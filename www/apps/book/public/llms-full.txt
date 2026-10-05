@@ -14531,6 +14531,47 @@ The brand record will now have the `metadata` property updated to remove the `is
 }
 ```
 
+Only an empty string removes a property. If you pass `null` as the value of a property, Medusa stores `null` as the property's value instead of removing it.
+
+### Manage Metadata in Commerce Modules and Workflows
+
+The merge behavior explained in this chapter also applies to the `metadata` property of data models in Medusa's Commerce Modules. This includes:
+
+- Module service methods, such as the Product Module's `updateProducts`, the Order Module's `updateOrders` and `updateOrderLineItems`, and the Cart Module's `updateCarts` and `updateLineItems`.
+- Workflows and steps that use these methods, such as `updateProductsWorkflow`, `updateOrderWorkflow`, `updateCartWorkflow`, and `updateCartsStep`.
+- All API routes that are built on top of these workflows.
+
+So, when you pass `metadata` to these API routes, methods, workflows, or steps:
+
+- Medusa merges the top-level properties you pass with the existing `metadata`. Properties you don't pass remain unchanged.
+- Medusa replaces nested objects entirely, as explained in the [Caveat: Updating Nested Objects](#caveat-updating-nested-objects) section. To change a single nested property, retrieve the record first, then pass the entire nested object with your changes.
+- Medusa removes properties whose value is an empty string.
+
+For example, to add a property to a product's `metadata` and remove another one using the `updateProductsWorkflow`:
+
+```ts
+import { updateProductsWorkflow } from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { result } = await updateProductsWorkflow(container)
+  .run({
+    input: {
+      products: [
+        {
+          id: "prod_123",
+          metadata: {
+            erp_id: "erp_123",
+            old_tax_code: "",
+          },
+        },
+      ],
+    },
+  })
+```
+
+After the update, the product's `metadata` has the new `erp_id` property, doesn't have the `old_tax_code` property, and keeps all other existing properties.
+
 ### Manage JSON Properties in API Routes
 
 The instructions above also apply when managing JSON properties in API routes, since they typically use a service's `update` method under the hood.
@@ -24643,7 +24684,7 @@ A search query runs against the [Search Module](https://docs.medusajs.com/resour
 
 Under the hood, the Search Module retrieves the results from the integrated [Search Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/search/providers/index.html.md), such as [Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md) or your custom third-party provider.
 
-For searching from a storefront, Medusa provides a [Store Search API route](https://docs.medusajs.com/api/store/search/search-indexes) that uses `query.search` under the hood. You can also use `query.search` in your custom API routes, such as to search data models that the route doesn't expose.
+For searching from a storefront, Medusa provides a [Store Search API route](https://docs.medusajs.com/api/store/search/search-indexes) that returns the fields your search indexes hold. Use `query.search` in your custom API routes to hydrate hits with other fields, or to search data models that the route doesn't expose.
 
 Prefer `query.search` over `query.graph` when the request has a free-text term to rank by. `query.graph` filters records in the database without relevance ranking, whereas `query.search` delegates the ranking to a [Search Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/search/providers/index.html.md).
 
@@ -25143,7 +25184,9 @@ It accepts the following properties:
 - facets: (\`(string | object)\[]\`) The facets to compute. Refer to \[Facets]\(#facets).
 - disjunctive\_facets: (\`boolean\`) Whether to compute each facet while ignoring the filter on that same field. Refer to \[Disjunctive Facets]\(#disjunctive-facets).
 - highlight: (\`object\`) Wraps the matched terms in the returned fields. Refer to \[Highlighting]\(#highlighting).
-- distinct: (\`string\`) A field to deduplicate on, so the provider returns at most one hit per distinct value.
+- distinct: (\`string\`) A field to deduplicate on, so the provider returns at most one hit per distinct value. The count in \`metadata.count\` then counts the deduplicated hits.
+
+  The field must exist in the index, and it can't be an array or vector field.
 - min\_score: (\`number\`) Discards the hits scoring below this threshold.
 - include\_score: (\`boolean\`) Whether to return each hit's relevance score in its \`score\` property. Scores aren't comparable across providers.
 - locales: (\`string\[]\`) A language hint for this query, such as \`\["en"]\`. Neither first-party provider honors it: a provider that can't apply it rejects the query rather than matching differently. Set the analyzer language on the provider (PostgreSQL) or on the field (Medusa Search) instead.
@@ -29561,7 +29604,7 @@ The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medus
 
 And [more features](https://docs.medusajs.com/cloud#features/index.html.md).
 
-[Sign up with Cloud](http://cloud.medusajs.com/signup?utm_source=docs\&utm_medium=website\&utm_campaign=cloud_signup_guide) and create your first Medusa project in minutes.
+[Sign up with Cloud](http://cloud.medusajs.com/signup?utm_source=docs\&utm_medium=website\&utm_campaign=cloud_signup_guide) to start a free trial and create your first Medusa project in minutes. You don't need to enter payment details to start the trial.
 
 ***
 
@@ -30109,15 +30152,15 @@ npx skills add medusajs/medusa-agent-skills
 See the [Agentic Deployment with Cloud CLI](https://docs.medusajs.com/cloud/cli/agents/index.html.md) guide for more details.
 
 
-# Ask Medusa Questions with the MCP Server
+# Ask Medusa Questions with the Docs MCP Server
 
-In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to let your AI agent answer questions from the official Medusa documentation.
+In this chapter, you'll learn how to use the [Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md) to let your AI agent answer questions from the official Medusa documentation.
 
 ## What is the Ask Medusa Question Tool?
 
-The Medusa MCP server exposes an `ask_medusa_question` tool that searches the official Medusa documentation and returns the most relevant sections for a query, each with its source URL and its actual content.
+The Docs MCP server exposes an `ask_medusa_question` tool that searches the official Medusa documentation and returns the most relevant sections for a query, each with its source URL and its actual content.
 
-This tool helps your AI agent answer Medusa questions from the current documentation rather than from what it memorized during training, and cites where each answer came from. This is the foundational tool of the MCP server: the other tools decide how to approach a task, and this one supplies the accurate details they're built on.
+This tool helps your AI agent answer Medusa questions from the current documentation rather than from what it memorized during training, and cites where each answer came from. This is the foundational tool of the Docs MCP server: the other tools decide how to approach a task, and this one supplies the accurate details they're built on.
 
 Everything in the Medusa documentation is available through it, from architecture and concepts to the Framework's tools, Commerce Modules, configuration, deployment, the API references, and integration guides.
 
@@ -30149,9 +30192,9 @@ Compared to browsing the documentation yourself, this tool gives you:
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+- [Docs MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md)
 
-After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), just ask your question. Your AI agent calls the tool whenever answering requires Medusa knowledge, and you don't need to invoke it explicitly.
+After [connecting to the Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server#connect-to-the-docs-mcp-server/index.html.md), just ask your question. Your AI agent calls the tool whenever answering requires Medusa knowledge, and you don't need to invoke it explicitly.
 
 For example:
 
@@ -30178,22 +30221,22 @@ The agent will call the tool whenever it needs information from the documentatio
 3. Your agent answers or writes code based on those sections, and can cite the source URLs so you can verify the answer.
 4. If your agent needs more detail, it calls the tool again with a narrower question.
 
-If the tool can't find relevant documentation for your question, that's a documentation gap worth reporting. Ask your agent to [submit feedback](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/submit-feedback/index.html.md) so the Medusa team can add coverage.
+If the tool can't find relevant documentation for your question, that's a documentation gap worth reporting. Ask your agent to [submit feedback](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/submit-feedback/index.html.md) so the Medusa team can add coverage.
 
 ***
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but have questions about Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-ask-medusa-question) for other options.
+If you don't use the Docs MCP server but have questions about Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-ask-medusa-question) for other options.
 
 
-# Extend Products with the MCP Server
+# Extend Products with the Docs MCP Server
 
-In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to extend Medusa's Product Module with custom data and features.
+In this chapter, you'll learn how to use the [Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md) to extend Medusa's Product Module with custom data and features.
 
 ## What is the Extend Products Tool?
 
-The Medusa MCP server exposes a `get_product_custom_data_guide` tool that returns a complete, step-by-step implementation guide for attaching custom data to Medusa's [Product Module](https://docs.medusajs.com/resources/commerce-modules/product/index.html.md) data models: `product`, `productVariant`, and `productOption`.
+The Docs MCP server exposes a `get_product_custom_data_guide` tool that returns a complete, step-by-step implementation guide for attaching custom data to Medusa's [Product Module](https://docs.medusajs.com/resources/commerce-modules/product/index.html.md) data models: `product`, `productVariant`, and `productOption`.
 
 You describe the data you want to attach, and your AI agent produces the extension: the custom data is stored, it's associated with products through a [module link](https://docs.medusajs.com/learn/fundamentals/module-links/index.html.md), it stays in sync as products are created, updated, and deleted, it can be read through the existing product APIs, and merchants can optionally manage it from the Medusa Admin.
 
@@ -30215,7 +30258,7 @@ This tool is useful for:
 
 Extending a product is where AI agents most often produce something that looks right and is wrong. Medusa's modules are isolated, so custom product data doesn't live on the product itself, and an agent working from general ecommerce instincts will reach for the wrong shape: forking the Product Module, adding a column to a Medusa table, or writing non-trivial data into `product.metadata`. All three appear to work at first and become expensive later.
 
-Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/ask-medusa-question/index.html.md), this tool gives you:
 
 - **The supported architecture by default.** Your agent builds the extension the way Medusa is designed to be extended, instead of choosing an approach that happens to compile.
 - **A right-sized solution.** The guide has your agent pick the lightest approach that actually fits your data, so you don't get a full module-and-link scaffold for something that didn't need one.
@@ -30231,9 +30274,9 @@ Your agent still calls `ask_medusa_question` as it works, to confirm exact API s
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+- [Docs MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md)
 
-After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent for the product extension you want. Your agent infers the name of the data from your request, calls the tool, and follows the returned guide.
+After [connecting to the Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server#connect-to-the-docs-mcp-server/index.html.md), ask your AI agent for the product extension you want. Your agent infers the name of the data from your request, calls the tool, and follows the returned guide.
 
 For example:
 
@@ -30257,18 +30300,18 @@ Tell your agent whether the data is per product, per variant, or per option, and
 
 ***
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help extending products with custom data and features, [contact our team](https://medusajs.com/contact?type=mcp-server-extend-products) for other options.
+If you don't use the Docs MCP server but need help extending products with custom data and features, [contact our team](https://medusajs.com/contact?type=mcp-server-extend-products) for other options.
 
 
-# Integrate Providers with the MCP Server
+# Integrate Providers with the Docs MCP Server
 
-In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to integrate third-party payment and fulfillment providers into your Medusa application.
+In this chapter, you'll learn how to use the [Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md) to integrate third-party payment and fulfillment providers into your Medusa application.
 
 ## What are the Provider Integration Tools?
 
-The Medusa MCP server exposes two tools that return complete, step-by-step implementation guides for building module providers:
+The Docs MCP server exposes two tools that return complete, step-by-step implementation guides for building module providers:
 
 - `get_payment_provider_integration_guide`: returns a guide for building a [Payment Module Provider](https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/index.html.md) that integrates a third-party payment service.
 - `get_fulfillment_provider_integration_guide`: returns a guide for building a [Fulfillment Module Provider](https://docs.medusajs.com/resources/commerce-modules/fulfillment/fulfillment-provider/index.html.md) that integrates a third-party shipping or fulfillment service.
@@ -30292,7 +30335,7 @@ These tools are useful for:
 
 ## Why Use These Tools?
 
-The documentation explains how provider integrations work, and [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md) gets your agent an accurate answer about any individual API. Neither gives your agent a plan.
+The documentation explains how provider integrations work, and [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/ask-medusa-question/index.html.md) gets your agent an accurate answer about any individual API. Neither gives your agent a plan.
 
 A provider integration is a sequence of decisions where a wrong early choice quietly invalidates the rest of the work, and where the code compiling doesn't mean the integration functions. That's what these tools address:
 
@@ -30312,9 +30355,9 @@ For Stripe, don't use these tools. Medusa ships an official Stripe provider, so 
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+- [Docs MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md)
 
-After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to integrate the provider. Your agent detects which of the two tools applies, calls it with the provider's name, and follows the returned guide.
+After [connecting to the Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server#connect-to-the-docs-mcp-server/index.html.md), ask your AI agent to integrate the provider. Your agent detects which of the two tools applies, calls it with the provider's name, and follows the returned guide.
 
 For example, to integrate a payment provider:
 
@@ -30354,18 +30397,18 @@ Tell your agent whether you want the provider inside your Medusa application or 
 
 ***
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help integrating a payment or fulfillment provider with Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-integration) for other options.
+If you don't use the Docs MCP server but need help integrating a payment or fulfillment provider with Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-integration) for other options.
 
 
 # Migrate from Magento (Adobe Commerce) to Medusa
 
-In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to migrate your store's data from Magento / Adobe Commerce into Medusa.
+In this chapter, you'll learn how to use the [Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md) to migrate your store's data from Magento / Adobe Commerce into Medusa.
 
 ## What is the Migration Tool?
 
-The Medusa MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from Magento / Adobe Commerce.
+The Docs MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from Magento / Adobe Commerce.
 
 You tell your AI agent that you're coming from Magento and what you want to bring over, and it produces a working import: your store's data lands in Medusa with Magento's model mapped onto Medusa's, and, depending on the approach you choose, the import can be re-run whenever you need it.
 
@@ -30377,7 +30420,7 @@ The tool can produce a migration for any of the following data types:
 
 The migration can also support other types like orders and customers, but it's mainly catered toward catalog data.
 
-The same tool also has curated guides for [Shopify](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/index.html.md) and [WooCommerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/index.html.md). It's platform agnostic beyond those: for any other source, it returns a generic migration guide, so you can use it to migrate from platforms like BigCommerce and commercetools. Always tell your AI agent the actual platform you're migrating from, since knowing the real platform helps your agent map its data model correctly.
+The same tool also has curated guides for [Shopify](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-shopify/index.html.md) and [WooCommerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-woocommerce/index.html.md). It's platform agnostic beyond those: for any other source, it returns a generic migration guide, so you can use it to migrate from platforms like BigCommerce and commercetools. Always tell your AI agent the actual platform you're migrating from, since knowing the real platform helps your agent map its data model correctly.
 
 ***
 
@@ -30396,7 +30439,7 @@ This tool is useful for:
 
 A migration is the one task where a plausible-looking result is the most dangerous. The import runs, rows appear in the database, and the problems only surface later: products that aren't purchasable, images that break when the Magento store is switched off, and records that can't be matched back to Magento when you need to re-sync.
 
-Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/ask-medusa-question/index.html.md), this tool gives you:
 
 - **A migration plan rather than an accumulation of answers.** Your agent gets the ordered approach for moving data from Magento into Medusa, instead of assembling one from separate answers about importers, workflows, and file providers.
 - **Source-platform quirks accounted for.** The curated Magento guide carries the specifics of how Magento models and exports its data, which is knowledge that lives in Magento's ecosystem rather than in Medusa's documentation.
@@ -30425,9 +30468,9 @@ Don't mix the two approaches on the same store. The CSV path can't key records t
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+- [Docs MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md)
 
-After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with Magento as the source platform, along with the data type and approach, then follows the returned guide.
+After [connecting to the Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server#connect-to-the-docs-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with Magento as the source platform, along with the data type and approach, then follows the returned guide.
 
 For example:
 
@@ -30456,9 +30499,9 @@ If you're migrating multiple data types, ask your agent to start with products. 
 
 ***
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, contact our team for other options:
+If you don't use the Docs MCP server but need help migrating your store's data to Medusa, contact our team for other options:
 
 1. [Magento Migration](https://medusajs.com/contact?type=mcp-server-magento-migration)
 2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
@@ -30466,11 +30509,11 @@ If you don't use the Medusa MCP server but need help migrating your store's data
 
 # Migrate from Shopify to Medusa
 
-In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to migrate your store's data from Shopify into Medusa.
+In this chapter, you'll learn how to use the [Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md) to migrate your store's data from Shopify into Medusa.
 
 ## What is the Migration Tool?
 
-The Medusa MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from Shopify, including Shopify Plus.
+The Docs MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from Shopify, including Shopify Plus.
 
 You tell your AI agent that you're coming from Shopify and what you want to bring over, and it produces a working import: your store's data lands in Medusa with Shopify's model mapped onto Medusa's, and, depending on the approach you choose, the import can be re-run whenever you need it.
 
@@ -30482,7 +30525,7 @@ The tool can produce a migration for any of the following data types:
 
 The migration can also support other types like orders and customers, but it's mainly catered toward catalog data.
 
-The same tool also has curated guides for [WooCommerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-woocommerce/index.html.md) and [Magento / Adobe Commerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/index.html.md). It's platform agnostic beyond those: for any other source, it returns a generic migration guide, so you can use it to migrate from platforms like BigCommerce and commercetools. Always tell your AI agent the actual platform you're migrating from, since knowing the real platform helps your agent map its data model correctly.
+The same tool also has curated guides for [WooCommerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-woocommerce/index.html.md) and [Magento / Adobe Commerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-magento/index.html.md). It's platform agnostic beyond those: for any other source, it returns a generic migration guide, so you can use it to migrate from platforms like BigCommerce and commercetools. Always tell your AI agent the actual platform you're migrating from, since knowing the real platform helps your agent map its data model correctly.
 
 ***
 
@@ -30501,7 +30544,7 @@ This tool is useful for:
 
 A migration is the one task where a plausible-looking result is the most dangerous. The import runs, rows appear in the database, and the problems only surface later: products that aren't purchasable, images that break when the Shopify store is switched off, and records that can't be matched back to Shopify when you need to re-sync.
 
-Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/ask-medusa-question/index.html.md), this tool gives you:
 
 - **A migration plan rather than an accumulation of answers.** Your agent gets the ordered approach for moving data from Shopify into Medusa, instead of assembling one from separate answers about importers, workflows, and file providers.
 - **Source-platform quirks accounted for.** The curated Shopify guide carries the specifics of how Shopify models and exports its data, which is knowledge that lives in Shopify's ecosystem rather than in Medusa's documentation.
@@ -30530,9 +30573,9 @@ Don't mix the two approaches on the same store. The CSV path can't key records t
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+- [Docs MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md)
 
-After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with Shopify as the source platform, along with the data type and approach, then follows the returned guide.
+After [connecting to the Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server#connect-to-the-docs-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with Shopify as the source platform, along with the data type and approach, then follows the returned guide.
 
 For example:
 
@@ -30561,9 +30604,9 @@ If you're migrating multiple data types, ask your agent to start with products. 
 
 ***
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, contact our team for other options:
+If you don't use the Docs MCP server but need help migrating your store's data to Medusa, contact our team for other options:
 
 1. [Shopify Migration](https://medusajs.com/contact?type=mcp-server-shopify-migration)
 2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
@@ -30571,11 +30614,11 @@ If you don't use the Medusa MCP server but need help migrating your store's data
 
 # Migrate from WooCommerce to Medusa
 
-In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to migrate your store's data from WooCommerce into Medusa.
+In this chapter, you'll learn how to use the [Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md) to migrate your store's data from WooCommerce into Medusa.
 
 ## What is the Migration Tool?
 
-The Medusa MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from WooCommerce.
+The Docs MCP server exposes a `get_import_data_from_shopify_or_other_platform_guide` tool that returns a complete, step-by-step implementation guide for importing or migrating existing store data into Medusa from WooCommerce.
 
 You tell your AI agent that you're coming from WooCommerce and what you want to bring over, and it produces a working import: your store's data lands in Medusa with WooCommerce's model mapped onto Medusa's, and, depending on the approach you choose, the import can be re-run whenever you need it.
 
@@ -30587,7 +30630,7 @@ The tool can produce a migration for any of the following data types:
 
 The migration can also support other types like orders and customers, but it's mainly catered toward catalog data.
 
-The same tool also has curated guides for [Shopify](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify/index.html.md) and [Magento / Adobe Commerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-magento/index.html.md). It's platform agnostic beyond those: for any other source, it returns a generic migration guide, so you can use it to migrate from platforms like BigCommerce and commercetools. Always tell your AI agent the actual platform you're migrating from, since knowing the real platform helps your agent map its data model correctly.
+The same tool also has curated guides for [Shopify](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-shopify/index.html.md) and [Magento / Adobe Commerce](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-magento/index.html.md). It's platform agnostic beyond those: for any other source, it returns a generic migration guide, so you can use it to migrate from platforms like BigCommerce and commercetools. Always tell your AI agent the actual platform you're migrating from, since knowing the real platform helps your agent map its data model correctly.
 
 ***
 
@@ -30606,7 +30649,7 @@ This tool is useful for:
 
 A migration is the one task where a plausible-looking result is the most dangerous. The import runs, rows appear in the database, and the problems only surface later: products that aren't purchasable, images that break when the WooCommerce store is switched off, and records that can't be matched back to WooCommerce when you need to re-sync.
 
-Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+Compared to reading the documentation yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/ask-medusa-question/index.html.md), this tool gives you:
 
 - **A migration plan rather than an accumulation of answers.** Your agent gets the ordered approach for moving data from WooCommerce into Medusa, instead of assembling one from separate answers about importers, workflows, and file providers.
 - **Source-platform quirks accounted for.** The curated WooCommerce guide carries the specifics of how WooCommerce models and exports its data, which is knowledge that lives in WooCommerce's ecosystem rather than in Medusa's documentation.
@@ -30635,9 +30678,9 @@ Don't mix the two approaches on the same store. The CSV path can't key records t
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+- [Docs MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md)
 
-After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with WooCommerce as the source platform, along with the data type and approach, then follows the returned guide.
+After [connecting to the Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server#connect-to-the-docs-mcp-server/index.html.md), ask your AI agent to migrate your data. Your agent detects the intent, calls the migration tool with WooCommerce as the source platform, along with the data type and approach, then follows the returned guide.
 
 For example:
 
@@ -30666,15 +30709,15 @@ If you're migrating multiple data types, ask your agent to start with products. 
 
 ***
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help migrating your store's data to Medusa, contact our team for other options:
+If you don't use the Docs MCP server but need help migrating your store's data to Medusa, contact our team for other options:
 
 1. [WooCommerce Migration](https://medusajs.com/contact?type=mcp-server-woocommerce-migration)
 2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
 
 
-# Medusa MCP Remote Server
+# Docs MCP Server
 
 The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
 
@@ -30682,16 +30725,16 @@ Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` tha
 
 ## Authentication
 
-This MCP server is available for [Cloud](https://docs.medusajs.com/cloud/index.html.md) users only. It requires authenticating with your Cloud account to use it.
+The Docs MCP server is available for [Cloud](https://docs.medusajs.com/cloud/index.html.md) users only. It requires authenticating with your Cloud account to use it.
 
-The MCP server supports two authentication methods:
+The Docs MCP server supports two authentication methods:
 
-1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Cloud account without generating a token manually. When you connect to the MCP server, you will be prompted to log into your Cloud account in a browser window to authenticate.
-2. [Personal Access Key](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This method is useful if you face issues with OAuth or prefer to use a token for authentication.
+1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Cloud account without generating a token manually. When you connect to the Docs MCP server, you will be prompted to log into your Cloud account in a browser window to authenticate.
+2. [Personal Access Key](https://docs.medusajs.com/cloud/access-keys#manage-personal-access-keys/index.html.md): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the Docs MCP server. This method is useful if you face issues with OAuth or prefer to use a token for authentication.
 
 ***
 
-## Connect to the Medusa MCP Server
+## Connect to the Docs MCP Server
 
 ### Prerequisites
 
@@ -30699,7 +30742,7 @@ The MCP server supports two authentication methods:
 
 ### Claude Code
 
-To connect to the Medusa MCP server in Claude Code, run the following command in your terminal:
+To connect to the Docs MCP server in Claude Code, run the following command in your terminal:
 
 ### OAuth
 
@@ -30724,7 +30767,7 @@ If you're connecting with OAuth, select the `medusa` MCP server and choose "Auth
 
 ### Codex
 
-To connect to the Medusa MCP server in Codex, use one of the following methods:
+To connect to the Docs MCP server in Codex, use one of the following methods:
 
 ### OAuth
 
@@ -30783,9 +30826,9 @@ If you're connecting with OAuth, open Settings -> Tools & MCPs and click "Connec
 
 ### VS Code
 
-<Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to VSCode.
+<Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Docs MCP server to VSCode.
 
-To manually connect to the Medusa MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
+To manually connect to the Docs MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
 
 ### OAuth
 
@@ -30816,7 +30859,7 @@ To manually connect to the Medusa MCP server in VSCode, add the following to you
 }
 ```
 
-If you're connecting with OAuth, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
+If you're connecting with OAuth, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Docs MCP server in VSCode.
 
 ### OpenCode
 
@@ -30864,9 +30907,9 @@ This will open a browser window where you can log into your Cloud account to aut
 
 ***
 
-## How to Use the MCP Server
+## How to Use the Docs MCP Server
 
-After connecting to the Medusa MCP server in your AI tool or IDE, you can start asking questions or requesting your AI assistant to build Medusa customizations. It will fetch the relevant information from the Medusa documentation and provide you with accurate answers, code snippets, and explanations.
+After connecting to the Docs MCP server in your AI tool or IDE, you can start asking questions or requesting your AI assistant to build Medusa customizations. It will fetch the relevant information from the Medusa documentation and provide you with accurate answers, code snippets, and explanations.
 
 For example, you can ask:
 
@@ -30877,20 +30920,20 @@ For example, you can ask:
 
 ***
 
-## MCP Server Tools
+## Docs MCP Server Tools
 
-Beyond answering questions from the documentation, the MCP server provides tools that return curated, step-by-step implementation guides for common tasks. These guides tell your AI agent exactly which Medusa APIs and patterns to use, so it doesn't have to infer them.
+Beyond answering questions from the documentation, the Docs MCP server provides tools that return curated, step-by-step implementation guides for common tasks. These guides tell your AI agent exactly which Medusa APIs and patterns to use, so it doesn't have to infer them.
 
 The following chapters cover each tool, who it's useful for, and how to use it:
 
 
-# Submit Feedback with the MCP Server
+# Submit Feedback with the Docs MCP Server
 
-In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to send feedback to the Medusa team directly from your AI tool or IDE.
+In this chapter, you'll learn how to use the [Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md) to send feedback to the Medusa team directly from your AI tool or IDE.
 
 ## What is the Submit Feedback Tool?
 
-The Medusa MCP server exposes a `submit_medusa_feedback` tool that records structured feedback for the Medusa team. You can ask your AI agent to submit feedback at the moment you hit a problem, without leaving your editor, opening a browser, or writing a reproduction in an issue tracker.
+The Docs MCP server exposes a `submit_medusa_feedback` tool that records structured feedback for the Medusa team. You can ask your AI agent to submit feedback at the moment you hit a problem, without leaving your editor, opening a browser, or writing a reproduction in an issue tracker.
 
 The Medusa team receives the feedback immediately at the moment your agent submits it. Because your agent has the full context of what you were building and what went wrong, including the code that failed, the report it writes is usually more specific than one you'd write from memory later.
 
@@ -30898,7 +30941,7 @@ The Medusa team receives the feedback immediately at the moment your agent submi
 
 ## Why This Matters
 
-Feedback submitted through the MCP server reaches the Medusa team, and it's one of the most direct signals our team has about where Medusa falls short in real projects.
+Feedback submitted through the Docs MCP server reaches the Medusa team, and it's one of the most direct signals our team has about where Medusa falls short in real projects.
 
 This matters because:
 
@@ -30914,9 +30957,9 @@ Submitting feedback is always preferable to silently working around a problem.
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+- [Docs MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md)
 
-After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to submit feedback.
+After [connecting to the Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server#connect-to-the-docs-mcp-server/index.html.md), ask your AI agent to submit feedback.
 
 For example:
 
@@ -30927,17 +30970,17 @@ Submit feedback that the documentation on how to create a custom payment provide
 Your AI agent may also offer to submit feedback on its own when it encounters a documentation gap or a clearly broken API surface while helping you.
 
 
-# Upgrade Medusa with the MCP Server
+# Upgrade Medusa with the Docs MCP Server
 
-In this chapter, you'll learn how to use the [Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md) to upgrade your Medusa project to a newer version.
+In this chapter, you'll learn how to use the [Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md) to upgrade your Medusa project to a newer version.
 
 ## What is the Upgrade Instructions Tool?
 
-The Medusa MCP server exposes a `get_medusa_upgrade_instructions` tool that returns step-by-step upgrade instructions for moving a Medusa project to a specific target version.
+The Docs MCP server exposes a `get_medusa_upgrade_instructions` tool that returns step-by-step upgrade instructions for moving a Medusa project to a specific target version.
 
 You name the version you want to move to, and your AI agent produces an upgraded project: packages bumped, breaking changes applied across your backend, admin, and storefront, migrations run, and the result built and typechecked to prove the changes hold together. Before any of that happens, it presents a plan for your approval.
 
-If the MCP server has a curated guide for the version you asked for, your agent works from it directly. If not, the tool directs your agent to build the plan from the [GitHub release notes](https://github.com/medusajs/medusa/releases) for every release between your current version and the target, the official documentation, and the `ask_medusa_question` tool for anything it's unsure about.
+If the Docs MCP server has a curated guide for the version you asked for, your agent works from it directly. If not, the tool directs your agent to build the plan from the [GitHub release notes](https://github.com/medusajs/medusa/releases) for every release between your current version and the target, the official documentation, and the `ask_medusa_question` tool for anything it's unsure about.
 
 ***
 
@@ -30956,7 +30999,7 @@ This tool is useful for:
 
 Upgrades are the task where an AI agent's default behavior is most misleading. Asked to upgrade Medusa, an agent will bump `@medusajs/*` versions from memory, report success, and leave you with a project that no longer boots, because the breaking changes those releases introduced were never applied. Nothing about the output signals that anything is missing.
 
-Compared to reading the release notes yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/ask-medusa-question/index.html.md), this tool gives you:
+Compared to reading the release notes yourself or [asking a Medusa question](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/ask-medusa-question/index.html.md), this tool gives you:
 
 - **An upgrade, not a version bump.** The tool exists to make sure the changes each release requires are actually applied, rather than just the numbers in `package.json` changing.
 - **Coverage across every release in between.** Upgrading several versions at once means several sets of breaking changes. The tool accounts for all of them, which is easy to miss when you're only looking at the target release's notes.
@@ -30972,9 +31015,9 @@ Some versions also ship [codemods](https://docs.medusajs.com/learn/codemods/inde
 
 ### Prerequisites
 
-- [Medusa MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md)
+- [Docs MCP server connected to your AI tool or IDE](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md)
 
-After [connecting to the Medusa MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server#connect-to-the-medusa-mcp-server/index.html.md), ask your AI agent to upgrade your project. Your agent infers the target version from your request and calls the tool with it.
+After [connecting to the Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server#connect-to-the-docs-mcp-server/index.html.md), ask your AI agent to upgrade your project. Your agent infers the target version from your request and calls the tool with it.
 
 For example:
 
@@ -30995,9 +31038,124 @@ Always upgrade on a branch with a clean working tree, and review the resulting d
 
 ***
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help upgrading your Medusa project, [contact our team](https://medusajs.com/contact?type=mcp-server-upgrade-instructions) for other options.
+If you don't use the Docs MCP server but need help upgrading your Medusa project, [contact our team](https://medusajs.com/contact?type=mcp-server-upgrade-instructions) for other options.
+
+
+# Medusa MCP: Manage Store with Agents
+
+In this chapter, you'll learn how to connect AI agents like Claude and ChatGPT to your stores deployed on [Cloud](https://docs.medusajs.com/cloud/index.html.md), so you can ask them about your store's commerce data.
+
+## What Can AI Agents Do with Your Store?
+
+Medusa allows AI agents to read data from your Cloud stores, so you can ask questions about your store in natural language. For example:
+
+- "Show me the 5 most recent orders in my store, with each order's total and status."
+- "How many orders are waiting to be fulfilled?"
+- "What products are available to shoppers in my B2B sales channel?"
+
+Your AI agent then retrieves the relevant data from your store and presents it to you in a human-readable format.
+
+The agent's access is read-only. It can retrieve data from your store, but it can't create, update, or delete data.
+
+Store access for AI agents is in early access. If it isn't enabled for your organization, refer to the [Medusa MCP](https://docs.medusajs.com/cloud/medusa-mcp#connect-to-the-medusa-mcp-server/index.html.md) guide to request access and rebuild your environments.
+
+### How to Connect AI Agents to Your Store
+
+You can connect AI agents to your store in the following ways:
+
+- [Claude Connector](#claude-connector): Add the Claude Connector to Claude.
+- [ChatGPT App](#chatgpt-app): Add the ChatGPT app to ChatGPT.
+- [Medusa MCP Server](#medusa-mcp-server): Connect the Medusa MCP server to any AI agent that supports MCP servers, such as Claude Code, Codex, or Cursor.
+
+***
+
+## Claude Connector
+
+The Claude Connector is Medusa's listing in [Claude's connectors directory](https://claude.ai/directory/medusa). It connects Claude to your stores, so you can ask Claude about your stores in any chat.
+
+You can add the Claude Connector to Claude at any time, but you can only connect to your stores after your organization has access to the Medusa MCP server.
+
+Refer to the [Claude Connector](https://docs.medusajs.com/cloud/medusa-mcp/claude/index.html.md) guide in the Cloud documentation to learn how to add and use it.
+
+***
+
+## ChatGPT App
+
+The ChatGPT app is under review by OpenAI and isn't available in ChatGPT yet. In the meantime, you can add the Medusa MCP server to ChatGPT as a [custom plugin](https://docs.medusajs.com/cloud/medusa-mcp/chatgpt#add-medusa-mcp-as-a-custom-plugin-in-chatgpt/index.html.md) in developer mode.
+
+The ChatGPT app connects ChatGPT to your stores, so you can ask ChatGPT about your stores in any chat.
+
+Refer to the [ChatGPT app](https://docs.medusajs.com/cloud/medusa-mcp/chatgpt/index.html.md) guide in the Cloud documentation to learn more.
+
+***
+
+## Medusa MCP Server
+
+The Medusa MCP server is a remote Model Context Protocol (MCP) server that powers the Claude Connector and the ChatGPT app. You can also connect it to any AI agent that supports MCP servers.
+
+The Medusa MCP server is different from the [Docs MCP server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md). The Docs MCP server helps you build with Medusa using the documentation and implementation guides, while the Medusa MCP server reads data from your stores.
+
+The Medusa MCP server is a Streamable HTTP server at `https://cloud.medusajs.com/mcp`. To add it to your AI agent:
+
+### Claude Code
+
+```bash
+claude mcp add --transport http medusa-commerce \
+  https://cloud.medusajs.com/mcp
+```
+
+### Codex
+
+```bash
+codex mcp add medusa-commerce \
+  --url https://cloud.medusajs.com/mcp
+codex mcp login medusa-commerce
+```
+
+### Cursor
+
+```json title=".cursor/mcp.json"
+{
+  "mcpServers": {
+    "medusa-commerce": {
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+### VS Code
+
+```json title=".vscode/mcp.json"
+{
+  "servers": {
+    "medusa-commerce": {
+      "type": "http",
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+### OpenCode
+
+```json title="~/.config/opencode/opencode.json"
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "medusa-commerce": {
+      "type": "remote",
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+When you connect, you log in with your Cloud account and choose the environments that the AI agent can access.
+
+Refer to the [Medusa MCP](https://docs.medusajs.com/cloud/medusa-mcp/index.html.md) guide in the Cloud documentation for setup instructions, the available tools, and troubleshooting steps.
 
 
 # Build with AI Assistants and LLMs
@@ -31029,8 +31187,9 @@ By levaging AI assistants in your Medusa development workflow, you can:
 Medusa provides various tools and integrations to help you leverage AI assistants and LLMs in your commerce development workflow:
 
 - [Cloud CLI](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/cloud-cli/index.html.md): Command-line interface for managing Cloud resources and deployments.
+- [Manage Store with Agents](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/manage-store-with-agents/index.html.md): Ask Claude, ChatGPT, and other AI agents about your Cloud stores' commerce data.
 - [Medusa Agent Skills](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/agentic-skills/index.html.md): Collection of skills for AI agents to assist you in building features, fixing bugs, and more.
-- [MCP Remote Server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/mcp-server/index.html.md): Find information from the docs when building features with AI agents like Claude Code.
+- [Docs MCP Server](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server/index.html.md): Find information from the docs when building features with AI agents like Claude Code.
 - [AI-Friendly Documentation](https://docs.medusajs.com/learn/introduction/build-with-llms-ai/ai-friendly-docs/index.html.md): Docs with an AI assistant and content optimized for humans and LLMs alike.
 
 
@@ -33291,7 +33450,7 @@ If you're a human, copy this prompt and run it in your AI agent:
 Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
 ```
 
-The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
+The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features. New Cloud accounts start with a free trial, so you can go live without entering payment details.
 
 ## FAQ
 
@@ -33304,6 +33463,10 @@ The AI agent will then execute the instructions, which include installing Medusa
 ### Do I need a Cloud account?
 
 No, the AI agent will set up Medusa locally on your machine. However, to deploy the store, the AI agent will guide you to create a [Cloud](https://docs.medusajs.com/cloud/index.html.md) account if you don't have one, and help you with the deployment process.
+
+### Is Cloud free to try?
+
+Yes, when you [sign up for Cloud](https://docs.medusajs.com/cloud/sign-up/index.html.md), Medusa starts a free trial for your organization. You don't need to enter payment details to start the trial. To keep your projects after the trial ends, add your billing details from the Cloud dashboard.
 
 ### Can my AI agent build custom features?
 
@@ -41973,6 +42136,50 @@ npm run dev
 
 Finally, customize the Order view in Medusa Admin to display the `custom_display_id` property.
 
+***
+
+## Search Orders by Display ID
+
+The `display_id` and `custom_display_id` properties are searchable fields of the `Order` data model. So, you can search orders by either display ID without any customizations.
+
+The Order Module also defines database indexes on both properties. The index on `custom_display_id` is unique, so each custom display ID must be unique among orders that aren't deleted.
+
+### Search in Medusa Admin
+
+The search box on the Orders page of Medusa Admin searches the order's searchable fields, including `display_id` and `custom_display_id`. So, you can enter an order's display ID or custom display ID in the search box to find it.
+
+### Search with the Admin API
+
+To search orders by display ID with the [List Orders API route](https://docs.medusajs.com/api/admin/orders/list-orders), pass the display ID or custom display ID in the `q` query parameter.
+
+For example, using the [JS SDK](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/js-sdk/index.html.md):
+
+```ts
+const { orders } = await sdk.admin.order.list({
+  q: "ORD-1234",
+})
+```
+
+The `q` parameter performs a case-insensitive partial match on the order's searchable fields, which also include the email and the shipping and billing addresses. For example, searching for `12` returns orders whose display ID is `12`, `120`, or `1234`.
+
+The List Orders API route doesn't accept `display_id` or `custom_display_id` as dedicated filter parameters. Use the `q` parameter instead.
+
+### Filter with Query in Customizations
+
+To retrieve an order by its exact display ID or custom display ID in your customizations, such as an API route or workflow step, use [Query](https://docs.medusajs.com/docs/learn/fundamentals/query/index.html.md) and pass the property in `filters`.
+
+For example:
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: ["id", "display_id", "custom_display_id"],
+  filters: {
+    custom_display_id: "ORD-1234",
+  },
+})
+```
+
 
 # Draft Orders Plugin
 
@@ -45706,7 +45913,9 @@ The Medusa application has a `/hooks/payment/[identifier]_[id]` API route out-of
 - `[identifier]` is the `identifier` static property defined in the payment provider class. For example, `stripe`.
 - `[id]` is the `id` field set for the provider in `medusa-config.ts`. For example, `stripe`.
 
-The route segment does not include the `pp_` prefix that appears in the full provider ID stored in the database. For a provider registered with `identifier = "myprovider"` and `id: "myprovider"`, the webhook route is `/hooks/payment/myprovider_myprovider`, not `/hooks/payment/pp_myprovider_myprovider`.
+The route segment doesn't need the `pp_` prefix that appears in the full provider ID stored in the database. For a provider registered with `identifier = "myprovider"` and `id: "myprovider"`, the webhook route is `/hooks/payment/myprovider_myprovider`.
+
+Starting from Medusa v2.21.2, the route also accepts the full provider ID with the `pp_` prefix, such as `/hooks/payment/pp_myprovider_myprovider`, and removes the `pp_` prefix internally. In earlier versions, the prefixed route fails to resolve the provider.
 
 For example, when integrating basic Stripe payments with the [Stripe Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe/index.html.md), the webhook listener route is `/hooks/payment/stripe_stripe`.
 
@@ -47560,6 +47769,337 @@ const { data: products } = useQueryGraphStep({
 ```
 
 In this example, only products that belong to either the `cat_123` or `cat_456` category will be returned.
+
+
+# Manage Products with the Admin API and JS SDK
+
+In this guide, you'll learn how to create and manage products from a client application, such as a script or an external admin, using the [JS SDK](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/js-sdk/index.html.md) and the Admin API routes.
+
+Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/products/index.html.md) to learn how to manage products using the dashboard.
+
+### Prerequisites
+
+- [JS SDK installed and configured](https://docs.medusajs.com/js-sdk/index.html.md)
+
+## Authenticate Admin Requests
+
+All Admin API routes require an authenticated admin user. You can authenticate the JS SDK with a session, a JWT token, or a secret API key.
+
+For server-side scripts, a [secret API key](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/api-key/index.html.md) is usually the simplest option:
+
+```ts
+import Medusa from "@medusajs/js-sdk"
+
+export const sdk = new Medusa({
+  baseUrl: "http://localhost:9000",
+  apiKey: process.env.MEDUSA_SECRET_API_KEY,
+})
+```
+
+Learn more about the authentication options in the [JS SDK Authentication](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/js-sdk/auth/overview/index.html.md) guide.
+
+The rest of this guide uses the JS SDK methods and mentions the Admin API route that each method sends a request to.
+
+***
+
+## Upload Product Images
+
+Product images are stored as URLs. So, before you create or update a product with new images, upload the image files using the `sdk.admin.upload.create` method. It sends a `POST` request to `/admin/uploads` as `multipart/form-data`.
+
+For example:
+
+```ts
+const { files } = await sdk.admin.upload.create({
+  files: [
+    new File([imageBuffer], "shirt-front.png", {
+      type: "image/png",
+    }),
+  ],
+})
+
+// each uploaded file has an `id` and a `url`
+const imageUrls = files.map((file) => file.url)
+```
+
+The [File Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/file/index.html.md) configured in your Medusa application stores the files and returns their URLs. You then pass these URLs in the product's `images` and `thumbnail` fields.
+
+***
+
+## Create a Product
+
+Before creating a product with images, make sure to [upload the images](#upload-product-images) first.
+
+To create a product, use the `sdk.admin.product.create` method. It sends a `POST` request to `/admin/products`.
+
+For example, to create a draft product with one option, one variant, images, and associations to existing records:
+
+```ts
+const { product } = await sdk.admin.product.create({
+  title: "Medusa T-Shirt",
+  handle: "medusa-t-shirt",
+  description: "A comfortable cotton t-shirt.",
+  status: "draft",
+  images: imageUrls.map((url) => ({ url })),
+  thumbnail: imageUrls[0],
+  collection_id: "pcol_123",
+  type_id: "ptyp_123",
+  categories: [{ id: "pcat_123" }, { id: "pcat_456" }],
+  tags: [{ id: "ptag_123" }],
+  sales_channels: [{ id: "sc_123" }, { id: "sc_456" }],
+  shipping_profile_id: "sp_123",
+  options: [
+    {
+      title: "Size",
+      values: ["S", "M"],
+    },
+  ],
+  variants: [
+    {
+      title: "Small",
+      sku: "SHIRT-S",
+      ean: "1234567890123",
+      manage_inventory: true,
+      allow_backorder: false,
+      options: {
+        Size: "S",
+      },
+      prices: [
+        {
+          currency_code: "usd",
+          amount: 20,
+        },
+        {
+          currency_code: "eur",
+          amount: 18,
+        },
+      ],
+    },
+  ],
+  metadata: {
+    source: "erp",
+  },
+})
+```
+
+Where:
+
+- `title` is the only required field.
+- `status` defaults to `draft`. Other statuses are `proposed`, `published`, and `rejected`.
+- `categories`, `tags`, and `sales_channels` are arrays of objects with an `id` property. There's no `category_ids` field.
+- `collection_id` and `type_id` are single IDs, since a product belongs to at most one collection and one type. A product can belong to many categories.
+- `images` is an array of objects with a `url` property. Medusa stores the images in the order of the array.
+- If you don't pass a `thumbnail`, Medusa uses the URL of the first image as the thumbnail.
+- If you don't pass a `handle`, Medusa generates it from the `title`.
+- Each variant requires a `title` and a `prices` array. The keys of a variant's `options` object are option titles, and the values are one of that option's `values`.
+- Amounts in `prices` are the actual amounts, such as `20` for $20. Learn more in the [Pricing Module's documentation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing/index.html.md).
+- `manage_inventory` defaults to `true`. Learn more in the [Product Variant Inventory](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/product/variant-inventory/index.html.md) guide.
+
+Refer to the [Create Product API reference](https://docs.medusajs.com/api/admin/products/create-product) for all accepted fields.
+
+Create products as drafts, then publish them after you verify their details. Draft products aren't returned by the Store API routes.
+
+***
+
+## Retrieve a Product with Its Relations
+
+To retrieve a product, use the `sdk.admin.product.retrieve` method. It sends a request to the [Get Product API route](https://docs.medusajs.com/api/admin/products/get-a-product).
+
+Use the `fields` query parameter to select the relations to retrieve. A `*` prefix retrieves all fields of a relation, and a `+` prefix adds a field to the default fields:
+
+```ts
+const { product } = await sdk.admin.product.retrieve(
+  "prod_123",
+  {
+    fields: "*categories,*images,*variants.prices,+metadata",
+  }
+)
+```
+
+The same `fields` syntax works with `sdk.admin.product.list`, which sends a request to the [List Products API route](https://docs.medusajs.com/api/admin/products/list-products). For example, to retrieve each product's category IDs so you can find products without categories:
+
+```ts
+const { products } = await sdk.admin.product.list({
+  fields: "id,title,categories.id",
+})
+
+const uncategorized = products.filter(
+  (product) => !product.categories?.length
+)
+```
+
+Learn more about the `fields` query parameter in the [API reference](https://docs.medusajs.com/api/admin/select-fields-and-relations).
+
+***
+
+## Update a Product
+
+To update a product, use the `sdk.admin.product.update` method. It sends a `POST` request to the [Update Product API route](https://docs.medusajs.com/api/admin/products/update-a-product). Only the fields that you pass are updated.
+
+For example, to update a product's details, images, and thumbnail:
+
+```ts
+const { product } = await sdk.admin.product.update(
+  "prod_123",
+  {
+    title: "Medusa T-Shirt",
+    description: "A soft cotton t-shirt.",
+    thumbnail: "https://example.com/new-front.png",
+    images: [
+      { id: "img_123", url: "https://example.com/front.png" },
+      { url: "https://example.com/new-back.png" },
+    ],
+    categories: [{ id: "pcat_123" }],
+    tags: [{ id: "ptag_123" }],
+    metadata: {
+      color: "black",
+    },
+  }
+)
+```
+
+Keep in mind the following about updates:
+
+- Array fields such as `images`, `categories`, `tags`, and `sales_channels` replace the product's existing values. For example, to add an image, pass the existing images along with the new one.
+- The order of the `images` array sets the order of the product's images. Pass an existing image's `id` along with its `url` to keep that image.
+- Updating `images` doesn't change the `thumbnail`. Pass `thumbnail` to change it.
+- `metadata` is merged with the product's existing metadata.
+- In the same request, you can update the product's `collection_id`, `type_id`, `shipping_profile_id`, `status`, and other scalar fields.
+
+To manage the product's variants and options, use the dedicated methods explained in the next sections.
+
+Since [Medusa v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0), the update request doesn't accept an `options` field. Use the `sdk.admin.product.linkOptions` method instead, which sends a request to the [Add Options to Product API route](https://docs.medusajs.com/api/admin/products/add-options-to-product).
+
+***
+
+## Manage Variants and Prices
+
+To create, update, or delete multiple variants of a product in one request, use the `sdk.admin.product.batchVariants` method. It sends a request to the [Manage Variants API Route](https://docs.medusajs.com/api/admin/products/manage-variants-in-a-product).
+
+For example:
+
+```ts
+const { created, updated, deleted } =
+  await sdk.admin.product.batchVariants("prod_123", {
+    create: [
+      {
+        title: "Medium",
+        sku: "SHIRT-M",
+        options: { Size: "M" },
+        prices: [{ currency_code: "usd", amount: 20 }],
+      },
+    ],
+    update: [
+      {
+        id: "variant_123",
+        sku: "SHIRT-S-NEW",
+        options: { Size: "S" },
+        prices: [
+          { id: "price_123", amount: 22 },
+          { currency_code: "eur", amount: 19 },
+        ],
+      },
+    ],
+    delete: ["variant_456"],
+  })
+```
+
+Each item in `update` requires the variant's `id`. The other fields are optional.
+
+When you pass `prices` for a variant, they replace the variant's existing prices:
+
+- Pass the `id` of an existing price to update it.
+- Pass a price without an `id` to add it.
+- Existing prices that you don't pass are removed.
+
+To update a single variant, you can also use the `sdk.admin.product.updateVariant` method, which sends a request to the [Update Variant API route](https://docs.medusajs.com/api/admin/products/update-variant).
+
+To set sale prices, create a [price list](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/pricing/concepts#price-list/index.html.md) instead of changing the variant's base prices.
+
+***
+
+## Assign Products to Collections and Categories in Bulk
+
+To add or remove multiple products in a collection, use the `sdk.admin.productCollection.updateProducts` method. It sends a request to the [Manage Products of a Collection API route](https://docs.medusajs.com/api/admin/collections/manage-products):
+
+```ts
+const { collection } =
+  await sdk.admin.productCollection.updateProducts(
+    "pcol_123",
+    {
+      add: ["prod_123", "prod_456"],
+      remove: ["prod_789"],
+    }
+  )
+```
+
+Since a product belongs to at most one collection, adding a product to a collection sets its `collection_id` to that collection.
+
+To add or remove multiple products in a category, use the `sdk.admin.productCategory.updateProducts` method. It sends a request to the [Manage Products of a Category API route](https://docs.medusajs.com/api/admin/product-categories/manage-products):
+
+```ts
+const { product_category } =
+  await sdk.admin.productCategory.updateProducts(
+    "pcat_123",
+    {
+      add: ["prod_123", "prod_456"],
+      remove: ["prod_789"],
+    }
+  )
+```
+
+Adding a product to a category doesn't remove it from its other categories.
+
+***
+
+## Publish a Product
+
+To publish a draft product, update its `status` to `published` using the [Update Product API route](https://docs.medusajs.com/api/admin/products/update).
+
+```ts
+await sdk.admin.product.update("prod_123", {
+  status: "published",
+})
+```
+
+Customers can view and purchase a published product in the sales channels that the product is available in.
+
+***
+
+## Create, Update, or Delete Products in Bulk
+
+To create, update, and delete multiple products in one request, use the `sdk.admin.product.batch` method. It sends a request to the [Manage Products API route](https://docs.medusajs.com/api/admin/products/manage-products):
+
+```ts
+const { created, updated, deleted } =
+  await sdk.admin.product.batch({
+    create: [
+      {
+        title: "Medusa Hoodie",
+        options: [{ title: "Size", values: ["M"] }],
+        variants: [
+          {
+            title: "Medium",
+            options: { Size: "M" },
+            prices: [{ currency_code: "usd", amount: 40 }],
+          },
+        ],
+      },
+    ],
+    update: [
+      {
+        id: "prod_123",
+        status: "published",
+        collection_id: "pcol_123",
+        categories: [{ id: "pcat_123" }],
+      },
+    ],
+    delete: ["prod_456"],
+  })
+```
+
+Items in `create` accept the same fields as the [create request](#create-a-product). Items in `update` accept the same fields as the [update request](#update-a-product), along with the product's `id`.
+
+To import many products from a CSV file, refer to the [Import Products](https://docs.medusajs.com/user-guide/products/import/index.html.md) user guide instead.
 
 
 # Calculate Product Variant Price with Taxes
@@ -63065,9 +63605,9 @@ A command with no terminal to prompt in, such as in a CI pipeline, leaves those 
 
 An index name, such as `product`, isn't one physical index. The Search Module builds a version of the index per definition change, and one of those versions is the index's active version. A query resolves the name to the active version, so which physical index answers a search can change without your code changing.
 
-That's what makes a schema change zero-downtime. When a definition changes, the module builds a new version alongside the active one, fills it, then makes the new version active. Reads keep hitting the old version throughout and never see a half-built one. A version that fails to fill stays behind without ever going live, so the active version keeps answering queries.
+That's what makes a schema change zero-downtime. When a definition changes, the module builds a new version alongside the active one, fills it, then makes the new version active. Reads keep hitting the old version throughout and never see a half-built one. A version that fails to fill never goes live, so the active version keeps answering queries. The next on-demand rebuild removes that failed version once it creates the version it builds.
 
-The module keeps the active version and the one it's building. It removes every version below the active one at the start of the next migration or rebuild, so a swap that went live doesn't leave its old index in the engine.
+Once a swap makes a new version active, the module removes every older version except the one the swap replaced. Other processes can keep reading from the replaced version until they pick up the new active version, so the module only removes it at the start of the next migration or rebuild.
 
 ```mermaid
 flowchart TD
@@ -63386,6 +63926,8 @@ curl -X POST "http://localhost:9000/store/search" \
     "filters": { "q": "shirt" }
   }'
 ```
+
+Each hit's `document` holds every field of the index that's retrievable. Pass `fields` to narrow the hits to some of those fields. The route rejects a field the index can't return, so a storefront can't retrieve data the index doesn't hold. To keep a field out of the hits, mark it with [`retrievable(false)`](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/index-definitions/modifiers#retrievable/index.html.md) in the index definition.
 
 Learn more about the accepted request body and the response in the [Store Search API reference](https://docs.medusajs.com/api/store/search/search-indexes).
 
@@ -63760,6 +64302,8 @@ WE_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
 ### Redis Workflow Engine Module Options
+
+All options below are set within the `redis` property of the module's options object, as shown in the example above.
 
 |Option|Description|Required|
 |---|---|---|
@@ -72211,12 +72755,12 @@ export default defineLink(
   ProductModule.linkable.product,
   {
     linkable: BlogModule.linkable.post,
-    deleteCascades: true,
+    deleteCascade: true,
   }
 )
 ```
 
-Learn more in [this documentation](https://docs.medusajs.com/docs/learn/fundamentals/module-links#define-a-list-link/index.html.md).
+Learn more in [this documentation](https://docs.medusajs.com/docs/learn/fundamentals/module-links#set-delete-cascades-on-link/index.html.md).
 
 ### Add Custom Columns to Module Link
 
@@ -152480,7 +153024,7 @@ such as the number of selected items which the commands will act on.
 
 ### CommandBar.Seperator Props
 
-The seperator component of the command bar. This component is used to display a seperator between commands.
+The separator component of the command bar. This component is used to display a separator between commands.
 
 
 
@@ -164289,7 +164833,7 @@ export default defineLink(
 
 This defines a link between `DigitalProduct` and the Product Module’s `ProductVariant`. This allows product variants that customers purchase to be digital products.
 
-`deleteCascades` is enabled on the `digitalProduct` so that when a product variant is deleted, its linked digital product is also deleted.
+`deleteCascade` is enabled on the `digitalProduct` so that when a product variant is deleted, its linked digital product is also deleted.
 
 Next, create the file `src/links/digital-product-order.ts` with the following content:
 
@@ -164310,7 +164854,7 @@ export default defineLink(
 
 This defines a link between `DigitalProductOrder` and the Order Module’s `Order`. This keeps track of orders that include purchases of digital products.
 
-`deleteCascades` is enabled on the `digitalProductOrder` so that when a Medusa order is deleted, its linked digital product order is also deleted.
+`deleteCascade` is enabled on the `digitalProductOrder` so that when a Medusa order is deleted, its linked digital product order is also deleted.
 
 ### Further Read
 

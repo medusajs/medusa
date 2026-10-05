@@ -1,0 +1,119 @@
+import { Note, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa ChatGPT App`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to connect ChatGPT to the Medusa MCP server and use it to ask questions about your Cloud stores.
+
+<Note type="soon">
+
+The ChatGPT app is under review by OpenAI and isn't available in ChatGPT yet. In the meantime, you can [add the Medusa MCP server as a custom plugin](#add-medusa-mcp-as-a-custom-plugin-in-chatgpt).
+
+</Note>
+
+## What is the Medusa ChatGPT App?
+
+The ChatGPT app connects ChatGPT to the [Medusa MCP server](../page.mdx), so you can ask ChatGPT questions about your stores' orders, products, customers, and other commerce data.
+
+The ChatGPT app is read-only. ChatGPT can retrieve data from your stores, but it can't create, update, or delete data.
+
+<Note>
+
+The Medusa MCP server is in early access. If it isn't enabled for your organization, you can't connect to your stores, even after you add Medusa to ChatGPT. Refer to the [Medusa MCP](../page.mdx#connect-to-the-medusa-mcp-server) guide to request access and rebuild your environments.
+
+</Note>
+
+---
+
+## Prerequisites
+
+<Prerequisites
+  items={[
+    {
+      text: "Cloud account in an organization with Medusa MCP access",
+      link: "/medusa-mcp#step-1-request-access",
+    },
+    {
+      text: "ChatGPT account",
+      link: "https://chatgpt.com",
+    },
+  ]}
+/>
+
+---
+
+{/* TODO: uncomment once OpenAI approves the ChatGPT app
+
+## Add the Medusa App to ChatGPT
+
+To add the ChatGPT app:
+
+1. In ChatGPT, click **Plugins** in the sidebar.
+2. Search for `Medusa` and select the ChatGPT app.
+3. Click **Connect**.
+4. In the browser window that opens, log in to your Cloud account.
+5. On the consent page, select the environments that ChatGPT can access, then click **Approve**.
+
+Refer to the [Medusa MCP](../page.mdx#approve-the-connection) guide for more details on the consent page.
+
+<Note>
+
+On ChatGPT Business and Enterprise plans, a workspace admin may need to enable the ChatGPT app before members can connect to it.
+
+</Note>
+
+*/}
+
+## Add Medusa MCP as a Custom Plugin in ChatGPT
+
+Until the ChatGPT app is available, you can add the Medusa MCP server to ChatGPT as a custom plugin. This requires enabling developer mode in ChatGPT.
+
+To add the Medusa MCP server as a custom plugin:
+
+1. In ChatGPT, go to **Settings** > **Security and login**, then turn on **Developer mode**.
+2. Click **Plugins** in the sidebar, then click the plus button.
+3. Enter a name, such as `Medusa`, and an optional description.
+4. Under **Connection**, enter the URL `https://cloud.medusajs.com/mcp` and choose OAuth authentication.
+5. Create the plugin, then connect it and log in to your Cloud account.
+6. On the consent page, select the environments that ChatGPT can access, then click **Approve**.
+
+Refer to [OpenAI's documentation](https://developers.openai.com/plugins/deploy/connect-chatgpt) for more details on developer mode and custom plugins.
+
+<Note>
+
+Developer mode's availability depends on your ChatGPT plan and workspace settings. On Business and Enterprise plans, a workspace admin may need to allow developer mode.
+
+</Note>
+
+---
+
+## Use Medusa in ChatGPT
+
+Once you add the plugin, select it from the tools menu in the message input, or mention it in your message. Then, ask ChatGPT questions about your stores. For example:
+
+- "Which Medusa stores do I have connected?"
+- "Show me the 5 most recent orders in my store, with each order's total and status."
+- "How many orders are waiting to be fulfilled?"
+- "What products are available to shoppers in my B2B sales channel?"
+
+Refer to the [Medusa MCP](../page.mdx#available-tools) guide for the list of tools that ChatGPT can call.
+
+---
+
+## Remove Medusa from ChatGPT
+
+To remove the Medusa plugin from ChatGPT:
+
+1. In ChatGPT, click **Plugins** in the sidebar.
+2. Select the Medusa plugin and click **Disconnect**.
+
+To change the stores that ChatGPT can access, disconnect the plugin and connect it again, then select the environments on the consent page.
+
+---
+
+## Troubleshooting
+
+Refer to the [Medusa MCP troubleshooting](../page.mdx#troubleshooting) section for common errors and how to fix them.

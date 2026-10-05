@@ -7,12 +7,13 @@ import {
   when,
 } from "@medusajs/framework/workflows-sdk"
 import { ProductTypes } from "@medusajs/framework/types"
+import { ProductVariantWorkflowEvents } from "@medusajs/framework/utils"
 import {
   addImageToVariantsStep,
   removeImageFromVariantsStep,
   updateProductVariantsStep,
 } from "../steps"
-import { useQueryGraphStep } from "../../common"
+import { emitEventStep, useQueryGraphStep } from "../../common"
 
 /**
  * The input for the batch image-variant workflow.
@@ -164,6 +165,20 @@ export const batchImageVariantsWorkflow = createWorkflow(
         added: data.res[0] ?? [],
         removed: data.res[1] ?? [],
       }
+    })
+
+    const variantIdEvents = transform({ normalizedInput }, (data) =>
+      [
+        ...new Set([
+          ...data.normalizedInput.add,
+          ...data.normalizedInput.remove,
+        ]),
+      ].map((id) => ({ id }))
+    )
+
+    emitEventStep({
+      eventName: ProductVariantWorkflowEvents.UPDATED,
+      data: variantIdEvents,
     })
 
     return new WorkflowResponse(response)

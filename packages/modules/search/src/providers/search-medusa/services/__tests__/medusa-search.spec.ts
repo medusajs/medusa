@@ -50,6 +50,31 @@ describe("MedusaSearchService", () => {
     ).toThrow(/environment_handle/)
   })
 
+  it("sends requests through an injected fetch", async () => {
+    const fetchImpl = jest.fn(async () => ({
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      json: async () => ({ approx_row_count: 3 }),
+    }))
+    const service = new MedusaSearchService(
+      {},
+      {
+        api_key: "medusa_test",
+        endpoint: "https://search.medusa.example",
+        environment_handle: "test-env",
+        fetch: fetchImpl as unknown as typeof fetch,
+      }
+    )
+
+    await service.upsertIndex({ index: definition })
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://search.medusa.example/indexes/product/metadata",
+      expect.objectContaining({ method: "GET" })
+    )
+  })
+
   it("creates missing indexes through the explicit create endpoint", async () => {
     const service = createService()
     const metadata = jest
