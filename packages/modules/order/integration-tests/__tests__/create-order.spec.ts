@@ -542,6 +542,35 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         expect(orders4.length).toEqual(0)
       })
 
+      it("should preserve order fields when loading shipping adjustments without a projection", async function () {
+        const createdOrder = await service.createOrders(input)
+        const config = { relations: ["shipping_methods.adjustments"] }
+        const orders = await service.listOrders({ id: createdOrder.id }, config)
+        const [countedOrders, count] = await service.listAndCountOrders(
+          { id: createdOrder.id },
+          config
+        )
+
+        expect(count).toEqual(1)
+        for (const order of [orders[0], countedOrders[0]]) {
+          expect(order).toEqual(
+            expect.objectContaining({
+              id: createdOrder.id,
+              currency_code: input.currency_code,
+              email: input.email,
+              version: createdOrder.version,
+            })
+          )
+          expect(order.shipping_methods).toHaveLength(1)
+          expect(order.shipping_methods![0].adjustments).toEqual([
+            expect.objectContaining({ code: "VIP_10" }),
+          ])
+          expect(
+            Number(order.shipping_methods![0].adjustments![0].amount)
+          ).toEqual(1)
+        }
+      })
+
       it("should list orders with totals without selecting shipping method fields", async function () {
         const createdOrder = await service.createOrders(input)
 

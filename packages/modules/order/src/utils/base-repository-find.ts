@@ -59,6 +59,10 @@ function ensureOrderItemFieldsSelection(config: any, isRelatedEntity: boolean) {
   const populate = config.options?.populate ?? []
   const fields = config.options?.fields ?? []
 
+  if (!fields.length) {
+    return
+  }
+
   const hasItemsItemPopulate = populate.some(
     (p: string) =>
       p === "items.item" ||
@@ -102,6 +106,10 @@ function ensureOrderShippingMethodFieldsSelection(
 ) {
   const populate = config.options?.populate ?? []
   const fields = config.options?.fields ?? []
+
+  if (!fields.length) {
+    return
+  }
 
   const hasShippingMethodPopulate = populate.some(
     (p: string) =>
