@@ -9,7 +9,7 @@ import { storeGiftCardsMiddlewares } from "./store/gift-cards/middlewares"
 import { storeStoreCreditAccountMiddlewares } from "./store/store-credit-accounts/middlewares"
 
 const allowGiftCardRelation: MiddlewareRoute = {
-  matcher: /^\/store\/(carts|orders)(\/|$)/,
+  matcher: /^\/store\/(carts|orders)(?=\/|$)/,
   middlewares: [allowFields(giftCardRelationAllowedFields)],
 }
 
