@@ -230,6 +230,10 @@ const useProduct = (id: string, fields?: string) => {
 
 Learn more about the `fields` parameter in the [Store API reference](!api!/store/select-fields-and-relations).
 
+Each Store API route restricts the fields that you can request through an allowed-fields list. If you request a field that the route doesn't allow, Medusa omits it from the response without returning an error.
+
+To allow extra fields, such as a custom relation, override the route's allowed fields as explained in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
 ---
 
 ## Implement Optimistic UI Updates
@@ -679,7 +683,7 @@ import { HttpTypes } from "@medusajs/types"
  * 
  * // With specific fields
  * const { data: cart } = useCart({ 
- *   fields: '*items, *items.variant, *items.variant.product, shipping_methods'
+ *   fields: '*items, *items.variant, *items.product, shipping_methods'
  * });
  * 
  * // In a component

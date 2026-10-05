@@ -101,6 +101,32 @@ export type ModuleCreditStoreCreditAccount = {
 };
 
 /**
+ * The data required to debit a store credit account by an amount.
+ */
+export type ModuleDebitStoreCreditAccount = {
+  /**
+   * The ID of the store credit account to debit.
+   */
+  account_id: string;
+  /**
+   * The amount to debit from the account.
+   */
+  amount: number;
+  /**
+   * An optional note describing the debit transaction.
+   */
+  note?: string;
+  /**
+   * The resource type this debit references (for example, "user", "order").
+   */
+  reference?: string;
+  /**
+   * The ID of the referenced resource.
+   */
+  reference_id?: string;
+};
+
+/**
  * The data required to update a store credit account.
  */
 export type ModuleUpdateStoreCreditAccount = {

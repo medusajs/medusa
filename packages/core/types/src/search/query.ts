@@ -1,3 +1,4 @@
+import { QueryContextType } from "../common"
 import { SearchFilters } from "./filters"
 
 /**
@@ -182,8 +183,9 @@ export interface SearchOptions {
   match_strategy?: SearchMatchStrategy
 
   /**
-   * Whether to match terms that are misspelled by a character or two. Applied
-   * only when the query includes a free-text `q`; otherwise it is ignored.
+   * Whether to match terms that are misspelled by a character or two.
+   * it is ignored unless the query includes a free-text `q` and the
+   * searched fields have typo tolerance enabled in the index's `settings.typo_tolerance`.
    */
   typo_tolerance?: boolean
 
@@ -228,8 +230,9 @@ export interface SearchOptions {
   /**
    * Query-time language hint, e.g. `["en"]`. Engines that analyze per language
    * (Meilisearch, Algolia) use it to pick the analyzer; a provider that cannot
-   * honour it rejects it rather than silently matching differently. Defaults to
-   * the index' `settings.locales`.
+   * honour it rejects it rather than silently matching differently. Neither
+   * first-party provider does: configure the analyzer language on the provider
+   * (postgres) or on the field (Medusa) instead.
    */
   locales?: string[]
 
@@ -312,4 +315,9 @@ export interface SearchQuery<TEntry extends string = string> {
    * The options changing how the query is matched, scored, and aggregated.
    */
   search_options?: SearchOptions
+
+  /**
+   * The context passed to the `query.graph` call during hydration.
+   */
+  context?: QueryContextType
 }

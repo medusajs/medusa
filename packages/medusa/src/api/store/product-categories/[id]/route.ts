@@ -8,6 +8,7 @@ import {
   MedusaError,
 } from "@medusajs/framework/utils"
 import { StoreProductCategoryParamsType } from "../validators"
+import { publishedProductsContext } from "../../utils/published-products-context"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<StoreProductCategoryParamsType>,
@@ -20,6 +21,7 @@ export const GET = async (
       entity: "product_category",
       filters: { id: req.params.id, ...req.filterableFields },
       fields: req.queryConfig.fields,
+      context: publishedProductsContext(),
     },
     {
       locale: req.locale,

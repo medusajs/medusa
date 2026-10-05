@@ -129,7 +129,7 @@ export async function ensureReturnOrderOwner(
 }
 ```
 
-The middleware retrieves the order's ID from the request body, since the Create Return API route accepts it as a body parameter. It then retrieves the order's `customer_id` with [Query](!docs!/learn/fundamentals/module-links/query). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
+The middleware retrieves the order's ID from the request body, since the Create Return API route accepts it as a body parameter. It then retrieves the order's `customer_id` with [Query](!docs!/learn/fundamentals/query). The `auth_context.actor_id` property holds the ID of the customer that the `authenticate` middleware authenticated. If the two IDs don't match, the middleware rejects the request with a `401` error.
 
 Then, apply the middleware after the `authenticate` middleware:
 
@@ -159,6 +159,47 @@ export default defineMiddlewares({
 The order of the middlewares matters. The `authenticate` middleware must run first, since `ensureReturnOrderOwner` reads the customer that it authenticated.
 
 Now, only the customer that placed the order can create a return for it. Other logged-in customers receive a `401` error.
+
+---
+
+## Keep Guest Access While Restricting Registered Customers
+
+If your store allows guest checkout, requiring authentication on the route removes the self-service return flow for guest customers. Instead, pass the `allowUnauthenticated` option to the `authenticate` middleware, then decide in your own middleware what an unauthenticated request may create:
+
+```ts title="src/api/middlewares.ts" highlights={[["16", "allowUnauthenticated", "Allow requests without credentials to reach your middleware."]]}
+import {
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/framework/http"
+import {
+  ensureReturnOrderOwner,
+} from "./middlewares/ensure-return-order-owner"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/returns",
+      method: ["POST"],
+      middlewares: [
+        authenticate("customer", ["session", "bearer"], {
+          allowUnauthenticated: true,
+        }),
+        ensureReturnOrderOwner,
+      ],
+    },
+  ],
+})
+```
+
+With this option, the `authenticate` middleware only sets the request's `auth_context` property when it verifies the customer's credentials. Your `ensureReturnOrderOwner` middleware then runs for every request, including guest requests.
+
+Update the middleware to handle a request that has no `auth_context`, since the version shown earlier reads `req.auth_context.actor_id` and throws for guest requests. For example, reject the request unless it also carries a separate proof of ownership, such as the order's email.
+
+<Note>
+
+`allowAuthenticated` only attaches the customer of the provided credentials to the request. It doesn't fail if the request doesn't include any credentials, or if the credentials are invalid. Learn more in the [Protected Routes](!docs!/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes) guide.
+
+</Note>
 
 ---
 

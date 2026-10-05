@@ -512,6 +512,30 @@ After updating the file, commit the change and push to trigger a new deployment.
 
 ---
 
+## Storefront: opennextjs-cloudflare Not Found with pnpm 12
+
+If your storefront uses pnpm 12 and its build fails with an error similar to:
+
+```bash
+opennextjs-cloudflare: not found
+```
+
+This error occurs because the Cloud storefront build installs the `@opennextjs/cloudflare` adapter with the `pnpm add --save` command. pnpm 12 removed the `--save` flag, so the adapter isn't installed and the build can't find the `opennextjs-cloudflare` binary.
+
+### Use pnpm 11 for Storefront Builds
+
+Until Cloud supports pnpm 12 for storefront builds, use pnpm 11 in your monorepo. Set the `packageManager` field in your root `package.json` to a pnpm 11 version, such as `11.26.0`:
+
+```json title="package.json"
+{
+  "packageManager": "pnpm@11.26.0"
+}
+```
+
+Then, run `pnpm install` locally with pnpm 11 to regenerate the `pnpm-lock.yaml` file, commit the changes, and push to trigger a new deployment.
+
+---
+
 ## Next.js 15: 404 Prerender Error with Async Layouts
 
 If your Next.js 15 storefront build fails during static prerendering with an error similar to:
@@ -657,12 +681,17 @@ For example, you can create a loader that checks an environment variable to enab
 
 ```ts title="src/loaders/maintenance.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function maintenanceLoader(
   container: MedusaContainer
 ) {
   if (process.env.MAINTENANCE_MODE === "true") {
-    const logger = container.resolve("logger")
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
     logger.info("Maintenance mode is enabled.")
   }
 }

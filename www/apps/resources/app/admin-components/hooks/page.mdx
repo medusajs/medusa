@@ -1,0 +1,111 @@
+---
+sidebar_label: "Hooks"
+---
+
+import { CardList } from "docs-ui"
+
+export const metadata = {
+  title: `Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `@medusajs/dashboard/hooks` subpath exports the React hooks that the Medusa Admin uses to fetch data and build its UI. Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+
+```tsx
+import { useProducts } from "@medusajs/dashboard/hooks"
+```
+
+<Note title="Tip">
+
+Refer to the [Components reference](../components/page.mdx) for the components that pair with these hooks.
+
+</Note>
+
+---
+
+## API Hooks
+
+Use these hooks to fetch or mutate data from the Medusa backend. They are built on [TanStack Query](https://tanstack.com/query/latest) and follow the same patterns used throughout the Medusa Admin.
+
+Each resource also exports a query key factory, which you use to invalidate the resource's cached queries after a mutation.
+
+<CardList items={[
+  {
+    title: "Customers",
+    href: "/admin-components/hooks/customers",
+  },
+  {
+    title: "Orders",
+    href: "/admin-components/hooks/orders",
+  },
+  {
+    title: "Products",
+    href: "/admin-components/hooks/products",
+  },
+  {
+    title: "Product Variants",
+    href: "/admin-components/hooks/product-variants",
+  },
+  {
+    title: "Promotions",
+    href: "/admin-components/hooks/promotions",
+  },
+  {
+    title: "Regions",
+    href: "/admin-components/hooks/regions",
+  },
+  {
+    title: "Sales Channels",
+    href: "/admin-components/hooks/sales-channels",
+  },
+  {
+    title: "Shipping Options",
+    href: "/admin-components/hooks/shipping-options",
+  },
+  {
+    title: "Price Preferences",
+    href: "/admin-components/hooks/price-preferences",
+  },
+  {
+    title: "Store",
+    href: "/admin-components/hooks/store",
+  },
+  {
+    title: "Users",
+    href: "/admin-components/hooks/users",
+  },
+]} />
+
+---
+
+## Utility Hooks
+
+<CardList items={[
+  {
+    title: "useComboboxData",
+    href: "/admin-components/hooks/use-combobox-data",
+  },
+  {
+    title: "useDate",
+    href: "/admin-components/hooks/use-date",
+  },
+  {
+    title: "useDebouncedSearch",
+    href: "/admin-components/hooks/use-debounced-search",
+  },
+  {
+    title: "useQueryParams",
+    href: "/admin-components/hooks/use-query-params",
+  },
+  {
+    title: "Data Table Hooks",
+    href: "/admin-components/hooks/data-table-helpers",
+  },
+]} />

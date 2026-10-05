@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/auth-emailpass",
-  "version": "2.20.1",
+  "version": "2.21.2",
   "description": "Email and password credential authentication provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -18,7 +18,7 @@
     "!dist/**/__fixtures__"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.0"
   },
   "author": "Medusa",
   "license": "MIT",
@@ -29,13 +29,13 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.20.1"
+    "@medusajs/framework": "2.21.2"
   },
   "dependencies": {
     "scrypt-kdf": "^2.0.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.20.1"
+    "@medusajs/framework": "2.21.2"
   },
   "keywords": [
     "medusa-provider",

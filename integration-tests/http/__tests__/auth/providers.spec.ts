@@ -40,9 +40,10 @@ const signActorlessToken = (
 medusaIntegrationTestRunner({
   testSuite: ({ getContainer, api, dbConnection, dbUtils }) => {
     describe("Auth provider discovery", () => {
-      // The HTTP test env registers a single "emailpass" auth provider and does
-      // not configure `authMethodsPerActor`, so every actor type is allowed to
-      // use every registered provider.
+      // The HTTP test env registers a single "emailpass" auth provider, and
+      // allowlists ["emailpass", "oidc-okta"] for the `user` actor. Only
+      // registered providers are listed, so the allowlisted-but-unregistered
+      // "oidc-okta" never shows up here.
       const emailpassProvider = {
         id: "emailpass",
         identifier: "emailpass",
@@ -281,6 +282,29 @@ medusaIntegrationTestRunner({
           .catch((error) => error.response)
 
         expect(response.status).toEqual(401)
+      })
+
+      it("rejects a provider that is not allowlisted for the user actor type", async () => {
+        const claims = { email: "sso-not-allowed@acme.com" }
+        const authIdentity = await createProviderIdentity(claims, "google")
+        const token = signActorlessToken(jwtSecret, {
+          authIdentityId: authIdentity.id,
+          userMetadata: claims,
+          provider: "google",
+        })
+
+        const response = await api
+          .post(
+            "/auth/google/user",
+            {},
+            { headers: { authorization: `Bearer ${token}` } }
+          )
+          .catch((error) => error.response)
+
+        expect(response.status).toEqual(400)
+        expect(response.data.message).toEqual(
+          "The actor type user is not allowed to use the auth provider google"
+        )
       })
     })
   },

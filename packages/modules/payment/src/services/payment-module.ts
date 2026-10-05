@@ -862,7 +862,7 @@ export default class PaymentModuleService
       {
         payment: data.payment_id,
         amount: data.amount,
-        captured_by: data.captured_by,
+        created_by: data.captured_by,
       },
       sharedContext
     )
@@ -1456,7 +1456,9 @@ export default class PaymentModuleService
     eventData: ProviderWebhookPayload,
     @MedusaContext() sharedContext?: Context
   ): Promise<WebhookActionResult> {
-    const providerId = `pp_${eventData.provider}`
+    const providerId = eventData.provider.startsWith("pp_")
+      ? eventData.provider
+      : `pp_${eventData.provider}`
 
     return await this.paymentProviderService_.getWebhookActionAndData(
       providerId,

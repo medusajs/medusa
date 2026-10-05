@@ -40,9 +40,12 @@
     "remaining": "Left",
     "admin": "Admin",
     "store": "Store",
+    "rank": "Rank",
     "details": "Details",
     "items_one": "{{count}} item",
     "items_other": "{{count}} items",
+    "values_one": "{{count}} value",
+    "values_other": "{{count}} values",
     "countSelected": "{{count}} selected",
     "countOfTotalSelected": "{{count}} of {{total}} selected",
     "plusCount": "+ {{count}}",
@@ -62,7 +65,10 @@
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you exit this form.",
     "includesTaxTooltip": "Prices in this column are tax inclusive.",
     "excludesTaxTooltip": "Prices in this column are tax exclusive.",
-    "noMoreData": "No more data"
+    "noMoreData": "No more data",
+    "quantityPrice": "Quantity Price",
+    "exclusive": "Product-specific",
+    "global": "Global"
   },
   "json": {
     "header": "JSON",
@@ -85,7 +91,8 @@
       "actions": {
         "insertRowAbove": "Insert row above",
         "insertRowBelow": "Insert row below",
-        "deleteRow": "Delete row"
+        "deleteRow": "Delete row",
+        "addRow": "Add row"
       },
       "labels": {
         "key": "Key",
@@ -146,9 +153,12 @@
     "browse": "Browse",
     "logout": "Logout",
     "hide": "Hide",
+    "show": "Show",
     "export": "Export",
     "import": "Import",
-    "cannotUndo": "This action cannot be undone"
+    "cannotUndo": "This action cannot be undone",
+    "manage": "Manage",
+    "goToProductOption": "Go to product option"
   },
   "operators": {
     "in": "In"
@@ -171,19 +181,34 @@
       "groups": {
         "all": "All areas",
         "customer": "Customers",
+        "customer_group": "Customer Groups",
         "customerGroup": "Customer Groups",
         "product": "Products",
+        "product_variant": "Product Variants",
+        "inventory_item": "Inventory",
         "productVariant": "Product Variants",
         "inventory": "Inventory",
         "reservation": "Reservations",
+        "product_category": "Categories",
+        "product_collection": "Collections",
         "category": "Categories",
         "collection": "Collections",
         "order": "Orders",
         "promotion": "Promotions",
         "campaign": "Campaigns",
+        "price_list": "Price Lists",
         "priceList": "Price Lists",
         "user": "Users",
         "region": "Regions",
+        "tax_region": "Tax Regions",
+        "return_reason": "Return Reasons",
+        "sales_channel": "Sales Channels",
+        "product_type": "Product Types",
+        "product_tag": "Product Tags",
+        "stock_location": "Locations",
+        "shipping_profile": "Shipping Profiles",
+        "publishable_api_key": "Publishable API Keys",
+        "secret_api_key": "Secret API Keys",
         "taxRegion": "Tax Regions",
         "returnReason": "Return Reasons",
         "salesChannel": "Sales Channels",
@@ -271,6 +296,24 @@
         "myAccount": "My Account"
       }
     }
+  },
+  "layout": {
+    "customizeTopbar": "Customise top bar",
+    "customizeSidebar": "Customise sidebar",
+    "customizeSettingsSidebar": "Customise settings sidebar",
+    "customizePage": "Customise page",
+    "customizeLayout": "Customise layout",
+    "viewingPersonalLayout": "You're seeing a personal layout",
+    "viewingSystemLayout": "You're seeing a system layout",
+    "personalView": "Personal",
+    "defaultView": "Default",
+    "empty": "Empty",
+    "dropToSectionEnd": "Drop here to move to the end",
+    "dragToReorder": "Drag to reorder",
+    "saveForEveryone": "Save for everyone",
+    "saveForEveryoneTitle": "Save layout for everyone",
+    "saveForEveryoneDescription": "This updates the default layout for this page for all users who haven't customised it themselves. Are you sure?",
+    "saveSuccess": "Layout saved"
   },
   "dataGrid": {
     "columns": {
@@ -459,7 +502,8 @@
         "productOptions": {
           "label": "Product options",
           "hint": "Define the options for the product, e.g. colour, size, etc."
-        }
+        },
+        "selectValuesHint": "Select which values to use for each option"
       },
       "successToast": "Product {{title}} was successfully created."
     },
@@ -716,6 +760,16 @@
         "header": "Create Option",
         "successToast": "Option {{title}} was successfully created."
       },
+      "manage": {
+        "header": "Manage Product Options",
+        "description": "Associate or disassociate product options from this product.",
+        "label": "Product Options",
+        "hint": "Select which options should be associated to this product.",
+        "placeholder": "Select options",
+        "error": {
+          "noValues": "Please select at least one value for the added option(s)."
+        }
+      },
       "deleteWarning": "You are about to delete the product option: {{title}}. This action cannot be undone."
     },
     "organization": {
@@ -765,6 +819,16 @@
   "collections": {
     "domain": "Collections",
     "subtitle": "Organise products into collections.",
+    "list": {
+      "empty": {
+        "heading": "No collections",
+        "description": "There are no collections to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No collections match the current filter criteria."
+      }
+    },
     "createCollection": "Create Collection",
     "createCollectionHint": "Create a new collection to organise your products.",
     "createSuccess": "Collection created successfully.",
@@ -852,9 +916,71 @@
       }
     }
   },
+  "productOptions": {
+    "domain": "Options",
+    "subtitle": "Manage product options and their associated values.",
+    "values": {
+      "header": "Values",
+      "list": {
+        "noRecords": "There are no values for this option."
+      },
+      "delete": {
+        "confirmation": "You are about to delete the option value \"{{value}}\". This action cannot be undone.",
+        "successToast": "Option value was successfully deleted."
+      }
+    },
+    "products": {
+      "list": {
+        "noRecords": "There are no products with this option."
+      }
+    },
+    "create": {
+      "header": "Create Product Option",
+      "hint": "Create a new product option and manage its values.",
+      "successToast": "Product option \"{{title}}\" was successfully created.",
+      "tabs": {
+        "details": "Details",
+        "organize": "Organise rankings"
+      }
+    },
+    "manage": {
+      "exclusiveOption": "Product exclusive option"
+    },
+    "edit": {
+      "header": "Edit Product Option",
+      "description": "Edit the product option to update its details and associated values.",
+      "successToast": "Product option \"{{title}}\" was successfully updated."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the product option \"{{title}}\". This action cannot be undone.",
+      "successToast": "Product option was successfully deleted."
+    },
+    "fields": {
+      "title": {
+        "label": "Title",
+        "placeholder": "Size"
+      },
+      "values": {
+        "label": "Values",
+        "placeholder": "S, M, L"
+      }
+    }
+  },
   "inventory": {
     "domain": "Inventory",
     "subtitle": "Manage your inventory items",
+    "export": {
+      "header": "Export Inventory List",
+      "description": "Export the inventory list to a CSV file.",
+      "success": {
+        "title": "We are processing your export",
+        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Apply filters in the table overview to adjust this view"
+      }
+    },
     "reserved": "Reserved",
     "available": "Available",
     "locationLevels": "Locations",
@@ -864,6 +990,8 @@
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
     "editItemDetails": "Edit item details",
     "quantityAcrossLocations": "{{quantity}} across {{locations}} locations",
+    "unitOfMeasurePlaceholder": "lb",
+    "unitOfMeasureHint": "The unit stock is held and counted in. Shown next to quantities across the Admin.",
     "levelDeleted": "Inventory level deleted successfully.",
     "create": {
       "title": "Create Inventory Item",
@@ -940,6 +1068,14 @@
   "customers": {
     "domain": "Customers",
     "list": {
+      "empty": {
+        "heading": "No customers",
+        "description": "There are no customers to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No customers match the current filter criteria."
+      },
       "noRecordsMessage": "Your customers will show up here."
     },
     "create": {
@@ -1078,7 +1214,9 @@
         "paymentMethod": "Payment method",
         "paymentMethodDescription": "Refund amount to the payment method",
         "creditLine": "Store credit",
-        "creditLineDescription": "Refund amount as store credit"
+        "creditLineDescription": "Refund amount as store credit",
+        "creditLineNoOutstandingAmountDescription": "Only available when the order has an outstanding amount. Create a return or an order edit first.",
+        "creditLineGuestDescription": "Only available for customers with an account. This order was placed by a guest."
       }
     },
     "domain": "Orders",
@@ -1131,15 +1269,25 @@
     "transfer": {
       "title": "Transfer ownership",
       "requestSuccess": "Order transfer request sent to: {{email}}.",
+      "guestSuccess": "Order transferred to guest customer: {{email}}.",
+      "ownerType": "Account type",
+      "registered": "Registered",
+      "registeredDescription": "Transfer to a registered customer, who must accept the request.",
+      "guest": "Guest",
+      "guestDescription": "Transfer to a guest customer by email. Applied immediately.",
       "currentOwner": "Current owner",
       "newOwner": "New owner",
+      "newGuestOwner": "New owner email",
       "currentOwnerDescription": "The customer currently related to this order.",
-      "newOwnerDescription": "The customer to transfer this order to."
+      "newOwnerDescription": "The customer to transfer this order to.",
+      "newGuestOwnerDescription": "The email of the guest customer to transfer this order to. A guest customer is created if none exists."
     },
     "payment": {
       "title": "Payments",
       "isReadyToBeCaptured": "Payment <0/> is ready to be captured.",
       "totalPaidByCustomer": "Total paid by customer",
+      "totalPending": "Total pending",
+      "storeCreditRefund": "Store credit refund",
       "totalStoreCreditRefunds": "Total store credit refunds",
       "capture": "Capture payment",
       "capture_short": "Capture",
@@ -1152,6 +1300,7 @@
         "authorized": "Authorised",
         "partiallyAuthorized": "Partially authorised",
         "awaiting": "Awaiting",
+        "pending": "Pending",
         "captured": "Captured",
         "partiallyRefunded": "Partially refunded",
         "partiallyCaptured": "Partially captured",
@@ -1163,6 +1312,10 @@
       "capturePaymentSuccess": "Payment of {{amount}} successfully captured",
       "markAsPaidPayment": "Payment of {{amount}} will be marked as paid.",
       "markAsPaidPaymentSuccess": "Payment of {{amount}} successfully marked as paid",
+      "pendingAuthorization": "Payment is awaiting authorisation from the payment provider.",
+      "checkStatus": "Check status",
+      "checkStatusSuccess": "Payment has been authorised successfully.",
+      "stillPending": "Payment is still pending authorisation.",
       "createRefund": "Create Refund",
       "refundPaymentSuccess": "Refund of amount {{amount}} successful",
       "createRefundWrongQuantity": "Quantity should be a number between 1 and {{number}}",
@@ -1185,6 +1338,8 @@
       "create": "Edit Order",
       "currentTotal": "Current total",
       "noteHint": "Add an internal note for the edit",
+      "sendNotification": "Send notification",
+      "sendNotificationHint": "Notify the customer about this order edit.",
       "cancelSuccessToast": "Order edit cancelled",
       "createSuccessToast": "Order edit request created",
       "activeChangeError": "There is already an active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",
@@ -1408,10 +1563,12 @@
       "markAsDelivered": "Mark as delivered",
       "itemsToFulfillDesc": "Choose items and quantities to fulfil",
       "locationDescription": "Choose which location you want to fulfil items from.",
+      "locationUnavailable": "Location deleted/unavailable",
       "sendNotificationHint": "Notify customers about the created fulfilment.",
       "methodDescription": "Choose a different shipping method from the one customer selected",
       "error": {
         "wrongQuantity": "Only one item is available for fulfilment",
+        "wrongQuantity_one": "Only one item is available for fulfilment",
         "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
         "noItems": "No items to fulfil.",
         "noShippingOption": "Shipping option is required",
@@ -2069,6 +2226,16 @@
   },
   "promotions": {
     "domain": "Promotions",
+    "list": {
+      "empty": {
+        "heading": "No promotions",
+        "description": "There are no promotions to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No promotions match the current filter criteria."
+      }
+    },
     "sections": {
       "details": "Promotion Details"
     },
@@ -2295,6 +2462,16 @@
   },
   "campaigns": {
     "domain": "Campaigns",
+    "list": {
+      "empty": {
+        "heading": "No campaigns",
+        "description": "There are no campaigns to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No campaigns match the current filter criteria."
+      }
+    },
     "details": "Campaign details",
     "status": {
       "active": "Active",
@@ -2406,6 +2583,16 @@
   "priceLists": {
     "domain": "Price Lists",
     "subtitle": "Create sales or override prices for specific conditions.",
+    "list": {
+      "empty": {
+        "heading": "No price lists",
+        "description": "There are no price lists to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No price lists match the current filter criteria."
+      }
+    },
     "delete": {
       "confirmation": "You are about to delete the price list \"{{title}}\". This action cannot be undone.",
       "successToast": "Price list \"{{title}}\" was successfully deleted."
@@ -2454,6 +2641,34 @@
       },
       "edit": {
         "successToast": "Prices were successfully updated."
+      }
+    },
+    "quantityPricing": {
+      "header": "Conditional Prices for {{name}}",
+      "description": "Manage the conditional prices for this product variant based on its cart quantities.",
+      "actions": {
+        "addPrice": "Add price"
+      },
+      "rules": {
+        "amount": "Product variant price",
+        "minQuantity": "Minimum cart quantity",
+        "maxQuantity": "Maximum cart quantity",
+        "qty": "QTY",
+        "allQuantities": "All quantities",
+        "min": "Min",
+        "max": "Max"
+      },
+      "attributes": {
+        "quantity": "Cart quantity"
+      },
+      "summaries": {
+        "range": "If <0>{{attribute}}</0> is between <1>{{min}}</1> and <2>{{max}}</2>",
+        "greaterThan": "If <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
+        "lessThan": "If <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
+      },
+      "errors": {
+        "minGreaterThanMax": "Minimum quantity cannot be greater than maximum quantity",
+        "mustBePositive": "Quantity must be at least 1"
       }
     },
     "fields": {
@@ -2508,6 +2723,31 @@
       "languageLabel": "Language",
       "usageInsightsLabel": "Usage insights"
     },
+    "mfa": {
+      "title": "Two-factor authentication",
+      "description": "Require an authenticator app when signing in.",
+      "status": "Status",
+      "method": "Method",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "pending": "Pending setup",
+      "authenticatorApp": "Authenticator app",
+      "noMethod": "No authentication method enabled",
+      "setupTitle": "Set up authenticator app",
+      "setupAuthenticatorApp": "Set up authenticator app",
+      "setupDescription": "Scan the QR code with your authenticator app, then enter the 6-digit code to finish setup.",
+      "setupError": "The authenticator app could not be set up.",
+      "verifyError": "The verification code could not be confirmed.",
+      "qrError": "The QR code could not be generated.",
+      "recoveryCodesTitle": "Recovery codes",
+      "recoveryCodesDescription": "Copy and store these recovery codes in case you lose access to your authenticator app.",
+      "recoveryCodesError": "Recovery codes could not be generated.",
+      "disableTitle": "Disable two-factor authentication",
+      "disableDescription": "You are about to disable two-factor authentication for your account.",
+      "disableChallengeDescription": "Enter the 6-digit code from your authenticator app to disable two-factor authentication.",
+      "disableError": "Two-factor authentication could not be disabled.",
+      "disableSuccess": "Two-factor authentication disabled"
+    },
     "edit": {
       "header": "Edit Profile",
       "languageHint": "The language you want to use in the admin dashboard. This doesn't change the language of your store.",
@@ -2523,11 +2763,15 @@
     "editUser": "Edit User",
     "inviteUser": "Invite User",
     "inviteUserHint": "Invite a new user to your store.",
+    "inviteRolesTooltip": "If no role is selected, the user will be invited with a superuser role.",
     "sendInvite": "Send invite",
     "pendingInvites": "Pending Invites",
     "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
     "resendInvite": "Resend invite",
     "copyInviteLink": "Copy invite link",
+    "copyResetPasswordLink": "Copy reset password link",
+    "copyResetPasswordLinkSuccess": "Reset password link copied to clipboard",
+    "copyResetPasswordLinkHint": "The link expires shortly and invalidates any reset password link previously sent to this user.",
     "expiredOnDate": "Expired on {{date}}",
     "validFromUntil": "Valid from <0>{{from}}</0> - <1>{{until}}</1>",
     "acceptedOnDate": "Accepted on {{date}}",
@@ -2554,6 +2798,127 @@
     "deleteUserWarning": "You are about to delete the user {{name}}. This action cannot be undone.",
     "deleteUserSuccess": "User {{name}} deleted successfully",
     "invite": "Invite"
+  },
+  "roles": {
+    "domain": "Roles",
+    "subtitle": "Manage access roles and permissions.",
+    "create": {
+      "header": "Create role",
+      "hint": "Create a role to manage access in your admin.",
+      "successToast": "Role {{name}} created",
+      "tabs": {
+        "details": "Details",
+        "permissions": "Permissions"
+      },
+      "permissions": {
+        "empty": {
+          "heading": "No permissions",
+          "description": "There are no permissions to select."
+        },
+        "filtered": {
+          "heading": "No results",
+          "description": "No permissions match the current filter criteria."
+        }
+      }
+    },
+    "edit": {
+      "header": "Edit role",
+      "successToast": "Role {{name}} updated"
+    },
+    "delete": {
+      "title": "Delete role",
+      "description": "You are about to delete the role {{name}}. This action cannot be undone.",
+      "successToast": "Role {{name}} deleted"
+    },
+    "fields": {
+      "permissions": "Permissions"
+    },
+    "actions": {
+      "managePermissions": "Manage permissions"
+    },
+    "users": {
+      "alreadyAddedTooltip": "User already has this role.",
+      "unassignableRoleTooltip": "You don't have access to assign this role — your permissions don't cover all of its policies.",
+      "add": {
+        "successToast_one": "User was successfully added to the role.",
+        "successToast_other": "Users were successfully added to the role.",
+        "list": {
+          "noRecordsMessage": "Create a user first."
+        }
+      },
+      "remove": {
+        "title_one": "Remove user",
+        "title_other": "Remove users",
+        "description_one": "You are about to remove {{count}} user from the role. This action cannot be undone.",
+        "description_other": "You are about to remove {{count}} users from the role. This action cannot be undone."
+      },
+      "list": {
+        "noRecordsMessage": "This role doesn't have users."
+      }
+    },
+    "permissions": {
+      "header": "Manage permissions",
+      "hint": "Select permissions that this role should include.",
+      "empty": {
+        "heading": "No permissions",
+        "description": "There are no permissions to select."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No permissions match the current filter criteria."
+      }
+    },
+    "list": {
+      "empty": {
+        "heading": "No roles found",
+        "description": "Create roles to manage access in your admin."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No roles match the current filter criteria."
+      }
+    }
+  },
+  "policies": {
+    "domain": "Policies",
+    "subtitle": "Define the permissions that roles can grant.",
+    "create": {
+      "header": "Create policy",
+      "hint": "Define a new permission that can be attached to roles.",
+      "successToast": "Policy {{key}} created"
+    },
+    "edit": {
+      "header": "Edit policy",
+      "successToast": "Policy {{key}} updated"
+    },
+    "delete": {
+      "title": "Delete policy",
+      "description": "You are about to delete the policy {{key}}. This action cannot be undone.",
+      "successToast": "Policy {{key}} deleted"
+    },
+    "fields": {
+      "roles": "Roles",
+      "users": "Users"
+    },
+    "list": {
+      "empty": {
+        "heading": "No policies found",
+        "description": "Create policies to manage the permissions roles can grant."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No policies match the current filter criteria."
+      }
+    },
+    "roles": {
+      "list": {
+        "noRecordsMessage": "No roles include this policy yet."
+      },
+      "empty": {
+        "heading": "No roles",
+        "description": "No roles include this policy yet."
+      }
+    }
   },
   "translations": {
     "domain": "Translations",
@@ -2652,7 +3017,15 @@
     "flatRate": "Flat Rate",
     "calculated": "Calculated",
     "list": {
-      "noRecordsMessage": "Create a region for the areas that you sell in."
+      "noRecordsMessage": "Create a region for the areas that you sell in.",
+      "empty": {
+        "heading": "No regions",
+        "description": "There are no regions to display."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No regions match the current filter criteria."
+      }
     },
     "toast": {
       "delete": "Region deleted successfully",
@@ -2946,7 +3319,21 @@
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
     "title": "Welcome to Medusa",
-    "hint": "Sign in to access the account area"
+    "hint": "Sign in to access the account area",
+    "mfa": {
+      "title": "Two-factor authentication",
+      "description": "Enter the 6-digit code from your authenticator app.",
+      "recoveryDescription": "Enter one of your recovery codes.",
+      "recoveryCodePlaceholder": "Recovery code",
+      "verify": "Verify",
+      "verifyError": "The verification code could not be confirmed.",
+      "completeError": "Authentication could not be completed.",
+      "backToLogin": "Back to login",
+      "useRecoveryCodePrompt": "Lost access to your authenticator app?",
+      "useRecoveryCode": "Use a recovery code",
+      "useAuthenticatorPrompt": "Have access to your authenticator app?",
+      "useAuthenticator": "Use an authenticator code"
+    }
   },
   "invite": {
     "title": "Welcome to Medusa",
@@ -2994,6 +3381,7 @@
     "subtitle": "View and keep track of workflow executions in your Medusa application.",
     "transactionIdLabel": "Transaction ID",
     "workflowIdLabel": "Workflow ID",
+    "stateLabel": "State",
     "progressLabel": "Progress",
     "stepsCompletedLabel_one": "{{completed}} of {{count}} step",
     "stepsCompletedLabel_other": "{{completed}} of {{count}} steps",
@@ -3033,6 +3421,33 @@
         "dormant": "Dormant",
         "timeout": "Timeout"
       }
+    }
+  },
+  "searchIndexes": {
+    "domain": "Search",
+    "subtitle": "View registered search indexes and rebuild them from source data.",
+    "fieldsLabel": "Indexed fields",
+    "providerLabel": "Provider",
+    "reindex": "Reindex",
+    "reindexConfirmationTitle": "Reindex {{name}}?",
+    "reindexConfirmation": "This rebuilds the \"{{name}}\" index from its source data. Search results for this index may be incomplete until the rebuild finishes.",
+    "reindexSuccess": "Reindexing {{name}} started",
+    "reindexSinceLabel": "Since",
+    "reindexSinceHint": "Only rebuild documents that changed at or after this date. Leave empty to rebuild everything.",
+    "reindexEntityIdsLabel": "Entity IDs",
+    "reindexEntityIdsHint": "Comma or newline separated IDs to rebuild only those documents. Support depends on this index's own definition.",
+    "delete": "Delete index",
+    "deleteWarning": "This drops the \"{{name}}\" index and every version ever built for it, including its data in the search engine. Nothing is searchable on this index until the next migration rebuilds it from scratch. This can't be undone.",
+    "deleteSuccess": "Index {{name}} deleted",
+    "noFields": "No fields are indexed.",
+    "list": {
+      "noRecordsMessage": "No search indexes are registered."
+    },
+    "status": {
+      "pending": "Pending",
+      "building": "Building",
+      "ready": "Ready",
+      "error": "Error"
     }
   },
   "shippingOptionTypes": {
@@ -3097,6 +3512,17 @@
       "value": "Value"
     }
   },
+  "propertyLabels": {
+    "domain": "Property Labels",
+    "title": "Property Labels",
+    "subtitle": "Manage custom property labels for configurable tables of your entities.",
+    "fields": {
+      "module": "Module",
+      "model": "Model",
+      "propertyCount": "Property Count",
+      "hasOverrides": "Has Overrides"
+    }
+  },
   "notifications": {
     "domain": "Notifications",
     "emptyState": {
@@ -3135,6 +3561,7 @@
     "selectValues": "Select Values"
   },
   "fields": {
+    "actions": "Actions",
     "amount": "Amount",
     "reference": "Reference",
     "reference_id": "Reference ID",
@@ -3248,11 +3675,13 @@
     "region": "Region",
     "discount": "Discount",
     "role": "Role",
+    "resource": "Resource",
     "sent": "Sent",
     "salesChannels": "Sales Channels",
     "product": "Product",
     "createdAt": "Created",
     "updatedAt": "Updated",
+    "operation": "Operation",
     "revokedAt": "Revoked at",
     "true": "True",
     "false": "False",
@@ -3275,6 +3704,7 @@
     "barcode": "Barcode",
     "countryOfOrigin": "Country of origin",
     "material": "Material",
+    "unitOfMeasure": "Unit of measure",
     "thumbnail": "Thumbnail",
     "sku": "SKU",
     "managedInventory": "Managed inventory",
@@ -3337,8 +3767,63 @@
   },
   "auth": {
     "login": {
+      "noProviders": "Register an auth provider in your Medusa config to be able to login",
       "authenticationFailed": "Authentication failed",
-      "cloud": "Log in with Medusa Cloud"
+      "cloud": "Log in with Medusa Cloud",
+      "continueWithProvider": "Continue with {{provider}}",
+      "or": "or",
+      "provisioningFailed": "We couldn't complete your sign in. Please contact an administrator."
+    }
+  },
+  "permissions": {
+    "accessDenied": {
+      "title": "Access Denied",
+      "description": "You don't have permission to access this page.",
+      "requiredPermission": "Required permission: {{permission}}",
+      "action": "You don't have permission to perform this action."
+    },
+    "requiredPermissions": {
+      "title": "Required permissions",
+      "none": "No permissions declared in this view.",
+      "anyOf": "Any of",
+      "allOf": "All of",
+      "source": "Source: {{source}}"
+    },
+    "resources": {
+      "customer": "Customer",
+      "customer_group": "Customer Group",
+      "order": "Order",
+      "product": "Product",
+      "product_category": "Product Category",
+      "product_collection": "Product Collection",
+      "product_tag": "Product Tag",
+      "product_type": "Product Type",
+      "inventory": "Inventory",
+      "reservation": "Reservation",
+      "promotion": "Promotion",
+      "campaign": "Campaign",
+      "price_list": "Price List",
+      "region": "Region",
+      "store": "Store",
+      "user": "User",
+      "role": "Role",
+      "permission": "Permission",
+      "sales_channel": "Sales Channel",
+      "stock_location": "Stock Location",
+      "shipping_profile": "Shipping Profile",
+      "shipping_option": "Shipping Option",
+      "tax_region": "Tax Region",
+      "api_key": "API Key",
+      "return_reason": "Return Reason",
+      "refund_reason": "Refund Reason",
+      "workflow": "Workflow",
+      "translation": "Translation"
+    },
+    "actions": {
+      "read": "View",
+      "create": "Create",
+      "update": "Edit",
+      "delete": "Delete"
     }
   }
 }

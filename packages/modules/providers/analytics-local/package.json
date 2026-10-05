@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/analytics-local",
-  "version": "2.20.1",
+  "version": "2.21.2",
   "description": "Local analytics provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -18,7 +18,7 @@
     "!dist/**/__fixtures__"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.0"
   },
   "author": "Medusa",
   "license": "MIT",
@@ -28,10 +28,10 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.20.1"
+    "@medusajs/framework": "2.21.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.20.1"
+    "@medusajs/framework": "2.21.2"
   },
   "keywords": [
     "medusa-plugin",

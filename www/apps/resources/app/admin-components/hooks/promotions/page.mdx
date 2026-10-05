@@ -1,0 +1,113 @@
+---
+sidebar_label: "Promotions"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Promotion Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The promotion hooks fetch promotions from the Medusa backend. Use them to show promotion data in your admin customizations.
+
+```tsx
+import {
+  promotionsQueryKeys,
+  usePromotions,
+} from "@medusajs/dashboard/hooks"
+```
+
+These hooks are built on [TanStack Query](https://tanstack.com/query/latest). Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+
+---
+
+## usePromotions
+
+Fetches a paginated list of promotions.
+
+```tsx
+const { promotions, count, isPending } = usePromotions({
+  limit: 20,
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "query",
+      type: "`AdminGetPromotionsParams`",
+      optional: true,
+      description: "Optional query parameters, such as `limit`, `offset`, `q`, or `fields`.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "promotions",
+      type: "`AdminPromotion[]`",
+      description: "The list of promotions. It's `undefined` while the request is loading.",
+    },
+    {
+      name: "count",
+      type: "`number`",
+      description: "The total number of promotions matching the query.",
+    },
+    {
+      name: "limit",
+      type: "`number`",
+      description: "The maximum number of promotions returned in the request.",
+    },
+    {
+      name: "offset",
+      type: "`number`",
+      description: "The number of promotions skipped before the returned ones.",
+    },
+  ]}
+/>
+
+---
+
+## promotionsQueryKeys
+
+A TanStack Query key factory for promotion queries. Besides `all`, `lists()`, `list(query)`, `details()`, and `detail(id, query)`, it adds the promotion-specific keys `listRules(id, ruleType, query)`, `listRuleAttributes(ruleType, promotionType, applicationMethodTargetType)`, and `listRuleValues(ruleType, ruleValue, query)`.
+
+```tsx
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  promotionsQueryKeys,
+} from "@medusajs/dashboard/hooks"
+
+const Widget = () => {
+  const queryClient = useQueryClient()
+
+  const refreshPromotions = () => {
+    queryClient.invalidateQueries({
+      queryKey: promotionsQueryKeys.lists(),
+    })
+  }
+
+  // ...
+}
+```

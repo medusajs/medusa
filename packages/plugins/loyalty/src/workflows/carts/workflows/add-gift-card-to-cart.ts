@@ -7,6 +7,7 @@ import {
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows";
 import {
+  createHook,
   createStep,
   createWorkflow,
   StepResponse,
@@ -214,6 +215,20 @@ export interface AddGiftCardToCartWorkflowInput {
  * @summary
  *
  * Apply a gift card to a cart.
+ *
+ * @property hooks.validate - This hook is executed after the gift card's built-in
+ * validations and before any credit line is created. You can consume this hook to
+ * perform any custom validation. If validation fails, you can throw an error to stop
+ * the workflow execution.
+ *
+ * @example
+ * import { addGiftCardToCartWorkflow } from "@medusajs/loyalty-plugin/workflows";
+ *
+ * addGiftCardToCartWorkflow.hooks.validate(
+ *   async ({ input, cart, giftCards }, { container }) => {
+ *     // throw an error to reject the gift card
+ *   }
+ * );
  */
 export const addGiftCardToCartWorkflow = createWorkflow(
   "add-gift-card-to-cart",
@@ -245,6 +260,12 @@ export const addGiftCardToCartWorkflow = createWorkflow(
     });
 
     validateCartGiftCardStep({ cart, giftCards });
+
+    const validate = createHook("validate", {
+      input,
+      cart,
+      giftCards,
+    });
 
     const giftCardStoreCreditAccountQuery = useQueryGraphStep({
       entity: "gift_card_store_credit_account",
@@ -334,6 +355,8 @@ export const addGiftCardToCartWorkflow = createWorkflow(
       input: { cart_id: input.cart_id },
     });
 
-    return new WorkflowResponse(creditLines);
+    return new WorkflowResponse(creditLines, {
+      hooks: [validate],
+    });
   }
 );
