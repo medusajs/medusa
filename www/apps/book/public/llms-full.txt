@@ -11521,6 +11521,10 @@ However, applying the locale middleware does not mean every route translates its
 
 - `/store/products` and `/store/products/:id`: product fields such as `title` and `description`
 - `/store/product-variants` and `/store/product-variants/:id`: product variant fields
+- `/store/product-categories` and `/store/product-categories/:id`: product category fields
+- `/store/collections` and `/store/collections/:id`: product collection fields
+- `/store/product-types` and `/store/product-types/:id`: product type fields
+- `/store/product-tags` and `/store/product-tags/:id`: product tag fields
 
 Other built-in store routes (including `/store/carts/:id`, `/store/customers/me`, and `/store/orders/:id`) receive the locale header but do not retrieve the translated content. Fields on data models reached through those routes, including custom models linked to their records, are returned untranslated even when `x-medusa-locale` is set.
 
@@ -14916,6 +14920,17 @@ By default, Medusa creates the following properties for every data model:
 - `created_at`: A [dateTime](#dateTime) property that stores when a record of the data model was created.
 - `updated_at`: A [dateTime](#dateTime) property that stores when a record of the data model was updated.
 - `deleted_at`: A [dateTime](#dateTime) property that stores when a record of the data model was deleted. When you soft-delete a record, Medusa sets the `deleted_at` property to the current date.
+
+### Precision of Default Timestamp Properties
+
+The `created_at` and `updated_at` properties are stored in `timestamptz` columns, and their precision depends on how you write the record:
+
+- When you create a record through a module's service or the ORM, Medusa sets the value from a JavaScript `Date`, which has millisecond precision.
+- When you insert a record with raw SQL that omits the column, such as in seed scripts, backfills, or imports, PostgreSQL applies the column's `now()` default, which has microsecond precision.
+
+When you retrieve a record, the database driver returns these properties as JavaScript `Date` objects, which drop any sub-millisecond digits. So, a retrieved value may be earlier than the value stored in the database.
+
+Don't use a retrieved `created_at` or `updated_at` value directly in a cursor for keyset pagination or in a `>` comparison against the database column. If the stored value has microsecond precision, the comparison can match the same record again, causing duplicate results or infinite pagination loops. Instead, select the column as text in raw SQL, such as `created_at::text`, or truncate the column to milliseconds with `date_trunc('milliseconds', created_at)` in the comparison.
 
 ***
 
@@ -29191,7 +29206,7 @@ Create a file named `Dockerfile` with the following content:
 ### pnpm
 
 ```dockerfile title="Dockerfile"
-FROM node:20-alpine
+FROM node:22-alpine
 
 WORKDIR /server
 
@@ -29213,7 +29228,7 @@ ENTRYPOINT ["./start.sh"]
 ### yarn
 
 ```dockerfile title="Dockerfile"
-FROM node:20-alpine
+FROM node:22-alpine
 
 WORKDIR /server
 
@@ -29234,7 +29249,7 @@ ENTRYPOINT ["./start.sh"]
 ### npm
 
 ```dockerfile title="Dockerfile"
-FROM node:20-alpine
+FROM node:22-alpine
 
 WORKDIR /server
 
@@ -29251,7 +29266,7 @@ EXPOSE 9000 5173 8000
 ENTRYPOINT ["./start.sh"]
 ```
 
-In the `Dockerfile`, you use the `node:20-alpine` image as the base since Medusa requires Node.js v20.19.0 or later.
+In the `Dockerfile`, you use the `node:22-alpine` image as the base since Medusa requires Node.js v22.22.0 or later.
 
 The workspace configuration files and all apps' `package.json` files are copied before installing dependencies so that the workspace dependency graph is resolved correctly. After installing dependencies, the rest of the source code is copied.
 
@@ -29616,7 +29631,7 @@ A Medusa application is made up of a Node.js server and a Vite admin dashboard. 
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+ (LTS versions only). If you choose to install the Next.js Starter Storefront, make sure to use Node v24 LTS or lower.](https://nodejs.org/en/download)
+- [Node.js v22.22.0+ (LTS versions only). If you choose to install the Next.js Starter Storefront, make sure to use Node v24 LTS or lower.](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL installed and running](https://www.postgresql.org/download/)
 
@@ -31217,7 +31232,7 @@ This chapter is also useful for developers who are already familiar with Medusa 
 
 ### Node.js Version
 
-While Medusa v1 supported Node.js v16+, Medusa v2 requires Node.js v20.19.0+ or v22.12.0+. So, make sure to update your Node.js version if it's older.
+While Medusa v1 supported Node.js v16+, Medusa v2 requires Node.js v22.22.0+. So, make sure to update your Node.js version if it's older.
 
 Refer to the [Node.js documentation](https://nodejs.org/en/docs/) for instructions on how to update your Node.js version.
 
@@ -64997,7 +65012,7 @@ The Medusa CLI tool provides commands that facilitate your development.
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -65542,7 +65557,7 @@ The Medusa CLI tool provides commands that facilitate your development.
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -75544,7 +75559,7 @@ By following this tutorial, you will:
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -82419,7 +82434,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -86839,7 +86854,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -91661,7 +91676,7 @@ While this tutorial focuses on supporting phone authentication for customers, yo
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -93730,7 +93745,7 @@ By following this tutorial, you will learn how to:
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -102935,7 +102950,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -103489,7 +103504,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -107713,7 +107728,7 @@ By following this tutorial, you'll learn how to:
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -109587,7 +109602,7 @@ By following this tutorial, you'll learn how to:
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -110091,7 +110106,7 @@ By following this tutorial, you'll learn how to:
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -147984,7 +147999,7 @@ In this step, you'll set up a Medusa application and configure the Stripe Module
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
@@ -150281,7 +150296,7 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ### Prerequisites
 
-- [Node.js v20.19.0+ or v22.12.0+](https://nodejs.org/en/download)
+- [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
