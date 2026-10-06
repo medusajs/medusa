@@ -6,4 +6,4 @@
 "@medusajs/medusa": patch
 ---
 
-fix(payment,core-flows): let refunds be retried safely with an idempotency key
+fix(payment,core-flows,medusa,types,utils): let refunds be retried safely with an idempotency key

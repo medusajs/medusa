@@ -15,7 +15,11 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { emitEventStep, useRemoteQueryStep } from "../../common"
+import {
+  emitEventStep,
+  useQueryGraphStep,
+  useRemoteQueryStep,
+} from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { createOrderRefundCreditLinesWorkflow } from "../../order/workflows/payments/create-order-refund-credit-lines"
 import { refundPaymentStep } from "../steps/refund-payment"
@@ -210,42 +214,37 @@ export const refundPaymentWorkflow = createWorkflow(
       { input },
       ({ input }) => !!input.idempotency_key
     ).then(() => {
-      return useRemoteQueryStep({
-        entry_point: "refund",
+      const { data } = useQueryGraphStep({
+        entity: "refund",
         fields: ["id"],
-        variables: {
-          filters: {
-            payment_id: input.payment_id,
-            idempotency_key: input.idempotency_key,
-          },
+        filters: {
+          payment_id: input.payment_id,
+          idempotency_key: input.idempotency_key,
         },
-        list: true,
+        options: { isList: false },
       }).config({ name: "refund-by-idempotency-key" })
+
+      return data
     })
 
-    const refundTransactions = when(
+    const refundTransaction = when(
       "fetch-refund-order-transaction",
       { existingRefund },
-      ({ existingRefund }) => !!existingRefund?.length
+      ({ existingRefund }) => !!existingRefund?.id
     ).then(() => {
-      const refundIds = transform(
-        { existingRefund },
-        ({ existingRefund }) => existingRefund.map((refund) => refund.id)
-      )
-
-      return useRemoteQueryStep({
-        entry_point: "order_transaction",
+      const { data } = useQueryGraphStep({
+        entity: "order_transaction",
         fields: ["id"],
-        variables: {
-          filters: { reference: "refund", reference_id: refundIds },
-        },
-        list: true,
+        filters: { reference: "refund", reference_id: existingRefund.id },
+        options: { isList: false },
       }).config({ name: "order-transaction-by-refund" })
+
+      return data
     })
 
     const isReplay = transform(
-      { refundTransactions },
-      ({ refundTransactions }) => !!refundTransactions?.length
+      { refundTransaction },
+      ({ refundTransaction }) => !!refundTransaction?.id
     )
 
     const refundPayment = refundPaymentStep(input)
@@ -298,19 +297,26 @@ export const refundPaymentWorkflow = createWorkflow(
       addOrderTransactionStep(orderTransactionData)
     })
 
-    when({ creditLineAmount, isReplay }, ({ creditLineAmount, isReplay }) =>
-      !isReplay && MathBN.gt(creditLineAmount, 0)
+    when(
+      { creditLineAmount, isReplay },
+      ({ creditLineAmount, isReplay }) =>
+        !isReplay && MathBN.gt(creditLineAmount, 0)
     ).then(() => {
-      const createRefundCreditLinesData = transform({
-        order, creditLineAmount, refundReason,
-      }, (data) => {
-        return {
-          order_id: data.order.id,
-          amount: data.creditLineAmount,
-          reference: data.refundReason?.label,
-          referenceId: data.refundReason?.code,
+      const createRefundCreditLinesData = transform(
+        {
+          order,
+          creditLineAmount,
+          refundReason,
+        },
+        (data) => {
+          return {
+            order_id: data.order.id,
+            amount: data.creditLineAmount,
+            reference: data.refundReason?.label,
+            referenceId: data.refundReason?.code,
+          }
         }
-      })
+      )
       createOrderRefundCreditLinesWorkflow.runAsStep({
         input: createRefundCreditLinesData,
       })
