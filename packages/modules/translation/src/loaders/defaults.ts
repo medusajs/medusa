@@ -53,6 +53,7 @@ const defaultLocales = [
   { code: "ar-AE", name: "Arabic (United Arab Emirates)" },
   { code: "ar-EG", name: "Arabic (Egypt)" },
   { code: "he-IL", name: "Hebrew (Israel)" },
+  { code: "fa-IR", name: "Persian (Iran)" },
   { code: "hi-IN", name: "Hindi (India)" },
   { code: "bn-BD", name: "Bengali (Bangladesh)" },
   { code: "th-TH", name: "Thai (Thailand)" },
