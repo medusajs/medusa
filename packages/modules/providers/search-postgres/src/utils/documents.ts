@@ -87,8 +87,8 @@ export function projectIndexedDocument(
     }
 
     if (planned.kind === "vector") {
-      // Engine-embedded fields are produced from `embed` — never store a
-      // client-supplied vector for them.
+      // Engine-embedded fields are produced from this field's text via
+      // the embedder — never store a client-supplied vector for them.
       if (planned.field.embed) {
         continue
       }
@@ -151,18 +151,27 @@ export function projectIndexedDocument(
 }
 
 /**
- * Plain text the engine embedder should encode for an `embed` source path.
- * Arrays of strings are joined; missing/blank sources return undefined so
- * the vector column can stay null.
+ * Plain text the engine embedder should encode for an `embed: true` vector
+ * field. Missing/blank values return undefined so the vector column can stay
+ * null.
  */
 export function sourceTextForEmbed(
   document: SearchTypes.SearchDocument,
-  sourcePath: string
+  path: string
 ): string | undefined {
-  const text = readDocumentPath(document, sourcePath.split("."))
-    .map((value) => String(value).trim())
-    .filter(Boolean)
-    .join(" ")
+  const values = readDocumentPath(document, path.split(".")).filter(
+    (value) => value !== undefined && value !== null
+  )
 
+  if (!values.length) {
+    return undefined
+  }
+
+  const value = values[0]
+  if (typeof value !== "string") {
+    fail(`Vector field "${path}" with embed must be a string`)
+  }
+
+  const text = value.trim()
   return text || undefined
 }

@@ -58,7 +58,11 @@ const modules = {
     resolve: "@medusajs/payment",
     /** @type {import('@medusajs/payment').PaymentModuleOptions} */
     options: {
-      providers: [customPaymentProvider, customPaymentProviderAccountHolder, customPendingAuthPaymentProvider],
+      providers: [
+        customPaymentProvider,
+        customPaymentProviderAccountHolder,
+        customPendingAuthPaymentProvider,
+      ],
       webhook_delay: 0,
       webhook_retries: 0,
     },
@@ -154,6 +158,11 @@ module.exports = defineConfig({
   projectConfig: {
     http: {
       jwtSecret: "test",
+      // `user` defaults to ["emailpass"], so the SSO provider the auth tests
+      // drive has to be opted in explicitly.
+      authMethodsPerActor: {
+        user: ["emailpass", "oidc-okta"],
+      },
     },
   },
   featureFlags: {

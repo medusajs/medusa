@@ -248,8 +248,8 @@ export const ProductOptionsManageForm = ({
 
     // Deselecting every value is the user's way of saying "remove this option
     // from the product". Drop the row so the submit pipeline routes it through
-    // optionsToRemove, where the backend's "variants are using it" guard kicks
-    // in if the option can't actually be detached.
+    // optionsToRemove; the backend detaches the option from the product's
+    // variants, or rejects it if that would collide two variants.
     if (!valueIds.length) {
       const currentOptions = form.getValues("options") || []
       form.setValue(

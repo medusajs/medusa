@@ -60,6 +60,13 @@ describe("rendering", () => {
     expect(dialog).toHaveTextContent("Content")
   })
 
+  test("dialog is the overlay and sits above every other layer", () => {
+    const { container } = render(<Modal>Content</Modal>)
+    const dialog = container.querySelector("dialog")
+    expect(dialog).toHaveClass("bg-medusa-bg-overlay")
+    expect(dialog).toHaveClass("z-[499]")
+  })
+
   test("renders with title", () => {
     const { container } = render(<Modal title="Modal Title">Content</Modal>)
     const header = container.querySelector("[data-testid='modal-header']")

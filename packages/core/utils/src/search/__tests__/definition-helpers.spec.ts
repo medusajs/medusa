@@ -1,0 +1,448 @@
+import { graphConsume, graphSeed } from "../definition-helpers"
+import { search } from "../model"
+
+const fields = search.define({
+  id: search.keyword().filterable(),
+  title: search.text().searchable(),
+})
+
+const index = {
+  name: "product",
+  entity: "product",
+  primary_key: "id",
+} as any
+
+function createContext(graph: jest.Mock, extra: Record<string, any> = {}) {
+  return {
+    container: { query: { graph } as any },
+    index,
+    ...extra,
+  } as any
+}
+
+async function collect<T>(iterable: AsyncIterable<T>): Promise<T[]> {
+  const batches: T[] = []
+  for await (const batch of iterable) {
+    batches.push(batch)
+  }
+  return batches
+}
+
+// Indexes rows with a title, and drops the rest.
+const titled = (rows: any[]) =>
+  rows
+    .filter((row) => row.title)
+    .map((row) => ({ id: row.id, title: row.title }))
+
+describe("graphSeed", () => {
+  it("pages with a keyset cursor and stops on a short page", async () => {
+    const graph = jest
+      .fn()
+      .mockResolvedValueOnce({
+        data: [
+          { id: "prod_1", title: "One" },
+          { id: "prod_2", title: "Two" },
+        ],
+      })
+      .mockResolvedValueOnce({ data: [{ id: "prod_3", title: "Three" }] })
+
+    const seed = graphSeed<typeof fields>({
+      fields: ["id", "title"],
+      batch_size: 2,
+    })
+
+    const batches = await collect(seed(createContext(graph)))
+
+    expect(batches).toEqual([
+      [
+        {
+          action: "upsert",
+          documents: [
+            { id: "prod_1", title: "One" },
+            { id: "prod_2", title: "Two" },
+          ],
+        },
+      ],
+      [{ action: "upsert", documents: [{ id: "prod_3", title: "Three" }] }],
+    ])
+
+    expect(graph).toHaveBeenCalledTimes(2)
+    expect(graph.mock.calls[0][0]).toEqual({
+      entity: "product",
+      fields: ["id", "title"],
+      filters: {},
+      pagination: { take: 2, order: { id: "ASC" } },
+      withDeleted: false,
+    })
+    // The second page starts after the last row of the first one.
+    expect(graph.mock.calls[1][0].filters).toEqual({ id: { $gt: "prod_2" } })
+  })
+
+  it("resumes from the context's last_key", async () => {
+    const graph = jest.fn().mockResolvedValue({ data: [] })
+
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"] })
+    await collect(seed(createContext(graph, { last_key: "prod_9" })))
+
+    expect(graph.mock.calls[0][0].filters).toEqual({ id: { $gt: "prod_9" } })
+  })
+
+  it("applies the reindex filters", async () => {
+    const graph = jest.fn().mockResolvedValue({ data: [] })
+
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"] })
+    await collect(
+      seed(createContext(graph, { filters: { collection_id: "pcol_1" } }))
+    )
+
+    expect(graph.mock.calls[0][0].filters).toEqual({
+      collection_id: "pcol_1",
+    })
+  })
+
+  it("keeps a reindex filter the cursor collides with", async () => {
+    const graph = jest
+      .fn()
+      .mockResolvedValueOnce({ data: [{ id: "prod_1", title: "One" }] })
+      .mockResolvedValueOnce({ data: [] })
+
+    const seed = graphSeed<typeof fields>({
+      fields: ["id", "title"],
+      batch_size: 1,
+    })
+    await collect(
+      seed(createContext(graph, { filters: { id: ["prod_1", "prod_2"] } }))
+    )
+
+    // Spreading them together would drop one of the two.
+    expect(graph.mock.calls[1][0].filters).toEqual({
+      id: ["prod_1", "prod_2"],
+      $and: [{ id: { $gt: "prod_1" } }],
+    })
+  })
+
+  it("deletes soft-deleted and dropped rows on the catch-up pass", async () => {
+    const since = new Date("2026-01-01")
+    const graph = jest.fn().mockResolvedValue({
+      data: [
+        { id: "prod_1", title: "One", deleted_at: null },
+        { id: "prod_2", title: "Two", deleted_at: new Date() },
+        { id: "prod_3", title: "", deleted_at: null },
+      ],
+    })
+    const transform = jest.fn(titled)
+
+    const seed = graphSeed<typeof fields>({
+      fields: ["id", "title"],
+      // A row that no longer qualifies has to leave the index.
+      transform,
+    })
+
+    const batches = await collect(
+      seed(createContext(graph, { catchup: { since } }))
+    )
+
+    expect(graph.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        fields: ["id", "title", "deleted_at"],
+        filters: { updated_at: { $gte: since } },
+        withDeleted: true,
+      })
+    )
+    // Soft-deleted rows never reach the transform.
+    expect(transform.mock.calls[0][0].map((row: any) => row.id)).toEqual([
+      "prod_1",
+      "prod_3",
+    ])
+    expect(batches[0]).toEqual([
+      { action: "upsert", documents: [{ id: "prod_1", title: "One" }] },
+      { action: "delete", filters: { id: ["prod_2", "prod_3"] } },
+    ])
+  })
+
+  it("pages and deletes by the index' own primary key", async () => {
+    const graph = jest
+      .fn()
+      .mockResolvedValueOnce({
+        data: [{ handle: "one", title: "One", deleted_at: new Date() }],
+      })
+      .mockResolvedValueOnce({ data: [] })
+
+    const seed = graphSeed<typeof fields>({
+      fields: ["title"],
+      batch_size: 1,
+    })
+
+    const batches = await collect(
+      seed(
+        createContext(graph, {
+          // An index keyed by something other than `id`.
+          index: { ...index, primary_key: "handle" },
+          catchup: { since: new Date("2026-01-01") },
+        })
+      )
+    )
+
+    // Selected even though `fields` left it out — the seed cannot page or
+    // delete without it.
+    expect(graph.mock.calls[0][0].fields).toEqual([
+      "title",
+      "handle",
+      "deleted_at",
+    ])
+    expect(graph.mock.calls[0][0].pagination.order).toEqual({ handle: "ASC" })
+    expect(batches[0]).toEqual([
+      { action: "delete", filters: { handle: ["one"] } },
+    ])
+    expect(graph.mock.calls[1][0].filters).toEqual({
+      updated_at: { $gte: new Date("2026-01-01") },
+      handle: { $gt: "one" },
+    })
+  })
+
+  it("skips dropped rows without deleting on a full seed", async () => {
+    const graph = jest.fn().mockResolvedValue({
+      data: [
+        { id: "prod_1", title: "One" },
+        { id: "prod_2", title: "" },
+      ],
+    })
+
+    const seed = graphSeed<typeof fields>({
+      fields: ["id", "title"],
+      transform: titled,
+    })
+
+    const batches = await collect(seed(createContext(graph)))
+
+    expect(batches).toEqual([
+      [{ action: "upsert", documents: [{ id: "prod_1", title: "One" }] }],
+    ])
+  })
+
+  it("hands the transform the whole page and awaits it", async () => {
+    const graph = jest
+      .fn()
+      .mockResolvedValueOnce({
+        data: [
+          { id: "prod_1", title: "One" },
+          { id: "prod_2", title: "Two" },
+        ],
+      })
+      .mockResolvedValueOnce({ data: [] })
+    const transform = jest.fn(async (rows: any[], _context: unknown) =>
+      rows.map((row) => ({ id: row.id, title: row.title.toUpperCase() }))
+    )
+
+    const seed = graphSeed<typeof fields>({
+      fields: ["id", "title"],
+      batch_size: 2,
+      transform,
+    })
+    const ingestion = createContext(graph)
+    const batches = await collect(seed(ingestion))
+
+    expect(transform).toHaveBeenCalledTimes(1)
+    expect(transform.mock.calls[0][1]).toBe(ingestion)
+    expect(batches).toEqual([
+      [
+        {
+          action: "upsert",
+          documents: [
+            { id: "prod_1", title: "ONE" },
+            { id: "prod_2", title: "TWO" },
+          ],
+        },
+      ],
+    ])
+    // The cursor follows the read, whatever the transform returned.
+    expect(graph.mock.calls[1][0].filters).toEqual({ id: { $gt: "prod_2" } })
+  })
+
+  it("rejects a document without an id", async () => {
+    const graph = jest.fn().mockResolvedValue({
+      data: [{ id: "prod_1", title: "One" }],
+    })
+
+    const seed = graphSeed<typeof fields>({
+      fields: ["id", "title"],
+      transform: (rows) => rows.map((row) => ({ title: row.title } as any)),
+    })
+
+    await expect(collect(seed(createContext(graph)))).rejects.toThrow(
+      'transform returned a document without an "id"'
+    )
+  })
+
+  it("reads the rows with the query context", async () => {
+    const graph = jest.fn().mockResolvedValue({ data: [] })
+    const context = { variants: { calculated_price: { currency_code: "eur" } } }
+
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"], context })
+    await collect(seed(createContext(graph)))
+
+    expect(graph.mock.calls[0][0].context).toBe(context)
+  })
+
+  it("resolves a query context function per read", async () => {
+    const since = new Date("2026-01-01")
+    const graph = jest.fn().mockResolvedValue({ data: [] })
+    const context = jest.fn(() => ({ locale: "de" }))
+
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"], context })
+    const ingestion = createContext(graph, { catchup: { since } })
+    await collect(seed(ingestion))
+
+    expect(context).toHaveBeenCalledWith(ingestion)
+    expect(graph.mock.calls[0][0]).toEqual(
+      expect.objectContaining({ withDeleted: true, context: { locale: "de" } })
+    )
+  })
+
+  it("passes no context key when none is configured", async () => {
+    const graph = jest.fn().mockResolvedValue({ data: [] })
+
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"] })
+    await collect(seed(createContext(graph)))
+
+    expect("context" in graph.mock.calls[0][0]).toBe(false)
+  })
+
+  it("yields nothing for an empty page", async () => {
+    const graph = jest.fn().mockResolvedValue({ data: [] })
+
+    const seed = graphSeed<typeof fields>({ fields: ["id", "title"] })
+
+    expect(await collect(seed(createContext(graph)))).toEqual([])
+  })
+})
+
+describe("graphConsume", () => {
+  it("reads the event's ids back and upserts them", async () => {
+    const graph = jest
+      .fn()
+      .mockResolvedValue({ data: [{ id: "prod_1", title: "One" }] })
+
+    const consume = graphConsume<typeof fields>({ fields: ["id", "title"] })
+    const mutations = await consume(
+      { name: "product.updated", data: { id: "prod_1" } } as any,
+      createContext(graph)
+    )
+
+    expect(graph).toHaveBeenCalledWith({
+      entity: "product",
+      fields: ["id", "title"],
+      filters: { id: ["prod_1"] },
+    })
+    expect(mutations).toEqual([
+      { action: "upsert", documents: [{ id: "prod_1", title: "One" }] },
+    ])
+  })
+
+  it("deletes by id without reading back on a deletion event", async () => {
+    const graph = jest.fn()
+
+    const consume = graphConsume<typeof fields>({ fields: ["id", "title"] })
+    const mutations = await consume(
+      { name: "product.deleted", data: { id: ["prod_1", "prod_2"] } } as any,
+      createContext(graph)
+    )
+
+    expect(graph).not.toHaveBeenCalled()
+    expect(mutations).toEqual([
+      { action: "delete", filters: { id: ["prod_1", "prod_2"] } },
+    ])
+  })
+
+  it("deletes ids the read back doesn't return or the transform drops", async () => {
+    const graph = jest.fn().mockResolvedValue({
+      data: [
+        { id: "prod_1", title: "One" },
+        { id: "prod_2", title: "" },
+      ],
+    })
+
+    const consume = graphConsume<typeof fields>({
+      fields: ["id", "title"],
+      transform: async (rows) => titled(rows),
+    })
+    const mutations = await consume(
+      {
+        name: "product.updated",
+        data: { id: ["prod_1", "prod_2", "prod_3"] },
+      } as any,
+      createContext(graph)
+    )
+
+    expect(graph.mock.calls[0][0].filters).toEqual({
+      id: ["prod_1", "prod_2", "prod_3"],
+    })
+    expect(mutations).toEqual([
+      { action: "upsert", documents: [{ id: "prod_1", title: "One" }] },
+      // prod_2 was dropped by the transform, prod_3 was never returned.
+      { action: "delete", filters: { id: ["prod_2", "prod_3"] } },
+    ])
+  })
+
+  it("reads the event's ids back with the query context", async () => {
+    const graph = jest
+      .fn()
+      .mockResolvedValue({ data: [{ id: "prod_1", title: "One" }] })
+    const context = { variants: { calculated_price: { currency_code: "eur" } } }
+
+    const consume = graphConsume<typeof fields>({
+      fields: ["id", "title"],
+      context: () => context,
+    })
+    await consume(
+      { name: "product.updated", data: { id: "prod_1" } } as any,
+      createContext(graph)
+    )
+
+    expect(graph).toHaveBeenCalledWith({
+      entity: "product",
+      fields: ["id", "title"],
+      filters: { id: ["prod_1"] },
+      context,
+    })
+  })
+
+  it("awaits resolve_ids and hands it the ingestion context", async () => {
+    const graph = jest.fn().mockResolvedValue({
+      data: [{ id: "prod_1", title: "One" }],
+    })
+    const resolveIds = jest.fn(async (_event: unknown, _context: unknown) => [
+      "prod_1",
+    ])
+
+    const consume = graphConsume<typeof fields>({
+      fields: ["id", "title"],
+      resolve_ids: resolveIds,
+    })
+    const ingestion = createContext(graph)
+    const mutations = await consume(
+      { name: "product-variant.updated", data: { id: "variant_1" } } as any,
+      ingestion
+    )
+
+    expect(resolveIds.mock.calls[0][1]).toBe(ingestion)
+    expect(graph.mock.calls[0][0].filters).toEqual({ id: ["prod_1"] })
+    expect(mutations).toEqual([
+      { action: "upsert", documents: [{ id: "prod_1", title: "One" }] },
+    ])
+  })
+
+  it("ignores an event carrying no id", async () => {
+    const graph = jest.fn()
+
+    const consume = graphConsume<typeof fields>({ fields: ["id", "title"] })
+
+    expect(
+      await consume(
+        { name: "product.updated", data: {} } as any,
+        createContext(graph)
+      )
+    ).toEqual([])
+    expect(graph).not.toHaveBeenCalled()
+  })
+})

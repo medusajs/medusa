@@ -610,19 +610,45 @@ describe("Medusa search utilities", () => {
       expect(disabled.schema.title).not.toHaveProperty("fuzzy")
     })
 
-    it("lets a field explicitly opt out of the fuzzy index", () => {
-      const disabled = buildIndexPlan({
-        ...definition,
-        fields: {
-          ...definition.fields,
-          title: {
-            type: "text",
-            searchable: true,
-            provider_options: { "search-medusa": { fuzzy: false } },
+    it("rejects a disabled_on_attributes path that is not a field", () => {
+      expect(() =>
+        buildIndexPlan({
+          ...definition,
+          settings: {
+            typo_tolerance: { disabled_on_attributes: ["titel"] },
           },
-        },
-      })
-      expect(disabled.schema.title).toMatchObject({ fuzzy: false })
+        })
+      ).toThrow(/not a field on this index/)
+    })
+
+    it("rejects word-size thresholds below what the engine can match", () => {
+      expect(() =>
+        buildIndexPlan({
+          ...definition,
+          settings: { typo_tolerance: { min_word_size_for_one_typo: 4 } },
+        })
+      ).toThrow(/min_word_size_for_one_typo to be at least 6/)
+
+      expect(() =>
+        buildIndexPlan({
+          ...definition,
+          settings: { typo_tolerance: { min_word_size_for_two_typos: 8 } },
+        })
+      ).toThrow(/min_word_size_for_two_typos to be at least 9/)
+    })
+
+    it("rejects a two-typo threshold below the one-typo threshold", () => {
+      expect(() =>
+        buildIndexPlan({
+          ...definition,
+          settings: {
+            typo_tolerance: {
+              min_word_size_for_one_typo: 12,
+              min_word_size_for_two_typos: 10,
+            },
+          },
+        })
+      ).toThrow(/cannot be lower than min_word_size_for_one_typo/)
     })
 
     it("boosts BM25 rank_by with a Fuzzy filter using the default edit-distance thresholds", () => {
@@ -740,13 +766,13 @@ describe("Medusa search utilities", () => {
       ])
     })
 
-    it("clamps Fuzzy min_query_chars to Cloud's 3 * (distance + 1) floor", () => {
+    it("passes the configured word-size thresholds through as Fuzzy min_query_chars", () => {
       const custom = buildIndexPlan({
         ...definition,
         settings: {
           typo_tolerance: {
-            min_word_size_for_one_typo: 3,
-            min_word_size_for_two_typos: 6,
+            min_word_size_for_one_typo: 8,
+            min_word_size_for_two_typos: 12,
           },
         },
       })
@@ -763,8 +789,8 @@ describe("Medusa search utilities", () => {
 
       const fuzzyClause = (query.query.rank_by as any)[1][1][2]
       expect(fuzzyClause[3].max_edit_distance).toEqual([
-        { min_query_chars: 6, distance: 1 },
-        { min_query_chars: 9, distance: 2 },
+        { min_query_chars: 8, distance: 1 },
+        { min_query_chars: 12, distance: 2 },
       ])
     })
 
@@ -783,36 +809,47 @@ describe("Medusa search utilities", () => {
       expect(fuzzyClause[0]).toBe("Or")
     })
 
-    it("rejects typo tolerance when no searchable field has a fuzzy index", () => {
+    it("ignores typo tolerance when no searched field has a fuzzy index", () => {
       const noFuzzy = buildIndexPlan({
         ...definition,
         settings: { typo_tolerance: { enabled: false } },
       })
 
-      expect(() =>
-        buildQueryPlan(
-          {
-            index: definition,
-            q: "shoo",
-            attributes_to_retrieve: ["title"],
-            search_options: { typo_tolerance: true },
-          },
-          noFuzzy
-        )
-      ).toThrow(/no fuzzy-enabled fields/)
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "shoo",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true },
+        },
+        noFuzzy
+      )
+
+      const withoutTypos = buildQueryPlan(
+        {
+          index: definition,
+          q: "shoo",
+          attributes_to_retrieve: ["title"],
+        },
+        noFuzzy
+      )
+
+      expect(query.query.rank_by).toEqual(withoutTypos.query.rank_by)
+      expect(query.query.filters).toEqual(withoutTypos.query.filters)
     })
 
-    it("rejects typo tolerance without a text query", () => {
-      expect(() =>
-        buildQueryPlan(
-          {
-            index: definition,
-            attributes_to_retrieve: ["title"],
-            search_options: { typo_tolerance: true },
-          },
-          plan
-        )
-      ).toThrow(/require a text query/)
+    it("ignores typo tolerance without a text query", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual(["id", "asc"])
+      expect(query.query.filters).toBeUndefined()
     })
   })
 
@@ -844,6 +881,39 @@ describe("Medusa search utilities", () => {
         pre_tag: "<mark>",
         post_tag: "</mark>",
         fields: [{ path: "title", key: "__medusa_highlight_0__" }],
+      })
+    })
+
+    it("passes last_as_prefix into fragment ranking for match_strategy last", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "dtc sta",
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            match_strategy: "last",
+            highlight: { fields: ["title"] },
+          },
+        },
+        plan
+      )
+
+      expect(query.query.compute_attributes).toEqual({
+        __medusa_highlight_0__: [
+          "Highlight",
+          "title",
+          {
+            fragment_by: "none",
+            rank_fragments_by: [
+              "$fragment",
+              "BM25",
+              "dtc sta",
+              { last_as_prefix: true },
+            ],
+            fragment_limit: 1,
+            include_offsets: "utf-16",
+          },
+        ],
       })
     })
 
@@ -895,17 +965,52 @@ describe("Medusa search utilities", () => {
       ).toThrow(/not searchable/)
     })
 
-    it("rejects highlighting without a text query", () => {
-      expect(() =>
-        buildQueryPlan(
-          {
-            index: definition,
-            attributes_to_retrieve: ["title"],
-            search_options: { highlight: { fields: ["title"] } },
+    it("ignores highlighting without a text query", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          attributes_to_retrieve: ["title"],
+          search_options: {
+            highlight: { fields: ["title"] },
+            typo_tolerance: true,
           },
-          plan
-        )
-      ).toThrow(/require a text query/)
+        },
+        plan
+      )
+
+      expect(query.query.compute_attributes).toBeUndefined()
+      expect(query.highlight).toBeUndefined()
+      expect(query.query.rank_by).toEqual(["id", "asc"])
+    })
+
+    it("highlights every searchable field when highlight is true", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red",
+          attributes_to_retrieve: ["title"],
+          search_options: { highlight: true },
+        },
+        plan
+      )
+
+      expect(query.query.compute_attributes).toEqual({
+        __medusa_highlight_0__: [
+          "Highlight",
+          "title",
+          {
+            fragment_by: "none",
+            rank_fragments_by: ["$fragment", "BM25", "red"],
+            fragment_limit: 1,
+            include_offsets: "utf-16",
+          },
+        ],
+      })
+      expect(query.highlight).toEqual({
+        pre_tag: "<mark>",
+        post_tag: "</mark>",
+        fields: [{ path: "title", key: "__medusa_highlight_0__" }],
+      })
     })
 
     it("tags matched ranges in returned fragments, applied back to front", () => {
@@ -1018,7 +1123,7 @@ describe("Medusa search utilities", () => {
       expect(query.query.filters).toBeUndefined()
     })
 
-    it("puts embed on the source field and omits the vector column", () => {
+    it("puts embed on the vector column", () => {
       const embedded = buildIndexPlan({
         ...definition,
         fields: {
@@ -1026,17 +1131,19 @@ describe("Medusa search utilities", () => {
           embedding: {
             type: "vector",
             dimensions: 3,
-            embed: "title",
+            embed: true,
           },
         },
       })
 
-      expect(embedded.schema.embedding).toBeUndefined()
-      expect(embedded.schema.title).toEqual(
+      expect(embedded.schema.embedding).toEqual(
         expect.objectContaining({
+          type: "[3]f32",
+          ann: true,
           embed: { dims: 3 },
         })
       )
+      expect(embedded.schema.title).not.toHaveProperty("embed")
 
       const query = buildQueryPlan(
         {
@@ -1050,7 +1157,7 @@ describe("Medusa search utilities", () => {
       )
 
       expect(query.query.rank_by).toEqual([
-        "title",
+        "embedding",
         "ANN",
         ["Embed", "red shoes"],
       ])
@@ -1064,7 +1171,7 @@ describe("Medusa search utilities", () => {
           embedding: {
             type: "vector",
             dimensions: 3,
-            embed: "title",
+            embed: true,
           },
         },
       })
@@ -1080,10 +1187,10 @@ describe("Medusa search utilities", () => {
         embedded
       )
 
-      expect(query.query.rank_by).toEqual(["title", "ANN", [0.1, 0.2, 0.3]])
+      expect(query.query.rank_by).toEqual(["embedding", "ANN", [0.1, 0.2, 0.3]])
     })
 
-    it("does not write client embeddings for engine-embedded fields", () => {
+    it("writes source text on engine-embedded vector fields", () => {
       const embedded = buildIndexPlan({
         ...definition,
         fields: {
@@ -1091,7 +1198,7 @@ describe("Medusa search utilities", () => {
           embedding: {
             type: "vector",
             dimensions: 3,
-            embed: "title",
+            embed: true,
           },
         },
       })
@@ -1101,11 +1208,38 @@ describe("Medusa search utilities", () => {
           {
             id: "prod_1",
             title: "Red shoe",
+            embedding: "comfortable red running shoe",
+          },
+          embedded
+        )
+      ).toMatchObject({
+        embedding: "comfortable red running shoe",
+      })
+    })
+
+    it("rejects a vector array on an engine-embedded field", () => {
+      const embedded = buildIndexPlan({
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: {
+            type: "vector",
+            dimensions: 3,
+            embed: true,
+          },
+        },
+      })
+
+      expect(() =>
+        toSearchDocument(
+          {
+            id: "prod_1",
+            title: "Red shoe",
             embedding: [0.1, 0.2, 0.3],
           },
           embedded
         )
-      ).not.toHaveProperty("embedding")
+      ).toThrow(/must be a string/)
     })
 
     it("rejects client embeddings whose dimensions do not match", () => {

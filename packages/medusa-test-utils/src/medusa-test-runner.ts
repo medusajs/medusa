@@ -86,6 +86,7 @@ class MedusaTestRunner {
   private hooks: TestRunnerConfig["hooks"] = {}
   private databaseTemplateReady = false
   private skipNextRestore = false
+  private restoreEnvVars: () => void = () => void 0
 
   constructor(config: TestRunnerConfig) {
     const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -153,7 +154,7 @@ class MedusaTestRunner {
       await this.dbUtils.create(this.dbName)
       this.dbUtils.pgConnection_ = await initDb()
     } catch (error) {
-      logger.error(`Error initializing database: ${error?.message}`)
+      logger.error(`Error initializing database:\n${formatError(error)}`)
       await this.cleanup()
       throw error
     }
@@ -242,7 +243,7 @@ class MedusaTestRunner {
 
       await waitWorkflowExecutions(this.globalContainer as MedusaContainer)
     } catch (error) {
-      logger.error(`Error starting the app: ${error?.message}`)
+      logger.error(`Error starting the app:\n${formatError(error)}`)
       await this.cleanup()
       throw error
     }
@@ -281,7 +282,10 @@ class MedusaTestRunner {
         global.gc()
       }
     } catch (error) {
-      logger.error("Error during cleanup:", error?.message)
+      logger.error(`Error during cleanup:\n${formatError(error)}`)
+    } finally {
+      this.restoreEnvVars()
+      this.restoreEnvVars = () => void 0
     }
   }
 
@@ -289,7 +293,7 @@ class MedusaTestRunner {
     try {
       this.setupProcessHandlers()
       await configLoaderOverride(this.cwd, this.dbConfig)
-      applyEnvVarsToProcess(this.env)
+      this.restoreEnvVars = applyEnvVarsToProcess(this.env)
       await this.setupApplication()
     } catch (error) {
       await this.cleanup()
@@ -324,7 +328,7 @@ class MedusaTestRunner {
         templateName: this.dbTemplateName,
       })
     } catch (error) {
-      logger.error("Error restoring database:", error?.message)
+      logger.error(`Error restoring database:\n${formatError(error)}`)
       throw error
     }
   }

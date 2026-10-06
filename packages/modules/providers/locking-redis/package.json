@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/locking-redis",
-  "version": "2.19.0",
+  "version": "2.21.2",
   "description": "Redis Lock for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -18,15 +18,15 @@
     "!dist/**/__fixtures__"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.0"
   },
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.19.0"
+    "@medusajs/framework": "2.21.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.19.0"
+    "@medusajs/framework": "2.21.2"
   },
   "dependencies": {
     "ioredis": "^5.4.1"

@@ -729,7 +729,7 @@ export const ProductOptionValueWorkflowEvents = {
   /**
    * Emitted when product option values are updated.
    *
-   * @since 2.19.1
+   * @since 2.20.0
    *
    * @eventPayload
    * ```ts
@@ -742,7 +742,7 @@ export const ProductOptionValueWorkflowEvents = {
   /**
    * Emitted when product option values are deleted.
    *
-   * @since 2.19.1
+   * @since 2.20.0
    *
    * @eventPayload
    * ```ts
@@ -752,6 +752,94 @@ export const ProductOptionValueWorkflowEvents = {
    * ```
    */
   DELETED: "product-option-value.deleted",
+} as const
+
+/**
+ * @category Price List
+ * @customNamespace Pricing
+ */
+export const PriceListWorkflowEvents = {
+  /**
+   * Emitted when price lists are created.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the price list
+   * }
+   * ```
+   */
+  CREATED: "price-list.created",
+  /**
+   * Emitted when price lists are updated.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the price list
+   * }
+   * ```
+   */
+  UPDATED: "price-list.updated",
+  /**
+   * Emitted when price lists are deleted.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the price list
+   * }
+   * ```
+   */
+  DELETED: "price-list.deleted",
+  /**
+   * Emitted when prices are added to a price list.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the price list
+   *   price_set_ids, // The IDs of the price sets whose prices were added
+   * }
+   * ```
+   */
+  PRICES_ADDED: "price-list.prices_added",
+  /**
+   * Emitted when prices in a price list are updated.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the price list
+   *   price_set_ids, // The IDs of the price sets whose prices were updated
+   * }
+   * ```
+   */
+  PRICES_UPDATED: "price-list.prices_updated",
+  /**
+   * Emitted when prices are removed from a price list.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the price list
+   *   price_set_ids, // The IDs of the price sets whose prices were removed
+   * }
+   * ```
+   */
+  PRICES_REMOVED: "price-list.prices_removed",
 } as const
 
 /**

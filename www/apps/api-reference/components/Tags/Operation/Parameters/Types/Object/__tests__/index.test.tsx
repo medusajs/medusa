@@ -19,8 +19,11 @@ vi.mock("@/components/Tags/Operation/Parameters/Nested", () => ({
     <div data-testid="nested">{children}</div>
   ),
 }))
-vi.mock("docs-ui", () => ({
+vi.mock("docs-ui", async () => ({
   Loading: () => <div data-testid="loading">Loading...</div>,
+  Details: (await import("docs-ui/components/Details")).Details,
+}))
+vi.mock("docs-ui/components/Details", () => ({
   Details: ({ children, summaryElm }: { children: React.ReactNode, summaryElm: React.ReactNode }) => (
     <div data-testid="details">
       <div data-testid="summary">{summaryElm}</div>

@@ -19,6 +19,7 @@ export const specsSitemapData = {
         "auth_postsession",
         "auth_deletesession",
         "auth_postadminauthtokenrefresh",
+        "auth_getuserproviders",
         "auth_postactor_typeauth_provider",
         "auth_postactor_typeauth_providercallback",
         "auth_postactor_typeauth_provider_register",
@@ -554,6 +555,14 @@ export const specsSitemapData = {
       ]
     },
     {
+      "tagSectionId": "search-indexes",
+      "operationSectionIds": [
+        "search-indexes_getsearchindexes",
+        "search-indexes_deletesearchindexesid",
+        "search-indexes_postsearchindexesidreindex"
+      ]
+    },
+    {
       "tagSectionId": "shipping-option-types",
       "operationSectionIds": [
         "shipping-option-types_getshippingoptiontypes",
@@ -604,6 +613,7 @@ export const specsSitemapData = {
         "store-credit-accounts_poststorecreditaccounts",
         "store-credit-accounts_getstorecreditaccountsid",
         "store-credit-accounts_poststorecreditaccountsidcredit",
+        "store-credit-accounts_poststorecreditaccountsiddebit",
         "store-credit-accounts_getstorecreditaccountsidtransactions"
       ]
     },
@@ -670,7 +680,9 @@ export const specsSitemapData = {
         "users_getusersme",
         "users_getusersid",
         "users_postusersid",
-        "users_deleteusersid"
+        "users_deleteusersid",
+        "users_getusersidauthproviders",
+        "users_postusersidresetpassword"
       ]
     },
     {
@@ -706,6 +718,7 @@ export const specsSitemapData = {
       "tagSectionId": "auth",
       "operationSectionIds": [
         "auth_postactor_typeauth_providerverificationconfirm",
+        "auth_getcustomerproviders",
         "auth_postactor_typeauth_provider",
         "auth_postactor_typeauth_providercallback",
         "auth_postactor_typeauth_provider_register",
@@ -871,6 +884,12 @@ export const specsSitemapData = {
       "tagSectionId": "returns",
       "operationSectionIds": [
         "returns_postreturns"
+      ]
+    },
+    {
+      "tagSectionId": "search",
+      "operationSectionIds": [
+        "search_postsearch"
       ]
     },
     {

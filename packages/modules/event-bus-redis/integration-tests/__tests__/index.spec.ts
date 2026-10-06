@@ -18,6 +18,7 @@ moduleIntegrationTestRunner<IEventBusModuleService>({
     describe("Event Bus Redis Service", () => {
       it("should emit an event", async () => {
         const subscriber = jest.fn()
+
         eventBus.subscribe("test", subscriber)
 
         await eventBus.emit(
@@ -50,6 +51,7 @@ moduleIntegrationTestRunner<IEventBusModuleService>({
 
       it("should release grouped events", async () => {
         const subscriber = jest.fn()
+
         eventBus.subscribe("test", subscriber)
 
         await eventBus.emit(
@@ -92,6 +94,7 @@ moduleIntegrationTestRunner<IEventBusModuleService>({
 
       it("should clear grouped events", async () => {
         const subscriber = jest.fn()
+
         eventBus.subscribe("test", subscriber)
 
         await eventBus.emit(
@@ -120,6 +123,7 @@ moduleIntegrationTestRunner<IEventBusModuleService>({
 
       it("should clear grouped events with event names", async () => {
         const subscriber = jest.fn()
+
         eventBus.subscribe("test", subscriber)
 
         await eventBus.emit(

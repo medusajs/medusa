@@ -92,12 +92,10 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   )
   const notAllowedFields = [...new Set(notAllowedArrays.flat())]
 
-  if (notAllowedFields.length && rbacFilterFieldsFeatureFlag) {
-    notAllowedFields.forEach((field) => {
-      allFields.delete(field)
-      starFields.delete(field)
-    })
-  }
+  notAllowedFields.forEach((field) => {
+    allFields.delete(field)
+    starFields.delete(field)
+  })
 
   // Disallowed fields are a hard security boundary and are always stripped,
   // independent of any feature flag, so sensitive relations (order, customer,

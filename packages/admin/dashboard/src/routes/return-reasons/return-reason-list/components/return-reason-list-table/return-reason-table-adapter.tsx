@@ -42,7 +42,7 @@ export function createReturnReasonTableAdapter({
         )
       return { data: return_reasons, count, isLoading, isError, error }
     },
-    getRowHref: (row) => `/settings/return-reasons/${row.id}`,
+    getRowHref: (row) => `/settings/return-reasons/${row.id}/edit`,
     renderRowActions: (row) => (
       <ReturnReasonListTableActions returnReason={row} />
     ),

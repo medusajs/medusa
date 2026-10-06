@@ -128,6 +128,38 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createCustomerAddressesWorkflow
  * x-events: []
+ * x-allowed:
+ *   - id
+ *   - email
+ *   - company_name
+ *   - first_name
+ *   - last_name
+ *   - phone
+ *   - metadata
+ *   - has_account
+ *   - deleted_at
+ *   - created_at
+ *   - updated_at
+ *   - addresses
+ *   - orders
+ *   - addresses.id
+ *   - addresses.address_name
+ *   - addresses.company
+ *   - addresses.customer_id
+ *   - addresses.first_name
+ *   - addresses.last_name
+ *   - addresses.address_1
+ *   - addresses.address_2
+ *   - addresses.city
+ *   - addresses.province
+ *   - addresses.postal_code
+ *   - addresses.country_code
+ *   - addresses.phone
+ *   - addresses.metadata
+ *   - addresses.is_default_shipping
+ *   - addresses.is_default_billing
+ *   - addresses.created_at
+ *   - addresses.updated_at
  * 
 */
 

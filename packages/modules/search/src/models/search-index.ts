@@ -1,6 +1,5 @@
 import { model } from "@medusajs/framework/utils"
-import { SearchIndexState } from "../utils"
-import { SearchIndexSync } from "./search-index-sync"
+import { SearchIndexVersion } from "./search-index-version"
 
 export const SearchIndex = model
   .define("SearchIndex", {
@@ -8,13 +7,13 @@ export const SearchIndex = model
     // The index name, as used in `query.search({ entity })`.
     // For now we expect the index and entity names to match.
     name: model.text(),
-    // The identifier of the provider backing this index.
-    provider: model.text(),
-    status: model.enum(SearchIndexState).default(SearchIndexState.PENDING),
-    // Used to detect schema drift
-    definition_hash: model.text(),
-    // Append-only history of every sync run against this index.
-    syncs: model.hasMany(() => SearchIndexSync, { mappedBy: "search_index" }),
+    // The version number of this index's version that serves reads. `null`
+    // until the first version finishes seeding.
+    active_version: model.number().nullable(),
+    // Every physical index ever built for this logical index, in order.
+    versions: model.hasMany(() => SearchIndexVersion, {
+      mappedBy: "search_index",
+    }),
   })
   .indexes([
     {

@@ -8,19 +8,20 @@ import {
   Heading,
   StatusBadge,
   Text,
-  toast,
   Tooltip,
+  toast,
   usePrompt,
 } from "@medusajs/ui"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
 import { LayoutComposer } from "../../../components/layout-composer"
 import {
-  useReindexSearchIndex,
+  useDeleteSearchIndex,
   useSearchIndexes,
 } from "../../../hooks/api/search-indexes"
+import { SearchIndexReindexModal } from "./components/search-index-reindex-modal"
 
 const statusColor = (
   status: HttpTypes.AdminSearchIndexStatus
@@ -49,24 +50,18 @@ const fieldTooltip = (field: HttpTypes.AdminSearchIndexField) => {
   return capabilities.join(" · ")
 }
 
-const SearchIndexCard = ({
-  index,
-}: {
-  index: HttpTypes.AdminSearchIndex
-}) => {
+const SearchIndexCard = ({ index }: { index: HttpTypes.AdminSearchIndex }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { mutateAsync, isPending } = useReindexSearchIndex()
+  const [isReindexModalOpen, setIsReindexModalOpen] = useState(false)
+  const { mutateAsync: deleteIndex, isPending: isDeleting } =
+    useDeleteSearchIndex()
 
-  const handleReindex = async () => {
+  const handleDelete = async () => {
     const confirmed = await prompt({
-      title: t("searchIndexes.reindexConfirmationTitle", {
-        name: index.name,
-      }),
-      description: t("searchIndexes.reindexConfirmation", {
-        name: index.name,
-      }),
-      confirmText: t("searchIndexes.reindex"),
+      title: t("general.areYouSure"),
+      description: t("searchIndexes.deleteWarning", { name: index.name }),
+      confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),
     })
 
@@ -74,9 +69,9 @@ const SearchIndexCard = ({
       return
     }
 
-    await mutateAsync(index.name, {
+    await deleteIndex(index.name, {
       onSuccess: () => {
-        toast.success(t("searchIndexes.reindexSuccess", { name: index.name }))
+        toast.success(t("searchIndexes.deleteSuccess", { name: index.name }))
       },
       onError: (error) => {
         toast.error(error.message)
@@ -100,12 +95,26 @@ const SearchIndexCard = ({
           <Button
             size="small"
             variant="secondary"
-            onClick={handleReindex}
-            isLoading={isPending}
+            onClick={() => setIsReindexModalOpen(true)}
             disabled={index.status === "building"}
           >
             {t("searchIndexes.reindex")}
           </Button>
+          <Button
+            size="small"
+            variant="danger"
+            onClick={handleDelete}
+            isLoading={isDeleting}
+            disabled={index.status === "building"}
+          >
+            {t("searchIndexes.delete")}
+          </Button>
+          {isReindexModalOpen && (
+            <SearchIndexReindexModal
+              index={index}
+              onClose={() => setIsReindexModalOpen(false)}
+            />
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-y-2 px-6 py-4">

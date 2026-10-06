@@ -7,19 +7,62 @@ const execa = require("execa")
 
 const isDryRun = process.argv.indexOf("--dry-run") !== -1
 const withFullFile = process.argv.indexOf("--with-full-file") !== -1
-const archiveVersionArg = process.argv.find((a) => a.startsWith("--archive-version="))
+const archiveVersionArg = process.argv.find((a) =>
+  a.startsWith("--archive-version=")
+)
 const archiveVersion = archiveVersionArg ? archiveVersionArg.split("=")[1] : undefined
 const basePath = path.resolve(__dirname, `../`)
 const repoRootPath = path.resolve(basePath, `../../../../`)
 const docsApiPath = path.resolve(repoRootPath, "www/apps/api-reference/specs")
 
+const FULL_SPEC_FILE_NAME = "openapi.full.yaml"
+
 const run = async () => {
   const oasOutDir = isDryRun ? await getTmpDirectory() : docsApiPath
   for (const apiType of ["store", "admin"]) {
+    await archiveCurrentFullSpec(apiType)
     await generateOASSource(oasOutDir, apiType)
     const oasSrcFile = path.resolve(oasOutDir, `${apiType}.oas.json`)
     const docsOutDir = path.resolve(oasOutDir, apiType)
     await generateDocs(oasSrcFile, docsOutDir, apiType, isDryRun)
+  }
+}
+
+/**
+ * Copies the full OAS of the currently released version to
+ * `specs/versions/{archiveVersion}` before it's overwritten by the generated
+ * OAS of the new release. Must run before `generateDocs`, which cleans the
+ * output directory.
+ */
+const archiveCurrentFullSpec = async (apiType) => {
+  if (!archiveVersion || isDryRun) {
+    return
+  }
+
+  const currentFile = path.resolve(docsApiPath, apiType, FULL_SPEC_FILE_NAME)
+  if (!(await fileExists(currentFile))) {
+    console.log(`Skipped archiving ${apiType}: ${currentFile} doesn't exist`)
+    return
+  }
+
+  const archiveOutFile = path.resolve(
+    docsApiPath,
+    "versions",
+    archiveVersion,
+    apiType,
+    FULL_SPEC_FILE_NAME
+  )
+  await fs.mkdir(path.dirname(archiveOutFile), { recursive: true })
+  await fs.copyFile(currentFile, archiveOutFile)
+  console.log(`Archived version ${archiveVersion} to ${archiveOutFile}`)
+}
+
+const fileExists = async (filePath) => {
+  try {
+    await fs.access(filePath)
+    return true
+  } catch {
+    return false
   }
 }
 
@@ -51,19 +94,8 @@ const generateDocs = async (srcFile, outDir, apiType, isDryRun) => {
       "docs",
       `--src-file=${srcFile}`,
       `--out-dir=${outDir}`,
-      `--main-file-name=openapi.full.yaml`
+      `--main-file-name=${FULL_SPEC_FILE_NAME}`,
     ]
-    if (archiveVersion) {
-      const archiveOutFile = path.resolve(
-        docsApiPath,
-        "versions",
-        archiveVersion,
-        apiType,
-        "openapi.full.yaml"
-      )
-      params.push(`--archive-out-file=${archiveOutFile}`)
-      console.log(`Archiving version ${archiveVersion} to ${archiveOutFile}`)
-    }
     await runMedusaOasCommand(params)
     console.log("Finished generating full file.")
   }

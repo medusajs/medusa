@@ -1,5 +1,13 @@
+import path from "path"
 import { Modules } from "../../modules-sdk"
-import { DEFAULT_STORE_RESTRICTED_FIELDS, defineConfig } from "../define-config"
+import { defineConfig } from "../define-config"
+
+const FIXTURES_ROOT = path.resolve(__dirname, "../__fixtures__")
+
+expect.addSnapshotSerializer({
+  test: (val) => typeof val === "string" && val.startsWith(FIXTURES_ROOT),
+  serialize: (val: string) => `"<fixtures>${val.slice(FIXTURES_ROOT.length)}"`,
+})
 
 describe("defineConfig", function () {
   const CLOUD_ENV_VARS = [
@@ -203,14 +211,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -554,14 +566,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -601,9 +617,7 @@ describe("defineConfig", function () {
             "options": {
               "apiKey": "test",
             },
-            "resolve": "${require.resolve(
-              "../__fixtures__/define-config/github"
-            )}",
+            "resolve": "<fixtures>/define-config/github/index.ts",
           },
           "api_key": {
             "resolve": "@medusajs/medusa/api-key",
@@ -761,14 +775,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -809,9 +827,7 @@ describe("defineConfig", function () {
             "options": {
               "apiKey": "test",
             },
-            "resolve": "${require.resolve(
-              "../__fixtures__/define-config/github"
-            )}",
+            "resolve": "<fixtures>/define-config/github/index.ts",
           },
           "api_key": {
             "resolve": "@medusajs/medusa/api-key",
@@ -969,14 +985,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -1165,14 +1185,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:3000",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -1364,14 +1388,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:3000",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -1615,14 +1643,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -1826,14 +1858,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -2079,14 +2115,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -2348,14 +2388,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -2647,14 +2691,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:3000",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -2684,6 +2732,7 @@ describe("defineConfig", function () {
     process.env.MEDUSA_CLOUD_API_KEY = "test-api-key"
     process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT = "test-emails-endpoint"
     process.env.MEDUSA_CLOUD_PAYMENTS_ENDPOINT = "test-payments-endpoint"
+    process.env.MEDUSA_CLOUD_PAYMENT_ACCOUNTS = "default, eu"
     process.env.MEDUSA_CLOUD_WEBHOOK_SECRET = "test-webhook-secret"
     process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT =
       "test-oauth-authorize-endpoint"
@@ -2805,6 +2854,10 @@ describe("defineConfig", function () {
                 "api_key": "test-api-key",
                 "endpoint": "test-payments-endpoint",
                 "environment_handle": "test-environment",
+                "payment_accounts": [
+                  "default",
+                  "eu",
+                ],
                 "sandbox_handle": undefined,
                 "webhook_secret": "test-webhook-secret",
               },
@@ -2895,6 +2948,10 @@ describe("defineConfig", function () {
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
+            "paymentAccounts": [
+              "default",
+              "eu",
+            ],
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": undefined,
             "searchEndpoint": undefined,
@@ -2904,14 +2961,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -3053,6 +3114,7 @@ describe("defineConfig", function () {
                 "api_key": "test-api-key",
                 "endpoint": "test-payments-endpoint",
                 "environment_handle": undefined,
+                "payment_accounts": undefined,
                 "sandbox_handle": "test-sandbox",
                 "webhook_secret": "test-webhook-secret",
               },
@@ -3143,6 +3205,7 @@ describe("defineConfig", function () {
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
+            "paymentAccounts": undefined,
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": "test-sandbox",
             "searchEndpoint": undefined,
@@ -3152,14 +3215,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",
@@ -3310,6 +3377,7 @@ describe("defineConfig", function () {
                 "api_key": "overriden-api-key",
                 "endpoint": "overriden-payments-endpoint",
                 "environment_handle": "overriden-environment",
+                "payment_accounts": undefined,
                 "sandbox_handle": undefined,
                 "webhook_secret": "overriden-webhook-secret",
               },
@@ -3400,6 +3468,7 @@ describe("defineConfig", function () {
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "overriden-oauth-token-endpoint",
+            "paymentAccounts": undefined,
             "paymentsEndpoint": "overriden-payments-endpoint",
             "sandboxHandle": undefined,
             "searchEndpoint": undefined,
@@ -3409,14 +3478,18 @@ describe("defineConfig", function () {
           "http": {
             "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
             "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
+            "authMethodsPerActor": {
+              "user": [
+                "emailpass",
+              ],
+            },
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
             "restrictedFields": {
               "store": [
-                ${DEFAULT_STORE_RESTRICTED_FIELDS.map((v) => `"${v}"`).join(
-                  ",\n                "
-                )},
+                "order",
+                "orders",
               ],
             },
             "storeCors": "http://localhost:8000",

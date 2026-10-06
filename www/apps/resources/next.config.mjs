@@ -82,6 +82,46 @@ const nextConfig = {
   async redirects() {
     return catchBadRedirects([
       {
+        source: "/admin-components/components/data-table",
+        destination: "/admin-components/guides/data-table",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/forms",
+        destination: "/admin-components/guides/forms",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/table",
+        destination: "/admin-components/guides/table",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/layouts/single-column",
+        destination: "/admin-components/archive/single-column-layout",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/layouts/two-column",
+        destination: "/admin-components/archive/two-column-layout",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/layout-composer",
+        destination: "/admin-components/layouts/layout-composer",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/container",
+        destination: "/admin-components/guides/container",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/header",
+        destination: "/admin-components/guides/header",
+        permanent: true,
+      },
+      {
         source: "/commerce-modules/order/relations-to-other-modules",
         destination: "/commerce-modules/order/links-to-other-modules",
         permanent: true,
@@ -292,6 +332,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ["@medusajs/icons", "@medusajs/ui", "elkjs"],
+    webpackMemoryOptimizations: true,
   },
   rewrites: async () => {
     return {

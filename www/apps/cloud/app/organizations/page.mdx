@@ -34,6 +34,12 @@ To create a new organization when you already have a Cloud account:
     - **Billing address**: Enter your billing address. This address is used for generated invoices.
 5. Once you're done, click the "Start your X/mo plan" button. Then, Medusa will charge you for the plan you selected, create an organization, and redirect you to your organization's Cloud dashboard.
 
+<Note title="Free Trial">
+
+If you don't belong to any organizations yet and you're eligible for a free trial, which is available only in select regions, Medusa starts a free trial for the new organization and redirects you to the **Get started** page. Learn how to view the trial's status in the [Manage Plans](../billing/plans/page.mdx#view-trial-status) guide.
+
+</Note>
+
 ---
 
 ## Organization Dashboard
@@ -214,6 +220,28 @@ You can also navigate to an organization's team member settings from the [comman
 4. In the "Organization members" section, find the member you want to remove.
 5. Click the <InlineIcon alt="ellipsis" Icon={EllipsisHorizontal} /> button at the end of the member's row.
 6. Choose **Remove from organization** from the dropdown.
+
+### Promote a Member to Owner
+
+Organization owners can promote other members to the Owner role. This action is only available to owners and only appears for members who are not already owners.
+
+To promote a member to owner:
+
+<Note title="Tip">
+
+You can also navigate to an organization's team member settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd> and select **Team Members**.
+
+</Note>
+
+1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click on **Team** in the sidebar.
+4. In the "Organization members" section, find the member you want to promote.
+5. Click the <InlineIcon alt="ellipsis" Icon={EllipsisHorizontal} /> button at the end of the member's row.
+6. Choose **Promote to Owner** from the dropdown.
+7. Confirm the promotion in the dialog that appears.
+
+The member is promoted to owner and gains full owner privileges in the organization.
 
 ---
 

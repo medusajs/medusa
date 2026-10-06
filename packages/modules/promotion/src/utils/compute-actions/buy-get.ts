@@ -22,6 +22,15 @@ export type EligibleItem = {
 }
 
 function sortByPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
+  // Returning a non-zero value for equal subtotals makes this an inconsistent
+  // comparator, which leaves the order of equally priced items up to the sort
+  // implementation rather than keeping it stable. Since the resulting order
+  // decides which items are reserved for the buy side below, that turned into
+  // the promotion being applied or not depending on line item order.
+  if (MathBN.eq(a.subtotal, b.subtotal)) {
+    return 0
+  }
+
   return MathBN.lt(a.subtotal, b.subtotal) ? 1 : -1
 }
 
@@ -151,7 +160,29 @@ function preparePromotionApplicationState(
   const eligibleItemsByPromotion: EligibleItem[] = []
   let accumulatedQuantity = MathBN.convert(0)
 
-  for (const eligibleBuyItem of eligibleBuyItems) {
+  // Quantity reserved for the buy side is subtracted from what the target side
+  // can use, so reserving a target eligible item can leave the promotion with
+  // no target and drop it entirely - even when a valid assignment exists. For
+  // "buy 2 of {A,B,C}, get 1 A" with one unit each of A, B and C, reserving B
+  // and C leaves A free to be discounted, while reserving A does not.
+  //
+  // Prefer items that cannot serve as targets, keeping the price order within
+  // each group. When every buy eligible item is also target eligible (buy X
+  // get X on a single product) this leaves the order untouched.
+  const targetEligibleItemIds = new Set(
+    eligibleTargetItems.map((eligibleTargetItem) => eligibleTargetItem.id)
+  )
+
+  const buyItemsInReservationOrder = [
+    ...eligibleBuyItems.filter(
+      (eligibleBuyItem) => !targetEligibleItemIds.has(eligibleBuyItem.id)
+    ),
+    ...eligibleBuyItems.filter((eligibleBuyItem) =>
+      targetEligibleItemIds.has(eligibleBuyItem.id)
+    ),
+  ]
+
+  for (const eligibleBuyItem of buyItemsInReservationOrder) {
     if (MathBN.gte(accumulatedQuantity, applicationConfig.minimumBuyQuantity)) {
       break
     }

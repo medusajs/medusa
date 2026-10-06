@@ -45,6 +45,7 @@ function resolveEnvSecret(envValue: string | undefined): string | undefined {
   return DEFAULT_SECRET
 }
 const DEFAULT_ADMIN_URL = "/"
+const DEFAULT_USER_AUTH_METHODS = ["emailpass"]
 const DEFAULT_STORE_CORS = "http://localhost:8000"
 const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
 const DEFAULT_ADMIN_CORS =
@@ -532,6 +533,9 @@ function normalizeProjectConfig(
     webhookSecret: process.env.MEDUSA_CLOUD_WEBHOOK_SECRET,
     emailsEndpoint: process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT,
     paymentsEndpoint: process.env.MEDUSA_CLOUD_PAYMENTS_ENDPOINT,
+    paymentAccounts: process.env.MEDUSA_CLOUD_PAYMENT_ACCOUNTS?.split(",")
+      .map((handle) => handle.trim())
+      .filter(Boolean),
     searchEndpoint: process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT,
     oauthAuthorizeEndpoint: process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT,
     oauthTokenEndpoint: process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT,
@@ -611,6 +615,11 @@ function normalizeProjectConfig(
     ...restOfProjectConfig,
   } satisfies ConfigModule["projectConfig"]
 
+  config.http.authMethodsPerActor = {
+    ...config.http.authMethodsPerActor,
+    user: config.http.authMethodsPerActor?.user ?? DEFAULT_USER_AUTH_METHODS,
+  }
+
   if (
     isCloud &&
     !mergedCloudOptions.oauthDisabled &&
@@ -677,6 +686,7 @@ function applyCloudOptionsToModules(
             api_key: config.apiKey,
             webhook_secret: config.webhookSecret,
             endpoint: config.paymentsEndpoint,
+            payment_accounts: config.paymentAccounts,
             environment_handle: config.environmentHandle,
             sandbox_handle: config.sandboxHandle,
           },

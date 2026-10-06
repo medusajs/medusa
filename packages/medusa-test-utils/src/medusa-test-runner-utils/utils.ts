@@ -1,8 +1,24 @@
 import { isObject } from "@medusajs/framework/utils"
 
 export function applyEnvVarsToProcess(env?: Record<any, any>) {
+  const previousEnvVars = new Map<string, string | undefined>()
+
   if (isObject(env)) {
-    Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
+    Object.entries(env).forEach(([k, v]) => {
+      previousEnvVars.set(k, process.env[k])
+      process.env[k] = v
+    })
+  }
+
+  return function restoreEnvVars() {
+    for (const [key, value] of previousEnvVars) {
+      if (value === undefined) {
+        delete process.env[key]
+      } else {
+        process.env[key] = value
+      }
+    }
+    previousEnvVars.clear()
   }
 }
 
@@ -13,7 +29,10 @@ export function formatError(error: unknown): string {
       detail?: string
       hint?: string
       where?: string
+      cause?: unknown
     }
+
+    const aggregatedErrors = (error as AggregateError).errors
 
     return [
       pgError.message || pgError.name,
@@ -21,6 +40,9 @@ export function formatError(error: unknown): string {
       pgError.detail && `detail: ${pgError.detail}`,
       pgError.hint && `hint: ${pgError.hint}`,
       pgError.where && `where: ${pgError.where}`,
+      Array.isArray(aggregatedErrors) &&
+        aggregatedErrors.map((e) => formatError(e)).join("\n"),
+      pgError.cause && `caused by: ${formatError(pgError.cause)}`,
     ]
       .filter(Boolean)
       .join("\n")

@@ -39,7 +39,7 @@ export const navDropdownItems: NavigationItem[] = [
           {
             type: "link",
             title: "Index Module",
-            link: "/learn/fundamentals/module-links/index-module",
+            link: "/learn/fundamentals/query/index-module",
           },
           {
             type: "link",
@@ -64,7 +64,7 @@ export const navDropdownItems: NavigationItem[] = [
           {
             type: "link",
             title: "Query",
-            link: "/learn/fundamentals/module-links/query",
+            link: "/learn/fundamentals/query",
           },
           {
             type: "link",
@@ -238,6 +238,11 @@ export const navDropdownItems: NavigationItem[] = [
           },
           {
             type: "link",
+            title: "Search",
+            link: "/resources/infrastructure-modules/search",
+          },
+          {
+            type: "link",
             title: "Workflow Engine",
             link: "/resources/infrastructure-modules/workflow-engine",
           },
@@ -294,13 +299,29 @@ export const navDropdownItems: NavigationItem[] = [
             title: "Medusa CLI",
             link: "/resources/medusa-cli",
           },
+          {
+            type: "link",
+            title: "Medusa Cloud CLI",
+            link: "/cloud/cli",
+          },
         ],
+      },
+      {
+        type: "link",
+        title: "InstantSearch Adapter",
+        link: "/resources/instantsearch",
       },
       {
         type: "link",
         title: "JS SDK",
         link: "/resources/js-sdk",
         sidebar_id: "js-sdk",
+      },
+      {
+        type: "link",
+        title: "Admin Components",
+        link: "/resources/admin-components",
+        sidebar_id: "admin-components",
       },
       {
         type: "link",
@@ -552,4 +573,5 @@ export enum DocsTrackingEvents {
   AI_ASSISTANT_CALLOUT_CLICK = "ai_assistant_callout_click",
   SEARCH_CALLOUT_CLICK = "search_callout_click",
   BLOOM_ACTION = "bloom_action",
+  WHATS_NEW_ITEM_CLICK = "whats_new_item_click",
 }

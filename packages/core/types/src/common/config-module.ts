@@ -302,6 +302,11 @@ export type MedusaCloudOptions = {
    */
   paymentsEndpoint?: string
   /**
+   * The handles of the Medusa Payments accounts available to the environment. A payment
+   * provider is registered for each, with the ID `medusa-payments_{handle}`.
+   */
+  paymentAccounts?: string[]
+  /**
    * The endpoint of the Medusa Cloud email service.
    */
   emailsEndpoint?: string
@@ -1025,8 +1030,34 @@ export type ProjectConfigOptions = {
      */
     restrictedFields?: {
       store?: string[]
-      /*admin?: string[]*/
+      /* admin?: string[]*/
     }
+
+    /**
+     * The maximum number of relations that can be expanded in a single request to a Store API route.
+     * For example, requesting `variants.options.values` expands three relations.
+     *
+     * Routes can override this limit through their query configuration's `storeRelationsLimit` property.
+     *
+     * The default value is `3`.
+     *
+     * @since v2.20.0
+     *
+     * @example
+     *
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       storeRelationsLimit: 4,
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    storeRelationsLimit?: number
   }
 
   /**
