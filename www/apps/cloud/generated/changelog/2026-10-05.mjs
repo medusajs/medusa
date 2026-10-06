@@ -1,7 +1,7 @@
 /** @type {import("../../utils/changelog").ChangelogEntry} */
 export default {
   date: "2026-10-05",
-  title: "Manage OAuth connections in organization settings",
+  title: "Manage Connections in organization settings",
   summary: "A new organization settings page lists the apps you've authorized, such as AI tools, and lets you change their environments or revoke them.",
   image: "https://res.cloudinary.com/dza7lstvk/image/upload/v1791216121/Cloud%20Changelog/october-5-2026-04e389.png",
   content: `- A new **Connections** page in the organization's settings lists the OAuth connections that you approved for third-party applications, such as AI tools connected to the Medusa MCP server. The page shows each connection's accessible environments and organizations, its status, and when it was last used. Refer to [Connections](/organizations/connections) for more details.

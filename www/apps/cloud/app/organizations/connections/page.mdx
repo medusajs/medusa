@@ -9,6 +9,12 @@ export const metadata = {
 
 In this guide, you'll learn how to view and manage the connections that third-party applications, such as AI tools, have to your organization's environments.
 
+<Note>
+
+This page is only available for organizations that can [access the Medusa MCP](../../medusa-mcp/page.mdx).
+
+</Note>
+
 ## What is a Connection?
 
 A connection is the access that you grant a third-party application to your environments when you approve it on Cloud's OAuth consent page. For example, when you connect an AI tool like Claude, ChatGPT, or Cursor to the [Medusa MCP server](../../medusa-mcp/page.mdx), Cloud creates a connection for that AI tool with the environments you selected.
@@ -23,7 +29,7 @@ To view your organization's connections:
 
 1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization) whose connections you want to view.
 2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
-3. Click **Settings** > **Connections** in the sidebar.
+3. Click **Connections** in the sidebar.
 
 The Connections page shows a table of all the authorized connections and the total number of connections. If there are no connections, the page shows an empty state instead.
 
@@ -46,7 +52,7 @@ The table has the following columns:
         **App**
       </Table.Cell>
       <Table.Cell>
-        The connected application's icon and name, along with the resource type or host that it connects to.
+        The connected application's icon and name, along with the resource type or host that it connects to. For example, "Claude" with a "Medusa MCP" subtitle.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -85,7 +91,7 @@ You can view a connection's details and change the environments that the applica
 To manage a connection:
 
 1. [Go to the Connections page](#view-connections).
-2. Click the connection's row. Alternatively, click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the end of the connection's row and choose **Manage**.
+2. Click the connection's row. Alternatively, click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the end of the connection's row and choose **Manage access**.
 
 This opens a side drawer with the connection's details.
 
