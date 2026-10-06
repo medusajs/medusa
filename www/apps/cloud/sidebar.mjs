@@ -501,6 +501,11 @@ export const sidebar = [
             title: "IP Addresses",
             path: "/ip-addresses",
           },
+          {
+            type: "link",
+            title: "Medusa Security",
+            path: "/security",
+          },
         ],
       },
       {
