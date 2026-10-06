@@ -664,7 +664,7 @@ export const currencies: Record<string, CurrencyInfo> = {
   TRY: {
     code: "TRY",
     name: "Turkish Lira",
-    symbol_native: "TL",
+    symbol_native: "₺",
     decimal_digits: 2,
   },
   TTD: {
