@@ -77,6 +77,13 @@ export const sidebar = [
             type: "link",
             title: "Organizations",
             path: "/organizations",
+            children: [
+              {
+                type: "link",
+                title: "Connections",
+                path: "/organizations/connections",
+              },
+            ],
           },
           {
             type: "link",
