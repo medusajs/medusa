@@ -12,7 +12,7 @@ import {
 } from "docs-ui"
 
 export const metadata = {
-  title: `${pageNumber} Medusa MCP Remote Server`,
+  title: `${pageNumber} Docs MCP Server`,
 }
 
 # {metadata.title}
@@ -23,16 +23,16 @@ Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` tha
 
 ## Authentication
 
-This MCP server is available for [Cloud](!cloud!) users only. It requires authenticating with your Cloud account to use it.
+The Docs MCP server is available for [Cloud](!cloud!) users only. It requires authenticating with your Cloud account to use it.
 
-The MCP server supports two authentication methods:
+The Docs MCP server supports two authentication methods:
 
-1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Cloud account without generating a token manually. When you connect to the MCP server, you will be prompted to log into your Cloud account in a browser window to authenticate.
-2. [Personal Access Key](!cloud!/access-keys#manage-personal-access-keys): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the MCP server. This method is useful if you face issues with OAuth or prefer to use a token for authentication.
+1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Cloud account without generating a token manually. When you connect to the Docs MCP server, you will be prompted to log into your Cloud account in a browser window to authenticate.
+2. [Personal Access Key](!cloud!/access-keys#manage-personal-access-keys): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the Docs MCP server. This method is useful if you face issues with OAuth or prefer to use a token for authentication.
 
 ---
 
-## Connect to the Medusa MCP Server
+## Connect to the Docs MCP Server
 
 <Prerequisites
   items={[
@@ -45,7 +45,7 @@ The MCP server supports two authentication methods:
 
 ### Claude Code
 
-To connect to the Medusa MCP server in Claude Code, run the following command in your terminal:
+To connect to the Docs MCP server in Claude Code, run the following command in your terminal:
 
 <CodeTabs group="mcp-server-auth">
   <CodeTab label="OAuth" value="oauth">
@@ -75,12 +75,10 @@ If you're connecting with OAuth, select the `medusa` MCP server and choose "Auth
 
 ### Codex
 
-To connect to the Medusa MCP server in Codex, use one of the following methods:
+To connect to the Docs MCP server in Codex, use one of the following methods:
 
 <CodeTabs group="mcp-server-auth">
   <CodeTab label="OAuth" value="oauth">
-
-Run the following command in your terminal:
 
 ```bash
 codex mcp add medusa --url https://docs.medusajs.com/mcp
@@ -146,9 +144,9 @@ If you're connecting with OAuth, open Settings -> Tools & MCPs and click "Connec
 
 ### VS Code
 
-<Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Medusa MCP server to VSCode.
+<Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Docs MCP server to VSCode.
 
-To manually connect to the Medusa MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
+To manually connect to the Docs MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
 
 <CodeTabs group="mcp-server-auth">
   <CodeTab label="OAuth" value="oauth">
@@ -184,7 +182,7 @@ To manually connect to the Medusa MCP server in VSCode, add the following to you
   </CodeTab>
 </CodeTabs>
 
-If you're connecting with OAuth, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Medusa MCP server in VSCode.
+If you're connecting with OAuth, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Docs MCP server in VSCode.
 
 ### OpenCode
 
@@ -237,9 +235,9 @@ This will open a browser window where you can log into your Cloud account to aut
 
 ---
 
-## How to Use the MCP Server
+## How to Use the Docs MCP Server
 
-After connecting to the Medusa MCP server in your AI tool or IDE, you can start asking questions or requesting your AI assistant to build Medusa customizations. It will fetch the relevant information from the Medusa documentation and provide you with accurate answers, code snippets, and explanations.
+After connecting to the Docs MCP server in your AI tool or IDE, you can start asking questions or requesting your AI assistant to build Medusa customizations. It will fetch the relevant information from the Medusa documentation and provide you with accurate answers, code snippets, and explanations.
 
 For example, you can ask:
 
@@ -250,9 +248,9 @@ For example, you can ask:
 
 ---
 
-## MCP Server Tools
+## Docs MCP Server Tools
 
-Beyond answering questions from the documentation, the MCP server provides tools that return curated, step-by-step implementation guides for common tasks. These guides tell your AI agent exactly which Medusa APIs and patterns to use, so it doesn't have to infer them.
+Beyond answering questions from the documentation, the Docs MCP server provides tools that return curated, step-by-step implementation guides for common tasks. These guides tell your AI agent exactly which Medusa APIs and patterns to use, so it doesn't have to infer them.
 
 The following chapters cover each tool, who it's useful for, and how to use it:
 

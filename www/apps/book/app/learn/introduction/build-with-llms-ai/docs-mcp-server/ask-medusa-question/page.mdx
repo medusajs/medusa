@@ -1,18 +1,18 @@
 import { Prerequisites } from "docs-ui"
 
 export const metadata = {
-  title: `${pageNumber} Ask Medusa Questions with the MCP Server`,
+  title: `${pageNumber} Ask Medusa Questions with the Docs MCP Server`,
 }
 
 # {metadata.title}
 
-In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to let your AI agent answer questions from the official Medusa documentation.
+In this chapter, you'll learn how to use the [Docs MCP server](../page.mdx) to let your AI agent answer questions from the official Medusa documentation.
 
 ## What is the Ask Medusa Question Tool?
 
-The Medusa MCP server exposes an `ask_medusa_question` tool that searches the official Medusa documentation and returns the most relevant sections for a query, each with its source URL and its actual content.
+The Docs MCP server exposes an `ask_medusa_question` tool that searches the official Medusa documentation and returns the most relevant sections for a query, each with its source URL and its actual content.
 
-This tool helps your AI agent answer Medusa questions from the current documentation rather than from what it memorized during training, and cites where each answer came from. This is the foundational tool of the MCP server: the other tools decide how to approach a task, and this one supplies the accurate details they're built on.
+This tool helps your AI agent answer Medusa questions from the current documentation rather than from what it memorized during training, and cites where each answer came from. This is the foundational tool of the Docs MCP server: the other tools decide how to approach a task, and this one supplies the accurate details they're built on.
 
 Everything in the Medusa documentation is available through it, from architecture and concepts to the Framework's tools, Commerce Modules, configuration, deployment, the API references, and integration guides.
 
@@ -45,13 +45,13 @@ Compared to browsing the documentation yourself, this tool gives you:
 <Prerequisites
   items={[
     {
-      text: "Medusa MCP server connected to your AI tool or IDE",
-      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/docs-mcp-server"
     }
   ]}
 />
 
-After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), just ask your question. Your AI agent calls the tool whenever answering requires Medusa knowledge, and you don't need to invoke it explicitly.
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), just ask your question. Your AI agent calls the tool whenever answering requires Medusa knowledge, and you don't need to invoke it explicitly.
 
 For example:
 
@@ -86,6 +86,6 @@ If the tool can't find relevant documentation for your question, that's a docume
 
 ---
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but have questions about Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-ask-medusa-question) for other options.
+If you don't use the Docs MCP server but have questions about Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-ask-medusa-question) for other options.

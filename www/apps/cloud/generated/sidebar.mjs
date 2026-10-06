@@ -61,6 +61,28 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Medusa MCP",
+            "path": "/medusa-mcp",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Claude Connector",
+                "path": "/medusa-mcp/claude",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "ChatGPT App",
+                "path": "/medusa-mcp/chatgpt",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Changelog",
             "path": "/changelog",
             "children": []
@@ -78,7 +100,15 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Organizations",
             "path": "/organizations",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Connections",
+                "path": "/organizations/connections",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,

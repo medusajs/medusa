@@ -1,20 +1,20 @@
 import { Prerequisites } from "docs-ui"
 
 export const metadata = {
-  title: `${pageNumber} Upgrade Medusa with the MCP Server`,
+  title: `${pageNumber} Upgrade Medusa with the Docs MCP Server`,
 }
 
 # {metadata.title}
 
-In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to upgrade your Medusa project to a newer version.
+In this chapter, you'll learn how to use the [Docs MCP server](../page.mdx) to upgrade your Medusa project to a newer version.
 
 ## What is the Upgrade Instructions Tool?
 
-The Medusa MCP server exposes a `get_medusa_upgrade_instructions` tool that returns step-by-step upgrade instructions for moving a Medusa project to a specific target version.
+The Docs MCP server exposes a `get_medusa_upgrade_instructions` tool that returns step-by-step upgrade instructions for moving a Medusa project to a specific target version.
 
 You name the version you want to move to, and your AI agent produces an upgraded project: packages bumped, breaking changes applied across your backend, admin, and storefront, migrations run, and the result built and typechecked to prove the changes hold together. Before any of that happens, it presents a plan for your approval.
 
-If the MCP server has a curated guide for the version you asked for, your agent works from it directly. If not, the tool directs your agent to build the plan from the [GitHub release notes](https://github.com/medusajs/medusa/releases) for every release between your current version and the target, the official documentation, and the `ask_medusa_question` tool for anything it's unsure about.
+If the Docs MCP server has a curated guide for the version you asked for, your agent works from it directly. If not, the tool directs your agent to build the plan from the [GitHub release notes](https://github.com/medusajs/medusa/releases) for every release between your current version and the target, the official documentation, and the `ask_medusa_question` tool for anything it's unsure about.
 
 ---
 
@@ -54,8 +54,8 @@ Some versions also ship [codemods](../../../../codemods/page.mdx) that automate 
 <Prerequisites
   items={[
     {
-      text: "Medusa MCP server connected to your AI tool or IDE",
-      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/docs-mcp-server"
     },
     {
       text: "A clean git working tree, so you can review and revert the upgrade's changes"
@@ -63,7 +63,7 @@ Some versions also ship [codemods](../../../../codemods/page.mdx) that automate 
   ]}
 />
 
-After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), ask your AI agent to upgrade your project. Your agent infers the target version from your request and calls the tool with it.
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your AI agent to upgrade your project. Your agent infers the target version from your request and calls the tool with it.
 
 For example:
 
@@ -88,6 +88,6 @@ Always upgrade on a branch with a clean working tree, and review the resulting d
 
 ---
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help upgrading your Medusa project, [contact our team](https://medusajs.com/contact?type=mcp-server-upgrade-instructions) for other options.
+If you don't use the Docs MCP server but need help upgrading your Medusa project, [contact our team](https://medusajs.com/contact?type=mcp-server-upgrade-instructions) for other options.

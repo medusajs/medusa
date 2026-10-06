@@ -46,6 +46,23 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Medusa MCP",
+            path: "/medusa-mcp",
+            children: [
+              {
+                type: "link",
+                title: "Claude Connector",
+                path: "/medusa-mcp/claude",
+              },
+              {
+                type: "link",
+                title: "ChatGPT App",
+                path: "/medusa-mcp/chatgpt",
+              },
+            ],
+          },
+          {
+            type: "link",
             title: "Changelog",
             path: "/changelog",
           },
@@ -60,6 +77,13 @@ export const sidebar = [
             type: "link",
             title: "Organizations",
             path: "/organizations",
+            children: [
+              {
+                type: "link",
+                title: "Connections",
+                path: "/organizations/connections",
+              },
+            ],
           },
           {
             type: "link",

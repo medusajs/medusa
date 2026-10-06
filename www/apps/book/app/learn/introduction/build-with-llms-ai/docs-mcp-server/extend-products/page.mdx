@@ -1,16 +1,16 @@
 import { Prerequisites } from "docs-ui"
 
 export const metadata = {
-  title: `${pageNumber} Extend Products with the MCP Server`,
+  title: `${pageNumber} Extend Products with the Docs MCP Server`,
 }
 
 # {metadata.title}
 
-In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to extend Medusa's Product Module with custom data and features.
+In this chapter, you'll learn how to use the [Docs MCP server](../page.mdx) to extend Medusa's Product Module with custom data and features.
 
 ## What is the Extend Products Tool?
 
-The Medusa MCP server exposes a `get_product_custom_data_guide` tool that returns a complete, step-by-step implementation guide for attaching custom data to Medusa's [Product Module](!resources!/commerce-modules/product) data models: `product`, `productVariant`, and `productOption`.
+The Docs MCP server exposes a `get_product_custom_data_guide` tool that returns a complete, step-by-step implementation guide for attaching custom data to Medusa's [Product Module](!resources!/commerce-modules/product) data models: `product`, `productVariant`, and `productOption`.
 
 You describe the data you want to attach, and your AI agent produces the extension: the custom data is stored, it's associated with products through a [module link](../../../../fundamentals/module-links/page.mdx), it stays in sync as products are created, updated, and deleted, it can be read through the existing product APIs, and merchants can optionally manage it from the Medusa Admin.
 
@@ -49,13 +49,13 @@ Your agent still calls `ask_medusa_question` as it works, to confirm exact API s
 <Prerequisites
   items={[
     {
-      text: "Medusa MCP server connected to your AI tool or IDE",
-      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/docs-mcp-server"
     }
   ]}
 />
 
-After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), ask your AI agent for the product extension you want. Your agent infers the name of the data from your request, calls the tool, and follows the returned guide.
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your AI agent for the product extension you want. Your agent infers the name of the data from your request, calls the tool, and follows the returned guide.
 
 For example:
 
@@ -83,6 +83,6 @@ Tell your agent whether the data is per product, per variant, or per option, and
 
 ---
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help extending products with custom data and features, [contact our team](https://medusajs.com/contact?type=mcp-server-extend-products) for other options.
+If you don't use the Docs MCP server but need help extending products with custom data and features, [contact our team](https://medusajs.com/contact?type=mcp-server-extend-products) for other options.
