@@ -1,0 +1,49 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Project Security Settings`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage the security features of a project, such as managed rulesets, bot protection, and DDoS protection.
+
+<Note>
+
+Project security settings aren't available to all organizations yet. If you don't see the **Security** settings in your project, the feature isn't enabled for your organization.
+
+</Note>
+
+## What are Project Security Settings?
+
+A project's security settings let you turn on security features that protect your project's environments from malicious traffic. You can enable each feature for the whole project, then choose the environment types it applies to.
+
+---
+
+## Available Security Features
+
+The **Security** settings page lists the following security features. Each feature has a card with its title, description, and a toggle to turn it on or off:
+
+- **Medusa Managed Ruleset**
+- **Free Cloudflare Managed Ruleset**
+- **Advanced Cloudflare Managed Ruleset**
+- **OWASP Ruleset**
+- **Bot Protection**
+- **DDoS Protection**
+
+---
+
+## Manage Security Features
+
+To manage a project's security features:
+
+1. [Open the project's dashboard](../page.mdx#open-project-dashboard).
+2. Click **Settings** > **Security** in the sidebar.
+3. Turn on the toggle of each feature you want to enable, or turn off the toggle of each feature you want to disable.
+4. For every enabled feature, use the toggles that appear below its main toggle to choose the environment types it applies to:
+    - **Production**: The project's [Production environment](../../environments/long-lived/page.mdx).
+    - **Long-lived**: The project's other [long-lived environments](../../environments/long-lived/page.mdx), such as Staging.
+    - **Preview Instance**: The project's [preview environments](../../environments/preview/page.mdx).
+5. Click the **Save** button at the bottom of the page.
+
+The **Save** button is disabled until you change at least one setting.

@@ -83,6 +83,11 @@ export const sidebar = [
                 title: "Connections",
                 path: "/organizations/connections",
               },
+              {
+                type: "link",
+                title: "Payments",
+                path: "/organizations/payments",
+              },
             ],
           },
           {
@@ -109,6 +114,11 @@ export const sidebar = [
                 type: "link",
                 title: "Log Drains",
                 path: "/projects/log-drains",
+              },
+              {
+                type: "link",
+                title: "Security",
+                path: "/projects/security",
               },
               {
                 type: "link",
