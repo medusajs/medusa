@@ -14,12 +14,12 @@ Medusa Instant Protection is a set of security features that Cloud applies to th
 
 When you self-host Medusa, you're responsible for setting up a firewall, mitigating attacks, and keeping up with newly discovered vulnerabilities. On Cloud, Medusa handles this for you, so your projects are protected from the moment they go live without configuring firewall rules, DDoS mitigation, or bot protection yourself.
 
-Medusa Instant Protection is available to all Cloud customers, on every plan, and all of its features are enabled by default. You can [turn each feature on or off](#manage-features) individually.
+You can [turn each feature on or off](#manage-features) individually.
 
 Medusa Instant Protection includes the following features:
 
-- [Basic Protection Ruleset](#basic-protection-ruleset): Blocks requests that try to exploit common web attacks and widely exploited vulnerabilities.
 - [Medusa Ruleset](#medusa-ruleset): Blocks requests that try to exploit vulnerabilities and attack patterns specific to Medusa applications.
+- [Basic Protection Ruleset](#basic-protection-ruleset): Blocks requests that try to exploit common web attacks and widely exploited vulnerabilities.
 - [DDoS Protection](#ddos-protection): Detects and mitigates distributed denial-of-service (DDoS) attacks.
 - [Bot Detection](#bot-detection): Blocks requests coming from malicious bots.
 
@@ -27,7 +27,7 @@ Medusa Instant Protection includes the following features:
 
 ## Manage Features
 
-Medusa Instant Protection enables all of its features by default. You can turn each feature off individually. For example, you can turn off bot detection if it interferes with an integration that sends automated requests to your Medusa application.
+You can turn each Medusa Instant Protection feature on or off individually. For example, you can turn off bot detection if it interferes with an integration that sends automated requests to your Medusa application.
 
 To manage the features:
 
@@ -45,14 +45,6 @@ Turning off a feature removes its protection from your project. Turn it back on 
 
 ---
 
-## Basic Protection Ruleset
-
-The Basic Protection Ruleset is a managed web application firewall (WAF) ruleset that protects your projects against common web attacks and widely exploited vulnerabilities. It inspects incoming requests, such as their URLs and headers, and blocks requests that match known attack patterns. This stops automated scanners that probe every server on the internet for these vulnerabilities before they reach your Medusa application.
-
-The ruleset receives updates whenever a new wide-ranging vulnerability emerges, so your projects stay protected against new threats without any action on your part. Its rules also aim to minimize false positives, so they don't block legitimate traffic to your Medusa application.
-
----
-
 ## Medusa Ruleset
 
 The Medusa Ruleset is a set of rules that Medusa maintains to protect against vulnerabilities and attack patterns relevant to Medusa applications.
@@ -60,6 +52,14 @@ The Medusa Ruleset is a set of rules that Medusa maintains to protect against vu
 While the [Basic Protection Ruleset](#basic-protection-ruleset) covers general web attacks, the Medusa Ruleset targets threats specific to Medusa. Since Medusa builds both the commerce framework and the Cloud platform, it turns vulnerabilities identified in Medusa into protections enforced at the edge. When Medusa discovers a new attack vector affecting Medusa applications, it deploys a mitigation before malicious traffic reaches your projects.
 
 This protects your projects even before you [update your Medusa application](../update-medusa/page.mdx) to a version that fixes the vulnerability. You should still update your application regularly to receive the fixes in your codebase.
+
+---
+
+## Basic Protection Ruleset
+
+The Basic Protection Ruleset is a managed web application firewall (WAF) ruleset that protects your projects against common web attacks and widely exploited vulnerabilities. It inspects incoming requests, such as their URLs and headers, and blocks requests that match known attack patterns. This stops automated scanners that probe every server on the internet for these vulnerabilities before they reach your Medusa application.
+
+The ruleset receives updates whenever a new wide-ranging vulnerability emerges, so your projects stay protected against new threats without any action on your part. Its rules also aim to minimize false positives, so they don't block legitimate traffic to your Medusa application.
 
 ---
 
