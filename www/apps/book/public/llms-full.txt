@@ -54094,6 +54094,38 @@ For example, a translation for a product to French (`fr-FR`) may look like this:
 
 Each key in the `translations` object corresponds to a property in the product resource, such as `title` and `description`, with their respective translated values.
 
+### Update Translations
+
+When you update a translation, for example, with the Translation Module's `updateTranslations` method or the [batchTranslationsWorkflow](undefined/references/medusa-workflows/batchTranslationsWorkflow), Medusa merges the `translations` object you pass into the existing `translations` object. It doesn't replace the entire object.
+
+So, the update only changes the keys you pass. Keys that you omit keep their existing translated values.
+
+For example, if a translation has the `title` and `description` keys, the following update only changes the `title`, and keeps the `description` as is:
+
+```ts
+await translationModuleService.updateTranslations({
+  id: "trans_123",
+  translations: {
+    title: "Nouveau titre",
+  },
+})
+```
+
+To remove the translated value of a field, set its key to `null`:
+
+```ts
+await translationModuleService.updateTranslations({
+  id: "trans_123",
+  translations: {
+    description: null,
+  },
+})
+```
+
+Medusa ignores translated values that are `null` or empty, and falls back to the original value stored in the resource's data model.
+
+If a workflow that updates translations fails, such as the `batchTranslationsWorkflow`, the rollback restores the previous values of existing keys. However, since the rollback also merges the previous `translations` object, it doesn't remove keys that the update added.
+
 ***
 
 ## Retrieve Translations in Medusa
