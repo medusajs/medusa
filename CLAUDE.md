@@ -445,3 +445,31 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 ```
+
+### 6. GitHub Actions
+
+**Automation Token:**
+
+Any workflow that pushes branches, opens or updates PRs, comments, or labels MUST authenticate as the Medusa GitHub App. NEVER use a personal access token (e.g. `REFERENCE_PAT`) or the default `GITHUB_TOKEN` for these: the default token's pushes and PRs don't trigger CI.
+
+```yaml
+- name: Generate GitHub App token
+  id: app-token
+  uses: actions/create-github-app-token@v1
+  with:
+    app-id: ${{ secrets.MEDUSA_APP_ID }}
+    private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+- uses: actions/checkout@v4
+  with:
+    token: ${{ steps.app-token.outputs.token }}
+```
+
+- Pass `${{ steps.app-token.outputs.token }}` as `GH_TOKEN` for `gh` calls and as `token` for `peter-evans/create-pull-request`
+- Reusable workflows take `MEDUSA_APP_ID` and `MEDUSA_APP_PRIVATE_KEY` as `workflow_call` secrets and generate the token themselves
+- In workflows that run Claude, keep the app token out of the job that runs the model: the model writes a result file, and a separate job validates it and pushes/opens the PR with the app token
+
+**Reference Files:**
+
+- `.github/workflows/fix-bug-action.yml`
+- `.github/workflows/triage-issue-action.yml`
