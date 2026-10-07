@@ -1408,8 +1408,36 @@ medusaIntegrationTestRunner({
           // reportSuccess). Rewrap anything thrown into a plain Error so the
           // worker can always report the result.
           const fail = (e: unknown): never => {
+            // Capture which request failed and what the API said, using only
+            // plain strings so the value stays JSON-serializable for the jest
+            // worker IPC boundary (a previous version crashed the worker by
+            // throwing an object with circular references).
+            const ax = e as {
+              config?: { method?: unknown; url?: unknown }
+              response?: { status?: unknown; data?: unknown }
+            }
+            const parts: string[] = []
+            if (ax?.config?.method && ax?.config?.url) {
+              parts.push(
+                `${String(ax.config.method).toUpperCase()} ${String(
+                  ax.config.url
+                )}`
+              )
+            }
+            if (ax?.response?.status !== undefined) {
+              parts.push(`status ${String(ax.response.status)}`)
+            }
+            if (ax?.response?.data !== undefined) {
+              try {
+                parts.push(`body ${JSON.stringify(ax.response.data)}`)
+              } catch {
+                parts.push(`body ${String(ax.response.data)}`)
+              }
+            }
             let detail: string
-            if (e instanceof Error) {
+            if (parts.length) {
+              detail = parts.join(" | ")
+            } else if (e instanceof Error) {
               detail = e.message
             } else {
               try {
