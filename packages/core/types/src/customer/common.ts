@@ -341,6 +341,11 @@ export interface FilterableCustomerProps
   last_name?: string | string[] | OperatorMap<string> | null
 
   /**
+   * Filter by phone number.
+   */
+  phone?: string | string[] | OperatorMap<string> | null
+
+  /**
    * Filter by whether the customer has an account.
    */
   has_account?: boolean | OperatorMap<boolean>
