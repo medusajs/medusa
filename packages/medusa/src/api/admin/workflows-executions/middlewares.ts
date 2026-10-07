@@ -69,8 +69,8 @@ export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       authorize([
         {
-          resource: Entities.workflow_execution,
-          operation: PolicyOperation.create,
+          resource: "*",
+          operation: "*",
         },
       ]),
       validateAndTransformBody(AdminCreateWorkflowsRun),
