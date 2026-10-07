@@ -171,7 +171,7 @@ export function applyStep<
       workflowId: this.workflowId!,
     })
 
-    const handler = createAndConfigureHandler(
+    let handler = createAndConfigureHandler(
       this,
       stepName,
       stepConfig,
@@ -223,7 +223,7 @@ export function applyStep<
 
       delete newConfig.name
 
-      const handler = createAndConfigureHandler(
+      handler = createAndConfigureHandler(
         this,
         newStepName,
         newConfig,
