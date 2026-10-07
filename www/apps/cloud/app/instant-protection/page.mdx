@@ -14,7 +14,7 @@ Medusa Instant Protection is a set of security features that Cloud applies to th
 
 When you self-host Medusa, you're responsible for setting up a firewall, mitigating attacks, and keeping up with newly discovered vulnerabilities. On Cloud, Medusa handles this for you, so your projects are protected from the moment they go live without configuring firewall rules, DDoS mitigation, or bot protection yourself.
 
-You can [turn each feature on or off](#manage-features) individually.
+You can [choose which environments each feature applies to](#manage-features), such as only your Production environment or all environments of your project.
 
 Medusa Instant Protection includes the following features:
 
@@ -27,19 +27,29 @@ Medusa Instant Protection includes the following features:
 
 ## Manage Features
 
-You can turn each Medusa Instant Protection feature on or off individually. For example, you can turn off bot detection if it interferes with an integration that sends automated requests to your Medusa application.
+Each Medusa Instant Protection feature applies to the environments you select for it. For example, you can apply bot detection to your Production environment only, so that it doesn't interfere with automated tests that send requests to your [preview environments](../environments/preview/page.mdx).
 
-To manage the features:
+For each feature, you can select:
+
+- **Environment types**: Production, Long-lived, or Previews. The feature applies to every environment of the selected types, including environments you create later.
+- **Specific environments**: Individual environments of your project. The feature applies to those environments only.
+
+You can combine both. For example, you can apply a feature to the Production environment type and to a specific [long-lived environment](../environments/long-lived/page.mdx), such as Staging.
+
+To manage the environments of a feature:
 
 1. Go to your project's dashboard.
 2. Click **Security**.
-3. Use the toggle next to a feature to turn it on or off.
+3. Click the **Environments** dropdown next to the feature.
+4. Select or deselect environment types and environments.
+
+Medusa saves your changes as soon as you select or deselect an option.
 
 <!-- TODO: add screenshot -->
 
 <Note type="warning">
 
-Turning off a feature removes its protection from your project. Turn it back on as soon as you no longer need it off.
+If you deselect all environments, the feature is turned off for your project. An environment that a feature doesn't apply to doesn't receive its protection.
 
 </Note>
 
