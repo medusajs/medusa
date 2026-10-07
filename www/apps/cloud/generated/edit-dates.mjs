@@ -1,6 +1,6 @@
 export const generatedEditDates = {
   "app/page.mdx": "2026-10-02T15:50:10.882Z",
-  "app/projects/page.mdx": "2026-10-06T18:50:12.629Z",
+  "app/projects/page.mdx": "2026-10-07T09:20:21.577Z",
   "app/environments/page.mdx": "2026-05-27T17:17:14.724Z",
   "app/deployments/page.mdx": "2026-09-10T12:21:00.639Z",
   "app/organizations/page.mdx": "2026-10-02T15:50:14.159Z",
@@ -82,7 +82,5 @@ export const generatedEditDates = {
   "app/medusa-mcp/chatgpt/page.mdx": "2026-10-02T08:36:19.389Z",
   "app/medusa-mcp/claude/page.mdx": "2026-10-02T13:23:53.700Z",
   "app/medusa-mcp/page.mdx": "2026-10-05T16:01:35.434Z",
-  "app/organizations/connections/page.mdx": "2026-10-05T16:01:40.323Z",
-  "app/organizations/payments/page.mdx": "2026-10-06T18:50:45.906Z",
-  "app/projects/security/page.mdx": "2026-10-06T18:50:24.680Z"
+  "app/organizations/connections/page.mdx": "2026-10-05T16:01:40.323Z"
 }

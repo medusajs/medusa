@@ -107,13 +107,6 @@ export const generatedSidebars = [
                 "title": "Connections",
                 "path": "/organizations/connections",
                 "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Payments",
-                "path": "/organizations/payments",
-                "children": []
               }
             ]
           },
@@ -149,13 +142,6 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Log Drains",
                 "path": "/projects/log-drains",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Security",
-                "path": "/projects/security",
                 "children": []
               },
               {
