@@ -114,6 +114,35 @@ export const GET = async (
 }
 ```
 
+### Index Metadata Keys You Filter By
+
+When you filter by a metadata key with a module service, the filter compiles into a PostgreSQL expression that extracts the key's value as text. For example, the following filter on product variants:
+
+```ts
+const variants = await productModuleService.listProductVariants({
+  metadata: {
+    external_id: "123",
+  },
+})
+```
+
+Compiles into a `WHERE` condition similar to the following:
+
+```sql
+WHERE "metadata"->>'external_id' = '123'
+```
+
+If you run this filter frequently on a large table, such as to look up records by an external ID, add an index to speed it up. A GIN index on the whole `metadata` column doesn't serve this condition: PostgreSQL uses GIN indexes on JSONB columns for containment and existence operators like `@>` and `?`, not for `->>` equality. So, a GIN index can look effective when you test it with an `@>` query, but the actual filter still runs a sequential scan.
+
+Instead, create a B-tree expression index on the specific metadata key. For example:
+
+```sql
+CREATE INDEX IF NOT EXISTS "IDX_variant_metadata_external_id"
+ON "product_variant" (("metadata"->>'external_id'));
+```
+
+Create one index for each metadata key that you filter by. To confirm that PostgreSQL uses the index, run `EXPLAIN ANALYZE` on a query that uses the same `"metadata"->>'key' = 'value'` condition.
+
 ---
 
 ## Related Resources
