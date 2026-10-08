@@ -103,6 +103,17 @@ However, before choosing self-hosting, it's important to understand the challeng
     </Table.Row>
     <Table.Row>
       <Table.Cell>
+        [Security](#security)
+      </Table.Cell>
+      <Table.Cell>
+        Requires setting up and maintaining a firewall, DDoS mitigation, and bot protection, and keeping up with new vulnerabilities.
+      </Table.Cell>
+      <Table.Cell>
+        Provides managed firewall rulesets, DDoS protection, and bot detection, with Medusa-specific protections deployed as new vulnerabilities emerge.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
         [Performance](#performance)
       </Table.Cell>
       <Table.Cell>
@@ -231,7 +242,7 @@ All of these features are available out-of-the-box in your Cloud projects. By us
 
 When you **self-host**, you need to manually set up the production environment, including scaling, monitoring, and logging. You'll need to build deployment pipelines and processes to ensure smooth deployments and rollbacks.
 
-Additionally, your self-hosted environment must be production-ready with best security practices, performance optimizations, and high-availability configurations.
+Additionally, your self-hosted environment must be production-ready with [best security practices](#security), performance optimizations, and high-availability configurations.
 
 Supporting this setup requires extensive knowledge of infrastructure management. You must also dedicate time and resources to maintain the infrastructure.
 
@@ -280,6 +291,33 @@ Medusa provides high-availability features on **Cloud** to ensure your applicati
 - Offers [SLA-backed response and uptime](../pricing/page.mdx) based on your plan to guarantee your application's availability.
 
 By using Cloud, you can focus on building your application without worrying about downtime or availability issues.
+
+---
+
+## Security
+
+### Self-Hosting: Manual Protection and Patching
+
+When you **self-host**, you're responsible for protecting your application from malicious traffic. This requires:
+
+- Setting up and maintaining a web application firewall (WAF) to block common attacks, such as SQL injection and cross-site scripting (XSS).
+- Configuring DDoS mitigation at both the network and application levels.
+- Detecting and blocking malicious bots that scrape your data, take over customer accounts, or overload your application.
+- Monitoring for newly discovered vulnerabilities and updating your firewall rules and application to address them.
+
+Until you patch a vulnerability, your application remains exposed to attackers exploiting it. A misconfigured firewall can also block legitimate customers or let malicious traffic through.
+
+### Cloud: Built-in Protection with Medusa Security
+
+On **Cloud**, Medusa protects your projects from the moment they go live with [Medusa Security](../security/page.mdx). Medusa Security includes:
+
+- **Medusa Ruleset**: Rules that Medusa maintains to block vulnerabilities and attack patterns specific to Medusa applications. Medusa deploys protections for new vulnerabilities, keeping your projects protected before you update your Medusa application.
+- **Basic Protection Ruleset**: A managed WAF ruleset that blocks common web attacks and widely exploited vulnerabilities.
+- **DDoS Protection**: Automatic detection and mitigation of DDoS attacks at the network and application levels.
+- **Bot Detection**: Blocks requests from malicious bots while allowing verified bots, such as search engine crawlers.
+- **Per-environment configuration**: Choose which environments each feature applies to, such as only your Production environment.
+
+By using Cloud, you get production-grade protection without configuring or maintaining security infrastructure yourself.
 
 ---
 

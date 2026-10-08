@@ -8,6 +8,8 @@ Open-source commerce platform. TypeScript monorepo with 35+ modular commerce pac
 
 > When working on the main documentation (`www/apps/book`), read [`www/apps/book/CLAUDE.md`](www/apps/book/CLAUDE.md) for the homepage structure and the What's New list that must be updated whenever a new feature, release, or notable guide ships.
 
+> When working on the Cloud documentation (`www/apps/cloud`), read [`www/apps/cloud/CLAUDE.md`](www/apps/cloud/CLAUDE.md) for changelog entries and how to generate their banner images.
+
 ### 1. Codebase Structure
 
 **Monorepo Organization:**

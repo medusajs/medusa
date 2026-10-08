@@ -1,5 +1,5 @@
 export const generatedEditDates = {
-  "app/page.mdx": "2026-10-02T15:50:10.882Z",
+  "app/page.mdx": "2026-10-08T06:29:18.648Z",
   "app/projects/page.mdx": "2026-10-07T09:20:21.577Z",
   "app/environments/page.mdx": "2026-05-27T17:17:14.724Z",
   "app/deployments/page.mdx": "2026-09-10T12:21:00.639Z",
@@ -20,7 +20,7 @@ export const generatedEditDates = {
   "app/billing/manage/page.mdx": "2026-05-27T00:37:24.600Z",
   "app/pricing/page.mdx": "2026-09-25T08:17:41.958Z",
   "app/sign-up/page.mdx": "2026-10-02T15:50:08.280Z",
-  "app/comparison/page.mdx": "2026-08-18T10:36:02.526Z",
+  "app/comparison/page.mdx": "2026-10-08T06:22:44.529Z",
   "app/billing/plans/page.mdx": "2026-09-30T09:50:01.826Z",
   "app/cache/page.mdx": "2026-07-28T05:58:03.886Z",
   "app/deployments/troubleshooting/page.mdx": "2026-08-19T07:31:51.231Z",
@@ -81,6 +81,6 @@ export const generatedEditDates = {
   "app/search/analytics/page.mdx": "2026-09-22T11:07:49.287Z",
   "app/medusa-mcp/chatgpt/page.mdx": "2026-10-02T08:36:19.389Z",
   "app/medusa-mcp/claude/page.mdx": "2026-10-02T13:23:53.700Z",
-  "app/medusa-mcp/page.mdx": "2026-10-05T16:01:35.434Z",
-  "app/organizations/connections/page.mdx": "2026-10-05T16:01:40.323Z"
+  "app/medusa-mcp/page.mdx": "2026-10-05T11:18:21.069Z",
+  "app/security/page.mdx": "2026-10-08T06:29:22.328Z"
 }
