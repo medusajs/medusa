@@ -69,19 +69,15 @@
  *     in: query
  *     required: false
  *     schema:
- *       oneOf:
- *         - type: string
- *           title: status
- *           description: Filter by a product status.
- *         - type: array
- *           description: Filter by product statuses.
- *           items:
- *             type: string
- *             enum:
- *               - draft
- *               - proposed
- *               - published
- *               - rejected
+ *       type: array
+ *       description: Filter by product statuses.
+ *       items:
+ *         type: string
+ *         enum:
+ *           - draft
+ *           - proposed
+ *           - published
+ *           - rejected
  *   - name: sales_channel_id
  *     in: query
  *     required: false
