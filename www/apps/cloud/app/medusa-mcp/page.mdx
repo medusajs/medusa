@@ -53,7 +53,9 @@ This section explains how to connect your AI tool to the Medusa MCP server.
 
 ### Step 1: Rebuild Environments
 
-Medusa indexes an environment's API routes when the environment builds. Before you connect an environment to the Medusa MCP server, rebuild it so that Medusa indexes its API routes.
+Medusa indexes an environment's API routes when the environment builds. Environments built on or after October 8, 2026 are already indexed, so you can skip to [connecting an AI tool](#step-2-connect-an-ai-tool).
+
+If the environment's latest build is from before October 8, 2026, rebuild it so that Medusa indexes its API routes.
 
 <Note type="warning">
 
@@ -173,6 +175,10 @@ Then, run the following command to log in to your Cloud account:
 ```bash
 opencode mcp auth medusa-commerce
 ```
+
+#### n8n
+
+Add an **MCP Client Tool** to an **AI Agent** node in n8n Cloud, as explained in the [n8n](./n8n/page.mdx) guide. Self-hosted n8n instances can't connect to the Medusa MCP server.
 
 #### Custom Agents
 
@@ -329,6 +335,8 @@ Medusa indexes a store's API routes, including its custom API routes, each time 
 
 Medusa only indexes custom API routes under the `/store` and `/admin` prefixes. The AI tool can't find or call custom API routes under other prefixes.
 
+To learn how to create custom API routes that the AI tool can find and use, such as an API route that retrieves abandoned carts, refer to the [Retrieve Custom Data](./custom-data/page.mdx) guide.
+
 ---
 
 ## Medusa MCP vs Docs MCP
@@ -346,7 +354,7 @@ The Medusa MCP server can also search the Medusa documentation, so you don't nee
 
 ### AI Tool Can't Find Your Store's API Routes
 
-If the AI tool can't find your store's API routes, including your custom API routes, make sure that you [rebuilt the environment](#step-1-rebuild-environments). Redeploying an existing deployment doesn't index the environment's API routes.
+If the AI tool can't find your store's API routes, including your custom API routes, make sure that the environment's latest build is from October 8, 2026 or later. Otherwise, [rebuild the environment](#step-1-rebuild-environments). Redeploying an existing deployment doesn't index the environment's API routes.
 
 {/* ### Permission Denied Errors
 
