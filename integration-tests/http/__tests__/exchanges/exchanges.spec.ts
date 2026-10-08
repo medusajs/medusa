@@ -919,6 +919,71 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("with outbound items and no outbound shipping method", () => {
+        it("should reserve the inventory of the outbound items on confirmation", async () => {
+          const exchange = (
+            await api.post(
+              "/admin/exchanges",
+              {
+                order_id: order.id,
+                description: "Exchange without outbound shipping method",
+              },
+              adminHeaders
+            )
+          ).data.exchange
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/items`,
+            {
+              items: [
+                {
+                  id: order.items[0].id,
+                  reason_id: returnReason.id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/items`,
+            {
+              items: [{ variant_id: productExtra.variants[0].id, quantity: 2 }],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/request`,
+            {},
+            adminHeaders
+          )
+
+          const reservations = (
+            await api.get(
+              `/admin/reservations?inventory_item_id[]=${inventoryItemExtra.id}`,
+              adminHeaders
+            )
+          ).data.reservations
+
+          expect(reservations).toHaveLength(1)
+          expect(reservations[0]).toEqual(
+            expect.objectContaining({
+              inventory_item_id: inventoryItemExtra.id,
+              location_id: location.id,
+              quantity: 2,
+            })
+          )
+        })
+      })
+
       describe("Exchange adjustments", () => {
         let appliedPromotion
         let promotionModule: IPromotionModuleService
