@@ -289,10 +289,7 @@ medusaIntegrationTestRunner({
 
           const roleId = createResponse.data.role.id
 
-          const response = await api.get(
-            `/rbac/roles/${roleId}`,
-            adminHeaders
-          )
+          const response = await api.get(`/rbac/roles/${roleId}`, adminHeaders)
 
           expect(response.status).toEqual(200)
           expect(response.data.role).toEqual(
@@ -1160,6 +1157,284 @@ medusaIntegrationTestRunner({
             })
             expect(remaining).toHaveLength(0)
           })
+
+          describe("granting scope", () => {
+            const orgA = { type: "organization", id: "org_A" }
+            const orgB = { type: "organization", id: "org_B" }
+            let scopedGranterId: string
+            let globalGranterId: string
+
+            beforeEach(async () => {
+              const rbacModule = container.resolve(Modules.RBAC)
+              const userModule = container.resolve(Modules.USER)
+
+              const productWildcard = await ensureRbacPolicy(rbacModule, {
+                key: "product:*",
+                resource: "product",
+                operation: "*",
+                name: "Manage Products",
+              })
+              const granterRole = await rbacModule.createRbacRoles({
+                name: "Scoped Granter",
+              })
+              await rbacModule.createRbacRolePolicies([
+                { role_id: granterRole.id, policy_id: productWildcard.id },
+              ])
+
+              const [scopedGranter, globalGranter] =
+                await userModule.createUsers([
+                  {
+                    email: "scoped-granter@medusa.js",
+                    first_name: "Scoped",
+                    last_name: "Granter",
+                  },
+                  {
+                    email: "global-granter@medusa.js",
+                    first_name: "Global",
+                    last_name: "Granter",
+                  },
+                ])
+              scopedGranterId = scopedGranter.id
+              globalGranterId = globalGranter.id
+
+              await rbacModule.createRbacRoleAssignments([
+                // product:* only within org_A
+                {
+                  role_id: granterRole.id,
+                  reference: "user",
+                  reference_id: scopedGranterId,
+                  scope: orgA.type,
+                  scope_id: orgA.id,
+                },
+                // product:* across all scopes
+                {
+                  role_id: granterRole.id,
+                  reference: "user",
+                  reference_id: globalGranterId,
+                },
+              ])
+            })
+
+            const assign = (
+              granterId: string,
+              granting_scope: { type: string; id: string } | undefined,
+              scope: { type: string; id: string } | undefined
+            ) =>
+              assignRolesWorkflow(container).run({
+                input: {
+                  granting_actor_id: granterId,
+                  granting_actor: "user",
+                  granting_scope,
+                  assignments: [
+                    {
+                      role_id: productReadRoleId,
+                      reference: "user",
+                      reference_id: assigneeUserId,
+                      scope,
+                    },
+                  ],
+                },
+              })
+
+            it("allows a scoped granter to assign a role within the scope they act in", async () => {
+              const { result } = await assign(scopedGranterId, orgA, orgA)
+              expect(result).toBeUndefined()
+            })
+
+            it("denies a scoped granter assigning a role to another scope", async () => {
+              const error = await assign(scopedGranterId, orgA, orgB).catch(
+                (e) => e
+              )
+              expect(error.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+            })
+
+            it("denies a scoped granter assigning a role across all scopes", async () => {
+              const error = await assign(
+                scopedGranterId,
+                orgA,
+                undefined
+              ).catch((e) => e)
+              expect(error.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+            })
+
+            it("denies a scoped granter assigning within their scope while not acting in it", async () => {
+              const withoutGrantingScope = await assign(
+                scopedGranterId,
+                undefined,
+                orgA
+              ).catch((e) => e)
+              expect(withoutGrantingScope.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+
+              const fromOtherScope = await assign(
+                scopedGranterId,
+                orgB,
+                orgA
+              ).catch((e) => e)
+              expect(fromOtherScope.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+            })
+
+            it("allows an unscoped granter to assign a role to any scope", async () => {
+              await assign(globalGranterId, orgA, orgB)
+              await assign(globalGranterId, orgA, undefined)
+              await assign(globalGranterId, undefined, orgA)
+            })
+
+            it("unassignRolesWorkflow: scoped granter can only remove assignments within the scope they act in", async () => {
+              const rbacModule = container.resolve(Modules.RBAC)
+              await rbacModule.createRbacRoleAssignments([
+                {
+                  role_id: productReadRoleId,
+                  reference: "user",
+                  reference_id: assigneeUserId,
+                  scope: orgA.type,
+                  scope_id: orgA.id,
+                },
+                {
+                  role_id: productReadRoleId,
+                  reference: "user",
+                  reference_id: assigneeUserId,
+                  scope: orgB.type,
+                  scope_id: orgB.id,
+                },
+              ])
+
+              const unassign = (scope?: { type: string; id: string }) =>
+                unassignRolesWorkflow(container).run({
+                  input: {
+                    granting_actor_id: scopedGranterId,
+                    granting_actor: "user",
+                    granting_scope: orgA,
+                    assignments: [
+                      {
+                        role_id: productReadRoleId,
+                        reference: "user",
+                        reference_id: assigneeUserId,
+                        scope,
+                      },
+                    ],
+                  },
+                })
+
+              // Removing regardless of scope would also remove the org_B one.
+              const unscopedError = await unassign(undefined).catch((e) => e)
+              expect(unscopedError.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+
+              const otherScopeError = await unassign(orgB).catch((e) => e)
+              expect(otherScopeError.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+
+              await unassign(orgA)
+
+              const remaining = await rbacModule.listRbacRoleAssignments({
+                role_id: productReadRoleId,
+                reference: "user",
+                reference_id: assigneeUserId,
+              })
+              expect(remaining).toEqual([
+                expect.objectContaining({
+                  scope: orgB.type,
+                  scope_id: orgB.id,
+                }),
+              ])
+            })
+
+            it("unassignRolesWorkflow: unscoped granter acting in a scope can remove assignments of any scope", async () => {
+              const rbacModule = container.resolve(Modules.RBAC)
+              await rbacModule.createRbacRoleAssignments([
+                {
+                  role_id: productReadRoleId,
+                  reference: "user",
+                  reference_id: assigneeUserId,
+                  scope: orgB.type,
+                  scope_id: orgB.id,
+                },
+                {
+                  role_id: productReadRoleId,
+                  reference: "user",
+                  reference_id: assigneeUserId,
+                },
+              ])
+
+              const unassign = (scope?: { type: string; id: string }) =>
+                unassignRolesWorkflow(container).run({
+                  input: {
+                    granting_actor_id: globalGranterId,
+                    granting_actor: "user",
+                    granting_scope: orgA,
+                    assignments: [
+                      {
+                        role_id: productReadRoleId,
+                        reference: "user",
+                        reference_id: assigneeUserId,
+                        scope,
+                      },
+                    ],
+                  },
+                })
+
+              await unassign(orgB)
+
+              const afterScoped = await rbacModule.listRbacRoleAssignments({
+                role_id: productReadRoleId,
+                reference: "user",
+                reference_id: assigneeUserId,
+              })
+              expect(afterScoped).toEqual([
+                expect.objectContaining({ scope: null, scope_id: null }),
+              ])
+
+              // Removing regardless of scope.
+              await unassign(undefined)
+
+              const afterUnscoped = await rbacModule.listRbacRoleAssignments({
+                role_id: productReadRoleId,
+                reference: "user",
+                reference_id: assigneeUserId,
+              })
+              expect(afterUnscoped).toHaveLength(0)
+            })
+
+            it("only uses the granter's roles scoped to the scope they act in", async () => {
+              // The granter holds product:* in both org_A and org_B, but only
+              // its org_B privileges are usable while acting in org_B.
+              const rbacModule = container.resolve(Modules.RBAC)
+              const [{ role_id: granterRoleId }] =
+                await rbacModule.listRbacRoleAssignments({
+                  reference: "user",
+                  reference_id: scopedGranterId,
+                })
+              await rbacModule.createRbacRoleAssignments([
+                {
+                  role_id: granterRoleId,
+                  reference: "user",
+                  reference_id: scopedGranterId,
+                  scope: orgB.type,
+                  scope_id: orgB.id,
+                },
+              ])
+
+              await assign(scopedGranterId, orgB, orgB)
+              await assign(scopedGranterId, orgA, orgA)
+
+              const error = await assign(scopedGranterId, orgB, orgA).catch(
+                (e) => e
+              )
+              expect(error.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+            })
+          })
         })
       })
 
@@ -1357,10 +1632,7 @@ medusaIntegrationTestRunner({
         })
 
         it("returns response shape `{ roles, count }` with count matching roles.length", async () => {
-          const response = await api.get(
-            "/rbac/roles/assignable",
-            adminHeaders
-          )
+          const response = await api.get("/rbac/roles/assignable", adminHeaders)
 
           expect(response.status).toEqual(200)
           expect(response.data).toMatchObject({
@@ -1371,10 +1643,7 @@ medusaIntegrationTestRunner({
         })
 
         it("returns every target role for a super-admin (`*:*`)", async () => {
-          const response = await api.get(
-            "/rbac/roles/assignable",
-            adminHeaders
-          )
+          const response = await api.get("/rbac/roles/assignable", adminHeaders)
 
           const ids = response.data.roles.map((r: { id: string }) => r.id)
           // Super-admin covers every action, so every target role is assignable.
@@ -1390,10 +1659,7 @@ medusaIntegrationTestRunner({
         })
 
         it("returns role projection of `{ id, name, description }` without policies leakage", async () => {
-          const response = await api.get(
-            "/rbac/roles/assignable",
-            adminHeaders
-          )
+          const response = await api.get("/rbac/roles/assignable", adminHeaders)
 
           for (const role of response.data.roles) {
             expect(typeof role.id).toEqual("string")

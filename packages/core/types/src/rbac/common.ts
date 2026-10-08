@@ -92,6 +92,27 @@ export type RbacScope = {
 }
 
 /**
+ * The actor granting roles, e.g. when creating users or invites with roles.
+ * When provided, the actor can only grant roles whose policies it holds itself.
+ */
+export type RbacGrantingContext = {
+  /**
+   * The ID of the actor granting the roles.
+   */
+  actor_id: string
+  /**
+   * The type of the actor granting the roles. Defaults to `user`.
+   */
+  actor?: string
+  /**
+   * The scope the actor is acting within. When granting roles, this is
+   * used to resolve the actor's scoped assignments plus their unscoped
+   * ones and compare them against these.
+   */
+  scope?: RbacScope
+}
+
+/**
  * The RBAC context of a request, held on `req.rbac_context`.
  *
  * The scope is set by the application, from a middleware registered ahead of

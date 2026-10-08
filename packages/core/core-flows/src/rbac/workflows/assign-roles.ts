@@ -34,11 +34,9 @@ export type AssignRolesWorkflowInput = {
   granting_actor_id?: string
   granting_actor?: string
   /**
-   * The scope the role assignments are being granted within. This drives the
-   * validation of the granting actor's permissions.
-   *
-   * If not set, only unscoped role assignments are considered when resolving the
-   * granting actor's roles.
+   * The scope the granting actor is acting within. Their role assignments
+   * scoped to it only allow assigning roles scoped to that same scope; assigning
+   * roles to other scopes, or unscoped, requires their unscoped privileges.
    */
   granting_scope?: RbacScope
 }
@@ -86,8 +84,8 @@ export const assignRolesWorkflow = createWorkflow(
       validateActorRolePermissionsStep({
         actor_id: normalizedInput.grantingActorId!,
         actor: normalizedInput.grantingActor,
-        role_ids: normalizedInput.roleIds,
-        scope: normalizedInput.grantingScope,
+        granting_scope: normalizedInput.grantingScope,
+        assignments: normalizedInput.assignments,
       })
     })
 

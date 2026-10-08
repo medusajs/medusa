@@ -1,6 +1,7 @@
 import {
   CreateActorRoleDTO,
   CreateRbacRoleAssignmentDTO,
+  RbacScope,
 } from "@medusajs/framework/types"
 
 /**
@@ -35,4 +36,23 @@ export const buildRoleAssignments = (
       scope_id: scope.id,
     }))
   })
+}
+
+/**
+ * Builds the role <> scope pairs being granted from the roles of one or more
+ * reference entities, to validate them against the granting actor. A role
+ * with scopes results in one pair per scope, a role without scopes in a single
+ * unscoped pair.
+ *
+ * @ignore
+ * @featureFlag rbac
+ */
+export const buildRoleScopePairs = (
+  roles: CreateActorRoleDTO[] | null | undefined
+): { role_id: string; scope?: RbacScope }[] => {
+  return (roles ?? []).flatMap((role) =>
+    role.scopes?.length
+      ? role.scopes.map((scope) => ({ role_id: role.role_id, scope }))
+      : [{ role_id: role.role_id }]
+  )
 }

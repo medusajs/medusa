@@ -604,6 +604,166 @@ medusaIntegrationTestRunner({
           ])
         )
       })
+
+      describe("granting actor role validation", () => {
+        const orgA = { type: "organization", id: "org_A" }
+        const orgB = { type: "organization", id: "org_B" }
+        let productReaderRoleId: string
+        let mixedRoleId: string
+        let globalGranterId: string
+        let scopedGranterId: string
+
+        const ensurePolicy = async (
+          rbacModule,
+          resource: string,
+          operation: string
+        ) => {
+          const key = `${resource}:${operation}`
+          const [existing] = await rbacModule.listRbacPolicies({ key })
+
+          if (existing) {
+            return existing
+          }
+
+          const [created] = await rbacModule.createRbacPolicies([
+            { key, resource, operation, name: key },
+          ])
+          return created
+        }
+
+        beforeEach(async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const userModule = container.resolve(Modules.USER)
+
+          const productRead = await ensurePolicy(rbacModule, "product", "read")
+          const customerCreate = await ensurePolicy(
+            rbacModule,
+            "customer",
+            "create"
+          )
+
+          const productReaderRole = await rbacModule.createRbacRoles({
+            name: "Product Reader",
+          })
+          const mixedRole = await rbacModule.createRbacRoles({
+            name: "Mixed",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: productReaderRole.id, policy_id: productRead.id },
+            { role_id: mixedRole.id, policy_id: productRead.id },
+            { role_id: mixedRole.id, policy_id: customerCreate.id },
+          ])
+          productReaderRoleId = productReaderRole.id
+          mixedRoleId = mixedRole.id
+
+          const [globalGranter, scopedGranter] = await userModule.createUsers([
+            { email: "global-granter@medusa.js" },
+            { email: "scoped-granter@medusa.js" },
+          ])
+          globalGranterId = globalGranter.id
+          scopedGranterId = scopedGranter.id
+
+          // Both hold product:read only: one across all scopes, one in org_A.
+          await rbacModule.createRbacRoleAssignments([
+            {
+              role_id: productReaderRoleId,
+              reference: "user",
+              reference_id: globalGranterId,
+            },
+            {
+              role_id: productReaderRoleId,
+              reference: "user",
+              reference_id: scopedGranterId,
+              scope: orgA.type,
+              scope_id: orgA.id,
+            },
+          ])
+        })
+
+        const createUser = (
+          email: string,
+          role_id: string,
+          rbac_context: {
+            actor_id: string
+            scope?: { type: string; id: string }
+          },
+          scope?: { type: string; id: string }
+        ) =>
+          createUsersWorkflow(container).run({
+            input: {
+              users: [
+                {
+                  email,
+                  roles: [{ role_id, scopes: scope ? [scope] : undefined }],
+                },
+              ],
+              rbac_context,
+            },
+          })
+
+        it("should allow creating a user with roles whose policies the actor holds", async () => {
+          const { result } = await createUser(
+            "allowed-user@medusa.js",
+            productReaderRoleId,
+            { actor_id: globalGranterId }
+          )
+
+          expect(result).toHaveLength(1)
+        })
+
+        it("should reject creating a user with roles whose policies the actor does not hold", async () => {
+          const error = await createUser("denied-user@medusa.js", mixedRoleId, {
+            actor_id: globalGranterId,
+          }).catch((e) => e)
+
+          expect(error.message).toContain(
+            "You do not have permission to assign these roles"
+          )
+
+          const userModule = container.resolve(Modules.USER)
+          const users = await userModule.listUsers({
+            email: "denied-user@medusa.js",
+          })
+          expect(users).toHaveLength(0)
+        })
+
+        it("should only allow a scoped actor to assign roles within the scope they act in", async () => {
+          const { result } = await createUser(
+            "scoped-a-user@medusa.js",
+            productReaderRoleId,
+            { actor_id: scopedGranterId, scope: orgA },
+            orgA
+          )
+          expect(result).toHaveLength(1)
+
+          for (const [email, granting, target] of [
+            ["scoped-b-user@medusa.js", orgA, orgB],
+            ["scoped-global-user@medusa.js", orgA, undefined],
+            ["scoped-other-context-user@medusa.js", orgB, orgA],
+          ] as const) {
+            const error = await createUser(
+              email,
+              productReaderRoleId,
+              { actor_id: scopedGranterId, scope: granting },
+              target
+            ).catch((e) => e)
+
+            expect(error.message).toContain(
+              "You do not have permission to assign these roles"
+            )
+          }
+        })
+
+        it("should skip the validation when no rbac_context is provided", async () => {
+          const { result } = await createUser(
+            "no-context-user@medusa.js",
+            mixedRoleId,
+            undefined as any
+          )
+
+          expect(result).toHaveLength(1)
+        })
+      })
     })
 
     describe("User Roles Management", () => {

@@ -94,9 +94,7 @@ describe("deleteRoleAssignmentsStep", () => {
     )
 
     const workflow = createWorkflow("delete-role-assignments-single-id", () => {
-      return new WorkflowResponse(
-        deleteRoleAssignmentsStep({ id: "rasgn_1" })
-      )
+      return new WorkflowResponse(deleteRoleAssignmentsStep({ id: "rasgn_1" }))
     })
 
     await workflow(container).run({ input: {} })

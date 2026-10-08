@@ -5,14 +5,19 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { createInviteStep } from "../steps"
 import {
   createRoleAssignmentsStep,
+  validateActorRolePermissionsStep,
   validateRolesExistStep,
 } from "../../rbac/steps"
-import { buildRoleAssignments } from "../../rbac/utils/build-role-assignments"
+import {
+  buildRoleAssignments,
+  buildRoleScopePairs,
+} from "../../rbac/utils/build-role-assignments"
 export const createInvitesWorkflowId = "create-invite-step"
 /**
  * This workflow creates one or more user invites. It's used by the
@@ -64,6 +69,25 @@ export const createInvitesWorkflow = createWorkflow(
     })
 
     validateRolesExistStep(allRoleIds)
+
+    const roleAssignments = transform({ input }, ({ input }) => {
+      return input.invites.flatMap((invite) =>
+        buildRoleScopePairs(invite.roles)
+      )
+    })
+
+    when(
+      { roleAssignments, input },
+      ({ roleAssignments, input }) =>
+        !!input.rbac_context?.actor_id && !!roleAssignments.length
+    ).then(() => {
+      validateActorRolePermissionsStep({
+        actor_id: input.rbac_context!.actor_id,
+        actor: input.rbac_context!.actor,
+        granting_scope: input.rbac_context!.scope,
+        assignments: roleAssignments,
+      })
+    })
 
     const createdInvites = createInviteStep(input.invites)
 

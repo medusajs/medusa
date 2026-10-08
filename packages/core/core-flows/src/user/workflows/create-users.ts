@@ -5,11 +5,16 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { createRoleAssignmentsStep } from "../../rbac/steps/create-role-assignments"
+import { validateActorRolePermissionsStep } from "../../rbac/steps/validate-actor-role-permissions"
 import { validateRolesExistStep } from "../../rbac/steps/validate-roles-exist"
-import { buildRoleAssignments } from "../../rbac/utils/build-role-assignments"
+import {
+  buildRoleAssignments,
+  buildRoleScopePairs,
+} from "../../rbac/utils/build-role-assignments"
 import { createUsersStep } from "../steps"
 
 export const createUsersWorkflowId = "create-users-workflow"
@@ -23,7 +28,8 @@ export const createUsersWorkflowId = "create-users-workflow"
  *
  * You can provide roles to be assigned to each user during creation. Each role
  * can be constrained to one or more scopes, creating one role assignment per
- * scope.
+ * scope. When an `rbac_context` is provided, its actor can only assign roles
+ * whose policies it holds itself.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create users within your custom flows.
@@ -67,6 +73,23 @@ export const createUsersWorkflow = createWorkflow(
     })
 
     validateRolesExistStep(allRoleIds)
+
+    const roleAssignments = transform({ input }, ({ input }) => {
+      return input.users.flatMap((user) => buildRoleScopePairs(user.roles))
+    })
+
+    when(
+      { roleAssignments, input },
+      ({ roleAssignments, input }) =>
+        !!input.rbac_context?.actor_id && !!roleAssignments.length
+    ).then(() => {
+      validateActorRolePermissionsStep({
+        actor_id: input.rbac_context!.actor_id,
+        actor: input.rbac_context!.actor,
+        granting_scope: input.rbac_context!.scope,
+        assignments: roleAssignments,
+      })
+    })
 
     const createdUsers = createUsersStep(input.users)
 

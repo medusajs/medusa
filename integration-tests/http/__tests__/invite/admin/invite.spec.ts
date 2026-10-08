@@ -1,3 +1,5 @@
+import { Modules } from "@medusajs/framework/utils"
+import { createInvitesWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -527,6 +529,240 @@ medusaIntegrationTestRunner({
 
         expect(error.status).toEqual(400)
         expect(error.data.message).toContain("role")
+      })
+
+      describe("granting actor role validation", () => {
+        const limitedHeaders = { headers: { ...adminHeaders.headers } }
+        let productReaderRoleId: string
+        let mixedRoleId: string
+
+        const ensurePolicy = async (
+          rbacModule,
+          resource: string,
+          operation: string
+        ) => {
+          const key = `${resource}:${operation}`
+          const [existing] = await rbacModule.listRbacPolicies({ key })
+
+          if (existing) {
+            return existing
+          }
+
+          const [created] = await rbacModule.createRbacPolicies([
+            { key, resource, operation, name: key },
+          ])
+          return created
+        }
+
+        beforeEach(async () => {
+          const container = getContainer()
+          const rbacModule = container.resolve(Modules.RBAC)
+
+          const inviteCreate = await ensurePolicy(
+            rbacModule,
+            "invite",
+            "create"
+          )
+          const productRead = await ensurePolicy(rbacModule, "product", "read")
+          const customerCreate = await ensurePolicy(
+            rbacModule,
+            "customer",
+            "create"
+          )
+
+          // The inviter: can create invites and holds product:read only.
+          const inviterRole = await rbacModule.createRbacRoles({
+            name: "Inviter",
+            description: "invite:create and product:read",
+          })
+          // Roles being offered through the invite.
+          const productReaderRole = await rbacModule.createRbacRoles({
+            name: "Product Reader",
+            description: "product:read",
+          })
+          const mixedRole = await rbacModule.createRbacRoles({
+            name: "Mixed",
+            description: "product:read and customer:create",
+          })
+
+          await rbacModule.createRbacRolePolicies([
+            { role_id: inviterRole.id, policy_id: inviteCreate.id },
+            { role_id: inviterRole.id, policy_id: productRead.id },
+            { role_id: productReaderRole.id, policy_id: productRead.id },
+            { role_id: mixedRole.id, policy_id: productRead.id },
+            { role_id: mixedRole.id, policy_id: customerCreate.id },
+          ])
+
+          await createAdminUser(dbConnection, limitedHeaders, container, {
+            email: "inviter@medusa.js",
+            roles: [inviterRole.id],
+          })
+
+          productReaderRoleId = productReaderRole.id
+          mixedRoleId = mixedRole.id
+        })
+
+        it("should allow inviting to a role whose policies the actor holds", async () => {
+          const response = await api.post(
+            "/admin/invites",
+            {
+              email: "allowed-invite@medusa-commerce.com",
+              roles: [{ role_id: productReaderRoleId }],
+            },
+            limitedHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.invite.email).toEqual(
+            "allowed-invite@medusa-commerce.com"
+          )
+        })
+
+        it("should allow inviting to a scoped role whose policies the actor holds", async () => {
+          const response = await api.post(
+            "/admin/invites",
+            {
+              email: "allowed-scoped-invite@medusa-commerce.com",
+              roles: [
+                {
+                  role_id: productReaderRoleId,
+                  scopes: [{ type: "organization", id: "org_1" }],
+                },
+              ],
+            },
+            limitedHeaders
+          )
+
+          expect(response.status).toEqual(200)
+        })
+
+        it("should reject inviting to a role with policies the actor does not hold", async () => {
+          const error = await api
+            .post(
+              "/admin/invites",
+              {
+                email: "denied-invite@medusa-commerce.com",
+                roles: [{ role_id: mixedRoleId }],
+              },
+              limitedHeaders
+            )
+            .catch((e) => e.response)
+
+          expect(error.status).toEqual(403)
+          expect(error.data.message).toContain(
+            "You do not have permission to assign these roles"
+          )
+
+          const { data } = await api.get(
+            "/admin/invites?email=denied-invite@medusa-commerce.com",
+            adminHeaders
+          )
+          expect(data.invites).toHaveLength(0)
+        })
+
+        it("should reject when any role among several is not grantable", async () => {
+          const error = await api
+            .post(
+              "/admin/invites",
+              {
+                email: "denied-multi-invite@medusa-commerce.com",
+                roles: [
+                  { role_id: productReaderRoleId },
+                  { role_id: mixedRoleId },
+                ],
+              },
+              limitedHeaders
+            )
+            .catch((e) => e.response)
+
+          expect(error.status).toEqual(403)
+        })
+
+        it("should reject a scoped invite to a role the actor cannot grant", async () => {
+          const error = await api
+            .post(
+              "/admin/invites",
+              {
+                email: "denied-scoped-invite@medusa-commerce.com",
+                roles: [
+                  {
+                    role_id: mixedRoleId,
+                    scopes: [{ type: "organization", id: "org_1" }],
+                  },
+                ],
+              },
+              limitedHeaders
+            )
+            .catch((e) => e.response)
+
+          expect(error.status).toEqual(403)
+        })
+
+        it("should only allow a scoped inviter to invite to roles within the scope they act in", async () => {
+          const container = getContainer()
+          const rbacModule = container.resolve(Modules.RBAC)
+          const userModule = container.resolve(Modules.USER)
+          const orgA = { type: "organization", id: "org_A" }
+          const orgB = { type: "organization", id: "org_B" }
+
+          const scopedInviter = await userModule.createUsers({
+            email: "scoped-inviter@medusa.js",
+          })
+          // Holds product:read (via the product reader role) only within org_A.
+          await rbacModule.createRbacRoleAssignments([
+            {
+              role_id: productReaderRoleId,
+              reference: "user",
+              reference_id: scopedInviter.id,
+              scope: orgA.type,
+              scope_id: orgA.id,
+            },
+          ])
+
+          const invite = (email: string, scope?: typeof orgA) =>
+            createInvitesWorkflow(container).run({
+              input: {
+                invites: [
+                  {
+                    email,
+                    roles: [
+                      {
+                        role_id: productReaderRoleId,
+                        scopes: scope ? [scope] : undefined,
+                      },
+                    ],
+                  },
+                ],
+                rbac_context: { actor_id: scopedInviter.id, scope: orgA },
+              },
+            })
+
+          const { result } = await invite("scoped-a@medusa-commerce.com", orgA)
+          expect(result).toHaveLength(1)
+
+          for (const [email, scope] of [
+            ["scoped-b@medusa-commerce.com", orgB],
+            ["scoped-global@medusa-commerce.com", undefined],
+          ] as const) {
+            const error = await invite(email, scope).catch((e) => e)
+            expect(error.message).toContain(
+              "You do not have permission to assign these roles"
+            )
+          }
+        })
+
+        it("should still allow a super admin to invite to any role", async () => {
+          const response = await api.post(
+            "/admin/invites",
+            {
+              email: "super-admin-invite@medusa-commerce.com",
+              roles: [{ role_id: mixedRoleId }],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+        })
       })
     })
   },
