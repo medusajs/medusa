@@ -79,8 +79,9 @@ export const generatedEditDates = {
   "app/search/settings/page.mdx": "2026-09-22T11:09:25.272Z",
   "app/mermaid-icon-test/page.mdx": "2026-09-15T06:44:06.483Z",
   "app/search/analytics/page.mdx": "2026-09-22T11:07:49.287Z",
-  "app/medusa-mcp/chatgpt/page.mdx": "2026-10-02T08:36:19.389Z",
-  "app/medusa-mcp/claude/page.mdx": "2026-10-02T13:23:53.700Z",
-  "app/medusa-mcp/page.mdx": "2026-10-05T16:01:35.434Z",
-  "app/organizations/connections/page.mdx": "2026-10-05T16:01:40.323Z"
+  "app/medusa-mcp/chatgpt/page.mdx": "2026-10-08T07:46:41.587Z",
+  "app/medusa-mcp/claude/page.mdx": "2026-10-08T07:46:41.587Z",
+  "app/medusa-mcp/page.mdx": "2026-10-08T07:46:04.339Z",
+  "app/organizations/connections/page.mdx": "2026-10-08T07:45:03.390Z",
+  "app/medusa-mcp/custom-agents/page.mdx": "2026-10-08T07:45:11.588Z"
 }

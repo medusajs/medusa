@@ -77,6 +77,13 @@ export const generatedSidebars = [
                 "title": "ChatGPT App",
                 "path": "/medusa-mcp/chatgpt",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Custom Agents",
+                "path": "/medusa-mcp/custom-agents",
+                "children": []
               }
             ]
           },
