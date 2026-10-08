@@ -35,6 +35,12 @@ export const whatsNewItems: WhatsNewItem[] = [
     link: "https://docs.medusajs.com/cloud/medusa-mcp",
   },
   {
+    title: "Medusa Security",
+    date: "2026-10-08",
+    link: "https://docs.medusajs.com/cloud/security",
+    tag: "Medusa Cloud",
+  },
+  {
     title: "Medusa Search",
     tag: "Medusa Cloud",
     date: "2026-09-22",

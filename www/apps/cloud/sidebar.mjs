@@ -503,8 +503,8 @@ export const sidebar = [
           },
           {
             type: "link",
-            title: "Instant Protection",
-            path: "/instant-protection",
+            title: "Medusa Security",
+            path: "/security",
           },
         ],
       },

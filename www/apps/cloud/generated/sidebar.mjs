@@ -665,6 +665,13 @@ export const generatedSidebars = [
             "title": "IP Addresses",
             "path": "/ip-addresses",
             "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Medusa Security",
+            "path": "/security",
+            "children": []
           }
         ]
       },
