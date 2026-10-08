@@ -1,158 +1,181 @@
-import { Logger } from "@medusajs/framework/types"
+import { asValue } from "@medusajs/framework/awilix"
 import {
-  checkLicenseRemote,
-  LicenseCheckResponse,
-  loadLicense,
-  MEDUSA_CLOUD_EXECUTION_CONTEXT,
-  registerLicensedFeature,
-  resetLicenseState,
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+  License,
 } from "@medusajs/framework/utils"
-import { startLicenseRemoteCheck } from "../license-check"
+import { LICENSE_CHECK_URL, startLicenseRemoteCheck } from "../license-check"
 
-jest.mock("@medusajs/framework/utils", () => ({
-  ...jest.requireActual("@medusajs/framework/utils"),
-  checkLicenseRemote: jest.fn(),
-  loadLicense: jest.fn(),
-}))
-
-const checkLicenseRemoteMock = checkLicenseRemote as jest.Mock
-const loadLicenseMock = loadLicense as jest.Mock
-
-const validLicense = {
-  status: "valid",
+const license: License = {
   token: "token",
-  claims: { sub: "org_test", features: ["rbac"] },
+  sub: "org_test",
+  features: ["rbac"],
 }
 
-function run(): Promise<void> & {
-  logger: {
-    debug: jest.Mock
-    info: jest.Mock
-    warn: jest.Mock
-    error: jest.Mock
-  }
-} {
-  const logger = {
-    debug: jest.fn(),
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
+const logger = {
+  debug: jest.fn(),
+  info: jest.fn(),
+  warn: jest.fn(),
+  error: jest.fn(),
+}
+
+const originalFetch = global.fetch
+const fetchMock = jest.fn()
+
+function run(registeredLicense?: License | null): Promise<void> {
+  const container = createMedusaContainer()
+  container.register(ContainerRegistrationKeys.LOGGER, asValue(logger))
+
+  if (registeredLicense !== undefined) {
+    container.register(
+      ContainerRegistrationKeys.LICENSE,
+      asValue(registeredLicense)
+    )
   }
 
-  return Object.assign(startLicenseRemoteCheck(logger as unknown as Logger), {
-    logger,
+  return startLicenseRemoteCheck(container)
+}
+
+function mockResponse(status: number, body: unknown): void {
+  fetchMock.mockResolvedValue({
+    ok: status >= 200 && status < 300,
+    status,
+    json: async () => body,
   })
+}
+
+function expectFailOpen(): void {
+  expect(logger.warn).toHaveBeenCalledWith(
+    expect.stringContaining("Could not verify the configured license key")
+  )
+  expect(logger.error).not.toHaveBeenCalled()
+  expect(exit).not.toHaveBeenCalled()
 }
 
 let exit: jest.SpyInstance
 
 beforeEach(() => {
-  registerLicensedFeature("rbac")
-  loadLicenseMock.mockReturnValue(validLicense)
+  global.fetch = fetchMock
   exit = jest
     .spyOn(process, "exit")
     .mockImplementation((() => undefined) as never)
 })
 
 afterEach(() => {
-  delete process.env.EXECUTION_CONTEXT
-
-  resetLicenseState()
+  global.fetch = originalFetch
   jest.resetAllMocks()
   jest.restoreAllMocks()
 })
 
-function mockResponse(response: LicenseCheckResponse | null): void {
-  checkLicenseRemoteMock.mockResolvedValue(response)
-}
-
 describe("startLicenseRemoteCheck", () => {
-  it("skips the check on Medusa Cloud hosted instances", async () => {
-    process.env.EXECUTION_CONTEXT = MEDUSA_CLOUD_EXECUTION_CONTEXT
-
+  it("skips the check when no license is registered", async () => {
     await run()
+    await run(null)
 
-    expect(checkLicenseRemoteMock).not.toHaveBeenCalled()
+    expect(fetchMock).not.toHaveBeenCalled()
   })
 
-  it("skips the check when no license gated package was loaded", async () => {
-    resetLicenseState()
+  it("posts the configured license key to Medusa Cloud", async () => {
+    mockResponse(200, { status: "active" })
 
-    await run()
+    await run(license)
 
-    expect(checkLicenseRemoteMock).not.toHaveBeenCalled()
-  })
-
-  it("skips the check when the local license is not valid", async () => {
-    loadLicenseMock.mockReturnValue({
-      status: "invalid",
-      claims: null,
-      token: null,
-    })
-
-    await run()
-
-    expect(checkLicenseRemoteMock).not.toHaveBeenCalled()
-  })
-
-  it("sends the configured license key", async () => {
-    mockResponse({ status: "active" })
-
-    await run()
-
-    expect(checkLicenseRemoteMock).toHaveBeenCalledWith("token")
-  })
-
-  it("fails open when Cloud is unreachable", async () => {
-    mockResponse(null)
-
-    const task = run()
-    await task
-
-    expect(task.logger.error).not.toHaveBeenCalled()
-    expect(exit).not.toHaveBeenCalled()
+    expect(fetchMock).toHaveBeenCalledWith(
+      LICENSE_CHECK_URL,
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({ license_key: "token" }),
+      })
+    )
   })
 
   it("stays silent on an active license", async () => {
-    mockResponse({ status: "active" })
+    mockResponse(200, { status: "active" })
 
-    const task = run()
-    await task
+    await run(license)
 
-    expect(task.logger.error).not.toHaveBeenCalled()
+    expect(logger.warn).not.toHaveBeenCalled()
+    expect(logger.error).not.toHaveBeenCalled()
     expect(exit).not.toHaveBeenCalled()
   })
 
   it("exits on a key Cloud does not recognize", async () => {
-    mockResponse({ status: "invalid" })
+    mockResponse(200, { status: "invalid" })
 
-    const task = run()
-    await task
+    await run(license)
 
-    expect(task.logger.error).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       expect.stringContaining("was not issued by Medusa")
     )
     expect(exit).toHaveBeenCalledWith(1)
   })
 
   it("exits on a revoked license", async () => {
-    mockResponse({ status: "revoked" })
+    mockResponse(200, { status: "revoked" })
 
-    const task = run()
-    await task
+    await run(license)
 
-    expect(task.logger.error).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       expect.stringContaining("no longer entitles this instance")
     )
     expect(exit).toHaveBeenCalledWith(1)
   })
 
-  it("never rejects, even when the check itself throws", async () => {
-    checkLicenseRemoteMock.mockRejectedValue(new Error("boom"))
+  it("warns and carries on on a non-2xx response", async () => {
+    mockResponse(500, { status: "revoked" })
 
-    const task = run()
+    await run(license)
 
-    await expect(task).resolves.toBeUndefined()
-    expect(exit).not.toHaveBeenCalled()
+    expectFailOpen()
+  })
+
+  it("warns and carries on on a network error", async () => {
+    fetchMock.mockRejectedValue(new Error("ECONNREFUSED"))
+
+    await expect(run(license)).resolves.toBeUndefined()
+
+    expectFailOpen()
+  })
+
+  it("warns and carries on when the request times out", async () => {
+    // The rejection AbortSignal.timeout() produces, without the real wait.
+    fetchMock.mockRejectedValue(
+      new DOMException(
+        "The operation was aborted due to timeout",
+        "TimeoutError"
+      )
+    )
+
+    await run(license)
+
+    expectFailOpen()
+  })
+
+  it("warns and carries on on an unparsable body", async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => {
+        throw new Error("Unexpected token")
+      },
+    })
+
+    await run(license)
+
+    expectFailOpen()
+  })
+
+  it.each([
+    { status: "expired" },
+    { status: 1 },
+    { status: "toString" },
+    {},
+    null,
+  ])("warns and carries on on an unknown status: %j", async (body) => {
+    mockResponse(200, body)
+
+    await run(license)
+
+    expectFailOpen()
   })
 })

@@ -1,9 +1,9 @@
+import { asValue } from "@medusajs/deps/awilix"
 import { ModuleResolution } from "@medusajs/types"
 import {
+  ContainerRegistrationKeys,
   createMedusaContainer,
-  getRegisteredLicensedFeatures,
-  resetLicenseState,
-  setLicensePublicKey,
+  Modules,
 } from "@medusajs/utils"
 import { MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
@@ -221,34 +221,13 @@ describe("modules loader", () => {
 })
 
 describe("license gated modules", () => {
-  const setLicenseEnv = (features: string[]): void => {
-    const { generateKeyPairSync, sign } = require("crypto")
-    const { publicKey, privateKey } = generateKeyPairSync("ed25519")
-
-    const toSegment = (value: object): string =>
-      Buffer.from(JSON.stringify(value), "utf-8").toString("base64url")
-
-    const headerSegment = toSegment({ alg: "EdDSA" })
-    const payloadSegment = toSegment({ sub: "org_test", features })
-    const signature = sign(
-      null,
-      Buffer.from(`${headerSegment}.${payloadSegment}`, "utf-8"),
-      privateKey
-    ).toString("base64url")
-
-    process.env.MEDUSA_LICENSE_KEY = `${headerSegment}.${payloadSegment}.${signature}`
-    setLicensePublicKey(
-      publicKey.export({ type: "spki", format: "pem" }).toString()
-    )
-  }
-
-  const buildResolutions = (): Record<string, ModuleResolution> => ({
-    licensedService: {
-      resolutionPath: require.resolve("../__mocks__/@modules/licensed"),
+  const moduleResolutions: Record<string, ModuleResolution> = {
+    [Modules.RBAC]: {
+      resolutionPath: require.resolve("../__mocks__/@modules/default"),
       definition: {
-        key: "licensedService",
-        defaultPackage: "licensedService",
-        label: "LicensedService",
+        key: Modules.RBAC,
+        defaultPackage: "rbac",
+        label: "RBAC",
         defaultModuleDeclaration: {
           scope: MODULE_SCOPE.INTERNAL,
         },
@@ -257,56 +236,38 @@ describe("license gated modules", () => {
         scope: MODULE_SCOPE.INTERNAL,
       },
     },
-  })
+  }
 
-  afterEach(() => {
-    delete process.env.MEDUSA_LICENSE_KEY
+  const registerLicense = (container, features: string[]): void => {
+    container.register(
+      ContainerRegistrationKeys.LICENSE,
+      asValue({ token: "token", sub: "org_test", features })
+    )
+  }
 
-    resetLicenseState()
-  })
-
-  it("refuses to load a module declaring a licensed feature without a license key", async () => {
-    expect.assertions(1)
+  it("refuses to load a gated module when no license is registered", async () => {
     const container = createMedusaContainer()
 
-    try {
-      await moduleLoader({
-        container,
-        moduleResolutions: buildResolutions(),
-        logger,
-      })
-    } catch (err) {
-      expect(err.message).toContain("The Medusa license key required")
-    }
+    await expect(
+      moduleLoader({ container, moduleResolutions, logger })
+    ).rejects.toThrow("is missing or could not be verified")
   })
 
-  it("refuses to load a module whose licensed feature the key does not cover", async () => {
-    expect.assertions(1)
-    setLicenseEnv(["other-feature"])
+  it("refuses to load a gated module the license does not cover", async () => {
     const container = createMedusaContainer()
+    registerLicense(container, ["other-feature"])
 
-    try {
-      await moduleLoader({
-        container,
-        moduleResolutions: buildResolutions(),
-        logger,
-      })
-    } catch (err) {
-      expect(err.message).toContain('does not cover the "test-feature" feature')
-    }
+    await expect(
+      moduleLoader({ container, moduleResolutions, logger })
+    ).rejects.toThrow('does not cover the "rbac" feature')
   })
 
-  it("loads a module whose licensed feature the key covers, and records the feature", async () => {
-    setLicenseEnv(["test-feature"])
+  it("loads a gated module the license covers", async () => {
     const container = createMedusaContainer()
+    registerLicense(container, ["rbac"])
 
-    await moduleLoader({
-      container,
-      moduleResolutions: buildResolutions(),
-      logger,
-    })
+    await moduleLoader({ container, moduleResolutions, logger })
 
-    expect(container.resolve("licensedService")).toBeDefined()
-    expect(getRegisteredLicensedFeatures()).toEqual(["test-feature"])
+    expect(container.resolve(Modules.RBAC)).toBeDefined()
   })
 })

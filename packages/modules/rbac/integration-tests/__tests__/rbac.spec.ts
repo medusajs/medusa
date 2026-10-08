@@ -1,16 +1,18 @@
 import { IRbacModuleService } from "@medusajs/framework/types"
-import { Module, Modules } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  LicenseFeature,
+  Module,
+  Modules,
+} from "@medusajs/framework/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-  setTestLicense,
+  testLicense,
 } from "@medusajs/test-utils"
 import { RbacModuleService } from "@services"
 
 jest.setTimeout(30000)
-
-// The module is license gated, so it cannot be booted without a key.
-setTestLicense(["rbac"])
 
 moduleIntegrationTestRunner<IRbacModuleService>({
   moduleName: Modules.RBAC,
@@ -18,6 +20,7 @@ moduleIntegrationTestRunner<IRbacModuleService>({
   moduleOptions: {},
   injectedDependencies: {
     [Modules.EVENT_BUS]: new MockEventBusService(),
+    [ContainerRegistrationKeys.LICENSE]: testLicense([LicenseFeature.RBAC]),
   },
   testSuite: ({ service }) => {
     it.skip(`should export the appropriate linkable configuration`, () => {

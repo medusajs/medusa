@@ -30,7 +30,7 @@ export function Module<
     : InfersLinksConfig<ServiceName, ModelObjects>
 >(
   serviceName: ServiceName,
-  { service, loaders, licensedFeature }: ModuleExports<Service>
+  { service, loaders }: ModuleExports<Service>
 ): ModuleExports<Service> & {
   linkable: Linkable
 } {
@@ -75,7 +75,6 @@ export function Module<
   return {
     service,
     loaders,
-    licensedFeature,
     linkable,
   }
 }

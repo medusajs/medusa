@@ -275,10 +275,6 @@ async function start(args: {
         expressApp: app,
       })
 
-      void startLicenseRemoteCheck(
-        container.resolve(ContainerRegistrationKeys.LOGGER)
-      )
-
       if (generateTypes) {
         const typesDirectory = path.join(directory, ".medusa/types")
 
@@ -333,6 +329,7 @@ async function start(args: {
           logger.success(serverActivity, `Server is ready on port: ${port}`)
           displayAdminUrl({ container, host, port })
           track("CLI_START_COMPLETED")
+          void startLicenseRemoteCheck(container)
         })
       )
 
