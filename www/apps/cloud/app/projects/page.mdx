@@ -41,6 +41,7 @@ You can also start the project creation flow from the [command palette](../comma
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the **Create Project** button in your organization's dashboard.
+    - If your organization has no projects yet, the projects list instead shows a **Browse starters** card to [create a project from a starter](#1-create-project-from-a-starter), and an **Import repository** card to [create a project from an existing application](#2-create-project-from-an-existing-application).
 
 In the project-creation page, you can either [create from a starter](#1-create-project-from-a-starter) or [create from an existing application](#2-create-project-from-an-existing-application).
 
@@ -57,13 +58,20 @@ Medusa provides you with starter templates that you can use to quickly set up yo
 
 ### Browse and Select Templates
 
+Each starter template shows a **DTC** or **B2B** badge indicating its category.
+
 To create a project from a starter template:
 
-1. Click on the **Browse Starters** button at the top right of the [project creation page](#create-a-project).
-  - For each template, you can click on it to view more details, such as its features and the tech stack used in the storefront.
-2. Click the **Clone** button of the starter you want to use.
-3. If GitHub is not connected, you'll be directed to the [new project form](#2-create-project-from-an-existing-application) to set up the repository connection.
-4. If GitHub is already connected:
+1. Open the starter templates page in one of the following ways:
+  - Click on the **Browse Starters** button at the top right of the [project creation page](#create-a-project).
+  - If your organization has no projects yet, click on the **Browse starters** card in the projects list.
+2. Find the starter you want to use:
+  - To show only starters of a specific category, click the **DTC** or **B2B** filter button. Click **All** to show all starters again.
+  - To view more details about a starter, such as its features and the tech stack used in the storefront, click its **Preview** button.
+  - If you prefer to connect your own GitHub repository instead, click the **Import repository** button in the banner at the top of the page. This takes you to the [new project form](#2-create-project-from-an-existing-application).
+3. Click the **Deploy** button of the starter you want to use. While Medusa deploys the starter, the button shows the current phase, such as "Creating repository".
+4. If GitHub is not connected, you'll be directed to the [new project form](#2-create-project-from-an-existing-application) to set up the repository connection.
+5. If GitHub is already connected:
    - Choose a GitHub organization or account to clone the starter into in the "GitHub account" field.
    - In the "Repository name" field, enter a name for your new repository.
    - Once you're done, click the **Clone** button.
