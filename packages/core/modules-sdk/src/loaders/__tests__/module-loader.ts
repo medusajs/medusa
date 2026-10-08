@@ -270,4 +270,69 @@ describe("license gated modules", () => {
 
     expect(container.resolve(Modules.RBAC)).toBeDefined()
   })
+
+  describe("license gated providers", () => {
+    const providerResolutions = (
+      resolve: string
+    ): Record<string, ModuleResolution> => ({
+      [Modules.AUTH]: {
+        resolutionPath: require.resolve("../__mocks__/@modules/default"),
+        definition: {
+          key: Modules.AUTH,
+          defaultPackage: "auth",
+          label: "Auth",
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+          },
+        },
+        moduleDeclaration: {
+          scope: MODULE_SCOPE.INTERNAL,
+        },
+        options: {
+          providers: [{ resolve, id: "oidc" }],
+        },
+      },
+    })
+
+    it.each(["@medusajs/auth-oidc", "@medusajs/medusa/auth-oidc"])(
+      "refuses to load a module with the %s provider when no license is registered",
+      async (resolve) => {
+        const container = createMedusaContainer()
+
+        await expect(
+          moduleLoader({
+            container,
+            moduleResolutions: providerResolutions(resolve),
+            logger,
+          })
+        ).rejects.toThrow("is missing or could not be verified")
+      }
+    )
+
+    it("refuses to load a gated provider the license does not cover", async () => {
+      const container = createMedusaContainer()
+      registerLicense(container, ["rbac"])
+
+      await expect(
+        moduleLoader({
+          container,
+          moduleResolutions: providerResolutions("@medusajs/medusa/auth-oidc"),
+          logger,
+        })
+      ).rejects.toThrow('does not cover the "auth-oidc" feature')
+    })
+
+    it("does not gate a gated provider the license covers", async () => {
+      const container = createMedusaContainer()
+      registerLicense(container, ["auth-oidc"])
+
+      const error = await moduleLoader({
+        container,
+        moduleResolutions: providerResolutions("@medusajs/medusa/auth-oidc"),
+        logger,
+      }).catch((e) => e)
+
+      expect(error?.message ?? "").not.toContain("license")
+    })
+  })
 })

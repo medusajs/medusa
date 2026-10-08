@@ -79,14 +79,15 @@ type ResolvedModuleProvider = ModuleProviderExports & {
 }
 
 // Packages that only load when the license covers their feature. Modules are
-// keyed by module key, providers by package name, since a provider's
-// definition key is the id chosen in the config.
+// keyed by module key, providers by the specifier in `resolve`, since a
+// provider's definition key is the id chosen in the config.
 const LICENSED_MODULES: Record<string, LicenseFeature> = {
   [Modules.RBAC]: LicenseFeature.RBAC,
 }
 
 const LICENSED_PROVIDERS: Record<string, LicenseFeature> = {
   "@medusajs/auth-oidc": LicenseFeature.AUTH_OIDC,
+  "@medusajs/medusa/auth-oidc": LicenseFeature.AUTH_OIDC,
 }
 
 function licenseError(
@@ -175,16 +176,6 @@ async function loadInternalProvider(
       continue
     }
 
-    const providerLicenseError = licenseError(
-      container,
-      isString(providerRes) ? LICENSED_PROVIDERS[providerRes] : undefined
-    )
-
-    if (providerLicenseError) {
-      errors.push({ error: providerLicenseError })
-      continue
-    }
-
     const res = await loadInternalModule({
       container,
       resolution: {
@@ -246,13 +237,25 @@ export async function loadInternalModule(args: {
     ? resolution.definition.key
     : resolution.definition.key + "__loaderOnly"
 
-  const moduleLicenseError = licenseError(
-    container,
-    loadingProviders ? undefined : LICENSED_MODULES[resolution.definition.key]
-  )
+  // Checked against the shared container before anything is imported. Gated
+  // providers are checked with their module, since providers load into the
+  // module's local container, which has no license.
+  if (!loadingProviders) {
+    const providers = (resolution.options?.providers as ModuleProvider[]) ?? []
+    const features = [
+      LICENSED_MODULES[resolution.definition.key],
+      ...providers.map(({ resolve }) =>
+        isString(resolve) ? LICENSED_PROVIDERS[resolve] : undefined
+      ),
+    ]
 
-  if (moduleLicenseError) {
-    return { error: moduleLicenseError }
+    for (const feature of features) {
+      const error = licenseError(container, feature)
+
+      if (error) {
+        return { error }
+      }
+    }
   }
 
   const loadedModule = await resolveModuleExports({ resolution })
