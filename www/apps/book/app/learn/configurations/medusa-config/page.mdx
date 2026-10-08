@@ -191,7 +191,7 @@ When you disable `rejectUnauthorized`, make sure to also add `?ssl_mode=disable`
 
 #### AWS RDS IAM Database Authentication
 
-To use a dynamic password (for example, with AWS RDS IAM authentication), pass a `dynamicPassword` function that returns a fresh token for each new connection:
+To use a dynamic password (for example, with AWS RDS IAM authentication), pass a `dynamicPassword` function that returns a fresh token. Medusa calls it for each new database connection, including the connections that the `db:migrate`, `db:rollback`, `db:generate`, and `db:sync-links` commands open. Medusa ignores any password in the [databaseUrl](#databaseUrl):
 
 <Note>
 
@@ -200,14 +200,18 @@ This option is available since Medusa [v2.18.0](https://github.com/medusajs/medu
 </Note>
 
 ```ts title="medusa-config.ts"
+import { readFileSync } from "fs"
 import { generateAuthToken } from "./src/utils/rds-auth"
 
 module.exports = defineConfig({
   projectConfig: {
+    // No password or sslmode in the URL
+    databaseUrl: process.env.DATABASE_URL,
     databaseDriverOptions: {
       dynamicPassword: async () => generateAuthToken(),
-      expirationChecker: () => {
-        return tokenHasExpired()
+      // RDS certificates, untrusted by default
+      connection: {
+        ssl: { ca: readFileSync("global-bundle.pem", "utf8") },
       },
     },
     // ...
@@ -215,6 +219,12 @@ module.exports = defineConfig({
   // ...
 })
 ```
+
+<Note>
+
+The `db:create` command connects with the credentials in the `DATABASE_URL` variable of your `.env` file, and `plugin:db:generate` with the `DB_*` environment variables. Neither uses `dynamicPassword`. As `db:setup` runs `db:create` first, run `db:migrate` instead when the database already exists.
+
+</Note>
 
 #### Properties
 
@@ -286,7 +296,7 @@ module.exports = defineConfig({
     {
       name: "expirationChecker",
       type: "`() => boolean`",
-      description: `A function that returns \`true\` when a connection's credentials have expired. When this returns \`true\`, the connection pool creates a new connection and calls \`dynamicPassword\` to obtain fresh credentials. Available since v2.18.0.`
+      description: `Deprecated. This option has no effect, as Medusa calls \`dynamicPassword\` for each new database connection.`
     },
     {
       name: "idle_in_transaction_session_timeout",

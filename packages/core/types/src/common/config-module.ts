@@ -474,6 +474,28 @@ export type ProjectConfigOptions = {
        */
       ssl?: boolean | ConnectionOptions
     }
+    /**
+     * A function that returns the database password, such as an AWS RDS IAM
+     * token. Medusa calls it for each new connection and ignores any password
+     * in the database URL.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     databaseDriverOptions: {
+     *       dynamicPassword: () => signer.getAuthToken(),
+     *     },
+     *   },
+     * })
+     * ```
+     */
+    dynamicPassword?: () => string | Promise<string>
+    /**
+     * @deprecated Has no effect, as Medusa calls `dynamicPassword` for each
+     * new connection.
+     */
+    expirationChecker?: () => boolean
   }
 
   /**
