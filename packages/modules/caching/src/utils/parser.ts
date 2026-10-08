@@ -127,7 +127,10 @@ export class CacheInvalidationParser {
    * Detect entity type based on object structure and GraphQL type map
    */
   private detectEntityType(obj: any, suggestedType?: string): string | null {
-    if (obj.id) {
+    // Ids are not guaranteed to be strings: read-only relationships can expose
+    // numeric ids (e.g. a CMS row with a numeric primary key). Only prefix
+    // detection relies on the `prefix_value` convention, so guard the split.
+    if (typeof obj.id === "string") {
       const idParts = obj.id.split("_")
       if (idParts.length > 1 && this.idPrefixToEntityName[idParts[0]]) {
         return this.idPrefixToEntityName[idParts[0]]

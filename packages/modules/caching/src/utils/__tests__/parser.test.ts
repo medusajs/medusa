@@ -277,6 +277,37 @@ describe("CacheInvalidationParser", () => {
         isInArray: false,
       })
     })
+
+    it("should not throw when a nested entity has a numeric id", () => {
+      const product = {
+        id: "prod_123",
+        title: "Test Product",
+        cms: { id: 123, meta_description: "Example description" },
+      }
+
+      expect(() => parser.parseObjectForEntities(product)).not.toThrow()
+
+      const entities = parser.parseObjectForEntities(product)
+      expect(entities).toContainEqual({
+        type: "Product",
+        id: "prod_123",
+        isInArray: false,
+      })
+    })
+
+    it("should detect a top-level entity with a numeric id", () => {
+      const product = {
+        id: 123,
+        title: "Test Product",
+      }
+
+      const entities = parser.parseObjectForEntities(product)
+      expect(entities).toContainEqual({
+        type: "Product",
+        id: 123,
+        isInArray: false,
+      })
+    })
   })
 
   describe("buildInvalidationEvents", () => {
