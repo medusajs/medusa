@@ -100,7 +100,15 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Organizations",
             "path": "/organizations",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Connections",
+                "path": "/organizations/connections",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,

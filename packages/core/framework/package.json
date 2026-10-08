@@ -89,7 +89,7 @@
     "@medusajs/workflows-sdk": "2.21.2",
     "@types/express": "^4.17.21",
     "chokidar": "^4.0.3",
-    "compression": "^1.8.1",
+    "compression": "^1.8.2",
     "connect-dynamodb": "^3.0.5",
     "connect-redis": "5.2.0",
     "cookie-parser": "^1.4.6",
