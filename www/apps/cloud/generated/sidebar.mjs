@@ -54,6 +54,21 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Changelog",
+            "path": "/changelog",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "AI Tools",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Cloud Assistant",
             "path": "/assistant",
             "children": []
@@ -81,18 +96,25 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
+                "title": "n8n",
+                "path": "/medusa-mcp/n8n",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
                 "title": "Custom Agents",
                 "path": "/medusa-mcp/custom-agents",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Retrieve Custom Data",
+                "path": "/medusa-mcp/custom-data",
+                "children": []
               }
             ]
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Changelog",
-            "path": "/changelog",
-            "children": []
           }
         ]
       },
