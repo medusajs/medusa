@@ -1,6 +1,6 @@
 export const generatedEditDates = {
   "app/page.mdx": "2026-10-02T15:50:10.882Z",
-  "app/projects/page.mdx": "2026-09-28T13:11:06.269Z",
+  "app/projects/page.mdx": "2026-10-07T09:20:21.577Z",
   "app/environments/page.mdx": "2026-05-27T17:17:14.724Z",
   "app/deployments/page.mdx": "2026-09-10T12:21:00.639Z",
   "app/organizations/page.mdx": "2026-10-02T15:50:14.159Z",
@@ -55,7 +55,7 @@ export const generatedEditDates = {
   "app/access-keys/page.mdx": "2026-04-29T09:09:42.629Z",
   "app/cli/agents/page.mdx": "2026-07-15T14:47:29.910Z",
   "app/deployments/fix-with-ai/page.mdx": "2026-08-18T10:35:40.845Z",
-  "app/first-project/page.mdx": "2026-07-30T08:13:38.734Z",
+  "app/first-project/page.mdx": "2026-10-06T18:50:17.091Z",
   "app/cli/commands/local/page.mdx": "2026-07-28T10:28:59.437Z",
   "app/cli/changelog/page.mdx": "2026-07-28T10:28:43.318Z",
   "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z",
