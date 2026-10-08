@@ -31074,7 +31074,7 @@ Your AI agent then retrieves the relevant data from your store and presents it t
 
 The agent's access is read-only. It can retrieve data from your store, but it can't create, update, or delete data.
 
-Store access for AI agents is in early access. If it isn't enabled for your organization, refer to the [Medusa MCP](undefined/cloud/medusa-mcp#connect-to-the-medusa-mcp-server) guide to request access and rebuild your environments.
+Store access for AI agents is in beta access. Before you connect AI agents to your store, rebuild the environments that you want to connect, as explained in the [Medusa MCP](https://docs.medusajs.com/cloud/medusa-mcp#step-1-rebuild-environments/index.html.md) guide.
 
 ### How to Connect AI Agents to Your Store
 
@@ -54096,7 +54096,7 @@ Each key in the `translations` object corresponds to a property in the product r
 
 ### Update Translations
 
-When you update a translation, for example, with the Translation Module's `updateTranslations` method or the [batchTranslationsWorkflow](undefined/references/medusa-workflows/batchTranslationsWorkflow), Medusa merges the `translations` object you pass into the existing `translations` object. It doesn't replace the entire object.
+When you update a translation, for example, with the Translation Module's `updateTranslations` method or the [batchTranslationsWorkflow](https://docs.medusajs.com/references/medusa-workflows/batchTranslationsWorkflow/index.html.md), Medusa merges the `translations` object you pass into the existing `translations` object. It doesn't replace the entire object.
 
 So, the update only changes the keys you pass. Keys that you omit keep their existing translated values.
 
