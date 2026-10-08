@@ -13,13 +13,18 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Use a PAT so the created PR triggers other workflows
-          # (the default GITHUB_TOKEN cannot trigger workflow runs)
-          token: ${{ secrets.REFERENCE_PAT }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -243,7 +248,7 @@ jobs:
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
-          token: ${{ secrets.REFERENCE_PAT }}
+          token: ${{ steps.app-token.outputs.token }}
           commit-message: "chore(docs): automated cloud documentation update"
           base: develop
           branch: docs/cloud-docs
