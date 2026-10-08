@@ -1,9 +1,9 @@
 export const generatedEditDates = {
   "app/page.mdx": "2026-10-02T15:50:10.882Z",
-  "app/projects/page.mdx": "2026-10-07T09:20:21.577Z",
+  "app/projects/page.mdx": "2026-10-07T16:01:34.304Z",
   "app/environments/page.mdx": "2026-05-27T17:17:14.724Z",
   "app/deployments/page.mdx": "2026-09-10T12:21:00.639Z",
-  "app/organizations/page.mdx": "2026-10-02T15:50:14.159Z",
+  "app/organizations/page.mdx": "2026-10-07T16:01:20.015Z",
   "app/notifications/page.mdx": "2025-10-15T15:25:33.672Z",
   "app/database/page.mdx": "2026-09-30T08:54:02.601Z",
   "app/redis/page.mdx": "2026-04-17T09:45:49.836Z",
@@ -19,7 +19,7 @@ export const generatedEditDates = {
   "app/usage/page.mdx": "2026-09-25T14:24:36.389Z",
   "app/billing/manage/page.mdx": "2026-05-27T00:37:24.600Z",
   "app/pricing/page.mdx": "2026-09-25T08:17:41.958Z",
-  "app/sign-up/page.mdx": "2026-10-02T15:50:08.280Z",
+  "app/sign-up/page.mdx": "2026-10-07T16:01:19.125Z",
   "app/comparison/page.mdx": "2026-08-18T10:36:02.526Z",
   "app/billing/plans/page.mdx": "2026-09-30T09:50:01.826Z",
   "app/cache/page.mdx": "2026-07-28T05:58:03.886Z",
@@ -55,7 +55,7 @@ export const generatedEditDates = {
   "app/access-keys/page.mdx": "2026-04-29T09:09:42.629Z",
   "app/cli/agents/page.mdx": "2026-07-15T14:47:29.910Z",
   "app/deployments/fix-with-ai/page.mdx": "2026-08-18T10:35:40.845Z",
-  "app/first-project/page.mdx": "2026-10-06T18:50:17.091Z",
+  "app/first-project/page.mdx": "2026-10-07T16:01:16.971Z",
   "app/cli/commands/local/page.mdx": "2026-07-28T10:28:59.437Z",
   "app/cli/changelog/page.mdx": "2026-07-28T10:28:43.318Z",
   "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z",
@@ -79,8 +79,9 @@ export const generatedEditDates = {
   "app/search/settings/page.mdx": "2026-09-22T11:09:25.272Z",
   "app/mermaid-icon-test/page.mdx": "2026-09-15T06:44:06.483Z",
   "app/search/analytics/page.mdx": "2026-09-22T11:07:49.287Z",
-  "app/medusa-mcp/chatgpt/page.mdx": "2026-10-02T08:36:19.389Z",
-  "app/medusa-mcp/claude/page.mdx": "2026-10-02T13:23:53.700Z",
-  "app/medusa-mcp/page.mdx": "2026-10-05T16:01:35.434Z",
-  "app/organizations/connections/page.mdx": "2026-10-05T16:01:40.323Z"
+  "app/medusa-mcp/chatgpt/page.mdx": "2026-10-08T07:46:41.587Z",
+  "app/medusa-mcp/claude/page.mdx": "2026-10-08T07:46:41.587Z",
+  "app/medusa-mcp/page.mdx": "2026-10-08T07:46:04.339Z",
+  "app/organizations/connections/page.mdx": "2026-10-08T07:45:03.390Z",
+  "app/medusa-mcp/custom-agents/page.mdx": "2026-10-08T07:45:11.588Z"
 }

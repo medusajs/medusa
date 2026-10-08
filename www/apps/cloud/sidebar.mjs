@@ -59,6 +59,11 @@ export const sidebar = [
                 title: "ChatGPT App",
                 path: "/medusa-mcp/chatgpt",
               },
+              {
+                type: "link",
+                title: "Custom Agents",
+                path: "/medusa-mcp/custom-agents",
+              },
             ],
           },
           {
