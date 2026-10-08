@@ -277,6 +277,47 @@ describe("CacheInvalidationParser", () => {
         isInArray: false,
       })
     })
+
+    it("should detect nested entities with numeric ids by type", () => {
+      // Custom modules backed by external systems (e.g. a CMS) can return
+      // numeric ids, which cannot be matched by id prefix
+      const product = {
+        id: "prod_123",
+        title: "Test Product",
+        collection: {
+          id: 42,
+          title: "CMS Collection",
+        },
+      }
+
+      const entities = parser.parseObjectForEntities(product)
+
+      expect(entities).toHaveLength(2)
+      expect(entities).toContainEqual({
+        type: "Product",
+        id: "prod_123",
+        isInArray: false,
+      })
+      expect(entities).toContainEqual({
+        type: "ProductCollection",
+        id: 42,
+        isInArray: false,
+      })
+    })
+
+    it("should not throw on numeric ids that match no known type", () => {
+      const product = {
+        id: "prod_123",
+        title: "Test Product",
+        cms_content: [{ id: 7, body: "Hello", author_ref: 3 }],
+      }
+
+      const entities = parser.parseObjectForEntities(product)
+
+      expect(entities).toEqual([
+        { type: "Product", id: "prod_123", isInArray: false },
+      ])
+    })
   })
 
   describe("buildInvalidationEvents", () => {

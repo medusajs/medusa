@@ -127,7 +127,10 @@ export class CacheInvalidationParser {
    * Detect entity type based on object structure and GraphQL type map
    */
   private detectEntityType(obj: any, suggestedType?: string): string | null {
-    if (obj.id) {
+    // Only string ids can carry a prefix. Entities from custom modules backed
+    // by external systems may have numeric ids, which fall through to the
+    // type-based detection below.
+    if (typeof obj.id === "string") {
       const idParts = obj.id.split("_")
       if (idParts.length > 1 && this.idPrefixToEntityName[idParts[0]]) {
         return this.idPrefixToEntityName[idParts[0]]
