@@ -6,12 +6,6 @@ import {
   MEDUSA_CLOUD_EXECUTION_CONTEXT,
 } from "@medusajs/framework/utils"
 
-/**
- * Asks Medusa Cloud whether the configured license key still entitles this
- * instance. Fired in the background after boot so it never delays startup:
- * network failures fail open, and only a definitive negative from Cloud past
- * its grace window stops the process.
- */
 export async function startLicenseRemoteCheck(logger: Logger): Promise<void> {
   if (process.env.EXECUTION_CONTEXT === MEDUSA_CLOUD_EXECUTION_CONTEXT) {
     return
@@ -36,29 +30,10 @@ export async function startLicenseRemoteCheck(logger: Logger): Promise<void> {
       return
     }
 
-    if (response.status === "invalid") {
-      logger.error(
-        "The configured license key was not issued by Medusa: Medusa Cloud does not recognize it. Contact support@medusajs.com for more information."
-      )
-      process.exit(1)
-    }
-
-    const expiredAt = response.expires_at ? ` on ${response.expires_at}` : ""
-    const graceUntil = response.grace_until
-      ? new Date(response.grace_until)
-      : null
-
-    if (graceUntil && graceUntil.getTime() > Date.now()) {
-      logger.warn(
-        `The configured license key no longer entitles this instance: the license is ${
-          response.status
-        }${expiredAt}. Licensed features stop loading at boot after ${graceUntil.toISOString()}. To renew the license, contact support@medusajs.com.`
-      )
-      return
-    }
-
     logger.error(
-      `The configured license key no longer entitles this instance: the license is ${response.status}${expiredAt} and its grace window has passed. To renew the license, contact support@medusajs.com.`
+      response.status === "invalid"
+        ? "The configured license key was not issued by Medusa: Medusa Cloud does not recognize it. Contact support@medusajs.com for more information."
+        : "The configured license key no longer entitles this instance: the plan it was issued for no longer covers the licensed features in use. To renew the license, contact support@medusajs.com."
     )
     process.exit(1)
   } catch (error) {

@@ -1,5 +1,9 @@
-import { LicenseKeyEnvVars, resetLicenseState } from "@medusajs/framework/utils"
-import { generateKeyPairSync, randomBytes, sign } from "crypto"
+import {
+  LICENSE_KEY_ENV_VAR,
+  resetLicenseState,
+  setLicensePublicKey,
+} from "@medusajs/framework/utils"
+import { generateKeyPairSync, sign } from "crypto"
 
 function toSegment(value: object): string {
   return Buffer.from(JSON.stringify(value), "utf-8").toString("base64url")
@@ -7,21 +11,15 @@ function toSegment(value: object): string {
 
 /**
  * Test helper. Signs a license key covering `features` with an ephemeral
- * Ed25519 key pair and points both license env vars at it, so suites can boot
- * modules guarded by `assertLicensed` without a real key.
+ * Ed25519 key pair and sets it as `MEDUSA_LICENSE_KEY`
  *
  * @internal
  */
 export function setTestLicense(features: string[]): void {
   const { publicKey, privateKey } = generateKeyPairSync("ed25519")
 
-  const headerSegment = toSegment({ alg: "EdDSA", kid: "test-license" })
-  const payloadSegment = toSegment({
-    sub: "org_test",
-    jti: `lic_${randomBytes(8).toString("hex")}`,
-    features,
-    iat: Math.floor(Date.now() / 1000),
-  })
+  const headerSegment = toSegment({ alg: "EdDSA" })
+  const payloadSegment = toSegment({ sub: "org_test", features })
   const signature = sign(
     null,
     Buffer.from(`${headerSegment}.${payloadSegment}`, "utf-8"),
@@ -29,24 +27,21 @@ export function setTestLicense(features: string[]): void {
   ).toString("base64url")
 
   process.env[
-    LicenseKeyEnvVars.KEY
+    LICENSE_KEY_ENV_VAR
   ] = `${headerSegment}.${payloadSegment}.${signature}`
-  process.env[LicenseKeyEnvVars.PUBLIC_KEY] = publicKey
-    .export({ type: "spki", format: "pem" })
-    .toString()
-
-  resetLicenseState()
+  setLicensePublicKey(
+    publicKey.export({ type: "spki", format: "pem" }).toString()
+  )
 }
 
 /**
- * Test helper. Removes the env vars set by `setTestLicense` and drops the
- * cached license state, leaving the process without a license key.
+ * Test helper. Removes the key set by `setTestLicense` and restores the
+ * default license state
  *
  * @internal
  */
 export function clearTestLicense(): void {
-  delete process.env[LicenseKeyEnvVars.KEY]
-  delete process.env[LicenseKeyEnvVars.PUBLIC_KEY]
+  delete process.env[LICENSE_KEY_ENV_VAR]
 
   resetLicenseState()
 }

@@ -1,15 +1,14 @@
 import { generateKeyPairSync, KeyObject, sign } from "crypto"
 import { assertLicensed } from "../assert-licensed"
 import { checkLicenseRemote } from "../check-license-remote"
-import { resetLicenseState } from "../license-state"
+import { LICENSE_CHECK_URL } from "../constants"
+import { resetLicenseState, setLicensePublicKey } from "../license-state"
 import { verifyLicenseKey } from "../verify-license-key"
 
 const { publicKey, privateKey } = generateKeyPairSync("ed25519")
 const publicPem = publicKey.export({ type: "spki", format: "pem" }).toString()
 
 const otherKeyPair = generateKeyPairSync("ed25519")
-
-const LICENSE_ENV_VARS = ["MEDUSA_LICENSE_KEY", "MEDUSA_LICENSE_PUBLIC_KEY"]
 
 function toSegment(value: object): string {
   return Buffer.from(JSON.stringify(value), "utf-8").toString("base64url")
@@ -18,7 +17,7 @@ function toSegment(value: object): string {
 function signToken(
   claims: object,
   key: KeyObject = privateKey,
-  header: object = { alg: "EdDSA", kid: "test-key" }
+  header: object = { alg: "EdDSA" }
 ): string {
   const headerSegment = toSegment(header)
   const payloadSegment = toSegment(claims)
@@ -33,33 +32,20 @@ function signToken(
 
 const validClaims = {
   sub: "org_01",
-  jti: "lic_abc123",
-  features: ["rbac", "auth-oidc"],
-  iat: 1700000000,
+  features: ["auth-oidc", "rbac"],
 }
 
-beforeEach(() => {
-  process.env.MEDUSA_LICENSE_PUBLIC_KEY = publicPem
-})
-
 afterEach(() => {
-  for (const name of LICENSE_ENV_VARS) {
-    delete process.env[name]
-  }
+  delete process.env.MEDUSA_LICENSE_KEY
 
   resetLicenseState()
 })
 
 describe("verifyLicenseKey", () => {
   it("returns the claims of an authentic token", () => {
-    expect(verifyLicenseKey(signToken(validClaims))).toEqual(validClaims)
-  })
-
-  it("returns the claims of an authentic token whose exp is in the past", () => {
-    // Authenticity is not freshness: expiry is decided by the remote check.
-    const expiredClaims = { ...validClaims, exp: 1700000001 }
-
-    expect(verifyLicenseKey(signToken(expiredClaims))).toEqual(expiredClaims)
+    expect(verifyLicenseKey(signToken(validClaims), publicKey)).toEqual(
+      validClaims
+    )
   })
 
   it("returns null when the payload was tampered with", () => {
@@ -71,13 +57,13 @@ describe("verifyLicenseKey", () => {
       signatureSegment,
     ].join(".")
 
-    expect(verifyLicenseKey(tampered)).toBeNull()
+    expect(verifyLicenseKey(tampered, publicKey)).toBeNull()
   })
 
   it("returns null when the token was signed by another key", () => {
     const token = signToken(validClaims, otherKeyPair.privateKey)
 
-    expect(verifyLicenseKey(token)).toBeNull()
+    expect(verifyLicenseKey(token, publicKey)).toBeNull()
   })
 
   it("returns null for a malformed token", () => {
@@ -85,65 +71,51 @@ describe("verifyLicenseKey", () => {
       validClaims
     )}`
 
-    expect(verifyLicenseKey("")).toBeNull()
-    expect(verifyLicenseKey("not-a-token")).toBeNull()
-    expect(verifyLicenseKey(twoSegments)).toBeNull()
-    expect(verifyLicenseKey("!!!.???.***")).toBeNull()
-    expect(verifyLicenseKey(`${signToken(validClaims)}.extra`)).toBeNull()
+    expect(verifyLicenseKey("", publicKey)).toBeNull()
+    expect(verifyLicenseKey("not-a-token", publicKey)).toBeNull()
+    expect(verifyLicenseKey(twoSegments, publicKey)).toBeNull()
+    expect(verifyLicenseKey("!!!.???.***", publicKey)).toBeNull()
+    expect(
+      verifyLicenseKey(`${signToken(validClaims)}.extra`, publicKey)
+    ).toBeNull()
   })
 
   it("returns null when the algorithm is not EdDSA", () => {
-    const token = signToken(validClaims, privateKey, {
-      alg: "HS256",
-      kid: "test-key",
-    })
+    const token = signToken(validClaims, privateKey, { alg: "HS256" })
 
-    expect(verifyLicenseKey(token)).toBeNull()
+    expect(verifyLicenseKey(token, publicKey)).toBeNull()
   })
 
-  it("returns null when structural claims are missing or malformed", () => {
+  it("returns null when the claims are missing or malformed", () => {
     const malformedClaims = [
-      { jti: "lic_1", features: [], iat: 1 },
-      { sub: "org_1", features: [], iat: 1 },
-      { sub: "org_1", jti: "lic_1", features: [] },
-      { ...validClaims, jti: 123 },
-      { ...validClaims, features: "rbac" },
-      { ...validClaims, features: ["rbac", 1] },
+      { features: ["rbac"] },
+      { sub: "org_1" },
+      { sub: 1, features: ["rbac"] },
+      { sub: "org_1", features: "rbac" },
+      { sub: "org_1", features: ["rbac", 1] },
     ]
 
     for (const claims of malformedClaims) {
-      expect(verifyLicenseKey(signToken(claims))).toBeNull()
+      expect(verifyLicenseKey(signToken(claims), publicKey)).toBeNull()
     }
-  })
-
-  it("returns null when the public key env var is missing or malformed", () => {
-    const token = signToken(validClaims)
-
-    delete process.env.MEDUSA_LICENSE_PUBLIC_KEY
-    expect(verifyLicenseKey(token)).toBeNull()
-
-    process.env.MEDUSA_LICENSE_PUBLIC_KEY = "not-a-pem"
-    expect(verifyLicenseKey(token)).toBeNull()
   })
 })
 
 describe("assertLicensed", () => {
   it("throws when no license key is set", () => {
-    expect(() => assertLicensed("rbac")).toThrow(/must be set and valid/)
+    expect(() => assertLicensed("rbac")).toThrow(/could not be verified/)
   })
 
-  it("throws and names both env vars when the key cannot be verified", () => {
-    process.env.MEDUSA_LICENSE_KEY = signToken(
-      validClaims,
-      otherKeyPair.privateKey
-    )
+  it("throws when the key was not signed by Medusa Cloud", () => {
+    process.env.MEDUSA_LICENSE_KEY = signToken(validClaims)
 
     expect(() => assertLicensed("rbac")).toThrow(
-      /Both MEDUSA_LICENSE_KEY and MEDUSA_LICENSE_PUBLIC_KEY must be set and valid/
+      /could not be verified\. Set MEDUSA_LICENSE_KEY/
     )
   })
 
   it("throws when the license key does not cover the feature", () => {
+    setLicensePublicKey(publicPem)
     process.env.MEDUSA_LICENSE_KEY = signToken({
       ...validClaims,
       features: ["auth-oidc"],
@@ -155,6 +127,7 @@ describe("assertLicensed", () => {
   })
 
   it("passes when the license key covers the feature", () => {
+    setLicensePublicKey(publicPem)
     process.env.MEDUSA_LICENSE_KEY = signToken(validClaims)
 
     expect(() => assertLicensed("rbac")).not.toThrow()
@@ -180,15 +153,19 @@ describe("checkLicenseRemote", () => {
     })
   }
 
-  it("returns the parsed body on 200", async () => {
-    const body = {
-      status: "expired",
-      expires_at: "2026-01-01T00:00:00.000Z",
-      grace_until: "2026-01-15T00:00:00.000Z",
-    }
-    mockResponse(200, body)
+  it("posts to the remote endpoint and returns the status", async () => {
+    mockResponse(200, { status: "revoked" })
 
-    await expect(checkLicenseRemote("token")).resolves.toEqual(body)
+    await expect(checkLicenseRemote("token")).resolves.toEqual({
+      status: "revoked",
+    })
+    expect(global.fetch).toHaveBeenCalledWith(
+      LICENSE_CHECK_URL,
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({ license_key: "token" }),
+      })
+    )
   })
 
   it("returns null on a non-2xx response", async () => {
@@ -228,12 +205,10 @@ describe("checkLicenseRemote", () => {
   })
 
   it("returns null on an unknown status", async () => {
-    mockResponse(200, { status: "something-else" })
+    for (const body of [{ status: "expired" }, { status: 1 }, {}]) {
+      mockResponse(200, body)
 
-    await expect(checkLicenseRemote("token")).resolves.toBeNull()
-
-    mockResponse(200, {})
-
-    await expect(checkLicenseRemote("token")).resolves.toBeNull()
+      await expect(checkLicenseRemote("token")).resolves.toBeNull()
+    }
   })
 })

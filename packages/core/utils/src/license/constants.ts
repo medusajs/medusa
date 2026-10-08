@@ -6,12 +6,13 @@ export const LicenseFeature = {
 export type LicenseFeature =
   (typeof LicenseFeature)[keyof typeof LicenseFeature]
 
-export const LICENSE_CHECK_URL =
-  "https://api.staging.medusajs.cloud/v1/subscriptions/license/check"
+export const LICENSE_KEY_ENV_VAR = "MEDUSA_LICENSE_KEY"
 
-export const LicenseKeyEnvVars = {
-  KEY: "MEDUSA_LICENSE_KEY",
-  PUBLIC_KEY: "MEDUSA_LICENSE_PUBLIC_KEY",
-} as const
+export const LICENSE_CHECK_URL =
+  "https://api.staging.medusajs.cloud/v1/license/check"
+
+export const LICENSE_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
+MCowBQYDK2VwAyEAf9qSwDtZzl7mYI1Gf8FuT6acJWmpeIjVfHzPYqT8ZqE=
+-----END PUBLIC KEY-----`
 
 export const LICENSE_CHECK_ERROR_CODE = "LICENSE_CHECK_ERROR"

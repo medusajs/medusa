@@ -3,6 +3,7 @@ import {
   createMedusaContainer,
   getRegisteredLicensedFeatures,
   resetLicenseState,
+  setLicensePublicKey,
 } from "@medusajs/utils"
 import { MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
@@ -227,13 +228,8 @@ describe("license gated modules", () => {
     const toSegment = (value: object): string =>
       Buffer.from(JSON.stringify(value), "utf-8").toString("base64url")
 
-    const headerSegment = toSegment({ alg: "EdDSA", kid: "test-key" })
-    const payloadSegment = toSegment({
-      sub: "org_test",
-      jti: "lic_test",
-      features,
-      iat: Math.floor(Date.now() / 1000),
-    })
+    const headerSegment = toSegment({ alg: "EdDSA" })
+    const payloadSegment = toSegment({ sub: "org_test", features })
     const signature = sign(
       null,
       Buffer.from(`${headerSegment}.${payloadSegment}`, "utf-8"),
@@ -241,11 +237,9 @@ describe("license gated modules", () => {
     ).toString("base64url")
 
     process.env.MEDUSA_LICENSE_KEY = `${headerSegment}.${payloadSegment}.${signature}`
-    process.env.MEDUSA_LICENSE_PUBLIC_KEY = publicKey
-      .export({ type: "spki", format: "pem" })
-      .toString()
-
-    resetLicenseState()
+    setLicensePublicKey(
+      publicKey.export({ type: "spki", format: "pem" }).toString()
+    )
   }
 
   const buildResolutions = (): Record<string, ModuleResolution> => ({
@@ -267,7 +261,6 @@ describe("license gated modules", () => {
 
   afterEach(() => {
     delete process.env.MEDUSA_LICENSE_KEY
-    delete process.env.MEDUSA_LICENSE_PUBLIC_KEY
 
     resetLicenseState()
   })

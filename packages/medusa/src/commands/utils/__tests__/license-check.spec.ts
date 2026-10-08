@@ -21,7 +21,7 @@ const loadLicenseMock = loadLicense as jest.Mock
 const validLicense = {
   status: "valid",
   token: "token",
-  claims: { sub: "org_test", jti: "lic_test", features: ["rbac"], iat: 1 },
+  claims: { sub: "org_test", features: ["rbac"] },
 }
 
 function run(): Promise<void> & {
@@ -85,7 +85,7 @@ describe("startLicenseRemoteCheck", () => {
 
   it("skips the check when the local license is not valid", async () => {
     loadLicenseMock.mockReturnValue({
-      status: "none",
+      status: "invalid",
       claims: null,
       token: null,
     })
@@ -93,6 +93,14 @@ describe("startLicenseRemoteCheck", () => {
     await run()
 
     expect(checkLicenseRemoteMock).not.toHaveBeenCalled()
+  })
+
+  it("sends the configured license key", async () => {
+    mockResponse({ status: "active" })
+
+    await run()
+
+    expect(checkLicenseRemoteMock).toHaveBeenCalledWith("token")
   })
 
   it("fails open when Cloud is unreachable", async () => {
@@ -106,7 +114,7 @@ describe("startLicenseRemoteCheck", () => {
   })
 
   it("stays silent on an active license", async () => {
-    mockResponse({ status: "active", expires_at: "2027-01-01T00:00:00.000Z" })
+    mockResponse({ status: "active" })
 
     const task = run()
     await task
@@ -127,45 +135,15 @@ describe("startLicenseRemoteCheck", () => {
     expect(exit).toHaveBeenCalledWith(1)
   })
 
-  it("warns without exiting on an expired license within its grace window", async () => {
-    const graceUntil = new Date(Date.now() + 24 * 60 * 60 * 1000)
-    mockResponse({
-      status: "expired",
-      expires_at: "2026-01-01T00:00:00.000Z",
-      grace_until: graceUntil.toISOString(),
-    })
-
-    const task = run()
-    await task
-
-    expect(task.logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining(graceUntil.toISOString())
-    )
-    expect(exit).not.toHaveBeenCalled()
-  })
-
-  it("exits on an expired license past its grace window", async () => {
-    mockResponse({
-      status: "expired",
-      expires_at: "2026-01-01T00:00:00.000Z",
-      grace_until: "2026-01-08T00:00:00.000Z",
-    })
-
-    const task = run()
-    await task
-
-    expect(task.logger.error).toHaveBeenCalledWith(
-      expect.stringContaining("grace window has passed")
-    )
-    expect(exit).toHaveBeenCalledWith(1)
-  })
-
-  it("exits on a revoked license without a grace window", async () => {
+  it("exits on a revoked license", async () => {
     mockResponse({ status: "revoked" })
 
     const task = run()
     await task
 
+    expect(task.logger.error).toHaveBeenCalledWith(
+      expect.stringContaining("no longer entitles this instance")
+    )
     expect(exit).toHaveBeenCalledWith(1)
   })
 

@@ -5,27 +5,18 @@ const DEFAULT_TIMEOUT = 5000
 
 const KNOWN_STATUSES = new Set<LicenseCheckStatus>([
   "active",
-  "expired",
   "revoked",
   "invalid",
 ])
 
-/**
- * Asks the Medusa Cloud license endpoint whether `token` still entitles this
- * instance. Returns `null` on any failure: network error, timeout, non-2xx,
- * unparsable body, or an unrecognized status. Callers are expected to fail
- * open on `null`.
- */
 export async function checkLicenseRemote(
-  token: string
+  licenseKey: string
 ): Promise<LicenseCheckResponse | null> {
-  const url = LICENSE_CHECK_URL
-
   try {
-    const response = await fetch(url, {
+    const response = await fetch(LICENSE_CHECK_URL, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ license_key: licenseKey }),
       signal: AbortSignal.timeout(DEFAULT_TIMEOUT),
     })
 
@@ -39,7 +30,7 @@ export async function checkLicenseRemote(
       return null
     }
 
-    return body as LicenseCheckResponse
+    return { status: body.status }
   } catch {
     return null
   }

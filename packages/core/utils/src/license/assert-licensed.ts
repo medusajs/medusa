@@ -1,5 +1,5 @@
 import { MedusaError } from "../common/errors"
-import { LICENSE_CHECK_ERROR_CODE, LicenseKeyEnvVars } from "./constants"
+import { LICENSE_CHECK_ERROR_CODE, LICENSE_KEY_ENV_VAR } from "./constants"
 import { loadLicense } from "./license-state"
 
 const OBTAIN_KEY_HINT = "Contact support@medusajs.com for more information."
@@ -20,7 +20,7 @@ export function assertLicensed(feature: string): void {
 
   if (state.status === "invalid") {
     throw licenseCheckError(
-      `The Medusa license key required by the "${feature}" feature could not be verified. Both ${LicenseKeyEnvVars.KEY} and ${LicenseKeyEnvVars.PUBLIC_KEY} must be set and valid.`
+      `The Medusa license key required by the "${feature}" feature could not be verified. Set ${LICENSE_KEY_ENV_VAR} to the license key issued for your organization.`
     )
   }
 
