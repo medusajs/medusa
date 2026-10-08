@@ -153,6 +153,12 @@ class MedusaTestRunner {
       logger.info(`Creating database ${this.dbName}`)
       await this.dbUtils.create(this.dbName)
       this.dbUtils.pgConnection_ = await initDb()
+
+      if (this.schema !== "public") {
+        await this.dbUtils.pgConnection_.raw(
+          `CREATE SCHEMA IF NOT EXISTS "${this.schema}"`
+        )
+      }
     } catch (error) {
       logger.error(`Error initializing database:\n${formatError(error)}`)
       await this.cleanup()
