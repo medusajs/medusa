@@ -28,7 +28,15 @@ export const createRemoteLinkStep = createStep(
       return new StepResponse([], [])
     }
 
-    await link.create(data)
+    try {
+      await link.create(data)
+    } catch (error) {
+      // Link creation fans out across modules, so one module may have
+      // committed its link before another module fails. Clean up any links
+      // that may have been written before rethrowing the original error.
+      await link.dismiss(data)
+      throw error
+    }
 
     return new StepResponse(data, data)
   },
