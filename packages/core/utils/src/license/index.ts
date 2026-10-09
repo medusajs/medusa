@@ -10,12 +10,13 @@ export type LicenseFeature =
   (typeof LicenseFeature)[keyof typeof LicenseFeature]
 
 export const LICENSE_KEY_ENV_VAR = "MEDUSA_LICENSE_KEY"
+export const LICENSE_PUBLIC_KEY_ENV_VAR = "MEDUSA_LICENSE_PUBLIC_KEY"
 
 export const LICENSE_CHECK_ERROR_CODE = "LICENSE_CHECK_ERROR"
 
-const MEDUSA_PUBLIC_KEY = createPublicKey(`-----BEGIN PUBLIC KEY-----
+const MEDUSA_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
 MCowBQYDK2VwAyEAnRoePLA0drIdxYPM9LJoNeyMFPe+CLBEXsYP164ZHKA=
------END PUBLIC KEY-----`)
+-----END PUBLIC KEY-----`
 
 const SIGNATURE_ALGORITHM = "EdDSA"
 const OBTAIN_KEY_HINT = "Contact support@medusajs.com for more information."
@@ -52,11 +53,13 @@ function isLicenseClaims(claims: unknown): claims is LicenseClaims {
  *
  * @param token - The license key. Defaults to `MEDUSA_LICENSE_KEY`.
  * @param publicKey - The key the signature is verified against. Defaults to
- * the Medusa public key.
+ * `MEDUSA_LICENSE_PUBLIC_KEY`, or the Medusa public key when it is not set.
  */
 export function loadLicense(
   token: string | undefined = process.env[LICENSE_KEY_ENV_VAR],
-  publicKey: KeyObject = MEDUSA_PUBLIC_KEY
+  publicKey: KeyObject = createPublicKey(
+    process.env[LICENSE_PUBLIC_KEY_ENV_VAR] || MEDUSA_PUBLIC_KEY
+  )
 ): License | null {
   if (!token) {
     return null

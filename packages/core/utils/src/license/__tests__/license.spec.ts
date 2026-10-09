@@ -31,6 +31,7 @@ const validClaims = {
 
 afterEach(() => {
   delete process.env.MEDUSA_LICENSE_KEY
+  delete process.env.MEDUSA_LICENSE_PUBLIC_KEY
 })
 
 describe("loadLicense", () => {
@@ -50,6 +51,17 @@ describe("loadLicense", () => {
     process.env.MEDUSA_LICENSE_KEY = signToken(validClaims)
 
     expect(loadLicense()).toBeNull()
+  })
+
+  it("verifies the token against the public key from the environment when set", () => {
+    const token = signToken(validClaims)
+    process.env.MEDUSA_LICENSE_KEY = token
+    process.env.MEDUSA_LICENSE_PUBLIC_KEY = publicKey.export({
+      type: "spki",
+      format: "pem",
+    }) as string
+
+    expect(loadLicense()).toEqual({ token, ...validClaims })
   })
 
   it("returns null when the payload was tampered with", () => {
