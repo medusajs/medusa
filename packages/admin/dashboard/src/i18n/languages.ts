@@ -17,6 +17,7 @@ import {
   id,
   it,
   ja,
+  ka,
   ko,
   lt,
   mk,
@@ -121,6 +122,12 @@ export const languages: Language[] = [
     display_name: "日本語",
     ltr: true,
     date_locale: ja,
+  },
+  {
+    code: "ka",
+    display_name: "ქართული",
+    ltr: true,
+    date_locale: ka,
   },
   {
     code: "pl",
