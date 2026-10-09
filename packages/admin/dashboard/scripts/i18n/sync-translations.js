@@ -103,7 +103,10 @@ function findMissing(enObj, localeObj, forms) {
 // New keys go after their closest preceding en.json sibling so existing key order is kept.
 function mergeLevel(enObj, localeObj, translated, forms, keyPath, errors) {
   const expected = getExpectedEntries(enObj, forms)
-  const result = Object.entries(isObject(localeObj) ? localeObj : {})
+  const expectedKeys = new Set(expected.map(([key]) => key))
+  const result = Object.entries(isObject(localeObj) ? localeObj : {}).filter(
+    ([key]) => IGNORED_KEYS.has(key) || expectedKeys.has(key)
+  )
 
   Object.keys(translated).forEach((key) => {
     if (!expected.some(([expectedKey]) => expectedKey === key)) {
@@ -112,17 +115,14 @@ function mergeLevel(enObj, localeObj, translated, forms, keyPath, errors) {
   })
 
   expected.forEach(([key, enValue], index) => {
-    if (!(key in translated)) {
-      return
-    }
-
     const fullKey = [...keyPath, key].join(".")
+    const hasTranslation = key in translated
     const translatedValue = translated[key]
     const existingIndex = result.findIndex(([k]) => k === key)
     let value
 
     if (isObject(enValue)) {
-      if (!isObject(translatedValue)) {
+      if (hasTranslation && !isObject(translatedValue)) {
         errors.push(`Expected an object at "${fullKey}"`)
         return
       }
@@ -130,7 +130,7 @@ function mergeLevel(enObj, localeObj, translated, forms, keyPath, errors) {
       value = mergeLevel(
         enValue,
         existingIndex === -1 ? undefined : result[existingIndex][1],
-        translatedValue,
+        hasTranslation ? translatedValue : {},
         forms,
         [...keyPath, key],
         errors
@@ -140,6 +140,10 @@ function mergeLevel(enObj, localeObj, translated, forms, keyPath, errors) {
         return
       }
     } else {
+      if (!hasTranslation) {
+        return
+      }
+
       if (existingIndex !== -1) {
         errors.push(`"${fullKey}" is already translated`)
         return
@@ -242,6 +246,8 @@ function runApply({ input }) {
         .filter((file) => file.endsWith(".json"))
         .sort()
     : []
+  const processedLocales = new Set()
+
   files.forEach((file) => {
     const locale = file.split(".")[0]
 
@@ -274,8 +280,31 @@ function runApply({ input }) {
     }
 
     writeJson(localePath, merged)
+    processedLocales.add(locale)
     console.log(`Updated ${locale}.json`)
   })
+
+  // Prune stale keys even when a locale has no missing translations. Such a
+  // locale is not included in the translation artifact input, but its file
+  // can still contain keys that were removed from en.json or from its plural
+  // configuration.
+  getLocales()
+    .filter((locale) => !processedLocales.has(locale))
+    .forEach((locale) => {
+      const localePath = path.join(translationsDir, `${locale}.json`)
+      const errors = []
+      const pruned = mergeLevel(
+        en,
+        readJson(localePath),
+        {},
+        pluralConfig[locale],
+        [],
+        errors
+      )
+
+      writeJson(localePath, pruned)
+      console.log(`Pruned stale keys from ${locale}.json`)
+    })
 }
 
 function main() {
