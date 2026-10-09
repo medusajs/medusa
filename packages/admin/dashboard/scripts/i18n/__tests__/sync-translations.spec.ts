@@ -139,7 +139,7 @@ describe("findMissing", () => {
 })
 
 describe("mergeLevel", () => {
-  test("inserts new keys after their closest preceding en.json sibling", () => {
+  test("inserts new keys and prunes stale keys", () => {
     const locale = {
       $schema: "./$schema.json",
       general: { cancel: "Abbrechen", extra: "Veraltet" },
@@ -157,7 +157,6 @@ describe("mergeLevel", () => {
       "save",
       "cancel",
       "items_other",
-      "extra",
     ])
     expect(result.orders).toEqual({
       title: "Bestellungen",
@@ -165,6 +164,30 @@ describe("mergeLevel", () => {
     })
     expect(Object.keys(result.orders)).toEqual(["title", "status"])
     expect(Object.keys(result.orders.status)).toEqual(["pending", "paid"])
+  })
+
+  test("prunes plural forms that the locale does not use", () => {
+    const errors: string[] = []
+    const result = mergeLevel(
+      en,
+      {
+        general: {
+          save: "Speichern",
+          items_one: "Ein Artikel",
+          items_other: "Artikel",
+        },
+      },
+      {},
+      ["other"],
+      [],
+      errors
+    )
+
+    expect(errors).toEqual([])
+    expect(result.general).toEqual({
+      save: "Speichern",
+      items_other: "Artikel",
+    })
   })
 
   test("keeps $schema first when inserting at the start", () => {
