@@ -1368,4 +1368,77 @@ describe("Total calculation", function () {
     expect(serialized.items[0].refundable_total).toBe(99)
     expect(serialized.items[0].refundable_total_per_unit).toBe(99)
   })
+
+  describe("original subtotals", function () {
+    const sumOf = (lines: { original_subtotal: number }[]) =>
+      lines.reduce((acc, line) => acc + line.original_subtotal, 0)
+
+    it("should accumulate pre-discount original subtotals for items and shipping methods", function () {
+      const cart = {
+        items: [
+          {
+            unit_price: 50,
+            quantity: 2,
+            tax_lines: [{ rate: 10 }],
+            adjustments: [{ amount: 10 }],
+          },
+        ],
+        shipping_methods: [
+          {
+            amount: 10,
+            tax_lines: [{ rate: 10 }],
+            adjustments: [{ amount: 5 }],
+          },
+        ],
+      }
+
+      const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
+
+      expect(serialized.discount_subtotal).toBe(15)
+      expect(serialized.original_item_subtotal).toBe(100)
+      expect(serialized.original_shipping_subtotal).toBe(10)
+      expect(serialized.original_subtotal).toBe(110)
+
+      expect(serialized.original_item_subtotal).toBe(sumOf(serialized.items))
+      expect(serialized.original_shipping_subtotal).toBe(
+        sumOf(serialized.shipping_methods)
+      )
+    })
+
+    it("should accumulate original subtotals for tax inclusive items with a received return", function () {
+      const cart = {
+        items: [
+          {
+            unit_price: 110,
+            quantity: 2,
+            is_tax_inclusive: true,
+            tax_lines: [{ rate: 10 }],
+            adjustments: [{ amount: 11, is_tax_inclusive: true }],
+            detail: {
+              return_received_quantity: 1,
+              return_dismissed_quantity: 0,
+            },
+          },
+        ],
+        shipping_methods: [
+          {
+            amount: 11,
+            is_tax_inclusive: true,
+            tax_lines: [{ rate: 10 }],
+          },
+        ],
+      }
+
+      const serialized = JSON.parse(JSON.stringify(decorateCartTotals(cart)))
+
+      expect(serialized.original_item_subtotal).toBe(100)
+      expect(serialized.original_shipping_subtotal).toBe(10)
+      expect(serialized.original_subtotal).toBe(110)
+
+      expect(serialized.original_item_subtotal).toBe(sumOf(serialized.items))
+      expect(serialized.original_shipping_subtotal).toBe(
+        sumOf(serialized.shipping_methods)
+      )
+    })
+  })
 })
