@@ -4356,7 +4356,7 @@ __metadata:
     express: ^4.21.0
     graphql: ^16.9.0
     jsonwebtoken: ^9.0.2
-    pg-connection-string: ^2.7.0
+    pg-connection-string: ^2.9.1
     pluralize: ^8.0.0
     ulid: ^2.3.0
   peerDependencies:
@@ -20504,7 +20504,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-connection-string@npm:^2.7.0, pg-connection-string@npm:^2.9.1":
+"pg-connection-string@npm:^2.9.1":
   version: 2.9.1
   resolution: "pg-connection-string@npm:2.9.1"
   checksum: 9a646529bbc0843806fc5de98ce93735a4612b571f11867178a85665d11989a827e6fd157388ca0e34ec948098564fce836c178cfd499b9f0e8cd9972b8e2e5c

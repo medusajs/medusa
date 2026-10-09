@@ -306,8 +306,11 @@ export interface ModuleServiceInitializeOptions {
     driverOptions?: Record<string, unknown> & {
       connection?: Record<string, unknown>
       /** Dynamic password function called for each new connection (e.g. AWS RDS IAM token) */
-      dynamicPassword?: (() => string) | (() => Promise<string>)
-      /** Optional function to check if a connection's credentials have expired */
+      dynamicPassword?: () => string | Promise<string>
+      /**
+       * @deprecated Has no effect, as Medusa calls `dynamicPassword` for each
+       * new connection.
+       */
       expirationChecker?: () => boolean
     }
     debug?: boolean
