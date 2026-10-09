@@ -13,6 +13,8 @@ import {
   DataGridUpdateCommand,
 } from "../models"
 import { DataGridCoordinates } from "../types"
+import { useDocumentDirection } from "../../../hooks/use-document-direction"
+import { toVisualArrowKey } from "../../../lib/visual-arrow-key"
 
 type UseDataGridKeydownEventOptions<TData, TFieldValues extends FieldValues> = {
   containerRef: React.RefObject<HTMLDivElement>
@@ -70,6 +72,10 @@ export const useDataGridKeydownEvent = <
   restoreSnapshot,
   createSnapshot,
 }: UseDataGridKeydownEventOptions<TData, TFieldValues>) => {
+  // Named for the document, not the grid: `direction` inside the callbacks
+  // below already means the axis of travel (horizontal or vertical).
+  const documentDirection = useDocumentDirection()
+
   const handleKeyboardNavigation = useCallback(
     (e: KeyboardEvent) => {
       if (!anchor) {
@@ -90,7 +96,11 @@ export const useDataGridKeydownEvent = <
         return
       }
 
-      const direction = VERTICAL_KEYS.includes(e.key)
+      // In RTL the next cell sits to the left, so the physical arrows are
+      // exchanged before the key is read as a movement.
+      const key = toVisualArrowKey(e.key, documentDirection)
+
+      const direction = VERTICAL_KEYS.includes(key)
         ? "vertical"
         : "horizontal"
 
@@ -130,7 +140,7 @@ export const useDataGridKeydownEvent = <
       const next = matrix.getValidMovement(
         row,
         col,
-        e.key,
+        key,
         e.metaKey || e.ctrlKey
       )
 
@@ -144,6 +154,7 @@ export const useDataGridKeydownEvent = <
       setSingleRange,
       setRangeEnd,
       matrix,
+      documentDirection,
     ]
   )
 
