@@ -8,6 +8,16 @@ import {
 import { MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
 
+// Stands in for the real provider, whose import is slow enough to time out on
+// cold CI runners.
+jest.mock("@medusajs/medusa/auth-oidc", () => ({
+  services: [
+    class OidcProviderService {
+      static identifier = "oidc"
+    },
+  ],
+}))
+
 const logger = {
   warn: jest.fn(),
   error: jest.fn(),
@@ -326,13 +336,13 @@ describe("license gated modules", () => {
       const container = createMedusaContainer()
       registerLicense(container, ["auth-oidc"])
 
-      const error = await moduleLoader({
+      await moduleLoader({
         container,
         moduleResolutions: providerResolutions("@medusajs/medusa/auth-oidc"),
         logger,
-      }).catch((e) => e)
+      })
 
-      expect(error?.message ?? "").not.toContain("license")
+      expect(container.resolve(Modules.AUTH)).toBeDefined()
     })
   })
 })
