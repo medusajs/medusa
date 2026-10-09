@@ -25,6 +25,19 @@ const server = setupServer(
       statusText: "Internal Server Error",
     })
   }),
+  http.get(`${baseUrl}/error-fields`, ({ request, params, cookies }) => {
+    return HttpResponse.json(
+      {
+        code: "insufficient_inventory",
+        type: "invalid_data",
+        message: "Some variant does not have the required inventory",
+      },
+      {
+        status: 400,
+        statusText: "Bad Request",
+      }
+    )
+  }),
   http.get(`${baseUrl}/header`, ({ request }) => {
     if (
       request.headers.get("X-custom-header") === "test" &&
@@ -239,6 +252,24 @@ describe("Client", () => {
       const err: FetchError = await client.fetch<any>("throw").catch((e) => e)
       expect(err.status).toEqual(500)
       expect(err.message).toEqual("Internal Server Error")
+    })
+
+    it("should preserve code and type from the API error response", async () => {
+      const err: FetchError = await client
+        .fetch<any>("error-fields")
+        .catch((e) => e)
+      expect(err.status).toEqual(400)
+      expect(err.message).toEqual(
+        "Some variant does not have the required inventory"
+      )
+      expect(err.code).toEqual("insufficient_inventory")
+      expect(err.type).toEqual("invalid_data")
+    })
+
+    it("should leave code and type undefined when the error body lacks them", async () => {
+      const err: FetchError = await client.fetch<any>("throw").catch((e) => e)
+      expect(err.code).toBeUndefined()
+      expect(err.type).toBeUndefined()
     })
   })
 
