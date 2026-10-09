@@ -8,6 +8,9 @@ import {
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { MedusaErrorTypes } from "@medusajs/framework/utils"
+import { getRegionsByNameForImport } from "../helpers/get-regions-by-name"
+
+type RegionsByName = Map<string, { id: string; currency_code: string }>
 
 /**
  * The CSV file content to parse.
@@ -26,9 +29,10 @@ async function processChunk(
   file: IFileModuleService,
   fileKey: string,
   csvRows: ReturnType<(typeof CSVNormalizer)["preProcess"]>[],
-  currentRowNumber: number
+  currentRowNumber: number,
+  regionsByName: RegionsByName
 ): Promise<Chunk> {
-  const normalizer = new CSVNormalizer(csvRows)
+  const normalizer = new CSVNormalizer(csvRows, { regionsByName })
   const products = normalizer.proccess(currentRowNumber)
 
   let create = Object.keys(products.toCreate).reduce<
@@ -79,7 +83,8 @@ async function processChunk(
 async function createChunks(
   file: IFileModuleService,
   fileKey: string,
-  stream: Parser
+  stream: Parser,
+  regionsByName: RegionsByName
 ): Promise<Chunk[]> {
   /**
    * The row under process
@@ -138,7 +143,8 @@ async function createChunks(
               file,
               `${fileKey}-${chunks.length + 1}`,
               rows,
-              currentCSVRow
+              currentCSVRow,
+              regionsByName
             )
           )
 
@@ -167,7 +173,8 @@ async function createChunks(
           file,
           `${fileKey}-${chunks.length + 1}`,
           rows,
-          currentCSVRow
+          currentCSVRow,
+          regionsByName
         )
       )
     }
@@ -206,6 +213,7 @@ export const normalizeCsvToChunksStep = createStep(
     >(async (resolve, reject) => {
       try {
         const file = container.resolve(Modules.FILE)
+        const regionsByName = await getRegionsByNameForImport(container)
         const contents = await file.getDownloadStream(fileKey)
 
         const transformer = parse({
@@ -218,7 +226,8 @@ export const normalizeCsvToChunksStep = createStep(
         const chunks = await createChunks(
           file,
           fileKey,
-          contents.pipe(transformer)
+          contents.pipe(transformer),
+          regionsByName
         )
 
         const summary = chunks.reduce<{ toCreate: number; toUpdate: number }>(
