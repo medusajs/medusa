@@ -388,85 +388,81 @@ export const confirmClaimRequestWorkflow = createWorkflow(
       updateReturnsStep(updateReturnDate)
     })
 
-    const { returnShippingMethod, claimShippingMethod } = transform(
+    const { returnShippingMethod } = transform(
       { orderPreview, orderClaim, returnId },
       extractShippingOption
     )
 
-    when({ claimShippingMethod }, ({ claimShippingMethod }) => {
-      return !!claimShippingMethod
-    }).then(() => {
-      const claim: OrderClaimDTO = useRemoteQueryStep({
-        entry_point: "order_claim",
-        fields: [
-          "id",
-          "version",
-          "canceled_at",
-          "order.sales_channel_id",
-          "additional_items.quantity",
-          "additional_items.raw_quantity",
-          "additional_items.item.id",
-          "additional_items.item.variant.manage_inventory",
-          "additional_items.item.variant.allow_backorder",
-          "additional_items.item.variant.inventory_items.inventory_item_id",
-          "additional_items.item.variant.inventory_items.required_quantity",
-          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.id",
-          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.name",
-          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
-          "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
-        ],
-        variables: { id: input.claim_id },
-        list: false,
-        throw_if_key_not_found: true,
-      }).config({ name: "claim-query" })
+    const claim: OrderClaimDTO = useRemoteQueryStep({
+      entry_point: "order_claim",
+      fields: [
+        "id",
+        "version",
+        "canceled_at",
+        "order.sales_channel_id",
+        "additional_items.quantity",
+        "additional_items.raw_quantity",
+        "additional_items.item.id",
+        "additional_items.item.variant.manage_inventory",
+        "additional_items.item.variant.allow_backorder",
+        "additional_items.item.variant.inventory_items.inventory_item_id",
+        "additional_items.item.variant.inventory_items.required_quantity",
+        "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.id",
+        "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.name",
+        "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.id",
+        "additional_items.item.variant.inventory_items.inventory.location_levels.stock_locations.sales_channels.name",
+      ],
+      variables: { id: input.claim_id },
+      list: false,
+      throw_if_key_not_found: true,
+    }).config({ name: "claim-query" })
 
-      const { variants, items } = transform({ claim }, ({ claim }) => {
-        const allItems: any[] = []
-        const allVariants: any[] = []
-        claim.additional_items.forEach((claimItem) => {
-          const item = claimItem.item
-          allItems.push({
-            id: item.id,
-            variant_id: item.variant_id,
-            quantity: claimItem.raw_quantity ?? claimItem.quantity,
-          })
-          allVariants.push(item.variant)
+    const { variants, items } = transform({ claim }, ({ claim }) => {
+      const allItems: any[] = []
+      const allVariants: any[] = []
+      claim.additional_items.forEach((claimItem) => {
+        const item = claimItem.item
+        allItems.push({
+          id: item.id,
+          variant_id: item.variant_id,
+          quantity: claimItem.raw_quantity ?? claimItem.quantity,
         })
-
-        return {
-          variants: allVariants,
-          items: allItems,
-        }
+        allVariants.push(item.variant)
       })
 
-      const formatedInventoryItems = transform(
-        {
-          input: {
-            sales_channel_id: (claim as any).order.sales_channel_id,
-            variants,
-            items,
-          },
-        },
-        prepareConfirmInventoryInput
-      )
-
-      const createdReservations = reserveInventoryStep(formatedInventoryItems)
-
-      const reservationCreatedEvents = transform(
-        { createdReservations, order },
-        ({ createdReservations, order }) => {
-          return (createdReservations ?? []).map((reservation) => ({
-            id: reservation.id,
-            order_id: order.id,
-          }))
-        }
-      )
-
-      emitEventStep({
-        eventName: ReservationItemWorkflowEvents.CREATED,
-        data: reservationCreatedEvents,
-      }).config({ name: "emit-reservation-item-created" })
+      return {
+        variants: allVariants,
+        items: allItems,
+      }
     })
+
+    const formatedInventoryItems = transform(
+      {
+        input: {
+          sales_channel_id: (claim as any).order.sales_channel_id,
+          variants,
+          items,
+        },
+      },
+      prepareConfirmInventoryInput
+    )
+
+    const createdReservations = reserveInventoryStep(formatedInventoryItems)
+
+    const reservationCreatedEvents = transform(
+      { createdReservations, order },
+      ({ createdReservations, order }) => {
+        return (createdReservations ?? []).map((reservation) => ({
+          id: reservation.id,
+          order_id: order.id,
+        }))
+      }
+    )
+
+    emitEventStep({
+      eventName: ReservationItemWorkflowEvents.CREATED,
+      data: reservationCreatedEvents,
+    }).config({ name: "emit-reservation-item-created" })
 
     when(
       { returnShippingMethod, returnId },
