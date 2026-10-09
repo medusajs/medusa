@@ -1,5 +1,5 @@
 import type { ConfirmVariantInventoryWorkflowInputDTO } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import { MathBN, MedusaError } from "@medusajs/framework/utils"
 import { prepareConfirmInventoryInput } from "../prepare-confirm-inventory-input"
 
 describe("prepareConfirmInventoryInput", () => {
@@ -57,6 +57,7 @@ describe("prepareConfirmInventoryInput", () => {
           quantity: 2, // overrides the quantity from the items array
           allow_backorder: false,
           location_ids: ["sl_1"],
+          location_availability: [],
         },
       ],
     })
@@ -120,6 +121,7 @@ describe("prepareConfirmInventoryInput", () => {
           quantity: 1,
           allow_backorder: false,
           location_ids: ["sl_1"],
+          location_availability: [],
         },
       ],
     })
@@ -190,6 +192,7 @@ describe("prepareConfirmInventoryInput", () => {
           quantity: 1,
           allow_backorder: false,
           location_ids: ["sl_1"],
+          location_availability: [],
         },
         {
           id: "item_1",
@@ -198,6 +201,7 @@ describe("prepareConfirmInventoryInput", () => {
           quantity: 1,
           allow_backorder: false,
           location_ids: ["sl_1"],
+          location_availability: [],
         },
       ],
     })
@@ -320,6 +324,7 @@ describe("prepareConfirmInventoryInput", () => {
           quantity: 1,
           allow_backorder: true,
           location_ids: [], // TODO: what should this be?
+          location_availability: [],
         },
       ],
     })
@@ -502,6 +507,10 @@ describe("prepareConfirmInventoryInput", () => {
           quantity: 2,
           allow_backorder: false,
           location_ids: ["sl_2"], // Only includes location with available stock
+          location_availability: [
+            { location_id: "sl_1", available_quantity: expect.anything() },
+            { location_id: "sl_2", available_quantity: expect.anything() },
+          ],
         },
       ],
     })
@@ -640,9 +649,78 @@ describe("prepareConfirmInventoryInput", () => {
           quantity: 2,
           allow_backorder: false,
           location_ids: ["sl_1", "sl_2"], // Includes all locations since none has availability
+          location_availability: [
+            { location_id: "sl_1", available_quantity: expect.anything() },
+            { location_id: "sl_2", available_quantity: expect.anything() },
+          ],
         },
       ],
     })
+  })
+
+  it("should include the available quantity per location with a level", () => {
+    const input = {
+      sales_channel_id: "sc_1",
+      variants: [
+        {
+          id: "pv_1",
+          manage_inventory: true,
+          inventory_items: [
+            {
+              inventory_item_id: "ii_1",
+              variant_id: "pv_1",
+              required_quantity: 1,
+              inventory: [
+                {
+                  location_levels: {
+                    stocked_quantity: 10,
+                    reserved_quantity: 9, // available = 1
+                    location_id: "sl_1",
+                    stock_locations: [
+                      {
+                        id: "sl_1",
+                        sales_channels: [{ id: "sc_1" }],
+                      },
+                    ],
+                  },
+                },
+                {
+                  location_levels: {
+                    stocked_quantity: 7,
+                    reserved_quantity: 5, // available = 2
+                    location_id: "sl_2",
+                    stock_locations: [
+                      {
+                        id: "sl_2",
+                        sales_channels: [{ id: "sc_1" }],
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      items: [
+        {
+          variant_id: "pv_1",
+          quantity: 2,
+          id: "item_1",
+        },
+      ],
+    }
+
+    const result = prepareConfirmInventoryInput({ input })
+
+    const availability = result.items[0].location_availability
+
+    expect(availability.map((level) => level.location_id)).toEqual([
+      "sl_1",
+      "sl_2",
+    ])
+    expect(MathBN.eq(availability[0].available_quantity, 1)).toBe(true)
+    expect(MathBN.eq(availability[1].available_quantity, 2)).toBe(true)
   })
 
   it("should only return locations where the inventory item has a level when falling back (backorder item stocked at a different location than another item in the same channel)", () => {
@@ -729,6 +807,9 @@ describe("prepareConfirmInventoryInput", () => {
           quantity: 1,
           allow_backorder: false,
           location_ids: ["sl_A"], // has availability at sl_A
+          location_availability: [
+            { location_id: "sl_A", available_quantity: expect.anything() },
+          ],
         },
         {
           id: "item_2",
@@ -737,6 +818,9 @@ describe("prepareConfirmInventoryInput", () => {
           quantity: 1,
           allow_backorder: true,
           location_ids: ["sl_B"], // no availability, but only has a level at sl_B — must not pick sl_A
+          location_availability: [
+            { location_id: "sl_B", available_quantity: expect.anything() },
+          ],
         },
       ],
     })
