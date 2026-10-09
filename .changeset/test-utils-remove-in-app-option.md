@@ -1,5 +1,5 @@
 ---
-"@medusajs/test-utils": minor
+"@medusajs/test-utils": patch
 ---
 
 fix(test-utils): remove the unused `inApp` option from `medusaIntegrationTestRunner`
