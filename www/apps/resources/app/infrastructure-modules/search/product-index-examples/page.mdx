@@ -528,7 +528,7 @@ To index a product's data from a linked module instead, such as a brand you crea
 
 ## Re-Index a Product When Related Data Changes
 
-A product's document holds data from its variants, options, tags, categories, and sales channels. So, subscribe to the events of all of them, then map each event back to the products it affects with the [`resolve_ids` option](../index-definitions/page.mdx#graphconsume-options) of `graphConsume`.
+A product's document holds data from its variants, options, tags, categories, sales channels, and price lists. So, subscribe to the events of all of them, then map each event back to the products it affects with the [`resolve_ids` option](../index-definitions/page.mdx#graphconsume-options) of `graphConsume`.
 
 Add the following functions to the file:
 
@@ -702,9 +702,96 @@ async function resolveProductIds(
 
 If your store has more than 200 products in a channel, page through the results with the `skip` pagination option.
 
+### Changing Price Lists
+
+<Note>
+
+The price list events are available since Medusa [v2.21.3](https://github.com/medusajs/medusa/releases/tag/v2.21.3).
+
+</Note>
+
+A price list overrides the prices of the variants it holds prices for, so changing a price list changes the prices in the products' documents. Medusa emits the following events when a price list or its prices change:
+
+- `price-list.created`, `price-list.updated`, and `price-list.deleted`: The payload holds the price list's `id`.
+- `price-list.prices_added`, `price-list.prices_updated`, and `price-list.prices_removed`: The payload holds the price list's `id` and the `price_set_ids` of the variants whose prices changed.
+
+Add the following function to map a price list event to the products it affects:
+
+export const priceListHighlights = [
+  ["12", "price_set_ids", "The price sets whose prices changed."],
+  ["18", "price_set", "Read the products of the changed price sets."],
+  ["28", "price_list", "Read the products of all the price list's prices."],
+]
+
+```ts title="src/search/product.ts" highlights={priceListHighlights}
+async function priceListProductIds(
+  query: RemoteQueryFunction,
+  data: unknown,
+  ids: string[],
+  deleted: boolean
+) {
+  const priceSetIds = (
+    Array.isArray(data) ? data : [data]
+  ).flatMap(
+    (entry) =>
+      (entry as { price_set_ids?: string[] })
+        ?.price_set_ids ?? []
+  )
+
+  if (priceSetIds.length) {
+    return relatedProductIds(
+      query,
+      "price_set",
+      ["variant.product_id"],
+      priceSetIds,
+      (row) => [row.variant?.product_id],
+      false
+    )
+  }
+
+  return relatedProductIds(
+    query,
+    "price_list",
+    ["prices.price_set.variant.product_id"],
+    ids,
+    (row) =>
+      (row.prices ?? []).map(
+        (price) => price?.price_set?.variant?.product_id
+      ),
+    deleted
+  )
+}
+```
+
+When the event's payload holds `price_set_ids`, the function reads only the products of those price sets. Otherwise, it reads the products of all the prices in the price list.
+
+Then, call it from a `price-list` case in `resolveProductIds`, and add the price list events to the definition's `events`:
+
+```ts title="src/search/product.ts"
+async function resolveProductIds(
+  event: { name: string; data: unknown },
+  { container }: SearchTypes.SearchIngestionContext
+) {
+  // ...
+
+  switch (entity) {
+    // ...
+    case "price-list":
+      return priceListProductIds(
+        container.query,
+        event.data,
+        ids,
+        deleted
+      )
+    default:
+      return []
+  }
+}
+```
+
 <Note title="Note">
 
-Some changes to a product's prices don't emit an event, such as creating a price list or a price list becoming active. For those, reindex the product index on a schedule, or after the change, as explained in the [Reindexing and Migrations guide](../reindexing/page.mdx#seeding-on-demand).
+A price list becoming active or expiring based on its start and end dates doesn't emit an event. For those, reindex the product index on a schedule, or after the change, as explained in the [Reindexing and Migrations guide](../reindexing/page.mdx#seeding-on-demand).
 
 </Note>
 
@@ -718,7 +805,7 @@ export const completeHighlights = [
   ["14", "status", "Lets the Store Search API route scope the index to published products."],
   ["69", "transform", "Reshape each product into the document to index."],
   ["106", "settings", "Engine settings, supported by Medusa Search only."],
-  ["124", "consume", "Turn each event into document writes."],
+  ["130", "consume", "Turn each event into document writes."],
 ]
 
 ```ts title="src/search/product.ts" highlights={completeHighlights}
@@ -844,6 +931,12 @@ export default defineSearchIndex({
     "product-category.updated",
     "product-category.deleted",
     "sales-channel.deleted",
+    "price-list.created",
+    "price-list.updated",
+    "price-list.deleted",
+    "price-list.prices_added",
+    "price-list.prices_updated",
+    "price-list.prices_removed",
   ],
   consume: graphConsume({
     ...source,
