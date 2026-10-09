@@ -97,6 +97,12 @@ export async function mikroOrmCreateConnection(
     schema = database.connection.context?.client?.config?.searchPath
   }
 
+  // Migrations run unqualified SQL, so the connection itself has to resolve
+  // tables in the requested schema. A shared connection already does.
+  if (!database.connection && schema !== "public") {
+    driverOptions = { ...driverOptions, searchPath: schema }
+  }
+
   const { MikroORM, defineConfig } = await import(
     "@medusajs/deps/mikro-orm/postgresql"
   )
