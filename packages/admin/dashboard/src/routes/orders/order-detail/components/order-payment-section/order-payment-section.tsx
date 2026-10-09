@@ -21,6 +21,7 @@ import {
   useAuthorizePaymentSession,
 } from "../../../../../hooks/api"
 import { formatCurrency } from "../../../../../lib/format-currency"
+import { formatProvider } from "../../../../../lib/format-provider"
 import {
   getLocaleAmount,
   getStylizedAmount,
@@ -177,11 +178,11 @@ const Payment = ({
 
   const getPaymentStatusAttributes = (payment: AdminPayment) => {
     if (payment.canceled_at) {
-      return ["Canceled", "red"]
+      return [t("orders.payment.status.canceled"), "red"]
     } else if (payment.captured_at) {
-      return ["Captured", "green"]
+      return [t("orders.payment.status.captured"), "green"]
     } else {
-      return ["Pending", "orange"]
+      return [t("orders.payment.status.pending"), "orange"]
     }
   }
 
@@ -218,8 +219,8 @@ const Payment = ({
           </Text>
         </div>
         <div className="hidden items-center justify-end sm:flex">
-          <Text size="small" leading="compact" className="capitalize">
-            {payment.provider_id}
+          <Text size="small" leading="compact">
+            {formatProvider(payment.provider_id)}
           </Text>
         </div>
         <div className="flex items-center justify-end">
@@ -293,6 +294,7 @@ const CreditLine = ({
   currencyCode: string
   plugins: HttpTypes.AdminPlugin[]
 }) => {
+  const { t } = useTranslation()
   const loyaltyPlugin = getLoyaltyPlugin(plugins)
 
   if (!loyaltyPlugin) {
@@ -321,7 +323,7 @@ const CreditLine = ({
           >
             {loyaltyPlugin ? (
               <Text size="small" leading="compact" weight="plus">
-                Store credit refund
+                {t("orders.payment.storeCreditRefund")}
               </Text>
             ) : (
               <DisplayId id={creditLine.id} />
@@ -519,7 +521,7 @@ const Total = ({ order }: { order: AdminOrder }) => {
       {order.status !== "canceled" && totalPending > 0 && (
         <div className="flex items-center justify-between">
           <Text size="small" weight="plus" leading="compact">
-            Total pending
+            {t("orders.payment.totalPending")}
           </Text>
 
           <Text size="small" weight="plus" leading="compact">

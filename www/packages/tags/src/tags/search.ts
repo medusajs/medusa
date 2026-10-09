@@ -4,12 +4,20 @@ export const search = [
     "path": "https://docs.medusajs.com/user-guide/settings/search"
   },
   {
+    "title": "deleteSearchIndexStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteSearchIndexStep"
+  },
+  {
     "title": "reindexSearchIndexesStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/reindexSearchIndexesStep"
   },
   {
     "title": "validateSearchIndexesExistStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateSearchIndexesExistStep"
+  },
+  {
+    "title": "deleteSearchIndexWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteSearchIndexWorkflow"
   },
   {
     "title": "reindexSearchIndexesWorkflow",

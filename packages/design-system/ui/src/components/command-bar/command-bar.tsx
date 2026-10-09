@@ -111,7 +111,7 @@ const Bar = React.forwardRef<
 Bar.displayName = "CommandBar.Bar"
 
 /**
- * The seperator component of the command bar. This component is used to display a seperator between commands.
+ * The separator component of the command bar. This component is used to display a separator between commands.
  */
 const Seperator = React.forwardRef<
   HTMLDivElement,

@@ -1,0 +1,50 @@
+name: Notify Slack on OS Bot PRs
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions: {}
+
+jobs:
+  notify:
+    if: ${{ github.event.pull_request.user.login == 'medusa-os-bot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sanitize PR title
+        id: pr
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          {
+            echo "title<<EOF_TITLE"
+            printf '%s' "$PR_TITLE" | tr -d '\000-\037' | tr '<>|&' '    ' | cut -c1-200
+            echo
+            echo "EOF_TITLE"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_OS_BOT_PRS }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "New PR opened by medusa-os-bot"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ${{ toJSON(format('<{0}|#{1} — {2}>', github.event.pull_request.html_url, github.event.pull_request.number, steps.pr.outputs.title)) }}
+                  }
+                }
+              ]
+            }

@@ -139,15 +139,16 @@ jobs:
 
       - name: Run Claude Code to fix alerts
         if: steps.alerts.outputs.has_alerts == 'true'
-        uses: anthropics/claude-code-base-action@beta
+        uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           # Deliberately NO GitHub API access: the alert details are pre-fetched
           # into a file, so Claude needs no token and can only edit files + refresh
           # the lockfile. npm view / yarn are registry ops that need no auth.
-          allowed_tools: "Skill,Read,Write,Edit,Glob,Grep,Bash(npm view:*),Bash(yarn install:*),Bash(yarn up:*),Bash(node:*),Bash(grep:*),Bash(git diff:*),Bash(git status:*),Bash(git log:*),Bash(cat:*),Bash(ls:*),Bash(find:*),Bash(mkdir:*),Bash(head:*),Bash(tail:*),Bash(sed:*),Bash(wc:*),Bash(sort:*),Bash(column:*),Bash(paste:*)"
-          max_turns: 60
-          model: claude-sonnet-4-6
+          claude_args: >-
+            --model claude-sonnet-4-6
+            --max-turns 60
+            --allowedTools "Skill,Read,Write,Edit,Glob,Grep,Bash(npm view:*),Bash(yarn install:*),Bash(yarn up:*),Bash(node:*),Bash(grep:*),Bash(git diff:*),Bash(git status:*),Bash(git log:*),Bash(cat:*),Bash(ls:*),Bash(find:*),Bash(mkdir:*),Bash(head:*),Bash(tail:*),Bash(sed:*),Bash(wc:*),Bash(sort:*),Bash(column:*),Bash(paste:*)"
           prompt: |
             Load and follow the diagnosing-dependabot-alerts skill before doing anything else, by reading this file with the Read tool: .claude/skills/diagnosing-dependabot-alerts/SKILL.md
             Also read the reference file it points to: .claude/skills/diagnosing-dependabot-alerts/reference/remediation-strategies.md

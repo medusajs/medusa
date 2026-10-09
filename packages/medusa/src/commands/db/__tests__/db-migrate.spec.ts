@@ -205,6 +205,36 @@ describe("db:migrate – main", () => {
     })
   })
 
+  describe("migration scripts", () => {
+    beforeEach(() => {
+      ;(initializeContainer as jest.Mock).mockResolvedValue(buildContainer())
+    })
+
+    it("runs the scripts command when skipScripts is false", async () => {
+      const fork = mockFork()
+
+      await main({ ...defaultArgs, skipScripts: false })
+
+      expect(forkedWith(fork)).toContainEqual(["db:migrate:scripts"])
+    })
+
+    it("fails the migration when the scripts command exits non-zero", async () => {
+      mockFork(1)
+
+      await main({ ...defaultArgs, skipScripts: false })
+
+      expect(process.exit).toHaveBeenCalledWith(1)
+    })
+
+    it("exits with code 0 when the scripts command exits zero", async () => {
+      mockFork(0)
+
+      await main({ ...defaultArgs, skipScripts: false })
+
+      expect(process.exit).toHaveBeenCalledWith(0)
+    })
+  })
+
   describe("successful migration", () => {
     it("exits with code 0 when migration completes", async () => {
       ;(initializeContainer as jest.Mock).mockResolvedValue(buildContainer())

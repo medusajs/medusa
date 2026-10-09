@@ -136,9 +136,9 @@ A command with no terminal to prompt in, such as in a CI pipeline, leaves those 
 
 An index name, such as `product`, isn't one physical index. The Search Module builds a version of the index per definition change, and one of those versions is the index's active version. A query resolves the name to the active version, so which physical index answers a search can change without your code changing.
 
-That's what makes a schema change zero-downtime. When a definition changes, the module builds a new version alongside the active one, fills it, then makes the new version active. Reads keep hitting the old version throughout and never see a half-built one. A version that fails to fill stays behind without ever going live, so the active version keeps answering queries.
+That's what makes a schema change zero-downtime. When a definition changes, the module builds a new version alongside the active one, fills it, then makes the new version active. Reads keep hitting the old version throughout and never see a half-built one. A version that fails to fill never goes live, so the active version keeps answering queries. The next on-demand rebuild removes that failed version once it creates the version it builds.
 
-The module keeps the active version and the one it's building. It removes every version below the active one at the start of the next migration or rebuild, so a swap that went live doesn't leave its old index in the engine.
+Once a swap makes a new version active, the module removes every older version except the one the swap replaced. Other processes can keep reading from the replaced version until they pick up the new active version, so the module only removes it at the start of the next migration or rebuild.
 
 ```mermaid
 flowchart TD

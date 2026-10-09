@@ -91,8 +91,8 @@ const HomepageLinksSection = () => {
           text: "Agent Skills",
         },
         {
-          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai#mcp-remote-server",
-          text: "Medusa Docs MCP",
+          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server",
+          text: "Docs MCP",
         },
       ],
     },
