@@ -16,12 +16,8 @@ jobs:
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          {
-            echo "title<<EOF_TITLE"
-            printf '%s' "$PR_TITLE" | tr -d '\000-\037' | tr '<>|&' '    ' | cut -c1-200
-            echo
-            echo "EOF_TITLE"
-          } >> "$GITHUB_OUTPUT"
+          TITLE=$(printf '%s' "$PR_TITLE" | tr -d '\000-\037' | tr '<>|&' '    ' | cut -c1-200)
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
 
       - name: Notify Slack
         uses: slackapi/slack-github-action@v1.23.0
@@ -45,6 +41,20 @@ jobs:
                     "type": "mrkdwn",
                     "text": ${{ toJSON(format('<{0}|#{1} — {2}>', github.event.pull_request.html_url, github.event.pull_request.number, steps.pr.outputs.title)) }}
                   }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View PR"
+                      },
+                      "style": "primary",
+                      "url": ${{ toJSON(github.event.pull_request.html_url) }}
+                    }
+                  ]
                 }
               ]
             }

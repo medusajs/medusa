@@ -29,19 +29,6 @@ jobs:
     timeout-minutes: 120
     permissions:
       contents: read
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 1s
-          --health-timeout 10s
-          --health-retries 10
-        ports:
-          - 5432:5432
     outputs:
       base_sha: ${{ steps.base.outputs.sha }}
       status: ${{ steps.result.outputs.status }}
@@ -66,6 +53,19 @@ jobs:
             registry.npmjs.org:443
             repo.yarnpkg.com:443
             nodejs.org:443
+
+      # Not a service container: harden-runner's disable-sudo-and-containers removes docker, failing
+      # the post-job container teardown. Sudo is also unavailable here.
+      - name: Start Postgres
+        run: |
+          set -euo pipefail
+          PG_BIN=$(ls -d /usr/lib/postgresql/*/bin | sort -V | tail -1)
+          echo postgres > "$RUNNER_TEMP/pgpass"
+          "$PG_BIN/initdb" -D "$RUNNER_TEMP/pgdata" -U postgres --auth=scram-sha-256 --pwfile="$RUNNER_TEMP/pgpass"
+          rm "$RUNNER_TEMP/pgpass"
+          "$PG_BIN/pg_ctl" -D "$RUNNER_TEMP/pgdata" -l "$RUNNER_TEMP/postgres.log" \
+            -o "-c listen_addresses=localhost -c port=5432 -c unix_socket_directories=''" -w start
+          "$PG_BIN/pg_isready" -h localhost -p 5432 -t 30
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -219,7 +219,7 @@ jobs:
           retention-days: 3
 
   # Holds the push token. Never runs model output as code; it validates the
-  # result against fixed rules, applies the patch, and opens a draft PR.
+  # result against fixed rules, applies the patch, and opens a PR.
   open-pr:
     needs: analyze
     if: needs.analyze.outputs.status == 'confirmed'
@@ -329,7 +329,7 @@ jobs:
           git commit -m "$TITLE"
           git push origin "$BRANCH"
 
-      - name: Open draft pull request
+      - name: Open pull request
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BRANCH: ${{ steps.validate.outputs.branch }}
@@ -349,10 +349,9 @@ jobs:
           } >> "$BODY_FILE"
 
           PR_URL=$(gh pr create \
-            --draft \
             --base develop \
             --head "$BRANCH" \
             --title "$TITLE" \
             --body-file "$BODY_FILE")
           echo "Opened $PR_URL"
-          echo "### Opened draft PR: $PR_URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Opened PR: $PR_URL" >> "$GITHUB_STEP_SUMMARY"
