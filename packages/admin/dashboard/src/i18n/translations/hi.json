@@ -1437,7 +1437,7 @@
       "refundAmount": "अनुमानित अंतर",
       "carryOverPromotion": "प्रमोशन आगे बढ़ाएं",
       "carryOverPromotionHint": "ऑर्डर के प्रमोशन क्लेम के आइटम पर लागू करें",
-      "carryOverPromotionTooltip": "केवल EACH आवंटन वाले फ़िक्स्ड प्रकार के प्रमोशन, और EACH या ACROSS आवंटन वाले प्रतिशत प्रकार के प्रमोशन ही आउटबाउंड क्लेम आइटम पर आगे बढ़ाए जा सकते हैं।",
+      "carryOverPromotionTooltip": "केवल 'प्रत्येक' आवंटन वाले फ़िक्स्ड राशि के प्रमोशन, और 'प्रत्येक' या 'सभी पर' आवंटन वाले प्रतिशत के प्रमोशन ही आउटबाउंड क्लेम आइटम पर आगे बढ़ाए जा सकते हैं।",
       "activeChangeError": "इस ऑर्डर पर एक सक्रिय बदलाव चल रहा है। कृपया पिछले बदलाव को पूरा करें या छोड़ दें।",
       "actions": {
         "cancelClaim": {
@@ -1473,7 +1473,7 @@
       "refundAmount": "अनुमानित अंतर",
       "carryOverPromotion": "प्रमोशन आगे बढ़ाएं",
       "carryOverPromotionHint": "ऑर्डर के प्रमोशन एक्सचेंज के आइटम पर लागू करें",
-      "carryOverPromotionTooltip": "केवल EACH आवंटन वाले फ़िक्स्ड प्रकार के प्रमोशन, और EACH या ACROSS आवंटन वाले प्रतिशत प्रकार के प्रमोशन ही आउटबाउंड एक्सचेंज आइटम पर आगे बढ़ाए जा सकते हैं।",
+      "carryOverPromotionTooltip": "केवल 'प्रत्येक' आवंटन वाले फ़िक्स्ड राशि के प्रमोशन, और 'प्रत्येक' या 'सभी पर' आवंटन वाले प्रतिशत के प्रमोशन ही आउटबाउंड एक्सचेंज आइटम पर आगे बढ़ाए जा सकते हैं।",
       "activeChangeError": "इस ऑर्डर पर एक सक्रिय बदलाव चल रहा है। कृपया पिछले बदलाव को पूरा करें या छोड़ दें।",
       "actions": {
         "cancelExchange": {
@@ -1962,486 +1962,486 @@
     }
   },
   "taxRegions": {
-    "domain": "Tax Regions",
+    "domain": "टैक्स क्षेत्र",
     "list": {
-      "hint": "Manage what you charge your customers when they shop from different countries and regions."
+      "hint": "जब ग्राहक अलग-अलग देशों और क्षेत्रों से खरीदारी करते हैं, तो उनसे लिया जाने वाला शुल्क प्रबंधित करें।"
     },
     "delete": {
-      "confirmation": "You are about to delete a tax region. This action cannot be undone.",
-      "successToast": "The tax region was successfully deleted."
+      "confirmation": "आप एक टैक्स क्षेत्र हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "टैक्स क्षेत्र सफलतापूर्वक हटाया गया।"
     },
     "create": {
-      "header": "Create Tax Region",
-      "hint": "Create a new tax region to define tax rates for a specific country.",
+      "header": "टैक्स क्षेत्र बनाएं",
+      "hint": "किसी विशेष देश के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।",
       "errors": {
-        "missingProvider": "Provider is required when creating a tax region.",
-        "missingCountry": "Country is required when creating a tax region."
+        "missingProvider": "टैक्स क्षेत्र बनाते समय प्रोवाइडर आवश्यक है।",
+        "missingCountry": "टैक्स क्षेत्र बनाते समय देश आवश्यक है।"
       },
-      "successToast": "The tax region was successfully created."
+      "successToast": "टैक्स क्षेत्र सफलतापूर्वक बनाया गया।"
     },
     "edit": {
-      "header": "Edit Tax Region",
-      "hint": "Edit the tax region details.",
-      "successToast": "The tax region was successfully updated."
+      "header": "टैक्स क्षेत्र संपादित करें",
+      "hint": "टैक्स क्षेत्र का विवरण संपादित करें।",
+      "successToast": "टैक्स क्षेत्र सफलतापूर्वक अपडेट किया गया।"
     },
     "province": {
-      "header": "Provinces",
+      "header": "प्रांत",
       "create": {
-        "header": "Create Province Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific province."
+        "header": "प्रांत टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष प्रांत के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "provider": {
-      "header": "Tax Provider"
+      "header": "टैक्स प्रोवाइडर"
     },
     "state": {
-      "header": "States",
+      "header": "राज्य",
       "create": {
-        "header": "Create State Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific state."
+        "header": "राज्य टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष राज्य के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "stateOrTerritory": {
-      "header": "States or Territories",
+      "header": "राज्य या टेरिटरी",
       "create": {
-        "header": "Create State/Territory Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific state/territory."
+        "header": "राज्य/टेरिटरी टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष राज्य/टेरिटरी के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "county": {
-      "header": "Counties",
+      "header": "काउंटी",
       "create": {
-        "header": "Create County Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific county."
+        "header": "काउंटी टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष काउंटी के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "region": {
-      "header": "Regions",
+      "header": "क्षेत्र",
       "create": {
-        "header": "Create Region Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific region."
+        "header": "क्षेत्र टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष क्षेत्र के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "department": {
-      "header": "Departments",
+      "header": "डिपार्टमेंट",
       "create": {
-        "header": "Create Department Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific department."
+        "header": "डिपार्टमेंट टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष डिपार्टमेंट के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "territory": {
-      "header": "Territories",
+      "header": "टेरिटरी",
       "create": {
-        "header": "Create Territory Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific territory."
+        "header": "टेरिटरी टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष टेरिटरी के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "prefecture": {
-      "header": "Prefectures",
+      "header": "प्रीफ़ेक्चर",
       "create": {
-        "header": "Create Prefecture Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific prefecture."
+        "header": "प्रीफ़ेक्चर टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष प्रीफ़ेक्चर के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "district": {
-      "header": "Districts",
+      "header": "ज़िले",
       "create": {
-        "header": "Create District Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific district."
+        "header": "ज़िला टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष ज़िला के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "governorate": {
-      "header": "Governorates",
+      "header": "गवर्नरेट",
       "create": {
-        "header": "Create Governorate Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific governorate."
+        "header": "गवर्नरेट टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष गवर्नरेट के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "canton": {
-      "header": "Cantons",
+      "header": "कैंटन",
       "create": {
-        "header": "Create Canton Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific canton."
+        "header": "कैंटन टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष कैंटन के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "emirate": {
-      "header": "Emirates",
+      "header": "अमीरात",
       "create": {
-        "header": "Create Emirate Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific emirate."
+        "header": "अमीरात टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष अमीरात के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "sublevel": {
-      "header": "Sublevels",
+      "header": "उप-स्तर",
       "create": {
-        "header": "Create Sublevel Tax Region",
-        "hint": "Create a new tax region to define tax rates for a specific sublevel."
+        "header": "उप-स्तर टैक्स क्षेत्र बनाएं",
+        "hint": "किसी विशेष उप-स्तर के लिए टैक्स दरें तय करने के लिए नया टैक्स क्षेत्र बनाएं।"
       }
     },
     "taxOverrides": {
-      "header": "Overrides",
+      "header": "ओवरराइड",
       "create": {
-        "header": "Create Override",
-        "hint": "Create a tax rate that overrides the default tax rates for selected conditions."
+        "header": "ओवरराइड बनाएं",
+        "hint": "ऐसी टैक्स दर बनाएं जो चुनी गई शर्तों के लिए डिफ़ॉल्ट टैक्स दरों को ओवरराइड करे।"
       },
       "edit": {
-        "header": "Edit Override",
-        "hint": "Edit the tax rate that overrides the default tax rates for selected conditions."
+        "header": "ओवरराइड संपादित करें",
+        "hint": "उस टैक्स दर को संपादित करें जो चुनी गई शर्तों के लिए डिफ़ॉल्ट टैक्स दरों को ओवरराइड करती है।"
       }
     },
     "taxRates": {
       "create": {
-        "header": "Create Tax Rate",
-        "hint": "Create a new tax rate to define the tax rate for a region.",
-        "successToast": "Tax rate was successfully created."
+        "header": "टैक्स दर बनाएं",
+        "hint": "किसी क्षेत्र के लिए टैक्स दर तय करने के लिए नई टैक्स दर बनाएं।",
+        "successToast": "टैक्स दर सफलतापूर्वक बनाई गई।"
       },
       "edit": {
-        "header": "Edit Tax Rate",
-        "hint": "Edit the tax rate to define the tax rate for a region.",
-        "successToast": "Tax rate was successfully updated."
+        "header": "टैक्स दर संपादित करें",
+        "hint": "किसी क्षेत्र के लिए टैक्स दर तय करने के लिए टैक्स दर संपादित करें।",
+        "successToast": "टैक्स दर सफलतापूर्वक अपडेट की गई।"
       },
       "delete": {
-        "confirmation": "You are about to delete the tax rate \"{{name}}\". This action cannot be undone.",
-        "successToast": "Tax rate was successfully deleted."
+        "confirmation": "आप टैक्स दर \"{{name}}\" को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+        "successToast": "टैक्स दर सफलतापूर्वक हटाई गई।"
       }
     },
     "fields": {
       "isCombinable": {
-        "label": "Combinable",
-        "hint": "Whether this tax rate can be combined with the default rate from the tax region.",
-        "true": "Combinable",
-        "false": "Not combinable"
+        "label": "संयोजन योग्य",
+        "hint": "क्या इस टैक्स दर को टैक्स क्षेत्र की डिफ़ॉल्ट दर के साथ जोड़ा जा सकता है।",
+        "true": "संयोजन योग्य",
+        "false": "संयोजन योग्य नहीं"
       },
       "defaultTaxRate": {
-        "label": "Default tax rate",
-        "tooltip": "The default tax rate for this region. An example is the standard VAT rate for a country or region.",
-        "action": "Create default tax rate"
+        "label": "डिफ़ॉल्ट टैक्स दर",
+        "tooltip": "इस क्षेत्र की डिफ़ॉल्ट टैक्स दर। उदाहरण के लिए, किसी देश या क्षेत्र की मानक GST/VAT दर।",
+        "action": "डिफ़ॉल्ट टैक्स दर बनाएं"
       },
-      "taxRate": "Tax rate",
-      "taxCode": "Tax code",
-      "taxProvider": "Tax provider",
+      "taxRate": "टैक्स दर",
+      "taxCode": "टैक्स कोड",
+      "taxProvider": "टैक्स प्रोवाइडर",
       "targets": {
-        "label": "Targets",
-        "hint": "Select the targets that this tax rate will apply to.",
+        "label": "लक्ष्य",
+        "hint": "वे लक्ष्य चुनें जिन पर यह टैक्स दर लागू होगी।",
         "options": {
-          "product": "Products",
-          "productCollection": "Product collections",
-          "productTag": "Product tags",
-          "productType": "Product types",
-          "customerGroup": "Customer groups",
-          "shippingOption": "Shipping options"
+          "product": "उत्पाद",
+          "productCollection": "उत्पाद कलेक्शन",
+          "productTag": "उत्पाद टैग",
+          "productType": "उत्पाद प्रकार",
+          "customerGroup": "ग्राहक समूह",
+          "shippingOption": "शिपिंग विकल्प"
         },
         "operators": {
-          "in": "in",
-          "on": "on",
-          "and": "and"
+          "in": "में",
+          "on": "पर",
+          "and": "और"
         },
         "placeholders": {
-          "product": "Search for products",
-          "productCollection": "Search for product collections",
-          "productTag": "Search for product tags",
-          "productType": "Search for product types",
-          "customerGroup": "Search for customer groups",
-          "shippingOption": "Search for shipping options"
+          "product": "उत्पाद खोजें",
+          "productCollection": "उत्पाद कलेक्शन खोजें",
+          "productTag": "उत्पाद टैग खोजें",
+          "productType": "उत्पाद प्रकार खोजें",
+          "customerGroup": "ग्राहक समूह खोजें",
+          "shippingOption": "शिपिंग विकल्प खोजें"
         },
         "tags": {
-          "product": "Product",
-          "productCollection": "Product collection",
-          "productTag": "Product tag",
-          "productType": "Product type",
-          "customerGroup": "Customer group",
-          "shippingOption": "Shipping option"
+          "product": "उत्पाद",
+          "productCollection": "उत्पाद कलेक्शन",
+          "productTag": "उत्पाद टैग",
+          "productType": "उत्पाद प्रकार",
+          "customerGroup": "ग्राहक समूह",
+          "shippingOption": "शिपिंग विकल्प"
         },
         "modal": {
-          "header": "Add targets"
+          "header": "लक्ष्य जोड़ें"
         },
-        "values_one": "{{count}} value",
-        "values_other": "{{count}} values",
-        "numberOfTargets_one": "{{count}} target",
-        "numberOfTargets_other": "{{count}} targets",
-        "additionalValues_one": "and {{count}} more value",
-        "additionalValues_other": "and {{count}} more values",
-        "action": "Add target"
+        "values_one": "{{count}} मान",
+        "values_other": "{{count}} मान",
+        "numberOfTargets_one": "{{count}} लक्ष्य",
+        "numberOfTargets_other": "{{count}} लक्ष्य",
+        "additionalValues_one": "और {{count}} अन्य मान",
+        "additionalValues_other": "और {{count}} अन्य मान",
+        "action": "लक्ष्य जोड़ें"
       },
       "sublevels": {
         "labels": {
-          "province": "Province",
-          "state": "State",
-          "region": "Region",
-          "stateOrTerritory": "State/Territory",
-          "department": "Department",
-          "county": "County",
-          "territory": "Territory",
-          "prefecture": "Prefecture",
-          "district": "District",
-          "governorate": "Governorate",
-          "emirate": "Emirate",
-          "canton": "Canton",
-          "sublevel": "Sublevel code"
+          "province": "प्रांत",
+          "state": "राज्य",
+          "region": "क्षेत्र",
+          "stateOrTerritory": "राज्य/टेरिटरी",
+          "department": "डिपार्टमेंट",
+          "county": "काउंटी",
+          "territory": "टेरिटरी",
+          "prefecture": "प्रीफ़ेक्चर",
+          "district": "ज़िला",
+          "governorate": "गवर्नरेट",
+          "emirate": "अमीरात",
+          "canton": "कैंटन",
+          "sublevel": "उप-स्तर कोड"
         },
         "placeholders": {
-          "province": "Select province",
-          "state": "Select state",
-          "region": "Select region",
-          "stateOrTerritory": "Select state/territory",
-          "department": "Select department",
-          "county": "Select county",
-          "territory": "Select territory",
-          "prefecture": "Select prefecture",
-          "district": "Select district",
-          "governorate": "Select governorate",
-          "emirate": "Select emirate",
-          "canton": "Select canton"
+          "province": "प्रांत चुनें",
+          "state": "राज्य चुनें",
+          "region": "क्षेत्र चुनें",
+          "stateOrTerritory": "राज्य/टेरिटरी चुनें",
+          "department": "डिपार्टमेंट चुनें",
+          "county": "काउंटी चुनें",
+          "territory": "टेरिटरी चुनें",
+          "prefecture": "प्रीफ़ेक्चर चुनें",
+          "district": "ज़िला चुनें",
+          "governorate": "गवर्नरेट चुनें",
+          "emirate": "अमीरात चुनें",
+          "canton": "कैंटन चुनें"
         },
         "tooltips": {
-          "sublevel": "Enter the ISO 3166-2 code for the sublevel tax region.",
-          "notPartOfCountry": "{{province}} does not appear to be part of {{country}}. Please double-check if this is correct."
+          "sublevel": "उप-स्तर टैक्स क्षेत्र के लिए ISO 3166-2 कोड डालें।",
+          "notPartOfCountry": "{{province}}, {{country}} का हिस्सा नहीं लगता। कृपया दोबारा जांच लें कि यह सही है।"
         },
         "alert": {
-          "header": "Sublevel regions are disabled for this tax region",
-          "description": "Sublevel regions are disabled for this region by default. You can enable them to create sublevel regions like provinces, states, or territories.",
-          "action": "Enable sublevel regions"
+          "header": "इस टैक्स क्षेत्र के लिए उप-स्तर क्षेत्र अक्षम हैं",
+          "description": "इस क्षेत्र के लिए उप-स्तर क्षेत्र डिफ़ॉल्ट रूप से अक्षम हैं। प्रांत, राज्य या टेरिटरी जैसे उप-स्तर क्षेत्र बनाने के लिए आप इन्हें सक्षम कर सकते हैं।",
+          "action": "उप-स्तर क्षेत्र सक्षम करें"
         }
       },
       "noDefaultRate": {
-        "label": "No default rate",
-        "tooltip": "This tax region does not have a default tax rate. If there is a standard rate, such as a country's VAT, please add it to this region."
+        "label": "कोई डिफ़ॉल्ट दर नहीं",
+        "tooltip": "इस टैक्स क्षेत्र की कोई डिफ़ॉल्ट टैक्स दर नहीं है। अगर कोई मानक दर है, जैसे किसी देश का GST/VAT, तो कृपया उसे इस क्षेत्र में जोड़ें।"
       }
     }
   },
   "promotions": {
-    "domain": "Promotions",
+    "domain": "प्रमोशन",
     "list": {
       "empty": {
-        "heading": "No promotions",
-        "description": "There are no promotions to display."
+        "heading": "कोई प्रमोशन नहीं",
+        "description": "दिखाने के लिए कोई प्रमोशन नहीं है।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No promotions match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी प्रमोशन मौजूदा फ़िल्टर से मेल नहीं खाता।"
       }
     },
     "sections": {
-      "details": "Promotion Details"
+      "details": "प्रमोशन का विवरण"
     },
     "tabs": {
-      "template": "Type",
-      "details": "Details",
-      "campaign": "Campaign"
+      "template": "प्रकार",
+      "details": "विवरण",
+      "campaign": "कैंपेन"
     },
     "fields": {
-      "type": "Type",
-      "value_type": "Value Type",
-      "value": "Value",
-      "campaign": "Campaign",
-      "method": "Method",
-      "allocation": "Allocation",
-      "allocationTooltip": "Each enforces the quantity limit per item, while Once enforces the quantity limit across the entire cart",
-      "addCondition": "Add condition",
-      "clearAll": "Clear all",
-      "taxInclusive": "Tax Inclusive",
-      "usageLimit": "Usage Limit",
-      "usage": "Usage",
+      "type": "प्रकार",
+      "value_type": "मान का प्रकार",
+      "value": "मान",
+      "campaign": "कैंपेन",
+      "method": "तरीका",
+      "allocation": "आवंटन",
+      "allocationTooltip": "'प्रत्येक' मात्रा की सीमा को हर आइटम पर लागू करता है, जबकि 'एक बार' मात्रा की सीमा को पूरे कार्ट पर लागू करता है",
+      "addCondition": "शर्त जोड़ें",
+      "clearAll": "सभी साफ़ करें",
+      "taxInclusive": "टैक्स सहित",
+      "usageLimit": "उपयोग की सीमा",
+      "usage": "उपयोग",
       "amount": {
-        "tooltip": "Select the currency code to enable setting the amount"
+        "tooltip": "राशि तय करने के लिए मुद्रा कोड चुनें"
       },
       "conditions": {
         "rules": {
-          "title": "Who can use this code?",
-          "description": "Which customer is allowed to use the promotion code? Promotion code can be used by all customers if left untouched."
+          "title": "इस कोड का उपयोग कौन कर सकता है?",
+          "description": "किस ग्राहक को प्रमोशन कोड का उपयोग करने की अनुमति है? अगर इसे नहीं बदला गया, तो सभी ग्राहक प्रमोशन कोड का उपयोग कर सकते हैं।"
         },
         "target-rules": {
           "order": {
-            "title": "What items will the promotion be applied to?",
-            "description": "The promotion will be applied to items that match the following conditions."
+            "title": "प्रमोशन किन आइटम पर लागू होगा?",
+            "description": "प्रमोशन उन आइटम पर लागू होगा जो इन शर्तों से मेल खाते हैं।"
           },
           "shipping_methods": {
-            "title": "What shipping methods will the promotion be applied to?",
-            "description": "The promotion will be applied to shipping methods that match the following conditions."
+            "title": "प्रमोशन किन शिपिंग तरीकों पर लागू होगा?",
+            "description": "प्रमोशन उन शिपिंग तरीकों पर लागू होगा जो इन शर्तों से मेल खाते हैं।"
           },
           "items": {
-            "title": "What items will the promotion be applied to?",
-            "description": "The promotion will be applied to items that match the following conditions."
+            "title": "प्रमोशन किन आइटम पर लागू होगा?",
+            "description": "प्रमोशन उन आइटम पर लागू होगा जो इन शर्तों से मेल खाते हैं।"
           }
         },
         "buy-rules": {
-          "title": "What needs to be in the cart to unlock the promotion?",
-          "description": "If these conditions match, we enable the promotion on the target items."
+          "title": "प्रमोशन पाने के लिए कार्ट में क्या होना चाहिए?",
+          "description": "अगर ये शर्तें पूरी होती हैं, तो हम चुने गए आइटम पर प्रमोशन लागू कर देते हैं।"
         }
       }
     },
     "tooltips": {
-      "campaignType": "The currency code must be selected in the promotion to set a spend budget."
+      "campaignType": "खर्च का बजट तय करने के लिए प्रमोशन में मुद्रा कोड चुनना आवश्यक है।"
     },
     "errors": {
-      "requiredField": "Required field",
-      "promotionTabError": "Fix errors in Promotion Tab before proceeding"
+      "requiredField": "आवश्यक फ़ील्ड",
+      "promotionTabError": "आगे बढ़ने से पहले प्रमोशन टैब की त्रुटियाँ ठीक करें"
     },
     "toasts": {
-      "promotionCreateSuccess": "Promotion ({{code}}) was successfully created."
+      "promotionCreateSuccess": "प्रमोशन ({{code}}) सफलतापूर्वक बनाया गया।"
     },
     "create": {},
     "edit": {
-      "title": "Edit Promotion Details",
+      "title": "प्रमोशन का विवरण संपादित करें",
       "rules": {
-        "title": "Edit usage conditions"
+        "title": "उपयोग की शर्तें संपादित करें"
       },
       "target-rules": {
-        "title": "Edit item conditions"
+        "title": "आइटम की शर्तें संपादित करें"
       },
       "buy-rules": {
-        "title": "Edit buy rules"
+        "title": "खरीद के नियम संपादित करें"
       }
     },
     "campaign": {
-      "header": "Campaign",
+      "header": "कैंपेन",
       "edit": {
-        "header": "Edit Campaign",
-        "successToast": "Successfully updated the campaign of the promotion."
+        "header": "कैंपेन संपादित करें",
+        "successToast": "प्रमोशन का कैंपेन सफलतापूर्वक अपडेट किया गया।"
       },
       "actions": {
-        "goToCampaign": "Go to campaign"
+        "goToCampaign": "कैंपेन पर जाएं"
       }
     },
     "campaign_currency": {
-      "tooltip": "This is the promotion's currency. Change it from the Details tab."
+      "tooltip": "यह प्रमोशन की मुद्रा है। इसे विवरण टैब से बदलें।"
     },
     "form": {
-      "required": "Required",
-      "and": "AND",
-      "selectAttribute": "Select Attribute",
+      "required": "आवश्यक",
+      "and": "और",
+      "selectAttribute": "विशेषता चुनें",
       "campaign": {
         "existing": {
-          "title": "Existing Campaign",
-          "description": "Add promotion to an existing campaign.",
+          "title": "मौजूदा कैंपेन",
+          "description": "प्रमोशन को किसी मौजूदा कैंपेन में जोड़ें।",
           "placeholder": {
-            "title": "No existing campaigns",
-            "desc": "You can create one to track multiple promotions and set budget limits."
+            "title": "कोई मौजूदा कैंपेन नहीं",
+            "desc": "कई प्रमोशन ट्रैक करने और बजट की सीमा तय करने के लिए आप एक कैंपेन बना सकते हैं।"
           }
         },
         "new": {
-          "title": "New Campaign",
-          "description": "Create a new campaign for this promotion."
+          "title": "नया कैंपेन",
+          "description": "इस प्रमोशन के लिए नया कैंपेन बनाएं।"
         },
         "none": {
-          "title": "Without Campaign",
-          "description": "Proceed without associating promotion with campaign"
+          "title": "बिना कैंपेन के",
+          "description": "प्रमोशन को किसी कैंपेन से जोड़े बिना आगे बढ़ें"
         }
       },
       "taxInclusive": {
-        "title": "Does promotion include taxes?",
-        "description": "Enable this field to apply the promotion after taxes"
+        "title": "क्या प्रमोशन में टैक्स शामिल है?",
+        "description": "टैक्स के बाद प्रमोशन लागू करने के लिए इसे चालू करें"
       },
       "status": {
-        "label": "Status",
+        "label": "स्थिति",
         "draft": {
-          "title": "Draft",
-          "description": "Customers will not be able to use the code yet"
+          "title": "ड्राफ़्ट",
+          "description": "ग्राहक अभी इस कोड का उपयोग नहीं कर पाएंगे"
         },
         "active": {
-          "title": "Active",
-          "description": "Customers will be able to use the code"
+          "title": "सक्रिय",
+          "description": "ग्राहक इस कोड का उपयोग कर पाएंगे"
         },
         "inactive": {
-          "title": "Inactive",
-          "description": "Customers will no longer be able to use the code"
+          "title": "निष्क्रिय",
+          "description": "ग्राहक अब इस कोड का उपयोग नहीं कर पाएंगे"
         }
       },
       "method": {
-        "label": "Method",
+        "label": "तरीका",
         "code": {
-          "title": "Promotion code",
-          "description": "Customers must enter this code at checkout"
+          "title": "प्रमोशन कोड",
+          "description": "ग्राहकों को चेकआउट पर यह कोड डालना होगा"
         },
         "automatic": {
-          "title": "Automatic",
-          "description": "Customers will see this promotion at checkout"
+          "title": "स्वचालित",
+          "description": "ग्राहकों को यह प्रमोशन चेकआउट पर दिखेगा"
         }
       },
       "max_quantity": {
-        "title": "Maximum Quantity",
-        "description": "Maximum quantity of items this promotion applies to."
+        "title": "अधिकतम मात्रा",
+        "description": "आइटम की वह अधिकतम मात्रा जिस पर यह प्रमोशन लागू होता है।"
       },
       "type": {
         "standard": {
-          "title": "Standard",
-          "description": "A standard promotion"
+          "title": "स्टैंडर्ड",
+          "description": "एक सामान्य प्रमोशन"
         },
         "buyget": {
-          "title": "Buy Get",
-          "description": "Buy X get Y promotion"
+          "title": "खरीदें और पाएं",
+          "description": "X खरीदें, Y पाएं प्रमोशन"
         }
       },
       "allocation": {
         "each": {
-          "title": "Each",
-          "description": "Applies value on each item"
+          "title": "प्रत्येक",
+          "description": "हर आइटम पर मान लागू करता है"
         },
         "across": {
-          "title": "Across",
-          "description": "Applies value across items"
+          "title": "सभी पर",
+          "description": "सभी आइटम पर मिलाकर मान लागू करता है"
         },
         "once": {
-          "title": "Once",
-          "description": "Applies value to a limited number of items"
+          "title": "एक बार",
+          "description": "सीमित संख्या में आइटम पर मान लागू करता है"
         }
       },
       "code": {
-        "title": "Code",
-        "description": "The code your customers will enter during checkout."
+        "title": "कोड",
+        "description": "वह कोड जिसे आपके ग्राहक चेकआउट के दौरान डालेंगे।"
       },
       "value": {
-        "title": "Promotion Value",
-        "invalid": "Invalid promotion value"
+        "title": "प्रमोशन का मान",
+        "invalid": "प्रमोशन का मान अमान्य है"
       },
       "value_type": {
         "fixed": {
-          "title": "Fixed amount",
-          "description": "The amount to be discounted. eg. 100"
+          "title": "फ़िक्स्ड राशि",
+          "description": "छूट दी जाने वाली राशि। जैसे: 100"
         },
         "percentage": {
-          "title": "Percentage",
-          "description": "The percentage to discount off the amount. eg. 8%"
+          "title": "प्रतिशत",
+          "description": "राशि पर दी जाने वाली छूट का प्रतिशत। जैसे: 8%"
         }
       },
       "limit": {
-        "title": "Usage Limit",
-        "description": "Maximum number of times this promotion can be used across all orders. Leave empty for unlimited usage."
+        "title": "उपयोग की सीमा",
+        "description": "सभी ऑर्डर में मिलाकर इस प्रमोशन का अधिकतम कितनी बार उपयोग किया जा सकता है। असीमित उपयोग के लिए खाली छोड़ें।"
       }
     },
     "templates": {
       "amount_off_products": {
-        "title": "Amount off products",
-        "description": "Discount specific products or collection of products"
+        "title": "उत्पादों पर राशि की छूट",
+        "description": "चुनिंदा उत्पादों या उत्पादों के कलेक्शन पर छूट दें"
       },
       "amount_off_order": {
-        "title": "Amount off order",
-        "description": "Discounts the total order amount"
+        "title": "ऑर्डर पर राशि की छूट",
+        "description": "ऑर्डर की कुल राशि पर छूट देता है"
       },
       "percentage_off_product": {
-        "title": "Percentage off product",
-        "description": "Discounts a percentage off selected products"
+        "title": "उत्पाद पर प्रतिशत छूट",
+        "description": "चुने गए उत्पादों पर प्रतिशत छूट देता है"
       },
       "percentage_off_order": {
-        "title": "Percentage off order",
-        "description": "Discounts a percentage of the total order amount"
+        "title": "ऑर्डर पर प्रतिशत छूट",
+        "description": "ऑर्डर की कुल राशि पर प्रतिशत छूट देता है"
       },
       "buy_get": {
-        "title": "Buy X Get Y",
-        "description": "Buy X product(s), get Y product(s)"
+        "title": "X खरीदें, Y पाएं",
+        "description": "X उत्पाद खरीदें, Y उत्पाद पाएं"
       },
       "shipping_discount": {
-        "title": "Free shipping",
-        "description": "Applies a 100% discount to shipping fees"
+        "title": "मुफ़्त शिपिंग",
+        "description": "शिपिंग शुल्क पर 100% छूट लागू करता है"
       }
     },
-    "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
-    "createPromotionTitle": "Create Promotion",
-    "type": "Promotion type",
+    "deleteWarning": "आप प्रमोशन {{code}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "createPromotionTitle": "प्रमोशन बनाएं",
+    "type": "प्रमोशन का प्रकार",
     "conditions": {
-      "add": "Add condition",
+      "add": "शर्त जोड़ें",
       "list": {
-        "noRecordsMessage": "Add a condition to restrict what items the promotion applies to."
+        "noRecordsMessage": "प्रमोशन किन आइटम पर लागू हो, इसे सीमित करने के लिए एक शर्त जोड़ें।"
       }
     }
   },
