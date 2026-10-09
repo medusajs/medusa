@@ -1456,6 +1456,13 @@ export default class PaymentModuleService
     eventData: ProviderWebhookPayload,
     @MedusaContext() sharedContext?: Context
   ): Promise<WebhookActionResult> {
+    if (!isString(eventData?.provider) || !eventData.provider) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The webhook event data must include the provider id as a non-empty string."
+      )
+    }
+
     const providerId = eventData.provider.startsWith("pp_")
       ? eventData.provider
       : `pp_${eventData.provider}`
