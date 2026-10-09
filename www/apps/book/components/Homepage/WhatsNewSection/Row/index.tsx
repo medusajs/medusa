@@ -51,17 +51,20 @@ const HomepageWhatsNewRow = ({
           item_link: item.link ?? null,
           item_date: item.date ?? null,
           item_coming_soon: !!item.comingSoon,
+          item_early_access: !!item.earlyAccess,
           item_position: position,
         },
       },
     })
   }
 
+  const isHighlighted = !!item.comingSoon || !!item.earlyAccess
+
   const className = clsx(
     "w-full text-left flex-1 flex flex-col gap-0.5 px-2 py-1.5",
     "sm:grid sm:grid-cols-[96px_minmax(0,1fr)_auto] sm:items-center sm:gap-1.5",
     "transition-colors",
-    item.comingSoon
+    isHighlighted
       ? "bg-medusa-bg-highlight hover:bg-medusa-bg-highlight-hover"
       : "hover:bg-medusa-bg-base-hover",
     !isLast && "border-b border-medusa-border-base"
@@ -69,16 +72,7 @@ const HomepageWhatsNewRow = ({
 
   const content = (
     <>
-      {item.comingSoon ? (
-        <span
-          className={clsx(
-            "text-code-paragraph-2xsmall font-monospace uppercase",
-            "text-medusa-tag-blue-text"
-          )}
-        >
-          [Soon]
-        </span>
-      ) : (
+      {item.date ? (
         <span
           className={clsx(
             "text-code-paragraph-xsmall font-monospace",
@@ -87,6 +81,15 @@ const HomepageWhatsNewRow = ({
         >
           {formatDate(item.date)}
         </span>
+      ) : (
+        <span
+          className={clsx(
+            "text-code-paragraph-2xsmall font-monospace uppercase",
+            "text-medusa-tag-blue-text"
+          )}
+        >
+          {item.earlyAccess ? "[Early Access]" : "[Soon]"}
+        </span>
       )}
       <h3 className="text-medium-plus text-medusa-fg-base">{item.title}</h3>
       <span
@@ -94,7 +97,7 @@ const HomepageWhatsNewRow = ({
           "w-fit whitespace-nowrap rounded-full px-0.5 py-0.25",
           "text-code-paragraph-2xsmall font-monospace",
           "border border-medusa-tag-neutral-border text-medusa-tag-neutral-text",
-          item.comingSoon ? "bg-medusa-bg-base" : "bg-medusa-tag-neutral-bg"
+          isHighlighted ? "bg-medusa-bg-base" : "bg-medusa-tag-neutral-bg"
         )}
       >
         {item.tag}
