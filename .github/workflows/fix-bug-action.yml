@@ -219,7 +219,7 @@ jobs:
           retention-days: 3
 
   # Holds the push token. Never runs model output as code; it validates the
-  # result against fixed rules, applies the patch, and opens a draft PR.
+  # result against fixed rules, applies the patch, and opens a PR.
   open-pr:
     needs: analyze
     if: needs.analyze.outputs.status == 'confirmed'
@@ -329,7 +329,7 @@ jobs:
           git commit -m "$TITLE"
           git push origin "$BRANCH"
 
-      - name: Open draft pull request
+      - name: Open pull request
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BRANCH: ${{ steps.validate.outputs.branch }}
@@ -349,10 +349,9 @@ jobs:
           } >> "$BODY_FILE"
 
           PR_URL=$(gh pr create \
-            --draft \
             --base develop \
             --head "$BRANCH" \
             --title "$TITLE" \
             --body-file "$BODY_FILE")
           echo "Opened $PR_URL"
-          echo "### Opened draft PR: $PR_URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Opened PR: $PR_URL" >> "$GITHUB_STEP_SUMMARY"
