@@ -10,6 +10,12 @@ export default async (
   { container, logger, options, dataLoaderOnly }: LoaderOptions,
   moduleDeclaration: InternalModuleDeclaration
 ): Promise<void> => {
+  // The module options type (`RedisWorkflowsOptions`) describes the redis
+  // fields at the top level, so accept them there for consistency with the
+  // other redis infrastructure modules (event-bus-redis, cache-redis).
+  // The legacy nested `options.redis` shape keeps working and takes
+  // precedence for backward compatibility.
+  const nestedRedisOptions = (options?.redis ?? {}) as RedisWorkflowsOptions
   const {
     url,
     redisUrl,
@@ -28,7 +34,10 @@ export default async (
     cleanerQueueOptions,
     cleanerWorkerOptions,
     pubsub,
-  } = options?.redis as RedisWorkflowsOptions
+  } = {
+    ...((options ?? {}) as RedisWorkflowsOptions),
+    ...nestedRedisOptions,
+  }
 
   // Handle backward compatibility for deprecated options
   const resolvedUrl = redisUrl ?? url
@@ -49,7 +58,7 @@ export default async (
   // TODO: get default from ENV VAR
   if (!resolvedUrl) {
     throw Error(
-      "No `redis.redisUrl` (or deprecated `redis.url`) provided in `workflowOrchestrator` module options. It is required for the Workflow Orchestrator Redis."
+      "No `redisUrl` (or deprecated `url`) provided in `workflowOrchestrator` module options. It is required for the Workflow Orchestrator Redis."
     )
   }
 
