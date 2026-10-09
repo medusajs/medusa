@@ -70,6 +70,12 @@ export class InMemoryLockingProvider implements ILockingProvider {
     try {
       await Promise.race(promises)
     } catch (error) {
+      // The acquisition may have taken some of the keys and be queued on
+      // another. Those keys would otherwise stay held until the key it is
+      // queued on is released, which can be long after this call gave up. Give
+      // them back now; the owner id keeps this from touching anyone else's.
+      await this.release(keys, { ownerId })
+
       // The queued acquisition can still take the keys in the same tick the
       // timeout fires, and no job is going to use them. Since nothing expires
       // them, they have to be given back explicitly.
@@ -108,10 +114,20 @@ export class InMemoryLockingProvider implements ILockingProvider {
     },
     cancellationToken?: { cancelled: boolean }
   ): Promise<void> {
-    keys = Array.isArray(keys) ? keys : [keys]
+    // Every caller takes keys in the same order, so two callers wanting the
+    // same keys can never each hold one while waiting on the other's. A key
+    // named twice is taken once; a second pass would find it held by this call
+    // and, without an owner id, wait on it forever.
+    const uniqueKeys = [...new Set(Array.isArray(keys) ? keys : [keys])].sort()
     const { ownerId, expire } = args ?? {}
 
-    for (const key of keys) {
+    // Keys before `index` are held by this call. After waiting on a key, only
+    // that key is checked again. Starting over from the first key would find
+    // it held by this same call and, without an owner id to recognise it by,
+    // wait on it until the timeout.
+    let index = 0
+    while (index < uniqueKeys.length) {
+      const key = uniqueKeys[index]
       const lock = this.locks.get(key)
       const now = Date.now()
 
@@ -122,6 +138,7 @@ export class InMemoryLockingProvider implements ILockingProvider {
           currentPromise: this.getPromise(),
         })
 
+        index++
         continue
       }
 
@@ -133,6 +150,7 @@ export class InMemoryLockingProvider implements ILockingProvider {
           currentPromise: this.getPromise(),
         })
 
+        index++
         continue
       }
 
@@ -142,6 +160,7 @@ export class InMemoryLockingProvider implements ILockingProvider {
           this.locks.set(key, lock)
         }
 
+        index++
         continue
       }
 
@@ -151,7 +170,7 @@ export class InMemoryLockingProvider implements ILockingProvider {
           return
         }
 
-        return this.acquire_(keys, args, cancellationToken)
+        continue
       }
 
       throw new Error(`Failed to acquire lock for key "${key}"`)
