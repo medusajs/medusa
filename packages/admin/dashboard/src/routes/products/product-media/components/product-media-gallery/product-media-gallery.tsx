@@ -12,7 +12,9 @@ import { Link, useLocation } from "react-router-dom"
 
 import { HttpTypes } from "@medusajs/types"
 import { RouteFocusModal } from "../../../../../components/modals"
+import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { toVisualArrowKey } from "../../../../../lib/visual-arrow-key"
 
 type ProductMediaGalleryProps = {
   product: HttpTypes.AdminProduct
@@ -21,6 +23,7 @@ type ProductMediaGalleryProps = {
 export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
   const { state } = useLocation()
   const [curr, setCurr] = useState<number>(state?.curr || 0)
+  const direction = useDocumentDirection()
 
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -108,9 +111,13 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
+      // In RTL the next image sits to the left, so the physical arrows are
+      // exchanged before they are read as next/previous.
+      const key = toVisualArrowKey(e.key, direction)
+
+      if (key === "ArrowRight") {
         next()
-      } else if (e.key === "ArrowLeft") {
+      } else if (key === "ArrowLeft") {
         prev()
       }
     }
@@ -120,7 +127,7 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown)
     }
-  }, [next, prev])
+  }, [next, prev, direction])
 
   const noMedia = !media.length
 
