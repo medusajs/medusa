@@ -13,8 +13,12 @@ import {
 export const AdminCustomerParams = createSelectParams()
 
 export const AdminCustomerGroupInCustomerParams = z.object({
-  id: z.union([z.string(), z.array(z.string())]).optional(),
-  name: z.union([z.string(), z.array(z.string())]).optional(),
+  id: z
+    .union([z.string(), z.array(z.string()), createOperatorMap()])
+    .optional(),
+  name: z
+    .union([z.string(), z.array(z.string()), createOperatorMap()])
+    .optional(),
   created_at: createOperatorMap().optional(),
   updated_at: createOperatorMap().optional(),
   deleted_at: createOperatorMap().optional(),

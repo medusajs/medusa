@@ -137,6 +137,50 @@ medusaIntegrationTestRunner({
         ])
       })
 
+      it("should list customers not in a specific group using negation operators", async () => {
+        const negationGroup = (
+          await api.post(
+            "/admin/customer-groups",
+            {
+              name: "NEGATION_TEST",
+            },
+            adminHeaders
+          )
+        ).data.customer_group
+
+        await api.post(
+          `/admin/customer-groups/${negationGroup.id}/customers`,
+          {
+            add: [customer1.id, customer2.id],
+          },
+          adminHeaders
+        )
+
+        const ninResponse = await api.get(
+          `/admin/customers?groups[id][$nin][]=${negationGroup.id}`,
+          adminHeaders
+        )
+
+        expect(ninResponse.status).toEqual(200)
+        const ninIds = ninResponse.data.customers.map((c) => c.id)
+        expect(ninIds).toContain(customer3.id)
+        expect(ninIds).toContain(customer4.id)
+        expect(ninIds).not.toContain(customer1.id)
+        expect(ninIds).not.toContain(customer2.id)
+
+        const neResponse = await api.get(
+          `/admin/customers?groups[id][$ne]=${negationGroup.id}`,
+          adminHeaders
+        )
+
+        expect(neResponse.status).toEqual(200)
+        const neIds = neResponse.data.customers.map((c) => c.id)
+        expect(neIds).toContain(customer3.id)
+        expect(neIds).toContain(customer4.id)
+        expect(neIds).not.toContain(customer1.id)
+        expect(neIds).not.toContain(customer2.id)
+      })
+
       it("should list customers with specific query", async () => {
         const response = await api.get("/admin/customers?q=est2@", adminHeaders)
 
