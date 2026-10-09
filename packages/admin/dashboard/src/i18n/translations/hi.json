@@ -2785,263 +2785,263 @@
     "invite": "आमंत्रित करें"
   },
   "roles": {
-    "domain": "Roles",
-    "subtitle": "Manage access roles and permissions.",
+    "domain": "भूमिकाएँ",
+    "subtitle": "एक्सेस भूमिकाएँ और अनुमतियाँ प्रबंधित करें।",
     "create": {
-      "header": "Create role",
-      "hint": "Create a role to manage access in your admin.",
-      "successToast": "Role {{name}} created",
+      "header": "भूमिका बनाएं",
+      "hint": "अपने एडमिन में एक्सेस प्रबंधित करने के लिए एक भूमिका बनाएं।",
+      "successToast": "भूमिका {{name}} बनाई गई",
       "tabs": {
-        "details": "Details",
-        "permissions": "Permissions"
+        "details": "विवरण",
+        "permissions": "अनुमतियाँ"
       },
       "permissions": {
         "empty": {
-          "heading": "No permissions",
-          "description": "There are no permissions to select."
+          "heading": "कोई अनुमति नहीं",
+          "description": "चुनने के लिए कोई अनुमति नहीं है।"
         },
         "filtered": {
-          "heading": "No results",
-          "description": "No permissions match the current filter criteria."
+          "heading": "कोई परिणाम नहीं",
+          "description": "कोई भी अनुमति मौजूदा फ़िल्टर से मेल नहीं खाती।"
         }
       }
     },
     "edit": {
-      "header": "Edit role",
-      "successToast": "Role {{name}} updated"
+      "header": "भूमिका संपादित करें",
+      "successToast": "भूमिका {{name}} अपडेट की गई"
     },
     "delete": {
-      "title": "Delete role",
-      "description": "You are about to delete the role {{name}}. This action cannot be undone.",
-      "successToast": "Role {{name}} deleted"
+      "title": "भूमिका हटाएं",
+      "description": "आप भूमिका {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "भूमिका {{name}} हटाई गई"
     },
     "fields": {
-      "permissions": "Permissions"
+      "permissions": "अनुमतियाँ"
     },
     "actions": {
-      "managePermissions": "Manage permissions"
+      "managePermissions": "अनुमतियाँ प्रबंधित करें"
     },
     "users": {
-      "alreadyAddedTooltip": "User already has this role.",
-      "unassignableRoleTooltip": "You don't have access to assign this role — your permissions don't cover all of its policies.",
+      "alreadyAddedTooltip": "उपयोगकर्ता के पास पहले से यह भूमिका है।",
+      "unassignableRoleTooltip": "आपके पास यह भूमिका देने की अनुमति नहीं है, क्योंकि आपकी अनुमतियों में इसकी सभी पॉलिसी शामिल नहीं हैं।",
       "add": {
-        "successToast_one": "User was successfully added to the role.",
-        "successToast_other": "Users were successfully added to the role.",
+        "successToast_one": "उपयोगकर्ता को सफलतापूर्वक भूमिका में जोड़ा गया।",
+        "successToast_other": "उपयोगकर्ताओं को सफलतापूर्वक भूमिका में जोड़ा गया।",
         "list": {
-          "noRecordsMessage": "Create a user first."
+          "noRecordsMessage": "पहले एक उपयोगकर्ता बनाएं।"
         }
       },
       "remove": {
-        "title_one": "Remove user",
-        "title_other": "Remove users",
-        "description_one": "You are about to remove {{count}} user from the role. This action cannot be undone.",
-        "description_other": "You are about to remove {{count}} users from the role. This action cannot be undone."
+        "title_one": "उपयोगकर्ता निकालें",
+        "title_other": "उपयोगकर्ताओं को निकालें",
+        "description_one": "आप भूमिका से {{count}} उपयोगकर्ता निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+        "description_other": "आप भूमिका से {{count}} उपयोगकर्ता निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।"
       },
       "list": {
-        "noRecordsMessage": "This role doesn't have users."
+        "noRecordsMessage": "इस भूमिका में कोई उपयोगकर्ता नहीं है।"
       }
     },
     "permissions": {
-      "header": "Manage permissions",
-      "hint": "Select permissions that this role should include.",
+      "header": "अनुमतियाँ प्रबंधित करें",
+      "hint": "वे अनुमतियाँ चुनें जो इस भूमिका में शामिल होनी चाहिए।",
       "empty": {
-        "heading": "No permissions",
-        "description": "There are no permissions to select."
+        "heading": "कोई अनुमति नहीं",
+        "description": "चुनने के लिए कोई अनुमति नहीं है।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No permissions match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी अनुमति मौजूदा फ़िल्टर से मेल नहीं खाती।"
       }
     },
     "list": {
       "empty": {
-        "heading": "No roles found",
-        "description": "Create roles to manage access in your admin."
+        "heading": "कोई भूमिका नहीं मिली",
+        "description": "अपने एडमिन में एक्सेस प्रबंधित करने के लिए भूमिकाएँ बनाएं।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No roles match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी भूमिका मौजूदा फ़िल्टर से मेल नहीं खाती।"
       }
     }
   },
   "policies": {
-    "domain": "Policies",
-    "subtitle": "Define the permissions that roles can grant.",
+    "domain": "पॉलिसी",
+    "subtitle": "वे अनुमतियाँ तय करें जो भूमिकाएँ दे सकती हैं।",
     "create": {
-      "header": "Create policy",
-      "hint": "Define a new permission that can be attached to roles.",
-      "successToast": "Policy {{key}} created"
+      "header": "पॉलिसी बनाएं",
+      "hint": "एक नई अनुमति तय करें जिसे भूमिकाओं से जोड़ा जा सके।",
+      "successToast": "पॉलिसी {{key}} बनाई गई"
     },
     "edit": {
-      "header": "Edit policy",
-      "successToast": "Policy {{key}} updated"
+      "header": "पॉलिसी संपादित करें",
+      "successToast": "पॉलिसी {{key}} अपडेट की गई"
     },
     "delete": {
-      "title": "Delete policy",
-      "description": "You are about to delete the policy {{key}}. This action cannot be undone.",
-      "successToast": "Policy {{key}} deleted"
+      "title": "पॉलिसी हटाएं",
+      "description": "आप पॉलिसी {{key}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "पॉलिसी {{key}} हटाई गई"
     },
     "fields": {
-      "roles": "Roles",
-      "users": "Users"
+      "roles": "भूमिकाएँ",
+      "users": "उपयोगकर्ता"
     },
     "list": {
       "empty": {
-        "heading": "No policies found",
-        "description": "Create policies to manage the permissions roles can grant."
+        "heading": "कोई पॉलिसी नहीं मिली",
+        "description": "भूमिकाएँ कौन-सी अनुमतियाँ दे सकती हैं, इसे प्रबंधित करने के लिए पॉलिसी बनाएं।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No policies match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी पॉलिसी मौजूदा फ़िल्टर से मेल नहीं खाती।"
       }
     },
     "roles": {
       "list": {
-        "noRecordsMessage": "No roles include this policy yet."
+        "noRecordsMessage": "अभी तक किसी भी भूमिका में यह पॉलिसी शामिल नहीं है।"
       },
       "empty": {
-        "heading": "No roles",
-        "description": "No roles include this policy yet."
+        "heading": "कोई भूमिका नहीं",
+        "description": "अभी तक किसी भी भूमिका में यह पॉलिसी शामिल नहीं है।"
       }
     }
   },
   "translations": {
-    "domain": "Translations",
+    "domain": "अनुवाद",
     "settings": {
-      "header": "Manage translatable entities",
-      "successToast": "Settings updated successfully"
+      "header": "अनुवाद योग्य एंटिटी प्रबंधित करें",
+      "successToast": "सेटिंग्स सफलतापूर्वक अपडेट की गईं"
     },
     "actions": {
-      "manage": "Manage translations",
-      "manageEntities": "Manage entities",
-      "manageLocales": "Manage locales"
+      "manage": "अनुवाद प्रबंधित करें",
+      "manageEntities": "एंटिटी प्रबंधित करें",
+      "manageLocales": "लोकेल प्रबंधित करें"
     },
-    "subtitle": "Manage translations of your data in Medusa",
+    "subtitle": "Medusa में अपने डेटा के अनुवाद प्रबंधित करें",
     "list": {
-      "metrics": "{{translated}} of {{total}} translations"
+      "metrics": "{{total}} में से {{translated}} अनुवाद"
     },
     "edit": {
-      "successToast": "Translations updated successfully",
+      "successToast": "अनुवाद सफलतापूर्वक अपडेट किए गए",
       "unsavedChanges": {
-        "title": "Unsaved translations",
-        "description": "Don't lose your work. You have changes that haven't been saved yet"
+        "title": "बिना सहेजे अनुवाद",
+        "description": "अपना काम न खोएं। आपके कुछ बदलाव अभी तक सहेजे नहीं गए हैं"
       }
     },
     "bulk": {
-      "header": "Translations Bulk Editor",
-      "mainColumn": "Locale"
+      "header": "अनुवाद बल्क एडिटर",
+      "mainColumn": "लोकेल"
     },
     "activeLocales": {
-      "heading": "Languages",
-      "subtitle": "Activated translations",
-      "noLocalesTip": "Configure at least one language to start translating your data",
-      "noLocalesTipConfigureAction": "Configure"
+      "heading": "भाषाएँ",
+      "subtitle": "सक्रिय अनुवाद",
+      "noLocalesTip": "अपने डेटा का अनुवाद शुरू करने के लिए कम से कम एक भाषा कॉन्फ़िगर करें",
+      "noLocalesTipConfigureAction": "कॉन्फ़िगर करें"
     },
     "completion": {
-      "heading": "Translated fields",
-      "translated": "Translated",
-      "toTranslate": "Missing",
-      "footer": "Languages"
+      "heading": "अनुवादित फ़ील्ड",
+      "translated": "अनुवादित",
+      "toTranslate": "बाकी",
+      "footer": "भाषाएँ"
     }
   },
   "store": {
-    "domain": "Store",
-    "manageYourStoresDetails": "Manage your store's details",
-    "editStore": "Edit store",
-    "defaultCurrency": "Default currency",
-    "defaultLocale": "Default locale",
-    "defaultRegion": "Default region",
-    "defaultSalesChannel": "Default sales channel",
-    "defaultLocation": "Default location",
-    "swapLinkTemplate": "Swap link template",
-    "paymentLinkTemplate": "Payment link template",
-    "inviteLinkTemplate": "Invite link template",
-    "locales": "Locales",
-    "currencies": "Currencies",
-    "addCurrencies": "Add currencies",
-    "enableTaxInclusivePricing": "Enable tax inclusive pricing",
-    "disableTaxInclusivePricing": "Disable tax inclusive pricing",
-    "removeCurrencyWarning_one": "You are about to remove {{count}} currency from your store. Ensure that you have removed all prices using the currency before proceeding.",
-    "removeCurrencyWarning_other": "You are about to remove {{count}} currencies from your store. Ensure that you have removed all prices using the currencies before proceeding.",
-    "removeLocaleWarning_one": "You are about to remove {{count}} locale from your store. Any translation using this locale will be removed.",
-    "removeLocaleWarning_other": "You are about to remove {{count}} locales from your store. Any translation using these locales will be removed.",
-    "currencyAlreadyAdded": "The currency has already been added to your store.",
-    "localeAlreadyAdded": "The locale has already been added to your store.",
+    "domain": "स्टोर",
+    "manageYourStoresDetails": "अपने स्टोर का विवरण प्रबंधित करें",
+    "editStore": "स्टोर संपादित करें",
+    "defaultCurrency": "डिफ़ॉल्ट मुद्रा",
+    "defaultLocale": "डिफ़ॉल्ट लोकेल",
+    "defaultRegion": "डिफ़ॉल्ट क्षेत्र",
+    "defaultSalesChannel": "डिफ़ॉल्ट सेल्स चैनल",
+    "defaultLocation": "डिफ़ॉल्ट लोकेशन",
+    "swapLinkTemplate": "स्वैप लिंक टेम्पलेट",
+    "paymentLinkTemplate": "भुगतान लिंक टेम्पलेट",
+    "inviteLinkTemplate": "आमंत्रण लिंक टेम्पलेट",
+    "locales": "लोकेल",
+    "currencies": "मुद्राएँ",
+    "addCurrencies": "मुद्राएँ जोड़ें",
+    "enableTaxInclusivePricing": "टैक्स सहित कीमतें सक्षम करें",
+    "disableTaxInclusivePricing": "टैक्स सहित कीमतें अक्षम करें",
+    "removeCurrencyWarning_one": "आप अपने स्टोर से {{count}} मुद्रा निकालने वाले हैं। आगे बढ़ने से पहले पक्का करें कि आपने इस मुद्रा का उपयोग करने वाली सभी कीमतें हटा दी हैं।",
+    "removeCurrencyWarning_other": "आप अपने स्टोर से {{count}} मुद्राएँ निकालने वाले हैं। आगे बढ़ने से पहले पक्का करें कि आपने इन मुद्राओं का उपयोग करने वाली सभी कीमतें हटा दी हैं।",
+    "removeLocaleWarning_one": "आप अपने स्टोर से {{count}} लोकेल निकालने वाले हैं। इस लोकेल का उपयोग करने वाले सभी अनुवाद हटा दिए जाएंगे।",
+    "removeLocaleWarning_other": "आप अपने स्टोर से {{count}} लोकेल निकालने वाले हैं। इन लोकेल का उपयोग करने वाले सभी अनुवाद हटा दिए जाएंगे।",
+    "currencyAlreadyAdded": "यह मुद्रा पहले से आपके स्टोर में जोड़ी जा चुकी है।",
+    "localeAlreadyAdded": "यह लोकेल पहले से आपके स्टोर में जोड़ा जा चुका है।",
     "edit": {
-      "header": "Edit Store"
+      "header": "स्टोर संपादित करें"
     },
     "toast": {
-      "update": "Store successfully updated",
-      "currenciesUpdated": "Currencies updated successfully",
-      "localesUpdated": "Locales updated successfully",
-      "currenciesRemoved": "Removed currencies from the store successfully",
-      "localesRemoved": "Removed locales from the store successfully",
-      "updatedTaxInclusivitySuccessfully": "Tax inclusive pricing updated successfully"
+      "update": "स्टोर सफलतापूर्वक अपडेट किया गया",
+      "currenciesUpdated": "मुद्राएँ सफलतापूर्वक अपडेट की गईं",
+      "localesUpdated": "लोकेल सफलतापूर्वक अपडेट किए गए",
+      "currenciesRemoved": "स्टोर से मुद्राएँ सफलतापूर्वक निकाली गईं",
+      "localesRemoved": "स्टोर से लोकेल सफलतापूर्वक निकाले गए",
+      "updatedTaxInclusivitySuccessfully": "टैक्स सहित कीमतें सफलतापूर्वक अपडेट की गईं"
     }
   },
   "regions": {
-    "domain": "Regions",
-    "subtitle": "A region is an area that you sell products in. It can cover multiple countries, and has different tax rates, providers, and currency.",
-    "createRegion": "Create Region",
-    "createRegionHint": "Manage tax rates and providers for a set of countries.",
-    "addCountries": "Add countries",
-    "editRegion": "Edit Region",
-    "countriesHint": "Add the countries included in this region.",
-    "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
-    "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
-    "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
-    "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
-    "automaticTaxesHint": "When enabled, taxes will only be calculated at checkout based on the shipping address.",
-    "taxInclusiveHint": "When enabled, prices in the region will be tax inclusive.",
-    "providersHint": "Add which payment providers are available in this region.",
-    "shippingOptions": "Shipping Options",
-    "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
-    "return": "Return",
-    "outbound": "Outbound",
-    "priceType": "Price Type",
-    "flatRate": "Flat Rate",
-    "calculated": "Calculated",
+    "domain": "क्षेत्र",
+    "subtitle": "क्षेत्र वह इलाका है जहाँ आप उत्पाद बेचते हैं। इसमें कई देश शामिल हो सकते हैं, और इसकी अपनी टैक्स दरें, प्रोवाइडर और मुद्रा होती है।",
+    "createRegion": "क्षेत्र बनाएं",
+    "createRegionHint": "देशों के एक समूह के लिए टैक्स दरें और प्रोवाइडर प्रबंधित करें।",
+    "addCountries": "देश जोड़ें",
+    "editRegion": "क्षेत्र संपादित करें",
+    "countriesHint": "इस क्षेत्र में शामिल देश जोड़ें।",
+    "deleteRegionWarning": "आप क्षेत्र {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "removeCountriesWarning_one": "आप क्षेत्र से {{count}} देश निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "removeCountriesWarning_other": "आप क्षेत्र से {{count}} देश निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "removeCountryWarning": "आप देश {{name}} को क्षेत्र से निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "automaticTaxesHint": "इसे चालू करने पर, टैक्स की गणना केवल चेकआउट के समय शिपिंग पते के आधार पर की जाएगी।",
+    "taxInclusiveHint": "इसे चालू करने पर, इस क्षेत्र की कीमतें टैक्स सहित होंगी।",
+    "providersHint": "इस क्षेत्र में कौन-से पेमेंट प्रोवाइडर उपलब्ध हैं, उन्हें जोड़ें।",
+    "shippingOptions": "शिपिंग विकल्प",
+    "deleteShippingOptionWarning": "आप शिपिंग विकल्प {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "return": "रिटर्न",
+    "outbound": "आउटबाउंड",
+    "priceType": "कीमत का प्रकार",
+    "flatRate": "फ़्लैट रेट",
+    "calculated": "गणना आधारित",
     "list": {
-      "noRecordsMessage": "Create a region for the areas that you sell in.",
+      "noRecordsMessage": "जिन इलाकों में आप बेचते हैं, उनके लिए एक क्षेत्र बनाएं।",
       "empty": {
-        "heading": "No regions",
-        "description": "There are no regions to display."
+        "heading": "कोई क्षेत्र नहीं",
+        "description": "दिखाने के लिए कोई क्षेत्र नहीं है।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No regions match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी क्षेत्र मौजूदा फ़िल्टर से मेल नहीं खाता।"
       }
     },
     "toast": {
-      "delete": "Region deleted successfully",
-      "edit": "Region edit saved",
-      "create": "Region created successfully",
-      "countries": "Region countries updated successfully"
+      "delete": "क्षेत्र सफलतापूर्वक हटाया गया",
+      "edit": "क्षेत्र में बदलाव सहेजे गए",
+      "create": "क्षेत्र सफलतापूर्वक बनाया गया",
+      "countries": "क्षेत्र के देश सफलतापूर्वक अपडेट किए गए"
     },
     "shippingOption": {
-      "createShippingOption": "Create Shipping Option",
-      "createShippingOptionHint": "Create a new shipping option for the region.",
-      "editShippingOption": "Edit Shipping Option",
-      "fulfillmentMethod": "Fulfillment Method",
+      "createShippingOption": "शिपिंग विकल्प बनाएं",
+      "createShippingOptionHint": "क्षेत्र के लिए नया शिपिंग विकल्प बनाएं।",
+      "editShippingOption": "शिपिंग विकल्प संपादित करें",
+      "fulfillmentMethod": "फ़ुलफ़िलमेंट का तरीका",
       "type": {
-        "outbound": "Outbound",
-        "outboundHint": "Use this if you are creating a shipping option for sending products to the customer.",
-        "return": "Return",
-        "returnHint": "Use this if you are creating a shipping option for the customer to return products to you."
+        "outbound": "आउटबाउंड",
+        "outboundHint": "इसका उपयोग तब करें जब आप ग्राहक को उत्पाद भेजने के लिए शिपिंग विकल्प बना रहे हों।",
+        "return": "रिटर्न",
+        "returnHint": "इसका उपयोग तब करें जब आप ग्राहक के लिए उत्पाद वापस भेजने का शिपिंग विकल्प बना रहे हों।"
       },
       "priceType": {
-        "label": "Price Type",
-        "flatRate": "Flat rate",
-        "calculated": "Calculated"
+        "label": "कीमत का प्रकार",
+        "flatRate": "फ़्लैट रेट",
+        "calculated": "गणना आधारित"
       },
       "availability": {
-        "adminOnly": "Admin only",
-        "adminOnlyHint": "When enabled, the shipping option will only be available in the admin dashboard, and not in the storefront."
+        "adminOnly": "केवल एडमिन",
+        "adminOnlyHint": "इसे चालू करने पर, शिपिंग विकल्प केवल एडमिन डैशबोर्ड में उपलब्ध होगा, स्टोरफ़्रंट में नहीं।"
       },
-      "taxInclusiveHint": "When enabled, the shipping option's price will be tax inclusive.",
+      "taxInclusiveHint": "इसे चालू करने पर, शिपिंग विकल्प की कीमत टैक्स सहित होगी।",
       "requirements": {
-        "label": "Requirements",
-        "hint": "Specify the requirements for the shipping option."
+        "label": "आवश्यकताएँ",
+        "hint": "शिपिंग विकल्प के लिए आवश्यकताएँ तय करें।"
       }
     }
   },
@@ -3110,124 +3110,124 @@
     "deleteWarning": "आप एक आरक्षण हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।"
   },
   "salesChannels": {
-    "domain": "Sales Channels",
-    "subtitle": "Manage the online and offline channels you sell products on.",
+    "domain": "सेल्स चैनल",
+    "subtitle": "उन ऑनलाइन और ऑफ़लाइन चैनलों को प्रबंधित करें जिन पर आप उत्पाद बेचते हैं।",
     "list": {
       "empty": {
-        "heading": "No sales channels found",
-        "description": "Once a sales channel has been created, it will appear here."
+        "heading": "कोई सेल्स चैनल नहीं मिला",
+        "description": "सेल्स चैनल बनने के बाद, वह यहाँ दिखाई देगा।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No sales channels match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी सेल्स चैनल मौजूदा फ़िल्टर से मेल नहीं खाता।"
       }
     },
-    "createSalesChannel": "Create Sales Channel",
-    "createSalesChannelHint": "Create a new sales channel to sell your products on.",
-    "enabledHint": "Specify whether the sales channel is enabled.",
-    "removeProductsWarning_one": "You are about to remove {{count}} product from {{sales_channel}}.",
-    "removeProductsWarning_other": "You are about to remove {{count}} products from {{sales_channel}}.",
-    "addProducts": "Add Products",
-    "editSalesChannel": "Edit sales channel",
-    "productAlreadyAdded": "The product has already been added to the sales channel.",
-    "deleteSalesChannelWarning": "You are about to delete the sales channel {{name}}. This action cannot be undone.",
+    "createSalesChannel": "सेल्स चैनल बनाएं",
+    "createSalesChannelHint": "अपने उत्पाद बेचने के लिए नया सेल्स चैनल बनाएं।",
+    "enabledHint": "बताएं कि सेल्स चैनल सक्षम है या नहीं।",
+    "removeProductsWarning_one": "आप {{sales_channel}} से {{count}} उत्पाद निकालने वाले हैं।",
+    "removeProductsWarning_other": "आप {{sales_channel}} से {{count}} उत्पाद निकालने वाले हैं।",
+    "addProducts": "उत्पाद जोड़ें",
+    "editSalesChannel": "सेल्स चैनल संपादित करें",
+    "productAlreadyAdded": "यह उत्पाद पहले से सेल्स चैनल में जोड़ा जा चुका है।",
+    "deleteSalesChannelWarning": "आप सेल्स चैनल {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
     "toast": {
-      "create": "Sales channel created successfully",
-      "update": "Sales channel updated successfully",
-      "delete": "Sales channel deleted successfully"
+      "create": "सेल्स चैनल सफलतापूर्वक बनाया गया",
+      "update": "सेल्स चैनल सफलतापूर्वक अपडेट किया गया",
+      "delete": "सेल्स चैनल सफलतापूर्वक हटाया गया"
     },
     "tooltip": {
-      "cannotDeleteDefault": "Cannot delete default sales channel"
+      "cannotDeleteDefault": "डिफ़ॉल्ट सेल्स चैनल को हटाया नहीं जा सकता"
     },
     "products": {
       "list": {
-        "noRecordsMessage": "There are no products in the sales channel."
+        "noRecordsMessage": "इस सेल्स चैनल में कोई उत्पाद नहीं है।"
       },
       "add": {
         "list": {
-          "noRecordsMessage": "Create a product first."
+          "noRecordsMessage": "पहले एक उत्पाद बनाएं।"
         }
       }
     }
   },
   "apiKeyManagement": {
     "domain": {
-      "publishable": "Publishable API Keys",
-      "secret": "Secret API Keys"
+      "publishable": "पब्लिशेबल API कुंजियाँ",
+      "secret": "सीक्रेट API कुंजियाँ"
     },
     "subtitle": {
-      "publishable": "Manage API keys used in the storefront to limit the scope of requests to specific sales channels.",
-      "secret": "Manage API keys used to authenticate admin users in admin applications."
+      "publishable": "स्टोरफ़्रंट में इस्तेमाल होने वाली API कुंजियाँ प्रबंधित करें, ताकि अनुरोधों को विशेष सेल्स चैनलों तक सीमित किया जा सके।",
+      "secret": "एडमिन ऐप्लिकेशन में एडमिन उपयोगकर्ताओं को प्रमाणित करने के लिए इस्तेमाल होने वाली API कुंजियाँ प्रबंधित करें।"
     },
     "status": {
-      "active": "Active",
-      "revoked": "Revoked"
+      "active": "सक्रिय",
+      "revoked": "निरस्त"
     },
     "type": {
-      "publishable": "Publishable",
-      "secret": "Secret"
+      "publishable": "पब्लिशेबल",
+      "secret": "सीक्रेट"
     },
     "create": {
-      "createPublishableHeader": "Create Publishable API Key",
-      "createPublishableHint": "Create a new publishable API key to limit the scope of requests to specific sales channels.",
-      "createSecretHeader": "Create Secret API Key",
-      "createSecretHint": "Create a new secret API key to access the Medusa API as an authenticated admin user.",
-      "secretKeyCreatedHeader": "Secret Key Created",
-      "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed.",
-      "copySecretTokenSuccess": "Secret key was copied to clipboard.",
-      "copySecretTokenFailure": "Failed to copy secret key to clipboard.",
-      "successToast": "API key was successfully created."
+      "createPublishableHeader": "पब्लिशेबल API कुंजी बनाएं",
+      "createPublishableHint": "अनुरोधों को विशेष सेल्स चैनलों तक सीमित करने के लिए नई पब्लिशेबल API कुंजी बनाएं।",
+      "createSecretHeader": "सीक्रेट API कुंजी बनाएं",
+      "createSecretHint": "प्रमाणित एडमिन उपयोगकर्ता के रूप में Medusa API का उपयोग करने के लिए नई सीक्रेट API कुंजी बनाएं।",
+      "secretKeyCreatedHeader": "सीक्रेट कुंजी बनाई गई",
+      "secretKeyCreatedHint": "आपकी नई सीक्रेट कुंजी बना दी गई है। इसे अभी कॉपी करके सुरक्षित रखें। यह केवल इसी बार दिखाई जाएगी।",
+      "copySecretTokenSuccess": "सीक्रेट कुंजी क्लिपबोर्ड पर कॉपी की गई।",
+      "copySecretTokenFailure": "सीक्रेट कुंजी क्लिपबोर्ड पर कॉपी नहीं की जा सकी।",
+      "successToast": "API कुंजी सफलतापूर्वक बनाई गई।"
     },
     "edit": {
-      "header": "Edit API Key",
-      "description": "Edit the API key's title.",
-      "successToast": "API key {{title}} was successfully updated."
+      "header": "API कुंजी संपादित करें",
+      "description": "API कुंजी का शीर्षक संपादित करें।",
+      "successToast": "API कुंजी {{title}} सफलतापूर्वक अपडेट की गई।"
     },
     "salesChannels": {
-      "title": "Add Sales Channels",
-      "description": "Add the sales channels that the API key should be limited to.",
-      "successToast_one": "{{count}} sales channel was successfully added to the API key.",
-      "successToast_other": "{{count}} sales channels were successfully added to the API key.",
-      "alreadyAddedTooltip": "The sales channel has already been added to the API key.",
+      "title": "सेल्स चैनल जोड़ें",
+      "description": "वे सेल्स चैनल जोड़ें जिन तक API कुंजी सीमित होनी चाहिए।",
+      "successToast_one": "API कुंजी में {{count}} सेल्स चैनल सफलतापूर्वक जोड़ा गया।",
+      "successToast_other": "API कुंजी में {{count}} सेल्स चैनल सफलतापूर्वक जोड़े गए।",
+      "alreadyAddedTooltip": "यह सेल्स चैनल पहले से API कुंजी में जोड़ा जा चुका है।",
       "list": {
-        "noRecordsMessage": "There are no sales channels in the publishable API key's scope."
+        "noRecordsMessage": "पब्लिशेबल API कुंजी के दायरे में कोई सेल्स चैनल नहीं है।"
       }
     },
     "delete": {
-      "warning": "You are about to delete the API key {{title}}. This action cannot be undone.",
-      "successToast": "API key {{title}} was successfully deleted."
+      "warning": "आप API कुंजी {{title}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "API कुंजी {{title}} सफलतापूर्वक हटाई गई।"
     },
     "revoke": {
-      "warning": "You are about to revoke the API key {{title}}. This action cannot be undone.",
-      "successToast": "API key {{title}} was successfully revoked."
+      "warning": "आप API कुंजी {{title}} को निरस्त करने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "API कुंजी {{title}} सफलतापूर्वक निरस्त की गई।"
     },
     "addSalesChannels": {
       "list": {
-        "noRecordsMessage": "Create a sales channel first."
+        "noRecordsMessage": "पहले एक सेल्स चैनल बनाएं।"
       }
     },
     "removeSalesChannel": {
-      "warning": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
-      "warningBatch_one": "You are about to remove {{count}} sales channel from the API key. This action cannot be undone.",
-      "warningBatch_other": "You are about to remove {{count}} sales channels from the API key. This action cannot be undone.",
-      "successToast": "Sales channel was successfully removed from the API key.",
-      "successToastBatch_one": "{{count}} sales channel was successfully removed from the API key.",
-      "successToastBatch_other": "{{count}} sales channels were successfully removed from the API key."
+      "warning": "आप सेल्स चैनल {{name}} को API कुंजी से निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "warningBatch_one": "आप API कुंजी से {{count}} सेल्स चैनल निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "warningBatch_other": "आप API कुंजी से {{count}} सेल्स चैनल निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "सेल्स चैनल सफलतापूर्वक API कुंजी से निकाला गया।",
+      "successToastBatch_one": "API कुंजी से {{count}} सेल्स चैनल सफलतापूर्वक निकाला गया।",
+      "successToastBatch_other": "API कुंजी से {{count}} सेल्स चैनल सफलतापूर्वक निकाले गए।"
     },
     "actions": {
-      "revoke": "Revoke API key",
-      "copy": "Copy API key",
-      "copySuccessToast": "API key was copied to clipboard."
+      "revoke": "API कुंजी निरस्त करें",
+      "copy": "API कुंजी कॉपी करें",
+      "copySuccessToast": "API कुंजी क्लिपबोर्ड पर कॉपी की गई।"
     },
     "table": {
-      "lastUsedAtHeader": "Last Used At",
-      "createdAtHeader": "Revoked At"
+      "lastUsedAtHeader": "अंतिम उपयोग",
+      "createdAtHeader": "निरस्त करने का समय"
     },
     "fields": {
-      "lastUsedAtLabel": "Last used at",
-      "revokedByLabel": "Revoked by",
-      "revokedAtLabel": "Revoked at",
-      "createdByLabel": "Created by"
+      "lastUsedAtLabel": "अंतिम उपयोग",
+      "revokedByLabel": "निरस्त करने वाले",
+      "revokedAtLabel": "निरस्त करने का समय",
+      "createdByLabel": "बनाने वाले"
     }
   },
   "returnReasons": {
