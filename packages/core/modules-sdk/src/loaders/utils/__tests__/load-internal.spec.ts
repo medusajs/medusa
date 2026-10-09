@@ -423,6 +423,58 @@ describe("load internal", () => {
       expect(provider).toBeInstanceOf(ModuleServiceWithProviderProvider1)
     })
 
+    test("should construct the providers with their own options instead of the module options", async () => {
+      const moduleResolution: ModuleResolution = {
+        resolutionPath: join(
+          __dirname,
+          "../__fixtures__/module-with-providers"
+        ),
+        moduleDeclaration: {
+          scope: "internal",
+        },
+        definition: {
+          key: "module-with-providers",
+          label: "Module with providers",
+          defaultPackage: false,
+          defaultModuleDeclaration: {
+            scope: "internal",
+          },
+        },
+        options: {
+          module_option: "module",
+          providers: [
+            {
+              resolve: join(
+                __dirname,
+                "../__fixtures__/module-with-providers/provider-1"
+              ),
+              id: "provider-1-id",
+              options: {
+                api_key: "test",
+              },
+            },
+          ],
+        },
+      }
+
+      const container = createMedusaContainer()
+      await loadInternalModule({
+        container: container,
+        resolution: moduleResolution,
+        logger: console as any,
+      })
+
+      const moduleService = container.resolve(moduleResolution.definition.key)
+      const provider = (moduleService as any).container[
+        getProviderRegistrationKey({
+          providerId: moduleResolution.options!.providers![0].id,
+          providerIdentifier: ModuleServiceWithProviderProvider1.identifier,
+        })
+      ]
+
+      expect(provider.options).toEqual({ api_key: "test" })
+    })
+
     test("should load the module and its providers using the provided id", async () => {
       const moduleResolution: ModuleResolution = {
         resolutionPath: join(

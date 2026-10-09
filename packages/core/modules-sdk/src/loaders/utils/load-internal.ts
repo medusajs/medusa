@@ -379,7 +379,7 @@ export async function loadInternalModule(args: {
           ;(moduleProviderService as any).__type = MedusaModuleType
           return new moduleProviderService(
             localContainer.cradle,
-            resolution.options,
+            providerOptions ?? resolution.options,
             resolution.moduleDeclaration
           )
         }).singleton(),
