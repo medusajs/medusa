@@ -150,10 +150,14 @@ export default class NotificationModuleService
               provider?.channels.includes(entry.channel)
             )
 
+            const existing = entry.idempotency_key
+              ? existsMap.get(entry.idempotency_key)
+              : undefined
+
             return {
               provider,
               data: {
-                id: generateEntityId(undefined, "noti"),
+                id: existing?.id ?? generateEntityId(undefined, "noti"),
                 ...entry,
                 provider_id: provider?.id,
               },

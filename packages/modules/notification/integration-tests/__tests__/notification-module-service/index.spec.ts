@@ -14,6 +14,7 @@ import {
   MockEventBusService,
   moduleIntegrationTestRunner,
 } from "@medusajs/test-utils"
+import { NotificationProviderServiceFixtures } from "../../__fixtures__/providers/default-provider"
 import { NotificationModuleService } from "@services"
 import { resolve } from "path"
 
@@ -279,5 +280,125 @@ Failed to send notification with id ${notification4Result.id}:
 Failed to send notification`
         )
       })
+      it("should retry a notification that previously failed and flip the existing entry to success", async () => {
+        const sendSpy = jest.spyOn(
+          NotificationProviderServiceFixtures.prototype,
+          "send"
+        )
+
+        const failingNotification = {
+          to: "fail",
+          template: "some-template",
+          channel: "email",
+          data: {},
+          idempotency_key: "idempotency-key-retry",
+        }
+
+        const err = await service
+          .createNotifications(failingNotification)
+          .catch((e) => e)
+
+        expect(err).toBeTruthy()
+
+        const [failed] = await service.listNotifications({
+          idempotency_key: "idempotency-key-retry",
+        })
+        expect(failed.status).toEqual(NotificationStatus.FAILURE)
+
+        sendSpy.mockClear()
+
+        await service.createNotifications({
+          ...failingNotification,
+          to: "admin@medusa.com",
+        })
+
+        expect(sendSpy).toHaveBeenCalledTimes(1)
+
+        const notifications = await service.listNotifications({
+          idempotency_key: "idempotency-key-retry",
+        })
+
+        expect(notifications).toHaveLength(1)
+        expect(notifications[0]).toEqual(
+          expect.objectContaining({
+            id: failed.id,
+            external_id: "external_id",
+            status: NotificationStatus.SUCCESS,
+          })
+        )
+
+        sendSpy.mockRestore()
+      })
+
+      it("should not send a notification again once a previously failed one succeeded", async () => {
+        const notification = {
+          to: "fail",
+          template: "some-template",
+          channel: "email",
+          data: {},
+          idempotency_key: "idempotency-key-retry-once",
+        }
+
+        await service.createNotifications(notification).catch((e) => e)
+        await service.createNotifications({
+          ...notification,
+          to: "admin@medusa.com",
+        })
+
+        const sendSpy = jest.spyOn(
+          NotificationProviderServiceFixtures.prototype,
+          "send"
+        )
+
+        const result = await service.createNotifications({
+          ...notification,
+          to: "admin@medusa.com",
+        })
+
+        expect(result).toBeUndefined()
+        expect(sendSpy).not.toHaveBeenCalled()
+
+        const notifications = await service.listNotifications({
+          idempotency_key: "idempotency-key-retry-once",
+        })
+        expect(notifications).toHaveLength(1)
+        expect(notifications[0].status).toEqual(NotificationStatus.SUCCESS)
+
+        sendSpy.mockRestore()
+      })
+
+      it("should persist the status of the other notifications of a batch containing a retried one", async () => {
+        const failingNotification = {
+          to: "fail",
+          template: "some-template",
+          channel: "email",
+          data: {},
+          idempotency_key: "idempotency-key-retry-batch",
+        }
+
+        await service.createNotifications(failingNotification).catch((e) => e)
+
+        await service.createNotifications([
+          { ...failingNotification, to: "admin@medusa.com" },
+          {
+            to: "admin@medusa.com",
+            template: "some-template",
+            channel: "email",
+            data: {},
+            idempotency_key: "idempotency-key-retry-batch-sibling",
+          },
+        ])
+
+        const [sibling] = await service.listNotifications({
+          idempotency_key: "idempotency-key-retry-batch-sibling",
+        })
+        expect(sibling.status).toEqual(NotificationStatus.SUCCESS)
+
+        const [retried] = await service.listNotifications({
+          idempotency_key: "idempotency-key-retry-batch",
+        })
+        expect(retried.status).toEqual(NotificationStatus.SUCCESS)
+      })
+
     }),
 })
