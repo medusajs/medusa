@@ -952,84 +952,84 @@
     }
   },
   "inventory": {
-    "domain": "Inventory",
-    "subtitle": "Manage your inventory items",
+    "domain": "इन्वेंटरी",
+    "subtitle": "अपने इन्वेंटरी आइटम प्रबंधित करें",
     "export": {
-      "header": "Export Inventory List",
-      "description": "Export the inventory list to a CSV file.",
+      "header": "इन्वेंटरी सूची एक्सपोर्ट करें",
+      "description": "इन्वेंटरी सूची को CSV फ़ाइल में एक्सपोर्ट करें।",
       "success": {
-        "title": "We are processing your export",
-        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+        "title": "हम आपका एक्सपोर्ट तैयार कर रहे हैं",
+        "description": "डेटा एक्सपोर्ट करने में कुछ मिनट लग सकते हैं। पूरा होने पर हम आपको सूचित करेंगे।"
       },
       "filters": {
-        "title": "Filters",
-        "description": "Apply filters in the table overview to adjust this view"
+        "title": "फ़िल्टर",
+        "description": "इस दृश्य को बदलने के लिए तालिका में फ़िल्टर लागू करें"
       }
     },
-    "reserved": "Reserved",
-    "available": "Available",
-    "locationLevels": "Locations",
-    "associatedVariants": "Associated variants",
-    "manageLocations": "Manage locations",
-    "manageLocationQuantity": "Manage location quantity",
-    "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
-    "editItemDetails": "Edit item details",
-    "quantityAcrossLocations": "{{quantity}} across {{locations}} locations",
-    "unitOfMeasurePlaceholder": "lb",
-    "unitOfMeasureHint": "The unit stock is held and counted in. Shown next to quantities across the Admin.",
-    "levelDeleted": "Inventory level deleted successfully.",
+    "reserved": "आरक्षित",
+    "available": "उपलब्ध",
+    "locationLevels": "लोकेशन",
+    "associatedVariants": "जुड़े हुए वैरिएंट",
+    "manageLocations": "लोकेशन प्रबंधित करें",
+    "manageLocationQuantity": "लोकेशन की मात्रा प्रबंधित करें",
+    "deleteWarning": "आप एक इन्वेंटरी आइटम हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "editItemDetails": "आइटम का विवरण संपादित करें",
+    "quantityAcrossLocations": "{{locations}} लोकेशन में कुल {{quantity}}",
+    "unitOfMeasurePlaceholder": "kg",
+    "unitOfMeasureHint": "वह इकाई जिसमें स्टॉक रखा और गिना जाता है। यह एडमिन में हर जगह मात्रा के साथ दिखाई जाती है।",
+    "levelDeleted": "इन्वेंटरी स्तर सफलतापूर्वक हटाया गया।",
     "create": {
-      "title": "Create Inventory Item",
-      "details": "Details",
-      "availability": "Availability",
-      "locations": "Locations",
-      "attributes": "Attributes",
-      "requiresShipping": "Requires shipping",
-      "requiresShippingHint": "Does the inventory item require shipping?",
-      "successToast": "Inventory item was successfully created."
+      "title": "इन्वेंटरी आइटम बनाएं",
+      "details": "विवरण",
+      "availability": "उपलब्धता",
+      "locations": "लोकेशन",
+      "attributes": "विशेषताएँ",
+      "requiresShipping": "शिपिंग आवश्यक है",
+      "requiresShippingHint": "क्या इस इन्वेंटरी आइटम को शिप करना आवश्यक है?",
+      "successToast": "इन्वेंटरी आइटम सफलतापूर्वक बनाया गया।"
     },
     "reservation": {
-      "header": "Reservation of {{itemName}}",
-      "editItemDetails": "Edit reservation",
-      "lineItemId": "Line item ID",
-      "orderID": "Order ID",
-      "description": "Description",
-      "location": "Location",
-      "inStockAtLocation": "In stock at this location",
-      "availableAtLocation": "Available at this location",
-      "reservedAtLocation": "Reserved at this location",
-      "reservedAmount": "Reserve amount",
-      "create": "Create reservation",
-      "itemToReserve": "Item to reserve",
-      "quantityPlaceholder": "How much do you want to reserve?",
-      "descriptionPlaceholder": "What type of reservation is this?",
-      "successToast": "Reservation was successfully created.",
-      "updateSuccessToast": "Reservation was successfully updated.",
-      "deleteSuccessToast": "Reservation was successfully deleted.",
+      "header": "{{itemName}} का आरक्षण",
+      "editItemDetails": "आरक्षण संपादित करें",
+      "lineItemId": "लाइन आइटम ID",
+      "orderID": "ऑर्डर ID",
+      "description": "विवरण",
+      "location": "लोकेशन",
+      "inStockAtLocation": "इस लोकेशन पर स्टॉक में",
+      "availableAtLocation": "इस लोकेशन पर उपलब्ध",
+      "reservedAtLocation": "इस लोकेशन पर आरक्षित",
+      "reservedAmount": "आरक्षित की जाने वाली मात्रा",
+      "create": "आरक्षण बनाएं",
+      "itemToReserve": "आरक्षित करने के लिए आइटम",
+      "quantityPlaceholder": "आप कितनी मात्रा आरक्षित करना चाहते हैं?",
+      "descriptionPlaceholder": "यह किस प्रकार का आरक्षण है?",
+      "successToast": "आरक्षण सफलतापूर्वक बनाया गया।",
+      "updateSuccessToast": "आरक्षण सफलतापूर्वक अपडेट किया गया।",
+      "deleteSuccessToast": "आरक्षण सफलतापूर्वक हटाया गया।",
       "errors": {
-        "noAvaliableQuantity": "Stock location doesn't have available quantity.",
-        "quantityOutOfRange": "Minimum quantity is 1 and maximum quantity is {{max}}"
+        "noAvaliableQuantity": "इस स्टॉक लोकेशन पर कोई मात्रा उपलब्ध नहीं है।",
+        "quantityOutOfRange": "न्यूनतम मात्रा 1 और अधिकतम मात्रा {{max}} है"
       }
     },
     "adjustInventory": {
       "errors": {
-        "stockedQuantity": "Stocked quantity cannot be updated to less than the reserved quantity of {{quantity}}."
+        "stockedQuantity": "स्टॉक की मात्रा को आरक्षित मात्रा {{quantity}} से कम नहीं किया जा सकता।"
       }
     },
     "toast": {
-      "updateLocations": "Locations updated successfully.",
-      "updateLevel": "Inventory level updated successfully.",
-      "updateItem": "Inventory item updated successfully."
+      "updateLocations": "लोकेशन सफलतापूर्वक अपडेट की गईं।",
+      "updateLevel": "इन्वेंटरी स्तर सफलतापूर्वक अपडेट किया गया।",
+      "updateItem": "इन्वेंटरी आइटम सफलतापूर्वक अपडेट किया गया।"
     },
     "stock": {
-      "title": "Update inventory levels",
-      "description": "Update the stocked inventory levels for the selected inventory items.",
-      "action": "Edit stock levels",
-      "placeholder": "Not enabled",
-      "disablePrompt_one": "You are about to disable {{count}} location level. This action cannot be undone.",
-      "disablePrompt_other": "You are about to disable {{count}} location levels. This action cannot be undone.",
-      "disabledToggleTooltip": "Cannot disable: clear incoming and/or reserved quantity before disabling.",
-      "successToast": "Inventory levels updated successfully."
+      "title": "इन्वेंटरी स्तर अपडेट करें",
+      "description": "चुने गए इन्वेंटरी आइटम के लिए स्टॉक में मौजूद इन्वेंटरी स्तर अपडेट करें।",
+      "action": "स्टॉक स्तर संपादित करें",
+      "placeholder": "सक्षम नहीं",
+      "disablePrompt_one": "आप {{count}} लोकेशन स्तर अक्षम करने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "disablePrompt_other": "आप {{count}} लोकेशन स्तर अक्षम करने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "disabledToggleTooltip": "अक्षम नहीं किया जा सकता: अक्षम करने से पहले आने वाली और/या आरक्षित मात्रा को खाली करें।",
+      "successToast": "इन्वेंटरी स्तर सफलतापूर्वक अपडेट किए गए।"
     }
   },
   "giftCards": {
@@ -1051,128 +1051,128 @@
     "recipient": "प्राप्तकर्ता"
   },
   "customers": {
-    "domain": "Customers",
+    "domain": "ग्राहक",
     "list": {
       "empty": {
-        "heading": "No customers",
-        "description": "There are no customers to display."
+        "heading": "कोई ग्राहक नहीं",
+        "description": "दिखाने के लिए कोई ग्राहक नहीं है।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No customers match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी ग्राहक मौजूदा फ़िल्टर से मेल नहीं खाता।"
       },
-      "noRecordsMessage": "Your customers will show up here."
+      "noRecordsMessage": "आपके ग्राहक यहाँ दिखाई देंगे।"
     },
     "create": {
-      "header": "Create Customer",
-      "hint": "Create a new customer and manage their details.",
-      "successToast": "Customer {{email}} was successfully created."
+      "header": "ग्राहक बनाएं",
+      "hint": "नया ग्राहक बनाएं और उसका विवरण प्रबंधित करें।",
+      "successToast": "ग्राहक {{email}} सफलतापूर्वक बनाया गया।"
     },
     "groups": {
-      "label": "Customer groups",
-      "remove": "Are you sure you want to remove the customer from \"{{name}}\" customer group?",
-      "removeMany": "Are you sure you want to remove customer from following customer groups: {{groups}}?",
-      "alreadyAddedTooltip": "The customer is already in this customer group.",
+      "label": "ग्राहक समूह",
+      "remove": "क्या आप वाकई ग्राहक को \"{{name}}\" ग्राहक समूह से निकालना चाहते हैं?",
+      "removeMany": "क्या आप वाकई ग्राहक को इन ग्राहक समूहों से निकालना चाहते हैं: {{groups}}?",
+      "alreadyAddedTooltip": "ग्राहक पहले से इस ग्राहक समूह में है।",
       "list": {
-        "noRecordsMessage": "This customer doesn't belong to any group."
+        "noRecordsMessage": "यह ग्राहक किसी भी समूह में नहीं है।"
       },
       "add": {
-        "success": "Customer added to: {{groups}}.",
+        "success": "ग्राहक को इनमें जोड़ा गया: {{groups}}।",
         "list": {
-          "noRecordsMessage": "Please create a customer group first."
+          "noRecordsMessage": "कृपया पहले एक ग्राहक समूह बनाएं।"
         }
       },
       "removed": {
-        "success": "Customer removed from: {{groups}}.",
+        "success": "ग्राहक को इनसे निकाला गया: {{groups}}।",
         "list": {
-          "noRecordsMessage": "Please create a customer group first."
+          "noRecordsMessage": "कृपया पहले एक ग्राहक समूह बनाएं।"
         }
       }
     },
     "edit": {
-      "header": "Edit Customer",
-      "emailDisabledTooltip": "The email address cannot be changed for registered customers.",
-      "successToast": "Customer {{email}} was successfully updated."
+      "header": "ग्राहक संपादित करें",
+      "emailDisabledTooltip": "पंजीकृत ग्राहकों का ईमेल पता बदला नहीं जा सकता।",
+      "successToast": "ग्राहक {{email}} सफलतापूर्वक अपडेट किया गया।"
     },
     "delete": {
-      "title": "Delete Customer",
-      "description": "You are about to delete the customer {{email}}. This action cannot be undone.",
-      "successToast": "Customer {{email}} was successfully deleted."
+      "title": "ग्राहक हटाएं",
+      "description": "आप ग्राहक {{email}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "ग्राहक {{email}} सफलतापूर्वक हटाया गया।"
     },
     "fields": {
-      "guest": "Guest",
-      "registered": "Registered",
-      "groups": "Groups"
+      "guest": "अतिथि",
+      "registered": "पंजीकृत",
+      "groups": "समूह"
     },
-    "registered": "Registered",
-    "guest": "Guest",
-    "hasAccount": "Has account",
+    "registered": "पंजीकृत",
+    "guest": "अतिथि",
+    "hasAccount": "खाता है",
     "addresses": {
-      "title": "Addresses",
+      "title": "पते",
       "fields": {
-        "addressName": "Address name",
-        "address1": "Address 1",
-        "address2": "Address 2",
-        "city": "City",
-        "province": "Province",
-        "postalCode": "Postal code",
-        "country": "Country",
-        "phone": "Phone",
-        "company": "Company",
-        "countryCode": "Country code",
-        "provinceCode": "Province code"
+        "addressName": "पते का नाम",
+        "address1": "पता पंक्ति 1",
+        "address2": "पता पंक्ति 2",
+        "city": "शहर",
+        "province": "राज्य",
+        "postalCode": "पिन कोड",
+        "country": "देश",
+        "phone": "फ़ोन",
+        "company": "कंपनी",
+        "countryCode": "देश कोड",
+        "provinceCode": "राज्य कोड"
       },
       "create": {
-        "header": "Create Address",
-        "hint": "Create a new address for the customer.",
-        "successToast": "Address was successfully created."
+        "header": "पता बनाएं",
+        "hint": "ग्राहक के लिए नया पता बनाएं।",
+        "successToast": "पता सफलतापूर्वक बनाया गया।"
       }
     }
   },
   "customerGroups": {
-    "domain": "Customer Groups",
-    "subtitle": "Organize customers into groups. Groups can have different promotions and prices.",
+    "domain": "ग्राहक समूह",
+    "subtitle": "ग्राहकों को समूहों में व्यवस्थित करें। अलग-अलग समूहों के लिए अलग प्रमोशन और कीमतें हो सकती हैं।",
     "list": {
       "empty": {
-        "heading": "No customer groups",
-        "description": "There are no customer groups to display."
+        "heading": "कोई ग्राहक समूह नहीं",
+        "description": "दिखाने के लिए कोई ग्राहक समूह नहीं है।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No customer groups match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी ग्राहक समूह मौजूदा फ़िल्टर से मेल नहीं खाता।"
       }
     },
     "create": {
-      "header": "Create Customer Group",
-      "hint": "Create a new customer group to segment your customers.",
-      "successToast": "Customer group {{name}} was successfully created."
+      "header": "ग्राहक समूह बनाएं",
+      "hint": "अपने ग्राहकों को अलग-अलग वर्गों में बांटने के लिए नया ग्राहक समूह बनाएं।",
+      "successToast": "ग्राहक समूह {{name}} सफलतापूर्वक बनाया गया।"
     },
     "edit": {
-      "header": "Edit Customer Group",
-      "successToast": "Customer group {{name}} was successfully updated."
+      "header": "ग्राहक समूह संपादित करें",
+      "successToast": "ग्राहक समूह {{name}} सफलतापूर्वक अपडेट किया गया।"
     },
     "delete": {
-      "title": "Delete Customer Group",
-      "description": "You are about to delete the customer group {{name}}. This action cannot be undone.",
-      "successToast": "Customer group {{name}} was successfully deleted."
+      "title": "ग्राहक समूह हटाएं",
+      "description": "आप ग्राहक समूह {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "ग्राहक समूह {{name}} सफलतापूर्वक हटाया गया।"
     },
     "customers": {
-      "alreadyAddedTooltip": "The customer has already been added to the group.",
+      "alreadyAddedTooltip": "ग्राहक पहले से इस समूह में जोड़ा जा चुका है।",
       "add": {
-        "successToast_one": "Customer was successfully added to the group.",
-        "successToast_other": "Customers were successfully added to the group.",
+        "successToast_one": "ग्राहक सफलतापूर्वक समूह में जोड़ा गया।",
+        "successToast_other": "ग्राहक सफलतापूर्वक समूह में जोड़े गए।",
         "list": {
-          "noRecordsMessage": "Create a customer first."
+          "noRecordsMessage": "पहले एक ग्राहक बनाएं।"
         }
       },
       "remove": {
-        "title_one": "Remove customer",
-        "title_other": "Remove customers",
-        "description_one": "You are about to remove {{count}} customer from the customer group. This action cannot be undone.",
-        "description_other": "You are about to remove {{count}} customers from the customer group. This action cannot be undone."
+        "title_one": "ग्राहक निकालें",
+        "title_other": "ग्राहकों को निकालें",
+        "description_one": "आप ग्राहक समूह से {{count}} ग्राहक निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+        "description_other": "आप ग्राहक समूह से {{count}} ग्राहक निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।"
       },
       "list": {
-        "noRecordsMessage": "This group doesn't have customers."
+        "noRecordsMessage": "इस समूह में कोई ग्राहक नहीं है।"
       }
     }
   },
