@@ -1415,6 +1415,251 @@ medusaIntegrationTestRunner({
             )
           })
 
+          describe("with a percentage promotion", () => {
+            let percentagePromotion
+
+            beforeEach(async () => {
+              percentagePromotion = (
+                await api.post(
+                  `/admin/promotions`,
+                  {
+                    code: "HALF_OFF",
+                    type: PromotionType.STANDARD,
+                    status: PromotionStatus.ACTIVE,
+                    application_method: {
+                      type: "percentage",
+                      target_type: "items",
+                      allocation: "across",
+                      value: 50,
+                      currency_code: "usd",
+                      target_rules: [
+                        {
+                          attribute: "items.product_id",
+                          operator: "in",
+                          values: [product.id],
+                        },
+                      ],
+                    },
+                  },
+                  adminHeaders
+                )
+              ).data.promotion
+            })
+
+            const createCartWithShippingMethod = async (
+              quantity: number,
+              promoCodes: string[] = [percentagePromotion.code]
+            ) => {
+              const newCart = (
+                await api.post(
+                  `/store/carts`,
+                  {
+                    currency_code: "usd",
+                    sales_channel_id: salesChannel.id,
+                    region_id: region.id,
+                    items: [{ variant_id: product.variants[0].id, quantity }],
+                    promo_codes: promoCodes,
+                  },
+                  storeHeaders
+                )
+              ).data.cart
+
+              return (
+                await api.post(
+                  `/store/carts/${newCart.id}/shipping-methods`,
+                  { option_id: shippingOption.id },
+                  storeHeaders
+                )
+              ).data.cart
+            }
+
+            it("should price shipping on the discounted item total when quantity increases", async () => {
+              const cartWithShipping = await createCartWithShippingMethod(5)
+
+              expect(cartWithShipping).toEqual(
+                expect.objectContaining({
+                  item_total: expect.closeTo(3750),
+                  shipping_methods: [
+                    expect.objectContaining({
+                      shipping_option_id: shippingOption.id,
+                      amount: 1000,
+                    }),
+                  ],
+                })
+              )
+
+              // Stale adjustment would give 9000 - 3750 = 5250, above the free-shipping threshold
+              const response = await api.post(
+                `/store/carts/${cartWithShipping.id}/line-items/${cartWithShipping.items[0].id}`,
+                { quantity: 6 },
+                storeHeaders
+              )
+
+              expect(response.data.cart).toEqual(
+                expect.objectContaining({
+                  item_total: expect.closeTo(4500),
+                  shipping_methods: [
+                    expect.objectContaining({
+                      shipping_option_id: shippingOption.id,
+                      amount: 1000,
+                    }),
+                  ],
+                })
+              )
+            })
+
+            it("should price shipping on the discounted item total when quantity decreases", async () => {
+              const cartWithShipping = await createCartWithShippingMethod(8)
+
+              expect(cartWithShipping).toEqual(
+                expect.objectContaining({
+                  item_total: expect.closeTo(6000),
+                  shipping_methods: [
+                    expect.objectContaining({
+                      shipping_option_id: shippingOption.id,
+                      amount: 0,
+                    }),
+                  ],
+                })
+              )
+
+              // Stale adjustment would give 10500 - 6000 = 4500, below the free-shipping threshold
+              const response = await api.post(
+                `/store/carts/${cartWithShipping.id}/line-items/${cartWithShipping.items[0].id}`,
+                { quantity: 7 },
+                storeHeaders
+              )
+
+              expect(response.data.cart).toEqual(
+                expect.objectContaining({
+                  item_total: expect.closeTo(5250),
+                  shipping_methods: [
+                    expect.objectContaining({
+                      shipping_option_id: shippingOption.id,
+                      amount: 0,
+                    }),
+                  ],
+                })
+              )
+            })
+            it("should price shipping on the discounted item total when a promotion code is applied", async () => {
+              const cartWithShipping = await createCartWithShippingMethod(5, [])
+
+              expect(cartWithShipping).toEqual(
+                expect.objectContaining({
+                  item_total: expect.closeTo(7500),
+                  shipping_methods: [
+                    expect.objectContaining({
+                      shipping_option_id: shippingOption.id,
+                      amount: 0,
+                    }),
+                  ],
+                })
+              )
+
+              const response = await api.post(
+                `/store/carts/${cartWithShipping.id}/promotions`,
+                { promo_codes: [percentagePromotion.code] },
+                storeHeaders
+              )
+
+              expect(response.data.cart).toEqual(
+                expect.objectContaining({
+                  item_total: expect.closeTo(3750),
+                  shipping_methods: [
+                    expect.objectContaining({
+                      shipping_option_id: shippingOption.id,
+                      amount: 1000,
+                    }),
+                  ],
+                })
+              )
+            })
+
+            it("should report promotions skipped after shipping is re-priced", async () => {
+              const campaign = (
+                await api.post(
+                  `/admin/campaigns`,
+                  {
+                    name: "Shipping budget",
+                    campaign_identifier: "shipping-budget",
+                    budget: {
+                      type: "spend",
+                      limit: 500,
+                      currency_code: "usd",
+                    },
+                  },
+                  adminHeaders
+                )
+              ).data.campaign
+
+              const freeShippingPromotion = (
+                await api.post(
+                  `/admin/promotions`,
+                  {
+                    code: "FREE_SHIPPING",
+                    type: PromotionType.STANDARD,
+                    status: PromotionStatus.ACTIVE,
+                    campaign_id: campaign.id,
+                    application_method: {
+                      type: "percentage",
+                      target_type: "shipping_methods",
+                      allocation: "each",
+                      value: 100,
+                      max_quantity: 1,
+                      currency_code: "usd",
+                    },
+                  },
+                  adminHeaders
+                )
+              ).data.promotion
+
+              const cartWithShipping = await createCartWithShippingMethod(5, [])
+
+              expect(cartWithShipping.shipping_methods).toEqual([
+                expect.objectContaining({ amount: 0 }),
+              ])
+
+              // Free shipping costs 0 of the budget until shipping is re-priced to 1000
+              const { result } = await updateCartPromotionsWorkflow(
+                appContainer
+              ).run({
+                input: {
+                  cart_id: cartWithShipping.id,
+                  promo_codes: [
+                    percentagePromotion.code,
+                    freeShippingPromotion.code,
+                  ],
+                  action: PromotionActions.ADD,
+                },
+              })
+
+              expect(result.skipped_promo_codes).toEqual([
+                { code: "FREE_SHIPPING", reason: "campaign_budget_exceeded" },
+              ])
+
+              const updatedCart = (
+                await api.get(
+                  `/store/carts/${cartWithShipping.id}`,
+                  storeHeaders
+                )
+              ).data.cart
+
+              expect(updatedCart).toEqual(
+                expect.objectContaining({
+                  item_total: expect.closeTo(3750),
+                  shipping_methods: [
+                    expect.objectContaining({
+                      shipping_option_id: shippingOption.id,
+                      amount: 1000,
+                      adjustments: [],
+                    }),
+                  ],
+                })
+              )
+            })
+          })
+
           it("should remove shipping methods when they are no longer valid for the cart", async () => {
             let response = await api.post(
               `/store/carts/${cart.id}/shipping-methods`,
@@ -7504,6 +7749,27 @@ medusaIntegrationTestRunner({
 
           expect(result.skipped_promo_codes).toEqual([
             { code: "NO_BUDGET", reason: "campaign_budget_exceeded" },
+          ])
+        })
+
+        it("should throw when neither cart_id nor cart is provided", async () => {
+          const { errors } = await updateCartPromotionsWorkflow(
+            appContainer
+          ).run({
+            input: {
+              promo_codes: [promotion.code],
+              action: PromotionActions.ADD,
+            },
+            throwOnError: false,
+          })
+
+          expect(errors).toEqual([
+            expect.objectContaining({
+              error: expect.objectContaining({
+                message:
+                  "Either cart_id or cart must be provided to update the cart's promotions",
+              }),
+            }),
           ])
         })
 
