@@ -1,12 +1,12 @@
-import { useMemo } from "react";
-import { useDataTableDateFilters } from "../../../../hooks/common/use-data-table-date-filters";
-import { useCustomerFilters } from "../../../../hooks/query/use-customers-filters";
+import { useMemo } from "react"
+import { useCustomerFilters } from "../../../../hooks/query/use-customers-filters"
+import { useDataTableDateFilters } from "@medusajs/dashboard/hooks"
 
 export const useStoreCreditAccountFilters = () => {
-  const dateFilterOptions = useDataTableDateFilters();
-  const customerFilterOptions = useCustomerFilters();
+  const dateFilterOptions = useDataTableDateFilters()
+  const customerFilterOptions = useCustomerFilters()
 
   return useMemo(() => {
-    return [...dateFilterOptions, ...customerFilterOptions];
-  }, [dateFilterOptions, customerFilterOptions]);
-};
+    return [...dateFilterOptions, ...customerFilterOptions]
+  }, [dateFilterOptions, customerFilterOptions])
+}

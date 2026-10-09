@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import { ComponentProps } from "react"
 
 const GiftCardIcon = (props: ComponentProps<"svg">) => {
   return (
@@ -56,7 +56,7 @@ const GiftCardIcon = (props: ComponentProps<"svg">) => {
         </clipPath>
       </defs>
     </svg>
-  );
-};
+  )
+}
 
-export default GiftCardIcon;
+export default GiftCardIcon

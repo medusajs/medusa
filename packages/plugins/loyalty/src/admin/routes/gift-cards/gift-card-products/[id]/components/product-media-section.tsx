@@ -1,5 +1,5 @@
-import { ThumbnailBadge } from "@medusajs/icons";
-import { AdminProduct, HttpTypes } from "@medusajs/types";
+import { ThumbnailBadge } from "@medusajs/icons"
+import { AdminProduct, HttpTypes } from "@medusajs/types"
 import {
   Button,
   Checkbox,
@@ -10,39 +10,39 @@ import {
   Tooltip,
   clx,
   usePrompt,
-} from "@medusajs/ui";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useUpdateProduct } from "../../../../../hooks/api/products";
+} from "@medusajs/ui"
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import { useUpdateProduct } from "@medusajs/dashboard/hooks"
 
 type ProductMedisaSectionProps = {
-  product: HttpTypes.AdminProduct;
-};
+  product: HttpTypes.AdminProduct
+}
 
 export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
-  const prompt = usePrompt();
-  const [selection, setSelection] = useState<Record<string, boolean>>({});
+  const prompt = usePrompt()
+  const [selection, setSelection] = useState<Record<string, boolean>>({})
 
-  const media = getMedia(product);
+  const media = getMedia(product)
 
   const handleCheckedChange = (id: string) => {
     setSelection((prev) => {
       if (prev[id]) {
-        const { [id]: _, ...rest } = prev;
-        return rest;
+        const { [id]: _, ...rest } = prev
+        return rest
       } else {
-        return { ...prev, [id]: true };
+        return { ...prev, [id]: true }
       }
-    });
-  };
+    })
+  }
 
-  const { mutateAsync } = useUpdateProduct(product.id);
+  const { mutateAsync } = useUpdateProduct(product.id)
 
   const handleDelete = async () => {
-    const ids = Object.keys(selection);
+    const ids = Object.keys(selection)
     const includingThumbnail = ids.some(
       (id) => media.find((m) => m.id === id)?.isThumbnail
-    );
+    )
 
     const res = await prompt({
       title: "Are you sure?",
@@ -51,15 +51,15 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
         : `Deleting ${ids.length} image(s).`,
       confirmText: "Delete",
       cancelText: "Cancel",
-    });
+    })
 
     if (!res) {
-      return;
+      return
     }
 
     const mediaToKeep = (product?.images || [])
       .filter((i) => !ids.includes(i.id))
-      .map((i) => ({ url: i.url }));
+      .map((i) => ({ url: i.url }))
 
     await mutateAsync(
       {
@@ -68,11 +68,11 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
       },
       {
         onSuccess: () => {
-          setSelection({});
+          setSelection({})
         },
       }
-    );
-  };
+    )
+  }
 
   return (
     <Container className="p-0">
@@ -82,7 +82,7 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
         {media.length > 0 && (
           <Link
             to={`media?view=edit`}
-            className="text-ui-fg-muted text-sm  txt-compact-medium-plus"
+            className="text-ui-fg-muted txt-compact-medium-plus  text-sm"
           >
             Edit
           </Link>
@@ -92,7 +92,7 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
       {media.length > 0 ? (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-4 px-6 pb-4">
           {media.map((i, index) => {
-            const isSelected = selection[i.id];
+            const isSelected = selection[i.id]
 
             return (
               <div
@@ -127,7 +127,7 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
                   />
                 </Link>
               </div>
-            );
+            )
           })}
         </div>
       ) : (
@@ -164,31 +164,31 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
         </CommandBar.Bar>
       </CommandBar>
     </Container>
-  );
-};
+  )
+}
 
 type Media = {
-  id: string;
-  url: string;
-  isThumbnail: boolean;
-};
+  id: string
+  url: string
+  isThumbnail: boolean
+}
 
 const getMedia = (product: AdminProduct) => {
-  const { images = [], thumbnail } = product;
+  const { images = [], thumbnail } = product
 
   const media: Media[] = (images || []).map((image) => ({
     id: image.id,
     url: image.url,
     isThumbnail: image.url === thumbnail,
-  }));
+  }))
 
   if (thumbnail && !media.some((mediaItem) => mediaItem.url === thumbnail)) {
     media.unshift({
       id: "img_thumbnail",
       url: thumbnail,
       isThumbnail: true,
-    });
+    })
   }
 
-  return media;
-};
+  return media
+}

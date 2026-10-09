@@ -1,5 +1,5 @@
-import { DataTableEmptyStateProps } from "@medusajs/ui";
-import { useMemo } from "react";
+import { DataTableEmptyStateProps } from "@medusajs/ui"
+import { useMemo } from "react"
 
 export const useGeneralEmptyState = (): DataTableEmptyStateProps => {
   return useMemo(() => {
@@ -10,8 +10,8 @@ export const useGeneralEmptyState = (): DataTableEmptyStateProps => {
       filtered: {
         heading: "No records found",
       },
-    };
+    }
 
-    return content;
-  }, []);
-};
+    return content
+  }, [])
+}

@@ -1,14 +1,14 @@
-import { z } from "zod";
-import { optionalFloat, optionalInt } from "../../../../../utils/validations";
+import { z } from "zod"
+import { optionalFloat, optionalInt } from "@medusajs/dashboard/lib"
 
-export const SC_STACKED_MODAL_ID = "sc";
+export const SC_STACKED_MODAL_ID = "sc"
 
 export const MediaSchema = z.object({
   id: z.string().optional(),
   url: z.string(),
   isThumbnail: z.boolean(),
   file: z.any().nullable(), // File
-});
+})
 
 const ProductCreateVariantSchema = z.object({
   should_create: z.boolean(),
@@ -39,20 +39,20 @@ const ProductCreateVariantSchema = z.object({
       })
     )
     .optional(),
-});
+})
 
 export type ProductCreateVariantSchema = z.infer<
   typeof ProductCreateVariantSchema
->;
+>
 
 const ProductCreateOptionSchema = z.object({
   title: z.string(),
   values: z.array(z.string()).min(1),
-});
+})
 
 export type ProductCreateOptionSchema = z.infer<
   typeof ProductCreateOptionSchema
->;
+>
 
 export const ProductCreateSchema = z.object({
   title: z.string().min(1),
@@ -91,11 +91,11 @@ export const ProductCreateSchema = z.object({
     .min(1),
   enable_variants: z.boolean(),
   media: z.array(MediaSchema).optional(),
-});
+})
 
 export const EditProductMediaSchema = z.object({
   media: z.array(MediaSchema),
-});
+})
 
 export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
   z.infer<typeof ProductCreateSchema>
@@ -127,4 +127,4 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
   type_id: "",
   weight: "",
   width: "",
-};
+}

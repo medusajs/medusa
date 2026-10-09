@@ -1,12 +1,12 @@
-import { XMark } from "@medusajs/icons";
-import { Alert, Button, IconButton, Input, Text } from "@medusajs/ui";
-import { UseFormReturn, useFieldArray } from "react-hook-form";
-import { Form } from "../../../../../components/form";
-import { ProductCreateSchemaType } from "./types";
+import { XMark } from "@medusajs/icons"
+import { Alert, Button, IconButton, Input, Text } from "@medusajs/ui"
+import { UseFormReturn, useFieldArray } from "react-hook-form"
+import { ProductCreateSchemaType } from "./types"
+import { Form } from "@medusajs/dashboard/components"
 
 type GiftCardProductCreateFormDenominationsProps = {
-  form: UseFormReturn<ProductCreateSchemaType>;
-};
+  form: UseFormReturn<ProductCreateSchemaType>
+}
 
 export const GiftCardProductCreateFormDenominations = ({
   form,
@@ -18,12 +18,12 @@ export const GiftCardProductCreateFormDenominations = ({
   } = useFieldArray({
     name: "denominations",
     control: form.control,
-  });
+  })
 
   return (
     <div
       id="variants"
-      className="grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-2"
+      className="grid grid-cols-1 gap-x-4 gap-y-6 md:grid-cols-2"
     >
       <div>
         <Text className="txt-small-plus text-ui-fg-base" weight="plus">
@@ -43,7 +43,7 @@ export const GiftCardProductCreateFormDenominations = ({
               return (
                 <div
                   key={denominationField.id}
-                  className="flex items-center justify-between shadow-elevation-card-rest bg-ui-bg-component transition-fg rounded-md px-4 py-2 gap-x-2"
+                  className="shadow-elevation-card-rest bg-ui-bg-component transition-fg flex items-center justify-between gap-x-2 rounded-md px-4 py-2"
                 >
                   <Form.Field
                     key={denominationField.id}
@@ -62,7 +62,7 @@ export const GiftCardProductCreateFormDenominations = ({
 
                           <Form.ErrorMessage />
                         </Form.Item>
-                      );
+                      )
                     }}
                   />
 
@@ -72,14 +72,14 @@ export const GiftCardProductCreateFormDenominations = ({
                       size="small"
                       variant="transparent"
                       onClick={() => {
-                        removeDenomination(index);
+                        removeDenomination(index)
                       }}
                     >
                       <XMark />
                     </IconButton>
                   </div>
                 </div>
-              );
+              )
             })}
 
             <Button
@@ -88,7 +88,7 @@ export const GiftCardProductCreateFormDenominations = ({
               type="button"
               className="w-full"
               onClick={() => {
-                addDenomination({ value: "", prices: {} });
+                addDenomination({ value: "", prices: {} })
               }}
             >
               Add denomination
@@ -103,5 +103,5 @@ export const GiftCardProductCreateFormDenominations = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

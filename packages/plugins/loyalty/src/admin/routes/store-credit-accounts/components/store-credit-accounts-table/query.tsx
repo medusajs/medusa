@@ -1,10 +1,10 @@
-import { AdminGetStoreCreditAccountsParams } from "../../../../../types";
-import { useQueryParams } from "../../../../hooks/common/use-query-params";
+import { AdminGetStoreCreditAccountsParams } from "../../../../../types"
+import { useQueryParams } from "@medusajs/dashboard/hooks"
 
 type UseStoreCreditAccountsTableQueryProps = {
-  prefix?: string;
-  pageSize?: number;
-};
+  prefix?: string
+  pageSize?: number
+}
 
 export const useStoreCreditAccountsTableQuery = ({
   prefix,
@@ -13,7 +13,7 @@ export const useStoreCreditAccountsTableQuery = ({
   const queryObject = useQueryParams(
     ["offset", "customer_id", "currency_code", "created_at", "updated_at"],
     prefix
-  );
+  )
 
   const {
     offset,
@@ -22,7 +22,7 @@ export const useStoreCreditAccountsTableQuery = ({
     customer_id,
     currency_code,
     ...rest
-  } = queryObject;
+  } = queryObject
 
   const searchParams: AdminGetStoreCreditAccountsParams = {
     limit: pageSize,
@@ -32,7 +32,7 @@ export const useStoreCreditAccountsTableQuery = ({
     customer_id: customer_id ? JSON.parse(customer_id) : undefined,
     currency_code: currency_code ? JSON.parse(currency_code) : undefined,
     ...rest,
-  };
+  }
 
-  return searchParams;
-};
+  return searchParams
+}

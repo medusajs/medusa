@@ -20,11 +20,11 @@ import {
 import { Accordion } from "radix-ui"
 import { Link } from "react-router-dom"
 
-import { useShippingOptions } from "../../hooks/api/shipping-options"
 import { getUniqueShippingProfiles } from "../../lib/utils/order-utils"
 import { pluralize } from "../../lib/utils/string-utils"
-import { Thumbnail } from "../common/thumbnail"
 import { useMemo } from "react"
+import { Thumbnail } from "@medusajs/dashboard/components"
+import { useShippingOptions } from "@medusajs/dashboard/hooks"
 
 interface ShippingSectionProps {
   order: HttpTypes.AdminOrder
@@ -99,7 +99,7 @@ export const ShippingSection = ({ order }: ShippingSectionProps) => {
   )
 
   return (
-    <Container className="p-0 overflow-hidden">
+    <Container className="overflow-hidden p-0">
       <div className="px-6 py-4">
         <Heading>Shipping</Heading>
       </div>
@@ -161,7 +161,7 @@ const ProfileWithShipping = ({
   return (
     <div>
       <Accordion.Item value={profile.id}>
-        <div className="flex items-center px-6 py-4 justify-between gap-x-3">
+        <div className="flex items-center justify-between gap-x-3 px-6 py-4">
           <div className="flex items-center gap-x-3 max-sm:items-start">
             <Accordion.Trigger asChild>
               <IconButton
@@ -170,10 +170,10 @@ const ProfileWithShipping = ({
                 className="group/trigger"
                 disabled={!hasItems}
               >
-                <TriangleRightMini className="group-data-[state=open]/trigger:rotate-90 transition-transform" />
+                <TriangleRightMini className="transition-transform group-data-[state=open]/trigger:rotate-90" />
               </IconButton>
             </Accordion.Trigger>
-            <div className="flex items-center gap-[5px] max-sm:flex-col max-sm:items-start flex-1 w-full overflow-hidden">
+            <div className="flex w-full flex-1 items-center gap-[5px] overflow-hidden max-sm:flex-col max-sm:items-start">
               <Tooltip
                 content={
                   <ul>
@@ -186,7 +186,7 @@ const ProfileWithShipping = ({
                 }
               >
                 <Badge
-                  className="flex items-center gap-x-[3px] overflow-hidden cursor-default"
+                  className="flex cursor-default items-center gap-x-[3px] overflow-hidden"
                   size="xsmall"
                 >
                   <Shopping className="shrink-0" />
@@ -205,7 +205,7 @@ const ProfileWithShipping = ({
                 }
               >
                 <Badge
-                  className="flex items-center gap-x-[3px] overflow-hidden cursor-default"
+                  className="flex cursor-default items-center gap-x-[3px] overflow-hidden"
                   size="xsmall"
                 >
                   <Buildings className="shrink-0" />
@@ -219,7 +219,7 @@ const ProfileWithShipping = ({
               </Tooltip>
               <Tooltip content={shippingOption.name}>
                 <Badge
-                  className="flex items-center gap-x-[3px] overflow-hidden cursor-default"
+                  className="flex cursor-default items-center gap-x-[3px] overflow-hidden"
                   size="xsmall"
                 >
                   <TruckFast className="shrink-0" />
@@ -248,7 +248,7 @@ const ProfileWithoutShipping = ({
   return (
     <div>
       <Accordion.Item value={profile.id}>
-        <div className="flex items-center gap-x-3 justify-between px-6 py-4">
+        <div className="flex items-center justify-between gap-x-3 px-6 py-4">
           <div className="flex items-center gap-x-3">
             <Accordion.Trigger asChild>
               <IconButton
@@ -256,10 +256,10 @@ const ProfileWithoutShipping = ({
                 variant="transparent"
                 className="group/trigger"
               >
-                <TriangleRightMini className="group-data-[state=open]/trigger:rotate-90 transition-transform" />
+                <TriangleRightMini className="transition-transform group-data-[state=open]/trigger:rotate-90" />
               </IconButton>
             </Accordion.Trigger>
-            <div className="flex-1 flex items-center gap-x-3">
+            <div className="flex flex-1 items-center gap-x-3">
               <ShippingBadge />
               <div>
                 <Text size="small" weight="plus" leading="compact">
@@ -301,12 +301,12 @@ const ShippingProfileItems = ({ profile }: ShippingProfileItemsProps) => {
       {profile.items.map((item, idx) => {
         return (
           <div key={item.id}>
-            <div className="px-6 flex items-center gap-x-3" key={item.id}>
-              <div className="w-5 h-[72px] flex flex-col justify-center items-center">
+            <div className="flex items-center gap-x-3 px-6" key={item.id}>
+              <div className="flex h-[72px] w-5 flex-col items-center justify-center">
                 <Divider variant="dashed" orientation="vertical" />
               </div>
-              <div className="py-4 flex items-center gap-x-3">
-                <div className="size-7 flex items-center justify-center tabular-nums">
+              <div className="flex items-center gap-x-3 py-4">
+                <div className="flex size-7 items-center justify-center tabular-nums">
                   <Text
                     size="small"
                     leading="compact"
@@ -315,7 +315,7 @@ const ShippingProfileItems = ({ profile }: ShippingProfileItemsProps) => {
                     {item.quantity}x
                   </Text>
                 </div>
-                <Thumbnail thumbnail={item.thumbnail} />
+                <Thumbnail src={item.thumbnail} />
                 <div>
                   <Text size="small" leading="compact" weight="plus">
                     {item.variant?.product?.title} ({item.variant?.title})
@@ -346,7 +346,7 @@ interface FooterProps {
 
 const Footer = ({ isSomeProfilesAssigned }: FooterProps) => {
   return (
-    <div className="px-6 py-4 flex items-center justify-end bg-ui-bg-component">
+    <div className="bg-ui-bg-component flex items-center justify-end px-6 py-4">
       <Button size="small" variant="secondary" asChild>
         <Link to="shipping">
           {isSomeProfilesAssigned ? "Edit shipping" : "Add shipping"}
@@ -364,11 +364,11 @@ const ShippingBadge = ({ className }: ShippingBadgeProps) => {
   return (
     <div
       className={clx(
-        "size-7 rounded-md shadow-borders-base flex items-center justify-center",
+        "shadow-borders-base flex size-7 items-center justify-center rounded-md",
         className
       )}
     >
-      <div className="size-6 rounded bg-ui-bg-component-hover flex items-center justify-center">
+      <div className="bg-ui-bg-component-hover flex size-6 items-center justify-center rounded">
         <Shopping className="text-ui-fg-subtle" />
       </div>
     </div>

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export const ChannelIcon = (props: React.ComponentProps<"svg">) => {
   return (
@@ -25,5 +25,5 @@ export const ChannelIcon = (props: React.ComponentProps<"svg">) => {
         </clipPath>
       </defs>
     </svg>
-  );
-};
+  )
+}
