@@ -134,6 +134,11 @@ export const sidebar = [
               },
               {
                 type: "link",
+                title: "Security Analytics",
+                path: "/projects/security-analytics",
+              },
+              {
+                type: "link",
                 title: "Troubleshooting",
                 path: "/projects/troubleshooting",
               },

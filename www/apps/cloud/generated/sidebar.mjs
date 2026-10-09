@@ -176,6 +176,13 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
+                "title": "Security Analytics",
+                "path": "/projects/security-analytics",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
                 "title": "Troubleshooting",
                 "path": "/projects/troubleshooting",
                 "children": []
