@@ -152,6 +152,78 @@ moduleIntegrationTestRunner<ILockingModule>({
         const release = await service.release(keyToLock)
         expect(release).toBe(true)
       })
+
+      it("should allow another owner to acquire a lock once it has expired", async () => {
+        const keyToLock = "expiredKey"
+
+        await service.acquire(keyToLock, { ownerId: "user_id_123", expire: 1 })
+
+        await expect(
+          service.acquire(keyToLock, { ownerId: "user_id_456" })
+        ).rejects.toThrow(`Failed to acquire lock for key "${keyToLock}"`)
+
+        await setTimeout(1100)
+
+        await expect(
+          service.acquire(keyToLock, { ownerId: "user_id_456", expire: 5 })
+        ).resolves.toBeUndefined()
+
+        const previousOwnerRelease = await service.release(keyToLock, {
+          ownerId: "user_id_123",
+        })
+        expect(previousOwnerRelease).toBe(false)
+
+        const newOwnerRelease = await service.release(keyToLock, {
+          ownerId: "user_id_456",
+        })
+        expect(newOwnerRelease).toBe(true)
+      })
+
+      it("should allow acquiring an expired lock without an owner", async () => {
+        const keyToLock = "expiredKeyNoOwner"
+
+        await service.acquire(keyToLock, { ownerId: "user_id_123", expire: 1 })
+
+        await setTimeout(1100)
+
+        await expect(service.acquire(keyToLock)).resolves.toBeUndefined()
+
+        await expect(
+          service.acquire(keyToLock, { ownerId: "user_id_123" })
+        ).rejects.toThrow(`Failed to acquire lock for key "${keyToLock}"`)
+
+        const release = await service.release(keyToLock)
+        expect(release).toBe(true)
+      })
+
+      it("should let only one owner take over an expired lock when acquiring concurrently", async () => {
+        const keyToLock = "expiredKeyConcurrent"
+
+        await service.acquire(keyToLock, { ownerId: "user_id_123", expire: 1 })
+
+        await setTimeout(1100)
+
+        const results = await Promise.allSettled([
+          service.acquire(keyToLock, { ownerId: "user_id_456", expire: 5 }),
+          service.acquire(keyToLock, { ownerId: "user_id_789", expire: 5 }),
+        ])
+
+        const fulfilled = results.filter((r) => r.status === "fulfilled")
+        const rejected = results.filter(
+          (r): r is PromiseRejectedResult => r.status === "rejected"
+        )
+
+        expect(fulfilled).toHaveLength(1)
+        expect(rejected).toHaveLength(1)
+        expect(rejected[0].reason.message).toContain(
+          `lock for key "${keyToLock}"`
+        )
+
+        const winner =
+          results[0].status === "fulfilled" ? "user_id_456" : "user_id_789"
+        const release = await service.release(keyToLock, { ownerId: winner })
+        expect(release).toBe(true)
+      })
     })
 
     it("should release lock in case of failure", async () => {
