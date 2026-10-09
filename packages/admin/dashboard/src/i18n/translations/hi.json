@@ -3231,319 +3231,319 @@
     }
   },
   "returnReasons": {
-    "domain": "Return Reasons",
-    "subtitle": "Manage reasons for returned items.",
-    "calloutHint": "Manage the reasons to categorize returns.",
-    "editReason": "Edit Return Reason",
+    "domain": "रिटर्न के कारण",
+    "subtitle": "लौटाए गए आइटम के कारण प्रबंधित करें।",
+    "calloutHint": "रिटर्न को श्रेणियों में बांटने के लिए कारण प्रबंधित करें।",
+    "editReason": "रिटर्न का कारण संपादित करें",
     "create": {
-      "header": "Add Return Reason",
-      "subtitle": "Specify the most common reasons for returns.",
-      "hint": "Create a new return reason to categorize returns.",
-      "successToast": "Return reason {{label}} was successfully created."
+      "header": "रिटर्न का कारण जोड़ें",
+      "subtitle": "रिटर्न के सबसे आम कारण बताएं।",
+      "hint": "रिटर्न को श्रेणियों में बांटने के लिए रिटर्न का नया कारण बनाएं।",
+      "successToast": "रिटर्न का कारण {{label}} सफलतापूर्वक बनाया गया।"
     },
     "edit": {
-      "header": "Edit Return Reason",
-      "subtitle": "Edit the value of the return reason.",
-      "successToast": "Return reason {{label}} was successfully updated."
+      "header": "रिटर्न का कारण संपादित करें",
+      "subtitle": "रिटर्न के कारण का मान संपादित करें।",
+      "successToast": "रिटर्न का कारण {{label}} सफलतापूर्वक अपडेट किया गया।"
     },
     "delete": {
-      "confirmation": "You are about to delete the return reason \"{{label}}\". This action cannot be undone.",
-      "successToast": "Return reason \"{{label}}\" was successfully deleted."
+      "confirmation": "आप रिटर्न का कारण \"{{label}}\" हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "रिटर्न का कारण \"{{label}}\" सफलतापूर्वक हटाया गया।"
     },
     "fields": {
       "value": {
-        "label": "Value",
+        "label": "मान",
         "placeholder": "wrong_size",
-        "tooltip": "The value should be a unique identifier for the return reason."
+        "tooltip": "मान रिटर्न के कारण के लिए एक अद्वितीय पहचानकर्ता होना चाहिए।"
       },
       "label": {
-        "label": "Label",
-        "placeholder": "Wrong size"
+        "label": "लेबल",
+        "placeholder": "गलत साइज़"
       },
       "description": {
-        "label": "Description",
-        "placeholder": "Customer received the wrong size"
+        "label": "विवरण",
+        "placeholder": "ग्राहक को गलत साइज़ मिला"
       }
     }
   },
   "refundReasons": {
-    "domain": "Refund Reasons",
-    "subtitle": "Manage reasons for issuing refunds.",
-    "calloutHint": "Manage the reasons to categorize refunds.",
-    "editReason": "Edit Refund Reason",
+    "domain": "रिफ़ंड के कारण",
+    "subtitle": "रिफ़ंड देने के कारण प्रबंधित करें।",
+    "calloutHint": "रिफ़ंड को श्रेणियों में बांटने के लिए कारण प्रबंधित करें।",
+    "editReason": "रिफ़ंड का कारण संपादित करें",
     "create": {
-      "header": "Add Refund Reason",
-      "subtitle": "Specify the most common reasons for refunds.",
-      "hint": "Create a new refund reason to categorize refunds.",
-      "successToast": "Refund reason {{label}} was successfully created."
+      "header": "रिफ़ंड का कारण जोड़ें",
+      "subtitle": "रिफ़ंड के सबसे आम कारण बताएं।",
+      "hint": "रिफ़ंड को श्रेणियों में बांटने के लिए रिफ़ंड का नया कारण बनाएं।",
+      "successToast": "रिफ़ंड का कारण {{label}} सफलतापूर्वक बनाया गया।"
     },
     "edit": {
-      "header": "Edit Refund Reason",
-      "subtitle": "Edit the value of the refund reason.",
-      "successToast": "Refund reason {{label}} was successfully updated."
+      "header": "रिफ़ंड का कारण संपादित करें",
+      "subtitle": "रिफ़ंड के कारण का मान संपादित करें।",
+      "successToast": "रिफ़ंड का कारण {{label}} सफलतापूर्वक अपडेट किया गया।"
     },
     "delete": {
-      "confirmation": "You are about to delete the refund reason \"{{label}}\". This action cannot be undone.",
-      "successToast": "Refund reason was successfully deleted."
+      "confirmation": "आप रिफ़ंड का कारण \"{{label}}\" हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "रिफ़ंड का कारण सफलतापूर्वक हटाया गया।"
     },
     "fields": {
       "label": {
-        "label": "Label",
-        "placeholder": "Gesture of goodwill"
+        "label": "लेबल",
+        "placeholder": "सद्भावना के तौर पर"
       },
       "code": {
-        "label": "Code",
+        "label": "कोड",
         "placeholder": "gesture_of_goodwill"
       },
       "description": {
-        "label": "Description",
-        "placeholder": "Customer had a bad shopping experience"
+        "label": "विवरण",
+        "placeholder": "ग्राहक का खरीदारी का अनुभव खराब रहा"
       }
     }
   },
   "login": {
-    "forgotPassword": "Forgot password? - <0>Reset</0>",
-    "title": "Welcome to Medusa",
-    "hint": "Sign in to access the account area",
+    "forgotPassword": "पासवर्ड भूल गए? - <0>रीसेट करें</0>",
+    "title": "Medusa में आपका स्वागत है",
+    "hint": "खाते तक पहुंचने के लिए साइन इन करें",
     "mfa": {
-      "title": "Two-factor authentication",
-      "description": "Enter the 6-digit code from your authenticator app.",
-      "recoveryDescription": "Enter one of your recovery codes.",
-      "recoveryCodePlaceholder": "Recovery code",
-      "verify": "Verify",
-      "verifyError": "The verification code could not be confirmed.",
-      "completeError": "Authentication could not be completed.",
-      "backToLogin": "Back to login",
-      "useRecoveryCodePrompt": "Lost access to your authenticator app?",
-      "useRecoveryCode": "Use a recovery code",
-      "useAuthenticatorPrompt": "Have access to your authenticator app?",
-      "useAuthenticator": "Use an authenticator code"
+      "title": "दो-चरणीय सत्यापन",
+      "description": "अपने ऑथेंटिकेटर ऐप से 6 अंकों का कोड डालें।",
+      "recoveryDescription": "अपने रिकवरी कोड में से कोई एक डालें।",
+      "recoveryCodePlaceholder": "रिकवरी कोड",
+      "verify": "सत्यापित करें",
+      "verifyError": "सत्यापन कोड की पुष्टि नहीं की जा सकी।",
+      "completeError": "सत्यापन पूरा नहीं किया जा सका।",
+      "backToLogin": "लॉग इन पर वापस जाएं",
+      "useRecoveryCodePrompt": "अपने ऑथेंटिकेटर ऐप तक पहुंच खो दी है?",
+      "useRecoveryCode": "रिकवरी कोड का उपयोग करें",
+      "useAuthenticatorPrompt": "क्या आपके पास ऑथेंटिकेटर ऐप है?",
+      "useAuthenticator": "ऑथेंटिकेटर कोड का उपयोग करें"
     }
   },
   "invite": {
-    "title": "Welcome to Medusa",
-    "hint": "Create your account below",
-    "backToLogin": "Back to login",
-    "createAccount": "Create account",
-    "alreadyHaveAccount": "Already have an account? - <0>Log in</0>",
-    "emailTooltip": "Your email cannot be changed. If you would like to use another email, a new invite must be sent.",
-    "invalidInvite": "The invite is invalid or has expired.",
-    "successTitle": "Your account has been registered",
-    "successHint": "Get started with Medusa Admin right away.",
-    "successAction": "Start Medusa Admin",
-    "invalidTokenTitle": "Your invite token is invalid",
-    "invalidTokenHint": "Try requesting a new invite link.",
-    "passwordMismatch": "Passwords do not match",
+    "title": "Medusa में आपका स्वागत है",
+    "hint": "नीचे अपना खाता बनाएं",
+    "backToLogin": "लॉग इन पर वापस जाएं",
+    "createAccount": "खाता बनाएं",
+    "alreadyHaveAccount": "पहले से खाता है? - <0>लॉग इन करें</0>",
+    "emailTooltip": "आपका ईमेल बदला नहीं जा सकता। अगर आप कोई दूसरा ईमेल इस्तेमाल करना चाहते हैं, तो एक नया आमंत्रण भेजना होगा।",
+    "invalidInvite": "यह आमंत्रण अमान्य है या इसकी समय-सीमा समाप्त हो गई है।",
+    "successTitle": "आपका खाता पंजीकृत हो गया है",
+    "successHint": "Medusa एडमिन का उपयोग तुरंत शुरू करें।",
+    "successAction": "Medusa एडमिन शुरू करें",
+    "invalidTokenTitle": "आपका आमंत्रण टोकन अमान्य है",
+    "invalidTokenHint": "नए आमंत्रण लिंक का अनुरोध करके देखें।",
+    "passwordMismatch": "पासवर्ड मेल नहीं खाते",
     "toast": {
-      "accepted": "Invite successfully accepted"
+      "accepted": "आमंत्रण सफलतापूर्वक स्वीकार किया गया"
     }
   },
   "resetPassword": {
-    "title": "Reset password",
-    "hint": "Enter your email below, and we will send you instructions on how to reset your password.",
-    "email": "Email",
-    "sendResetInstructions": "Send reset instructions",
-    "backToLogin": "<0>Back to login</0>",
-    "newPasswordHint": "Choose a new password below.",
-    "invalidTokenTitle": "Your reset token is invalid",
-    "invalidTokenHint": "Try requesting a new reset link.",
-    "expiredTokenTitle": "Your reset token has expired",
-    "goToResetPassword": "Go to Reset Password",
-    "resetPassword": "Reset password",
-    "newPassword": "New password",
-    "repeatNewPassword": "Repeat new password",
-    "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
-    "successfulRequestTitle": "Successfully sent you an email",
-    "successfulRequest": "We've sent you an email which you can use to reset your password. Check your spam folder if you haven't received it after a few minutes.",
-    "successfulResetTitle": "Password reset successful",
-    "successfulReset": "Please login in on the login page.",
-    "passwordMismatch": "Passwords do no match",
-    "invalidLinkTitle": "Your reset link is invalid",
-    "invalidLinkHint": "Try resetting your password again."
+    "title": "पासवर्ड रीसेट करें",
+    "hint": "नीचे अपना ईमेल डालें, और हम आपको पासवर्ड रीसेट करने के निर्देश भेजेंगे।",
+    "email": "ईमेल",
+    "sendResetInstructions": "रीसेट के निर्देश भेजें",
+    "backToLogin": "<0>लॉग इन पर वापस जाएं</0>",
+    "newPasswordHint": "नीचे एक नया पासवर्ड चुनें।",
+    "invalidTokenTitle": "आपका रीसेट टोकन अमान्य है",
+    "invalidTokenHint": "नए रीसेट लिंक का अनुरोध करके देखें।",
+    "expiredTokenTitle": "आपके रीसेट टोकन की समय-सीमा समाप्त हो गई है",
+    "goToResetPassword": "पासवर्ड रीसेट पर जाएं",
+    "resetPassword": "पासवर्ड रीसेट करें",
+    "newPassword": "नया पासवर्ड",
+    "repeatNewPassword": "नया पासवर्ड दोबारा डालें",
+    "tokenExpiresIn": "टोकन <0>{{time}}</0> मिनट में समाप्त हो जाएगा",
+    "successfulRequestTitle": "आपको सफलतापूर्वक ईमेल भेजा गया",
+    "successfulRequest": "हमने आपको एक ईमेल भेजा है, जिससे आप अपना पासवर्ड रीसेट कर सकते हैं। अगर कुछ मिनटों के बाद भी ईमेल नहीं मिला है, तो अपना स्पैम फ़ोल्डर जांचें।",
+    "successfulResetTitle": "पासवर्ड सफलतापूर्वक रीसेट हो गया",
+    "successfulReset": "कृपया लॉग इन पेज पर लॉग इन करें।",
+    "passwordMismatch": "पासवर्ड मेल नहीं खाते",
+    "invalidLinkTitle": "आपका रीसेट लिंक अमान्य है",
+    "invalidLinkHint": "अपना पासवर्ड फिर से रीसेट करके देखें।"
   },
   "workflowExecutions": {
-    "domain": "Workflows",
-    "subtitle": "View and keep track of workflow executions in your Medusa application.",
-    "transactionIdLabel": "Transaction ID",
-    "workflowIdLabel": "Workflow ID",
-    "stateLabel": "State",
-    "progressLabel": "Progress",
-    "stepsCompletedLabel_one": "{{completed}} of {{count}} step",
-    "stepsCompletedLabel_other": "{{completed}} of {{count}} steps",
+    "domain": "वर्कफ़्लो",
+    "subtitle": "अपने Medusa ऐप्लिकेशन में वर्कफ़्लो के निष्पादन देखें और उन पर नज़र रखें।",
+    "transactionIdLabel": "ट्रांज़ैक्शन ID",
+    "workflowIdLabel": "वर्कफ़्लो ID",
+    "stateLabel": "स्थिति",
+    "progressLabel": "प्रगति",
+    "stepsCompletedLabel_one": "{{count}} में से {{completed}} चरण",
+    "stepsCompletedLabel_other": "{{count}} में से {{completed}} चरण",
     "list": {
-      "noRecordsMessage": "No workflows have been executed, yet."
+      "noRecordsMessage": "अभी तक कोई वर्कफ़्लो निष्पादित नहीं हुआ है।"
     },
     "history": {
-      "sectionTitle": "History",
-      "runningState": "Running...",
-      "awaitingState": "Awaiting",
-      "failedState": "Failed",
-      "skippedState": "Skipped",
-      "skippedFailureState": "Skipped (Failure)",
-      "definitionLabel": "Definition",
-      "outputLabel": "Output",
-      "compensateInputLabel": "Compensate input",
-      "revertedLabel": "Reverted",
-      "errorLabel": "Error"
+      "sectionTitle": "इतिहास",
+      "runningState": "चल रहा है...",
+      "awaitingState": "प्रतीक्षा में",
+      "failedState": "विफल",
+      "skippedState": "छोड़ा गया",
+      "skippedFailureState": "छोड़ा गया (विफलता)",
+      "definitionLabel": "परिभाषा",
+      "outputLabel": "आउटपुट",
+      "compensateInputLabel": "कम्पेन्सेट इनपुट",
+      "revertedLabel": "वापस लिया गया",
+      "errorLabel": "त्रुटि"
     },
     "state": {
-      "done": "Done",
-      "failed": "Failed",
-      "reverted": "Reverted",
-      "invoking": "Invoking",
-      "compensating": "Compensating",
-      "notStarted": "Not started"
+      "done": "पूर्ण",
+      "failed": "विफल",
+      "reverted": "वापस लिया गया",
+      "invoking": "चलाया जा रहा है",
+      "compensating": "कम्पेन्सेट किया जा रहा है",
+      "notStarted": "शुरू नहीं हुआ"
     },
     "transaction": {
       "state": {
-        "waitingToCompensate": "Waiting to compensate"
+        "waitingToCompensate": "कम्पेन्सेट होने की प्रतीक्षा में"
       }
     },
     "step": {
       "state": {
-        "skipped": "Skipped",
-        "skippedFailure": "Skipped (Failure)",
-        "dormant": "Dormant",
-        "timeout": "Timeout"
+        "skipped": "छोड़ा गया",
+        "skippedFailure": "छोड़ा गया (विफलता)",
+        "dormant": "निष्क्रिय",
+        "timeout": "टाइमआउट"
       }
     }
   },
   "searchIndexes": {
-    "domain": "Search",
-    "subtitle": "View registered search indexes and rebuild them from source data.",
-    "fieldsLabel": "Indexed fields",
-    "providerLabel": "Provider",
-    "reindex": "Reindex",
-    "reindexConfirmationTitle": "Reindex {{name}}?",
-    "reindexConfirmation": "This rebuilds the \"{{name}}\" index from its source data. Search results for this index may be incomplete until the rebuild finishes.",
-    "reindexSuccess": "Reindexing {{name}} started",
-    "reindexSinceLabel": "Since",
-    "reindexSinceHint": "Only rebuild documents that changed at or after this date. Leave empty to rebuild everything.",
-    "reindexEntityIdsLabel": "Entity IDs",
-    "reindexEntityIdsHint": "Comma or newline separated IDs to rebuild only those documents. Support depends on this index's own definition.",
-    "delete": "Delete index",
-    "deleteWarning": "This drops the \"{{name}}\" index and every version ever built for it, including its data in the search engine. Nothing is searchable on this index until the next migration rebuilds it from scratch. This can't be undone.",
-    "deleteSuccess": "Index {{name}} deleted",
-    "noFields": "No fields are indexed.",
+    "domain": "खोज",
+    "subtitle": "पंजीकृत सर्च इंडेक्स देखें और उन्हें स्रोत डेटा से फिर से बनाएं।",
+    "fieldsLabel": "इंडेक्स किए गए फ़ील्ड",
+    "providerLabel": "प्रोवाइडर",
+    "reindex": "फिर से इंडेक्स करें",
+    "reindexConfirmationTitle": "{{name}} को फिर से इंडेक्स करें?",
+    "reindexConfirmation": "इससे \"{{name}}\" इंडेक्स उसके स्रोत डेटा से फिर से बनाया जाएगा। फिर से बनने तक इस इंडेक्स के खोज परिणाम अधूरे हो सकते हैं।",
+    "reindexSuccess": "{{name}} को फिर से इंडेक्स करना शुरू हो गया",
+    "reindexSinceLabel": "इस तिथि से",
+    "reindexSinceHint": "केवल उन दस्तावेज़ों को फिर से बनाएं जो इस तिथि को या उसके बाद बदले गए हैं। सब कुछ फिर से बनाने के लिए खाली छोड़ें।",
+    "reindexEntityIdsLabel": "एंटिटी ID",
+    "reindexEntityIdsHint": "केवल उन दस्तावेज़ों को फिर से बनाने के लिए ID को कॉमा या नई पंक्ति से अलग करके लिखें। यह सुविधा इस इंडेक्स की अपनी परिभाषा पर निर्भर करती है।",
+    "delete": "इंडेक्स हटाएं",
+    "deleteWarning": "इससे \"{{name}}\" इंडेक्स और उसके लिए बने सभी संस्करण हट जाएंगे, जिसमें सर्च इंजन में उसका डेटा भी शामिल है। अगले माइग्रेशन में इसके शुरू से दोबारा बनने तक इस इंडेक्स पर कुछ भी खोजा नहीं जा सकेगा। इसे पूर्ववत नहीं किया जा सकता।",
+    "deleteSuccess": "इंडेक्स {{name}} हटाया गया",
+    "noFields": "कोई फ़ील्ड इंडेक्स नहीं किया गया है।",
     "list": {
-      "noRecordsMessage": "No search indexes are registered."
+      "noRecordsMessage": "कोई सर्च इंडेक्स पंजीकृत नहीं है।"
     },
     "status": {
-      "pending": "Pending",
-      "building": "Building",
-      "ready": "Ready",
-      "error": "Error"
+      "pending": "लंबित",
+      "building": "बन रहा है",
+      "ready": "तैयार",
+      "error": "त्रुटि"
     }
   },
   "shippingOptionTypes": {
-    "domain": "Shipping Option Types",
-    "subtitle": "Organize your shipping options into types.",
+    "domain": "शिपिंग विकल्प प्रकार",
+    "subtitle": "अपने शिपिंग विकल्पों को प्रकारों में व्यवस्थित करें।",
     "create": {
-      "header": "Create Shipping Option Type",
-      "hint": "Create a new shipping option type to categorize your shipping options.",
-      "successToast": "Shipping option type {{label}} was successfully created."
+      "header": "शिपिंग विकल्प प्रकार बनाएं",
+      "hint": "अपने शिपिंग विकल्पों को श्रेणियों में बांटने के लिए नया शिपिंग विकल्प प्रकार बनाएं।",
+      "successToast": "शिपिंग विकल्प प्रकार {{label}} सफलतापूर्वक बनाया गया।"
     },
     "edit": {
-      "header": "Edit Shipping Option Type",
-      "successToast": "Shipping option type {{label}} was successfully updated."
+      "header": "शिपिंग विकल्प प्रकार संपादित करें",
+      "successToast": "शिपिंग विकल्प प्रकार {{label}} सफलतापूर्वक अपडेट किया गया।"
     },
     "delete": {
-      "confirmation": "You are about to delete the shipping option type \"{{label}}\". This action cannot be undone.",
-      "successToast": "Shipping option type \"{{label}}\" was successfully deleted."
+      "confirmation": "आप शिपिंग विकल्प प्रकार \"{{label}}\" को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "शिपिंग विकल्प प्रकार \"{{label}}\" सफलतापूर्वक हटाया गया।"
     },
     "fields": {
-      "label": "Label",
-      "code": "Code",
-      "description": "Description"
+      "label": "लेबल",
+      "code": "कोड",
+      "description": "विवरण"
     }
   },
   "productTypes": {
-    "domain": "Product Types",
-    "subtitle": "Organize your products into types.",
+    "domain": "उत्पाद प्रकार",
+    "subtitle": "अपने उत्पादों को प्रकारों में व्यवस्थित करें।",
     "create": {
-      "header": "Create Product Type",
-      "hint": "Create a new product type to categorize your products.",
-      "successToast": "Product type {{value}} was successfully created."
+      "header": "उत्पाद प्रकार बनाएं",
+      "hint": "अपने उत्पादों को श्रेणियों में बांटने के लिए नया उत्पाद प्रकार बनाएं।",
+      "successToast": "उत्पाद प्रकार {{value}} सफलतापूर्वक बनाया गया।"
     },
     "edit": {
-      "header": "Edit Product Type",
-      "successToast": "Product type {{value}} was successfully updated."
+      "header": "उत्पाद प्रकार संपादित करें",
+      "successToast": "उत्पाद प्रकार {{value}} सफलतापूर्वक अपडेट किया गया।"
     },
     "delete": {
-      "confirmation": "You are about to delete the product type \"{{value}}\". This action cannot be undone.",
-      "successToast": "Product type \"{{value}}\" was successfully deleted."
+      "confirmation": "आप उत्पाद प्रकार \"{{value}}\" को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "उत्पाद प्रकार \"{{value}}\" सफलतापूर्वक हटाया गया।"
     },
     "fields": {
-      "value": "Value"
+      "value": "मान"
     }
   },
   "productTags": {
-    "domain": "Product Tags",
+    "domain": "उत्पाद टैग",
     "create": {
-      "header": "Create Product Tag",
-      "subtitle": "Create a new product tag to categorize your products.",
-      "successToast": "Product tag {{value}} was successfully created."
+      "header": "उत्पाद टैग बनाएं",
+      "subtitle": "अपने उत्पादों को श्रेणियों में बांटने के लिए नया उत्पाद टैग बनाएं।",
+      "successToast": "उत्पाद टैग {{value}} सफलतापूर्वक बनाया गया।"
     },
     "edit": {
-      "header": "Edit Product Tag",
-      "subtitle": "Edit the value of the product tag.",
-      "successToast": "Product tag {{value}} was successfully updated."
+      "header": "उत्पाद टैग संपादित करें",
+      "subtitle": "उत्पाद टैग का मान संपादित करें।",
+      "successToast": "उत्पाद टैग {{value}} सफलतापूर्वक अपडेट किया गया।"
     },
     "delete": {
-      "confirmation": "You are about to delete the product tag {{value}}. This action cannot be undone.",
-      "successToast": "Product tag {{value}} was successfully deleted."
+      "confirmation": "आप उत्पाद टैग {{value}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "उत्पाद टैग {{value}} सफलतापूर्वक हटाया गया।"
     },
     "fields": {
-      "value": "Value"
+      "value": "मान"
     }
   },
   "propertyLabels": {
-    "domain": "Property Labels",
-    "title": "Property Labels",
-    "subtitle": "Manage custom property labels for configurable tables of your entities.",
+    "domain": "प्रॉपर्टी लेबल",
+    "title": "प्रॉपर्टी लेबल",
+    "subtitle": "अपनी एंटिटी की कॉन्फ़िगर की जा सकने वाली तालिकाओं के लिए कस्टम प्रॉपर्टी लेबल प्रबंधित करें।",
     "fields": {
-      "module": "Module",
-      "model": "Model",
-      "propertyCount": "Property Count",
-      "hasOverrides": "Has Overrides"
+      "module": "मॉड्यूल",
+      "model": "मॉडल",
+      "propertyCount": "प्रॉपर्टी की संख्या",
+      "hasOverrides": "ओवरराइड हैं"
     }
   },
   "notifications": {
-    "domain": "Notifications",
+    "domain": "सूचनाएँ",
     "emptyState": {
-      "title": "No notifications",
-      "description": "You don't have any notifications at the moment, but once you do they will live here."
+      "title": "कोई सूचना नहीं",
+      "description": "अभी आपके पास कोई सूचना नहीं है। जब आएंगी, तो वे यहाँ दिखाई देंगी।"
     },
     "accessibility": {
-      "description": "Notifications about Medusa activities will be listed here."
+      "description": "Medusa की गतिविधियों से जुड़ी सूचनाएँ यहाँ दिखाई जाएंगी।"
     }
   },
   "errors": {
-    "serverError": "Server error - Try again later.",
-    "invalidCredentials": "Wrong email or password"
+    "serverError": "सर्वर त्रुटि - बाद में फिर से कोशिश करें।",
+    "invalidCredentials": "गलत ईमेल या पासवर्ड"
   },
   "statuses": {
-    "scheduled": "Scheduled",
-    "expired": "Expired",
-    "active": "Active",
-    "inactive": "Inactive",
-    "draft": "Draft",
-    "enabled": "Enabled",
-    "disabled": "Disabled"
+    "scheduled": "निर्धारित",
+    "expired": "समय-सीमा समाप्त",
+    "active": "सक्रिय",
+    "inactive": "निष्क्रिय",
+    "draft": "ड्राफ़्ट",
+    "enabled": "सक्षम",
+    "disabled": "अक्षम"
   },
   "labels": {
-    "productVariant": "Product Variant",
-    "prices": "Prices",
-    "available": "Available",
-    "inStock": "In stock",
-    "added": "Added",
-    "removed": "Removed",
-    "from": "From",
-    "to": "To",
-    "beaware": "Be aware",
-    "loading": "Loading",
-    "selectValue": "Select Value",
-    "selectValues": "Select Values"
+    "productVariant": "उत्पाद वैरिएंट",
+    "prices": "कीमतें",
+    "available": "उपलब्ध",
+    "inStock": "स्टॉक में",
+    "added": "जोड़ा गया",
+    "removed": "हटाया गया",
+    "from": "से",
+    "to": "तक",
+    "beaware": "ध्यान दें",
+    "loading": "लोड हो रहा है",
+    "selectValue": "मान चुनें",
+    "selectValues": "मान चुनें"
   },
   "fields": {
     "actions": "Actions",
