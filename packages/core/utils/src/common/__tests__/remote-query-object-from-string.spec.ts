@@ -145,4 +145,55 @@ describe("remoteQueryObjectFromString", function () {
       },
     })
   })
+
+  describe("prototype pollution", () => {
+    afterEach(() => {
+      delete (Object.prototype as any).fields
+      delete (Object.prototype as any).roles
+    })
+
+    it.each([
+      "__proto__.fields",
+      "__proto__.roles.x",
+      "constructor.prototype.roles.x",
+      "tags.__proto__.x",
+    ])("should ignore the unsafe field %s", (field) => {
+      const output = remoteQueryObjectFromString({
+        entryPoint: "product",
+        variables: {},
+        fields: ["id", field, "tags.value"],
+      })
+
+      expect(({} as any).fields).toBeUndefined()
+      expect(({} as any).roles).toBeUndefined()
+      expect(output).toEqual({
+        __value: {
+          product: {
+            fields: ["id"],
+            isServiceAccess: false,
+            __args: {},
+            tags: {
+              fields: ["value"],
+            },
+          },
+        },
+      })
+    })
+
+    it("should not affect the query of a subsequent call", () => {
+      remoteQueryObjectFromString({
+        entryPoint: "region",
+        variables: {},
+        fields: ["__proto__.leak"],
+      })
+
+      const output = remoteQueryObjectFromString({
+        entryPoint: "region",
+        variables: {},
+        fields: ["id", "countries.iso_2"],
+      })
+
+      expect(output.__value.region.countries).toEqual({ fields: ["iso_2"] })
+    })
+  })
 })
