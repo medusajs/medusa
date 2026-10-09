@@ -195,12 +195,16 @@ export class RedisLockingProvider implements ILockingProvider {
       await Promise.race(promises)
     } catch (error) {
       // The acquire loop can be mid-`SET` when the timeout fires, and then
-      // takes keys no job is going to use. Hand them back rather than leaving
-      // them locked for a whole lease.
-      void acquisition.then(
-        () => this.release(keys, { ownerId }),
-        () => {}
-      )
+      // takes keys no job is going to use. Wait for every attempt to settle,
+      // including rejected retries, before releasing this call's keys.
+      void acquisition
+        .catch(() => {})
+        .then(() => this.release(keys, { ownerId }))
+        .catch((releaseError) => {
+          this.logger_?.warn(
+            `Failed to release lock after acquisition failed: ${releaseError.message}`
+          )
+        })
 
       throw error
     }
