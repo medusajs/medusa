@@ -74,6 +74,12 @@ medusaIntegrationTestRunner({
           optional: true
         },
         {
+          type: "`(options: MedusaSuiteOptions) => Promise<void>`",
+          name: "seedBaseline",
+          description: "An async function to seed a shared database baseline for the test file. Runs once after server startup and migrations, then captures a template snapshot that is restored before every test (including across sibling nested describe blocks).",
+          optional: true
+        },
+        {
           type: "`object`",
           name: "hooks",
           description: "An object containing hooks to run at different points in the test lifecycle.",
@@ -83,7 +89,19 @@ medusaIntegrationTestRunner({
               type: "`(container: MedusaContainer) => Promise<void>`",
               name: "beforeServerStart",
               description: "A hook that runs before the Medusa server starts.",
-          optional: true
+              optional: true
+            },
+            {
+              type: "`(options: MedusaSuiteOptions) => Promise<void>`",
+              name: "afterSetup",
+              description: "A hook that runs once after the Medusa server starts and migrations finish, before creating the baseline template snapshot. Alias for seedBaseline.",
+              optional: true
+            },
+            {
+              type: "`(options: MedusaSuiteOptions) => Promise<void>`",
+              name: "seedBaseline",
+              description: "A hook that runs once after the Medusa server starts and migrations finish, before creating the baseline template snapshot. Alias for the top-level seedBaseline option.",
+              optional: true
             }
           ]
         }
@@ -197,6 +215,11 @@ The function passed to `testSuite` accepts the following parameters:
               type: "`() => Promise<void>`",
               name: "waitWorkflowExecutions",
               description: "Waits for all workflow executions to complete."
+            },
+            {
+              type: "`(options?: { templateName?: string }) => Promise<void>`",
+              name: "freezeDatabaseBaseline",
+              description: "Drains active workflows and freezes the current database state into a template snapshot for subsequent test restores."
             }
           ]
         }
@@ -206,3 +229,33 @@ The function passed to `testSuite` accepts the following parameters:
   sectionTitle="Test Suite Parameters"
   openedLevel={2}
 />
+
+## Sibling Nested Describe Suites and `seedBaseline`
+
+When writing test files that organize tests across sibling `describe` blocks, use `seedBaseline` to set up shared data for the whole file. The runner executes `seedBaseline` once after startup and migrations, snapshots the PostgreSQL template, and restores that baseline before each test across all sibling suites:
+
+```ts
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { createAdminUser, adminHeaders } from "../helpers/create-admin-user"
+
+medusaIntegrationTestRunner({
+  async seedBaseline({ dbConnection, getContainer }) {
+    // Shared fixtures for the whole file
+    await createAdminUser(dbConnection, adminHeaders, getContainer())
+  },
+  testSuite: ({ api }) => {
+    describe("Suite A", () => {
+      it("starts from the baseline database state", async () => {
+        // Runs against seedBaseline
+      })
+    })
+
+    describe("Suite B", () => {
+      it("also starts from the same baseline database state", async () => {
+        // Starts with fresh seedBaseline restore, unaffected by Suite A
+      })
+    })
+  },
+})
+```
+
