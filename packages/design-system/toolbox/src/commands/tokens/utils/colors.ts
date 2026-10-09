@@ -36,7 +36,7 @@ function colorToRGBA(color: Color, opacity?: number): string {
   /**
    * How Figma returns opacity for colors is a bit weird.
    * They always return the alpha channel as 1, even if the color is less than solid.
-   * Instead, they return the opacity in a seperate opacity property.
+   * Instead, they return the opacity in a separate opacity property.
    * So we need to check if the opacity is defined, and if it is,
    * use that for the alpha channel instead.
    */
