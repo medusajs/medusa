@@ -1425,317 +1425,317 @@
       }
     },
     "claims": {
-      "create": "Create Claim",
-      "confirm": "Confirm Claim",
-      "confirmText": "You are about to confirm a Claim. This action cannot be undone.",
-      "manage": "Manage Claim",
-      "outbound": "Outbound",
-      "outboundItemAdded": "{{itemsCount}}x added through claim",
-      "outboundTotal": "Outbound total",
-      "outboundShipping": "Outbound shipping",
-      "outboundShippingHint": "Choose which method you want to use.",
-      "refundAmount": "Estimated difference",
-      "carryOverPromotion": "Carry over promotions",
-      "carryOverPromotionHint": "Apply the order's promotions to the claim items",
-      "carryOverPromotionTooltip": "Only fixed type promotions with EACH allocation and percentage type promotions with EACH or ACROSS allocation can be carried over to outbound claim items.",
-      "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
+      "create": "क्लेम बनाएं",
+      "confirm": "क्लेम की पुष्टि करें",
+      "confirmText": "आप एक क्लेम की पुष्टि करने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "manage": "क्लेम प्रबंधित करें",
+      "outbound": "आउटबाउंड",
+      "outboundItemAdded": "{{itemsCount}}x क्लेम के ज़रिए जोड़े गए",
+      "outboundTotal": "आउटबाउंड का कुल योग",
+      "outboundShipping": "आउटबाउंड शिपिंग",
+      "outboundShippingHint": "चुनें कि आप कौन-सा तरीका इस्तेमाल करना चाहते हैं।",
+      "refundAmount": "अनुमानित अंतर",
+      "carryOverPromotion": "प्रमोशन आगे बढ़ाएं",
+      "carryOverPromotionHint": "ऑर्डर के प्रमोशन क्लेम के आइटम पर लागू करें",
+      "carryOverPromotionTooltip": "केवल EACH आवंटन वाले फ़िक्स्ड प्रकार के प्रमोशन, और EACH या ACROSS आवंटन वाले प्रतिशत प्रकार के प्रमोशन ही आउटबाउंड क्लेम आइटम पर आगे बढ़ाए जा सकते हैं।",
+      "activeChangeError": "इस ऑर्डर पर एक सक्रिय बदलाव चल रहा है। कृपया पिछले बदलाव को पूरा करें या छोड़ दें।",
       "actions": {
         "cancelClaim": {
-          "successToast": "Claim was successfully canceled."
+          "successToast": "क्लेम सफलतापूर्वक रद्द किया गया।"
         }
       },
       "cancel": {
-        "title": "Cancel Claim",
-        "description": "Are you sure you want to cancel the claim?"
+        "title": "क्लेम रद्द करें",
+        "description": "क्या आप वाकई क्लेम रद्द करना चाहते हैं?"
       },
       "tooltips": {
-        "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+        "onlyReturnShippingOptions": "इस सूची में केवल रिटर्न शिपिंग विकल्प होंगे।"
       },
       "toast": {
-        "canceledSuccessfully": "Claim canceled successfully",
-        "confirmedSuccessfully": "Claim confirmed successfully"
+        "canceledSuccessfully": "क्लेम सफलतापूर्वक रद्द किया गया",
+        "confirmedSuccessfully": "क्लेम की सफलतापूर्वक पुष्टि की गई"
       },
       "panel": {
-        "title": "Claim initiated",
-        "description": "There is an open claim request to be completed"
+        "title": "क्लेम शुरू किया गया",
+        "description": "एक खुला क्लेम अनुरोध पूरा होना बाकी है"
       }
     },
     "exchanges": {
-      "create": "Create Exchange",
-      "manage": "Manage Exchange",
-      "confirm": "Confirm Exchange",
-      "confirmText": "You are about to confirm an Exchange. This action cannot be undone.",
-      "outbound": "Outbound",
-      "outboundItemAdded": "{{itemsCount}}x added through exchange",
-      "outboundTotal": "Outbound total",
-      "outboundShipping": "Outbound shipping",
-      "outboundShippingHint": "Choose which method you want to use.",
-      "refundAmount": "Estimated difference",
-      "carryOverPromotion": "Carry over promotions",
-      "carryOverPromotionHint": "Apply the order's promotions to the exchange items",
-      "carryOverPromotionTooltip": "Only fixed type promotions with EACH allocation and percentage type promotions with EACH or ACROSS allocation can be carried over to outbound exchange items.",
-      "activeChangeError": "There is an active order change on this order. Please finish or discard the previous change.",
+      "create": "एक्सचेंज बनाएं",
+      "manage": "एक्सचेंज प्रबंधित करें",
+      "confirm": "एक्सचेंज की पुष्टि करें",
+      "confirmText": "आप एक एक्सचेंज की पुष्टि करने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "outbound": "आउटबाउंड",
+      "outboundItemAdded": "{{itemsCount}}x एक्सचेंज के ज़रिए जोड़े गए",
+      "outboundTotal": "आउटबाउंड का कुल योग",
+      "outboundShipping": "आउटबाउंड शिपिंग",
+      "outboundShippingHint": "चुनें कि आप कौन-सा तरीका इस्तेमाल करना चाहते हैं।",
+      "refundAmount": "अनुमानित अंतर",
+      "carryOverPromotion": "प्रमोशन आगे बढ़ाएं",
+      "carryOverPromotionHint": "ऑर्डर के प्रमोशन एक्सचेंज के आइटम पर लागू करें",
+      "carryOverPromotionTooltip": "केवल EACH आवंटन वाले फ़िक्स्ड प्रकार के प्रमोशन, और EACH या ACROSS आवंटन वाले प्रतिशत प्रकार के प्रमोशन ही आउटबाउंड एक्सचेंज आइटम पर आगे बढ़ाए जा सकते हैं।",
+      "activeChangeError": "इस ऑर्डर पर एक सक्रिय बदलाव चल रहा है। कृपया पिछले बदलाव को पूरा करें या छोड़ दें।",
       "actions": {
         "cancelExchange": {
-          "successToast": "Exchange was successfully canceled."
+          "successToast": "एक्सचेंज सफलतापूर्वक रद्द किया गया।"
         }
       },
       "cancel": {
-        "title": "Cancel Exchange",
-        "description": "Are you sure you want to cancel the exchange?"
+        "title": "एक्सचेंज रद्द करें",
+        "description": "क्या आप वाकई एक्सचेंज रद्द करना चाहते हैं?"
       },
       "tooltips": {
-        "onlyReturnShippingOptions": "This list will consist of only return shipping options."
+        "onlyReturnShippingOptions": "इस सूची में केवल रिटर्न शिपिंग विकल्प होंगे।"
       },
       "toast": {
-        "canceledSuccessfully": "Exchange canceled successfully",
-        "confirmedSuccessfully": "Exchange confirmed successfully"
+        "canceledSuccessfully": "एक्सचेंज सफलतापूर्वक रद्द किया गया",
+        "confirmedSuccessfully": "एक्सचेंज की सफलतापूर्वक पुष्टि की गई"
       },
       "panel": {
-        "title": "Exchange initiated",
-        "description": "There is an open exchange request to be completed"
+        "title": "एक्सचेंज शुरू किया गया",
+        "description": "एक खुला एक्सचेंज अनुरोध पूरा होना बाकी है"
       }
     },
     "reservations": {
-      "allocatedLabel": "Allocated",
-      "notAllocatedLabel": "Not allocated"
+      "allocatedLabel": "आवंटित",
+      "notAllocatedLabel": "आवंटित नहीं"
     },
     "allocateItems": {
-      "action": "Allocate items",
-      "title": "Allocate order items",
-      "locationDescription": "Choose which location you want to allocate from.",
-      "itemsToAllocate": "Items to allocate",
-      "itemsToAllocateDesc": "Select the number of items you wish to allocate",
-      "search": "Search items",
-      "consistsOf": "Consists of {{num}}x inventory items",
-      "requires": "Requires {{num}} per variant",
+      "action": "आइटम आवंटित करें",
+      "title": "ऑर्डर के आइटम आवंटित करें",
+      "locationDescription": "चुनें कि आप किस लोकेशन से आवंटित करना चाहते हैं।",
+      "itemsToAllocate": "आवंटित करने के लिए आइटम",
+      "itemsToAllocateDesc": "चुनें कि आप कितने आइटम आवंटित करना चाहते हैं",
+      "search": "आइटम खोजें",
+      "consistsOf": "{{num}}x इन्वेंटरी आइटम से मिलकर बना",
+      "requires": "प्रति वैरिएंट {{num}} आवश्यक",
       "toast": {
-        "created": "Items successfully allocated",
-        "error": "Failed to allocate following items: {{items}}"
+        "created": "आइटम सफलतापूर्वक आवंटित किए गए",
+        "error": "ये आइटम आवंटित नहीं किए जा सके: {{items}}"
       },
       "error": {
-        "quantityNotAllocated": "There are unallocated items."
+        "quantityNotAllocated": "कुछ आइटम आवंटित नहीं किए गए हैं।"
       }
     },
     "shipment": {
-      "title": "Mark fulfillment shipped",
-      "trackingNumber": "Tracking number",
-      "trackingUrl": "Tracking URL",
-      "labelUrl": "Label URL",
-      "addTracking": "Add tracking number",
-      "sendNotification": "Send notification",
-      "sendNotificationHint": "Notify the customer about this shipment.",
-      "toastCreated": "Shipment created successfully."
+      "title": "फ़ुलफ़िलमेंट को शिप किया गया के रूप में चिह्नित करें",
+      "trackingNumber": "ट्रैकिंग नंबर",
+      "trackingUrl": "ट्रैकिंग URL",
+      "labelUrl": "लेबल URL",
+      "addTracking": "ट्रैकिंग नंबर जोड़ें",
+      "sendNotification": "सूचना भेजें",
+      "sendNotificationHint": "ग्राहक को इस शिपमेंट के बारे में सूचित करें।",
+      "toastCreated": "शिपमेंट सफलतापूर्वक बनाया गया।"
     },
     "fulfillment": {
-      "cancelWarning": "You are about to cancel a fulfillment. This action cannot be undone.",
-      "markAsDeliveredWarning": "You are about to mark fulfillment as delivered. This action cannot be undone.",
-      "differentOptionSelected": "The selected shipping option is different from the one selected by the customer.",
-      "disabledItemTooltip": "The shipping option you have selected don’t allow fulfillment of this item",
-      "unfulfilledItems": "Unfulfilled Items",
-      "statusLabel": "Fulfillment status",
-      "statusTitle": "Fulfillment Status",
-      "fulfillItems": "Fulfill items",
-      "awaitingFulfillmentBadge": "Awaiting fulfillment",
-      "requiresShipping": "Requires shipping",
-      "number": "Fulfillment #{{number}}",
-      "itemsToFulfill": "Items to fulfill",
-      "create": "Create Fulfillment",
-      "available": "Available",
-      "inStock": "In stock",
-      "markAsShipped": "Mark as shipped",
-      "markAsPickedUp": "Mark as picked up",
-      "markAsDelivered": "Mark as delivered",
-      "itemsToFulfillDesc": "Choose items and quantities to fulfill",
-      "locationDescription": "Choose which location you want to fulfill items from.",
-      "locationUnavailable": "Location deleted/unavailable",
-      "sendNotificationHint": "Notify customers about the created fulfillment.",
-      "methodDescription": "Choose a different shipping method from the one customer selected",
+      "cancelWarning": "आप एक फ़ुलफ़िलमेंट रद्द करने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "markAsDeliveredWarning": "आप फ़ुलफ़िलमेंट को डिलीवर हुआ के रूप में चिह्नित करने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "differentOptionSelected": "चुना गया शिपिंग विकल्प ग्राहक द्वारा चुने गए विकल्प से अलग है।",
+      "disabledItemTooltip": "आपके द्वारा चुना गया शिपिंग विकल्प इस आइटम के फ़ुलफ़िलमेंट की अनुमति नहीं देता",
+      "unfulfilledItems": "बिना फ़ुलफ़िल किए आइटम",
+      "statusLabel": "फ़ुलफ़िलमेंट की स्थिति",
+      "statusTitle": "फ़ुलफ़िलमेंट की स्थिति",
+      "fulfillItems": "आइटम फ़ुलफ़िल करें",
+      "awaitingFulfillmentBadge": "फ़ुलफ़िलमेंट की प्रतीक्षा में",
+      "requiresShipping": "शिपिंग आवश्यक है",
+      "number": "फ़ुलफ़िलमेंट #{{number}}",
+      "itemsToFulfill": "फ़ुलफ़िल करने के लिए आइटम",
+      "create": "फ़ुलफ़िलमेंट बनाएं",
+      "available": "उपलब्ध",
+      "inStock": "स्टॉक में",
+      "markAsShipped": "शिप किया गया के रूप में चिह्नित करें",
+      "markAsPickedUp": "पिकअप हुआ के रूप में चिह्नित करें",
+      "markAsDelivered": "डिलीवर हुआ के रूप में चिह्नित करें",
+      "itemsToFulfillDesc": "फ़ुलफ़िल करने के लिए आइटम और उनकी मात्रा चुनें",
+      "locationDescription": "चुनें कि आप किस लोकेशन से आइटम फ़ुलफ़िल करना चाहते हैं।",
+      "locationUnavailable": "लोकेशन हटाई गई/उपलब्ध नहीं",
+      "sendNotificationHint": "ग्राहकों को बनाए गए फ़ुलफ़िलमेंट के बारे में सूचित करें।",
+      "methodDescription": "ग्राहक द्वारा चुने गए तरीके से अलग कोई शिपिंग तरीका चुनें",
       "error": {
-        "wrongQuantity": "Only one item is available for fulfillment",
-        "wrongQuantity_one": "Only one item is available for fulfillment",
-        "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
-        "noItems": "No items to fulfill.",
-        "noShippingOption": "Shipping option is required",
-        "noLocation": "Location is required"
+        "wrongQuantity": "फ़ुलफ़िलमेंट के लिए केवल एक आइटम उपलब्ध है",
+        "wrongQuantity_one": "फ़ुलफ़िलमेंट के लिए केवल एक आइटम उपलब्ध है",
+        "wrongQuantity_other": "मात्रा 1 और {{number}} के बीच की कोई संख्या होनी चाहिए",
+        "noItems": "फ़ुलफ़िल करने के लिए कोई आइटम नहीं।",
+        "noShippingOption": "शिपिंग विकल्प आवश्यक है",
+        "noLocation": "लोकेशन आवश्यक है"
       },
       "status": {
-        "notFulfilled": "Not fulfilled",
-        "partiallyFulfilled": "Partially fulfilled",
-        "fulfilled": "Fulfilled",
-        "partiallyShipped": "Partially shipped",
-        "shipped": "Shipped",
-        "delivered": "Delivered",
-        "partiallyDelivered": "Partially delivered",
-        "partiallyReturned": "Partially returned",
-        "returned": "Returned",
-        "canceled": "Canceled",
-        "requiresAction": "Requires action",
-        "awaitingPickup": "Awaiting pickup",
-        "awaitingShipping": "Awaiting shipping",
-        "awaitingDelivery": "Awaiting delivery"
+        "notFulfilled": "फ़ुलफ़िल नहीं हुआ",
+        "partiallyFulfilled": "आंशिक रूप से फ़ुलफ़िल हुआ",
+        "fulfilled": "फ़ुलफ़िल हुआ",
+        "partiallyShipped": "आंशिक रूप से शिप हुआ",
+        "shipped": "शिप हुआ",
+        "delivered": "डिलीवर हुआ",
+        "partiallyDelivered": "आंशिक रूप से डिलीवर हुआ",
+        "partiallyReturned": "आंशिक रूप से लौटाया गया",
+        "returned": "लौटाया गया",
+        "canceled": "रद्द",
+        "requiresAction": "कार्रवाई आवश्यक",
+        "awaitingPickup": "पिकअप की प्रतीक्षा में",
+        "awaitingShipping": "शिपिंग की प्रतीक्षा में",
+        "awaitingDelivery": "डिलीवरी की प्रतीक्षा में"
       },
       "toast": {
-        "created": "Fulfillment created successfully",
-        "canceled": "Fulfillment successfully canceled",
-        "fulfillmentShipped": "Cannot cancel an already shipped fulfillment",
-        "fulfillmentDelivered": "Fulfillment marked as delivered successfully",
-        "fulfillmentPickedUp": "Fulfillment marked as picked up successfully"
+        "created": "फ़ुलफ़िलमेंट सफलतापूर्वक बनाया गया",
+        "canceled": "फ़ुलफ़िलमेंट सफलतापूर्वक रद्द किया गया",
+        "fulfillmentShipped": "पहले से शिप हो चुके फ़ुलफ़िलमेंट को रद्द नहीं किया जा सकता",
+        "fulfillmentDelivered": "फ़ुलफ़िलमेंट को सफलतापूर्वक डिलीवर हुआ के रूप में चिह्नित किया गया",
+        "fulfillmentPickedUp": "फ़ुलफ़िलमेंट को सफलतापूर्वक पिकअप हुआ के रूप में चिह्नित किया गया"
       },
-      "trackingLabel": "Tracking",
-      "shippingFromLabel": "Shipping from",
-      "itemsLabel": "Items"
+      "trackingLabel": "ट्रैकिंग",
+      "shippingFromLabel": "यहाँ से शिपिंग",
+      "itemsLabel": "आइटम"
     },
     "refund": {
-      "title": "Create Refund",
-      "sendNotificationHint": "Notify customers about the created refund.",
-      "systemPayment": "System payment",
-      "systemPaymentDesc": "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments.",
+      "title": "रिफ़ंड बनाएं",
+      "sendNotificationHint": "ग्राहकों को बनाए गए रिफ़ंड के बारे में सूचित करें।",
+      "systemPayment": "सिस्टम भुगतान",
+      "systemPaymentDesc": "आपके एक या अधिक भुगतान सिस्टम भुगतान हैं। ध्यान दें कि ऐसे भुगतानों के लिए कैप्चर और रिफ़ंड Medusa द्वारा नहीं संभाले जाते।",
       "error": {
-        "amountToLarge": "Cannot refund more than the original order amount.",
-        "amountNegative": "Refund amount must be a positive number.",
-        "reasonRequired": "Please select a refund reason."
+        "amountToLarge": "मूल ऑर्डर राशि से अधिक रिफ़ंड नहीं किया जा सकता।",
+        "amountNegative": "रिफ़ंड राशि एक धनात्मक संख्या होनी चाहिए।",
+        "reasonRequired": "कृपया रिफ़ंड का कारण चुनें।"
       }
     },
     "customer": {
-      "contactLabel": "Contact",
-      "editEmail": "Edit email",
-      "transferOwnership": "Transfer ownership",
-      "editBillingAddress": "Edit billing address",
-      "editShippingAddress": "Edit shipping address"
+      "contactLabel": "संपर्क",
+      "editEmail": "ईमेल संपादित करें",
+      "transferOwnership": "स्वामित्व ट्रांसफ़र करें",
+      "editBillingAddress": "बिलिंग पता संपादित करें",
+      "editShippingAddress": "शिपिंग पता संपादित करें"
     },
     "activity": {
-      "header": "Activity",
-      "showMoreActivities_one": "Show {{count}} more activity",
-      "showMoreActivities_other": "Show {{count}} more activities",
+      "header": "गतिविधि",
+      "showMoreActivities_one": "{{count}} और गतिविधि दिखाएं",
+      "showMoreActivities_other": "{{count}} और गतिविधियाँ दिखाएं",
       "comment": {
-        "label": "Comment",
-        "placeholder": "Leave a comment",
-        "addButtonText": "Add comment",
-        "deleteButtonText": "Delete comment"
+        "label": "टिप्पणी",
+        "placeholder": "टिप्पणी लिखें",
+        "addButtonText": "टिप्पणी जोड़ें",
+        "deleteButtonText": "टिप्पणी हटाएं"
       },
-      "from": "From",
-      "to": "To",
+      "from": "से",
+      "to": "तक",
       "events": {
         "common": {
-          "toReturn": "To return",
-          "toSend": "To send"
+          "toReturn": "लौटाने के लिए",
+          "toSend": "भेजने के लिए"
         },
         "placed": {
-          "title": "Order placed",
-          "fromSalesChannel": "from {{salesChannel}}"
+          "title": "ऑर्डर दिया गया",
+          "fromSalesChannel": "{{salesChannel}} से"
         },
         "canceled": {
-          "title": "Order canceled"
+          "title": "ऑर्डर रद्द किया गया"
         },
         "payment": {
-          "awaiting": "Awaiting payment",
-          "captured": "Payment captured",
-          "canceled": "Payment canceled",
-          "refunded": "Payment refunded"
+          "awaiting": "भुगतान की प्रतीक्षा में",
+          "captured": "भुगतान कैप्चर किया गया",
+          "canceled": "भुगतान रद्द किया गया",
+          "refunded": "भुगतान रिफ़ंड किया गया"
         },
         "fulfillment": {
-          "created": "Items fulfilled",
-          "canceled": "Fulfillment canceled",
-          "shipped": "Items shipped",
-          "delivered": "Items delivered",
-          "items_one": "{{count}} item",
-          "items_other": "{{count}} items"
+          "created": "आइटम फ़ुलफ़िल किए गए",
+          "canceled": "फ़ुलफ़िलमेंट रद्द किया गया",
+          "shipped": "आइटम शिप किए गए",
+          "delivered": "आइटम डिलीवर किए गए",
+          "items_one": "{{count}} आइटम",
+          "items_other": "{{count}} आइटम"
         },
         "return": {
-          "created": "Return #{{returnId}} requested",
-          "canceled": "Return #{{returnId}} canceled",
-          "received": "Return #{{returnId}} received",
-          "items_one": "{{count}} item returned",
-          "items_other": "{{count}} items returned"
+          "created": "रिटर्न #{{returnId}} का अनुरोध किया गया",
+          "canceled": "रिटर्न #{{returnId}} रद्द किया गया",
+          "received": "रिटर्न #{{returnId}} प्राप्त हुआ",
+          "items_one": "{{count}} आइटम लौटाया गया",
+          "items_other": "{{count}} आइटम लौटाए गए"
         },
         "note": {
-          "comment": "Comment",
-          "byLine": "by {{author}}"
+          "comment": "टिप्पणी",
+          "byLine": "{{author}} द्वारा"
         },
         "claim": {
-          "created": "Claim #{{claimId}} requested",
-          "canceled": "Claim #{{claimId}} canceled",
-          "itemsInbound": "{{count}} item to return",
-          "itemsOutbound": "{{count}} item to send"
+          "created": "क्लेम #{{claimId}} का अनुरोध किया गया",
+          "canceled": "क्लेम #{{claimId}} रद्द किया गया",
+          "itemsInbound": "लौटाने के लिए {{count}} आइटम",
+          "itemsOutbound": "भेजने के लिए {{count}} आइटम"
         },
         "exchange": {
-          "created": "Exchange #{{exchangeId}} requested",
-          "canceled": "Exchange #{{exchangeId}} canceled",
-          "itemsInbound": "{{count}} item to return",
-          "itemsOutbound": "{{count}} item to send"
+          "created": "एक्सचेंज #{{exchangeId}} का अनुरोध किया गया",
+          "canceled": "एक्सचेंज #{{exchangeId}} रद्द किया गया",
+          "itemsInbound": "लौटाने के लिए {{count}} आइटम",
+          "itemsOutbound": "भेजने के लिए {{count}} आइटम"
         },
         "edit": {
-          "requested": "Order edit #{{editId}} requested",
-          "confirmed": "Order edit #{{editId}} confirmed"
+          "requested": "ऑर्डर संपादन #{{editId}} का अनुरोध किया गया",
+          "confirmed": "ऑर्डर संपादन #{{editId}} की पुष्टि की गई"
         },
         "transfer": {
-          "requested": "Order transfer #{{transferId}} requested",
-          "confirmed": "Order transfer #{{transferId}} confirmed",
-          "declined": "Order transfer #{{transferId}} declined"
+          "requested": "ऑर्डर ट्रांसफ़र #{{transferId}} का अनुरोध किया गया",
+          "confirmed": "ऑर्डर ट्रांसफ़र #{{transferId}} की पुष्टि की गई",
+          "declined": "ऑर्डर ट्रांसफ़र #{{transferId}} अस्वीकार किया गया"
         },
         "update_order": {
-          "shipping_address": "Shipping address updated",
-          "billing_address": "Billing address updated",
-          "email": "Email updated"
+          "shipping_address": "शिपिंग पता अपडेट किया गया",
+          "billing_address": "बिलिंग पता अपडेट किया गया",
+          "email": "ईमेल अपडेट किया गया"
         }
       }
     },
     "fields": {
-      "displayId": "Display ID",
-      "refundableAmount": "Refundable amount",
-      "returnableQuantity": "Returnable quantity"
+      "displayId": "डिस्प्ले ID",
+      "refundableAmount": "रिफ़ंड की जा सकने वाली राशि",
+      "returnableQuantity": "लौटाई जा सकने वाली मात्रा"
     }
   },
   "draftOrders": {
-    "domain": "Draft Orders",
-    "deleteWarning": "You are about to delete the draft order {{id}}. This action cannot be undone.",
-    "paymentLinkLabel": "Payment link",
-    "cartIdLabel": "Cart ID",
+    "domain": "ड्राफ़्ट ऑर्डर",
+    "deleteWarning": "आप ड्राफ़्ट ऑर्डर {{id}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "paymentLinkLabel": "भुगतान लिंक",
+    "cartIdLabel": "कार्ट ID",
     "markAsPaid": {
-      "label": "Mark as paid",
-      "warningTitle": "Mark as Paid",
-      "warningDescription": "You are about to mark the draft order as paid. This action cannot be undone, and collecting payment will not be possible later."
+      "label": "भुगतान हुआ के रूप में चिह्नित करें",
+      "warningTitle": "भुगतान हुआ के रूप में चिह्नित करें",
+      "warningDescription": "आप ड्राफ़्ट ऑर्डर को भुगतान हुआ के रूप में चिह्नित करने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता, और बाद में भुगतान लेना संभव नहीं होगा।"
     },
     "status": {
-      "open": "Open",
-      "completed": "Completed"
+      "open": "खुला",
+      "completed": "पूर्ण"
     },
     "create": {
-      "createDraftOrder": "Create Draft Order",
-      "createDraftOrderHint": "Create a new draft order to manage the details of an order before it is placed.",
-      "chooseRegionHint": "Choose region",
-      "existingItemsLabel": "Existing items",
-      "existingItemsHint": "Add existing products to the draft order.",
-      "customItemsLabel": "Custom items",
-      "customItemsHint": "Add custom items to the draft order.",
-      "addExistingItemsAction": "Add existing items",
-      "addCustomItemAction": "Add custom item",
-      "noCustomItemsAddedLabel": "No custom items added yet",
-      "noExistingItemsAddedLabel": "No existing items added yet",
-      "chooseRegionTooltip": "Choose a region first",
-      "useExistingCustomerLabel": "Use existing customer",
-      "addShippingMethodsAction": "Add shipping methods",
-      "unitPriceOverrideLabel": "Unit price override",
-      "shippingOptionLabel": "Shipping option",
-      "shippingOptionHint": "Choose the shipping option for the draft order.",
-      "shippingPriceOverrideLabel": "Shipping price override",
-      "shippingPriceOverrideHint": "Override the shipping price for the draft order.",
-      "sendNotificationLabel": "Send notification",
-      "sendNotificationHint": "Send a notification to the customer when the draft order is created."
+      "createDraftOrder": "ड्राफ़्ट ऑर्डर बनाएं",
+      "createDraftOrderHint": "ऑर्डर दिए जाने से पहले उसका विवरण प्रबंधित करने के लिए नया ड्राफ़्ट ऑर्डर बनाएं।",
+      "chooseRegionHint": "क्षेत्र चुनें",
+      "existingItemsLabel": "मौजूदा आइटम",
+      "existingItemsHint": "ड्राफ़्ट ऑर्डर में मौजूदा उत्पाद जोड़ें।",
+      "customItemsLabel": "कस्टम आइटम",
+      "customItemsHint": "ड्राफ़्ट ऑर्डर में कस्टम आइटम जोड़ें।",
+      "addExistingItemsAction": "मौजूदा आइटम जोड़ें",
+      "addCustomItemAction": "कस्टम आइटम जोड़ें",
+      "noCustomItemsAddedLabel": "अभी तक कोई कस्टम आइटम नहीं जोड़ा गया",
+      "noExistingItemsAddedLabel": "अभी तक कोई मौजूदा आइटम नहीं जोड़ा गया",
+      "chooseRegionTooltip": "पहले एक क्षेत्र चुनें",
+      "useExistingCustomerLabel": "मौजूदा ग्राहक का उपयोग करें",
+      "addShippingMethodsAction": "शिपिंग तरीके जोड़ें",
+      "unitPriceOverrideLabel": "यूनिट कीमत बदलें",
+      "shippingOptionLabel": "शिपिंग विकल्प",
+      "shippingOptionHint": "ड्राफ़्ट ऑर्डर के लिए शिपिंग विकल्प चुनें।",
+      "shippingPriceOverrideLabel": "शिपिंग कीमत बदलें",
+      "shippingPriceOverrideHint": "ड्राफ़्ट ऑर्डर के लिए शिपिंग कीमत बदलें।",
+      "sendNotificationLabel": "सूचना भेजें",
+      "sendNotificationHint": "ड्राफ़्ट ऑर्डर बनने पर ग्राहक को सूचना भेजें।"
     },
     "list": {
-      "noRecordsMessage": "No draft orders found",
-      "description": "Create a new draft order to get started.",
+      "noRecordsMessage": "कोई ड्राफ़्ट ऑर्डर नहीं मिला",
+      "description": "शुरू करने के लिए नया ड्राफ़्ट ऑर्डर बनाएं।",
       "filtered": {
-        "heading": "No results found",
-        "description": "No draft orders match your filter criteria."
+        "heading": "कोई परिणाम नहीं मिला",
+        "description": "कोई भी ड्राफ़्ट ऑर्डर आपके फ़िल्टर से मेल नहीं खाता।"
       }
     },
     "validation": {
-      "requiredEmailOrCustomer": "Email or customer is required.",
-      "requiredItems": "At least one item is required.",
-      "invalidEmail": "Email must be a valid email address."
+      "requiredEmailOrCustomer": "ईमेल या ग्राहक आवश्यक है।",
+      "requiredItems": "कम से कम एक आइटम आवश्यक है।",
+      "invalidEmail": "ईमेल एक मान्य ईमेल पता होना चाहिए।"
     }
   },
   "stockLocations": {
