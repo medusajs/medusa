@@ -107,18 +107,25 @@ export class ModuleDataFetcher implements IRemoteDataFetcher {
     const processBatch = async (batch: (unknown | unknown[])[]) => {
       running++
       const batchFilters = { ...filters, [keyField]: batch }
+      // Services can mutate the options they receive, e.g. the pricing module
+      // removes `calculated_price` from `relations`, so each batch gets its own copy
+      const batchOptions = {
+        ...options,
+        select: options.select && [...options.select],
+        relations: options.relations && [...options.relations],
+      }
       let result
 
       try {
         if (ModuleDataFetcher.traceFetchRemoteData) {
           result = await ModuleDataFetcher.traceFetchRemoteData(
-            async () => service[methodName](batchFilters, options),
+            async () => service[methodName](batchFilters, batchOptions),
             serviceName,
             methodName,
-            options
+            batchOptions
           )
         } else {
-          result = await service[methodName](batchFilters, options)
+          result = await service[methodName](batchFilters, batchOptions)
         }
         results.push(result)
       } finally {
