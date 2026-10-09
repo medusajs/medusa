@@ -1,0 +1,94 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Security Analytics`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to view the requests that [Medusa Security](../page.mdx) features allow or block for your project, and how to look up a blocked request by its Ray ID.
+
+## What are Security Analytics?
+
+[Medusa Security](../page.mdx) protects your project with the following security features:
+
+- [Medusa Ruleset](../page.mdx#medusa-ruleset): Blocks requests that try to exploit vulnerabilities specific to Medusa applications.
+- [Basic Protection Ruleset](../page.mdx#basic-protection-ruleset): Blocks requests that try to exploit common web attacks.
+- [DDoS Protection](../page.mdx#ddos-protection): Detects and mitigates distributed denial-of-service (DDoS) attacks.
+- [Bot Detection](../page.mdx#bot-detection): Blocks requests coming from malicious bots.
+
+These features inspect incoming requests and can block or challenge the ones that match a rule before they reach your application.
+
+The Security Analytics page shows how much of your project's traffic these features allow or block, lists recent security events, and lets you find the details of a specific blocked request.
+
+---
+
+## Open Security Analytics
+
+To open a project's Security Analytics page:
+
+1. [Open the project's dashboard](../../projects/page.mdx#open-project-dashboard).
+2. Click **Security** in the sidebar, then click **Analytics**.
+
+The page has two sections: [Requests](#view-requests) and [Ray ID Lookup](#look-up-a-request-by-ray-id).
+
+---
+
+## View Requests
+
+The **Requests** section shows your project's HTTP requests over time, broken down into allowed traffic and traffic blocked by each security feature [enabled for the environment](../page.mdx#configurable-security-features-per-environment).
+
+### Filter Requests
+
+At the top of the section, you can filter the data shown in the chart and the events list:
+
+- **Environment**: Select a specific environment of the project, or view all environments.
+- **Target**: Select **Backend and Storefront**, **Backend**, or **Storefront** to view requests sent to your Medusa backend, your storefront, or both.
+- **Time range**: Select the last 1 hour, 6 hours, 24 hours, or 7 days.
+
+To fetch the latest data, click the refresh button next to the filters.
+
+### Requests Summary and Chart
+
+Above the chart, three summary cards show the totals for the selected filters:
+
+- **Allowed**: The total number of allowed requests.
+- **Blocked**: The total number of blocked requests.
+- **Breakdown**: The number of blocked requests per security feature. Each feature has a colored dot that matches its color in the chart.
+
+The area chart below the cards shows allowed requests and the requests blocked by each security feature over the selected time range.
+
+### Security Events
+
+Below the chart, a paginated list shows recent security events. Each row shows:
+
+- The time the event occurred.
+- The action taken on the request, such as `block` or `challenge`, shown as a colored badge.
+- The security feature that acted on the request.
+- The request's path.
+
+Click a row to expand it and view the event's full details, including:
+
+- The security feature that acted on the request.
+- The matched rule's description and ID.
+- The action taken, shown as a colored badge.
+- The time of the request.
+- The target, which is your Medusa backend or storefront.
+- The domain, HTTP method, and path of the request.
+- The client's IP address, country, and user agent.
+- The Ray ID.
+
+To copy a field's value, hover over it and click its copy button.
+
+---
+
+## Look Up a Request by Ray ID
+
+When Cloud blocks or challenges a request, the response includes a Ray ID that identifies the request. You can use the **Ray ID Lookup** section to find out why a specific request was blocked, for example, when a customer reports that they can't access your store.
+
+To look up a request:
+
+1. In the **Ray ID Lookup** section, enter the Ray ID. A Ray ID is a 16-character hexadecimal string, optionally followed by a data center code, such as `8f2a1b3c4d5e6f70-AMS`.
+2. Submit the form.
+
+If the Ray ID is malformed, an error appears below the field. Otherwise, the section shows the matching [security event's details](#security-events).

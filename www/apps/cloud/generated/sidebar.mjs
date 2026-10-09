@@ -679,7 +679,15 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Medusa Security",
             "path": "/security",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Security Analytics",
+                "path": "/security/analytics",
+                "children": []
+              }
+            ]
           }
         ]
       },

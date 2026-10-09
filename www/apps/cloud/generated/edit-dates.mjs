@@ -82,5 +82,6 @@ export const generatedEditDates = {
   "app/medusa-mcp/chatgpt/page.mdx": "2026-10-02T08:36:19.389Z",
   "app/medusa-mcp/claude/page.mdx": "2026-10-02T13:23:53.700Z",
   "app/medusa-mcp/page.mdx": "2026-10-05T11:18:21.069Z",
-  "app/security/page.mdx": "2026-10-08T06:29:22.328Z"
+  "app/security/page.mdx": "2026-10-09T15:01:32.708Z",
+  "app/security/analytics/page.mdx": "2026-10-09T15:11:30.257Z"
 }
