@@ -1,16 +1,16 @@
 import { Prerequisites } from "docs-ui"
 
 export const metadata = {
-  title: `${pageNumber} Integrate Providers with the MCP Server`,
+  title: `${pageNumber} Integrate Providers with the Docs MCP Server`,
 }
 
 # {metadata.title}
 
-In this chapter, you'll learn how to use the [Medusa MCP server](../page.mdx) to integrate third-party payment and fulfillment providers into your Medusa application.
+In this chapter, you'll learn how to use the [Docs MCP server](../page.mdx) to integrate third-party payment and fulfillment providers into your Medusa application.
 
 ## What are the Provider Integration Tools?
 
-The Medusa MCP server exposes two tools that return complete, step-by-step implementation guides for building module providers:
+The Docs MCP server exposes two tools that return complete, step-by-step implementation guides for building module providers:
 
 - `get_payment_provider_integration_guide`: returns a guide for building a [Payment Module Provider](!resources!/commerce-modules/payment/payment-provider) that integrates a third-party payment service.
 - `get_fulfillment_provider_integration_guide`: returns a guide for building a [Fulfillment Module Provider](!resources!/commerce-modules/fulfillment/fulfillment-provider) that integrates a third-party shipping or fulfillment service.
@@ -63,13 +63,13 @@ For Stripe, don't use these tools. Medusa ships an official Stripe provider, so 
 <Prerequisites
   items={[
     {
-      text: "Medusa MCP server connected to your AI tool or IDE",
-      link: "/learn/introduction/build-with-llms-ai/mcp-server"
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/learn/introduction/build-with-llms-ai/docs-mcp-server"
     }
   ]}
 />
 
-After [connecting to the Medusa MCP server](../page.mdx#connect-to-the-medusa-mcp-server), ask your AI agent to integrate the provider. Your agent detects which of the two tools applies, calls it with the provider's name, and follows the returned guide.
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your AI agent to integrate the provider. Your agent detects which of the two tools applies, calls it with the provider's name, and follows the returned guide.
 
 For example, to integrate a payment provider:
 
@@ -113,6 +113,6 @@ Tell your agent whether you want the provider inside your Medusa application or 
 
 ---
 
-## Not an MCP server user?
+## Not a Docs MCP server user?
 
-If you don't use the Medusa MCP server but need help integrating a payment or fulfillment provider with Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-integration) for other options.
+If you don't use the Docs MCP server but need help integrating a payment or fulfillment provider with Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-integration) for other options.

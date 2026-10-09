@@ -54,6 +54,21 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Changelog",
+            "path": "/changelog",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "AI Tools",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Cloud Assistant",
             "path": "/assistant",
             "children": []
@@ -61,9 +76,45 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Changelog",
-            "path": "/changelog",
-            "children": []
+            "title": "Medusa MCP",
+            "path": "/medusa-mcp",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Claude Connector",
+                "path": "/medusa-mcp/claude",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "ChatGPT App",
+                "path": "/medusa-mcp/chatgpt",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "n8n",
+                "path": "/medusa-mcp/n8n",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Custom Agents",
+                "path": "/medusa-mcp/custom-agents",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Retrieve Custom Data",
+                "path": "/medusa-mcp/custom-data",
+                "children": []
+              }
+            ]
           }
         ]
       },
@@ -78,7 +129,15 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Organizations",
             "path": "/organizations",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Connections",
+                "path": "/organizations/connections",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
