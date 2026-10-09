@@ -571,6 +571,7 @@ export const sitemapUrls = [
   "/troubleshooting/query/expression-type-error",
   "/troubleshooting/query/filter-linked",
   "/troubleshooting/query/metadata-filtering",
+  "/troubleshooting/query/not-assignable-type",
   "/troubleshooting/query/service-list",
   "/troubleshooting/s3",
   "/troubleshooting/scheduled-job-not-running",
