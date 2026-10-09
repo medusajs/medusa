@@ -2446,343 +2446,343 @@
     }
   },
   "campaigns": {
-    "domain": "Campaigns",
+    "domain": "कैंपेन",
     "list": {
       "empty": {
-        "heading": "No campaigns",
-        "description": "There are no campaigns to display."
+        "heading": "कोई कैंपेन नहीं",
+        "description": "दिखाने के लिए कोई कैंपेन नहीं है।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No campaigns match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी कैंपेन मौजूदा फ़िल्टर से मेल नहीं खाता।"
       }
     },
-    "details": "Campaign details",
+    "details": "कैंपेन का विवरण",
     "status": {
-      "active": "Active",
-      "expired": "Expired",
-      "scheduled": "Scheduled"
+      "active": "सक्रिय",
+      "expired": "समय-सीमा समाप्त",
+      "scheduled": "निर्धारित"
     },
     "delete": {
-      "title": "Are you sure?",
-      "description": "You are about to delete the campaign '{{name}}'. This action cannot be undone.",
-      "successToast": "Campaign '{{name}}' was successfully deleted."
+      "title": "क्या आप निश्चित हैं?",
+      "description": "आप कैंपेन '{{name}}' को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "कैंपेन '{{name}}' सफलतापूर्वक हटाया गया।"
     },
     "edit": {
-      "header": "Edit Campaign",
-      "description": "Edit the details of the campaign.",
-      "successToast": "Campaign '{{name}}' was successfully updated."
+      "header": "कैंपेन संपादित करें",
+      "description": "कैंपेन का विवरण संपादित करें।",
+      "successToast": "कैंपेन '{{name}}' सफलतापूर्वक अपडेट किया गया।"
     },
     "configuration": {
-      "header": "Configuration",
+      "header": "कॉन्फ़िगरेशन",
       "edit": {
-        "header": "Edit Campaign Configuration",
-        "description": "Edit the configuration of the campaign.",
-        "successToast": "Campaign configuration was successfully updated."
+        "header": "कैंपेन कॉन्फ़िगरेशन संपादित करें",
+        "description": "कैंपेन का कॉन्फ़िगरेशन संपादित करें।",
+        "successToast": "कैंपेन कॉन्फ़िगरेशन सफलतापूर्वक अपडेट किया गया।"
       }
     },
     "create": {
-      "title": "Create Campaign",
-      "description": "Create a promotional campaign.",
-      "hint": "Create a promotional campaign.",
-      "header": "Create Campaign",
-      "successToast": "Campaign '{{name}}' was successfully created."
+      "title": "कैंपेन बनाएं",
+      "description": "एक प्रमोशनल कैंपेन बनाएं।",
+      "hint": "एक प्रमोशनल कैंपेन बनाएं।",
+      "header": "कैंपेन बनाएं",
+      "successToast": "कैंपेन '{{name}}' सफलतापूर्वक बनाया गया।"
     },
     "fields": {
-      "name": "Name",
-      "identifier": "Identifier",
-      "start_date": "Start date",
-      "end_date": "End date",
-      "total_spend": "Budget spent",
-      "total_used": "Budget used",
-      "totalUsedByAttribute": "Total used",
-      "budget_limit": "Budget limit",
+      "name": "नाम",
+      "identifier": "पहचानकर्ता",
+      "start_date": "प्रारंभ तिथि",
+      "end_date": "समाप्ति तिथि",
+      "total_spend": "खर्च हुआ बजट",
+      "total_used": "उपयोग हुआ बजट",
+      "totalUsedByAttribute": "कुल उपयोग",
+      "budget_limit": "बजट सीमा",
       "campaign_id": {
-        "hint": "Disabled campaigns have budget in a different currency than the promotion."
+        "hint": "अक्षम कैंपेन का बजट प्रमोशन से अलग मुद्रा में है।"
       }
     },
     "budget": {
       "attribute": {
-        "customer_id": "customer",
-        "customer_email": "email"
+        "customer_id": "ग्राहक",
+        "customer_email": "ईमेल"
       },
       "create": {
-        "hint": "Create a budget for the campaign.",
-        "header": "Campaign Budget"
+        "hint": "कैंपेन के लिए बजट बनाएं।",
+        "header": "कैंपेन बजट"
       },
-      "details": "Campaign budget",
+      "details": "कैंपेन बजट",
       "fields": {
-        "type": "Type",
-        "currency": "Currency",
-        "limit": "Limit",
-        "used": "Used",
-        "budgetAttribute": "Limit usage per",
-        "budgetAttributeTooltip": "Define how many times the promotion can be used by each customer or email.",
-        "totalUsedByAttribute": "Budget limit per: {{attribute}}",
-        "totalUsedByAttributeCustomerId": "Budget limit per customer",
-        "totalUsedByAttributeEmail": "Budget limit per email"
+        "type": "प्रकार",
+        "currency": "मुद्रा",
+        "limit": "सीमा",
+        "used": "उपयोग हुआ",
+        "budgetAttribute": "उपयोग की सीमा प्रति",
+        "budgetAttributeTooltip": "तय करें कि हर ग्राहक या ईमेल कितनी बार प्रमोशन का उपयोग कर सकता है।",
+        "totalUsedByAttribute": "प्रति {{attribute}} बजट सीमा",
+        "totalUsedByAttributeCustomerId": "प्रति ग्राहक बजट सीमा",
+        "totalUsedByAttributeEmail": "प्रति ईमेल बजट सीमा"
       },
       "type": {
         "spend": {
-          "title": "Spend",
-          "description": "Set a limit on the total discounted amount of all promotion usages."
+          "title": "खर्च",
+          "description": "प्रमोशन के सभी उपयोगों में दी गई कुल छूट की राशि पर सीमा तय करें।"
         },
         "usage": {
-          "title": "Usage",
-          "description": "Set a limit on how many times the promotion can be used."
+          "title": "उपयोग",
+          "description": "प्रमोशन का कितनी बार उपयोग किया जा सकता है, इस पर सीमा तय करें।"
         },
         "useByAttribute": {
-          "title": "Usage by attribute (customer id, email, etc.)",
-          "titleCustomerId": "Usage per customer",
-          "titleEmail": "Usage per email",
-          "description": "Set a limit on how many times the promotion can be used by a specific attribute value."
+          "title": "विशेषता के आधार पर उपयोग (ग्राहक ID, ईमेल आदि)",
+          "titleCustomerId": "प्रति ग्राहक उपयोग",
+          "titleEmail": "प्रति ईमेल उपयोग",
+          "description": "किसी विशेष विशेषता मान द्वारा प्रमोशन का कितनी बार उपयोग किया जा सकता है, इस पर सीमा तय करें।"
         }
       },
       "edit": {
-        "header": "Edit Campaign Budget"
+        "header": "कैंपेन बजट संपादित करें"
       }
     },
     "promotions": {
       "remove": {
-        "title": "Remove promotion from campaign",
-        "description": "You are about to remove {{count}} promotion(s) from the campaign. This action cannot be undone."
+        "title": "कैंपेन से प्रमोशन निकालें",
+        "description": "आप कैंपेन से {{count}} प्रमोशन निकालने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।"
       },
-      "alreadyAdded": "This promotion has already been added to the campaign.",
-      "alreadyAddedDiffCampaign": "This promotion has already been added to a different campaign ({{name}}).",
-      "currencyMismatch": "Currency of the promotion and campaign doesn't match",
+      "alreadyAdded": "यह प्रमोशन पहले से कैंपेन में जोड़ा जा चुका है।",
+      "alreadyAddedDiffCampaign": "यह प्रमोशन पहले से किसी दूसरे कैंपेन ({{name}}) में जोड़ा जा चुका है।",
+      "currencyMismatch": "प्रमोशन और कैंपेन की मुद्रा मेल नहीं खाती",
       "toast": {
-        "success": "Successfully added {{count}} promotion(s) to campaign"
+        "success": "कैंपेन में {{count}} प्रमोशन सफलतापूर्वक जोड़े गए"
       },
       "add": {
         "list": {
-          "noRecordsMessage": "Create a promotion first."
+          "noRecordsMessage": "पहले एक प्रमोशन बनाएं।"
         }
       },
       "list": {
-        "noRecordsMessage": "There are no promotions in the campaign."
+        "noRecordsMessage": "इस कैंपेन में कोई प्रमोशन नहीं है।"
       }
     },
-    "deleteCampaignWarning": "You are about to delete the campaign {{name}}. This action cannot be undone.",
+    "deleteCampaignWarning": "आप कैंपेन {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
     "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
   },
   "priceLists": {
-    "domain": "Price Lists",
-    "subtitle": "Create sales or override prices for specific conditions.",
+    "domain": "प्राइस लिस्ट",
+    "subtitle": "विशेष शर्तों के लिए सेल बनाएं या कीमतें ओवरराइड करें।",
     "list": {
       "empty": {
-        "heading": "No price lists",
-        "description": "There are no price lists to display."
+        "heading": "कोई प्राइस लिस्ट नहीं",
+        "description": "दिखाने के लिए कोई प्राइस लिस्ट नहीं है।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No price lists match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी प्राइस लिस्ट मौजूदा फ़िल्टर से मेल नहीं खाती।"
       }
     },
     "delete": {
-      "confirmation": "You are about to delete the price list \"{{title}}\". This action cannot be undone.",
-      "successToast": "Price list \"{{title}}\" was successfully deleted."
+      "confirmation": "आप प्राइस लिस्ट \"{{title}}\" को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "प्राइस लिस्ट \"{{title}}\" सफलतापूर्वक हटाई गई।"
     },
     "create": {
-      "header": "Create Price List",
-      "subheader": "Create a new price list to manage the prices of your products.",
+      "header": "प्राइस लिस्ट बनाएं",
+      "subheader": "अपने उत्पादों की कीमतें प्रबंधित करने के लिए नई प्राइस लिस्ट बनाएं।",
       "tabs": {
-        "details": "Details",
-        "products": "Products",
-        "prices": "Prices"
+        "details": "विवरण",
+        "products": "उत्पाद",
+        "prices": "कीमतें"
       },
-      "successToast": "Price list {{title}} was successfully created.",
+      "successToast": "प्राइस लिस्ट {{title}} सफलतापूर्वक बनाई गई।",
       "products": {
         "list": {
-          "noRecordsMessage": "Create a product first."
+          "noRecordsMessage": "पहले एक उत्पाद बनाएं।"
         }
       }
     },
     "edit": {
-      "header": "Edit Price List",
-      "successToast": "Price list {{title}} was successfully updated."
+      "header": "प्राइस लिस्ट संपादित करें",
+      "successToast": "प्राइस लिस्ट {{title}} सफलतापूर्वक अपडेट की गई।"
     },
     "configuration": {
-      "header": "Configuration",
+      "header": "कॉन्फ़िगरेशन",
       "edit": {
-        "header": "Edit Price List Configuration",
-        "description": "Edit the configuration of the price list.",
-        "successToast": "Price list configuration was successfully updated."
+        "header": "प्राइस लिस्ट कॉन्फ़िगरेशन संपादित करें",
+        "description": "प्राइस लिस्ट का कॉन्फ़िगरेशन संपादित करें।",
+        "successToast": "प्राइस लिस्ट कॉन्फ़िगरेशन सफलतापूर्वक अपडेट किया गया।"
       }
     },
     "products": {
-      "header": "Products",
+      "header": "उत्पाद",
       "actions": {
-        "addProducts": "Add products",
-        "editPrices": "Edit prices"
+        "addProducts": "उत्पाद जोड़ें",
+        "editPrices": "कीमतें संपादित करें"
       },
       "delete": {
-        "confirmation_one": "You are about to delete the prices for {{count}} product in the price list. This action cannot be undone.",
-        "confirmation_other": "You are about to delete the prices for {{count}} products in the price list. This action cannot be undone.",
-        "successToast_one": "Successfully deleted prices for {{count}} product.",
-        "successToast_other": "Successfully deleted prices for {{count}} products."
+        "confirmation_one": "आप प्राइस लिस्ट में {{count}} उत्पाद की कीमतें हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+        "confirmation_other": "आप प्राइस लिस्ट में {{count}} उत्पादों की कीमतें हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+        "successToast_one": "{{count}} उत्पाद की कीमतें सफलतापूर्वक हटाई गईं।",
+        "successToast_other": "{{count}} उत्पादों की कीमतें सफलतापूर्वक हटाई गईं।"
       },
       "add": {
-        "successToast": "Prices were successfully added to the price list."
+        "successToast": "प्राइस लिस्ट में कीमतें सफलतापूर्वक जोड़ी गईं।"
       },
       "edit": {
-        "successToast": "Prices were successfully updated."
+        "successToast": "कीमतें सफलतापूर्वक अपडेट की गईं।"
       }
     },
     "quantityPricing": {
-      "header": "Conditional Prices for {{name}}",
-      "description": "Manage the conditional prices for this product variant based on its cart quantities.",
+      "header": "{{name}} के लिए शर्त-आधारित कीमतें",
+      "description": "कार्ट में मात्रा के आधार पर इस उत्पाद वैरिएंट की शर्त-आधारित कीमतें प्रबंधित करें।",
       "actions": {
-        "addPrice": "Add price"
+        "addPrice": "कीमत जोड़ें"
       },
       "rules": {
-        "amount": "Product variant price",
-        "minQuantity": "Minimum cart quantity",
-        "maxQuantity": "Maximum cart quantity",
-        "qty": "QTY",
-        "allQuantities": "All quantities",
-        "min": "Min",
-        "max": "Max"
+        "amount": "उत्पाद वैरिएंट की कीमत",
+        "minQuantity": "कार्ट में न्यूनतम मात्रा",
+        "maxQuantity": "कार्ट में अधिकतम मात्रा",
+        "qty": "मात्रा",
+        "allQuantities": "सभी मात्राएँ",
+        "min": "न्यूनतम",
+        "max": "अधिकतम"
       },
       "attributes": {
-        "quantity": "Cart quantity"
+        "quantity": "कार्ट में मात्रा"
       },
       "summaries": {
-        "range": "If <0>{{attribute}}</0> is between <1>{{min}}</1> and <2>{{max}}</2>",
-        "greaterThan": "If <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
-        "lessThan": "If <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
+        "range": "यदि <0>{{attribute}}</0> <1>{{min}}</1> और <2>{{max}}</2> के बीच है",
+        "greaterThan": "यदि <0>{{attribute}}</0> ≥ <1>{{min}}</1>",
+        "lessThan": "यदि <0>{{attribute}}</0> ≤ <1>{{max}}</1>"
       },
       "errors": {
-        "minGreaterThanMax": "Minimum quantity cannot be greater than maximum quantity",
-        "mustBePositive": "Quantity must be at least 1"
+        "minGreaterThanMax": "न्यूनतम मात्रा अधिकतम मात्रा से अधिक नहीं हो सकती",
+        "mustBePositive": "मात्रा कम से कम 1 होनी चाहिए"
       }
     },
     "fields": {
       "priceOverrides": {
-        "label": "Price overrides",
-        "header": "Price Overrides"
+        "label": "कीमत ओवरराइड",
+        "header": "कीमत ओवरराइड"
       },
       "status": {
-        "label": "Status",
+        "label": "स्थिति",
         "options": {
-          "active": "Active",
-          "draft": "Draft",
-          "expired": "Expired",
-          "scheduled": "Scheduled"
+          "active": "सक्रिय",
+          "draft": "ड्राफ़्ट",
+          "expired": "समय-सीमा समाप्त",
+          "scheduled": "निर्धारित"
         }
       },
       "type": {
-        "label": "Type",
-        "hint": "Choose the type of price list you want to create.",
+        "label": "प्रकार",
+        "hint": "चुनें कि आप किस प्रकार की प्राइस लिस्ट बनाना चाहते हैं।",
         "options": {
           "sale": {
-            "label": "Sale",
-            "description": "Sale prices are temporary price changes for products."
+            "label": "सेल",
+            "description": "सेल कीमतें उत्पादों की कीमतों में अस्थायी बदलाव होती हैं।"
           },
           "override": {
-            "label": "Override",
-            "description": "Overrides are usually used to create customer-specific prices."
+            "label": "ओवरराइड",
+            "description": "ओवरराइड का उपयोग आमतौर पर ग्राहक-विशिष्ट कीमतें बनाने के लिए किया जाता है।"
           }
         }
       },
       "startsAt": {
-        "label": "Price list has a start date?",
-        "hint": "Schedule the price list to activate in the future."
+        "label": "क्या प्राइस लिस्ट की कोई प्रारंभ तिथि है?",
+        "hint": "प्राइस लिस्ट को भविष्य में सक्रिय होने के लिए शेड्यूल करें।"
       },
       "endsAt": {
-        "label": "Price list has an expiry date?",
-        "hint": "Schedule the price list to deactivate in the future."
+        "label": "क्या प्राइस लिस्ट की कोई समाप्ति तिथि है?",
+        "hint": "प्राइस लिस्ट को भविष्य में निष्क्रिय होने के लिए शेड्यूल करें।"
       },
       "customerAvailability": {
-        "header": "Choose customer groups",
-        "label": "Customer availability",
-        "hint": "Choose which customer groups the price list should be applied to.",
-        "placeholder": "Search for customer groups",
-        "attribute": "Customer groups"
+        "header": "ग्राहक समूह चुनें",
+        "label": "ग्राहकों के लिए उपलब्धता",
+        "hint": "चुनें कि प्राइस लिस्ट किन ग्राहक समूहों पर लागू होनी चाहिए।",
+        "placeholder": "ग्राहक समूह खोजें",
+        "attribute": "ग्राहक समूह"
       }
     }
   },
   "profile": {
-    "domain": "Profile",
-    "manageYourProfileDetails": "Manage your profile details.",
+    "domain": "प्रोफ़ाइल",
+    "manageYourProfileDetails": "अपनी प्रोफ़ाइल का विवरण प्रबंधित करें।",
     "fields": {
-      "languageLabel": "Language",
-      "usageInsightsLabel": "Usage insights"
+      "languageLabel": "भाषा",
+      "usageInsightsLabel": "उपयोग से जुड़ी जानकारी"
     },
     "mfa": {
-      "title": "Two-factor authentication",
-      "description": "Require an authenticator app when signing in.",
-      "status": "Status",
-      "method": "Method",
-      "enabled": "Enabled",
-      "disabled": "Disabled",
-      "pending": "Pending setup",
-      "authenticatorApp": "Authenticator app",
-      "noMethod": "No authentication method enabled",
-      "setupTitle": "Set up authenticator app",
-      "setupAuthenticatorApp": "Set up authenticator app",
-      "setupDescription": "Scan the QR code with your authenticator app, then enter the 6-digit code to finish setup.",
-      "setupError": "The authenticator app could not be set up.",
-      "verifyError": "The verification code could not be confirmed.",
-      "qrError": "The QR code could not be generated.",
-      "recoveryCodesTitle": "Recovery codes",
-      "recoveryCodesDescription": "Copy and store these recovery codes in case you lose access to your authenticator app.",
-      "recoveryCodesError": "Recovery codes could not be generated.",
-      "disableTitle": "Disable two-factor authentication",
-      "disableDescription": "You are about to disable two-factor authentication for your account.",
-      "disableChallengeDescription": "Enter the 6-digit code from your authenticator app to disable two-factor authentication.",
-      "disableError": "Two-factor authentication could not be disabled.",
-      "disableSuccess": "Two-factor authentication disabled"
+      "title": "दो-चरणीय सत्यापन",
+      "description": "साइन इन करते समय ऑथेंटिकेटर ऐप आवश्यक करें।",
+      "status": "स्थिति",
+      "method": "तरीका",
+      "enabled": "सक्षम",
+      "disabled": "अक्षम",
+      "pending": "सेटअप लंबित",
+      "authenticatorApp": "ऑथेंटिकेटर ऐप",
+      "noMethod": "कोई सत्यापन तरीका सक्षम नहीं है",
+      "setupTitle": "ऑथेंटिकेटर ऐप सेट अप करें",
+      "setupAuthenticatorApp": "ऑथेंटिकेटर ऐप सेट अप करें",
+      "setupDescription": "अपने ऑथेंटिकेटर ऐप से QR कोड स्कैन करें, फिर सेटअप पूरा करने के लिए 6 अंकों का कोड डालें।",
+      "setupError": "ऑथेंटिकेटर ऐप सेट अप नहीं किया जा सका।",
+      "verifyError": "सत्यापन कोड की पुष्टि नहीं की जा सकी।",
+      "qrError": "QR कोड नहीं बनाया जा सका।",
+      "recoveryCodesTitle": "रिकवरी कोड",
+      "recoveryCodesDescription": "अगर आप अपने ऑथेंटिकेटर ऐप तक पहुंच खो देते हैं, तो उसके लिए इन रिकवरी कोड को कॉपी करके सुरक्षित रखें।",
+      "recoveryCodesError": "रिकवरी कोड नहीं बनाए जा सके।",
+      "disableTitle": "दो-चरणीय सत्यापन अक्षम करें",
+      "disableDescription": "आप अपने खाते के लिए दो-चरणीय सत्यापन अक्षम करने वाले हैं।",
+      "disableChallengeDescription": "दो-चरणीय सत्यापन अक्षम करने के लिए अपने ऑथेंटिकेटर ऐप से 6 अंकों का कोड डालें।",
+      "disableError": "दो-चरणीय सत्यापन अक्षम नहीं किया जा सका।",
+      "disableSuccess": "दो-चरणीय सत्यापन अक्षम किया गया"
     },
     "edit": {
-      "header": "Edit Profile",
-      "languageHint": "The language you want to use in the admin dashboard. This doesn't change the language of your store.",
-      "languagePlaceholder": "Select language",
-      "usageInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
+      "header": "प्रोफ़ाइल संपादित करें",
+      "languageHint": "वह भाषा जिसे आप एडमिन डैशबोर्ड में इस्तेमाल करना चाहते हैं। इससे आपके स्टोर की भाषा नहीं बदलती।",
+      "languagePlaceholder": "भाषा चुनें",
+      "usageInsightsHint": "उपयोग से जुड़ी जानकारी साझा करें और Medusa को बेहतर बनाने में हमारी मदद करें। हम क्या जानकारी इकट्ठा करते हैं और उसका उपयोग कैसे करते हैं, इसके बारे में आप हमारे <0>डॉक्यूमेंटेशन</0> में और पढ़ सकते हैं।"
     },
     "toast": {
-      "edit": "Profiles changes saved"
+      "edit": "प्रोफ़ाइल में बदलाव सहेजे गए"
     }
   },
   "users": {
-    "domain": "Users",
-    "editUser": "Edit User",
-    "inviteUser": "Invite User",
-    "inviteUserHint": "Invite a new user to your store.",
-    "inviteRolesTooltip": "If no role is selected, the user will be invited with a superuser role.",
-    "sendInvite": "Send invite",
-    "pendingInvites": "Pending Invites",
-    "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
-    "resendInvite": "Resend invite",
-    "copyInviteLink": "Copy invite link",
-    "copyResetPasswordLink": "Copy reset password link",
-    "copyResetPasswordLinkSuccess": "Reset password link copied to clipboard",
-    "copyResetPasswordLinkHint": "The link expires shortly and invalidates any reset password link previously sent to this user.",
-    "expiredOnDate": "Expired on {{date}}",
-    "validFromUntil": "Valid from <0>{{from}}</0> - <1>{{until}}</1>",
-    "acceptedOnDate": "Accepted on {{date}}",
+    "domain": "उपयोगकर्ता",
+    "editUser": "उपयोगकर्ता संपादित करें",
+    "inviteUser": "उपयोगकर्ता को आमंत्रित करें",
+    "inviteUserHint": "अपने स्टोर में एक नए उपयोगकर्ता को आमंत्रित करें।",
+    "inviteRolesTooltip": "अगर कोई भूमिका नहीं चुनी गई, तो उपयोगकर्ता को सुपरयूज़र भूमिका के साथ आमंत्रित किया जाएगा।",
+    "sendInvite": "आमंत्रण भेजें",
+    "pendingInvites": "लंबित आमंत्रण",
+    "deleteInviteWarning": "आप {{email}} के लिए आमंत्रण हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "resendInvite": "आमंत्रण फिर से भेजें",
+    "copyInviteLink": "आमंत्रण लिंक कॉपी करें",
+    "copyResetPasswordLink": "पासवर्ड रीसेट लिंक कॉपी करें",
+    "copyResetPasswordLinkSuccess": "पासवर्ड रीसेट लिंक क्लिपबोर्ड पर कॉपी किया गया",
+    "copyResetPasswordLinkHint": "यह लिंक जल्द ही समाप्त हो जाता है, और इस उपयोगकर्ता को पहले भेजे गए सभी पासवर्ड रीसेट लिंक अमान्य कर देता है।",
+    "expiredOnDate": "{{date}} को समाप्त हुआ",
+    "validFromUntil": "<0>{{from}}</0> से <1>{{until}}</1> तक मान्य",
+    "acceptedOnDate": "{{date}} को स्वीकार किया गया",
     "inviteStatus": {
-      "accepted": "Accepted",
-      "pending": "Pending",
-      "expired": "Expired"
+      "accepted": "स्वीकृत",
+      "pending": "लंबित",
+      "expired": "समय-सीमा समाप्त"
     },
     "roles": {
-      "admin": "Admin",
-      "developer": "Developer",
-      "member": "Member"
+      "admin": "एडमिन",
+      "developer": "डेवलपर",
+      "member": "सदस्य"
     },
     "list": {
       "empty": {
-        "heading": "No users found",
-        "description": "Once a user has been invited, they will appear here."
+        "heading": "कोई उपयोगकर्ता नहीं मिला",
+        "description": "जब किसी उपयोगकर्ता को आमंत्रित किया जाएगा, तो वह यहाँ दिखाई देगा।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No users match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी उपयोगकर्ता मौजूदा फ़िल्टर से मेल नहीं खाता।"
       }
     },
-    "deleteUserWarning": "You are about to delete the user {{name}}. This action cannot be undone.",
-    "deleteUserSuccess": "User {{name}} deleted successfully",
-    "invite": "Invite"
+    "deleteUserWarning": "आप उपयोगकर्ता {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "deleteUserSuccess": "उपयोगकर्ता {{name}} सफलतापूर्वक हटाया गया",
+    "invite": "आमंत्रित करें"
   },
   "roles": {
     "domain": "Roles",
