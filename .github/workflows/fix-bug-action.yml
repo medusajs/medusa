@@ -29,23 +29,18 @@ jobs:
     timeout-minutes: 120
     permissions:
       contents: read
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 1s
-          --health-timeout 10s
-          --health-retries 10
-        ports:
-          - 5432:5432
     outputs:
       base_sha: ${{ steps.base.outputs.sha }}
       status: ${{ steps.result.outputs.status }}
     steps:
+      # Uses the runner's preinstalled Postgres, not a service container: harden-runner's
+      # disable-sudo-and-containers removes docker, which fails the post-job container teardown.
+      - name: Start Postgres
+        run: |
+          sudo systemctl start postgresql.service
+          sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+          pg_isready -h localhost -p 5432 -t 30
+
       # Sudo must stay disabled, or the agent's test code could flush the egress rules.
       # TODO: switch egress-policy to block once an audit run confirms allowed-endpoints.
       - name: Harden runner
