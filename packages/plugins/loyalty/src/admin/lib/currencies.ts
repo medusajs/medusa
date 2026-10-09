@@ -1,10 +1,10 @@
 /** This file is auto-generated. Do not modify it manually. */
 export type CurrencyInfo = {
-  code: string;
-  name: string;
-  symbol_native: string;
-  decimal_digits: number;
-};
+  code: string
+  name: string
+  symbol_native: string
+  decimal_digits: number
+}
 
 export const currencies: Record<string, CurrencyInfo> = {
   USD: {
@@ -287,6 +287,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     code: "HRK",
     name: "Croatian Kuna",
     symbol_native: "kn",
+    decimal_digits: 2,
+  },
+  HTG: {
+    code: "HTG",
+    name: "Haitian Gourde",
+    symbol_native: "G",
     decimal_digits: 2,
   },
   HUF: {
@@ -745,8 +751,8 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "ZWL$",
     decimal_digits: 0,
   },
-};
+}
 
 export function getCurrencySymbol(code: string) {
-  return currencies[code.toUpperCase()].symbol_native;
+  return currencies[code.toUpperCase()].symbol_native
 }
