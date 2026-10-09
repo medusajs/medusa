@@ -1,5 +1,14 @@
 # @medusajs/ui
 
+## 4.2.7
+
+### Patch Changes
+
+- [#16794](https://github.com/medusajs/medusa/pull/16794) [`0e64e7da490fb3c8b8b6255f28cd76a2508be1a3`](https://github.com/medusajs/medusa/commit/0e64e7da490fb3c8b8b6255f28cd76a2508be1a3) Thanks [@thomassarazin](https://github.com/thomassarazin)! - fix(ui): keep the gap between date and time segments in locales whose separator is a space
+
+- Updated dependencies []:
+  - @medusajs/icons@2.22.0
+
 ## 4.2.6
 
 ### Patch Changes

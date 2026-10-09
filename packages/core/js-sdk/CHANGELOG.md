@@ -1,5 +1,15 @@
 # @medusajs/js-sdk
 
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.22.0 or later
+
+### Patch Changes
+
+- [#17157](https://github.com/medusajs/medusa/pull/17157) [`c522ce6c070a85ed735fa0e1ea281b7641935a96`](https://github.com/medusajs/medusa/commit/c522ce6c070a85ed735fa0e1ea281b7641935a96) Thanks [@sarmah-rup](https://github.com/sarmah-rup)! - fix(js-sdk): don't throw a ReferenceError when `setLocale` is called outside the browser
+
 ## 2.21.2
 
 ## 2.21.1

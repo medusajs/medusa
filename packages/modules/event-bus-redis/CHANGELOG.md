@@ -1,5 +1,18 @@
 # @medusajs/event-bus-redis
 
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.22.0 or later
+
+### Patch Changes
+
+- [#17208](https://github.com/medusajs/medusa/pull/17208) [`09814617a5e117dd42b12c5026d79e8536244fcd`](https://github.com/medusajs/medusa/commit/09814617a5e117dd42b12c5026d79e8536244fcd) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(event-bus-redis): push kept events in chunks and preserve the TTL when partially clearing a large event group
+
+- Updated dependencies [[`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a), [`14499a2e9309d653c0e4ec6aec3f88079751b4d2`](https://github.com/medusajs/medusa/commit/14499a2e9309d653c0e4ec6aec3f88079751b4d2)]:
+  - @medusajs/framework@2.22.0
+
 ## 2.21.2
 
 ### Patch Changes

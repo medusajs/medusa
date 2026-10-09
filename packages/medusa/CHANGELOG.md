@@ -1,5 +1,81 @@
 # Change Log
 
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.22.0 or later
+
+### Patch Changes
+
+- [#17035](https://github.com/medusajs/medusa/pull/17035) [`9aa921a62139888fed08aee7db1480cff0a3ee40`](https://github.com/medusajs/medusa/commit/9aa921a62139888fed08aee7db1480cff0a3ee40) Thanks [@gautamyash](https://github.com/gautamyash)! - fix(medusa): report a failed migration script instead of exiting 0
+
+  `db:migrate` forked `db:migrate:scripts` as a child process and discarded its exit code, unlike the `db:migrate:search` call a few lines above which already checks it. A migration script that threw logged the error but the parent process still exited 0, so a CI/CD pipeline or deploy step trusting `db:migrate`'s exit code carried on as if every script had succeeded.
+
+  `db:migrate` now checks the child's exit code the same way it already does for `db:migrate:search`, and returns false (non-zero exit) when a migration script fails.
+
+- [#17147](https://github.com/medusajs/medusa/pull/17147) [`14499a2e9309d653c0e4ec6aec3f88079751b4d2`](https://github.com/medusajs/medusa/commit/14499a2e9309d653c0e4ec6aec3f88079751b4d2) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(admin-bundler, framework, medusa, deps): dependency updates
+
+- [#16964](https://github.com/medusajs/medusa/pull/16964) [`780a69aad3ea20beadf82e9c5351a6633de45b64`](https://github.com/medusajs/medusa/commit/780a69aad3ea20beadf82e9c5351a6633de45b64) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(payment,core-flows,medusa,types,utils): let refunds be retried safely with an idempotency key
+
+- Updated dependencies [[`0e087453a34fea61d39d1e416a52ef3417220b2e`](https://github.com/medusajs/medusa/commit/0e087453a34fea61d39d1e416a52ef3417220b2e), [`6adae2ca2e3185cec3af9afbefdf58a378dcf1ca`](https://github.com/medusajs/medusa/commit/6adae2ca2e3185cec3af9afbefdf58a378dcf1ca), [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a), [`09814617a5e117dd42b12c5026d79e8536244fcd`](https://github.com/medusajs/medusa/commit/09814617a5e117dd42b12c5026d79e8536244fcd), [`14499a2e9309d653c0e4ec6aec3f88079751b4d2`](https://github.com/medusajs/medusa/commit/14499a2e9309d653c0e4ec6aec3f88079751b4d2), [`735231340d130af0c3565bc7340f1163863c283f`](https://github.com/medusajs/medusa/commit/735231340d130af0c3565bc7340f1163863c283f), [`dab83ec94a8d60446e15eb982617b7c1cc7589a2`](https://github.com/medusajs/medusa/commit/dab83ec94a8d60446e15eb982617b7c1cc7589a2), [`65260a9d80d666916ad1e4b59d346123e1fa7991`](https://github.com/medusajs/medusa/commit/65260a9d80d666916ad1e4b59d346123e1fa7991), [`fdac7de4c3268ccf0f86c47c140662d84c141832`](https://github.com/medusajs/medusa/commit/fdac7de4c3268ccf0f86c47c140662d84c141832), [`780a69aad3ea20beadf82e9c5351a6633de45b64`](https://github.com/medusajs/medusa/commit/780a69aad3ea20beadf82e9c5351a6633de45b64), [`b561a37343f4132d0f3a243e7722260797c3cf85`](https://github.com/medusajs/medusa/commit/b561a37343f4132d0f3a243e7722260797c3cf85)]:
+  - @medusajs/core-flows@2.22.0
+  - @medusajs/draft-order@2.22.0
+  - @medusajs/admin-bundler@2.22.0
+  - @medusajs/analytics-local@2.22.0
+  - @medusajs/analytics-posthog@2.22.0
+  - @medusajs/analytics@2.22.0
+  - @medusajs/api-key@2.22.0
+  - @medusajs/auth-emailpass@2.22.0
+  - @medusajs/auth-github@2.22.0
+  - @medusajs/auth-google@2.22.0
+  - @medusajs/auth-oidc@2.22.0
+  - @medusajs/auth@2.22.0
+  - @medusajs/cache-inmemory@2.22.0
+  - @medusajs/cache-redis@2.22.0
+  - @medusajs/caching-redis@2.22.0
+  - @medusajs/cart@2.22.0
+  - @medusajs/currency@2.22.0
+  - @medusajs/customer@2.22.0
+  - @medusajs/event-bus-local@2.22.0
+  - @medusajs/event-bus-redis@2.22.0
+  - @medusajs/file-local@2.22.0
+  - @medusajs/file-s3@2.22.0
+  - @medusajs/file@2.22.0
+  - @medusajs/framework@2.22.0
+  - @medusajs/fulfillment-manual@2.22.0
+  - @medusajs/fulfillment@2.22.0
+  - @medusajs/index@2.22.0
+  - @medusajs/inventory@2.22.0
+  - @medusajs/link-modules@2.22.0
+  - @medusajs/locking-postgres@2.22.0
+  - @medusajs/locking-redis@2.22.0
+  - @medusajs/notification-local@2.22.0
+  - @medusajs/notification-sendgrid@2.22.0
+  - @medusajs/notification@2.22.0
+  - @medusajs/order@2.22.0
+  - @medusajs/payment-stripe@2.22.0
+  - @medusajs/payment@2.22.0
+  - @medusajs/pricing@2.22.0
+  - @medusajs/product@2.22.0
+  - @medusajs/promotion@2.22.0
+  - @medusajs/rbac@2.22.0
+  - @medusajs/region@2.22.0
+  - @medusajs/sales-channel@2.22.0
+  - @medusajs/search-postgres@2.22.0
+  - @medusajs/search@2.22.0
+  - @medusajs/settings@2.22.0
+  - @medusajs/stock-location@2.22.0
+  - @medusajs/store@2.22.0
+  - @medusajs/tax@2.22.0
+  - @medusajs/translation@2.22.0
+  - @medusajs/user@2.22.0
+  - @medusajs/workflow-engine-inmemory@2.22.0
+  - @medusajs/workflow-engine-redis@2.22.0
+  - @medusajs/caching@2.22.0
+  - @medusajs/locking@2.22.0
+  - @medusajs/telemetry@2.22.0
+
 ## 2.21.2
 
 ### Patch Changes
