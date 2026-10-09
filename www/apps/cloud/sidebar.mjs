@@ -41,6 +41,18 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Changelog",
+            path: "/changelog",
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "AI Tools",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
             title: "Cloud Assistant",
             path: "/assistant",
           },
@@ -59,12 +71,22 @@ export const sidebar = [
                 title: "ChatGPT App",
                 path: "/medusa-mcp/chatgpt",
               },
+              {
+                type: "link",
+                title: "n8n",
+                path: "/medusa-mcp/n8n",
+              },
+              {
+                type: "link",
+                title: "Custom Agents",
+                path: "/medusa-mcp/custom-agents",
+              },
+              {
+                type: "link",
+                title: "Retrieve Custom Data",
+                path: "/medusa-mcp/custom-data",
+              },
             ],
-          },
-          {
-            type: "link",
-            title: "Changelog",
-            path: "/changelog",
           },
         ],
       },

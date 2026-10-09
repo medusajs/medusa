@@ -397,7 +397,7 @@ export interface BaseProductListParams
   /**
    * Filter the product by status(es).
    */
-  status?: ProductStatus | ProductStatus[]
+  status?: ProductStatus[]
   /**
    * Filter the product by the sales channel(s) it belongs to.
    */

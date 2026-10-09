@@ -20,11 +20,13 @@ Once you connect an AI tool to the Medusa MCP server, you can ask it questions a
 
 Your AI tool then retrieves the relevant data from your store and presents it to you in a human-readable format.
 
+The Medusa MCP is available for all Cloud plans.
+
 ---
 
 ## Connect to the Medusa MCP Server
 
-This section explains how to get access to the Medusa MCP server and connect your AI tool to it.
+This section explains how to connect your AI tool to the Medusa MCP server.
 
 ### Prerequisites
 
@@ -49,17 +51,11 @@ This section explains how to get access to the Medusa MCP server and connect you
   ]}
 />
 
-### Step 1: Request Access
+### Step 1: Rebuild Environments
 
-The Medusa MCP server is in beta. Early access is currently only open to Launch, Scale, and Enterprise plans.
+Medusa indexes an environment's API routes when the environment builds. Environments built on or after October 8, 2026 are already indexed, so you can skip to [connecting an AI tool](#step-2-connect-an-ai-tool).
 
-To confirm you have access, you should see the [Connections](../organizations/connections/page.mdx) page in your organization's settings.
-
-If you're on the Launch, Scale, or Enterprise plan and don't see the Connections page, request access for your organization by emailing [support@medusajs.com](mailto:support@medusajs.com) with the name of your organization.
-
-### Step 2: Rebuild Environments
-
-After Medusa informs you that your organization has access, rebuild each environment that you want to connect to the Medusa MCP server.
+If the environment's latest build is from before October 8, 2026, rebuild it so that Medusa indexes its API routes.
 
 <Note type="warning">
 
@@ -77,7 +73,7 @@ You can also start a new build with the Cloud CLI's [`mcloud environments trigge
 
 Once the build finishes and the deployment is live, you can connect the environment to your AI tool.
 
-### Step 3: Connect an AI Tool
+### Step 2: Connect an AI Tool
 
 The Medusa MCP server is a Streamable HTTP server at the following URL:
 
@@ -180,11 +176,19 @@ Then, run the following command to log in to your Cloud account:
 opencode mcp auth medusa-commerce
 ```
 
+#### n8n
+
+Add an **MCP Client Tool** to an **AI Agent** node in n8n Cloud, as explained in the [n8n](./n8n/page.mdx) guide. Self-hosted n8n instances can't connect to the Medusa MCP server.
+
+#### Custom Agents
+
+To connect an agent that you build yourself, follow the [Connect a Custom Agent](./custom-agents/page.mdx) guide.
+
 #### Approve the Connection
 
 After you log in to your Cloud account, Cloud shows a consent page with the AI tool's name and the access it requests.
 
-1. Select the environments that the AI tool can access. You can only select environments in organizations that have Medusa MCP access.
+1. Select the environments that the AI tool can access.
 2. Click **Approve**.
 
 <Note type="warning">
@@ -331,6 +335,8 @@ Medusa indexes a store's API routes, including its custom API routes, each time 
 
 Medusa only indexes custom API routes under the `/store` and `/admin` prefixes. The AI tool can't find or call custom API routes under other prefixes.
 
+To learn how to create custom API routes that the AI tool can find and use, such as an API route that retrieves abandoned carts, refer to the [Retrieve Custom Data](./custom-data/page.mdx) guide.
+
 ---
 
 ## Medusa MCP vs Docs MCP
@@ -346,13 +352,9 @@ The Medusa MCP server can also search the Medusa documentation, so you don't nee
 
 ## Troubleshooting
 
-### Medusa MCP Isn't Enabled for Your Account
-
-If the AI tool shows an error that Medusa MCP isn't enabled for your account, none of your organizations have Medusa MCP access. [Request access](#step-1-request-access) for your organization.
-
 ### AI Tool Can't Find Your Store's API Routes
 
-If the AI tool can't find your store's API routes, including your custom API routes, make sure that you [rebuilt the environment](#step-2-rebuild-environments) after your organization received access. Redeploying an existing deployment doesn't index the environment's API routes.
+If the AI tool can't find your store's API routes, including your custom API routes, make sure that the environment's latest build is from October 8, 2026 or later. Otherwise, [rebuild the environment](#step-1-rebuild-environments). Redeploying an existing deployment doesn't index the environment's API routes.
 
 {/* ### Permission Denied Errors
 
