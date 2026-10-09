@@ -8,8 +8,6 @@ import {
 import { MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
 
-// Stands in for the real provider, whose import is slow enough to time out on
-// cold CI runners.
 jest.mock("@medusajs/medusa/auth-oidc", () => ({
   services: [
     class OidcProviderService {
