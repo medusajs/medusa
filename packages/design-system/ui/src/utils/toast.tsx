@@ -136,7 +136,7 @@ function loading(
     position: DEFAULT_TOAST_POSITION,
   }
 ) {
-  return create("loading", title, { ...props, dismissable: false })
+  return create("loading", title, { dismissable: false, ...props })
 }
 
 type PromiseStateProps =
