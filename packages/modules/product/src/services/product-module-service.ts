@@ -1425,6 +1425,76 @@ export default class ProductModuleService
         sharedContext
       )
 
+    // For each updated option, detect value IDs that are new (did not exist
+    // before the upsert) and create the missing product_product_option_value
+    // pivot rows so that those values become visible through the product's
+    // option-value relationships.  Options that are not linked to any product
+    // are skipped without error.
+    const updatedOptionIds = productOptions.map((opt) => opt.id)
+
+    const existingPPOs = await this.productProductOptionService_.list(
+      { product_option_id: updatedOptionIds },
+      { select: ["id", "product_id", "product_option_id"] },
+      sharedContext
+    )
+
+    if (existingPPOs.length) {
+      // Group PPO rows by option id for quick lookup
+      const pposByOptionId = new Map<
+        string,
+        { id: string; product_id: string }[]
+      >()
+      for (const ppo of existingPPOs) {
+        const list = pposByOptionId.get(ppo.product_option_id!) ?? []
+        list.push({ id: ppo.id, product_id: ppo.product_id! })
+        pposByOptionId.set(ppo.product_option_id!, list)
+      }
+
+      const ppovToCreate: Array<{
+        product_product_option_id: string
+        product_option_value_id: string
+      }> = []
+
+      for (const updatedOption of productOptions) {
+        const ppos = pposByOptionId.get(updatedOption.id)
+        if (!ppos?.length) {
+          // This option is not linked to any product — nothing to do.
+          continue
+        }
+
+        // Compute the set of value IDs that existed BEFORE this update.
+        const oldValueIds = new Set(
+          (dbOptionsMap.get(updatedOption.id)?.values ?? []).map((v) => v.id)
+        )
+
+        // Newly added values are those present after the upsert but absent before.
+        const newValueIds = (updatedOption.values ?? [])
+          .map((v) => v.id)
+          .filter((id) => !oldValueIds.has(id))
+
+        if (!newValueIds.length) {
+          continue
+        }
+
+        // For every product assignment of this option, link the new values.
+        for (const ppo of ppos) {
+          for (const valueId of newValueIds) {
+            ppovToCreate.push({
+              product_product_option_id: ppo.id,
+              product_option_value_id: valueId,
+            })
+          }
+        }
+      }
+
+      if (ppovToCreate.length) {
+        await this.productProductOptionValueService_.create(
+          ppovToCreate,
+          sharedContext
+        )
+      }
+    }
+
     return productOptions
   }
 
