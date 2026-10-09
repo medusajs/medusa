@@ -687,6 +687,38 @@ export default class InventoryModuleService
       context
     )
 
+    // A reservation moved to another location must also release its reserved
+    // quantity at the previous location, so that level has to be loaded too
+    const previousLocationData = input
+      .filter(
+        (data) =>
+          isDefined(data.location_id) &&
+          data.location_id !== reservationMap.get(data.id)!.location_id
+      )
+      .map((data) => {
+        const reservation = reservationMap.get(data.id)!
+
+        return {
+          inventory_item_id: reservation.inventory_item_id,
+          location_id: reservation.location_id,
+        }
+      })
+
+    if (previousLocationData.length) {
+      const previousLocationLevels = await this.ensureInventoryLevels(
+        previousLocationData,
+        {},
+        context
+      )
+      const loadedLevelIds = new Set(inventoryLevels.map((level) => level.id))
+
+      inventoryLevels.push(
+        ...previousLocationLevels.filter(
+          (level) => !loadedLevelIds.has(level.id)
+        )
+      )
+    }
+
     const result = await this.reservationItemService_.update(input, context)
 
     const levelAdjustmentUpdates = inventoryLevels
