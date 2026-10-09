@@ -96,6 +96,20 @@ A draft order is stored in the database as a regular order. It is represented by
 
 So, the same [order concepts](../concepts/page.mdx) apply to draft orders as well.
 
+### Promotions in Draft Orders
+
+You can add promotions to draft orders using the `addDraftOrderPromotionsWorkflow`. Once a promotion is attached to a draft order, Medusa recomputes adjustments for that promotion whenever items or shipping methods change.
+
+<Note title="Warning" type="warning">
+
+Automatic promotions (those with `is_automatic: true`) are not auto-discovered for draft orders. Medusa only evaluates promotions that have already been explicitly added to the draft order. To apply a promotion to a draft order, add it using `addDraftOrderPromotionsWorkflow`.
+
+</Note>
+
+This is different from store cart checkout flows, where automatic promotions are discovered and applied without requiring a promotion code.
+
+---
+
 ### Editing Draft Orders
 
 Similar to regular orders, draft orders can be [edited](../edit/page.mdx), allowing admin users to add, update, or remove items, as well as add shipping methods.
