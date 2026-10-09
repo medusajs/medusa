@@ -438,365 +438,365 @@
     "availableIn": "<1>{{y}}</1> में से <0>{{x}}</0> सेल्स चैनल में उपलब्ध"
   },
   "products": {
-    "domain": "Products",
+    "domain": "उत्पाद",
     "list": {
-      "noRecordsMessage": "Create your first product to start selling."
+      "noRecordsMessage": "बिक्री शुरू करने के लिए अपना पहला उत्पाद बनाएं।"
     },
     "edit": {
-      "header": "Edit Product",
-      "description": "Edit the product details.",
-      "successToast": "Product {{title}} was successfully updated."
+      "header": "उत्पाद संपादित करें",
+      "description": "उत्पाद का विवरण संपादित करें।",
+      "successToast": "उत्पाद {{title}} सफलतापूर्वक अपडेट किया गया।"
     },
     "create": {
-      "title": "Create Product",
-      "description": "Create a new product.",
-      "header": "General",
+      "title": "उत्पाद बनाएं",
+      "description": "नया उत्पाद बनाएं।",
+      "header": "सामान्य",
       "tabs": {
-        "details": "Details",
-        "organize": "Organize",
-        "variants": "Variants",
-        "inventory": "Inventory kits"
+        "details": "विवरण",
+        "organize": "व्यवस्थित करें",
+        "variants": "वैरिएंट",
+        "inventory": "इन्वेंटरी किट"
       },
       "errors": {
-        "variants": "Please select at least one variant.",
-        "options": "Please create at least one option.",
-        "uniqueSku": "SKU must be unique."
+        "variants": "कृपया कम से कम एक वैरिएंट चुनें।",
+        "options": "कृपया कम से कम एक विकल्प बनाएं।",
+        "uniqueSku": "SKU अद्वितीय होना चाहिए।"
       },
       "inventory": {
-        "heading": "Inventory kits",
-        "label": "Add inventory items to the variant's inventory kit.",
-        "itemPlaceholder": "Select inventory item",
-        "quantityPlaceholder": "How many of these are needed for the kit?"
+        "heading": "इन्वेंटरी किट",
+        "label": "वैरिएंट की इन्वेंटरी किट में इन्वेंटरी आइटम जोड़ें।",
+        "itemPlaceholder": "इन्वेंटरी आइटम चुनें",
+        "quantityPlaceholder": "किट के लिए इनमें से कितने चाहिए?"
       },
       "variants": {
-        "header": "Variants",
-        "subHeadingTitle": "Yes, this is a product with variants",
-        "subHeadingDescription": "When unchecked, we will create a default variant for you",
+        "header": "वैरिएंट",
+        "subHeadingTitle": "हाँ, यह वैरिएंट वाला उत्पाद है",
+        "subHeadingDescription": "अगर यह चेक नहीं किया गया, तो हम आपके लिए एक डिफ़ॉल्ट वैरिएंट बना देंगे",
         "optionTitle": {
-          "placeholder": "Size"
+          "placeholder": "साइज़"
         },
         "optionValues": {
-          "placeholder": "Small, Medium, Large"
+          "placeholder": "छोटा, मध्यम, बड़ा"
         },
         "productVariants": {
-          "label": "Product variants",
-          "hint": "This ranking will affect the variants' order in your storefront.",
-          "alert": "Add options to create variants.",
-          "tip": "Variants left unchecked won't be created. You can always create and edit variants afterwards but this list fits the variations in your product options."
+          "label": "उत्पाद वैरिएंट",
+          "hint": "यह क्रम आपके स्टोरफ़्रंट में वैरिएंट के क्रम को प्रभावित करेगा।",
+          "alert": "वैरिएंट बनाने के लिए विकल्प जोड़ें।",
+          "tip": "जो वैरिएंट चेक नहीं किए गए हैं, वे नहीं बनाए जाएंगे। आप बाद में भी वैरिएंट बना और संपादित कर सकते हैं, लेकिन यह सूची आपके उत्पाद विकल्पों के सभी संयोजन दिखाती है।"
         },
         "productOptions": {
-          "label": "Product options",
-          "hint": "Define the options for the product, e.g. color, size, etc."
+          "label": "उत्पाद विकल्प",
+          "hint": "उत्पाद के विकल्प तय करें, जैसे रंग, साइज़ आदि।"
         },
-        "selectValuesHint": "Select which values to use for each option"
+        "selectValuesHint": "चुनें कि हर विकल्प के लिए कौन-से मान इस्तेमाल करने हैं"
       },
-      "successToast": "Product {{title}} was successfully created."
+      "successToast": "उत्पाद {{title}} सफलतापूर्वक बनाया गया।"
     },
     "export": {
-      "header": "Export Product List",
-      "description": "Export the product list to a CSV file.",
+      "header": "उत्पाद सूची एक्सपोर्ट करें",
+      "description": "उत्पाद सूची को CSV फ़ाइल में एक्सपोर्ट करें।",
       "success": {
-        "title": "We are processing your export",
-        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+        "title": "हम आपका एक्सपोर्ट तैयार कर रहे हैं",
+        "description": "डेटा एक्सपोर्ट करने में कुछ मिनट लग सकते हैं। पूरा होने पर हम आपको सूचित करेंगे।"
       },
       "filters": {
-        "title": "Filters",
-        "description": "Apply filters in the table overview to adjust this view"
+        "title": "फ़िल्टर",
+        "description": "इस दृश्य को बदलने के लिए तालिका में फ़िल्टर लागू करें"
       },
       "columns": {
-        "title": "Columns",
-        "description": "Customize the exported data to meet specific needs"
+        "title": "कॉलम",
+        "description": "अपनी ज़रूरत के अनुसार एक्सपोर्ट होने वाले डेटा को कस्टमाइज़ करें"
       }
     },
     "import": {
-      "header": "Import Product List",
-      "uploadLabel": "Import Products",
-      "uploadHint": "Drag and drop a CSV file or click to upload",
-      "description": "Import products by providing a CSV file in a pre-defined format",
+      "header": "उत्पाद सूची इम्पोर्ट करें",
+      "uploadLabel": "उत्पाद इम्पोर्ट करें",
+      "uploadHint": "CSV फ़ाइल को यहाँ खींचकर छोड़ें या अपलोड करने के लिए क्लिक करें",
+      "description": "पहले से तय फ़ॉर्मेट वाली CSV फ़ाइल देकर उत्पाद इम्पोर्ट करें",
       "template": {
-        "title": "Unsure about how to arrange your list?",
-        "description": "Download the template below to ensure you are following the correct format."
+        "title": "सूची को कैसे व्यवस्थित करें, इसको लेकर पक्का नहीं हैं?",
+        "description": "सही फ़ॉर्मेट का पालन करने के लिए नीचे दिया गया टेम्पलेट डाउनलोड करें।"
       },
       "upload": {
-        "title": "Upload a CSV file",
-        "description": "Through imports you can add or update products. To update existing products you must use the existing handle and ID, to update existing variants you must use the existing ID. You will be asked for confirmation before we import products.",
-        "preprocessing": "Preprocessing...",
-        "productsToCreate": "Products will be created",
-        "productsToUpdate": "Products will be updated"
+        "title": "CSV फ़ाइल अपलोड करें",
+        "description": "इम्पोर्ट के ज़रिए आप उत्पाद जोड़ या अपडेट कर सकते हैं। मौजूदा उत्पादों को अपडेट करने के लिए आपको उनका मौजूदा हैंडल और ID इस्तेमाल करना होगा, और मौजूदा वैरिएंट को अपडेट करने के लिए उनकी मौजूदा ID इस्तेमाल करनी होगी। उत्पाद इम्पोर्ट करने से पहले आपसे पुष्टि मांगी जाएगी।",
+        "preprocessing": "प्रोसेस किया जा रहा है...",
+        "productsToCreate": "उत्पाद बनाए जाएंगे",
+        "productsToUpdate": "उत्पाद अपडेट किए जाएंगे"
       },
       "success": {
-        "title": "We are processing your import",
-        "description": "Importing data may take a while. We will notify you when we are done."
+        "title": "हम आपका इम्पोर्ट प्रोसेस कर रहे हैं",
+        "description": "डेटा इम्पोर्ट करने में कुछ समय लग सकता है। पूरा होने पर हम आपको सूचित करेंगे।"
       }
     },
-    "deleteWarning": "You are about to delete the product {{title}}. This action cannot be undone.",
+    "deleteWarning": "आप उत्पाद {{title}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
     "variants": {
-      "header": "Variants",
+      "header": "वैरिएंट",
       "empty": {
-        "heading": "No variants",
-        "description": "There are no variants to display."
+        "heading": "कोई वैरिएंट नहीं",
+        "description": "दिखाने के लिए कोई वैरिएंट नहीं है।"
       },
       "filtered": {
-        "heading": "No results",
-        "description": "No variants match the current filter criteria."
+        "heading": "कोई परिणाम नहीं",
+        "description": "कोई भी वैरिएंट मौजूदा फ़िल्टर से मेल नहीं खाता।"
       }
     },
-    "attributes": "Attributes",
-    "editAttributes": "Edit Attributes",
-    "editOptions": "Edit Options",
-    "editPrices": "Edit prices",
+    "attributes": "विशेषताएँ",
+    "editAttributes": "विशेषताएँ संपादित करें",
+    "editOptions": "विकल्प संपादित करें",
+    "editPrices": "कीमतें संपादित करें",
     "media": {
-      "label": "Media",
-      "editHint": "Add media to the product to showcase it in your storefront.",
-      "manageImageVariants": "Manage associated variants",
-      "makeThumbnail": "Make thumbnail",
-      "uploadImagesLabel": "Upload images",
-      "uploadImagesHint": "Drag and drop images here or click to upload.",
-      "invalidFileType": "'{{name}}' is not a supported file type. Supported file types are: {{types}}.",
-      "fileTooLarge": "One or more files exceed the maximum file size of {{size}}: {{name}}",
-      "failedToUpload": "Failed to upload the added media. Please try again.",
-      "deleteWarning_one": "You are about to delete {{count}} image. This action cannot be undone.",
-      "deleteWarning_other": "You are about to delete {{count}} images. This action cannot be undone.",
-      "deleteWarningWithThumbnail_one": "You are about to delete {{count}} image including the thumbnail. This action cannot be undone.",
-      "deleteWarningWithThumbnail_other": "You are about to delete {{count}} images including the thumbnail. This action cannot be undone.",
-      "thumbnailTooltip": "Thumbnail",
-      "galleryLabel": "Gallery",
-      "downloadImageLabel": "Download current image",
-      "deleteImageLabel": "Delete current image",
+      "label": "मीडिया",
+      "editHint": "अपने स्टोरफ़्रंट में उत्पाद दिखाने के लिए उसमें मीडिया जोड़ें।",
+      "manageImageVariants": "जुड़े हुए वैरिएंट प्रबंधित करें",
+      "makeThumbnail": "थंबनेल बनाएं",
+      "uploadImagesLabel": "इमेज अपलोड करें",
+      "uploadImagesHint": "इमेज को यहाँ खींचकर छोड़ें या अपलोड करने के लिए क्लिक करें।",
+      "invalidFileType": "'{{name}}' समर्थित फ़ाइल प्रकार नहीं है। समर्थित फ़ाइल प्रकार हैं: {{types}}।",
+      "fileTooLarge": "एक या अधिक फ़ाइलें {{size}} के अधिकतम फ़ाइल आकार से बड़ी हैं: {{name}}",
+      "failedToUpload": "जोड़ा गया मीडिया अपलोड नहीं हो सका। कृपया फिर से कोशिश करें।",
+      "deleteWarning_one": "आप {{count}} इमेज हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "deleteWarning_other": "आप {{count}} इमेज हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "deleteWarningWithThumbnail_one": "आप थंबनेल सहित {{count}} इमेज हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "deleteWarningWithThumbnail_other": "आप थंबनेल सहित {{count}} इमेज हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "thumbnailTooltip": "थंबनेल",
+      "galleryLabel": "गैलरी",
+      "downloadImageLabel": "वर्तमान इमेज डाउनलोड करें",
+      "deleteImageLabel": "वर्तमान इमेज हटाएं",
       "emptyState": {
-        "header": "No media yet",
-        "description": "Add media to showcase it in your storefront.",
-        "action": "Add media"
+        "header": "अभी तक कोई मीडिया नहीं",
+        "description": "अपने स्टोरफ़्रंट में दिखाने के लिए मीडिया जोड़ें।",
+        "action": "मीडिया जोड़ें"
       },
-      "successToast": "Media was successfully updated.",
-      "variantImages": "Variant images",
-      "showAvailableImages": "Show available images",
-      "availableImages": "Select images",
-      "selectToAdd": "Add product images to the variant. To add new images, add them to the product first.",
-      "removeSelected": "Remove Selected"
+      "successToast": "मीडिया सफलतापूर्वक अपडेट किया गया।",
+      "variantImages": "वैरिएंट की इमेज",
+      "showAvailableImages": "उपलब्ध इमेज दिखाएं",
+      "availableImages": "इमेज चुनें",
+      "selectToAdd": "वैरिएंट में उत्पाद की इमेज जोड़ें। नई इमेज जोड़ने के लिए, पहले उन्हें उत्पाद में जोड़ें।",
+      "removeSelected": "चयनित निकालें"
     },
     "variantMedia": {
-      "label": "Variant Media",
-      "manageVariants": "Manage variants",
-      "addToMultipleVariants": "Add to multiple variants",
-      "manageVariantsDescription": "Manage associated variants for the image",
-      "successToast": "Image variants successfully updated.",
+      "label": "वैरिएंट मीडिया",
+      "manageVariants": "वैरिएंट प्रबंधित करें",
+      "addToMultipleVariants": "कई वैरिएंट में जोड़ें",
+      "manageVariantsDescription": "इमेज से जुड़े वैरिएंट प्रबंधित करें",
+      "successToast": "इमेज के वैरिएंट सफलतापूर्वक अपडेट किए गए।",
       "emptyState": {
-        "header": "No media yet",
-        "description": "Add media to the variant to showcase it in your storefront.",
-        "action": "Add media"
+        "header": "अभी तक कोई मीडिया नहीं",
+        "description": "अपने स्टोरफ़्रंट में दिखाने के लिए वैरिएंट में मीडिया जोड़ें।",
+        "action": "मीडिया जोड़ें"
       }
     },
-    "discountableHint": "When unchecked, discounts will not be applied to this product.",
-    "noSalesChannels": "Not available in any sales channels",
-    "variantCount_one": "{{count}} variant",
-    "variantCount_other": "{{count}} variants",
-    "deleteVariantWarning": "You are about to delete the variant {{title}}. This action cannot be undone.",
+    "discountableHint": "अगर यह चेक नहीं किया गया, तो इस उत्पाद पर छूट लागू नहीं होगी।",
+    "noSalesChannels": "किसी भी सेल्स चैनल में उपलब्ध नहीं",
+    "variantCount_one": "{{count}} वैरिएंट",
+    "variantCount_other": "{{count}} वैरिएंट",
+    "deleteVariantWarning": "आप वैरिएंट {{title}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
     "productStatus": {
-      "draft": "Draft",
-      "published": "Published",
-      "proposed": "Proposed",
-      "rejected": "Rejected"
+      "draft": "ड्राफ़्ट",
+      "published": "प्रकाशित",
+      "proposed": "प्रस्तावित",
+      "rejected": "अस्वीकृत"
     },
     "columns": {
-      "product_display": "Product",
-      "variants_count": "Variants",
-      "sales_channels_display": "Sales Channels",
-      "collection": "Collection",
-      "status": "Status",
-      "thumbnail": "Thumbnail",
-      "title": "Title",
-      "handle": "Handle",
-      "created_at": "Created",
-      "updated_at": "Updated"
+      "product_display": "उत्पाद",
+      "variants_count": "वैरिएंट",
+      "sales_channels_display": "सेल्स चैनल",
+      "collection": "कलेक्शन",
+      "status": "स्थिति",
+      "thumbnail": "थंबनेल",
+      "title": "शीर्षक",
+      "handle": "हैंडल",
+      "created_at": "बनाया गया",
+      "updated_at": "अपडेट किया गया"
     },
     "fields": {
       "title": {
-        "label": "Title",
-        "hint": "Give your product a short and clear title.<0/>50-60 characters is the recommended length for search engines.",
-        "placeholder": "Winter jacket"
+        "label": "शीर्षक",
+        "hint": "अपने उत्पाद को एक छोटा और स्पष्ट शीर्षक दें।<0/>सर्च इंजन के लिए 50-60 अक्षरों की लंबाई सुझाई जाती है।",
+        "placeholder": "सर्दियों की जैकेट"
       },
       "subtitle": {
-        "label": "Subtitle",
-        "placeholder": "Warm and cosy"
+        "label": "उपशीर्षक",
+        "placeholder": "गर्म और आरामदायक"
       },
       "handle": {
-        "label": "Handle",
-        "tooltip": "The handle is used to reference the product in your storefront. If not specified, the handle will be generated from the product title.",
+        "label": "हैंडल",
+        "tooltip": "हैंडल का उपयोग आपके स्टोरफ़्रंट में उत्पाद को पहचानने के लिए किया जाता है। अगर यह नहीं दिया गया, तो हैंडल उत्पाद के शीर्षक से बनाया जाएगा।",
         "placeholder": "winter-jacket"
       },
       "description": {
-        "label": "Description",
-        "hint": "Give your product a short and clear description.<0/>120-160 characters is the recommended length for search engines.",
-        "placeholder": "A warm and cozy jacket"
+        "label": "विवरण",
+        "hint": "अपने उत्पाद का छोटा और स्पष्ट विवरण दें।<0/>सर्च इंजन के लिए 120-160 अक्षरों की लंबाई सुझाई जाती है।",
+        "placeholder": "एक गर्म और आरामदायक जैकेट"
       },
       "discountable": {
-        "label": "Discountable",
-        "hint": "When unchecked, discounts will not be applied to this product"
+        "label": "छूट योग्य",
+        "hint": "अगर यह चेक नहीं किया गया, तो इस उत्पाद पर छूट लागू नहीं होगी"
       },
       "shipping_profile": {
-        "label": "Shipping profile",
-        "hint": "Connect the product to a shipping profile"
+        "label": "शिपिंग प्रोफ़ाइल",
+        "hint": "उत्पाद को किसी शिपिंग प्रोफ़ाइल से जोड़ें"
       },
       "type": {
-        "label": "Type"
+        "label": "प्रकार"
       },
       "collection": {
-        "label": "Collection"
+        "label": "कलेक्शन"
       },
       "categories": {
-        "label": "Categories"
+        "label": "श्रेणियाँ"
       },
       "tags": {
-        "label": "Tags"
+        "label": "टैग"
       },
       "sales_channels": {
-        "label": "Sales channels",
-        "hint": "This product will only be available in the default sales channel if left untouched."
+        "label": "सेल्स चैनल",
+        "hint": "अगर इसे नहीं बदला गया, तो यह उत्पाद केवल डिफ़ॉल्ट सेल्स चैनल में उपलब्ध होगा।"
       },
       "countryOrigin": {
-        "label": "Country of origin"
+        "label": "मूल देश"
       },
       "material": {
-        "label": "Material"
+        "label": "सामग्री"
       },
       "width": {
-        "label": "Width"
+        "label": "चौड़ाई"
       },
       "length": {
-        "label": "Length"
+        "label": "लंबाई"
       },
       "height": {
-        "label": "Height"
+        "label": "ऊंचाई"
       },
       "weight": {
-        "label": "Weight"
+        "label": "वज़न"
       },
       "options": {
-        "label": "Product options",
-        "hint": "Options are used to define the color, size, etc. of the product",
-        "add": "Add option",
-        "optionTitle": "Option title",
-        "optionTitlePlaceholder": "Color",
-        "variations": "Variations (comma-separated)",
-        "variantionsPlaceholder": "Red, Blue, Green"
+        "label": "उत्पाद विकल्प",
+        "hint": "विकल्पों से उत्पाद का रंग, साइज़ आदि तय किया जाता है",
+        "add": "विकल्प जोड़ें",
+        "optionTitle": "विकल्प का शीर्षक",
+        "optionTitlePlaceholder": "रंग",
+        "variations": "मान (कॉमा से अलग करें)",
+        "variantionsPlaceholder": "लाल, नीला, हरा"
       },
       "variants": {
-        "label": "Product variants",
-        "hint": "Variants left unchecked won't be created, This ranking will affect how the variants are ranked in your frontend."
+        "label": "उत्पाद वैरिएंट",
+        "hint": "जो वैरिएंट चेक नहीं किए गए हैं, वे नहीं बनाए जाएंगे। यह क्रम तय करेगा कि आपके फ़्रंटएंड में वैरिएंट किस क्रम में दिखेंगे।"
       },
       "mid_code": {
-        "label": "Mid code"
+        "label": "MID कोड"
       },
       "hs_code": {
-        "label": "HS code"
+        "label": "HS कोड"
       }
     },
     "variant": {
       "edit": {
-        "header": "Edit Variant",
-        "success": "Product variant edited successfully"
+        "header": "वैरिएंट संपादित करें",
+        "success": "उत्पाद वैरिएंट सफलतापूर्वक संपादित किया गया"
       },
       "create": {
-        "header": "Variant details"
+        "header": "वैरिएंट का विवरण"
       },
-      "deleteWarning": "Are you sure you want to delete this variant?",
-      "pricesPagination": "1 - {{current}} of {{total}} prices",
-      "tableItemAvailable": "{{availableCount}} available",
-      "tableItem_one": "{{availableCount}} available at {{locationCount}} location",
-      "tableItem_other": "{{availableCount}} available at {{locationCount}} locations",
+      "deleteWarning": "क्या आप वाकई इस वैरिएंट को हटाना चाहते हैं?",
+      "pricesPagination": "{{total}} में से 1 - {{current}} कीमतें",
+      "tableItemAvailable": "{{availableCount}} उपलब्ध",
+      "tableItem_one": "{{locationCount}} लोकेशन पर {{availableCount}} उपलब्ध",
+      "tableItem_other": "{{locationCount}} लोकेशन पर {{availableCount}} उपलब्ध",
       "inventory": {
-        "notManaged": "Not managed",
-        "manageItems": "Manage inventory items",
-        "notManagedDesc": "Inventory is not managed for this variant. Turn on ‘Manage Inventory’ to track the variant's inventory.",
-        "manageKit": "Manage inventory kit",
-        "navigateToItem": "Go to inventory item",
+        "notManaged": "प्रबंधित नहीं",
+        "manageItems": "इन्वेंटरी आइटम प्रबंधित करें",
+        "notManagedDesc": "इस वैरिएंट की इन्वेंटरी प्रबंधित नहीं की जा रही है। वैरिएंट की इन्वेंटरी ट्रैक करने के लिए ‘इन्वेंटरी प्रबंधित करें’ चालू करें।",
+        "manageKit": "इन्वेंटरी किट प्रबंधित करें",
+        "navigateToItem": "इन्वेंटरी आइटम पर जाएं",
         "actions": {
-          "inventoryItems": "Go to inventory item",
-          "inventoryKit": "Show inventory items"
+          "inventoryItems": "इन्वेंटरी आइटम पर जाएं",
+          "inventoryKit": "इन्वेंटरी आइटम दिखाएं"
         },
-        "inventoryKit": "Inventory Kit",
-        "inventoryKitHint": "Does this variant consist of several inventory items?",
+        "inventoryKit": "इन्वेंटरी किट",
+        "inventoryKitHint": "क्या यह वैरिएंट कई इन्वेंटरी आइटम से मिलकर बना है?",
         "validation": {
-          "itemId": "Please select inventory item.",
-          "quantity": "Quantity is required. Please input a positive number."
+          "itemId": "कृपया इन्वेंटरी आइटम चुनें।",
+          "quantity": "मात्रा आवश्यक है। कृपया एक धनात्मक संख्या डालें।"
         },
-        "header": "Stock & Inventory",
-        "editItemDetails": "Edit item details",
-        "manageInventoryLabel": "Manage inventory",
-        "manageInventoryHint": "When enabled, we'll change the inventory quantity for you when orders and returns are created.",
-        "allowBackordersLabel": "Allow backorders",
-        "allowBackordersHint": "When enabled, customers can purchase the variant even if there's no available quantity.",
+        "header": "स्टॉक और इन्वेंटरी",
+        "editItemDetails": "आइटम का विवरण संपादित करें",
+        "manageInventoryLabel": "इन्वेंटरी प्रबंधित करें",
+        "manageInventoryHint": "इसे चालू करने पर, ऑर्डर और रिटर्न बनने पर हम आपके लिए इन्वेंटरी की मात्रा अपने-आप बदल देंगे।",
+        "allowBackordersLabel": "बैकऑर्डर की अनुमति दें",
+        "allowBackordersHint": "इसे चालू करने पर, ग्राहक इस वैरिएंट को तब भी खरीद सकते हैं जब इसकी कोई मात्रा उपलब्ध न हो।",
         "toast": {
-          "levelsBatch": "Inventory levels updated.",
-          "update": "Inventory item updated successfully.",
-          "updateLevel": "Inventory level updated successfully.",
-          "itemsManageSuccess": "Inventory items successfully updated."
+          "levelsBatch": "इन्वेंटरी स्तर अपडेट किए गए।",
+          "update": "इन्वेंटरी आइटम सफलतापूर्वक अपडेट किया गया।",
+          "updateLevel": "इन्वेंटरी स्तर सफलतापूर्वक अपडेट किया गया।",
+          "itemsManageSuccess": "इन्वेंटरी आइटम सफलतापूर्वक अपडेट किए गए।"
         }
       }
     },
     "options": {
-      "header": "Options",
+      "header": "विकल्प",
       "edit": {
-        "header": "Edit Option",
-        "successToast": "Option {{title}} was successfully updated."
+        "header": "विकल्प संपादित करें",
+        "successToast": "विकल्प {{title}} सफलतापूर्वक अपडेट किया गया।"
       },
       "create": {
-        "header": "Create Option",
-        "successToast": "Option {{title}} was successfully created."
+        "header": "विकल्प बनाएं",
+        "successToast": "विकल्प {{title}} सफलतापूर्वक बनाया गया।"
       },
       "manage": {
-        "header": "Manage Product Options",
-        "description": "Associate or disassociate product options from this product.",
-        "label": "Product Options",
-        "hint": "Select which options should be associated to this product.",
-        "placeholder": "Select options",
+        "header": "उत्पाद विकल्प प्रबंधित करें",
+        "description": "इस उत्पाद से उत्पाद विकल्प जोड़ें या हटाएं।",
+        "label": "उत्पाद विकल्प",
+        "hint": "चुनें कि इस उत्पाद से कौन-से विकल्प जुड़े होने चाहिए।",
+        "placeholder": "विकल्प चुनें",
         "error": {
-          "noValues": "Please select at least one value for the added option(s)."
+          "noValues": "कृपया जोड़े गए विकल्प(ों) के लिए कम से कम एक मान चुनें।"
         }
       },
-      "deleteWarning": "You are about to delete the product option: {{title}}. This action cannot be undone."
+      "deleteWarning": "आप उत्पाद विकल्प {{title}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।"
     },
     "organization": {
-      "header": "Organize",
+      "header": "व्यवस्थित करें",
       "edit": {
-        "header": "Edit Organization",
+        "header": "व्यवस्था संपादित करें",
         "toasts": {
-          "success": "Successfully updated the organization of {{title}}."
+          "success": "{{title}} की व्यवस्था सफलतापूर्वक अपडेट की गई।"
         }
       }
     },
     "stock": {
-      "heading": "Manage product stock levels and locations",
-      "description": "Update the stocked inventory levels for all of the product's variants.",
-      "loading": "Hang on this may take a moment...",
+      "heading": "उत्पाद के स्टॉक स्तर और लोकेशन प्रबंधित करें",
+      "description": "उत्पाद के सभी वैरिएंट के लिए स्टॉक में मौजूद इन्वेंटरी स्तर अपडेट करें।",
+      "loading": "कृपया प्रतीक्षा करें, इसमें कुछ समय लग सकता है...",
       "tooltips": {
-        "alreadyManaged": "This inventory item is already editable under {{title}}.",
-        "alreadyManagedWithSku": "This inventory item is already editable under {{title}} ({{sku}})."
+        "alreadyManaged": "यह इन्वेंटरी आइटम पहले से {{title}} के अंतर्गत संपादित किया जा सकता है।",
+        "alreadyManagedWithSku": "यह इन्वेंटरी आइटम पहले से {{title}} ({{sku}}) के अंतर्गत संपादित किया जा सकता है।"
       }
     },
     "shippingProfile": {
-      "header": "Shipping configuration",
+      "header": "शिपिंग कॉन्फ़िगरेशन",
       "edit": {
-        "header": "Shipping Configuration",
+        "header": "शिपिंग कॉन्फ़िगरेशन",
         "toasts": {
-          "success": "Successfully updated the shipping profile for {{title}}."
+          "success": "{{title}} की शिपिंग प्रोफ़ाइल सफलतापूर्वक अपडेट की गई।"
         }
       },
       "create": {
         "errors": {
-          "required": "Shipping profile is required"
+          "required": "शिपिंग प्रोफ़ाइल आवश्यक है"
         }
       }
     },
     "toasts": {
       "delete": {
         "success": {
-          "header": "Product deleted",
-          "description": "{{title}} was successfully deleted."
+          "header": "उत्पाद हटाया गया",
+          "description": "{{title}} सफलतापूर्वक हटाया गया।"
         },
         "error": {
-          "header": "Failed to delete product"
+          "header": "उत्पाद हटाया नहीं जा सका"
         }
       }
     }
