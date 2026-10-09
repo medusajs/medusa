@@ -17,6 +17,7 @@ import {
   ContainerRegistrationKeys,
   createMedusaContainer,
   defineJoinerConfig,
+  assertLicensed,
   discoverAndRegisterFeatureFlags,
   DmlEntity,
   dynamicImport,
@@ -24,6 +25,8 @@ import {
   getProviderRegistrationKey,
   isFileSkipped,
   isString,
+  License,
+  LicenseFeature,
   MedusaModuleProviderType,
   MedusaModuleType,
   Modules,
@@ -73,6 +76,39 @@ type ResolvedModule = ModuleExports & {
 
 type ResolvedModuleProvider = ModuleProviderExports & {
   discoveryPath: string
+}
+
+// Packages that only load when the license covers their feature. Modules are
+// keyed by module key, providers by the specifier in `resolve`, since a
+// provider's definition key is the id chosen in the config.
+const LICENSED_MODULES: Record<string, LicenseFeature> = {
+  [Modules.RBAC]: LicenseFeature.RBAC,
+}
+
+const LICENSED_PROVIDERS: Record<string, LicenseFeature> = {
+  "@medusajs/auth-oidc": LicenseFeature.AUTH_OIDC,
+  "@medusajs/medusa/auth-oidc": LicenseFeature.AUTH_OIDC,
+}
+
+function licenseError(
+  container: MedusaContainer,
+  feature?: LicenseFeature
+): Error | undefined {
+  if (!feature) {
+    return undefined
+  }
+
+  try {
+    assertLicensed(
+      container.resolve<License | null>(ContainerRegistrationKeys.LICENSE, {
+        allowUnregistered: true,
+      }),
+      feature
+    )
+    return undefined
+  } catch (error) {
+    return error as Error
+  }
 }
 
 export async function resolveModuleExports({
@@ -201,6 +237,27 @@ export async function loadInternalModule(args: {
     ? resolution.definition.key
     : resolution.definition.key + "__loaderOnly"
 
+  // Checked against the shared container before anything is imported. Gated
+  // providers are checked with their module, since providers load into the
+  // module's local container, which has no license.
+  if (!loadingProviders) {
+    const providers = (resolution.options?.providers as ModuleProvider[]) ?? []
+    const features = [
+      LICENSED_MODULES[resolution.definition.key],
+      ...providers.map(({ resolve }) =>
+        isString(resolve) ? LICENSED_PROVIDERS[resolve] : undefined
+      ),
+    ]
+
+    for (const feature of features) {
+      const error = licenseError(container, feature)
+
+      if (error) {
+        return { error }
+      }
+    }
+  }
+
   const loadedModule = await resolveModuleExports({ resolution })
 
   if ("error" in loadedModule) {
@@ -220,6 +277,7 @@ export async function loadInternalModule(args: {
   }
 
   const loadedModule_ = loadedModule as ModuleExports
+
   if (
     !loadingProviders &&
     !loadedModule_?.service &&
