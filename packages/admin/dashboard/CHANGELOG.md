@@ -1,5 +1,50 @@
 # @medusajs/dashboard
 
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.22.0 or later
+
+### Patch Changes
+
+- [#17112](https://github.com/medusajs/medusa/pull/17112) [`f5a7defac0c0b7bfa7e823d69daa0ff6e76f3819`](https://github.com/medusajs/medusa/commit/f5a7defac0c0b7bfa7e823d69daa0ff6e76f3819) Thanks [@ankit25bcs10610](https://github.com/ankit25bcs10610)! - fix(dashboard): show collection update errors in the admin edit form.
+
+- [#17199](https://github.com/medusajs/medusa/pull/17199) [`665e494019cabd3f4b89cce3242c31f12b657702`](https://github.com/medusajs/medusa/commit/665e494019cabd3f4b89cce3242c31f12b657702) Thanks [@soroush2025](https://github.com/soroush2025)! - feat(dashboard): add Iran's provinces to the country-states data
+
+  Iran (`IR`) had no sub-national entries in `country-states.ts`, so the
+  province select was disabled for Iranian addresses and province-level tax
+  regions could not be created from the dashboard. The 31 ISO 3166-2:IR
+  provinces (`IR-00` Markazi through `IR-30` Alborz) are now included.
+
+- [#17083](https://github.com/medusajs/medusa/pull/17083) [`a49dd4d78fdfad0bba8708bc3ef78e1aaae79123`](https://github.com/medusajs/medusa/commit/a49dd4d78fdfad0bba8708bc3ef78e1aaae79123) Thanks [@Stratkoss](https://github.com/Stratkoss)! - fix(i18n): use Czech genitive plural for counts of 5 and above
+
+- [#17197](https://github.com/medusajs/medusa/pull/17197) [`11e0269bda3769ecd9cff1c1d66bdde4ad4de559`](https://github.com/medusajs/medusa/commit/11e0269bda3769ecd9cff1c1d66bdde4ad4de559) Thanks [@soroush2025](https://github.com/soroush2025)! - fix(dashboard): remove stale keys from the Persian translation
+
+  The Persian (`fa`) translation file contained 18 keys that are not in
+  `en.json`: 15 camelCase `app.search.groups.*` names that were renamed
+  to snake_case, and three tax keys (`taxRegions.create.errors.rateIsRequired`,
+  `taxRegions.create.errors.nameIsRequired`, `taxes.taxRate.editTaxRate`)
+  that were removed from `en.json`. i18next could never reach them, and the
+  translation schema rejects additional properties, so
+  `yarn i18n:validate fa.json` failed.
+
+  No Persian value is modified and no keys are added.
+
+- [#16669](https://github.com/medusajs/medusa/pull/16669) [`7906936a5f360acee5f0b8790919e959c7e4a2eb`](https://github.com/medusajs/medusa/commit/7906936a5f360acee5f0b8790919e959c7e4a2eb) Thanks [@vansh17June](https://github.com/vansh17June)! - fix(dashboard): render refund reason selector in balance settlement refund form
+
+- [#17166](https://github.com/medusajs/medusa/pull/17166) [`bf69d091b2dc3f86655e3067533c953f2138e258`](https://github.com/medusajs/medusa/commit/bf69d091b2dc3f86655e3067533c953f2138e258) Thanks [@sradevski](https://github.com/sradevski)! - fix(dashboard): keep payment provider identifiers that contain underscores, such as Medusa Payments account IDs, and show formatted provider names on order payments
+
+- [#17061](https://github.com/medusajs/medusa/pull/17061) [`d5e01f88a32961fda4550bf54b6014ce4e5a64ba`](https://github.com/medusajs/medusa/commit/d5e01f88a32961fda4550bf54b6014ce4e5a64ba) Thanks [@PINYOPATTANAWASANPORN](https://github.com/PINYOPATTANAWASANPORN)! - fix(dashboard): use display_name from API in regions table countries cell
+
+- [#17118](https://github.com/medusajs/medusa/pull/17118) [`146c46b0ad1146b40595c8ef586c4d5890982603`](https://github.com/medusajs/medusa/commit/146c46b0ad1146b40595c8ef586c4d5890982603) Thanks [@theluckystrike](https://github.com/theluckystrike)! - fix(dashboard): restore dropped placeholders and Trans tags in the ar, el, es, fr and ptPT locales
+
+- Updated dependencies [[`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a), [`c522ce6c070a85ed735fa0e1ea281b7641935a96`](https://github.com/medusajs/medusa/commit/c522ce6c070a85ed735fa0e1ea281b7641935a96), [`0e64e7da490fb3c8b8b6255f28cd76a2508be1a3`](https://github.com/medusajs/medusa/commit/0e64e7da490fb3c8b8b6255f28cd76a2508be1a3)]:
+  - @medusajs/js-sdk@2.22.0
+  - @medusajs/ui@4.2.7
+  - @medusajs/admin-shared@2.22.0
+  - @medusajs/icons@2.22.0
+
 ## 2.21.2
 
 ### Patch Changes

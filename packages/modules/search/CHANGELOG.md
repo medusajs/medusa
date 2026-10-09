@@ -1,5 +1,18 @@
 # @medusajs/search
 
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.22.0 or later
+
+### Patch Changes
+
+- [#17102](https://github.com/medusajs/medusa/pull/17102) [`b561a37343f4132d0f3a243e7722260797c3cf85`](https://github.com/medusajs/medusa/commit/b561a37343f4132d0f3a243e7722260797c3cf85) Thanks [@sradevski](https://github.com/sradevski)! - feat(search): allow replacing the transport of the Medusa Cloud search provider
+
+- Updated dependencies [[`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a), [`14499a2e9309d653c0e4ec6aec3f88079751b4d2`](https://github.com/medusajs/medusa/commit/14499a2e9309d653c0e4ec6aec3f88079751b4d2)]:
+  - @medusajs/framework@2.22.0
+
 ## 2.21.2
 
 ### Patch Changes
