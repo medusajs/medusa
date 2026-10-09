@@ -355,8 +355,8 @@
     "sorting": {
       "alphabeticallyAsc": "A do Z",
       "alphabeticallyDesc": "Z do A",
-      "dateAsc": "Najnovije prvo",
-      "dateDesc": "Najstarije prvo"
+      "dateAsc": "Najstarije prvo",
+      "dateDesc": "Najnovije prvo"
     },
     "radio": {
       "yes": "Da",

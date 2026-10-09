@@ -395,8 +395,8 @@
     "sorting": {
       "alphabeticallyAsc": "Від А до Я",
       "alphabeticallyDesc": "Від Я до А",
-      "dateAsc": "Спочатку новіші",
-      "dateDesc": "Спочатку старіші"
+      "dateAsc": "Спочатку старіші",
+      "dateDesc": "Спочатку новіші"
     },
     "radio": {
       "yes": "Так",
