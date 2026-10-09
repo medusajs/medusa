@@ -1739,226 +1739,226 @@
     }
   },
   "stockLocations": {
-    "domain": "Locations & Shipping",
+    "domain": "लोकेशन और शिपिंग",
     "list": {
-      "description": "Manage your store's stock locations and shipping options.",
-      "noRecordsMessage": "No records",
-      "noRecordsMessageEmpty": "No locations found",
-      "noRecordsMessageFiltered": "No locations found matching the filters"
+      "description": "अपने स्टोर की स्टॉक लोकेशन और शिपिंग विकल्प प्रबंधित करें।",
+      "noRecordsMessage": "कोई रिकॉर्ड नहीं",
+      "noRecordsMessageEmpty": "कोई लोकेशन नहीं मिली",
+      "noRecordsMessageFiltered": "फ़िल्टर से मेल खाने वाली कोई लोकेशन नहीं मिली"
     },
     "create": {
-      "header": "Create Stock Location",
-      "hint": "A stock location is a physical site where products are stored and shipped from.",
-      "successToast": "Location {{name}} was successfully created."
+      "header": "स्टॉक लोकेशन बनाएं",
+      "hint": "स्टॉक लोकेशन एक भौतिक स्थान है, जहाँ उत्पाद रखे जाते हैं और जहाँ से शिप किए जाते हैं।",
+      "successToast": "लोकेशन {{name}} सफलतापूर्वक बनाई गई।"
     },
     "edit": {
-      "header": "Edit Stock Location",
-      "viewInventory": "View inventory",
-      "successToast": "Location {{name}} was successfully updated."
+      "header": "स्टॉक लोकेशन संपादित करें",
+      "viewInventory": "इन्वेंटरी देखें",
+      "successToast": "लोकेशन {{name}} सफलतापूर्वक अपडेट की गई।"
     },
     "delete": {
-      "confirmation": "You are about to delete the stock location \"{{name}}\". This action cannot be undone.",
-      "successToast": "Location \"{{name}}\" was successfully deleted."
+      "confirmation": "आप स्टॉक लोकेशन \"{{name}}\" को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "लोकेशन \"{{name}}\" सफलतापूर्वक हटाई गई।"
     },
     "fulfillmentProviders": {
-      "header": "Fulfillment Providers",
-      "shippingOptionsTooltip": "This dropdown will only consist of providers enabled for this location. Add them to the location if the dropdown is disabled.",
-      "label": "Connected fulfillment providers",
-      "connectedTo": "Connected to {{count}} of {{total}} fulfillment providers",
-      "noProviders": "This Stock Location is not connected to any fulfillment providers.",
-      "action": "Connect Providers",
-      "successToast": "Fulfillment providers for stock location were successfully updated."
+      "header": "फ़ुलफ़िलमेंट प्रोवाइडर",
+      "shippingOptionsTooltip": "इस ड्रॉपडाउन में केवल वे प्रोवाइडर होंगे जो इस लोकेशन के लिए सक्षम हैं। अगर ड्रॉपडाउन अक्षम है, तो उन्हें लोकेशन में जोड़ें।",
+      "label": "जुड़े हुए फ़ुलफ़िलमेंट प्रोवाइडर",
+      "connectedTo": "{{total}} में से {{count}} फ़ुलफ़िलमेंट प्रोवाइडर से जुड़ा है",
+      "noProviders": "यह स्टॉक लोकेशन किसी भी फ़ुलफ़िलमेंट प्रोवाइडर से जुड़ी नहीं है।",
+      "action": "प्रोवाइडर जोड़ें",
+      "successToast": "स्टॉक लोकेशन के फ़ुलफ़िलमेंट प्रोवाइडर सफलतापूर्वक अपडेट किए गए।"
     },
     "fulfillmentSets": {
       "pickup": {
-        "header": "Pickup"
+        "header": "पिकअप"
       },
       "shipping": {
-        "header": "Shipping"
+        "header": "शिपिंग"
       },
       "disable": {
-        "confirmation": "Are you sure that you want to disable \"{{name}}\"? This will delete all associated service zones and shipping options, and cannot be undone.",
-        "pickup": "Pickup was successfully disabled.",
-        "shipping": "Shipping was successfully disabled."
+        "confirmation": "क्या आप वाकई \"{{name}}\" को अक्षम करना चाहते हैं? इससे उससे जुड़े सभी सर्विस ज़ोन और शिपिंग विकल्प हट जाएंगे, और इसे पूर्ववत नहीं किया जा सकता।",
+        "pickup": "पिकअप सफलतापूर्वक अक्षम किया गया।",
+        "shipping": "शिपिंग सफलतापूर्वक अक्षम की गई।"
       },
       "enable": {
-        "pickup": "Pickup was successfully enabled.",
-        "shipping": "Shipping was successfully enabled."
+        "pickup": "पिकअप सफलतापूर्वक सक्षम किया गया।",
+        "shipping": "शिपिंग सफलतापूर्वक सक्षम की गई।"
       }
     },
     "sidebar": {
-      "header": "Shipping Configuration",
+      "header": "शिपिंग कॉन्फ़िगरेशन",
       "shippingProfiles": {
-        "label": "Shipping Profiles",
-        "description": "Group products by shipping requirements"
+        "label": "शिपिंग प्रोफ़ाइल",
+        "description": "शिपिंग ज़रूरतों के आधार पर उत्पादों को समूहित करें"
       },
       "shippingOptionTypes": {
-        "label": "Shipping Option Types",
-        "description": "Group shipping options by types"
+        "label": "शिपिंग विकल्प प्रकार",
+        "description": "शिपिंग विकल्पों को प्रकार के आधार पर समूहित करें"
       }
     },
     "salesChannels": {
-      "header": "Sales Channels",
-      "hint": "Manage the sales channels that are connected to this location.",
-      "label": "Connected sales channels",
-      "connectedTo": "Connected to {{count}} of {{total}} sales channels",
-      "noChannels": "The location is not connected to any sales channels.",
-      "action": "Connect sales channels",
-      "successToast": "Sales channels were successfully updated."
+      "header": "सेल्स चैनल",
+      "hint": "इस लोकेशन से जुड़े सेल्स चैनल प्रबंधित करें।",
+      "label": "जुड़े हुए सेल्स चैनल",
+      "connectedTo": "{{total}} में से {{count}} सेल्स चैनल से जुड़ा है",
+      "noChannels": "यह लोकेशन किसी भी सेल्स चैनल से जुड़ी नहीं है।",
+      "action": "सेल्स चैनल जोड़ें",
+      "successToast": "सेल्स चैनल सफलतापूर्वक अपडेट किए गए।"
     },
     "pickupOptions": {
       "edit": {
-        "header": "Edit Pickup Option"
+        "header": "पिकअप विकल्प संपादित करें"
       }
     },
     "shippingOptions": {
       "create": {
         "shipping": {
-          "header": "Create Shipping Option for {{zone}}",
-          "hint": "Create a new shipping option to define how products are shipped from this location.",
-          "label": "Shipping options",
-          "successToast": "Shipping option {{name}} was successfully created."
+          "header": "{{zone}} के लिए शिपिंग विकल्प बनाएं",
+          "hint": "इस लोकेशन से उत्पाद कैसे शिप किए जाएंगे, यह तय करने के लिए नया शिपिंग विकल्प बनाएं।",
+          "label": "शिपिंग विकल्प",
+          "successToast": "शिपिंग विकल्प {{name}} सफलतापूर्वक बनाया गया।"
         },
         "pickup": {
-          "header": "Create Pickup Option for {{zone}}",
-          "hint": "Create a new pickup option to define how products are picked up from this location.",
-          "label": "Pickup options",
-          "successToast": "Pickup option {{name}} was successfully created."
+          "header": "{{zone}} के लिए पिकअप विकल्प बनाएं",
+          "hint": "इस लोकेशन से उत्पाद कैसे पिकअप किए जाएंगे, यह तय करने के लिए नया पिकअप विकल्प बनाएं।",
+          "label": "पिकअप विकल्प",
+          "successToast": "पिकअप विकल्प {{name}} सफलतापूर्वक बनाया गया।"
         },
         "returns": {
-          "header": "Create a Return Option for {{zone}}",
-          "hint": "Create a new return option to define how products are returned to this location.",
-          "label": "Return options",
-          "successToast": "Return option {{name}} was successfully created."
+          "header": "{{zone}} के लिए रिटर्न विकल्प बनाएं",
+          "hint": "उत्पाद इस लोकेशन पर कैसे लौटाए जाएंगे, यह तय करने के लिए नया रिटर्न विकल्प बनाएं।",
+          "label": "रिटर्न विकल्प",
+          "successToast": "रिटर्न विकल्प {{name}} सफलतापूर्वक बनाया गया।"
         },
         "tabs": {
-          "details": "Details",
-          "prices": "Prices"
+          "details": "विवरण",
+          "prices": "कीमतें"
         },
-        "action": "Create option"
+        "action": "विकल्प बनाएं"
       },
       "delete": {
-        "confirmation": "You are about to delete the shipping option \"{{name}}\". This action cannot be undone.",
-        "successToast": "Shipping option {{name}} was successfully deleted."
+        "confirmation": "आप शिपिंग विकल्प \"{{name}}\" को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+        "successToast": "शिपिंग विकल्प {{name}} सफलतापूर्वक हटाया गया।"
       },
       "edit": {
-        "header": "Edit Shipping Option",
-        "action": "Edit option",
-        "successToast": "Shipping option {{name}} was successfully updated."
+        "header": "शिपिंग विकल्प संपादित करें",
+        "action": "विकल्प संपादित करें",
+        "successToast": "शिपिंग विकल्प {{name}} सफलतापूर्वक अपडेट किया गया।"
       },
       "pricing": {
-        "action": "Edit prices"
+        "action": "कीमतें संपादित करें"
       },
       "conditionalPrices": {
-        "header": "Conditional Prices for {{name}}",
-        "description": "Manage the conditional prices for this shipping option based on the cart item total.",
+        "header": "{{name}} के लिए शर्त-आधारित कीमतें",
+        "description": "कार्ट आइटम के कुल योग के आधार पर इस शिपिंग विकल्प की शर्त-आधारित कीमतें प्रबंधित करें।",
         "attributes": {
-          "cartItemTotal": "Cart item total"
+          "cartItemTotal": "कार्ट आइटम का कुल योग"
         },
         "summaries": {
-          "range": "If <0>{{attribute}}</0> is between <1>{{gte}}</1> and <2>{{lte}}</2>",
-          "greaterThan": "If <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
-          "lessThan": "If <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
+          "range": "यदि <0>{{attribute}}</0> <1>{{gte}}</1> और <2>{{lte}}</2> के बीच है",
+          "greaterThan": "यदि <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
+          "lessThan": "यदि <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
         },
         "actions": {
-          "addPrice": "Add price",
-          "manageConditionalPrices": "Manage conditional prices"
+          "addPrice": "कीमत जोड़ें",
+          "manageConditionalPrices": "शर्त-आधारित कीमतें प्रबंधित करें"
         },
         "rules": {
-          "amount": "Shipping option price",
-          "gte": "Minimum cart item total",
-          "lte": "Maximum cart item total"
+          "amount": "शिपिंग विकल्प की कीमत",
+          "gte": "कार्ट आइटम का न्यूनतम कुल योग",
+          "lte": "कार्ट आइटम का अधिकतम कुल योग"
         },
         "customRules": {
-          "label": "Custom rules",
-          "tooltip": "This conditional price has rules that cannot be managed in the dashboard.",
-          "eq": "Cart item total must equal",
-          "gt": "Cart item total must be greater than",
-          "lt": "Cart item total must be less than"
+          "label": "कस्टम नियम",
+          "tooltip": "इस शर्त-आधारित कीमत में ऐसे नियम हैं जिन्हें डैशबोर्ड में प्रबंधित नहीं किया जा सकता।",
+          "eq": "कार्ट आइटम का कुल योग इसके बराबर होना चाहिए",
+          "gt": "कार्ट आइटम का कुल योग इससे अधिक होना चाहिए",
+          "lt": "कार्ट आइटम का कुल योग इससे कम होना चाहिए"
         },
         "errors": {
-          "amountRequired": "Shipping option price is required",
-          "minOrMaxRequired": "At least one of minimum or maximum cart item total must be provided",
-          "minGreaterThanMax": "Minimum cart item total must be less than or equal to maximum cart item total",
-          "duplicateAmount": "Shipping option price must be unique for each condition",
-          "overlappingConditions": "Conditions must be unique across all price rules"
+          "amountRequired": "शिपिंग विकल्प की कीमत आवश्यक है",
+          "minOrMaxRequired": "कार्ट आइटम का न्यूनतम या अधिकतम कुल योग, इनमें से कम से कम एक देना आवश्यक है",
+          "minGreaterThanMax": "कार्ट आइटम का न्यूनतम कुल योग, अधिकतम कुल योग से कम या उसके बराबर होना चाहिए",
+          "duplicateAmount": "हर शर्त के लिए शिपिंग विकल्प की कीमत अलग होनी चाहिए",
+          "overlappingConditions": "सभी कीमत नियमों में शर्तें अलग-अलग होनी चाहिए"
         }
       },
       "fields": {
         "count": {
-          "shipping_one": "{{count}} shipping option",
-          "shipping_other": "{{count}} shipping options",
-          "pickup_one": "{{count}} pickup option",
-          "pickup_other": "{{count}} pickup options",
-          "returns_one": "{{count}} return option",
-          "returns_other": "{{count}} return options"
+          "shipping_one": "{{count}} शिपिंग विकल्प",
+          "shipping_other": "{{count}} शिपिंग विकल्प",
+          "pickup_one": "{{count}} पिकअप विकल्प",
+          "pickup_other": "{{count}} पिकअप विकल्प",
+          "returns_one": "{{count}} रिटर्न विकल्प",
+          "returns_other": "{{count}} रिटर्न विकल्प"
         },
         "priceType": {
-          "label": "Price type",
+          "label": "कीमत का प्रकार",
           "options": {
             "fixed": {
-              "label": "Fixed",
-              "hint": "The shipping option's price is fixed and does not change based on the order's contents."
+              "label": "फ़िक्स्ड",
+              "hint": "शिपिंग विकल्प की कीमत तय है और ऑर्डर की सामग्री के आधार पर नहीं बदलती।"
             },
             "calculated": {
-              "label": "Calculated",
-              "hint": "The shipping option's price is calculated by the fulfillment provider during checkout."
+              "label": "गणना आधारित",
+              "hint": "शिपिंग विकल्प की कीमत चेकआउट के दौरान फ़ुलफ़िलमेंट प्रोवाइडर द्वारा गणना की जाती है।"
             }
           }
         },
         "enableInStore": {
-          "label": "Enable in store",
-          "hint": "Whether customers can use this option during checkout."
+          "label": "स्टोर में सक्षम करें",
+          "hint": "क्या ग्राहक चेकआउट के दौरान इस विकल्प का उपयोग कर सकते हैं।"
         },
-        "provider": "Fulfillment provider",
-        "profile": "Shipping profile",
-        "type": "Shipping option type",
-        "fulfillmentOption": "Fulfillment option"
+        "provider": "फ़ुलफ़िलमेंट प्रोवाइडर",
+        "profile": "शिपिंग प्रोफ़ाइल",
+        "type": "शिपिंग विकल्प प्रकार",
+        "fulfillmentOption": "फ़ुलफ़िलमेंट विकल्प"
       }
     },
     "serviceZones": {
       "create": {
-        "headerPickup": "Create Service Zone for Pickup from {{location}}",
-        "headerShipping": "Create Service Zone for Shipping from {{location}}",
-        "action": "Create service zone",
-        "successToast": "Service zone {{name}} was successfully created."
+        "headerPickup": "{{location}} से पिकअप के लिए सर्विस ज़ोन बनाएं",
+        "headerShipping": "{{location}} से शिपिंग के लिए सर्विस ज़ोन बनाएं",
+        "action": "सर्विस ज़ोन बनाएं",
+        "successToast": "सर्विस ज़ोन {{name}} सफलतापूर्वक बनाया गया।"
       },
       "edit": {
-        "header": "Edit Service Zone",
-        "successToast": "Service zone {{name}} was successfully updated."
+        "header": "सर्विस ज़ोन संपादित करें",
+        "successToast": "सर्विस ज़ोन {{name}} सफलतापूर्वक अपडेट किया गया।"
       },
       "delete": {
-        "confirmation": "You are about to delete the service zone \"{{name}}\". This action cannot be undone.",
-        "successToast": "Service zone {{name}} was successfully deleted."
+        "confirmation": "आप सर्विस ज़ोन \"{{name}}\" को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+        "successToast": "सर्विस ज़ोन {{name}} सफलतापूर्वक हटाया गया।"
       },
       "manageAreas": {
-        "header": "Manage Areas for {{name}}",
-        "action": "Manage areas",
-        "label": "Areas",
-        "hint": "Select the geographical areas that the service zone covers.",
-        "successToast": "Areas for {{name}} were successfully updated."
+        "header": "{{name}} के क्षेत्र प्रबंधित करें",
+        "action": "क्षेत्र प्रबंधित करें",
+        "label": "क्षेत्र",
+        "hint": "वे भौगोलिक क्षेत्र चुनें जिन्हें यह सर्विस ज़ोन कवर करता है।",
+        "successToast": "{{name}} के क्षेत्र सफलतापूर्वक अपडेट किए गए।"
       },
       "fields": {
-        "noRecords": "There are no service zones to add shipping options to.",
-        "tip": "A service zone is a collection of geographical zones or areas. It's used to restrict available shipping options to a defined set of locations."
+        "noRecords": "शिपिंग विकल्प जोड़ने के लिए कोई सर्विस ज़ोन नहीं है।",
+        "tip": "सर्विस ज़ोन भौगोलिक ज़ोन या क्षेत्रों का एक समूह है। इसका उपयोग उपलब्ध शिपिंग विकल्पों को तय की गई लोकेशन तक सीमित करने के लिए किया जाता है।"
       }
     }
   },
   "shippingProfile": {
-    "domain": "Shipping Profiles",
-    "subtitle": "Group products with similar shipping requirements into profiles.",
+    "domain": "शिपिंग प्रोफ़ाइल",
+    "subtitle": "एक जैसी शिपिंग ज़रूरतों वाले उत्पादों को प्रोफ़ाइल में समूहित करें।",
     "create": {
-      "header": "Create Shipping Profile",
-      "hint": "Create a new shipping profile to group products with similar shipping requirements.",
-      "successToast": "Shipping profile {{name}} was successfully created."
+      "header": "शिपिंग प्रोफ़ाइल बनाएं",
+      "hint": "एक जैसी शिपिंग ज़रूरतों वाले उत्पादों को समूहित करने के लिए नई शिपिंग प्रोफ़ाइल बनाएं।",
+      "successToast": "शिपिंग प्रोफ़ाइल {{name}} सफलतापूर्वक बनाई गई।"
     },
     "delete": {
-      "title": "Delete Shipping Profile",
-      "description": "You are about to delete the shipping profile {{name}}. This action cannot be undone.",
-      "successToast": "Shipping profile {{name}} was successfully deleted."
+      "title": "शिपिंग प्रोफ़ाइल हटाएं",
+      "description": "आप शिपिंग प्रोफ़ाइल {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "successToast": "शिपिंग प्रोफ़ाइल {{name}} सफलतापूर्वक हटाई गई।"
     },
     "tooltip": {
-      "type": "Enter shipping profile type, for example: Heavy, Oversized, Freight-only, etc."
+      "type": "शिपिंग प्रोफ़ाइल का प्रकार लिखें, जैसे: भारी, बड़े आकार का, केवल फ़्रेट आदि।"
     }
   },
   "taxRegions": {
@@ -3046,68 +3046,68 @@
     }
   },
   "taxes": {
-    "domain": "Tax Regions",
-    "domainDescription": "Manage your tax region",
+    "domain": "टैक्स क्षेत्र",
+    "domainDescription": "अपना टैक्स क्षेत्र प्रबंधित करें",
     "countries": {
-      "taxCountriesHint": "Tax settings apply to the listed countries."
+      "taxCountriesHint": "टैक्स सेटिंग्स सूची में दिए गए देशों पर लागू होती हैं।"
     },
     "settings": {
-      "editTaxSettings": "Edit Tax Settings",
-      "taxProviderLabel": "Tax provider",
-      "systemTaxProviderLabel": "System Tax Provider",
-      "calculateTaxesAutomaticallyLabel": "Calculate taxes automatically",
-      "calculateTaxesAutomaticallyHint": "When enabled, tax rates will be calculated automatically and applied to carts. When disabled, taxes must be manually computed at checkout. Manual taxes are recommended for usage with third-party tax providers.",
-      "applyTaxesOnGiftCardsLabel": "Apply taxes on gift cards",
-      "applyTaxesOnGiftCardsHint": "When enabled, taxes will be applied to gift cards at checkout. In some countries, tax regulations require the application of taxes to gift cards upon purchase.",
-      "defaultTaxRateLabel": "Default tax rate",
-      "defaultTaxCodeLabel": "Default tax code"
+      "editTaxSettings": "टैक्स सेटिंग्स संपादित करें",
+      "taxProviderLabel": "टैक्स प्रोवाइडर",
+      "systemTaxProviderLabel": "सिस्टम टैक्स प्रोवाइडर",
+      "calculateTaxesAutomaticallyLabel": "टैक्स अपने-आप गणना करें",
+      "calculateTaxesAutomaticallyHint": "इसे चालू करने पर, टैक्स दरें अपने-आप गणना करके कार्ट पर लागू की जाएंगी। इसे बंद करने पर, चेकआउट के समय टैक्स मैन्युअल रूप से गणना करना होगा। थर्ड-पार्टी टैक्स प्रोवाइडर के साथ मैन्युअल टैक्स की सलाह दी जाती है।",
+      "applyTaxesOnGiftCardsLabel": "गिफ़्ट कार्ड पर टैक्स लागू करें",
+      "applyTaxesOnGiftCardsHint": "इसे चालू करने पर, चेकआउट के समय गिफ़्ट कार्ड पर टैक्स लागू होगा। कुछ देशों में टैक्स नियमों के अनुसार गिफ़्ट कार्ड की खरीद पर टैक्स लगाना आवश्यक है।",
+      "defaultTaxRateLabel": "डिफ़ॉल्ट टैक्स दर",
+      "defaultTaxCodeLabel": "डिफ़ॉल्ट टैक्स कोड"
     },
     "defaultRate": {
-      "sectionTitle": "Default Tax Rate"
+      "sectionTitle": "डिफ़ॉल्ट टैक्स दर"
     },
     "taxRate": {
-      "sectionTitle": "Tax Rates",
-      "createTaxRate": "Create Tax Rate",
-      "createTaxRateHint": "Create a new tax rate for the region.",
-      "deleteRateDescription": "You are about to delete the tax rate {{name}}. This action cannot be undone.",
-      "editRateAction": "Edit rate",
-      "editOverridesAction": "Edit overrides",
-      "editOverridesTitle": "Edit Tax Rate Overrides",
-      "editOverridesHint": "Specify the overrides for the tax rate.",
-      "deleteTaxRateWarning": "You are about to delete the tax rate {{name}}. This action cannot be undone.",
-      "productOverridesLabel": "Product overrides",
-      "productOverridesHint": "Specify the product overrides for the tax rate.",
-      "addProductOverridesAction": "Add product overrides",
-      "productTypeOverridesLabel": "Product type overrides",
-      "productTypeOverridesHint": "Specify the product type overrides for the tax rate.",
-      "addProductTypeOverridesAction": "Add product type overrides",
-      "shippingOptionOverridesLabel": "Shipping option overrides",
-      "shippingOptionOverridesHint": "Specify the shipping option overrides for the tax rate.",
-      "addShippingOptionOverridesAction": "Add shipping option overrides",
-      "productOverridesHeader": "Products",
-      "productTypeOverridesHeader": "Product Types",
-      "shippingOptionOverridesHeader": "Shipping Options"
+      "sectionTitle": "टैक्स दरें",
+      "createTaxRate": "टैक्स दर बनाएं",
+      "createTaxRateHint": "क्षेत्र के लिए नई टैक्स दर बनाएं।",
+      "deleteRateDescription": "आप टैक्स दर {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "editRateAction": "दर संपादित करें",
+      "editOverridesAction": "ओवरराइड संपादित करें",
+      "editOverridesTitle": "टैक्स दर ओवरराइड संपादित करें",
+      "editOverridesHint": "टैक्स दर के लिए ओवरराइड तय करें।",
+      "deleteTaxRateWarning": "आप टैक्स दर {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+      "productOverridesLabel": "उत्पाद ओवरराइड",
+      "productOverridesHint": "टैक्स दर के लिए उत्पाद ओवरराइड तय करें।",
+      "addProductOverridesAction": "उत्पाद ओवरराइड जोड़ें",
+      "productTypeOverridesLabel": "उत्पाद प्रकार ओवरराइड",
+      "productTypeOverridesHint": "टैक्स दर के लिए उत्पाद प्रकार ओवरराइड तय करें।",
+      "addProductTypeOverridesAction": "उत्पाद प्रकार ओवरराइड जोड़ें",
+      "shippingOptionOverridesLabel": "शिपिंग विकल्प ओवरराइड",
+      "shippingOptionOverridesHint": "टैक्स दर के लिए शिपिंग विकल्प ओवरराइड तय करें।",
+      "addShippingOptionOverridesAction": "शिपिंग विकल्प ओवरराइड जोड़ें",
+      "productOverridesHeader": "उत्पाद",
+      "productTypeOverridesHeader": "उत्पाद प्रकार",
+      "shippingOptionOverridesHeader": "शिपिंग विकल्प"
     }
   },
   "locations": {
-    "domain": "Locations",
-    "editLocation": "Edit location",
-    "addSalesChannels": "Add sales channels",
-    "noLocationsFound": "No locations found",
-    "selectLocations": "Select locations that stock the item.",
-    "deleteLocationWarning": "You are about to delete the location {{name}}. This action cannot be undone.",
-    "removeSalesChannelsWarning_one": "You are about to remove {{count}} sales channel from the location.",
-    "removeSalesChannelsWarning_other": "You are about to remove {{count}} sales channels from the location.",
+    "domain": "लोकेशन",
+    "editLocation": "लोकेशन संपादित करें",
+    "addSalesChannels": "सेल्स चैनल जोड़ें",
+    "noLocationsFound": "कोई लोकेशन नहीं मिली",
+    "selectLocations": "वे लोकेशन चुनें जहाँ यह आइटम स्टॉक में है।",
+    "deleteLocationWarning": "आप लोकेशन {{name}} को हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।",
+    "removeSalesChannelsWarning_one": "आप लोकेशन से {{count}} सेल्स चैनल निकालने वाले हैं।",
+    "removeSalesChannelsWarning_other": "आप लोकेशन से {{count}} सेल्स चैनल निकालने वाले हैं।",
     "toast": {
-      "create": "Location created successfully",
-      "update": "Location updated successfully",
-      "removeChannel": "Sales channel removed successfully"
+      "create": "लोकेशन सफलतापूर्वक बनाई गई",
+      "update": "लोकेशन सफलतापूर्वक अपडेट की गई",
+      "removeChannel": "सेल्स चैनल सफलतापूर्वक निकाला गया"
     }
   },
   "reservations": {
-    "domain": "Reservations",
-    "subtitle": "Manage the reserved quantity of inventory items.",
-    "deleteWarning": "You are about to delete a reservation. This action cannot be undone."
+    "domain": "आरक्षण",
+    "subtitle": "इन्वेंटरी आइटम की आरक्षित मात्रा प्रबंधित करें।",
+    "deleteWarning": "आप एक आरक्षण हटाने वाले हैं। इस क्रिया को पूर्ववत नहीं किया जा सकता।"
   },
   "salesChannels": {
     "domain": "Sales Channels",
