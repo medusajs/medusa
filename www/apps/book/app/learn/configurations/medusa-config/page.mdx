@@ -803,7 +803,7 @@ The `projectConfig.http.authMethodsPerActor` configuration specifies the support
 
 For example, you can allow Google login for `customers`, and allow email/password logins for `users` in the admin.
 
-`authMethodsPerActor` is a an object whose key is the actor type (for example, `user`), and the value is an array of supported auth provider IDs (for example, `emailpass`).
+`authMethodsPerActor` is an object whose key is the actor type (for example, `user`), and the value is an array of supported auth provider IDs (for example, `emailpass`).
 
 <Note>
 
@@ -830,7 +830,7 @@ module.exports = defineConfig({
 })
 ```
 
-The above configurations allow admin users to login using email/password, and customers to login using email/password and Google.
+This configuration allows admin users to log in with an email and password, and customers to log in with an email and password or with Google.
 
 #### http.restrictedFields
 
