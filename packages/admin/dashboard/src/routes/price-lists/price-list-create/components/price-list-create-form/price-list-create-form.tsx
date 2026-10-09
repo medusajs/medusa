@@ -72,6 +72,7 @@ export const PriceListCreateForm = ({
       products: {},
       rules: {
         customer_group_id: [],
+        customer_group_operator: "in",
       },
     },
     resolver: zodResolver(PricingCreateSchema),
@@ -82,8 +83,16 @@ export const PriceListCreateForm = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     const { rules, products } = data
 
-    const rulesPayload = rules?.customer_group_id?.length
-      ? { "customer.groups.id": rules.customer_group_id.map((cg) => cg.id) }
+    const customerGroupIds = rules?.customer_group_id?.map((cg) => cg.id)
+    const customerGroupOperator = rules?.customer_group_operator ?? "in"
+
+    const rulesPayload = customerGroupIds?.length
+      ? {
+          "customer.groups.id":
+            customerGroupOperator === "nin"
+              ? { operator: "nin" as const, value: customerGroupIds }
+              : customerGroupIds,
+        }
       : undefined
 
     const prices = exctractPricesFromProducts(products, regions)
