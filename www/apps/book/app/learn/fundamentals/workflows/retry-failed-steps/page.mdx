@@ -14,7 +14,7 @@ By default, when a step fails, the workflow execution stops, and the workflow is
 
 When a step fails, you can configure the workflow engine to automatically retry the step a specified number of times before marking the workflow as failed. This can help improve the reliability and resilience of your workflows.
 
-You can also configure the interval between retries, awllowing you to wait for a certain period before attempting the step again. This is useful when the failure is due to a temporary issue that may resolve itself after some time.
+You can also configure the interval between retries, allowing you to wait for a certain period before attempting the step again. This is useful when the failure is due to a temporary issue that may resolve itself after some time.
 
 For example, if a step captures a payment, you may want to retry it daily until the payment is successful or the maximum number of retries is reached.
 
