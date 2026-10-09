@@ -2,7 +2,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { Button, clx, Heading, Input, Switch, toast } from "@medusajs/ui"
+import { XMarkMini } from "@medusajs/icons"
+import {
+  Button,
+  clx,
+  Heading,
+  IconButton,
+  Input,
+  Switch,
+  toast,
+} from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 
 import { Form } from "../../../../../components/common/form"
@@ -40,7 +49,11 @@ export function OrderCreateShipmentForm({
     resolver: zodResolver(CreateShipmentSchema),
   })
 
-  const { fields: labels, append } = useFieldArray({
+  const {
+    fields: labels,
+    append,
+    remove,
+  } = useFieldArray({
     name: "labels",
     control: form.control,
   })
@@ -100,7 +113,7 @@ export function OrderCreateShipmentForm({
                       <div
                         key={label.id}
                         className={clx(
-                          "grid grid-cols-1 gap-x-4 md:grid-cols-3",
+                          "grid grid-cols-1 gap-x-4 md:grid-cols-[repeat(3,minmax(0,1fr))_auto]",
                           { "max-md:pt-4": index > 0 }
                         )}
                       >
@@ -168,6 +181,15 @@ export function OrderCreateShipmentForm({
                             )
                           }}
                         />
+                        <IconButton
+                          type="button"
+                          variant="transparent"
+                          className="text-ui-fg-muted mb-2 self-end justify-self-end"
+                          aria-label={t("actions.remove")}
+                          onClick={() => remove(index)}
+                        >
+                          <XMarkMini />
+                        </IconButton>
                       </div>
                     ))}
                   </div>
