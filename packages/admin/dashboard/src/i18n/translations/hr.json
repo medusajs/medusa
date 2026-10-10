@@ -1220,24 +1220,24 @@
       "newGuestOwnerDescription": "Adresa e-pošte neregistriranog kupca na kojeg se prenosi narudžba. Ako takav kupac ne postoji, izradit će se novi neregistrirani kupac."
     },
     "payment": {
-      "title": "Uplate",
-      "isReadyToBeCaptured": "Uplata <0/> spremna je za naplatu.",
-      "totalPaidByCustomer": "Ukupno plaćeno od strane kupca",
+      "title": "Plaćanja",
+      "isReadyToBeCaptured": "Plaćanje <0/> spremno je za naplatu.",
+      "totalPaidByCustomer": "Kupac je ukupno platio",
       "totalPending": "Preostalo za naplatu",
       "storeCreditRefund": "Povrat sredstava na kredit trgovine",
       "totalStoreCreditRefunds": "Ukupno vraćeno na kredit trgovine",
-      "capture": "Naplati uplatu",
+      "capture": "Naplati",
       "capture_short": "Naplati",
       "refund": "Povrat sredstava",
       "markAsPaid": "Označi kao plaćeno",
-      "statusLabel": "Status uplate",
-      "statusTitle": "Status uplate",
+      "statusLabel": "Status plaćanja",
+      "statusTitle": "Status plaćanja",
       "status": {
         "notPaid": "Nije plaćeno",
         "authorized": "Autorizirano",
         "partiallyAuthorized": "Djelomično autorizirano",
-        "awaiting": "Čekanje",
-        "pending": "Na čekanju",
+        "awaiting": "Čeka plaćanje",
+        "pending": "Čeka naplatu",
         "captured": "Naplaćeno",
         "partiallyRefunded": "Djelomično vraćeno",
         "partiallyCaptured": "Djelomično naplaćeno",
@@ -1245,16 +1245,16 @@
         "canceled": "Otkazano",
         "requiresAction": "Zahtijeva radnju"
       },
-      "capturePayment": "Uplata od {{amount}} bit će naplaćena.",
-      "capturePaymentSuccess": "Uplata od {{amount}} uspješno je naplaćena",
-      "markAsPaidPayment": "Uplata od {{amount}} će biti označena kao plaćena.",
-      "markAsPaidPaymentSuccess": "Uplata od {{amount}} uspješno označena kao plaćena",
+      "capturePayment": "Bit će naplaćeno {{amount}}.",
+      "capturePaymentSuccess": "Uspješno naplaćeno {{amount}}",
+      "markAsPaidPayment": "Iznos od {{amount}} bit će označen kao plaćen.",
+      "markAsPaidPaymentSuccess": "Iznos od {{amount}} uspješno je označen kao plaćen",
       "createRefund": "Kreiraj povrat sredstava",
       "refundPaymentSuccess": "Povrat sredstava u iznosu {{amount}} uspješno je izvršen",
       "createRefundWrongQuantity": "Količina treba biti broj između 1 i {{number}}",
       "refundAmount": "Povrat sredstava {{ amount }}",
       "paymentLink": "Kopiraj poveznicu za plaćanje za {{ amount }}",
-      "selectPaymentToRefund": "Odaberite uplatu za povrat sredstava",
+      "selectPaymentToRefund": "Odaberite plaćanje za povrat sredstava",
       "pendingAuthorization": "Plaćanje čeka autorizaciju pružatelja plaćanja.",
       "checkStatus": "Provjeri status",
       "checkStatusSuccess": "Plaćanje je uspješno autorizirano.",
@@ -1317,7 +1317,7 @@
       "returnTotal": "Ukupno za povrat",
       "inboundTotal": "Ukupno ulazno",
       "estDifference": "Procijenjena razlika",
-      "outstandingAmount": "Neplaćeni iznos",
+      "outstandingAmount": "Nepodmireni iznos",
       "reason": "Razlog",
       "reasonHint": "Odaberite razlog zbog kojeg kupac želi vratiti artikle.",
       "note": "Napomena",
@@ -1542,8 +1542,8 @@
     "refund": {
       "title": "Kreiraj povrat sredstava",
       "sendNotificationHint": "Obavijestite kupca o izvršenom povratu sredstava.",
-      "systemPayment": "Sustavska uplata",
-      "systemPaymentDesc": "Jedna ili više vaših uplata je sustavska uplata. Imajte na umu da Medusa ne upravlja naplatom ni povratom sredstava za takve uplate.",
+      "systemPayment": "Sustavsko plaćanje",
+      "systemPaymentDesc": "Jedno ili više vaših plaćanja je sustavsko plaćanje. Imajte na umu da Medusa ne upravlja naplatom ni povratom sredstava za takva plaćanja.",
       "error": {
         "amountToLarge": "Nije moguće vratiti više od originalnog iznosa narudžbe.",
         "amountNegative": "Iznos povrata mora biti pozitivan broj.",
@@ -1582,9 +1582,9 @@
           "title": "Narudžba otkazana"
         },
         "payment": {
-          "awaiting": "Čeka se uplata",
-          "captured": "Uplata naplaćena",
-          "canceled": "Uplata otkazana",
+          "awaiting": "Čeka plaćanje",
+          "captured": "Plaćanje naplaćeno",
+          "canceled": "Plaćanje otkazano",
           "refunded": "Sredstva vraćena"
         },
         "fulfillment": {
@@ -1651,7 +1651,7 @@
     "markAsPaid": {
       "label": "Označi kao plaćeno",
       "warningTitle": "Označi kao plaćeno",
-      "warningDescription": "Uskoro ćete označiti nacrt narudžbe kao plaćen. Ova radnja se ne može poništiti, a kasnije više neće biti moguće naplatiti uplatu."
+      "warningDescription": "Upravo ćete označiti nacrt narudžbe kao plaćen. Ova radnja se ne može poništiti, a kasnije više neće biti moguće izvršiti naplatu."
     },
     "status": {
       "open": "Otvoreno",
@@ -1861,7 +1861,7 @@
             },
             "calculated": {
               "label": "Izračunata cijena",
-              "hint": "Cijenu opcije dostave izračunava pružatelj otpreme pri naplati."
+              "hint": "Cijenu opcije dostave izračunava pružatelj otpreme pri plaćanju."
             }
           }
         },
@@ -3452,7 +3452,7 @@
     "orders": "Narudžbe",
     "account": "Račun",
     "total": "Ukupno narudžbe",
-    "paidTotal": "Ukupno zabilježeno",
+    "paidTotal": "Ukupno plaćeno",
     "creditTotal": "Ukupno kreditne stavke",
     "totalExclTax": "Ukupno bez poreza",
     "subtotal": "Međuzbroj",
