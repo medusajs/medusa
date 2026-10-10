@@ -2,7 +2,7 @@ import { logger } from "@medusajs/framework/logger"
 import { MedusaContainer } from "@medusajs/framework/types"
 import { GracefulShutdownServer, promiseAll } from "@medusajs/framework/utils"
 import express from "express"
-import getPort from "get-port"
+import type { AddressInfo } from "net"
 import { resolve } from "path"
 import { applyEnvVarsToProcess, execOrTimeout } from "./utils"
 
@@ -26,7 +26,7 @@ async function bootstrapApp({
       expressApp: app,
     })
 
-    const PORT = process.env.PORT ? parseInt(process.env.PORT) : await getPort()
+    const PORT = process.env.PORT ? parseInt(process.env.PORT) : 0
 
     return {
       shutdown,
@@ -104,12 +104,13 @@ export async function startApp({
           return reject(err)
         })
         .on("listening", () => {
-          process.send?.(port)
+          const boundPort = (server.address() as AddressInfo).port
+          process.send?.(boundPort)
 
           resolve({
             shutdown,
             container,
-            port,
+            port: boundPort,
           })
         })
 
