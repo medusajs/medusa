@@ -71,4 +71,4 @@
 "create-medusa-app": minor
 ---
 
-chore: drop Node.js 20 support and require Node.js v22.15.0 or later
+chore: drop Node.js 20 support and require Node.js v22.22.0 or later

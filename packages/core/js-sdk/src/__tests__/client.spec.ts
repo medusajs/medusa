@@ -318,6 +318,26 @@ describe("Client", () => {
     })
   })
 
+  describe("Locale", () => {
+    it("should warn instead of throwing when setLocale is called outside the browser", () => {
+      // Mimic a server environment, where `window` is not declared at all
+      delete (global as any).window
+
+      const logger = {
+        error: jest.fn(),
+        warn: jest.fn(),
+        info: jest.fn(),
+        debug: jest.fn(),
+      }
+      const serverClient = new Client({ baseUrl, logger })
+
+      expect(() => serverClient.setLocale("fr-FR")).not.toThrow()
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining("setLocale is not available")
+      )
+    })
+  })
+
   describe("Custom Storage", () => {
     const mockSyncStorage = {
       storage: new Map<string, string>(),

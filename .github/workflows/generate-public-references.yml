@@ -24,6 +24,13 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch'}}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
         with:
@@ -102,6 +109,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
+          token: ${{ steps.app-token.outputs.token }}
           commit-message: "chore(docs): Generated References (automated)"
           base: "develop"
           title: "chore(docs): Generated References (automated)"
@@ -119,6 +127,13 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
         with:
@@ -193,6 +208,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
+          token: ${{ steps.app-token.outputs.token }}
           commit-message: "chore(docs): Generated API Reference (automated)"
           base: "develop"
           title: "chore(docs): Updated API Reference (automated)"
@@ -209,6 +225,13 @@ jobs:
     name: Generate DML JSON files
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
         with:
@@ -252,6 +275,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
+          token: ${{ steps.app-token.outputs.token }}
           commit-message: "chore(docs): Generated DML JSON files (automated)"
           title: "chore(docs): Generated DML JSON files (automated)"
           body: "This PR holds all generated DML JSON files for the upcoming release."
@@ -264,6 +288,13 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'ui' }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
         with:
@@ -319,6 +350,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
+          token: ${{ steps.app-token.outputs.token }}
           commit-message: "chore(docs): Generated + Updated UI Reference (automated)"
           base: "develop"
           title: "chore(docs): Updated UI Reference (automated)"

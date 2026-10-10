@@ -12,7 +12,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=22.15.0"
+    "node": ">=22.22.0"
   },
   "publishConfig": {
     "access": "public"

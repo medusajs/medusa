@@ -18,7 +18,7 @@
     "!dist/**/__fixtures__"
   ],
   "engines": {
-    "node": ">=22.15.0"
+    "node": ">=22.22.0"
   },
   "author": "Medusa",
   "license": "SEE LICENSE IN LICENSE",

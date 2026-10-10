@@ -4,7 +4,7 @@ You are an AI coding agent. The prompt below sets up, verifies, and extends [Med
 
 Prefer the [Cloud CLI (`mcloud`)](../cli/page.mdx) for every Cloud operation you can run yourself, and direct the user to the [Cloud dashboard](https://cloud.medusajs.com) only for the actions the CLI doesn't cover.
 
-The prompt's reference section is an extract of the API, not all of it. Query the [Medusa MCP server](!docs!/learn/introduction/build-with-llms-ai/mcp-server) or fetch the guides at https://docs.medusajs.com for anything it leaves out.
+The prompt's reference section is an extract of the API, not all of it. Query the [Docs MCP server](!docs!/learn/introduction/build-with-llms-ai/docs-mcp-server) or fetch the guides at https://docs.medusajs.com for anything it leaves out.
 
 ````md title="Medusa Search Prompt" noLineNumbers
 <role>
@@ -121,7 +121,7 @@ Use the Cloud CLI for every Cloud operation it covers, and
 pass `--json` whenever you parse the output.
 
 The commands below are the ones this task needs. For any
-other command, flag, or output shape, ask the Medusa MCP
+other command, flag, or output shape, ask the Docs MCP
 server or fetch the CLI reference at
 https://docs.medusajs.com/cloud/cli, and read
 https://docs.medusajs.com/cloud/cli/agents for the CLI's
@@ -197,7 +197,7 @@ The snippets below are the API surface this task uses. Copy
 their shape rather than inventing one.
 
 They're an extract, not the full API. For anything they
-don't cover, ask the Medusa MCP server with its
+don't cover, ask the Docs MCP server with its
 `ask_medusa_question` tool, or fetch the guide from
 https://docs.medusajs.com. Do that rather than inferring an
 option, a field type, or a method signature from the
@@ -239,7 +239,7 @@ export const brandIndex = defineSearchIndex({
 })
 ```
 
-Use the Medusa MCP server or query the docs for more
+Use the Docs MCP server or query the docs for more
 information on defining search indexes, available fields,
 modifiers, and settings.
 
@@ -512,7 +512,7 @@ registration must stay behind the development check.
 
 ## Useful Documentation Links
 
-Query the Medusa MCP server or fetch these guides for the
+Query the Docs MCP server or fetch these guides for the
 details this reference leaves out:
 
 - Index definitions, `graphSeed`, `graphConsume`, and custom
@@ -548,7 +548,7 @@ details this reference leaves out:
    search client, and any third-party search integration.
 2. If the Medusa version is below v2.21.1, stop and tell the
    user they need to upgrade first. If the user confirms the
-   update, update their project for them. Use the Medusa MCP
+   update, update their project for them. Use the Docs MCP
    to retrieve update instructions based on their version, or
    retrieve the release details from GitHub at
    https://github.com/medusajs/medusa/releases
@@ -662,7 +662,7 @@ details this reference leaves out:
   prompt reads as a hung command rather than an error, since
   the command keeps waiting with no output.
 - Consult the Medusa documentation at
-  https://docs.medusajs.com or the Medusa MCP server for any
+  https://docs.medusajs.com or the Docs MCP server for any
   API details you need, including the index definition
   properties, field types and modifiers, the options of
   `graphSeed` and `graphConsume`, and the options of
@@ -746,7 +746,7 @@ relevance checks. Write "None" when the list is empty.
 
 ## Reference
 
-Ask the [Medusa MCP server](!docs!/learn/introduction/build-with-llms-ai/mcp-server) or fetch the guides below for anything the prompt's own reference section leaves out. The prompt tells the agent to do the same rather than infer an API from its snippets.
+Ask the [Docs MCP server](!docs!/learn/introduction/build-with-llms-ai/docs-mcp-server) or fetch the guides below for anything the prompt's own reference section leaves out. The prompt tells the agent to do the same rather than infer an API from its snippets.
 
 - [Medusa Search](./page.mdx): the guide this prompt comes from, including the index status table and the local development setup.
 - [Search settings](./settings/page.mdx): the settings of an index, a field, and a query, such as typo tolerance.

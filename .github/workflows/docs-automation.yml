@@ -25,13 +25,18 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Use a PAT so the created PR triggers other workflows
-          # (the default GITHUB_TOKEN cannot trigger workflow runs)
-          token: ${{ secrets.REFERENCE_PAT }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -105,7 +110,7 @@ jobs:
         id: existing-pr
         if: steps.check.outputs.needs_docs == 'true'
         env:
-          GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REPO: ${{ github.repository }}
         run: |
           # The docs/release-docs-staging branch is long-lived: its PR is reused
@@ -333,7 +338,7 @@ jobs:
       - name: Create or update Pull Request
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
         env:
-          GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REPO: ${{ github.repository }}
           PR_NUMBER: ${{ steps.existing-pr.outputs.number }}
           # The branch is long-lived, so the title stays static

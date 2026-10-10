@@ -21,6 +21,28 @@ If you, as a community contributor, wish to work on more extensive features, ple
 1. Before you start working on a change please make sure that there is an issue for what you will be working on. You can either find and [existing issue](https://github.com/medusajs/medusa/issues) or [open a new issue](https://github.com/medusajs/medusa/issues/new) if none exists. Doing this makes sure that others can contribute with thoughts or suggest alternatives, ultimately making sure that we only add changes that make
 
 2. When you are ready to start working on a change you should first [fork the Medusa repo](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) and [branch out](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository) from the `develop` branch.
+
+After cloning, keep the remotes explicit so that changes are fetched from Medusa while branches and pushes stay on your fork. If you cloned `medusajs/medusa` directly, rename its `origin` remote first:
+
+```bash
+git remote rename origin upstream
+git remote add origin https://github.com/<your-github-username>/medusa.git
+git fetch upstream
+git checkout develop
+git pull upstream develop
+```
+
+If you cloned your fork, keep its existing `origin` remote and add only the upstream remote:
+
+```bash
+git remote add upstream https://github.com/medusajs/medusa.git
+git fetch upstream
+git checkout develop
+git pull upstream develop
+```
+
+Before starting work, verify the configuration with `git remote -v`. `origin` should point to your fork and `upstream` should point to `https://github.com/medusajs/medusa.git`.
+
 3. Make your changes.
 4. [Open a pull request towards the develop branch in the Medusa repo](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork). Within a couple of days a Medusa team member will review, comment and eventually approve your PR.
 

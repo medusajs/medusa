@@ -28,6 +28,7 @@ import {
 } from "../../../../../hooks/api"
 import { currencies } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
+import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../../../../../lib/orders"
 
@@ -288,7 +289,7 @@ export const OrderBalanceSettlementForm = ({
                               )}
                               {" - "}
                             </span>
-                            <span>{payment.provider_id}</span>
+                            <span>{formatProvider(payment.provider_id)}</span>
                             <span> - ({payment.id.replace("pay_", "")})</span>
                           </Select.Item>
                         )

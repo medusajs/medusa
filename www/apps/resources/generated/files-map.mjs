@@ -2288,6 +2288,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/query/metadata-filtering"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/query/not-assignable-type/page.mdx",
+    "pathname": "/troubleshooting/query/not-assignable-type"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/query/service-list/page.mdx",
     "pathname": "/troubleshooting/query/service-list"
   },

@@ -9,7 +9,7 @@ jest.mock("@medusajs/telemetry", () => ({ track: jest.fn() }))
 
 jest.mock("@medusajs/utils", () => ({
   isNodeVersionSupported: jest.fn(() => true),
-  MIN_SUPPORTED_NODE_VERSION: "22.15.0",
+  MIN_SUPPORTED_NODE_VERSION: "22.22.0",
 }))
 
 jest.mock("../../reporter", () => ({
