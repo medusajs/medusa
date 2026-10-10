@@ -259,13 +259,7 @@ To test out the Redis Locking Module Provider, start the Medusa application:
 npm run dev
 ```
 
-You'll see the following message logged in the terminal:
-
-```bash
-info:    Connection to Redis in "locking-redis" provider established
-```
-
-This message indicates that the Redis Locking Module Provider has successfully connected to the Redis server.
+The Redis Locking Module Provider connects to the Redis server the first time it acquires a lock, not when the application starts. So, Medusa doesn't log a connection message on startup. If the Redis server is unreachable, you'll see an error when the first lock is acquired.
 
 If you set the `is_default` flag to `true` in the provider options or you only registered the Redis Locking Module Provider, the Locking Module will use it by default for all locking operations.
 

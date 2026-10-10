@@ -439,6 +439,10 @@ export class RedisLockingProvider implements ILockingProvider {
     } while (cursor !== "0")
   }
 
+  async shutdown(): Promise<void> {
+    this.redisClient.disconnect()
+  }
+
   private async getTimeout(
     seconds: number,
     cancellationToken: { cancelled: boolean }
