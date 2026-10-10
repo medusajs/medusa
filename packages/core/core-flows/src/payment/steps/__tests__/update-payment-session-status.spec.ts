@@ -77,6 +77,32 @@ describe("updatePaymentSessionStatusStep", () => {
     expect(updatePaymentSession).not.toHaveBeenCalled()
   })
 
+  it.each([PaymentSessionStatus.AUTHORIZED, PaymentSessionStatus.CAPTURED])(
+    "does not overwrite a session that is already %s",
+    async (status) => {
+      const { container, updatePaymentSession } = buildContainer({
+        id: "payses_1",
+        status,
+      })
+
+      const workflow = createWorkflow(
+        `update-session-status-settled-${status}`,
+        () => {
+          return new WorkflowResponse(
+            updatePaymentSessionStatusStep({
+              id: "payses_1",
+              status: PaymentSessionStatus.ERROR,
+            })
+          )
+        }
+      )
+
+      await workflow(container).run()
+
+      expect(updatePaymentSession).not.toHaveBeenCalled()
+    }
+  )
+
   it("does nothing without a session id", async () => {
     const { container, retrievePaymentSession, updatePaymentSession } =
       buildContainer({ id: "payses_1", status: PaymentSessionStatus.PENDING })

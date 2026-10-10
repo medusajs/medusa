@@ -9,6 +9,16 @@ export type UpdatePaymentSessionStatusStepInput = {
 
 export const updatePaymentSessionStatusStepId = "update-payment-session-status"
 
+// Webhooks aren't guaranteed to arrive in order, so a status reported for an
+// earlier attempt can show up after the payment has settled. Only a session
+// that is still in flight is updated, which keeps a late failure or
+// cancelation from overwriting an authorized or captured session.
+const UPDATABLE_SESSION_STATUSES = [
+  PaymentSessionStatus.PENDING,
+  PaymentSessionStatus.REQUIRES_MORE,
+  PaymentSessionStatus.PENDING_AUTHORIZATION,
+]
+
 export const updatePaymentSessionStatusStep = createStep(
   updatePaymentSessionStatusStepId,
   async (input: UpdatePaymentSessionStatusStepInput, { container }) => {
@@ -22,7 +32,12 @@ export const updatePaymentSessionStatusStep = createStep(
 
     const session = await paymentModule.retrievePaymentSession(input.id)
 
-    if (session.status === input.status) {
+    if (
+      session.status === input.status ||
+      !UPDATABLE_SESSION_STATUSES.includes(
+        session.status as PaymentSessionStatus
+      )
+    ) {
       return new StepResponse(void 0)
     }
 
