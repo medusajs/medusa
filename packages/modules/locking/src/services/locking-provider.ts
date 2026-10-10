@@ -34,6 +34,24 @@ export default class LockingProviderService {
     return `${(providerClass as any).identifier}`
   }
 
+  async shutdown(): Promise<void> {
+    const providerKeys = Object.keys(this.__container__).filter((key) =>
+      key.startsWith(LockingProviderRegistrationPrefix)
+    )
+
+    for (const key of providerKeys) {
+      try {
+        await this.__container__[key].shutdown?.()
+      } catch (err) {
+        this.#logger.error(
+          `An error occurred while shutting down the locking provider "${key.slice(
+            LockingProviderRegistrationPrefix.length
+          )}": ${err.message}`
+        )
+      }
+    }
+  }
+
   public retrieveProviderRegistration(providerId: string): ILockingProvider {
     try {
       return this.__container__[

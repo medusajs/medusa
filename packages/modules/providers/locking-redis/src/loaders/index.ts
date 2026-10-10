@@ -6,7 +6,6 @@ import Redis from "ioredis"
 
 export default async ({
   container,
-  logger,
   options,
   moduleOptions,
 }: ProviderLoaderOptions): Promise<void> => {
@@ -19,20 +18,12 @@ export default async ({
     )
   }
 
+  // The connection opens on the first command. Loads that never take a lock,
+  // such as migrations, then don't leave a socket open.
   const connection = new Redis(redisUrl, {
-    // Lazy connect to properly handle connection errors
     lazyConnect: true,
     ...(redisOptions ?? {}),
   })
-
-  try {
-    await connection.connect()
-    logger?.info(`Connection to Redis in "locking-redis" provider established`)
-  } catch (err) {
-    logger?.error(
-      `An error occurred while connecting to Redis in provider "locking-redis": ${err}`
-    )
-  }
 
   container.register({
     redisClient: asValue(connection),
