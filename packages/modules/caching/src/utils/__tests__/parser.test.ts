@@ -305,6 +305,41 @@ describe("CacheInvalidationParser", () => {
       })
     })
 
+    it("should detect entities whose numeric id is 0", () => {
+      const product = {
+        id: "prod_123",
+        title: "Test Product",
+        collection: {
+          id: 0,
+          title: "CMS Collection",
+        },
+      }
+
+      const entities = parser.parseObjectForEntities(product)
+
+      expect(entities).toHaveLength(2)
+      expect(entities).toContainEqual({
+        type: "ProductCollection",
+        id: 0,
+        isInArray: false,
+      })
+    })
+
+    it("should still ignore entities with an empty or missing id", () => {
+      const product = {
+        id: "prod_123",
+        title: "Test Product",
+        collection: { id: "", title: "No id" },
+        variants: [{ id: null, title: "No id" }],
+      }
+
+      const entities = parser.parseObjectForEntities(product)
+
+      expect(entities).toEqual([
+        { type: "Product", id: "prod_123", isInArray: false },
+      ])
+    })
+
     it("should not throw on numeric ids that match no known type", () => {
       const product = {
         id: "prod_123",
