@@ -368,8 +368,8 @@
     "sorting": {
       "alphabeticallyAsc": "A till Ö",
       "alphabeticallyDesc": "Ö till A",
-      "dateAsc": "Nyaste först",
-      "dateDesc": "Äldsta först"
+      "dateAsc": "Äldsta först",
+      "dateDesc": "Nyaste först"
     },
     "radio": {
       "yes": "Ja",

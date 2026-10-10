@@ -395,8 +395,8 @@
     "sorting": {
       "alphabeticallyAsc": "A iki Z",
       "alphabeticallyDesc": "Z iki A",
-      "dateAsc": "Naujausi viršuje",
-      "dateDesc": "Seniausi viršuje"
+      "dateAsc": "Seniausi viršuje",
+      "dateDesc": "Naujausi viršuje"
     },
     "radio": {
       "yes": "Taip",
