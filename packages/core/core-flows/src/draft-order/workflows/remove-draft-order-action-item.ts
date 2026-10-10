@@ -1,8 +1,6 @@
 import { OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   createWorkflow,
-  transform,
-  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
@@ -19,7 +17,6 @@ import {
 } from "../../order"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { validateDraftOrderRemoveActionItemStep } from "../steps/validate-draft-order-remove-action-item"
-import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { computeDraftOrderAdjustmentsWorkflow } from "./compute-draft-order-adjustments"
 import { refreshPendingDraftOrderShippingMethodsWorkflow } from "./refresh-pending-draft-order-shipping-methods"
@@ -91,36 +88,18 @@ export const removeDraftOrderActionItemWorkflow = createWorkflow(
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
 
-    const refetchedOrder = useRemoteQueryStep({
-      entry_point: "orders",
-      fields: draftOrderFieldsForRefreshSteps,
-      variables: { id: input.order_id },
-      list: false,
-      throw_if_key_not_found: true,
-    }).config({ name: "refetched-order-query" })
-
     // Calculated shipping prices can depend on the order's items, so refresh
     // them after the item is removed.
     refreshPendingDraftOrderShippingMethodsWorkflow.runAsStep({
       input: { order_id: input.order_id },
     })
 
-    const appliedPromoCodes: string[] = transform(
-      refetchedOrder,
-      (refetchedOrder) =>
-        refetchedOrder.promotions?.map((promotion) => promotion.code) ?? []
-    )
-
-    // If any the order has any promo codes, then we need to refresh the adjustments.
-    when(
-      appliedPromoCodes,
-      (appliedPromoCodes) => appliedPromoCodes.length > 0
-    ).then(() => {
-      computeDraftOrderAdjustmentsWorkflow.runAsStep({
-        input: {
-          order_id: input.order_id,
-        },
-      })
+    // Always refresh the adjustments: even if the order has no promo codes
+    // applied yet, an automatic promotion may have newly become eligible.
+    computeDraftOrderAdjustmentsWorkflow.runAsStep({
+      input: {
+        order_id: input.order_id,
+      },
     })
 
     releaseLockStep({
