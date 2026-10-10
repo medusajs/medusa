@@ -10,6 +10,7 @@ const mockServer = {
     }
     return this
   }),
+  address: jest.fn(() => ({ port: 4000 })),
 }
 
 const mockApp = {
@@ -18,8 +19,6 @@ const mockApp = {
 }
 
 jest.mock("express", () => jest.fn(() => mockApp))
-
-jest.mock("get-port", () => jest.fn().mockResolvedValue(4000))
 
 jest.mock("@medusajs/framework/logger", () => ({
   logger: { error: jest.fn() },
