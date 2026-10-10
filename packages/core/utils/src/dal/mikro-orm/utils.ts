@@ -1,6 +1,9 @@
-import { EntityMetadata, FindOptions } from "@medusajs/deps/mikro-orm/core"
+import {
+  EntityMetadata,
+  FindOptions,
+  wrap,
+} from "@medusajs/deps/mikro-orm/core"
 import { SqlEntityManager } from "@medusajs/deps/mikro-orm/postgresql"
-import { promiseAll } from "../../common"
 import { isString } from "../../common/is-string"
 import { buildQuery } from "../../modules-sdk/build-query"
 
@@ -58,128 +61,142 @@ function detectCircularDependency(
   }
 }
 
+type SoftDeletableEntity = { id: string; deleted_at?: string | Date | null }
+
+// Keeps each cascade lookup well below Postgres' 65,535 bind parameter limit
+const CASCADE_LOOKUP_BATCH_SIZE = 1000
+
+function areRelationsLoaded(entity: object, relationNames: string[]): boolean {
+  return relationNames.every((name) => {
+    const relation = entity[name]
+
+    // A to-one relation known to be empty, nothing to load
+    if (relation === null) {
+      return true
+    }
+
+    if (relation === undefined) {
+      return false
+    }
+
+    return "toArray" in relation
+      ? relation.isInitialized()
+      : wrap(relation).isInitialized()
+  })
+}
+
+/**
+ * Marks one level of the cascade tree as deleted and returns the entities of
+ * the next level. Cascading relations are loaded with one query per entity
+ * type (per batch of ids), rather than one query per entity.
+ */
 async function performCascadingSoftDeletion<T>(
   manager: SqlEntityManager,
-  entity: T & { id: string; deleted_at?: string | Date | null },
+  entities: (T & SoftDeletableEntity)[],
   value: Date | null,
-  softDeletedEntitiesMap: Map<
-    string,
-    (T & { id: string; deleted_at?: string | Date | null })[]
-  > = new Map()
-) {
-  if (!("deleted_at" in entity)) return
+  softDeletedEntitiesMap: Map<string, (T & SoftDeletableEntity)[]>,
+  visited: Set<T & SoftDeletableEntity>
+): Promise<(T & SoftDeletableEntity)[]> {
+  const entitiesByType = new Map<string, (T & SoftDeletableEntity)[]>()
 
-  entity.deleted_at = value
+  for (const entity of entities) {
+    // An entity can be reached through more than one relation, process it once
+    if (visited.has(entity) || !("deleted_at" in entity)) continue
+    visited.add(entity)
 
-  const softDeletedEntityMapItem = softDeletedEntitiesMap.get(
-    entity.constructor.name
-  )
-  if (!softDeletedEntityMapItem) {
-    softDeletedEntitiesMap.set(entity.constructor.name, [entity])
-  } else {
-    softDeletedEntityMapItem.push(entity)
-  }
+    entity.deleted_at = value
 
-  const entityName = entity.constructor.name
-  const entityMetadata = manager.getDriver().getMetadata().get(entityName)
-  const relations = entityMetadata.relations
+    const entityName = entity.constructor.name
 
-  const relationsToCascade = relations.filter((relation) =>
-    relation.cascade?.includes("soft-remove" as any)
-  )
-
-  // If there are no relations to cascade, just persist the entity and return
-  if (!relationsToCascade.length) {
-    manager.persist(entity)
-    return
-  }
-
-  // Fetch the entity with all cascading relations in a single query
-  const relationNames = relationsToCascade.map((r) => r.name)
-
-  const query = buildQuery(
-    {
-      id: entity.id,
-    },
-    {
-      select: [
-        "id",
-        "deleted_at",
-        ...relationNames.flatMap((r) => [`${r}.id`, `${r}.deleted_at`]),
-      ],
-      relations: relationNames,
-      withDeleted: true,
-    }
-  )
-
-  const entityWithRelations = await manager.findOne(entityName, query.where, {
-    ...query.options,
-    populateFilter: {
-      withDeleted: true,
-    },
-  } as FindOptions<any>)
-
-  if (!entityWithRelations) {
-    manager.persist(entity)
-    return
-  }
-
-  // Create a map to group related entities by their type
-  const relatedEntitiesByType = new Map<
-    string,
-    T & { id: string; deleted_at?: string | Date | null }[]
-  >()
-
-  // Collect all related entities by type
-  for (const relation of relationsToCascade) {
-    const entityRelation = entityWithRelations[relation.name]
-
-    // Skip if relation is null or undefined
-    if (!entityRelation) {
-      continue
-    }
-
-    const isCollection = "toArray" in entityRelation
-    let relationEntities: any[] = []
-
-    if (isCollection) {
-      relationEntities = entityRelation.getItems()
+    const softDeletedEntityMapItem = softDeletedEntitiesMap.get(entityName)
+    if (!softDeletedEntityMapItem) {
+      softDeletedEntitiesMap.set(entityName, [entity])
     } else {
-      relationEntities = [entityRelation]
+      softDeletedEntityMapItem.push(entity)
     }
 
-    if (!relationEntities.length) {
-      continue
+    const entitiesOfType = entitiesByType.get(entityName)
+    if (!entitiesOfType) {
+      entitiesByType.set(entityName, [entity])
+    } else {
+      entitiesOfType.push(entity)
     }
-
-    // Add to the map of entities by type
-    if (!relatedEntitiesByType.has(relation.type)) {
-      relatedEntitiesByType.set(relation.type, [] as any)
-    }
-    relatedEntitiesByType.get(relation.type)!.push(...relationEntities)
   }
 
-  // Process each type of related entity in batch
-  const promises: Promise<void>[] = []
-  for (const [, entities] of relatedEntitiesByType.entries()) {
-    if (entities.length === 0) continue
+  const nextLevel: (T & SoftDeletableEntity)[] = []
 
-    // Process cascading relations for these entities
-    promises.push(
-      ...entities.map((entity) =>
-        performCascadingSoftDeletion(
-          manager,
-          entity as any,
-          value,
-          softDeletedEntitiesMap
-        )
-      )
+  for (const [entityName, entitiesOfType] of entitiesByType) {
+    const entityMetadata = manager.getDriver().getMetadata().get(entityName)
+
+    const relationsToCascade = entityMetadata.relations.filter((relation) =>
+      relation.cascade?.includes("soft-remove" as any)
     )
+
+    if (relationsToCascade.length) {
+      const relationNames = relationsToCascade.map((r) => r.name)
+
+      const entitiesToLoad = entitiesOfType.filter(
+        (entity) => !areRelationsLoaded(entity, relationNames)
+      )
+
+      // Populate the cascading relations of the whole batch in a single query.
+      // The loaded entities are the same instances as the ones in the identity
+      // map, so the relations are read from `entitiesOfType` below.
+      for (
+        let i = 0;
+        i < entitiesToLoad.length;
+        i += CASCADE_LOOKUP_BATCH_SIZE
+      ) {
+        const batch = entitiesToLoad.slice(i, i + CASCADE_LOOKUP_BATCH_SIZE)
+
+        const query = buildQuery(
+          {
+            id: batch.map((entity) => entity.id),
+          },
+          {
+            select: [
+              "id",
+              "deleted_at",
+              ...relationNames.flatMap((r) => [`${r}.id`, `${r}.deleted_at`]),
+            ],
+            relations: relationNames,
+            withDeleted: true,
+          }
+        )
+
+        await manager.find(entityName, query.where, {
+          ...query.options,
+          populateFilter: {
+            withDeleted: true,
+          },
+        } as FindOptions<any>)
+      }
+
+      for (const entity of entitiesOfType) {
+        for (const relation of relationsToCascade) {
+          const entityRelation = entity[relation.name]
+
+          // Skip if relation is null or undefined
+          if (!entityRelation) {
+            continue
+          }
+
+          if ("toArray" in entityRelation) {
+            // Not initialized when the entity doesn't exist in the database
+            if (entityRelation.isInitialized()) {
+              nextLevel.push(...entityRelation.getItems())
+            }
+          } else {
+            nextLevel.push(entityRelation)
+          }
+        }
+      }
+    }
+
+    manager.persist(entitiesOfType)
   }
 
-  await promiseAll(promises)
-
-  manager.persist(entity)
+  return nextLevel
 }
 
 /**
@@ -214,13 +231,18 @@ export const mikroOrmUpdateDeletedAtRecursively = async <
     .get(entities[0].constructor.name)
   detectCircularDependency(manager, entityMetadata)
 
-  // Process each entity type
-  for (const entity of entities) {
-    await performCascadingSoftDeletion(
+  // Walk the cascade tree level by level, so each level costs one query per
+  // entity type instead of one query per entity
+  const visited = new Set<T & SoftDeletableEntity>()
+  let level = entities
+
+  while (level.length) {
+    level = await performCascadingSoftDeletion(
       manager,
-      entity,
+      level,
       value,
-      softDeletedEntitiesMap
+      softDeletedEntitiesMap,
+      visited
     )
   }
 

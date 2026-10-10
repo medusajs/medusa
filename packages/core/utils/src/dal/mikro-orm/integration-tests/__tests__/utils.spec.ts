@@ -5,8 +5,16 @@ import {
 } from "@medusajs/deps/mikro-orm/postgresql"
 import { dropDatabase } from "pg-god"
 import { mikroOrmUpdateDeletedAtRecursively } from "../../utils"
-import { getDatabaseURL, pgGodCredentials } from "../__fixtures__/database"
 import {
+  createSqlCapture,
+  getDatabaseURL,
+  pgGodCredentials,
+  SqlCapture,
+} from "../__fixtures__/database"
+import {
+  CascadeChildEntity,
+  CascadeGrandChildEntity,
+  CascadeParentEntity,
   DeepRecursiveEntity1,
   DeepRecursiveEntity2,
   DeepRecursiveEntity3,
@@ -173,6 +181,134 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
       expect(entity1.deleted_at).toBeNull()
       expect(entity2.deleted_at).toBeNull()
       expect(entity3.deleted_at).toBeNull()
+    })
+  })
+
+  describe("using persisted entities", () => {
+    let orm!: MikroORM
+    let sqlCapture: SqlCapture
+
+    beforeEach(async () => {
+      sqlCapture = createSqlCapture()
+
+      await dropDatabase(
+        { databaseName: dbName, errorIfNonExist: false },
+        pgGodCredentials
+      )
+
+      orm = await MikroORM.init(
+        defineConfig({
+          entities: [
+            CascadeParentEntity,
+            CascadeChildEntity,
+            CascadeGrandChildEntity,
+          ],
+          clientUrl: getDatabaseURL(dbName),
+          onQuery: sqlCapture.onQuery,
+        })
+      )
+
+      const generator = orm.getSchemaGenerator()
+      await generator.ensureDatabase()
+      await generator.createSchema()
+    })
+
+    afterEach(async () => {
+      if (orm) {
+        const generator = orm.getSchemaGenerator()
+        await generator.dropSchema()
+        await orm.close(true)
+      }
+
+      await dropDatabase(
+        { databaseName: dbName, errorIfNonExist: false },
+        pgGodCredentials
+      )
+    })
+
+    it("should load the cascading relations with one query per level instead of one per entity", async () => {
+      const seedManager = orm.em.fork() as SqlEntityManager
+      for (const parentId of ["1", "2", "3"]) {
+        const parent = new CascadeParentEntity({
+          id: parentId,
+          deleted_at: null,
+        })
+        seedManager.persist(parent)
+
+        for (const childSuffix of ["a", "b"]) {
+          const child = new CascadeChildEntity({
+            id: `${parentId}${childSuffix}`,
+            deleted_at: null,
+            parent,
+          })
+          seedManager.persist(child)
+
+          for (const grandChildSuffix of ["x", "y"]) {
+            seedManager.persist(
+              new CascadeGrandChildEntity({
+                id: `${child.id}${grandChildSuffix}`,
+                deleted_at: null,
+                parent: child,
+              })
+            )
+          }
+        }
+      }
+      await seedManager.flush()
+
+      const manager = orm.em.fork() as SqlEntityManager
+      const parents = await manager.find(CascadeParentEntity, {})
+
+      sqlCapture.clear()
+      const softDeletedEntitiesMap = await mikroOrmUpdateDeletedAtRecursively(
+        manager,
+        parents,
+        new Date()
+      )
+
+      // One lookup for the parents' children and one for the children's
+      // children, rather than one per parent (3) plus one per child (6)
+      const selects = sqlCapture.queries.filter(({ sql }) =>
+        sql.trim().toLowerCase().startsWith("select")
+      )
+      expect(selects).toHaveLength(2)
+
+      expect(
+        Object.fromEntries(
+          [...softDeletedEntitiesMap].map(([type, entities]) => [
+            type,
+            entities.map((entity) => entity.id).sort(),
+          ])
+        )
+      ).toEqual({
+        CascadeParentEntity: ["1", "2", "3"],
+        CascadeChildEntity: ["1a", "1b", "2a", "2b", "3a", "3b"],
+        CascadeGrandChildEntity: [
+          "1ax",
+          "1ay",
+          "1bx",
+          "1by",
+          "2ax",
+          "2ay",
+          "2bx",
+          "2by",
+          "3ax",
+          "3ay",
+          "3bx",
+          "3by",
+        ],
+      })
+
+      await manager.flush()
+
+      const [{ count }] = await manager.getConnection().execute(
+        `select (
+          (select count(*) from cascade_parent_entity where deleted_at is null) +
+          (select count(*) from cascade_child_entity where deleted_at is null) +
+          (select count(*) from cascade_grand_child_entity where deleted_at is null)
+        ) as count`
+      )
+      expect(Number(count)).toEqual(0)
     })
   })
 })
