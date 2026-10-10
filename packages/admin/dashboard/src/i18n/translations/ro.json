@@ -6,7 +6,7 @@
     "descending": "Descendent",
     "add": "Adăuga",
     "start": "Început",
-    "end": "Sfârşit",
+    "end": "Sfârșit",
     "open": "Deschide",
     "close": "Aproape",
     "apply": "Aplicați",
@@ -124,7 +124,7 @@
     "duplicate": "Duplicat",
     "publish": "Publica",
     "create": "Crea",
-    "delete": "Şterge",
+    "delete": "Șterge",
     "remove": "Elimina",
     "revoke": "Revoca",
     "cancel": "Anula",
@@ -334,7 +334,7 @@
         "copy": "Copie",
         "paste": "Pastă",
         "edit": "Edita",
-        "delete": "Şterge",
+        "delete": "Șterge",
         "clear": "Clar",
         "moveUp": "Mișcă-te în sus",
         "moveDown": "Deplasați-vă în jos",
@@ -384,7 +384,7 @@
       "range": "Gamă",
       "lessThanLabel": "mai puțin decât {{value}}",
       "greaterThanLabel": "mai mare decât {{value}}",
-      "andLabel": "şi"
+      "andLabel": "și"
     },
     "sorting": {
       "alphabeticallyAsc": "A to Z",
@@ -428,7 +428,7 @@
       "sameAsShipping": "La fel ca adresa de livrare"
     },
     "contactHeading": "Contact",
-    "locationHeading": "Locaţie"
+    "locationHeading": "Locație"
   },
   "email": {
     "editHeader": "Editați e-mailul",
@@ -682,13 +682,13 @@
         "label": "Material"
       },
       "width": {
-        "label": "Lăţime"
+        "label": "Lățime"
       },
       "length": {
         "label": "Lungime"
       },
       "height": {
-        "label": "Înălţime"
+        "label": "Înălțime"
       },
       "weight": {
         "label": "Greutate"
@@ -753,7 +753,7 @@
           "itemsManageSuccess": "Articolele din inventar au fost actualizate cu succes."
         }
       },
-      "tableItem_one": "{{availableCount}} disponibil la {{locationCount}} locaţie",
+      "tableItem_one": "{{availableCount}} disponibil la {{locationCount}} locație",
       "tableItem_few": "{{availableCount}} disponibil în {{locationCount}} locații",
       "tableItem_other": "{{availableCount}} disponibil la {{locationCount}} locații"
     },
@@ -761,11 +761,11 @@
       "header": "Opțiuni",
       "edit": {
         "header": "Editare opțiune",
-        "successToast": "Opţiune {{title}} a fost actualizat cu succes."
+        "successToast": "Opțiune {{title}} a fost actualizat cu succes."
       },
       "create": {
         "header": "Creare opțiune",
-        "successToast": "Opţiune {{title}} a fost creat cu succes."
+        "successToast": "Opțiune {{title}} a fost creat cu succes."
       },
       "manage": {
         "header": "Gestionați opțiunile produsului",
@@ -1025,7 +1025,7 @@
       "lineItemId": "ID-ul elementului rând",
       "orderID": "ID comandă",
       "description": "Descriere",
-      "location": "Locaţie",
+      "location": "Locație",
       "inStockAtLocation": "În stoc la această locație",
       "availableAtLocation": "Disponibil în această locație",
       "reservedAtLocation": "Rezervat în această locație",
@@ -1408,7 +1408,7 @@
       "noInventoryLevel": "Fără nivel de inventar",
       "noInventoryLevelDesc": "Locația selectată nu are un nivel de inventar pentru articolele selectate. ",
       "noteHint": "Puteți scrie liber dacă doriți să specificați ceva.",
-      "location": "Locaţie",
+      "location": "Locație",
       "locationHint": "Alegeți locația în care doriți să returnați articolele.",
       "inboundShipping": "Transport de retur",
       "inboundShippingHint": "Alegeți ce metodă doriți să utilizați.",
@@ -1789,12 +1789,12 @@
     "create": {
       "header": "Creați locație stoc",
       "hint": "O locație de stoc este un site fizic de unde sunt depozitate și expediate produsele.",
-      "successToast": "Locaţie {{name}} a fost creat cu succes."
+      "successToast": "Locație {{name}} a fost creat cu succes."
     },
     "edit": {
       "header": "Editați locația stocului",
       "viewInventory": "Vedeți inventarul",
-      "successToast": "Locaţie {{name}} a fost actualizat cu succes."
+      "successToast": "Locație {{name}} a fost actualizat cu succes."
     },
     "delete": {
       "confirmation": "Sunteți pe cale să ștergeți locația stocului {{name}}. ",
@@ -1896,7 +1896,7 @@
           "cartItemTotal": "Total articole din coș"
         },
         "summaries": {
-          "range": "Dacă <0>{{attribute}}</0> este între <1>{{gte}}</1> şi <2>{{lte}}</2>",
+          "range": "Dacă <0>{{attribute}}</0> este între <1>{{gte}}</1> și <2>{{lte}}</2>",
           "greaterThan": "Dacă <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
           "lessThan": "Dacă <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
         },
@@ -2179,7 +2179,7 @@
         "operators": {
           "in": "în",
           "on": "pe",
-          "and": "şi"
+          "and": "și"
         },
         "placeholders": {
           "product": "Caută produse",
@@ -2204,12 +2204,12 @@
         "values_one": "{{count}} valoare",
         "values_few": "{{count}} valori",
         "values_other": "{{count}} valorile",
-        "numberOfTargets_one": "{{count}} ţintă",
+        "numberOfTargets_one": "{{count}} țintă",
         "numberOfTargets_few": "{{count}} ținte",
         "numberOfTargets_other": "{{count}} tinte",
-        "additionalValues_one": "şi {{count}} mai multă valoare",
+        "additionalValues_one": "și {{count}} mai multă valoare",
         "additionalValues_few": "și {{count}} valori în plus",
-        "additionalValues_other": "şi {{count}} mai multe valori"
+        "additionalValues_other": "și {{count}} mai multe valori"
       },
       "sublevels": {
         "labels": {
@@ -2358,7 +2358,7 @@
     },
     "form": {
       "required": "Necesar",
-      "and": "ŞI",
+      "and": "ȘI",
       "selectAttribute": "Selectați Atribut",
       "campaign": {
         "existing": {
@@ -3054,7 +3054,7 @@
     "return": "Reveni",
     "outbound": "Ieșire",
     "priceType": "Tip de preț",
-    "flatRate": "Preţ global",
+    "flatRate": "Preț global",
     "calculated": "Calculat",
     "list": {
       "noRecordsMessage": "Creați o regiune pentru zonele în care vindeți.",
@@ -3086,7 +3086,7 @@
       },
       "priceType": {
         "label": "Tip de preț",
-        "flatRate": "Preţ global",
+        "flatRate": "Preț global",
         "calculated": "Calculat"
       },
       "availability": {
@@ -3366,7 +3366,7 @@
     }
   },
   "login": {
-    "forgotPassword": "Aţi uitat parola?  <0>Resetați</0>",
+    "forgotPassword": "Ați uitat parola?  <0>Resetați</0>",
     "title": "Bun venit la Medusa",
     "hint": "Conectați-vă pentru a accesa zona de cont",
     "mfa": {
@@ -3437,12 +3437,12 @@
     },
     "history": {
       "sectionTitle": "Istorie",
-      "runningState": "Funcţionare...",
+      "runningState": "Funcționare...",
       "awaitingState": "În așteptare",
       "failedState": "A eșuat",
       "skippedState": "Sărit",
       "skippedFailureState": "Omis (Eșec)",
-      "definitionLabel": "Definiţie",
+      "definitionLabel": "Definiție",
       "outputLabel": "Ieșire",
       "compensateInputLabel": "Compensați intrarea",
       "revertedLabel": "Întors",
@@ -3690,9 +3690,9 @@
     "currency": "Valută",
     "address": "Adresa",
     "address2": "Apartament, apartament etc.",
-    "city": "Oraş",
+    "city": "Oraș",
     "postalCode": "Cod poștal",
-    "country": "Ţară",
+    "country": "Țară",
     "state": "Stat",
     "province": "Provincie",
     "company": "Companie",
@@ -3740,10 +3740,10 @@
     "dateIssued": "Data emiterii",
     "issuedDate": "Data emiterii",
     "expiryDate": "Data de expirare",
-    "price": "Preţ",
-    "priceTemplate": "Preţ {{regionOrCurrency}}",
-    "height": "Înălţime",
-    "width": "Lăţime",
+    "price": "Preț",
+    "priceTemplate": "Preț {{regionOrCurrency}}",
+    "height": "Înălțime",
+    "width": "Lățime",
     "length": "Lungime",
     "weight": "Greutate",
     "midCode": "Codul MID",
@@ -3760,7 +3760,7 @@
     "managedInventory": "Inventar gestionat",
     "allowBackorder": "Permiteți comanda în așteptare",
     "inStock": "În stoc",
-    "location": "Locaţie",
+    "location": "Locație",
     "quantity": "Cantitate",
     "variant": "Variantă",
     "id": "ID",
