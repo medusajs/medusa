@@ -199,7 +199,10 @@ export const confirmCartCreditLinesWorkflow = createWorkflow(
               amount: cl.amount,
               reference: "cart",
               reference_id: cart.id,
-              note: "Gift card usage",
+              note:
+                cl.reference === "gift-card"
+                  ? "Gift card usage"
+                  : "Store credit usage",
             };
           });
       }

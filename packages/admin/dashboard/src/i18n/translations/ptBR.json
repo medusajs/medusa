@@ -91,7 +91,8 @@
       "actions": {
         "insertRowAbove": "Inserir linha acima",
         "insertRowBelow": "Inserir linha abaixo",
-        "deleteRow": "Excluir linha"
+        "deleteRow": "Excluir linha",
+        "addRow": "Adicionar linha"
       },
       "labels": {
         "key": "Chave",
@@ -180,19 +181,34 @@
       "groups": {
         "all": "Todas as áreas",
         "customer": "Clientes",
+        "customer_group": "Grupos de Clientes",
         "customerGroup": "Grupos de Clientes",
         "product": "Produtos",
+        "product_variant": "Variantes de Produto",
+        "inventory_item": "Inventário",
         "productVariant": "Variantes de Produto",
         "inventory": "Inventário",
         "reservation": "Reservas",
+        "product_category": "Categorias",
+        "product_collection": "Coleções",
         "category": "Categorias",
         "collection": "Coleções",
         "order": "Pedidos",
         "promotion": "Promoções",
         "campaign": "Campanhas",
+        "price_list": "Listas de Preços",
         "priceList": "Listas de Preços",
         "user": "Usuários",
         "region": "Regiões",
+        "tax_region": "Regiões de Imposto",
+        "return_reason": "Motivos de Devolução",
+        "sales_channel": "Canais de Vendas",
+        "product_type": "Tipos de Produto",
+        "product_tag": "Tags de Produto",
+        "stock_location": "Localizações",
+        "shipping_profile": "Perfis de Envio",
+        "publishable_api_key": "Chaves de API Publicáveis",
+        "secret_api_key": "Chaves de API Secretas",
         "taxRegion": "Regiões Fiscais",
         "returnReason": "Motivos de Devolução",
         "salesChannel": "Canais de Vendas",
@@ -337,6 +353,7 @@
   },
   "filters": {
     "sortLabel": "Ordenar",
+    "columnsLabel": "Colunas",
     "collapse": {
       "all": "Recolher tudo"
     },
@@ -802,6 +819,16 @@
   "collections": {
     "domain": "Coleções",
     "subtitle": "Organize os produtos em coleções.",
+    "list": {
+      "empty": {
+        "heading": "Nenhuma coleção",
+        "description": "Não há coleções para exibir."
+      },
+      "filtered": {
+        "heading": "Nenhum resultado",
+        "description": "Nenhuma coleção corresponde aos critérios de filtro atuais."
+      }
+    },
     "createCollection": "Criar Coleção",
     "createCollectionHint": "Crie uma nova coleção para organizar seus produtos.",
     "createSuccess": "Coleção criada com sucesso.",
@@ -942,6 +969,18 @@
   "inventory": {
     "domain": "Inventário",
     "subtitle": "Gerencie os itens do seu inventário",
+    "export": {
+      "header": "Exportar Lista de Inventário",
+      "description": "Exportar a lista de inventário para um arquivo CSV.",
+      "success": {
+        "title": "Estamos processando sua exportação",
+        "description": "A exportação dos dados pode levar alguns minutos. Você será notificado quando concluída."
+      },
+      "filters": {
+        "title": "Filtros",
+        "description": "Aplique filtros na visão geral da tabela para ajustar esta exibição"
+      }
+    },
     "reserved": "Reservado",
     "available": "Disponível",
     "locationLevels": "Localizações",
@@ -951,6 +990,8 @@
     "deleteWarning": "Você está prestes a excluir um item do inventário. Esta ação não pode ser desfeita.",
     "editItemDetails": "Editar detalhes do item",
     "quantityAcrossLocations": "{{quantity}} em {{locations}} localizações",
+    "unitOfMeasurePlaceholder": "lb",
+    "unitOfMeasureHint": "A unidade em que o estoque é armazenado e contado. Exibida ao lado das quantidades no Admin.",
     "levelDeleted": "Nível de inventário excluído com sucesso.",
     "create": {
       "title": "Criar Item de Inventário",
@@ -1027,6 +1068,14 @@
   "customers": {
     "domain": "Clientes",
     "list": {
+      "empty": {
+        "heading": "Nenhum cliente",
+        "description": "Não há clientes para exibir."
+      },
+      "filtered": {
+        "heading": "Nenhum resultado",
+        "description": "Nenhum cliente corresponde aos critérios de filtro atuais."
+      },
       "noRecordsMessage": "Seus clientes aparecerão aqui."
     },
     "create": {
@@ -1165,7 +1214,9 @@
         "paymentMethod": "Forma de pagamento",
         "paymentMethodDescription": "Reembolsar o valor para a forma de pagamento",
         "creditLine": "Crédito na loja",
-        "creditLineDescription": "Reembolsar o valor como crédito na loja"
+        "creditLineDescription": "Reembolsar o valor como crédito na loja",
+        "creditLineNoOutstandingAmountDescription": "Disponível apenas quando o pedido possui um valor pendente. Crie uma devolução ou uma edição de pedido primeiro.",
+        "creditLineGuestDescription": "Disponível apenas para clientes com uma conta. Este pedido foi feito por um visitante."
       }
     },
     "domain": "Pedidos",
@@ -1218,15 +1269,25 @@
     "transfer": {
       "title": "Transferir propriedade",
       "requestSuccess": "Solicitação de transferência do pedido enviada para: {{email}}.",
+      "guestSuccess": "Pedido transferido para o cliente visitante: {{email}}.",
+      "ownerType": "Tipo de conta",
+      "registered": "Registrado",
+      "registeredDescription": "Transferir para um cliente registrado, que deverá aceitar a solicitação.",
+      "guest": "Visitante",
+      "guestDescription": "Transferir para um cliente visitante por e-mail. Aplicado imediatamente.",
       "currentOwner": "Proprietário atual",
       "newOwner": "Novo proprietário",
+      "newGuestOwner": "E-mail do novo proprietário",
       "currentOwnerDescription": "O cliente atualmente relacionado a este pedido.",
-      "newOwnerDescription": "O cliente para o qual este pedido será transferido."
+      "newOwnerDescription": "O cliente para o qual este pedido será transferido.",
+      "newGuestOwnerDescription": "O e-mail do cliente visitante para o qual este pedido será transferido. Um cliente visitante será criado se não existir."
     },
     "payment": {
       "title": "Pagamentos",
       "isReadyToBeCaptured": "Pagamento <0/> está pronto para ser capturado.",
       "totalPaidByCustomer": "Total pago pelo cliente",
+      "totalPending": "Total pendente",
+      "storeCreditRefund": "Reembolso em crédito na loja",
       "totalStoreCreditRefunds": "Total de reembolsos em crédito na loja",
       "capture": "Capturar pagamento",
       "capture_short": "Capturar",
@@ -1239,6 +1300,7 @@
         "authorized": "Autorizado",
         "partiallyAuthorized": "Parcialmente autorizado",
         "awaiting": "Aguardando",
+        "pending": "Pendente",
         "captured": "Capturado",
         "partiallyRefunded": "Parcialmente reembolsado",
         "partiallyCaptured": "Parcialmente capturado",
@@ -1276,6 +1338,8 @@
       "create": "Editar pedido",
       "currentTotal": "Total atual",
       "noteHint": "Adicione uma nota interna para a edição",
+      "sendNotification": "Enviar notificação",
+      "sendNotificationHint": "Notificar o cliente sobre esta edição de pedido.",
       "cancelSuccessToast": "Edição de pedido cancelada",
       "createSuccessToast": "Solicitação de edição de pedido criada",
       "activeChangeError": "Já existe uma alteração ativa no pedido (devolução, reclamação, troca etc.). Por favor, finalize ou cancele a alteração antes de editar o pedido.",
@@ -1499,6 +1563,7 @@
       "markAsDelivered": "Marcar como entregue",
       "itemsToFulfillDesc": "Escolha os itens e quantidades a serem atendidos",
       "locationDescription": "Escolha de qual local você deseja atender os itens.",
+      "locationUnavailable": "Localização excluída/indisponível",
       "sendNotificationHint": "Notificar os clientes sobre o atendimento criado.",
       "methodDescription": "Escolha um método de envio diferente do selecionado pelo cliente",
       "error": {
@@ -2161,6 +2226,16 @@
   },
   "promotions": {
     "domain": "Promoções",
+    "list": {
+      "empty": {
+        "heading": "Nenhuma promoção",
+        "description": "Não há promoções para exibir."
+      },
+      "filtered": {
+        "heading": "Nenhum resultado",
+        "description": "Nenhuma promoção corresponde aos critérios de filtro atuais."
+      }
+    },
     "sections": {
       "details": "Detalhes da Promoção"
     },
@@ -2387,6 +2462,16 @@
   },
   "campaigns": {
     "domain": "Campanhas",
+    "list": {
+      "empty": {
+        "heading": "Nenhuma campanha",
+        "description": "Não há campanhas para exibir."
+      },
+      "filtered": {
+        "heading": "Nenhum resultado",
+        "description": "Nenhuma campanha corresponde aos critérios de filtro atuais."
+      }
+    },
     "details": "Detalhes da campanha",
     "status": {
       "active": "Ativa",
@@ -2498,6 +2583,16 @@
   "priceLists": {
     "domain": "Listas de Preços",
     "subtitle": "Crie vendas ou substitua preços para condições específicas.",
+    "list": {
+      "empty": {
+        "heading": "Nenhuma lista de preços",
+        "description": "Não há listas de preços para exibir."
+      },
+      "filtered": {
+        "heading": "Nenhum resultado",
+        "description": "Nenhuma lista de preços corresponde aos critérios de filtro atuais."
+      }
+    },
     "delete": {
       "confirmation": "Você está prestes a excluir a lista de preços {{title}}. Esta ação não pode ser desfeita.",
       "successToast": "Lista de preços {{title}} foi excluída com sucesso."
@@ -2674,6 +2769,9 @@
     "deleteInviteWarning": "Você está prestes a excluir o convite para {{email}}. Esta ação não pode ser desfeita.",
     "resendInvite": "Reenviar convite",
     "copyInviteLink": "Copiar link do convite",
+    "copyResetPasswordLink": "Copiar link de redefinição de senha",
+    "copyResetPasswordLinkSuccess": "Link de redefinição de senha copiado para a área de transferência",
+    "copyResetPasswordLinkHint": "O link expira em breve e invalida qualquer link de redefinição de senha enviado anteriormente a este usuário.",
     "expiredOnDate": "Expirado em {{date}}",
     "validFromUntil": "Válido de <0>{{from}}</0> - <1>{{until}}</1>",
     "acceptedOnDate": "Aceito em {{date}}",
@@ -2919,7 +3017,15 @@
     "flatRate": "Taxa Fixa",
     "calculated": "Calculado",
     "list": {
-      "noRecordsMessage": "Crie uma região para as áreas onde você vende."
+      "noRecordsMessage": "Crie uma região para as áreas onde você vende.",
+      "empty": {
+        "heading": "Nenhuma região",
+        "description": "Não há regiões para exibir."
+      },
+      "filtered": {
+        "heading": "Nenhum resultado",
+        "description": "Nenhuma região corresponde aos critérios de filtro atuais."
+      }
     },
     "toast": {
       "delete": "Região excluída com sucesso",
@@ -3275,6 +3381,7 @@
     "subtitle": "Visualize e acompanhe as execuções de fluxos de trabalho em sua aplicação Medusa.",
     "transactionIdLabel": "ID da Transação",
     "workflowIdLabel": "ID do Fluxo de Trabalho",
+    "stateLabel": "Estado",
     "progressLabel": "Progresso",
     "stepsCompletedLabel_one": "{{completed}} de {{count}} etapa",
     "stepsCompletedLabel_other": "{{completed}} de {{count}} etapas",
@@ -3314,6 +3421,33 @@
         "dormant": "Inativo",
         "timeout": "Tempo limite"
       }
+    }
+  },
+  "searchIndexes": {
+    "domain": "Busca",
+    "subtitle": "Visualize os índices de busca registrados e reconstrua-os a partir dos dados de origem.",
+    "fieldsLabel": "Campos indexados",
+    "providerLabel": "Provedor",
+    "reindex": "Reindexar",
+    "reindexConfirmationTitle": "Reindexar {{name}}?",
+    "reindexConfirmation": "Isso reconstrói o índice \"{{name}}\" a partir dos dados de origem. Os resultados de busca para este índice podem estar incompletos até que a reconstrução seja concluída.",
+    "reindexSuccess": "Reindexação de {{name}} iniciada",
+    "reindexSinceLabel": "Desde",
+    "reindexSinceHint": "Reconstruir apenas documentos alterados nesta data ou após ela. Deixe em branco para reconstruir tudo.",
+    "reindexEntityIdsLabel": "IDs de entidades",
+    "reindexEntityIdsHint": "IDs separados por vírgula ou nova linha para reconstruir apenas esses documentos. O suporte depende da definição do próprio índice.",
+    "delete": "Excluir índice",
+    "deleteWarning": "Isso exclui o índice \"{{name}}\" e todas as versões já criadas para ele, incluindo seus dados no mecanismo de busca. Nada é pesquisável neste índice até que a próxima migração o reconstrua do zero. Esta ação não pode ser desfeita.",
+    "deleteSuccess": "Índice {{name}} excluído",
+    "noFields": "Nenhum campo está indexado.",
+    "list": {
+      "noRecordsMessage": "Nenhum índice de busca está registrado."
+    },
+    "status": {
+      "pending": "Pendente",
+      "building": "Construindo",
+      "ready": "Pronto",
+      "error": "Erro"
     }
   },
   "shippingOptionTypes": {
@@ -3378,6 +3512,17 @@
       "value": "Valor"
     }
   },
+  "propertyLabels": {
+    "domain": "Rótulos de Propriedade",
+    "title": "Rótulos de Propriedade",
+    "subtitle": "Gerencie rótulos de propriedade personalizados para tabelas configuráveis das suas entidades.",
+    "fields": {
+      "module": "Módulo",
+      "model": "Modelo",
+      "propertyCount": "Quantidade de Propriedades",
+      "hasOverrides": "Possui Substituições"
+    }
+  },
   "notifications": {
     "domain": "Notificações",
     "emptyState": {
@@ -3416,6 +3561,7 @@
     "selectValues": "Selecionar valores"
   },
   "fields": {
+    "actions": "Ações",
     "amount": "Quantidade",
     "reference": "Referência",
     "reference_id": "ID de referência",
@@ -3558,6 +3704,7 @@
     "barcode": "Código de barras",
     "countryOfOrigin": "País de origem",
     "material": "Material",
+    "unitOfMeasure": "Unidade de medida",
     "thumbnail": "Miniatura",
     "sku": "SKU",
     "managedInventory": "Inventário gerido",
@@ -3620,8 +3767,12 @@
   },
   "auth": {
     "login": {
+      "noProviders": "Registre um provedor de autenticação na sua configuração do Medusa para poder fazer login",
       "authenticationFailed": "Falha na autenticação",
-      "cloud": "Entrar com o Medusa Cloud"
+      "cloud": "Entrar com o Medusa Cloud",
+      "continueWithProvider": "Continuar com {{provider}}",
+      "or": "ou",
+      "provisioningFailed": "Não foi possível concluir o seu login. Por favor, entre em contato com um administrador."
     }
   },
   "permissions": {

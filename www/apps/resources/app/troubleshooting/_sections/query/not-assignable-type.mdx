@@ -1,0 +1,139 @@
+import { CodeTab, CodeTabs } from "docs-ui"
+
+If you get a type error similar to the following when you pass the result of `query.graph` or `useQueryGraphStep` to a function or variable that uses your own type:
+
+```bash
+error TS2345: Argument of type '{ ...;
+payment_collections: Maybe<Maybe<PaymentCollection>[]>; }'
+is not assignable to parameter of type 'OrderSummary'.
+```
+
+## Why this Error Occurred
+
+Medusa generates the types of Query results from the schema of your modules and their links. In these generated types, a to-many relation of a module link, such as an order's `payment_collections`, has the following type:
+
+```ts
+Maybe<Maybe<PaymentCollection>[]>
+```
+
+`Maybe<T>` is a shorthand for `T | null`. So, TypeScript considers both the array and each of its items nullable.
+
+If you define your own type for the retrieved data where the relation is a non-nullable array, TypeScript can't assign the Query result to it. For example:
+
+```ts
+type OrderSummary = {
+  id: string
+  payment_collections: {
+    id: string
+    amount: number
+  }[]
+}
+
+function summarizeOrder(order: OrderSummary) {
+  // ...
+}
+
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: [
+    "id",
+    "payment_collections.id",
+    "payment_collections.amount",
+  ],
+})
+
+// TS2345 error
+summarizeOrder(orders[0])
+```
+
+This error only affects type-checking. Your code works as expected at runtime, but the type error fails the `build` command.
+
+---
+
+## How to Fix it
+
+### Option 1: Remove Null Items from the Relation
+
+Map the Query result to your type, and filter out `null` items from the relation's array with a type predicate. In a workflow, perform the mapping in a [transform](!docs!/learn/fundamentals/workflows/variable-manipulation) function.
+
+For example:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: [
+    "id",
+    "payment_collections.id",
+    "payment_collections.amount",
+  ],
+})
+
+const order: OrderSummary = {
+  id: orders[0].id,
+  payment_collections: (
+    orders[0].payment_collections ?? []
+  ).filter(
+    (pc): pc is NonNullable<typeof pc> => !!pc
+  ),
+}
+
+summarizeOrder(order)
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts
+const { data: orders } = useQueryGraphStep({
+  entity: "order",
+  fields: [
+    "id",
+    "payment_collections.id",
+    "payment_collections.amount",
+  ],
+})
+
+const order = transform({ orders }, ({ orders }) => {
+  return {
+    id: orders[0].id,
+    payment_collections: (
+      orders[0].payment_collections ?? []
+    ).filter(
+      (pc): pc is NonNullable<typeof pc> => !!pc
+    ),
+  } as OrderSummary
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+The type predicate `pc is NonNullable<typeof pc>` tells TypeScript that the filtered array no longer has `null` items, so the result matches your type.
+
+### Option 2: Accept Nullable Values in Your Type
+
+Alternatively, change your type to accept `null` for the relation and its items:
+
+```ts
+type OrderSummary = {
+  id: string
+  payment_collections: ({
+    id: string
+    amount: number
+  } | null)[] | null
+}
+```
+
+Then, handle the `null` values in the code that uses the type. For example:
+
+```ts
+function summarizeOrder(order: OrderSummary) {
+  const paymentCollections = (
+    order.payment_collections ?? []
+  ).filter((pc) => pc !== null)
+  // ...
+}
+```

@@ -44,9 +44,44 @@ The following metrics are tracked and billed as part of your Cloud usage:
 - **Redis Storage**: The disk space used by Redis to store your application's cache and session data, measured in gigabytes (GB).
 - **Build Minutes**: The time taken to build your Medusa applications during deployments, measured in minutes.
 - **Emails**: The number of emails sent from your Medusa applications, including order confirmations, password resets, and marketing emails.
-- **Search**: The number of search requests your Medusa applications make to [Medusa Search](../search/page.mdx), including storefront product searches.
+- **Freetext search requests**: Keyword search requests your Medusa applications make with [Medusa Search](../search/page.mdx).
+- **Vector search requests**: [semantic search](../search/semantic-search/page.mdx) requests your Medusa applications make with [Medusa Search](../search/page.mdx).
 - **Storefront Requests**: The number of requests made to your storefront. Every page load or API call to your storefront counts as a request.
 - **Webhooks**: The number of webhook event deliveries sent from your organization to your configured endpoint.
+
+### Usage Table Allowance Breakdown
+
+When you view a single billing cycle and your organization has [credits](#view-organization-credits) for a metric, the quantity column of the usage table shows a second line that breaks down the metric's allowance into the portion from your plan and the portion from your credits. For example, `500 from plan + 100 from credits`.
+
+---
+
+## View Organization Credits
+
+Credits add to your plan's allowance for a specific feature, reducing the usage that counts as [Flex Usage](#what-is-flex-usage).
+
+If your organization has credits, the Usage settings show a **Credits** section above the usage charts.
+
+### Credits Table Columns
+
+The **Credits** section has a table listing each credit with the following columns:
+
+- **Feature**: The name of the feature that the credit applies to, along with the date the credit became active.
+- **Type**: The credit's type, such as subscription or one-time.
+- **Status**: The credit's status:
+  - Green: The credit is active.
+  - Orange: The credit expires within 14 days.
+  - Grey: The credit is used up or expired.
+- **Balance**:
+  - For subscription credits, the allowance the credit provides in each billing cycle. Cloud doesn't track the consumption of subscription credits individually.
+  - For other credits, the used and remaining balance, if any.
+- **Expires**:
+  - For subscription credits, **Renews each cycle**.
+  - For credits without an expiration date, **Never expires**.
+  - For other credits, the expiration date and the relative time until it, such as "in 3 days".
+
+### Show Expired Credits
+
+If at least one of your organization's credits has expired, the **Credits** section shows a **Show expired** toggle. Enable the toggle to include expired credits in the table.
 
 ---
 
@@ -66,6 +101,8 @@ You can view additional Flex Usage for each resource and its charge in the [usag
 - **Charge**: The cost associated with the Flex Usage.
 
 If you have Flex Usage, you can also see the flex charges visualized in the chart above the table.
+
+If your organization has [credits](#view-organization-credits), the flex charges chart also shows the usage that your credits covered as a yellow segment stacked on top of each day's charges. Hover over a day to see its **Credited** amount in the tooltip.
 
 ### Usage Chart Per Resource
 
@@ -87,6 +124,8 @@ In each chart, there are two line types:
 2. Grey lines: Represent the forecasted usage for the resource. This is an estimate of your future usage based on historical data.
 
 There's also a horizontal orange dashed line indicating your plan's usage limit for that resource. If your actual usage (green line) exceeds this limit, the excess is considered Flex Usage.
+
+If your organization has [credits](#view-organization-credits) for a resource, the cumulative chart of that resource also shows a yellow dashed line indicating the combined allowance of your plan and credits. In this case, the chart's tooltip shows the plan's allowance and the combined allowance separately, along with the **Credited** quantity.
 
 ![Usage chart showing actual and forecasted usage with plan limit](https://res.cloudinary.com/dza7lstvk/image/upload/v1765976514/Cloud/CleanShot_2025-12-17_at_15.01.21_2x_upehmd.png)
 

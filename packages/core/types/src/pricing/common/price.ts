@@ -19,7 +19,7 @@ export interface PriceDTO {
    */
   title?: string
   /**
-   * The currency code of this price.
+   * The currency code of this price. It's always lowercase, such as `usd`. To compare it with your own data, normalize your value with `normalizeCurrencyCode` from `@medusajs/framework/utils`.
    */
   currency_code?: string
   /**
@@ -75,7 +75,7 @@ export interface UpdatePriceDTO {
   title?: string
   price_set?: PriceSetDTO
   /**
-   * The code of the currency to associate with the price.
+   * The code of the currency to associate with the price. It's normalized to lowercase when stored. For example, `EUR` is stored as `eur`.
    */
   currency_code?: string | null
   /**
@@ -99,7 +99,7 @@ export interface CreatePriceDTO {
   price_list?: PriceListDTO | string
   rules_count?: number
   /**
-   * The currency code of this price.
+   * The currency code of this price. It's normalized to lowercase when stored. For example, `EUR` is stored as `eur`.
    */
   currency_code: string
   /**

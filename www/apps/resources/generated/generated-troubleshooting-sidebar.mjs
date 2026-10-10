@@ -169,6 +169,13 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
             {
               "loaded": true,
               "type": "link",
+              "path": "/troubleshooting/query/not-assignable-type",
+              "title": "Not Assignable to Custom Type",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
               "path": "/troubleshooting/query/service-list",
               "title": "service.list Error",
               "children": []

@@ -30,6 +30,121 @@ So, there can only be one guest customer (having `has_account=false`) and one re
 
 ---
 
+## Change a Guest Customer to a Registered Customer
+
+You can only set the `has_account` property when you create a customer. The [updateCustomersWorkflow](/references/medusa-workflows/updateCustomersWorkflow) and the Customer Module's `updateCustomers` method don't accept it. So, you can't change an existing guest customer to a registered customer.
+
+This affects flows that link a new auth identity to an existing guest customer. For example, a custom auth provider that sets the `customer_id` in the auth identity's app metadata to the guest customer's ID. The customer can log in, but the Medusa Admin still shows them as a guest.
+
+Instead, use one of the following approaches.
+
+### Set `has_account` When Importing Customers
+
+If you're migrating customers from another platform, set `has_account` to `true` for customers that have accounts when you create them. How you do that depends on whether the customer's auth identity already exists at import time.
+
+#### Auth Identity Exists
+
+If you create the customer's auth identity before importing the customer, use the [createCustomerAccountWorkflow](/references/medusa-workflows/createCustomerAccountWorkflow). It creates the customer with `has_account` set to `true` and sets the customer's ID in the auth identity's app metadata.
+
+For example, in a [custom CLI script](!docs!/learn/fundamentals/custom-cli-scripts):
+
+```ts title="src/scripts/import-customers.ts"
+import { ExecArgs } from "@medusajs/framework/types"
+import {
+  createCustomerAccountWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+export default async function importCustomers({
+  container,
+}: ExecArgs) {
+  await createCustomerAccountWorkflow(container).run({
+    input: {
+      authIdentityId: "authid_123",
+      customerData: {
+        email: "john@example.com",
+      },
+    },
+  })
+}
+```
+
+The workflow creates one customer per run, so run it for each customer you import.
+
+#### Auth Identity Is Created on First Login
+
+Some auth providers, such as passwordless providers, create the auth identity when the customer first logs in. In that case, create the customers with `has_account` set to `true` using the [createCustomersWorkflow](/references/medusa-workflows/createCustomersWorkflow). It accepts multiple customers in one run:
+
+export const importHighlights = [
+  ["14", "has_account", "Mark the customer as registered."]
+]
+
+```ts title="src/scripts/import-customers.ts" highlights={importHighlights}
+import { ExecArgs } from "@medusajs/framework/types"
+import {
+  createCustomersWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+export default async function importCustomers({
+  container,
+}: ExecArgs) {
+  await createCustomersWorkflow(container).run({
+    input: {
+      customersData: [
+        {
+          email: "john@example.com",
+          has_account: true,
+        },
+      ],
+    },
+  })
+}
+```
+
+Then, when the customer first logs in, link the new auth identity to the existing customer. Create a workflow that uses the [setAuthAppMetadataStep](/references/medusa-workflows/steps/setAuthAppMetadataStep) to set the customer's ID in the auth identity's app metadata:
+
+export const linkHighlights = [
+  ["19", "actorType", "Sets the `customer_id` key in the app metadata."],
+  ["20", "value", "The ID of the imported customer."]
+]
+
+```ts title="src/workflows/link-customer-auth-identity.ts" highlights={linkHighlights}
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  setAuthAppMetadataStep,
+} from "@medusajs/medusa/core-flows"
+
+type LinkCustomerAuthIdentityInput = {
+  authIdentityId: string
+  customerId: string
+}
+
+export const linkCustomerAuthIdentityWorkflow = createWorkflow(
+  "link-customer-auth-identity",
+  (input: LinkCustomerAuthIdentityInput) => {
+    const authIdentity = setAuthAppMetadataStep({
+      authIdentityId: input.authIdentityId,
+      actorType: "customer",
+      value: input.customerId,
+    })
+
+    return new WorkflowResponse(authIdentity)
+  }
+)
+```
+
+Execute the workflow in your login flow after the auth provider creates the auth identity. The step throws an error if the auth identity is already linked to a customer.
+
+### Register a New Customer Account
+
+When a guest customer registers, use the [createCustomerAccountWorkflow](/references/medusa-workflows/createCustomerAccountWorkflow) to create a registered customer with the same email. The workflow also sets the customer's ID in the auth identity's app metadata. It doesn't change the existing guest customer.
+
+The guest customer's orders stay linked to the guest customer. To move them to the registered customer, the customer can request an order transfer using the [Request Order Transfer API route](!api!/store#orders_postordersidtransferrequest).
+
+---
+
 ## Customer Deletion and Email Reuse
 
 When a merchant deletes a customer, the `Customer` record is soft-deleted, meaning it is not permanently removed from the database.

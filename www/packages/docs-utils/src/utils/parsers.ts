@@ -1444,22 +1444,22 @@ const formatNodeText = (node?: UnistNode): string => {
   return node.value || ""
 }
 
-export type ChangelogListParserOptions = {
+export type InjectedMarkdownParserOptions = {
   /**
-   * The Markdown of the changelog entries that the component renders. The
-   * component loads its entries from generated files, so the content can't be
-   * derived from the MDX file and must be passed by the consuming project.
+   * The Markdown of the content that the component renders. The component
+   * loads its content from outside the MDX file, such as generated files or a
+   * CMS, so the content must be passed by the consuming project.
    */
   content?: string
 }
 
 /**
- * Replaces a `<ChangelogList />` component with the Markdown of the changelog
- * entries it renders, so the Markdown version of a changelog page holds the
- * same content as the page itself.
+ * Replaces a component, such as `<ChangelogList />`, with the Markdown of the
+ * content it renders, so the Markdown version of a page holds the same content
+ * as the page itself.
  */
-export const parseChangelogList: ComponentParser<
-  ChangelogListParserOptions
+export const parseInjectedMarkdown: ComponentParser<
+  InjectedMarkdownParserOptions
 > = async (
   node: UnistNodeWithData,
   index: number,
@@ -1469,7 +1469,7 @@ export const parseChangelogList: ComponentParser<
   const content = options?.content?.trim()
 
   if (!content) {
-    // no entries available: drop the component so no broken output remains
+    // no content available: drop the component so no broken output remains
     parent?.children.splice(index, 1)
     return [SKIP, index]
   }

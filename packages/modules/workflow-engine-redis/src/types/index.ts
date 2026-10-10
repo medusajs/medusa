@@ -17,6 +17,18 @@ export type InitializeModuleInjectableDependencies = {
  * You can configure shared options that apply to all queues/workers, or provide
  * per-queue overrides for fine-grained control.
  *
+ * This is the value of the `redis` property in the module's options:
+ * ```ts
+ * {
+ *   resolve: "@medusajs/medusa/workflow-engine-redis",
+ *   options: {
+ *     redis: {
+ *       // a RedisWorkflowsOptions value, as shown in the examples below
+ *     }
+ *   }
+ * }
+ * ```
+ *
  * @example
  * ```ts
  * // Simple configuration - same options for all queues
@@ -180,7 +192,7 @@ export type RedisWorkflowsOptions = {
 
 declare module "@medusajs/types" {
   interface ModuleOptions {
-    "@medusajs/workflow-engine-redis": RedisWorkflowsOptions
-    "@medusajs/medusa/workflow-engine-redis": RedisWorkflowsOptions
+    "@medusajs/workflow-engine-redis": { redis: RedisWorkflowsOptions }
+    "@medusajs/medusa/workflow-engine-redis": { redis: RedisWorkflowsOptions }
   }
 }

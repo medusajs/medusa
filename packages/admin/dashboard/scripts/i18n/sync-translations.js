@@ -250,12 +250,20 @@ function runApply({ input }) {
       return
     }
 
+    let translations
+    try {
+      translations = readJson(path.join(input, file))
+    } catch (e) {
+      console.warn(`Skipping ${file}: invalid JSON (${e.message})`)
+      return
+    }
+
     const localePath = path.join(translationsDir, `${locale}.json`)
     const errors = []
     const merged = mergeLevel(
       en,
       readJson(localePath),
-      readJson(path.join(input, file)),
+      translations,
       pluralConfig[locale],
       [],
       errors

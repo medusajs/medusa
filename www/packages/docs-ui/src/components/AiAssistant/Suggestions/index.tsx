@@ -30,10 +30,10 @@ export const AiAssistantSuggestions = (props: AiAssistantSuggestionsProps) => {
           </Link>{" "}
           or{" "}
           <Link
-            href={`${baseUrl}/learn/introduction/build-with-llms-ai#mcp-remote-server`}
+            href={`${baseUrl}/learn/introduction/build-with-llms-ai/docs-mcp-server`}
             variant="content"
           >
-            Medusa MCP server
+            Docs MCP server
           </Link>{" "}
           in Cursor, VSCode, etc...
         </span>

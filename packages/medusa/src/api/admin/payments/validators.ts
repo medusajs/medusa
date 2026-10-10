@@ -61,5 +61,6 @@ export const AdminCreatePaymentRefund = z
     amount: z.number().positive().optional(),
     refund_reason_id: z.string().optional(),
     note: z.string().optional(),
+    idempotency_key: z.string().min(1).max(255).optional(),
   })
   .strict()

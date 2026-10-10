@@ -49,6 +49,7 @@ export default async ({
       environment_handle?: string
       sandbox_handle?: string
       webhook_secret?: string
+      payment_accounts?: string[]
     }
   }
 >): Promise<void> => {
@@ -63,6 +64,7 @@ export default async ({
     environment_handle,
     sandbox_handle,
     webhook_secret,
+    payment_accounts,
   } = options?.cloud ?? {}
 
   if (
@@ -71,16 +73,21 @@ export default async ({
     webhook_secret &&
     (environment_handle || sandbox_handle)
   ) {
-    await registrationFn(providers.MedusaPaymentsProvider, container, {
-      options: {
-        api_key,
-        endpoint,
-        environment_handle,
-        sandbox_handle,
-        webhook_secret,
-      },
-      id: "default",
-    })
+    // Each Medusa Payments account (eg. one per region) gets its own provider, so it can be
+    // assigned to regions and receives the webhooks for that account.
+    for (const payment_account of payment_accounts ?? []) {
+      await registrationFn(providers.MedusaPaymentsProvider, container, {
+        options: {
+          api_key,
+          endpoint,
+          environment_handle,
+          sandbox_handle,
+          webhook_secret,
+          payment_account,
+        },
+        id: payment_account,
+      })
+    }
   }
 
   await moduleProviderLoader({

@@ -1809,7 +1809,7 @@ Learn more about list links in [this documentation](!docs!/learn/fundamentals/mo
 
 To ensure a model's records linked to another model are deleted when the linked model is deleted:
 
-```ts highlights={[["9", "deleteCascades"]]}
+```ts highlights={[["9", "deleteCascade"]]}
 import BlogModule from "../modules/blog"
 import ProductModule from "@medusajs/medusa/product"
 import { defineLink } from "@medusajs/framework/utils"
@@ -1818,12 +1818,12 @@ export default defineLink(
   ProductModule.linkable.product,
   {
     linkable: BlogModule.linkable.post,
-    deleteCascades: true,
+    deleteCascade: true,
   }
 )
 ```
 
-Learn more in [this documentation](!docs!/learn/fundamentals/module-links#define-a-list-link).
+Learn more in [this documentation](!docs!/learn/fundamentals/module-links#set-delete-cascades-on-link).
 
 ### Add Custom Columns to Module Link
 

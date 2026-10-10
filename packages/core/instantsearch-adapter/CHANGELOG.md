@@ -1,5 +1,7 @@
 # @medusajs/instantsearch-adapter
 
+## 2.21.2
+
 ## 2.21.1
 
 ## 2.21.0

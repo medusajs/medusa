@@ -1,8 +1,8 @@
 import { SearchResult } from "../../../search"
 
 /**
- * Each hit carries the matching document under `document`: the index' own fields,
- * or the hydrated entity when the query asked for fields the index doesn't hold.
+ * Each hit carries the matching document under `document`: the fields the query
+ * selected, or every field the index can return.
  * `metadata.count` is whatever the engine reported, which most of them only
  * estimate.
  */

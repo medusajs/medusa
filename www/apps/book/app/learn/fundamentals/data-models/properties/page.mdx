@@ -16,6 +16,21 @@ By default, Medusa creates the following properties for every data model:
 - `updated_at`: A [dateTime](#dateTime) property that stores when a record of the data model was updated.
 - `deleted_at`: A [dateTime](#dateTime) property that stores when a record of the data model was deleted. When you soft-delete a record, Medusa sets the `deleted_at` property to the current date.
 
+### Precision of Default Timestamp Properties
+
+The `created_at` and `updated_at` properties are stored in `timestamptz` columns, and their precision depends on how you write the record:
+
+- When you create a record through a module's service or the ORM, Medusa sets the value from a JavaScript `Date`, which has millisecond precision.
+- When you insert a record with raw SQL that omits the column, such as in seed scripts, backfills, or imports, PostgreSQL applies the column's `now()` default, which has microsecond precision.
+
+When you retrieve a record, the database driver returns these properties as JavaScript `Date` objects, which drop any sub-millisecond digits. So, a retrieved value may be earlier than the value stored in the database.
+
+<Note title="Warning" type="warning">
+
+Don't use a retrieved `created_at` or `updated_at` value directly in a cursor for keyset pagination or in a `>` comparison against the database column. If the stored value has microsecond precision, the comparison can match the same record again, causing duplicate results or infinite pagination loops. Instead, select the column as text in raw SQL, such as `created_at::text`, or truncate the column to milliseconds with `date_trunc('milliseconds', created_at)` in the comparison.
+
+</Note>
+
 ---
 
 ## Property Types

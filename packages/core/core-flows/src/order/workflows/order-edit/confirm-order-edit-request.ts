@@ -199,10 +199,25 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
     }).config({ name: "order-items-query" })
 
     const { variants, items, toRemoveReservationLineItemIds } = transform(
-      { refreshedOrder, previousOrderItems: order.items, orderPreview },
-      ({ refreshedOrder, previousOrderItems, orderPreview }) => {
+      {
+        refreshedOrder,
+        previousOrderItems: order.items,
+        orderPreview,
+        orderChange,
+      },
+      ({ refreshedOrder, previousOrderItems, orderPreview, orderChange }) => {
         const allItems: any[] = []
         const allVariants: any[] = []
+
+        const backorderItemIds = new Set(
+          (orderChange.actions ?? [])
+            .filter(
+              (a) =>
+                a.action === ChangeActionType.ITEM_ADD &&
+                a.details?.allow_backorder
+            )
+            .map((a) => a.details?.reference_id)
+        )
 
         const previousItemIds = (previousOrderItems || []).map(({ id }) => id)
         const currentItemIds = refreshedOrder.items.map(({ id }) => id)
@@ -248,6 +263,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             id: ordItem.id,
             variant_id: ordItem.variant_id,
             quantity: reservationQuantity,
+            allow_backorder: backorderItemIds.has(ordItem.id),
           })
           allVariants.push(ordItem.variant)
         })

@@ -3,9 +3,18 @@ import { HeadlineTags } from "docs-ui"
 import HomepageWhatsNewRow from "./Row"
 import { MAX_WHATS_NEW_ITEMS, whatsNewItems, WhatsNewItem } from "./data"
 
+const getPriority = (item: WhatsNewItem) => {
+  if (item.comingSoon) {
+    return 0
+  }
+
+  return item.earlyAccess ? 1 : 2
+}
+
 const sortItems = (a: WhatsNewItem, b: WhatsNewItem) => {
-  if (!!a.comingSoon !== !!b.comingSoon) {
-    return a.comingSoon ? -1 : 1
+  const priorityDiff = getPriority(a) - getPriority(b)
+  if (priorityDiff !== 0) {
+    return priorityDiff
   }
 
   return (b.date ?? "").localeCompare(a.date ?? "")

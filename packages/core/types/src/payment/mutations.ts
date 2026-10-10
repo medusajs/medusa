@@ -192,6 +192,16 @@ export interface CreateRefundDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown>
+
+  /**
+   * A caller-supplied key that makes the refund idempotent at the payment
+   * provider. Retrying a refund with the same key never moves funds twice,
+   * even when the response of the original request was lost.
+   *
+   * When omitted, every request starts a new refund, so a retry after a lost
+   * response can refund twice.
+   */
+  idempotency_key?: string
 }
 
 /**

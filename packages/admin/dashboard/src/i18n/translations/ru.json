@@ -101,7 +101,8 @@
       "actions": {
         "insertRowAbove": "Вставить строку выше",
         "insertRowBelow": "Вставить строку ниже",
-        "deleteRow": "Удалить строку"
+        "deleteRow": "Удалить строку",
+        "addRow": "Добавить строку"
       },
       "labels": {
         "key": "Ключ",
@@ -190,19 +191,34 @@
       "groups": {
         "all": "Все разделы",
         "customer": "Клиенты",
+        "customer_group": "Группы клиентов",
         "customerGroup": "Группы клиентов",
         "product": "Товары",
+        "product_variant": "Варианты товаров",
+        "inventory_item": "Запасы",
         "productVariant": "Варианты товаров",
         "inventory": "Склад",
         "reservation": "Резервы",
+        "product_category": "Категории",
+        "product_collection": "Коллекции",
         "category": "Категории",
         "collection": "Коллекции",
         "order": "Заказы",
         "promotion": "Акции",
         "campaign": "Кампании",
+        "price_list": "Прайс-листы",
         "priceList": "Прайс-листы",
         "user": "Пользователи",
         "region": "Регионы",
+        "tax_region": "Налоговые регионы",
+        "return_reason": "Причины возврата",
+        "sales_channel": "Каналы продаж",
+        "product_type": "Типы товаров",
+        "product_tag": "Теги товаров",
+        "stock_location": "Локации",
+        "shipping_profile": "Профили доставки",
+        "publishable_api_key": "Публичные API-ключи",
+        "secret_api_key": "Секретные API-ключи",
         "taxRegion": "Налоговые регионы",
         "returnReason": "Причины возврата",
         "salesChannel": "Каналы продаж",
@@ -1006,6 +1022,8 @@
     "deleteWarning": "Вы собираетесь удалить складскую позицию. Это действие нельзя отменить.",
     "editItemDetails": "Редактировать детали позиции",
     "quantityAcrossLocations": "{{quantity}} в {{locations}} локациях",
+    "unitOfMeasurePlaceholder": "кг",
+    "unitOfMeasureHint": "Единица, в которой хранится и учитывается запас. Отображается рядом с количеством в панели администратора.",
     "levelDeleted": "Остаток успешно удален.",
     "create": {
       "title": "Создать складскую позицию",
@@ -1236,7 +1254,9 @@
         "paymentMethod": "Способ оплаты",
         "paymentMethodDescription": "Вернуть сумму на способ оплаты",
         "creditLine": "Кредит магазина",
-        "creditLineDescription": "Вернуть сумму в виде кредита магазина"
+        "creditLineDescription": "Вернуть сумму в виде кредита магазина",
+        "creditLineNoOutstandingAmountDescription": "Доступно только при наличии остатка к оплате. Сначала создайте возврат или редактирование заказа.",
+        "creditLineGuestDescription": "Доступно только для клиентов с аккаунтом. Этот заказ был оформлен гостем."
       }
     },
     "domain": "Заказы",
@@ -1306,6 +1326,8 @@
       "title": "Платежи",
       "isReadyToBeCaptured": "Платеж <0/> готов к получению.",
       "totalPaidByCustomer": "Общая сумма, оплаченная клиентом",
+      "totalPending": "Всего в ожидании",
+      "storeCreditRefund": "Возврат в виде кредита магазина",
       "totalStoreCreditRefunds": "Сумма возвратов в виде кредита магазина",
       "capture": "Получить платеж",
       "capture_short": "Получить",
@@ -1318,6 +1340,7 @@
         "authorized": "Авторизован",
         "partiallyAuthorized": "Частично авторизован",
         "awaiting": "Ожидает",
+        "pending": "Ожидает",
         "captured": "Получен",
         "partiallyRefunded": "Частично возвращен",
         "partiallyCaptured": "Частично получен",
@@ -2810,6 +2833,9 @@
     "deleteInviteWarning": "Вы собираетесь удалить приглашение для пользователя {{email}}. Это действие нельзя отменить.",
     "resendInvite": "Отправить приглашение повторно",
     "copyInviteLink": "Копировать ссылку для приглашения",
+    "copyResetPasswordLink": "Скопировать ссылку для сброса пароля",
+    "copyResetPasswordLinkSuccess": "Ссылка для сброса пароля скопирована в буфер обмена",
+    "copyResetPasswordLinkHint": "Ссылка скоро истечёт и аннулирует любую ранее отправленную этому пользователю ссылку для сброса пароля.",
     "expiredOnDate": "Истекло {{date}}",
     "validFromUntil": "Действительно с <0>{{from}}</0> по <1>{{until}}</1>",
     "acceptedOnDate": "Принято {{date}}",
@@ -3441,6 +3467,7 @@
     "subtitle": "Просматривайте и отслеживайте выполнение рабочих процессов в приложении Medusa.",
     "transactionIdLabel": "ID транзакции",
     "workflowIdLabel": "ID рабочего процесса",
+    "stateLabel": "Состояние",
     "progressLabel": "Прогресс",
     "stepsCompletedLabel_one": "{{completed}} из {{count}} шага",
     "stepsCompletedLabel_few": "{{completed}} из {{count}} шагов",
@@ -3482,6 +3509,33 @@
         "dormant": "Неактивно",
         "timeout": "Таймаут"
       }
+    }
+  },
+  "searchIndexes": {
+    "domain": "Поиск",
+    "subtitle": "Просматривайте зарегистрированные поисковые индексы и перестраивайте их из исходных данных.",
+    "fieldsLabel": "Индексируемые поля",
+    "providerLabel": "Провайдер",
+    "reindex": "Переиндексировать",
+    "reindexConfirmationTitle": "Переиндексировать {{name}}?",
+    "reindexConfirmation": "Это перестроит индекс «{{name}}» из исходных данных. Результаты поиска по этому индексу могут быть неполными до завершения перестройки.",
+    "reindexSuccess": "Переиндексация {{name}} запущена",
+    "reindexSinceLabel": "Начиная с",
+    "reindexSinceHint": "Перестроить только документы, изменённые начиная с этой даты. Оставьте пустым, чтобы перестроить всё.",
+    "reindexEntityIdsLabel": "ID сущностей",
+    "reindexEntityIdsHint": "ID, разделённые запятой или переносом строки, для перестройки только этих документов. Поддержка зависит от определения индекса.",
+    "delete": "Удалить индекс",
+    "deleteWarning": "Это удалит индекс «{{name}}» и все когда-либо созданные его версии, включая данные в поисковом движке. Индекс не будет доступен для поиска до следующей миграции, которая пересоздаст его с нуля. Это действие нельзя отменить.",
+    "deleteSuccess": "Индекс {{name}} удалён",
+    "noFields": "Нет индексируемых полей.",
+    "list": {
+      "noRecordsMessage": "Нет зарегистрированных поисковых индексов."
+    },
+    "status": {
+      "pending": "Ожидает",
+      "building": "Построение",
+      "ready": "Готов",
+      "error": "Ошибка"
     }
   },
   "shippingOptionTypes": {
@@ -3738,6 +3792,7 @@
     "barcode": "Штрих-код",
     "countryOfOrigin": "Страна происхождения",
     "material": "Материал",
+    "unitOfMeasure": "Единица измерения",
     "thumbnail": "Миниатюра",
     "sku": "SKU",
     "managedInventory": "Управляемые запасы",

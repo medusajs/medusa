@@ -113,7 +113,16 @@ Each locale has a `code` property that follows the [IETF BCP 47 standard](https:
 
 ## Retrieve Translations for Resources
 
-Currently, you can retrieve translations using the [Store API routes](!api!/store) for product-related resources, such as products, product variants, and categories. Future releases will expand translation support to additional resources.
+Currently, you can retrieve translations using the [Store API routes](!api!/store) for product-related resources. The following Store API routes return translated content:
+
+- `/store/products` and `/store/products/:id`
+- `/store/product-variants` and `/store/product-variants/:id`
+- `/store/product-categories` and `/store/product-categories/:id`
+- `/store/collections` and `/store/collections/:id`
+- `/store/product-types` and `/store/product-types/:id`
+- `/store/product-tags` and `/store/product-tags/:id`
+
+Future releases will expand translation support to additional resources.
 
 By default, Medusa serves the original content of a resource. You can override the locale for a request to get the translated content if available.
 

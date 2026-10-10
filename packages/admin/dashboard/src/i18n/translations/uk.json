@@ -43,8 +43,12 @@
     "rank": "Ранг",
     "details": "Деталі",
     "items_one": "{{count}} товар",
+    "items_few": "{{count}} товари",
+    "items_many": "{{count}} товарів",
     "items_other": "{{count}} товари",
     "values_one": "{{count}} значення",
+    "values_few": "{{count}} значення",
+    "values_many": "{{count}} значень",
     "values_other": "{{count}} значень",
     "countSelected": "{{count}} вибрано",
     "countOfTotalSelected": "{{count}} з {{total}} вибрано",
@@ -73,9 +77,13 @@
   "json": {
     "header": "JSON",
     "numberOfKeys_one": "{{count}} ключ",
+    "numberOfKeys_few": "{{count}} ключі",
+    "numberOfKeys_many": "{{count}} ключів",
     "numberOfKeys_other": "{{count}} ключів",
     "drawer": {
       "header_one": "JSON <0>· {{count}} ключ</0>",
+      "header_few": "JSON <0>· {{count}} ключі</0>",
+      "header_many": "JSON <0>· {{count}} ключів</0>",
       "header_other": "JSON <0>· {{count}} ключів</0>",
       "description": "Перегляньте JSON дані для цього об'єкта."
     }
@@ -83,6 +91,8 @@
   "metadata": {
     "header": "Метадані",
     "numberOfKeys_one": "{{count}} ключ",
+    "numberOfKeys_few": "{{count}} ключі",
+    "numberOfKeys_many": "{{count}} ключів",
     "numberOfKeys_other": "{{count}} ключів",
     "edit": {
       "header": "Редагувати метадані",
@@ -348,6 +358,8 @@
     "errors": {
       "fixError": "Виправити помилку",
       "count_one": "{{count}} помилка",
+      "count_few": "{{count}} помилки",
+      "count_many": "{{count}} помилок",
       "count_other": "{{count}} помилок"
     }
   },
@@ -571,8 +583,12 @@
       "fileTooLarge": "Один або кілька файлів перевищують максимальний розмір {{size}}: {{name}}",
       "failedToUpload": "Не вдалося завантажити додане медіа. Спробуйте ще раз.",
       "deleteWarning_one": "Ви збираєтеся видалити {{count}} зображення. Цю дію не можна скасувати.",
+      "deleteWarning_few": "Ви збираєтесь видалити {{count}} зображення. Цю дію неможливо скасувати.",
+      "deleteWarning_many": "Ви збираєтесь видалити {{count}} зображень. Цю дію неможливо скасувати.",
       "deleteWarning_other": "Ви збираєтеся видалити {{count}} зображень. Цю дію не можна скасувати.",
       "deleteWarningWithThumbnail_one": "Ви збираєтеся видалити {{count}} зображення, включаючи мініатюру. Цю дію не можна скасувати.",
+      "deleteWarningWithThumbnail_few": "Ви збираєтесь видалити {{count}} зображення, включно з мініатюрою. Цю дію неможливо скасувати.",
+      "deleteWarningWithThumbnail_many": "Ви збираєтесь видалити {{count}} зображень, включно з мініатюрою. Цю дію неможливо скасувати.",
       "deleteWarningWithThumbnail_other": "Ви збираєтеся видалити {{count}} зображень, включаючи мініатюри. Цю дію не можна скасувати.",
       "thumbnailTooltip": "Мініатюра",
       "galleryLabel": "Галерея",
@@ -605,6 +621,8 @@
     "discountableHint": "Коли не вибрано, знижки не будуть застосовуватися до цього продукту.",
     "noSalesChannels": "Не доступний у жодному каналі продажу",
     "variantCount_one": "{{count}} варіант",
+    "variantCount_few": "{{count}} варіанти",
+    "variantCount_many": "{{count}} варіантів",
     "variantCount_other": "{{count}} варіанти",
     "deleteVariantWarning": "Ви збираєтеся видалити варіант {{title}}. Цю дію не можна скасувати.",
     "productStatus": {
@@ -719,6 +737,8 @@
       "pricesPagination": "1 - {{current}} із {{total}} цін",
       "tableItemAvailable": "{{availableCount}} доступно",
       "tableItem_one": "{{availableCount}} доступно на {{locationCount}} локації",
+      "tableItem_few": "{{availableCount}} доступно на {{locationCount}} локаціях",
+      "tableItem_many": "{{availableCount}} доступно на {{locationCount}} локаціях",
       "tableItem_other": "{{availableCount}} доступно на {{locationCount}} локаціях",
       "inventory": {
         "notManaged": "Не керується",
@@ -837,6 +857,8 @@
     "deleteWarning": "Ви збираєтесь видалити колекцію {{title}}. Цю дію не можна скасувати.",
     "removeSingleProductWarning": "Ви збираєтесь видалити продукт {{title}} з колекції. Цю дію не можна скасувати.",
     "removeProductsWarning_one": "Ви збираєтесь видалити {{count}} продукт з колекції. Цю дію не можна скасувати.",
+    "removeProductsWarning_few": "Ви збираєтесь видалити {{count}} товари з колекції. Цю дію неможливо скасувати.",
+    "removeProductsWarning_many": "Ви збираєтесь видалити {{count}} товарів з колекції. Цю дію неможливо скасувати.",
     "removeProductsWarning_other": "Ви збираєтесь видалити {{count}} продукти з колекції. Цю дію не можна скасувати.",
     "products": {
       "list": {
@@ -844,10 +866,14 @@
       },
       "add": {
         "successToast_one": "Продукт успішно додано до колекції.",
+        "successToast_few": "Товари успішно додано до колекції.",
+        "successToast_many": "Товари успішно додано до колекції.",
         "successToast_other": "Продукти успішно додано до колекції."
       },
       "remove": {
         "successToast_one": "Продукт успішно видалено з колекції.",
+        "successToast_few": "Товари успішно видалено з колекції.",
+        "successToast_many": "Товари успішно видалено з колекції.",
         "successToast_other": "Продукти успішно видалено з колекції."
       }
     }
@@ -877,12 +903,18 @@
       "add": {
         "disabledTooltip": "Продукт вже є в цій категорії.",
         "successToast_one": "Додано {{count}} продукт до категорії.",
+        "successToast_few": "Додано {{count}} товари до категорії.",
+        "successToast_many": "Додано {{count}} товарів до категорії.",
         "successToast_other": "Додано {{count}} продукти до категорії."
       },
       "remove": {
         "confirmation_one": "Ви збираєтесь видалити {{count}} продукт з категорії. Цю дію не можна скасувати.",
+        "confirmation_few": "Ви збираєтесь видалити {{count}} товари з категорії. Цю дію неможливо скасувати.",
+        "confirmation_many": "Ви збираєтесь видалити {{count}} товарів з категорії. Цю дію неможливо скасувати.",
         "confirmation_other": "Ви збираєтесь видалити {{count}} продукти з категорії. Цю дію не можна скасувати.",
         "successToast_one": "Видалено {{count}} продукт з категорії.",
+        "successToast_few": "Видалено {{count}} товари з категорії.",
+        "successToast_many": "Видалено {{count}} товарів з категорії.",
         "successToast_other": "Видалено {{count}} продукти з категорії."
       },
       "list": {
@@ -1042,6 +1074,8 @@
       "action": "Редагувати рівні запасів",
       "placeholder": "Не увімкнено",
       "disablePrompt_one": "Ви збираєтеся вимкнути {{count}} рівень локації. Цю дію неможливо скасувати.",
+      "disablePrompt_few": "Ви збираєтесь вимкнути {{count}} рівні локацій. Цю дію неможливо скасувати.",
+      "disablePrompt_many": "Ви збираєтесь вимкнути {{count}} рівнів локацій. Цю дію неможливо скасувати.",
       "disablePrompt_other": "Ви збираєтеся вимкнути {{count}} рівні локацій. Цю дію неможливо скасувати.",
       "disabledToggleTooltip": "Неможливо вимкнути: очистіть вхідну та/або зарезервовану кількість перед вимкненням.",
       "successToast": "Рівні інвентарю успішно оновлено."
@@ -1175,6 +1209,8 @@
       "alreadyAddedTooltip": "Клієнт вже доданий до групи.",
       "add": {
         "successToast_one": "Клієнта успішно додано до групи.",
+        "successToast_few": "Клієнтів успішно додано до групи.",
+        "successToast_many": "Клієнтів успішно додано до групи.",
         "successToast_other": "Клієнтів успішно додано до групи.",
         "list": {
           "noRecordsMessage": "Спочатку створіть групу клієнтів."
@@ -1182,8 +1218,12 @@
       },
       "remove": {
         "title_one": "Видалити клієнта",
+        "title_few": "Видалити клієнтів",
+        "title_many": "Видалити клієнтів",
         "title_other": "Видалити клієнтів",
         "description_one": "Ви збираєтеся видалити {{count}} клієнта з групи. Цю дію не можна скасувати.",
+        "description_few": "Ви збираєтесь видалити {{count}} клієнти з групи клієнтів. Цю дію неможливо скасувати.",
+        "description_many": "Ви збираєтесь видалити {{count}} клієнтів з групи клієнтів. Цю дію неможливо скасувати.",
         "description_other": "Ви збираєтеся видалити {{count}} клієнтів з групи. Цю дію не можна скасувати."
       },
       "list": {
@@ -1286,6 +1326,8 @@
       "title": "Платежі",
       "isReadyToBeCaptured": "Платіж <0/> готовий до підтвердження.",
       "totalPaidByCustomer": "Загальна сума, сплачена клієнтом",
+      "totalPending": "Загальна сума очікує",
+      "storeCreditRefund": "Відшкодування магазинним кредитом",
       "totalStoreCreditRefunds": "Загальна сума повернень магазинного кредиту",
       "capture": "Підтвердити платіж",
       "capture_short": "Підтвердити",
@@ -1298,6 +1340,7 @@
         "authorized": "Авторизовано",
         "partiallyAuthorized": "Частково авторизовано",
         "awaiting": "Очікує",
+        "pending": "Очікує",
         "captured": "Підтверджено",
         "partiallyRefunded": "Частково відшкодовано",
         "partiallyCaptured": "Частково підтверджено",
@@ -1567,6 +1610,8 @@
       "error": {
         "wrongQuantity": "Доступний тільки один товар для виконання",
         "wrongQuantity_one": "Лише один товар доступний для виконання",
+        "wrongQuantity_few": "Кількість має бути числом від 1 до {{number}}",
+        "wrongQuantity_many": "Кількість має бути числом від 1 до {{number}}",
         "wrongQuantity_other": "Кількість повинна бути числом між 1 і {{number}}",
         "noItems": "Немає товарів для виконання.",
         "noShippingOption": "Варіант доставки обов'язковий",
@@ -1620,6 +1665,8 @@
     "activity": {
       "header": "Активність",
       "showMoreActivities_one": "Показати ще {{count}} активність",
+      "showMoreActivities_few": "Показати ще {{count}} активності",
+      "showMoreActivities_many": "Показати ще {{count}} активностей",
       "showMoreActivities_other": "Показати ще {{count}} активностей",
       "comment": {
         "label": "Коментар",
@@ -1653,6 +1700,8 @@
           "shipped": "Товари відправлено",
           "delivered": "Товари доставлено",
           "items_one": "{{count}} товар",
+          "items_few": "{{count}} товари",
+          "items_many": "{{count}} товарів",
           "items_other": "{{count}} товари"
         },
         "return": {
@@ -1660,6 +1709,8 @@
           "canceled": "Повернення #{{returnId}} скасовано",
           "received": "Повернення #{{returnId}} отримано",
           "items_one": "{{count}} товар повернуто",
+          "items_few": "{{count}} товари повернуто",
+          "items_many": "{{count}} товарів повернуто",
           "items_other": "{{count}} товари повернуто"
         },
         "note": {
@@ -1900,10 +1951,16 @@
       "fields": {
         "count": {
           "shipping_one": "{{count}} варіант доставки",
+          "shipping_few": "{{count}} варіанти доставки",
+          "shipping_many": "{{count}} варіантів доставки",
           "shipping_other": "{{count}} варіанти доставки",
           "pickup_one": "{{count}} опція самовивозу",
+          "pickup_few": "{{count}} варіанти самовивозу",
+          "pickup_many": "{{count}} варіантів самовивозу",
           "pickup_other": "{{count}} опцій самовивозу",
           "returns_one": "{{count}} варіант повернення",
+          "returns_few": "{{count}} варіанти повернення",
+          "returns_many": "{{count}} варіантів повернення",
           "returns_other": "{{count}} варіанти повернення"
         },
         "priceType": {
@@ -2171,10 +2228,16 @@
           "header": "Додати цілі"
         },
         "values_one": "{{count}} значення",
+        "values_few": "{{count}} значення",
+        "values_many": "{{count}} значень",
         "values_other": "{{count}} значень",
         "numberOfTargets_one": "{{count}} ціль",
+        "numberOfTargets_few": "{{count}} цілі",
+        "numberOfTargets_many": "{{count}} цілей",
         "numberOfTargets_other": "{{count}} цілей",
         "additionalValues_one": "і {{count}} додаткове значення",
+        "additionalValues_few": "та ще {{count}} значення",
+        "additionalValues_many": "та ще {{count}} значень",
         "additionalValues_other": "і {{count}} додаткових значень",
         "action": "Додати ціль"
       },
@@ -2634,8 +2697,12 @@
       },
       "delete": {
         "confirmation_one": "Ви збираєтесь видалити ціни для {{count}} продукту в ціновому списку. Цю дію неможливо скасувати.",
+        "confirmation_few": "Ви збираєтесь видалити ціни для {{count}} товарів у ціновому списку. Цю дію неможливо скасувати.",
+        "confirmation_many": "Ви збираєтесь видалити ціни для {{count}} товарів у ціновому списку. Цю дію неможливо скасувати.",
         "confirmation_other": "Ви збираєтесь видалити ціни для {{count}} продуктів у ціновому списку. Цю дію неможливо скасувати.",
         "successToast_one": "Успішно видалено ціни для {{count}} продукту.",
+        "successToast_few": "Ціни для {{count}} товарів успішно видалено.",
+        "successToast_many": "Ціни для {{count}} товарів успішно видалено.",
         "successToast_other": "Успішно видалено ціни для {{count}} продуктів."
       },
       "add": {
@@ -2843,6 +2910,8 @@
       "unassignableRoleTooltip": "У вас немає доступу, щоб призначити цю роль — ваші дозволи не покривають усі її політики.",
       "add": {
         "successToast_one": "Користувача успішно додано до ролі.",
+        "successToast_few": "Користувачів успішно додано до ролі.",
+        "successToast_many": "Користувачів успішно додано до ролі.",
         "successToast_other": "Користувачів успішно додано до ролі.",
         "list": {
           "noRecordsMessage": "Спочатку створіть користувача."
@@ -2850,8 +2919,12 @@
       },
       "remove": {
         "title_one": "Видалити користувача",
+        "title_few": "Видалити користувачів",
+        "title_many": "Видалити користувачів",
         "title_other": "Видалити користувачів",
         "description_one": "Ви збираєтеся видалити {{count}} користувача з ролі. Цю дію неможливо скасувати.",
+        "description_few": "Ви збираєтесь видалити {{count}} користувачів з ролі. Цю дію неможливо скасувати.",
+        "description_many": "Ви збираєтесь видалити {{count}} користувачів з ролі. Цю дію неможливо скасувати.",
         "description_other": "Ви збираєтеся видалити {{count}} користувачів із ролі. Цю дію неможливо скасувати."
       },
       "list": {
@@ -2979,8 +3052,12 @@
     "enableTaxInclusivePricing": "Увімкнути ціноутворення з урахуванням податків",
     "disableTaxInclusivePricing": "Вимкнути ціноутворення з урахуванням податків",
     "removeCurrencyWarning_one": "Ви збираєтесь видалити {{count}} валюту з вашого магазину. Переконайтеся, що ви видалили всі ціни, що використовують цю валюту, перед тим як продовжити.",
+    "removeCurrencyWarning_few": "Ви збираєтесь видалити {{count}} валюти з вашого магазину. Переконайтесь, що ви видалили всі ціни, що використовують ці валюти, перш ніж продовжити.",
+    "removeCurrencyWarning_many": "Ви збираєтесь видалити {{count}} валют з вашого магазину. Переконайтесь, що ви видалили всі ціни, що використовують ці валюти, перш ніж продовжити.",
     "removeCurrencyWarning_other": "Ви збираєтесь видалити {{count}} валют з вашого магазину. Переконайтеся, що ви видалили всі ціни, що використовують ці валюти, перед тим як продовжити.",
     "removeLocaleWarning_one": "Ви збираєтеся видалити {{count}} локаль із вашого магазину. Будь-який переклад, що використовує цю локаль, буде видалено.",
+    "removeLocaleWarning_few": "Ви збираєтесь видалити {{count}} локалі з вашого магазину. Будь-який переклад, що використовує ці локалі, буде видалено.",
+    "removeLocaleWarning_many": "Ви збираєтесь видалити {{count}} локалей з вашого магазину. Будь-який переклад, що використовує ці локалі, буде видалено.",
     "removeLocaleWarning_other": "Ви збираєтеся видалити {{count}} локалей із вашого магазину. Будь-які переклади, що використовують ці локалі, будуть видалені.",
     "currencyAlreadyAdded": "Валюта вже додана до вашого магазину.",
     "localeAlreadyAdded": "Цю локаль уже додано до вашого магазину.",
@@ -3006,6 +3083,8 @@
     "countriesHint": "Додайте країни, що входять до цього регіону.",
     "deleteRegionWarning": "Ви збираєтесь видалити регіон {{name}}. Цю дію неможливо скасувати.",
     "removeCountriesWarning_one": "Ви збираєтесь видалити {{count}} країну з регіону. Цю дію неможливо скасувати.",
+    "removeCountriesWarning_few": "Ви збираєтесь видалити {{count}} країни з регіону. Цю дію неможливо скасувати.",
+    "removeCountriesWarning_many": "Ви збираєтесь видалити {{count}} країн з регіону. Цю дію неможливо скасувати.",
     "removeCountriesWarning_other": "Ви збираєтесь видалити {{count}} країн з регіону. Цю дію неможливо скасувати.",
     "removeCountryWarning": "Ви збираєтесь видалити країну {{name}} з регіону. Цю дію неможливо скасувати.",
     "automaticTaxesHint": "Коли увімкнено, податки обчислюються тільки на основі адреси доставки під час оформлення замовлення.",
@@ -3115,6 +3194,8 @@
     "selectLocations": "Виберіть локації, де є товар.",
     "deleteLocationWarning": "Ви збираєтесь видалити локацію {{name}}. Цю дію не можна скасувати.",
     "removeSalesChannelsWarning_one": "Ви збираєтесь видалити {{count}} канал продажу з локації.",
+    "removeSalesChannelsWarning_few": "Ви збираєтесь видалити {{count}} канали продажу з локації.",
+    "removeSalesChannelsWarning_many": "Ви збираєтесь видалити {{count}} каналів продажу з локації.",
     "removeSalesChannelsWarning_other": "Ви збираєтесь видалити {{count}} канали продажу з локації.",
     "toast": {
       "create": "Локацію створено успішно",
@@ -3144,6 +3225,8 @@
     "createSalesChannelHint": "Створіть новий канал продажу для продажу ваших товарів.",
     "enabledHint": "Вкажіть, чи активований канал продажу.",
     "removeProductsWarning_one": "Ви збираєтесь видалити {{count}} товар з {{sales_channel}}.",
+    "removeProductsWarning_few": "Ви збираєтесь видалити {{count}} товари з {{sales_channel}}.",
+    "removeProductsWarning_many": "Ви збираєтесь видалити {{count}} товарів з {{sales_channel}}.",
     "removeProductsWarning_other": "Ви збираєтесь видалити {{count}} товари з {{sales_channel}}.",
     "addProducts": "Додати товари",
     "editSalesChannel": "Редагувати канал продажу",
@@ -3205,6 +3288,8 @@
       "title": "Додати канали продажу",
       "description": "Додайте канали продажу, до яких буде обмежено доступ для API ключа.",
       "successToast_one": "{{count}} канал продажу успішно додано до API ключа.",
+      "successToast_few": "{{count}} канали продажу успішно додано до API ключа.",
+      "successToast_many": "{{count}} каналів продажу успішно додано до API ключа.",
       "successToast_other": "{{count}} канали продажу успішно додано до API ключа.",
       "alreadyAddedTooltip": "Канал продажу вже додано до API ключа.",
       "list": {
@@ -3227,9 +3312,13 @@
     "removeSalesChannel": {
       "warning": "Ви збираєтесь видалити канал продажу {{name}} з API ключа. Цю дію неможливо скасувати.",
       "warningBatch_one": "Ви збираєтесь видалити {{count}} канал продажу з API ключа. Цю дію неможливо скасувати.",
+      "warningBatch_few": "Ви збираєтесь видалити {{count}} канали продажу з API ключа. Цю дію неможливо скасувати.",
+      "warningBatch_many": "Ви збираєтесь видалити {{count}} каналів продажу з API ключа. Цю дію неможливо скасувати.",
       "warningBatch_other": "Ви збираєтесь видалити {{count}} канали продажу з API ключа. Цю дію неможливо скасувати.",
       "successToast": "Канал продажу успішно видалено з API ключа.",
       "successToastBatch_one": "{{count}} канал продажу успішно видалено з API ключа.",
+      "successToastBatch_few": "{{count}} канали продажу успішно видалено з API ключа.",
+      "successToastBatch_many": "{{count}} каналів продажу успішно видалено з API ключа.",
       "successToastBatch_other": "{{count}} канали продажу успішно видалено з API ключа."
     },
     "actions": {
@@ -3387,6 +3476,8 @@
     "stateLabel": "Стан",
     "progressLabel": "Прогрес",
     "stepsCompletedLabel_one": "{{completed}} з {{count}} кроку",
+    "stepsCompletedLabel_few": "{{completed}} з {{count}} кроків",
+    "stepsCompletedLabel_many": "{{completed}} з {{count}} кроків",
     "stepsCompletedLabel_other": "{{completed}} з {{count}} кроків",
     "list": {
       "noRecordsMessage": "Немає виконаних процесів роботи."
@@ -3734,18 +3825,32 @@
   },
   "dateTime": {
     "years_one": "Рік",
+    "years_few": "Роки",
+    "years_many": "Років",
     "years_other": "Роки",
     "months_one": "Місяць",
+    "months_few": "Місяці",
+    "months_many": "Місяців",
     "months_other": "Місяці",
     "weeks_one": "Тиждень",
+    "weeks_few": "Тижні",
+    "weeks_many": "Тижнів",
     "weeks_other": "Тижні",
     "days_one": "День",
+    "days_few": "Дні",
+    "days_many": "Днів",
     "days_other": "Дні",
     "hours_one": "Година",
+    "hours_few": "Години",
+    "hours_many": "Годин",
     "hours_other": "Години",
     "minutes_one": "Хвилина",
+    "minutes_few": "Хвилини",
+    "minutes_many": "Хвилин",
     "minutes_other": "Хвилини",
     "seconds_one": "Секунда",
+    "seconds_few": "Секунди",
+    "seconds_many": "Секунд",
     "seconds_other": "Секунди"
   },
   "views": {

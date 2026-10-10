@@ -1343,6 +1343,406 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               "You cannot refund more than what is captured on the payment."
             )
           })
+
+          describe("idempotency", () => {
+            const spyOnProviderRefund = () =>
+              jest.spyOn(
+                (service as any).paymentProviderService_,
+                "refundPayment"
+              )
+
+            const capture = () =>
+              service.capturePayment({ amount: 100, payment_id: "pay-id-2" })
+
+            const listAllRefunds = (paymentId = "pay-id-2") =>
+              service.listRefunds(
+                { payment_id: paymentId },
+                { withDeleted: true }
+              )
+
+            it("should derive the idempotency key from the refund when the caller doesn't supply one", async () => {
+              await capture()
+
+              const refundPaymentMock = spyOnProviderRefund()
+
+              const payment = await service.refundPayment({
+                amount: 100,
+                payment_id: "pay-id-2",
+              })
+
+              expect(refundPaymentMock).toHaveBeenCalledTimes(1)
+              expect(refundPaymentMock.mock.calls[0][1]).toEqual(
+                expect.objectContaining({
+                  context: expect.objectContaining({
+                    idempotency_key: payment.refunds![0].id,
+                  }),
+                })
+              )
+            })
+
+            it("should forward a caller-supplied idempotency key to the provider", async () => {
+              await capture()
+
+              const refundPaymentMock = spyOnProviderRefund()
+
+              await service.refundPayment({
+                amount: 100,
+                payment_id: "pay-id-2",
+                idempotency_key: "rma_42_refund",
+              })
+
+              expect(refundPaymentMock.mock.calls[0][1]).toEqual(
+                expect.objectContaining({
+                  context: expect.objectContaining({
+                    idempotency_key: "rma_42_refund",
+                  }),
+                })
+              )
+            })
+
+            it("should soft-delete the refund record when the provider call fails", async () => {
+              await capture()
+
+              spyOnProviderRefund().mockRejectedValueOnce(
+                new Error("provider timed out")
+              )
+
+              await expect(
+                service.refundPayment({
+                  amount: 100,
+                  payment_id: "pay-id-2",
+                })
+              ).rejects.toThrow("provider timed out")
+
+              // Invisible to every refund total, but still on record.
+              expect(
+                await service.listRefunds({ payment_id: "pay-id-2" })
+              ).toHaveLength(0)
+
+              const refunds = await listAllRefunds()
+
+              expect(refunds).toHaveLength(1)
+              expect(refunds[0]).toEqual(
+                expect.objectContaining({
+                  amount: 100,
+                  deleted_at: expect.any(Date),
+                })
+              )
+            })
+
+            it("should not count a failed refund toward the refunded total", async () => {
+              await capture()
+
+              spyOnProviderRefund().mockRejectedValueOnce(
+                new Error("provider timed out")
+              )
+
+              await expect(
+                service.refundPayment({
+                  amount: 100,
+                  payment_id: "pay-id-2",
+                })
+              ).rejects.toThrow("provider timed out")
+
+              const payment = await service.refundPayment({
+                amount: 100,
+                payment_id: "pay-id-2",
+              })
+
+              expect(payment.refunds).toEqual([
+                expect.objectContaining({ amount: 100, deleted_at: null }),
+              ])
+            })
+
+            it("should start a new refund when retrying without an idempotency key", async () => {
+              await capture()
+
+              const refundPaymentMock = spyOnProviderRefund()
+              refundPaymentMock.mockRejectedValueOnce(
+                new Error("provider timed out")
+              )
+
+              await expect(
+                service.refundPayment({
+                  amount: 100,
+                  payment_id: "pay-id-2",
+                })
+              ).rejects.toThrow("provider timed out")
+
+              await service.refundPayment({
+                amount: 100,
+                payment_id: "pay-id-2",
+              })
+
+              // A keyless request is never matched against an earlier attempt,
+              // so the retry is a separate refund with its own key.
+              expect(refundPaymentMock).toHaveBeenCalledTimes(2)
+              expect(
+                refundPaymentMock.mock.calls[1][1].context.idempotency_key
+              ).not.toEqual(
+                refundPaymentMock.mock.calls[0][1].context.idempotency_key
+              )
+              expect(await listAllRefunds()).toHaveLength(2)
+              expect(
+                await service.listRefunds({ payment_id: "pay-id-2" })
+              ).toHaveLength(1)
+            })
+
+            it("should reuse the caller-supplied idempotency key when retrying a failed refund", async () => {
+              await capture()
+
+              const refundPaymentMock = spyOnProviderRefund()
+              refundPaymentMock.mockRejectedValueOnce(
+                new Error("provider timed out")
+              )
+
+              const input = {
+                amount: 100,
+                payment_id: "pay-id-2",
+                idempotency_key: "rma_42_refund",
+              }
+
+              await expect(service.refundPayment(input)).rejects.toThrow(
+                "provider timed out"
+              )
+
+              await service.refundPayment(input)
+
+              expect(refundPaymentMock).toHaveBeenCalledTimes(2)
+              expect(
+                refundPaymentMock.mock.calls.map(
+                  (call) => call[1].context.idempotency_key
+                )
+              ).toEqual(["rma_42_refund", "rma_42_refund"])
+            })
+
+            it("should not create a second refund when retrying with the same caller-supplied key", async () => {
+              await capture()
+
+              spyOnProviderRefund().mockRejectedValueOnce(
+                new Error("provider timed out")
+              )
+
+              const input = {
+                amount: 100,
+                payment_id: "pay-id-2",
+                idempotency_key: "rma_42_refund",
+              }
+
+              await expect(service.refundPayment(input)).rejects.toThrow(
+                "provider timed out"
+              )
+
+              const payment = await service.refundPayment(input)
+
+              expect(payment.refunds).toHaveLength(1)
+
+              const refunds = await listAllRefunds()
+
+              expect(refunds).toHaveLength(1)
+              expect(refunds[0]).toEqual(
+                expect.objectContaining({ deleted_at: null })
+              )
+            })
+
+            it("should not call the provider twice for a refund that already succeeded under the same key", async () => {
+              await capture()
+
+              const refundPaymentMock = spyOnProviderRefund()
+
+              const input = {
+                amount: 50,
+                payment_id: "pay-id-2",
+                idempotency_key: "rma_42_refund",
+              }
+
+              await service.refundPayment(input)
+              const payment = await service.refundPayment(input)
+
+              expect(refundPaymentMock).toHaveBeenCalledTimes(1)
+              expect(payment.refunds).toHaveLength(1)
+            })
+
+            it("should not let a resumed refund exceed the captured amount", async () => {
+              await capture()
+
+              spyOnProviderRefund().mockRejectedValueOnce(
+                new Error("provider timed out")
+              )
+
+              await expect(
+                service.refundPayment({ amount: 50, payment_id: "pay-id-2" })
+              ).rejects.toThrow("provider timed out")
+
+              await service.refundPayment({
+                amount: 100,
+                payment_id: "pay-id-2",
+              })
+
+              // Resuming the failed 50 would put 150 against 100 captured.
+              await expect(
+                service.refundPayment({ amount: 50, payment_id: "pay-id-2" })
+              ).rejects.toThrow(
+                "You cannot refund more than what is captured on the payment."
+              )
+
+              const live = await service.listRefunds({
+                payment_id: "pay-id-2",
+              })
+              expect(live).toHaveLength(1)
+              expect(live[0].amount).toEqual(100)
+            })
+
+            it("should not let a resumed refund exceed the captured amount with a caller key", async () => {
+              await capture()
+
+              spyOnProviderRefund().mockRejectedValueOnce(
+                new Error("provider timed out")
+              )
+
+              await expect(
+                service.refundPayment({
+                  amount: 50,
+                  payment_id: "pay-id-2",
+                  idempotency_key: "rma_1_refund",
+                })
+              ).rejects.toThrow("provider timed out")
+
+              await service.refundPayment({
+                amount: 100,
+                payment_id: "pay-id-2",
+                idempotency_key: "rma_2_refund",
+              })
+
+              await expect(
+                service.refundPayment({
+                  amount: 50,
+                  payment_id: "pay-id-2",
+                  idempotency_key: "rma_1_refund",
+                })
+              ).rejects.toThrow(
+                "You cannot refund more than what is captured on the payment."
+              )
+            })
+
+            it("should not let an unrelated refund take over a failed one", async () => {
+              await capture()
+
+              spyOnProviderRefund().mockRejectedValueOnce(
+                new Error("provider timed out")
+              )
+
+              await expect(
+                service.refundPayment({
+                  amount: 30,
+                  payment_id: "pay-id-2",
+                  note: "old attempt",
+                })
+              ).rejects.toThrow("provider timed out")
+
+              const payment = await service.refundPayment({
+                amount: 30,
+                payment_id: "pay-id-2",
+                note: "new unrelated refund",
+              })
+
+              expect(payment.refunds).toEqual([
+                expect.objectContaining({
+                  amount: 30,
+                  note: "new unrelated refund",
+                }),
+              ])
+
+              // The old attempt is left behind, not adopted.
+              const all = await listAllRefunds()
+              expect(all).toHaveLength(2)
+            })
+
+            it("should not resume a failed refund even when the request is identical", async () => {
+              await capture()
+
+              const refundPaymentMock = spyOnProviderRefund()
+              refundPaymentMock.mockRejectedValueOnce(
+                new Error("provider timed out")
+              )
+
+              const input = {
+                amount: 30,
+                payment_id: "pay-id-2",
+                note: "same request",
+              }
+
+              await expect(service.refundPayment(input)).rejects.toThrow(
+                "provider timed out"
+              )
+
+              await service.refundPayment(input)
+
+              // Two identical requests are indistinguishable from one request
+              // sent twice, so resuming is only ever driven by an explicit key.
+              expect(await listAllRefunds()).toHaveLength(2)
+              expect(
+                refundPaymentMock.mock.calls[1][1].context.idempotency_key
+              ).not.toEqual(
+                refundPaymentMock.mock.calls[0][1].context.idempotency_key
+              )
+            })
+
+            it("should reject a replay while the first attempt is still in flight", async () => {
+              await capture()
+
+              let releaseProvider: () => void
+              const providerCall = new Promise<void>((resolve) => {
+                releaseProvider = resolve
+              })
+
+              spyOnProviderRefund().mockImplementationOnce(async () => {
+                await providerCall
+                throw new Error("provider timed out")
+              })
+
+              const input = {
+                amount: 50,
+                payment_id: "pay-id-2",
+                idempotency_key: "rma_42_refund",
+              }
+
+              const first = service.refundPayment(input).catch((e) => e)
+
+              // The row is committed before the provider is called, so the
+              // replay below sees an attempt whose outcome isn't known yet.
+              await new Promise((resolve) => setTimeout(resolve, 100))
+
+              await expect(service.refundPayment(input)).rejects.toThrow(
+                "is still in progress"
+              )
+
+              releaseProvider!()
+              await first
+
+              expect(
+                await service.listRefunds({ payment_id: "pay-id-2" })
+              ).toHaveLength(0)
+            })
+
+            it("should treat refunds with different idempotency keys as distinct", async () => {
+              await capture()
+
+              await service.refundPayment({
+                amount: 40,
+                payment_id: "pay-id-2",
+                idempotency_key: "rma_1_refund",
+              })
+
+              const payment = await service.refundPayment({
+                amount: 60,
+                payment_id: "pay-id-2",
+                idempotency_key: "rma_2_refund",
+              })
+
+              expect(payment.refunds).toHaveLength(2)
+            })
+          })
         })
 
         describe("cancel", () => {

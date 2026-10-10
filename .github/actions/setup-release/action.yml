@@ -1,0 +1,18 @@
+name: "Setup release env"
+description: "Setup Node.js, npm with trusted publishing support, and dependencies for publishing packages"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js 22
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+
+    - name: Ensure npm 11.5.1+ for OIDC
+      shell: bash
+      run: npm install -g npm@11.5.1
+
+    - name: Install Dependencies
+      shell: bash
+      run: yarn

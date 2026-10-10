@@ -134,7 +134,8 @@ const StoreSearchPagination = z
 
 /**
  * The Search Module's `SearchQuery`, minus the `context` that shapes hydration,
- * which is the endpoint's to build.
+ * which the endpoint never runs. Which `fields` the index can return is a
+ * property of its definition, so the route checks them.
  */
 const StoreSearchQuery = z
   .object({

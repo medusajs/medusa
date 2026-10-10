@@ -11,7 +11,7 @@ export interface CreatePriceListPriceWorkflowDTO {
   amount: number
 
   /**
-   * The currency code for the price.
+   * The currency code for the price. It's normalized to lowercase when stored. For example, `EUR` is stored as `eur`.
    * 
    * @example
    * usd
@@ -59,7 +59,7 @@ export interface UpdatePriceListPriceWorkflowDTO {
   amount?: number
 
   /**
-   * The currency code of the price.
+   * The currency code of the price. It's normalized to lowercase when stored. For example, `EUR` is stored as `eur`.
    * 
    * @example
    * usd
