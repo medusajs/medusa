@@ -91,10 +91,31 @@ export const useReferenceTranslations = (
   )
   const count = data?.pages[0]?.count ?? 0
 
+  const fetchAllReferences = async () => {
+    let pages = data?.pages ?? []
+    let hasMore = rest.hasNextPage
+
+    while (hasMore) {
+      const result = await rest.fetchNextPage({ cancelRefetch: false })
+      if (result.isError) {
+        throw result.error
+      }
+      pages = result.data?.pages ?? pages
+      hasMore = result.hasNextPage
+    }
+
+    const entities = pages.flatMap((page) => page.data)
+    return {
+      references: entities.map(({ translations: _, ...entity }) => entity),
+      translations: entities.flatMap((entity) => entity.translations ?? []),
+    }
+  }
+
   return {
     references,
     translations,
     count,
+    fetchAllReferences,
     ...rest,
   }
 }

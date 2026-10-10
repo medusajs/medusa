@@ -11197,9 +11197,60 @@
               },
               "required": ["title", "description"],
               "additionalProperties": false
+            },
+            "copyToAll": {
+              "type": "string"
+            },
+            "copyDescription": {
+              "type": "string"
+            },
+            "copyValue": {
+              "type": "string"
+            },
+            "copyMode": {
+              "type": "string"
+            },
+            "copyAllRows": {
+              "type": "string"
+            },
+            "copyEmptyRows": {
+              "type": "string"
+            },
+            "copySaveHint": {
+              "type": "string"
+            },
+            "copyApplied": {
+              "type": "string"
+            },
+            "copyFailed": {
+              "type": "string"
+            },
+            "loadFailed": {
+              "type": "string"
+            },
+            "loadedRows": {
+              "type": "string"
+            },
+            "undoCopy": {
+              "type": "string"
             }
           },
-          "required": ["successToast", "unsavedChanges"],
+          "required": [
+            "successToast",
+            "unsavedChanges",
+            "copyToAll",
+            "copyDescription",
+            "copyValue",
+            "copyMode",
+            "copyAllRows",
+            "copyEmptyRows",
+            "copySaveHint",
+            "copyApplied",
+            "copyFailed",
+            "loadFailed",
+            "loadedRows",
+            "undoCopy"
+          ],
           "additionalProperties": false
         },
         "bulk": {

@@ -1,10 +1,9 @@
 import { Input } from "@medusajs/ui"
-import { ChangeEvent, useCallback, useEffect } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { useSearchParams } from "react-router-dom"
 
 import debounce from "lodash.debounce"
-import { useSelectedParams } from "../hooks"
-
 type DataTableSearchProps = {
   placeholder?: string
   prefix?: string
@@ -18,27 +17,37 @@ export const DataTableSearch = ({
 }: DataTableSearchProps) => {
   const { t } = useTranslation()
   const placeholderText = placeholder || t("general.search")
-  const selectedParams = useSelectedParams({
-    param: "q",
-    prefix,
-    multiple: false,
-  })
+  const [searchParams, setSearchParams] = useSearchParams()
+  const queryKey = prefix ? `${prefix}_q` : "q"
+  const offsetKey = prefix ? `${prefix}_offset` : "offset"
+  const query = searchParams.get(queryKey) ?? ""
+  const [value, setValue] = useState(query)
 
-  const query = selectedParams.get()
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedOnChange = useCallback(
-    debounce((e: ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value
-
-      if (!value) {
-        selectedParams.delete()
-      } else {
-        selectedParams.add(value)
-      }
-    }, 500),
-    [selectedParams]
+  const debouncedOnChange = useMemo(
+    () =>
+      debounce((nextValue: string) => {
+        setSearchParams(
+          (params) => {
+            const next = new URLSearchParams(params)
+            if (nextValue) {
+              next.set(queryKey, nextValue)
+            } else {
+              next.delete(queryKey)
+            }
+            next.delete(offsetKey)
+            return next
+          },
+          { replace: true }
+        )
+      }, 300),
+    [setSearchParams, queryKey, offsetKey]
   )
+
+  // Saved views and browser navigation must also update the visible input.
+  useEffect(() => {
+    debouncedOnChange.cancel()
+    setValue(query)
+  }, [query, debouncedOnChange])
 
   useEffect(() => {
     return () => {
@@ -53,8 +62,12 @@ export const DataTableSearch = ({
       type="search"
       size="small"
       autoFocus={autofocus}
-      defaultValue={query?.[0] || undefined}
-      onChange={debouncedOnChange}
+      value={value}
+      onChange={(event) => {
+        const nextValue = event.target.value
+        setValue(nextValue)
+        debouncedOnChange(nextValue)
+      }}
       placeholder={placeholderText}
     />
   )

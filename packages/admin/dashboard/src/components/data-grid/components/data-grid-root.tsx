@@ -667,7 +667,7 @@ export const DataGridRoot = <
 
   return (
     <DataGridContext.Provider value={values as DataGridContextType<any>}>
-      <div className="bg-ui-bg-subtle flex size-full flex-col">
+      <div className="bg-ui-bg-subtle size-full flex flex-col">
         <DataGridHeader
           showColumnsDropdown={showColumnsDropdown}
           columnOptions={columnOptions}
@@ -680,7 +680,7 @@ export const DataGridRoot = <
           onHeaderInteractionChange={handleHeaderInteractionChange}
           headerContent={headerContent}
         />
-        <div className="size-full overflow-hidden">
+        <div className="min-h-0 w-full flex-1 overflow-hidden">
           <div
             ref={containerRef}
             autoFocus
@@ -868,7 +868,7 @@ const DataGridHeader = ({
     setColumnsOpen(value)
   }
   return (
-    <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
+    <div className="bg-ui-bg-base flex shrink-0 flex-wrap items-center justify-between gap-2 border-b p-4">
       {showColumnsDropdown && (
         <div className="flex items-center gap-x-2">
           <DropdownMenu
@@ -1001,7 +1001,7 @@ const DataGridCell = <TData,>({
           <div
             onMouseDown={onDragToFillStart}
             className={clx(
-              "bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize",
+              "bg-ui-fg-interactive size-1.5 absolute bottom-0 right-0 z-[3] cursor-ns-resize",
               {
                 "cursor-nwse-resize": multiColumnSelection,
               }
@@ -1051,7 +1051,7 @@ const DataGridRow = <TData,>({
       style={{
         transform: `translateY(${virtualRow.start}px)`,
       }}
-      className="bg-ui-bg-subtle txt-compact-small absolute flex min-h-10 w-full"
+      className="bg-ui-bg-subtle txt-compact-small min-h-10 absolute flex w-full"
     >
       {virtualPaddingLeft ? (
         <div

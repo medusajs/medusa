@@ -2925,7 +2925,19 @@
       "unsavedChanges": {
         "title": "Unsaved translations",
         "description": "Don't lose your work. You have changes that haven't been saved yet"
-      }
+      },
+      "copyToAll": "Copy to all rows",
+      "copyDescription": "Apply the value of “{{field}}” to {{count}} records in {{locale}}, including rows that have not loaded yet.",
+      "copyValue": "Value to copy",
+      "copyMode": "Rows to update",
+      "copyAllRows": "All rows — replace existing values",
+      "copyEmptyRows": "Only empty rows",
+      "copySaveHint": "This updates the form. Review the changes and save when ready. An empty value clears the field.",
+      "copyApplied": "Updated rows: {{count}}. Save to keep your changes.",
+      "copyFailed": "Could not load all rows. No values were copied. Please try again.",
+      "loadFailed": "Could not load the selected language. Please try again.",
+      "loadedRows": "Loaded: {{loaded}} / {{total}} records",
+      "undoCopy": "Undo last copy"
     },
     "bulk": {
       "header": "Translations Bulk Editor",

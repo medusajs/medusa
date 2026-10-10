@@ -35,11 +35,14 @@ export const TranslationsEdit = () => {
     translations,
     references,
     fetchNextPage,
+    fetchAllReferences,
     count,
     isFetchingNextPage,
     hasNextPage,
     isPending,
     isError,
+    isFetchNextPageError,
+    isRefetchError,
     error,
   } = useReferenceTranslations(reference!, referenceIdParam, {
     enabled: !!reference,
@@ -61,7 +64,9 @@ export const TranslationsEdit = () => {
     !isStorePending &&
     !!store
 
-  if (isError || isStoreError || isTranslationSettingsError) {
+  // Keep the form and its unsaved edits mounted if a later page fails.
+  const isInitialLoadError = isError && !isFetchNextPageError && !isRefetchError
+  if (isInitialLoadError || isStoreError || isTranslationSettingsError) {
     throw error || storeError || translationSettingsError
   }
 
@@ -75,6 +80,7 @@ export const TranslationsEdit = () => {
           availableLocales={store?.supported_locales ?? []}
           translatableFields={translation_settings[reference!]?.fields ?? []}
           fetchNextPage={fetchNextPage}
+          fetchAllReferences={fetchAllReferences}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
           referenceCount={count}

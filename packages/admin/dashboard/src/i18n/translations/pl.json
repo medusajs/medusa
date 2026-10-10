@@ -1363,7 +1363,19 @@
       "unsavedChanges": {
         "title": "Niezapisane tłumaczenia",
         "description": "Nie utrać swojej pracy. Masz zmiany, które nie zostały jeszcze zapisane"
-      }
+      },
+      "copyToAll": "Kopiuj do wszystkich wierszy",
+      "copyDescription": "Zastosuj wartość pola „{{field}}” do {{count}} rekordów w języku {{locale}}, również do jeszcze niewczytanych wierszy.",
+      "copyValue": "Wartość do skopiowania",
+      "copyMode": "Wiersze do aktualizacji",
+      "copyAllRows": "Wszystkie wiersze — zastąp istniejące wartości",
+      "copyEmptyRows": "Tylko puste wiersze",
+      "copySaveHint": "Zmiany zostaną wprowadzone w formularzu. Sprawdź je i zapisz. Pusta wartość wyczyści pole.",
+      "copyApplied": "Zmienione wiersze: {{count}}. Zapisz, aby zachować zmiany.",
+      "copyFailed": "Nie udało się wczytać wszystkich wierszy. Wartości nie zostały skopiowane. Spróbuj ponownie.",
+      "loadFailed": "Nie udało się wczytać wybranego języka. Spróbuj ponownie.",
+      "loadedRows": "Wczytano: {{loaded}} / {{total}} rekordów",
+      "undoCopy": "Cofnij ostatnie kopiowanie"
     },
     "bulk": {
       "header": "Zbiorczy edytor tłumaczeń",
