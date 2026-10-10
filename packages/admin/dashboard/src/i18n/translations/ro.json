@@ -389,8 +389,8 @@
     "sorting": {
       "alphabeticallyAsc": "A to Z",
       "alphabeticallyDesc": "Z to A",
-      "dateAsc": "Cel mai nou primul",
-      "dateDesc": "Cel mai vechi primul"
+      "dateAsc": "Cel mai vechi primul",
+      "dateDesc": "Cel mai nou primul"
     },
     "radio": {
       "yes": "Da",
