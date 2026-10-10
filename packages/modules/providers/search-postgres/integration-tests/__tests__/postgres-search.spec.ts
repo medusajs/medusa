@@ -332,6 +332,37 @@ moduleIntegrationTestRunner<SearchService>({
           })
         })
 
+        it("applies min_score to facet counts like the hits", async () => {
+          // With typo tolerance, "shoe" also matches "shirt" (word similarity
+          // 0.4); min_score 0.5 drops it from the hits, so it must not be
+          // counted in the facets either.
+          const loose = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "shoe" },
+            search_options: { typo_tolerance: true },
+          })
+          expect(ids(loose).sort()).toEqual(["prod_1", "prod_2"])
+
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "shoe" },
+            search_options: {
+              typo_tolerance: true,
+              min_score: 0.5,
+              facets: ["brand"],
+            },
+          })
+
+          expect(ids(result)).toEqual(["prod_1"])
+          expect(result.metadata.count).toBe(1)
+          expect(result.facets?.brand).toEqual({
+            type: "value",
+            values: [{ value: "acme", count: 1 }],
+          })
+        })
+
         it("computes range facets alongside filters", async () => {
           const result = await service.search({
             entity: "product",
