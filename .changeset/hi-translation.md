@@ -2,4 +2,4 @@
 "@medusajs/dashboard": patch
 ---
 
-Add Hindi (hi) admin translation
+feat(dashboard): add Hindi (hi) admin translation
