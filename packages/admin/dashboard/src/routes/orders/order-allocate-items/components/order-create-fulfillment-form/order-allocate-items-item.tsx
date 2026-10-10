@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { AdminInventoryItem } from "@medusajs/types"
 import {
@@ -25,6 +25,7 @@ type OrderEditItemProps = {
   }
   locationId?: string
   form: UseFormReturn<zod.infer<typeof AllocateItemsSchema>>
+  invalidQuantityKeys: string[]
   onQuantityChange: (
     inventoryItem: AdminInventoryItem,
     lineItem: ExtendedLineItem,
@@ -39,6 +40,7 @@ export function OrderAllocateItemsItem({
   form,
   locationId,
   onQuantityChange,
+  invalidQuantityKeys,
 }: OrderEditItemProps) {
   const { t } = useTranslation()
 
@@ -56,32 +58,15 @@ export function OrderAllocateItemsItem({
     item.variant?.inventory_items &&
     checkInventoryKit(item as Parameters<typeof checkInventoryKit>[0])
 
-  const { availableQuantity, inStockQuantity } = useMemo(() => {
-    if (!variant || !locationId) {
-      return {}
-    }
+  const locationInventory = inventory[0]?.location_levels?.find(
+    (level) => level.location_id === locationId
+  )
+  const availableQuantity = locationInventory?.available_quantity
+  const inStockQuantity = locationInventory?.stocked_quantity
 
-    const locationInventory = inventory[0]?.location_levels?.find(
-      (inv) => inv.location_id === locationId
-    )
-
-    if (!locationInventory) {
-      return {}
-    }
-
-    return {
-      availableQuantity: locationInventory.available_quantity,
-      inStockQuantity: locationInventory.stocked_quantity,
-    }
-  }, [variant, locationId])
-
-  const hasQuantityError =
-    !hasInventoryKit &&
-    availableQuantity &&
-    quantityField[`${item.id}-${item.variant?.inventory?.[0].id}`] &&
-    ((quantityField[
-      `${item.id}-${item.variant?.inventory?.[0].id}`
-    ] as number) ?? 0) > availableQuantity
+  const hasQuantityError = inventory.some((inventoryItem) =>
+    invalidQuantityKeys.includes(`${item.id}-${inventoryItem.id}`)
+  )
 
   const minValue = 0
 
@@ -93,9 +78,10 @@ export function OrderAllocateItemsItem({
 
   const maxValue = Math.min(
     getFulfillableQuantity(item),
-    availableQuantity
-      ? Math.floor(divideDecimal(availableQuantity, rootRequiredQuantity))
-      : Number.MAX_SAFE_INTEGER
+    Math.max(
+      0,
+      Math.floor(divideDecimal(availableQuantity ?? 0, rootRequiredQuantity))
+    )
   )
 
   return (
@@ -145,8 +131,8 @@ export function OrderAllocateItemsItem({
                     {t("labels.available")}
                   </span>
                   <span className="text-ui-fg-muted">
-                    {availableQuantity || "-"}
-                    {availableQuantity &&
+                    {availableQuantity ?? "-"}
+                    {availableQuantity != null &&
                       !hasInventoryKit &&
                       quantityField[
                         `${item.id}-${item.variant?.inventory?.[0].id}`
@@ -172,7 +158,7 @@ export function OrderAllocateItemsItem({
                     {t("labels.inStock")}
                   </span>
                   <span className="text-ui-fg-muted">
-                    {inStockQuantity || "-"}
+                    {inStockQuantity ?? "-"}
                   </span>
                 </div>
               </div>
@@ -204,6 +190,7 @@ export function OrderAllocateItemsItem({
                           type="number"
                           {...field}
                           disabled={!locationId}
+                          aria-invalid={hasQuantityError}
                           onChange={(e) => {
                             const val =
                               e.target.value === ""
@@ -259,10 +246,9 @@ export function OrderAllocateItemsItem({
             (l) => l.location_id === locationId
           )
 
-          const hasQuantityError =
-            !!quantityField[`${item.id}-${i.id}`] &&
-            (quantityField[`${item.id}-${i.id}`] as number) >
-              (location?.available_quantity ?? 0)
+          const hasQuantityError = invalidQuantityKeys.includes(
+            `${item.id}-${i.id}`
+          )
 
           return (
             <div key={i.id} className="txt-small flex items-center gap-x-3 p-4">
@@ -289,8 +275,8 @@ export function OrderAllocateItemsItem({
                       {t("labels.available")}
                     </span>
                     <span className="text-ui-fg-muted">
-                      {location?.available_quantity || "-"}
-                      {location?.available_quantity &&
+                      {location?.available_quantity ?? "-"}
+                      {location?.available_quantity != null &&
                         quantityField[`${item.id}-${i.id}`] && (
                           <span className="text-ui-fg-error txt-small ml-1">
                             -{quantityField[`${item.id}-${i.id}`]}
@@ -308,7 +294,7 @@ export function OrderAllocateItemsItem({
                       {t("labels.inStock")}
                     </span>
                     <span className="text-ui-fg-muted">
-                      {location?.stocked_quantity || "-"}
+                      {location?.stocked_quantity ?? "-"}
                     </span>
                   </div>
                 </div>
@@ -334,6 +320,7 @@ export function OrderAllocateItemsItem({
                                 type="number"
                                 {...field}
                                 disabled={!locationId}
+                                aria-invalid={hasQuantityError}
                                 onChange={(e) => {
                                   const val =
                                     e.target.value === ""

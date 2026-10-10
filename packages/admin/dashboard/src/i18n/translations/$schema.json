@@ -5882,11 +5882,14 @@
             "error": {
               "type": "object",
               "properties": {
+                "invalidQuantity": {
+                  "type": "string"
+                },
                 "quantityNotAllocated": {
                   "type": "string"
                 }
               },
-              "required": ["quantityNotAllocated"],
+              "required": ["invalidQuantity", "quantityNotAllocated"],
               "additionalProperties": false
             }
           },
