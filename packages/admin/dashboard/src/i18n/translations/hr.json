@@ -919,7 +919,7 @@
       "locations": "Lokacije",
       "attributes": "Atributi",
       "requiresShipping": "Potrebna dostava",
-      "requiresShippingHint": "Zahtijeva li ovaj artikal dostavu?",
+      "requiresShippingHint": "Zahtijeva li ovaj artikl dostavu?",
       "successToast": "Artikal je uspješno kreiran."
     },
     "reservation": {
@@ -1287,7 +1287,7 @@
         "confirmedSuccessfully": "Uređivanje narudžbe uspješno potvrđeno"
       },
       "validation": {
-        "quantityLowerThanFulfillment": "Ne može se postaviti količina manja ili jednaka otpremljenoj količini"
+        "quantityLowerThanFulfillment": "Ne može se postaviti količina manja ili jednaka spakiranoj količini"
       },
       "sendNotification": "Pošalji obavijest",
       "sendNotificationHint": "Obavijesti kupca o ovoj izmjeni narudžbe."
@@ -1470,51 +1470,51 @@
       }
     },
     "shipment": {
-      "title": "Označi isporuku kao poslanu",
+      "title": "Označi pošiljku kao otpremljenu",
       "trackingNumber": "Broj za praćenje",
       "trackingUrl": "URL za praćenje",
       "labelUrl": "URL oznake",
       "addTracking": "Dodaj broj za praćenje",
       "sendNotification": "Pošaljite obavijest",
       "sendNotificationHint": "Obavijestite kupca o ovoj pošiljci.",
-      "toastCreated": "Pošiljka uspješno kreirana."
+      "toastCreated": "Pošiljka označena kao otpremljena."
     },
     "fulfillment": {
-      "cancelWarning": "Spremate se otkazati otpremu. Ova radnja se ne može poništiti.",
-      "markAsDeliveredWarning": "Spremate se označiti otpremu kao isporučenu. Ova radnja se ne može poništiti.",
+      "cancelWarning": "Spremate se otkazati pošiljku. Ova radnja se ne može poništiti.",
+      "markAsDeliveredWarning": "Spremate se označiti pošiljku kao isporučenu. Ova radnja se ne može poništiti.",
       "differentOptionSelected": "Odabrana opcija dostave različita je od one koju je odabrao kupac.",
-      "disabledItemTooltip": "Odabrana opcija dostave ne omogućuje otpremu ovog artikla.",
-      "unfulfilledItems": "Artikli koji nisu otpremljeni",
+      "disabledItemTooltip": "Odabrana opcija dostave ne omogućuje pakiranje ovog artikla.",
+      "unfulfilledItems": "Nespakirani artikli",
       "statusLabel": "Status otpreme",
       "statusTitle": "Status otpreme",
-      "fulfillItems": "Otpremi artikle",
-      "awaitingFulfillmentBadge": "Čeka na otpremu",
+      "fulfillItems": "Spakiraj artikle",
+      "awaitingFulfillmentBadge": "Čeka pakiranje",
       "requiresShipping": "Potrebna dostava",
-      "number": "Otprema #{{number}}",
-      "itemsToFulfill": "Artikli za otpremu",
-      "create": "Kreiraj otpremu",
+      "number": "Pošiljka #{{number}}",
+      "itemsToFulfill": "Artikli za pakiranje",
+      "create": "Kreiraj pošiljku",
       "available": "Dostupno",
       "inStock": "Na skladištu",
       "markAsShipped": "Označi kao otpremljeno",
       "markAsPickedUp": "Označi kao preuzeto",
       "markAsDelivered": "Označi kao isporučeno",
-      "itemsToFulfillDesc": "Odaberite artikle i količine za otpremu",
-      "locationDescription": "Odaberite lokaciju s koje želite otpremiti artikle.",
-      "sendNotificationHint": "Obavijestite kupce o kreiranoj otpremi.",
+      "itemsToFulfillDesc": "Odaberite artikle i količine za pakiranje",
+      "locationDescription": "Odaberite lokaciju s koje želite spakirati artikle.",
+      "sendNotificationHint": "Obavijestite kupce o kreiranoj pošiljci.",
       "methodDescription": "Odaberite drugu opciju dostave od one koju je odabrao kupac",
       "error": {
-        "wrongQuantity": "Dostupan je samo jedan artikal za otpremu",
+        "wrongQuantity": "Dostupan je samo jedan artikl za pakiranje",
         "wrongQuantity_other": "Količina treba biti broj između 1 i {{number}}",
-        "noItems": "Nema artikala za otpremu.",
+        "noItems": "Nema artikala za pakiranje.",
         "noShippingOption": "Opcija dostave je obvezna",
         "noLocation": "Lokacija je obvezna",
-        "wrongQuantity_one": "Dostupan je samo jedan artikal za otpremu",
+        "wrongQuantity_one": "Dostupan je samo jedan artikl za pakiranje",
         "wrongQuantity_few": "Količina mora biti broj između 1 i {{number}}"
       },
       "status": {
-        "notFulfilled": "Nije otpremljeno",
-        "partiallyFulfilled": "Djelomično otpremljeno",
-        "fulfilled": "Otpremljeno",
+        "notFulfilled": "Nije spakirano",
+        "partiallyFulfilled": "Djelomično spakirano",
+        "fulfilled": "Spakirano",
         "partiallyShipped": "Djelomično otpremljeno",
         "shipped": "Otpremljeno",
         "delivered": "Isporučeno",
@@ -1522,17 +1522,17 @@
         "partiallyReturned": "Djelomično vraćeno",
         "returned": "Vraćeno",
         "canceled": "Otkazano",
-        "requiresAction": "Zahtijeva akciju",
+        "requiresAction": "Zahtijeva radnju",
         "awaitingPickup": "Čeka preuzimanje",
         "awaitingShipping": "Čeka otpremu",
         "awaitingDelivery": "Čeka dostavu"
       },
       "toast": {
-        "created": "Otprema uspješno kreirana",
-        "canceled": "Otprema uspješno otkazana",
-        "fulfillmentShipped": "Nemoguće otkazati već otpremljenu otpremu",
-        "fulfillmentDelivered": "Otprema označena kao isporučena",
-        "fulfillmentPickedUp": "Otprema označena kao preuzeta"
+        "created": "Pošiljka uspješno kreirana",
+        "canceled": "Pošiljka uspješno otkazana",
+        "fulfillmentShipped": "Nije moguće otkazati već otpremljenu pošiljku",
+        "fulfillmentDelivered": "Pošiljka označena kao isporučena",
+        "fulfillmentPickedUp": "Pošiljka označena kao preuzeta"
       },
       "trackingLabel": "Praćenje",
       "shippingFromLabel": "Dostava s",
@@ -1588,9 +1588,9 @@
           "refunded": "Sredstva vraćena"
         },
         "fulfillment": {
-          "created": "Artikli otpremljeni",
-          "canceled": "Otprema otkazana",
-          "shipped": "Artikli poslati",
+          "created": "Artikli spakirani",
+          "canceled": "Pošiljka otkazana",
+          "shipped": "Artikli otpremljeni",
           "delivered": "Artikli dostavljeni",
           "items_one": "{{count}} artikal",
           "items_other": "{{count}} artikala",
@@ -2869,7 +2869,7 @@
       "editShippingOption": "Uredi opciju dostave",
       "fulfillmentMethod": "Način otpreme",
       "type": {
-        "outbound": "Isporuka",
+        "outbound": "Odlazna",
         "outboundHint": "Koristite ovu opciju ako kreirate opciju dostave za slanje proizvoda kupcu.",
         "return": "Povrat",
         "returnHint": "Koristite ovu opciju ako kreirate opciju dostave za povrat proizvoda od kupca."
@@ -3517,7 +3517,7 @@
     "details": "Detalji",
     "label": "Naziv",
     "rate": "Stopa",
-    "requiresShipping": "Potreban je prijevoz",
+    "requiresShipping": "Potrebna dostava",
     "unitPrice": "Jedinična cijena",
     "startDate": "Datum početka",
     "endDate": "Datum završetka",
