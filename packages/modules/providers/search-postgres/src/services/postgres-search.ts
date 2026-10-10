@@ -1365,9 +1365,11 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const params: unknown[] = []
     const conditions: string[] = []
 
-    const matchSql = useKeyword
-      ? this.keywordFragments({ query, catalog }).matchSql
+    const fragments = useKeyword
+      ? this.keywordFragments({ query, catalog })
       : undefined
+    const matchSql = fragments?.matchSql
+    const minScore = query.search_options?.min_score
     const vectorCond = useVector
       ? `"${vectorColumnName(
           resolveVectorField(query.search_options!.vector!, catalog.plan)
@@ -1378,6 +1380,13 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       conditions.push(`(${matchSql(params)} OR ${vectorCond})`)
     } else if (matchSql) {
       conditions.push(matchSql(params))
+      // Keyword hits drop rows below `min_score`, so count facets on the same
+      // rows. Hybrid applies it to the fused list and vector-only facets do
+      // not mirror it yet.
+      if (minScore !== undefined) {
+        conditions.push(`${fragments!.rankSql(params)} >= ?`)
+        params.push(minScore)
+      }
     } else if (vectorCond) {
       conditions.push(vectorCond)
     }
