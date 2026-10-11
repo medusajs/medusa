@@ -8,9 +8,10 @@ const promiseExec = util.promisify(exec)
 
 const projectBasePath = path.resolve()
 const rootPath = path.resolve("..", "..", "..")
-const monorepoRelativePath = projectBasePath
-  .replace(rootPath, "")
-  .replace(/^\//, "")
+const monorepoRelativePath = path
+  .relative(rootPath, projectBasePath)
+  .split(path.sep)
+  .join("/")
 const generatedFilePath = path.join(
   projectBasePath,
   "generated",
@@ -74,12 +75,18 @@ const getChangedFiles = async (): Promise<string[]> => {
   })
 
   // get tracked files
-  const trackedFiles = await promiseExec(
-    `{ git diff --name-only ; git diff --name-only --staged ; } | sort | uniq`
-  )
+  const trackedFileProcesses = await Promise.all([
+    promiseExec(`git diff --name-only`),
+    promiseExec(`git diff --name-only --staged`),
+  ])
+  const trackedFiles = [
+    ...new Set(
+      trackedFileProcesses.flatMap(({ stdout }) => stdout.split("\n"))
+    ),
+  ].sort()
 
-  trackedFiles.stdout.split("\n").forEach((file) => {
-    // The above command retrieve the full file path relative to the monorepo
+  trackedFiles.forEach((file) => {
+    // The commands above retrieve the full file path relative to the monorepo
     // so all parts before the project's path should be removed.
     if (
       !file.startsWith(monorepoRelativePath) ||
