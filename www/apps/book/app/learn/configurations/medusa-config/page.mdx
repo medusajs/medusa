@@ -34,11 +34,11 @@ module.exports = defineConfig({
 
 The `defineConfig` utility accepts an object having the following properties:
 
-- [projectConfig](#project-configurations-projectConfig): Essential configurations related to the Medusa application, such as database and CORS configurations.
+- [projectConfig](#project-configurations-projectconfig): Essential configurations related to the Medusa application, such as database and CORS configurations.
 - [admin](#admin-configurations-admin): Configurations related to the Medusa Admin.
 - [modules](#module-configurations-modules): Configurations related to registered modules.
 - [plugins](#plugin-configurations-plugins): Configurations related to registered plugins.
-- [featureFlags](#feature-flags-featureFlags): Configurations to manage enabled beta features in the Medusa application.
+- [featureFlags](#feature-flags-featureflags): Configurations to manage enabled beta features in the Medusa application.
 - [logger](#custom-logger-logger): Override the default logger.
 
 ### Using Environment Variables
@@ -185,7 +185,7 @@ module.exports = defineConfig({
 
 <Note title="Tip">
 
-When you disable `rejectUnauthorized`, make sure to also add `?ssl_mode=disable` to the end of the [databaseUrl](#databaseUrl) as well.
+When you disable `rejectUnauthorized`, make sure to also add `?ssl_mode=disable` to the end of the [databaseUrl](#databaseurl) as well.
 
 </Note>
 
@@ -317,7 +317,7 @@ module.exports = defineConfig({
 
 ### databaseName
 
-The `projectConfig.databaseName` configuration determines the name of the database to connect to. If the name is specified in the [databaseUrl](#databaseUrl) configuration, you don't have to use this configuration.
+The `projectConfig.databaseName` configuration determines the name of the database to connect to. If the name is specified in the [databaseUrl](#databaseurl) configuration, you don't have to use this configuration.
 
 <Note title="Tip">
 
@@ -547,7 +547,7 @@ Every origin in that list must either be:
 - A full URL. For example, `http://localhost:7001`. The URL must not end with a backslash;
 - Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that Medusa tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
 
-Since the `/auth` routes are used for authentication for both store and admin routes, it's recommended to set this configuration's value to a combination of the [storeCors](#httpstoreCors) and [adminCors](#httpadminCors) configurations.
+Since the `/auth` routes are used for authentication for both store and admin routes, it's recommended to set this configuration's value to a combination of the [storeCors](#httpstorecors) and [adminCors](#httpadmincors) configurations.
 
 Some example values of common use cases:
 
@@ -1038,7 +1038,7 @@ module.exports = defineConfig({
     {
       name: "secret",
       type: "`string`",
-      description: "The secret to sign the session ID cookie. By default, the value of [http.cookieSecret](#httpcookieSecret) is used. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#secret) for details."
+      description: "The secret to sign the session ID cookie. By default, the value of [http.cookieSecret](#httpcookiesecret) is used. Refer to [express-session’s documentation](https://www.npmjs.com/package/express-session#secret) for details."
     },
     {
       name: "ttl",
