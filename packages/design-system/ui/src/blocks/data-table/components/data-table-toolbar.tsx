@@ -45,7 +45,8 @@ interface DataTableToolbarProps {
 
 /**
  * Checks whether the consumer rendered an explicit `DataTable.FilterBar` among
- * the given nodes, either as a toolbar child or as the filter bar content.
+ * the given nodes, either as a toolbar child, one level deep (inside a layout
+ * wrapper), or as the filter bar content.
  *
  * The toolbar already renders a filter bar of its own. When a consumer also
  * renders one, both instances read the same filtering state from the data table
@@ -63,32 +64,44 @@ const isFilterBarElement = (node: React.ReactNode): boolean => {
 const hasExplicitFilterBar = (props: DataTableToolbarProps): boolean => {
   let found = false
 
-  const search = (children: React.ReactNode) => {
-    if (found) {
-      return
-    }
+  // Check direct children (level 0)
+  const checkChildren = (children: React.ReactNode) => {
+    if (found) return
 
     React.Children.forEach(children, (child) => {
-      if (found) {
-        return
-      }
+      if (found) return
 
       if (isFilterBarElement(child)) {
         found = true
         return
       }
+    })
+  }
 
-      // A filter bar can also be nested one level deep, for example inside a
-      // wrapper element used for layout.
+  // Check one level deep: children of valid element wrappers (level 1)
+  const checkOneLevelDeep = (children: React.ReactNode) => {
+    if (found) return
+
+    React.Children.forEach(children, (child) => {
+      if (found) return
+
       if (React.isValidElement(child)) {
         const props = (child.props ?? {}) as { children?: React.ReactNode }
-        search(props.children)
+        // Only check immediate children of the wrapper, don't recurse further
+        React.Children.forEach(props.children, (grandChild) => {
+          if (found) return
+          if (isFilterBarElement(grandChild)) {
+            found = true
+            return
+          }
+        })
       }
     })
   }
 
-  search(props.children)
-  search(props.filterBarContent)
+  checkChildren(props.children)
+  checkOneLevelDeep(props.children)
+  checkChildren(props.filterBarContent)
 
   return found
 }
