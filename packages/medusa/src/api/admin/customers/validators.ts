@@ -26,6 +26,7 @@ export const AdminCustomersParamsFields = z.object({
     .union([z.string(), z.array(z.string()), createOperatorMap()])
     .optional(),
   email: z.union([z.string(), z.array(z.string())]).optional(),
+  phone: z.union([z.string(), z.array(z.string())]).optional(),
   groups: z
     .union([
       AdminCustomerGroupInCustomerParams,

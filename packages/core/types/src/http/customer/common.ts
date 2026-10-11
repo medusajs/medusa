@@ -186,6 +186,10 @@ export interface BaseCustomerFilters
    */
   email?: string[] | string | OperatorMap<string>
   /**
+   * Filter by phone number(s).
+   */
+  phone?: string[] | string | OperatorMap<string>
+  /**
    * Filter by company name(s).
    */
   company_name?: string[] | string | OperatorMap<string>
