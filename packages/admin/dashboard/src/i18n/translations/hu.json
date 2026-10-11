@@ -383,8 +383,8 @@
     "sorting": {
       "alphabeticallyAsc": "A-Z",
       "alphabeticallyDesc": "Z-A",
-      "dateAsc": "Legújabb elöl",
-      "dateDesc": "Legrégebbi elöl"
+      "dateAsc": "Legrégebbi elöl",
+      "dateDesc": "Legújabb elöl"
     },
     "radio": {
       "yes": "Igen",

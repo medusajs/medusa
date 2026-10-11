@@ -383,8 +383,8 @@
     "sorting": {
       "alphabeticallyAsc": "ก ถึง ฮ",
       "alphabeticallyDesc": "ฮ ถึง ก",
-      "dateAsc": "ใหม่สุดก่อน",
-      "dateDesc": "เก่าสุดก่อน"
+      "dateAsc": "เก่าสุดก่อน",
+      "dateDesc": "ใหม่สุดก่อน"
     },
     "radio": {
       "yes": "ใช่",

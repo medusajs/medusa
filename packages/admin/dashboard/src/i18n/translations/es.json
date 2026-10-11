@@ -406,8 +406,8 @@
     "sorting": {
       "alphabeticallyAsc": "A a Z",
       "alphabeticallyDesc": "Z a A",
-      "dateAsc": "Más reciente primero",
-      "dateDesc": "Más antiguo primero"
+      "dateAsc": "Más antiguo primero",
+      "dateDesc": "Más reciente primero"
     },
     "compare": {
       "lessThan": "Menor que",

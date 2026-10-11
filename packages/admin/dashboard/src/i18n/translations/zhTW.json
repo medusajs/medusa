@@ -382,8 +382,8 @@
     "sorting": {
       "alphabeticallyAsc": "A 到 Z",
       "alphabeticallyDesc": "Z 到 A",
-      "dateAsc": "最新在前",
-      "dateDesc": "最舊在前"
+      "dateAsc": "最舊在前",
+      "dateDesc": "最新在前"
     },
     "radio": {
       "yes": "是",

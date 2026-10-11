@@ -361,8 +361,8 @@
     "sorting": {
       "alphabeticallyAsc": "Từ A đến Z",
       "alphabeticallyDesc": "Từ Z đến A",
-      "dateAsc": "Mới nhất trước",
-      "dateDesc": "Cũ nhất trước"
+      "dateAsc": "Cũ nhất trước",
+      "dateDesc": "Mới nhất trước"
     },
     "radio": {
       "yes": "Có",

@@ -383,8 +383,8 @@
     "sorting": {
       "alphabeticallyAsc": "A→Z",
       "alphabeticallyDesc": "Z→A",
-      "dateAsc": "新しい順",
-      "dateDesc": "古い順"
+      "dateAsc": "古い順",
+      "dateDesc": "新しい順"
     },
     "radio": {
       "yes": "はい",

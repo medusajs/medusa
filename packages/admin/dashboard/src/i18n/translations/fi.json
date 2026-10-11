@@ -368,8 +368,8 @@
     "sorting": {
       "alphabeticallyAsc": "A–Ö",
       "alphabeticallyDesc": "Ö–A",
-      "dateAsc": "Uusimmat ensin",
-      "dateDesc": "Vanhimmat ensin"
+      "dateAsc": "Vanhimmat ensin",
+      "dateDesc": "Uusimmat ensin"
     },
     "radio": {
       "yes": "Kyllä",

@@ -395,8 +395,8 @@
     "sorting": {
       "alphabeticallyAsc": "От А до Я",
       "alphabeticallyDesc": "От Я до А",
-      "dateAsc": "Сначала новые",
-      "dateDesc": "Сначала старые"
+      "dateAsc": "Сначала старые",
+      "dateDesc": "Сначала новые"
     },
     "radio": {
       "yes": "Да",

@@ -382,8 +382,8 @@
     "sorting": {
       "alphabeticallyAsc": "A에서 Z순",
       "alphabeticallyDesc": "Z에서 A순",
-      "dateAsc": "최신순",
-      "dateDesc": "오래된순"
+      "dateAsc": "오래된순",
+      "dateDesc": "최신순"
     },
     "radio": {
       "yes": "예",

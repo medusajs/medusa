@@ -383,8 +383,8 @@
     "sorting": {
       "alphabeticallyAsc": "A tot Z",
       "alphabeticallyDesc": "Z tot A",
-      "dateAsc": "Nieuwste eerst",
-      "dateDesc": "Oudste eerst"
+      "dateAsc": "Oudste eerst",
+      "dateDesc": "Nieuwste eerst"
     },
     "radio": {
       "yes": "Ja",

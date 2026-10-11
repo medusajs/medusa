@@ -383,8 +383,8 @@
     "sorting": {
       "alphabeticallyAsc": "A με Ω",
       "alphabeticallyDesc": "Z με Α",
-      "dateAsc": "Νεότερο πρώτα",
-      "dateDesc": "Παλιότερο πρώτα"
+      "dateAsc": "Παλιότερο πρώτα",
+      "dateDesc": "Νεότερο πρώτα"
     },
     "radio": {
       "yes": "Ναι",

@@ -383,8 +383,8 @@
     "sorting": {
       "alphabeticallyAsc": "А-Я",
       "alphabeticallyDesc": "Я-А",
-      "dateAsc": "Шинэ эхний",
-      "dateDesc": "Хуучин эхний"
+      "dateAsc": "Хуучин эхний",
+      "dateDesc": "Шинэ эхний"
     },
     "radio": {
       "yes": "Тийм",

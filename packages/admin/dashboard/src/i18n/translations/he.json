@@ -395,8 +395,8 @@
     "sorting": {
       "alphabeticallyAsc": "א עד ת",
       "alphabeticallyDesc": "ת עד א",
-      "dateAsc": "החדש ביותר תחילה",
-      "dateDesc": "הישן ביותר תחילה"
+      "dateAsc": "הישן ביותר תחילה",
+      "dateDesc": "החדש ביותר תחילה"
     },
     "radio": {
       "yes": "כן",

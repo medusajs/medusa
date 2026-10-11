@@ -383,8 +383,8 @@
     "sorting": {
       "alphabeticallyAsc": "А до Ш",
       "alphabeticallyDesc": "Ш до А",
-      "dateAsc": "Најнови први",
-      "dateDesc": "Најстари први"
+      "dateAsc": "Најстари први",
+      "dateDesc": "Најнови први"
     },
     "radio": {
       "yes": "Да",
