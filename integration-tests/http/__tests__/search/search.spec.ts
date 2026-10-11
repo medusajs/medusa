@@ -113,6 +113,14 @@ medusaIntegrationTestRunner({
         adminHeaders
       )
 
+      // No index covers categories, so this one is only found via the graph
+      // fallback.
+      await api.post(
+        "/admin/product-categories",
+        { name: "Zephyr Gear" },
+        adminHeaders
+      )
+
       // Fills both indexes from their seeds. Ingestion has already indexed the
       // products off their events; rebuilding is idempotent and covers the
       // customer index, which declares no events.
@@ -120,14 +128,19 @@ medusaIntegrationTestRunner({
     })
 
     describe("GET /admin/search", () => {
-      it("searches every indexed entity and groups the results", async () => {
+      it("searches every default entity and groups the results", async () => {
         const response = await api.get("/admin/search?q=zephyr", adminHeaders)
 
         expect(response.status).toEqual(200)
-        expect(response.data.results.map((g) => g.entity).sort()).toEqual([
-          "customer",
-          "product",
-        ])
+        expect(response.data.results.map((g) => g.entity)).toEqual(
+          expect.arrayContaining([
+            "order",
+            "product",
+            "product_category",
+            "customer",
+            "region",
+          ])
+        )
 
         expect(groupFor(response.data, "product").data).toEqual([
           expect.objectContaining({
@@ -142,6 +155,11 @@ medusaIntegrationTestRunner({
             email: "zephyr.tester@example.com",
             first_name: "Zephyr",
           }),
+        ])
+
+        // Not indexed, so it comes from the graph fallback.
+        expect(groupFor(response.data, "product_category").data).toEqual([
+          expect.objectContaining({ name: "Zephyr Gear" }),
         ])
       })
 

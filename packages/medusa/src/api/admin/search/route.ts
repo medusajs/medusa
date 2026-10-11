@@ -13,6 +13,7 @@ import {
   promiseAll,
 } from "@medusajs/framework/utils"
 import { searchWithGraphFallback } from "./fallback-search"
+import { DEFAULT_ADMIN_SEARCH_ENTITY_NAMES } from "./search-entities"
 import { AdminGetSearchParamsType } from "./validators"
 
 /**
@@ -42,12 +43,15 @@ export const GET = async (
     ((await searchModule?.listIndexes()) ?? []).map((index) => index.name)
   )
 
-  // Caller narrows the set; otherwise search every index. If the module is on
-  // but nothing is indexed yet, leave `entities` empty so we fall through to
-  // the graph defaults
-  const entities = entity?.length ? entity : indexes.size ? [...indexes] : []
+  // Caller narrows the set; otherwise search every default entity plus any
+  // other indexed one (e.g. a custom index). Indexed entities go to the Search
+  // Module and the rest to the graph fallback, so defining one index doesn't
+  // drop the other entities from the search.
+  const entities = entity?.length
+    ? entity
+    : [...new Set([...DEFAULT_ADMIN_SEARCH_ENTITY_NAMES, ...indexes])]
 
-  if (!searchModule || !entities.length) {
+  if (!searchModule || !indexes.size) {
     const results = await searchWithGraphFallback(req.scope, {
       q,
       entity: entity?.length ? entity : undefined,
@@ -86,7 +90,8 @@ export const GET = async (
     resultsByEntity.set(group.entity, group)
   }
 
-  // Preserve the caller's entity order (or index registration order).
+  // Preserve the caller's entity order (or the default order, followed by any
+  // other indexes in registration order).
   res.json({
     results: entities.map((name) => resultsByEntity.get(name)!),
   })
