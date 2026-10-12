@@ -1231,6 +1231,101 @@ medusaIntegrationTestRunner({
     })
 
     describe("DELETE /admin/products/:id/variants/:variant_id", () => {
+      it("successfully deletes a variant belonging to the specified product", async () => {
+        const product = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product for delete test",
+              shipping_profile_id: shippingProfile.id,
+            }),
+            adminHeaders
+          )
+        ).data.product
+
+        const variantId = product.variants[0].id
+
+        const response = await api.delete(
+          `/admin/products/${product.id}/variants/${variantId}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual(
+          expect.objectContaining({
+            id: variantId,
+            object: "variant",
+            deleted: true,
+          })
+        )
+      })
+
+      it("returns 404 when the variant belongs to a different product", async () => {
+        const productA = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product A (ownership check)",
+              shipping_profile_id: shippingProfile.id,
+            }),
+            adminHeaders
+          )
+        ).data.product
+
+        const productB = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product B (ownership check)",
+              shipping_profile_id: shippingProfile.id,
+            }),
+            adminHeaders
+          )
+        ).data.product
+
+        const variantB1Id = productB.variants[0].id
+
+        // Attempt to delete Product B's variant through Product A's endpoint
+        const errorResponse = await api
+          .delete(
+            `/admin/products/${productA.id}/variants/${variantB1Id}`,
+            adminHeaders
+          )
+          .catch((err) => err.response)
+
+        expect(errorResponse.status).toEqual(404)
+
+        // Variant B1 must still exist and remain associated with Product B
+        const variantCheck = await api.get(
+          `/admin/products/${productB.id}/variants/${variantB1Id}`,
+          adminHeaders
+        )
+        expect(variantCheck.status).toEqual(200)
+        expect(variantCheck.data.variant.id).toEqual(variantB1Id)
+      })
+
+      it("returns 404 when the variant does not exist", async () => {
+        const product = (
+          await api.post(
+            "/admin/products",
+            getProductFixture({
+              title: "Product for nonexistent variant test",
+              shipping_profile_id: shippingProfile.id,
+            }),
+            adminHeaders
+          )
+        ).data.product
+
+        const errorResponse = await api
+          .delete(
+            `/admin/products/${product.id}/variants/nonexistent-variant-id`,
+            adminHeaders
+          )
+          .catch((err) => err.response)
+
+        expect(errorResponse.status).toEqual(404)
+      })
+
       it("successfully deletes a variant when a linked inventory item was already deleted", async () => {
         const stockLocation = (
           await api.post(
