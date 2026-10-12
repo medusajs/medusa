@@ -1,5 +1,11 @@
 import type { RemovePromotionRulesWorkflowDTO } from "@medusajs/framework/types"
-import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { PromotionRuleWorkflowEvents } from "@medusajs/framework/utils"
+import {
+  WorkflowData,
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { removeRulesFromPromotionsStep } from "../steps"
 
 export const deletePromotionRulesWorkflowId = "delete-promotion-rules-workflow"
@@ -32,5 +38,18 @@ export const deletePromotionRulesWorkflow = createWorkflow(
     input: WorkflowData<RemovePromotionRulesWorkflowDTO>
   ): WorkflowData<void> => {
     removeRulesFromPromotionsStep(input)
+
+    const eventData = transform({ input }, ({ input }) =>
+      input.data.rule_ids.map((id) => ({
+        id,
+        promotion_id: input.data.id,
+        rule_type: input.rule_type,
+      }))
+    )
+
+    emitEventStep({
+      eventName: PromotionRuleWorkflowEvents.DELETED,
+      data: eventData,
+    })
   }
 )

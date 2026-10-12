@@ -843,6 +843,152 @@ export const PriceListWorkflowEvents = {
 } as const
 
 /**
+ * @category Promotion
+ * @customNamespace Promotion
+ */
+export const PromotionWorkflowEvents = {
+  /**
+   * Emitted when promotions are created.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  CREATED: "promotion.created",
+  /**
+   * Emitted when promotions are updated, including when their status changes
+   * or when they're added to or removed from a campaign.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  UPDATED: "promotion.updated",
+  /**
+   * Emitted when promotions are deleted.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  DELETED: "promotion.deleted",
+} as const
+
+/**
+ * @category Promotion Rule
+ * @customNamespace Promotion
+ */
+export const PromotionRuleWorkflowEvents = {
+  /**
+   * Emitted when promotion rules are created.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion rule
+   *   promotion_id, // The ID of the promotion the rule belongs to
+   *   rule_type, // The type of the rule: "rules", "target_rules", or "buy_rules"
+   * }
+   * ```
+   */
+  CREATED: "promotion-rule.created",
+  /**
+   * Emitted when promotion rules are updated.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion rule
+   *   promotion_id, // The ID of the promotion the rule belongs to
+   *   rule_type, // The type of the rule: "rules", "target_rules", or "buy_rules"
+   * }
+   * ```
+   */
+  UPDATED: "promotion-rule.updated",
+  /**
+   * Emitted when promotion rules are deleted.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion rule
+   *   promotion_id, // The ID of the promotion the rule belonged to
+   *   rule_type, // The type of the rule: "rules", "target_rules", or "buy_rules"
+   * }
+   * ```
+   */
+  DELETED: "promotion-rule.deleted",
+} as const
+
+/**
+ * @category Campaign
+ * @customNamespace Promotion
+ */
+export const CampaignWorkflowEvents = {
+  /**
+   * Emitted when campaigns are created.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   * }
+   * ```
+   */
+  CREATED: "campaign.created",
+  /**
+   * Emitted when campaigns are updated, including when promotions are
+   * added to or removed from them.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   * }
+   * ```
+   */
+  UPDATED: "campaign.updated",
+  /**
+   * Emitted when campaigns are deleted.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   * }
+   * ```
+   */
+  DELETED: "campaign.deleted",
+} as const
+
+/**
  * @category Invite
  * @customNamespace User
  */

@@ -3,10 +3,16 @@ import {
   PromotionRuleDTO,
 } from "@medusajs/framework/types"
 import {
+  PromotionRuleWorkflowEvents,
+  RuleType,
+} from "@medusajs/framework/utils"
+import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep, useQueryGraphStep } from "../../common"
 import { updatePromotionRulesStep } from "../steps"
 
 export const updatePromotionRulesWorkflowId = "update-promotion-rules-workflow"
@@ -39,6 +45,48 @@ export const updatePromotionRulesWorkflow = createWorkflow(
   (
     input: WorkflowData<UpdatePromotionRulesWorkflowDTO>
   ): WorkflowResponse<PromotionRuleDTO[]> => {
-    return new WorkflowResponse(updatePromotionRulesStep(input))
+    const updatedRules = updatePromotionRulesStep(input)
+
+    const ruleIds = transform({ input }, ({ input }) =>
+      input.data.map((rule) => rule.id)
+    )
+
+    const { data: rules } = useQueryGraphStep({
+      entity: "promotion_rule",
+      fields: [
+        "id",
+        "promotions.id",
+        "method_target_rules.promotion_id",
+        "method_buy_rules.promotion_id",
+      ],
+      filters: { id: ruleIds },
+    }).config({ name: "get-updated-promotion-rules" })
+
+    const eventData = transform({ rules }, ({ rules }) =>
+      rules.flatMap((rule) => [
+        ...(rule.promotions ?? []).map((promotion) => ({
+          id: rule.id,
+          promotion_id: promotion.id,
+          rule_type: RuleType.RULES,
+        })),
+        ...(rule.method_target_rules ?? []).map((method) => ({
+          id: rule.id,
+          promotion_id: method.promotion_id,
+          rule_type: RuleType.TARGET_RULES,
+        })),
+        ...(rule.method_buy_rules ?? []).map((method) => ({
+          id: rule.id,
+          promotion_id: method.promotion_id,
+          rule_type: RuleType.BUY_RULES,
+        })),
+      ])
+    )
+
+    emitEventStep({
+      eventName: PromotionRuleWorkflowEvents.UPDATED,
+      data: eventData,
+    })
+
+    return new WorkflowResponse(updatedRules)
   }
 )

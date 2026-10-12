@@ -1,9 +1,15 @@
 import type { LinkWorkflowInput } from "@medusajs/framework/types"
 import {
+  CampaignWorkflowEvents,
+  PromotionWorkflowEvents,
+} from "@medusajs/framework/utils"
+import {
   WorkflowData,
   createWorkflow,
   parallelize,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import {
   addCampaignPromotionsStep,
   removeCampaignPromotionsStep,
@@ -49,6 +55,28 @@ export const addOrRemoveCampaignPromotionsWorkflow = createWorkflow(
     parallelize(
       addCampaignPromotionsStep(input),
       removeCampaignPromotionsStep(input)
+    )
+
+    const eventData = transform({ input }, ({ input }) => {
+      const promotionIds = [
+        ...new Set([...(input.add ?? []), ...(input.remove ?? [])]),
+      ]
+
+      return {
+        campaigns: promotionIds.length ? [{ id: input.id }] : [],
+        promotions: promotionIds.map((id) => ({ id })),
+      }
+    })
+
+    parallelize(
+      emitEventStep({
+        eventName: CampaignWorkflowEvents.UPDATED,
+        data: eventData.campaigns,
+      }).config({ name: "emit-campaign-updated" }),
+      emitEventStep({
+        eventName: PromotionWorkflowEvents.UPDATED,
+        data: eventData.promotions,
+      }).config({ name: "emit-promotion-updated" })
     )
   }
 )
