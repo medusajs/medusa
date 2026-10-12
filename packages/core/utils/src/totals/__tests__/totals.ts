@@ -1331,6 +1331,68 @@ describe("Total calculation", function () {
     expect(serializedTaxInclusive.items[0].refundable_total_per_unit).toBe(94)
   })
 
+  it("should calculate refundable_total without inflating tax when tax inclusiveness comes from the context", function () {
+    const buildCart = () => ({
+      items: [
+        {
+          unit_price: 100,
+          quantity: 2,
+          detail: {
+            fulfilled_quantity: 2,
+            shipped_quantity: 2,
+            return_requested_quantity: 0,
+            return_received_quantity: 0,
+            return_dismissed_quantity: 0,
+            written_off_quantity: 0,
+          },
+          tax_lines: [
+            {
+              rate: 20,
+            },
+          ],
+          adjustments: [
+            {
+              amount: 10,
+            },
+          ],
+        },
+      ],
+    })
+
+    const serialized = JSON.parse(
+      JSON.stringify(decorateCartTotals(buildCart(), { includeTaxes: true }))
+    )
+
+    expect(serialized.items[0].total).toBe(188)
+    expect(serialized.items[0].refundable_total).toBe(188)
+    expect(serialized.items[0].refundable_total_per_unit).toBe(94)
+
+    const serializedAutomaticTaxes = JSON.parse(
+      JSON.stringify(
+        decorateCartTotals({
+          ...buildCart(),
+          region: { automatic_taxes: true },
+        })
+      )
+    )
+
+    expect(serializedAutomaticTaxes.items[0].total).toBe(188)
+    expect(serializedAutomaticTaxes.items[0].refundable_total).toBe(188)
+    expect(serializedAutomaticTaxes.items[0].refundable_total_per_unit).toBe(94)
+
+    // The item's own flag still takes precedence over the context
+    const exclusiveCart = buildCart()
+    exclusiveCart.items[0]["is_tax_inclusive"] = false
+
+    const serializedExclusive = JSON.parse(
+      JSON.stringify(decorateCartTotals(exclusiveCart, { includeTaxes: true }))
+    )
+
+    expect(serializedExclusive.items[0].total).toBe(228)
+    expect(serializedExclusive.items[0].refundable_total).toBe(228)
+    expect(serializedExclusive.items[0].refundable_total_per_unit).toBe(114)
+  })
+
   it("should not double-count tax on the discount when computing refundable_total for non-tax-inclusive items with a pending return", function () {
     const cart = {
       items: [
