@@ -802,10 +802,16 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     const signature = data.headers["stripe-signature"] as string
 
     try {
+      // The event may be processed some time after it was received (it goes
+      // through the event bus), so check the signature's timestamp against
+      // the time the request arrived.
       return this.stripe_.webhooks.constructEvent(
         data.rawData as string | Buffer,
         signature,
-        this.options_.webhookSecret
+        this.options_.webhookSecret,
+        undefined,
+        undefined,
+        data.receivedAt
       )
     } catch (error) {
       throw this.buildError("An error occurred in constructWebhookEvent", error)

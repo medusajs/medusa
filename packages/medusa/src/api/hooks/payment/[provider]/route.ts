@@ -4,6 +4,8 @@ import { Modules, PaymentWebhookEvents } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+  const receivedAt = Date.now()
+
   try {
     const { provider } = req.params
 
@@ -13,7 +15,12 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
     const event = {
       provider,
-      payload: { data: req.body, rawData: req.rawBody, headers: req.headers },
+      payload: {
+        data: req.body,
+        rawData: req.rawBody,
+        headers: req.headers,
+        receivedAt,
+      },
     }
 
     const eventBus = req.scope.resolve(Modules.EVENT_BUS)
