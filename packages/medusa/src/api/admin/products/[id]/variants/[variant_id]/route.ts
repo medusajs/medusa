@@ -73,12 +73,12 @@ export const DELETE = async (
 
   const variant = await refetchEntity({
     entity: "variant",
-    idOrFilter: variantId,
+    idOrFilter: { id: variantId, product_id: productId },
     scope: req.scope,
-    fields: ["id", "product_id"],
+    fields: ["id"],
   })
 
-  if (variant && variant.product_id !== productId) {
+  if (!variant) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
       `Variant with id "${variantId}" was not found`

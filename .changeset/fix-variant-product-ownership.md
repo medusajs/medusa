@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-Fix product variant deletion to validate ownership against the requested product.
+fix(medusa): enforce variant ownership check when deleting via the product endpoint
