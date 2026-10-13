@@ -59,44 +59,80 @@ export const processPaymentWorkflow = createWorkflow(
       name: "payment-session-query",
     })
 
-    const cartPaymentCollection = useQueryGraphStep({
-      entity: "cart_payment_collection",
-      fields: ["cart_id"],
-      filters: {
-        payment_collection_id:
-          paymentSessionResult.data[0].payment_collection_id,
-      },
-    }).config({
-      name: "cart-payment-query",
-    })
-
-    const cartId = transform(
-      { cartPaymentCollection, input },
-      ({ cartPaymentCollection, input }) => {
-        // A webhook action without a session id cannot be tied to a specific
-        // payment session, and therefore not to a specific cart. The queries
-        // above would otherwise resolve to an arbitrary cart (an undefined
-        // filter value matches every row), so we bail out here to avoid
-        // acting on an unrelated cart.
+    // Only act on a webhook whose session id matches a payment session in this
+    // instance. When several instances share one Stripe account, Stripe sends
+    // every event to all of them, so a session id we have never seen is normal.
+    // Without this check the queries below would filter on undefined, which
+    // matches every row, and we would lock and complete a cart that has
+    // nothing to do with the payment.
+    const paymentCollectionId = transform(
+      { input, paymentSessionResult },
+      ({ input, paymentSessionResult }) => {
         if (!input.data?.session_id) {
           return undefined
         }
 
+        return paymentSessionResult.data[0]?.payment_collection_id
+      }
+    )
+
+    const cartPaymentCollectionResult = when(
+      "query-cart-payment-collection-when-session-found",
+      { paymentCollectionId },
+      ({ paymentCollectionId }) => {
+        return !!paymentCollectionId
+      }
+    ).then(() => {
+      return useQueryGraphStep({
+        entity: "cart_payment_collection",
+        fields: ["cart_id"],
+        filters: {
+          payment_collection_id: paymentCollectionId,
+        },
+      }).config({
+        name: "cart-payment-query",
+      })
+    })
+
+    const cartPaymentCollection = transform(
+      { cartPaymentCollectionResult },
+      ({ cartPaymentCollectionResult }) => {
+        return {
+          data: cartPaymentCollectionResult?.data ?? [],
+        }
+      }
+    )
+
+    const cartId = transform(
+      { cartPaymentCollection },
+      ({ cartPaymentCollection }) => {
         return cartPaymentCollection.data[0]?.cart_id
       }
     )
 
-    const { data: order } = useQueryGraphStep({
-      entity: "order_cart",
-      fields: ["id"],
-      filters: {
-        cart_id: cartId,
-      },
-      options: {
-        isList: false,
-      },
-    }).config({
-      name: "cart-order-query",
+    const orderResult = when(
+      "query-cart-order-when-cart-found",
+      { cartId },
+      ({ cartId }) => {
+        return !!cartId
+      }
+    ).then(() => {
+      return useQueryGraphStep({
+        entity: "order_cart",
+        fields: ["id"],
+        filters: {
+          cart_id: cartId,
+        },
+        options: {
+          isList: false,
+        },
+      }).config({
+        name: "cart-order-query",
+      })
+    })
+
+    const order = transform({ orderResult }, ({ orderResult }) => {
+      return orderResult?.data
     })
 
     when("lock-cart-when-available", { cartId }, ({ cartId }) => {
@@ -130,11 +166,11 @@ export const processPaymentWorkflow = createWorkflow(
 
     const autocapturePayment = when(
       "authorize-payment-session-autocapture-condition",
-      { input, paymentData },
-      ({ input, paymentData }) => {
+      { input, paymentData, paymentCollectionId },
+      ({ input, paymentData, paymentCollectionId }) => {
         // payment is captured with the provider but we dont't have any payment data which means we didn't call authorize yet - autocapture flow
         return (
-          !!input.data?.session_id &&
+          !!paymentCollectionId &&
           input.action === PaymentActions.SUCCESSFUL &&
           !paymentData.data.length
         )
@@ -172,14 +208,14 @@ export const processPaymentWorkflow = createWorkflow(
     })
 
     when(
-      { input, cartPaymentCollection },
-      ({ input, cartPaymentCollection }) => {
+      { input, cartPaymentCollection, paymentCollectionId },
+      ({ input, cartPaymentCollection, paymentCollectionId }) => {
         // Authorize payment session if no Cart is linked to the payment
         // When associated with a Cart, the complete cart workflow will handle the authorization
         return (
           !cartPaymentCollection.data.length &&
           input.action === PaymentActions.AUTHORIZED &&
-          !!input.data?.session_id
+          !!paymentCollectionId
         )
       }
     ).then(() => {
