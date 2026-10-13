@@ -1,4 +1,7 @@
-import { loadDatabaseConfig } from "../load-module-database-config"
+import {
+  isLocalDatabaseUrl,
+  loadDatabaseConfig,
+} from "../load-module-database-config"
 
 describe("loadDatabaseConfig", function () {
   afterEach(() => {
@@ -133,6 +136,32 @@ describe("loadDatabaseConfig", function () {
     })
   })
 
+  it("should return the local configuration for the IPv6 loopback address", function () {
+    const options = {
+      database: {
+        clientUrl: "postgres://postgres@[::1]:5432/medusa-test",
+      },
+    }
+
+    const config = loadDatabaseConfig("product", options)
+
+    expect(config.driverOptions).toEqual({ connection: { ssl: false } })
+  })
+
+  it("should return the remote configuration for a remote host whose URL mentions localhost", function () {
+    const options = {
+      database: {
+        clientUrl: "postgres://localhost@db.example.com:5432/medusa-test",
+      },
+    }
+
+    const config = loadDatabaseConfig("product", options)
+
+    expect(config.driverOptions).toEqual({
+      connection: { ssl: { rejectUnauthorized: false } },
+    })
+  })
+
   it("should return the remote configuration using the options", function () {
     process.env.DATABASE_URL = "postgres://localhost:5432/medusa"
     const options = {
@@ -237,5 +266,33 @@ describe("loadDatabaseConfig", function () {
     expect(error.message).toEqual(
       "No database clientUrl provided. Please provide the clientUrl through the [MODULE]_DATABASE_URL, MEDUSA_DATABASE_URL or DATABASE_URL environment variable or the options object in the initialize function."
     )
+  })
+})
+
+describe("isLocalDatabaseUrl", function () {
+  it.each([
+    "postgres://postgres@localhost:5432/medusa",
+    "postgres://postgres@LOCALHOST/medusa",
+    "postgres://postgres@db.localhost:5432/medusa",
+    "postgres://postgres@127.0.0.1:5432/medusa",
+    "postgres://postgres@127.0.1.5:5432/medusa",
+    "postgres://postgres@[::1]:5432/medusa",
+    "postgresql://postgres:secret@[::1]/medusa",
+  ])("treats %s as local", function (clientUrl) {
+    expect(isLocalDatabaseUrl(clientUrl)).toBe(true)
+  })
+
+  it.each([
+    "postgres://postgres@db.example.com:5432/medusa",
+    "postgres://localhost@db.example.com:5432/medusa",
+    "postgres://postgres:localhost@db.example.com/medusa",
+    "postgres://postgres@db.example.com/localhost",
+    "postgres://postgres@localhost.example.com:5432/medusa",
+    "postgres://postgres@10.127.0.0.1:5432/medusa",
+    "postgres://postgres@[::2]:5432/medusa",
+    "not a url",
+    "",
+  ])("treats %s as remote", function (clientUrl) {
+    expect(isLocalDatabaseUrl(clientUrl)).toBe(false)
   })
 })

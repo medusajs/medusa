@@ -2,6 +2,7 @@ import {
   FeatureFlag,
   getConfigFile,
   discoverAndRegisterFeatureFlags,
+  isLocalDatabaseUrl,
 } from "@medusajs/framework/utils"
 
 export async function configLoaderOverride(
@@ -29,15 +30,16 @@ export async function configLoaderOverride(
   configModule.projectConfig.databaseDriverOptions
   configModule.projectConfig.databaseUrl = override.clientUrl
   configModule.projectConfig.databaseLogging = !!override.debug
-  configModule.projectConfig.databaseDriverOptions =
-    override.clientUrl.includes("localhost")
-      ? {}
-      : {
-          connection: {
-            ssl: { rejectUnauthorized: false },
-          },
-          idle_in_transaction_session_timeout: 20000,
-        }
+  configModule.projectConfig.databaseDriverOptions = isLocalDatabaseUrl(
+    override.clientUrl
+  )
+    ? {}
+    : {
+        connection: {
+          ssl: { rejectUnauthorized: false },
+        },
+        idle_in_transaction_session_timeout: 20000,
+      }
 
   logger.info("Disabling admin as we run integration tests")
   Object.assign(configModule.admin ?? {}, { disable: true })

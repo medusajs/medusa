@@ -137,6 +137,23 @@ describe("pgConnectionLoader", () => {
     expect(mockContainer.register).not.toHaveBeenCalled()
   })
 
+  it("fails fast when TLS is requested from a server that does not support it", async () => {
+    const realError = new Error("The server does not support SSL connections")
+    const connection = buildFakeConnection({
+      realError,
+      rawError: timeoutError(),
+    })
+    mockCreatePgConnection.mockReturnValue(connection)
+
+    const error = await pgConnectionLoader().catch((e) => e)
+    expect(error.message).toContain(
+      "Failed to connect to the database: The server does not support SSL connections"
+    )
+    expect(connection.raw).toHaveBeenCalledTimes(1)
+    expect(mockLogger.warn).not.toHaveBeenCalled()
+    expect(mockContainer.register).not.toHaveBeenCalled()
+  })
+
   it("logs the real cause and demotes the pool-reported message on each retry", async () => {
     const realError = Object.assign(new Error("connect ECONNREFUSED"), {
       code: "ECONNREFUSED",

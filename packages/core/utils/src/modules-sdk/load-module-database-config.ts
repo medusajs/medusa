@@ -15,6 +15,28 @@ function isModuleServiceInitializeOptions(
   return !!(obj as any)?.database
 }
 
+/**
+ * Whether a database URL points at this machine: `localhost`, a `*.localhost`
+ * name, an IPv4 loopback address (`127.0.0.0/8`) or the IPv6 loopback `::1`.
+ * The host is read from the parsed URL, so a remote host whose name, user or
+ * database merely contains "localhost" is not mistaken for a local one.
+ */
+export function isLocalDatabaseUrl(clientUrl: string): boolean {
+  let hostname: string
+  try {
+    hostname = new URL(clientUrl).hostname.toLowerCase()
+  } catch {
+    return false
+  }
+
+  return (
+    hostname === "localhost" ||
+    hostname.endsWith(".localhost") ||
+    /^127(\.\d{1,3}){3}$/.test(hostname) ||
+    hostname === "[::1]"
+  )
+}
+
 function getDefaultDriverOptions(clientUrl: string) {
   const localOptions = {
     connection: {
@@ -31,9 +53,8 @@ function getDefaultDriverOptions(clientUrl: string) {
   }
 
   if (clientUrl) {
-    return clientUrl.match(
-      /localhost|127\.0\.0\.1|ssl_mode=(disable|false)|sslmode=(disable)/i
-    )
+    return isLocalDatabaseUrl(clientUrl) ||
+      clientUrl.match(/ssl_mode=(disable|false)|sslmode=(disable)/i)
       ? localOptions
       : remoteOptions
   }
