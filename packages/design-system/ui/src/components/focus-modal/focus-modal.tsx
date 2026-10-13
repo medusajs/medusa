@@ -112,10 +112,17 @@ FocusModalContent.displayName = "FocusModal.Content"
  * This component is used to wrap the header content of the modal.
  * This component is based on the `div` element and supports all of its props
  */
+interface FocusModalHeaderProps extends React.ComponentPropsWithoutRef<"div"> {
+  /**
+   * The accessible name of the close button, announced by screen readers.
+   */
+  closeLabel?: string
+}
+
 const FocusModalHeader = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<"div">
->(({ children, className, ...props }, ref) => {
+  FocusModalHeaderProps
+>(({ children, className, closeLabel = "Close", ...props }, ref) => {
   return (
     <div
       ref={ref}
@@ -127,7 +134,12 @@ const FocusModalHeader = React.forwardRef<
     >
       <div className="flex items-center gap-x-2">
         <RadixDialog.Close asChild>
-          <IconButton size="small" type="button" variant="transparent">
+          <IconButton
+            size="small"
+            type="button"
+            variant="transparent"
+            aria-label={closeLabel}
+          >
             <XMark />
           </IconButton>
         </RadixDialog.Close>
