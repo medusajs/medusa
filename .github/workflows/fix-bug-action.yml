@@ -281,9 +281,14 @@ jobs:
           fi
 
           TITLE=$(jq -r '.pr_title // ""' fix-result.json)
-          if [[ "$TITLE" == *$'\n'* || ${#TITLE} -gt 120 || ! "$TITLE" =~ ^fix\([a-z0-9-]+\):\ .+$ ]]; then
+          if [[ "$TITLE" == *$'\n'* || ${#TITLE} -gt 500 || ! "$TITLE" =~ ^fix\([a-z0-9-]+\):\ .+$ ]]; then
             echo "::error::Invalid pr_title." >&2
             exit 1
+          fi
+          if [[ ${#TITLE} -gt 120 ]]; then
+            TITLE="${TITLE:0:117}"
+            TITLE="${TITLE% *}..."
+            echo "::warning::pr_title exceeded 120 characters and was truncated."
           fi
 
           if [[ "$(wc -c < pr-body.md)" -gt 30000 ]]; then
