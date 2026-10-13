@@ -140,142 +140,6 @@ type PromotionApplication = {
 }
 
 /*
-  Opt-in selection strategy for buy-get promotions, enabled with
-  `promotion.metadata.buyget_selection = "cheapest_eligible_first"`.
-
-  Every eligible unit in the cart forms one pool. Each application round gives
-  away the cheapest remaining units and pays for them with the most expensive
-  remaining units, so across the cart the cheapest units are the ones
-  discounted. For "buy 3, get 1 free" with eight units priced 100 to 800, the
-  100 and 200 units are discounted.
-
-  The strategy needs the buy and target rules to select the same items. When
-  they don't, the promotion keeps the default selection.
-*/
-const BUYGET_SELECTION_CHEAPEST_ELIGIBLE_FIRST = "cheapest_eligible_first"
-
-function isCheapestEligibleFirst(
-  promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
-  eligibleBuyItems: ComputeActionItemLine[],
-  eligibleTargetItems: ComputeActionItemLine[]
-): boolean {
-  if (
-    promotion.metadata?.buyget_selection !==
-    BUYGET_SELECTION_CHEAPEST_ELIGIBLE_FIRST
-  ) {
-    return false
-  }
-
-  const eligibleTargetItemIds = new Set(
-    eligibleTargetItems.map((item) => item.id)
-  )
-
-  return (
-    eligibleBuyItems.length === eligibleTargetItems.length &&
-    eligibleBuyItems.every((item) => eligibleTargetItemIds.has(item.id))
-  )
-}
-
-/*
-  Prepares one application round for the cheapest-eligible-first strategy.
-
-  Units are ranked by unit price, never by line subtotal: three units at 199
-  have a higher subtotal than one unit at 379 but are still the cheaper units.
-  A unit counts as available only while it is unused on both the buy and the
-  target side, since the two pools are the same items.
-*/
-function prepareCheapestPromotionApplicationState(
-  eligibleItems: ComputeActionItemLine[],
-  remainingBuyQuantities: Map<string, BigNumberInput>,
-  remainingTargetQuantities: Map<string, BigNumberInput>,
-  applicationConfig: PromotionConfig,
-  appliedPromotionQuantity: BigNumberInput
-): PromotionApplication {
-  const available = eligibleItems
-    .map((item) => ({
-      item,
-      unitPrice: getUnitPrice(item),
-      quantity: MathBN.min(
-        remainingBuyQuantities.get(item.id) ?? 0,
-        remainingTargetQuantities.get(item.id) ?? 0
-      ),
-    }))
-    .filter(({ quantity }) => MathBN.gt(quantity, 0))
-
-  const totalQuantity = available.length
-    ? MathBN.sum(...available.map(({ quantity }) => quantity))
-    : MathBN.convert(0)
-  const groupSize = MathBN.add(
-    applicationConfig.minimumBuyQuantity,
-    applicationConfig.targetApplyQuantity
-  )
-  const remainingAllowance = MathBN.sub(
-    applicationConfig.maximumApplyQuantity,
-    appliedPromotionQuantity
-  )
-
-  // A round needs a full group of units, and room under max_quantity for all
-  // of its targets. The default strategy only applies whole rounds as well.
-  if (
-    MathBN.lte(applicationConfig.targetApplyQuantity, 0) ||
-    MathBN.lt(totalQuantity, groupSize) ||
-    MathBN.lt(remainingAllowance, applicationConfig.targetApplyQuantity)
-  ) {
-    return { buyItems: [], targetItems: [], isValid: false }
-  }
-
-  // Equal unit prices keep their cart order, so the result doesn't depend on
-  // how the sort implementation handles ties.
-  const cheapestFirst = [...available].sort((a, b) =>
-    MathBN.eq(a.unitPrice, b.unitPrice)
-      ? 0
-      : MathBN.lt(a.unitPrice, b.unitPrice)
-      ? -1
-      : 1
-  )
-  const mostExpensiveFirst = [...cheapestFirst].reverse()
-
-  const targetItems: EligibleItem[] = []
-  let targetsNeeded = MathBN.convert(applicationConfig.targetApplyQuantity)
-
-  for (const { item, quantity } of cheapestFirst) {
-    if (MathBN.lte(targetsNeeded, 0)) {
-      break
-    }
-
-    const taken = MathBN.min(quantity, targetsNeeded)
-    targetItems.push({ item_id: item.id, quantity: taken.toNumber() })
-    targetsNeeded = MathBN.sub(targetsNeeded, taken)
-  }
-
-  const targetQuantities = new Map(
-    targetItems.map((target) => [target.item_id, target.quantity])
-  )
-  const buyItems: EligibleItem[] = []
-  let buysNeeded = MathBN.convert(applicationConfig.minimumBuyQuantity)
-
-  for (const { item, quantity } of mostExpensiveFirst) {
-    if (MathBN.lte(buysNeeded, 0)) {
-      break
-    }
-
-    const unused = MathBN.sub(quantity, targetQuantities.get(item.id) ?? 0)
-    const taken = MathBN.min(unused, buysNeeded)
-
-    if (MathBN.gt(taken, 0)) {
-      buyItems.push({ item_id: item.id, quantity: taken.toNumber() })
-      buysNeeded = MathBN.sub(buysNeeded, taken)
-    }
-  }
-
-  return {
-    buyItems,
-    targetItems,
-    isValid: MathBN.lte(targetsNeeded, 0) && MathBN.lte(buysNeeded, 0),
-  }
-}
-
-/*
   Determines which buy and target items should be used for a promotion application.
   
   We run the following steps to prepare the promotion application state to be used within an application loop:
@@ -644,6 +508,34 @@ function filterItemsByPromotionRules(
     .sort(sortByPrice)
 }
 
+/*
+  Opt-in selection strategy, enabled with
+  `promotion.metadata.buyget_selection = "cheapest_eligible_first"`.
+
+  By default each application round pays with the most expensive eligible
+  units and discounts the most expensive target left over. With this option
+  the target is the cheapest one left over instead, so across the cart the
+  cheapest eligible units are the ones discounted. For "buy 3, get 1 free" with
+  eight units priced 100 to 800, the 100 and 200 units are discounted.
+
+  Both sides are ranked by unit price: three units at 199 have a higher line
+  subtotal than one unit at 379, but they are still the cheaper units.
+*/
+const BUYGET_SELECTION_CHEAPEST_ELIGIBLE_FIRST = "cheapest_eligible_first"
+
+function compareUnitPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
+  const aUnitPrice = getUnitPrice(a)
+  const bUnitPrice = getUnitPrice(b)
+
+  // Equal prices keep their order, so ties don't depend on the sort
+  // implementation.
+  if (MathBN.eq(aUnitPrice, bUnitPrice)) {
+    return 0
+  }
+
+  return MathBN.lt(aUnitPrice, bUnitPrice) ? -1 : 1
+}
+
 export function getComputedActionsForBuyGet(
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   itemsContext: ComputeActionItemLine[],
@@ -684,11 +576,20 @@ export function getComputedActionsForBuyGet(
     promotion.code!
   )
 
-  const cheapestEligibleFirst = isCheapestEligibleFirst(
-    promotion,
-    eligibleBuyItems,
-    eligibleTargetItems
-  )
+  // Buy items are reserved in the order given (after the items that can't be
+  // targets) and targets are picked in the order given, so ordering the two
+  // lists is all the option needs.
+  const cheapestEligibleFirst =
+    promotion.metadata?.buyget_selection ===
+    BUYGET_SELECTION_CHEAPEST_ELIGIBLE_FIRST
+
+  const buyItemsInSelectionOrder = cheapestEligibleFirst
+    ? [...eligibleBuyItems].sort((a, b) => compareUnitPrice(b, a))
+    : eligibleBuyItems
+
+  const targetItemsInSelectionOrder = cheapestEligibleFirst
+    ? [...eligibleTargetItems].sort(compareUnitPrice)
+    : eligibleTargetItems
 
   const totalEligibleBuyItemsMap = new Map<string, EligibleItem>()
   const totalEligibleTargetItemsMap = new Map<string, EligibleItem>()
@@ -725,22 +626,14 @@ export function getComputedActionsForBuyGet(
     // We prepare an application state for the promotion to be applied on all eligible items
     // We use this as a source of truth to update the remaining quantities of the eligible items
     // and the total eligible items
-    const applicationState = cheapestEligibleFirst
-      ? prepareCheapestPromotionApplicationState(
-          eligibleBuyItems,
-          remainingBuyQuantities,
-          remainingTargetQuantities,
-          applicationConfig,
-          appliedPromotionQuantity
-        )
-      : preparePromotionApplicationState(
-          eligibleBuyItems,
-          eligibleTargetItems,
-          remainingBuyQuantities,
-          remainingTargetQuantities,
-          applicationConfig,
-          appliedPromotionQuantity
-        )
+    const applicationState = preparePromotionApplicationState(
+      buyItemsInSelectionOrder,
+      targetItemsInSelectionOrder,
+      remainingBuyQuantities,
+      remainingTargetQuantities,
+      applicationConfig,
+      appliedPromotionQuantity
+    )
 
     // If the application state is not valid, we break the loop
     // If it is not valid, it means that there are no more eligible items to apply the promotion to

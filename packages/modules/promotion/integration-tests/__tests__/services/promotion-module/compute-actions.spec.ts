@@ -6113,9 +6113,53 @@ moduleIntegrationTestRunner({
             ])
           })
 
-          it("should keep the default selection when buy and target rules differ", async () => {
-            const differentPools = {
+          it("should rank the buy side by unit price as well", async () => {
+            await createBuyThreeGetOne()
+
+            // Three units at 199 have a higher line subtotal (597) than one unit
+            // at 379. Ranked by subtotal, they would pay and the 379 unit would
+            // be the only one left to discount.
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              [line("expensive", 379), line("cheap", 199, 3)]
+            )
+
+            expect(result).toEqual([adjustment("cheap", 199)])
+          })
+
+          it("should discount the cheapest target when buy and target rules differ", async () => {
+            // Buy 2 of the other product, get 1 of the eligible product free.
+            await createBuyThreeGetOne({
               application_method: {
+                buy_rules_min_quantity: 2,
+                buy_rules: [
+                  {
+                    attribute: "items.product.id",
+                    operator: "in",
+                    values: [otherProduct],
+                  },
+                ],
+              },
+            })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              [
+                line("other_300", 300, 1, otherProduct),
+                line("other_400", 400, 1, otherProduct),
+                line("target_50", 50),
+                line("target_80", 80),
+              ]
+            )
+
+            expect(result).toEqual([adjustment("target_50", 50)])
+          })
+
+          it("should discount the cheapest target when the target is also in the buy rules", async () => {
+            // Buy 2 of either product, get 1 of the eligible product free.
+            await createBuyThreeGetOne({
+              application_method: {
+                buy_rules_min_quantity: 2,
                 buy_rules: [
                   {
                     attribute: "items.product.id",
@@ -6124,34 +6168,20 @@ moduleIntegrationTestRunner({
                   },
                 ],
               },
-            }
-
-            await createBuyThreeGetOne(differentPools)
-            await createBuyThreeGetOne({
-              ...differentPools,
-              code: "DEFAULT_4_FOR_3",
-              metadata: {},
             })
 
-            const items = [
-              ...singleUnits([100, 200, 300, 400]),
-              line("other_500", 500, 1, otherProduct),
-              line("other_600", 600, 1, otherProduct),
-            ]
-
-            const withOption = await computeAdjustments(
+            const result = await computeAdjustments(
               ["CHEAPEST_4_FOR_3"],
-              items
-            )
-            const withoutOption = await computeAdjustments(
-              ["DEFAULT_4_FOR_3"],
-              items
+              [
+                line("target_100", 100),
+                line("target_200", 200),
+                line("other_300", 300, 1, otherProduct),
+                line("other_400", 400, 1, otherProduct),
+              ]
             )
 
-            expect(withOption.length).toBeGreaterThan(0)
-            expect(withOption.map(({ code, ...rest }) => rest)).toEqual(
-              withoutOption.map(({ code, ...rest }) => rest)
-            )
+            // The other product pays, so the cheapest eligible unit is free.
+            expect(result).toEqual([adjustment("target_100", 100)])
           })
 
           it("should not reuse units another promotion has used", async () => {
