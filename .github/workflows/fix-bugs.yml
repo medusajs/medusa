@@ -52,7 +52,7 @@ jobs:
           mkdir -p /tmp/fix-bugs
 
           jq -n --arg since "$SINCE" '{
-            query: "query($filter: IssueFilter) { issues(first: 100, filter: $filter) { nodes { identifier title description attachments { nodes { url } } } } }",
+            query: "query($filter: IssueFilter) { issues(first: 100, filter: $filter) { nodes { identifier title description attachments { nodes { url } } comments(first: 50) { nodes { body } } } } }",
             variables: {
               filter: ({
                 team: { key: { eq: "DX" } },
@@ -72,9 +72,11 @@ jobs:
             exit 1
           fi
 
-          # Tickets with a linked medusa PR are already being worked on.
+          # Tickets with a linked medusa PR are already being worked on, and tickets
+          # the Fix Bug workflow already commented on were already analyzed.
           jq '[.data.issues.nodes[]
             | select([.attachments.nodes[].url | test("github\\.com/medusajs/medusa/pull/")] | any | not)
+            | select([.comments.nodes[].body | contains("Posted automatically by the Fix Bug workflow")] | any | not)
             | {identifier, title, description: ((.description // "")[:4000])}]' \
             /tmp/fix-bugs/response.json > /tmp/fix-bugs/tickets.json
           rm /tmp/fix-bugs/query.json /tmp/fix-bugs/response.json
