@@ -52,7 +52,7 @@ jobs:
           mkdir -p /tmp/fix-bugs
 
           jq -n --arg since "$SINCE" '{
-            query: "query($filter: IssueFilter) { issues(first: 100, filter: $filter) { nodes { identifier title description attachments { nodes { url } } } } }",
+            query: "query($filter: IssueFilter) { issues(first: 100, filter: $filter) { nodes { identifier title description attachments { nodes { url } } comments(first: 50) { nodes { body } } } } }",
             variables: {
               filter: ({
                 team: { key: { eq: "DX" } },
@@ -72,9 +72,11 @@ jobs:
             exit 1
           fi
 
-          # Tickets with a linked medusa PR are already being worked on.
+          # Tickets with a linked medusa PR are already being worked on, and tickets
+          # the Fix Bug workflow already commented on were already analyzed.
           jq '[.data.issues.nodes[]
             | select([.attachments.nodes[].url | test("github\\.com/medusajs/medusa/pull/")] | any | not)
+            | select([.comments.nodes[].body | contains("Posted automatically by the Fix Bug workflow")] | any | not)
             | {identifier, title, description: ((.description // "")[:4000])}]' \
             /tmp/fix-bugs/response.json > /tmp/fix-bugs/tickets.json
           rm /tmp/fix-bugs/query.json /tmp/fix-bugs/response.json
@@ -90,6 +92,7 @@ jobs:
           persist-credentials: false
 
       - name: Classify tickets with Claude
+        id: classify
         if: inputs.linear_ticket == ''
         uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         with:
@@ -103,7 +106,8 @@ jobs:
           claude_args: >-
             --model claude-sonnet-5
             --max-turns 40
-            --allowedTools "Read,Write,Glob,Grep"
+            --allowedTools "Read,Glob,Grep"
+            --json-schema '{"type":"object","properties":{"tickets":{"type":"array","items":{"type":"string"}}},"required":["tickets"],"additionalProperties":false}'
           prompt: |
             You are selecting Linear tickets that report bugs in the Medusa source code, so each can be fixed by an automated workflow.
 
@@ -121,14 +125,19 @@ jobs:
             - Session audits, agent/skill feedback, or internal process tickets.
             - Too vague to act on.
 
-            Write the selected identifiers as a JSON array of strings to /tmp/fix-bugs/bug-tickets.json, e.g. ["DX-3078"]. Write [] if none qualify. Do not modify any file in the repository.
+            Return the selected identifiers in `tickets`, e.g. ["DX-3078"]. Return [] if none qualify. Do not modify any file in the repository.
 
       - name: Build matrix
         id: matrix
         env:
           MAX_TICKETS: 10
+          STRUCTURED_OUTPUT: ${{ steps.classify.outputs.structured_output }}
         run: |
           set -euo pipefail
+          if [[ -n "$STRUCTURED_OUTPUT" ]]; then
+            jq -c '.tickets' <<< "$STRUCTURED_OUTPUT" > /tmp/fix-bugs/bug-tickets.json
+          fi
+
           if [[ ! -f /tmp/fix-bugs/bug-tickets.json ]]; then
             echo "::error::bug-tickets.json was not produced." >&2
             exit 1

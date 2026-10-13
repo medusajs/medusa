@@ -1013,6 +1013,57 @@ medusaIntegrationTestRunner({
           ])
         )
       })
+
+      it("should confirm an order edit with an out-of-stock item added with allow_backorder", async () => {
+        await api.post(
+          `/admin/order-edits`,
+          { order_id: inventoryOrder.id },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${inventoryOrder.id}/items`,
+          {
+            items: [
+              {
+                variant_id: product.variants.find((v) => v.title === "S shirt")
+                  .id,
+                quantity: 15,
+                allow_backorder: true,
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${inventoryOrder.id}/request`,
+          {},
+          adminHeaders
+        )
+
+        const response = await api.post(
+          `/admin/order-edits/${inventoryOrder.id}/confirm`,
+          {},
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+
+        const reservations = (
+          await api.get(
+            `/admin/reservations?inventory_item_id[]=${inventoryItemSmall.id}`,
+            adminHeaders
+          )
+        ).data.reservations
+
+        expect(reservations).toEqual([
+          expect.objectContaining({
+            inventory_item_id: inventoryItemSmall.id,
+            quantity: 15,
+          }),
+        ])
+      })
     })
 
     describe("Order Edit Shipping Methods", () => {
