@@ -799,7 +799,9 @@ export class TransactionOrchestrator extends EventEmitter {
 
     if (
       !isTimeout &&
-      step.getStates().status !== TransactionStepStatus.PERMANENT_FAILURE
+      step.getStates().status !== TransactionStepStatus.PERMANENT_FAILURE &&
+      step.getStates().status !== TransactionStepStatus.OK &&
+      step.getStates().status !== TransactionStepStatus.DONE
     ) {
       step.changeStatus(TransactionStepStatus.TEMPORARY_FAILURE)
     }
