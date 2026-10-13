@@ -26,6 +26,15 @@ export interface AdminRefundPayment {
    * A note to attach to the refund.
    */
   note?: string
+  /**
+   * A key that makes the refund idempotent at the payment provider. Retrying
+   * the request with the same key never refunds twice, even when the response
+   * of the original request was lost.
+   *
+   * When omitted, every request starts a new refund, so a retry after a lost
+   * response can refund twice.
+   */
+  idempotency_key?: string
 }
 
 /**

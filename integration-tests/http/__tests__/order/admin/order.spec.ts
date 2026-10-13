@@ -1571,6 +1571,166 @@ medusaIntegrationTestRunner({
         // The failed payment should have no refund records
         expect(payment2After.refunds).toHaveLength(0)
       })
+
+      it("should soft-delete a failed refund and exclude it from credit lines when the provider rejects it", async () => {
+        const paymentModule = container.resolve(Modules.PAYMENT)
+        const payment = order.payment_collections[0].payments[0]
+        const paymentCollectionId = order.payment_collections[0].id
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          { amount: 50 },
+          adminHeaders
+        )
+
+        const session2 = await paymentModule.createPaymentSession(
+          paymentCollectionId,
+          {
+            provider_id: "pp_system_default",
+            amount: 100,
+            currency_code: "usd",
+            data: {},
+          }
+        )
+        const payment2 = await paymentModule.authorizePaymentSession(
+          session2.id,
+          {}
+        )
+        await paymentModule.capturePayment({
+          payment_id: payment2.id,
+          amount: 30,
+        })
+
+        // Unlike the test above, the failure is injected at the provider rather
+        // than at the module, so the refund record is created before it fails.
+        const providerService = (paymentModule as any).paymentProviderService_
+        const originalProviderRefund =
+          providerService.refundPayment.bind(providerService)
+
+        jest
+          .spyOn(providerService, "refundPayment")
+          .mockImplementation(async (...args: any[]) => {
+            const [providerId, input] = args
+            const rawAmount = input?.amount
+            const amount =
+              rawAmount && typeof rawAmount === "object"
+                ? rawAmount.value
+                : rawAmount
+
+            if (Number(amount) === 30) {
+              throw new Error("Refund failed at payment provider")
+            }
+
+            return originalProviderRefund(providerId, input)
+          })
+
+        const cancelResponse = await api.post(
+          `/admin/orders/${order.id}/cancel`,
+          {},
+          adminHeaders
+        )
+
+        expect(cancelResponse.status).toBe(200)
+
+        jest.restoreAllMocks()
+
+        const canceledOrder = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=*credit_lines.amount,*payment_collections.payments.amount,*payment_collections.payments.captures.amount`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(canceledOrder.status).toBe("canceled")
+
+        // The failed refund moved no funds, so it must not reach credit lines.
+        const totalCreditLineAmount = canceledOrder.credit_lines.reduce(
+          (sum, cl) => sum + cl.amount,
+          0
+        )
+        expect(totalCreditLineAmount).toBe(50)
+        expect(canceledOrder.summary.credit_line_total).toBe(50)
+
+        const succeededRefunds = await paymentModule.listRefunds({
+          payment_id: payment.id,
+        })
+        expect(succeededRefunds).toHaveLength(1)
+        expect(succeededRefunds[0]).toEqual(
+          expect.objectContaining({ amount: 50 })
+        )
+
+        // Invisible to ordinary reads, exactly as before this change.
+        expect(
+          await paymentModule.listRefunds({ payment_id: payment2.id })
+        ).toHaveLength(0)
+
+        // The record survives so the refund can be retried with the same key.
+        const failedRefunds = await paymentModule.listRefunds(
+          { payment_id: payment2.id },
+          { withDeleted: true }
+        )
+        expect(failedRefunds).toHaveLength(1)
+        expect(failedRefunds[0]).toEqual(
+          expect.objectContaining({ amount: 30, deleted_at: expect.any(Date) })
+        )
+
+        const paymentCollection = await paymentModule.retrievePaymentCollection(
+          paymentCollectionId
+        )
+        expect(paymentCollection.refunded_amount).toBe(50)
+      })
+
+      it("should retry a failed refund with the same idempotency key", async () => {
+        const paymentModule = container.resolve(Modules.PAYMENT)
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          { amount: 50 },
+          adminHeaders
+        )
+
+        const providerService = (paymentModule as any).paymentProviderService_
+        const providerRefundSpy = jest
+          .spyOn(providerService, "refundPayment")
+          .mockRejectedValueOnce(new Error("Refund failed at payment provider"))
+
+        const body = { amount: 50, idempotency_key: "return_42_refund" }
+
+        await api
+          .post(`/admin/payments/${payment.id}/refund`, body, adminHeaders)
+          .catch((e) => e)
+
+        const afterFailure = await paymentModule.listRefunds(
+          { payment_id: payment.id },
+          { withDeleted: true }
+        )
+        expect(afterFailure).toHaveLength(1)
+        expect(afterFailure[0].deleted_at).toEqual(expect.any(Date))
+
+        const response = await api.post(
+          `/admin/payments/${payment.id}/refund`,
+          body,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+
+        const afterRetry = await paymentModule.listRefunds({
+          payment_id: payment.id,
+        })
+        expect(afterRetry).toHaveLength(1)
+        expect(afterRetry[0]).toEqual(
+          expect.objectContaining({ id: afterFailure[0].id, deleted_at: null })
+        )
+
+        expect(providerRefundSpy).toHaveBeenCalledTimes(2)
+        expect(
+          providerRefundSpy.mock.calls[1][1].context.idempotency_key
+        ).toEqual(providerRefundSpy.mock.calls[0][1].context.idempotency_key)
+
+        jest.restoreAllMocks()
+      })
     })
 
     describe("POST /orders/:id/fulfillments", () => {

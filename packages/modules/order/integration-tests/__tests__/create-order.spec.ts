@@ -456,6 +456,41 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         expect(serializedOrder).toEqual(expectation)
       })
 
+      it("should return the item quantity when only explicit item fields are selected", async function () {
+        const createdOrder = await service.createOrders(input)
+
+        const expectedItems = expect.arrayContaining([
+          expect.objectContaining({ title: "Item 1", quantity: 1 }),
+          expect.objectContaining({ title: "Item 2", quantity: 2 }),
+          expect.objectContaining({ title: "Item 3", quantity: 1 }),
+        ])
+
+        const retrieved = await service.retrieveOrder(createdOrder.id, {
+          select: ["id", "items.id", "items.title", "items.quantity"],
+          relations: ["items"],
+        })
+        expect(normalizeBigNumbers(retrieved).items).toEqual(expectedItems)
+
+        const [listed] = await service.listOrders(
+          { id: createdOrder.id },
+          {
+            select: ["id", "items.id", "items.title", "items.quantity"],
+            relations: ["items"],
+          }
+        )
+        expect(normalizeBigNumbers(listed).items).toEqual(expectedItems)
+
+        const [[paginated]] = await service.listAndCountOrders(
+          { id: createdOrder.id },
+          {
+            select: ["id", "items.id", "items.title", "items.quantity"],
+            relations: ["items"],
+            take: 10,
+          }
+        )
+        expect(normalizeBigNumbers(paginated).items).toEqual(expectedItems)
+      })
+
       it("should return order transactions", async function () {
         const createdOrder = await service.createOrders(input)
         const getOrder = await service.retrieveOrder(createdOrder.id, {

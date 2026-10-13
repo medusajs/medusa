@@ -1897,15 +1897,15 @@
         "action": "Editar precios"
       },
       "conditionalPrices": {
-        "header": "Precios Condicionales",
+        "header": "Precios Condicionales para {{name}}",
         "description": "Establece precios diferentes basados en condiciones específicas.",
         "attributes": {
           "cartItemTotal": "Total de artículos del carrito"
         },
         "summaries": {
-          "range": "Rango",
-          "greaterThan": "Mayor que",
-          "lessThan": "Menor que"
+          "range": "Si <0>{{attribute}}</0> está entre <1>{{gte}}</1> y <2>{{lte}}</2>",
+          "greaterThan": "Si <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
+          "lessThan": "Si <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
         },
         "actions": {
           "addPrice": "Agregar precio",

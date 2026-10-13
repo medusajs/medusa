@@ -22,6 +22,13 @@ export type MedusaSearchProviderOptions = {
    * the user.
    */
   environment_handle?: string
+  /**
+   * @ignore
+   *
+   * Replaces the HTTP transport. It receives the requests that would go to the
+   * Cloud search proxy and must answer as the proxy would.
+   */
+  fetch?: typeof fetch
 }
 
 export type ResolvedMedusaSearchProviderOptions =

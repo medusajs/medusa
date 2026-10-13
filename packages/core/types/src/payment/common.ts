@@ -508,6 +508,12 @@ export interface RefundDTO {
    * The associated payment.
    */
   payment: PaymentDTO
+
+  /**
+   * The key that makes the refund idempotent at the payment provider. It's
+   * only set when the caller supplied one; otherwise the refund's ID is used.
+   */
+  idempotency_key?: string | null
 }
 /* ********** PAYMENT SESSION ********** */
 /**

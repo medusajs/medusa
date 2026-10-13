@@ -42,6 +42,8 @@ type IORedisEventType<T = unknown> = {
   opts: BulkJobOptions
 }
 
+const GROUPED_EVENTS_CHUNK_SIZE = 1000
+
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
@@ -364,13 +366,16 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
        * names. which allow to partially clear an event group.
        */
 
-      const eventsToKeep = await this.eventBusRedisConnection_
-        .lrange(`staging:${eventGroupId}`, 0, -1)
-        .then((result) => {
-          return result
-            .map((jsonString) => JSON.parse(jsonString))
-            .filter((event) => !eventNames.includes(event.name))
-        })
+      const [eventsToKeep, ttl] = await promiseAll([
+        this.eventBusRedisConnection_
+          .lrange(`staging:${eventGroupId}`, 0, -1)
+          .then((result) => {
+            return result
+              .map((jsonString) => JSON.parse(jsonString))
+              .filter((event) => !eventNames.includes(event.name))
+          }),
+        this.eventBusRedisConnection_.pttl(`staging:${eventGroupId}`),
+      ])
 
       // Create a pipeline
       const pipeline = this.eventBusRedisConnection_.pipeline()
@@ -380,12 +385,20 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
       // Add the remaining events to the list, if any.
       // RPUSH with no members is a Redis argument error, so only issue it
-      // when there is at least one event left to keep.
-      if (eventsToKeep.length > 0) {
+      // when there is at least one event left to keep. Push in chunks since
+      // spreading a large list into the call arguments overflows the stack.
+      for (let i = 0; i < eventsToKeep.length; i += GROUPED_EVENTS_CHUNK_SIZE) {
         pipeline.rpush(
           `staging:${eventGroupId}`,
-          ...eventsToKeep.map((event) => JSON.stringify(event))
+          ...eventsToKeep
+            .slice(i, i + GROUPED_EVENTS_CHUNK_SIZE)
+            .map((event) => JSON.stringify(event))
         )
+      }
+
+      // Restore the TTL set by groupEvents, which DEL drops
+      if (eventsToKeep.length > 0 && ttl > 0) {
+        pipeline.pexpire(`staging:${eventGroupId}`, ttl)
       }
 
       await pipeline.exec()

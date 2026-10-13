@@ -60,7 +60,9 @@ export class MedusaSearchService extends AbstractSearchProviderService {
 
     this.logger_ = logger
     this.options_ = resolvedOptions
-    this.client_ = new MedusaSearchClient(resolvedOptions)
+    this.client_ = new MedusaSearchClient(resolvedOptions, {
+      fetchImpl: resolvedOptions.fetch,
+    })
   }
 
   /**

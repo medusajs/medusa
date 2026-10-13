@@ -302,6 +302,11 @@ export type MedusaCloudOptions = {
    */
   paymentsEndpoint?: string
   /**
+   * The handles of the Medusa Payments accounts available to the environment. A payment
+   * provider is registered for each, with the ID `medusa-payments_{handle}`.
+   */
+  paymentAccounts?: string[]
+  /**
    * The endpoint of the Medusa Cloud email service.
    */
   emailsEndpoint?: string

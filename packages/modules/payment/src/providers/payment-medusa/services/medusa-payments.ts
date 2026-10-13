@@ -104,6 +104,7 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Basic ${this.options_.api_key}`,
+      "x-medusa-payment-account": this.options_.payment_account,
     }
     if (this.options_.environment_handle) {
       headers["x-medusa-environment-handle"] = this.options_.environment_handle
@@ -798,6 +799,11 @@ const validateOptions = (options: MedusaPaymentsOptions): void => {
   if (!isDefined(options.api_key)) {
     throw new Error(
       "Required option `api_key` is missing in Medusa payments plugin"
+    )
+  }
+  if (!isDefined(options.payment_account)) {
+    throw new Error(
+      "Required option `payment_account` is missing in Medusa payments plugin"
     )
   }
 

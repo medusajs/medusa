@@ -169,7 +169,7 @@ export class Client {
   }
 
   setLocale(locale: string) {
-    if (!window) {
+    if (typeof window === "undefined") {
       this.logger.warn(
         "setLocale is not available in the server environment. Please set the locale directly through the 'x-medusa-locale' header."
       )

@@ -606,7 +606,7 @@
     "noSalesChannels": "Não disponível em nenhum canal de venda",
     "variantCount_one": "{{count}} variante",
     "variantCount_other": "{{count}} variantes",
-    "deleteVariantWarning": "Tens a certeza que queres eliminar esta variante?",
+    "deleteVariantWarning": "Estás prestes a eliminar a variante {{title}}. Esta ação não pode ser anulada.",
     "productStatus": {
       "draft": "Rascunho",
       "published": "Publicado",

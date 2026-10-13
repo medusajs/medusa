@@ -198,7 +198,7 @@ DO NOT show wrap up yet. Wait until user confirms deployment or skipping before 
 
 ## Step 4a: Local-Only Setup (skip Cloud)
 
-If the user chose not to deploy to Cloud now, go directly to Step 5 (Install Agent Skills) and Step 8 (MCP Server). After both are done, go to the Wrap Up step (Step 13).
+If the user chose not to deploy to Cloud now, go directly to Step 5 (Install Agent Skills) and Step 8 (Docs MCP Server). After both are done, go to the Wrap Up step (Step 13).
 
 Tell the user they can run `mcloud signup` at any time when they are ready to deploy.
 
@@ -279,7 +279,7 @@ Run:
 mcloud signup
 ```
 
-This opens a browser. Wait for the user to confirm they have completed sign-up before continuing.
+This opens a browser. Tell the user that sign-up starts a free trial and doesn't require payment details. Wait for the user to confirm they have completed sign-up before continuing.
 
 Then run:
 
@@ -313,9 +313,9 @@ The `auth.kind` field must not be `"none"`. If it is, retry `mcloud login`.
 
 ---
 
-## Step 8: Add the Medusa Documentation MCP Server
+## Step 8: Add the Docs MCP Server
 
-The Medusa MCP server gives the agent live access to the Medusa documentation. The connection method depends on the agent.
+The Docs MCP server gives the agent live access to the Medusa documentation. The connection method depends on the agent.
 
 Add the MCP servers but do not authenticate yet or block next steps. In the wrap up, remind the user to authenticate so the agent can use the docs.
 
@@ -481,7 +481,7 @@ If a custom domain has not been set, the URLs will be subdomains of `medusajs.ap
 Tell the user, in one short message:
 
 - Their ecommerce store is live (or running locally, if they skipped Cloud).
-- They can now build features by asking. The installed skills (`medusa-dev`, `ecommerce-storefront`) and the Medusa documentation MCP server (if installed) give the agent everything it needs to add modules, API routes, admin UI, storefront pages, and integrations.
+- They can now build features by asking. The installed skills (`medusa-dev`, `ecommerce-storefront`) and the Docs MCP server (if installed) give the agent everything it needs to add modules, API routes, admin UI, storefront pages, and integrations.
 - If MCP was installed, remind the user to authenticate with Medusa Cloud from the MCP settings so the agent can access the documentation.
 - If any step was blocked due to execution mode or permissions, mention them in the message and tell the user how to re-run them.
 - Suggest two or three concrete next prompts the user could try, e.g.:

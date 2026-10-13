@@ -40,7 +40,26 @@ You can then log in with your Cloud account by clicking the "Log in with Medusa 
 
 ### Can't Find the Log in with Medusa Cloud Button?
 
-If you don't see the "Log in with Medusa Cloud" button on the Medusa Admin log in page, make sure that your Medusa application's version is using [Medusa v2.12.4 or later](https://github.com/medusajs/medusa/releases/tag/v2.12.4).
+If you don't see the "Log in with Medusa Cloud" button on the Medusa Admin log in page, make sure that:
+
+- Your Medusa application is using [Medusa v2.12.4 or later](https://github.com/medusajs/medusa/releases/tag/v2.12.4).
+- The `MEDUSA_CLOUD_OAUTH_DISABLED` [environment variable](../../environments/environment-variables/page.mdx) of the environment is set to `false` or isn't set.
+- If you set the [http.authMethodsPerActor](!docs!/learn/configurations/medusa-config#httpauthMethodsPerActor) configuration in `medusa-config.ts`, the `user` actor type's authentication methods include `cloud`. For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      // ...
+      authMethodsPerActor: {
+        user: ["emailpass", "cloud"],
+      },
+    },
+  },
+})
+```
+
+After changing the environment variable, [redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment) for the change to take effect. After changing `medusa-config.ts`, push the change to the environment's branch to start a new build.
 
 ---
 

@@ -21,6 +21,7 @@ import {
   useAuthorizePaymentSession,
 } from "../../../../../hooks/api"
 import { formatCurrency } from "../../../../../lib/format-currency"
+import { formatProvider } from "../../../../../lib/format-provider"
 import {
   getLocaleAmount,
   getStylizedAmount,
@@ -218,8 +219,8 @@ const Payment = ({
           </Text>
         </div>
         <div className="hidden items-center justify-end sm:flex">
-          <Text size="small" leading="compact" className="capitalize">
-            {payment.provider_id}
+          <Text size="small" leading="compact">
+            {formatProvider(payment.provider_id)}
           </Text>
         </div>
         <div className="flex items-center justify-end">
