@@ -59,55 +59,53 @@ function createError(rowNumber: number, message: string) {
 const VARIANT_PRICE_COLUMN_PREFIX = "variant price "
 
 /**
- * Parses a variant price column name into its currency ISO code and, for
- * region-scoped prices, the region name. This matches the format written by
- * the product export:
+ * Region names are matched loosely. The export lowercases the name and turns
+ * spaces into underscores before building the column, so a region called
+ * "eu_west" comes back as "Variant Price Eu West [EUR]". Comparing names with
+ * case, underscores and repeated spaces folded away lets both sides meet.
+ */
+function normalizeRegionName(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[\s_]+/g, " ")
+    .trim()
+}
+
+/**
+ * Works out the currency and, for region prices, the region name from a
+ * variant price column. Column names are already lowercased by the time they
+ * get here.
  *
- * - Store-wide price: "Variant Price <CURRENCY>" (e.g. "Variant Price EUR")
- * - Region price:     "Variant Price <Region Name> [<CURRENCY>]"
- *                     (e.g. "Variant Price Europe [EUR]")
- *
- * The ISO code is returned lowercased. `region` is the (case-insensitive)
- * region name for region prices, and `undefined` for store-wide prices.
- *
- * Note: column names reaching this function are already lowercased.
+ * The export writes store wide prices as "Variant Price USD" and region prices
+ * as "Variant Price Test Region [USD]". The older "Variant Price [Test Region]
+ * USD" spelling is still accepted so files people already have keep working.
  */
 function parseVariantPriceColumn(columnName: string, rowNumber: number) {
-  // Region prices carry the currency in trailing brackets, with the region
-  // name in between, e.g. "variant price europe [eur]".
-  const trailingBracket = /\[([^\]]+)\]\s*$/.exec(columnName)
-  if (trailingBracket) {
-    const iso = trailingBracket[1].trim()
-    const region = columnName
-      .slice(VARIANT_PRICE_COLUMN_PREFIX.length, trailingBracket.index)
-      .trim()
+  const value = columnName.slice(VARIANT_PRICE_COLUMN_PREFIX.length).trim()
 
-    if (!iso) {
-      throw createError(
-        rowNumber,
-        `Invalid price format used by "${columnName}". Expect the currency ISO code inside the brackets. For example: "Variant Price Europe [EUR]"`
-      )
-    }
+  const exportFormat = /^(.+?)\s*\[([^\]]+)\]$/.exec(value)
+  const olderFormat = /^\[([^\]]+)\]\s*(\S+)$/.exec(value)
 
-    return {
-      iso: iso.toLowerCase(),
-      region: region || undefined,
-    }
+  let region: string | undefined
+  let iso = value
+  if (exportFormat) {
+    region = exportFormat[1]
+    iso = exportFormat[2].trim()
+  } else if (olderFormat) {
+    region = olderFormat[1]
+    iso = olderFormat[2]
   }
 
-  // Store-wide price: the currency ISO code is the remainder of the column name.
-  const iso = columnName.slice(VARIANT_PRICE_COLUMN_PREFIX.length).trim()
-
-  if (!iso) {
+  if (!iso || /[\s\[\]]/.test(iso)) {
     throw createError(
       rowNumber,
-      `Invalid price format used by "${columnName}". Expect the column name to contain the currency ISO code. For example: "Variant Price EUR" or "Variant Price Europe [EUR]"`
+      `Invalid price format used by "${columnName}". Expected "Variant Price <CURRENCY>" for a store wide price or "Variant Price <Region Name> [<CURRENCY>]" for a region price. For example: "Variant Price EUR" or "Variant Price Europe [EUR]"`
     )
   }
 
   return {
     iso: iso.toLowerCase(),
-    region: undefined,
+    region: region ? normalizeRegionName(region) : undefined,
   }
 }
 
@@ -393,6 +391,16 @@ const variantWildcardColumns: {
           )
         }
 
+        // A region only has one currency, so a column that names a different
+        // one is almost certainly a typo or a stale file. Better to say so
+        // than to quietly store the price in the region's currency.
+        if (region.currency_code.toLowerCase() !== iso) {
+          throw createError(
+            rowNumber,
+            `Column "${columnName}" uses the currency "${iso.toUpperCase()}", but the region "${regionName}" uses "${region.currency_code.toUpperCase()}"`
+          )
+        }
+
         output["prices"].push({
           amount: numericValue,
           currency_code: region.currency_code,
@@ -546,7 +554,17 @@ export class CSVNormalizer {
 
   constructor(rows: NormalizedRow[], context: CSVNormalizerContext = {}) {
     this.#rows = rows
-    this.#context = context
+    this.#context = {
+      ...context,
+      regionsByName: context.regionsByName
+        ? new Map(
+            [...context.regionsByName].map(([name, region]) => [
+              normalizeRegionName(name),
+              region,
+            ])
+          )
+        : undefined,
+    }
   }
 
   /**

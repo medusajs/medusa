@@ -532,6 +532,77 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should import region prices in the format the export writes them", async () => {
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
+          eventBus
+        )
+
+        // This file has a "Variant Price Test Region [USD]" column, which is
+        // exactly what the export writes for a price tied to a region.
+        let fileContent = await fs.readFile(
+          path.join(__dirname, "__fixtures__", "prices-with-region.csv"),
+          { encoding: "utf-8" }
+        )
+
+        fileContent = fileContent.replace(/prod_\w*\d*/g, baseProduct.id)
+        fileContent = fileContent.replace(
+          /variant_\w*\d*/g,
+          baseProduct.variants[0].id
+        )
+        fileContent = fileContent.replace(
+          /,123,456,/g,
+          `,${baseTag1.id},${baseTag3.id},`
+        )
+        fileContent = fileContent.replace(
+          /import-shipping-profile*/g,
+          shippingProfile.id
+        )
+
+        const { form, meta } = getUploadReq({
+          name: "test.csv",
+          content: prepareCSVForImport(fileContent),
+        })
+
+        const batchJobRes = await api.post("/admin/products/import", form, meta)
+
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+        expect(batchJobRes.data.summary).toEqual({
+          toCreate: 0,
+          toUpdate: 1,
+        })
+
+        await api.post(
+          `/admin/products/import/${transactionId}/confirm`,
+          {},
+          meta
+        )
+
+        await subscriberExecution
+        const product = (
+          await api.get(
+            `/admin/products/${baseProduct.id}?fields=*variants.prices`,
+            adminHeaders
+          )
+        ).data.product
+
+        expect(product.variants[0].prices).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: 45,
+              rules: { region_id: baseRegion.id },
+            }),
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: 100,
+            }),
+          ])
+        )
+        expect(product.variants[0].prices).toHaveLength(2)
+      })
+
       it("should complain about non-existent fields being present in the CSV", async () => {
         let fileContent = await fs.readFile(
           path.join(__dirname, "__fixtures__", "unrelated-column.csv"),

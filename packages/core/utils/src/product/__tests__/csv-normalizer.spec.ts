@@ -1366,9 +1366,7 @@ describe("CSV processor", () => {
     }
 
     it("carries the option id when the row has a Variant Option N Id column", () => {
-      const result = runRow(
-        baseRow({ "Variant Option 1 Id": "opt_existing" })
-      )
+      const result = runRow(baseRow({ "Variant Option 1 Id": "opt_existing" }))
 
       expect(result.toCreate["p1"].options).toEqual([
         { title: "Color", values: ["Red"], id: "opt_existing" },
@@ -1514,5 +1512,74 @@ describe("CSV processor", () => {
         new CSVNormalizer(rows, { regionsByName }).proccess()
       ).toThrow('Region with name "mars" not found')
     })
+
+    it("still accepts the older Variant Price [Region] CUR spelling", () => {
+      const rows = preProcess([
+        {
+          "Product Handle": "shirt",
+          "Variant Price [Europe] EUR": 10,
+        },
+      ])
+
+      const result = new CSVNormalizer(rows, { regionsByName }).proccess()
+
+      expect(result.toCreate["shirt"].variants[0].prices).toEqual([
+        { amount: 10, currency_code: "eur", rules: { region_id: "reg_eu" } },
+      ])
+    })
+
+    it("matches region names that contain underscores, as the export writes them", () => {
+      const rows = preProcess([
+        {
+          "Product Handle": "shirt",
+          "Variant Price Eu West [EUR]": 12,
+        },
+      ])
+
+      const result = new CSVNormalizer(rows, {
+        regionsByName: new Map([
+          ["eu_west", { id: "reg_eu_west", currency_code: "eur" }],
+        ]),
+      }).proccess()
+
+      expect(result.toCreate["shirt"].variants[0].prices).toEqual([
+        {
+          amount: 12,
+          currency_code: "eur",
+          rules: { region_id: "reg_eu_west" },
+        },
+      ])
+    })
+
+    it("throws when the column currency does not match the region currency", () => {
+      const rows = preProcess([
+        {
+          "Product Handle": "shirt",
+          "Variant Price Europe [USD]": 10,
+        },
+      ])
+
+      expect(() =>
+        new CSVNormalizer(rows, { regionsByName }).proccess()
+      ).toThrow(
+        'Column "variant price europe [usd]" uses the currency "USD", but the region "europe" uses "EUR"'
+      )
+    })
+
+    it.each(["Variant Price [USD]", "Variant Price Test Region USD"])(
+      "throws on a price column it cannot read (%s)",
+      (column) => {
+        const rows = preProcess([
+          {
+            "Product Handle": "shirt",
+            [column]: 10,
+          },
+        ])
+
+        expect(() =>
+          new CSVNormalizer(rows, { regionsByName }).proccess()
+        ).toThrow("Invalid price format")
+      }
+    )
   })
 })
