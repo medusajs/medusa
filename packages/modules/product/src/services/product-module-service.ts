@@ -725,7 +725,7 @@ export default class ProductModuleService
   > {
     let normalizedInput: UpdateProductVariantInput[] = []
     if (isString(idOrSelector)) {
-      normalizedInput = [{ id: idOrSelector, ...data }]
+      normalizedInput = [{ ...data, id: idOrSelector }]
     } else {
       const variants = await this.productVariantService_.list(
         idOrSelector,
@@ -734,8 +734,8 @@ export default class ProductModuleService
       )
 
       normalizedInput = variants.map((variant) => ({
-        id: variant.id,
         ...data,
+        id: variant.id,
       }))
     }
 
@@ -821,6 +821,22 @@ export default class ProductModuleService
       )
       const { optionsByProductId, valueIdsByProductId } =
         await this.loadOptionsAndValuesByProductId_(productIds, sharedContext)
+
+      for (const variant of variantsWithProductId) {
+        const productOptions = optionsByProductId.get(variant.product_id!) ?? []
+        if (
+          variant.options &&
+          !Object.keys(variant.options).length &&
+          productOptions.length
+        ) {
+          const title =
+            variant.title ?? variants.find((v) => v.id === variant.id)?.title
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Product has ${productOptions.length} option values but there were 0 provided option values for the variant: ${title}.`
+          )
+        }
+      }
 
       productVariantsWithOptions = ProductModuleService.assignOptionsToVariants(
         variantsWithProductId,
