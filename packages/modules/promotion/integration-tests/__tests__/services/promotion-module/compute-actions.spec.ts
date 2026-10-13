@@ -7841,6 +7841,77 @@ moduleIntegrationTestRunner({
             expect(JSON.parse(JSON.stringify(result))).toEqual([])
           })
         })
+
+        describe("when eligible lines have different quantities", () => {
+          const expensiveProduct = "prod_expensive"
+          const cheapProduct = "prod_cheap"
+
+          let buyThreeGetOnePromotion
+
+          beforeEach(async () => {
+            const rules = [
+              {
+                attribute: "items.product.id",
+                operator: "in",
+                values: [expensiveProduct, cheapProduct],
+              },
+            ]
+
+            buyThreeGetOnePromotion = await createDefaultPromotion(service, {
+              type: PromotionType.BUYGET,
+              application_method: {
+                type: "percentage",
+                target_type: "items",
+                value: 100,
+                allocation: "each",
+                max_quantity: 1,
+                apply_to_quantity: 1,
+                buy_rules_min_quantity: 3,
+                target_rules: rules,
+                buy_rules: rules,
+              } as any,
+            })
+          })
+
+          const expensiveLine = {
+            id: "item_expensive",
+            quantity: 1,
+            subtotal: 379,
+            original_total: 379,
+            is_discountable: true,
+            product: { id: expensiveProduct },
+          }
+          const cheapLine = {
+            id: "item_cheap",
+            quantity: 3,
+            subtotal: 597,
+            original_total: 597,
+            is_discountable: true,
+            product: { id: cheapProduct },
+          }
+
+          it.each([
+            ["expensive line first", [expensiveLine, cheapLine]],
+            ["cheap line first", [cheapLine, expensiveLine]],
+          ])(
+            "should rank lines by unit price, not subtotal (%s)",
+            async (_, items) => {
+              const result = await service.computeActions(
+                [buyThreeGetOnePromotion.code!],
+                { currency_code: "usd", items }
+              )
+
+              expect(JSON.parse(JSON.stringify(result))).toEqual([
+                {
+                  action: "addItemAdjustment",
+                  item_id: "item_cheap",
+                  amount: 199,
+                  code: "PROMOTION_TEST",
+                },
+              ])
+            }
+          )
+        })
       })
 
       describe("when promotion allocation is once", () => {
