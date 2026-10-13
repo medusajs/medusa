@@ -103,6 +103,10 @@ export interface AdminStore {
    */
   default_location_id: string | null
   /**
+   * The URL of the store's logo.
+   */
+  logo_url: string | null
+  /**
    * Custom key-value pairs that can be added to the store.
    */
   metadata: Record<string, any> | null

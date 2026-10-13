@@ -62,6 +62,10 @@ export interface AdminUpdateStore {
    */
   default_location_id?: string | null
   /**
+   * The URL of the store's logo.
+   */
+  logo_url?: string | null
+  /**
    * Custom key-value pairs to store custom data in the store.
    */
   metadata?: Record<string, any> | null

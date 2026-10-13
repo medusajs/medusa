@@ -80,6 +80,22 @@ moduleIntegrationTestRunner<IStoreModuleService>({
           )
         })
 
+        it("should store the logo url", async function () {
+          const store = await service.createStores({
+            ...createStoreFixture,
+            logo_url: "https://example.com/logo.png",
+          })
+
+          expect(store.logo_url).toEqual("https://example.com/logo.png")
+        })
+
+        it("should default the logo url to null", async function () {
+          const { id } = await service.createStores(createStoreFixture)
+          const store = await service.retrieveStore(id)
+
+          expect(store.logo_url).toBeNull()
+        })
+
         it("should fail to get created if there is no default currency", async function () {
           const err = await service
             .createStores({
@@ -132,6 +148,20 @@ moduleIntegrationTestRunner<IStoreModuleService>({
             name: "Updated store",
           })
           expect(updatedStore.name).toEqual("Updated store")
+        })
+
+        it("should set and clear the logo url", async function () {
+          const createdStore = await service.createStores(createStoreFixture)
+
+          const withLogo = await service.updateStores(createdStore.id, {
+            logo_url: "https://example.com/logo.png",
+          })
+          expect(withLogo.logo_url).toEqual("https://example.com/logo.png")
+
+          const withoutLogo = await service.updateStores(createdStore.id, {
+            logo_url: null,
+          })
+          expect(withoutLogo.logo_url).toBeNull()
         })
 
         it("should fail updating currencies without a default one", async function () {

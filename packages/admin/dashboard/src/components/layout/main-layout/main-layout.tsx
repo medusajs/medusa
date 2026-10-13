@@ -100,6 +100,7 @@ const Header = () => {
   const direction = useDocumentDirection()
   const name = store?.name
   const fallback = store?.name?.slice(0, 1).toUpperCase()
+  const logo = store?.logo_url || undefined
 
   const isLoaded = !isPending && !!store && !!name && !!fallback
 
@@ -120,7 +121,12 @@ const Header = () => {
           )}
         >
           {fallback ? (
-            <Avatar variant="squared" size="xsmall" fallback={fallback} />
+            <Avatar
+              variant="squared"
+              size="xsmall"
+              src={logo}
+              fallback={fallback}
+            />
           ) : (
             <Skeleton className="h-6 w-6 rounded-md" />
           )}
@@ -143,7 +149,12 @@ const Header = () => {
         {isLoaded && (
           <DropdownMenu.Content className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-0">
             <div className="flex items-center gap-x-3 px-2 py-1">
-              <Avatar variant="squared" size="small" fallback={fallback} />
+              <Avatar
+                variant="squared"
+                size="small"
+                src={logo}
+                fallback={fallback}
+              />
               <div className="flex flex-col overflow-hidden">
                 <Text
                   size="small"

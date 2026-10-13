@@ -1,6 +1,6 @@
 import { PencilSquare } from "@medusajs/icons"
 import { AdminStore } from "@medusajs/types"
-import { Badge, Container, Heading, Text } from "@medusajs/ui"
+import { Avatar, Badge, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { Link } from "react-router-dom"
@@ -65,6 +65,23 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
         <Text size="small" leading="compact">
           {store.name}
         </Text>
+      </div>
+      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("store.logo")}
+        </Text>
+        {store.logo_url ? (
+          <Avatar
+            variant="squared"
+            size="small"
+            src={store.logo_url}
+            fallback={store.name.slice(0, 1).toUpperCase()}
+          />
+        ) : (
+          <Text size="small" leading="compact">
+            -
+          </Text>
+        )}
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">

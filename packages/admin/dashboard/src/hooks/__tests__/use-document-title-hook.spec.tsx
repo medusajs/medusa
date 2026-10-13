@@ -118,4 +118,58 @@ describe("useDocumentTitle", () => {
 
     expect(result.current).toBe("Products - Medusa")
   })
+
+  describe("brand", () => {
+    const productsMatch = {
+      id: "products",
+      pathname: "/products",
+      params: {},
+      loaderData: undefined,
+      handle: { breadcrumb: () => "Products" },
+    }
+
+    it("uses the brand as the title suffix", () => {
+      useMatchesMock.mockReturnValue([productsMatch])
+
+      const { result } = renderHook(() => useDocumentTitle("ACME"))
+
+      expect(result.current).toBe("Products - ACME")
+    })
+
+    it("uses the brand alone when no match yields a title", () => {
+      useMatchesMock.mockReturnValue([
+        { id: "root", pathname: "/", params: {}, data: undefined, handle: {} },
+      ])
+
+      const { result } = renderHook(() => useDocumentTitle("ACME"))
+
+      expect(result.current).toBe("ACME")
+    })
+
+    it.each([null, "", "   "])(
+      "falls back to Medusa when the brand is %j",
+      (brand) => {
+        useMatchesMock.mockReturnValue([productsMatch])
+
+        const { result } = renderHook(() => useDocumentTitle(brand))
+
+        expect(result.current).toBe("Products - Medusa")
+      }
+    )
+
+    it("updates the title when the brand changes", () => {
+      useMatchesMock.mockReturnValue([productsMatch])
+
+      const { result, rerender } = renderHook(
+        ({ brand }: { brand?: string }) => useDocumentTitle(brand),
+        { initialProps: { brand: undefined as string | undefined } }
+      )
+
+      expect(result.current).toBe("Products - Medusa")
+
+      rerender({ brand: "ACME" })
+
+      expect(result.current).toBe("Products - ACME")
+    })
+  })
 })

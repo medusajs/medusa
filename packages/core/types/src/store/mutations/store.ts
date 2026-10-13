@@ -51,6 +51,11 @@ export interface CreateStoreDTO {
   default_location_id?: string
 
   /**
+   * The URL of the store's logo.
+   */
+  logo_url?: string
+
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, any>
@@ -99,6 +104,11 @@ export interface UpdateStoreDTO {
    * The associated default location's ID.
    */
   default_location_id?: string | null
+
+  /**
+   * The URL of the store's logo.
+   */
+  logo_url?: string | null
 
   /**
    * Holds custom data in key-value pairs.

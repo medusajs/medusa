@@ -16,6 +16,7 @@ export const defaultAdminStoreFields = [
   "default_sales_channel_id",
   "default_region_id",
   "default_location_id",
+  "logo_url",
   "metadata",
   "created_at",
   "updated_at",
