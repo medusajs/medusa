@@ -812,7 +812,7 @@ describe("Workflow composer", function () {
     it("should compose a new workflow with conditional steps", async () => {
       const stepResults: string[] = []
 
-      let hookCalled = jest.fn()
+      const hookCalled = jest.fn()
       let timesExecuted = 0
       const mockStep1Fn = jest.fn().mockImplementation(async () => {
         timesExecuted += 1
@@ -1187,14 +1187,17 @@ describe("Workflow composer", function () {
       const step1 = createStep("step1", mockStep1Fn)
       const step2 = createStep("step2", mockStep2Fn)
 
-      const workflow = createWorkflow("workflow1", function (input) {
-        const obj = transform({ input }, ({ input }) => ({
-          key: input.value,
-          other: "x",
-        }))
-        step1({ a: obj.key, b: obj.other })
-        step2({ nested: obj, list: [obj] })
-      })
+      const workflow = createWorkflow(
+        "workflow1",
+        function (input: { value: string }) {
+          const obj = transform({ input }, ({ input }) => ({
+            key: input.value,
+            other: "x",
+          }))
+          step1({ a: obj.key, b: obj.other })
+          step2({ nested: obj, list: [obj] })
+        }
+      )
 
       await workflow().run({
         input: { value: "hello" },
@@ -1204,6 +1207,34 @@ describe("Workflow composer", function () {
       expect(mockStep2Fn.mock.calls[0][0]).toEqual({
         nested: { key: "hello", other: "x" },
         list: [{ key: "hello", other: "x" }],
+      })
+    })
+
+    it("should resolve step results nested in a transform result when passed to a step", async () => {
+      const mockStep1Fn = jest.fn().mockImplementation(() => ({ id: "s1" }))
+      const mockStep2Fn = jest.fn().mockImplementation((input) => input)
+
+      const step1 = createStep("step1", mockStep1Fn)
+      const step2 = createStep("step2", mockStep2Fn)
+
+      const workflow = createWorkflow(
+        "workflow1",
+        function (input: { value: string }) {
+          const step1Result = step1(input)
+          const obj = transform({ input }, ({ input }) => ({
+            key: input.value,
+            step1: step1Result,
+          }))
+          step2({ data: obj })
+        }
+      )
+
+      await workflow().run({
+        input: { value: "hello" },
+      })
+
+      expect(mockStep2Fn.mock.calls[0][0]).toEqual({
+        data: { key: "hello", step1: { id: "s1" } },
       })
     })
 
