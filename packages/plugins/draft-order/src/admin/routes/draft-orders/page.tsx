@@ -185,10 +185,15 @@ const useFilters = (): DataTableFilter[] => {
         id: "customer_id",
         label: "Customer",
         options:
-          customers?.map((customer) => ({
-            label: customer.email,
-            value: customer.id,
-          })) ?? [],
+          customers
+            ?.filter(
+              (customer): customer is HttpTypes.AdminCustomer =>
+                customer !== null
+            )
+            .map((customer) => ({
+              label: customer.email,
+              value: customer.id,
+            })) ?? [],
         type: "select",
       },
       {

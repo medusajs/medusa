@@ -229,6 +229,33 @@ Organization owners can rotate the password for the write connection string from
 
 Medusa generates a new write connection string. Update any tools or scripts that use the old connection string after rotating.
 
+### Restrict Database Access by IP Address
+
+The **IP Allowlist** section of an environment's database settings lets you control which IP addresses can connect to the environment's database. You can restrict public access to the database entirely, or allow access only from specific IP addresses.
+
+To restrict public access to an environment's database:
+
+<Note title="Tip">
+
+You can access the database settings from the [command palette](../command-palette/page.mdx). Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>, then select **Storage**.
+
+</Note>
+
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment you want to configure.
+3. In the project's dashboard, click on the name of the environment. For example, "Production".
+4. Click **Database** in the sidebar under the environment's section.
+5. In the **Public Access** section, toggle the **Restrict public access** switch.
+
+Medusa saves the change as soon as you toggle the switch.
+
+To allow access to the database from specific IP addresses:
+
+1. In the **Public Access** section, enter the IP addresses in the text area, with one IP address per line.
+2. Click **Save**.
+
+After saving, you can connect to the database using the [read-only](#get-read-only-connection-string) or [write](#get-write-connection-string) connection string from the allowed IP addresses.
+
 ---
 
 ## Import/Export Cloud Database Dumps

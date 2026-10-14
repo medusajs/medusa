@@ -35,6 +35,13 @@ export type SearchModuleOptions = Partial<ModuleServiceInitializeOptions> & {
     endpoint: string
     /** Not needed when the endpoint carries basic auth credentials. */
     environment_handle?: string
+    /**
+     * @ignore
+     *
+     * Replaces the HTTP transport. It receives the requests that would go to
+     * the Cloud search proxy and must answer as the proxy would.
+     */
+    fetch?: typeof fetch
   }
 
   // For definitions that name no provider. Defaults to the only registered one,

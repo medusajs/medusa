@@ -523,4 +523,91 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
 
     return allowedValueIdsByProduct
   }
+
+  /**
+   * Returns every non-deleted variant of the given products together with the
+   * option values it is built on, keyed by product id then variant id.
+   */
+  async getVariantOptionValuesByProductIds(
+    productIds: string[],
+    context: Context = {}
+  ): Promise<
+    Map<string, Map<string, { title: string | null; valueIds: Set<string> }>>
+  > {
+    const variantsByProduct = new Map<
+      string,
+      Map<string, { title: string | null; valueIds: Set<string> }>
+    >()
+
+    if (!productIds.length) {
+      return variantsByProduct
+    }
+
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    // Use the transaction-bound knex so we see pivot rows written earlier in
+    // the same transaction.
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
+
+    // Left join so a variant with no options at all still shows up — it takes
+    // part in the option-combination uniqueness check like any other.
+    const rows: Array<{
+      variant_id: string
+      title: string | null
+      product_id: string
+      option_value_id: string | null
+    }> = await knex
+      .select(
+        "pv.id as variant_id",
+        "pv.title",
+        "pv.product_id",
+        "pvo.option_value_id"
+      )
+      .from("product_variant as pv")
+      .leftJoin("product_variant_option as pvo", "pvo.variant_id", "pv.id")
+      .whereIn("pv.product_id", productIds)
+      .whereNull("pv.deleted_at")
+
+    for (const row of rows) {
+      if (!variantsByProduct.has(row.product_id)) {
+        variantsByProduct.set(row.product_id, new Map())
+      }
+
+      const productVariants = variantsByProduct.get(row.product_id)!
+
+      if (!productVariants.has(row.variant_id)) {
+        productVariants.set(row.variant_id, {
+          title: row.title,
+          valueIds: new Set(),
+        })
+      }
+
+      if (row.option_value_id) {
+        productVariants.get(row.variant_id)!.valueIds.add(row.option_value_id)
+      }
+    }
+
+    return variantsByProduct
+  }
+
+  /**
+   * Drops the given option values off the given variants. product_variant_option
+   * is a plain pivot with no deleted_at, so the rows are deleted outright.
+   */
+  async detachOptionValuesFromVariants(
+    variantIds: string[],
+    optionValueIds: string[],
+    context: Context = {}
+  ): Promise<void> {
+    if (!variantIds.length || !optionValueIds.length) {
+      return
+    }
+
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const knex = manager.getTransactionContext() ?? manager.getKnex()
+
+    await knex("product_variant_option")
+      .whereIn("variant_id", variantIds)
+      .whereIn("option_value_id", optionValueIds)
+      .delete()
+  }
 }

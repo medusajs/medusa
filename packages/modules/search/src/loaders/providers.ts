@@ -31,7 +31,7 @@ export default async ({
   container,
   options,
 }: LoaderOptions<SearchModuleOptions>): Promise<void> => {
-  const { api_key, endpoint, environment_handle } = options?.cloud ?? {}
+  const { api_key, endpoint, environment_handle, fetch } = options?.cloud ?? {}
 
   // Register Medusa Cloud search when cloud options are present, same pattern
   // as payment's Medusa Payments and notification's cloud email. The key and
@@ -42,6 +42,7 @@ export default async ({
         api_key,
         endpoint,
         environment_handle,
+        fetch,
       },
       id: "default",
     })

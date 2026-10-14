@@ -2,12 +2,15 @@ import {
   CreatePriceListPricesWorkflowDTO,
   PricingTypes,
 } from "@medusajs/framework/types"
+import { PriceListWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   parallelize,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { createPriceListPricesStep } from "../steps/create-price-list-prices"
 import { validatePriceListsStep } from "../steps/validate-price-lists"
 import { validateVariantPriceLinksStep } from "../steps/validate-variant-price-links"
@@ -66,11 +69,33 @@ export const createPriceListPricesWorkflow = createWorkflow(
       validateVariantPriceLinksStep(input.data)
     )
 
-    return new WorkflowResponse(
-      createPriceListPricesStep({
-        data: input.data,
-        variant_price_map: variantPriceMap,
-      })
+    const prices = createPriceListPricesStep({
+      data: input.data,
+      variant_price_map: variantPriceMap,
+    })
+
+    const eventData = transform(
+      { input, variantPriceMap },
+      ({ input, variantPriceMap = {} }) =>
+        input.data
+          .filter((priceList) => priceList.prices?.length)
+          .map((priceList) => ({
+            id: priceList.id,
+            price_set_ids: [
+              ...new Set(
+                priceList.prices.map(
+                  (price) => variantPriceMap[price.variant_id]
+                )
+              ),
+            ],
+          }))
     )
+
+    emitEventStep({
+      eventName: PriceListWorkflowEvents.PRICES_ADDED,
+      data: eventData,
+    })
+
+    return new WorkflowResponse(prices)
   }
 )

@@ -117,6 +117,7 @@ export const addDraftOrderItemsWorkflow = createWorkflow(
             compare_at_unit_price:
               item.compare_at_unit_price ??
               lineItems[index].compare_at_unit_price,
+            allow_backorder: item.allow_backorder,
             metadata: item.metadata,
           },
         }))

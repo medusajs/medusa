@@ -1,4 +1,5 @@
 import {
+  ChangeActionType,
   EventPriority,
   Modules,
   OrderStatus,
@@ -149,26 +150,48 @@ export const convertDraftOrderWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "order-items-query" })
 
-    const { variants, items } = transform({ orderItems }, ({ orderItems }) => {
-      const items: ConfirmVariantInventoryWorkflowInputDTO["items"] = []
-      const variants: ConfirmVariantInventoryWorkflowInputDTO["variants"] = []
+    const orderChanges = useRemoteQueryStep({
+      entry_point: "order_change",
+      fields: ["id", "actions.action", "actions.details"],
+      variables: { filters: { order_id: input.id } },
+    }).config({ name: "order-changes-query" })
 
-      for (const orderItem of orderItems.items ?? []) {
-        items.push({
-          variant_id: orderItem.variant?.id,
-          quantity: orderItem.quantity,
-          id: orderItem.id,
-        })
-        if (orderItem.variant) {
-          variants.push(orderItem.variant)
+    const { variants, items } = transform(
+      { orderItems, orderChanges },
+      ({ orderItems, orderChanges }) => {
+        const items: ConfirmVariantInventoryWorkflowInputDTO["items"] = []
+        const variants: ConfirmVariantInventoryWorkflowInputDTO["variants"] =
+          []
+
+        const backorderItemIds = new Set(
+          (orderChanges ?? [])
+            .flatMap((change) => change.actions ?? [])
+            .filter(
+              (a) =>
+                a.action === ChangeActionType.ITEM_ADD &&
+                a.details?.allow_backorder
+            )
+            .map((a) => a.details?.reference_id)
+        )
+
+        for (const orderItem of orderItems.items ?? []) {
+          items.push({
+            variant_id: orderItem.variant?.id,
+            quantity: orderItem.quantity,
+            id: orderItem.id,
+            allow_backorder: backorderItemIds.has(orderItem.id),
+          })
+          if (orderItem.variant) {
+            variants.push(orderItem.variant)
+          }
+        }
+
+        return {
+          variants,
+          items,
         }
       }
-
-      return {
-        variants,
-        items,
-      }
-    })
+    )
 
     const formatedInventoryItems = transform(
       {

@@ -41,6 +41,7 @@ You can also start the project creation flow from the [command palette](../comma
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the **Create Project** button in your organization's dashboard.
+    - If your organization has no projects yet, the projects list instead shows a **Browse starters** card to [create a project from a starter](#1-create-project-from-a-starter), and an **Import repository** card to [create a project from an existing application](#2-create-project-from-an-existing-application).
 
 In the project-creation page, you can either [create from a starter](#1-create-project-from-a-starter) or [create from an existing application](#2-create-project-from-an-existing-application).
 
@@ -50,24 +51,27 @@ In the project-creation page, you can either [create from a starter](#1-create-p
 
 Medusa provides you with starter templates that you can use to quickly set up your ecommerce application. All templates include a storefront, backend, and admin dashboard. These templates include:
 
-- **DTC Starter**: Standard Medusa application with fully-fledged commerce features.
-- **B2B Starter**: Medusa application with powerful B2B and commerce features.
-- **Configurable product starter**: Medusa application with the configurable product feature. For example, customers can configure their product's attributes, and the price changes accordingly.
-- **Grounded starter**: Medusa application with a storefront having a modern design, ideal for designers, artists, and brands with a focus on aesthetics.
+- **Modern DTC Starter**: Medusa application for direct-to-consumer brands with a TanStack Start storefront.
 - **Industrials B2B starter**: B2B Medusa application with features and a storefront tailored for industrial businesses, such as machinery, equipment, and supplies.
-- **Quiz-to-product starter:** Medusa application with a storefront that includes a quiz to help customers find the right product based on their preferences and needs.
-- **Essentials starter:** Medusa application with storefront suitable for fashion brands.
-- **Uncut Coffee starter:** Medusa application with a storefront that has bold visuals and immersive storytelling. Ideal for modern DTC brands.
+- **Blank DTC Starter**: Standard Medusa application with fully-fledged commerce features and a Next.js storefront.
+- **Minimal B2B Starter**: Medusa application with B2B and commerce features and a Next.js storefront.
 
 ### Browse and Select Templates
 
+Each starter template shows a **DTC** or **B2B** badge indicating its category.
+
 To create a project from a starter template:
 
-1. Click on the **Browse Starters** button at the top right of the [project creation page](#create-a-project).
-  - For each template, you can click on it to view more details, such as its features and the tech stack used in the storefront.
-2. Click the **Clone** button of the starter you want to use.
-3. If GitHub is not connected, you'll be directed to the [new project form](#2-create-project-from-an-existing-application) to set up the repository connection.
-4. If GitHub is already connected:
+1. Open the starter templates page in one of the following ways:
+  - Click on the **Browse Starters** button at the top right of the [project creation page](#create-a-project).
+  - If your organization has no projects yet, click on the **Browse starters** card in the projects list.
+2. Find the starter you want to use:
+  - To show only starters of a specific category, click the **DTC** or **B2B** filter button. Click **All** to show all starters again.
+  - To view more details about a starter, such as its features and the tech stack used in the storefront, click its **Preview** button.
+  - If you prefer to connect your own GitHub repository instead, click the **Import repository** button in the banner at the top of the page. This takes you to the [new project form](#2-create-project-from-an-existing-application).
+3. Click the **Deploy** button of the starter you want to use. While Medusa deploys the starter, the button shows the current phase, such as "Creating repository".
+4. If GitHub is not connected, you'll be directed to the [new project form](#2-create-project-from-an-existing-application) to set up the repository connection.
+5. If GitHub is already connected:
    - Choose a GitHub organization or account to clone the starter into in the "GitHub account" field.
    - In the "Repository name" field, enter a name for your new repository.
    - Once you're done, click the **Clone** button.
@@ -105,15 +109,12 @@ After selecting the repository, you'll move on to the project configuration step
 3. In the **Build details** section, set the following:
     - **Project root directory**: If your project is in a monorepo, specify the path to the Medusa project in the repository. Otherwise, leave it empty.
     - **Storefront root directory**: If you're deploying a storefront along with your Medusa application, specify the path to the storefront project in the repository. Otherwise, leave it empty.
-4. You can expand the "Initial user" section to optionally set up the credentials of the initial admin user for the Medusa Admin:
-    - **Email**: The email of the initial admin user.
-    - **Password**: The password of the initial admin user.
-5. You can expand the "Environment variables" section to optionally add environment variables for both backend and storefront:
+4. You can expand the "Environment variables" section to optionally add environment variables for both backend and storefront:
     - Enter the key and value for each environment variable you want to add.
     - Mark the variable as "Sensitive" to hide its value in the UI.
     - To add more variables, click the "Add another" button.
     - You can also add and change environment variables later in the project's environment settings.
-6. Once you're done configuring the project, click the "Create" button.
+5. Once you're done configuring the project, click the "Create" button.
 
 After creating the project, it will take a few minutes to create the necessary resources for it and deploy it. Once the deployment is complete, you'll be able to access the project from your organization's dashboard.
 

@@ -309,7 +309,6 @@ jobs:
             // The version is a projection from the pending changesets, not a
             // promise: more changesets can land before the release cuts.
             version_is_tentative: true,
-            version_label: `${version} (tentative)`,
           }
 
           out("should_notify", "true")

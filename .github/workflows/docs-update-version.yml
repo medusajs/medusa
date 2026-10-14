@@ -17,9 +17,14 @@ jobs:
   update-docs-version:
     if: github.event_name != 'workflow_dispatch' || inputs.update_docs_version
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
         with:
@@ -51,11 +56,14 @@ jobs:
 
       - name: Update Docs Version
         run: yarn update:config-version
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         working-directory: www/utils/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
+          token: ${{ steps.app-token.outputs.token }}
           commit-message: "chore(docs): Update version in documentation (automated)"
           base: "develop"
           title: "chore(docs): Update version in documentation (automated)"

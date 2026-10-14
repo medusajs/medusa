@@ -39,7 +39,7 @@ export function load(app: Application) {
   })
 
   app.options.addDeclaration({
-    help: "[Markdown Plugin] Specify module names where property reflections are outputted into seperate files.",
+    help: "[Markdown Plugin] Specify module names where property reflections are outputted into separate files.",
     name: "allPropertyReflectionsHaveOwnDocument",
     type: ParameterType.Array,
     defaultValue: [],
