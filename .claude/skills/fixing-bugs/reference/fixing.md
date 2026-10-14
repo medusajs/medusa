@@ -24,6 +24,7 @@ fix(<package-short-name>): <what was fixed, user-facing wording>
 - Always `patch` for bug fixes. Never `major`. `minor` only for breaking changes (which this skill should not ship).
 - Package name comes from the changed package's `package.json` `name`.
 - Test-only changes don't need a changeset.
+- Keep the description to one short line (under 80 characters), like a commit subject.
 
 ## Generated files
 
