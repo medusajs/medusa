@@ -378,7 +378,7 @@ jobs:
   # when no PR is needed, so the ticket shows why.
   comment:
     needs: analyze
-    if: contains(fromJSON('["already-fixed", "not-reproducible", "needs-info"]'), needs.analyze.outputs.status)
+    if: contains(fromJSON('["already-fixed", "not-a-bug", "not-reproducible", "needs-info"]'), needs.analyze.outputs.status)
     runs-on: ubuntu-latest
     permissions: {}
     steps:
@@ -404,6 +404,7 @@ jobs:
 
           case "$STATUS" in
             already-fixed) HEADING="Already fixed" ;;
+            not-a-bug) HEADING="Not a bug" ;;
             not-reproducible) HEADING="Could not reproduce" ;;
             needs-info) HEADING="More information needed" ;;
           esac
