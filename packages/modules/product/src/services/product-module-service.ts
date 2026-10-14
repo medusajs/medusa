@@ -758,7 +758,7 @@ export default class ProductModuleService
     // needed in that case. When no variant carries `options`, all of that work is
     // dead weight — and on a product with a large number of variants it is very
     // expensive (see below), so we skip it.
-    const hasOptions = data.some((d) => !!d.options)
+    const hasOptions = data.some((d) => isPresent(d.options))
 
     // Validation step
     const variantIdsToUpdate = data.map(({ id }) => id)
@@ -781,10 +781,13 @@ export default class ProductModuleService
     // Data normalization
     const variantsWithProductId: UpdateProductVariantInput[] = variants.map(
       (variant) => {
-        const update = data.find(({ id }) => id === variant.id)!
+        const { options, ...update } = data.find(
+          ({ id }) => id === variant.id
+        )!
 
         return {
           ...update,
+          ...(isPresent(options) ? { options } : {}),
           id: variant.id,
           product_id: variant.product_id,
           ...(isPresent(update.metadata)
@@ -821,22 +824,6 @@ export default class ProductModuleService
       )
       const { optionsByProductId, valueIdsByProductId } =
         await this.loadOptionsAndValuesByProductId_(productIds, sharedContext)
-
-      for (const variant of variantsWithProductId) {
-        const productOptions = optionsByProductId.get(variant.product_id!) ?? []
-        if (
-          variant.options &&
-          !Object.keys(variant.options).length &&
-          productOptions.length
-        ) {
-          const title =
-            variant.title ?? variants.find((v) => v.id === variant.id)?.title
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Product has ${productOptions.length} option values but there were 0 provided option values for the variant: ${title}.`
-          )
-        }
-      }
 
       productVariantsWithOptions = ProductModuleService.assignOptionsToVariants(
         variantsWithProductId,

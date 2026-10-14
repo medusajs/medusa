@@ -516,16 +516,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
-        it("should throw when updating the options of a variant with an empty options map", async () => {
-          const error = await service
-            .updateProductVariants(
-              { id: variantOne.id, product_id: productOne.id },
-              { options: {} }
-            )
-            .catch((e) => e)
-
-          expect(error.message).toEqual(
-            "Product has 2 option values but there were 0 provided option values for the variant: variant 1."
+        it("should keep the options of a variant when updating with an empty options map", async () => {
+          await service.updateProductVariants(
+            { id: variantOne.id, product_id: productOne.id },
+            { title: "updated variant", options: {} }
           )
 
           const productVariant = await service.retrieveProductVariant(
@@ -533,6 +527,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             { relations: ["options"] }
           )
 
+          expect(productVariant.title).toEqual("updated variant")
           expect(productVariant.options).toHaveLength(2)
         })
 
