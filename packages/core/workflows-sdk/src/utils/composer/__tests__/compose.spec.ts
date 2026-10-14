@@ -1180,6 +1180,33 @@ describe("Workflow composer", function () {
       expect(mockStep3Fn.mock.calls[0][0]).toEqual({ variant: "variant_2" })
     })
 
+    it("should resolve a transform result that has a key property when passed to a step", async () => {
+      const mockStep1Fn = jest.fn().mockImplementation((input) => input)
+      const mockStep2Fn = jest.fn().mockImplementation((input) => input)
+
+      const step1 = createStep("step1", mockStep1Fn)
+      const step2 = createStep("step2", mockStep2Fn)
+
+      const workflow = createWorkflow("workflow1", function (input) {
+        const obj = transform({ input }, ({ input }) => ({
+          key: input.value,
+          other: "x",
+        }))
+        step1({ a: obj.key, b: obj.other })
+        step2({ nested: obj, list: [obj] })
+      })
+
+      await workflow().run({
+        input: { value: "hello" },
+      })
+
+      expect(mockStep1Fn.mock.calls[0][0]).toEqual({ a: "hello", b: "x" })
+      expect(mockStep2Fn.mock.calls[0][0]).toEqual({
+        nested: { key: "hello", other: "x" },
+        list: [{ key: "hello", other: "x" }],
+      })
+    })
+
     it("should throw error when multiple handlers are defined for a single hook", async () => {
       const mockStep1Fn = jest.fn().mockImplementation(({ input }) => {
         return { id: input, product: "product_1", variant: "variant_2" }
