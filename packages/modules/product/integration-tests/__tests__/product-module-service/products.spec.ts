@@ -930,6 +930,24 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
+        it("should keep the options of variants updated with an empty options map", async () => {
+          await service.updateProducts(productTwo.id, {
+            variants: productTwo.variants.map((variant) => ({
+              id: variant.id,
+              options: {},
+            })),
+          })
+
+          const fetchedProduct = await service.retrieveProduct(productTwo.id, {
+            relations: ["variants", "variants.options"],
+          })
+
+          expect(fetchedProduct.variants).toHaveLength(2)
+          fetchedProduct.variants.forEach((variant) => {
+            expect(variant.options).toHaveLength(2)
+          })
+        })
+
         it("should create a variant with id that was passed if it does not exist", async () => {
           const updateData = {
             id: productTwo.id,
