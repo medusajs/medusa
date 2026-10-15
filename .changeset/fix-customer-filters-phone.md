@@ -3,4 +3,4 @@
 "@medusajs/types": patch
 ---
 
-fix: allow filtering admin customers by `phone` (add `phone` to BaseCustomerFilters and the admin customers list validator)
+fix(medusa, types): allow filtering admin customers by `phone` (add `phone` to BaseCustomerFilters and the admin customers list validator)
