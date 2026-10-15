@@ -171,7 +171,7 @@ const nextConfig = {
         },
         {
           source:
-            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content|robots\\.txt|\\.well-known)[^/]+)/:rest*",
           has: [
             {
               type: "header",
@@ -344,11 +344,32 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/:path((?!_next/).*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, must-revalidate",
+          },
+        ],
+      },
+      {
         source: "/",
         headers: [
           {
             key: "Cache-Control",
             value: "public, max-age=3600, must-revalidate",
+          },
+          {
+            key: "Link",
+            value: [
+              `</.well-known/api-catalog>; rel="api-catalog"`,
+              `</api/store>; rel="service-doc"`,
+              `</api/admin>; rel="service-doc"`,
+              `</api/download/store>; rel="service-desc"; type="application/yaml"`,
+              `</api/download/admin>; rel="service-desc"; type="application/yaml"`,
+              `</index.html.md>; rel="alternate"; type="text/markdown"`,
+              `</llms.txt>; rel="describedby"; type="text/plain"`,
+            ].join(", "),
           },
         ],
       },

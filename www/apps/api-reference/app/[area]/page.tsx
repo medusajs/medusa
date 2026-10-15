@@ -52,7 +52,7 @@ export async function generateMetadata({
       : "Medusa Store API Reference"
 
   return {
-    title,
+    title: { absolute: title },
     description: `REST API reference for the Medusa v2 ${area} API, with code snippets and examples.`,
     metadataBase: apiRefMetadataBase,
   }
