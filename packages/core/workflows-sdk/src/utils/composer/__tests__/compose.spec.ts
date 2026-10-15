@@ -1,12 +1,16 @@
 import {
+  DistributedTransaction,
   IDistributedSchedulerStorage,
   SchedulerOptions,
+  TransactionCheckpoint,
+  TransactionState,
   WorkflowManager,
   WorkflowScheduler,
 } from "@medusajs/orchestration"
 import { IEventBusModuleService } from "@medusajs/types"
 import {
   composeMessage,
+  ContainerRegistrationKeys,
   createMedusaContainer,
   Modules,
   promiseAll,
@@ -2741,6 +2745,80 @@ describe("Workflow composer", function () {
     expect(eventBusMock.releaseGroupedEvents.mock.calls[0][0]).toEqual(
       "event-group-id"
     )
+  })
+
+  it("should not compensate a completed workflow when releasing grouped events fails", async () => {
+    const container = createMedusaContainer()
+    container.register({
+      [ContainerRegistrationKeys.LOGGER]: asValue({
+        error: jest.fn(),
+        warn: jest.fn(),
+      }),
+      [Modules.EVENT_BUS]: asValue({
+        releaseGroupedEvents: jest
+          .fn()
+          .mockImplementation(() =>
+            Promise.reject(new Error("execution timed out"))
+          ),
+        clearGroupedEvents: jest
+          .fn()
+          .mockImplementation(() => Promise.resolve()),
+        emit: jest.fn(),
+      }),
+    })
+
+    const mockStep1Fn = jest.fn().mockImplementation(() => {
+      return new StepResponse("step1 result", "step1 compensate")
+    })
+    const mockStep1CompensateFn = jest.fn()
+
+    const step1 = createStep("step1", mockStep1Fn, mockStep1CompensateFn)
+
+    const workflow = createWorkflow(
+      { name: "workflow1", store: true },
+      function (input) {
+        return new WorkflowResponse(step1(input))
+      }
+    )
+
+    const onFinish = jest.fn()
+
+    const originalStorage = DistributedTransaction["keyValueStore"]
+    const retained = new Map<string, TransactionCheckpoint>()
+
+    DistributedTransaction.setStorage(
+      Object.assign(Object.create(originalStorage), {
+        get: async (key: string) => retained.get(key),
+        save: async (key: string, data: TransactionCheckpoint) => {
+          retained.set(key, data)
+          return data
+        },
+      })
+    )
+
+    const { transaction } = await workflow(container)
+      .run({
+        context: {
+          eventGroupId: "event-group-id",
+        },
+        events: { onFinish },
+      })
+      .then(async (res) => {
+        await setTimeout(50)
+        return res
+      })
+      .finally(() => {
+        DistributedTransaction.setStorage(originalStorage)
+      })
+
+    const eventBusMock = container.resolve<IEventBusModuleService>(
+      Modules.EVENT_BUS
+    )
+
+    expect(eventBusMock.releaseGroupedEvents).toHaveBeenCalledTimes(1)
+    expect(transaction.getState()).toEqual(TransactionState.DONE)
+    expect(mockStep1CompensateFn).toHaveBeenCalledTimes(0)
+    expect(onFinish).toHaveBeenCalledTimes(1)
   })
 
   it("should clear grouped events on fail state", async () => {
