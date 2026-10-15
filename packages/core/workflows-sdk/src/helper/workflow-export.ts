@@ -648,17 +648,14 @@ function attachOnFinishReleaseEvents(
 
     await eventBusService
       .releaseGroupedEvents(flowEventGroupId)
-      .then(async () => {
-        await onFinish?.(args)
-      })
       .catch((e) => {
         logger.error(
           `Failed to release grouped events for eventGroupId: ${flowEventGroupId}`,
           e
         )
-
-        return flow.cancel(transaction)
       })
+
+    await onFinish?.(args)
   }
 
   events.onFinish = wrappedOnFinish
