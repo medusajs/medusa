@@ -73,15 +73,15 @@ const Logout = () => {
   const { mutateAsync: logoutMutation } = useLogout()
 
   const handleLogout = async () => {
-    await logoutMutation(undefined, {
-      onSuccess: () => {
-        /**
-         * When the user logs out, we want to clear the query cache
-         */
-        queryClient.clear()
-        navigate("/login")
-      },
-    })
+    try {
+      await logoutMutation()
+    } catch {
+      // noop
+    } finally {
+      document.body.style.pointerEvents = ""
+      queryClient.clear()
+      navigate("/login")
+    }
   }
 
   return (

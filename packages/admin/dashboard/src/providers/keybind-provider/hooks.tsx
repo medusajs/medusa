@@ -105,12 +105,15 @@ export const useGlobalShortcuts = () => {
   const { mutateAsync } = useLogout()
 
   const handleLogout = async () => {
-    await mutateAsync(undefined, {
-      onSuccess: () => {
-        queryClient.clear()
-        navigate("/login")
-      },
-    })
+    try {
+      await mutateAsync()
+    } catch {
+      // noop
+    } finally {
+      document.body.style.pointerEvents = ""
+      queryClient.clear()
+      navigate("/login")
+    }
   }
 
   const globalShortcuts: Shortcut[] = [
