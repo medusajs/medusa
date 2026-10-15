@@ -15,6 +15,7 @@ import {
   moduleIntegrationTestRunner,
 } from "@medusajs/test-utils"
 import { NotificationModuleService } from "@services"
+import { NotificationProviderServiceFixtures } from "../../__fixtures__/providers/default-provider"
 import { resolve } from "path"
 
 let moduleOptions = {
@@ -258,6 +259,76 @@ moduleIntegrationTestRunner<INotificationModuleService>({
           to: "admin@medusa.com",
         })
         expect(duplicateResult).toBe(undefined)
+      })
+
+      it("should land every row in a mixed batch when a failed idempotency key is retried", async () => {
+        const retryKey = "mixed-batch-retry-key"
+        const freshKey = "mixed-batch-fresh-key"
+
+        await expect(
+          service.createNotifications({
+            to: "fail",
+            template: "some-template",
+            channel: "email",
+            data: {},
+            idempotency_key: retryKey,
+          })
+        ).rejects.toThrow("Failed to send notification")
+
+        const [failedNotification] = await service.listNotifications({
+          idempotency_key: retryKey,
+        })
+        expect(failedNotification.status).toEqual(NotificationStatus.FAILURE)
+
+        const sendSpy = jest.spyOn(
+          NotificationProviderServiceFixtures.prototype,
+          "send"
+        )
+        sendSpy.mockClear()
+
+        await service.createNotifications([
+          {
+            to: "admin@medusa.com",
+            template: "some-template",
+            channel: "email",
+            data: {},
+            idempotency_key: retryKey,
+          },
+          {
+            to: "admin@medusa.com",
+            template: "some-template",
+            channel: "email",
+            data: {},
+            idempotency_key: freshKey,
+          },
+        ])
+
+        const retriedRow = await service.retrieveNotification(
+          failedNotification.id
+        )
+        expect(retriedRow).toEqual(
+          expect.objectContaining({
+            id: failedNotification.id,
+            status: NotificationStatus.SUCCESS,
+            external_id: "external_id",
+          })
+        )
+
+        const freshRows = await service.listNotifications({
+          idempotency_key: freshKey,
+        })
+        expect(freshRows).toHaveLength(1)
+        expect(freshRows[0]).toEqual(
+          expect.objectContaining({
+            status: NotificationStatus.SUCCESS,
+            external_id: "external_id",
+          })
+        )
+
+        // one delivery attempt per row: the retry must not re-send the original row
+        expect(sendSpy).toHaveBeenCalledTimes(2)
+
+        sendSpy.mockRestore()
       })
 
       it("should manage the status of multiple notification properly in any scenarios", async () => {
