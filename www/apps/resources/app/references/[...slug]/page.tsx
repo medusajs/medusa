@@ -1,4 +1,5 @@
 import { cache } from "react"
+import { notFound } from "next/navigation"
 import { ReferenceJSON } from "../../../components/ReferenceJSON"
 import { Metadata } from "next"
 import { workerCompatibleFetch } from "docs-utils"
@@ -13,6 +14,10 @@ type PageProps = {
 export default async function ReferencesPage(props: PageProps) {
   const params = await props.params
   const { slug } = params
+
+  if (!(await findReferenceFile(slug))) {
+    notFound()
+  }
 
   return <ReferenceJSON slug={slug} />
 }
@@ -41,13 +46,17 @@ export async function generateMetadata({
   return metadata
 }
 
+const findReferenceFile = cache(async (slug: string[]) => {
+  const pathname = `/references/${slug.join("/")}`
+  const filesMap = (await import("@/generated/files-map.mjs")).filesMap
+  return filesMap.find((f) => f.pathname === pathname)
+})
+
 const loadReferencesFile = cache(
   async (slug: string[]): Promise<string | undefined> => {
     const monoRepoPath = path.resolve("..", "..", "..")
 
-    const pathname = `/references/${slug.join("/")}`
-    const filesMap = (await import("@/generated/files-map.mjs")).filesMap
-    const fileDetails = filesMap.find((f) => f.pathname === pathname)
+    const fileDetails = await findReferenceFile(slug)
     if (!fileDetails) {
       return undefined
     }
