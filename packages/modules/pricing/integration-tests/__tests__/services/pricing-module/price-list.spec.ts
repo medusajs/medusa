@@ -913,6 +913,63 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
         })
 
+        it("should update every price given by id when the updates omit the fields that tell them apart", async () => {
+          const [priceSet] = await service.createPriceSets([{}])
+
+          await service.addPriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  id: "test-price-band-1",
+                  amount: 100,
+                  currency_code: "eur",
+                  price_set_id: priceSet.id,
+                  min_quantity: 1,
+                  max_quantity: 9,
+                },
+                {
+                  id: "test-price-band-2",
+                  amount: 80,
+                  currency_code: "eur",
+                  price_set_id: priceSet.id,
+                  min_quantity: 10,
+                },
+              ],
+            },
+          ])
+
+          await service.updatePriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  id: "test-price-band-1",
+                  price_set_id: priceSet.id,
+                  amount: 90,
+                },
+                {
+                  id: "test-price-band-2",
+                  price_set_id: priceSet.id,
+                  amount: 70,
+                },
+              ],
+            },
+          ])
+
+          const prices = await service.listPrices({
+            id: ["test-price-band-1", "test-price-band-2"],
+          })
+
+          expect(prices).toHaveLength(2)
+          expect(prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ id: "test-price-band-1", amount: 90 }),
+              expect.objectContaining({ id: "test-price-band-2", amount: 70 }),
+            ])
+          )
+        })
+
         it("should do an update to the price if an equivalent price already exists", async () => {
           const [priceSet] = await service.createPriceSets([{}])
 
