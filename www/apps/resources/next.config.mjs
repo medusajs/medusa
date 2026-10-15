@@ -79,6 +79,19 @@ const nextConfig = {
   transpilePackages: ["docs-ui", "next-mdx-remote"],
 
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/resources",
+  async headers() {
+    const headers = [
+      {
+        key: "Cache-Control",
+        value: "public, max-age=3600, must-revalidate",
+      },
+    ]
+
+    return [
+      { source: "/", headers },
+      { source: "/:path((?!_next/).*)", headers },
+    ]
+  },
   async redirects() {
     return catchBadRedirects([
       {

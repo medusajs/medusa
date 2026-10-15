@@ -4,6 +4,7 @@ import { RootProviders, Sidebar, SidebarProps } from "@/components"
 import { MainContentLayout, MainContentLayoutProps } from "./main-content"
 import { AiAssistantChatWindow } from "../components/AiAssistant/ChatWindow"
 import { TechArticleJsonLd } from "../components/TechArticleJsonLd"
+import { AgentDirective } from "../components/AgentDirective"
 
 export type RootLayoutProps = {
   bodyClassName?: string
@@ -21,6 +22,7 @@ export const RootLayout = ({
 }: RootLayoutProps) => {
   return (
     <body className={clsx("h-screen w-full overflow-hidden")}>
+      <AgentDirective />
       <div
         className={clsx(
           "bg-medusa-bg-subtle font-base text-medium w-full",

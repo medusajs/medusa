@@ -34,7 +34,9 @@ export async function generateMetadata({
   const title = introSection?.title || tag?.name
 
   return {
-    title: title ? `${title} - Medusa ${area} API Reference` : undefined,
+    title: title
+      ? { absolute: `${title} - Medusa ${area} API Reference` }
+      : undefined,
     metadataBase: apiRefMetadataBase,
   }
 }
