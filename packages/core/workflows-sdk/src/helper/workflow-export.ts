@@ -646,14 +646,12 @@ function attachOnFinishReleaseEvents(
         })
     }
 
-    await eventBusService
-      .releaseGroupedEvents(flowEventGroupId)
-      .catch((e) => {
-        logger.error(
-          `Failed to release grouped events for eventGroupId: ${flowEventGroupId}`,
-          e
-        )
-      })
+    await eventBusService.releaseGroupedEvents(flowEventGroupId).catch((e) => {
+      logger.error(
+        `Failed to release grouped events for eventGroupId: ${flowEventGroupId}`,
+        e
+      )
+    })
 
     await onFinish?.(args)
   }
