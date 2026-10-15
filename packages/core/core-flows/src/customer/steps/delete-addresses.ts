@@ -1,4 +1,7 @@
-import type { ICustomerModuleService } from "@medusajs/framework/types"
+import type {
+  CustomerAddressDTO,
+  ICustomerModuleService,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
@@ -30,6 +33,14 @@ export const deleteCustomerAddressesStep = createStep(
 
     const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
-    await service.createCustomerAddresses(prevAddresses)
+    // The listed addresses also carry the `customer` relation, which would be inserted again.
+    await service.createCustomerAddresses(
+      prevAddresses.map(
+        ({
+          customer,
+          ...address
+        }: CustomerAddressDTO & { customer?: unknown }) => address
+      )
+    )
   }
 )
