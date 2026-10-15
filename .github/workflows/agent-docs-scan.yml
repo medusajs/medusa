@@ -1,0 +1,113 @@
+name: Agent-Friendly Docs Scan
+
+# Scans the deployed docs against the Agent-Friendly Documentation Spec with AFDocs
+# and opens a Linear ticket per failing check. Dedup is handled in the script.
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # Every day at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-docs-scan
+  cancel-in-progress: false
+
+env:
+  AFDOCS_VERSION: 0.22.2
+
+jobs:
+  scan:
+    name: Scan ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - app: book
+            url: https://docs.medusajs.com
+          - app: resources
+            url: https://docs.medusajs.com/resources
+            max_links: 15
+          - app: user-guide
+            url: https://docs.medusajs.com/user-guide
+          - app: ui
+            url: https://docs.medusajs.com/ui
+          - app: cloud
+            url: https://docs.medusajs.com/cloud
+          - app: api-reference
+            url: https://docs.medusajs.com/api
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # afdocs exits 1 when any check fails, so only a missing or empty report is an error.
+      - name: Run AFDocs
+        env:
+          APP: ${{ matrix.app }}
+          URL: ${{ matrix.url }}
+          MAX_LINKS: ${{ matrix.max_links || 50 }}
+        run: |
+          npx -y "afdocs@${AFDOCS_VERSION}" check "$URL" \
+            --format json \
+            --score \
+            --sampling deterministic \
+            --network-context ci \
+            --max-links "$MAX_LINKS" \
+            --llms-txt-url https://docs.medusajs.com/llms.txt \
+            --quiet > "$APP.json" || true
+          test -s "$APP.json"
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-docs-${{ matrix.app }}
+          path: ${{ matrix.app }}.json
+          retention-days: 30
+
+  report:
+    name: Report to Linear
+    needs: scan
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install www/utils dependencies
+        run: yarn install
+        working-directory: www/utils
+
+      - name: Build scripts package
+        run: yarn build --filter=scripts...
+        working-directory: www/utils
+
+      - name: Download reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: agent-docs-*
+          path: agent-docs-reports
+          merge-multiple: true
+
+      - name: Create Linear tickets
+        run: yarn report:agent-docs "$GITHUB_WORKSPACE/agent-docs-reports"
+        working-directory: www/utils/packages/scripts
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+
+      - name: Fail if a scan failed
+        if: ${{ needs.scan.result != 'success' }}
+        run: |
+          echo "One or more AFDocs scans failed to produce a report."
+          exit 1
