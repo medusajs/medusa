@@ -382,8 +382,8 @@
     "sorting": {
       "alphabeticallyAsc": "A to Z",
       "alphabeticallyDesc": "Z to A",
-      "dateAsc": "按最新的",
-      "dateDesc": "按最旧的"
+      "dateAsc": "按最旧的",
+      "dateDesc": "按最新的"
     },
     "radio": {
       "yes": "Yes",

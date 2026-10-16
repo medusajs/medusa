@@ -380,8 +380,8 @@
     "sorting": {
       "alphabeticallyAsc": "od A do Z",
       "alphabeticallyDesc": "od Z do A",
-      "dateAsc": "Od najnowszych",
-      "dateDesc": "Od najstarszych"
+      "dateAsc": "Od najstarszych",
+      "dateDesc": "Od najnowszych"
     },
     "radio": {
       "yes": "Tak",

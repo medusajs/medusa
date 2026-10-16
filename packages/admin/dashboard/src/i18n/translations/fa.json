@@ -368,8 +368,8 @@
     "sorting": {
       "alphabeticallyAsc": "از A به Z",
       "alphabeticallyDesc": "از Z به A",
-      "dateAsc": "جدیدترین اول",
-      "dateDesc": "قدیمی‌ترین اول"
+      "dateAsc": "قدیمی‌ترین اول",
+      "dateDesc": "جدیدترین اول"
     },
     "radio": {
       "yes": "بله",
