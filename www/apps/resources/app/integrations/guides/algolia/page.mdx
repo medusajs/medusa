@@ -239,7 +239,7 @@ export default class AlgoliaModuleService {
 
 You define two methods:
 
-1. `getIndexName`: A method that receives an `AlgoliaIndexType` (defined in the previous snippt) and returns the index name for that type. In this case, you only have one type, `product`, so you return the product index name.
+1. `getIndexName`: A method that receives an `AlgoliaIndexType` (defined in the previous snippet) and returns the index name for that type. In this case, you only have one type, `product`, so you return the product index name.
     - If you want to index other types of data, you can add more cases to the switch statement.
 2. `indexData`: A method that receives an array of data and an `AlgoliaIndexType`. The method indexes the data in the Algolia index for the given type.
     - Notice that you set the `objectID` property of each object to the object's `id`. This ensures that you later update the object instead of creating a new one.
