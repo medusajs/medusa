@@ -306,10 +306,14 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     return this.getPaymentStatus(input)
   }
 
-  async cancelPayment({
-    data,
-    context,
-  }: CancelPaymentInput): Promise<CancelPaymentOutput> {
+  async cancelPayment(input: CancelPaymentInput): Promise<CancelPaymentOutput> {
+    return await this.cancelPaymentIntent(input, [ErrorIntentStatus.CANCELED])
+  }
+
+  protected async cancelPaymentIntent(
+    { data, context }: CancelPaymentInput,
+    ignoredStatuses: string[]
+  ): Promise<CancelPaymentOutput> {
     try {
       const id = data?.id as string
 
@@ -322,7 +326,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       })
       return { data: res as unknown as Record<string, unknown> }
     } catch (error) {
-      if (error.payment_intent?.status === ErrorIntentStatus.CANCELED) {
+      if (ignoredStatuses.includes(error.payment_intent?.status)) {
         return { data: error.payment_intent }
       }
 
@@ -353,7 +357,11 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   }
 
   async deletePayment(input: DeletePaymentInput): Promise<DeletePaymentOutput> {
-    return await this.cancelPayment(input)
+    // A succeeded PaymentIntent can't be canceled, but its session can still be deleted.
+    return await this.cancelPaymentIntent(input, [
+      ErrorIntentStatus.CANCELED,
+      ErrorIntentStatus.SUCCEEDED,
+    ])
   }
 
   async refundPayment({
