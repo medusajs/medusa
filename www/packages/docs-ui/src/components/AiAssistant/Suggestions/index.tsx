@@ -23,7 +23,7 @@ export const AiAssistantSuggestions = (props: AiAssistantSuggestionsProps) => {
         <span className="text-medusa-fg-muted text-compact-small px-docs_0.5 py-docs_0.75 block">
           For assistance in your development, use{" "}
           <Link
-            href={`${baseUrl}/learn/introduction/build-with-llms-ai#claude-code-plugins`}
+            href={`${baseUrl}/learn/introduction/build-with-llms-ai/agentic-skills`}
             variant="content"
           >
             Claude Code Plugins
