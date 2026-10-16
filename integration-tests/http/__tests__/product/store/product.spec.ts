@@ -1400,6 +1400,115 @@ medusaIntegrationTestRunner({
           expect(response.data.products).toEqual(expectation)
         })
 
+        it("should apply a price list whose rules use the customer_group_id attribute for an authenticated customer in the group", async () => {
+          // Every value thrown out of this test must stay JSON-serializable.
+          // A previous version of this test crashed the jest worker: a thrown
+          // object with circular references could not cross the worker IPC
+          // boundary (TypeError: Converting circular structure to JSON at
+          // reportSuccess). Rewrap anything thrown into a plain Error so the
+          // worker can always report the result.
+          const fail = (e: unknown): never => {
+            // Capture which request failed and what the API said, using only
+            // plain strings so the value stays JSON-serializable for the jest
+            // worker IPC boundary (a previous version crashed the worker by
+            // throwing an object with circular references).
+            const ax = e as {
+              config?: { method?: unknown; url?: unknown }
+              response?: { status?: unknown; data?: unknown }
+            }
+            const parts: string[] = []
+            if (ax?.config?.method && ax?.config?.url) {
+              parts.push(
+                `${String(ax.config.method).toUpperCase()} ${String(
+                  ax.config.url
+                )}`
+              )
+            }
+            if (ax?.response?.status !== undefined) {
+              parts.push(`status ${String(ax.response.status)}`)
+            }
+            if (ax?.response?.data !== undefined) {
+              try {
+                parts.push(`body ${JSON.stringify(ax.response.data)}`)
+              } catch {
+                parts.push(`body ${String(ax.response.data)}`)
+              }
+            }
+            let detail: string
+            if (parts.length) {
+              detail = parts.join(" | ")
+            } else if (e instanceof Error) {
+              detail = e.message
+            } else {
+              try {
+                detail = JSON.stringify(e) ?? String(e)
+              } catch {
+                detail = String(e)
+              }
+            }
+            throw new Error(`customer_group_id price list test failed: ${detail}`)
+          }
+
+          try {
+            // Use a dedicated product so other price lists created in this
+            // file cannot interfere with the assertions below.
+            const [groupProduct, [groupVariant]] = await createProducts({
+              title: "customer group price list product",
+              status: ProductStatus.PUBLISHED,
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "group test variant",
+                  prices: [{ amount: 3000, currency_code: "usd" }],
+                },
+              ],
+            })
+
+            const priceList = (
+              await api.post(
+                `/admin/price-lists`,
+                {
+                  title: "test price list",
+                  description: "test",
+                  status: PriceListStatus.ACTIVE,
+                  type: PriceListType.SALE,
+                  prices: [
+                    {
+                      amount: 350,
+                      currency_code: "usd",
+                      variant_id: groupVariant.id,
+                    },
+                  ],
+                  rules: { customer_group_id: [customerGroup.id] },
+                },
+                adminHeaders
+              )
+            ).data.price_list
+
+            const response = await api.get(
+              `/store/products/${groupProduct.id}?fields=*variants.calculated_price&region_id=${region.id}`,
+              storeHeadersWithCustomer
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.product.variants).toEqual([
+              expect.objectContaining({
+                id: groupVariant.id,
+                calculated_price: expect.objectContaining({
+                  is_calculated_price_price_list: true,
+                  calculated_amount: 350,
+                  currency_code: "usd",
+                  calculated_price: expect.objectContaining({
+                    price_list_id: priceList.id,
+                    price_list_type: "sale",
+                  }),
+                }),
+              }),
+            ])
+          } catch (e) {
+            fail(e)
+          }
+        })
         it("should list products with prices with a default price when the price list price is higher and the price list is of type SALE", async () => {
           const priceList = (
             await api.post(
