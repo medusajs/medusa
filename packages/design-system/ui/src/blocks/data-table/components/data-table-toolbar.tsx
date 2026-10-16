@@ -13,7 +13,7 @@ interface DataTableToolbarTranslations {
    */
   sort?: string
   /**
-   * The tooltip for the columns menu  
+   * The tooltip for the columns menu
    */
   columns?: string
 }
@@ -44,24 +44,90 @@ interface DataTableToolbarProps {
 }
 
 /**
+ * Checks whether the consumer rendered an explicit `DataTable.FilterBar` among
+ * the given nodes, either as a toolbar child, one level deep (inside a layout
+ * wrapper), or as the filter bar content.
+ *
+ * The toolbar already renders a filter bar of its own. When a consumer also
+ * renders one, both instances read the same filtering state from the data table
+ * context, so they render an identical copy of the active filter chips and of
+ * the clear-all button. In that case the toolbar must not render its own bar.
+ */
+const isFilterBarElement = (node: React.ReactNode): boolean => {
+  if (!React.isValidElement(node)) {
+    return false
+  }
+
+  return node.type === DataTableFilterBar
+}
+
+const hasExplicitFilterBar = (props: DataTableToolbarProps): boolean => {
+  let found = false
+
+  // Check direct children (level 0)
+  const checkChildren = (children: React.ReactNode) => {
+    if (found) return
+
+    React.Children.forEach(children, (child) => {
+      if (found) return
+
+      if (isFilterBarElement(child)) {
+        found = true
+        return
+      }
+    })
+  }
+
+  // Check one level deep: children of valid element wrappers (level 1)
+  const checkOneLevelDeep = (children: React.ReactNode) => {
+    if (found) return
+
+    React.Children.forEach(children, (child) => {
+      if (found) return
+
+      if (React.isValidElement(child)) {
+        const props = (child.props ?? {}) as { children?: React.ReactNode }
+        // Only check immediate children of the wrapper, don't recurse further
+        React.Children.forEach(props.children, (grandChild) => {
+          if (found) return
+          if (isFilterBarElement(grandChild)) {
+            found = true
+            return
+          }
+        })
+      }
+    })
+  }
+
+  checkChildren(props.children)
+  checkOneLevelDeep(props.children)
+  checkChildren(props.filterBarContent)
+
+  return found
+}
+
+/**
  * Toolbar shown for the data table.
  */
 const DataTableToolbar = (props: DataTableToolbarProps) => {
+  const renderFilterBar = !hasExplicitFilterBar(props)
+
   return (
     <div className="flex flex-col divide-y">
       <div className={clx("flex items-center px-6 py-4", props.className)}>
         {props.children}
       </div>
-      <DataTableFilterBar
-        clearAllFiltersLabel={props.translations?.clearAll}
-        alwaysShow={props.alwaysShowFilterBar}
-      >
-        {props.filterBarContent}
-      </DataTableFilterBar>
+      {renderFilterBar && (
+        <DataTableFilterBar
+          clearAllFiltersLabel={props.translations?.clearAll}
+          alwaysShow={props.alwaysShowFilterBar}
+        >
+          {props.filterBarContent}
+        </DataTableFilterBar>
+      )}
     </div>
   )
 }
 
 export { DataTableToolbar }
 export type { DataTableToolbarProps, DataTableToolbarTranslations }
-
