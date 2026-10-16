@@ -227,6 +227,26 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should reject fractional quantities passed with the initial items", async () => {
+          const error = await api
+            .post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [
+                  { variant_id: product.variants[0].id, quantity: 1.5 },
+                ],
+              },
+              storeHeadersWithCustomer
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+        })
+
         it("should reject a currency_code that does not match the region's currency", async () => {
           const multiCurrencyProduct = (
             await api.post(
@@ -823,6 +843,21 @@ medusaIntegrationTestRunner({
           expect(error.response.data.message).toEqual(
             `Variants with IDs ${variantId} do not have a price`
           )
+        })
+
+        it("should reject a fractional quantity when adding a line item", async () => {
+          const error = await api
+            .post(
+              `/store/carts/${cart.id}/line-items`,
+              {
+                variant_id: product.variants[0].id,
+                quantity: 0.1,
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
         })
 
         it("should add item to cart and calculate prices based on item quantity", async () => {
@@ -2266,6 +2301,20 @@ medusaIntegrationTestRunner({
             },
             adminHeaders
           )
+        })
+
+        it("should reject a fractional quantity when updating a line item", async () => {
+          const error = await api
+            .post(
+              `/store/carts/${cart.id}/line-items/${item.id}`,
+              {
+                quantity: 0.1,
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
         })
 
         it("should update cart's line item", async () => {
