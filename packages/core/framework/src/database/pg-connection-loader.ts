@@ -21,9 +21,24 @@ const FATAL_PG_CONNECTION_ERROR_CODES = new Set([
   "42501", // insufficient privilege
 ])
 
+/**
+ * Driver errors without a PostgreSQL code that retrying cannot fix either.
+ */
+const FATAL_PG_CONNECTION_ERROR_MESSAGES = [
+  // TLS was requested but the server has it turned off (e.g. a local
+  // PostgreSQL reached through an address not recognised as local).
+  "The server does not support SSL connections",
+]
+
 const isFatalConnectionError = (error: unknown): boolean => {
-  const code = (error as { code?: string })?.code
-  return !!code && FATAL_PG_CONNECTION_ERROR_CODES.has(code)
+  const { code, message } = (error ?? {}) as { code?: string; message?: string }
+  if (code && FATAL_PG_CONNECTION_ERROR_CODES.has(code)) {
+    return true
+  }
+  return (
+    typeof message === "string" &&
+    FATAL_PG_CONNECTION_ERROR_MESSAGES.some((fatal) => message.includes(fatal))
+  )
 }
 
 /**
