@@ -1,4 +1,5 @@
 import { FindParams, SelectParams } from "../../common"
+import { OperatorMap } from "../../../dal"
 import {
   BaseCustomerAddressFilters,
   BaseCustomerFilters,
@@ -23,10 +24,10 @@ export interface AdminCustomerParams extends SelectParams {}
 
 export interface AdminCustomerGroupInCustomerParams {
   created_at?: any
-  id?: string | string[] | undefined
+  id?: string | string[] | OperatorMap<string> | undefined
   updated_at?: any
   deleted_at?: any
-  name?: string | string[] | undefined
+  name?: string | string[] | OperatorMap<string> | undefined
 }
 
 export interface AdminCustomerAddressParams extends SelectParams {}
