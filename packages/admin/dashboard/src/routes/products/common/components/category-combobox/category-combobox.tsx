@@ -25,6 +25,8 @@ import { Trans, useTranslation } from "react-i18next"
 import { TextSkeleton } from "../../../../../components/common/skeleton"
 import { useProductCategories } from "../../../../../hooks/api/categories"
 import { useDebouncedSearch } from "../../../../../hooks/use-debounced-search"
+import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
+import { toVisualArrowKey } from "../../../../../lib/visual-arrow-key"
 
 interface CategoryComboboxProps
   extends Omit<
@@ -56,6 +58,7 @@ export const CategoryCombobox = forwardRef<
   )
 
   const [open, setOpen] = useState(false)
+  const direction = useDocumentDirection()
 
   const { i18n, t } = useTranslation()
 
@@ -191,7 +194,7 @@ export const CategoryCombobox = forwardRef<
         setFocusedIndex((prev) => {
           return prev > 0 ? prev - 1 : prev
         })
-      } else if (e.key === "ArrowRight") {
+      } else if (toVisualArrowKey(e.key, direction) === "ArrowRight") {
         const index = showLevelUp ? focusedIndex - 1 : focusedIndex
         const hasChildren = options[index]?.has_children
 
@@ -222,7 +225,16 @@ export const CategoryCombobox = forwardRef<
         handleSelect(options[index])(e as any)
       }
     },
-    [open, focusedIndex, options, level, handleSelect, searchValue, showLevelUp]
+    [
+      open,
+      focusedIndex,
+      options,
+      level,
+      handleSelect,
+      searchValue,
+      showLevelUp,
+      direction,
+    ]
   )
 
   useEffect(() => {
