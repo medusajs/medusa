@@ -205,15 +205,20 @@ export const DataTable = <TData,>({
   }, [q])
 
   const handleSearchChange = (value: string) => {
-    setSearchParams((prev) => {
-      if (value) {
-        prev.set(getQueryParamKey("q", prefix), value)
-      } else {
-        prev.delete(getQueryParamKey("q", prefix))
-      }
+    rowSelection?.onRowSelectionChange({})
+    setSearchParams(
+      (prev) => {
+        prev.delete(getQueryParamKey("offset", prefix))
+        if (value) {
+          prev.set(getQueryParamKey("q", prefix), value)
+        } else {
+          prev.delete(getQueryParamKey("q", prefix))
+        }
 
-      return prev
-    })
+        return prev
+      },
+      { replace: true }
+    )
   }
 
   const pagination: DataTablePaginationState = useMemo(() => {
@@ -242,7 +247,9 @@ export const DataTable = <TData,>({
   )
 
   const handleFilteringChange = (value: DataTableFilteringState) => {
+    rowSelection?.onRowSelectionChange({})
     setSearchParams((prev) => {
+      prev.delete(getQueryParamKey("offset", prefix))
       // Remove filters that are no longer in the state
       Array.from(prev.keys()).forEach((key) => {
         if (prefixedFilterIds.includes(key)) {
@@ -283,7 +290,9 @@ export const DataTable = <TData,>({
   )
 
   const handleSortingChange = (value: DataTableSortingState) => {
+    rowSelection?.onRowSelectionChange({})
     setSearchParams((prev) => {
+      prev.delete(getQueryParamKey("offset", prefix))
       if (value) {
         const valueToStore = transformSortingState(value)
 
@@ -390,8 +399,8 @@ export const DataTable = <TData,>({
         filterBarContent={filterBarContent}
         alwaysShowFilterBar={alwaysShowFilterBar}
       >
-        <div className="flex w-full items-center justify-between gap-2">
-          <div className="flex items-center gap-x-4">
+        <div className="flex w-full flex-wrap items-center justify-between gap-3">
+          <div className="flex min-w-0 flex-wrap items-center gap-4">
             {shouldRenderHeading && (
               <div>
                 {heading && <Heading level={headingLevel}>{heading}</Heading>}
@@ -410,7 +419,7 @@ export const DataTable = <TData,>({
               />
             )}
           </div>
-          <div className="flex items-center gap-x-2">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             {enableFiltering && (
               <UiDataTable.FilterMenu tooltip={toolbarTranslations.filter} />
             )}
@@ -444,7 +453,7 @@ export const DataTable = <TData,>({
       )}
       {enableCommands && (
         <UiDataTable.CommandBar
-          selectedLabel={(count) => `${count} selected`}
+          selectedLabel={(count) => t("general.countSelected", { count })}
         />
       )}
     </UiDataTable>
@@ -466,7 +475,8 @@ function transformPaginationState(value: DataTablePaginationState) {
 }
 
 function parsePaginationState(value: string, pageSize: number) {
-  const offset = parseInt(value)
+  const parsed = Number(value)
+  const offset = Number.isFinite(parsed) && parsed > 0 ? parsed : 0
 
   return {
     pageIndex: Math.floor(offset / pageSize),

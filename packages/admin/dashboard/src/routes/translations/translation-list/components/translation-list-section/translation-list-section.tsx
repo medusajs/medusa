@@ -19,28 +19,43 @@ export const TranslationListSection = ({
       {entities.map((entity) => (
         <div
           key={entity.reference}
-          className="grid grid-cols-[250px_1fr_auto] items-center gap-x-4 px-6 py-4"
+          className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2 px-6 py-4 sm:grid-cols-[minmax(0,250px)_1fr_auto]"
         >
           <Text size="small" weight="plus">
             {entity.label}
           </Text>
-          <Text size="small" className="text-ui-fg-subtle">
+          <Text
+            size="small"
+            className="text-ui-fg-subtle col-start-1 row-start-2 sm:col-start-2 sm:row-start-1"
+          >
             {t("translations.list.metrics", {
               translated: (entity.translatedCount ?? 0).toLocaleString(),
               total: (entity.totalCount ?? 0).toLocaleString(),
             })}
           </Text>
-          <Link
-            to={`/settings/translations/edit?reference=${entity.reference}`}
-          >
+          {!hasLocales || !entity.totalCount ? (
             <Button
               variant="secondary"
               size="small"
-              disabled={!hasLocales || !entity.totalCount}
+              disabled
+              className="col-start-2 row-start-1 sm:col-start-3"
             >
-              Edit
+              {t("actions.edit")}
             </Button>
-          </Link>
+          ) : (
+            <Button
+              variant="secondary"
+              size="small"
+              className="col-start-2 row-start-1 sm:col-start-3"
+              asChild
+            >
+              <Link
+                to={`/settings/translations/edit?reference=${entity.reference}`}
+              >
+                {t("actions.edit")}
+              </Link>
+            </Button>
+          )}
         </div>
       ))}
     </Container>

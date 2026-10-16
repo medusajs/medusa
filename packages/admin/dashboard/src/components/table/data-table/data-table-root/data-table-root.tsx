@@ -63,17 +63,6 @@ export interface DataTableRootProps<TData> {
 }
 
 /**
- * TODO
- *
- * Add a sticky header to the table that shows the column name when scrolling through the table vertically.
- *
- * This is a bit tricky as we can't support horizontal scrolling and sticky headers at the same time, natively
- * with CSS. We need to implement a custom solution for this. One solution is to render a duplicate table header
- * using a DIV that, but it will require rerendeing the duplicate header every time the window is resized, to keep
- * the columns aligned.
- */
-
-/**
  * Table component for rendering a table with pagination, filtering and ordering.
  */
 export const DataTableRoot = <TData,>({
@@ -137,9 +126,14 @@ export const DataTableRoot = <TData,>({
         })}
       >
         {!noResults ? (
-          <Table className="relative w-full">
+          <Table className="relative isolate w-full">
             {!noHeader && (
-              <Table.Header className="border-t-0">
+              <Table.Header
+                className={clx("bg-ui-bg-subtle border-t-0", {
+                  "shadow-ui-border-base sticky top-0 z-[2] shadow-[0_1px_0_0]":
+                    layout === "fill",
+                })}
+              >
                 {table.getHeaderGroups().map((headerGroup) => {
                   return (
                     <Table.Row
@@ -176,7 +170,7 @@ export const DataTableRoot = <TData,>({
                                 : undefined,
                             }}
                             className={clx({
-                              "bg-ui-bg-subtle sticky start-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                              "bg-ui-bg-subtle start-0 sticky after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                 isStickyHeader,
                               "start-[68px]":
                                 isStickyHeader && hasSelect && !isSelectHeader,
@@ -263,7 +257,7 @@ export const DataTableRoot = <TData,>({
                           key={cell.id}
                           className={clx({
                             "!pe-0 !ps-0": shouldRenderAsLink,
-                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover sticky start-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover start-0 sticky after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
                             "bg-ui-bg-subtle group-hover/row:bg-ui-bg-subtle-hover":
                               isOdd && isStickyCell,
@@ -288,7 +282,7 @@ export const DataTableRoot = <TData,>({
                             >
                               <div
                                 className={clx(
-                                  "flex size-full items-center pe-6",
+                                  "size-full pe-6 flex items-center",
                                   {
                                     "ps-6": isTabableLink && !hasLeftOffset,
                                   }
