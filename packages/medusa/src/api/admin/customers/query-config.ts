@@ -32,7 +32,6 @@ export const listTransformQueryConfig = {
 
 export const exportTransformQueryConfig = {
   defaults: defaultAdminCustomerFields,
-  allowed,
   isList: true,
   entity: Entities.customer,
 }
