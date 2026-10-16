@@ -3,6 +3,15 @@ import { RedisCacheModuleOptions } from "@types"
 import { Redis } from "ioredis"
 import { createGunzip, createGzip } from "zlib"
 
+/**
+ * How many members of a forward tag set one pass of a tag-based `clear` may
+ * hold at a time. Everything the tag path allocates is a function of this
+ * number rather than of how large the tag set has grown, so a set that has
+ * accumulated hundreds of thousands of members costs more round trips but not
+ * more memory.
+ */
+const CLEAR_CHUNK_SIZE = 500
+
 export class RedisCachingProvider {
   static identifier = "cache-redis"
 
@@ -131,6 +140,104 @@ export class RedisCachingProvider {
       deletePipeline.unlink(keyName)
     })
     await deletePipeline.exec()
+  }
+
+  /**
+   * Walks one forward tag set and clears the entries it points at.
+   *
+   * The set is consumed with SSCAN in bounded chunks rather than read whole with
+   * SMEMBERS: a tag such as `Product:list:*` is attached to every cached list
+   * entry, so its set grows with storefront traffic and a single-step read makes
+   * peak memory and pipeline size a function of that growth.
+   *
+   * The scan also prunes. An entry that expires by TTL is dropped by Redis but
+   * stays a member of every tag set it was indexed under, because membership is
+   * only removed here and only for entries whose reverse index is still alive --
+   * and that index outlives the entry by just 60s. The forward set's own TTL is
+   * refreshed by every later write carrying the tag, so on a busy tag it never
+   * expires either. Left alone the set therefore grows monotonically and each
+   * clear gets more expensive than the last. Removing the members whose entry is
+   * already gone, while we are holding them anyway, stops that ratchet.
+   */
+  async #clearTag(tag: string, autoInvalidateOnly: boolean): Promise<void> {
+    const tagKey = this.#getTagKey(tag)
+
+    let cursor = "0"
+
+    do {
+      const [nextCursor, members] = await this.redisClient.sscan(
+        tagKey,
+        cursor,
+        "COUNT",
+        CLEAR_CHUNK_SIZE
+      )
+      cursor = nextCursor
+
+      if (!members?.length) {
+        continue
+      }
+
+      // SSCAN may return the same member at more than one cursor position.
+      const keyNames = Array.from(new Set(members))
+
+      const probePipeline = this.redisClient.pipeline()
+      keyNames.forEach((keyName) => {
+        probePipeline.exists(keyName)
+        probePipeline.hget(keyName, "options")
+      })
+      const probeResults = await probePipeline.exec()
+
+      const staleKeyNames: string[] = []
+      const keysToDelete: string[] = []
+
+      keyNames.forEach((keyName, index) => {
+        if (!probeResults?.[index * 2]?.[1]) {
+          // The entry is gone; only its membership is left behind.
+          staleKeyNames.push(keyName)
+          return
+        }
+
+        if (!autoInvalidateOnly) {
+          // Explicit call, clear everything the tag points at.
+          keysToDelete.push(keyName)
+          return
+        }
+
+        const storedOptions = probeResults?.[index * 2 + 1]?.[1] as
+          | string
+          | null
+
+        if (!storedOptions) {
+          // No options stored, default to true
+          keysToDelete.push(keyName)
+          return
+        }
+
+        try {
+          // Delete if entry has autoInvalidate=true or no setting (default true)
+          if (JSON.parse(storedOptions).autoInvalidate ?? true) {
+            keysToDelete.push(keyName)
+          }
+        } catch (e) {
+          // If can't parse options, assume it's safe to delete (default true)
+          keysToDelete.push(keyName)
+        }
+      })
+
+      await this.#deleteEntries(keysToDelete)
+      // Stale members may still have a reverse index, which names every other
+      // tag set holding them. Reuse it while it is there.
+      await this.#removeTagIndexes(staleKeyNames)
+
+      // Backstop for the set being scanned: the two calls above drop a member
+      // only when its reverse index resolved, and for an expired entry it
+      // usually has not. Without this the member survives the clear and the set
+      // never shrinks.
+      const prunedKeyNames = keysToDelete.concat(staleKeyNames)
+      if (prunedKeyNames.length) {
+        await this.redisClient.srem(tagKey, ...prunedKeyNames)
+      }
+    } while (cursor !== "0")
   }
 
   async #compressData(data: string): Promise<Buffer> {
@@ -380,77 +487,31 @@ export class RedisCachingProvider {
         return
       }
 
-      if (tags?.length) {
-        // Handle wildcard tag to clear all cache data
-        if (tags.includes("*")) {
-          await this.flush()
-          return
-        }
+      if (!tags?.length) {
+        return
+      }
 
-        // Get all keys associated with the tags
-        const pipeline = this.redisClient.pipeline()
-        tags.forEach((tag) => {
-          const tagKey = this.#getTagKey(tag)
-          pipeline.smembers(tagKey)
-        })
+      // Handle wildcard tag to clear all cache data
+      if (tags.includes("*")) {
+        await this.flush()
+        return
+      }
 
-        const tagResults = await pipeline.exec()
+      // A strategy-driven invalidation passes `{ autoInvalidate: true }` and has
+      // to leave entries that opted out alone; an explicit call passes no
+      // options and clears everything. Any other options object is not an
+      // invalidation request and clears nothing, as before.
+      if (options && options.autoInvalidate !== true) {
+        return
+      }
 
-        const allKeys = new Set<string>()
+      const autoInvalidateOnly = !!options
 
-        tagResults?.forEach((result) => {
-          if (result && result[1]) {
-            ;(result[1] as string[]).forEach((key) => allKeys.add(key))
-          }
-        })
-
-        if (allKeys.size) {
-          // If no options provided (user explicit call), clear everything
-          if (!options) {
-            await this.#deleteEntries(Array.from(allKeys))
-            return
-          }
-
-          // If autoInvalidate is true (strategy call), only clear entries with autoInvalidate=true (default)
-          if (options.autoInvalidate === true) {
-            const optionsPipeline = this.redisClient.pipeline()
-
-            Array.from(allKeys).forEach((key) => {
-              optionsPipeline.hget(key, "options")
-            })
-
-            const optionsResults = await optionsPipeline.exec()
-            const keysToDelete: string[] = []
-
-            Array.from(allKeys).forEach((key, index) => {
-              const optionsResult = optionsResults?.[index]
-
-              if (optionsResult && optionsResult[1]) {
-                try {
-                  const entryOptions = JSON.parse(optionsResult[1] as string)
-
-                  // Delete if entry has autoInvalidate=true or no setting (default true)
-                  const shouldAutoInvalidate =
-                    entryOptions.autoInvalidate ?? true
-
-                  if (shouldAutoInvalidate) {
-                    keysToDelete.push(key)
-                  }
-                } catch (e) {
-                  // If can't parse options, assume it's safe to delete (default true)
-                  keysToDelete.push(key)
-                }
-              } else {
-                // No options stored, default to true
-                keysToDelete.push(key)
-              }
-            })
-
-            if (keysToDelete.length) {
-              await this.#deleteEntries(keysToDelete)
-            }
-          }
-        }
+      // Sequential on purpose: the tags of one invalidation overlap heavily, and
+      // walking them one at a time keeps the work in flight bounded by the chunk
+      // size no matter how many tags a single clear was handed.
+      for (const tag of tags) {
+        await this.#clearTag(tag, autoInvalidateOnly)
       }
     } catch (error) {
       if (this.isConnectionError(error)) {
