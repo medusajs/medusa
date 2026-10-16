@@ -1346,6 +1346,93 @@ medusaIntegrationTestRunner({
           ])
         )
       })
+
+      it("should keep the authorized payment collection if the edit leaves the order total unchanged", async () => {
+        const cart = (
+          await api.post(
+            `/store/carts`,
+            {
+              currency_code: "usd",
+              sales_channel_id: salesChannel.id,
+              region_id: region.id,
+              shipping_address: shippingAddressData,
+              items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+            },
+            storeHeaders
+          )
+        ).data.cart
+
+        const paymentCollection = (
+          await api.post(
+            `/store/payment-collections`,
+            { cart_id: cart.id },
+            storeHeaders
+          )
+        ).data.payment_collection
+
+        await api.post(
+          `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+          { provider_id: "pp_system_default" },
+          storeHeaders
+        )
+
+        const order = (
+          await api.post(
+            `/store/carts/${cart.id}/complete`,
+            { cart_id: cart.id },
+            storeHeaders
+          )
+        ).data.order
+
+        // Swap the item for another variant at the same price
+        await api.post(
+          `/admin/order-edits`,
+          { order_id: order.id, description: "Test" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${order.id}/items/item/${order.items[0].id}`,
+          { quantity: 0 },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${order.id}/items`,
+          { items: [{ variant_id: product.variants[1].id, quantity: 1 }] },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${order.id}/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const editedOrder = (
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
+        ).data.order
+
+        expect(editedOrder.total).toEqual(order.total)
+        expect(editedOrder.payment_collections).toEqual([
+          expect.objectContaining({
+            id: paymentCollection.id,
+            status: "authorized",
+          }),
+        ])
+
+        await api.post(
+          `/admin/payments/${editedOrder.payment_collections[0].payments[0].id}/capture`,
+          {},
+          adminHeaders
+        )
+
+        const capturedOrder = (
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
+        ).data.order
+
+        expect(capturedOrder.payment_status).toEqual("captured")
+      })
     })
 
     describe("Order Edits promotions", () => {

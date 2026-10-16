@@ -114,7 +114,7 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
 
     const { data: existingPaymentCollection } = useQueryGraphStep({
       entity: "payment_collection",
-      fields: ["id", "status"],
+      fields: ["id", "status", "authorized_amount", "raw_authorized_amount"],
       filters: {
         id: orderPaymentCollectionIds,
         status: [
@@ -129,16 +129,24 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
       options: { isList: false },
     }).config({ name: "payment-collection-query" })
 
-    const shouldRecreate = transform(
-      { existingPaymentCollection },
-      ({ existingPaymentCollection }) =>
-        existingPaymentCollection?.status ===
-          PaymentCollectionStatus.AUTHORIZED ||
-        existingPaymentCollection?.status ===
-          PaymentCollectionStatus.PARTIALLY_AUTHORIZED
-    )
-
     const amountPending = getOrderPendingAmountStep({ order, input })
+
+    // The provider capture call has no amount, so a payment is captured for
+    // its whole authorization. Keep an authorization only when it still
+    // equals the pending amount.
+    const shouldRecreate = transform(
+      { existingPaymentCollection, amountPending },
+      ({ existingPaymentCollection, amountPending }) =>
+        existingPaymentCollection?.status ===
+          PaymentCollectionStatus.PARTIALLY_AUTHORIZED ||
+        (existingPaymentCollection?.status ===
+          PaymentCollectionStatus.AUTHORIZED &&
+          !MathBN.eq(
+            amountPending,
+            existingPaymentCollection.raw_authorized_amount ??
+              existingPaymentCollection.authorized_amount
+          ))
+    )
 
     const updatedPaymentCollections = when(
       { existingPaymentCollection, amountPending, shouldRecreate },
