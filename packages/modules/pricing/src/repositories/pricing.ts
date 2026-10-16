@@ -192,7 +192,9 @@ export class PricingRepository
         }
       })
 
-      const priceListRuleMatchConditions = flattenedContext
+      // Expression that is TRUE when a rule's attribute/value overlaps the
+      // customer's context (the existing "in" containment check).
+      const priceListRuleOverlapExpr = flattenedContext
         .map(([_key, value]) => {
           if (Array.isArray(value)) {
             return value
@@ -203,12 +205,30 @@ export class PricingRepository
         })
         .join(" OR ")
 
-      const priceListRuleMatchParams = flattenedContext.flatMap(
+      // A rule is "satisfied" when:
+      //  - operator = in  and it overlaps the context, OR
+      //  - operator = nin and it does NOT overlap the context. A nin rule
+      //    whose attribute is absent from the context does not match any
+      //    overlap clause, so NOT(overlap) is TRUE and it is satisfied
+      //    (guests / customers with no groups get nin price lists).
+      const priceListRuleMatchConditions = `(
+        (plr.operator = 'in' AND (${priceListRuleOverlapExpr})) OR
+        (plr.operator = 'nin' AND NOT (${priceListRuleOverlapExpr}))
+      )`
+
+      const priceListRuleOverlapParams = flattenedContext.flatMap(
         ([key, value]) => {
           const valueAsArray = Array.isArray(value) ? value : [value]
           return valueAsArray.flatMap((v) => [key, JSON.stringify(v)])
         }
       )
+
+      // The overlap expression appears twice (in branch, then nin branch),
+      // so its params must be supplied twice, in that order.
+      const priceListRuleMatchParams = [
+        ...priceListRuleOverlapParams,
+        ...priceListRuleOverlapParams,
+      ]
 
       // Pre-resolve the active price lists whose rules all match the context
       // in a single pass over price_list/price_list_rule, instead of running
@@ -301,7 +321,21 @@ export class PricingRepository
         this.where(function (this: Knex.QueryBuilder) {
           this.whereNull("price.price_list_id").where("price.rules_count", 0)
         }).orWhere(function (this: Knex.QueryBuilder) {
-          this.whereNotNull("price.price_list_id").where("price.rules_count", 0).where("pl.rules_count", 0)
+          // With no context, all nin rules are trivially satisfied and all in
+          // rules fail. A price list applies if it has no rules, or all of its
+          // rules are nin (i.e. it has no in rule).
+          this.whereNotNull("price.price_list_id")
+            .where("price.rules_count", 0)
+            .andWhere(function (this: Knex.QueryBuilder) {
+              this.where("pl.rules_count", 0).orWhereRaw(
+                `NOT EXISTS (
+                  SELECT 1 FROM price_list_rule plr
+                  WHERE plr.price_list_id = pl.id
+                    AND plr.deleted_at IS NULL
+                    AND plr.operator = 'in'
+                )`
+              )
+            })
         })
       })
     }

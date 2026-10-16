@@ -5,3 +5,8 @@ export enum PricingRuleOperator {
   LT = "lt",
   EQ = "eq",
 }
+
+export enum PriceListRuleOperator {
+  IN = "in",
+  NIN = "nin",
+}

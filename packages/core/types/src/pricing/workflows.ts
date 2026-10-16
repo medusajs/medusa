@@ -114,7 +114,7 @@ export interface CreatePriceListWorkflowInputDTO {
   /**
    * The rules associated with the price list.
    */
-  rules?: Record<string, string[]>
+  rules?: PricingTypes.CreatePriceListRules
 
   /**
    * The prices associated with the price list.
@@ -164,7 +164,7 @@ export interface UpdatePriceListWorkflowInputDTO {
   /**
    * The rules associated with the price list.
    */
-  rules?: Record<string, string[]>
+  rules?: PricingTypes.CreatePriceListRules
 
   /**
    * Holds custom data in key-value pairs.

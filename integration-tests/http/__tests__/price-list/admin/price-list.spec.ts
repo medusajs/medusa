@@ -177,6 +177,40 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("creates a price list with a nin customer-group rule", async () => {
+          const payload = getPricelistFixture({
+            title: "Public sale, excluding VIP",
+            description: "Everyone except the VIP customer group.",
+            rules: {
+              "customer.groups.id": {
+                operator: "nin",
+                value: [customerGroup1.id],
+              },
+            },
+            prices: [
+              {
+                amount: 85,
+                currency_code: "usd",
+                variant_id: product1.variants[0].id,
+              },
+            ],
+          })
+
+          const response = await api.post(
+            "/admin/price-lists",
+            payload,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.price_list.rules).toEqual({
+            "customer.groups.id": {
+              operator: "nin",
+              value: [expect.stringContaining("cusgroup_")],
+            },
+          })
+        })
       })
 
       describe("GET /admin/price-lists", () => {
