@@ -157,28 +157,15 @@ const StoreSearchQuery = z
   })
   .strict()
 
-const StoreSearchBatch = z
-  .object({
-    queries: z.array(StoreSearchQuery).min(1).max(MAX_SEARCH_QUERIES),
-  })
-  .strict()
-
 /**
  * A batch of queries, or a single one — which is what the InstantSearch adapter
  * posts when it is configured with `batch: false`.
- *
- * Not a plain union: when a single query fails, a union reports the batch's
- * missing `queries` instead of the query's own error. The `queries` key picks
- * the shape, and only that shape's issues are reported.
  */
-export const StoreSearch = z.unknown().transform((body, ctx) => {
-  const isBatch = typeof body === "object" && body !== null && "queries" in body
-  const result = (isBatch ? StoreSearchBatch : StoreSearchQuery).safeParse(body)
-
-  if (!result.success) {
-    result.error.issues.forEach((issue) => ctx.addIssue({ ...issue }))
-    return z.NEVER
-  }
-
-  return result.data
-})
+export const StoreSearch = z.union([
+  z
+    .object({
+      queries: z.array(StoreSearchQuery).min(1).max(MAX_SEARCH_QUERIES),
+    })
+    .strict(),
+  StoreSearchQuery,
+])
