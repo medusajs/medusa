@@ -36,6 +36,7 @@ export const AdminCustomersParamsFields = z.object({
   company_name: z.union([z.string(), z.array(z.string())]).optional(),
   first_name: z.union([z.string(), z.array(z.string())]).optional(),
   last_name: z.union([z.string(), z.array(z.string())]).optional(),
+  phone: createOperatorMap().optional(),
   has_account: booleanString().optional(),
   created_by: z.union([z.string(), z.array(z.string())]).optional(),
   created_at: createOperatorMap().optional(),

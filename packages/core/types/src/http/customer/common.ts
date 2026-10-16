@@ -198,6 +198,10 @@ export interface BaseCustomerFilters
    */
   last_name?: string[] | string | OperatorMap<string>
   /**
+   * Filter by phone number(s).
+   */
+  phone?: string[] | string | OperatorMap<string>
+  /**
    * Filter by user ID(s) to retrieve the customers they created.
    */
   created_by?: string[] | string | OperatorMap<string>
