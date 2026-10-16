@@ -5902,6 +5902,149 @@ moduleIntegrationTestRunner({
       })
 
       describe("when promotion of type buyget", () => {
+        it("should not apply the discount to non discountable target items", async () => {
+          const context = {
+            currency_code: "usd",
+            items: [
+              {
+                id: "item_cotton_tshirt",
+                quantity: 1,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_tshirt",
+                },
+                product: {
+                  id: "prod_tshirt_1",
+                },
+              },
+              {
+                id: "item_gift_card",
+                quantity: 1,
+                subtotal: 500,
+                original_total: 500,
+                is_discountable: false,
+                product_category: {
+                  id: "catg_gift_card",
+                },
+                product: {
+                  id: "prod_gift_card_1",
+                },
+              },
+            ],
+          }
+
+          await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              type: "percentage",
+              target_type: "items",
+              value: 100,
+              allocation: "each",
+              max_quantity: 1,
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              target_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_gift_card"],
+                },
+              ],
+              buy_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_tshirt"],
+                },
+              ],
+            } as any,
+          })
+
+          const result = await service.computeActions(
+            ["PROMOTION_TEST"],
+            context
+          )
+
+          expect(result).toEqual([])
+        })
+
+        it("should still count non discountable items towards the buy rules", async () => {
+          const context = {
+            currency_code: "usd",
+            items: [
+              {
+                id: "item_gift_card",
+                quantity: 1,
+                subtotal: 500,
+                original_total: 500,
+                is_discountable: false,
+                product_category: {
+                  id: "catg_gift_card",
+                },
+                product: {
+                  id: "prod_gift_card_1",
+                },
+              },
+              {
+                id: "item_cotton_tshirt",
+                quantity: 1,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product_category: {
+                  id: "catg_tshirt",
+                },
+                product: {
+                  id: "prod_tshirt_1",
+                },
+              },
+            ],
+          }
+
+          await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              type: "percentage",
+              target_type: "items",
+              value: 100,
+              allocation: "each",
+              max_quantity: 1,
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              target_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_tshirt"],
+                },
+              ],
+              buy_rules: [
+                {
+                  attribute: "items.product_category.id",
+                  operator: "eq",
+                  values: ["catg_gift_card"],
+                },
+              ],
+            } as any,
+          })
+
+          const result = await service.computeActions(
+            ["PROMOTION_TEST"],
+            context
+          )
+
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            {
+              action: "addItemAdjustment",
+              item_id: "item_cotton_tshirt",
+              amount: 1000,
+              code: "PROMOTION_TEST",
+            },
+          ])
+        })
+
         it("should compute adjustment when target and buy rules match", async () => {
           const context = {
             currency_code: "usd",
