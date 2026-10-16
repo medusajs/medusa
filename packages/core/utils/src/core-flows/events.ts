@@ -843,6 +843,131 @@ export const PriceListWorkflowEvents = {
 } as const
 
 /**
+ * @category Promotion
+ * @customNamespace Promotion
+ */
+export const PromotionWorkflowEvents = {
+  /**
+   * Emitted when promotions are created.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  CREATED: "promotion.created",
+  /**
+   * Emitted when promotions are updated, including their status.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  UPDATED: "promotion.updated",
+  /**
+   * Emitted when promotions are deleted.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   * }
+   * ```
+   */
+  DELETED: "promotion.deleted",
+  /**
+   * Emitted when a promotion's rules, target rules, or buy rules
+   * are created, updated, or deleted in a batch.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the promotion
+   *   rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+   *   created, // The IDs of the created rules
+   *   updated, // The IDs of the updated rules
+   *   deleted, // The IDs of the deleted rules
+   * }
+   * ```
+   */
+  RULES_UPDATED: "promotion.rules_updated",
+} as const
+
+/**
+ * @category Campaign
+ * @customNamespace Promotion
+ */
+export const CampaignWorkflowEvents = {
+  /**
+   * Emitted when campaigns are created.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   * }
+   * ```
+   */
+  CREATED: "campaign.created",
+  /**
+   * Emitted when campaigns are updated.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   * }
+   * ```
+   */
+  UPDATED: "campaign.updated",
+  /**
+   * Emitted when campaigns are deleted.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   * }
+   * ```
+   */
+  DELETED: "campaign.deleted",
+  /**
+   * Emitted when promotions are added to or removed from a campaign.
+   *
+   * @since 2.21.3
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   id, // The ID of the campaign
+   *   added_promotion_ids, // The IDs of the promotions added to the campaign
+   *   removed_promotion_ids, // The IDs of the promotions removed from the campaign
+   * }
+   * ```
+   */
+  PROMOTIONS_UPDATED: "campaign.promotions_updated",
+} as const
+
+/**
  * @category Invite
  * @customNamespace User
  */
