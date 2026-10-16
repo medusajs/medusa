@@ -1,12 +1,19 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 
+import { deleteProductVariantsWorkflow } from "@medusajs/core-flows"
 import CurrencyModule from "@medusajs/currency"
+import CustomerModule from "@medusajs/customer"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import ProductModule from "@medusajs/product"
 import RegionModule from "@medusajs/region"
-import { defineLink } from "@medusajs/utils"
+import { ContainerRegistrationKeys, defineLink, Modules } from "@medusajs/utils"
 
 jest.setTimeout(50000)
+
+defineLink(ProductModule.linkable.productVariant, {
+  linkable: CustomerModule.linkable.customerGroup,
+  deleteCascade: true,
+})
 
 medusaIntegrationTestRunner({
   testSuite: ({ getContainer }) => {
@@ -781,6 +788,36 @@ medusaIntegrationTestRunner({
           foreignKey: "secondary_region_id",
           serviceName: "region",
         })
+      })
+
+      it("should cascade delete records linked to a variant when the variant is deleted", async () => {
+        const container = getContainer()
+        const productService = container.resolve(Modules.PRODUCT)
+        const customerService = container.resolve(Modules.CUSTOMER)
+        const link = container.resolve(ContainerRegistrationKeys.LINK)
+
+        const product = await productService.createProducts({
+          title: "Product",
+          variants: [{ title: "Variant" }],
+        })
+        const group = await customerService.createCustomerGroups({
+          name: "Linked group",
+        })
+
+        await link.create({
+          [Modules.PRODUCT]: { product_variant_id: product.variants[0].id },
+          [Modules.CUSTOMER]: { customer_group_id: group.id },
+        })
+
+        await deleteProductVariantsWorkflow(container).run({
+          input: { ids: [product.variants[0].id] },
+        })
+
+        const [deletedGroup] = await customerService.listCustomerGroups(
+          { id: group.id },
+          { withDeleted: true }
+        )
+        expect(deletedGroup.deleted_at).toBeTruthy()
       })
     })
   },
