@@ -347,6 +347,55 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
           expect(retrieved.is_exclusive).toBe(false)
         })
+
+        it(
+          "should link a newly added option value to the product (regression #16863)",
+          async () => {
+            // Create a product with an exclusive option "Type" and one value
+            // "A". createProducts goes through the full link chain and
+            // populates both product_option_value and
+            // product_product_option_value.
+            const product = await service.createProducts({
+              title: "Type-Link Test",
+              options: [{ title: "Type", values: ["A"] }],
+            })
+
+            const option = product.options[0]
+            expect(option.values).toHaveLength(1)
+
+            // Baseline: "A" is visible through the product relationship.
+            const [before] = await service.listProducts(
+              { id: [product.id] },
+              { relations: ["options.values"] }
+            )
+            expect(before.options[0].values.map((v) => v.value)).toEqual(["A"])
+
+            // Update the existing option to add value "B".
+            await service.updateProductOptions(option.id, {
+              values: ["A", "B"],
+            })
+
+            // The option itself must have both values in product_option_value.
+            const [updatedOption] = await service.listProductOptions(
+              { id: [option.id] },
+              { relations: ["values"] }
+            )
+            expect(updatedOption.values).toHaveLength(2)
+            expect(updatedOption.values.map((v) => v.value)).toEqual(
+              expect.arrayContaining(["A", "B"])
+            )
+
+            // The product must also expose both values through
+            // product_product_option_value (the bug: "B" was missing here).
+            const [after] = await service.listProducts(
+              { id: [product.id] },
+              { relations: ["options.values"] }
+            )
+            const linkedValues = after.options[0].values.map((v) => v.value)
+            expect(linkedValues).toHaveLength(2)
+            expect(linkedValues).toEqual(expect.arrayContaining(["A", "B"]))
+          }
+        )
       })
 
       describe("createOptions", () => {
