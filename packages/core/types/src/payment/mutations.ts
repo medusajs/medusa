@@ -368,6 +368,13 @@ export interface ProviderWebhookPayload {
      * The headers of the webhook request.
      */
     headers: Record<string, unknown>
+
+    /**
+     * When the webhook request was received, as a Unix timestamp in milliseconds.
+     * Providers can use it to check a signature's timestamp against the time the
+     * request arrived, rather than the time the queued event is processed.
+     */
+    receivedAt?: number
   }
 }
 
