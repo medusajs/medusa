@@ -2,7 +2,7 @@ import { Logger, MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys, License } from "@medusajs/framework/utils"
 
 export const LICENSE_CHECK_URL =
-  "https://api.staging.medusajs.cloud/v1/license/check"
+  "https://api.prod.medusajs.cloud/v1/license/check"
 
 const LICENSE_CHECK_TIMEOUT = 5000
 
