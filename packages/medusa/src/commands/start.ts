@@ -144,7 +144,7 @@ type ExpressStack = {
  * @param url - The input url
  * @returns The route path
  */
-function findExpressRoutePath({
+export function findExpressRoutePath({
   stack,
   url,
 }: {
@@ -156,8 +156,12 @@ function findExpressRoutePath({
   while (stackToProcess.length > 0) {
     const layer = stackToProcess.pop()!
 
-    if (layer.name === "bound dispatch" && layer.match(url)) {
-      return layer.route.path
+    try {
+      if (layer.name === "bound dispatch" && layer.match(url)) {
+        return layer.route.path
+      }
+    } catch {
+      // Layer.match can throw a URIError if a route parameter or url contains invalid percent-encoding
     }
 
     // Add nested stack items to be processed if they exist
@@ -251,10 +255,15 @@ async function start(args: {
       await new Promise((resolve) => {
         res.on("finish", resolve)
         if (traceRequestHandler) {
-          const expressHandlerPath = findExpressRoutePath({
-            stack,
-            url: parse(req.url!, false).pathname!,
-          })
+          let expressHandlerPath: string | void = undefined
+          try {
+            expressHandlerPath = findExpressRoutePath({
+              stack,
+              url: parse(req.url!, false).pathname!,
+            })
+          } catch {
+            // Let Express handle (and reject) the malformed URL itself.
+          }
           void traceRequestHandler(
             async () => {
               app(req, res)
