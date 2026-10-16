@@ -314,4 +314,176 @@ describe("EasyPostFulfillmentService", () => {
       ).rejects.toThrow()
     })
   })
+
+  describe("validateFulfillmentData", () => {
+    const validContextFixture = {
+      id: "cart_test",
+      shipping_address: {
+        address_1: "417 montgomery st",
+        city: "San Francisco",
+        province: "CA",
+        postal_code: "94104",
+        country_code: "us",
+      },
+      from_location: {
+        address: {
+          address_1: "118 2nd street",
+          city: "San Francisco",
+          province: "CA",
+          postal_code: "94105",
+          country_code: "us",
+        },
+      },
+      items: [
+        {
+          quantity: 1,
+          variant: { weight: 16, length: 10, width: 8, height: 4 },
+        },
+      ],
+    } as unknown as CalculateShippingOptionPriceContext
+
+    test(
+      "persists a real shipment id and matching rate id for later purchase",
+      async () => {
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: process.env.EASYPOST_API_KEY!, defaultParcel }
+        )
+
+        const result = await service.validateFulfillmentData(
+          { carrier: "USPS", service: "Priority" },
+          {},
+          validContextFixture as any
+        )
+
+        expect(result.easypost_shipment_id).toMatch(/^shp_/)
+        expect(result.easypost_rate_id).toBeDefined()
+        expect(result.easypost_carrier).toBe("USPS")
+        expect(result.easypost_service).toBe("Priority")
+      },
+      REAL_API_TEST_TIMEOUT_MS
+    )
+
+    test("merges the persisted ids onto the existing data object rather than replacing it", async () => {
+      const fakeClient = {
+        createShipment: async () => ({
+          id: "shp_fake",
+          rates: [
+            {
+              id: "rate_1",
+              carrier: "USPS",
+              service: "Priority",
+              rate: "8.01",
+              currency: "USD",
+            },
+          ],
+        }),
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      const result = await service.validateFulfillmentData(
+        { carrier: "USPS", service: "Priority" },
+        { some_existing_field: "keep-me" },
+        validContextFixture as any
+      )
+
+      expect(result).toEqual({
+        some_existing_field: "keep-me",
+        easypost_shipment_id: "shp_fake",
+        easypost_rate_id: "rate_1",
+        easypost_carrier: "USPS",
+        easypost_service: "Priority",
+      })
+    })
+
+    // Review Focus: unlike `calculatePrice`, this method throws -- it has no
+    // sensible fake-data fallback, since its whole job is to persist the
+    // REAL ids `createFulfillment` will later use to buy an actual label.
+    test("throws when EasyPost can't quote this carrier+service for the destination (Review Focus)", async () => {
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: process.env.EASYPOST_API_KEY!, defaultParcel }
+      )
+
+      await expect(
+        service.validateFulfillmentData(
+          { carrier: "NotARealCarrier", service: "Fake" },
+          {},
+          validContextFixture as any
+        )
+      ).rejects.toThrow()
+    })
+
+    test("the thrown error names the specific carrier+service that failed to quote", async () => {
+      const fakeClient = {
+        createShipment: async () => ({
+          id: "shp_fake",
+          rates: [
+            {
+              id: "rate_1",
+              carrier: "USPS",
+              service: "Priority",
+              rate: "8.01",
+              currency: "USD",
+            },
+          ],
+        }),
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      await expect(
+        service.validateFulfillmentData(
+          { carrier: "NotARealCarrier", service: "Fake" },
+          {},
+          validContextFixture as any
+        )
+      ).rejects.toThrow(/NotARealCarrier.*Fake/)
+    })
+
+    test("still throws when the EasyPost API call itself fails", async () => {
+      const fakeClient = {
+        createShipment: async () => {
+          throw new Error("ECONNREFUSED: could not reach EasyPost")
+        },
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      await expect(
+        service.validateFulfillmentData(
+          { carrier: "USPS", service: "Priority" },
+          {},
+          validContextFixture as any
+        )
+      ).rejects.toThrow(/ECONNREFUSED/)
+    })
+
+    test("throws a clear error when the destination address is incomplete", async () => {
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel }
+      )
+
+      const context = {
+        ...validContextFixture,
+        shipping_address: { city: "San Francisco" },
+      } as unknown as CalculateShippingOptionPriceContext
+
+      await expect(
+        service.validateFulfillmentData(
+          { carrier: "USPS", service: "Priority" },
+          {},
+          context as any
+        )
+      ).rejects.toThrow()
+    })
+  })
 })

@@ -8,9 +8,15 @@ import {
   CalculateShippingOptionPriceContext,
   CreateShippingOptionDTO,
   FulfillmentOption,
+  ValidateFulfillmentDataContext,
 } from "@medusajs/types"
 import { CARRIER_SERVICE_MAP } from "../core/carrier-services"
-import { EasyPostAddressInput, EasyPostClient } from "../core/easypost-client"
+import {
+  EasyPostAddressInput,
+  EasyPostClient,
+  EasyPostShipment,
+  Rate,
+} from "../core/easypost-client"
 import { buildParcel, ParcelDimensions } from "../core/parcel"
 
 type InjectedDependencies = {
@@ -206,37 +212,21 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
     data: Record<string, unknown>,
     context: CalculateShippingOptionPriceContext
   ): Promise<CalculatedShippingOptionPrice> {
-    const carrier = optionData?.carrier
-    const service = optionData?.service
-
-    if (typeof carrier !== "string" || typeof service !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `EasyPost fulfillment provider: cannot calculate a price without a carrier and service -- got option data ${JSON.stringify(
-          optionData
-        )}.`
-      )
-    }
-
-    const parcel = buildParcel(context.items, this.options_.defaultParcel)
+    const { carrier, service } = extractCarrierAndService(
+      optionData,
+      "calculate a price"
+    )
 
     // A rejection here is a genuine API/connectivity/auth failure -- it
     // propagates and throws, unlike the "no matching rate" case below.
-    const shipment = await this.client_.createShipment({
-      toAddress: toEasyPostAddress(context.shipping_address, "destination"),
-      fromAddress: toEasyPostAddress(context.from_location?.address, "origin"),
-      parcel,
-    })
-
-    const rate = shipment.rates.find(
-      (candidate) =>
-        candidate.carrier === carrier && candidate.service === service
+    const { shipment, rate } = await this.createShipmentAndMatchRate(
+      carrier,
+      service,
+      context
     )
 
     if (!rate) {
-      const quoted = shipment.rates
-        .map((candidate) => `${candidate.carrier}:${candidate.service}`)
-        .join(", ")
+      const quoted = describeQuotedRates(shipment)
       this.logger_.warn(
         `EasyPost fulfillment provider: no rate was returned for carrier "${carrier}" service "${service}" -- EasyPost quoted [${quoted}] for this shipment. Falling back to the configured unquotable-fallback price rather than failing the whole cart's shipping options.`
       )
@@ -254,6 +244,131 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
       is_calculated_price_tax_inclusive: false,
     }
   }
+
+  /**
+   * Validates the `data` property of a shipping method when a customer (or
+   * the storefront on their behalf) explicitly adds this shipping option to
+   * their cart, and persists the real EasyPost shipment/rate ids that
+   * `createFulfillment` will later need to actually buy the label.
+   *
+   * **Why this throws instead of using `calculatePrice`'s fallback
+   * pattern:** this method has the same mechanical batching hazard
+   * `calculatePrice` had -- `validateAndReturnShippingMethodsDataStep`
+   * batches every shipping method's `validateFulfillmentData` call through
+   * core's `promiseAll`, which re-throws the first rejection across the
+   * whole batch rather than dropping just one method's result. But unlike
+   * `calculatePrice` (called automatically and speculatively every time a
+   * cart is priced), this method only runs on an explicit customer action
+   * (adding a shipping method), and it has no sensible fake-data fallback:
+   * its whole job is to persist the REAL shipment/rate ids `createFulfillment`
+   * will use to buy an actual label, so inventing placeholder ids would only
+   * move the failure to order-fulfillment time -- after the customer has
+   * already paid, and can't ship. Failing cleanly at checkout is the better
+   * customer experience here. So this throws on a no-match rate, with a
+   * message naming the specific carrier+service that failed, so a batch
+   * failure (if one ever happens) stays legible about which option broke.
+   */
+  async validateFulfillmentData(
+    optionData: Record<string, unknown>,
+    data: Record<string, unknown>,
+    context: ValidateFulfillmentDataContext
+  ): Promise<Record<string, unknown>> {
+    const { carrier, service } = extractCarrierAndService(
+      optionData,
+      "validate fulfillment data"
+    )
+
+    const { shipment, rate } = await this.createShipmentAndMatchRate(
+      carrier,
+      service,
+      context
+    )
+
+    if (!rate) {
+      const quoted = describeQuotedRates(shipment)
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `EasyPost fulfillment provider: cannot validate fulfillment data for carrier "${carrier}" service "${service}" -- EasyPost quoted [${quoted}] for this shipment, which doesn't include the requested carrier+service for this destination.`
+      )
+    }
+
+    return {
+      ...data,
+      easypost_shipment_id: shipment.id,
+      easypost_rate_id: rate.id,
+      easypost_carrier: rate.carrier,
+      easypost_service: rate.service,
+    }
+  }
+
+  /**
+   * Shared by `calculatePrice` and `validateFulfillmentData`: builds a
+   * parcel from the cart's real items, creates a real EasyPost shipment
+   * against the cart's real destination/origin addresses, and looks up the
+   * rate (if any) EasyPost quoted for the requested carrier+service. Each
+   * caller decides for itself what "no matching rate" means for its own
+   * purpose -- this helper only reports what EasyPost returned.
+   */
+  private async createShipmentAndMatchRate(
+    carrier: string,
+    service: string,
+    context: Pick<
+      CalculateShippingOptionPriceContext,
+      "shipping_address" | "from_location" | "items"
+    >
+  ): Promise<{ shipment: EasyPostShipment; rate: Rate | undefined }> {
+    const parcel = buildParcel(context.items, this.options_.defaultParcel)
+
+    const shipment = await this.client_.createShipment({
+      toAddress: toEasyPostAddress(context.shipping_address, "destination"),
+      fromAddress: toEasyPostAddress(context.from_location?.address, "origin"),
+      parcel,
+    })
+
+    const rate = shipment.rates.find(
+      (candidate) =>
+        candidate.carrier === carrier && candidate.service === service
+    )
+
+    return { shipment, rate }
+  }
+}
+
+/**
+ * Pulls the `carrier`/`service` strings off a shipping option's own `data`
+ * (the shape `getFulfillmentOptions()` returned). Shared by `calculatePrice`
+ * and `validateFulfillmentData`, which both require these before they can
+ * call EasyPost at all. `action` is interpolated into the error message to
+ * say what the caller was trying to do.
+ */
+function extractCarrierAndService(
+  optionData: Record<string, unknown>,
+  action: string
+): { carrier: string; service: string } {
+  const carrier = optionData?.carrier
+  const service = optionData?.service
+
+  if (typeof carrier !== "string" || typeof service !== "string") {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `EasyPost fulfillment provider: cannot ${action} without a carrier and service -- got option data ${JSON.stringify(
+        optionData
+      )}.`
+    )
+  }
+
+  return { carrier, service }
+}
+
+/**
+ * Renders a shipment's quoted rates as a human-readable `"carrier:service"`
+ * list, for use in warning/error messages when a requested carrier+service
+ * wasn't among them.
+ */
+function describeQuotedRates(shipment: EasyPostShipment): string {
+  return shipment.rates
+    .map((candidate) => `${candidate.carrier}:${candidate.service}`)
+    .join(", ")
 }
 
 /**
@@ -270,8 +385,8 @@ function isCarrierServiceOptionId(id: unknown): boolean {
 /**
  * A loose shape covering both `CartAddressDTO` (the cart's
  * `shipping_address`) and `StockLocationAddressDTO` (a stock location's
- * `address`) -- the two real address shapes `calculatePrice` receives via
- * its `context` parameter.
+ * `address`) -- the two real address shapes `calculatePrice` and
+ * `validateFulfillmentData` receive via their `context` parameter.
  */
 type AddressLike = {
   first_name?: string | null
@@ -304,7 +419,7 @@ function toEasyPostAddress(
   if (missing.length > 0) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `EasyPost fulfillment provider: cannot calculate a price without a complete ${label} address -- missing ${missing.join(
+      `EasyPost fulfillment provider: cannot create a shipment without a complete ${label} address -- missing ${missing.join(
         ", "
       )}.`
     )
