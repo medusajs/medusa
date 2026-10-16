@@ -1,4 +1,4 @@
-import { MedusaError, PaymentSessionStatus } from "@medusajs/framework/utils"
+import { MedusaError, PaymentEvents, PaymentSessionStatus } from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
@@ -8,7 +8,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useQueryGraphStep } from "../../common"
+import { emitEventStep, useQueryGraphStep } from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { authorizePaymentSessionStep } from "../steps"
 
@@ -42,6 +42,21 @@ const validatePendingAuthorizationStep = createStep(
 
 export const authorizePaymentSessionForOrderWorkflowId =
   "authorize-payment-session-for-order"
+
+export function paymentCapturedEventData(payment?: {
+  id: string
+  captures?: unknown[]
+  captured_at?: unknown
+} | null) {
+  if (!payment || (!payment.captures?.length && !payment.captured_at)) {
+    return null
+  }
+
+  return {
+    eventName: PaymentEvents.CAPTURED,
+    data: { id: payment.id },
+  }
+}
 /**
  * This workflow authorizes a payment session that is in pending_authorization status,
  * typically triggered by an admin action when a deferred payment (bank transfer,
@@ -108,6 +123,12 @@ export const authorizePaymentSessionForOrderWorkflow = createWorkflow(
       )
 
       addOrderTransactionStep(orderTransactions)
+    })
+
+    when("emit-payment-captured-event", { payment }, ({ payment }) => {
+      return !!paymentCapturedEventData(payment)
+    }).then(() => {
+      emitEventStep(paymentCapturedEventData(payment)!)
     })
 
     return new WorkflowResponse(payment)
