@@ -93,55 +93,84 @@ export class PostgresAdvisoryLockProvider
       expire?: number
     }
   ): Promise<void> {
-    keys = Array.isArray(keys) ? keys : [keys]
-
+    const rawKeys = Array.isArray(keys) ? keys : [keys]
+    const uniqueKeys = Array.from(new Set(rawKeys))
     const { ownerId, expire } = args ?? {}
-    for (const key of keys) {
-      const row = await this.loadLock(key)
+    const acquiredKeys: string[] = []
 
-      if (!row) {
-        const expireSql = expire
-          ? `NOW() + INTERVAL '${+expire} SECONDS'`
-          : "NULL"
-
+    const rollback = async () => {
+      for (const k of acquiredKeys) {
         try {
-          await this.getManager().execute(
-            `INSERT INTO locking (id, owner_id, expiration) VALUES (?, ?, ${expireSql})`,
-            [key, ownerId ?? null]
-          )
-        } catch (err) {
-          if (err.toString().includes("locking_pkey")) {
-            const owner = await this.loadLock(key)
-            if (ownerId != owner.owner_id) {
-              throw new Error(`"${key}" is already locked.`)
-            }
+          if (isDefined(ownerId)) {
+            await this.getManager().execute(
+              `DELETE FROM locking WHERE id = ? AND owner_id = ?`,
+              [k, ownerId]
+            )
           } else {
-            throw err
+            await this.getManager().execute(
+              `DELETE FROM locking WHERE id = ? AND owner_id IS NULL`,
+              [k]
+            )
           }
+        } catch {
+          // Ignore rollback errors during failure handling
         }
-        continue
       }
+      acquiredKeys.length = 0
+    }
 
-      const errMessage = `Failed to acquire lock for key "${key}"`
-      if (row.owner_id === null || row.owner_id !== ownerId) {
-        throw new Error(errMessage)
+    try {
+      for (const key of uniqueKeys) {
+        const row = await this.loadLock(key)
+
+        if (!row) {
+          const expireSql = expire
+            ? `NOW() + INTERVAL '${+expire} SECONDS'`
+            : "NULL"
+
+          try {
+            await this.getManager().execute(
+              `INSERT INTO locking (id, owner_id, expiration) VALUES (?, ?, ${expireSql})`,
+              [key, ownerId ?? null]
+            )
+            acquiredKeys.push(key)
+          } catch (err) {
+            if (err.toString().includes("locking_pkey")) {
+              const owner = await this.loadLock(key)
+              if (ownerId != owner.owner_id) {
+                throw new Error(`"${key}" is already locked.`)
+              }
+            } else {
+              throw err
+            }
+          }
+          continue
+        }
+
+        const errMessage = `Failed to acquire lock for key "${key}"`
+        if (row.owner_id === null || row.owner_id !== ownerId) {
+          throw new Error(errMessage)
+        }
+
+        if (!row.expiration && row.owner_id == ownerId) {
+          continue
+        }
+
+        const canRefresh =
+          row.owner_id == ownerId && (expire || row.expiration! <= row.now)
+
+        if (!canRefresh || !expire) {
+          continue
+        }
+
+        await this.getManager().execute(
+          `UPDATE locking SET owner_id = ?, expiration = NOW() + INTERVAL '${+expire} SECONDS' WHERE id = ?`,
+          [ownerId ?? null, key]
+        )
       }
-
-      if (!row.expiration && row.owner_id == ownerId) {
-        continue
-      }
-
-      const canRefresh =
-        row.owner_id == ownerId && (expire || row.expiration! <= row.now)
-
-      if (!canRefresh || !expire) {
-        continue
-      }
-
-      await this.getManager().execute(
-        `UPDATE locking SET owner_id = ?, expiration = NOW() + INTERVAL '${+expire} SECONDS' WHERE id = ?`,
-        [ownerId ?? null, key]
-      )
+    } catch (error) {
+      await rollback()
+      throw error
     }
   }
 

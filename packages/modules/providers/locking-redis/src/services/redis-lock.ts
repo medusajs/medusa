@@ -328,22 +328,28 @@ export class RedisLockingProvider implements ILockingProvider {
     },
     cancellationToken?: { cancelled: boolean }
   ): Promise<void> {
-    keys = Array.isArray(keys) ? keys : [keys]
+    const rawKeys = Array.isArray(keys) ? keys : [keys]
+    const uniqueKeys = Array.from(new Set(rawKeys))
 
     const timeout = Math.max(args?.expire ?? this.waitLockingTimeout, 1)
     const timeoutSeconds = Number.isNaN(timeout) ? 1 : timeout
-    let retryDelay = this.defaultRetryInterval
 
     const ownerId = args?.ownerId ?? "*"
     const awaitQueue = args?.awaitQueue ?? false
 
-    const acquirePromises = keys.map(async (key) => {
+    const acquiredKeys = new Set<string>()
+    const localCancellation = { cancelled: false }
+    const isCancelled = () =>
+      localCancellation.cancelled || !!cancellationToken?.cancelled
+
+    const acquirePromises = uniqueKeys.map(async (key) => {
       const errMessage = `Failed to acquire lock for key "${key}"`
       const keyName = this.getKeyName(key)
+      let retryDelay = this.defaultRetryInterval
 
       const acquireLock = async () => {
         while (true) {
-          if (cancellationToken?.cancelled) {
+          if (isCancelled()) {
             throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
           }
 
@@ -355,9 +361,17 @@ export class RedisLockingProvider implements ILockingProvider {
           )
 
           if (result === 1) {
+            if (isCancelled()) {
+              await this.redisClient.releaseLock(keyName, ownerId)
+              throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
+            }
+            acquiredKeys.add(key)
             break
           } else {
             if (awaitQueue) {
+              if (isCancelled()) {
+                throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
+              }
               // Wait before retrying with exponential backoff and jitter
               const jitteredDelay = retryDelay * (0.5 + Math.random() * 0.5)
               await delay(jitteredDelay)
@@ -376,7 +390,19 @@ export class RedisLockingProvider implements ILockingProvider {
       await acquireLock()
     })
 
-    await promiseAll(acquirePromises)
+    try {
+      await promiseAll(acquirePromises)
+    } catch (error) {
+      localCancellation.cancelled = true
+      await Promise.allSettled(acquirePromises)
+
+      if (acquiredKeys.size > 0) {
+        await this.release(Array.from(acquiredKeys), { ownerId })
+        acquiredKeys.clear()
+      }
+
+      throw error
+    }
   }
 
   async release(
