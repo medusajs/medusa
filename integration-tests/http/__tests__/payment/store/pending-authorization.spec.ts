@@ -728,6 +728,62 @@ medusaIntegrationTestRunner({
           await setTimeout(500)
         }
       })
+
+      it.each([PaymentActions.AUTHORIZED, PaymentActions.SUCCESSFUL])(
+        "should leave unrelated carts alone when the %s webhook carries a session id this instance does not know",
+        async (action) => {
+          const paymentCollection = (
+            await api.post(
+              "/store/payment-collections",
+              { cart_id: cart.id },
+              storeHeaders
+            )
+          ).data.payment_collection
+
+          const sessionId = (
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: pendingAuthProviderId },
+              storeHeaders
+            )
+          ).data.payment_collection.payment_sessions[0].id
+
+          // Our cart is ready to be completed, so if the workflow picked it up
+          // by mistake it would go through and we would see it below.
+          const paymentModule = appContainer.resolve(Modules.PAYMENT)
+          await paymentModule.updatePaymentSession({
+            id: sessionId,
+            currency_code: "usd",
+            amount: paymentCollection.amount,
+            data: { payment_received: true },
+          })
+
+          // This is what happens when several instances share one provider
+          // account and the event was meant for one of the others.
+          const { errors } = await processPaymentWorkflow(appContainer).run({
+            input: {
+              action,
+              data: {
+                session_id: "payses_from_another_instance",
+                amount: paymentCollection.amount,
+              },
+            },
+            throwOnError: false,
+          })
+
+          expect(errors ?? []).toEqual([])
+
+          const cartAfter = (
+            await api.get(`/store/carts/${cart.id}`, storeHeaders)
+          ).data.cart
+          expect(cartAfter.completed_at).toBeNull()
+
+          const [session] = await paymentModule.listPaymentSessions({
+            id: sessionId,
+          })
+          expect(session.status).toBe("pending")
+        }
+      )
     })
   },
 })
