@@ -1,9 +1,11 @@
-import { RouteFocusModal } from "../../../../components/modals";
-import { usePricePreferences } from "../../../../hooks/api/price-preferences";
-import { useRegions } from "../../../../hooks/api/regions";
-import { useSalesChannel } from "../../../../hooks/api/sales-channels";
-import { useStore } from "../../../../hooks/api/store";
-import { GiftCardProductCreateForm } from "../components/gift-card-product-create-form";
+import { GiftCardProductCreateForm } from "../components/gift-card-product-create-form"
+import { RouteFocusModal } from "@medusajs/dashboard/components"
+import {
+  usePricePreferences,
+  useRegions,
+  useSalesChannel,
+  useStore,
+} from "@medusajs/dashboard/hooks"
 
 const GiftCardProductCreate = () => {
   const {
@@ -13,7 +15,7 @@ const GiftCardProductCreate = () => {
     error: storeError,
   } = useStore({
     fields: "+default_sales_channel",
-  });
+  })
 
   const {
     sales_channel,
@@ -22,14 +24,14 @@ const GiftCardProductCreate = () => {
     error: salesChannelError,
   } = useSalesChannel(store?.default_sales_channel_id!, {
     enabled: !!store?.default_sales_channel_id,
-  });
+  })
 
   const {
     regions,
     isPending: isRegionsPending,
     isError: isRegionsError,
     error: regionsError,
-  } = useRegions({ limit: 9999 });
+  } = useRegions({ limit: 9999 })
 
   const {
     price_preferences,
@@ -38,7 +40,7 @@ const GiftCardProductCreate = () => {
     error: pricePreferencesError,
   } = usePricePreferences({
     limit: 9999,
-  });
+  })
 
   const ready =
     !!store &&
@@ -48,22 +50,22 @@ const GiftCardProductCreate = () => {
     !!sales_channel &&
     !isSalesChannelPending &&
     !!price_preferences &&
-    !isPricePreferencesPending;
+    !isPricePreferencesPending
 
   if (isStoreError) {
-    throw storeError;
+    throw storeError
   }
 
   if (isRegionsError) {
-    throw regionsError;
+    throw regionsError
   }
 
   if (isSalesChannelError) {
-    throw salesChannelError;
+    throw salesChannelError
   }
 
   if (isPricePreferencesError) {
-    throw pricePreferencesError;
+    throw pricePreferencesError
   }
 
   return (
@@ -85,7 +87,7 @@ const GiftCardProductCreate = () => {
         />
       )}
     </RouteFocusModal>
-  );
-};
+  )
+}
 
-export default GiftCardProductCreate;
+export default GiftCardProductCreate

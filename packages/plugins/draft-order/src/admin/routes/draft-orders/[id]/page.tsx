@@ -11,8 +11,8 @@ import { JsonViewSection } from "../../../components/draft-orders/json-view-sect
 import { MetadataSection } from "../../../components/draft-orders/metadata-section"
 import { ShippingSection } from "../../../components/draft-orders/shipping-section"
 import { SummarySection } from "../../../components/draft-orders/summary-section"
-import { useOrder, useOrderChanges } from "../../../hooks/api/orders"
 import { sdk } from "../../../lib/queries/sdk"
+import { useOrder, useOrderChanges } from "@medusajs/dashboard/hooks"
 
 type AdminDraftOrderSummary = HttpTypes.AdminOrder & {
   promotions: HttpTypes.AdminPromotion[]
@@ -30,7 +30,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export const handle = {
   breadcrumb: (match: UIMatch<HttpTypes.AdminOrderResponse>) =>
-    `#${match.loaderData.order.display_id}`,
+    match.loaderData?.order.display_id ? `#${match.loaderData.order.display_id}` : undefined,
 }
 
 const ID = () => {

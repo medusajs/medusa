@@ -1,10 +1,10 @@
-import { AdminGetTransactionsParams } from "../../../../../../types";
-import { useQueryParams } from "../../../../../hooks/common/use-query-params";
+import { AdminGetTransactionsParams } from "../../../../../../types"
+import { useQueryParams } from "@medusajs/dashboard/hooks"
 
 type UseTransactionTableQueryProps = {
-  prefix?: string;
-  pageSize?: number;
-};
+  prefix?: string
+  pageSize?: number
+}
 
 export const useTransactionTableQuery = ({
   prefix,
@@ -13,9 +13,9 @@ export const useTransactionTableQuery = ({
   const queryObject = useQueryParams(
     ["offset", "created_at", "updated_at"],
     prefix
-  );
+  )
 
-  const { offset, created_at, updated_at, ...rest } = queryObject;
+  const { offset, created_at, updated_at, ...rest } = queryObject
 
   const searchParams: AdminGetTransactionsParams = {
     limit: pageSize,
@@ -24,7 +24,7 @@ export const useTransactionTableQuery = ({
     updated_at: updated_at ? JSON.parse(updated_at) : undefined,
 
     ...rest,
-  };
+  }
 
-  return searchParams;
-};
+  return searchParams
+}

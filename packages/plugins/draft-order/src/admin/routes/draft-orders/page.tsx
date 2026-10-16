@@ -1,5 +1,13 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
-import { LayoutComposer } from "@medusajs/dashboard/components"
+import { DataTable, LayoutComposer } from "@medusajs/dashboard/components"
+import {
+  useCustomers,
+  useDataTableDateFilters,
+  useDate,
+  useQueryParams,
+  useRegions,
+  useSalesChannels,
+} from "@medusajs/dashboard/hooks"
 import type { HttpTypes } from "@medusajs/types"
 import {
   Container,
@@ -10,14 +18,7 @@ import {
 import { keepPreviousData } from "@tanstack/react-query"
 import { useMemo } from "react"
 
-import { DataTable } from "../../components/common/data-table"
-import { useCustomers } from "../../hooks/api/customers"
 import { useDraftOrders } from "../../hooks/api/draft-orders"
-import { useRegions } from "../../hooks/api/regions"
-import { useSalesChannels } from "../../hooks/api/sales-channels"
-import { useDataTableDateFilters } from "../../hooks/common/use-data-table-date-filters"
-import { useQueryParams } from "../../hooks/common/use-query-params"
-import { getFullDate } from "../../lib/utils/date-utils"
 import { useTranslation } from "react-i18next"
 
 const PAGE_SIZE = 20
@@ -100,6 +101,8 @@ export const config = defineRouteConfig({
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminOrder>()
 
 const useColumns = () => {
+  const { getFullDate } = useDate()
+
   return useMemo(
     () => [
       columnHelper.accessor("display_id", {
@@ -144,7 +147,7 @@ const useColumns = () => {
         enableSorting: true,
       }),
     ],
-    []
+    [getFullDate]
   )
 }
 

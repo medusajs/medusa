@@ -1,3 +1,9 @@
+import {
+  DataTable,
+  RouteFocusModal,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useSalesChannels, useUpdateProduct } from "@medusajs/dashboard/hooks"
 import { Button, createDataTableColumnHelper } from "@medusajs/ui"
 import { RowSelectionState } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
@@ -7,14 +13,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
-import { DataTable } from "../../../../../../components/data-table"
-import * as hooks from "../../../../../../components/data-table/helpers/sales-channels"
 import {
-  RouteFocusModal,
-  useRouteModal,
-} from "../../../../../../components/modals"
-import { useUpdateProduct } from "../../../../../../hooks/api/products"
-import { useSalesChannels } from "../../../../../../hooks/api/sales-channels"
+  useSalesChannelTableColumns,
+  useSalesChannelTableEmptyState,
+  useSalesChannelTableFilters,
+  useSalesChannelTableQuery,
+} from "@medusajs/dashboard/hooks"
 
 type EditSalesChannelsFormProps = {
   product: HttpTypes.AdminProduct
@@ -58,7 +62,7 @@ export const EditSalesChannelsForm = ({
     })
   }, [rowSelection, setValue])
 
-  const searchParams = hooks.useSalesChannelTableQuery({
+  const searchParams = useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
     prefix: PREFIX,
   })
@@ -71,8 +75,8 @@ export const EditSalesChannelsForm = ({
     }
   )
 
-  const filters = hooks.useSalesChannelTableFilters()
-  const emptyState = hooks.useSalesChannelTableEmptyState()
+  const filters = useSalesChannelTableFilters()
+  const emptyState = useSalesChannelTableEmptyState()
   const columns = useColumns()
 
   const { mutateAsync, isPending: isMutating } = useUpdateProduct(product.id)
@@ -147,7 +151,7 @@ const columnHelper =
   >()
 
 const useColumns = () => {
-  const columns = hooks.useSalesChannelTableColumns()
+  const columns = useSalesChannelTableColumns()
 
   return useMemo(() => [columnHelper.select(), ...columns], [columns])
 }

@@ -4,16 +4,19 @@ import { Button, Heading, Hint, Label, Select, toast } from "@medusajs/ui"
 import { Control, useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { z } from "zod"
-import { Form } from "../../../../components/common/form"
-import { KeyboundForm } from "../../../../components/common/keybound-form"
-import { Combobox } from "../../../../components/inputs/combobox"
-import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import {
   useDraftOrder,
   useUpdateDraftOrder,
 } from "../../../../hooks/api/draft-orders"
-import { useComboboxData } from "../../../../hooks/common/use-combobox-data"
 import { sdk } from "../../../../lib/queries/sdk"
+import {
+  Combobox,
+  Form,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useComboboxData } from "@medusajs/dashboard/hooks"
 
 const TransferOwnership = () => {
   const { id } = useParams()
@@ -95,7 +98,7 @@ const TransferOwnershipForm = ({ order }: TransferOwnershipFormProps) => {
         onSubmit={onSubmit}
       >
         <RouteDrawer.Body className="flex flex-col gap-y-6 overflow-y-auto">
-          <div className="flex items-center justify-center bg-ui-bg-component rounded-md border">
+          <div className="bg-ui-bg-component flex items-center justify-center rounded-md border">
             <Illustration />
           </div>
           {currentCustomer && (

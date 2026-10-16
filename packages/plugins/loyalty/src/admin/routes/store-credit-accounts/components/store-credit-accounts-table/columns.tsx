@@ -1,10 +1,10 @@
-import { Badge, createDataTableColumnHelper } from "@medusajs/ui";
-import { useMemo } from "react";
-import { AdminStoreCreditAccount } from "../../../../../types";
-import { formatAmount } from "../../../../utils/format-amount";
-import { getRelativeDate } from "../../../../utils/format-date";
+import { Badge, createDataTableColumnHelper } from "@medusajs/ui"
+import { useMemo } from "react"
+import { AdminStoreCreditAccount } from "../../../../../types"
+import { getRelativeDate } from "../../../../utils/format-date"
+import { formatCurrency } from "@medusajs/dashboard/lib"
 
-const columnHelper = createDataTableColumnHelper<AdminStoreCreditAccount>();
+const columnHelper = createDataTableColumnHelper<AdminStoreCreditAccount>()
 
 export const useStoreCreditAccountTableColumns = () => {
   return useMemo(() => {
@@ -16,44 +16,44 @@ export const useStoreCreditAccountTableColumns = () => {
             <Badge size="2xsmall">
               {row.original.currency_code.toUpperCase()}
             </Badge>
-          );
+          )
         },
       }),
 
       columnHelper.accessor("customer.email", {
         header: "Customer",
         cell: ({ row }) => {
-          return row.original.customer?.email ?? "N/A";
+          return row.original.customer?.email ?? "N/A"
         },
       }),
 
       columnHelper.accessor("balance", {
         header: "Balance",
         cell: ({ row }) => {
-          return formatAmount(
+          return formatCurrency(
             row.original.balance as number,
             row.original.currency_code
-          );
+          )
         },
       }),
 
       columnHelper.accessor("credits", {
         header: "Credits",
         cell: ({ row }) => {
-          return formatAmount(
+          return formatCurrency(
             row.original.credits as number,
             row.original.currency_code
-          );
+          )
         },
       }),
 
       columnHelper.accessor("debits", {
         header: "Debits",
         cell: ({ row }) => {
-          return formatAmount(
+          return formatCurrency(
             row.original.debits as number,
             row.original.currency_code
-          );
+          )
         },
       }),
 
@@ -61,6 +61,6 @@ export const useStoreCreditAccountTableColumns = () => {
         header: "Created at",
         cell: ({ row }) => getRelativeDate(row.original.created_at),
       }),
-    ];
-  }, []);
-};
+    ]
+  }, [])
+}

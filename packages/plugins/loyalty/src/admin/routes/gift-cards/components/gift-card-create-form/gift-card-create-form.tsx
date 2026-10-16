@@ -13,12 +13,15 @@ import {
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "@medusajs/framework/zod"
-import { Combobox } from "../../../../components/combobox"
-import { Form } from "../../../../components/form"
-import { RouteFocusModal, useRouteModal } from "../../../../components/modals"
 import { useCreateGiftCard } from "../../../../hooks/api/gift-cards"
-import { currencies } from "../../../../lib/currencies"
 import { GiftCardCreateSchema } from "./schema"
+import {
+  Combobox,
+  Form,
+  RouteFocusModal,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { currencies } from "@medusajs/dashboard/lib"
 
 export const GiftCardCreateForm = ({
   store,

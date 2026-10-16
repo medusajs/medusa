@@ -5,16 +5,19 @@ import { Control, useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
 import { z } from "zod"
 
-import { Form } from "../../../../components/common/form"
-import { KeyboundForm } from "../../../../components/common/keybound-form"
-import { Combobox } from "../../../../components/inputs/combobox"
-import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import {
   useDraftOrder,
   useUpdateDraftOrder,
 } from "../../../../hooks/api/draft-orders"
-import { useComboboxData } from "../../../../hooks/common/use-combobox-data"
 import { sdk } from "../../../../lib/queries/sdk"
+import {
+  Combobox,
+  Form,
+  KeyboundForm,
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useComboboxData } from "@medusajs/dashboard/hooks"
 
 const SalesChannel = () => {
   const { id } = useParams()

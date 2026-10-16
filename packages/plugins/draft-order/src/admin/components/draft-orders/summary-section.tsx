@@ -12,9 +12,8 @@ import {
 } from "@medusajs/ui"
 import { Link, useNavigate } from "react-router-dom"
 import { useConvertDraftOrder } from "../../hooks/api/draft-orders"
-import { getLocaleAmount, getStylizedAmount } from "../../lib/data/currencies"
-import { ActionMenu } from "../common/action-menu"
-import { Thumbnail } from "../common/thumbnail"
+import { ActionMenu, Thumbnail } from "@medusajs/dashboard/components"
+import { getLocaleAmount, getStylizedAmount } from "@medusajs/dashboard/lib"
 
 interface SummarySectionProps {
   order: HttpTypes.AdminOrder & {
@@ -26,8 +25,8 @@ export const SummarySection = ({ order }: SummarySectionProps) => {
   const promotions: HttpTypes.AdminPromotion[] | null = order.promotions || []
 
   return (
-    <Container className="p-0 overflow-hidden">
-      <div className="px-6 py-4 flex items-center justify-between gap-x-4">
+    <Container className="overflow-hidden p-0">
+      <div className="flex items-center justify-between gap-x-4 px-6 py-4">
         <Heading>Summary</Heading>
         <ActionMenu
           groups={[
@@ -96,12 +95,10 @@ interface ItemProps {
 
 const Item = ({ item, currencyCode }: ItemProps) => {
   return (
-    <div className="px-6 py-4 grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-3 px-6 py-4">
       <div className="flex items-center gap-x-3">
         {/* Only display a thumbnail for non-custom items */}
-        {item.variant_id && (
-          <Thumbnail thumbnail={item.thumbnail} alt={item.title} />
-        )}
+        {item.variant_id && <Thumbnail src={item.thumbnail} alt={item.title} />}
         <div>
           <div className="flex items-center gap-x-1">
             <Text size="small" weight="plus" leading="compact">
@@ -122,7 +119,7 @@ const Item = ({ item, currencyCode }: ItemProps) => {
           </Text>
         </div>
       </div>
-      <div className="grid grid-cols-3 items-center gap-3 [&>div]:text-right text-ui-fg-subtle">
+      <div className="text-ui-fg-subtle grid grid-cols-3 items-center gap-3 [&>div]:text-right">
         <div>
           <Text>{getLocaleAmount(item.unit_price, currencyCode)}</Text>
         </div>
@@ -159,9 +156,9 @@ const Total = ({
   itemCount,
 }: TotalProps) => {
   return (
-    <div className="flex flex-col px-6 py-4 gap-y-2">
+    <div className="flex flex-col gap-y-2 px-6 py-4">
       {itemCount > 0 && (
-        <div className="grid grid-cols-3 items-center justify-between gap-x-4 text-ui-fg-subtle">
+        <div className="text-ui-fg-subtle grid grid-cols-3 items-center justify-between gap-x-4">
           <Text size="small" leading="compact">
             Subtotal
           </Text>
@@ -178,7 +175,7 @@ const Total = ({
         </div>
       )}
       {shippingSubtotal !== null && (
-        <div className="flex items-center justify-between gap-x-4 text-ui-fg-subtle">
+        <div className="text-ui-fg-subtle flex items-center justify-between gap-x-4">
           <Text size="small" leading="compact">
             Shipping
           </Text>
@@ -190,7 +187,7 @@ const Total = ({
       {discountTotal !== null && (
         <div
           className={clx(
-            "grid grid-cols-2 items-center gap-x-4 text-ui-fg-subtle",
+            "text-ui-fg-subtle grid grid-cols-2 items-center gap-x-4",
             {
               "grid-cols-3": !!promotions,
             }
@@ -216,7 +213,7 @@ const Total = ({
         </div>
       )}
       {taxTotal !== null && (
-        <div className="flex items-center justify-between gap-x-4 text-ui-fg-subtle">
+        <div className="text-ui-fg-subtle flex items-center justify-between gap-x-4">
           <Text size="small" leading="compact">
             Tax
           </Text>
@@ -274,7 +271,7 @@ const Footer = ({ order }: { order: HttpTypes.AdminOrder }) => {
   }
 
   return (
-    <div className="px-6 py-4 flex items-center justify-end gap-x-2 bg-ui-bg-component">
+    <div className="bg-ui-bg-component flex items-center justify-end gap-x-2 px-6 py-4">
       <Button
         size="small"
         variant="secondary"

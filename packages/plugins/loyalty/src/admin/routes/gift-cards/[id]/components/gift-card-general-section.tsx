@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { Calendar } from "@medusajs/icons";
+import { useMemo } from "react"
+import { Calendar } from "@medusajs/icons"
 import {
   Badge,
   Container,
@@ -7,20 +7,24 @@ import {
   Heading,
   StatusBadge,
   Text,
-} from "@medusajs/ui";
-import { Link } from "react-router-dom";
-import { AdminGiftCard } from "../../../../../types";
-import { ActionMenu } from "../../../../components/action-menu";
-import { SectionRow } from "../../../../components/section-row";
-import { Thumbnail } from "../../../../components/thumbnail";
-import { getFullDate } from "../../../../utils/date-utils";
-import { formatAmount } from "../../../../utils/format-amount";
-import { formatDate, getRelativeDate } from "../../../../utils/format-date";
+} from "@medusajs/ui"
+import { Link } from "react-router-dom"
+import { AdminGiftCard } from "../../../../../types"
+import { useDate } from "@medusajs/dashboard/hooks"
+import { formatDate, getRelativeDate } from "../../../../utils/format-date"
+import {
+  ActionMenu,
+  SectionRow,
+  Thumbnail,
+} from "@medusajs/dashboard/components"
+import { formatCurrency } from "@medusajs/dashboard/lib"
 
 const GiftCardGeneralSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
+  const { getFullDate } = useDate()
+
   const hasGiftCardExpired = useMemo(() => {
-    return giftCard.expires_at && new Date(giftCard.expires_at) < new Date();
-  }, [giftCard.expires_at]);
+    return giftCard.expires_at && new Date(giftCard.expires_at) < new Date()
+  }, [giftCard.expires_at])
 
   return (
     <Container className="divide-y p-0">
@@ -97,7 +101,7 @@ const GiftCardGeneralSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
 
       <SectionRow
         title="Value"
-        value={formatAmount(giftCard.value, giftCard.currency_code)}
+        value={formatCurrency(giftCard.value, giftCard.currency_code)}
       />
 
       <SectionRow
@@ -110,7 +114,7 @@ const GiftCardGeneralSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
         value={getRelativeDate(giftCard.created_at)}
       />
     </Container>
-  );
-};
+  )
+}
 
-export default GiftCardGeneralSection;
+export default GiftCardGeneralSection

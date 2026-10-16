@@ -107,36 +107,52 @@ const Label = forwardRef<
     optional?: boolean
     tooltip?: ReactNode
     icon?: ReactNode
+    variant?: "default" | "subtle"
   }
->(({ className, optional = false, tooltip, icon, ...props }, ref) => {
-  const { formLabelId, formItemId } = useFormField()
-  const { t } = useTranslation()
+>(
+  (
+    {
+      className,
+      optional = false,
+      tooltip,
+      icon,
+      variant = "default",
+      ...props
+    },
+    ref
+  ) => {
+    const { formLabelId, formItemId } = useFormField()
+    const { t } = useTranslation()
 
-  return (
-    <div className="flex items-center gap-x-1">
-      <LabelComponent
-        id={formLabelId}
-        ref={ref}
-        className={clx(className)}
-        htmlFor={formItemId}
-        size="small"
-        weight="plus"
-        {...props}
-      />
-      {tooltip && (
-        <Tooltip content={tooltip}>
-          <InformationCircleSolid className="text-ui-fg-muted" />
-        </Tooltip>
-      )}
-      {icon}
-      {optional && (
-        <Text size="small" leading="compact" className="text-ui-fg-muted">
-          ({t("fields.optional")})
-        </Text>
-      )}
-    </div>
-  )
-})
+    return (
+      <div className="flex items-center gap-x-1">
+        <LabelComponent
+          id={formLabelId}
+          ref={ref}
+          className={clx(
+            { "text-ui-fg-subtle": variant === "subtle" },
+            className
+          )}
+          htmlFor={formItemId}
+          size="small"
+          weight={variant === "default" ? "plus" : "regular"}
+          {...props}
+        />
+        {tooltip && (
+          <Tooltip content={tooltip}>
+            <InformationCircleSolid className="text-ui-fg-muted" />
+          </Tooltip>
+        )}
+        {icon}
+        {optional && (
+          <Text size="small" leading="compact" className="text-ui-fg-muted">
+            ({t("fields.optional")})
+          </Text>
+        )}
+      </div>
+    )
+  }
+)
 Label.displayName = "Form.Label"
 
 const Control = forwardRef<

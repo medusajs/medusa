@@ -7,7 +7,7 @@ import {
   ProductCreateSchemaType,
 } from "../routes/gift-cards/gift-card-products/components/gift-card-product-create-form/types"
 import { FileType, FileUpload } from "./file-upload"
-import { Form } from "./form"
+import { Form } from "@medusajs/dashboard/components"
 
 type Media = z.infer<typeof MediaSchema>
 

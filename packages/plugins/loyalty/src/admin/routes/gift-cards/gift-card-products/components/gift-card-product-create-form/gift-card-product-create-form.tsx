@@ -4,17 +4,17 @@ import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "@medusajs/framework/zod"
-import { KeyboundForm } from "../../../../../components/keybound-form"
-import {
-  RouteFocusModal,
-  useRouteModal,
-} from "../../../../../components/modals"
-import { useCreateProduct } from "../../../../../hooks/api/products"
 import { sdk } from "../../../../../lib/sdk"
 import { normalizeProductFormValues } from "../../../../../utils/variants"
 import { GiftCardProductCreateDenominationsForm } from "./gift-card-product-create-denominations-form"
 import { GiftCardProductCreateDetailsForm } from "./gift-card-product-create-details-form"
 import { PRODUCT_CREATE_FORM_DEFAULTS, ProductCreateSchema } from "./schema"
+import {
+  KeyboundForm,
+  RouteFocusModal,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useCreateProduct } from "@medusajs/dashboard/hooks"
 
 enum Tab {
   DETAILS = "details",

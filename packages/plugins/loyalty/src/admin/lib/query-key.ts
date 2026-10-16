@@ -1,7 +1,9 @@
 export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
   all: readonly [TKey]
   lists: () => readonly [...TQueryKey<TKey>["all"], "list"]
-  list: (query?: TListQuery) => readonly (string | TKey | { query: TListQuery })[]
+  list: (
+    query?: TListQuery
+  ) => readonly (string | TKey | { query: TListQuery })[]
   details: () => readonly [...TQueryKey<TKey>["all"], "detail"]
   detail: (
     id: TDetailQuery,

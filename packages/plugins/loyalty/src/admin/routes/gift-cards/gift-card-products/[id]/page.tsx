@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom"
 
-import { LayoutComposer } from "@medusajs/dashboard/components"
-import { JsonViewSection } from "../../../../components/json-view-section"
-import { useProduct } from "../../../../hooks/api/products"
+import { JsonViewSection, LayoutComposer } from "@medusajs/dashboard/components"
+import { useProduct } from "@medusajs/dashboard/hooks"
 import { ProductGeneralSection } from "./components/product-general-section"
 import { ProductMediaSection } from "./components/product-media-section"
 import { ProductSalesChannelSection } from "./components/product-sales-channel-section"

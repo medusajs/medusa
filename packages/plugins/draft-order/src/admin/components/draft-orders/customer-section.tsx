@@ -2,12 +2,10 @@ import { ArrowPath, CurrencyDollar, Envelope, FlyingBox } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Avatar, Container, Copy, Heading, Text } from "@medusajs/ui"
 import { Link } from "react-router-dom"
-import {
-  getFormattedAddress,
-  isSameAddress,
-} from "../../lib/utils/address-utils"
 import { getOrderCustomer } from "../../lib/utils/order-utils"
-import { ActionMenu } from "../common/action-menu"
+import { ActionMenu } from "@medusajs/dashboard/components"
+import { getFormattedAddress } from "@medusajs/dashboard/lib"
+import { isSameAddress } from "../../lib/utils/address-utils"
 
 interface CustomerSectionProps {
   order: HttpTypes.AdminOrder
@@ -15,7 +13,7 @@ interface CustomerSectionProps {
 
 export const CustomerSection = ({ order }: CustomerSectionProps) => {
   return (
-    <Container className="p-0 divide-y">
+    <Container className="divide-y p-0">
       <Header />
       <ID order={order} />
       <Contact order={order} />
@@ -26,7 +24,7 @@ export const CustomerSection = ({ order }: CustomerSectionProps) => {
 
 const Header = () => {
   return (
-    <div className="flex items-center justify-between px-6 py-4 gap-2">
+    <div className="flex items-center justify-between gap-2 px-6 py-4">
       <Heading level="h2">Customer</Heading>
       <ActionMenu
         groups={[
@@ -160,7 +158,7 @@ const AddressPrint = ({
       {address ? (
         <div className="grid grid-cols-[1fr_20px] items-start gap-x-2">
           <Text size="small" leading="compact">
-            {getFormattedAddress(address).map((line, i) => {
+            {getFormattedAddress({ address }).map((line, i) => {
               return (
                 <span key={i} className="break-words">
                   {line}
@@ -171,7 +169,7 @@ const AddressPrint = ({
           </Text>
           <div className="flex justify-end">
             <Copy
-              content={getFormattedAddress(address).join("\n")}
+              content={getFormattedAddress({ address }).join("\n")}
               className="text-ui-fg-muted"
             />
           </div>
