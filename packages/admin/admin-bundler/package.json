@@ -4,7 +4,9 @@
   "description": "Bundler for the Medusa admin dashboard.",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "scripts": {
-    "build": "yarn run -T tsup && node ./scripts/assert-esm-imports.mjs"
+    "build": "yarn run -T tsup && node ./scripts/assert-esm-imports.mjs",
+    "test": "../../../node_modules/.bin/vitest --run",
+    "test:watch": "../../../node_modules/.bin/vitest"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
