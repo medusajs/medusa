@@ -18,7 +18,7 @@ import {
   MedusaError,
   OrderChangeStatus,
   OrderWorkflowEvents,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { previewOrderChangeStep, updateOrderChangesStep } from "../../steps"
 
 /**

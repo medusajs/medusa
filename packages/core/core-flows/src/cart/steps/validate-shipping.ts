@@ -5,7 +5,7 @@ import {
   ProductVariantDTO,
   ShippingOptionDTO,
 } from "@medusajs/framework/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
  * The data to validate shipping data when cart is completed.
