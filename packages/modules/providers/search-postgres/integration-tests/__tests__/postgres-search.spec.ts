@@ -332,6 +332,53 @@ moduleIntegrationTestRunner<SearchService>({
           })
         })
 
+        it("scopes facet counts to the hits that pass min_score", async () => {
+          const scored = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "running shoe" },
+            search_options: { match_strategy: "any", include_score: true },
+          })
+          expect(ids(scored)).toEqual(["prod_1", "prod_2"])
+          const [top, next] = scored.hits.map((hit) => hit.score!)
+          expect(top).toBeGreaterThan(next)
+
+          // Between the two scores, so only prod_1 passes. The returned scores
+          // are float4, so the top score itself is not a safe bound.
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "running shoe" },
+            search_options: {
+              match_strategy: "any",
+              min_score: (top + next) / 2,
+              facets: ["brand"],
+            },
+          })
+
+          expect(ids(result)).toEqual(["prod_1"])
+          expect(result.facets?.brand).toEqual({
+            type: "value",
+            values: [{ value: "acme", count: 1 }],
+          })
+        })
+
+        it("applies min_score to facet counts with typo tolerance", async () => {
+          const result = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "runing" },
+            search_options: {
+              typo_tolerance: true,
+              min_score: 1000,
+              facets: ["brand"],
+            },
+          })
+
+          expect(result.hits).toEqual([])
+          expect(result.facets?.brand).toEqual({ type: "value", values: [] })
+        })
+
         it("computes range facets alongside filters", async () => {
           const result = await service.search({
             entity: "product",

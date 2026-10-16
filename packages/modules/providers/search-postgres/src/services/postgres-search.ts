@@ -1365,9 +1365,10 @@ export class PostgresSearchService extends AbstractSearchProviderService {
     const params: unknown[] = []
     const conditions: string[] = []
 
-    const matchSql = useKeyword
-      ? this.keywordFragments({ query, catalog }).matchSql
+    const fragments = useKeyword
+      ? this.keywordFragments({ query, catalog })
       : undefined
+    const matchSql = fragments?.matchSql
     const vectorCond = useVector
       ? `"${vectorColumnName(
           resolveVectorField(query.search_options!.vector!, catalog.plan)
@@ -1380,6 +1381,15 @@ export class PostgresSearchService extends AbstractSearchProviderService {
       conditions.push(matchSql(params))
     } else if (vectorCond) {
       conditions.push(vectorCond)
+    }
+
+    // Keyword hits are cut at `min_score`, which the match predicate alone
+    // doesn't express (typo mode matches above a lower similarity bound).
+    // Hybrid search applies `min_score` to the fused list instead.
+    const minScore = query.search_options?.min_score
+    if (fragments?.q && !useVector && minScore !== undefined) {
+      conditions.push(`${fragments.rankSql(params)} >= ?`)
+      params.push(minScore)
     }
 
     const filterWhere = toWhereClause(query.filters, catalog.plan)
