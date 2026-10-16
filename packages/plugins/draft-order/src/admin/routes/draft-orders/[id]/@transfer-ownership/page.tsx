@@ -158,16 +158,20 @@ const CustomerField = ({ control, currentCustomerId }: CustomerFieldProps) => {
     },
     queryKey: ["customers"],
     getOptions: (data) => {
-      return data.customers.map((customer) => {
-        const name = [customer.first_name, customer.last_name]
-          .filter(Boolean)
-          .join(" ")
+      return data.customers
+        .filter(
+          (customer): customer is HttpTypes.AdminCustomer => customer !== null
+        )
+        .map((customer) => {
+          const name = [customer.first_name, customer.last_name]
+            .filter(Boolean)
+            .join(" ")
 
-        return {
-          label: name ? `${name} (${customer.email})` : customer.email,
-          value: customer.id,
-        }
-      })
+          return {
+            label: name ? `${name} (${customer.email})` : customer.email,
+            value: customer.id,
+          }
+        })
     },
   })
 

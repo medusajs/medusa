@@ -53,7 +53,7 @@
     "areYouSure": "Êtes-vous sûr ?",
     "areYouSureDescription": "Vous êtes sur le point de supprimer {{entity}} {{title}}. Cette action ne peut être annulée.",
     "noRecordsFound": "Aucun enregistrement trouvé",
-    "typeToConfirm": "Veuillez entrer {{val}} pour confirmer :",
+    "typeToConfirm": "Veuillez entrer {val} pour confirmer :",
     "noResultsTitle": "Aucun résultat",
     "noResultsMessage": "Essayez de changer les filtres ou la requête de recherche",
     "noSearchResults": "Aucun résultat de recherche",
@@ -876,14 +876,14 @@
     "products": {
       "add": {
         "disabledTooltip": "Le produit est déjà dans cette catégorie.",
-        "successToast_one": "Produit ajouté à la catégorie avec succès.",
-        "successToast_other": "Produits ajoutés à la catégorie avec succès."
+        "successToast_one": "{{count}} produit ajouté à la catégorie avec succès.",
+        "successToast_other": "{{count}} produits ajoutés à la catégorie avec succès."
       },
       "remove": {
         "confirmation_one": "Vous êtes sur le point de supprimer {{count}} produit de la catégorie. Cette action ne peut être annulée.",
         "confirmation_other": "Vous êtes sur le point de supprimer {{count}} produits de la catégorie. Cette action ne peut être annulée.",
-        "successToast_one": "Produit retiré de la catégorie avec succès.",
-        "successToast_other": "Produits retirés de la catégorie avec succès."
+        "successToast_one": "{{count}} produit retiré de la catégorie avec succès.",
+        "successToast_other": "{{count}} produits retirés de la catégorie avec succès."
       },
       "list": {
         "noRecordsMessage": "Il n'y a pas de produits dans la catégorie."
@@ -2572,7 +2572,7 @@
       "alreadyAddedDiffCampaign": "Cette promotion a déjà été ajoutée à une autre campagne ({{name}}).",
       "currencyMismatch": "La devise de la promotion et de la campagne ne correspondent pas",
       "toast": {
-        "success": "Promotion(s) ajoutée(s) à la campagne avec succès"
+        "success": "{{count}} promotion(s) ajoutée(s) à la campagne avec succès"
       },
       "add": {
         "list": {
