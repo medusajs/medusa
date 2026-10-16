@@ -578,6 +578,14 @@ describe("extra data tracking", () => {
 })
 
 describe("layout", () => {
+  test("excludes feedback form from markdown parity", () => {
+    const { container } = render(<Feedback event="test-event" />)
+    const feedbackForm = container.querySelector(
+      "[data-testid='feedback-form']"
+    )
+    expect(feedbackForm).toHaveAttribute("data-markdown-ignore")
+  })
+
   test("applies vertical layout classes when vertical is true", () => {
     const { container } = render(<Feedback event="test-event" vertical />)
     const feedbackForm = container.querySelector(

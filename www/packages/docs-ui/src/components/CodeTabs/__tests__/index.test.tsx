@@ -97,6 +97,7 @@ vi.mock("../Item", () => ({
 
 import { CodeTab } from "../Item"
 import { CodeTabs } from "../../CodeTabs"
+import { PreMdx } from "../../PreMdx"
 
 beforeEach(() => {
   mockUseColorMode.mockReturnValue({
@@ -120,6 +121,20 @@ describe("rendering", () => {
     )
     const codeTabs = container.querySelector("[data-testid='code-tabs']")
     expect(codeTabs).toBeInTheDocument()
+  })
+
+  test("renders tabs for MDX code blocks", () => {
+    const { container } = render(
+      <CodeTabs>
+        <CodeTab label="Tab 1" value="tab1">
+          <PreMdx>
+            <code className="language-ts">console.log('test')</code>
+          </PreMdx>
+        </CodeTab>
+      </CodeTabs>
+    )
+    const tab = container.querySelector("[data-testid='code-tab-tab1']")
+    expect(tab).toBeInTheDocument()
   })
 
   test("renders with className", () => {

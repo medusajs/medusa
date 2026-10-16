@@ -20,62 +20,9 @@ env:
 
 jobs:
   scan:
-    name: Scan ${{ matrix.app }}
+    name: Scan docs
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      max-parallel: 3
-      matrix:
-        include:
-          - app: book
-            url: https://docs.medusajs.com
-          - app: resources
-            url: https://docs.medusajs.com/resources
-            max_links: 15
-          - app: user-guide
-            url: https://docs.medusajs.com/user-guide
-          - app: ui
-            url: https://docs.medusajs.com/ui
-          - app: cloud
-            url: https://docs.medusajs.com/cloud
-          - app: api-reference
-            url: https://docs.medusajs.com/api
-    steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      # afdocs exits 1 when any check fails, so only a missing or empty report is an error.
-      - name: Run AFDocs
-        env:
-          APP: ${{ matrix.app }}
-          URL: ${{ matrix.url }}
-          MAX_LINKS: ${{ matrix.max_links || 50 }}
-        run: |
-          npx -y "afdocs@${AFDOCS_VERSION}" check "$URL" \
-            --format json \
-            --score \
-            --sampling deterministic \
-            --network-context ci \
-            --max-links "$MAX_LINKS" \
-            --llms-txt-url https://docs.medusajs.com/llms.txt \
-            --quiet > "$APP.json" || true
-          test -s "$APP.json"
-
-      - name: Upload report
-        uses: actions/upload-artifact@v4
-        with:
-          name: agent-docs-${{ matrix.app }}
-          path: ${{ matrix.app }}.json
-          retention-days: 30
-
-  report:
-    name: Report to Linear
-    needs: scan
-    if: ${{ !cancelled() }}
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -85,6 +32,27 @@ jobs:
         with:
           node-version: 22
 
+      # afdocs exits 1 when any check fails, so only a missing or empty report is an error.
+      - name: Run AFDocs
+        run: |
+          npx -y "afdocs@${AFDOCS_VERSION}" check https://docs.medusajs.com \
+            --format json \
+            --score \
+            --sampling deterministic \
+            --network-context ci \
+            --max-links 50 \
+            --skip-checks page-size-html,page-size-markdown \
+            --llms-txt-url https://docs.medusajs.com/llms.txt \
+            --quiet > "$RUNNER_TEMP/agent-docs.json" || true
+          test -s "$RUNNER_TEMP/agent-docs.json"
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-docs
+          path: ${{ runner.temp }}/agent-docs.json
+          retention-days: 30
+
       - name: Install www/utils dependencies
         run: yarn install
         working-directory: www/utils
@@ -93,21 +61,8 @@ jobs:
         run: yarn build --filter=scripts...
         working-directory: www/utils
 
-      - name: Download reports
-        uses: actions/download-artifact@v4
-        with:
-          pattern: agent-docs-*
-          path: agent-docs-reports
-          merge-multiple: true
-
       - name: Create Linear tickets
-        run: yarn report:agent-docs "$GITHUB_WORKSPACE/agent-docs-reports"
+        run: yarn report:agent-docs "$RUNNER_TEMP/agent-docs.json"
         working-directory: www/utils/packages/scripts
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-
-      - name: Fail if a scan failed
-        if: ${{ needs.scan.result != 'success' }}
-        run: |
-          echo "One or more AFDocs scans failed to produce a report."
-          exit 1

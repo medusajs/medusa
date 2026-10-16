@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { API_REF_SCHEMA_SLUG } from "docs-utils"
 import { apiRefPaths } from "@/utils/api-ref-paths"
 import { apiRefMetadataBase, isArea } from "@/utils/area"
 
@@ -28,9 +29,17 @@ const getOperationEntry = (
 // stays mounted across tag <-> operation navigation. Scrolling to the active
 // operation is handled client-side (TagOperation reacts to the active path), so
 // this page only exists for the route and its metadata.
+const isSchemaPage = (area: string, section: string, operation: string) =>
+  operation === API_REF_SCHEMA_SLUG &&
+  isArea(area) &&
+  !!apiRefPaths[area]?.tags?.[section]?.schemaPath
+
 const OperationPage = async ({ params }: OperationPageProps) => {
   const { area, section, operation } = await params
-  if (!getOperationEntry(area, section, operation)) {
+  if (
+    !isSchemaPage(area, section, operation) &&
+    !getOperationEntry(area, section, operation)
+  ) {
     notFound()
   }
 
