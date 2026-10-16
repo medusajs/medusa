@@ -1,5 +1,6 @@
 import {
   addToCartWorkflow,
+  completeCartWorkflow,
   createCartCreditLinesWorkflow,
   updateCartsStep,
   updateCartPromotionsWorkflow,
@@ -7,6 +8,7 @@ import {
 } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
+  ContainerRegistrationKeys,
   Modules,
   PaymentSessionStatus,
   PriceListStatus,
@@ -27,7 +29,9 @@ import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-authenticated-customer"
 import { medusaTshirtProduct } from "../../../__fixtures__/product"
 import {
+  createStep,
   createWorkflow,
+  WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 
@@ -44,6 +48,24 @@ const shippingAddressData = {
   province: "CA",
   postal_code: "94016",
 }
+
+// Runs the cart completion and then fails, so the completion's compensation
+// chain runs after the payment was authorized, as it does when a step after
+// authorization (e.g. the orderCreated hook) fails.
+const failAfterAuthorizationStep = createStep(
+  "fail-after-authorization",
+  async () => {
+    throw new Error("failure after payment authorization")
+  }
+)
+
+const completeCartThenFailWorkflow = createWorkflow(
+  "test-complete-cart-then-fail",
+  (input: WorkflowData<{ id: string }>) => {
+    completeCartWorkflow.runAsStep({ input: { id: input.id } })
+    failAfterAuthorizationStep()
+  }
+)
 
 medusaIntegrationTestRunner({
   env,
@@ -3642,6 +3664,150 @@ medusaIntegrationTestRunner({
                   available_quantity: 98.25,
                 }),
               ])
+            })
+          })
+          describe("when a completion failure canceled the authorized payment", () => {
+            const createPaymentSession = async () => {
+              const paymentCollection = (
+                await api.post(
+                  `/store/payment-collections`,
+                  { cart_id: cart.id },
+                  storeHeaders
+                )
+              ).data.payment_collection
+
+              await api.post(
+                `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+                { provider_id: "pp_system_default" },
+                storeHeaders
+              )
+
+              return paymentCollection
+            }
+
+            const getPaymentCollection = async (id: string) => {
+              const query = appContainer.resolve(
+                ContainerRegistrationKeys.QUERY
+              )
+              const {
+                data: [paymentCollection],
+              } = await query.graph({
+                entity: "payment_collection",
+                filters: { id },
+                fields: [
+                  "id",
+                  "status",
+                  "authorized_amount",
+                  "payment_sessions.id",
+                  "payment_sessions.status",
+                  "payments.id",
+                  "payments.canceled_at",
+                  "payments.payment_session_id",
+                ],
+              })
+
+              return paymentCollection
+            }
+
+            const getCartOrderLink = async () => {
+              const query = appContainer.resolve(
+                ContainerRegistrationKeys.QUERY
+              )
+              const { data } = await query.graph({
+                entity: "order_cart",
+                filters: { cart_id: cart.id },
+                fields: ["order_id"],
+              })
+
+              return data[0]
+            }
+
+            const completeCartThenFail = async () =>
+              await completeCartThenFailWorkflow(appContainer).run({
+                input: { id: cart.id },
+                throwOnError: false,
+              })
+
+            it("should mark the payment session as canceled when the completion compensation cancels its payment", async () => {
+              const paymentCollection = await createPaymentSession()
+
+              const { errors } = await completeCartThenFail()
+
+              expect(errors[0].error.message).toBe(
+                "failure after payment authorization"
+              )
+
+              const collection = await getPaymentCollection(
+                paymentCollection.id
+              )
+
+              // The compensation canceled the uncaptured payment...
+              expect(collection.payments).toHaveLength(1)
+              expect(collection.payments[0].canceled_at).toEqual(
+                expect.any(Date)
+              )
+
+              // ...so its session can no longer be used to complete the cart
+              expect(collection.payment_sessions).toEqual([
+                expect.objectContaining({
+                  id: collection.payments[0].payment_session_id,
+                  status: PaymentSessionStatus.CANCELED,
+                }),
+              ])
+
+              // ...and the collection no longer reports it as authorized
+              expect(collection.status).toBe("not_paid")
+              expect(collection.authorized_amount).toBe(0)
+
+              expect(await getCartOrderLink()).toBeUndefined()
+            })
+
+            it("should NOT place an order when retrying with the payment session whose payment was canceled", async () => {
+              await createPaymentSession()
+              await completeCartThenFail()
+
+              // Retry with the same payment session
+              const response = await api
+                .post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
+                .catch((e) => e.response)
+
+              expect(response.status).toBe(400)
+              expect(response.data.type).toBe("invalid_data")
+
+              expect(await getCartOrderLink()).toBeUndefined()
+
+              const refetchedCart = (
+                await api.get(`/store/carts/${cart.id}`, storeHeaders)
+              ).data.cart
+              expect(refetchedCart.completed_at).toBeNull()
+            })
+
+            it("should place an order backed by an active payment once a new payment session is created", async () => {
+              await createPaymentSession()
+              await completeCartThenFail()
+
+              // The storefront recovers by initiating a new payment session
+              const paymentCollection = await createPaymentSession()
+
+              const completed = (
+                await api.post(
+                  `/store/carts/${cart.id}/complete`,
+                  {},
+                  storeHeaders
+                )
+              ).data
+
+              expect(completed.type).toBe("order")
+
+              const collection = await getPaymentCollection(
+                paymentCollection.id
+              )
+              const activePayments = collection.payments.filter(
+                (p) => !p.canceled_at
+              )
+
+              expect(activePayments).toHaveLength(1)
+              expect(collection.status).toBe("authorized")
             })
           })
         })
