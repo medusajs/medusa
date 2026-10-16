@@ -522,8 +522,15 @@ export function getComputedActionsForBuyGet(
     promotion.application_method?.buy_rules
   )
 
+  // Items flagged as non-discountable can still satisfy the buy rules, but
+  // they never receive the discount, the same way the standard item path
+  // treats them.
+  const discountableItems = itemsContext.filter(
+    (item) => !("is_discountable" in item && !item.is_discountable)
+  )
+
   const eligibleTargetItems = filterItemsByPromotionRules(
-    itemsContext,
+    discountableItems,
     promotion.application_method?.target_rules
   )
 
