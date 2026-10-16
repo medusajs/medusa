@@ -43,6 +43,14 @@ const LIST_AFFECTING_OPERATIONS: InvalidationOperation[] = [
   "detached",
 ]
 
+/**
+ * An entity id is any non-empty value. Numeric ids, including 0, are valid:
+ * custom modules backed by external systems may not use string ids.
+ */
+function hasEntityId(id: unknown): boolean {
+  return id === 0 || !!id
+}
+
 export class CacheInvalidationParser {
   private typeMap: Map<string, GraphQLObjectType>
   private idPrefixToEntityName: Record<string, string>
@@ -87,7 +95,7 @@ export class CacheInvalidationParser {
 
     // Check if this object matches any known GraphQL types
     const detectedType = this.detectEntityType(obj, parentType)
-    if (detectedType && obj.id) {
+    if (detectedType && hasEntityId(obj.id)) {
       entities.push({
         type: detectedType,
         id: obj.id,
@@ -127,7 +135,10 @@ export class CacheInvalidationParser {
    * Detect entity type based on object structure and GraphQL type map
    */
   private detectEntityType(obj: any, suggestedType?: string): string | null {
-    if (obj.id) {
+    // Only string ids can carry a prefix. Entities from custom modules backed
+    // by external systems may have numeric ids, which fall through to the
+    // type-based detection below.
+    if (typeof obj.id === "string") {
       const idParts = obj.id.split("_")
       if (idParts.length > 1 && this.idPrefixToEntityName[idParts[0]]) {
         return this.idPrefixToEntityName[idParts[0]]
@@ -159,7 +170,7 @@ export class CacheInvalidationParser {
     const objKeys = Object.keys(obj)
 
     // Must have id field for entities
-    if (!obj.id || !fields.id) {
+    if (!hasEntityId(obj.id) || !fields.id) {
       return false
     }
 
