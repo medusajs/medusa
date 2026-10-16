@@ -2,4 +2,4 @@
 "@medusajs/dashboard": patch
 ---
 
-Complete the Turkish customer export translations and sync the locale with the current schema.
+fix(dashboard): complete Turkish customer export translations
