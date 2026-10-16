@@ -10,7 +10,7 @@ In this chapter, you’ll learn about Medusa's event system, and how to handle e
 
 When building commerce digital applications, you'll often need to perform an action after a commerce operation is performed. For example, sending an order confirmation email when the customer places an order, or syncing data that's updated in Medusa to a third-party system.
 
-Medusa emits events when core commerce features are performed, and you can listen to and handle these events in asynchronous functions. You can think of Medusa's events like you'd think about webhooks in other commerce platforms, but instead of having to setup separate applications to handle webhooks, your efforts only go into writing the logic right in your Medusa codebase.
+Medusa emits events when core commerce features are performed, and you can listen to and handle these events in asynchronous functions. You can think of Medusa's events like you'd think about webhooks in other commerce platforms, but instead of having to set up separate applications to handle webhooks, your efforts only go into writing the logic right in your Medusa codebase.
 
 You listen to an event in a subscriber, which is an asynchronous function that's executed when its associated event is emitted.
 

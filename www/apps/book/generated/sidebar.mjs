@@ -1221,7 +1221,7 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Medusa Configuations",
+            "title": "Medusa Configurations",
             "path": "/learn/configurations/medusa-config",
             "children": [
               {
@@ -1234,7 +1234,7 @@ export const generatedSidebars = [
                 "number": "7.3.1."
               }
             ],
-            "chapterTitle": "7.3. Medusa Configuations",
+            "chapterTitle": "7.3. Medusa Configurations",
             "number": "7.3."
           },
           {
