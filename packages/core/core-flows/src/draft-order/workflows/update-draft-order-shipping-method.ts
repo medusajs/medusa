@@ -1,4 +1,4 @@
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
+import { ChangeActionType, OrderChangeStatus, isDefined } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
@@ -108,12 +108,18 @@ export const updateDraftOrderShippingMethodWorkflow = createWorkflow(
 
     validateDraftOrderChangeStep({ order, orderChange })
 
-    const { before, after } = updateDraftOrderShippingMethodStep({
-      order_id: input.order_id,
-      shipping_method_id: input.data.shipping_method_id,
-      shipping_option_id: input.data.shipping_option_id,
-      amount: input.data.custom_amount,
+    const stepInput = transform(input.data, (data) => {
+      const isCustomPrice = isDefined(data.custom_amount)
+      return {
+        order_id: input.order_id,
+        shipping_method_id: data.shipping_method_id,
+        shipping_option_id: data.shipping_option_id,
+        amount: data.custom_amount,
+        is_custom_amount: isCustomPrice ? true : undefined,
+      }
     })
+
+    const { before, after } = updateDraftOrderShippingMethodStep(stepInput)
 
     updateOrderTaxLinesWorkflow.runAsStep({
       input: {
