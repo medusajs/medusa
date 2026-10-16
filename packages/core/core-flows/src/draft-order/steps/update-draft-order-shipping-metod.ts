@@ -29,6 +29,10 @@ export interface UpdateDraftOrderShippingMethodStepInput {
    */
   amount?: BigNumberInput
   /**
+   * Whether the amount is custom.
+   */
+  is_custom_amount?: boolean
+  /**
    * The metadata of the shipping method.
    */
   metadata?: Record<string, unknown> | null
@@ -58,7 +62,7 @@ export const updateDraftOrderShippingMethodStep = createStep(
       },
       {
         take: 1,
-        select: ["id", "shipping_option_id", "amount"],
+        select: ["id", "shipping_option_id", "amount", "is_custom_amount"],
       }
     )
 
@@ -69,12 +73,18 @@ export const updateDraftOrderShippingMethodStep = createStep(
       )
     }
 
+    const updateData: Record<string, any> = {
+      id: input.shipping_method_id,
+      shipping_option_id: input.shipping_option_id,
+      amount: input.amount,
+    }
+
+    if (input.is_custom_amount !== undefined) {
+      updateData.is_custom_amount = input.is_custom_amount
+    }
+
     const [updatedMethod] = await service.updateOrderShippingMethods([
-      {
-        id: input.shipping_method_id,
-        shipping_option_id: input.shipping_option_id,
-        amount: input.amount,
-      },
+      updateData,
     ])
 
     return new StepResponse(
