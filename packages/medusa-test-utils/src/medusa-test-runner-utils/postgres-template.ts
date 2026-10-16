@@ -1,11 +1,14 @@
 import { Client } from "@medusajs/framework/pg"
 
-const DB_HOST = process.env.DB_HOST ?? "localhost"
-const DB_USERNAME = process.env.DB_USERNAME ?? "postgres"
-const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
-const DB_PORT = process.env.DB_PORT ?? "5432"
-const DB_WAITINGROOM_DATABASE =
-  process.env.DB_WAITINGROOM_DATABASE ?? "postgres"
+function getWaitingroomConfig() {
+  return {
+    host: process.env.DB_HOST ?? "localhost",
+    user: process.env.DB_USERNAME ?? "postgres",
+    password: process.env.DB_PASSWORD ?? "",
+    port: parseInt(process.env.DB_PORT ?? "5432"),
+    database: process.env.DB_WAITINGROOM_DATABASE ?? "postgres",
+  }
+}
 
 type DatabaseTemplateOptions = {
   databaseName: string
@@ -21,41 +24,68 @@ function quoteIdentifier(identifier: string) {
 }
 
 // We need to connect to a different database while creating and restoring a template.
-// The client is created lazily and reused across calls, since restores run before every
-// test and reconnecting each time adds 10-30ms per test.
+// The client is created lazily and reused while credentials are unchanged, since
+// restores run before every test and reconnecting each time adds 10-30ms per test.
+// Credentials are read at connect time; a change closes the current client first.
 let waitingroomClientPromise: Promise<Client> | null = null
+let waitingroomClientConfig: string | null = null
+let waitingroomClientToken = 0
 
 function resetWaitingroomClient() {
   waitingroomClientPromise = null
+  waitingroomClientConfig = null
 }
 
 async function getWaitingroomClient(): Promise<Client> {
-  if (!waitingroomClientPromise) {
-    waitingroomClientPromise = (async () => {
-      const client = new Client({
-        host: DB_HOST,
-        user: DB_USERNAME,
-        password: DB_PASSWORD || undefined,
-        port: parseInt(DB_PORT),
-        database: DB_WAITINGROOM_DATABASE,
-      })
+  const config = getWaitingroomConfig()
+  const configKey = JSON.stringify(config)
 
-      try {
-        await client.connect()
-      } catch (error) {
-        resetWaitingroomClient()
-        throw error
-      }
-
-      // If the connection drops, make sure the next call reconnects.
-      client.on("error", resetWaitingroomClient)
-      client.on("end", resetWaitingroomClient)
-
-      return client
-    })()
+  if (waitingroomClientPromise && waitingroomClientConfig === configKey) {
+    return waitingroomClientPromise
   }
 
-  return waitingroomClientPromise
+  if (waitingroomClientPromise) {
+    await closeWaitingroomClient()
+  }
+
+  if (waitingroomClientPromise && waitingroomClientConfig === configKey) {
+    return waitingroomClientPromise
+  }
+
+  const clientConfig = {
+    ...config,
+    password: config.password || undefined,
+  }
+  const token = ++waitingroomClientToken
+  const clientPromise = (async () => {
+    const client = new Client(clientConfig)
+
+    try {
+      await client.connect()
+    } catch (error) {
+      if (waitingroomClientToken === token) {
+        resetWaitingroomClient()
+      }
+      throw error
+    }
+
+    // A dropped connection should reconnect next time, but a previous client's
+    // close event must not drop a client opened with newer credentials.
+    const resetIfCurrent = () => {
+      if (waitingroomClientToken === token) {
+        resetWaitingroomClient()
+      }
+    }
+    client.on("error", resetIfCurrent)
+    client.on("end", resetIfCurrent)
+
+    return client
+  })()
+
+  waitingroomClientConfig = configKey
+  waitingroomClientPromise = clientPromise
+
+  return clientPromise
 }
 
 export async function closeWaitingroomClient() {
