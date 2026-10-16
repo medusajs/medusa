@@ -41,5 +41,6 @@ export const AdminUpdateStore = z.object({
   default_sales_channel_id: z.string().nullish(),
   default_region_id: z.string().nullish(),
   default_location_id: z.string().nullish(),
+  logo_url: z.string().nullish(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })

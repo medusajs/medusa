@@ -11358,6 +11358,30 @@
         "defaultLocation": {
           "type": "string"
         },
+        "logo": {
+          "type": "string"
+        },
+        "logoHint": {
+          "type": "string"
+        },
+        "uploadLogoLabel": {
+          "type": "string"
+        },
+        "uploadLogoHint": {
+          "type": "string"
+        },
+        "removeLogo": {
+          "type": "string"
+        },
+        "logoInvalidFileType": {
+          "type": "string"
+        },
+        "logoFileTooLarge": {
+          "type": "string"
+        },
+        "logoUploadFailed": {
+          "type": "string"
+        },
         "swapLinkTemplate": {
           "type": "string"
         },
@@ -11476,6 +11500,14 @@
         "defaultRegion",
         "defaultSalesChannel",
         "defaultLocation",
+        "logo",
+        "logoHint",
+        "uploadLogoLabel",
+        "uploadLogoHint",
+        "removeLogo",
+        "logoInvalidFileType",
+        "logoFileTooLarge",
+        "logoUploadFailed",
         "swapLinkTemplate",
         "paymentLinkTemplate",
         "inviteLinkTemplate",

@@ -133,6 +133,50 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should set the logo url and return it by default", async () => {
+          const response = await api.post(
+            `/admin/stores/${store.id}`,
+            { logo_url: "https://example.com/logo.png" },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.store.logo_url).toEqual(
+            "https://example.com/logo.png"
+          )
+
+          const listed = (
+            await api.get("/admin/stores", adminHeaders)
+          ).data.stores.find((s) => s.id === store.id)
+
+          expect(listed.logo_url).toEqual("https://example.com/logo.png")
+        })
+
+        it("should clear the logo url", async () => {
+          await api.post(
+            `/admin/stores/${store.id}`,
+            { logo_url: "https://example.com/logo.png" },
+            adminHeaders
+          )
+
+          const response = await api.post(
+            `/admin/stores/${store.id}`,
+            { logo_url: null },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.store.logo_url).toBeNull()
+        })
+
+        it("fails to update the logo url with a non-string value", async () => {
+          const err = await api
+            .post(`/admin/stores/${store.id}`, { logo_url: 123 }, adminHeaders)
+            .catch((e) => e)
+
+          expect(err.response.status).toEqual(400)
+        })
+
         it("fails to update default currencies if there is no default one", async () => {
           const err = await api
             .post(

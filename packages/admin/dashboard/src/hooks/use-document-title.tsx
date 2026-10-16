@@ -84,10 +84,11 @@ export function getTitleFromMatch(
  * Hook that returns the document title based on the current route.
  *
  * It walks the matched routes from root to leaf and uses the most specific
- * (last) route that yields a title. The format is `"Page Title - Medusa"`,
- * falling back to `"Medusa"` when no route contributes a title.
+ * (last) route that yields a title. The format is `"Page Title - <brand>"`,
+ * falling back to `"<brand>"` when no route contributes a title. The brand
+ * defaults to `"Medusa"`, e.g. when the store name is not known yet.
  */
-export function useDocumentTitle() {
+export function useDocumentTitle(brand?: string | null) {
   const matches = useMatches() as UIMatch<unknown, RouteHandle>[]
 
   const title = useMemo(() => {
@@ -102,12 +103,14 @@ export function useDocumentTitle() {
       }
     }
 
+    const suffix = brand?.trim() || DEFAULT_TITLE
+
     if (!pageTitle) {
-      return DEFAULT_TITLE
+      return suffix
     }
 
-    return `${pageTitle} - Medusa`
-  }, [matches])
+    return `${pageTitle} - ${suffix}`
+  }, [matches, brand])
 
   return title
 }
@@ -116,8 +119,8 @@ export function useDocumentTitle() {
  * Component that renders the document title using react-helmet-async.
  * Should be used within a HelmetProvider.
  */
-export function DocumentTitle() {
-  const title = useDocumentTitle()
+export function DocumentTitle({ brand }: { brand?: string | null }) {
+  const title = useDocumentTitle(brand)
 
   return (
     <Helmet>

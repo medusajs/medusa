@@ -9,6 +9,10 @@ const Store = model
     default_sales_channel_id: model.text().nullable(),
     default_region_id: model.text().nullable(),
     default_location_id: model.text().nullable(),
+    /**
+     * The URL of the store's logo, shown in the admin dashboard.
+     */
+    logo_url: model.text().nullable(),
     metadata: model.json().nullable(),
     supported_currencies: model.hasMany(() => StoreCurrency, {
       mappedBy: "store",

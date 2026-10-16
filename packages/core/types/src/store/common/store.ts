@@ -98,6 +98,11 @@ export interface StoreDTO {
   default_location_id?: string
 
   /**
+   * The URL of the store's logo.
+   */
+  logo_url?: string | null
+
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata: Record<string, any> | null
