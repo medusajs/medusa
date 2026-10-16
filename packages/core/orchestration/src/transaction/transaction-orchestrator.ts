@@ -92,7 +92,14 @@ export class TransactionOrchestrator extends EventEmitter {
   }
 
   /**
-   * Trace workflow transaction for instrumentation
+   * Trace one `resume()` for instrumentation.
+   *
+   * A failed step does not reject the resume function: the promise resolves
+   * and the transaction state becomes `reverted` or `failed`. `transaction`
+   * is that same instance, so instrumentation can read its state and errors
+   * after `transactionResume` returns. Workflows with async steps are traced
+   * too. Each resume gets its own span, ended when that resume returns, with
+   * the state at that point. A later resume continues the workflow.
    */
   static traceTransaction?: (
     transactionResume: (...args: any[]) => Promise<void>,
@@ -100,7 +107,8 @@ export class TransactionOrchestrator extends EventEmitter {
       model_id: string
       transaction_id: string
       flow_metadata: TransactionFlow["metadata"]
-    }
+    },
+    transaction: DistributedTransactionType
   ) => Promise<any>
 
   /**
@@ -1438,15 +1446,16 @@ export class TransactionOrchestrator extends EventEmitter {
       return await this.executeNext(transaction)
     }
 
-    if (
-      TransactionOrchestrator.traceTransaction &&
-      !transaction.getFlow().hasAsyncSteps
-    ) {
-      await TransactionOrchestrator.traceTransaction(executeNext, {
-        model_id: transaction.modelId,
-        transaction_id: transaction.transactionId,
-        flow_metadata: transaction.getFlow().metadata,
-      })
+    if (TransactionOrchestrator.traceTransaction) {
+      await TransactionOrchestrator.traceTransaction(
+        executeNext,
+        {
+          model_id: transaction.modelId,
+          transaction_id: transaction.transactionId,
+          flow_metadata: transaction.getFlow().metadata,
+        },
+        transaction
+      )
       return
     }
 
