@@ -1136,6 +1136,68 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("with outbound items and no outbound shipping method", () => {
+        it("should reserve the inventory of the outbound items on confirmation", async () => {
+          await api.post(
+            `/admin/orders/${order.id}/fulfillments`,
+            { items: [{ id: order.items[0].id, quantity: 2 }] },
+            adminHeaders
+          )
+
+          const claim = (
+            await api.post(
+              "/admin/claims",
+              {
+                order_id: order.id,
+                type: ClaimType.REPLACE,
+                description: "Claim without outbound shipping method",
+              },
+              adminHeaders
+            )
+          ).data.claim
+
+          await api.post(
+            `/admin/claims/${claim.id}/outbound/items`,
+            {
+              items: [{ variant_id: productExtra.variants[0].id, quantity: 3 }],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/claims/${claim.id}/claim-items`,
+            {
+              items: [
+                {
+                  id: order.items[0].id,
+                  reason: ClaimReason.PRODUCTION_FAILURE,
+                  quantity: 1,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(`/admin/claims/${claim.id}/request`, {}, adminHeaders)
+
+          const reservations = (
+            await api.get(
+              `/admin/reservations?inventory_item_id[]=${inventoryItemExtra.id}`,
+              adminHeaders
+            )
+          ).data.reservations
+
+          expect(reservations).toHaveLength(1)
+          expect(reservations[0]).toEqual(
+            expect.objectContaining({
+              inventory_item_id: inventoryItemExtra.id,
+              location_id: location.id,
+              quantity: 3,
+            })
+          )
+        })
+      })
+
       describe("with only inbound items", () => {
         let orderResult
 
