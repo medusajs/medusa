@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@medusajs/framework/zod";
 import { optionalFloat, optionalInt } from "../../../../../utils/validations";
 
 export const SC_STACKED_MODAL_ID = "sc";
