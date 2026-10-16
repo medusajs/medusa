@@ -36,10 +36,10 @@ describe("RedisLockingProvider Jitter", () => {
 
     // The first retryDelay should be the defaultRetryInterval (100)
     const expectedBaseDelay = 100
-    
+
     expect(setTimeout).toHaveBeenCalledTimes(1)
     const actualDelay = (setTimeout as jest.Mock).mock.calls[0][0]
-    
+
     expect(actualDelay).toBeGreaterThanOrEqual(expectedBaseDelay * 0.5)
     expect(actualDelay).toBeLessThanOrEqual(expectedBaseDelay)
   })
@@ -54,7 +54,7 @@ describe("RedisLockingProvider Jitter", () => {
     await provider.acquire("test-key", { awaitQueue: true })
 
     expect(setTimeout).toHaveBeenCalledTimes(2)
-    
+
     // First delay (base 100)
     const firstDelay = (setTimeout as jest.Mock).mock.calls[0][0]
     expect(firstDelay).toBeGreaterThanOrEqual(100 * 0.5)
@@ -64,5 +64,63 @@ describe("RedisLockingProvider Jitter", () => {
     const secondDelay = (setTimeout as jest.Mock).mock.calls[1][0]
     expect(secondDelay).toBeGreaterThanOrEqual(200 * 0.5)
     expect(secondDelay).toBeLessThanOrEqual(200)
+  })
+})
+
+describe("RedisLockingProvider Multi-Key Rollback", () => {
+  let provider: RedisLockingProvider
+  const redisClientMock = {
+    defineCommand: jest.fn(),
+    acquireLock: jest.fn(),
+    releaseLock: jest.fn(),
+  }
+
+  beforeEach(() => {
+    provider = new RedisLockingProvider(
+      {
+        redisClient: redisClientMock as any,
+        prefix: "test:",
+      },
+      {} as any
+    )
+    jest.clearAllMocks()
+    redisClientMock.releaseLock.mockResolvedValue(1)
+  })
+
+  it("should rollback acquired keys when a subsequent key fails to acquire", async () => {
+    redisClientMock.acquireLock.mockImplementation(async (key: string) => {
+      if (key === "test:keyA") {
+        return 1
+      }
+      return 0
+    })
+
+    await expect(provider.acquire(["keyA", "keyB"])).rejects.toThrow(
+      'Failed to acquire lock for key "keyB"'
+    )
+
+    expect(redisClientMock.releaseLock).toHaveBeenCalledWith("test:keyA", "*")
+    expect(redisClientMock.releaseLock).not.toHaveBeenCalledWith(
+      "test:keyB",
+      "*"
+    )
+  })
+
+  it("should rollback with custom ownerId when a key fails", async () => {
+    redisClientMock.acquireLock.mockImplementation(async (key: string) => {
+      if (key === "test:key1") {
+        return 1
+      }
+      return 0
+    })
+
+    await expect(
+      provider.acquire(["key1", "key2"], { ownerId: "custom_owner" })
+    ).rejects.toThrow('Failed to acquire lock for key "key2"')
+
+    expect(redisClientMock.releaseLock).toHaveBeenCalledWith(
+      "test:key1",
+      "custom_owner"
+    )
   })
 })
