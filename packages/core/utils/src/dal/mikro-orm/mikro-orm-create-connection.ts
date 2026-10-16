@@ -87,14 +87,38 @@ export async function mikroOrmCreateConnection(
   }
 
   let clientUrl = database.clientUrl
+  let dbName: string | undefined
+  let dynamicPassword: (() => string | Promise<string>) | undefined
 
   if (database.connection) {
     // Reuse already existing connection
     // It is important that the knex package version is the same as the one used by MikroORM knex package
+    const sharedConnection =
+      database.connection.context?.client?.config?.connection
     driverOptions = database.connection
-    clientUrl =
-      database.connection.context?.client?.config?.connection?.connectionString
+    // A pool created with dynamicPassword has discrete connection fields
+    // instead of a connectionString (see createPgConnection)
+    clientUrl = sharedConnection?.connectionString ?? database.clientUrl
+    dbName = sharedConnection?.database
     schema = database.connection.context?.client?.config?.searchPath
+  } else if (driverOptions.dynamicPassword) {
+    // MikroORM merges driverOptions into the knex config, where these options
+    // have no effect. The password function is applied after init instead.
+    const {
+      dynamicPassword: passwordFn,
+      expirationChecker: _expirationChecker,
+      ...knexDriverOptions
+    } = driverOptions
+    dynamicPassword = passwordFn
+    driverOptions = knexDriverOptions
+
+    if (clientUrl) {
+      // knex makes a non-empty password non-writable, which would stop the
+      // function from replacing it below
+      const url = new URL(clientUrl)
+      url.password = ""
+      clientUrl = url.toString()
+    }
   }
 
   const { MikroORM, defineConfig } = await import(
@@ -106,6 +130,7 @@ export async function mikroOrmCreateConnection(
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,
     baseDir: process.cwd(),
     clientUrl,
+    dbName,
     schema,
     driverOptions,
     tsNode: process.env.APP_ENV === "development",
@@ -161,7 +186,7 @@ export async function mikroOrmCreateConnection(
     ? parseInt(process.env.__MEDUSA_DB_CONNECTION_RETRY_DELAY)
     : 1000
 
-  return await retryExecution(
+  const orm = await retryExecution(
     async () => {
       return await MikroORM.init(mikroOrmConfig)
     },
@@ -177,4 +202,17 @@ export async function mikroOrmCreateConnection(
       },
     }
   )
+
+  if (dynamicPassword) {
+    // knex passes these settings to pg for each new connection, so pg calls
+    // the function every time. MikroORM's own password option would keep the
+    // first password. The ORM has not connected yet (connect: false).
+    Object.defineProperty(
+      orm.em.getConnection().getKnex().client.connectionSettings,
+      "password",
+      { value: dynamicPassword, enumerable: false, writable: true }
+    )
+  }
+
+  return orm
 }
