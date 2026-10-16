@@ -181,32 +181,17 @@
       "groups": {
         "all": "Tüm Alanlar",
         "customer": "Müşteriler",
-        "customerGroup": "Müşteri Grupları",
         "product": "Ürünler",
-        "productVariant": "Ürün Varyantları",
-        "inventory": "Envanter",
         "reservation": "Rezervasyonlar",
-        "category": "Kategoriler",
-        "collection": "Koleksiyonlar",
         "order": "Siparişler",
         "promotion": "Promosyonlar",
         "campaign": "Kampanyalar",
-        "priceList": "Fiyat Listeleri",
         "user": "Kullanıcılar",
         "region": "Bölgeler",
-        "taxRegion": "Vergi Bölgeleri",
-        "returnReason": "İade Nedenleri",
-        "salesChannel": "Satış Kanalları",
-        "productType": "Ürün Tipleri",
-        "productTag": "Ürün Etiketleri",
-        "location": "Konumlar",
-        "shippingProfile": "Kargo Profilleri",
-        "publishableApiKey": "Yayınlanabilir API Anahtarları",
-        "secretApiKey": "Gizli API Anahtarları",
         "command": "Komutlar",
         "navigation": "Navigasyon",
         "customer_group": "Müşteri Grupları",
-        "product_variant": "Ürün Varyantları",
+        "product_variant": "Varyantlar",
         "inventory_item": "Envanter",
         "product_category": "Kategoriler",
         "product_collection": "Koleksiyonlar",
@@ -467,8 +452,8 @@
       },
       "variants": {
         "header": "Varyantlar",
-        "subHeadingTitle": "Evet, bu bir varyantlı ürün",
-        "subHeadingDescription": "İşaretlenmediğinde, sizin için varsayılan bir varyant oluşturacağız",
+        "subHeadingTitle": "Varyantlı ürün",
+        "subHeadingDescription": "Renk, beden veya ölçü gibi seçenekler sunuyorsanız işaretleyin. İşaretlemezseniz tek bir varsayılan varyant oluşturulur.",
         "optionTitle": {
           "placeholder": "Beden"
         },
@@ -476,14 +461,14 @@
           "placeholder": "Küçük, Orta, Büyük"
         },
         "productVariants": {
-          "label": "Ürün varyantları",
+          "label": "Varyantlar",
           "hint": "Bu sıralama, varyantların mağazanızdaki sırasını etkileyecektir.",
           "alert": "Varyantlar oluşturmak için seçenekler ekleyin.",
-          "tip": "İşaretlenmeyen varyantlar oluşturulmayacaktır. Ürün seçeneklerinizdeki varyasyonları bu listeye uyacak şekilde oluşturup düzenleyebilirsiniz."
+          "tip": "Yalnızca seçili varyantlar oluşturulur. Liste, ürün seçeneklerinizdeki değerlerin birleşimlerinden oluşur. Varyantları daha sonra ekleyebilir veya düzenleyebilirsiniz."
         },
         "productOptions": {
           "label": "Ürün seçenekleri",
-          "hint": "Ürün için seçenekleri belirleyin, örneğin renk, boyut vb."
+          "hint": "Renk, beden veya ölçü gibi ürün seçeneklerini belirleyin."
         },
         "selectValuesHint": "Her seçenek için kullanılacak değerleri seçin"
       },
@@ -516,7 +501,7 @@
       },
       "upload": {
         "title": "Bir CSV dosyası yükleyin",
-        "description": "İçe aktarma yoluyla ürün ekleyebilir veya güncelleyebilirsiniz. Mevcut ürünleri güncellemek için mevcut tutamaç ve ID'yi, mevcut varyantları güncellemek için mevcut ID'yi kullanmanız gerekmektedir. Ürünleri içe aktarmadan önce sizden onay istenecektir.",
+        "description": "İçe aktarma ile ürün ekleyebilir veya güncelleyebilirsiniz. Mevcut ürünleri güncellemek için URL tanıtıcısını ve kimliğini (ID) kullanın. Varyantları güncellemek için mevcut varyant kimliğini (ID) kullanın. İçe aktarmadan önce onayınızı isteriz.",
         "preprocessing": "Ön işleme...",
         "productsToCreate": "Ürünler oluşturulacak",
         "productsToUpdate": "Ürünler güncellenecek"
@@ -603,7 +588,7 @@
       "status": "Durum",
       "thumbnail": "Küçük Resim",
       "title": "Başlık",
-      "handle": "Handle",
+      "handle": "URL tanıtıcısı",
       "created_at": "Oluşturulma",
       "updated_at": "Güncellenme"
     },
@@ -618,9 +603,9 @@
         "placeholder": "Sıcak ve rahat"
       },
       "handle": {
-        "label": "Tutamak",
-        "tooltip": "Tutamak, ürünü mağazanızda referans almak için kullanılır. Belirtilmediğinde, ürün başlığından oluşturulacaktır.",
-        "placeholder": "kışlık-ceket"
+        "label": "URL tanıtıcısı",
+        "tooltip": "Ürünün mağazadaki bağlantısında kullanılan kısa addır. Boş bırakırsanız ürün adından otomatik oluşturulur.",
+        "placeholder": "kislik-ceket"
       },
       "description": {
         "label": "Açıklama",
@@ -679,8 +664,8 @@
         "variantionsPlaceholder": "Kırmızı, Mavi, Yeşil"
       },
       "variants": {
-        "label": "Ürün varyantları",
-        "hint": "İşaretlenmeyen varyantlar oluşturulmayacaktır. Bu sıralama varyantların ön uçtaki sıralamasını etkiler."
+        "label": "Varyantlar",
+        "hint": "Yalnızca seçili varyantlar oluşturulur. Bu sıralama, varyantların mağazadaki sırasını belirler."
       },
       "mid_code": {
         "label": "Mid kodu"
@@ -722,8 +707,8 @@
         "editItemDetails": "Öğe detaylarını düzenle",
         "manageInventoryLabel": "Envanteri yönet",
         "manageInventoryHint": "Etkinleştirildiğinde, siparişler ve iadeler oluşturulduğunda envanter miktarını sizin için değiştireceğiz.",
-        "allowBackordersLabel": "Geri siparişlere izin ver",
-        "allowBackordersHint": "Etkinleştirildiğinde, müşteriler mevcut miktar olmasa bile varyantı satın alabilir.",
+        "allowBackordersLabel": "Stok tükenince satışa devam et",
+        "allowBackordersHint": "Etkinleştirildiğinde, stokta ürün kalmasa da müşteriler bu varyantı satın alabilir.",
         "toast": {
           "levelsBatch": "Envanter seviyeleri güncellendi.",
           "update": "Envanter öğesi başarıyla güncellendi.",
@@ -1014,6 +999,24 @@
       "header": "Müşteri Oluştur",
       "hint": "Yeni bir müşteri oluşturun ve detaylarını yönetin.",
       "successToast": "{{email}} müşterisi başarıyla oluşturuldu."
+    },
+    "export": {
+      "header": "Müşteri Listesini Dışa Aktar",
+      "description": "Müşteri listesini bir dosyaya aktarın.",
+      "success": {
+        "title": "Dışa aktarma isteğiniz işleniyor",
+        "description": "Veri dışa aktarımı birkaç dakika sürebilir. İşlem tamamlandığında size bildireceğiz."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Dışa aktarılan dosyanın biçimini seçin. JSON, modüller arasındaki iç içe geçmiş verileri kayıpsız olarak içerir. Bu nedenle ilgili kişi erişim talepleri için önerilir.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtreler",
+        "description": "Bu görünümü ayarlamak için tablo görünümünde filtreleri uygulayın"
+      }
     },
     "groups": {
       "label": "Müşteri grupları",
@@ -1922,9 +1925,7 @@
       "hint": "Belirli bir ülke için vergi oranlarını tanımlamak üzere yeni bir vergi bölgesi oluşturun.",
       "errors": {
         "missingProvider": "Vergi bölgesi oluştururken sağlayıcı gereklidir.",
-        "missingCountry": "Vergi bölgesi oluştururken ülke gereklidir.",
-        "rateIsRequired": "Varsayılan bir vergi oranı oluştururken vergi oranı gereklidir.",
-        "nameIsRequired": "Varsayılan bir vergi oranı oluştururken isim gereklidir."
+        "missingCountry": "Vergi bölgesi oluştururken ülke gereklidir."
       },
       "successToast": "Vergi bölgesi başarıyla oluşturuldu."
     },
@@ -2201,9 +2202,7 @@
           "items": {
             "title": "Promosyon hangi ürünlere uygulanacak?",
             "description": "Promosyon, aşağıdaki koşullara uyan ürünlere uygulanacaktır."
-          },
-          "title": "Promosyon hangi ürünlere uygulanacak?",
-          "description": "Promosyon, aşağıdaki koşulları karşılayan ürünlere uygulanacaktır."
+          }
         },
         "buy-rules": {
           "title": "Promosyonu açmak için sepette ne olmalı?",
@@ -2916,8 +2915,7 @@
       "addShippingOptionOverridesAction": "Kargo seçeneği geçersiz kılmaları ekle",
       "productOverridesHeader": "Ürünler",
       "productTypeOverridesHeader": "Ürün Türleri",
-      "shippingOptionOverridesHeader": "Kargo Seçenekleri",
-      "editTaxRate": "Vergi Oranını Düzenle"
+      "shippingOptionOverridesHeader": "Kargo Seçenekleri"
     }
   },
   "locations": {
@@ -3371,7 +3369,7 @@
     "collection": "Koleksiyon",
     "discountable": "İndirim uygulanabilir",
     "promotionCode": "Promosyon kodu",
-    "handle": "Tanıtıcı",
+    "handle": "URL tanıtıcısı",
     "subtitle": "Alt başlık",
     "by": "Tarafından",
     "item": "Öğe",
@@ -3480,9 +3478,9 @@
     "countryOfOrigin": "Menşei ülke",
     "material": "Malzeme",
     "thumbnail": "Küçük resim",
-    "sku": "SKU",
+    "sku": "Stok kodu (SKU)",
     "managedInventory": "Yönetilen envanter",
-    "allowBackorder": "Ön siparişe izin ver",
+    "allowBackorder": "Stok tükenince satışa devam et",
     "inStock": "Stokta var",
     "location": "Konum",
     "quantity": "Miktar",
