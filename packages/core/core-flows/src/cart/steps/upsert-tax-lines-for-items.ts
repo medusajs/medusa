@@ -66,19 +66,26 @@ export const upsertTaxLinesForItemsStep = createStep(
     const { cart, item_tax_lines, shipping_tax_lines } = data
     const cartService = container.resolve<ICartModuleService>(Modules.CART)
 
+    // The entities this step writes tax lines for. The compensation needs them:
+    // the normalized tax lines below carry an `id` only when the entity already
+    // had a tax line, so the upsert inserts rows that the revert has to find
+    // again in order to remove them.
+    const affectedItemIds = item_tax_lines.map((t) => t.line_item_id)
+    const affectedShippingIds = shipping_tax_lines.map(
+      (t) => t.shipping_line_id
+    )
+
     const [existingShippingMethodTaxLines, existingLineItemTaxLines] =
       await promiseAll([
-        shipping_tax_lines.length
+        affectedShippingIds.length
           ? cartService.listShippingMethodTaxLines({
-              shipping_method_id: shipping_tax_lines.map(
-                (t) => t.shipping_line_id
-              ),
+              shipping_method_id: affectedShippingIds,
             })
           : [],
 
-        item_tax_lines.length
+        affectedItemIds.length
           ? cartService.listLineItemTaxLines({
-              item_id: item_tax_lines.map((t) => t.line_item_id),
+              item_id: affectedItemIds,
             })
           : [],
       ])
@@ -105,6 +112,8 @@ export const upsertTaxLinesForItemsStep = createStep(
       cart,
       existingLineItemTaxLines,
       existingShippingMethodTaxLines,
+      affectedItemIds,
+      affectedShippingIds,
     })
   },
   async (revertData, { container }) => {
@@ -112,28 +121,28 @@ export const upsertTaxLinesForItemsStep = createStep(
       return
     }
 
-    const { existingLineItemTaxLines, existingShippingMethodTaxLines } =
-      revertData
+    const {
+      existingLineItemTaxLines,
+      existingShippingMethodTaxLines,
+      affectedItemIds,
+      affectedShippingIds,
+    } = revertData
 
     const cartService = container.resolve<ICartModuleService>(Modules.CART)
 
-    if (existingLineItemTaxLines) {
-      await cartService.upsertLineItemTaxLines(
-        existingLineItemTaxLines.map((taxLine) => ({
-          description: taxLine.description,
-          tax_rate_id: taxLine.tax_rate_id,
-          code: taxLine.code,
-          rate: taxLine.rate,
-          provider_id: taxLine.provider_id,
-          item_id: taxLine.item_id,
-          metadata: taxLine.metadata,
-          data: taxLine.data,
-        }))
-      )
-    }
+    const itemTaxLines = (existingLineItemTaxLines ?? []).map((taxLine) => ({
+      description: taxLine.description,
+      tax_rate_id: taxLine.tax_rate_id,
+      code: taxLine.code,
+      rate: taxLine.rate,
+      provider_id: taxLine.provider_id,
+      item_id: taxLine.item_id,
+      metadata: taxLine.metadata,
+      data: taxLine.data,
+    }))
 
-    await cartService.upsertShippingMethodTaxLines(
-      existingShippingMethodTaxLines.map((taxLine) => ({
+    const shippingTaxLines = (existingShippingMethodTaxLines ?? []).map(
+      (taxLine) => ({
         description: taxLine.description,
         tax_rate_id: taxLine.tax_rate_id,
         code: taxLine.code,
@@ -142,8 +151,59 @@ export const upsertTaxLinesForItemsStep = createStep(
         shipping_method_id: taxLine.shipping_method_id,
         metadata: taxLine.metadata,
         data: taxLine.data,
-      }))
+      })
     )
+
+    // Restore each affected entity to its pre-step state. The forward step
+    // inserts a new tax line for every incoming line beyond the first one an
+    // entity already had, and upserting the captured snapshot back cannot undo
+    // that: the snapshot carries no `id` either, so it inserts a second copy of
+    // every pre-step line and leaves the step's own rows in place. A cart's tax
+    // lines therefore multiplied on every failed run. Delete whatever is
+    // currently attached to the affected entities — which removes the rows the
+    // step inserted — and recreate the captured snapshot instead. Mirrors
+    // setOrderTaxLinesForItemsStep's compensation.
+    const revertItemTaxLines = async () => {
+      if (!affectedItemIds?.length) {
+        return
+      }
+
+      const current = await cartService.listLineItemTaxLines(
+        { item_id: affectedItemIds },
+        { select: ["id"] }
+      )
+
+      if (current.length) {
+        await cartService.deleteLineItemTaxLines(current.map((t) => t.id))
+      }
+
+      if (itemTaxLines.length) {
+        await cartService.addLineItemTaxLines(itemTaxLines)
+      }
+    }
+
+    const revertShippingTaxLines = async () => {
+      if (!affectedShippingIds?.length) {
+        return
+      }
+
+      const current = await cartService.listShippingMethodTaxLines(
+        { shipping_method_id: affectedShippingIds },
+        { select: ["id"] }
+      )
+
+      if (current.length) {
+        await cartService.deleteShippingMethodTaxLines(
+          current.map((t) => t.id)
+        )
+      }
+
+      if (shippingTaxLines.length) {
+        await cartService.addShippingMethodTaxLines(shippingTaxLines)
+      }
+    }
+
+    await promiseAll([revertItemTaxLines(), revertShippingTaxLines()])
   }
 )
 
