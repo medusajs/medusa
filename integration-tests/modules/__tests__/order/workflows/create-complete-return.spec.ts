@@ -639,6 +639,42 @@ medusaIntegrationTestRunner({
         
       })
 
+      it("should pass refund_amount to created return", async () => {
+        const order = await createOrderFixture({ container, product })
+        const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
+          {
+            order_id: order.id,
+            return_shipping: {
+              option_id: shippingOption.id,
+            },
+            items: [
+              {
+                id: order.items![0].id,
+                quantity: 1,
+              },
+            ],
+            refund_amount: 10,
+          }
+
+        const query = container.resolve(ContainerRegistrationKeys.QUERY)
+
+        const { result: returned } =
+          await createAndCompleteReturnOrderWorkflow(container).run({
+            input: createReturnOrderData,
+            throwOnError: true,
+          })
+
+        const { data: returns } = await query.graph({
+          entity: "return",
+          filters: {
+            id: returned.id,
+          },
+          fields: ["id", "refund_amount"],
+        })
+
+        expect(returns[0].refund_amount).toEqual(10)
+      })
+
       it("should fail when location is not linked", async () => {
         const order = await createOrderFixture({ container, product })
         const createReturnOrderData: OrderWorkflow.CreateOrderReturnWorkflowInput =
