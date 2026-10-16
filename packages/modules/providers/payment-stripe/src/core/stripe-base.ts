@@ -335,15 +335,28 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   }
 
   async capturePayment({
+    amount,
     data,
     context,
   }: CapturePaymentInput): Promise<CapturePaymentOutput> {
     const id = data?.id as string
 
     try {
-      const intent = await this.stripe_.paymentIntents.capture(id, {
-        idempotencyKey: context?.idempotency_key,
-      })
+      const captureParams: Stripe.PaymentIntentCaptureParams = {}
+
+      if (amount !== undefined && amount !== null) {
+        const currencyCode = data?.currency as string
+        captureParams.amount_to_capture = getSmallestUnit(amount, currencyCode)
+      }
+
+      const intent = await this.stripe_.paymentIntents.capture(
+        id,
+        captureParams,
+        {
+          idempotencyKey: context?.idempotency_key,
+        }
+      )
+
       return { data: intent as unknown as Record<string, unknown> }
     } catch (error) {
       if (error.code === ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE) {

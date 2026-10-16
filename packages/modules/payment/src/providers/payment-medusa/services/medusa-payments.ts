@@ -332,17 +332,25 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
   }
 
   async capturePayment({
+    amount,
     data,
     context,
   }: CapturePaymentInput): Promise<CapturePaymentOutput> {
     const id = data?.id as string
 
+    const body: Record<string, unknown> = {
+      idempotency_key: context?.idempotency_key,
+    }
+
+    if (amount !== undefined && amount !== null) {
+      const currencyCode = data?.currency as string
+      body.amount = getSmallestUnit(amount, currencyCode)
+    }
+
     const intent = (await this.executeWithRetry(() => {
       return this.request<{ payment: any }>(`/payments/${id}/capture`, {
         method: "POST",
-        body: {
-          idempotency_key: context?.idempotency_key,
-        },
+        body,
       }).then((data) => data.payment)
     })) as MedusaPayment
 
