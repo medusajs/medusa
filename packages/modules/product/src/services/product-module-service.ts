@@ -3975,39 +3975,57 @@ export default class ProductModuleService
       }
     }
 
+    // Fetch product images without hydrating all variant relations across the product
     const allProductImages = (await this.listProductImages(
       { product_id: Array.from(uniqueProductIds) },
-      {
-        relations: ["variants"],
-      },
+      {},
       context
     )) as (ProductTypes.ProductImageDTO & {
       product_id: string
-      variants: InferEntityType<typeof ProductVariant>[]
     })[]
 
-    // all product images
-    const imagesByProductId = new Map<string, typeof allProductImages>()
-    // variant specific images
-    const variantSpecificImageIds = new Map<string, Set<string>>()
+    if (!allProductImages.length) {
+      return new Map(variants.map((v) => [v.id, []]))
+    }
 
-    // Single pass to build both lookup maps
+    const allImageIds = allProductImages.map((img) => img.id)
+    const variantIds = variants.map((v) => v.id)
+
+    // Query pivot table only to:
+    // 1. Determine which images of the product have ANY variant link (to separate general vs variant-scoped images)
+    // 2. Determine which images are specifically linked to the requested variants
+    const [allLinkedImageRelations, variantRelations] = await Promise.all([
+      this.productVariantProductImageService_.list(
+        { image_id: allImageIds },
+        { select: ["image_id"] },
+        context
+      ),
+      this.productVariantProductImageService_.list(
+        { variant_id: variantIds },
+        { select: ["variant_id", "image_id"] },
+        context
+      ),
+    ])
+
+    const imageIdsWithVariants = new Set(
+      allLinkedImageRelations.map((r) => r.image_id)
+    )
+
+    const variantSpecificImageIds = new Map<string, Set<string>>()
+    for (const relation of variantRelations) {
+      if (!variantSpecificImageIds.has(relation.variant_id)) {
+        variantSpecificImageIds.set(relation.variant_id, new Set())
+      }
+      variantSpecificImageIds.get(relation.variant_id)!.add(relation.image_id)
+    }
+
+    // Group images by product_id
+    const imagesByProductId = new Map<string, typeof allProductImages>()
     for (const img of allProductImages) {
-      // Group by product_id
       if (!imagesByProductId.has(img.product_id)) {
         imagesByProductId.set(img.product_id, [])
       }
       imagesByProductId.get(img.product_id)!.push(img)
-
-      // Track variant-specific images
-      if (img.variants.length > 0) {
-        for (const variant of img.variants) {
-          if (!variantSpecificImageIds.has(variant.id)) {
-            variantSpecificImageIds.set(variant.id, new Set())
-          }
-          variantSpecificImageIds.get(variant.id)!.add(img.id || "")
-        }
-      }
     }
 
     const result = new Map<string, InferEntityType<typeof ProductImage>[]>()
@@ -4019,18 +4037,26 @@ export default class ProductModuleService
       const specificImageIds =
         variantSpecificImageIds.get(variant.id) || new Set()
 
-      const variantImages = productImages.filter((img) => {
-        // general product image
-        if (!img.variants.length) {
-          return true
-        }
-        // Check if this image is specifically associated with this variant
-        return specificImageIds.has(img.id || "")
-      })
+      const variantImages = productImages
+        .filter((img) => {
+          // General product image (not linked to any variant)
+          if (!imageIdsWithVariants.has(img.id)) {
+            return true
+          }
+          // Specifically associated with this variant
+          return specificImageIds.has(img.id)
+        })
+        .map((img) => {
+          const isScopedToVariant = specificImageIds.has(img.id)
+          return {
+            ...img,
+            variants: isScopedToVariant ? [{ id: variant.id }] : [],
+          }
+        })
 
       result.set(
         variant.id,
-        variantImages as InferEntityType<typeof ProductImage>[]
+        variantImages as unknown as InferEntityType<typeof ProductImage>[]
       )
     }
 
