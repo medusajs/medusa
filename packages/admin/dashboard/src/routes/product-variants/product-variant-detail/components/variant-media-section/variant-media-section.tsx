@@ -54,7 +54,12 @@ export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => {
                     </Tooltip>
                   </div>
                 )}
-                <img src={i.url} className="size-full object-cover" />
+                <img
+                  src={i.url}
+                  className="size-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             )
           })}

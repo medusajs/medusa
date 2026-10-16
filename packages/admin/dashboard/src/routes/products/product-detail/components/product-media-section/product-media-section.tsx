@@ -135,6 +135,8 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
                   <img
                     src={i.url}
                     alt={`${product.title} image`}
+                    loading="lazy"
+                    decoding="async"
                     className="size-full object-cover"
                   />
                 </Link>
