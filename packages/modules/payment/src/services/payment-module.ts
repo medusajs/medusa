@@ -895,6 +895,9 @@ export default class PaymentModuleService
         payment.provider_id,
         {
           data: payment.data!,
+          amount: capture
+            ? ((capture.raw_amount ?? capture.amount) as BigNumberInput)
+            : undefined,
           context: {
             idempotency_key: capture?.id,
           },

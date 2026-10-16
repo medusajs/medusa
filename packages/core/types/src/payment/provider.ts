@@ -139,7 +139,12 @@ export interface AuthorizePaymentInput extends PaymentProviderInput {}
 /**
  * The data to capture a payment.
  */
-export interface CapturePaymentInput extends PaymentProviderInput {}
+export interface CapturePaymentInput extends PaymentProviderInput {
+  /**
+   * The amount to capture.
+   */
+  amount?: BigNumberInput
+}
 
 /**
  * The data to refund a payment.
