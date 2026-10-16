@@ -501,6 +501,71 @@ describe("Workflow composer", () => {
     })
   })
 
+  describe("when compensating a step renamed with config inside a when condition", () => {
+    const setup = () => {
+      const compensateMock = jest.fn()
+
+      const stepX = createStep(
+        "stepX",
+        async (input: string) => {
+          return new StepResponse(input, `compensate-${input}`)
+        },
+        async (compensateInput) => {
+          compensateMock(compensateInput)
+        }
+      )
+      const failingStep = createStep("failing-step", async () => {
+        throw new Error("failing-step failed")
+      })
+
+      const workflow = createWorkflow(
+        getNewWorkflowId(),
+        function (input: WorkflowData<{ a: boolean; b: boolean }>) {
+          when(input, (data) => data.a).then(() => {
+            stepX("a")
+          })
+          when(input, (data) => data.b).then(() => {
+            stepX("b").config({ name: "x2" })
+          })
+          failingStep()
+
+          return new WorkflowResponse(void 0)
+        }
+      )
+
+      return { workflow, compensateMock }
+    }
+
+    it("should pass the renamed step's own compensate input when the original step was skipped", async function () {
+      const { workflow, compensateMock } = setup()
+
+      const { transaction } = await workflow.run({
+        input: { a: false, b: true },
+        throwOnError: false,
+      })
+
+      expect(transaction.getState()).toEqual(TransactionState.REVERTED)
+      expect(compensateMock).toHaveBeenCalledTimes(1)
+      expect(compensateMock).toHaveBeenCalledWith("compensate-b")
+    })
+
+    it("should pass each step its own compensate input when both the original and renamed steps ran", async function () {
+      const { workflow, compensateMock } = setup()
+
+      const { transaction } = await workflow.run({
+        input: { a: true, b: true },
+        throwOnError: false,
+      })
+
+      expect(transaction.getState()).toEqual(TransactionState.REVERTED)
+      expect(compensateMock).toHaveBeenCalledTimes(2)
+      expect(compensateMock.mock.calls.map(([arg]) => arg).sort()).toEqual([
+        "compensate-a",
+        "compensate-b",
+      ])
+    })
+  })
+
   it("should not throw an unhandled error on failed transformer resolution after a step fail, but should rather push the errors in the errors result", async function () {
     const step1 = createStep("step1", async () => {
       return new StepResponse({ result: "step1" })
