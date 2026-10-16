@@ -433,14 +433,28 @@ const DataTableFilterDateContent = ({
   const onCustomValueChange = React.useCallback(
     (input: "$gte" | "$lte", value: Date | null) => {
       const newCurrentValue = { ...currentValue }
-      newCurrentValue[input] = value ? value.toISOString() : undefined
-      if (onUpdate) {
-        onUpdate(newCurrentValue)
+      if (value) {
+        const date = new Date(value)
+        // With day granularity the picker yields local midnight of the chosen
+        // day; the upper bound is inclusive, so extend it to the end of that day.
+        if (input === "$lte" && format !== "date-time") {
+          date.setHours(23, 59, 59, 999)
+        }
+        newCurrentValue[input] = date.toISOString()
       } else {
-        instance.updateFilter({ id, value: newCurrentValue })
+        delete newCurrentValue[input]
+      }
+      // Clearing the last bound clears the filter instead of leaving `{}`.
+      const nextValue = Object.keys(newCurrentValue).length
+        ? newCurrentValue
+        : undefined
+      if (onUpdate) {
+        onUpdate(nextValue)
+      } else {
+        instance.updateFilter({ id, value: nextValue })
       }
     },
-    [instance, id, currentValue, onUpdate]
+    [instance, id, currentValue, format, onUpdate]
   )
 
   const { focusedIndex, setFocusedIndex } = useKeyboardNavigation(
