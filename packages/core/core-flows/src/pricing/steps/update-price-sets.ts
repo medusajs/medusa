@@ -65,9 +65,14 @@ export const updatePriceSetsStep = createStep(
         )
       }
 
-      const prevData = await pricingModule.listPriceSets({
-        id: data.price_sets.map((p) => p.id) as string[],
-      })
+      const prevData = await pricingModule.listPriceSets(
+        {
+          id: data.price_sets.map((p) => p.id) as string[],
+        },
+        {
+          relations: ["prices", "prices.price_rules"],
+        }
+      )
 
       const priceSets = await pricingModule.upsertPriceSets(data.price_sets)
       return new StepResponse(priceSets, prevData)
