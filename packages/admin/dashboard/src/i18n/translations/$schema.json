@@ -1114,9 +1114,28 @@
                 },
                 "storeSettings": {
                   "type": "string"
+                },
+                "groups": {
+                  "type": "object",
+                  "properties": {
+                    "sales": {
+                      "type": "string"
+                    },
+                    "catalog": {
+                      "type": "string"
+                    },
+                    "customers": {
+                      "type": "string"
+                    },
+                    "marketing": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["sales", "catalog", "customers", "marketing"],
+                  "additionalProperties": false
                 }
               },
-              "required": ["store", "storeSettings"],
+              "required": ["store", "storeSettings", "groups"],
               "additionalProperties": false
             },
             "settings": {

@@ -37,6 +37,13 @@ export interface LayoutSectionRegistry {
     | "developer"
     | "myAccount"
     | "extensions"
+  [CORE_LAYOUT_IDS.MAIN_SIDEBAR]:
+    | "top"
+    | "sales"
+    | "catalog"
+    | "customers"
+    | "marketing"
+    | "extensions"
 }
 
 export type Layouts = keyof LayoutSectionRegistry

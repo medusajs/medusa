@@ -178,7 +178,24 @@ const Header = () => {
   )
 }
 
-const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
+type CoreRoute = Omit<INavItem, "pathname">
+
+type CoreGroup = "sales" | "catalog" | "customers" | "marketing"
+
+/**
+ * The sidebar section each core route is placed in by default. Users can move
+ * a route to another section when customizing the sidebar.
+ */
+const CORE_ROUTE_GROUPS: Record<string, CoreGroup> = {
+  "/orders": "sales",
+  "/products": "catalog",
+  "/inventory": "catalog",
+  "/price-lists": "catalog",
+  "/customers": "customers",
+  "/promotions": "marketing",
+}
+
+const useCoreRoutes = (): CoreRoute[] => {
   const { t } = useTranslation()
 
   return [
@@ -259,6 +276,15 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   ]
 }
 
+const toCoreEntries = (routes: CoreRoute[], group: CoreGroup) =>
+  routes
+    .filter((route) => CORE_ROUTE_GROUPS[route.to] === group)
+    .map((route) => (
+      <LayoutComposer.Entry id={`nav:${route.to}`} key={route.to}>
+        <NavItem key={route.to} {...route} />
+      </LayoutComposer.Entry>
+    ))
+
 const Searchbar = () => {
   const { t } = useTranslation()
   const { toggleSearch } = useSearch()
@@ -311,47 +337,42 @@ const SidebarRoutes = () => {
   const extensionItems = menuItems.filter((item) => !item.nested)
 
   return (
-    <nav className="py-3">
-      <div className="px-3">
-        <LayoutComposer
-          widgetsZonePrefix="sidebar"
-          preferredLayoutId={CORE_LAYOUT_IDS.SINGLE_COLUMN}
-          hasOutlet={false}
-          disableWidgets
-          customizeId={CUSTOMIZE_IDS.MAIN_SIDEBAR}
-          controlSize="small"
-          layoutProps={{
-            className: "gap-y-1",
-          }}
-          sections={{
-            main: (
-              <>
-                <LayoutComposer.Entry id="Searchbar">
-                  <Searchbar />
-                </LayoutComposer.Entry>
-                {coreRoutes.map((route) => (
-                  <LayoutComposer.Entry id={`nav:${route.to}`} key={route.to}>
-                    <NavItem key={route.to} {...route} />
-                  </LayoutComposer.Entry>
-                ))}
-                {extensionItems.map((item) => (
-                  <LayoutComposer.Entry id={`nav:${item.to}`} key={item.to}>
-                    <NavItem
-                      key={item.to}
-                      to={item.to}
-                      label={item.label}
-                      icon={item.icon ? item.icon : <SquaresPlus />}
-                      items={item.items}
-                      translationNs={item.translationNs}
-                      type="extension"
-                    />
-                  </LayoutComposer.Entry>
-                ))}
-              </>
-            ),
-          }}
-        />
-      </div>
+    <nav>
+      <LayoutComposer
+        widgetsZonePrefix="sidebar"
+        preferredLayoutId={CORE_LAYOUT_IDS.MAIN_SIDEBAR}
+        hasOutlet={false}
+        disableWidgets
+        customizeId={CUSTOMIZE_IDS.MAIN_SIDEBAR}
+        controlSize="small"
+        layoutProps={{
+          className: "gap-y-1",
+        }}
+        sections={{
+          top: (
+            <LayoutComposer.Entry id="Searchbar">
+              <Searchbar />
+            </LayoutComposer.Entry>
+          ),
+          sales: toCoreEntries(coreRoutes, "sales"),
+          catalog: toCoreEntries(coreRoutes, "catalog"),
+          customers: toCoreEntries(coreRoutes, "customers"),
+          marketing: toCoreEntries(coreRoutes, "marketing"),
+          extensions: extensionItems.map((item) => (
+            <LayoutComposer.Entry id={`nav:${item.to}`} key={item.to}>
+              <NavItem
+                key={item.to}
+                to={item.to}
+                label={item.label}
+                icon={item.icon ? item.icon : <SquaresPlus />}
+                items={item.items}
+                translationNs={item.translationNs}
+                type="extension"
+              />
+            </LayoutComposer.Entry>
+          )),
+        }}
+      />
     </nav>
   )
 }

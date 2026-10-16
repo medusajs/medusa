@@ -272,7 +272,13 @@
       },
       "main": {
         "store": "Store",
-        "storeSettings": "Store settings"
+        "storeSettings": "Store settings",
+        "groups": {
+          "sales": "Sales",
+          "catalog": "Catalog",
+          "customers": "Customers",
+          "marketing": "Marketing"
+        }
       },
       "settings": {
         "header": "Settings",

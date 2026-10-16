@@ -5,6 +5,7 @@ import {
   SingleRowLayoutComponent,
   TwoColumnLayoutComponent,
 } from "../layout/pages"
+import { MainSidebarLayoutComponent } from "../layout/main-layout/main-sidebar-layout-component"
 import { SettingsSidebarLayoutComponent } from "../layout/settings-layout/settings-sidebar-layout-component"
 
 export const CORE_LAYOUTS: LayoutDefinition[] = [
@@ -35,5 +36,17 @@ export const CORE_LAYOUTS: LayoutDefinition[] = [
       { id: "extensions", ordering: "list" },
     ],
     Component: SettingsSidebarLayoutComponent,
+  },
+  {
+    id: CORE_LAYOUT_IDS.MAIN_SIDEBAR,
+    sections: [
+      { id: "top", ordering: "list" },
+      { id: "sales", ordering: "list" },
+      { id: "catalog", ordering: "list" },
+      { id: "customers", ordering: "list" },
+      { id: "marketing", ordering: "list" },
+      { id: "extensions", ordering: "list" },
+    ],
+    Component: MainSidebarLayoutComponent,
   },
 ]
