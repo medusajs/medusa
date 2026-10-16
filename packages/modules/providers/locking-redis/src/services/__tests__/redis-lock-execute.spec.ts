@@ -250,4 +250,120 @@ describe("RedisLockingProvider - execute", () => {
       expect.any(String)
     )
   })
+
+  it("should release partial acquisitions after a timed-out retry rejects", async () => {
+    const locks = new Map<string, string>([["test:busy", "another-owner"]])
+    redisClientMock.acquireLock.mockImplementation(async (key, ownerId) => {
+      if (locks.has(key)) {
+        return 0
+      }
+      locks.set(key, ownerId)
+      return 1
+    })
+    redisClientMock.releaseLock.mockImplementation(async (key, ownerId) => {
+      return locks.get(key) === ownerId && locks.delete(key) ? 1 : 0
+    })
+
+    let fireTimeout: () => void
+    let finishRetry: () => void
+    delayMock
+      .mockReturnValueOnce(
+        new Promise<void>((resolve) => (fireTimeout = resolve))
+      )
+      .mockReturnValueOnce(
+        new Promise<void>((resolve) => (finishRetry = resolve))
+      )
+
+    const job = jest.fn(async () => "unreachable")
+    const executing = provider
+      .execute(["free", "busy", "reacquired"], job, { timeout: 1 })
+      .catch((error) => error)
+    await settle()
+    expect(locks.has("test:free")).toBe(true)
+
+    fireTimeout!()
+    expect((await executing).message).toEqual("Timed-out acquiring lock.")
+    locks.set("test:reacquired", "new-owner")
+    finishRetry!()
+    await settle()
+
+    expect(locks.has("test:free")).toBe(false)
+    expect(locks.get("test:busy")).toBe("another-owner")
+    expect(locks.get("test:reacquired")).toBe("new-owner")
+    expect(job).not.toHaveBeenCalled()
+  })
+
+  it("should wait for late acquisitions before cleaning up a rejected acquisition", async () => {
+    const locks = new Map<string, string>()
+    let landAcquisition: () => void
+    redisClientMock.acquireLock.mockImplementation((key, ownerId) => {
+      if (key === "test:late") {
+        return new Promise<number>((resolve) => {
+          landAcquisition = () => {
+            locks.set(key, ownerId)
+            resolve(1)
+          }
+        })
+      }
+      return Promise.resolve(0)
+    })
+    redisClientMock.releaseLock.mockImplementation(async (key, ownerId) => {
+      return locks.get(key) === ownerId && locks.delete(key) ? 1 : 0
+    })
+
+    let fireTimeout: () => void
+    let finishRetry: () => void
+    delayMock
+      .mockReturnValueOnce(
+        new Promise<void>((resolve) => (fireTimeout = resolve))
+      )
+      .mockReturnValueOnce(
+        new Promise<void>((resolve) => (finishRetry = resolve))
+      )
+
+    const executing = provider
+      .execute(["busy", "late"], async () => "unreachable", { timeout: 1 })
+      .catch((error) => error)
+    await settle()
+    fireTimeout!()
+    expect((await executing).message).toEqual("Timed-out acquiring lock.")
+    finishRetry!()
+    await settle()
+
+    landAcquisition!()
+    await settle()
+    expect(locks.has("test:late")).toBe(false)
+  })
+
+  it("should report cleanup failures without changing the acquisition timeout", async () => {
+    const logger = { warn: jest.fn() }
+    provider = new RedisLockingProvider(
+      { redisClient: redisClientMock as any, logger: logger as any },
+      {} as any
+    )
+    let landAcquisition: (result: number) => void
+    redisClientMock.acquireLock.mockReturnValue(
+      new Promise<number>((resolve) => (landAcquisition = resolve))
+    )
+    redisClientMock.releaseLock.mockRejectedValue(
+      new Error("Connection closed")
+    )
+
+    let fireTimeout: () => void
+    delayMock.mockReturnValueOnce(
+      new Promise<void>((resolve) => (fireTimeout = resolve))
+    )
+
+    const executing = provider
+      .execute("key", async () => "unreachable", { timeout: 1 })
+      .catch((error) => error)
+    fireTimeout!()
+    expect((await executing).message).toEqual("Timed-out acquiring lock.")
+
+    landAcquisition!(1)
+    await settle()
+    expect(logger.warn).toHaveBeenCalledWith(
+      expect.stringContaining("Failed to release lock")
+    )
+  })
 })
