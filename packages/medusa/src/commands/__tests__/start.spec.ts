@@ -2,7 +2,7 @@ import * as utils from "@medusajs/framework/utils"
 import path from "path"
 import * as instrumentationFixture from "../__fixtures__/instrumentation"
 import * as instrumentationFailureFixture from "../__fixtures__/instrumentation-failure/instrumentation"
-import { registerInstrumentation } from "../start"
+import { registerInstrumentation, findExpressRoutePath } from "../start"
 
 const logger = {
   info: jest.fn(),
@@ -112,4 +112,24 @@ describe("start", () => {
       expect(err).toBeInstanceOf(Error)
     })
   })
+  describe("findExpressRoutePath", () => {
+    it("should gracefully handle malformed percent-encoding in url without throwing", () => {
+      const mockLayer = {
+        name: "bound dispatch",
+        match: () => {
+          throw new URIError("Failed to decode param '%c0'")
+        },
+        route: { path: "/test" },
+        handle: { stack: [] },
+      }
+      expect(() => {
+        const result = findExpressRoutePath({
+          stack: [mockLayer as any],
+          url: "/%c0",
+        })
+        expect(result).toBeUndefined()
+      }).not.toThrow()
+    })
+  })
+
 })
