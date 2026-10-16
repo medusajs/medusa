@@ -209,24 +209,90 @@ describe("EasyPostFulfillmentService", () => {
       REAL_API_TEST_TIMEOUT_MS
     )
 
-    test(
-      "throws a clear error when EasyPost's rates for this shipment don't include the requested carrier+service",
-      async () => {
-        const service = new EasyPostFulfillmentService(
-          { logger: fakeLogger },
-          { apiKey: process.env.EASYPOST_API_KEY!, defaultParcel }
-        )
+    test("returns the configured fallback price, without throwing, when EasyPost's rates don't include the requested carrier+service", async () => {
+      // This is the routine "this carrier doesn't reach this destination"
+      // case, not an error -- calculatePrice calls for every option on a
+      // cart are batched through core's `promiseAll`, which re-throws the
+      // first rejection and would fail the WHOLE cart's shipping options
+      // over just this one unquotable option. So this case must resolve,
+      // not reject.
+      const fakeClient = {
+        createShipment: async () => ({
+          id: "shp_fake",
+          rates: [
+            {
+              id: "rate_1",
+              carrier: "USPS",
+              service: "Priority",
+              rate: "8.01",
+              currency: "USD",
+            },
+          ],
+        }),
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        {
+          apiKey: "unused",
+          defaultParcel,
+          unquotableFallbackPrice: 123456,
+          client: fakeClient,
+        }
+      )
 
-        await expect(
-          service.calculatePrice(
-            { carrier: "NotARealCarrier", service: "Fake" },
-            {},
-            validContextFixture
-          )
-        ).rejects.toThrow(/NotARealCarrier/)
-      },
-      REAL_API_TEST_TIMEOUT_MS
-    )
+      const price = await service.calculatePrice(
+        { carrier: "NotARealCarrier", service: "Fake" },
+        {},
+        validContextFixture
+      )
+
+      expect(price).toEqual({
+        calculated_amount: 123456,
+        is_calculated_price_tax_inclusive: false,
+      })
+      expect(fakeLogger.warn).toHaveBeenCalledWith(
+        expect.stringContaining("NotARealCarrier")
+      )
+    })
+
+    test("uses the default fallback price when unquotableFallbackPrice isn't configured", async () => {
+      const fakeClient = {
+        createShipment: async () => ({ id: "shp_fake", rates: [] }),
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      const price = await service.calculatePrice(
+        { carrier: "USPS", service: "Priority" },
+        {},
+        validContextFixture
+      )
+
+      expect(price.calculated_amount).toBe(999_999)
+      expect(price.is_calculated_price_tax_inclusive).toBe(false)
+    })
+
+    test("still throws when the EasyPost API call itself fails (a genuine connectivity/auth failure, not just an unquotable rate)", async () => {
+      const fakeClient = {
+        createShipment: async () => {
+          throw new Error("ECONNREFUSED: could not reach EasyPost")
+        },
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      await expect(
+        service.calculatePrice(
+          { carrier: "USPS", service: "Priority" },
+          {},
+          validContextFixture
+        )
+      ).rejects.toThrow(/ECONNREFUSED/)
+    })
 
     test("throws a clear error when the destination address is incomplete", async () => {
       const service = new EasyPostFulfillmentService(

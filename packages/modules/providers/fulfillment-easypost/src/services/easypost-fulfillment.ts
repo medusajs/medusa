@@ -28,11 +28,27 @@ export type EasyPostFulfillmentServiceOptions = {
    */
   defaultParcel: ParcelDimensions
   /**
+   * The price `calculatePrice` returns when EasyPost's shipment response
+   * comes back successfully but its `rates[]` simply has no entry for the
+   * requested carrier+service at this destination -- a routine outcome
+   * (not every carrier reaches every address), not an error. See the
+   * comment on `calculatePrice` below for why this can't just throw.
+   * Defaults to `DEFAULT_UNQUOTABLE_FALLBACK_PRICE` if not configured.
+   */
+  unquotableFallbackPrice?: number
+  /**
    * Lets tests substitute a fake `EasyPostClient` instead of constructing a
    * real one from `apiKey`. Not meant to be set outside of tests.
    */
   client?: EasyPostClient
 }
+
+/**
+ * Deliberately high, deliberately unattractive price used by `calculatePrice`
+ * when EasyPost genuinely can't quote a requested carrier+service for a
+ * destination. See the comment on `calculatePrice` for why.
+ */
+const DEFAULT_UNQUOTABLE_FALLBACK_PRICE = 999_999
 
 /**
  * A generic domestic US from/to address pair used only to discover which
@@ -166,6 +182,24 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
    * shape `getFulfillmentOptions()` returned: `{ id, name, carrier,
    * service }`) -- not nested, like `validateOption`'s `data` and unlike
    * `canCalculate`'s `data`.
+   *
+   * **Why "no matching rate" returns a fallback price instead of throwing:**
+   * `FulfillmentModuleService.calculateShippingOptionsPrices` batches every
+   * requested option's `calculatePrice` call through `promiseAll`, which
+   * re-throws the first rejection rather than dropping just that one
+   * option's result -- so throwing here would fail the ENTIRE cart's
+   * shipping-options lookup (every option, every carrier) over ONE
+   * carrier+service this account's EasyPost setup can't reach for this
+   * particular destination, which is a routine occurrence, not a bug. This
+   * provider has no mechanism to hide or drop a single shipping option from
+   * checkout dynamically once it exists, so -- per the abstract base
+   * class's own doc comment, which suggests exactly this -- the honest
+   * mitigation is to make an effectively-unavailable option deliberately
+   * unattractive (`unquotableFallbackPrice`, a very high number by default)
+   * rather than block checkout for every option over one unreachable one.
+   * A genuine API/connectivity/auth failure (the `createShipment` call
+   * itself rejecting) is a different, real failure and is NOT caught here
+   * -- it propagates and still throws, since that's worth surfacing loudly.
    */
   async calculatePrice(
     optionData: Record<string, unknown>,
@@ -186,6 +220,8 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
 
     const parcel = buildParcel(context.items, this.options_.defaultParcel)
 
+    // A rejection here is a genuine API/connectivity/auth failure -- it
+    // propagates and throws, unlike the "no matching rate" case below.
     const shipment = await this.client_.createShipment({
       toAddress: toEasyPostAddress(context.shipping_address, "destination"),
       fromAddress: toEasyPostAddress(context.from_location?.address, "origin"),
@@ -201,10 +237,16 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
       const quoted = shipment.rates
         .map((candidate) => `${candidate.carrier}:${candidate.service}`)
         .join(", ")
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `EasyPost fulfillment provider: no rate was returned for carrier "${carrier}" service "${service}" -- EasyPost quoted [${quoted}] for this shipment.`
+      this.logger_.warn(
+        `EasyPost fulfillment provider: no rate was returned for carrier "${carrier}" service "${service}" -- EasyPost quoted [${quoted}] for this shipment. Falling back to the configured unquotable-fallback price rather than failing the whole cart's shipping options.`
       )
+
+      return {
+        calculated_amount:
+          this.options_.unquotableFallbackPrice ??
+          DEFAULT_UNQUOTABLE_FALLBACK_PRICE,
+        is_calculated_price_tax_inclusive: false,
+      }
     }
 
     return {
