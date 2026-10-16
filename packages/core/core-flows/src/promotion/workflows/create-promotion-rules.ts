@@ -2,11 +2,14 @@ import {
   AddPromotionRulesWorkflowDTO,
   PromotionRuleDTO,
 } from "@medusajs/framework/types"
+import { PromotionRuleWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { addRulesToPromotionsStep } from "../steps"
 
 export const createPromotionRulesWorkflowId = "create-promotion-rules-workflow"
@@ -45,6 +48,23 @@ export const createPromotionRulesWorkflow = createWorkflow(
   (
     input: WorkflowData<AddPromotionRulesWorkflowDTO>
   ): WorkflowResponse<PromotionRuleDTO[]> => {
-    return new WorkflowResponse(addRulesToPromotionsStep(input))
+    const createdRules = addRulesToPromotionsStep(input)
+
+    const eventData = transform(
+      { input, createdRules },
+      ({ input, createdRules }) =>
+        createdRules.map((rule) => ({
+          id: rule.id,
+          promotion_id: input.data.id,
+          rule_type: input.rule_type,
+        }))
+    )
+
+    emitEventStep({
+      eventName: PromotionRuleWorkflowEvents.CREATED,
+      data: eventData,
+    })
+
+    return new WorkflowResponse(createdRules)
   }
 )

@@ -4,7 +4,7 @@ import {
   PromotionStatusValues,
   UpdatePromotionDTO,
 } from "@medusajs/framework/types"
-import { isString } from "@medusajs/framework/utils"
+import { isString, PromotionWorkflowEvents } from "@medusajs/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -13,7 +13,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { updatePromotionsStep } from "../steps"
 import { updatePromotionsStatusWorkflow } from "./update-promotions-status"
 
@@ -112,6 +112,23 @@ export const updatePromotionsWorkflow = createWorkflow(
     const updatedPromotions = updatePromotionsStep(
       promotionInputs.promotionsUpdateInput
     )
+
+    // Promotions with a status change get their update event from the
+    // nested updatePromotionsStatusWorkflow, so they're skipped here.
+    const eventData = transform({ promotionInputs }, ({ promotionInputs }) => {
+      const statusUpdatedIds = new Set(
+        promotionInputs.promotionsStatusUpdateInput.map(({ id }) => id)
+      )
+
+      return promotionInputs.promotionsUpdateInput
+        .filter(({ id }) => !statusUpdatedIds.has(id))
+        .map(({ id }) => ({ id }))
+    })
+
+    emitEventStep({
+      eventName: PromotionWorkflowEvents.UPDATED,
+      data: eventData,
+    })
 
     when({ promotionInputs }, ({ promotionInputs }) => {
       return !!promotionInputs.promotionsStatusUpdateInput?.length
