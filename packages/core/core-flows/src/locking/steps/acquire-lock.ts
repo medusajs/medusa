@@ -54,7 +54,7 @@ export const acquireLockStep = createStep(
   acquireLockStepId,
   async (
     data: AcquireLockStepInput,
-    { container, parentStepIdempotencyKey }
+    { container, parentStepIdempotencyKey, transactionId }
   ) => {
     const keys = Array.isArray(data.key)
       ? data.key
@@ -73,6 +73,7 @@ export const acquireLockStep = createStep(
 
     const locking = container.resolve(Modules.LOCKING)
 
+    const ownerId = data.ownerId ?? transactionId
     const retryInterval = data.retryInterval ?? 0.3
     const tryUntil = Date.now() + (data.timeout ?? 0) * 1000
 
@@ -80,7 +81,7 @@ export const acquireLockStep = createStep(
       try {
         await locking.acquire(data.key, {
           expire: data.ttl,
-          ownerId: data.ownerId,
+          ownerId,
           provider: data.provider,
         })
         break
@@ -95,7 +96,7 @@ export const acquireLockStep = createStep(
 
     return new StepResponse(void 0, {
       keys,
-      ownerId: data.ownerId,
+      ownerId,
       provider: data.provider,
     })
   },
