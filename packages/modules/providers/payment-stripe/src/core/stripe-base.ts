@@ -349,13 +349,13 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         captureParams.amount_to_capture = getSmallestUnit(amount, currencyCode)
       }
 
-      const intent = Object.keys(captureParams).length
-        ? await this.stripe_.paymentIntents.capture(id, captureParams, {
-            idempotencyKey: context?.idempotency_key,
-          })
-        : await this.stripe_.paymentIntents.capture(id, {
-            idempotencyKey: context?.idempotency_key,
-          })
+      const intent = await this.stripe_.paymentIntents.capture(
+        id,
+        captureParams,
+        {
+          idempotencyKey: context?.idempotency_key,
+        }
+      )
 
       return { data: intent as unknown as Record<string, unknown> }
     } catch (error) {

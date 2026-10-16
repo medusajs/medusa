@@ -148,9 +148,13 @@ describe("StripeBase", () => {
         context: { idempotency_key: "idem_capture_1" },
       })
 
-      expect(captureSpy).toHaveBeenCalledWith("pi_123", {
-        idempotencyKey: "idem_capture_1",
-      })
+      expect(captureSpy).toHaveBeenCalledWith(
+        "pi_123",
+        {},
+        {
+          idempotencyKey: "idem_capture_1",
+        }
+      )
       expect(result.data).toEqual({ id: "pi_123", status: "succeeded" })
     })
 

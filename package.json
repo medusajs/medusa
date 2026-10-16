@@ -133,7 +133,7 @@
     "*.{md,yaml,yml}": "prettier --write"
   },
   "scripts": {
-    "build": "turbo run build build:plugin --concurrency=100% --no-daemon",
+    "build": "node api.js && turbo run build build:plugin --concurrency=100% --no-daemon",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx .",
     "lint:medusa": "eslint --no-eslintrc --config eslint.medusa.cjs --ignore-path .eslintignore --ext .js,.ts,.tsx .",
     "lint:path": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx",

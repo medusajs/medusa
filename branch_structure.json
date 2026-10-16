@@ -1,0 +1,33 @@
+{
+  "default_branch": "develop",
+  "branches": [
+    "develop",
+    "fix/capture-partial-amount-17287",
+    "fix/customer-filters-phone",
+    "fix/dashboard-logout-redirect-pointer-events",
+    "fix/draft-order-shipping-custom-amount",
+    "fix/locking-rollback-partial-acquire",
+    "fix/locking-workflow-owner-17200",
+    "fix/variant-images-hydration-performance"
+  ],
+  "parent": {
+    "develop": null,
+    "fix/capture-partial-amount-17287": "develop",
+    "fix/customer-filters-phone": "develop",
+    "fix/dashboard-logout-redirect-pointer-events": "develop",
+    "fix/draft-order-shipping-custom-amount": "develop",
+    "fix/locking-rollback-partial-acquire": "develop",
+    "fix/locking-workflow-owner-17200": "develop",
+    "fix/variant-images-hydration-performance": "develop"
+  },
+  "order": [
+    "develop",
+    "fix/capture-partial-amount-17287",
+    "fix/customer-filters-phone",
+    "fix/dashboard-logout-redirect-pointer-events",
+    "fix/draft-order-shipping-custom-amount",
+    "fix/locking-rollback-partial-acquire",
+    "fix/locking-workflow-owner-17200",
+    "fix/variant-images-hydration-performance"
+  ]
+}
