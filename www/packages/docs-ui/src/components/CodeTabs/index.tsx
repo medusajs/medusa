@@ -8,6 +8,7 @@ import clsx from "clsx"
 import { CodeBlockActions, CodeBlockActionsProps } from "../CodeBlock/Actions"
 import { CodeBlockHeaderWrapper } from "../CodeBlock/Header/Wrapper"
 import { BaseTabType, useTabs } from "../../hooks/use-tabs"
+import { PreMdx } from "@/components/PreMdx"
 
 type CodeTab = BaseTabType & {
   codeProps?: CodeBlockProps
@@ -39,7 +40,7 @@ export const CodeTabs = ({
       return false
     }
 
-    if (node.type === "pre") {
+    if (node.type === "pre" || node.type === PreMdx) {
       return true
     }
 

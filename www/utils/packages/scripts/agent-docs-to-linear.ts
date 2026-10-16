@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
-// Creates a DX Linear ticket per failing AFDocs check across the docs apps. Reads every
-// `<app>.json` report (`afdocs check --format json --score`) in the given directory and
-// skips checks that already have an open ticket. Writes a scorecard to the job summary.
+// Creates a DX Linear ticket per failing AFDocs check in a docs scan report
+// (`afdocs check --format json --score`) and skips checks that already have an open
+// ticket. Writes a scorecard to the job summary.
 //
-// Usage: yarn report:agent-docs <reports-dir>
+// Usage: yarn report:agent-docs <report-file>
 
 import { LinearClient, Team } from "@linear/sdk"
 import fs from "fs"
-import path from "path"
 
 type AfdocsResult = {
   id: string
@@ -31,8 +30,7 @@ type AfdocsReport = {
 }
 
 type CheckFailure = {
-  app: string
-  url: string
+  checkId: string
   message: string
   fix?: string
   pages: string[]
@@ -46,7 +44,7 @@ type Ticket = {
 }
 
 const TITLE_PREFIX = "[Agent Docs]"
-const MAX_PAGES_PER_APP = 10
+const MAX_PAGES = 20
 
 const linearClient = new LinearClient({
   apiKey: process.env.LINEAR_API_KEY,
@@ -56,48 +54,23 @@ const runUrl = process.env.GITHUB_RUN_ID
   ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
   : null
 
-function readReports(reportsDir: string) {
-  return fs
-    .readdirSync(reportsDir)
-    .filter((file) => file.endsWith(".json"))
-    .sort()
-    .map((file) => ({
-      app: path.basename(file, ".json"),
-      report: JSON.parse(
-        fs.readFileSync(path.join(reportsDir, file), "utf-8")
-      ) as AfdocsReport,
-    }))
-}
-
 function getFailingPages(result: AfdocsResult) {
   return (result.details?.pageResults ?? [])
     .filter((page) => page.status === "fail" || page.found === false)
     .map((page) => page.url)
     .filter((url): url is string => !!url)
-    .slice(0, MAX_PAGES_PER_APP)
+    .slice(0, MAX_PAGES)
 }
 
-function groupFailuresByCheck(
-  reports: { app: string; report: AfdocsReport }[]
-) {
-  const failures = new Map<string, CheckFailure[]>()
-  for (const { app, report } of reports) {
-    for (const result of report.results) {
-      if (result.status !== "fail") {
-        continue
-      }
-      const checkFailures = failures.get(result.id) ?? []
-      checkFailures.push({
-        app,
-        url: report.url,
-        message: result.message,
-        fix: report.scoring?.resolutions?.[result.id],
-        pages: getFailingPages(result),
-      })
-      failures.set(result.id, checkFailures)
-    }
-  }
-  return failures
+function getFailures(report: AfdocsReport): CheckFailure[] {
+  return report.results
+    .filter((result) => result.status === "fail")
+    .map((result) => ({
+      checkId: result.id,
+      message: result.message,
+      fix: report.scoring?.resolutions?.[result.id],
+      pages: getFailingPages(result),
+    }))
 }
 
 // Closed tickets are ignored so a check that regresses after a fix gets a new ticket.
@@ -112,30 +85,19 @@ async function findOpenIssue(team: Team, checkId: string) {
   return issues.nodes[0]
 }
 
-function buildDescription(checkId: string, failures: CheckFailure[]) {
-  const sections = failures.map((failure) =>
-    [
-      `### ${failure.app}`,
-      `**Scanned:** ${failure.url}`,
-      "",
-      failure.message,
-      failure.fix ? `\n**Fix:** ${failure.fix}` : null,
-      failure.pages.length
-        ? `\n**Affected pages (sample):**\n${failure.pages
-            .map((page) => `- ${page}`)
-            .join("\n")}`
-        : null,
-    ]
-      .filter((line) => line !== null)
-      .join("\n")
-  )
-
+function buildDescription(failure: CheckFailure, scannedUrl: string) {
   return [
-    `**Check:** [\`${checkId}\`](https://afdocs.dev/checks/)`,
-    `**Apps:** ${failures.map((failure) => failure.app).join(", ")}`,
+    `**Check:** [\`${failure.checkId}\`](https://afdocs.dev/checks/)`,
+    `**Scanned:** ${scannedUrl}`,
     runUrl ? `**Workflow run:** ${runUrl}` : null,
     "",
-    sections.join("\n\n"),
+    failure.message,
+    failure.fix ? `\n**Fix:** ${failure.fix}` : null,
+    failure.pages.length
+      ? `\n**Affected pages (sample):**\n${failure.pages
+          .map((page) => `- ${page}`)
+          .join("\n")}`
+      : null,
     "",
     "---",
     "_Automatically opened by the Agent-Friendly Docs Scan workflow (AFDocs)._",
@@ -144,19 +106,11 @@ function buildDescription(checkId: string, failures: CheckFailure[]) {
     .join("\n")
 }
 
-function writeSummary(
-  reports: { app: string; report: AfdocsReport }[],
-  tickets: Ticket[]
-) {
+function writeSummary(report: AfdocsReport, tickets: Ticket[]) {
   if (!process.env.GITHUB_STEP_SUMMARY) {
     return
   }
-  const rows = reports.map(({ app, report }) => {
-    const { pass, warn, fail } = report.summary
-    return `| ${app} | ${report.scoring?.overall ?? "-"} (${
-      report.scoring?.grade ?? "-"
-    }) | ${pass} | ${warn} | ${fail} |`
-  })
+  const { pass, warn, fail } = report.summary
   const ticketLines = tickets.map(
     (ticket) =>
       `- \`${ticket.checkId}\`: [${ticket.identifier}](${ticket.url}) (${ticket.status})`
@@ -166,9 +120,11 @@ function writeSummary(
     [
       "## Agent-Friendly Docs Scan",
       "",
-      "| App | Score | Pass | Warn | Fail |",
+      "| URL | Score | Pass | Warn | Fail |",
       "| --- | --- | --- | --- | --- |",
-      ...rows,
+      `| ${report.url} | ${report.scoring?.overall ?? "-"} (${
+        report.scoring?.grade ?? "-"
+      }) | ${pass} | ${warn} | ${fail} |`,
       "",
       ticketLines.length ? "### Linear tickets" : "No failing checks.",
       ...ticketLines,
@@ -178,19 +134,20 @@ function writeSummary(
 }
 
 async function main() {
-  const reportsDir = process.argv[2]
-  if (!reportsDir) {
-    throw new Error("Usage: yarn report:agent-docs <reports-dir>")
+  const reportFile = process.argv[2]
+  if (!reportFile) {
+    throw new Error("Usage: yarn report:agent-docs <report-file>")
   }
 
-  const reports = readReports(reportsDir)
-  console.log(`Read ${reports.length} AFDocs reports from ${reportsDir}.`)
-
-  const failures = groupFailuresByCheck(reports)
+  const report = JSON.parse(
+    fs.readFileSync(reportFile, "utf-8")
+  ) as AfdocsReport
+  const failures = getFailures(report)
+  console.log(`Read AFDocs report for ${report.url} from ${reportFile}.`)
   const tickets: Ticket[] = []
   const errors: string[] = []
 
-  if (failures.size) {
+  if (failures.length) {
     const teams = await linearClient.teams({
       filter: { name: { eqIgnoreCase: "DX" } },
       first: 1,
@@ -206,7 +163,8 @@ async function main() {
     })
     const triageStateId = triageStates.nodes[0]?.id
 
-    for (const [checkId, checkFailures] of failures) {
+    for (const failure of failures) {
+      const { checkId } = failure
       try {
         const existing = await findOpenIssue(team, checkId)
         if (existing) {
@@ -222,10 +180,8 @@ async function main() {
 
         const payload = await linearClient.createIssue({
           teamId: team.id,
-          title: `${TITLE_PREFIX} ${checkId} failing in ${checkFailures
-            .map((failure) => failure.app)
-            .join(", ")}`.slice(0, 250),
-          description: buildDescription(checkId, checkFailures),
+          title: `${TITLE_PREFIX} ${checkId} failing`,
+          description: buildDescription(failure, report.url),
           stateId: triageStateId,
         })
         const issue = await payload.issue
@@ -246,11 +202,11 @@ async function main() {
     }
   }
 
-  writeSummary(reports, tickets)
+  writeSummary(report, tickets)
 
   const created = tickets.filter((ticket) => ticket.status === "created")
   console.log(
-    `\nDone. failing=${failures.size} created=${created.length} errors=${errors.length}`
+    `\nDone. failing=${failures.length} created=${created.length} errors=${errors.length}`
   )
   if (errors.length) {
     throw new Error(`Failed checks: ${errors.join(", ")}`)

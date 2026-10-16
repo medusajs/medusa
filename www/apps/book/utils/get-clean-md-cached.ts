@@ -1,5 +1,6 @@
 import { addExtraToMd, getCleanMd } from "docs-utils"
 import { unstable_cache } from "next/cache"
+import path from "path"
 import {
   addUrlToRelativeLink,
   crossProjectLinksPlugin,
@@ -9,12 +10,14 @@ import type { Plugin } from "unified"
 
 type Options = {
   removeExtra?: boolean
+  slug?: string[]
 }
 
 // slug is used as the cache key; content is the MDX source fetched from /raw-mdx/
 export const getCleanMdCached = unstable_cache(
   async (content: string, options: Options = {}) => {
-    const { removeExtra } = options
+    const { removeExtra, slug = [] } = options
+    const appDir = path.join(process.cwd(), "app")
     const md = await getCleanMd({
       file: content,
       type: "content",
@@ -44,7 +47,13 @@ export const getCleanMdCached = unstable_cache(
                 !!process.env.CLOUDFLARE_ENV,
             },
           ],
-          [localLinksRehypePlugin],
+          [
+            localLinksRehypePlugin,
+            {
+              filePath: path.join(appDir, ...slug, "page.mdx"),
+              basePath: appDir,
+            },
+          ],
         ] as unknown as Plugin[],
         after: [
           [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
