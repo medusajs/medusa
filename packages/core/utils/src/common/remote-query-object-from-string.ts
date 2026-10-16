@@ -4,6 +4,8 @@ import {
 } from "@medusajs/types"
 import { isObject } from "./is-object"
 
+const UNSAFE_FIELD_SEGMENTS = new Set(["__proto__", "constructor", "prototype"])
+
 /**
  * Convert a string fields array to a remote query object
  * @param config - The configuration object
@@ -123,6 +125,12 @@ export function remoteQueryObjectFromString<
     }
 
     const fieldSegments = fieldAsString.split(".")
+
+    // Guard against prototype pollution through unsafe field segments
+    if (fieldSegments.some((segment) => UNSAFE_FIELD_SEGMENTS.has(segment))) {
+      continue
+    }
+
     const fieldProperty = fieldSegments.pop()
 
     let combinedPath = ""

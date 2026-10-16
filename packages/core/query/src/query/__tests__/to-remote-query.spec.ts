@@ -915,4 +915,37 @@ describe("parseAndAssignFilters", () => {
       })
     })
   })
+
+  describe("prototype pollution", () => {
+    afterEach(() => {
+      delete (Object.prototype as any).__fields
+      delete (Object.prototype as any).roles
+    })
+
+    it.each([
+      "__proto__.__fields",
+      "__proto__.roles.x",
+      "constructor.prototype.roles.x",
+      "variants.__proto__.x",
+    ])("should ignore the unsafe field %s", (field) => {
+      const format = toRemoteQuery(
+        {
+          entity: "product",
+          fields: ["id", field, "variants.sku"],
+        },
+        parseFiltersJoinerConfigs
+      )
+
+      expect(({} as any).__fields).toBeUndefined()
+      expect(({} as any).roles).toBeUndefined()
+      expect(format).toEqual({
+        product: {
+          __fields: ["id"],
+          variants: {
+            __fields: ["sku"],
+          },
+        },
+      })
+    })
+  })
 })
