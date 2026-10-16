@@ -15,7 +15,7 @@ import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 import { AdminIndexSyncPayload } from "./validator"
 
-const isIndexEnabledMiddleware = (
+export const isIndexEnabledMiddleware = (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse,
   next: MedusaNextFunction
@@ -35,7 +35,16 @@ const isIndexEnabledMiddleware = (
     logger.warn(
       "Trying to access '/admin/index/*' route but the index module is not configured"
     )
-    return res.status(404)
+    /*
+     * The response has to be ended here: setting the status alone leaves the
+     * connection open with no body, so the client waits until it times out
+     * instead of receiving the 404.
+     */
+    res.status(404).json({
+      type: "not_found",
+      message: "Route not found",
+    })
+    return
   }
 
   return next()
