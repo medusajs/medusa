@@ -979,15 +979,18 @@ export default class PricingModuleService
 
       const entryHash = hashPrice(entry)
 
-      // We want to keep the existing rules as they might already have ids, but any other data should come from the updated input
+      // We want to keep the existing rules as they might already have ids, but any other data should come from the updated input.
+      // An explicit id identifies the price, so an equivalent existing price is only reused when it is that same price.
       const existing = existingPricesMap.get(entryHash)
 
-      if (existing) {
+      if (existing && (!entry.id || existing.id === entry.id)) {
         entry.id = existing.id ?? entry.id
         entry.price_rules = existing.price_rules ?? entry.price_rules
       }
 
-      pricesToUpsert.set(entryHash, entry)
+      // Entries with an id are kept apart even when their other fields hash the same,
+      // e.g. two updates that only send `id` and `amount` for prices in different quantity ranges.
+      pricesToUpsert.set(entry.id ? `id:${entry.id}` : entryHash, entry)
     })
 
     return Array.from(pricesToUpsert.values())
