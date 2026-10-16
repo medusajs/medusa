@@ -316,6 +316,138 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should carry is_custom_price over to the order's line items", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.createStockLocations({
+            name: "Warehouse",
+          })
+
+          const region = await regionModuleService.createRegions({
+            name: "US",
+            currency_code: "usd",
+          })
+
+          await linkRegionPaymentProviders(appContainer, region.id)
+
+          const [product] = await productModule.createProducts([
+            {
+              title: "Test product",
+              status: ProductStatus.PUBLISHED,
+              variants: [
+                {
+                  title: "Test variant",
+                  manage_inventory: false,
+                },
+              ],
+            },
+          ])
+
+          const priceSet = await pricingModule.createPriceSets({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+          ])
+
+          const cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+            region_id: region.id,
+          })
+
+          await addToCartWorkflow(appContainer).run({
+            input: {
+              items: [
+                {
+                  title: "Custom price item",
+                  requires_shipping: false,
+                  unit_price: 1500,
+                  quantity: 1,
+                },
+                {
+                  variant_id: product.variants[0].id,
+                  requires_shipping: false,
+                  quantity: 1,
+                },
+              ],
+              cart_id: cart.id,
+            },
+          })
+
+          await createPaymentCollectionForCartWorkflow(appContainer).run({
+            input: {
+              cart_id: cart.id,
+            },
+          })
+
+          const [paymentCollection] =
+            await paymentModule.listPaymentCollections({})
+
+          await createPaymentSessionsWorkflow(appContainer).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          const { result: order } = await completeCartWorkflow(
+            appContainer
+          ).run({
+            input: {
+              id: cart.id,
+            },
+          })
+
+          const { data } = await query.graph({
+            entity: "order",
+            filters: {
+              id: order.id,
+            },
+            fields: ["id", "items.*"],
+          })
+
+          expect(data[0].items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                title: "Custom price item",
+                unit_price: 1500,
+                is_custom_price: true,
+              }),
+              expect.objectContaining({
+                title: "Test product",
+                unit_price: 3000,
+                is_custom_price: false,
+              }),
+            ])
+          )
+        })
+
         it("should complete cart reserving inventory from available locations", async () => {
           const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
