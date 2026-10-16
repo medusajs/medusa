@@ -1,3 +1,4 @@
+import { deleteCustomerAddressesWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { ICustomerModuleService } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
@@ -56,6 +57,37 @@ medusaIntegrationTestRunner({
         )
 
         expect(updatedCustomer.addresses?.length).toEqual(0)
+      })
+
+      it("should restore customer address on delete workflow failure", async () => {
+        const customer = await customerModuleService.createCustomers({
+          first_name: "Jane",
+          last_name: "Doe",
+        })
+
+        const address = await customerModuleService.createCustomerAddresses({
+          customer_id: customer.id,
+          first_name: "Jane",
+          last_name: "Doe",
+          address_1: "Rollback street 1",
+        })
+
+        deleteCustomerAddressesWorkflow.hooks.addressesDeleted(async () => {
+          throw new Error("fail after delete")
+        })
+
+        const { errors } = await deleteCustomerAddressesWorkflow(appContainer).run({
+          input: { ids: [address.id] },
+          throwOnError: false,
+        })
+
+        expect(errors.length).toBeGreaterThan(0)
+
+        const restored = await customerModuleService.listCustomerAddresses({
+          id: address.id,
+        })
+        expect(restored).toHaveLength(1)
+        expect(restored[0].id).toEqual(address.id)
       })
     })
   },
