@@ -30,6 +30,11 @@ export const deleteCustomerAddressesStep = createStep(
 
     const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
-    await service.createCustomerAddresses(prevAddresses)
+    await service.createCustomerAddresses(
+      prevAddresses.map((address) => {
+        const { customer, ...rest } = address as any
+        return rest
+      })
+    )
   }
 )
