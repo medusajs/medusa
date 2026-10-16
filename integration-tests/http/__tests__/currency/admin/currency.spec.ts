@@ -1,4 +1,3 @@
-
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -25,9 +24,13 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.currencies).toHaveLength(126)
+        expect(response.data.currencies).toHaveLength(127)
         expect(response.data.currencies).toEqual(
           expect.arrayContaining([
+            expect.objectContaining({
+              code: "htg",
+              name: "Haitian Gourde",
+            }),
             expect.objectContaining({
               code: "gmd",
               name: "Gambian Dalasi",

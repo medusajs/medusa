@@ -39,6 +39,11 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
           expect(currenciesResult).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
+                code: "htg",
+                name: "Haitian Gourde",
+                decimal_digits: 2,
+              }),
+              expect.objectContaining({
                 code: "cad",
                 name: "Canadian Dollar",
                 decimal_digits: 2,
@@ -86,7 +91,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
           const [currenciesResult, count] =
             await service.listAndCountCurrencies({}, {})
 
-          expect(count).toEqual(126)
+          expect(count).toEqual(127)
           expect(currenciesResult).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -128,7 +133,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
           const [currenciesResult, count] =
             await service.listAndCountCurrencies({}, { skip: 5, take: 1 })
 
-          expect(count).toEqual(126)
+          expect(count).toEqual(127)
           expect(currenciesResult).toEqual([
             expect.objectContaining({
               code: "ars",
@@ -149,7 +154,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
 
           const serialized = JSON.parse(JSON.stringify(currenciesResult))
 
-          expect(count).toEqual(126)
+          expect(count).toEqual(127)
           expect(serialized).toEqual([
             {
               code: "aed",
