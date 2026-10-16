@@ -655,6 +655,35 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
+          it("should re-authorize a payment session when its payment was canceled", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 200,
+              currency_code: "usd",
+            })
+
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 100,
+              currency_code: "usd",
+              data: {},
+            })
+
+            const payment = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+
+            await service.cancelPayment(payment.id)
+
+            const retriedPayment = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+
+            expect(retriedPayment.id).not.toBe(payment.id)
+            expect(retriedPayment.canceled_at).toBeNull()
+          })
+
           it("should auto capture payment when provider returns captured status", async () => {
             const collection = await service.createPaymentCollections({
               amount: 200,

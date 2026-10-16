@@ -561,6 +561,7 @@ export default class PaymentModuleService
           "currency_code",
           "authorized_at",
           "payment_collection_id",
+          "payment.canceled_at",
         ],
         relations: ["payment", "payment_collection"],
       },
@@ -568,7 +569,11 @@ export default class PaymentModuleService
     )
 
     // this method needs to be idempotent
-    if (session.payment && session.authorized_at) {
+    if (
+      session.payment &&
+      session.authorized_at &&
+      !session.payment.canceled_at
+    ) {
       return await this.baseRepository_.serialize<PaymentDTO>(session.payment)
     }
 
@@ -670,6 +675,10 @@ export default class PaymentModuleService
       },
       sharedContext
     )
+
+    if (session.payment?.canceled_at) {
+      await this.paymentService_.delete(session.payment.id, sharedContext)
+    }
 
     const payment = await this.paymentService_.create(
       {
