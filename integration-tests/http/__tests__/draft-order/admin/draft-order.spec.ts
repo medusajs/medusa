@@ -1642,6 +1642,61 @@ medusaIntegrationTestRunner({
             ]),
           })
         )
+
+        /**
+         * Update shipping method with custom_amount and verify is_custom_amount
+         */
+        edit = (
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            {},
+            adminHeaders
+          )
+        ).data.draft_order_preview
+
+        const updateMethodResponse = await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/shipping-methods/method/${edit.shipping_methods[0].id}`,
+          {
+            custom_amount: 15,
+          },
+          adminHeaders
+        )
+
+        expect(updateMethodResponse.status).toBe(200)
+        expect(
+          updateMethodResponse.data.draft_order_preview.shipping_methods
+        ).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: edit.shipping_methods[0].id,
+              amount: 15,
+              is_custom_amount: true,
+            }),
+          ])
+        )
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const orderWithCustomShipping = (
+          await api.get(
+            `/admin/draft-orders/${testDraftOrder.id}?fields=+shipping_methods.amount,+shipping_methods.is_custom_amount`,
+            adminHeaders
+          )
+        ).data.draft_order
+
+        expect(orderWithCustomShipping.shipping_methods).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: edit.shipping_methods[0].id,
+              amount: 15,
+              is_custom_amount: true,
+            }),
+          ])
+        )
       })
     })
 

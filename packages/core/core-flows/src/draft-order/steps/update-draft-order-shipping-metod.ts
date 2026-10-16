@@ -1,4 +1,4 @@
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { isDefined, MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import type {
   BigNumberInput,
@@ -32,6 +32,10 @@ export interface UpdateDraftOrderShippingMethodStepInput {
    * The metadata of the shipping method.
    */
   metadata?: Record<string, unknown> | null
+  /**
+   * Whether the amount is a custom amount.
+   */
+  is_custom_amount?: boolean
 }
 
 /**
@@ -58,7 +62,7 @@ export const updateDraftOrderShippingMethodStep = createStep(
       },
       {
         take: 1,
-        select: ["id", "shipping_option_id", "amount"],
+        select: ["id", "shipping_option_id", "amount", "is_custom_amount"],
       }
     )
 
@@ -69,12 +73,21 @@ export const updateDraftOrderShippingMethodStep = createStep(
       )
     }
 
+    const updateData: any = {
+      id: input.shipping_method_id,
+      shipping_option_id: input.shipping_option_id,
+      amount: input.amount,
+      metadata: input.metadata,
+    }
+
+    if (isDefined(input.is_custom_amount)) {
+      updateData.is_custom_amount = input.is_custom_amount
+    } else if (isDefined(input.amount)) {
+      updateData.is_custom_amount = true
+    }
+
     const [updatedMethod] = await service.updateOrderShippingMethods([
-      {
-        id: input.shipping_method_id,
-        shipping_option_id: input.shipping_option_id,
-        amount: input.amount,
-      },
+      updateData,
     ])
 
     return new StepResponse(
