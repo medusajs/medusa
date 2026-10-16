@@ -144,6 +144,7 @@ export const Toast = ({
           variant="transparent"
           type="button"
           onClick={() => toast.dismiss(id)}
+          aria-label="Dismiss"
         >
           <XMark />
         </IconButton>

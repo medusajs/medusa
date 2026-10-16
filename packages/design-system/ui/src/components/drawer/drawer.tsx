@@ -126,7 +126,12 @@ const DrawerContent = React.forwardRef<
 })
 DrawerContent.displayName = "Drawer.Content"
 
-interface DrawerHeaderProps extends React.ComponentPropsWithoutRef<"div"> {}
+interface DrawerHeaderProps extends React.ComponentPropsWithoutRef<"div"> {
+  /**
+   * The accessible name of the close button, announced by screen readers.
+   */
+  closeLabel?: string
+}
 
 /**
  * This component is used to wrap the header content of the drawer.
@@ -135,7 +140,11 @@ interface DrawerHeaderProps extends React.ComponentPropsWithoutRef<"div"> {}
 const DrawerHeader = React.forwardRef<
   HTMLDivElement,
   DrawerHeaderProps
->(({ children, className, ...props }: DrawerHeaderProps, ref) => {
+>(
+  (
+    { children, className, closeLabel = "Close", ...props }: DrawerHeaderProps,
+    ref
+  ) => {
   return (
     <div
       ref={ref}
@@ -146,14 +155,20 @@ const DrawerHeader = React.forwardRef<
       <div className="flex items-center gap-x-2">
         <Kbd>esc</Kbd>
         <RadixDialog.Close asChild>
-          <IconButton size="small" type="button" variant="transparent">
+          <IconButton
+            size="small"
+            type="button"
+            variant="transparent"
+            aria-label={closeLabel}
+          >
             <XMark />
           </IconButton>
         </RadixDialog.Close>
       </div>
     </div>
   )
-})
+  }
+)
 DrawerHeader.displayName = "Drawer.Header"
 
 interface DrawerBodyProps extends React.ComponentPropsWithoutRef<"div"> {}

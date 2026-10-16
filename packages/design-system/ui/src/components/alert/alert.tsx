@@ -15,6 +15,10 @@ import { IconButton } from "@/components/icon-button"
 interface AlertProps extends React.ComponentPropsWithoutRef<"div"> {
   variant?: "error" | "success" | "warning" | "info"
   dismissible?: boolean
+  /**
+   * The accessible name of the dismiss button, announced by screen readers.
+   */
+  dismissLabel?: string
 }
 
 /**
@@ -33,6 +37,10 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
        * Whether the alert is dismissible
        */
       dismissible = false,
+      /**
+       * The accessible name of the dismiss button
+       */
+      dismissLabel = "Dismiss",
       className,
       children,
       ...props
@@ -84,6 +92,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             variant="transparent"
             type="button"
             onClick={handleDismiss}
+            aria-label={dismissLabel}
           >
             <XMarkMini className="text-ui-fg-muted" />
           </IconButton>
