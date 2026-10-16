@@ -392,8 +392,8 @@
     "sorting": {
       "alphabeticallyAsc": "A až Z",
       "alphabeticallyDesc": "Z až A",
-      "dateAsc": "Nejnovější první",
-      "dateDesc": "Nejstarší první"
+      "dateAsc": "Nejstarší první",
+      "dateDesc": "Nejnovější první"
     },
     "radio": {
       "yes": "Ano",

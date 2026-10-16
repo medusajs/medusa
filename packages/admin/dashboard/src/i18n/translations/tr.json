@@ -364,8 +364,8 @@
     "sorting": {
       "alphabeticallyAsc": "A'dan Z'ye",
       "alphabeticallyDesc": "Z'den A'ya",
-      "dateAsc": "Yeniden eskiye",
-      "dateDesc": "Eskiye yeniden"
+      "dateAsc": "Eskiye yeniden",
+      "dateDesc": "Yeniden eskiye"
     },
     "radio": {
       "yes": "Evet",

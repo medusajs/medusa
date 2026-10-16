@@ -368,8 +368,8 @@
     "sorting": {
       "alphabeticallyAsc": "A to Z",
       "alphabeticallyDesc": "Z to A",
-      "dateAsc": "Newest first",
-      "dateDesc": "Oldest first"
+      "dateAsc": "Oldest first",
+      "dateDesc": "Newest first"
     },
     "radio": {
       "yes": "Yes",

@@ -382,8 +382,8 @@
     "sorting": {
       "alphabeticallyAsc": "A ke Z",
       "alphabeticallyDesc": "Z ke A",
-      "dateAsc": "Terbaru dulu",
-      "dateDesc": "Terlama dulu"
+      "dateAsc": "Terlama dulu",
+      "dateDesc": "Terbaru dulu"
     },
     "radio": {
       "yes": "Ya",
