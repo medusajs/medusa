@@ -21,17 +21,27 @@ export type EligibleItem = {
   quantity: BigNumberInput
 }
 
+function getUnitPrice(item: ComputeActionItemLine) {
+  return MathBN.gt(item.quantity, 0)
+    ? MathBN.div(item.subtotal, item.quantity)
+    : MathBN.convert(0)
+}
+
 function sortByPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
-  // Returning a non-zero value for equal subtotals makes this an inconsistent
+  // Items are ranked by unit price.
+  const aUnitPrice = getUnitPrice(a)
+  const bUnitPrice = getUnitPrice(b)
+
+  // Returning a non-zero value for equal prices makes this an inconsistent
   // comparator, which leaves the order of equally priced items up to the sort
   // implementation rather than keeping it stable. Since the resulting order
   // decides which items are reserved for the buy side below, that turned into
   // the promotion being applied or not depending on line item order.
-  if (MathBN.eq(a.subtotal, b.subtotal)) {
+  if (MathBN.eq(aUnitPrice, bUnitPrice)) {
     return 0
   }
 
-  return MathBN.lt(a.subtotal, b.subtotal) ? 1 : -1
+  return MathBN.lt(aUnitPrice, bUnitPrice) ? 1 : -1
 }
 
 function isValidPromotionContext(
@@ -482,7 +492,7 @@ function createComputedActionsFromPromotionApplication(
 
 /*
   Grabs all the items in the context where the rules apply
-  We then sort by price to prioritize most valuable item
+  We then sort by unit price to prioritize most valuable item
 */
 function filterItemsByPromotionRules(
   itemsContext: ComputeActionItemLine[],
