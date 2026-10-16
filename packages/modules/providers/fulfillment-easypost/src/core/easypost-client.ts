@@ -69,6 +69,23 @@ import crypto from "crypto"
  *   has `refund_status` set to one of `"submitted"`, `"refunded"`, or
  *   `"rejected"`.
  *
+ * - Buying a shipment TWICE: confirmed empirically against the real
+ *   EasyPost test-mode API (while building Task 5's `createFulfillment`)
+ *   -- a second `client.Shipment.buy(...)` call against an
+ *   already-purchased shipment is REJECTED, not idempotent and not a
+ *   fresh rate: it throws with HTTP 422, `code: "SHIPMENT.POSTAGE.EXISTS"`,
+ *   message `"Postage already exists for this shipment."`. This wrapper
+ *   does not catch or special-case that -- it propagates, which is the
+ *   desired behavior for `createFulfillment`.
+ *
+ * - Tracking info after a buy: a bought `Shipment` also gets a `tracker`
+ *   object (`Shipment.tracker`), confirmed via the SDK's own
+ *   `types/Tracker/Tracker.d.ts`. `tracker.id` (begins with `trk_`) and
+ *   `tracker.public_url` (a hosted tracking page) are what `createFulfillment`
+ *   needs for `easypost_tracker_id` and the returned label's `tracking_url`
+ *   -- `shipment.tracking_code` and `tracker.tracking_code` are the same
+ *   value, so this wrapper keeps reading the former (already mapped below).
+ *
  * - Webhook signature verification: the SDK ships its own
  *   `client.Utils.validateWebhook(eventBody: Buffer, headers: object, webhookSecret: string)`
  *   (an instance method on `new Utils()`, despite the shipped `.d.ts`
@@ -151,6 +168,16 @@ export type EasyPostShipment = {
   trackingCode?: string
   labelUrl?: string
   refundStatus?: string
+  /**
+   * The id of the `Tracker` EasyPost automatically creates when a shipment
+   * is bought (`trk_...`). Undefined until the shipment is purchased.
+   */
+  trackerId?: string
+  /**
+   * The tracker's hosted public tracking page URL. Undefined until the
+   * shipment is purchased.
+   */
+  trackingUrl?: string
 }
 
 export type EasyPostClientOptions = {
@@ -291,6 +318,7 @@ function toEasyPostShipmentResult(shipment: {
   tracking_code?: string | null
   postage_label?: { label_url?: string } | null
   refund_status?: string | null
+  tracker?: { id?: string; public_url?: string } | null
 }): EasyPostShipment {
   return {
     id: shipment.id,
@@ -298,5 +326,7 @@ function toEasyPostShipmentResult(shipment: {
     trackingCode: shipment.tracking_code ?? undefined,
     labelUrl: shipment.postage_label?.label_url ?? undefined,
     refundStatus: shipment.refund_status ?? undefined,
+    trackerId: shipment.tracker?.id ?? undefined,
+    trackingUrl: shipment.tracker?.public_url ?? undefined,
   }
 }

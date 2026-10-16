@@ -486,4 +486,481 @@ describe("EasyPostFulfillmentService", () => {
       ).rejects.toThrow()
     })
   })
+
+  describe("createFulfillment", () => {
+    const validContextFixture = {
+      id: "cart_test",
+      shipping_address: {
+        address_1: "417 montgomery st",
+        city: "San Francisco",
+        province: "CA",
+        postal_code: "94104",
+        country_code: "us",
+      },
+      from_location: {
+        address: {
+          address_1: "118 2nd street",
+          city: "San Francisco",
+          province: "CA",
+          postal_code: "94105",
+          country_code: "us",
+        },
+      },
+      items: [
+        {
+          quantity: 1,
+          variant: { weight: 16, length: 10, width: 8, height: 4 },
+        },
+      ],
+    } as unknown as CalculateShippingOptionPriceContext
+
+    test(
+      "buys the exact persisted rate and returns a tracking code + label",
+      async () => {
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: process.env.EASYPOST_API_KEY!, defaultParcel }
+        )
+        const validated = await service.validateFulfillmentData(
+          { carrier: "USPS", service: "Priority" },
+          {},
+          validContextFixture as any
+        )
+
+        const result = await service.createFulfillment(
+          validated,
+          [],
+          undefined,
+          {} as any
+        )
+
+        expect(result.data.easypost_tracking_code).toBeDefined()
+        expect(result.data.easypost_shipment_id).toBe(
+          validated.easypost_shipment_id
+        )
+        expect(result.data.easypost_rate_id).toBe(validated.easypost_rate_id)
+        expect(result.labels[0].tracking_number).toBe(
+          result.data.easypost_tracking_code
+        )
+        expect(result.labels[0].label_url).toMatch(/^https?:\/\//)
+        expect(result.labels[0].tracking_url).toMatch(/^https?:\/\//)
+      },
+      REAL_API_TEST_TIMEOUT_MS
+    )
+
+    test(
+      "throws a clear error for an already-bought rate rather than silently succeeding again (Review Focus)",
+      async () => {
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: process.env.EASYPOST_API_KEY!, defaultParcel }
+        )
+        const validated = await service.validateFulfillmentData(
+          { carrier: "USPS", service: "Priority" },
+          {},
+          validContextFixture as any
+        )
+
+        // First buy succeeds.
+        await service.createFulfillment(validated, [], undefined, {} as any)
+
+        // Confirmed against the real EasyPost test-mode API: a second buy
+        // of the same shipment/rate is rejected with HTTP 422
+        // ("Postage already exists for this shipment."), not an idempotent
+        // success and not a different rate.
+        await expect(
+          service.createFulfillment(validated, [], undefined, {} as any)
+        ).rejects.toThrow(/postage already exists/i)
+      },
+      REAL_API_TEST_TIMEOUT_MS * 2
+    )
+
+    test("throws a clear error when the persisted data is missing the shipment or rate id", async () => {
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel }
+      )
+
+      await expect(
+        service.createFulfillment({}, [], undefined, {} as any)
+      ).rejects.toThrow(/easypost_shipment_id/)
+    })
+
+    test("maps a successful buyShipment result into the exact CreateFulfillmentResult shape", async () => {
+      const fakeClient = {
+        buyShipment: jest.fn(async (shipmentId: string, rateId: string) => ({
+          id: shipmentId,
+          rates: [],
+          trackingCode: "9400111899223197428490",
+          labelUrl: "https://easypost-test.s3.amazonaws.com/label.png",
+          trackerId: "trk_fake123",
+          trackingUrl: "https://track.easypost.com/djE6dHJrX2Zha2Ux",
+        })),
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      const result = await service.createFulfillment(
+        {
+          easypost_shipment_id: "shp_fake",
+          easypost_rate_id: "rate_fake",
+          easypost_carrier: "USPS",
+          easypost_service: "Priority",
+        },
+        [],
+        undefined,
+        {} as any
+      )
+
+      expect(fakeClient.buyShipment).toHaveBeenCalledWith(
+        "shp_fake",
+        "rate_fake"
+      )
+      expect(result).toEqual({
+        data: {
+          easypost_shipment_id: "shp_fake",
+          easypost_rate_id: "rate_fake",
+          easypost_carrier: "USPS",
+          easypost_service: "Priority",
+          easypost_tracking_code: "9400111899223197428490",
+          easypost_label_url:
+            "https://easypost-test.s3.amazonaws.com/label.png",
+          easypost_tracker_id: "trk_fake123",
+        },
+        labels: [
+          {
+            tracking_number: "9400111899223197428490",
+            tracking_url: "https://track.easypost.com/djE6dHJrX2Zha2Ux",
+            label_url: "https://easypost-test.s3.amazonaws.com/label.png",
+          },
+        ],
+      })
+    })
+
+    test("still throws when the EasyPost API call itself fails", async () => {
+      const fakeClient = {
+        buyShipment: async () => {
+          throw new Error("ECONNREFUSED: could not reach EasyPost")
+        },
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      await expect(
+        service.createFulfillment(
+          { easypost_shipment_id: "shp_fake", easypost_rate_id: "rate_fake" },
+          [],
+          undefined,
+          {} as any
+        )
+      ).rejects.toThrow(/ECONNREFUSED/)
+    })
+  })
+
+  describe("createReturnFulfillment", () => {
+    // Confirmed against the real Medusa core code (packages/modules/fulfillment/src/services/fulfillment-module-service.ts):
+    // `createReturnFulfillment`'s `fromData` always carries `shipping_option.data`
+    // (the same `{ id, name, carrier, service }` shape `getFulfillmentOptions`
+    // produces and `validateOption` validates), and `delivery_address` is always
+    // the return's own destination -- the merchant's stock location address,
+    // NOT the customer's. It never carries `order` (and therefore never
+    // `order.shipping_address`): the module service destructures `order` out of
+    // its input and never forwards it to the provider, in every return-creating
+    // workflow (plain return, exchange, claim). This provider still checks
+    // `order?.shipping_address` first in case that's ever fixed upstream, but
+    // the ONLY way to supply the customer's origin address today is this
+    // provider's own documented extension point, `metadata.return_from_address`.
+    const returnFulfillmentFixture = {
+      delivery_address: {
+        first_name: "Test",
+        last_name: "Seller",
+        address_1: "118 2nd street",
+        city: "San Francisco",
+        province: "CA",
+        postal_code: "94105",
+        country_code: "us",
+      },
+      shipping_option: {
+        data: {
+          id: "USPS:Priority",
+          name: "USPS Priority",
+          carrier: "USPS",
+          service: "Priority",
+        },
+      },
+      metadata: {
+        return_from_address: {
+          first_name: "Test",
+          last_name: "Buyer",
+          address_1: "417 montgomery st",
+          city: "San Francisco",
+          province: "CA",
+          postal_code: "94104",
+          country_code: "us",
+        },
+      },
+      items: [],
+    }
+
+    test(
+      "buys a return label reusing the original carrier+service, with to/from addresses reversed",
+      async () => {
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: process.env.EASYPOST_API_KEY!, defaultParcel }
+        )
+
+        const result = await service.createReturnFulfillment(
+          returnFulfillmentFixture
+        )
+
+        expect(result.data.easypost_tracking_code).toBeDefined()
+        expect(result.data.easypost_carrier).toBe("USPS")
+        expect(result.data.easypost_service).toBe("Priority")
+        expect(result.labels[0].label_url).toMatch(/^https?:\/\//)
+      },
+      REAL_API_TEST_TIMEOUT_MS
+    )
+
+    test("passes delivery_address as the EasyPost to_address and metadata.return_from_address as the from_address", async () => {
+      const createShipment = jest.fn(async () => ({
+        id: "shp_fake_return",
+        rates: [
+          {
+            id: "rate_1",
+            carrier: "USPS",
+            service: "Priority",
+            rate: "8.01",
+            currency: "USD",
+          },
+        ],
+      }))
+      const fakeClient = {
+        createShipment,
+        buyShipment: async (shipmentId: string, rateId: string) => ({
+          id: shipmentId,
+          rates: [],
+          trackingCode: "tracking-fake",
+          labelUrl: "https://example.com/label.png",
+          trackerId: "trk_fake",
+          trackingUrl: "https://example.com/track",
+        }),
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      await service.createReturnFulfillment(returnFulfillmentFixture)
+
+      expect(createShipment).toHaveBeenCalledWith(
+        expect.objectContaining({
+          toAddress: expect.objectContaining({
+            street1: "118 2nd street",
+            city: "San Francisco",
+          }),
+          fromAddress: expect.objectContaining({
+            street1: "417 montgomery st",
+            city: "San Francisco",
+          }),
+        })
+      )
+    })
+
+    test("prefers order.shipping_address over metadata.return_from_address when both are present", async () => {
+      const createShipment = jest.fn(async () => ({
+        id: "shp_fake_return",
+        rates: [
+          {
+            id: "rate_1",
+            carrier: "USPS",
+            service: "Priority",
+            rate: "8.01",
+            currency: "USD",
+          },
+        ],
+      }))
+      const fakeClient = {
+        createShipment,
+        buyShipment: async (shipmentId: string) => ({
+          id: shipmentId,
+          rates: [],
+          trackingCode: "tracking-fake",
+          labelUrl: "https://example.com/label.png",
+        }),
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      await service.createReturnFulfillment({
+        ...returnFulfillmentFixture,
+        order: {
+          shipping_address: {
+            first_name: "Order",
+            last_name: "Address",
+            address_1: "1 order shipping address way",
+            city: "Order City",
+            province: "CA",
+            postal_code: "90000",
+            country_code: "us",
+          },
+        },
+      })
+
+      expect(createShipment).toHaveBeenCalledWith(
+        expect.objectContaining({
+          fromAddress: expect.objectContaining({
+            street1: "1 order shipping address way",
+          }),
+        })
+      )
+    })
+
+    test("throws a clear error when no customer origin address is available at all", async () => {
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel }
+      )
+
+      const { metadata, ...withoutOriginAddress } = returnFulfillmentFixture
+
+      await expect(
+        service.createReturnFulfillment(withoutOriginAddress)
+      ).rejects.toThrow(/origin address/)
+    })
+
+    test("throws a clear error when the shipping option's data doesn't carry a carrier and service", async () => {
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel }
+      )
+
+      await expect(
+        service.createReturnFulfillment({
+          ...returnFulfillmentFixture,
+          shipping_option: { data: {} },
+        })
+      ).rejects.toThrow()
+    })
+
+    test("throws when EasyPost can't quote the original carrier+service for the return route", async () => {
+      const fakeClient = {
+        createShipment: async () => ({
+          id: "shp_fake_return",
+          rates: [
+            {
+              id: "rate_1",
+              carrier: "FedExDefault",
+              service: "FEDEX_GROUND",
+              rate: "12.00",
+              currency: "USD",
+            },
+          ],
+        }),
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      await expect(
+        service.createReturnFulfillment(returnFulfillmentFixture)
+      ).rejects.toThrow(/USPS.*Priority/)
+    })
+  })
+
+  describe("cancelFulfillment", () => {
+    test(
+      "submits a refund request for a bought shipment",
+      async () => {
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: process.env.EASYPOST_API_KEY!, defaultParcel }
+        )
+        const validContextFixture = {
+          id: "cart_test",
+          shipping_address: {
+            address_1: "417 montgomery st",
+            city: "San Francisco",
+            province: "CA",
+            postal_code: "94104",
+            country_code: "us",
+          },
+          from_location: {
+            address: {
+              address_1: "118 2nd street",
+              city: "San Francisco",
+              province: "CA",
+              postal_code: "94105",
+              country_code: "us",
+            },
+          },
+          items: [
+            {
+              quantity: 1,
+              variant: { weight: 16, length: 10, width: 8, height: 4 },
+            },
+          ],
+        } as unknown as CalculateShippingOptionPriceContext
+
+        const validated = await service.validateFulfillmentData(
+          { carrier: "USPS", service: "Priority" },
+          {},
+          validContextFixture as any
+        )
+        const created = await service.createFulfillment(
+          validated,
+          [],
+          undefined,
+          {} as any
+        )
+
+        const cancelled = (await service.cancelFulfillment(created.data)) as {
+          refundStatus?: string
+        }
+
+        expect(cancelled).toBeDefined()
+        expect(cancelled.refundStatus).toBeDefined()
+      },
+      REAL_API_TEST_TIMEOUT_MS * 2
+    )
+
+    test("throws a clear error when data is missing the shipment id", async () => {
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel }
+      )
+
+      await expect(service.cancelFulfillment({})).rejects.toThrow(
+        /easypost_shipment_id/
+      )
+    })
+
+    test("returns whatever refundShipment resolves with", async () => {
+      const fakeClient = {
+        refundShipment: jest.fn(async (shipmentId: string) => ({
+          id: shipmentId,
+          rates: [],
+          refundStatus: "submitted",
+        })),
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      const result = (await service.cancelFulfillment({
+        easypost_shipment_id: "shp_fake",
+      })) as { refundStatus?: string }
+
+      expect(fakeClient.refundShipment).toHaveBeenCalledWith("shp_fake")
+      expect(result.refundStatus).toBe("submitted")
+    })
+  })
 })

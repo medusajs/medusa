@@ -6,8 +6,13 @@ import {
 import {
   CalculatedShippingOptionPrice,
   CalculateShippingOptionPriceContext,
+  CartPropsForFulfillment,
+  CreateFulfillmentResult,
   CreateShippingOptionDTO,
+  FulfillmentDTO,
+  FulfillmentItemDTO,
   FulfillmentOption,
+  FulfillmentOrderDTO,
   ValidateFulfillmentDataContext,
 } from "@medusajs/types"
 import { CARRIER_SERVICE_MAP } from "../core/carrier-services"
@@ -332,6 +337,178 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
 
     return { shipment, rate }
   }
+
+  /**
+   * Buys the EXACT shipment/rate `validateFulfillmentData` persisted onto
+   * the shipping method's `data` (`easypost_shipment_id`/`easypost_rate_id`)
+   * -- deliberately NOT re-deriving a fresh shipment/rate via
+   * `createShipmentAndMatchRate`. The whole point of persisting those ids
+   * at validation time is to buy the rate the customer was already quoted
+   * and agreed to pay; re-quoting here could silently charge a different
+   * price.
+   *
+   * Unlike `calculatePrice`/`validateFulfillmentData`, Medusa core invokes
+   * `createFulfillment` ONE AT A TIME per fulfillment (`createFulfillmentStep`
+   * takes a single `CreateFulfillmentDTO`, not a batch) -- there's no
+   * `promiseAll` batching hazard here, so a genuine failure is allowed to
+   * throw and propagate; core's own step compensation calls
+   * `cancelFulfillment` if this throws.
+   *
+   * **"Already bought" behavior, confirmed against the real EasyPost
+   * test-mode API** (not assumed): calling `buy` a second time on an
+   * already-purchased shipment does NOT succeed idempotently and does NOT
+   * return a different rate -- EasyPost rejects it with HTTP 422,
+   * `code: "SHIPMENT.POSTAGE.EXISTS"`, message "Postage already exists for
+   * this shipment." That rejection isn't caught here; it propagates
+   * unchanged, which is exactly the desired "don't silently succeed again"
+   * behavior.
+   */
+  async createFulfillment(
+    data: Record<string, unknown>,
+    _items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
+    _order: Partial<FulfillmentOrderDTO> | undefined,
+    _fulfillment: Partial<
+      Omit<FulfillmentDTO, "provider_id" | "data" | "items">
+    >
+  ): Promise<CreateFulfillmentResult> {
+    const { easypost_shipment_id: shipmentId, easypost_rate_id: rateId } =
+      data as {
+        easypost_shipment_id?: unknown
+        easypost_rate_id?: unknown
+      }
+
+    if (typeof shipmentId !== "string" || typeof rateId !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `EasyPost fulfillment provider: cannot create a fulfillment without "easypost_shipment_id" and "easypost_rate_id" on the shipping method's data (normally persisted by validateFulfillmentData) -- got ${JSON.stringify(
+          data
+        )}.`
+      )
+    }
+
+    const bought = await this.client_.buyShipment(shipmentId, rateId)
+
+    return buildCreateFulfillmentResult(data, bought)
+  }
+
+  /**
+   * Buys a return label. A return fulfillment context is NOT the same
+   * shape as an outbound one, confirmed by reading the real Medusa core
+   * code (`packages/modules/fulfillment/src/services/fulfillment-module-service.ts`,
+   * `createReturnFulfillment`) rather than assumed:
+   *
+   * - `fromData.shipping_option.data` DOES carry the original shipping
+   *   option's `{ id, name, carrier, service }` -- the same shape
+   *   `getFulfillmentOptions` produces and `validateOption` validates. So
+   *   this reuses that carrier+service rather than picking the cheapest
+   *   quoted rate, same as the brief suggested.
+   * - `fromData.delivery_address` is always the return's own destination:
+   *   the merchant's stock location address (every return-creating
+   *   workflow comments this explicitly: "delivery address is the stock
+   *   location address"). It is the return shipment's `to_address`.
+   * - `fromData.order` -- and therefore `order.shipping_address`, the
+   *   customer's own address -- is NEVER forwarded to this method today:
+   *   `fulfillment-module-service.ts`'s `createReturnFulfillment`
+   *   destructures `order` out of its input before persisting the
+   *   fulfillment and never includes it in what's passed to the provider,
+   *   in EVERY return-creating workflow (plain return, exchange, claim,
+   *   create-and-complete-return) -- confirmed by reading all of them, not
+   *   just one. This looks like a real gap/bug in core (outbound
+   *   `createFulfillment` DOES forward `order` the same way), but fixing
+   *   core is out of scope here. This method still checks
+   *   `order?.shipping_address` first, in case that's ever fixed upstream
+   *   or a custom caller supplies it anyway, but falls back to this
+   *   provider's own documented extension point --
+   *   `fromData.metadata.return_from_address`, an `EasyPostAddressInput`-shaped
+   *   object -- which is, as of today, the ONLY way to actually get a
+   *   working return label out of this provider. If neither is present,
+   *   this throws a clear, actionable error rather than silently using a
+   *   fabricated address.
+   */
+  async createReturnFulfillment(
+    fromData: Record<string, unknown>
+  ): Promise<CreateFulfillmentResult> {
+    const typed = fromData as {
+      delivery_address?: AddressLike
+      shipping_option?: { data?: Record<string, unknown> }
+      order?: { shipping_address?: AddressLike }
+      metadata?: Record<string, unknown> | null
+      items?: CartPropsForFulfillment["items"]
+    }
+
+    const { carrier, service } = extractCarrierAndService(
+      (typed.shipping_option?.data ?? {}) as Record<string, unknown>,
+      "create a return fulfillment"
+    )
+
+    const fromAddressSource =
+      typed.order?.shipping_address ??
+      (typed.metadata?.return_from_address as AddressLike | undefined)
+
+    if (!fromAddressSource) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `EasyPost fulfillment provider: cannot create a return fulfillment without the customer's origin address. Medusa core's createReturnFulfillment doesn't currently forward the order (and therefore its shipping_address) to fulfillment providers -- pass it explicitly as "metadata.return_from_address" on the return fulfillment until that's fixed upstream.`
+      )
+    }
+
+    const parcel = buildParcel(typed.items ?? [], this.options_.defaultParcel)
+
+    // The return ships FROM the customer TO the merchant's stock location
+    // -- the reverse of an outbound shipment's to/from.
+    const shipment = await this.client_.createShipment({
+      toAddress: toEasyPostAddress(
+        typed.delivery_address,
+        "return destination"
+      ),
+      fromAddress: toEasyPostAddress(fromAddressSource, "return origin"),
+      parcel,
+    })
+
+    const rate = shipment.rates.find(
+      (candidate) =>
+        candidate.carrier === carrier && candidate.service === service
+    )
+
+    if (!rate) {
+      const quoted = describeQuotedRates(shipment)
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `EasyPost fulfillment provider: cannot create a return fulfillment for carrier "${carrier}" service "${service}" -- EasyPost quoted [${quoted}] for this return shipment.`
+      )
+    }
+
+    const bought = await this.client_.buyShipment(shipment.id, rate.id)
+
+    return buildCreateFulfillmentResult(
+      { easypost_carrier: carrier, easypost_service: service },
+      bought
+    )
+  }
+
+  /**
+   * Submits a refund request for a previously-bought shipment. EasyPost's
+   * own documented behavior is that a submitted refund doesn't necessarily
+   * resolve to "refunded" immediately (it can take up to 30 days depending
+   * on the carrier) -- the returned `refundStatus` of `"submitted"` is the
+   * expected, successful outcome of THIS call, not `"refunded"` itself.
+   */
+  async cancelFulfillment(data: Record<string, unknown>): Promise<unknown> {
+    const { easypost_shipment_id: shipmentId } = data as {
+      easypost_shipment_id?: unknown
+    }
+
+    if (typeof shipmentId !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `EasyPost fulfillment provider: cannot cancel a fulfillment without "easypost_shipment_id" -- got ${JSON.stringify(
+          data
+        )}.`
+      )
+    }
+
+    return await this.client_.refundShipment(shipmentId)
+  }
 }
 
 /**
@@ -369,6 +546,44 @@ function describeQuotedRates(shipment: EasyPostShipment): string {
   return shipment.rates
     .map((candidate) => `${candidate.carrier}:${candidate.service}`)
     .join(", ")
+}
+
+/**
+ * Maps a bought `EasyPostShipment` into the exact `CreateFulfillmentResult`
+ * shape (`packages/core/types/src/fulfillment/provider.ts`) shared by
+ * `createFulfillment` and `createReturnFulfillment`. `existingData` is
+ * spread onto the result's `data` first -- critically, this is what keeps
+ * `easypost_tracking_code` alongside whatever ids/carrier/service the
+ * caller already had (e.g. `easypost_shipment_id`/`easypost_rate_id` from
+ * `validateFulfillmentData`'s output), since `easypost_tracking_code` is
+ * what Task 8's webhook route looks fulfillments up by.
+ */
+function buildCreateFulfillmentResult(
+  existingData: Record<string, unknown>,
+  shipment: EasyPostShipment
+): CreateFulfillmentResult {
+  if (!shipment.trackingCode) {
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      `EasyPost fulfillment provider: buying shipment "${shipment.id}" did not return a tracking code.`
+    )
+  }
+
+  return {
+    data: {
+      ...existingData,
+      easypost_tracking_code: shipment.trackingCode,
+      easypost_label_url: shipment.labelUrl,
+      easypost_tracker_id: shipment.trackerId,
+    },
+    labels: [
+      {
+        tracking_number: shipment.trackingCode,
+        tracking_url: shipment.trackingUrl ?? "",
+        label_url: shipment.labelUrl ?? "",
+      },
+    ],
+  }
 }
 
 /**
