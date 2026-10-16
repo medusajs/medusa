@@ -1,0 +1,225 @@
+import { Note, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Data Protection`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how Medusa protects your project's data on Cloud, including encryption, data location, isolation, backups, compliance, and self-hosting options.
+
+## How Medusa Protects Your Data
+
+Medusa manages the infrastructure, encryption, and backups of your project's resources, so you don't need to configure them yourself.
+
+You remain responsible for the security of your Medusa application's code, its dependencies, the third-party services it connects to, and who you give access to your organization.
+
+To learn how Medusa protects your projects from malicious traffic, such as web attacks, DDoS attacks, and bots, refer to the [Medusa Security](../page.mdx) guide.
+
+---
+
+## Encryption at Rest
+
+Medusa encrypts your project's stored data by default. You don't need to enable or configure encryption at rest.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Data
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Encryption
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        [Database](../../database/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        AES-256
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Database backups](../../database/page.mdx#cloud-database-backups)
+      </Table.Cell>
+      <Table.Cell>
+        AES-256
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Uploaded files](../../s3/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        AES-256
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Redis](../../redis/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        {/* TODO: confirm Redis at-rest encryption */}
+        AES-256
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Environment variables](../../environments/environment-variables/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        AES-256
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+Medusa manages the encryption keys for all of these resources. Customer-managed encryption keys aren't supported.
+
+---
+
+## Encryption in Transit
+
+Medusa encrypts data in transit between clients and your project, and between your project's resources:
+
+- **Public endpoints**: Your backend and storefront URLs, including [custom domains](../../environments/custom-domains/page.mdx), are served over HTTPS. Medusa redirects HTTP requests to HTTPS.
+- **File storage**: The storage that holds your uploaded files rejects requests that don't use HTTPS.
+- **Database and Redis**: Your Medusa application connects to its database and Redis over TLS through a private network connection.
+{/* TODO: confirm with infra that external database connection strings enforce sslmode=require */}
+
+---
+
+## Data Location
+
+When you [create a project](../../projects/page.mdx), you choose the region that hosts it. You can't change a project's region after you create it.
+
+Medusa supports the following regions:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Region
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Code
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Location
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        US East
+      </Table.Cell>
+      <Table.Cell>
+        `us-east-1`
+      </Table.Cell>
+      <Table.Cell>
+        North Virginia, United States
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Europe Central
+      </Table.Cell>
+      <Table.Cell>
+        `eu-central-1`
+      </Table.Cell>
+      <Table.Cell>
+        Frankfurt, Germany
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Asia Southeast
+      </Table.Cell>
+      <Table.Cell>
+        `ap-southeast-1`
+      </Table.Cell>
+      <Table.Cell>
+        Singapore
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Data Stored in Your Project's Region
+
+Medusa stores the following data in your project's region:
+
+- Your Medusa backend and its workers.
+- Your environments' databases and database backups.
+- Files uploaded through your Medusa application.
+- Your environments' Redis data.
+- Your [Medusa Search](../../search/page.mdx) indexes.
+
+### Data Processed Outside Your Project's Region
+
+Some data is stored or processed outside your project's region to operate the platform:
+
+{/* TODO: confirm with infra/security which of these to disclose, and the observability data region */}
+- **Account and project settings**: Your organization, project, and environment settings, including environment variables, are stored in the US East (`us-east-1`) region.
+- **Logs and metrics**: Your project's logs and performance metrics are stored in the European Union.
+- **Storefronts**: If you deploy a storefront with your project, it runs on a global edge network and serves requests from the location closest to each customer.
+
+---
+
+## Resource Isolation
+
+Medusa isolates the resources of each environment from other environments and other projects:
+
+- **Database**: Each project has its own database cluster, and each environment has its own database and credentials.
+- **Redis**: Each environment has its own Redis database.
+- **Compute**: Each environment runs in its own isolated network space that blocks incoming traffic from other environments.
+- **File storage**: Each environment can only access its own files.
+
+---
+
+## Backups
+
+Medusa backs up your environments' databases daily and retains the backups based on your plan. You can download or restore a backup from the Cloud dashboard.
+
+Learn more about backups and their retention periods in the [Database](../../database/page.mdx#cloud-database-backups) guide.
+
+---
+
+## Access Control
+
+Cloud provides the following features to control access to your organization and project data:
+
+- **Two-factor authentication**: Require a second factor when signing in to your account. Learn more in the [Account](../../user/page.mdx#configure-two-factor-authentication) guide.
+- **Organization roles**: Only organization owners can perform sensitive actions, such as managing database write access. Learn more in the [Organizations](../../organizations/page.mdx) guide.
+- **Database IP allowlist**: Restrict which IP addresses can connect to your environments' databases. Learn more in the [Database](../../database/page.mdx#restrict-database-access-by-ip-address) guide.
+- **Static outgoing IP addresses**: Allowlist Cloud's outgoing IP addresses in third-party services your Medusa application connects to. Learn more in the [IP Addresses](../../ip-addresses/page.mdx) guide.
+
+---
+
+## Compliance
+
+{/* TODO: get confirmed compliance status, trust center URL, and DPA/sub-processor links from security/legal */}
+Medusa offers a SOC 2 report and a Data Processing Agreement (DPA) on the Enterprise plan. Refer to the [Plans & Pricing](../../pricing/page.mdx) page for details.
+
+To request these documents, [contact the Medusa team](https://medusajs.com/contact/).
+
+---
+
+## Self-Host with an Enterprise License
+
+Medusa only hosts projects on infrastructure that Medusa manages. You can't connect your own hosting provider account, such as an AWS or Google Cloud account, to Cloud and deploy your projects into it. This setup is also known as Bring Your Own Cloud (BYOC). If your business must keep all data within infrastructure it owns, for example, to meet internal security policies or regulatory requirements, you can self-host Medusa instead.
+
+When you self-host Medusa, you're responsible for setting up and securing its infrastructure, including encryption, backups, and data location. Learn more in the [Cloud vs Self Hosting](../../comparison/page.mdx) guide.
+
+With an Enterprise license, you can self-host Medusa and get:
+
+- Support from the Medusa team under an Enterprise contract.
+- Enterprise features, such as role-based access control (RBAC) and single sign-on (SSO).
+
+To learn more about the Enterprise license, [contact the Medusa team](https://medusajs.com/contact/).
+

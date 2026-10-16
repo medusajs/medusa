@@ -518,6 +518,11 @@ export const sidebar = [
                 title: "Security Analytics",
                 path: "/security/analytics",
               },
+              {
+                type: "link",
+                title: "Data Protection",
+                path: "/security/data-protection",
+              },
             ],
           },
         ],
