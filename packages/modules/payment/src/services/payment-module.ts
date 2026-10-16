@@ -531,18 +531,13 @@ export default class PaymentModuleService
   ): Promise<void> {
     const session = await this.paymentSessionService_.retrieve(
       id,
-      { select: ["id", "data", "provider_id"], relations: ["payment"] },
+      { select: ["id", "data", "provider_id"] },
       sharedContext
     )
 
-    // A captured payment can't be canceled at the provider (e.g. a succeeded
-    // Stripe PaymentIntent), so only the session record is removed.
-    // Refunding the payment is handled separately.
-    if (!session.payment?.captured_at) {
-      await this.paymentProviderService_.deleteSession(session.provider_id, {
-        data: session.data,
-      })
-    }
+    await this.paymentProviderService_.deleteSession(session.provider_id, {
+      data: session.data,
+    })
 
     await this.paymentSessionService_.delete(id, sharedContext)
   }

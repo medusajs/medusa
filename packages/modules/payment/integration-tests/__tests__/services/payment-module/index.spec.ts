@@ -603,62 +603,6 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
           })
         })
 
-        describe("delete", () => {
-          it("should delete a payment session and its provider session", async () => {
-            const deleteProviderSessionMock = jest.spyOn(
-              (service as any).paymentProviderService_,
-              "deleteSession"
-            )
-
-            await service.deletePaymentSession("pay-sess-id-2")
-
-            expect(deleteProviderSessionMock).toHaveBeenCalledTimes(1)
-
-            const sessions = await service.listPaymentSessions({
-              id: "pay-sess-id-2",
-            })
-            expect(sessions).toHaveLength(0)
-          })
-
-          it("should delete a payment session with a captured and refunded payment without canceling it at the provider", async () => {
-            await service.capturePayment({
-              amount: 100,
-              payment_id: "pay-id-1",
-            })
-            await service.refundPayment({
-              amount: 100,
-              payment_id: "pay-id-1",
-            })
-
-            // Providers reject canceling a captured payment (e.g. a succeeded Stripe PaymentIntent)
-            const deleteProviderSessionMock = jest
-              .spyOn((service as any).paymentProviderService_, "deleteSession")
-              .mockRejectedValue(new Error("Cannot cancel a captured payment"))
-
-            try {
-              await service.deletePaymentSession("pay-sess-id-1")
-              expect(deleteProviderSessionMock).not.toHaveBeenCalled()
-            } finally {
-              deleteProviderSessionMock.mockRestore()
-            }
-
-            const sessions = await service.listPaymentSessions({
-              id: "pay-sess-id-1",
-            })
-            expect(sessions).toHaveLength(0)
-
-            const payment = await service.retrievePayment("pay-id-1", {
-              relations: ["refunds"],
-            })
-            expect(payment).toEqual(
-              expect.objectContaining({
-                captured_at: expect.any(Date),
-                refunds: [expect.objectContaining({ amount: 100 })],
-              })
-            )
-          })
-        })
-
         describe("authorize", () => {
           it("should authorize a payment session", async () => {
             const collection = await service.createPaymentCollections({

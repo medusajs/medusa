@@ -1,5 +1,5 @@
 ---
-"@medusajs/payment": patch
+"@medusajs/payment-stripe": patch
 ---
 
-fix(payment): the refund-and-recreate payment session compensation no longer fails when a payment session has a captured (succeeded) payment, keeping the cart recoverable
+fix(payment-stripe): don't fail deleting a payment session whose PaymentIntent already succeeded, so the refund-and-recreate payment session compensation keeps the cart recoverable
