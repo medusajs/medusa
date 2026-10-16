@@ -1532,6 +1532,7 @@
         "error": "Failed to allocate following items: {{items}}"
       },
       "error": {
+        "invalidQuantity": "Allocation quantities must be between zero and the available stock at the selected location.",
         "quantityNotAllocated": "There are unallocated items."
       }
     },

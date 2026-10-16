@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
@@ -23,6 +23,7 @@ import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { multiplyDecimal } from "../../../../../lib/number-helper"
 import { queryClient } from "../../../../../lib/query-client"
 import { AllocateItemsSchema } from "./constants"
+import { getInvalidAllocationKeys } from "./allocation-validation"
 import { OrderAllocateItemsItem } from "./order-allocate-items-item"
 import { checkInventoryKit } from "./utils"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
@@ -45,7 +46,6 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const direction = useDocumentDirection()
-  const [disableSubmit, setDisableSubmit] = useState(false)
   const [filterTerm, setFilterTerm] = useState("")
 
   const { mutateAsync: allocateItems, isPending: isMutating } =
@@ -83,8 +83,39 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
 
   const { stock_locations = [] } = useStockLocations()
 
+  const selectedLocationId = useWatch({
+    name: "location_id",
+    control: form.control,
+  })
+
+  const quantities = useWatch({
+    name: "quantity",
+    control: form.control,
+  })
+
+  const invalidQuantityKeys = useMemo(
+    () =>
+      getInvalidAllocationKeys(itemsToAllocate, selectedLocationId, quantities),
+    [itemsToAllocate, selectedLocationId, quantities]
+  )
+
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
+      if (
+        getInvalidAllocationKeys(
+          itemsToAllocate,
+          data.location_id,
+          data.quantity
+        ).length
+      ) {
+        form.setError("root.invalidQuantity", {
+          type: "manual",
+          message: t("orders.allocateItems.error.invalidQuantity"),
+        })
+
+        return
+      }
+
       const payload = Object.entries(data.quantity)
         .filter(([key]) => !key.endsWith("-"))
         .map(([key, quantity]) => [...key.split("-"), quantity])
@@ -148,28 +179,12 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
     value: number | null,
     isRoot?: boolean
   ) => {
-    let shouldDisableSubmit = false
-
     const key =
       isRoot && hasInventoryKit
         ? `quantity.${lineItem.id}-`
         : `quantity.${lineItem.id}-${inventoryItem.id}`
 
     form.setValue(key as keyof AllocateItemsSchemaType, `${value ?? ""}`)
-
-    // For a kit root, `value` is the line item quantity rather than a demand on
-    // any single inventory item. The per-item demand is derived below, once the
-    // line quantity has been multiplied by each item's required_quantity.
-    if (value && !(isRoot && hasInventoryKit)) {
-      const location = inventoryItem.location_levels?.find(
-        (l) => l.location_id === selectedLocationId
-      )
-      if (location) {
-        if ((location.available_quantity ?? 0) < value) {
-          shouldDisableSubmit = true
-        }
-      }
-    }
 
     if (hasInventoryKit && !isRoot) {
       // changed subitem in the kit -> we need to set parent to "-"
@@ -190,37 +205,16 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
           `quantity.${lineItem.id}-${inventory?.id}`,
           requiredQuantity
         )
-
-        if (value) {
-          const location = inventory?.location_levels?.find(
-            (l) => l.location_id === selectedLocationId
-          )
-          if (location) {
-            if ((location.available_quantity ?? 0) < requiredQuantity) {
-              shouldDisableSubmit = true
-            }
-          }
-        }
       })
     }
 
-    form.clearErrors("root.quantityNotAllocated")
-    setDisableSubmit(shouldDisableSubmit)
+    form.clearErrors("root")
   }
 
-  const selectedLocationId = useWatch({
-    name: "location_id",
-    control: form.control,
-  })
-
-  useEffect(() => {
-    if (selectedLocationId) {
-      form.setValue("quantity", defaultAllocations(itemsToAllocate))
-    }
-  }, [selectedLocationId])
-
-  const allocationError =
-    form.formState.errors?.root?.quantityNotAllocated?.message
+  const allocationError = invalidQuantityKeys.length
+    ? t("orders.allocateItems.error.invalidQuantity")
+    : form.formState.errors?.root?.invalidQuantity?.message ||
+      form.formState.errors?.root?.quantityNotAllocated?.message
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -230,7 +224,7 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
       >
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
-          <div className="flex size-full flex-col items-center overflow-auto p-16">
+          <div className="size-full flex flex-col items-center overflow-auto p-16">
             <div className="flex w-full max-w-[736px] flex-col justify-center px-2 pb-2">
               <div className="flex flex-col gap-8 divide-y divide-dashed">
                 <Heading>{t("orders.allocateItems.title")}</Heading>
@@ -252,7 +246,14 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
                               <Form.Control>
                                 <Select
                                   dir={direction}
-                                  onValueChange={onChange}
+                                  onValueChange={(locationId) => {
+                                    form.setValue(
+                                      "quantity",
+                                      defaultAllocations(itemsToAllocate)
+                                    )
+                                    form.clearErrors("root")
+                                    onChange(locationId)
+                                  }}
                                   {...field}
                                 >
                                   <Select.Trigger
@@ -313,6 +314,7 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
                           item={item}
                           locationId={selectedLocationId}
                           onQuantityChange={onQuantityChange}
+                          invalidQuantityKeys={invalidQuantityKeys}
                         />
                       ))}
                     </div>
@@ -333,7 +335,7 @@ export function OrderAllocateItemsForm({ order }: OrderAllocateItemsFormProps) {
               size="small"
               type="submit"
               isLoading={isMutating}
-              disabled={!selectedLocationId || disableSubmit}
+              disabled={!selectedLocationId || !!invalidQuantityKeys.length}
             >
               {t("orders.allocateItems.action")}
             </Button>
