@@ -14,4 +14,6 @@ export const ContainerRegistrationKeys = {
    */
   LINK: "link",
   FEATURE_FLAG_ROUTER: "featureFlagRouter",
+  // @internal
+  LICENSE: "license",
 } as const
