@@ -168,6 +168,17 @@ function findExpressRoutePath({
   return undefined
 }
 
+export function tryFindExpressRoutePath(
+  options: Parameters<typeof findExpressRoutePath>[0]
+): string | void {
+  try {
+    return findExpressRoutePath(options)
+  } catch {
+    // Let Express handle malformed URLs even if route tracing fails.
+    return undefined
+  }
+}
+
 function handleHMRReload(logger: Logger) {
   // Set up HMR reload handler if running in HMR mode
   if (process.env.MEDUSA_HMR_ENABLED === "true" && process.send) {
@@ -250,7 +261,7 @@ async function start(args: {
       await new Promise((resolve) => {
         res.on("finish", resolve)
         if (traceRequestHandler) {
-          const expressHandlerPath = findExpressRoutePath({
+          const expressHandlerPath = tryFindExpressRoutePath({
             stack,
             url: parse(req.url!, false).pathname!,
           })

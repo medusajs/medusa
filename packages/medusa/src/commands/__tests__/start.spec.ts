@@ -2,7 +2,7 @@ import * as utils from "@medusajs/framework/utils"
 import path from "path"
 import * as instrumentationFixture from "../__fixtures__/instrumentation"
 import * as instrumentationFailureFixture from "../__fixtures__/instrumentation-failure/instrumentation"
-import { registerInstrumentation } from "../start"
+import { registerInstrumentation, tryFindExpressRoutePath } from "../start"
 
 const logger = {
   info: jest.fn(),
@@ -31,6 +31,31 @@ describe("start", () => {
         resolve: jest.fn(() => logger),
       })),
     }))
+  })
+
+  describe("tryFindExpressRoutePath", () => {
+    const layer = {
+      name: "bound dispatch",
+      route: { path: "/:id" },
+      handle: { stack: [] },
+      match: jest.fn(),
+    }
+
+    it("leaves malformed URLs to Express and preserves matching routes", () => {
+      layer.match.mockImplementationOnce(() => {
+        throw new URIError()
+      })
+      expect(
+        tryFindExpressRoutePath({ stack: [layer], url: "/%c0" })
+      ).toBeUndefined()
+      layer.match.mockReturnValueOnce(true)
+      expect(tryFindExpressRoutePath({ stack: [layer], url: "/123" })).toBe(
+        "/:id"
+      )
+      expect(
+        tryFindExpressRoutePath({ stack: [], url: "/123" })
+      ).toBeUndefined()
+    })
   })
 
   describe("registerInstrumentation", () => {
