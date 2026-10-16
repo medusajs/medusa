@@ -36,7 +36,7 @@ export const releaseLockStep = createStep(
   releaseLockStepId,
   async (
     data: ReleaseLockStepInput,
-    { container, parentStepIdempotencyKey }
+    { container, parentStepIdempotencyKey, transactionId }
   ) => {
     const keys = Array.isArray(data.key)
       ? data.key
@@ -53,7 +53,7 @@ export const releaseLockStep = createStep(
       return StepResponse.skip() as any
     }
 
-    const ownerId = data.ownerId
+    const ownerId = data.ownerId ?? transactionId
     const locking = container.resolve(Modules.LOCKING)
     const released = await locking.release(keys, {
       ownerId,
