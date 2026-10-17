@@ -999,6 +999,24 @@
   },
   "customers": {
     "domain": "Müşteriler",
+    "export": {
+      "header": "Müşteri Listesini Dışa Aktar",
+      "description": "Müşteri listesini bir dosyaya aktarın.",
+      "success": {
+        "title": "Dışa aktarma işleminiz devam ediyor",
+        "description": "Verilerin dışa aktarılması birkaç dakika sürebilir. Tamamlandığında sizi bilgilendireceğiz."
+      },
+      "format": {
+        "label": "Biçim",
+        "description": "Dışa aktarılan dosyanın biçimini seçin. JSON, modüller arasındaki iç içe verileri kayıpsız yakalar ve veri sahibi erişim talepleri için önerilir.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtreler",
+        "description": "Bu görünümü ayarlamak için tablo genel görünümündeki filtreleri uygulayın"
+      }
+    },
     "list": {
       "noRecordsMessage": "Müşterileriniz burada görünecek.",
       "empty": {
