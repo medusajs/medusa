@@ -149,6 +149,27 @@ export const evaluateExpression = (
       }
       return object
     }
+    case "CallExpression": {
+      const callee = expression.callee
+      // Only functions passed in the scope can be called, never ones reached
+      // through properties or the prototype (e.g. `x.constructor`).
+      if (
+        callee?.type !== "Identifier" ||
+        !Object.hasOwn(scope, callee.name) ||
+        typeof scope[callee.name] !== "function"
+      ) {
+        return UNRESOLVED
+      }
+      const args: unknown[] = []
+      for (const argument of expression.arguments || []) {
+        const value = evaluateExpression(argument, scope)
+        if (!isResolved(value)) {
+          return UNRESOLVED
+        }
+        args.push(value)
+      }
+      return (scope[callee.name] as (...args: unknown[]) => unknown)(...args)
+    }
     default:
       return UNRESOLVED
   }
