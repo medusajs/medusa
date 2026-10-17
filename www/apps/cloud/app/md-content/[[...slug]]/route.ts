@@ -23,6 +23,7 @@ export async function GET(req: NextRequest, { params }: Params) {
   const slug = rawSlug?.filter(Boolean) ?? []
   const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
+  const appDir = path.join(process.cwd(), "app")
   const isCloudflare = !!process.env.CLOUDFLARE_ENV
 
   const result = await fetchRawMdx(origin, basePath, slug)
@@ -71,10 +72,19 @@ export async function GET(req: NextRequest, { params }: Params) {
             isCloudflare,
         },
       ],
-      [localLinksRehypePlugin],
+      [
+        localLinksRehypePlugin,
+        {
+          filePath: path.join(appDir, ...slug, "page.mdx"),
+          basePath: appDir,
+        },
+      ],
     ] as unknown as Plugin[],
     after: [
-      [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
+      [
+        addUrlToRelativeLink,
+        { url: `${process.env.NEXT_PUBLIC_BASE_URL || ""}${basePath}` },
+      ],
     ] as unknown as Plugin[],
   })
 

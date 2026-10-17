@@ -59,6 +59,22 @@ describe("getCleanMd", () => {
       expect(md).not.toContain("{")
     })
 
+    it("resolves the OS shortcut helper", async () => {
+      const md = await clean(
+        "Press <Kbd>{getOsShortcut()}</Kbd> + <Kbd>K</Kbd>."
+      )
+
+      expect(md.trim()).toBe("Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd>.")
+    })
+
+    it("doesn't call functions that aren't in the scope", async () => {
+      const md = await clean(
+        'A {toString()} B {config.constructor.constructor("return 1")()} C'
+      )
+
+      expect(md.trim()).toBe("A  B  C")
+    })
+
     it("removes MDX comments", async () => {
       const md = await clean(["{/* a comment */}", "", "Content."].join("\n"))
 
@@ -130,6 +146,73 @@ describe("getCleanMd", () => {
       const md = await clean(["# Pricing", "", "<PricingContent />"].join("\n"))
 
       expect(md.trim()).toBe("# Pricing")
+    })
+  })
+
+  describe("tables", () => {
+    const table = (cells: string[]) =>
+      [
+        "<Table>",
+        "  <Table.Header>",
+        "    <Table.Row>",
+        ...cells.map((_, i) =>
+          [
+            "      <Table.HeaderCell>",
+            `      Column ${i + 1}`,
+            "      </Table.HeaderCell>",
+          ].join("\n")
+        ),
+        "    </Table.Row>",
+        "  </Table.Header>",
+        "  <Table.Body>",
+        "    <Table.Row>",
+        ...cells.map((cell) =>
+          ["      <Table.Cell>", "", cell, "", "      </Table.Cell>"].join("\n")
+        ),
+        "    </Table.Row>",
+        "  </Table.Body>",
+        "</Table>",
+      ].join("\n")
+
+    it("keeps all the inline content of a cell", async () => {
+      const md = await clean(
+        table([
+          "      `-o <id>`, `--organization <id>`",
+          "      The [ID of the organization](https://example.com/org) that the environment belongs to.",
+        ])
+      )
+
+      expect(md.trim()).toBe(
+        [
+          "|Column 1|Column 2|",
+          "|---|---|",
+          "|`-o <id>`, `--organization <id>`|The [ID of the organization](https://example.com/org) that the environment belongs to.|",
+        ].join("\n")
+      )
+    })
+
+    it("escapes pipes in a cell", async () => {
+      const md = await clean(table(["      `<backend|storefront>` or a|b"]))
+
+      expect(md.trim()).toBe(
+        ["|Column 1|", "|---|", "|`<backend\\|storefront>` or a\\|b|"].join(
+          "\n"
+        )
+      )
+    })
+
+    it("joins the paragraphs of a cell", async () => {
+      const md = await clean(
+        table(["      First paragraph.\n\n      Second **paragraph**."])
+      )
+
+      expect(md.trim()).toBe(
+        [
+          "|Column 1|",
+          "|---|",
+          "|First paragraph. Second **paragraph**.|",
+        ].join("\n")
+      )
     })
   })
 })
