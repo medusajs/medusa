@@ -172,11 +172,24 @@ export default class PaymentModuleService
     amount: BigNumberInput,
     currencyCode: string
   ): BigNumberInput {
+    if (
+      amount == null ||
+      (typeof amount === "number" && Number.isNaN(amount)) ||
+      (typeof amount === "string" && (amount.trim() === "" || Number.isNaN(Number(amount)))) ||
+      MathBN.lt(amount, 0)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Amount must be a valid non-negative number, received: ${amount}`
+      )
+    }
+
+    const normalizedCurrency = currencyCode?.toUpperCase()
     let precision: number | undefined = undefined
     try {
       const formatted = Intl.NumberFormat(undefined, {
         style: "currency",
-        currency: currencyCode,
+        currency: normalizedCurrency,
       }).format(0.1111111)
 
       precision = formatted.split(".")[1].length
