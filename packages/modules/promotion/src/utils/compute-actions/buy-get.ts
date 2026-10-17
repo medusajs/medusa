@@ -525,6 +525,8 @@ export function getComputedActionsForBuyGet(
   const eligibleTargetItems = filterItemsByPromotionRules(
     itemsContext,
     promotion.application_method?.target_rules
+  ).filter(
+    (item) => !("is_discountable" in item) || Boolean(item.is_discountable)
   )
 
   const remainingBuyQuantities = calculateRemainingQuantities(
