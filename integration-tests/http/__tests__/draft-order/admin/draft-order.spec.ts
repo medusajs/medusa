@@ -1362,6 +1362,173 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("automatic promotion discovery on draft order edits", () => {
+      let product
+
+      const createAutomaticPromotion = async (code: string) => {
+        return (
+          await api.post(
+            "/admin/promotions",
+            {
+              code,
+              type: "standard",
+              status: "active",
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                currency_code: "usd",
+                value: 100,
+                max_quantity: 5,
+              },
+              is_automatic: true,
+              is_tax_inclusive: true,
+            },
+            adminHeaders
+          )
+        ).data.promotion
+      }
+
+      beforeEach(async () => {
+        product = (
+          await api.post(
+            "/admin/products",
+            {
+              title: "Auto promo product",
+              status: ProductStatus.PUBLISHED,
+              sales_channels: [{ id: salesChannel.id }],
+              options: [{ title: "size", values: ["large"] }],
+              variants: [
+                {
+                  title: "L shirt",
+                  options: { size: "large" },
+                  manage_inventory: false,
+                  prices: [
+                    {
+                      currency_code: "usd",
+                      amount: 1000,
+                    },
+                  ],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+      })
+
+      it("should discover and apply an eligible automatic promotion when adding items to a draft order with no promotions yet", async () => {
+        // The automatic promotion already exists before any item is added,
+        // so the order never has any promotions applied prior to the edit.
+        const promotion = await createAutomaticPromotion("auto-promo-add")
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit`,
+          {},
+          adminHeaders
+        )
+
+        const response = await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+          {
+            items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+          },
+          adminHeaders
+        )
+
+        const preview = response.data.draft_order_preview
+        const item = preview.items.find(
+          (item) => item.variant_id === product.variants[0].id
+        )
+
+        expect(preview.discount_total).toBe(100)
+        expect(item?.discount_total).toBe(100)
+        expect(item?.adjustments).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              code: promotion.code,
+              amount: 100,
+              promotion_id: promotion.id,
+            }),
+          ])
+        )
+      })
+
+      it("should discover and apply an eligible automatic promotion when updating an item on a draft order with no promotions yet", async () => {
+        // Add and confirm the item first, as a separate edit, so it becomes
+        // a real committed order item before we try to update it below.
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit`,
+          {},
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+          {
+            items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const confirmedOrder = (
+          await api.get(
+            `/admin/draft-orders/${testDraftOrder.id}?fields=+discount_total,items.*`,
+            adminHeaders
+          )
+        ).data.draft_order
+
+        const confirmedItem = confirmedOrder.items.find(
+          (item) => item.variant_id === product.variants[0].id
+        )
+
+        // No automatic promotion exists yet, so the order has no
+        // promotions applied at this point.
+        expect(confirmedOrder.discount_total).toBe(0)
+
+        // The automatic promotion only becomes eligible now, after the
+        // item has already been added and confirmed.
+        const promotion = await createAutomaticPromotion("auto-promo-update")
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit`,
+          {},
+          adminHeaders
+        )
+
+        const response = await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items/item/${confirmedItem.id}`,
+          {
+            quantity: 2,
+          },
+          adminHeaders
+        )
+
+        const preview = response.data.draft_order_preview
+        const item = preview.items.find(
+          (item) => item.variant_id === product.variants[0].id
+        )
+
+        expect(preview.discount_total).toBe(200)
+        expect(item?.discount_total).toBe(200)
+        expect(item?.adjustments).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              code: promotion.code,
+              amount: 200,
+              promotion_id: promotion.id,
+            }),
+          ])
+        )
+      })
+    })
+
     describe("DELETE /draft-orders/:id/shipping-options/methods/:method_id", () => {
       let product
       let edit
