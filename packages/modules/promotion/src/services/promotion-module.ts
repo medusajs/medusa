@@ -1,4 +1,5 @@
 import {
+  BigNumberInput,
   CampaignBudgetTypeValues,
   CampaignBudgetUsageDTO,
   Context,
@@ -204,6 +205,7 @@ export default class PromotionModuleService
   protected async registerCampaignBudgetUsageByAttribute_(
     budgetId: string,
     attributeValue: string,
+    amount: BigNumberInput = 1,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     // Re-read the per-attribute usage row under the budget row lock held by the
@@ -222,11 +224,25 @@ export default class PromotionModuleService
       )
 
     if (!campaignBudgetUsagePerAttributeValue) {
+      const budget = await this.campaignBudgetService_.retrieve(
+        budgetId,
+        {},
+        sharedContext
+      )
+      const newUsedValue = MathBN.convert(amount)
+
+      if (budget.limit && MathBN.gt(newUsedValue, budget.limit)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Promotion usage exceeds the budget limit."
+        )
+      }
+
       await this.campaignBudgetUsageService_.create(
         {
           budget_id: budgetId,
           attribute_value: attributeValue,
-          used: MathBN.convert(1),
+          used: newUsedValue,
         },
         sharedContext
       )
@@ -234,7 +250,7 @@ export default class PromotionModuleService
       const limit = campaignBudgetUsagePerAttributeValue.budget.limit
       const newUsedValue = MathBN.add(
         campaignBudgetUsagePerAttributeValue.used ?? 0,
-        1
+        amount
       )
 
       if (limit && MathBN.gt(newUsedValue, limit)) {
@@ -258,6 +274,7 @@ export default class PromotionModuleService
   protected async revertCampaignBudgetUsageByAttribute_(
     budgetId: string,
     attributeValue: string,
+    amount: BigNumberInput = 1,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const [campaignBudgetUsagePerAttributeValue] =
@@ -274,7 +291,7 @@ export default class PromotionModuleService
       return
     }
 
-    if (MathBN.lte(campaignBudgetUsagePerAttributeValue.used ?? 0, 1)) {
+    if (MathBN.lte(campaignBudgetUsagePerAttributeValue.used ?? 0, amount)) {
       await this.campaignBudgetUsageService_.delete(
         campaignBudgetUsagePerAttributeValue.id,
         sharedContext
@@ -283,7 +300,10 @@ export default class PromotionModuleService
       await this.campaignBudgetUsageService_.update(
         {
           id: campaignBudgetUsagePerAttributeValue.id,
-          used: MathBN.sub(campaignBudgetUsagePerAttributeValue.used ?? 0, 1),
+          used: MathBN.sub(
+            campaignBudgetUsagePerAttributeValue.used ?? 0,
+            amount
+          ),
         },
         sharedContext
       )
@@ -498,6 +518,7 @@ export default class PromotionModuleService
         await this.registerCampaignBudgetUsageByAttribute_(
           campaignBudget.id,
           attributeValue,
+          1,
           sharedContext
         )
 
@@ -510,6 +531,34 @@ export default class PromotionModuleService
         })
 
         promotionCodeUsageMap.set(promotion.code!, true)
+      }
+
+      if (campaignBudget.type === CampaignBudgetType.SPEND_BY_ATTRIBUTE) {
+        const attribute = campaignBudget.attribute!
+        const attributeValue = registrationContext[attribute]
+
+        if (!attributeValue) {
+          continue
+        }
+
+        await this.registerCampaignBudgetUsageByAttribute_(
+          campaignBudget.id,
+          attributeValue,
+          computedAction.amount,
+          sharedContext
+        )
+
+        const campaignBudgetData = campaignBudgetMap.get(campaignBudget.id)
+
+        if (campaignBudgetData) {
+          const newUsedValue = MathBN.add(
+            campaignBudgetData.used ?? 0,
+            computedAction.amount
+          )
+
+          campaignBudgetData.used = newUsedValue
+          campaignBudgetMap.set(campaignBudget.id, campaignBudgetData)
+        }
       }
     }
 
@@ -652,6 +701,7 @@ export default class PromotionModuleService
         await this.revertCampaignBudgetUsageByAttribute_(
           campaignBudget.id,
           attributeValue,
+          1,
           sharedContext
         )
         const newUsedValue = MathBN.sub(campaignBudget.used ?? 0, 1)
@@ -664,6 +714,36 @@ export default class PromotionModuleService
         })
 
         promotionCodeUsageMap.set(promotion.code!, true)
+      }
+
+      if (campaignBudget.type === CampaignBudgetType.SPEND_BY_ATTRIBUTE) {
+        const attribute = campaignBudget.attribute!
+        const attributeValue = registrationContext[attribute]
+
+        if (!attributeValue) {
+          continue
+        }
+
+        await this.revertCampaignBudgetUsageByAttribute_(
+          campaignBudget.id,
+          attributeValue,
+          computedAction.amount,
+          sharedContext
+        )
+
+        const campaignBudgetData = campaignBudgetMap.get(campaignBudget.id)
+
+        if (campaignBudgetData) {
+          const newUsedValue = MathBN.sub(
+            campaignBudgetData.used ?? 0,
+            computedAction.amount
+          )
+
+          campaignBudgetData.used = MathBN.lt(newUsedValue, 0)
+            ? 0
+            : newUsedValue
+          campaignBudgetMap.set(campaignBudget.id, campaignBudgetData)
+        }
       }
     }
 
@@ -876,7 +956,10 @@ export default class PromotionModuleService
 
       if (
         !skipUsageLimitChecks &&
-        promotion.campaign?.budget?.type === CampaignBudgetType.USE_BY_ATTRIBUTE
+        (promotion.campaign?.budget?.type ===
+          CampaignBudgetType.USE_BY_ATTRIBUTE ||
+          promotion.campaign?.budget?.type ===
+            CampaignBudgetType.SPEND_BY_ATTRIBUTE)
       ) {
         const attribute = promotion.campaign?.budget?.attribute!
         const budgetUsageContext =
@@ -905,14 +988,37 @@ export default class PromotionModuleService
         if (campaignBudgetUsagePerAttribute) {
           const action = ComputeActionUtils.computeActionForBudgetExceeded(
             promotion,
-            1,
+            promotion.campaign?.budget?.type ===
+              CampaignBudgetType.SPEND_BY_ATTRIBUTE
+              ? 0
+              : 1,
             campaignBudgetUsagePerAttribute
           )
 
-          if (action) {
-            computedActions.push(action)
+          if (
+            action ||
+            (promotion.campaign?.budget?.type ===
+              CampaignBudgetType.SPEND_BY_ATTRIBUTE &&
+              promotion.campaign?.budget?.limit &&
+              MathBN.gte(
+                campaignBudgetUsagePerAttribute.used ?? 0,
+                promotion.campaign.budget.limit
+              ))
+          ) {
+            computedActions.push({
+              action: ComputedActions.CAMPAIGN_BUDGET_EXCEEDED,
+              code: promotion.code!,
+            })
             continue
           }
+        }
+
+        if (
+          promotion.campaign?.budget?.type ===
+          CampaignBudgetType.SPEND_BY_ATTRIBUTE
+        ) {
+          ;(promotion.campaign.budget as any).used =
+            campaignBudgetUsagePerAttribute?.used ?? 0
         }
       }
 
@@ -1130,7 +1236,9 @@ export default class PromotionModuleService
           ?.currency_code
 
       if (
-        campaignData?.budget?.type === CampaignBudgetType.SPEND &&
+        (campaignData?.budget?.type === CampaignBudgetType.SPEND ||
+          campaignData?.budget?.type ===
+            CampaignBudgetType.SPEND_BY_ATTRIBUTE) &&
         campaignCurrency !== applicationMethodData?.currency_code
       ) {
         throw new MedusaError(
@@ -1384,7 +1492,9 @@ export default class PromotionModuleService
 
       if (
         campaignId &&
-        existingCampaign?.budget?.type === CampaignBudgetType.SPEND &&
+        (existingCampaign?.budget?.type === CampaignBudgetType.SPEND ||
+          existingCampaign?.budget?.type ===
+            CampaignBudgetType.SPEND_BY_ATTRIBUTE) &&
         existingCampaign.budget.currency_code !== promotionCurrencyCode
       ) {
         throw new MedusaError(
@@ -1875,7 +1985,8 @@ export default class PromotionModuleService
     }
 
     if (
-      data.type === CampaignBudgetType.SPEND &&
+      (data.type === CampaignBudgetType.SPEND ||
+        data.type === CampaignBudgetType.SPEND_BY_ATTRIBUTE) &&
       !isPresent(data.currency_code)
     ) {
       throw new MedusaError(
@@ -2036,7 +2147,8 @@ export default class PromotionModuleService
 
     const promotionsWithInvalidCurrency = promotionsToAdd.filter(
       (promotion) =>
-        campaign.budget?.type === CampaignBudgetType.SPEND &&
+        (campaign.budget?.type === CampaignBudgetType.SPEND ||
+          campaign.budget?.type === CampaignBudgetType.SPEND_BY_ATTRIBUTE) &&
         promotion.application_method?.currency_code !==
           campaign?.budget?.currency_code
     )
