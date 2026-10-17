@@ -1083,6 +1083,24 @@
       "hint": "Créer un nouveau client et gérer leurs détails.",
       "successToast": "Client {{email}} créé avec succès."
     },
+    "export": {
+      "header": "Exporter la liste des clients",
+      "description": "Exportez la liste des clients vers un fichier.",
+      "success": {
+        "title": "Nous traitons votre exportation",
+        "description": "L'exportation des données peut prendre quelques minutes. Nous vous notifierons lorsque nous aurons terminé."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Choisissez le format du fichier exporté. Le format JSON capture les données imbriquées entre les modules sans perte, ce qui est recommandé pour les demandes d'accès aux données personnelles.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtres",
+        "description": "Appliquez les filtres dans l'aperçu de la table pour ajuster cette vue"
+      }
+    },
     "groups": {
       "label": "Groupes de clients",
       "remove": "Êtes-vous sûr de vouloir supprimer le client de \"{{name}}\" groupe de clients ?",
