@@ -60,17 +60,23 @@ moduleIntegrationTestRunner({
           // 1000 limit in isolation, but together they would spend 1100.
           const outcomes = await Promise.all([
             service
-              .registerUsage(
-                [{ amount: 100, code: createdPromotion.code! }],
-                { customer_email: null, customer_id: null }
-              )
-              .then(() => "ok", () => "threw"),
+              .registerUsage([{ amount: 100, code: createdPromotion.code! }], {
+                customer_email: null,
+                customer_id: null,
+              })
+              .then(
+                () => "ok",
+                () => "threw"
+              ),
             service
-              .registerUsage(
-                [{ amount: 100, code: createdPromotion.code! }],
-                { customer_email: null, customer_id: null }
-              )
-              .then(() => "ok", () => "threw"),
+              .registerUsage([{ amount: 100, code: createdPromotion.code! }], {
+                customer_email: null,
+                customer_id: null,
+              })
+              .then(
+                () => "ok",
+                () => "threw"
+              ),
           ])
 
           // Budget had room for a single +100; the other registration must be rejected.
@@ -111,17 +117,23 @@ moduleIntegrationTestRunner({
           // the limit of 2 in isolation, but together they would reach 3.
           const outcomes = await Promise.all([
             service
-              .registerUsage(
-                [{ amount: 1, code: createdPromotion.code! }],
-                { customer_id: "customer-id-1", customer_email: "c1@email.com" }
-              )
-              .then(() => "ok", () => "threw"),
+              .registerUsage([{ amount: 1, code: createdPromotion.code! }], {
+                customer_id: "customer-id-1",
+                customer_email: "c1@email.com",
+              })
+              .then(
+                () => "ok",
+                () => "threw"
+              ),
             service
-              .registerUsage(
-                [{ amount: 1, code: createdPromotion.code! }],
-                { customer_id: "customer-id-1", customer_email: "c1@email.com" }
-              )
-              .then(() => "ok", () => "threw"),
+              .registerUsage([{ amount: 1, code: createdPromotion.code! }], {
+                customer_id: "customer-id-1",
+                customer_email: "c1@email.com",
+              })
+              .then(
+                () => "ok",
+                () => "threw"
+              ),
           ])
 
           expect(outcomes.filter((o) => o === "threw")).toHaveLength(1)
@@ -162,7 +174,10 @@ moduleIntegrationTestRunner({
                 ],
                 { customer_email: null, customer_id: null }
               )
-              .then(() => "ok", (e) => e.message),
+              .then(
+                () => "ok",
+                (e) => e.message
+              ),
             service
               .registerUsage(
                 [
@@ -171,7 +186,10 @@ moduleIntegrationTestRunner({
                 ],
                 { customer_email: null, customer_id: null }
               )
-              .then(() => "ok", (e) => e.message),
+              .then(
+                () => "ok",
+                (e) => e.message
+              ),
           ])
 
           expect(outcomes).toEqual(["ok", "ok"])
@@ -523,6 +541,132 @@ moduleIntegrationTestRunner({
                   expect.objectContaining({
                     attribute_value: "customer-id-1",
                     used: 1,
+                  }),
+                ]),
+              }),
+            })
+          )
+        })
+
+        it("should register and revert usage for type spend_by_attribute", async () => {
+          const [createdCampaign] = await service.createCampaigns([
+            {
+              name: "test-spend-by-attribute",
+              campaign_identifier: "test-spend-by-attribute",
+              budget: {
+                type: CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+                attribute: "customer_id",
+                currency_code: "usd",
+                limit: 500,
+              },
+            },
+          ])
+
+          const createdPromotion = await createDefaultPromotion(service, {
+            campaign_id: createdCampaign.id,
+            application_method: {
+              currency_code: "usd",
+            } as any,
+          })
+
+          await service.registerUsage(
+            [{ amount: 150, code: createdPromotion.code! }],
+            {
+              customer_id: "customer-id-1",
+              customer_email: "customer1@email.com",
+            }
+          )
+
+          await service.registerUsage(
+            [{ amount: 200, code: createdPromotion.code! }],
+            {
+              customer_id: "customer-id-2",
+              customer_email: "customer2@email.com",
+            }
+          )
+
+          await service.registerUsage(
+            [{ amount: 100, code: createdPromotion.code! }],
+            {
+              customer_id: "customer-id-1",
+              customer_email: "customer1@email.com",
+            }
+          )
+
+          let campaign = await service.retrieveCampaign(createdCampaign.id, {
+            relations: ["budget", "budget.usages"],
+          })
+
+          expect(campaign).toEqual(
+            expect.objectContaining({
+              budget: expect.objectContaining({
+                used: 450,
+                usages: expect.arrayContaining([
+                  expect.objectContaining({
+                    attribute_value: "customer-id-1",
+                    used: 250,
+                  }),
+                  expect.objectContaining({
+                    attribute_value: "customer-id-2",
+                    used: 200,
+                  }),
+                ]),
+              }),
+            })
+          )
+
+          await service.revertUsage(
+            [{ amount: 100, code: createdPromotion.code! }],
+            {
+              customer_id: "customer-id-1",
+              customer_email: "customer1@email.com",
+            }
+          )
+
+          campaign = await service.retrieveCampaign(createdCampaign.id, {
+            relations: ["budget", "budget.usages"],
+          })
+
+          expect(campaign).toEqual(
+            expect.objectContaining({
+              budget: expect.objectContaining({
+                used: 350,
+                usages: expect.arrayContaining([
+                  expect.objectContaining({
+                    attribute_value: "customer-id-1",
+                    used: 150,
+                  }),
+                  expect.objectContaining({
+                    attribute_value: "customer-id-2",
+                    used: 200,
+                  }),
+                ]),
+              }),
+            })
+          )
+
+          await service.revertUsage(
+            [{ amount: 200, code: createdPromotion.code! }],
+            {
+              customer_id: "customer-id-2",
+              customer_email: "customer2@email.com",
+            }
+          )
+
+          campaign = await service.retrieveCampaign(createdCampaign.id, {
+            relations: ["budget", "budget.usages"],
+          })
+
+          expect(campaign.budget!.usages!).toHaveLength(1)
+
+          expect(campaign).toEqual(
+            expect.objectContaining({
+              budget: expect.objectContaining({
+                used: 150,
+                usages: expect.arrayContaining([
+                  expect.objectContaining({
+                    attribute_value: "customer-id-1",
+                    used: 150,
                   }),
                 ]),
               }),

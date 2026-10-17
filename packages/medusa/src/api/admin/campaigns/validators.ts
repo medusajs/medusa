@@ -41,18 +41,23 @@ const CreateCampaignBudget = z
   .strict()
   .refine(
     (data) =>
-      data.type !== CampaignBudgetType.SPEND || isPresent(data.currency_code),
+      ![
+        CampaignBudgetType.SPEND,
+        CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+      ].includes(data.type) || isPresent(data.currency_code),
     {
       path: ["currency_code"],
-      message: `currency_code is required when budget type is ${CampaignBudgetType.SPEND}`,
+      message: `currency_code is required when budget type is ${CampaignBudgetType.SPEND} or ${CampaignBudgetType.SPEND_BY_ATTRIBUTE}`,
     }
   )
   .refine(
     (data) =>
-      data.type !== CampaignBudgetType.USAGE || !isPresent(data.currency_code),
+      ![CampaignBudgetType.USAGE, CampaignBudgetType.USE_BY_ATTRIBUTE].includes(
+        data.type
+      ) || !isPresent(data.currency_code),
     {
       path: ["currency_code"],
-      message: `currency_code should not be present when budget type is ${CampaignBudgetType.USAGE}`,
+      message: `currency_code should not be present when budget type is ${CampaignBudgetType.USAGE} or ${CampaignBudgetType.USE_BY_ATTRIBUTE}`,
     }
   )
   .refine(

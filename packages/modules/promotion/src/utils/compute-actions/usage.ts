@@ -18,10 +18,10 @@ import { Promotion } from "@models"
  * Compute the action for a budget exceeded.
  * @param promotion - the promotion being applied
  * @param amount - amount can be:
- *  1. discounted amount in case of spend budget
+ *  1. discounted amount in case of spend or spend_by_attribute budget
  *  2. number of times the promotion has been used in case of usage budget
  *  3. number of times the promotion has been used by a specific attribute value in case of use_by_attribute budget
- * @param attributeUsage - the attribute usage in case of use_by_attribute budget
+ * @param attributeUsage - the attribute usage in case of use_by_attribute or spend_by_attribute budget
  * @returns the exceeded action if the budget is exceeded, otherwise undefined
  */
 export function computeActionForBudgetExceeded(
@@ -47,7 +47,8 @@ export function computeActionForBudgetExceeded(
     : campaignBudget.used ?? 0
 
   const totalUsed =
-    campaignBudget.type === CampaignBudgetType.SPEND
+    campaignBudget.type === CampaignBudgetType.SPEND ||
+    campaignBudget.type === CampaignBudgetType.SPEND_BY_ATTRIBUTE
       ? MathBN.add(campaignBudgetUsed, amount)
       : MathBN.add(campaignBudgetUsed, 1)
 
