@@ -370,6 +370,25 @@ export interface ILockingProvider {
     },
     sharedContext?: Context
   ): Promise<void>
+  /**
+   * This method is optional. The Locking Module calls it when the application shuts down, so you can release resources
+   * your provider holds, such as a connection to an external service.
+   *
+   * @example
+   * An example of how to implement the `shutdown` method:
+   *
+   * ```ts
+   * class MyLockingProviderService implements ILockingProvider {
+   *   // ...
+   *   async shutdown(): Promise<void> {
+   *     await this.client.disconnect()
+   *   }
+   * }
+   * ```
+   *
+   * In this example, you close the connection of the client the provider uses.
+   */
+  shutdown?(): Promise<void>
 }
 
 export interface ILockingModule {
