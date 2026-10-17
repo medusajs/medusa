@@ -8,7 +8,7 @@ permissions: {}
 
 jobs:
   notify:
-    if: ${{ github.event.pull_request.user.login == 'medusa-os-bot[bot]' }}
+    if: ${{ contains(fromJSON('["medusa-os-bot[bot]", "medusa-agents[bot]"]'), github.event.pull_request.user.login) }}
     runs-on: ubuntu-latest
     steps:
       - name: Sanitize PR title
@@ -32,7 +32,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "New PR opened by medusa-os-bot"
+                    "text": "New automated PR"
                   }
                 },
                 {

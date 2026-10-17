@@ -3,7 +3,10 @@ import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
-import { addUrlToRelativeLink } from "remark-rehype-plugins"
+import {
+  addUrlToRelativeLink,
+  localLinksRehypePlugin,
+} from "remark-rehype-plugins"
 import type { Plugin } from "unified"
 import * as Icons from "@medusajs/icons"
 import * as HookValues from "@/specs/hook-values"
@@ -21,6 +24,7 @@ export async function GET(req: NextRequest, { params }: Params) {
 
   const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
+  const appDir = path.join(process.cwd(), "app")
 
   const rawMdxUrl = `${origin}${basePath}/raw-mdx/${[...slug, "page.mdx"].join("/")}`
   const fileContent =
@@ -61,8 +65,20 @@ export async function GET(req: NextRequest, { params }: Params) {
         : path.join(process.cwd(), "specs", "components"),
     },
     {
+      before: [
+        [
+          localLinksRehypePlugin,
+          {
+            filePath: path.join(appDir, ...slug, "page.mdx"),
+            basePath: appDir,
+          },
+        ],
+      ] as unknown as Plugin[],
       after: [
-        [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
+        [
+          addUrlToRelativeLink,
+          { url: `${process.env.NEXT_PUBLIC_BASE_URL || ""}${basePath}` },
+        ],
       ] as unknown as Plugin[],
     }
   )

@@ -46,7 +46,7 @@ Take a bug report from validation to a tested fix ready for a PR. You change fil
 
 ### Step 2 — Validate
 
-Confirm the bug exists on the current branch by reading the code path and, when cheap, a throwaway repro. Outcome is one of `confirmed`, `not-reproducible`, `not-a-bug`, `needs-info`, `already-fixed`. Anything other than `confirmed` → skip to Step 7.
+Check that no open PR already fixes it, then confirm the bug exists on the current branch by reading the code path and, when cheap, a throwaway repro. Outcome is one of `confirmed`, `not-reproducible`, `not-a-bug`, `needs-info`, `already-fixed`. Anything other than `confirmed` → skip to Step 7.
 
 ### Step 3 — Write the failing regression test
 
