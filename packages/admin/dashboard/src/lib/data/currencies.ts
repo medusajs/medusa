@@ -715,6 +715,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "Bs.F.",
     decimal_digits: 2,
   },
+  VES: {
+    code: "VES",
+    name: "Venezuelan Bolívar Soberano",
+    symbol_native: "Bs.S.",
+    decimal_digits: 2,
+  },
   VND: {
     code: "VND",
     name: "Vietnamese Dong",
@@ -757,11 +763,23 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "ZK",
     decimal_digits: 0,
   },
+  ZMW: {
+    code: "ZMW",
+    name: "Zambian Kwacha",
+    symbol_native: "ZK",
+    decimal_digits: 2,
+  },
   ZWL: {
     code: "ZWL",
     name: "Zimbabwean Dollar",
     symbol_native: "ZWL$",
     decimal_digits: 0,
+  },
+  ZWG: {
+    code: "ZWG",
+    name: "Zimbabwe Gold",
+    symbol_native: "ZiG",
+    decimal_digits: 2,
   },
 }
 
