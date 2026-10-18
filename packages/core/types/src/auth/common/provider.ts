@@ -116,4 +116,10 @@ export type AuthenticationInput = {
    * Protocol of the incoming authentication request (For example, `https`).
    */
   protocol?: string
+
+  /**
+   * The actor type the request authenticates as (For example, `customer`).
+   * Passed by the `/auth/{actor_type}/{auth_provider}` routes.
+   */
+  actor_type?: string
 }
