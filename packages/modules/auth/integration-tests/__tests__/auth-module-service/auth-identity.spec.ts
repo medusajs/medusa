@@ -1,4 +1,7 @@
-import { IAuthModuleService } from "@medusajs/framework/types"
+import {
+  AuthIdentityProviderService,
+  IAuthModuleService,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { createAuthIdentities } from "../../__fixtures__/auth-identity"
@@ -400,6 +403,63 @@ moduleIntegrationTestRunner<IAuthModuleService>({
               }),
             })
           )
+        })
+      })
+
+      describe("getAuthIdentityProviderService", () => {
+        describe("update", () => {
+          it("should only update the provider identity matching the entity_id", async () => {
+            const authIdentity = await service.createAuthIdentities({
+              provider_identities: [
+                {
+                  entity_id: "credential-1",
+                  provider: "passkey",
+                  provider_metadata: { counter: 1 },
+                },
+                {
+                  entity_id: "credential-2",
+                  provider: "passkey",
+                  provider_metadata: { counter: 1 },
+                },
+              ],
+            })
+
+            const authIdentityProviderService = (
+              service as unknown as {
+                getAuthIdentityProviderService: (
+                  provider: string
+                ) => AuthIdentityProviderService
+              }
+            ).getAuthIdentityProviderService("passkey")
+
+            const result = await authIdentityProviderService.update(
+              "credential-2",
+              { provider_metadata: { counter: 2 } }
+            )
+
+            const expectedProviderIdentities = expect.arrayContaining([
+              expect.objectContaining({
+                entity_id: "credential-1",
+                provider_metadata: { counter: 1 },
+              }),
+              expect.objectContaining({
+                entity_id: "credential-2",
+                provider_metadata: { counter: 2 },
+              }),
+            ])
+
+            expect(result.provider_identities).toHaveLength(2)
+            expect(result.provider_identities).toEqual(
+              expectedProviderIdentities
+            )
+
+            const providerIdentities = await service.listProviderIdentities({
+              auth_identity_id: authIdentity.id,
+            })
+
+            expect(providerIdentities).toHaveLength(2)
+            expect(providerIdentities).toEqual(expectedProviderIdentities)
+          })
         })
       })
     })
