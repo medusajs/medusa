@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { PublicLayout } from "../public-layout"
 
-vi.mock("../../../hooks/use-document-title", () => ({
+vi.mock("../../../../hooks/use-document-title", () => ({
   DocumentTitle: () => null,
 }))
 

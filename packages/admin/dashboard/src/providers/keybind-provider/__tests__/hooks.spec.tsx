@@ -2,9 +2,11 @@
 import { renderHook } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-const mockNavigate = vi.fn()
-const mockMutateAsync = vi.fn()
-const mockQueryClientClear = vi.fn()
+const { mockNavigate, mockMutateAsync, mockQueryClientClear } = vi.hoisted(() => ({
+  mockNavigate: vi.fn(),
+  mockMutateAsync: vi.fn(),
+  mockQueryClientClear: vi.fn(),
+}))
 
 vi.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
@@ -16,19 +18,19 @@ vi.mock("react-i18next", () => ({
   }),
 }))
 
-vi.mock("../../hooks/api/auth", () => ({
+vi.mock("../../../hooks/api/auth", () => ({
   useLogout: () => ({
     mutateAsync: mockMutateAsync,
   }),
 }))
 
-vi.mock("../../lib/query-client", () => ({
+vi.mock("../../../lib/query-client", () => ({
   queryClient: {
     clear: mockQueryClientClear,
   },
 }))
 
-vi.mock("../../lib/search/search-entities", () => ({
+vi.mock("../../../lib/search/search-entities", () => ({
   getSearchEntityShortcuts: () => [],
   resolveSearchEntityShortcutLabel: () => "",
 }))
