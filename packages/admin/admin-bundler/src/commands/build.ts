@@ -16,7 +16,9 @@ export async function build(options: BundlerOptions) {
 
 /**
  * Builds the application as one Vite app: the admin dashboard is the client
- * environment, and `buildServer` builds the backend alongside it.
+ * environment, and `buildServer` builds the backend after it. Not in
+ * parallel: bundling the backend can take several GB of memory on its own,
+ * more than build machines have to spare for both at once.
  */
 export async function buildApp(
   options: BundlerOptions,
@@ -30,10 +32,8 @@ export async function buildApp(
     logLevel: "error",
     builder: {
       async buildApp(builder) {
-        await Promise.all([
-          builder.build(builder.environments.client),
-          buildServer(),
-        ])
+        await builder.build(builder.environments.client)
+        await buildServer()
       },
     },
   }

@@ -66,6 +66,10 @@ export default async function build({
   // Platforms can opt projects in without changing their build script
   const shouldBundle = bundle || process.env.MEDUSA_BUILD_BUNDLE === "true"
   if (shouldBundle && !adminOnly) {
+    // esbuild (a Go program) holds every bundled module in memory: collect
+    // garbage more often, trading some speed for a smaller peak. Set before
+    // anything starts esbuild, which reads it once.
+    process.env.GOGC ??= "50"
     // The bundle is built from the compiled backend, so compile it first,
     // then build the admin and bundle the backend as one app
     const backendBuilt = await compiler.buildAppBackend(tsConfig)

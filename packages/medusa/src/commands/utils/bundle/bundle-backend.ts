@@ -346,8 +346,14 @@ export async function bundleBackend({
       bundledPackageJsons.add(path.join(root, "package.json"))
     }
   }
+  // Node's module loader reads every module it loads with fs too: those are
+  // bundled as code, not embedded again as text
+  const bundledFiles = new Set(registry.values())
   const files: Record<string, string> = {}
   for (const file of [...reads, ...bundledPackageJsons]) {
+    if (bundledFiles.has(file)) {
+      continue
+    }
     if (existsSync(file) && statSync(file).size < 512 * 1024) {
       files[toKey(file)] = readFileSync(file, "utf8")
     }
