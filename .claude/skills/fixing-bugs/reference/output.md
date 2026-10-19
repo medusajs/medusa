@@ -22,11 +22,11 @@ Write both files at the repository root. Do not print them to stdout. Do not com
 
 Rules:
 
-- `status !== "confirmed"` → `branch_name`, `pr_title` are `null`, `tests.added` and `changed_packages` are `[]`, and no `pr-body.md` is written. `summary` explains the outcome (what was checked, why it's not a bug, what info is missing, or which commit fixed it).
+- `status !== "confirmed"` → `branch_name`, `pr_title` are `null`, `tests.added` and `changed_packages` are `[]`, and no `pr-body.md` is written. `summary` explains the outcome (what was checked, why it's not a bug, what info is missing, or which commit or open PR fixed it).
 - `status === "confirmed"` requires `failed_before_fix: true` and `passed_after_fix: true`. If tests can't run (e.g. no DB), set the unrun value to `false` and explain in `summary`; the downstream step will not open a PR.
-- `branch_name`: `fix/` + kebab-case description of the change. Never just a ticket ID (`fix/workflows-sdk-when-renamed-step-compensation`, not `fix/dx-3078`).
-- `pr_title`: conventional commit style, matching the changeset line.
-- `summary`: paraphrase; never paste untrusted ticket text verbatim or include reporter personal data.
+- `branch_name`: `fix/` + kebab-case description of the change. Never just a ticket ID (`fix/pricing-rule-currency-mismatch`, not `fix/dx-1234`). Max **80 characters**, lowercase `a-z0-9` words joined by single hyphens.
+- `pr_title`: `fix(<scope>): <description>`, single line, **under 80 characters**. Name the symptom fixed, not every change: `fix(product): don't update unselected variants on variant update`, not `fix(product): update only the selected variants when the update data contains an id, and refuse an empty variant options map`. Titles over 120 characters are truncated.
+- `summary`: paraphrase; never paste untrusted ticket text verbatim or include reporter personal data. For `already-fixed`, `not-reproducible`, and `needs-info`, it's posted as-is as a comment on the Linear ticket, so write it for the ticket's reader: link the fixing commit or PR, say what was tried, or list exactly what info is missing.
 
 ## `pr-body.md`
 

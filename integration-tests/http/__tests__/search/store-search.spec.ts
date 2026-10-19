@@ -360,6 +360,27 @@ medusaIntegrationTestRunner({
         expect(second.data.results[0].metadata.skip).toEqual(1)
       })
 
+      it("sorts on a lower-case order direction", async () => {
+        const response = await search({
+          entity: "product",
+          pagination: { order: { title: "desc" } },
+        })
+
+        expect(response.status).toEqual(200)
+        expect(
+          response.data.results[0].hits.map((hit) => hit.document.title)
+        ).toEqual(["Zephyr Shirt", "Aurora Shoe"])
+      })
+
+      it("rejects an unknown order direction", async () => {
+        const error = await search({
+          entity: "product",
+          pagination: { order: { title: "up" } },
+        }).catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+      })
+
       it("returns the facets a query asks for", async () => {
         const response = await search({
           queries: [
