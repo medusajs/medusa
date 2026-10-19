@@ -7911,6 +7911,19 @@ moduleIntegrationTestRunner({
               ])
             }
           )
+
+          it("should throw when a line has no quantity", async () => {
+            const error = await service
+              .computeActions([buyThreeGetOnePromotion.code!], {
+                currency_code: "usd",
+                items: [expensiveLine, { ...cheapLine, quantity: 0 }],
+              })
+              .catch((e) => e)
+
+            expect(error.message).toContain(
+              "Item with id: item_cheap must have a quantity greater than 0"
+            )
+          })
         })
       })
 

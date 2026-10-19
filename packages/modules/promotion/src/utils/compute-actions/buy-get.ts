@@ -22,13 +22,19 @@ export type EligibleItem = {
 }
 
 function getUnitPrice(item: ComputeActionItemLine) {
-  return MathBN.gt(item.quantity, 0)
-    ? MathBN.div(item.subtotal, item.quantity)
-    : MathBN.convert(0)
+  return MathBN.div(item.subtotal, item.quantity)
 }
 
 function sortByPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
-  // Items are ranked by unit price.
+  for (const item of [a, b]) {
+    if (!item.quantity || !MathBN.gt(item.quantity, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Item with id: ${item.id} must have a quantity greater than 0 to compute buy-get promotion actions`
+      )
+    }
+  }
+
   const aUnitPrice = getUnitPrice(a)
   const bUnitPrice = getUnitPrice(b)
 
