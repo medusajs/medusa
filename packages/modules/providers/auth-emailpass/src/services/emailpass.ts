@@ -132,10 +132,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       return { success: false, error: error.message }
     }
 
-    if (
-      (await this.isPasswordMatch_(password, authIdentity)) &&
-      this.isAllowedForActorType_(authIdentity, userData.actor_type)
-    ) {
+    if (await this.isPasswordMatch_(password, authIdentity)) {
       return {
         success: true,
         authIdentity: this.sanitizeAuthIdentity_(authIdentity),
@@ -232,17 +229,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     }
 
     return await Scrypt.verify(Buffer.from(passwordHash, "base64"), password)
-  }
-
-  private isAllowedForActorType_(
-    authIdentity: AuthIdentityDTO,
-    actorType?: string
-  ): boolean {
-    if (!this.config_.requireActorAssociation) {
-      return true
-    }
-
-    return !!actorType && !!authIdentity.app_metadata?.[`${actorType}_id`]
   }
 
   private async getProviderMetadata_(

@@ -15,6 +15,9 @@ module.exports = defineConfig({
   projectConfig: {
     http: {
       jwtSecret: "test",
+      requireActorAssociation: {
+        emailpass: true,
+      },
     },
   },
   modules: [
@@ -25,9 +28,6 @@ module.exports = defineConfig({
           {
             resolve: "@medusajs/medusa/auth-emailpass",
             id: "emailpass",
-            options: {
-              requireActorAssociation: true,
-            },
           },
         ],
       },

@@ -97,7 +97,7 @@ medusaIntegrationTestRunner({
           .catch((e) => e.response)
 
         expect(login.status).toEqual(401)
-        expect(login.data.message).toEqual("Invalid email or password")
+        expect(login.data.message).toEqual("Authentication failed")
       })
 
       it("should not authenticate a customer identity on an arbitrary actor type", async () => {
@@ -111,7 +111,7 @@ medusaIntegrationTestRunner({
           .catch((e) => e.response)
 
         expect(login.status).toEqual(401)
-        expect(login.data.message).toEqual("Invalid email or password")
+        expect(login.data.message).toEqual("Authentication failed")
       })
 
       it("should not authenticate an admin identity on the customer actor type", async () => {
@@ -123,7 +123,19 @@ medusaIntegrationTestRunner({
           .catch((e) => e.response)
 
         expect(login.status).toEqual(401)
-        expect(login.data.message).toEqual("Invalid email or password")
+        expect(login.data.message).toEqual("Authentication failed")
+      })
+
+      it("should return the same error for a wrong password as for an unassociated actor type", async () => {
+        const login = await api
+          .post("/auth/customer/emailpass", {
+            email: "admin@medusa.js",
+            password: "wrong_password",
+          })
+          .catch((e) => e.response)
+
+        expect(login.status).toEqual(401)
+        expect(login.data.message).toEqual("Authentication failed")
       })
 
       it("should still allow registering and resuming an incomplete customer signup", async () => {

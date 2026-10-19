@@ -1,6 +1,6 @@
 ---
-"@medusajs/auth-emailpass": patch
+"@medusajs/medusa": patch
 "@medusajs/types": patch
 ---
 
-fix(auth-emailpass,types): add `requireActorAssociation` option to refuse logins on unassociated actor types
+fix(medusa,types): add `http.requireActorAssociation` config to refuse logins on actor types an auth identity isn't associated with
