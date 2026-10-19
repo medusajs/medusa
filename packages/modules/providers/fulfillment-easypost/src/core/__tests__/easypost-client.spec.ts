@@ -8,6 +8,12 @@ import { EasyPostClient } from "../easypost-client"
 // per-test timeout.
 const REAL_API_TEST_TIMEOUT_MS = 30_000
 
+// Real-API tests only run when an EasyPost (test-mode) API key is provided.
+// CI has no EASYPOST_API_KEY, and the SDK's constructor throws without one,
+// so these are skipped -- not failed -- there. The deterministic tests that
+// don't touch the network stay on unconditionally.
+const realApiTest = process.env.EASYPOST_API_KEY ? test : test.skip
+
 const shipmentFixture = {
   toAddress: {
     name: "Test Buyer",
@@ -29,7 +35,7 @@ const shipmentFixture = {
 }
 
 describe("EasyPostClient", () => {
-  test(
+  realApiTest(
     "listCarrierAccounts rejects a test-mode API key, as EasyPost's API requires production for this endpoint",
     async () => {
       // The plan brief originally assumed a fresh EasyPost test-mode account's
@@ -51,7 +57,7 @@ describe("EasyPostClient", () => {
     REAL_API_TEST_TIMEOUT_MS
   )
 
-  test(
+  realApiTest(
     "createShipment returns real rates for a real test-mode shipment",
     async () => {
       const client = new EasyPostClient({
@@ -69,7 +75,7 @@ describe("EasyPostClient", () => {
     REAL_API_TEST_TIMEOUT_MS
   )
 
-  test(
+  realApiTest(
     "buyShipment purchases the given rate and returns a tracking code + label",
     async () => {
       const client = new EasyPostClient({
@@ -83,7 +89,7 @@ describe("EasyPostClient", () => {
     REAL_API_TEST_TIMEOUT_MS
   )
 
-  test(
+  realApiTest(
     "retrieveShipment reads back the stored addresses/parcel and reports whether postage was purchased",
     async () => {
       const client = new EasyPostClient({
@@ -110,7 +116,7 @@ describe("EasyPostClient", () => {
     REAL_API_TEST_TIMEOUT_MS
   )
 
-  test(
+  realApiTest(
     "refundShipment submits a refund request for a bought shipment",
     async () => {
       const client = new EasyPostClient({

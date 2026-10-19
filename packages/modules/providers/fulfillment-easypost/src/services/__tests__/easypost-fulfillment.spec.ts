@@ -9,6 +9,13 @@ import { EasyPostFulfillmentService } from "../easypost-fulfillment"
 // to api.easypost.com (see Task 1's report) -- not a defect in this file.
 const REAL_API_TEST_TIMEOUT_MS = 30_000
 
+// Real-API tests only run when an EasyPost (test-mode) API key is provided.
+// CI has no EASYPOST_API_KEY, and the SDK's constructor throws without one,
+// so these are skipped -- not failed -- there. The fake-client tests below
+// are deterministic and stay on unconditionally: they are what protects
+// this provider in CI.
+const realApiTest = process.env.EASYPOST_API_KEY ? test : test.skip
+
 const fakeLogger: Logger = {
   panic: jest.fn(),
   shouldLog: jest.fn(),
@@ -76,7 +83,7 @@ function persistedShipment(
 }
 
 describe("EasyPostFulfillmentService", () => {
-  test(
+  realApiTest(
     "getFulfillmentOptions returns one option per carrier+service this account's rates actually quote",
     async () => {
       const service = new EasyPostFulfillmentService(
@@ -234,7 +241,7 @@ describe("EasyPostFulfillmentService", () => {
       ],
     } as unknown as CalculateShippingOptionPriceContext
 
-    test(
+    realApiTest(
       "returns a real EasyPost rate for the cart's real destination and parcel",
       async () => {
         const service = new EasyPostFulfillmentService(
@@ -387,7 +394,7 @@ describe("EasyPostFulfillmentService", () => {
       ],
     } as unknown as CalculateShippingOptionPriceContext
 
-    test(
+    realApiTest(
       "persists a real shipment id and matching rate id for later purchase",
       async () => {
         const service = new EasyPostFulfillmentService(
@@ -447,20 +454,24 @@ describe("EasyPostFulfillmentService", () => {
     // Review Focus: unlike `calculatePrice`, this method throws -- it has no
     // sensible fake-data fallback, since its whole job is to persist the
     // REAL ids `createFulfillment` will later use to buy an actual label.
-    test("throws when EasyPost can't quote this carrier+service for the destination (Review Focus)", async () => {
-      const service = new EasyPostFulfillmentService(
-        { logger: fakeLogger },
-        { apiKey: process.env.EASYPOST_API_KEY!, defaultParcel }
-      )
-
-      await expect(
-        service.validateFulfillmentData(
-          { carrier: "NotARealCarrier", service: "Fake" },
-          {},
-          validContextFixture as any
+    realApiTest(
+      "throws when EasyPost can't quote this carrier+service for the destination (Review Focus)",
+      async () => {
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: process.env.EASYPOST_API_KEY!, defaultParcel }
         )
-      ).rejects.toThrow()
-    })
+
+        await expect(
+          service.validateFulfillmentData(
+            { carrier: "NotARealCarrier", service: "Fake" },
+            {},
+            validContextFixture as any
+          )
+        ).rejects.toThrow()
+      },
+      REAL_API_TEST_TIMEOUT_MS
+    )
 
     test("the thrown error names the specific carrier+service that failed to quote", async () => {
       const fakeClient = {
@@ -559,7 +570,7 @@ describe("EasyPostFulfillmentService", () => {
       ],
     } as unknown as CalculateShippingOptionPriceContext
 
-    test(
+    realApiTest(
       "buys the exact persisted rate and returns a tracking code + label",
       async () => {
         const service = new EasyPostFulfillmentService(
@@ -593,7 +604,7 @@ describe("EasyPostFulfillmentService", () => {
       REAL_API_TEST_TIMEOUT_MS
     )
 
-    test(
+    realApiTest(
       "re-fulfilling an already-bought persisted shipment buys a fresh shipment instead of surfacing EasyPost's 422",
       async () => {
         const service = new EasyPostFulfillmentService(
@@ -1048,7 +1059,7 @@ describe("EasyPostFulfillmentService", () => {
       items: [],
     }
 
-    test(
+    realApiTest(
       "buys a return label reusing the original carrier+service, with to/from addresses reversed",
       async () => {
         const service = new EasyPostFulfillmentService(
@@ -1218,7 +1229,7 @@ describe("EasyPostFulfillmentService", () => {
   })
 
   describe("cancelFulfillment", () => {
-    test(
+    realApiTest(
       "submits a refund request for a bought shipment",
       async () => {
         const service = new EasyPostFulfillmentService(
