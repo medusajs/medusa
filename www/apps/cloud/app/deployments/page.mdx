@@ -86,6 +86,8 @@ Learn more about the `.medusa/server` directory in the [Build guide](!docs!/lear
 
 </Note>
 
+The `.medusa/server` directory doesn't include a `node_modules` directory or copies of the workspace packages that your Medusa application depends on. The build only copies the `package.json` file and, if it exists in your Medusa application's directory, the `package-lock.json` or `yarn.lock` file. Learn how the application resolves dependencies at runtime in the [Build guide](!docs!/learn/build#dependencies-and-workspace-packages).
+
 So, if you have custom assets like JSON files that your application needs at runtime, make sure to copy them to the `.medusa/server` directory after the `medusa build` command in your `build` script.
 
 For example, if your application needs a `src/data/custom.json` file at runtime, you can add a script that copies it to `.medusa/server/src/data/custom.json` after the build process is complete.

@@ -117,6 +117,10 @@ The `.medusa/server` directory contains the following:
 - `medusa-config.js`: The compiled Medusa configuration file.
 - `package.json` and a lock file: The dependencies required to run the Medusa application in production.
 
+### Dependencies and Workspace Packages
+
+The `.medusa/server` directory doesn't include a `node_modules` directory, and the `build` command doesn't copy your dependencies or monorepo workspace packages into it. It only copies the `package.json` file and, if it exists in your Medusa application's directory, the lock file for the used package manager, such as `package-lock.json` or `yarn.lock`. At runtime, Node.js resolves dependencies with its standard module resolution: it looks for a `node_modules` directory in `.medusa/server`, then in each parent directory, such as your Medusa application's directory and the root of your monorepo.
+
 ### Built Assets
 
 The `build` command compiles and copies `.{ts,js,tsx,jsx}` files in your project, such as those in the root directory and in the `src` directory.
