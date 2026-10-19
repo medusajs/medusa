@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn how Medusa protects your project's data on Cloud, including encryption, data location, isolation, backups, compliance, and self-hosting options.
+In this guide, you'll learn how Medusa protects your project's data on Cloud, including encryption, data location, isolation, backups, and self-hosting options.
 
 ## How Medusa Protects Your Data
 
@@ -20,7 +20,7 @@ To learn how Medusa protects your projects from malicious traffic, such as web a
 
 ## Encryption at Rest
 
-Medusa encrypts your project's stored data by default. You don't need to enable or configure encryption at rest.
+Medusa encrypts the following data at rest by default. You don't need to enable or configure encryption at rest.
 
 <Table>
   <Table.Header>
@@ -60,15 +60,6 @@ Medusa encrypts your project's stored data by default. You don't need to enable 
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-        [Redis](../../redis/page.mdx)
-      </Table.Cell>
-      <Table.Cell>
-        {/* TODO: confirm Redis at-rest encryption */}
-        AES-256
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
         [Environment variables](../../environments/environment-variables/page.mdx)
       </Table.Cell>
       <Table.Cell>
@@ -89,7 +80,7 @@ Medusa encrypts data in transit between clients and your project, and between yo
 - **Public endpoints**: Your backend and storefront URLs, including [custom domains](../../environments/custom-domains/page.mdx), are served over HTTPS. Medusa redirects HTTP requests to HTTPS.
 - **File storage**: The storage that holds your uploaded files rejects requests that don't use HTTPS.
 - **Database and Redis**: Your Medusa application connects to its database and Redis over TLS through a private network connection.
-{/* TODO: confirm with infra that external database connection strings enforce sslmode=require */}
+- **External database connections**: Your database rejects connections that don't use TLS, including connections from tools you use with the [database connection strings](../../database/page.mdx#connect-to-a-cloud-database).
 
 ---
 
@@ -150,8 +141,6 @@ Medusa supports the following regions:
   </Table.Body>
 </Table>
 
-### Data Stored in Your Project's Region
-
 Medusa stores the following data in your project's region:
 
 - Your Medusa backend and its workers.
@@ -159,15 +148,6 @@ Medusa stores the following data in your project's region:
 - Files uploaded through your Medusa application.
 - Your environments' Redis data.
 - Your [Medusa Search](../../search/page.mdx) indexes.
-
-### Data Processed Outside Your Project's Region
-
-Some data is stored or processed outside your project's region to operate the platform:
-
-{/* TODO: confirm with infra/security which of these to disclose, and the observability data region */}
-- **Account and project settings**: Your organization, project, and environment settings, including environment variables, are stored in the US East (`us-east-1`) region.
-- **Logs and metrics**: Your project's logs and performance metrics are stored in the European Union.
-- **Storefronts**: If you deploy a storefront with your project, it runs on a global edge network and serves requests from the location closest to each customer.
 
 ---
 
@@ -198,15 +178,6 @@ Cloud provides the following features to control access to your organization and
 - **Organization roles**: Only organization owners can perform sensitive actions, such as managing database write access. Learn more in the [Organizations](../../organizations/page.mdx) guide.
 - **Database IP allowlist**: Restrict which IP addresses can connect to your environments' databases. Learn more in the [Database](../../database/page.mdx#restrict-database-access-by-ip-address) guide.
 - **Static outgoing IP addresses**: Allowlist Cloud's outgoing IP addresses in third-party services your Medusa application connects to. Learn more in the [IP Addresses](../../ip-addresses/page.mdx) guide.
-
----
-
-## Compliance
-
-{/* TODO: get confirmed compliance status, trust center URL, and DPA/sub-processor links from security/legal */}
-Medusa offers a SOC 2 report and a Data Processing Agreement (DPA) on the Enterprise plan. Refer to the [Plans & Pricing](../../pricing/page.mdx) page for details.
-
-To request these documents, [contact the Medusa team](https://medusajs.com/contact/).
 
 ---
 
