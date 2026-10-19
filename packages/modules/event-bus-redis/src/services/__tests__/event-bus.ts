@@ -15,6 +15,7 @@ const loggerMock = {
 const pipelineMock = {
   rpush: jest.fn(),
   expire: jest.fn(),
+  pexpire: jest.fn(),
   del: jest.fn(),
   exec: jest.fn().mockResolvedValue([]),
 }
@@ -1085,6 +1086,46 @@ describe("RedisEventBusService", () => {
 
         callInterceptorsSpy.mockRestore()
       })
+    })
+  })
+
+  describe("clearGroupedEvents", () => {
+    beforeEach(async () => {
+      jest.clearAllMocks()
+
+      eventBus = new RedisEventBusService(moduleDeps, {}, moduleDeclaration)
+      redis = (eventBus as any).eventBusRedisConnection_
+    })
+
+    it("should re-stage a large number of kept events without overflowing the call stack and keep the TTL", async () => {
+      const keptCount = 300_000
+      const staged = Array.from({ length: keptCount }, (_, i) =>
+        JSON.stringify({ name: "kept-event", data: { data: { i } } })
+      )
+      staged.push(JSON.stringify({ name: "cleared-event", data: {} }))
+
+      redis.lrange = jest.fn().mockResolvedValue(staged)
+      redis.pttl = jest.fn().mockResolvedValue(600_000)
+
+      await eventBus.clearGroupedEvents("large-group", {
+        eventNames: ["cleared-event"],
+      })
+
+      expect(pipelineMock.del).toHaveBeenCalledWith("staging:large-group")
+
+      const pushed = pipelineMock.rpush.mock.calls.flatMap((call) => {
+        expect(call[0]).toEqual("staging:large-group")
+        return call.slice(1)
+      })
+      expect(pushed).toHaveLength(keptCount)
+      expect(pushed[0]).toEqual(staged[0])
+      expect(pushed[keptCount - 1]).toEqual(staged[keptCount - 1])
+
+      expect(pipelineMock.pexpire).toHaveBeenCalledWith(
+        "staging:large-group",
+        600_000
+      )
+      expect(pipelineMock.exec).toHaveBeenCalledTimes(1)
     })
   })
 

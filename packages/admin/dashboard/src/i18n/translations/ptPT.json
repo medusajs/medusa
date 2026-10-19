@@ -606,7 +606,7 @@
     "noSalesChannels": "Não disponível em nenhum canal de venda",
     "variantCount_one": "{{count}} variante",
     "variantCount_other": "{{count}} variantes",
-    "deleteVariantWarning": "Tens a certeza que queres eliminar esta variante?",
+    "deleteVariantWarning": "Estás prestes a eliminar a variante {{title}}. Esta ação não pode ser anulada.",
     "productStatus": {
       "draft": "Rascunho",
       "published": "Publicado",
@@ -1082,6 +1082,24 @@
       "header": "Criar Cliente",
       "hint": "Cria um novo cliente e gere os seus detalhes.",
       "successToast": "Cliente {{email}} criado com sucesso."
+    },
+    "export": {
+      "header": "Exportar lista de clientes",
+      "description": "Exporta a lista de clientes para um ficheiro.",
+      "success": {
+        "title": "Estamos a processar a tua exportação",
+        "description": "Exportar dados pode demorar alguns minutos. Avisamos quando terminar."
+      },
+      "format": {
+        "label": "Formato",
+        "description": "Escolhe o formato do ficheiro exportado. O JSON captura dados aninhados entre módulos sem perda, o que é recomendado para pedidos de acesso a dados pessoais.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtros",
+        "description": "Aplica filtros na tabela para ajustar esta vista"
+      }
     },
     "groups": {
       "label": "Grupos de clientes",

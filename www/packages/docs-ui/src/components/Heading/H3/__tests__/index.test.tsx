@@ -51,6 +51,12 @@ describe("rendering", () => {
     expect(link).toHaveAttribute("href", "#test-id")
   })
 
+  test("excludes anchor link from markdown parity", () => {
+    const { container } = render(<H3 id="test-id">Test</H3>)
+    const link = container.querySelector("[data-testid='copy-button'] a")
+    expect(link).toHaveAttribute("data-markdown-ignore")
+  })
+
   test("renders with collapsed navbar and id", () => {
     mockUseLayout.mockReturnValue({ showCollapsedNavbar: true })
     const { container } = render(<H3 id="test-id">Test</H3>)

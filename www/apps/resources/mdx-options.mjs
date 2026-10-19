@@ -4,6 +4,7 @@ import {
   cloudinaryImgRehypePlugin,
   resolveAdmonitionsPlugin,
   crossProjectLinksPlugin,
+  mdContentOverrideRehypePlugin,
   remarkAttachFrontmatterDataPlugin,
 } from "remark-rehype-plugins"
 import remarkFrontmatter from "remark-frontmatter"
@@ -67,6 +68,7 @@ const mdxPluginOptions = {
         },
       ],
       [withExtractedTableOfContents],
+      [mdContentOverrideRehypePlugin],
     ],
     remarkPlugins: [
       [remarkFrontmatter],

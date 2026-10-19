@@ -176,6 +176,22 @@ Then, run the following command to log in to your Cloud account:
 opencode mcp auth medusa-commerce
 ```
 
+#### Gemini CLI
+
+Install the [Medusa extension for Gemini CLI](https://github.com/medusajs/gemini-cli-extension), which adds the Medusa MCP server to Gemini CLI:
+
+```bash
+gemini extensions install \
+  https://github.com/medusajs/gemini-cli-extension
+```
+
+Then, start Gemini CLI and run the following command to log in to your Cloud account:
+
+```bash
+gemini
+/mcp auth medusa
+```
+
 #### n8n
 
 Add an **MCP Client Tool** to an **AI Agent** node in n8n Cloud, as explained in the [n8n](./n8n/page.mdx) guide. Self-hosted n8n instances can't connect to the Medusa MCP server.
@@ -190,6 +206,8 @@ After you log in to your Cloud account, Cloud shows a consent page with the AI t
 
 1. Select the environments that the AI tool can access.
 2. Click **Approve**.
+
+If you don't have any environments to select, click the **Create Project** button on the consent page. It opens the project creation page in a new tab. After you [create a project](../projects/page.mdx), return to the consent page to select its environment and approve the connection.
 
 <Note type="warning">
 
