@@ -2086,6 +2086,27 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
 
           expect(result).toEqual({ action: PaymentActions.NOT_SUPPORTED })
         })
+
+        it.each([
+          ["undefined", undefined],
+          ["null", null],
+          ["a number", 123],
+          ["an object", { id: "system_default" }],
+          ["an empty string", ""],
+        ])(
+          "throws an invalid data error when the provider is %s",
+          async (_, provider) => {
+            const error = await service
+              .getWebhookActionAndData({
+                provider: provider as any,
+                payload: { data: {}, rawData: Buffer.from(""), headers: {} },
+              })
+              .catch((e) => e)
+
+            expect(error.type).toEqual("invalid_data")
+            expect(error.message).toContain("provider")
+          }
+        )
       })
     })
   },
