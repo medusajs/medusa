@@ -1,0 +1,54 @@
+export const metadata = {
+  title: "How Compute Hours Accrue",
+}
+
+# How Compute Hours Accrue
+
+In this guide, learn how the Compute usage metric accrues for your running environments, and how it maps to real usage.
+
+## What a compute hour is
+
+Compute usage is measured in **vCPU-hours**. One vCPU-hour is the equivalent of one virtual CPU core running for one hour.
+
+Compute is metered for the workloads that run your Medusa application: the [server](/cloud/monitoring/servers) and [worker](/cloud/monitoring/workers) processes of each environment. Their CPU usage is added together for the environment.
+
+## How compute hours accrue
+
+Compute hours are based on the **CPU allocated to your environment**, not on how much CPU the application actually uses at any moment:
+
+- Medusa Cloud samples the CPU allocated to each of your running environments every hour.
+- The allocated CPU is multiplied by the time the environment runs to determine the compute hours consumed in that hour.
+- This means an environment accrues compute hours **even when it is idle** — as long as it's running, its allocated CPU is billable. Traffic levels don't change the accrual; keeping the environment online does.
+- An environment with no running processes (for example, a suspended environment) does not accrue compute hours.
+
+<Note title="Tip">
+
+If you have environments you're not actively using, suspending them stops their compute accrual.
+
+</Note>
+
+## Worked example
+
+Consider a production environment whose server is allocated 1 vCPU and runs continuously:
+
+- 1 vCPU × 24 hours = 24 vCPU-hours per day.
+- Over a 30-day month, that's roughly **720 vCPU-hours per month** for that environment — the standing cost of keeping it online around the clock.
+
+If the same environment also runs a worker allocated 1 vCPU, the worker adds its own ~720 vCPU-hours per month, for a total of ~1,440 vCPU-hours per month for the environment.
+
+Running multiple environments multiplies this accordingly. For example, four always-on environments of ~1 vCPU each consume around 2,880 vCPU-hours per month.
+
+## How this maps to your plan
+
+Your [plan](/cloud/pricing) includes a monthly amount of compute hours, applied across all projects in your organization. The plan-specific included amounts are listed on the [Plans & Pricing](/cloud/pricing) page.
+
+- Usage up to your plan's included amount is covered by the plan.
+- Compute usage beyond the included amount is [Flex Usage](/cloud/usage#what-is-flex-usage), billed on your next invoice as described in [Billing](/cloud/billing).
+
+You can monitor your compute usage over time, with forecasted usage, in the [Usage](/cloud/usage) settings. Forecasts focus on your production and long-lived environments, since preview environment usage is sporadic.
+
+## Reducing compute usage
+
+- **Suspend environments you don't need running.** Suspended environments don't accrue compute hours.
+- **Right-size your environments.** Since billing follows allocated CPU, an environment allocated more CPU accrues proportionally more compute hours.
+- **Consolidate projects.** Multiple always-on environments in the same organization each add to the total compute usage.
