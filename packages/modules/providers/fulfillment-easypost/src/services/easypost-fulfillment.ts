@@ -680,8 +680,16 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
 
     const bought = await this.client_.buyShipment(shipment.id, rate.id)
 
+    // `easypost_shipment_id` is what `cancelFulfillment` refunds by -- core
+    // also calls it as createReturnFulfillmentStep's compensation, so it
+    // must be here or a rollback leaves a paid, unrefunded label.
     return buildCreateFulfillmentResult(
-      { easypost_carrier: carrier, easypost_service: service },
+      {
+        easypost_shipment_id: shipment.id,
+        easypost_rate_id: rate.id,
+        easypost_carrier: carrier,
+        easypost_service: service,
+      },
       bought
     )
   }

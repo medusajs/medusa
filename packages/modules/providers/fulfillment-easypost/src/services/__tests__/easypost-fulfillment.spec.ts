@@ -1172,6 +1172,60 @@ describe("EasyPostFulfillmentService", () => {
       )
     })
 
+    // cancelFulfillment requires `easypost_shipment_id`, and core calls it
+    // both on an explicit cancel and as createReturnFulfillmentStep's own
+    // compensation -- without the id on the returned data, a rollback would
+    // fail and leave a paid, unrefunded return label.
+    test("returns easypost_shipment_id and easypost_rate_id on data, so the return can be cancelled/compensated", async () => {
+      const refundShipment = jest.fn(async (shipmentId: string) => ({
+        id: shipmentId,
+        rates: [],
+        refundStatus: "submitted",
+      }))
+      const fakeClient = {
+        createShipment: async () => ({
+          id: "shp_fake_return",
+          rates: [
+            {
+              id: "rate_return",
+              carrier: "USPS",
+              service: "Priority",
+              rate: "8.01",
+              currency: "USD",
+            },
+          ],
+        }),
+        buyShipment: async (shipmentId: string) => ({
+          id: shipmentId,
+          rates: [],
+          trackingCode: "tracking-fake",
+          labelUrl: "https://example.com/label.png",
+        }),
+        refundShipment,
+      } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
+      )
+
+      const result = await service.createReturnFulfillment(
+        returnFulfillmentFixture
+      )
+
+      expect(result.data).toEqual(
+        expect.objectContaining({
+          easypost_shipment_id: "shp_fake_return",
+          easypost_rate_id: "rate_return",
+          easypost_carrier: "USPS",
+          easypost_service: "Priority",
+          easypost_tracking_code: "tracking-fake",
+        })
+      )
+
+      await service.cancelFulfillment(result.data)
+      expect(refundShipment).toHaveBeenCalledWith("shp_fake_return")
+    })
+
     test("prefers order.shipping_address over metadata.return_from_address when both are present", async () => {
       const createShipment = jest.fn(async () => ({
         id: "shp_fake_return",
