@@ -109,7 +109,7 @@ Your deployment already restricts access to some of its parts:
 
 - **Medusa Admin**: Users must log in before they can view or manage your store's data.
 - **Admin API routes**: Requests to `/admin` API routes require an authenticated admin user.
-- **Store API routes**: Requests to `/store` API routes are public by design, since your storefront sends them on behalf of customers. They require a publishable API key.
+- **Store API routes**: Requests to `/store` API routes are public by design, with the exception of certain customer-specific routes, since your storefront sends them on behalf of customers. They require a publishable API key.
 
 <Note>
 
@@ -196,4 +196,4 @@ HTTP basic authentication is suitable for keeping test environments away from th
 
 ### Restrict Access in Other Storefront Frameworks
 
-For storefronts built with other frameworks, implement the same check in the framework's request handling layer. For example, use the `handle` hook in `src/hooks.server.ts` for SvelteKit, or a request middleware for Tanstack Start. The check reads the credentials from environment variables, compares them to the request's `Authorization` header, and returns a `401` response with a `WWW-Authenticate` header if they don't match.
+For storefronts built with other frameworks, implement the same check in its request handling layer. For example, use the `handle` hook in `src/hooks.server.ts` for SvelteKit, or a request middleware for Tanstack Start. The check reads the credentials from environment variables, compares them to the request's `Authorization` header, and returns a `401` response with a `WWW-Authenticate` header if they don't match.
