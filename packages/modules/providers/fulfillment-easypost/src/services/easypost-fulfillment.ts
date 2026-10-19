@@ -215,6 +215,15 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
    * A genuine API/connectivity/auth failure (the `createShipment` call
    * itself rejecting) is a different, real failure and is NOT caught here
    * -- it propagates and still throws, since that's worth surfacing loudly.
+   *
+   * **An incomplete origin (stock location) or destination address gets the
+   * same fallback, for the same batching reason**: one stock location
+   * without a street/province/postal code would otherwise throw for every
+   * cart's shipping-options lookup, not just its own. It is checked here,
+   * before any EasyPost call, rather than by relaxing `toEasyPostAddress`
+   * itself -- `validateFulfillmentData` and `createFulfillment` still throw
+   * on an incomplete address, since those run on an explicit action and
+   * have no safe fallback.
    */
   async calculatePrice(
     optionData: Record<string, unknown>,
@@ -225,6 +234,30 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
       optionData,
       "calculate a price"
     )
+
+    const incomplete = [
+      { label: "origin", address: context.from_location?.address },
+      { label: "destination", address: context.shipping_address },
+    ]
+      .map(({ label, address }) => ({
+        label,
+        missing: missingAddressFields(address),
+      }))
+      .filter(({ missing }) => missing.length > 0)
+
+    if (incomplete.length > 0) {
+      const described = incomplete
+        .map(
+          ({ label, missing }) =>
+            `${label} address (missing ${missing.join(", ")})`
+        )
+        .join(" and ")
+      this.logger_.warn(
+        `EasyPost fulfillment provider: cannot quote carrier "${carrier}" service "${service}" for an incomplete ${described}. Falling back to the configured unquotable-fallback price rather than failing the whole cart's shipping options.`
+      )
+
+      return this.unquotableFallbackPrice()
+    }
 
     // A rejection here is a genuine API/connectivity/auth failure -- it
     // propagates and throws, unlike the "no matching rate" case below.
@@ -240,16 +273,20 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
         `EasyPost fulfillment provider: no rate was returned for carrier "${carrier}" service "${service}" -- EasyPost quoted [${quoted}] for this shipment. Falling back to the configured unquotable-fallback price rather than failing the whole cart's shipping options.`
       )
 
-      return {
-        calculated_amount:
-          this.options_.unquotableFallbackPrice ??
-          DEFAULT_UNQUOTABLE_FALLBACK_PRICE,
-        is_calculated_price_tax_inclusive: false,
-      }
+      return this.unquotableFallbackPrice()
     }
 
     return {
       calculated_amount: Number(rate.rate),
+      is_calculated_price_tax_inclusive: false,
+    }
+  }
+
+  private unquotableFallbackPrice(): CalculatedShippingOptionPrice {
+    return {
+      calculated_amount:
+        this.options_.unquotableFallbackPrice ??
+        DEFAULT_UNQUOTABLE_FALLBACK_PRICE,
       is_calculated_price_tax_inclusive: false,
     }
   }
@@ -902,6 +939,25 @@ function fromStoredAddress(
   }
 }
 
+const REQUIRED_ADDRESS_FIELDS = [
+  "address_1",
+  "city",
+  "province",
+  "postal_code",
+  "country_code",
+] as const
+
+/**
+ * The fields EasyPost needs to rate a shipment that `address` is missing.
+ * Non-throwing, so `calculatePrice` can route an incomplete address to its
+ * fallback price; `toEasyPostAddress` turns a non-empty result into an error.
+ */
+function missingAddressFields(
+  address: AddressLike | null | undefined
+): string[] {
+  return REQUIRED_ADDRESS_FIELDS.filter((field) => !address?.[field])
+}
+
 /**
  * Maps a real Medusa address (cart shipping address or stock location
  * address) into EasyPost's address shape. Throws a descriptive error if the
@@ -913,9 +969,7 @@ function toEasyPostAddress(
   address: AddressLike | null | undefined,
   label: string
 ): EasyPostAddressInput {
-  const missing = (
-    ["address_1", "city", "province", "postal_code", "country_code"] as const
-  ).filter((field) => !address?.[field])
+  const missing = missingAddressFields(address)
 
   if (missing.length > 0) {
     throw new MedusaError(

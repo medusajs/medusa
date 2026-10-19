@@ -346,10 +346,57 @@ describe("EasyPostFulfillmentService", () => {
       ).rejects.toThrow(/ECONNREFUSED/)
     })
 
-    test("throws a clear error when the destination address is incomplete", async () => {
+    // Like "no matching rate": calculatePrice calls are batched through
+    // core's `promiseAll`, so one stock location with an incomplete address
+    // (e.g. test-project's seeded "European Warehouse", attached to the US
+    // zone) must not throw and break shipping options for every cart.
+    test("returns the fallback price, without throwing or calling EasyPost, when the from-address (stock location) is incomplete", async () => {
+      const createShipment = jest.fn()
+      const fakeClient = { createShipment } as unknown as EasyPostClient
       const service = new EasyPostFulfillmentService(
         { logger: fakeLogger },
-        { apiKey: "unused", defaultParcel }
+        {
+          apiKey: "unused",
+          defaultParcel,
+          unquotableFallbackPrice: 4242,
+          client: fakeClient,
+        }
+      )
+
+      const context = {
+        ...validContextFixture,
+        from_location: {
+          address: {
+            address_1: "",
+            city: "Copenhagen",
+            postal_code: "1000",
+            country_code: "dk",
+          },
+        },
+      } as unknown as CalculateShippingOptionPriceContext
+
+      const price = await service.calculatePrice(
+        { carrier: "USPS", service: "Priority" },
+        {},
+        context
+      )
+
+      expect(price).toEqual({
+        calculated_amount: 4242,
+        is_calculated_price_tax_inclusive: false,
+      })
+      expect(createShipment).not.toHaveBeenCalled()
+      expect(fakeLogger.warn).toHaveBeenCalledWith(
+        expect.stringMatching(/origin address.*address_1, province/)
+      )
+    })
+
+    test("returns the default fallback price, without throwing, when the destination address is incomplete", async () => {
+      const createShipment = jest.fn()
+      const fakeClient = { createShipment } as unknown as EasyPostClient
+      const service = new EasyPostFulfillmentService(
+        { logger: fakeLogger },
+        { apiKey: "unused", defaultParcel, client: fakeClient }
       )
 
       const context = {
@@ -357,13 +404,14 @@ describe("EasyPostFulfillmentService", () => {
         shipping_address: { city: "San Francisco" },
       } as unknown as CalculateShippingOptionPriceContext
 
-      await expect(
-        service.calculatePrice(
-          { carrier: "USPS", service: "Priority" },
-          {},
-          context
-        )
-      ).rejects.toThrow()
+      const price = await service.calculatePrice(
+        { carrier: "USPS", service: "Priority" },
+        {},
+        context
+      )
+
+      expect(price.calculated_amount).toBe(999_999)
+      expect(createShipment).not.toHaveBeenCalled()
     })
   })
 
