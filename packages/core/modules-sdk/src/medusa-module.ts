@@ -4,6 +4,7 @@ import {
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
+  Logger,
   MedusaContainer,
   ModuleBootstrapDeclaration,
   ModuleDefinition,
@@ -16,6 +17,7 @@ import {
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  getBuildManifest,
   loadDatabaseConfig,
   MedusaError,
   promiseAll,
@@ -560,6 +562,26 @@ class MedusaModule {
             allowUnregistered: true,
           }) ?? logger
 
+        const lazyModule =
+          !migrationOnly && !loaderOnly && !schemaOnly
+            ? getBuildManifest()?.lazyModules?.[moduleKey]
+            : undefined
+        if (lazyModule) {
+          const lazyServices = MedusaModule.registerLazyModule({
+            hashKey,
+            modDeclaration,
+            moduleResolutions,
+            container,
+            logger: logger_,
+            joinerConfig: lazyModule.joinerConfig,
+          })
+          MedusaModule.instances_.set(hashKey, lazyServices)
+          finishLoading(lazyServices)
+          MedusaModule.loading_.delete(hashKey)
+          services.push(lazyServices)
+          return
+        }
+
         try {
           await moduleLoader({
             container,
@@ -614,6 +636,110 @@ class MedusaModule {
     )
 
     services.push(...resolvedServices)
+
+    return services
+  }
+
+  /**
+   * Registers a module from the joiner config a build step recorded, without
+   * loading it: the returned services are proxies that load the module (run
+   * its loaders and resolve its service) on the first method call.
+   */
+  private static registerLazyModule({
+    hashKey,
+    modDeclaration,
+    moduleResolutions,
+    container,
+    logger: logger_,
+    joinerConfig,
+  }: {
+    hashKey: string
+    modDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration
+    moduleResolutions: Record<string, ModuleResolution>
+    container: MedusaContainer
+    logger: Logger
+    joinerConfig: Record<string, any> | null
+  }): { [key: string]: any } {
+    let loading: Promise<void> | undefined
+    const loaded: { [key: string]: any } = {}
+    const resolvePath =
+      "resolve" in modDeclaration && typeof modDeclaration.resolve === "string"
+        ? modDeclaration.resolve
+        : undefined
+
+    const load = () =>
+      (loading ??= (async () => {
+        await moduleLoader({ container, moduleResolutions, logger: logger_ })
+        for (const resolution of Object.values(
+          moduleResolutions
+        ) as ModuleResolution[]) {
+          const keyName = resolution.definition.key
+          const service = container.resolve<any>(keyName)
+          service.__definition = { ...resolution.definition, resolvePath }
+          if (resolution.definition.isQueryable) {
+            service.__joinerConfig = MedusaModule.getJoinerConfig(keyName)
+          }
+          loaded[keyName] = service
+        }
+      })())
+
+    const services: { [key: string]: any } = {}
+    for (const resolution of Object.values(
+      moduleResolutions
+    ) as ModuleResolution[]) {
+      const keyName = resolution.definition.key
+      const known: Record<string | symbol, unknown> = {
+        __definition: { ...resolution.definition, resolvePath },
+        __hooks: undefined,
+      }
+
+      if (resolution.definition.isQueryable && joinerConfig) {
+        const config = {
+          ...joinerConfig,
+          primaryKeys: joinerConfig.primaryKeys ?? ["id"],
+          databaseClientUrl: resolveJoinerConfigDatabaseClientUrl(resolution),
+        } as ModuleJoinerConfig
+        known.__joinerConfig = config
+        MedusaModule.setJoinerConfig(keyName, config)
+      }
+
+      services[keyName] = new Proxy(known, {
+        get(target, prop) {
+          if (prop in target) {
+            return target[prop]
+          }
+          const service = loaded[keyName]
+          if (service) {
+            const value = service[prop]
+            return typeof value === "function" ? value.bind(service) : value
+          }
+          // Never look like a promise, and nothing else to report until loaded
+          if (typeof prop === "symbol" || prop === "then" || prop === "toJSON") {
+            return undefined
+          }
+          return async (...args: unknown[]) => {
+            await load()
+            return loaded[keyName][prop](...args)
+          }
+        },
+        set(target, prop, value) {
+          target[prop] = value
+          if (loaded[keyName]) {
+            loaded[keyName][prop] = value
+          }
+          return true
+        },
+      })
+
+      MedusaModule.setModuleResolution(keyName, resolution)
+      MedusaModule.registerModule(keyName, {
+        key: keyName,
+        hash: hashKey,
+        alias: modDeclaration.alias ?? hashKey,
+        main: !!modDeclaration.main,
+        isLink: false,
+      })
+    }
 
     return services
   }

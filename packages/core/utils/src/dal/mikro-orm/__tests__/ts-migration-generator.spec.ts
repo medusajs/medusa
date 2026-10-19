@@ -1,4 +1,4 @@
-import { CustomTsMigrationGenerator } from "../mikro-orm-create-connection"
+import { CustomTsMigrationGenerator } from "../custom-ts-migration-generator"
 
 function unwrapSql(sql: string) {
   return sql.toString().match(/this.addSql\(`([\s\S]*?)`\)/m)?.[1]

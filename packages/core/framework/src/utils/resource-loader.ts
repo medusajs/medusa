@@ -93,7 +93,9 @@ export abstract class ResourceLoader {
           fileEntries.map(async (entry: Dirent) => {
             const fullPath = join(entry.path, entry.name)
 
-            const module_ = await dynamicImport(fullPath)
+            const module_ =
+              this.exportsFromBuildManifest(fullPath) ??
+              (await dynamicImport(fullPath))
 
             await this.onFileLoaded(fullPath, module_)
             return module_
@@ -104,6 +106,16 @@ export abstract class ResourceLoader {
 
     const resources = await promiseAll(promises)
     return resources.flat().filter(Boolean)
+  }
+
+  /**
+   * Exports to use for a file instead of importing it, when the build manifest
+   * describes it well enough (e.g. so its handler can be loaded lazily).
+   */
+  protected exportsFromBuildManifest(
+    _path: string
+  ): Record<string, unknown> | undefined {
+    return undefined
   }
 
   /**

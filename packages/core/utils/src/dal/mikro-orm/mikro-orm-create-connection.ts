@@ -1,70 +1,27 @@
 import { Filter as MikroORMFilter } from "@medusajs/deps/mikro-orm/core"
-import { TSMigrationGenerator } from "@medusajs/deps/mikro-orm/migrations"
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
-import { isString, retryExecution, stringifyCircular } from "../../common"
-import { normalizeMigrationSQL } from "../utils"
-import { CustomDBMigrator } from "./custom-db-migrator"
+import { retryExecution, stringifyCircular } from "../../common"
 
 type FilterDef = Parameters<typeof MikroORMFilter>[0]
 
-const expectedMigrationsImportStatement =
-  'import { Migration } from "@medusajs/framework/mikro-orm/migrations"'
-
-export class CustomTsMigrationGenerator extends TSMigrationGenerator {
-  // TODO: temporary fix to drop unique constraint before creating unique index
-  private dropUniqueConstraintBeforeUniqueIndex(
-    sqlPatches: string[],
-    sql: string
-  ) {
-    // DML unique index
-    const uniqueIndexName = sql.match(/"IDX_(.+?)_unique"/)?.[1]
-    if (!uniqueIndexName) {
-      return
-    }
-
-    // Add drop unique constraint if it exists, using the same name as index without IDX_ prefix
-    const tableName = sql.match(/ON "(.+?)"/)?.[1]
-    if (tableName) {
-      sqlPatches.push(
-        `alter table if exists "${tableName}" drop constraint if exists "${uniqueIndexName}_unique";`
-      )
-    }
-  }
-
-  generateMigrationFile(
-    className: string,
-    diff: { up: string[]; down: string[] }
-  ): string {
-    const sqlPatches: string[] = []
-    for (const sql of diff.up) {
-      this.dropUniqueConstraintBeforeUniqueIndex(sqlPatches, sql)
-    }
-
-    for (const sql of sqlPatches) {
-      diff.up.unshift(sql)
-    }
-
-    let migrationFileContent = super.generateMigrationFile(className, diff)
-    migrationFileContent = migrationFileContent
-      .replace(
-        'import { Migration } from "@mikro-orm/migrations"',
-        expectedMigrationsImportStatement
-      )
-      .replace(
-        "import { Migration } from '@mikro-orm/migrations'",
-        expectedMigrationsImportStatement
-      )
-    return migrationFileContent
-  }
-
-  createStatement(sql: string, padLeft: number): string {
-    if (isString(sql)) {
-      sql = normalizeMigrationSQL(sql)
-    }
-
-    return super.createStatement(sql, padLeft)
+/**
+ * Registers the migrator without loading the migrations tooling, which the
+ * connections modules open at boot never use: it's loaded on the first
+ * `getMigrator()` call.
+ */
+class LazyDBMigrator {
+  static register(orm: any): void {
+    orm.config.registerExtension("@mikro-orm/migrator", () => {
+      const { CustomDBMigrator } = require("./custom-db-migrator")
+      const {
+        CustomTsMigrationGenerator,
+      } = require("./custom-ts-migration-generator")
+      orm.config.get("migrations").generator ??= CustomTsMigrationGenerator
+      return new CustomDBMigrator(orm.em)
+    })
   }
 }
+
 
 export type Filter = {
   name?: string
@@ -133,14 +90,13 @@ export async function mikroOrmCreateConnection(
       path: pathToMigrations,
       snapshotName: database.snapshotName,
       snapshot: database.snapshot,
-      generator: CustomTsMigrationGenerator,
       silent: !(
         database.debug ??
         process.env.NODE_ENV?.startsWith("dev") ??
         false
       ),
     },
-    extensions: [CustomDBMigrator],
+    extensions: [LazyDBMigrator],
     // We don't want to do any DB checks when establishing the connection. This happens once when creating the pg_connection, and it can happen again explicitly if necessary.
     connect: false,
     ensureDatabase: false,

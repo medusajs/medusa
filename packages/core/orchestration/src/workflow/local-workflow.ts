@@ -3,6 +3,7 @@ import {
   createMedusaContainer,
   isDefined,
   isString,
+  loadWorkflowHooksFromManifest,
   MedusaContext,
   MedusaContextType,
   MedusaError,
@@ -51,6 +52,8 @@ export class LocalWorkflow {
     workflowId: string,
     modulesLoaded?: LoadedModule[] | MedusaContainer
   ) {
+    // Hook handlers deferred by a build manifest attach before the first run
+    loadWorkflowHooksFromManifest(workflowId)
     const globalWorkflow = WorkflowManager.getWorkflow(workflowId)
     if (!globalWorkflow) {
       throw new MedusaError(

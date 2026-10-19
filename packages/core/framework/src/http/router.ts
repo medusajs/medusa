@@ -5,6 +5,7 @@ import {
   parseCorsOrigins,
 } from "@medusajs/utils"
 import cors, { CorsOptions } from "cors"
+import { Router } from "express"
 import type {
   ErrorRequestHandler,
   Express,
@@ -65,12 +66,27 @@ export class ApiLoader {
   readonly #app: Express
 
   /**
+   * The router the API resources are registered on. Each load() builds a new
+   * one and swaps it in behind a single layer mounted on the app, so a reload
+   * never exposes a half-registered API and never touches layers registered
+   * by others (admin, health check).
+   * @private
+   */
+  #router: IRouter = Router()
+  #mountedRouter?: IRouter
+  #errorHandler?: ErrorRequestHandler
+  #mountedErrorHandler?: ErrorRequestHandler
+
+  /**
    * Path from where to load the routes from
    * @private
    */
   readonly #sourceDirs: string[]
 
   readonly #logger: Logger
+
+  readonly #baseRestrictedFields: string[]
+  readonly #storeRelationsLimit?: number
 
   constructor({
     app,
@@ -87,10 +103,8 @@ export class ApiLoader {
   }) {
     this.#app = app
     this.#sourceDirs = Array.isArray(sourceDir) ? sourceDir : [sourceDir]
-    this.#assignRestrictedFields(
-      baseRestrictedFields ?? [],
-      storeRelationsLimit
-    )
+    this.#baseRestrictedFields = baseRestrictedFields ?? []
+    this.#storeRelationsLimit = storeRelationsLimit
     this.#logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   }
 
@@ -176,7 +190,7 @@ export class ApiLoader {
           })
         : route.handler
 
-      this.#app[route.method.toLowerCase()](route.matcher, wrapHandler(handler))
+      this.#router[route.method.toLowerCase()](route.matcher, wrapHandler(handler))
 
       return
     }
@@ -197,7 +211,7 @@ export class ApiLoader {
           }) as RequestHandler)
         : (handlerToUse as RequestHandler)
 
-      this.#app.use(route.matcher, wrapHandler(handler))
+      this.#router.use(route.matcher, wrapHandler(handler))
       return
     }
 
@@ -229,7 +243,7 @@ export class ApiLoader {
           }) as RequestHandler)
         : wrapHandler(handlerToUse)
 
-      this.#app[method.toLowerCase()](route.matcher, handler)
+      this.#router[method.toLowerCase()](route.matcher, handler)
     })
   }
 
@@ -240,7 +254,7 @@ export class ApiLoader {
     baseRestrictedFields: string[],
     storeRelationsLimit?: number
   ) {
-    this.#app.use(((
+    this.#router.use(((
       req: MedusaRequest,
       _: MedusaResponse,
       next: MedusaNextFunction
@@ -249,7 +263,7 @@ export class ApiLoader {
       next()
     }) as unknown as RequestHandler)
 
-    this.#app.use("/store", ((
+    this.#router.use("/store", ((
       req: MedusaRequest,
       _: MedusaResponse,
       next: MedusaNextFunction
@@ -260,7 +274,7 @@ export class ApiLoader {
       next()
     }) as unknown as RequestHandler)
 
-    this.#app.use("/admin", ((
+    this.#router.use("/admin", ((
       req: MedusaRequest,
       _: MedusaResponse,
       next: MedusaNextFunction
@@ -315,7 +329,7 @@ export class ApiLoader {
       return next()
     }
 
-    this.#app.use(
+    this.#router.use(
       namespace,
       ApiLoader.traceMiddleware
         ? (ApiLoader.traceMiddleware(corsMiddleware, {
@@ -359,7 +373,7 @@ export class ApiLoader {
       return originalFn(req, res, next)
     }
 
-    this.#app.use(
+    this.#router.use(
       namespace,
       ApiLoader.traceMiddleware
         ? (ApiLoader.traceMiddleware(authMiddleware, {
@@ -379,7 +393,7 @@ export class ApiLoader {
     this.#logger.debug(
       `Registering bodyparser middleware for prefix ${namespace}`
     )
-    this.#app.use(
+    this.#router.use(
       namespace,
       createBodyParserMiddlewaresStack(
         namespace,
@@ -420,7 +434,7 @@ export class ApiLoader {
       return next()
     }
 
-    this.#app.use(
+    this.#router.use(
       namespace,
       ApiLoader.traceMiddleware
         ? (ApiLoader.traceMiddleware(additionalDataValidator, {
@@ -444,7 +458,7 @@ export class ApiLoader {
         })
       : ensurePublishableApiKeyMiddleware
 
-    this.#app.use(namespace, middleware as RequestHandler)
+    this.#router.use(namespace, middleware as RequestHandler)
   }
 
   #applyLocaleMiddleware(namespace: string) {
@@ -456,13 +470,19 @@ export class ApiLoader {
           route: namespace,
         })
       : applyLocale
-    this.#app.use(namespace, middleware as RequestHandler)
+    this.#router.use(namespace, middleware as RequestHandler)
   }
 
   async load() {
     if (FeatureFlag.isFeatureEnabled("backend_hmr")) {
       ;(global as any).__MEDUSA_HMR_API_LOADER__ = this
     }
+
+    this.#router = Router()
+    this.#assignRestrictedFields(
+      this.#baseRestrictedFields,
+      this.#storeRelationsLimit
+    )
 
     const {
       errorHandler: sourceErrorHandler,
@@ -572,21 +592,47 @@ export class ApiLoader {
     /**
      * Registering error handler as the final handler
      */
-    this.#app.use(sourceErrorHandler ?? errorHandler())
+    this.#errorHandler = (sourceErrorHandler ??
+      errorHandler()) as ErrorRequestHandler
+    this.#router.use(this.#errorHandler)
+
+    this.#mount()
   }
 
   /**
-   * Clear all API resources registered by this loader
-   * This removes all routes and middleware added after the initial stack state
-   * Used by HMR to reset the API state before reloading
+   * Mount the freshly built router. The first call registers a single layer
+   * on the app that delegates to whichever router is current; later calls
+   * just swap it.
    */
-  clearAllResources() {
-    const router = this.#app._router as IRouter
-    const initialStackLength =
-      (global as any).__MEDUSA_HMR_INITIAL_STACK_LENGTH__ ?? 0
+  #mount() {
+    const isFirstMount = !this.#mountedRouter
+    this.#mountedRouter = this.#router
+    this.#mountedErrorHandler = this.#errorHandler
 
-    if (router && router.stack) {
-      router.stack.splice(initialStackLength)
+    if (!isFirstMount) {
+      return
     }
+
+    const apiRouter = ((req, res, next) =>
+      this.#mountedRouter!(req, res, next)) as RequestHandler & {
+      stack: IRouter["stack"]
+    }
+    // Tools that walk the express stack (tracing, route lookup) descend into
+    // layers exposing a `stack`.
+    Object.defineProperty(apiRouter, "stack", {
+      get: () => this.#mountedRouter!.stack,
+    })
+    this.#app.use(apiRouter)
+
+    // Errors raised by middleware registered before the API (e.g. by the
+    // express loader) must still reach the API's error handler.
+    this.#app.use(((err, req, res, next) =>
+      this.#mountedErrorHandler!(err, req, res, next)) as ErrorRequestHandler)
   }
+
+  /**
+   * Kept for HMR callers. Resources are replaced atomically by the next
+   * load(), so there is nothing to clear up front.
+   */
+  clearAllResources() {}
 }

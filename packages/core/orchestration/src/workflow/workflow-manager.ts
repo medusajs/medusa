@@ -1,4 +1,5 @@
 import { Context, MedusaContainer } from "@medusajs/types"
+import { loadWorkflowFromManifest } from "@medusajs/utils"
 import {
   DistributedTransactionType,
   OrchestratorBuilder,
@@ -73,11 +74,15 @@ class WorkflowManager {
   }
 
   static getWorkflow(workflowId: string) {
+    // Workflows listed in the build manifest are loaded on first use
+    if (!WorkflowManager.workflows.has(workflowId)) {
+      loadWorkflowFromManifest(workflowId)
+    }
     return WorkflowManager.workflows.get(workflowId)
   }
 
   static getTransactionDefinition(workflowId): OrchestratorBuilder {
-    if (!WorkflowManager.workflows.has(workflowId)) {
+    if (!WorkflowManager.getWorkflow(workflowId)) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 

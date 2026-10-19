@@ -2,12 +2,27 @@ import { setTelemetryEnabled } from "@medusajs/telemetry"
 import { sync as existsSync } from "fs-exists-cached"
 import path from "path"
 import resolveCwd from "resolve-cwd"
-import { getCodemod, listCodemods } from "./codemods/index"
-import { newStarter } from "./commands/new"
 import { didYouMean } from "./did-you-mean"
 import reporter from "./reporter"
 
 const yargs = require(`yargs`)
+
+/**
+ * Whether a file was written by `medusa build --bundle` (reads its first line
+ * only).
+ */
+function isMedusaBundle(file: string) {
+  const marker = "/* @medusajs/medusa bundle */"
+  const fs = require("fs")
+  const head = Buffer.alloc(marker.length)
+  const fd = fs.openSync(file, "r")
+  try {
+    fs.readSync(fd, head, 0, marker.length, 0)
+  } finally {
+    fs.closeSync(fd)
+  }
+  return head.toString("utf8") === marker
+}
 
 const handlerP =
   (fn) =>
@@ -155,7 +170,12 @@ function buildLocalCommands(cli, isLocalProject) {
             describe: `The branch of the git repository to clone.`,
           }),
       desc: `Create a new Medusa project.`,
-      handler: handlerP(newStarter),
+      // Loaded on demand: scaffolding pulls in heavy dependencies that every
+      // other command (e.g. `medusa start`) would otherwise load at boot
+      handler: handlerP(async (args) => {
+        const { newStarter } = require("./commands/new")
+        return newStarter(args)
+      }),
     })
     .command({
       command: "db:setup",
@@ -472,6 +492,7 @@ function buildLocalCommands(cli, isLocalProject) {
             default: false,
           }),
       handler: handlerP(async ({ codemodName, dryRun }) => {
+        const { getCodemod, listCodemods } = require("./codemods/index")
         const codemod = getCodemod(codemodName)
 
         if (!codemod) {
@@ -600,7 +621,14 @@ function buildLocalCommands(cli, isLocalProject) {
       handler: handlerP(
         getCommandHandler(`start`, async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `production`
-          cmd(args)
+          // A bundled build (`medusa build --bundle`) starts from its bundle
+          const bundle = path.join(directory, "medusa-bundle.js")
+          if (existsSync(bundle) && isMedusaBundle(bundle)) {
+            // The bundle's launcher parses the same command line
+            require(bundle)
+          } else {
+            cmd(args)
+          }
           // Return an empty promise to prevent handlerP from exiting early.
           // The development server shouldn't ever exit until the user directly
           // kills it so this is fine.
@@ -621,11 +649,18 @@ function buildLocalCommands(cli, isLocalProject) {
           }),
           "building",
           directory
-        ).option("quiet", {
-          type: "boolean",
-          default: false,
-          describe: "Report lint errors only, suppressing warnings.",
-        }),
+        )
+          .option("quiet", {
+            type: "boolean",
+            default: false,
+            describe: "Report lint errors only, suppressing warnings.",
+          })
+          .option("bundle", {
+            type: "boolean",
+            default: false,
+            describe:
+              "Build the admin and backend as one app, bundling the backend into a single self-contained file (medusa-bundle.js) that boots faster. Also enabled by MEDUSA_BUILD_BUNDLE=true.",
+          }),
       handler: handlerP(
         getCommandHandler(`build`, async (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`

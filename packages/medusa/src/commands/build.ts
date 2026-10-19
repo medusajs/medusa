@@ -5,6 +5,7 @@ import {
   MedusaError,
 } from "@medusajs/framework/utils"
 import { initializeContainer } from "../loaders"
+import { bundleBackend } from "./utils/bundle/bundle-backend"
 import { generateTypes } from "./utils/generate-types"
 import { runLintStep } from "./utils/lint-project"
 
@@ -14,12 +15,14 @@ export default async function build({
   lint,
   fix,
   quiet,
+  bundle,
 }: {
   directory: string
   adminOnly: boolean
   lint: boolean
   fix?: boolean
   quiet?: boolean
+  bundle?: boolean
 }) {
   const container = await initializeContainer(directory, {
     skipDbConnection: true,
@@ -58,6 +61,19 @@ export default async function build({
   if (!tsConfig) {
     logger.error("Unable to compile application")
     process.exit(1)
+  }
+
+  // Platforms can opt projects in without changing their build script
+  const shouldBundle = bundle || process.env.MEDUSA_BUILD_BUNDLE === "true"
+  if (shouldBundle && !adminOnly) {
+    // The bundle is built from the compiled backend, so compile it first,
+    // then build the admin and bundle the backend as one app
+    const backendBuilt = await compiler.buildAppBackend(tsConfig)
+    const bundler = await import("@medusajs/admin-bundler")
+    const appBuilt = await compiler.buildApp(tsConfig, bundler, (outDir) =>
+      bundleBackend({ directory, outDir, logger })
+    )
+    process.exit(backendBuilt && appBuilt ? 0 : 1)
   }
 
   const promises: Promise<boolean>[] = []

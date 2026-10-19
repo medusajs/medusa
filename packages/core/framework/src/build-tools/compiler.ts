@@ -420,6 +420,79 @@ export class Compiler {
   }
 
   /**
+   * Builds the application as one Vite app: the admin dashboard is the client
+   * environment and `bundleServer` bundles the compiled backend (in the
+   * build output directory) alongside it. Expects `buildAppBackend` to have
+   * run.
+   */
+  async buildApp(
+    tsConfig: tsStatic.ParsedCommandLine,
+    adminBundler: {
+      buildApp: (
+        options: AdminOptions & {
+          sources: string[]
+          plugins: string[]
+          outDir: string
+        },
+        hooks: { buildServer: () => Promise<void> }
+      ) => Promise<void>
+    },
+    bundleServer: (outDir: string) => Promise<void>
+  ): Promise<boolean> {
+    const tracker = this.#trackDuration()
+    const dist = this.#computeDist(tsConfig)
+
+    const configFile = await this.#loadMedusaConfig()
+    if (!configFile) {
+      return false
+    }
+
+    try {
+      if (configFile.configModule.admin.disable) {
+        this.#logger.info("Bundling backend (admin is disabled)...")
+        await bundleServer(dist)
+      } else {
+        const plugins = await getResolvedPlugins(
+          this.#projectRoot,
+          configFile.configModule,
+          true
+        )
+        const sources = plugins
+          .map((plugin) =>
+            plugin.admin?.type === "local" ? plugin.admin.resolve : undefined
+          )
+          .filter(Boolean) as string[]
+        const adminPlugins = plugins
+          .map((plugin) =>
+            plugin.admin?.type === "package" ? plugin.admin.resolve : undefined
+          )
+          .filter(Boolean) as string[]
+
+        this.#logger.info("Building admin and bundling backend...")
+        await adminBundler.buildApp(
+          {
+            disable: false,
+            sources,
+            plugins: adminPlugins,
+            ...configFile.configModule.admin,
+            outDir: path.join(dist, "./public/admin"),
+          },
+          { buildServer: () => bundleServer(dist) }
+        )
+      }
+
+      this.#logger.info(
+        `App build completed successfully (${tracker.getSeconds()}s)`
+      )
+      return true
+    } catch (error) {
+      this.#logger.error("Unable to build the app")
+      this.#logger.error(error)
+      return false
+    }
+  }
+
+  /**
    * Compiles the plugin source code to JavaScript using the
    * TypeScript's official compiler
    */

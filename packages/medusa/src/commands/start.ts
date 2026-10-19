@@ -31,6 +31,7 @@ import loaders, { initializeContainer } from "../loaders"
 import { reloadResources } from "./utils/dev-server"
 import { startLicenseRemoteCheck } from "./utils/license-check"
 import { HMRReloadError } from "./utils/dev-server/errors"
+import { createViteDevServer, ViteReloader } from "./utils/vite-dev-server"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -169,7 +170,7 @@ function findExpressRoutePath({
   return undefined
 }
 
-function handleHMRReload(logger: Logger) {
+function handleHMRReload(logger: Logger, viteReloader?: ViteReloader) {
   // Set up HMR reload handler if running in HMR mode
   if (process.env.MEDUSA_HMR_ENABLED === "true" && process.send) {
     ;(global as any).__MEDUSA_HMR_ROUTE_REGISTRY__ = true
@@ -178,13 +179,17 @@ function handleHMRReload(logger: Logger) {
       if (msg?.type === "hmr-reload") {
         const { action, file, rootDirectory } = msg
 
-        const success = await reloadResources({
-          logSource: "[HMR]",
-          action,
-          absoluteFilePath: file,
-          logger,
-          rootDirectory,
-        })
+        const reload = viteReloader
+          ? viteReloader.reload(action, file)
+          : reloadResources({
+              logSource: "[HMR]",
+              action,
+              absoluteFilePath: file,
+              logger,
+              rootDirectory,
+            })
+
+        const success = await reload
           .then(() => true)
           .catch((error) => {
             if (HMRReloadError.isHMRReloadError(error)) {
@@ -243,6 +248,17 @@ async function start(args: {
     const serverActivity = logger.activity(`Creating server`)
 
     await registerInstrumentation(directory)
+
+    let viteReloader: ViteReloader | undefined
+    if (process.env.MEDUSA_DEV_VITE === "true" && !isProduction()) {
+      ;({ reloader: viteReloader } = await createViteDevServer({
+        directory,
+        configModule: container.resolve(
+          ContainerRegistrationKeys.CONFIG_MODULE
+        ),
+        logger,
+      }))
+    }
 
     const app = express()
 
@@ -355,7 +371,7 @@ async function start(args: {
         track("PING")
       })
 
-      handleHMRReload(logger)
+      handleHMRReload(logger, viteReloader)
 
       return { server, gracefulShutDown }
     } catch (err) {

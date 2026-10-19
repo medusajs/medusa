@@ -224,7 +224,11 @@ export default async ({
     ? () => {}
     : await loadEntrypoints(plugins, container, expressApp, rootDirectory)
 
-  const { createDefaultsWorkflow } = await import("@medusajs/core-flows")
+  // Import only the defaults workflow: the package root evaluates every
+  // workflow in core-flows, which isn't needed to boot.
+  const { createDefaultsWorkflow } = await import(
+    "@medusajs/core-flows/defaults"
+  )
   await createDefaultsWorkflow(container).run()
   await onApplicationStart()
 

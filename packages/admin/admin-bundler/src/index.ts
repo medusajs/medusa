@@ -1,5 +1,6 @@
-export { build } from "./commands/build"
-export { develop } from "./commands/develop"
+export { build, buildApp } from "./commands/build"
+export { createDevServer, develop } from "./commands/develop"
+export type { DevServerOptions } from "./commands/develop"
 export { plugin } from "./commands/plugin"
 export { serve } from "./commands/serve"
 
