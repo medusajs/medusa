@@ -80,6 +80,7 @@ export const sitemapUrls = [
   "/status",
   "/storefront",
   "/update-medusa",
+  "/usage/compute",
   "/usage",
   "/user",
   "/webhooks/changelog",
