@@ -1082,6 +1082,24 @@
       "hint": "建立新顧客並管理其詳細資訊。",
       "successToast": "顧客 {{email}} 已成功建立。"
     },
+    "export": {
+      "header": "匯出顧客清單",
+      "description": "將顧客清單匯出為檔案。",
+      "success": {
+        "title": "我們正在處理您的匯出",
+        "description": "匯出資料可能需要幾分鐘。完成後我們會通知您。"
+      },
+      "format": {
+        "label": "格式",
+        "description": "選擇匯出檔案的格式。JSON 能完整擷取各模組的巢狀資料，建議用於資料存取請求。",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "篩選條件",
+        "description": "在表格概覽中應用篩選條件以調整此視圖"
+      }
+    },
     "groups": {
       "label": "顧客群組",
       "remove": "您確定要將顧客從「{{name}}」顧客群組中移除嗎？",
