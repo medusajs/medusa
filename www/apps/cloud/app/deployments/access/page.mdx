@@ -197,3 +197,65 @@ HTTP basic authentication is suitable for keeping test environments away from th
 ### Restrict Access in Other Storefront Frameworks
 
 For storefronts built with other frameworks, implement the same check in its request handling layer. For example, use the `handle` hook in `src/hooks.server.ts` for SvelteKit, or a request middleware for Tanstack Start. The check reads the credentials from environment variables, compares them to the request's `Authorization` header, and returns a `401` response with a `WWW-Authenticate` header if they don't match.
+
+---
+
+## Manage Search Engine Indexing
+
+Medusa doesn't control whether search engines index your deployments. Cloud doesn't add a `noindex` directive, such as an `X-Robots-Tag` response header or a `robots` meta tag, to any deployment URL. This applies to the URLs of production, long-lived, and preview environments, whether they use the Medusa-provided `medusajs.app` and `medusajs.site` subdomains or [custom domains](../../environments/custom-domains/page.mdx).
+
+There's also no Cloud setting to enable or disable indexing. Your application's responses reach visitors and search engine crawlers unchanged, so you manage indexing in your application's code.
+
+<Note>
+
+To keep a page out of search results, search engines must be able to crawl it and see its `noindex` directive. If you disallow crawling a page in `robots.txt`, search engines can still index its URL when other sites link to it.
+
+</Note>
+
+### Prevent Indexing of Non-Production Storefronts
+
+Search engines can discover preview and staging storefront URLs, for example, when you share them publicly. To keep these storefronts out of search results, use the `MEDUSA_CLOUD_ENVIRONMENT_TYPE` [system environment variable](../../environments/environment-variables/page.mdx#system-environment-variables) to detect the environment type in your storefront. Its value is `production` only in your project's production environment.
+
+For example, in a Next.js storefront, such as the [Next.js Starter Storefront](!resources!/nextjs-starter), set the `robots` metadata in the root layout to add a `noindex` meta tag to all pages outside the production environment:
+
+```tsx title="src/app/layout.tsx"
+import { Metadata } from "next"
+
+const isProduction =
+  process.env.MEDUSA_CLOUD_ENVIRONMENT_TYPE === "production"
+
+export const metadata: Metadata = {
+  // ...
+  robots: isProduction
+    ? undefined
+    : { index: false, follow: false },
+}
+```
+
+After you push this change, every page of a preview or staging storefront includes the `<meta name="robots" content="noindex, nofollow">` tag, while the production storefront remains indexable.
+
+If you use a different storefront framework, add the same `robots` meta tag or an `X-Robots-Tag: noindex` response header using that framework's equivalent mechanism, based on the value of `MEDUSA_CLOUD_ENVIRONMENT_TYPE`.
+
+### Prevent Crawling of the Medusa Backend
+
+Your environment's backend URL serves the Medusa Admin and the Medusa backend's API routes, which you usually don't want search engines to crawl. To ask crawlers not to crawl the backend's domain, add a [custom API route](!docs!/learn/fundamentals/api-routes) that serves a `robots.txt` file at the root of the backend's URL:
+
+```ts title="src/api/robots.txt/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.type("text/plain").send("User-agent: *\nDisallow: /")
+}
+```
+
+After you push this change, `https://<subdomain>.medusajs.app/robots.txt` returns rules that disallow crawling the entire backend domain.
+
+### Avoid Duplicate Content with Custom Domains
+
+After you set up a custom domain for your production storefront, the storefront remains accessible at its Medusa-provided `medusajs.site` subdomain. To ensure search engines show your custom domain in search results, set [canonical URLs](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls) in your storefront that point to your custom domain.
