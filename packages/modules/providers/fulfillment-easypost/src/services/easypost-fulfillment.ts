@@ -622,8 +622,14 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
    *   `fromData.metadata.return_from_address`, an `EasyPostAddressInput`-shaped
    *   object -- which is, as of today, the ONLY way to actually get a
    *   working return label out of this provider. If neither is present,
-   *   this throws a clear, actionable error rather than silently using a
-   *   fabricated address.
+   *   this throws rather than silently using a fabricated address.
+   *
+   * **Returns are descoped for v1.** No standard return-creating workflow
+   * can set either source today, so the product decision was to not
+   * support EasyPost return labels in this version rather than patch core.
+   * The thrown error says exactly that (`NOT_ALLOWED`, "not supported in
+   * this version, pending a Medusa core fix") instead of reading like an
+   * address data problem. See the package README's "Returns" section.
    */
   async createReturnFulfillment(
     fromData: Record<string, unknown>
@@ -647,8 +653,8 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
 
     if (!fromAddressSource) {
       throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `EasyPost fulfillment provider: cannot create a return fulfillment without the customer's origin address. Medusa core's createReturnFulfillment doesn't currently forward the order (and therefore its shipping_address) to fulfillment providers -- pass it explicitly as "metadata.return_from_address" on the return fulfillment until that's fixed upstream.`
+        MedusaError.Types.NOT_ALLOWED,
+        `EasyPost fulfillment provider: EasyPost return labels are not supported in this version, pending a Medusa core fix. Buying a return label needs the customer's origin address, but Medusa core's return-creating workflows don't forward the order (or its shipping_address) to fulfillment providers. Outbound shipping, tracking and cancellation are unaffected. Use a different fulfillment provider for returns; see the @dtc/fulfillment-easypost README ("Returns") for details.`
       )
     }
 

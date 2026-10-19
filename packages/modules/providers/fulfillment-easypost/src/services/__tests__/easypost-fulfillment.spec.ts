@@ -1,4 +1,5 @@
 import { Logger } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import { CalculateShippingOptionPriceContext } from "@medusajs/types"
 import { EasyPostClient } from "../../core/easypost-client"
 import { EasyPostFulfillmentService } from "../easypost-fulfillment"
@@ -1277,7 +1278,10 @@ describe("EasyPostFulfillmentService", () => {
       )
     })
 
-    test("throws a clear error when no customer origin address is available at all", async () => {
+    // Returns are descoped for v1 (no core change): with no origin address
+    // reachable, the error must say returns aren't supported in this
+    // version pending a core fix -- not read like a data problem.
+    test("throws an explicit 'return labels not supported in this version' error when no customer origin address is available", async () => {
       const service = new EasyPostFulfillmentService(
         { logger: fakeLogger },
         { apiKey: "unused", defaultParcel }
@@ -1285,9 +1289,15 @@ describe("EasyPostFulfillmentService", () => {
 
       const { metadata, ...withoutOriginAddress } = returnFulfillmentFixture
 
-      await expect(
-        service.createReturnFulfillment(withoutOriginAddress)
-      ).rejects.toThrow(/origin address/)
+      const rejection = service.createReturnFulfillment(withoutOriginAddress)
+
+      await expect(rejection).rejects.toThrow(
+        /return labels are not supported in this version/i
+      )
+      await expect(rejection).rejects.toThrow(/core/i)
+      await expect(rejection).rejects.toMatchObject({
+        type: MedusaError.Types.NOT_ALLOWED,
+      })
     })
 
     test("throws a clear error when the shipping option's data doesn't carry a carrier and service", async () => {
