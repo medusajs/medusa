@@ -995,6 +995,45 @@ describe("EasyPostFulfillmentService", () => {
         )
       })
 
+      test("(a) buys the persisted shipment as-is for a kit/managed-inventory line item split across several reservation-based fulfillment items", async () => {
+        // Core creates one FulfillmentItemDTO per inventory reservation for
+        // a managed-inventory line item (one per inventory item in a kit, or
+        // one per reservation row for a single inventory item split across
+        // lots) -- all sharing the same line_item_id. If the parcel builder
+        // summed each entry's weight independently, this would wrongly look
+        // like the parcel changed since checkout and trigger an unnecessary
+        // (and possibly pricier) re-shop.
+        const fakeClient = buildFakeClient(persistedShipment())
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: "unused", defaultParcel, client: fakeClient }
+        )
+
+        const result = await service.createFulfillment(
+          persistedData,
+          [
+            { line_item_id: "item_1", inventory_item_id: "inv_a", quantity: 2 },
+            { line_item_id: "item_1", inventory_item_id: "inv_b", quantity: 3 },
+          ] as any,
+          {
+            items: [
+              {
+                id: "item_1",
+                variant: { weight: 16, length: 10, width: 8, height: 4 },
+              },
+            ],
+          } as any,
+          { delivery_address: unchangedDeliveryAddress } as any
+        )
+
+        expect(fakeClient.createShipment).not.toHaveBeenCalled()
+        expect(fakeClient.buyShipment).toHaveBeenCalledWith(
+          "shp_persisted",
+          "rate_persisted"
+        )
+        expect(result.data.easypost_shipment_id).toBe("shp_persisted")
+      })
+
       test("(b) re-shops instead of surfacing EasyPost's 422 when the as-is buy is rejected with SHIPMENT.POSTAGE.EXISTS", async () => {
         const postageExists = Object.assign(
           new Error("Postage already exists for this shipment."),

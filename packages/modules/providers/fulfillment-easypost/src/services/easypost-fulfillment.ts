@@ -851,6 +851,28 @@ function buildFulfilledParcel(
     return undefined
   }
 
+  // A managed-inventory line item can produce more than one fulfillment
+  // item sharing the same `line_item_id` -- one per inventory reservation,
+  // each already scaled by that inventory item's own `required_quantity`
+  // (see core's `createOrderFulfillmentWorkflow`). Counting every such
+  // entry toward the parcel would add that line item's weight multiple
+  // times (once per inventory item in a kit, or once per reservation row
+  // for a single inventory item split across lots). There's no reliable
+  // way to recover the line's real unit count from these entries alone,
+  // so bail to "unknown" -- same as an unmatched item -- rather than risk
+  // an inflated weight.
+  const lineItemCounts = new Map<string, number>()
+  for (const item of items) {
+    const key = item?.line_item_id
+    if (typeof key !== "string") {
+      return undefined
+    }
+    lineItemCounts.set(key, (lineItemCounts.get(key) ?? 0) + 1)
+  }
+  if ([...lineItemCounts.values()].some((count) => count > 1)) {
+    return undefined
+  }
+
   const fulfilled: CartPropsForFulfillment["items"] = []
   for (const item of items) {
     const orderItem = orderItems.find(
