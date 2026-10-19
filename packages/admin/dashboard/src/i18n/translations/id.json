@@ -1082,6 +1082,24 @@
       "hint": "Buat pelanggan baru dan kelola detailnya.",
       "successToast": "Pelanggan {{email}} berhasil dibuat."
     },
+    "export": {
+      "header": "Ekspor Daftar Pelanggan",
+      "description": "Ekspor daftar pelanggan ke file.",
+      "success": {
+        "title": "Kami sedang memproses ekspor Anda",
+        "description": "Mengekspor data mungkin memakan waktu beberapa menit. Kami akan memberitahu Anda setelah selesai."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Pilih format file yang diekspor. JSON menangkap data bersarang di seluruh modul tanpa kehilangan data, yang direkomendasikan untuk permintaan akses data subjek.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filter",
+        "description": "Terapkan filter di tabel ikhtisar untuk menyesuaikan tampilan ini"
+      }
+    },
     "groups": {
       "label": "Grup pelanggan",
       "remove": "Anda yakin ingin menghapus pelanggan dari grup pelanggan \"{{name}}\"?",

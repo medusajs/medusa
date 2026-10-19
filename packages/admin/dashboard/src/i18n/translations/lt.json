@@ -1117,6 +1117,24 @@
       "hint": "Sukurkite naują klientą ir tvarkykite jo duomenis.",
       "successToast": "Klientas {{email}} sėkmingai sukurtas."
     },
+    "export": {
+      "header": "Eksportuoti klientų sąrašą",
+      "description": "Eksportuokite klientų sąrašą į bylą.",
+      "success": {
+        "title": "Apdorojame jūsų eksportą",
+        "description": "Duomenų eksportavimas gali užtrukti kelias minutes. Pranešime kai baigsis."
+      },
+      "format": {
+        "label": "Formatas",
+        "description": "Pasirinkite eksportuojamo failo formatą. JSON fiksuoja įdėtuosius duomenis iš modulių be nuostolių, todėl jis rekomenduojamas asmens duomenų prieigos užklausoms.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtrai",
+        "description": "Pritaikykite filtrus lentelės peržiūroje, kad pakoreguotumėte šį vaizdą"
+      }
+    },
     "groups": {
       "label": "Klientų grupės",
       "remove": "Tikrai norite pašalinti klientą iš \"{{name}}\" klientų grupės?",

@@ -1082,6 +1082,24 @@
       "hint": "创建新客户并管理其详细信息。",
       "successToast": "客户 {{email}} 创建成功。"
     },
+    "export": {
+      "header": "导出客户列表",
+      "description": "将客户列表导出到文件。",
+      "success": {
+        "title": "我们正在处理您的导出",
+        "description": "导出数据可能需要几分钟。完成后我们会通知您。"
+      },
+      "format": {
+        "label": "格式",
+        "description": "选择导出文件的格式。JSON 可无损捕获各模块的嵌套数据，推荐用于数据主体访问请求。",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "筛选",
+        "description": "在表格概览中应用筛选以调整此视图"
+      }
+    },
     "groups": {
       "label": "客户群组",
       "remove": "您确定要将客户从 {{name }}客户群组中移除吗？",

@@ -1015,6 +1015,24 @@
       "hint": "Yeni bir müşteri oluşturun ve detaylarını yönetin.",
       "successToast": "{{email}} müşterisi başarıyla oluşturuldu."
     },
+    "export": {
+      "header": "Müşteri Listesini Dışa Aktar",
+      "description": "Müşteri listesini bir dosyaya dışa aktarın.",
+      "success": {
+        "title": "Dışa aktarma işleminiz işleniyor",
+        "description": "Veri dışa aktarımı birkaç dakika sürebilir. İşlem tamamlandığında size bildireceğiz."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Dışa aktarılan dosyanın formatını seçin. JSON, modüller arası iç içe verileri kayıpsız yakalar; bu, veri erişim talepleri için önerilir.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtreler",
+        "description": "Bu görünümü ayarlamak için tablo görünümünde filtreleri uygulayın"
+      }
+    },
     "groups": {
       "label": "Müşteri grupları",
       "remove": "\"{{name}}\" müşteri grubundan müşteriyi kaldırmak istediğinizden emin misiniz?",

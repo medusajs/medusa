@@ -1083,6 +1083,24 @@
       "hint": "Maak een nieuwe klant aan en beheer hun gegevens.",
       "successToast": "Klant {{email}} is succesvol aangemaakt."
     },
+    "export": {
+      "header": "Klantenlijst exporteren",
+      "description": "Exporteer de klantenlijst naar een bestand.",
+      "success": {
+        "title": "We verwerken uw export",
+        "description": "Het exporteren van gegevens kan enkele minuten duren. We laten u weten wanneer we klaar zijn."
+      },
+      "format": {
+        "label": "Formaat",
+        "description": "Kies het formaat van het geëxporteerde bestand. JSON legt geneste gegevens over modules heen vast zonder verlies, wat aanbevolen is voor verzoeken om toegang tot persoonsgegevens.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Pas filters toe in de tabelweergave om deze weergave aan te passen"
+      }
+    },
     "groups": {
       "label": "Klantengroepen",
       "remove": "Weet u zeker dat u de klant uit de klantengroep \"{{name}}\" wilt verwijderen?",

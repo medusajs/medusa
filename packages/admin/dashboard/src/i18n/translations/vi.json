@@ -1015,6 +1015,24 @@
       "hint": "Tạo một khách hàng mới và quản lý thông tin chi tiết của họ.",
       "successToast": "Khách hàng {{email}} đã được tạo thành công."
     },
+    "export": {
+      "header": "Xuất danh sách khách hàng",
+      "description": "Xuất danh sách khách hàng ra file.",
+      "success": {
+        "title": "Chúng tôi đang xử lý yêu cầu xuất của bạn",
+        "description": "Việc xuất dữ liệu có thể mất vài phút. Chúng tôi sẽ thông báo khi hoàn tất."
+      },
+      "format": {
+        "label": "Định dạng",
+        "description": "Chọn định dạng của tệp xuất. JSON lưu trữ dữ liệu lồng nhau giữa các module mà không bị mất dữ liệu, được khuyến nghị cho các yêu cầu truy cập dữ liệu của chủ thể dữ liệu.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Bộ lọc",
+        "description": "Áp dụng bộ lọc trong bảng tổng quan để điều chỉnh chế độ xem này"
+      }
+    },
     "groups": {
       "label": "Nhóm khách hàng",
       "remove": "Bạn có chắc muốn xóa khách hàng khỏi nhóm khách hàng \"{{name}}\" không?",

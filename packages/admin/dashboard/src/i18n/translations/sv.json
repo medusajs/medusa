@@ -1068,6 +1068,24 @@
       "hint": "Skapa en ny kund och hantera kundens uppgifter.",
       "successToast": "Kund {{email}} har skapats."
     },
+    "export": {
+      "header": "Exportera kundlista",
+      "description": "Exportera kundlistan till en fil.",
+      "success": {
+        "title": "Vi bearbetar din export",
+        "description": "Exporten kan ta några minuter. Du får en avisering när den är klar."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Välj format för den exporterade filen. JSON fångar nästlad data från alla moduler utan dataförlust, vilket rekommenderas för begäranden om dataportabilitet.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filter",
+        "description": "Tillämpa filter i tabellöversikten för att justera den här vyn"
+      }
+    },
     "groups": {
       "label": "Kundgrupper",
       "remove": "Är du säker på att du vill ta bort kund från \"{{name}}\" kundgrupp?",
