@@ -313,6 +313,33 @@ export async function bundleBackend({
   }
   loaded.forEach(add)
 
+  // Packages first-party code loads by name only under some configurations
+  // (e.g. the DynamoDB session store): the collection pass runs with the
+  // build's configuration, so bundle them even if it didn't load them.
+  // They're resolved from the file loading them, as Node would.
+  for (const file of [...registry.values()]) {
+    if (
+      !file.endsWith(".js") ||
+      !readPackageName(findPackageRoot(file) ?? "")?.startsWith("@medusajs/")
+    ) {
+      continue
+    }
+    for (const [, request] of readFileSync(file, "utf8").matchAll(
+      DYNAMIC_IMPORT_OF_PACKAGE
+    )) {
+      if (request in resolutions) {
+        continue
+      }
+      try {
+        const resolved = createRequire(file).resolve(request)
+        resolutions[request] = resolved
+        add(resolved)
+      } catch {
+        // Not installed: an optional dependency this app doesn't use
+      }
+    }
+  }
+
   // What boot looks up on disk outside the app, answered from the bundle: the
   // directory trees of bundled packages (names only, the code is bundled),
   // small files read at runtime, and package resolutions
@@ -441,7 +468,11 @@ const NEVER_LAZY =
 const STAR = /^__exportStar\(require\("([^"]+)"\), exports\);$/
 const NAMESPACE = /^exports\.([A-Za-z_$][\w$]*) = __importStar\(require\("([^"]+)"\)\);$/
 const VOID = /^(exports\.[A-Za-z_$][\w$]* = )+void 0;$/
-const SIDE_EFFECT = /^global(This)?\.[A-Za-z_]+ *(\?\?=|=)/m
+// `dynamicImport("pkg")` (or `(0, utils_1.dynamicImport)("pkg")` once
+// compiled) with a package name, not a relative or absolute path
+const DYNAMIC_IMPORT_OF_PACKAGE =
+  /dynamicImport\)?\(\s*"((?:@[\w.-]+\/)?[a-z0-9][\w./-]*)"\s*\)/g
+const SIDE_EFFECT =/^global(This)?\.[A-Za-z_]+ *(\?\?=|=)/m
 const ES_MODULE_MARKER = 'Object.defineProperty(exports, "__esModule", { value: true });'
 
 function createTransforms({
