@@ -177,5 +177,57 @@ describe("HTTP Instrumentation", () => {
       expect(span!.status.code).toEqual(SpanStatusCode.ERROR)
       expect(span!.attributes["http.status_code"]).toEqual(500)
     })
+
+    it("should not report sensitive headers or the query string as span attributes", async () => {
+      const { traceRequestHandler } = require("../../commands/start")
+      const res = createFakeResponse()
+
+      await traceRequestHandler(
+        async () => {
+          setImmediate(() => res.finishWith(200))
+        },
+        {
+          method: "GET",
+          url: "/admin/customers?q=jane%40example.com&limit=10",
+          headers: {
+            authorization: "Bearer secret-token",
+            "proxy-authorization": "Basic secret",
+            cookie: "connect.sid=secret-session",
+            "x-publishable-api-key": "pk_secret",
+            "x-api-key": "sk_secret",
+            "x-custom-auth-token": "secret",
+            "user-agent": "jest",
+            "x-request-id": "req_123",
+          },
+        },
+        res,
+        "/admin/customers"
+      )
+
+      const span = findSpan("/admin/customers")!
+
+      expect(span.attributes).toEqual(
+        expect.objectContaining({
+          "http.route": "/admin/customers",
+          "http.url": "/admin/customers",
+          "http.method": "GET",
+          "http.status_code": 200,
+          "user-agent": "jest",
+          "x-request-id": "req_123",
+        })
+      )
+      for (const header of [
+        "authorization",
+        "proxy-authorization",
+        "cookie",
+        "x-publishable-api-key",
+        "x-api-key",
+        "x-custom-auth-token",
+      ]) {
+        expect(span.attributes).not.toHaveProperty([header])
+      }
+      expect(JSON.stringify(span.attributes)).not.toContain("secret")
+      expect(JSON.stringify(span.attributes)).not.toContain("jane")
+    })
   })
 })

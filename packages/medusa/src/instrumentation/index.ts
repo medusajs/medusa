@@ -22,6 +22,29 @@ function shouldExcludeResource(resource: string) {
   )
 }
 
+const SENSITIVE_HEADER_PATTERN =
+  /authorization|cookie|key|token|secret|session|password|credential/i
+
+/**
+ * Request headers reported as span attributes, without the ones that can carry
+ * credentials or session identifiers.
+ */
+function getSafeHeaders(headers: Record<string, unknown> = {}) {
+  return Object.fromEntries(
+    Object.entries(headers).filter(
+      ([name]) => !SENSITIVE_HEADER_PATTERN.test(name)
+    )
+  )
+}
+
+/**
+ * Query strings can carry personal data (eg. search terms), so only the path is
+ * reported.
+ */
+function stripQueryString(url: string = "") {
+  return url.split("?")[0]
+}
+
 function setHttpStatusCode(span: Span, statusCode: number) {
   span.setAttributes({
     // "http.statusCode" is not a semantic convention, but it has been
@@ -84,13 +107,14 @@ export function instrumentHttpLayer() {
       return await requestHandler()
     }
 
-    const traceName = handlerPath ?? `${req.method} ${req.url}`
+    const url = stripQueryString(req.url)
+    const traceName = handlerPath ?? `${req.method} ${url}`
     await HTTPTracer.trace(traceName, async (span) => {
       span.setAttributes({
+        ...getSafeHeaders(req.headers),
         "http.route": handlerPath,
-        "http.url": req.url,
+        "http.url": url,
         "http.method": req.method,
-        ...req.headers,
       })
 
       try {
@@ -119,7 +143,8 @@ export function instrumentHttpLayer() {
         return await handler(req, res)
       }
 
-      const label = req.route?.path ?? `${req.method} ${req.originalUrl}`
+      const label =
+        req.route?.path ?? `${req.method} ${stripQueryString(req.originalUrl)}`
       const traceName = `route handler: ${label}`
 
       await HTTPTracer.trace(traceName, async (span) => {
