@@ -111,7 +111,11 @@ function unwrapInput({
   }
 
   const keys = Object.keys(inputTOUnwrap)
-  const promises: { promise: Promise<any>; keyIndex: number }[] = []
+  const promises: {
+    promise: Promise<any>
+    keyIndex: number
+    isUnwrapped?: boolean
+  }[] = []
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
@@ -136,8 +140,9 @@ function unwrapInput({
         })
         if (unwrapped instanceof Promise) {
           promises.push({
-            promise: unwrapped.then((r) => ({ key, value: r })),
+            promise: unwrapped,
             keyIndex: i,
+            isUnwrapped: true,
           })
         } else {
           parentRef[key] = unwrapped
@@ -151,26 +156,26 @@ function unwrapInput({
       (resolvedPromises) => {
         for (let i = 0; i < promises.length; i++) {
           const resolved = resolvedPromises[i]
-          if (resolved && typeof resolved === "object" && "key" in resolved) {
-            parentRef[resolved.key] = resolved.value
-          } else {
-            const key = keys[promises[i].keyIndex]
-            parentRef[key] = resolved
+          const key = keys[promises[i].keyIndex]
+          parentRef[key] = resolved
 
-            if (resolved != null && typeof resolved === "object") {
-              const unwrapped = unwrapInput({
-                inputTOUnwrap: resolved,
-                parentRef: {},
-                transactionContext,
+          if (
+            !promises[i].isUnwrapped &&
+            resolved != null &&
+            typeof resolved === "object"
+          ) {
+            const unwrapped = unwrapInput({
+              inputTOUnwrap: resolved,
+              parentRef: {},
+              transactionContext,
+            })
+            if (unwrapped instanceof Promise) {
+              return unwrapped.then((r) => {
+                parentRef[key] = r
+                return parentRef
               })
-              if (unwrapped instanceof Promise) {
-                return unwrapped.then((r) => {
-                  parentRef[key] = r
-                  return parentRef
-                })
-              }
-              parentRef[key] = unwrapped
             }
+            parentRef[key] = unwrapped
           }
         }
         return parentRef

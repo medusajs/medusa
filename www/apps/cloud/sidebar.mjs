@@ -468,6 +468,13 @@ export const sidebar = [
             type: "link",
             title: "Usage",
             path: "/usage",
+            children: [
+              {
+                type: "link",
+                title: "Compute Hours",
+                path: "/usage/compute",
+              },
+            ],
           },
           {
             type: "link",

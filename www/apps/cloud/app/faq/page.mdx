@@ -80,6 +80,14 @@ You can find the list of static outgoing IP addresses in the [IP Addresses](../i
 
 ---
 
+## Can I password-protect my deployment or preview URLs?
+
+No, Cloud doesn't have a built-in option to password-protect or otherwise restrict access to the URLs of long-lived or preview environments. The Medusa Admin and admin API routes already require authentication, but the storefront is publicly accessible.
+
+To keep a storefront private while you test it, you can add HTTP basic authentication in your storefront's code. Learn how in the [Restrict Access to a Deployment](../deployments/access/page.mdx#restrict-access-to-a-deployment) guide.
+
+---
+
 ## How do I know if Cloud has an ongoing issue?
 
 Check the [Cloud status page](https://status.medusajs.com) for the current health of Cloud's services and a history of past incidents. You can also subscribe to incident updates by email, Slack, Microsoft Teams, or RSS.
