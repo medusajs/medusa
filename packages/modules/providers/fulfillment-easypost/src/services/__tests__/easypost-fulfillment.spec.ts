@@ -30,6 +30,51 @@ const fakeLogger: Logger = {
 
 const defaultParcel = { weight: 16, length: 10, width: 8, height: 4 }
 
+/**
+ * A shipment as `EasyPostClient.retrieveShipment` returns it for a shipment
+ * `validateFulfillmentData` created at checkout time -- addresses in the
+ * shape EasyPost stores them (country upper-cased, missing fields `null`).
+ */
+function persistedShipment(
+  overrides: Partial<{ id: string; purchased: boolean }> = {}
+) {
+  return {
+    id: "shp_persisted",
+    rates: [
+      {
+        id: "rate_persisted",
+        carrier: "USPS",
+        service: "Priority",
+        rate: "8.01",
+        currency: "USD",
+        deliveryDays: 2,
+      },
+    ],
+    toAddress: {
+      name: "Test Buyer",
+      company: null,
+      street1: "417 montgomery st",
+      street2: null,
+      city: "San Francisco",
+      state: "CA",
+      zip: "94104",
+      country: "US",
+    },
+    fromAddress: {
+      name: null,
+      street1: "118 2nd street",
+      street2: null,
+      city: "San Francisco",
+      state: "CA",
+      zip: "94105",
+      country: "US",
+    },
+    parcel: { ...defaultParcel },
+    purchased: false,
+    ...overrides,
+  }
+}
+
 describe("EasyPostFulfillmentService", () => {
   test(
     "getFulfillmentOptions returns one option per carrier+service this account's rates actually quote",
@@ -549,7 +594,7 @@ describe("EasyPostFulfillmentService", () => {
     )
 
     test(
-      "throws a clear error for an already-bought rate rather than silently succeeding again (Review Focus)",
+      "re-fulfilling an already-bought persisted shipment buys a fresh shipment instead of surfacing EasyPost's 422",
       async () => {
         const service = new EasyPostFulfillmentService(
           { logger: fakeLogger },
@@ -561,18 +606,38 @@ describe("EasyPostFulfillmentService", () => {
           validContextFixture as any
         )
 
-        // First buy succeeds.
-        await service.createFulfillment(validated, [], undefined, {} as any)
+        // First buy succeeds against the persisted shipment itself.
+        const first = await service.createFulfillment(
+          validated,
+          [],
+          undefined,
+          {} as any
+        )
+        expect(first.data.easypost_shipment_id).toBe(
+          validated.easypost_shipment_id
+        )
 
-        // Confirmed against the real EasyPost test-mode API: a second buy
-        // of the same shipment/rate is rejected with HTTP 422
-        // ("Postage already exists for this shipment."), not an idempotent
-        // success and not a different rate.
-        await expect(
-          service.createFulfillment(validated, [], undefined, {} as any)
-        ).rejects.toThrow(/postage already exists/i)
+        // A second fulfillment from the same persisted data (split order /
+        // re-fulfil after cancel) would get HTTP 422 SHIPMENT.POSTAGE.EXISTS
+        // if bought as-is -- so it must re-shop a fresh shipment for the
+        // same carrier+service instead.
+        const second = await service.createFulfillment(
+          validated,
+          [],
+          undefined,
+          {} as any
+        )
+        expect(second.data.easypost_shipment_id).not.toBe(
+          validated.easypost_shipment_id
+        )
+        expect(second.data.easypost_carrier).toBe("USPS")
+        expect(second.data.easypost_service).toBe("Priority")
+        expect(second.data.easypost_tracking_code).toBeDefined()
+        expect(second.data.easypost_tracking_code).not.toBe(
+          first.data.easypost_tracking_code
+        )
       },
-      REAL_API_TEST_TIMEOUT_MS * 2
+      REAL_API_TEST_TIMEOUT_MS * 3
     )
 
     test("throws a clear error when the persisted data is missing the shipment or rate id", async () => {
@@ -588,6 +653,8 @@ describe("EasyPostFulfillmentService", () => {
 
     test("maps a successful buyShipment result into the exact CreateFulfillmentResult shape", async () => {
       const fakeClient = {
+        retrieveShipment: async (shipmentId: string) =>
+          persistedShipment({ id: shipmentId }),
         buyShipment: jest.fn(async (shipmentId: string, rateId: string) => ({
           id: shipmentId,
           rates: [],
@@ -641,6 +708,8 @@ describe("EasyPostFulfillmentService", () => {
 
     test("still throws when the EasyPost API call itself fails", async () => {
       const fakeClient = {
+        retrieveShipment: async (shipmentId: string) =>
+          persistedShipment({ id: shipmentId }),
         buyShipment: async () => {
           throw new Error("ECONNREFUSED: could not reach EasyPost")
         },
@@ -658,6 +727,279 @@ describe("EasyPostFulfillmentService", () => {
           {} as any
         )
       ).rejects.toThrow(/ECONNREFUSED/)
+    })
+
+    describe("stale or already-bought persisted shipments", () => {
+      const persistedData = {
+        easypost_shipment_id: "shp_persisted",
+        easypost_rate_id: "rate_persisted",
+        easypost_carrier: "USPS",
+        easypost_service: "Priority",
+      }
+
+      // The fulfillment's resolved delivery address, in Medusa's own address
+      // shape -- matches the persisted shipment's EasyPost to_address.
+      const unchangedDeliveryAddress = {
+        first_name: "Test",
+        last_name: "Buyer",
+        address_1: "417 montgomery st",
+        city: "San Francisco",
+        province: "CA",
+        postal_code: "94104",
+        country_code: "us",
+      }
+
+      const boughtResult = (shipmentId: string) => ({
+        id: shipmentId,
+        rates: [],
+        trackingCode: `tracking-${shipmentId}`,
+        labelUrl: "https://example.com/label.png",
+        trackerId: "trk_fake",
+        trackingUrl: "https://example.com/track",
+      })
+
+      const freshShipment = {
+        id: "shp_fresh",
+        rates: [
+          {
+            id: "rate_fresh_ups",
+            carrier: "UPS",
+            service: "Ground",
+            rate: "9.00",
+            currency: "USD",
+          },
+          {
+            id: "rate_fresh",
+            carrier: "USPS",
+            service: "Priority",
+            rate: "8.50",
+            currency: "USD",
+          },
+        ],
+      }
+
+      const buildFakeClient = (
+        retrieved: ReturnType<typeof persistedShipment>,
+        overrides: Record<string, unknown> = {}
+      ) =>
+        ({
+          retrieveShipment: jest.fn(async () => retrieved),
+          createShipment: jest.fn(async () => freshShipment),
+          buyShipment: jest.fn(async (shipmentId: string) =>
+            boughtResult(shipmentId)
+          ),
+          ...overrides,
+        } as unknown as EasyPostClient & {
+          retrieveShipment: jest.Mock
+          createShipment: jest.Mock
+          buyShipment: jest.Mock
+        })
+
+      test("(a) buys the persisted shipment as-is when it is still valid and unpurchased", async () => {
+        const fakeClient = buildFakeClient(persistedShipment())
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: "unused", defaultParcel, client: fakeClient }
+        )
+
+        const result = await service.createFulfillment(
+          persistedData,
+          [],
+          undefined,
+          { delivery_address: unchangedDeliveryAddress } as any
+        )
+
+        expect(fakeClient.retrieveShipment).toHaveBeenCalledWith(
+          "shp_persisted"
+        )
+        expect(fakeClient.createShipment).not.toHaveBeenCalled()
+        expect(fakeClient.buyShipment).toHaveBeenCalledWith(
+          "shp_persisted",
+          "rate_persisted"
+        )
+        expect(result.data.easypost_shipment_id).toBe("shp_persisted")
+        expect(result.data.easypost_rate_id).toBe("rate_persisted")
+      })
+
+      test("(b) re-shops and buys a fresh shipment for the same carrier+service when the persisted one was already bought", async () => {
+        const fakeClient = buildFakeClient(
+          persistedShipment({ purchased: true })
+        )
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: "unused", defaultParcel, client: fakeClient }
+        )
+
+        const result = await service.createFulfillment(
+          persistedData,
+          [],
+          undefined,
+          { delivery_address: unchangedDeliveryAddress } as any
+        )
+
+        expect(fakeClient.createShipment).toHaveBeenCalledTimes(1)
+        expect(fakeClient.buyShipment).toHaveBeenCalledTimes(1)
+        expect(fakeClient.buyShipment).toHaveBeenCalledWith(
+          "shp_fresh",
+          "rate_fresh"
+        )
+        expect(result.data).toEqual(
+          expect.objectContaining({
+            easypost_shipment_id: "shp_fresh",
+            easypost_rate_id: "rate_fresh",
+            easypost_carrier: "USPS",
+            easypost_service: "Priority",
+            easypost_tracking_code: "tracking-shp_fresh",
+          })
+        )
+      })
+
+      test("(b) re-shops to the fulfillment's CURRENT delivery address when it no longer matches the persisted shipment", async () => {
+        const fakeClient = buildFakeClient(persistedShipment())
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: "unused", defaultParcel, client: fakeClient }
+        )
+
+        const result = await service.createFulfillment(
+          persistedData,
+          [],
+          undefined,
+          {
+            delivery_address: {
+              ...unchangedDeliveryAddress,
+              address_1: "1 new street",
+              postal_code: "94110",
+            },
+          } as any
+        )
+
+        expect(fakeClient.createShipment).toHaveBeenCalledWith(
+          expect.objectContaining({
+            toAddress: expect.objectContaining({
+              street1: "1 new street",
+              zip: "94110",
+            }),
+            // The origin isn't on the fulfillment context -- it's reused
+            // from the persisted shipment.
+            fromAddress: expect.objectContaining({
+              street1: "118 2nd street",
+              zip: "94105",
+            }),
+          })
+        )
+        expect(fakeClient.buyShipment).toHaveBeenCalledWith(
+          "shp_fresh",
+          "rate_fresh"
+        )
+        expect(fakeClient.buyShipment).not.toHaveBeenCalledWith(
+          "shp_persisted",
+          expect.anything()
+        )
+        expect(result.data.easypost_shipment_id).toBe("shp_fresh")
+      })
+
+      test("(b) re-shops with a parcel built from only the fulfilled items (split fulfillment)", async () => {
+        const fakeClient = buildFakeClient(persistedShipment())
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: "unused", defaultParcel, client: fakeClient }
+        )
+
+        await service.createFulfillment(
+          persistedData,
+          [{ line_item_id: "item_1", quantity: 1 }] as any,
+          {
+            items: [
+              {
+                id: "item_1",
+                variant: { weight: 5, length: 6, width: 4, height: 2 },
+              },
+              {
+                id: "item_2",
+                variant: { weight: 11, length: 10, width: 8, height: 4 },
+              },
+            ],
+          } as any,
+          { delivery_address: unchangedDeliveryAddress } as any
+        )
+
+        expect(fakeClient.createShipment).toHaveBeenCalledWith(
+          expect.objectContaining({
+            parcel: { weight: 5, length: 6, width: 4, height: 2 },
+          })
+        )
+        expect(fakeClient.buyShipment).toHaveBeenCalledWith(
+          "shp_fresh",
+          "rate_fresh"
+        )
+      })
+
+      test("(b) re-shops instead of surfacing EasyPost's 422 when the as-is buy is rejected with SHIPMENT.POSTAGE.EXISTS", async () => {
+        const postageExists = Object.assign(
+          new Error("Postage already exists for this shipment."),
+          { code: "SHIPMENT.POSTAGE.EXISTS", statusCode: 422 }
+        )
+        const buyShipment = jest.fn(async (shipmentId: string) => {
+          if (shipmentId === "shp_persisted") {
+            throw postageExists
+          }
+          return boughtResult(shipmentId)
+        })
+        const fakeClient = buildFakeClient(persistedShipment(), {
+          buyShipment,
+        })
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: "unused", defaultParcel, client: fakeClient }
+        )
+
+        const result = await service.createFulfillment(
+          persistedData,
+          [],
+          undefined,
+          { delivery_address: unchangedDeliveryAddress } as any
+        )
+
+        expect(buyShipment).toHaveBeenLastCalledWith("shp_fresh", "rate_fresh")
+        expect(result.data.easypost_shipment_id).toBe("shp_fresh")
+      })
+
+      test("throws a clear error when the fresh shipment no longer quotes the original carrier+service", async () => {
+        const fakeClient = buildFakeClient(
+          persistedShipment({ purchased: true }),
+          {
+            createShipment: jest.fn(async () => ({
+              id: "shp_fresh",
+              rates: [freshShipment.rates[0]],
+            })),
+          }
+        )
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: "unused", defaultParcel, client: fakeClient }
+        )
+
+        await expect(
+          service.createFulfillment(persistedData, [], undefined, {} as any)
+        ).rejects.toThrow(/USPS.*Priority/)
+        expect(fakeClient.buyShipment).not.toHaveBeenCalled()
+      })
+
+      test("still throws on an incomplete current delivery address rather than buying for it", async () => {
+        const fakeClient = buildFakeClient(persistedShipment())
+        const service = new EasyPostFulfillmentService(
+          { logger: fakeLogger },
+          { apiKey: "unused", defaultParcel, client: fakeClient }
+        )
+
+        await expect(
+          service.createFulfillment(persistedData, [], undefined, {
+            delivery_address: { city: "San Francisco" },
+          } as any)
+        ).rejects.toThrow(/destination address/)
+        expect(fakeClient.buyShipment).not.toHaveBeenCalled()
+      })
     })
   })
 

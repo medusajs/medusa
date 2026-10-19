@@ -180,8 +180,59 @@ export type EasyPostShipment = {
   trackingUrl?: string
 }
 
+/**
+ * A shipment as read back from EasyPost (`retrieveShipment`), carrying the
+ * addresses/parcel EasyPost actually stored for it and whether postage has
+ * already been purchased -- what `createFulfillment` needs to decide whether
+ * a shipment persisted at checkout time can still be bought as-is.
+ */
+export type EasyPostShipmentDetails = EasyPostShipment & {
+  toAddress?: EasyPostStoredAddress
+  fromAddress?: EasyPostStoredAddress
+  parcel?: EasyPostParcelInput
+  /**
+   * True once postage has been bought for this shipment (EasyPost sets
+   * `selected_rate`/`postage_label` on purchase). Buying it again is
+   * rejected with HTTP 422 `SHIPMENT.POSTAGE.EXISTS`.
+   */
+  purchased: boolean
+}
+
+/**
+ * An address as EasyPost stores and returns it. Unlike `EasyPostAddressInput`
+ * every field may come back `null`/missing, and `country` is upper-cased by
+ * EasyPost (confirmed against the real test-mode API).
+ */
+export type EasyPostStoredAddress = {
+  name?: string | null
+  company?: string | null
+  street1?: string | null
+  street2?: string | null
+  city?: string | null
+  state?: string | null
+  zip?: string | null
+  country?: string | null
+  phone?: string | null
+  email?: string | null
+}
+
 export type EasyPostClientOptions = {
   apiKey: string
+}
+
+/**
+ * EasyPost's error code for a `buy` against a shipment whose postage was
+ * already purchased (HTTP 422). Confirmed against the real test-mode API:
+ * the SDK's thrown error carries it on `.code`.
+ */
+export const POSTAGE_EXISTS_ERROR_CODE = "SHIPMENT.POSTAGE.EXISTS"
+
+export function isPostageExistsError(error: unknown): boolean {
+  return (
+    !!error &&
+    typeof error === "object" &&
+    (error as { code?: unknown }).code === POSTAGE_EXISTS_ERROR_CODE
+  )
 }
 
 /**
@@ -217,6 +268,17 @@ export class EasyPostClient {
     })
 
     return toEasyPostShipmentResult(shipment)
+  }
+
+  /**
+   * Reads a shipment back from EasyPost (`GET /shipments/:id`), including
+   * the addresses/parcel it was created with and whether its postage has
+   * already been purchased.
+   */
+  async retrieveShipment(shipmentId: string): Promise<EasyPostShipmentDetails> {
+    const shipment = await this.client.Shipment.retrieve(shipmentId)
+
+    return toEasyPostShipmentDetails(shipment)
   }
 
   async buyShipment(
@@ -328,5 +390,37 @@ function toEasyPostShipmentResult(shipment: {
     refundStatus: shipment.refund_status ?? undefined,
     trackerId: shipment.tracker?.id ?? undefined,
     trackingUrl: shipment.tracker?.public_url ?? undefined,
+  }
+}
+
+function toEasyPostShipmentDetails(
+  shipment: Parameters<typeof toEasyPostShipmentResult>[0] & {
+    to_address?: EasyPostStoredAddress | null
+    from_address?: EasyPostStoredAddress | null
+    parcel?: {
+      weight?: number | null
+      length?: number | null
+      width?: number | null
+      height?: number | null
+    } | null
+    selected_rate?: unknown
+  }
+): EasyPostShipmentDetails {
+  const parcel =
+    shipment.parcel && shipment.parcel.weight != null
+      ? {
+          weight: shipment.parcel.weight,
+          length: shipment.parcel.length ?? undefined,
+          width: shipment.parcel.width ?? undefined,
+          height: shipment.parcel.height ?? undefined,
+        }
+      : undefined
+
+  return {
+    ...toEasyPostShipmentResult(shipment),
+    toAddress: shipment.to_address ?? undefined,
+    fromAddress: shipment.from_address ?? undefined,
+    parcel,
+    purchased: !!shipment.selected_rate || !!shipment.postage_label,
   }
 }

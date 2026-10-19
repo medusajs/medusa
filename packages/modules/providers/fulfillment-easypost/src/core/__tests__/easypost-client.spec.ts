@@ -84,6 +84,33 @@ describe("EasyPostClient", () => {
   )
 
   test(
+    "retrieveShipment reads back the stored addresses/parcel and reports whether postage was purchased",
+    async () => {
+      const client = new EasyPostClient({
+        apiKey: process.env.EASYPOST_API_KEY!,
+      })
+      const shipment = await client.createShipment(shipmentFixture)
+
+      const before = await client.retrieveShipment(shipment.id)
+      expect(before.id).toBe(shipment.id)
+      expect(before.purchased).toBe(false)
+      expect(before.toAddress).toMatchObject({
+        street1: "417 montgomery st",
+        zip: "94104",
+        country: "US",
+      })
+      expect(before.fromAddress).toMatchObject({ street1: "118 2nd street" })
+      expect(before.parcel).toMatchObject({ weight: 16 })
+
+      await client.buyShipment(shipment.id, shipment.rates[0].id)
+
+      const after = await client.retrieveShipment(shipment.id)
+      expect(after.purchased).toBe(true)
+    },
+    REAL_API_TEST_TIMEOUT_MS
+  )
+
+  test(
     "refundShipment submits a refund request for a bought shipment",
     async () => {
       const client = new EasyPostClient({

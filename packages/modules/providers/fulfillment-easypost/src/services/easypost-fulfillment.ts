@@ -19,7 +19,11 @@ import { CARRIER_SERVICE_MAP } from "../core/carrier-services"
 import {
   EasyPostAddressInput,
   EasyPostClient,
+  EasyPostParcelInput,
   EasyPostShipment,
+  EasyPostShipmentDetails,
+  EasyPostStoredAddress,
+  isPostageExistsError,
   Rate,
 } from "../core/easypost-client"
 import { buildParcel, ParcelDimensions } from "../core/parcel"
@@ -339,37 +343,51 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
   }
 
   /**
-   * Buys the EXACT shipment/rate `validateFulfillmentData` persisted onto
-   * the shipping method's `data` (`easypost_shipment_id`/`easypost_rate_id`)
-   * -- deliberately NOT re-deriving a fresh shipment/rate via
-   * `createShipmentAndMatchRate`. The whole point of persisting those ids
-   * at validation time is to buy the rate the customer was already quoted
-   * and agreed to pay; re-quoting here could silently charge a different
-   * price.
+   * Buys a label for this fulfillment. Normally that's the EXACT
+   * shipment/rate `validateFulfillmentData` persisted onto the shipping
+   * method's `data` (`easypost_shipment_id`/`easypost_rate_id`) at checkout
+   * -- the rate the customer was quoted and agreed to pay.
+   *
+   * **But that persisted shipment can't always be bought blindly**, so it's
+   * read back from EasyPost first (`retrieveShipment`) and compared against
+   * this fulfillment's real, current state. A FRESH shipment is created and
+   * bought instead, for the same carrier+service, when:
+   *
+   * - **its postage was already purchased** -- a split order's second
+   *   fulfillment, or re-fulfilling after a cancel, reuses the same
+   *   shipping-method data. EasyPost rejects a second `buy` with HTTP 422
+   *   `SHIPMENT.POSTAGE.EXISTS` (confirmed against the real test-mode API).
+   *   That 422 is also caught on the `buy` itself, for the race where the
+   *   shipment gets bought between the read and the buy.
+   * - **the destination changed** -- `fulfillment.delivery_address` is the
+   *   order's current shipping address (merged with any recipient override)
+   *   as resolved by core's `createOrderFulfillmentWorkflow`. Neither
+   *   `refreshCartShippingMethodsWorkflow` (price only) nor an admin's
+   *   post-checkout address edit re-creates the persisted shipment, so
+   *   buying it as-is could ship to the wrong place.
+   * - **the parcel changed** -- when the fulfilled items can be matched to
+   *   the order's items (with variant weights/dimensions), the parcel is
+   *   rebuilt from only the items in THIS fulfillment (e.g. part of a split
+   *   order) and compared with the persisted one.
+   *
+   * The origin address isn't on the fulfillment context (only
+   * `location_id`), so a fresh shipment reuses the persisted shipment's own
+   * `from_address`. A fresh shipment can be priced differently from the
+   * checkout quote; that is logged, since buying a correct label beats
+   * buying a stale one.
    *
    * Unlike `calculatePrice`/`validateFulfillmentData`, Medusa core invokes
    * `createFulfillment` ONE AT A TIME per fulfillment (`createFulfillmentStep`
    * takes a single `CreateFulfillmentDTO`, not a batch) -- there's no
-   * `promiseAll` batching hazard here, so a genuine failure is allowed to
-   * throw and propagate; core's own step compensation calls
-   * `cancelFulfillment` if this throws.
-   *
-   * **"Already bought" behavior, confirmed against the real EasyPost
-   * test-mode API** (not assumed): calling `buy` a second time on an
-   * already-purchased shipment does NOT succeed idempotently and does NOT
-   * return a different rate -- EasyPost rejects it with HTTP 422,
-   * `code: "SHIPMENT.POSTAGE.EXISTS"`, message "Postage already exists for
-   * this shipment." That rejection isn't caught here; it propagates
-   * unchanged, which is exactly the desired "don't silently succeed again"
-   * behavior.
+   * `promiseAll` batching hazard here, so a genuine failure (API error,
+   * incomplete current delivery address, carrier+service no longer quoted)
+   * is allowed to throw and propagate.
    */
   async createFulfillment(
     data: Record<string, unknown>,
-    _items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
-    _order: Partial<FulfillmentOrderDTO> | undefined,
-    _fulfillment: Partial<
-      Omit<FulfillmentDTO, "provider_id" | "data" | "items">
-    >
+    items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[],
+    order: Partial<FulfillmentOrderDTO> | undefined,
+    fulfillment: Partial<Omit<FulfillmentDTO, "provider_id" | "data" | "items">>
   ): Promise<CreateFulfillmentResult> {
     const { easypost_shipment_id: shipmentId, easypost_rate_id: rateId } =
       data as {
@@ -386,9 +404,154 @@ export class EasyPostFulfillmentService extends AbstractFulfillmentProviderServi
       )
     }
 
-    const bought = await this.client_.buyShipment(shipmentId, rateId)
+    const persisted = await this.client_.retrieveShipment(shipmentId)
+
+    // Throws on an incomplete current delivery address, same as at checkout.
+    const currentToAddress = fulfillment?.delivery_address
+      ? toEasyPostAddress(
+          fulfillment.delivery_address as AddressLike,
+          "destination"
+        )
+      : undefined
+    const currentParcel = buildFulfilledParcel(
+      items,
+      order,
+      this.options_.defaultParcel
+    )
+
+    const staleReasons: string[] = []
+    if (persisted.purchased) {
+      staleReasons.push("its postage was already purchased")
+    }
+    if (
+      currentToAddress &&
+      !addressesMatch(currentToAddress, persisted.toAddress)
+    ) {
+      staleReasons.push("the delivery address changed since checkout")
+    }
+    if (currentParcel && !parcelsMatch(currentParcel, persisted.parcel)) {
+      staleReasons.push("the fulfilled items' parcel differs from checkout")
+    }
+
+    const reshop = (reason: string) =>
+      this.buyFreshShipment(data, persisted, rateId, reason, {
+        toAddress: currentToAddress,
+        parcel: currentParcel,
+      })
+
+    if (staleReasons.length > 0) {
+      return await reshop(staleReasons.join("; "))
+    }
+
+    let bought: EasyPostShipment
+    try {
+      bought = await this.client_.buyShipment(shipmentId, rateId)
+    } catch (error) {
+      if (isPostageExistsError(error)) {
+        return await reshop(
+          "EasyPost reported its postage already exists (SHIPMENT.POSTAGE.EXISTS)"
+        )
+      }
+      throw error
+    }
 
     return buildCreateFulfillmentResult(data, bought)
+  }
+
+  /**
+   * Re-shops and buys a fresh shipment for the same carrier+service as the
+   * persisted one, for `createFulfillment` when the persisted shipment
+   * can't (or shouldn't) be bought as-is. `current` overrides the persisted
+   * shipment's destination/parcel with the fulfillment's real current ones
+   * where known; the origin is always the persisted shipment's own.
+   */
+  private async buyFreshShipment(
+    data: Record<string, unknown>,
+    persisted: EasyPostShipmentDetails,
+    persistedRateId: string,
+    reason: string,
+    current: { toAddress?: EasyPostAddressInput; parcel?: ParcelDimensions }
+  ): Promise<CreateFulfillmentResult> {
+    const persistedRate = persisted.rates.find(
+      (candidate) => candidate.id === persistedRateId
+    )
+    const carrier =
+      typeof data.easypost_carrier === "string"
+        ? data.easypost_carrier
+        : persistedRate?.carrier
+    const service =
+      typeof data.easypost_service === "string"
+        ? data.easypost_service
+        : persistedRate?.service
+
+    if (!carrier || !service) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `EasyPost fulfillment provider: shipment "${persisted.id}" can't be bought as-is (${reason}), and the carrier+service to re-shop it for couldn't be determined from the shipping method's data or the persisted rate "${persistedRateId}".`
+      )
+    }
+
+    const toAddress =
+      current.toAddress ??
+      fromStoredAddress(persisted.toAddress, "destination", persisted.id)
+    const fromAddress = fromStoredAddress(
+      persisted.fromAddress,
+      "origin",
+      persisted.id
+    )
+    const parcel =
+      current.parcel ??
+      (persisted.parcel as ParcelDimensions | undefined) ??
+      this.options_.defaultParcel
+
+    const fresh = await this.client_.createShipment({
+      toAddress,
+      fromAddress,
+      parcel,
+    })
+
+    const rate = fresh.rates.find(
+      (candidate) =>
+        candidate.carrier === carrier && candidate.service === service
+    )
+
+    if (!rate) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `EasyPost fulfillment provider: shipment "${
+          persisted.id
+        }" can't be bought as-is (${reason}), and a fresh shipment no longer quotes carrier "${carrier}" service "${service}" -- EasyPost quoted [${describeQuotedRates(
+          fresh
+        )}].`
+      )
+    }
+
+    this.logger_.warn(
+      `EasyPost fulfillment provider: not buying persisted shipment "${
+        persisted.id
+      }" (${reason}) -- bought fresh shipment "${
+        fresh.id
+      }" for carrier "${carrier}" service "${service}" at ${rate.rate} ${
+        rate.currency
+      }${
+        persistedRate
+          ? ` (checkout quote was ${persistedRate.rate} ${persistedRate.currency})`
+          : ""
+      }.`
+    )
+
+    const bought = await this.client_.buyShipment(fresh.id, rate.id)
+
+    return buildCreateFulfillmentResult(
+      {
+        ...data,
+        easypost_shipment_id: fresh.id,
+        easypost_rate_id: rate.id,
+        easypost_carrier: carrier,
+        easypost_service: service,
+      },
+      bought
+    )
   }
 
   /**
@@ -614,6 +777,129 @@ type AddressLike = {
   postal_code?: string | null
   country_code?: string | null
   phone?: string | null
+}
+
+/**
+ * Rebuilds the parcel for exactly the items in one fulfillment, by matching
+ * each fulfillment item (`line_item_id` + `quantity`) to the order's line
+ * item and its variant's weight/dimensions. Returns `undefined` -- meaning
+ * "unknown, keep the persisted parcel" -- unless EVERY fulfilled item can be
+ * matched, so a partial match never under-weighs a parcel.
+ */
+function buildFulfilledParcel(
+  items: Partial<Omit<FulfillmentItemDTO, "fulfillment">>[] | undefined,
+  order: Partial<FulfillmentOrderDTO> | undefined,
+  defaults: ParcelDimensions
+): ParcelDimensions | undefined {
+  const orderItems = (order?.items ?? []) as {
+    id?: string
+    variant?: CartPropsForFulfillment["items"][number]["variant"]
+  }[]
+
+  if (!items?.length || !orderItems.length) {
+    return undefined
+  }
+
+  const fulfilled: CartPropsForFulfillment["items"] = []
+  for (const item of items) {
+    const orderItem = orderItems.find(
+      (candidate) => !!candidate?.id && candidate.id === item?.line_item_id
+    )
+    if (!orderItem) {
+      return undefined
+    }
+    fulfilled.push({
+      quantity: item.quantity,
+      variant: orderItem.variant,
+    } as CartPropsForFulfillment["items"][number])
+  }
+
+  return buildParcel(fulfilled, defaults)
+}
+
+const PARCEL_FIELDS = ["weight", "length", "width", "height"] as const
+
+function parcelsMatch(
+  current: ParcelDimensions,
+  persisted: EasyPostParcelInput | undefined
+): boolean {
+  if (!persisted) {
+    return false
+  }
+
+  return PARCEL_FIELDS.every(
+    (field) =>
+      Math.abs(Number(current[field]) - Number(persisted[field])) < 1e-6
+  )
+}
+
+const COMPARED_ADDRESS_FIELDS = [
+  "name",
+  "company",
+  "street1",
+  "street2",
+  "city",
+  "state",
+  "zip",
+  "country",
+] as const
+
+/**
+ * Compares the fulfillment's current destination with the address EasyPost
+ * stored on the persisted shipment. Case- and whitespace-insensitive, and
+ * `null`/`undefined`/`""` are treated alike, since EasyPost upper-cases
+ * `country` and returns missing fields as `null` (confirmed against the real
+ * test-mode API) -- a mismatch only ever triggers a re-shop, never a wrong
+ * purchase, so erring towards "changed" is the safe direction.
+ */
+function addressesMatch(
+  current: EasyPostAddressInput,
+  stored: EasyPostStoredAddress | undefined
+): boolean {
+  if (!stored) {
+    return false
+  }
+
+  const normalize = (value: unknown) =>
+    String(value ?? "")
+      .trim()
+      .toLowerCase()
+
+  return COMPARED_ADDRESS_FIELDS.every(
+    (field) => normalize(current[field]) === normalize(stored[field])
+  )
+}
+
+/**
+ * Converts an address EasyPost stored on a shipment back into a
+ * `createShipment` input, for re-shopping a fresh shipment from it.
+ */
+function fromStoredAddress(
+  stored: EasyPostStoredAddress | undefined,
+  label: string,
+  shipmentId: string
+): EasyPostAddressInput {
+  const { street1, city, state, zip, country } = stored ?? {}
+
+  if (!street1 || !city || !state || !zip || !country) {
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      `EasyPost fulfillment provider: cannot re-shop shipment "${shipmentId}" -- EasyPost didn't return a complete ${label} address for it.`
+    )
+  }
+
+  return {
+    name: stored?.name ?? undefined,
+    company: stored?.company ?? undefined,
+    street1,
+    street2: stored?.street2 ?? undefined,
+    city,
+    state,
+    zip,
+    country,
+    phone: stored?.phone ?? undefined,
+    email: stored?.email ?? undefined,
+  }
 }
 
 /**
