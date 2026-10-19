@@ -73,7 +73,13 @@ export const updateDraftOrderShippingMethodStep = createStep(
       )
     }
 
-    const updateData: any = {
+    const updateData: {
+      id: string
+      shipping_option_id?: string
+      amount?: BigNumberInput
+      metadata?: Record<string, unknown> | null
+      is_custom_amount?: boolean
+    } = {
       id: input.shipping_method_id,
       shipping_option_id: input.shipping_option_id,
       amount: input.amount,
