@@ -95,7 +95,9 @@ export class RedisLockingProvider implements ILockingProvider {
                     table.insert(setArgs, ttl)
                 end
                 redis.call('SET', unpack(setArgs))
-                return 1
+                -- 2 = refreshed a lease the caller already held, distinct from
+                -- 1 (freshly acquired) so callers do not track it for rollback.
+                return 2
             else
                 return 0
             end
@@ -360,12 +362,23 @@ export class RedisLockingProvider implements ILockingProvider {
             awaitQueue
           )
 
-          if (result === 1) {
+          if (result === 1 || result === 2) {
+            // 1 = newly acquired in this call; 2 = same-owner refresh of a lease
+            // the caller already held. Only track keys newly acquired here, so a
+            // rollback can never release a key held before this call.
+            const isNewlyAcquired = result === 1
+
             if (isCancelled()) {
-              await this.redisClient.releaseLock(keyName, ownerId)
+              if (isNewlyAcquired) {
+                await this.redisClient.releaseLock(keyName, ownerId)
+              }
               throw new MedusaError(MedusaError.Types.CONFLICT, errMessage)
             }
-            acquiredKeys.add(key)
+
+            if (isNewlyAcquired) {
+              acquiredKeys.add(key)
+            }
+
             break
           } else {
             if (awaitQueue) {

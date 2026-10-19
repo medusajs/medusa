@@ -123,4 +123,26 @@ describe("RedisLockingProvider Multi-Key Rollback", () => {
       "custom_owner"
     )
   })
+
+  it("should not release a key the caller already held before the call", async () => {
+    // keyA is already held by this owner, so the Lua script refreshes it and
+    // returns 2. keyB is held by someone else, so the acquire fails.
+    redisClientMock.acquireLock.mockImplementation(async (key: string) => {
+      if (key === "test:keyA") {
+        return 2
+      }
+      return 0
+    })
+
+    await expect(
+      provider.acquire(["keyA", "keyB"], { ownerId: "same_owner" })
+    ).rejects.toThrow('Failed to acquire lock for key "keyB"')
+
+    // The pre-held keyA must survive the rollback; only keys newly acquired in
+    // this call may be released.
+    expect(redisClientMock.releaseLock).not.toHaveBeenCalledWith(
+      "test:keyA",
+      "same_owner"
+    )
+  })
 })
