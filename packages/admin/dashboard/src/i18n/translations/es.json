@@ -1115,6 +1115,24 @@
       "hint": "Crea un nuevo cliente y administra sus detalles.",
       "successToast": "Cliente {{email}} creado correctamente."
     },
+    "export": {
+      "header": "Exportar lista de clientes",
+      "description": "Exporta la lista de clientes a un archivo.",
+      "success": {
+        "title": "Estamos procesando tu exportación",
+        "description": "Exportar los datos puede tomar unos minutos. Te notificaremos cuando hayamos terminado."
+      },
+      "format": {
+        "label": "Formato",
+        "description": "Elige el formato del archivo exportado. JSON captura datos anidados en todos los módulos sin pérdida, lo cual es recomendado para solicitudes de acceso a datos personales.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtros",
+        "description": "Aplica filtros en la vista general de la tabla para ajustar esta vista"
+      }
+    },
     "groups": {
       "label": "Grupos de clientes",
       "remove": "¿Estás seguro de que deseas eliminar al cliente del grupo de clientes \"{{name}}\"?",

@@ -116,7 +116,7 @@ describe("render", () => {
       "[data-testid='line-number']"
     )
     expect(lineNumber).toBeInTheDocument()
-    expect(lineNumber).toHaveTextContent("2")
+    expect(lineNumber).toHaveAttribute("data-line-number", "2")
     expect(lineNumber).toHaveClass("text-red-500")
     expect(lineNumber).toHaveClass("bg-red-500")
     const codeBlockLineTokens = codeBlockLine?.querySelector(
@@ -353,7 +353,68 @@ describe("render", () => {
       "[data-testid='line-number']"
     )
     expect(lineNumber).toBeInTheDocument()
-    expect(lineNumber).toHaveTextContent("❯")
+    expect(lineNumber).toHaveAttribute("data-line-number", "❯")
+  })
+
+  test("keeps line number out of the line's text", () => {
+    const { container } = render(
+      <CodeBlockLine
+        line={mockLine}
+        highlights={[]}
+        lineNumber={1}
+        showLineNumber={true}
+        lineNumberColorClassName="text-red-500"
+        lineNumberBgClassName="bg-red-500"
+        isTerminal={false}
+        getLineProps={mockGetLineProps}
+        getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
+      />
+    )
+    const lineNumber = container.querySelector("[data-testid='line-number']")
+    expect(lineNumber).toBeEmptyDOMElement()
+  })
+
+  test("ends a non-empty line with a line break", () => {
+    const { container } = render(
+      <CodeBlockLine
+        line={mockLine}
+        highlights={[]}
+        lineNumber={1}
+        showLineNumber={true}
+        lineNumberColorClassName="text-red-500"
+        lineNumberBgClassName="bg-red-500"
+        isTerminal={false}
+        getLineProps={mockGetLineProps}
+        getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
+      />
+    )
+    const codeBlockLine = container.querySelector(
+      "[data-testid='code-block-line']"
+    )
+    expect(codeBlockLine?.textContent).toBe("console.log('Hello, world!')\n")
+  })
+
+  test("doesn't add a line break to an empty line", () => {
+    const { container } = render(
+      <CodeBlockLine
+        line={[{ types: ["plain"], content: "\n", empty: true }]}
+        highlights={[]}
+        lineNumber={1}
+        showLineNumber={false}
+        lineNumberColorClassName="text-red-500"
+        lineNumberBgClassName="bg-red-500"
+        isTerminal={false}
+        getLineProps={mockGetLineProps}
+        getTokenProps={mockGetTokenProps}
+        codeBlockStyle="loud"
+      />
+    )
+    const codeBlockLine = container.querySelector(
+      "[data-testid='code-block-line']"
+    )
+    expect(codeBlockLine?.textContent).toBe("\n")
   })
 
   test("render with false showLineNumber", () => {
@@ -406,6 +467,6 @@ describe("render", () => {
       "[data-testid='line-number']"
     )
     expect(lineNumber).toBeInTheDocument()
-    expect(lineNumber).toHaveTextContent("❯")
+    expect(lineNumber).toHaveAttribute("data-line-number", "❯")
   })
 })

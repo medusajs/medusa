@@ -265,6 +265,12 @@ cd .medusa/server && npm install && npm run predeploy && npm run start
 
 Notice that you run the `predeploy` command before starting the Medusa application to run migrations and sync links whenever there's an update.
 
+<Note>
+
+If your Medusa application is in a monorepo and depends on workspace packages, installing the dependencies in `.medusa/server` fails. Learn how to handle this in the [Build](../../build/page.mdx#dependencies-and-workspace-packages) chapter.
+
+</Note>
+
 ### Set Backend URL in Admin Configuration
 
 The Medusa Admin is built and hosted statically. To send requests to the Medusa server application, you must set the backend URL in the Medusa Admin's configuration.

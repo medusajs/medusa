@@ -1,5 +1,6 @@
 export * from "./AiAssistant/SearchWindow"
 export * from "./AiAssistant/ChatWindow"
+export * from "./AgentDirective"
 export * from "./ApiRunner"
 export * from "./Badge"
 export * from "./BadgesList"
