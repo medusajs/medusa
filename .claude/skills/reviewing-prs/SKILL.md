@@ -704,6 +704,21 @@ the workflow event — never from JSON-supplied numbers.
   split two unrelated required changes into two bullets.
 - Code snippets do not fit cleanly in a single bullet line; reference the
   file path and approximate location instead.
+- **Lay `summary` out so it scans** — it is markdown and renders as written.
+  Use short bold-labelled sections on their own lines, one point per bullet
+  under each, and blank lines between sections. Never run several labelled
+  points (**Root cause:** … **Fix:** … **Tests:** …) together in one
+  paragraph. For example:
+
+  ```markdown
+  **What we checked**
+  - **Root cause:** `create-step.ts` captured the original handler, so a renamed step ran the wrong compensation.
+  - **Fix:** the handler is reassigned when the step is renamed.
+  - **Tests:** two new cases cover a skipped original step and a renamed step.
+
+  **Notes**
+  - No input handling or query changes, so no security or performance concerns.
+  ```
 
 ## Common Mistakes
 
