@@ -175,3 +175,95 @@ To download runtime logs, click the <InlineIcon Icon={ArrowDownTray} alt="downlo
 If you applied filters or search terms, only the logs shown that match those criteria will be downloaded. This allows you to download a specific subset of logs that are relevant to your debugging needs.
 
 </Note>
+
+---
+
+## Correlate Runtime Errors with Requests
+
+When an error appears in the backend runtime logs, trace it back to the request and API route that caused it. Some errors don't come from a request at all.
+
+This section explains how the Medusa backend logs requests and errors, and how to use the runtime logs to connect them.
+
+### How the Medusa Backend Logs Requests and Errors
+
+In a Cloud environment, the Medusa backend writes each log as a JSON line. These logs fall into the following groups:
+
+- **HTTP request logs**: The backend writes one log at the `http` level for each request after it sends the response. It holds the request's metadata, such as `method`, `path`, `status`, `duration`, `client_ip`, `user_agent`, and `request_id`. The `request_id` is the value of the request's `x-request-id` header, or a generated UUID if the request doesn't have that header.
+- **Error logs**: When an API route or middleware throws an error, Medusa's error handler logs it before it sends the error response. The error handler logs errors that result in a `5xx` status code at the `error` level with the error message and stack trace. It logs errors that result in a `4xx` status code, such as validation or not-found errors, at the `info` level with the error message and without the stack trace.
+- **Other logs**: Messages that your customizations log with the [Logger](!docs!/learn/debugging-and-testing/logging), and messages that Medusa logs during startup or background tasks.
+
+For example, an error log for an API route that threw an unexpected error looks like this:
+
+```json
+{
+  "level": "error",
+  "message": "Cannot read properties of undefined",
+  "stack": [
+    {
+      "fileName": "/app/src/api/store/custom/route.js",
+      "lineNumber": 12,
+      "functionName": "GET",
+      "typeName": null,
+      "methodName": null,
+      "columnNumber": 34,
+      "native": false
+    }
+  ],
+  "timestamp": "2026-10-20 10:15:32"
+}
+```
+
+Error logs don't include the `request_id`, `path`, or other request metadata. To find the request that caused an error, use the error's timestamp and stack trace. Then, find the HTTP request log that the backend writes right after the error, as explained in the next section.
+
+The exception is errors that occur while the backend parses the request body. For example, the body isn't valid JSON, or the client aborted the request before sending its full body. The backend logs these errors with the request's path in the message, such as `Error 400 at /store/carts: request aborted`.
+
+<Note>
+
+Some messages bypass Medusa's logger, such as messages that third-party libraries print with `console.log` and uncaught exceptions or unhandled promise rejections. These messages are plain text instead of JSON, so they don't have a level or request metadata, and the Cloud logs may show a JSON parsing error for them.
+
+</Note>
+
+### Find the Request That Caused an Error
+
+To find the request that caused an error in the backend runtime logs:
+
+1. Find the error log. For example, set the **Level** filter to "Error", or [search](#search-runtime-logs) for the error's message.
+2. [View the error's details](#view-log-details) and note its timestamp and stack trace.
+3. Check the stack trace for files in your project, such as files under `src/api`, `src/workflows`, or `src/modules`. These files point to the API route, workflow, or module that threw the error.
+4. Set the **Timeline** filter to a short custom range around the error's timestamp, and set the **Status Code** filter to the status code of the error. For example, "500" for unexpected errors.
+5. Find the HTTP request log right after the error log. Since the backend logs the error before it sends the response, the request's log follows the error log.
+6. View the HTTP request log's details to find the request's `path`, `method`, `request_id`, `user_agent`, and `client_ip`.
+
+The [Cloud CLI](../cli/commands/logs/page.mdx) also finds these logs. For example, to find the requests that failed with a `500` status code within a minute of an error:
+
+```bash
+mcloud logs \
+  --metadata status=500 \
+  --from 2026-10-20T10:15:00Z \
+  --to 2026-10-20T10:16:00Z
+```
+
+<Note title="Tip">
+
+If your storefront or client application sends an `x-request-id` header with its requests, the backend uses that value as the request's `request_id`. Then, filter the HTTP request logs by the ID that your client logged for a failed request. For example, click the `request_id` value in the log's details, or pass `--metadata request_id=<id>` to `mcloud logs`.
+
+</Note>
+
+For deeper insights into each request, set up [instrumentation with OpenTelemetry](!docs!/learn/debugging-and-testing/instrumentation) and an error-tracking service like [Sentry](!resources!/integrations/guides/sentry). They show the route handler, middleware, workflows, and database queries that ran for a request, and the errors they threw.
+
+### Errors Not Tied to a Request
+
+Some runtime errors don't originate from an HTTP request, so they don't have a matching HTTP request log. For example:
+
+- Errors in [scheduled jobs](!docs!/learn/fundamentals/scheduled-jobs), [subscribers](!docs!/learn/fundamentals/events-and-subscribers), or workflows running in the background.
+- Errors from the backend connections to services like the database or Redis.
+
+For example, you may see the following message in the backend runtime logs:
+
+```text
+Connection Error: Connection ended unexpectedly
+```
+
+The Medusa backend keeps a pool of database connections that it reuses across operations. Before the database library that manages the pool reuses an idle connection, it checks whether the database server or the network closed it. If so, it prints this message. The library then discards that connection and opens a new one, so the message alone doesn't mean that a request failed.
+
+The library prints this message with `console.log` rather than Medusa's logger, so the message is plain text without request metadata. To check whether any request failed around the same time, set the **Timeline** filter to a short range around the message's timestamp and the **Status Code** filter to "500". If you find failed requests, use the steps in the [earlier section](#find-the-request-that-caused-an-error) to find their error logs and API routes.
