@@ -621,7 +621,15 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Usage",
             "path": "/usage",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compute Hours",
+                "path": "/usage/compute",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,

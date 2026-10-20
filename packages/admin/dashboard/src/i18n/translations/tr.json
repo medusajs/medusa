@@ -1002,14 +1002,14 @@
     },
     "export": {
       "header": "Müşteri Listesini Dışa Aktar",
-      "description": "Müşteri listesini bir dosyaya aktarın.",
+      "description": "Müşteri listesini bir dosyaya dışa aktarın.",
       "success": {
         "title": "Dışa aktarma isteğiniz işleniyor",
         "description": "Veri dışa aktarımı birkaç dakika sürebilir. İşlem tamamlandığında size bildireceğiz."
       },
       "format": {
         "label": "Format",
-        "description": "Dışa aktarılan dosyanın biçimini seçin. JSON, modüller arasındaki iç içe geçmiş verileri kayıpsız olarak içerir. Bu nedenle ilgili kişi erişim talepleri için önerilir.",
+        "description": "Dışa aktarılan dosyanın biçimini seçin. JSON, modüller arasındaki iç içe verileri kayıpsız korur; bu nedenle ilgili kişi erişim talepleri için önerilir.",
         "json": "JSON",
         "csv": "CSV"
       },

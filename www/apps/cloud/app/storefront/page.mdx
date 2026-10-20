@@ -18,7 +18,9 @@ To deploy a storefront with your Medusa application on Cloud, you need a monorep
 
 ### Storefront Deployment Per Environment
 
-Similar to the Medusa backend, Medusa deploys a storefront for every long-lived and preview environment, based on your plan's limits. This allows you to test and preview changes in isolation.
+Similar to the Medusa backend, Medusa deploys a storefront for every long-lived and preview environment, based on your plan's limits. This includes the Production environment. This allows you to test and preview changes in isolation.
+
+You don't add a storefront to each environment separately. When you create a project with a storefront or [add a storefront to an existing project](../projects/page.mdx#add-storefront-to-existing-project), Medusa deploys it in all of the project's environments, including Production. Medusa also deploys it in long-lived and preview environments that you create later.
 
 Medusa also automatically configures the necessary settings for each environment, such as URLs, API keys, and Cross-Origin Resource Sharing (CORS) settings, to ensure seamless connectivity between the storefront and Medusa application.
 
