@@ -30,6 +30,7 @@
     ".medusa/admin",
     "src/admin",
     ".cache",
-    "jest.config.js"
+    "jest.config.js",
+    "vitest.config.mts"
   ]
 }

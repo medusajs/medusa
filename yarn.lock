@@ -3803,10 +3803,14 @@ __metadata:
     "@medusajs/ui": 4.2.6
     "@medusajs/ui-preset": 2.21.2
     "@swc/core": 1.5.7
+    "@testing-library/react": ^14.0.0
     "@types/node": ^20.0.0
     cross-env: ^7.0.3
+    jsdom: ^27.1.0
+    react-currency-input-field: ^3.6.11
     ts-node: ^10.9.2
     typescript: ^5.7.3
+    vitest: ^4.1.10
   peerDependencies:
     "@medusajs/admin-sdk": 2.21.2
     "@medusajs/cli": 2.21.2

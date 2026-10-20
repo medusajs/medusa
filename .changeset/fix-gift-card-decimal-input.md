@@ -2,4 +2,4 @@
 "@medusajs/loyalty-plugin": patch
 ---
 
-Fix gift card creation rejecting valid amounts in locales that use a comma as the decimal separator.
+fix(loyalty-plugin): accept decimal-comma amounts in gift card creation
