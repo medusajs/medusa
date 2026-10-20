@@ -246,7 +246,7 @@ The sales channel lets you:
 - Track orders that customers placed on the marketplace.
 - Associate the marketplace with specific stock locations to manage its inventory.
 
-You can create the sales channel from the Medusa Admin, or programmatically in a workflow. For example:
+You can create the sales channel from the [Medusa Admin](!user-guide!/settings/sales-channels), or programmatically in a workflow. For example:
 
 ```ts title="src/workflows/create-marketplace-channel.ts"
 import {
@@ -355,17 +355,17 @@ import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
 
 type Input = {
   product_ids: string[]
-  sales_channel_id: string
 }
 
 const syncListingsStep = createStep(
   "sync-listings",
-  async ({ products, sales_channel_id }, { container }) => {
+  async ({ products }, { container }) => {
     const marketplaceService = container.resolve("marketplace")
+    const salesChannelId = await marketplaceService.getSalesChannelId()
 
     for (const product of products) {
       const isInChannel = product.sales_channels.some(
-        (channel) => channel.id === sales_channel_id
+        (channel) => channel.id === salesChannelId
       )
       if (!isInChannel) {
         continue
@@ -394,7 +394,6 @@ export const syncListingsWorkflow = createWorkflow(
 
     syncListingsStep({
       products,
-      sales_channel_id: input.sales_channel_id,
     })
   }
 )
@@ -418,7 +417,6 @@ export default async function productUpdatedHandler({
   await syncListingsWorkflow(container).run({
     input: {
       product_ids: [data.id],
-      sales_channel_id: process.env.AMAZON_SALES_CHANNEL_ID!,
     },
   })
 }
@@ -447,7 +445,6 @@ import {
 
 type Input = {
   variants: { id: string; sku: string }[]
-  sales_channel_id: string
 }
 
 const syncStockStep = createStep(
@@ -457,10 +454,11 @@ const syncStockStep = createStep(
       ContainerRegistrationKeys.QUERY
     )
     const marketplaceService = container.resolve("marketplace")
+    const salesChannelId = await marketplaceService.getSalesChannelId()
 
     const availability = await getVariantAvailability(query, {
       variant_ids: input.variants.map((variant) => variant.id),
-      sales_channel_id: input.sales_channel_id,
+      sales_channel_id: salesChannelId,
     })
 
     for (const variant of input.variants) {
@@ -499,7 +497,6 @@ export default async function syncInventoryJob(
   await syncInventoryWorkflow(container).run({
     input: {
       variants,
-      sales_channel_id: process.env.AMAZON_SALES_CHANNEL_ID!,
     },
   })
 }
