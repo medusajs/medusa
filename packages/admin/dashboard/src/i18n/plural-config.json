@@ -33,5 +33,6 @@
   "vi": ["other"],
   "zhCN": ["other"],
   "zhTW": ["other"],
-  "sv": ["one", "other"]
+  "sv": ["one", "other"],
+  "sr": ["one", "few", "other"]
 }

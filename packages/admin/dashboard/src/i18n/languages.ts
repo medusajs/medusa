@@ -34,6 +34,7 @@ import {
   zhCN,
   zhTW,
   sv,
+  srLatn,
 } from "date-fns/locale"
 import { Language } from "./types"
 
@@ -247,5 +248,11 @@ export const languages: Language[] = [
     display_name: "Swedish",
     ltr: true,
     date_locale: sv,
+  },
+  {
+    code: "sr",
+    display_name: "Srpski",
+    ltr: true,
+    date_locale: srLatn,
   },
 ]
