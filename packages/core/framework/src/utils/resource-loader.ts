@@ -2,6 +2,7 @@ import { Logger, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   dynamicImport,
+  EXCLUDED_RESOURCE_FILES,
   promiseAll,
   readDirRecursive,
 } from "@medusajs/utils"
@@ -26,11 +27,7 @@ export abstract class ResourceLoader {
    * Excludes: files starting with _, test files (.spec.ts, .test.ts)
    * @private
    */
-  #excludes: RegExp[] = [
-    /^_[^/\\]*(\.[^/\\]+)?$/,
-    /\.spec\.[jt]s$/,
-    /\.test\.[jt]s$/,
-  ]
+  #excludes: RegExp[] = [...EXCLUDED_RESOURCE_FILES]
 
   protected logger: Logger
 

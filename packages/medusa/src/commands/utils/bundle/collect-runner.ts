@@ -13,7 +13,10 @@ import {
   MedusaModule,
   mergeLoadedSchema,
 } from "@medusajs/framework/modules-sdk"
-import { WorkflowManager } from "@medusajs/framework/orchestration"
+import {
+  WorkflowManager,
+  WorkflowScheduler,
+} from "@medusajs/framework/orchestration"
 import {
   BuildManifest,
   ContainerRegistrationKeys,
@@ -22,6 +25,7 @@ import {
   getResolvedPlugins,
   GraphQLUtils,
   HOOK_REGISTRATIONS_KEY,
+  isExcludedResourceFile,
   mergePluginModules,
   Modules,
   readDirRecursive,
@@ -82,7 +86,13 @@ const isSourceFile = (name: string) =>
 async function listFiles(dir: string) {
   const entries = await readDirRecursive(dir, { ignoreMissing: true })
   return entries
-    .filter((entry) => !entry.isDirectory() && isSourceFile(entry.name))
+    .filter(
+      (entry) =>
+        !entry.isDirectory() &&
+        isSourceFile(entry.name) &&
+        // Same exclusions as the runtime's resource discovery
+        !isExcludedResourceFile(entry.name)
+    )
     .map((entry) => join(entry.path, entry.name))
     .filter((file) => !file.includes("__tests__"))
 }
@@ -106,8 +116,17 @@ async function main() {
     },
   })
 
+  // Scheduled workflows register their schedule when defined: nothing is
+  // scheduled during collection, which only records them
+  WorkflowScheduler.setStorage({
+    schedule: async () => {},
+    remove: async () => {},
+    removeAll: async () => {},
+  } as any)
+
   // Record which file defines each workflow, and which registers each hook
   const workflowFiles = new Map<string, string>()
+  const scheduledWorkflows = new Set<string>()
   const originalRegister = WorkflowManager.register
   WorkflowManager.register = function (
     this: typeof WorkflowManager,
@@ -122,6 +141,9 @@ async function main() {
       .find((name) => name && !FRAMEWORK_FRAME.test(name))
     if (file && !workflowFiles.has(workflowId)) {
       workflowFiles.set(workflowId, file)
+    }
+    if ((arguments[3] as { schedule?: unknown } | undefined)?.schedule) {
+      scheduledWorkflows.add(workflowId)
     }
     return originalRegister.apply(this, arguments as any)
   } as typeof WorkflowManager.register
@@ -265,12 +287,32 @@ async function main() {
 
   // Workflows load on first use; files that define them aren't imported at
   // boot. Files that only register hooks load before the workflow first runs.
+  // Files that load at boot as they do today:
+  // - configured ones (`defineFileConfig`): whether they're enabled is
+  //   decided at runtime, and the loader unregisters disabled workflows
+  // - ones defining scheduled workflows, which schedule themselves when
+  //   defined
+  const eagerFiles = new Set<string>()
+  for (const [workflowId, file] of workflowFiles) {
+    if (getDefinedFileConfig(file)) {
+      kept[file] = "workflow: has a file config"
+      eagerFiles.add(file)
+    } else if (scheduledWorkflows.has(workflowId)) {
+      kept[file] = "workflow: scheduled"
+      eagerFiles.add(file)
+    }
+  }
   const definingFiles = new Set(workflowFiles.values())
   for (const [workflowId, file] of workflowFiles) {
-    manifest.workflows![workflowId] = file
+    if (!eagerFiles.has(file)) {
+      manifest.workflows![workflowId] = file
+    }
   }
   for (const file of definingFiles) {
-    if (workflowDirs.some((dir) => file.startsWith(dir + path.sep))) {
+    if (
+      !eagerFiles.has(file) &&
+      workflowDirs.some((dir) => file.startsWith(dir + path.sep))
+    ) {
       manifest.lazyWorkflowFiles!.push(file)
     }
   }
