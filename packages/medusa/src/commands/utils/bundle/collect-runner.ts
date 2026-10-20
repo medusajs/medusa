@@ -35,6 +35,7 @@ import {
 import { writeFileSync } from "fs"
 import path, { join, parse } from "path"
 import { initializeContainer } from "../../../loaders"
+import { buildWorkflowManifest } from "./workflow-manifest"
 
 const HTTP_METHODS = [
   "GET",
@@ -287,52 +288,17 @@ async function main() {
 
   // Workflows load on first use; files that define them aren't imported at
   // boot. Files that only register hooks load before the workflow first runs.
-  // Files that load at boot as they do today:
-  // - configured ones (`defineFileConfig`): whether they're enabled is
-  //   decided at runtime, and the loader unregisters disabled workflows
-  // - ones defining scheduled workflows, which schedule themselves when
-  //   defined
-  const eagerFiles = new Set<string>()
-  for (const [workflowId, file] of workflowFiles) {
-    if (getDefinedFileConfig(file)) {
-      kept[file] = "workflow: has a file config"
-      eagerFiles.add(file)
-    } else if (scheduledWorkflows.has(workflowId)) {
-      kept[file] = "workflow: scheduled"
-      eagerFiles.add(file)
-    }
-  }
-  const definingFiles = new Set(workflowFiles.values())
-  for (const [workflowId, file] of workflowFiles) {
-    if (!eagerFiles.has(file)) {
-      manifest.workflows![workflowId] = file
-    }
-  }
-  for (const file of definingFiles) {
-    if (
-      !eagerFiles.has(file) &&
-      workflowDirs.some((dir) => file.startsWith(dir + path.sep))
-    ) {
-      manifest.lazyWorkflowFiles!.push(file)
-    }
-  }
-  const hookFiles = new Set<string>()
-  for (const { workflowId, file } of (global as any)[HOOK_REGISTRATIONS_KEY]) {
-    // A file registering a hook on a workflow it defines loads with it
-    if (
-      !file ||
-      workflowFiles.get(workflowId) === file ||
-      getDefinedFileConfig(file)
-    ) {
-      continue
-    }
-    const files = (manifest.workflowHooks![workflowId] ??= [])
-    if (!files.includes(file)) {
-      files.push(file)
-    }
-    hookFiles.add(file)
-  }
-  manifest.lazyWorkflowFiles!.push(...hookFiles)
+  const workflowManifest = buildWorkflowManifest({
+    workflowFiles,
+    scheduledWorkflows,
+    hookRegistrations: (global as any)[HOOK_REGISTRATIONS_KEY],
+    workflowDirs,
+    hasFileConfig: (file) => !!getDefinedFileConfig(file),
+  })
+  manifest.workflows = workflowManifest.workflows
+  manifest.lazyWorkflowFiles = workflowManifest.lazyWorkflowFiles
+  manifest.workflowHooks = workflowManifest.workflowHooks
+  Object.assign(kept, workflowManifest.kept)
 
   // The query graph schema, as merged while the modules loaded
   const schemaInput = getLastMergedSchemaInput()
