@@ -372,6 +372,8 @@ const getDefaultScope = (): EvaluationScope => ({
   config: {
     version: globalConfig.version,
   },
+  // Matches what `getOsShortcut` from `docs-ui` renders on the server.
+  getOsShortcut: () => "⌘",
 })
 
 export const getCleanMd = async ({
