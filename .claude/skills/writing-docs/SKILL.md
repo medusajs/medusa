@@ -15,8 +15,15 @@ Skill for writing and updating MDX documentation across the `book`, `resources`,
 - **Never touch `www/apps/resources/references/`** — auto-generated, will be overwritten
 - **Never touch `www/apps/ui/specs/components/`** — auto-generated, will be overwritten
 - **Never touch `www/apps/api-reference/`** — managed by a separate process
-- **Never run `yarn prep` or `yarn lint:content`** — these run automatically after your session
 - **Never invent Cloudinary screenshot URLs** in user-guide — leave `<!-- TODO: add screenshot -->` instead
+
+## After Making Changes
+
+Run these from each project you changed (`www/apps/<project>`), in order:
+
+1. **Prep:** `yarn prep:turbo --force` in resources, `yarn prep` in book, ui, user-guide, and cloud
+2. **Content lint:** `yarn lint:content` (auto-fixes MDX; fix any remaining errors manually)
+3. **Code lint:** `yarn lint`, only if you changed non-MDX files (for example, sidebar `.mjs` files or `specs/examples/` in ui)
 
 ## Load Reference Files When Needed
 

@@ -22,6 +22,77 @@ function shouldExcludeResource(resource: string) {
   )
 }
 
+const SENSITIVE_HEADER_PATTERN =
+  /authorization|cookie|key|token|secret|session|password|credential/i
+
+/**
+ * Request headers reported as span attributes, without the ones that can carry
+ * credentials or session identifiers.
+ */
+function getSafeHeaders(headers: Record<string, unknown> = {}) {
+  return Object.fromEntries(
+    Object.entries(headers).filter(
+      ([name]) => !SENSITIVE_HEADER_PATTERN.test(name)
+    )
+  )
+}
+
+export type HttpInstrumentationOptions = {
+  /**
+   * The query parameters whose values are reported in the `url.query` span
+   * attribute. The values of other parameters are replaced with `REDACTED`.
+   * Pass `"*"` to report the full query string.
+   *
+   * @defaultValue ["fields", "expand", "limit", "offset", "order", "with_deleted"]
+   */
+  allowedQueryParams?: string[] | "*"
+}
+
+const DEFAULT_ALLOWED_QUERY_PARAMS = [
+  "fields",
+  "expand",
+  "limit",
+  "offset",
+  "order",
+  "with_deleted",
+]
+
+function stripQueryString(url: string = "") {
+  return url.split("?")[0]
+}
+
+function decodeQueryParamName(name: string) {
+  try {
+    return decodeURIComponent(name.replace(/\+/g, " "))
+  } catch {
+    return name
+  }
+}
+
+function getRedactedQueryString(
+  url: string = "",
+  allowedQueryParams: string[] | "*"
+) {
+  const queryIndex = url.indexOf("?")
+  const query = queryIndex === -1 ? "" : url.slice(queryIndex + 1)
+
+  if (!query || allowedQueryParams === "*") {
+    return query
+  }
+
+  const allowed = new Set(allowedQueryParams)
+
+  return query
+    .split("&")
+    .map((param) => {
+      const [rawName] = param.split("=")
+      const name = decodeQueryParamName(rawName)
+
+      return allowed.has(name.split("[")[0]) ? param : `${rawName}=REDACTED`
+    })
+    .join("&")
+}
+
 function setHttpStatusCode(span: Span, statusCode: number) {
   span.setAttributes({
     // "http.statusCode" is not a semantic convention, but it has been
@@ -70,7 +141,9 @@ function onResponseFinished(res: any): Promise<void> | void {
  * Instrument the first touch point of the HTTP layer to report traces to
  * OpenTelemetry
  */
-export function instrumentHttpLayer() {
+export function instrumentHttpLayer(options: HttpInstrumentationOptions = {}) {
+  const allowedQueryParams =
+    options.allowedQueryParams ?? DEFAULT_ALLOWED_QUERY_PARAMS
   const startCommand = require("../commands/start")
   const HTTPTracer = new Tracer("@medusajs/http", "2.0.0")
 
@@ -84,13 +157,16 @@ export function instrumentHttpLayer() {
       return await requestHandler()
     }
 
-    const traceName = handlerPath ?? `${req.method} ${req.url}`
+    const url = stripQueryString(req.url)
+    const query = getRedactedQueryString(req.url, allowedQueryParams)
+    const traceName = handlerPath ?? `${req.method} ${url}`
     await HTTPTracer.trace(traceName, async (span) => {
       span.setAttributes({
+        ...getSafeHeaders(req.headers),
         "http.route": handlerPath,
-        "http.url": req.url,
+        "http.url": url,
         "http.method": req.method,
-        ...req.headers,
+        ...(query ? { "url.query": query } : {}),
       })
 
       try {
@@ -119,7 +195,8 @@ export function instrumentHttpLayer() {
         return await handler(req, res)
       }
 
-      const label = req.route?.path ?? `${req.method} ${req.originalUrl}`
+      const label =
+        req.route?.path ?? `${req.method} ${stripQueryString(req.originalUrl)}`
       const traceName = `route handler: ${label}`
 
       await HTTPTracer.trace(traceName, async (span) => {
@@ -423,7 +500,7 @@ export function registerOtel(
     serviceName: string
     exporter?: SpanExporter
     instrument?: Partial<{
-      http: boolean
+      http: boolean | HttpInstrumentationOptions
       query: boolean
       workflows: boolean
       db: boolean
@@ -459,7 +536,9 @@ export function registerOtel(
     instrumentations.push(new PgInstrumentation())
   }
   if (instrument.http) {
-    instrumentHttpLayer()
+    instrumentHttpLayer(
+      typeof instrument.http === "object" ? instrument.http : undefined
+    )
   }
   if (instrument.query) {
     instrumentRemoteQuery()

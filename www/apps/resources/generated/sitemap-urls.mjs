@@ -466,6 +466,7 @@ export const sitemapUrls = [
   "/recipes/marketplace/examples/vendors",
   "/recipes/marketplace",
   "/recipes/multi-region-store",
+  "/recipes/omnichannel/marketplaces",
   "/recipes/omnichannel",
   "/recipes/oms",
   "/recipes",

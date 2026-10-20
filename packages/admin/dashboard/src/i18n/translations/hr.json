@@ -1017,6 +1017,24 @@
       "hint": "Kreiraj novog kupca i upravljaj njegovim podacima.",
       "successToast": "Kupac {{email}} je uspješno kreiran."
     },
+    "export": {
+      "header": "Izvoz liste kupaca",
+      "description": "Izvezite popis kupaca u datoteku.",
+      "success": {
+        "title": "Obrađujemo vaš izvoz",
+        "description": "Izvoz podataka može potrajati nekoliko minuta. Obavijestit ćemo vas kada završimo."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Odaberite format izvezene datoteke. JSON bilježi ugniježđene podatke između modula bez gubitka, što se preporučuje za zahtjeve za pristup podacima ispitanika.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filteri",
+        "description": "Primijenite filtre u prikazu tablice kako biste prilagodili ovaj prikaz"
+      }
+    },
     "groups": {
       "label": "Grupe kupaca",
       "remove": "Jeste li sigurni da želite ukloniti kupca iz grupe \"{{name}}\"?",
