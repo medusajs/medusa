@@ -132,6 +132,12 @@ Once the project is created and deployed, you'll receive a notification in the C
 
 ![The project status in the list of projects](https://res.cloudinary.com/dza7lstvk/image/upload/v1767786310/Cloud/CleanShot_2026-01-07_at_13.44.17_2x_cggzib.png)
 
+### Production Environment's Branch
+
+When you create a project, Medusa creates its Production environment and links it to your repository's default branch, such as `main`. This applies whether you create the project from a starter or from an existing repository. Medusa then deploys the Production environment every time you push a commit to that branch.
+
+To deploy Production from a different branch, [change the environment's branch](../environments/long-lived/page.mdx#change-environments-branch) after creating the project.
+
 ---
 
 ## Troubleshooting Project Creation
@@ -258,6 +264,8 @@ Then, to add a storefront to an existing project:
 4. Once you're done, click the "Create" button.
 
 Cloud will then deploy the storefront along with the Medusa application. Once the deployment is complete, you'll be able to access the storefront from the Production environment card in the project's dashboard.
+
+The storefront belongs to the project, not only to the Production environment. So, Medusa deploys it in every environment of the project, including Production, other long-lived environments like Staging, and preview environments, based on your plan's limits. Each environment's storefront connects to that environment's Medusa application. Learn more in the [Storefront Deployment](../storefront/page.mdx#storefront-deployment-per-environment) guide.
 
 You can also set a custom domain for the storefront, as explained in the [Custom Domains](../environments/custom-domains/page.mdx) guide.
 
