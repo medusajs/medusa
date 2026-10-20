@@ -140,6 +140,13 @@ export const recipesSidebar = [
     type: "link",
     path: "/recipes/omnichannel",
     title: "Omnichannel Store",
+    children: [
+      {
+        type: "link",
+        path: "/recipes/omnichannel/marketplaces",
+        title: "Marketplace Integrations",
+      },
+    ],
   },
   {
     type: "link",
