@@ -12,6 +12,7 @@ import {
   readlinkSync,
   realpathSync,
   rmSync,
+  Stats,
   statSync,
   symlinkSync,
 } from "fs"
@@ -1244,9 +1245,12 @@ async function copyTracedFiles({
       (type: string) => !STATIC_TRACE_REASONS.has(type)
     )
 
-  const target = path.join(outDir, "node_modules")
-  let files = 0
-  let bytes = 0
+  const candidates: { file: string; stat: Stats }[] = []
+  // Packages with something to copy besides their manifest and links: only
+  // those get a package.json and links. A package that's fully bundled must
+  // leave nothing behind, or lookups would find a package without its code
+  // (instead of resolving it from the bundle).
+  const withContent = new Set<string>()
   for (const relative of fileList as Set<string>) {
     const file = path.join("/", relative)
     if (
@@ -1258,9 +1262,36 @@ async function copyTracedFiles({
     ) {
       continue
     }
-    const destination = path.join(target, path.relative(nodeModulesRoot, file))
     const stat = lstatSync(file, { throwIfNoEntry: false })
-    if (!stat || existsSync(destination)) {
+    if (!stat) {
+      continue
+    }
+    candidates.push({ file, stat })
+    if (stat.isFile() && path.basename(file) !== "package.json") {
+      const root = nearestPackageDir(file)
+      if (root) {
+        withContent.add(root)
+      }
+    }
+  }
+
+  const target = path.join(outDir, "node_modules")
+  let files = 0
+  let bytes = 0
+  for (const { file, stat } of candidates) {
+    if (stat.isSymbolicLink()) {
+      const linked = realpathSync(file)
+      if (!withContent.has(nearestPackageDir(path.join(linked, "x")) ?? "")) {
+        continue
+      }
+    } else if (
+      path.basename(file) === "package.json" &&
+      !withContent.has(path.dirname(file))
+    ) {
+      continue
+    }
+    const destination = path.join(target, path.relative(nodeModulesRoot, file))
+    if (existsSync(destination)) {
       continue
     }
     mkdirSync(path.dirname(destination), { recursive: true })
@@ -1274,6 +1305,17 @@ async function copyTracedFiles({
     }
   }
   return { files, bytes }
+}
+
+// The closest directory with a package.json, as a path (not resolved)
+function nearestPackageDir(file: string): string | undefined {
+  for (let dir = path.dirname(file); path.dirname(dir) !== dir; ) {
+    if (existsSync(path.join(dir, "package.json"))) {
+      return dir
+    }
+    dir = path.dirname(dir)
+  }
+  return undefined
 }
 
 // Reasons @vercel/nft records for a file reached by a plain require/import
