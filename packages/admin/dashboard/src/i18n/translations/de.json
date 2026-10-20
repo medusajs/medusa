@@ -1083,6 +1083,24 @@
       "hint": "Erstellen Sie einen neuen Kunden und verwalten Sie dessen Daten.",
       "successToast": "Der Kunde {{email}} wurde erfolgreich erstellt."
     },
+    "export": {
+      "header": "Kundenliste exportieren",
+      "description": "Exportieren Sie die Kundenliste in eine Datei.",
+      "success": {
+        "title": "Wir verarbeiten Ihren Export",
+        "description": "Das Exportieren von Daten kann einige Minuten dauern. Wir benachrichtigen Sie, wenn wir fertig sind."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Wählen Sie das Format der exportierten Datei aus. JSON erfasst verschachtelte Daten über alle Module hinweg ohne Datenverlust, was für Datenschutz-Auskunftsersuchen empfohlen wird.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filter",
+        "description": "Wenden Sie Filter in der Tabellenübersicht an, um diese Ansicht anzupassen"
+      }
+    },
     "groups": {
       "label": "Kundengruppen",
       "remove": "Sind Sie sicher, dass Sie den Kunden aus der Kundengruppe „{{name}}“ entfernen möchten?",

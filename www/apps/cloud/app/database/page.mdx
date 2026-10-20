@@ -17,6 +17,8 @@ Each project environment has a dedicated PostgreSQL database. These databases ar
 
 This isolation allows you to safely make or test changes in environments without affecting one another, especially the production environment and its data.
 
+When you create a new long-lived environment, its database starts empty rather than as a copy of the Production environment's database. Learn more in the [Long-Lived Environments](../environments/long-lived/page.mdx#new-environments-database) guide.
+
 ![Diagram showcasing isolation between environment databases](https://res.cloudinary.com/dza7lstvk/image/upload/v1750174759/Cloud/databases-cloud_hzjyrn.jpg)
 
 ---

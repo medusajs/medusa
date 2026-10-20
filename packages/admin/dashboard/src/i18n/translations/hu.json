@@ -1083,6 +1083,24 @@
       "hint": "Hozzon létre egy új vásárlót.",
       "successToast": "Vásárló {{email}} sikeresen létrehozva."
     },
+    "export": {
+      "header": "Vásárlólista exportálása",
+      "description": "Exportálja a vásárlólistát egy fájlba.",
+      "success": {
+        "title": "Feldolgozás folyamatban",
+        "description": "Az exportálás néhány percet igénybe vehet. Értesítjük, amikor kész."
+      },
+      "format": {
+        "label": "Formátum",
+        "description": "Válassza ki az exportált fájl formátumát. A JSON formátum veszteség nélkül rögzíti az összes modul beágyazott adatait, amelyet adatvédelmi kérelmekhez ajánlunk.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Szűrők",
+        "description": "Alkalmazzon szűrőket a táblázat áttekintőjében a nézet szűkítéséhez"
+      }
+    },
     "groups": {
       "label": "Vásárlói csoportok",
       "remove": "Biztosan el akarja távolítani a vásárlót a(z) \"{{name}}\" csoportból?",

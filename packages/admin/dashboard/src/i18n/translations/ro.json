@@ -1100,6 +1100,24 @@
       "hint": "Creați un client nou și gestionați detaliile acestuia.",
       "successToast": "Client {{email}} a fost creat cu succes."
     },
+    "export": {
+      "header": "Exportați lista de clienți",
+      "description": "Exportați lista de clienți într-un fișier.",
+      "success": {
+        "title": "Procesăm exportul dvs.",
+        "description": "Exportul datelor poate dura câteva minute. Vă vom notifica când am terminat."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Alegeți formatul fișierului exportat. JSON capturează date imbricate din module fără pierderi, ceea ce este recomandat pentru cererile de acces la datele personale.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtre",
+        "description": "Aplicați filtre în tabloul de prezentare generală pentru a ajusta această vizualizare"
+      }
+    },
     "groups": {
       "label": "Grupuri de clienți",
       "remove": "Sigur doriți să eliminați clientul din \"{{name}}„grup de clienți?",
