@@ -21,6 +21,7 @@ import {
   startApp,
   syncLinks,
 } from "./medusa-test-runner-utils"
+import { getTestBundleDirectory } from "./medusa-test-runner-utils/bundle"
 import { waitWorkflowExecutions } from "./medusa-test-runner-utils/wait-workflow-executions"
 import { ulid } from "ulid"
 
@@ -95,6 +96,13 @@ class MedusaTestRunner {
     this.schema = config.schema ?? "public"
     this.cwd = config.cwd ?? config.medusaConfigFile ?? process.cwd()
     this.modulesConfigPath = config.medusaConfigFile ?? this.cwd
+    // Against a bundled build, the app is the bundle, built from the suite's
+    // app beforehand (see `getTestBundleDirectory`)
+    const bundleDirectory = getTestBundleDirectory()
+    if (bundleDirectory) {
+      this.cwd = bundleDirectory
+      this.modulesConfigPath = bundleDirectory
+    }
     this.env = config.env ?? {}
     this.debug = config.debug ?? false
 

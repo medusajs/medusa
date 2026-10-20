@@ -714,7 +714,11 @@ class MedusaModule {
             return typeof value === "function" ? value.bind(service) : value
           }
           // Never look like a promise, and nothing else to report until loaded
-          if (typeof prop === "symbol" || prop === "then" || prop === "toJSON") {
+          if (
+            typeof prop === "symbol" ||
+            prop === "then" ||
+            prop === "toJSON"
+          ) {
             return undefined
           }
           return async (...args: unknown[]) => {
@@ -729,7 +733,19 @@ class MedusaModule {
           }
           return true
         },
+        // Mirrors `set` (e.g. restoring a spied method deletes it)
+        deleteProperty(target, prop) {
+          delete target[prop]
+          if (loaded[keyName]) {
+            delete loaded[keyName][prop]
+          }
+          return true
+        },
       })
+
+      // Registered right away, as a loaded module registers itself: modules
+      // loading alongside get it injected (e.g. the Auth Module's cache)
+      container.register(keyName, asValue(services[keyName]))
 
       MedusaModule.setModuleResolution(keyName, resolution)
       MedusaModule.registerModule(keyName, {

@@ -32,7 +32,15 @@ import { writeFileSync } from "fs"
 import path, { join, parse } from "path"
 import { initializeContainer } from "../../../loaders"
 
-const HTTP_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"]
+const HTTP_METHODS = [
+  "GET",
+  "POST",
+  "PUT",
+  "PATCH",
+  "DELETE",
+  "OPTIONS",
+  "HEAD",
+]
 
 /**
  * Modules that always load at boot:
@@ -141,7 +149,10 @@ async function main() {
 
   // Import the resources the loaders would: core first, then plugins/app
   const medusaDist = path.resolve(__dirname, "../../..")
-  const apiDirs = [join(medusaDist, "api"), ...plugins.map((p) => join(p.resolve, "api"))]
+  const apiDirs = [
+    join(medusaDist, "api"),
+    ...plugins.map((p) => join(p.resolve, "api")),
+  ]
   const subscriberDirs = [
     join(medusaDist, "subscribers"),
     ...plugins.map((p) => join(p.resolve, "subscribers")),
@@ -192,7 +203,9 @@ async function main() {
         kept[file] = "middlewares: has an error handler"
         continue
       }
-      const routes: NonNullable<BuildManifest["middlewares"]>[string]["routes"] = []
+      const routes: NonNullable<
+        BuildManifest["middlewares"]
+      >[string]["routes"] = []
       let lazy = true
       for (const route of config.routes ?? []) {
         if (
@@ -210,7 +223,9 @@ async function main() {
               : String(route.matcher),
           ...(route.methods !== undefined && { methods: route.methods }),
           ...(route.policies !== undefined && { policies: route.policies }),
-          ...(route.bodyParser !== undefined && { bodyParser: route.bodyParser }),
+          ...(route.bodyParser !== undefined && {
+            bodyParser: route.bodyParser,
+          }),
           middlewareArity: (route.middlewares ?? []).map(
             (fn: Function) => fn.length
           ),
@@ -283,6 +298,28 @@ async function main() {
     }
   }
 
+  // Modules with loaders run them at boot, and loaders can persist state that
+  // other code reads directly (e.g. payment and fulfillment providers are
+  // registered in the database): deferring them would change behaviour
+  const hasLoaders = (resolution: any): boolean => {
+    try {
+      // Modules given by path export their definition from it
+      const exported =
+        resolution.moduleExports ??
+        (resolution.resolutionPath
+          ? require(resolution.resolutionPath)
+          : undefined)
+      return !!(exported?.default ?? exported)?.loaders?.length
+    } catch {
+      return false
+    }
+  }
+  const modulesWithLoaders = new Set(
+    MedusaModule.getAllModuleResolutions()
+      .filter(hasLoaders)
+      .map((resolution) => resolution.definition.key)
+  )
+
   // Modules that boot doesn't need load on first use
   for (const [key, service] of Object.entries(modules ?? {})) {
     if (Array.isArray(service) || !service) {
@@ -296,13 +333,19 @@ async function main() {
       kept[`module:${key}`] = "has lifecycle hooks"
       continue
     }
+    if (modulesWithLoaders.has(key)) {
+      kept[`module:${key}`] = "has loaders"
+      continue
+    }
     const joinerConfig = MedusaModule.getJoinerConfig(key) ?? null
     if (joinerConfig && !isPlainData(joinerConfig)) {
       kept[`module:${key}`] = "joiner config isn't plain data"
       continue
     }
     manifest.lazyModules![key] = {
-      joinerConfig: joinerConfig ? JSON.parse(JSON.stringify(joinerConfig)) : null,
+      joinerConfig: joinerConfig
+        ? JSON.parse(JSON.stringify(joinerConfig))
+        : null,
     }
   }
 

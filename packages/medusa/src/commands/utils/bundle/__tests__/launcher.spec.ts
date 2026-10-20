@@ -2,12 +2,7 @@ import { execFileSync, spawnSync } from "child_process"
 import { mkdtempSync, realpathSync, writeFileSync } from "fs"
 import { tmpdir } from "os"
 import path from "path"
-import {
-  BUNDLE_FILE_NAME,
-  BUNDLE_MARKER,
-  findBundle,
-  LAUNCHER,
-} from "../bundle-backend"
+import { BUNDLE_FILE_NAME, BUNDLE_MARKER, LAUNCHER } from "../bundle-backend"
 
 /**
  * Writes the launcher next to a stand-in for the bundle that prints the
@@ -110,18 +105,5 @@ describe("bundle launcher", () => {
     ])
     expect(result.status).toBe(1)
     expect(result.stderr.toString()).toContain(message)
-  })
-})
-
-describe("findBundle", () => {
-  it("finds the launcher in a directory", () => {
-    const dir = createBundleDir()
-    expect(findBundle(dir)).toMatch(new RegExp(`${BUNDLE_FILE_NAME}$`))
-  })
-
-  it("returns undefined without a bundle", () => {
-    expect(
-      findBundle(mkdtempSync(path.join(tmpdir(), "medusa-no-bundle-")))
-    ).toBeUndefined()
   })
 })

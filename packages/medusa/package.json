@@ -113,6 +113,7 @@
     "@medusajs/user": "2.21.2",
     "@medusajs/workflow-engine-inmemory": "2.21.2",
     "@medusajs/workflow-engine-redis": "2.21.2",
+    "@vercel/nft": "^1.11.0",
     "boxen": "^5.0.1",
     "chalk": "^4.1.2",
     "chokidar": "^4.0.3",
