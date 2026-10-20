@@ -149,8 +149,20 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       action: action as PromotionActions,
     })
 
+    // The cart's `item_total` and `total` already include the discounts of the
+    // promotions currently applied. Rules on those totals are evaluated against
+    // the totals before those discounts, so a promotion doesn't fail its own
+    // minimum when it is recomputed.
+    const computeActionContext = transform({ cart }, ({ cart }) => {
+      return {
+        ...cart,
+        item_total: cart.original_item_total ?? cart.item_total,
+        total: cart.original_total ?? cart.total,
+      }
+    })
+
     const actions = getActionsToComputeFromPromotionsStep({
-      computeActionContext: cart,
+      computeActionContext,
       promotionCodesToApply,
       additional_promotion_context: setPromotionContextResult,
     })

@@ -16,6 +16,7 @@ export const cartFieldsForRefreshSteps = [
   "item_total",
   "locale",
   "total",
+  "original_total",
   "original_item_subtotal",
   "item_subtotal",
   "shipping_subtotal",
