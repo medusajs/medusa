@@ -1,11 +1,13 @@
 import {
   createLinksWorkflow,
-  createLinksWorkflowId,
   dismissLinksWorkflow,
-  dismissLinksWorkflowId,
   updateLinksWorkflow,
-  updateLinksWorkflowId,
 } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
@@ -65,8 +67,21 @@ medusaIntegrationTestRunner({
       describe("createLinksWorkflow", () => {
         describe("compensation", () => {
           it("should dismiss links when step throws an error", async () => {
-            const workflow = createLinksWorkflow(appContainer)
-            const workflowId = createLinksWorkflowId
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Fail`)
+            })
+            const failingWorkflow = createWorkflow(
+              "test-links-then-fail-1",
+              (input: any) => {
+                const result = createLinksWorkflow.runAsStep({ input })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
             const inventoryItem = (
               await api.post(
                 `/admin/inventory-items`,
@@ -74,12 +89,6 @@ medusaIntegrationTestRunner({
                 adminHeaders
               )
             ).data.inventory_item
-
-            workflow.appendAction("throw", workflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
-            })
 
             const { errors } = await workflow.run({
               input: [
@@ -118,8 +127,21 @@ medusaIntegrationTestRunner({
       describe("updateLinksWorkflow", () => {
         describe("compensation", () => {
           it("should revert link data when step throws an error", async () => {
-            const workflow = updateLinksWorkflow(appContainer)
-            const workflowId = updateLinksWorkflowId
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Fail`)
+            })
+            const failingWorkflow = createWorkflow(
+              "test-links-then-fail-2",
+              (input: any) => {
+                const result = updateLinksWorkflow.runAsStep({ input })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
             const originalQuantity = 5
             const newQuantity = 10
             const inventoryItem = (
@@ -138,12 +160,6 @@ medusaIntegrationTestRunner({
               },
               adminHeaders
             )
-
-            workflow.appendAction("throw", workflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
-            })
 
             const { errors } = await workflow.run({
               input: [
@@ -185,13 +201,6 @@ medusaIntegrationTestRunner({
 
           it("should throw an error when a link is not found", async () => {
             const workflow = updateLinksWorkflow(appContainer)
-            const workflowId = updateLinksWorkflowId
-
-            workflow.appendAction("throw", workflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
-            })
 
             const { errors } = await workflow.run({
               input: [
@@ -223,8 +232,21 @@ medusaIntegrationTestRunner({
         describe("compensation", () => {
           it("should recreate dismissed links when step throws an error", async () => {
             const originalQuantity = 10
-            const workflow = dismissLinksWorkflow(appContainer)
-            const workflowId = dismissLinksWorkflowId
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Fail`)
+            })
+            const failingWorkflow = createWorkflow(
+              "test-links-then-fail-3",
+              (input: any) => {
+                const result = dismissLinksWorkflow.runAsStep({ input })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
             const inventoryItem = (
               await api.post(
                 `/admin/inventory-items`,
@@ -241,12 +263,6 @@ medusaIntegrationTestRunner({
               },
               adminHeaders
             )
-
-            workflow.appendAction("throw", workflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
-            })
 
             const { errors } = await workflow.run({
               input: [
@@ -286,14 +302,21 @@ medusaIntegrationTestRunner({
           })
 
           it("should pass dismiss step if link not found if next step throws error", async () => {
-            const workflow = dismissLinksWorkflow(appContainer)
-            const workflowId = dismissLinksWorkflowId
-
-            workflow.appendAction("throw", workflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Fail`)
             })
+            const failingWorkflow = createWorkflow(
+              "test-links-then-fail-4",
+              (input: any) => {
+                const result = dismissLinksWorkflow.runAsStep({ input })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const { errors } = await workflow.run({
               input: [

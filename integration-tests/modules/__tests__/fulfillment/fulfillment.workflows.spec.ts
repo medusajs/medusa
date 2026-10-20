@@ -1,11 +1,13 @@
 import {
   createFulfillmentWorkflow,
-  createFulfillmentWorkflowId,
   createShipmentWorkflow,
-  createShipmentWorkflowId,
   updateFulfillmentWorkflow,
-  updateFulfillmentWorkflowId,
 } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   IFulfillmentModuleService,
@@ -108,7 +110,8 @@ medusaIntegrationTestRunner({
             })
 
             expect(
-              transaction.context.invoke["get-location"].output.output
+              transaction.getContext().invoke["get-location"].output
+                .output as any
             ).toEqual({
               id: expect.any(String),
               created_at: expect.any(Date),
@@ -132,15 +135,23 @@ medusaIntegrationTestRunner({
 
         describe("compensation", () => {
           it("should cancel created fulfillment if step following step throws error", async () => {
-            const workflow = createFulfillmentWorkflow(appContainer)
-
-            workflow.appendAction("throw", createFulfillmentWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed to do something after creating fulfillment`
-                )
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(
+                `Failed to do something after creating fulfillment`
+              )
             })
+            const failingWorkflow = createWorkflow(
+              "test-create-fulfillment-then-fail",
+              (input: any) => {
+                const res = createFulfillmentWorkflow.runAsStep({ input })
+                failStep(res)
+                return new WorkflowResponse(res)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const shippingProfile = await service.createShippingProfiles({
               name: "test",
@@ -196,15 +207,23 @@ medusaIntegrationTestRunner({
       describe("updateFulfillmentWorkflow", () => {
         describe("compensation", () => {
           it("should rollback updated fulfillment if step following step throws error", async () => {
-            const workflow = updateFulfillmentWorkflow(appContainer)
-
-            workflow.appendAction("throw", updateFulfillmentWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed to do something after updating fulfillment`
-                )
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(
+                `Failed to do something after updating fulfillment`
+              )
             })
+            const failingWorkflow = createWorkflow(
+              "test-update-fulfillment-then-fail",
+              (input: any) => {
+                const res = updateFulfillmentWorkflow.runAsStep({ input })
+                failStep(res)
+                return new WorkflowResponse(res)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const shippingProfile = await service.createShippingProfiles({
               name: "test",
@@ -280,15 +299,21 @@ medusaIntegrationTestRunner({
       describe("createShipmentWorkflow", () => {
         describe("compensation", () => {
           it("should rollback shipment workflow if following step throws error", async () => {
-            const workflow = createShipmentWorkflow(appContainer)
-
-            workflow.appendAction("throw", createShipmentWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed to do something after creating shipment`
-                )
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Failed to do something after creating shipment`)
             })
+            const failingWorkflow = createWorkflow(
+              "test-create-shipment-then-fail",
+              (input: any) => {
+                const res = createShipmentWorkflow.runAsStep({ input })
+                failStep(res)
+                return new WorkflowResponse(res)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const shippingProfile = await service.createShippingProfiles({
               name: "test",

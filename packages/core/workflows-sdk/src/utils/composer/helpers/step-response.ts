@@ -1,8 +1,41 @@
-import {
-  PermanentStepFailureError,
-  SkipStepResponse,
-} from "@medusajs/orchestration"
 import { OrchestrationUtils, isDefined } from "@medusajs/utils"
+
+/**
+ * Thrown by `StepResponse.permanentFailure`. The engine does not retry it and
+ * passes its compensation input to the step's own compensation.
+ */
+export class PermanentStepFailureError extends Error {
+  readonly nonRetryable = true
+
+  constructor(message?: string, protected stepResponse?: StepResponse<any>) {
+    super(message)
+    this.name = "PermanentStepFailure"
+  }
+
+  get compensateInput(): unknown {
+    return this.stepResponse?.compensateInput
+  }
+
+  static isPermanentStepFailureError(
+    error: Error
+  ): error is PermanentStepFailureError {
+    return (
+      error instanceof PermanentStepFailureError ||
+      error?.name === "PermanentStepFailure"
+    )
+  }
+
+  getStepResponse() {
+    return this.stepResponse
+  }
+}
+
+/**
+ * Returned by `StepResponse.skip()`.
+ */
+export class SkipStepResponse {
+  readonly __type = "SkipStepResponse"
+}
 
 /**
  * This class is used to create the response returned by a step. A step return its data by returning an instance of `StepResponse`.

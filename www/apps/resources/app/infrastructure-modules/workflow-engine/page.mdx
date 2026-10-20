@@ -1,4 +1,4 @@
-import { CardList } from "docs-ui"
+import { Table } from "docs-ui"
 
 export const metadata = {
   title: `Workflow Engine Module`,
@@ -6,87 +6,324 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you'll learn what a Workflow Engine Module is and how to use it in your Medusa application.
+In this document, you'll learn what the Workflow Engine Module is, how to configure it, and how to upgrade to it from the In-Memory and Redis Workflow Engine Modules.
 
-## What is a Workflow Engine Module?
+## What is the Workflow Engine Module?
 
-A Workflow Engine Module handles tracking and recording the transactions and statuses of workflows and their steps. It can use custom mechanism or integrate a third-party service.
+The Workflow Engine Module runs the [workflows](!docs!/learn/fundamentals/workflows) of your Medusa application. It executes their steps, retries and compensates failed steps, runs scheduled workflows, and keeps a record of their executions.
+
+The module stores executions, timers, and schedules in your application's PostgreSQL database. So, it needs no other infrastructure: a single instance and a deployment with many server and worker instances both use the same module.
+
+<Note>
+
+Since [Medusa v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0), the Workflow Engine Module replaces the In-Memory and Redis Workflow Engine Modules. Learn how to upgrade in the [Upgrade from the In-Memory or Redis Module](#upgrade-from-the-in-memory-or-redis-module) section.
+
+</Note>
 
 ### Default Workflow Engine Module
 
-Medusa uses the [In-Memory Workflow Engine Module](./in-memory/page.mdx) by default. For production purposes, it's recommended to use the [Redis Workflow Engine Module](./redis/page.mdx) instead.
+Medusa registers the Workflow Engine Module by default, so you don't need to add it to `medusa-config.ts` unless you want to change its options.
 
 ---
 
-## How to Use the Workflow Engine Module?
+## Run a Workflow
 
-You can use the registered Workflow Engine Module as part of the [workflows](!docs!/learn/fundamentals/workflows) you build for your custom features. A workflow is a special function composed of a series of steps that guarantees data consistency and reliable roll-back mechanism.
+To run a workflow, resolve the Workflow Engine Module from the [Medusa container](!docs!/learn/fundamentals/medusa-container) and call its `run` method, passing it the workflow and its input.
 
-In a step of your workflow, you can resolve the Workflow Engine Module's service and use its methods to track and record the transactions and statuses of workflows and their steps.
+For example, in an API route:
 
-For example:
+export const runHighlights = [
+  ["11", "resolve", "Resolve the Workflow Engine Module."],
+  ["13", "run", "Run the workflow with its input."],
+]
 
-```ts
+```ts title="src/api/hello-world/route.ts" highlights={runHighlights}
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
-import { 
-  createStep,
-  createWorkflow,
-  StepResponse,
-  WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
+import helloWorldWorkflow from "../../workflows/hello-world"
 
-const step1 = createStep(
-  "step-1",
-  async ({}, { container }) => {
-    const workflowEngineService = container.resolve(
-      Modules.WORKFLOW_ENGINE
-    )
-
-    const [workflowExecution] = await workflowEngineService.listWorkflowExecutions({
-      transaction_id: transaction_id,
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await req.scope
+    .resolve(Modules.WORKFLOW_ENGINE)
+    .run(helloWorldWorkflow, {
+      input: {
+        name: "John",
+      },
     })
 
-    return new StepResponse(workflowExecution)
-  } 
-)
-
-export const workflow = createWorkflow(
-  "workflow-1",
-  () => {
-    const workflowExecution = step1()
-
-    return new WorkflowResponse(workflowExecution)
-  }
-)
+  res.send(result)
+}
 ```
 
-In the example above, you create a workflow that has a step. In the step, you resolve the service of the Workflow Engine Module from the [Medusa container](!docs!/learn/fundamentals/medusa-container).
+The `run` method infers the type of the input and result from the workflow you pass it.
 
-Then, you use the `listWorkflowExecutions` method of the Workflow Engine Module to list the workflow executions with the transaction ID `transaction_id`. The workflow execution is then returned as a response from the step and the workflow.
+<Note>
+
+The `run` method is available since [Medusa v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0). Running a workflow directly, such as `helloWorldWorkflow(req.scope).run()`, keeps working.
+
+</Note>
+
+Learn about the module's other methods, such as `setStepSuccess` and `subscribe`, in the [Use Workflow Engine Module](./how-to-use/page.mdx) guide.
+
+### Workflows Must Be in the src/workflows Directory
+
+Medusa registers the workflows that your `src/workflows` directory exports, the workflows used in [scheduled jobs](!docs!/learn/fundamentals/scheduled-jobs), and the workflows that other workflows run as steps. The Workflow Engine Module only runs registered workflows.
+
+If you run a workflow defined outside these locations, the module throws an error that the workflow isn't registered. Move the workflow's file to the `src/workflows` directory to fix it.
 
 ---
 
-## List of Workflow Engine Modules
+## Module Options
 
-Medusa provides the following Workflow Engine Modules.
+To change the module's options, add it to the `modules` property of `medusa-config.ts`:
 
-<CardList
-  items={[
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
     {
-      title: "In-Memory",
-      href: "/infrastructure-modules/workflow-engine/in-memory",
-      badge: {
-        variant: "neutral",
-        children: "For Development"
-      }
+      resolve: "@medusajs/medusa/workflows",
+      options: {
+        notifier: {
+          type: "redis",
+          url: process.env.REDIS_URL,
+        },
+      },
     },
+  ],
+})
+```
+
+The module accepts the following options:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+`notifier`
+
+      </Table.Cell>
+      <Table.Cell>
+
+How instances tell each other that new work is due, such as a step that finished in another instance. Pass `{ type: "redis", url: "..." }` to use Redis. Without a notifier, instances find new work by checking for it every `pollIntervalMs`. The module ignores this option when `store` is `"memory"`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+Polling
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+`pollIntervalMs`
+
+      </Table.Cell>
+      <Table.Cell>
+
+How often, in milliseconds, an idle instance checks for due timers, scheduled workflows, and steps to resume. With a notifier, checking only catches wake-ups that were lost, so the default is longer.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`1000`, or `30000` with a notifier
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+`recovery`
+
+      </Table.Cell>
+      <Table.Cell>
+
+Instances send heartbeats, and one instance resumes the executions of an instance that stopped sending them for `leaseTtlMs`, for example after a crash. Pass an object with `heartbeatIntervalMs`, `leaseTtlMs`, and `reaperIntervalMs` to change the intervals, or `false` to turn recovery off. The module ignores this option when `store` is `"memory"`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`{ heartbeatIntervalMs: 5000, leaseTtlMs: 30000, reaperIntervalMs: 10000 }`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+`maxConcurrentRuns`
+
+      </Table.Cell>
+      <Table.Cell>
+
+The maximum number of executions that an instance resumes at once from timers and schedules.
+
+      </Table.Cell>
+      <Table.Cell>
+
+Unlimited
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+`shutdownGraceMs`
+
+      </Table.Cell>
+      <Table.Cell>
+
+How long, in milliseconds, an instance waits for running steps when it shuts down. After that, another instance resumes the executions.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`10000`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+`store`
+
+      </Table.Cell>
+      <Table.Cell>
+
+Where to store executions. `"memory"` keeps them in the process, so the module needs no database. Use it only with a single instance, for example in development: executions are lost when the process stops, a crashed execution isn't recovered, and instances don't share work.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`"postgres"` when your application has a database connection, otherwise `"memory"`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+`instanceId`
+
+      </Table.Cell>
+      <Table.Cell>
+
+A unique ID of the instance, used in heartbeats.
+
+      </Table.Cell>
+      <Table.Cell>
+
+A new ID for each process.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Server and Worker Instances
+
+When you deploy Medusa with separate [server and worker instances](!docs!/learn/production/worker-mode), the server instances hand background work to the worker instances. This includes async steps, steps that wait for a retry interval, and scheduled workflows. A server instance still runs the steps of a workflow it starts until the workflow finishes or waits.
+
+### Events Emitted in Workflows
+
+The Workflow Engine Module stores the events that a workflow's steps emit with the execution, and the [Event Module](../event/page.mdx) emits them once the workflow succeeds. If the workflow fails, the module discards them.
+
+Workflows that start before your application finishes starting, for example in loaders or in scripts that you run with `medusa exec`, group their events in the Event Module as before, instead of storing them with the execution.
+
+Events are emitted at least once: if an instance crashes after emitting events and before recording it, another instance emits them again. So, make your subscribers safe to run more than once for the same event.
+
+---
+
+## Upgrade from the In-Memory or Redis Module
+
+Before Medusa v2.22.0, you used the In-Memory Workflow Engine Module in development and the Redis Workflow Engine Module in production. Since v2.22.0, the Workflow Engine Module replaces both.
+
+### 1. Wait for Running Workflows to Finish
+
+The Workflow Engine Module doesn't resume executions started by the previous modules. So, before you deploy the upgrade, make sure no long-running workflow is in progress.
+
+While your application still runs the previous version, send a request to the [List Workflow Executions API route](!api!/admin/workflows-executions/list-workflows-executions) with the `state` query parameter set to `invoking`. Wait until it returns no executions, then deploy the upgrade. After the upgrade, this API route only returns executions of the Workflow Engine Module, so it can't show executions of the previous modules.
+
+On startup, the Workflow Engine Module logs a warning that lists the IDs of unfinished executions of the previous modules, if it finds any.
+
+### 2. Update medusa-config.ts
+
+You can remove the `@medusajs/medusa/workflow-engine-inmemory` and `@medusajs/medusa/workflow-engine-redis` entries from `medusa-config.ts`. If you keep them, `defineConfig` replaces them with the Workflow Engine Module and logs a warning. It also uses the Redis URL of the Redis Workflow Engine Module as the URL of the module's Redis notifier.
+
+To keep using Redis for faster communication between instances, set the `notifier` option:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
     {
-      title: "Redis",
-      href: "/infrastructure-modules/workflow-engine/redis",
-      badge: {
-        variant: "green",
-        children: "For Production"
-      }
-    }
-  ]}
-/>
+      resolve: "@medusajs/medusa/workflows",
+      options: {
+        notifier: {
+          type: "redis",
+          url: process.env.REDIS_URL,
+        },
+      },
+    },
+  ],
+})
+```
+
+The Redis Workflow Engine Module's queue and worker options have no equivalent.
+
+### 3. Run the Migrations
+
+The Workflow Engine Module stores executions in new tables. Run the migrations to create them:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+The executions of the previous modules stay in the `workflow_execution` table, but the Medusa Admin and the List Workflow Executions API route only show executions of the Workflow Engine Module.
+
+### 4. Run Workflows Through the Module (Optional)
+
+Running a workflow directly, such as `myWorkflow(container).run()`, keeps working. You can also run it with the module's [run method](#run-a-workflow).
+
+The `run` method checks the workflow's input type. If you switch to it, you may see type errors where your code passed an input that doesn't match the workflow's input type.
+
+### 5. Move Workflows to the src/workflows Directory
+
+The Workflow Engine Module only runs registered workflows. Medusa registers the workflows exported from files in the `src/workflows` directory and the workflows they run as steps. Move workflows defined elsewhere, such as in an API route's file, to the `src/workflows` directory.
+
+### 6. Remove Redis Keys of the Redis Module
+
+If you used the Redis Workflow Engine Module, you can remove its keys from Redis after the upgrade:
+
+```bash
+redis-cli --scan --pattern "bull:medusa-workflows*" \
+  | xargs -r redis-cli del
+redis-cli --scan --pattern "dtrx:*" | xargs -r redis-cli del
+```
+
+### Removed Exports
+
+The following exports are removed:
+
+- The `@medusajs/framework/orchestration` entry point, including `TransactionOrchestrator`, `LocalWorkflow`, and `WorkflowManager`.
+- `MedusaWorkflow` from `@medusajs/framework/workflows-sdk`.
+- The `createWorkflowExecutions` and `updateWorkflowExecutions` methods of the Workflow Engine Module.
+
+### Behavior Changes
+
+- When a step has a `retryInterval`, `run` waits until the step succeeds or fails after its retries, instead of returning while the step waits for its next retry.
+- A scheduled workflow doesn't start a new execution while its previous execution is still running. Set the `concurrency` schedule option to `"allow"` to change this.
+- Events that workflows emit are emitted at least once. Refer to the [Events Emitted in Workflows](#events-emitted-in-workflows) section.

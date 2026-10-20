@@ -41,7 +41,7 @@ medusaIntegrationTestRunner({
         )
 
         const workflowName = "workflow-admin/workflow-executions"
-        createWorkflow(
+        const workflow1 = createWorkflow(
           {
             name: workflowName,
             retentionTime: 50,
@@ -52,6 +52,9 @@ medusaIntegrationTestRunner({
             return new WorkflowResponse(stepRes)
           }
         )
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([workflow1])
 
         const engine = container.resolve(Modules.WORKFLOW_ENGINE)
 
@@ -110,7 +113,7 @@ medusaIntegrationTestRunner({
 
         const workflowId =
           "workflow-f" + Math.random().toString(36).substring(2, 15)
-        createWorkflow(
+        const workflow2 = createWorkflow(
           {
             name: workflowId,
             retentionTime: 60,
@@ -120,6 +123,9 @@ medusaIntegrationTestRunner({
             return new WorkflowResponse(void 0)
           }
         )
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([workflow2])
 
         const transactionId =
           "trx_123_f" + Math.random().toString(36).substring(2, 15)
@@ -182,7 +188,7 @@ medusaIntegrationTestRunner({
 
         const workflowId =
           "workflow_s" + Math.random().toString(36).substring(2, 15)
-        createWorkflow(
+        const workflow3 = createWorkflow(
           {
             name: workflowId,
             retentionTime: 60,
@@ -192,6 +198,9 @@ medusaIntegrationTestRunner({
             return new WorkflowResponse(void 0)
           }
         )
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([workflow3])
 
         const transactionId =
           "trx_123_s" + Math.random().toString(36).substring(2, 15)
@@ -253,13 +262,16 @@ medusaIntegrationTestRunner({
 
         const workflowId =
           "workflow" + Math.random().toString(36).substring(2, 15)
-        createWorkflow(workflowId, function (input) {
+        const workflow4 = createWorkflow(workflowId, function (input) {
           step1()
           step2().config({
             async: true,
           })
           return new WorkflowResponse("workflow")
         })
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([workflow4])
 
         const step1_1 = createStep({ name: "step1_1" }, async () => {
           return new StepResponse("step1_1")
@@ -271,13 +283,16 @@ medusaIntegrationTestRunner({
 
         const workflow2Id =
           "workflow_2" + Math.random().toString(36).substring(2, 15)
-        createWorkflow(workflow2Id, function (input) {
+        const workflow5 = createWorkflow(workflow2Id, function (input) {
           step1_1()
           step2_1().config({
             async: true,
           })
           return new WorkflowResponse("workflow_2")
         })
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([workflow5])
 
         const transactionId =
           "trx_123" + Math.random().toString(36).substring(2, 15)

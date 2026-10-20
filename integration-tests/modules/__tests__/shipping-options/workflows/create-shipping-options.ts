@@ -1,4 +1,9 @@
 import { createShippingOptionsWorkflow } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   FulfillmentSetDTO,
@@ -303,19 +308,21 @@ medusaIntegrationTestRunner({
             ],
           }
 
-        const workflow = createShippingOptionsWorkflow(container)
-
-        workflow.addAction(
-          "throw",
-          {
-            invoke: async function failStep() {
-              throw new Error(`Failed to create shipping options`)
-            },
-          },
-          {
-            noCompensation: true,
+        const failStep = createStep("throw", async () => {
+          throw new Error(`Failed to create shipping options`)
+        })
+        const failingWorkflow = createWorkflow(
+          "test-create-shipping-options-then-fail",
+          (input: any) => {
+            const res = createShippingOptionsWorkflow.runAsStep({ input })
+            failStep(res)
+            return new WorkflowResponse(res)
           }
         )
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([failingWorkflow])
+        const workflow = failingWorkflow(container)
 
         const { errors } = await workflow.run({
           input: [shippingOptionData],

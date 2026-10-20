@@ -3377,6 +3377,7 @@ __metadata:
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
     "@medusajs/framework": 2.21.2
+    "@medusajs/workflow-engine": 2.21.2
     csv-parse: ^7.0.2
     deeks: ^3.2.1
     json-2-csv: ^5.5.11
@@ -3625,10 +3626,10 @@ __metadata:
     "@medusajs/cli": 2.21.2
     "@medusajs/deps": 2.21.2
     "@medusajs/modules-sdk": 2.21.2
-    "@medusajs/orchestration": 2.21.2
     "@medusajs/telemetry": 2.21.2
     "@medusajs/types": 2.21.2
     "@medusajs/utils": 2.21.2
+    "@medusajs/workflow-engine": 2.21.2
     "@medusajs/workflows-sdk": 2.21.2
     "@types/express": ^4.17.21
     chokidar: ^4.0.3
@@ -3923,8 +3924,7 @@ __metadata:
     "@medusajs/telemetry": 2.21.2
     "@medusajs/translation": 2.21.2
     "@medusajs/user": 2.21.2
-    "@medusajs/workflow-engine-inmemory": 2.21.2
-    "@medusajs/workflow-engine-redis": 2.21.2
+    "@medusajs/workflows": 2.21.2
     boxen: ^5.0.1
     chalk: ^4.1.2
     chokidar: ^4.0.3
@@ -4005,17 +4005,6 @@ __metadata:
   dependencies:
     "@medusajs/medusa-oas-cli": 2.21.2
     execa: ^5.1.1
-  languageName: unknown
-  linkType: soft
-
-"@medusajs/orchestration@2.21.2, @medusajs/orchestration@workspace:packages/core/orchestration":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/orchestration@workspace:packages/core/orchestration"
-  dependencies:
-    "@medusajs/deps": 2.21.2
-    "@medusajs/types": 2.21.2
-    "@medusajs/utils": 2.21.2
-    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -4364,30 +4353,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-inmemory@2.21.2, @medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
+"@medusajs/workflow-engine@2.21.2, @medusajs/workflow-engine@workspace:*, @medusajs/workflow-engine@workspace:packages/core/workflow-engine":
   version: 0.0.0-use.local
-  resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory"
+  resolution: "@medusajs/workflow-engine@workspace:packages/core/workflow-engine"
   dependencies:
-    "@medusajs/framework": 2.21.2
-    "@medusajs/test-utils": 2.21.2
+    "@types/pg": ^8.11.0
     cron-parser: ^4.9.0
-    ulid: ^2.3.0
-  peerDependencies:
-    "@medusajs/framework": 2.21.2
-  languageName: unknown
-  linkType: soft
-
-"@medusajs/workflow-engine-redis@2.21.2, @medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis"
-  dependencies:
-    "@medusajs/framework": 2.21.2
-    "@medusajs/test-utils": 2.21.2
-    bullmq: 5.13.0
     ioredis: ^5.4.1
+    pg: ^8.16.3
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/framework": 2.21.2
+    ioredis: ^5.4.1
+  peerDependenciesMeta:
+    ioredis:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -4397,10 +4376,27 @@ __metadata:
   dependencies:
     "@medusajs/deps": 2.21.2
     "@medusajs/modules-sdk": 2.21.2
-    "@medusajs/orchestration": 2.21.2
     "@medusajs/types": 2.21.2
     "@medusajs/utils": 2.21.2
+    "@medusajs/workflow-engine": 2.21.2
     ulid: ^2.3.0
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/workflows@2.21.2, @medusajs/workflows@workspace:*, @medusajs/workflows@workspace:packages/modules/workflows":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/workflows@workspace:packages/modules/workflows"
+  dependencies:
+    "@medusajs/framework": 2.21.2
+    "@medusajs/test-utils": 2.21.2
+    "@medusajs/workflow-engine": 2.21.2
+    ulid: ^2.3.0
+  peerDependencies:
+    "@medusajs/framework": 2.21.2
+    ioredis: ^5.4.1
+  peerDependenciesMeta:
+    ioredis:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -10602,6 +10598,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/pg@npm:^8.11.0":
+  version: 8.23.1
+  resolution: "@types/pg@npm:8.23.1"
+  dependencies:
+    "@types/node": "*"
+    pg-protocol: "*"
+    pg-types: ^2.2.0
+  checksum: 0e39ff7dbe233e1e50b172d87fe84cca086a52e255adb104ef1d60619cded356c4414427ffbea58e70a5a985c3036603c8e544ca2937fc1cf4050185109973be
+  languageName: node
+  linkType: hard
+
 "@types/pluralize@npm:^0.0.33":
   version: 0.0.33
   resolution: "@types/pluralize@npm:0.0.33"
@@ -16481,6 +16488,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"integration-tests-bench@workspace:integration-tests/bench":
+  version: 0.0.0-use.local
+  resolution: "integration-tests-bench@workspace:integration-tests/bench"
+  dependencies:
+    "@medusajs/workflow-engine": "workspace:*"
+    "@swc/jest": ^0.2.36
+    ioredis: ^5.4.1
+    jest: ^29.7.0
+    pg: ^8.16.3
+  languageName: unknown
+  linkType: soft
+
 "integration-tests-http@workspace:integration-tests/http":
   version: 0.0.0-use.local
   resolution: "integration-tests-http@workspace:integration-tests/http"
@@ -16511,7 +16530,7 @@ __metadata:
     "@medusajs/types": "workspace:^"
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
-    "@medusajs/workflow-engine-inmemory": "workspace:*"
+    "@medusajs/workflows": "workspace:*"
     "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     form-data: ^4.0.4
@@ -16555,7 +16574,7 @@ __metadata:
     "@medusajs/types": "workspace:^"
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
-    "@medusajs/workflow-engine-inmemory": "workspace:*"
+    "@medusajs/workflows": "workspace:*"
     "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     faker: ^5.5.3

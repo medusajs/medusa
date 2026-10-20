@@ -9,6 +9,9 @@ import {
 import {
   isObject,
   isString,
+  LEGACY_WORKFLOW_ENGINE_PACKAGE_NAMES,
+  MODULE_PACKAGE_NAMES,
+  Modules,
   normalizeImportPathWithSource,
 } from "@medusajs/utils"
 import { ModulesDefinition } from "../definitions"
@@ -42,6 +45,8 @@ export const registerMedusaModule = ({
     throw new Error(`Module: ${moduleKey} has no declaration.`)
   }
 
+  assertNotLegacyWorkflowEngine(modDeclaration)
+
   if (
     isObject(modDeclaration) &&
     modDeclaration?.scope === MODULE_SCOPE.EXTERNAL
@@ -67,6 +72,30 @@ export const registerMedusaModule = ({
   )
 
   return moduleResolutions
+}
+
+// defineConfig replaces these, so only a config that bypasses it gets here.
+function assertNotLegacyWorkflowEngine(
+  moduleDeclaration:
+    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+    | string
+    | false
+) {
+  const resolve = isString(moduleDeclaration)
+    ? moduleDeclaration
+    : isObject(moduleDeclaration) && "resolve" in moduleDeclaration
+    ? moduleDeclaration.resolve
+    : undefined
+  if (
+    isString(resolve) &&
+    LEGACY_WORKFLOW_ENGINE_PACKAGE_NAMES.includes(resolve)
+  ) {
+    throw new Error(
+      `The workflow engine module "${resolve}" is no longer available. Use "${
+        MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE]
+      }" instead, or define your config with defineConfig, which replaces it.`
+    )
+  }
 }
 
 function getCustomModuleResolution(

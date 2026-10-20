@@ -16,6 +16,7 @@ import {
   createStep,
   createWorkflow,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
@@ -38,6 +39,8 @@ import {
   PaymentCollectionStatus,
   ProductStatus,
   remoteQueryObjectFromString,
+  TransactionStepState,
+  GROUPED_EVENT_BUS_TARGET,
 } from "@medusajs/utils"
 import {
   adminHeaders,
@@ -907,6 +910,9 @@ medusaIntegrationTestRunner({
               forceFailStep()
             }
           )
+          await appContainer
+            .resolve(Modules.WORKFLOW_ENGINE)
+            .registerWorkflows([staleCompensationWorkflow])
 
           const staleRun = await staleCompensationWorkflow(appContainer).run({
             input: { payment_session_id: paymentSession.id },
@@ -1170,7 +1176,6 @@ medusaIntegrationTestRunner({
             },
           })
 
-          let grouppedEventBefore: Message[] = []
           let eventGroupId!: string
 
           /**
@@ -1183,35 +1188,50 @@ medusaIntegrationTestRunner({
             // noop
           })
 
-          const workflow = completeCartWorkflow(appContainer)
-
-          workflow.addAction("throw", {
-            invoke: async function failStep({ context }) {
-              eventGroupId = context!.eventGroupId!
-              grouppedEventBefore = (
-                (eventBus as any).groupedEventsMap_ as Map<string, any>
-              ).get(context!.eventGroupId!)
-
-              throw new Error(
-                `Failed to do something before ending complete cart workflow`
+          // Events of a workflow are staged with the run and only reach the
+          // underlying bus once the run succeeds.
+          const underlyingBus =
+            (eventBus as any)[GROUPED_EVENT_BUS_TARGET] ?? eventBus
+          const emitted = jest.spyOn(eventBus, "emit")
+          const published = jest.spyOn(underlyingBus, "emit")
+          const messagesOfGroup = (spy: jest.SpyInstance) =>
+            spy.mock.calls
+              .flatMap(([data]) => (Array.isArray(data) ? data : [data]))
+              .filter(
+                (message: Message) =>
+                  message?.metadata?.eventGroupId === eventGroupId
               )
-            },
-          })
 
-          const { errors } = await workflow.run({
+          const failStep = createStep("throw", async (_, context) => {
+            eventGroupId = context.eventGroupId!
+
+            throw new Error(
+              `Failed to do something before ending complete cart workflow`
+            )
+          })
+          const failingWorkflow = createWorkflow(
+            "test-complete-cart-then-fail",
+            (input: WorkflowData<{ id: string }>) => {
+              const result = completeCartWorkflow.runAsStep({ input })
+              failStep(result)
+              return new WorkflowResponse(result)
+            }
+          )
+          await appContainer
+            .resolve(Modules.WORKFLOW_ENGINE)
+            .registerWorkflows([failingWorkflow])
+
+          const { errors } = await failingWorkflow(appContainer).run({
             input: {
               id: cart.id,
             },
             throwOnError: false,
           })
 
-          const grouppedEventAfter =
-            ((eventBus as any).groupedEventsMap_ as Map<string, any>).get(
-              eventGroupId
-            ) ?? []
-
-          expect(grouppedEventBefore).toHaveLength(17)
-          expect(grouppedEventAfter).toHaveLength(0) // events have been compensated
+          expect(messagesOfGroup(emitted).length).toBeGreaterThan(0)
+          expect(messagesOfGroup(published)).toHaveLength(0) // events have been compensated
+          emitted.mockRestore()
+          published.mockRestore()
 
           expect(errors[0].error.message).toBe(
             "Failed to do something before ending complete cart workflow"
@@ -1377,16 +1397,9 @@ medusaIntegrationTestRunner({
               },
             })
 
-          let completeCartCalled = false
           const workflow = processPaymentWorkflow(appContainer)
 
-          workflow.addAction("track-complete-cart-step", {
-            invoke: async function trackStep({ invoke }) {
-              completeCartCalled = !!invoke["complete-cart-after-payment-step"]
-            },
-          })
-
-          await workflow.run({
+          const { transaction } = await workflow.run({
             input: {
               action: "captured",
               data: {
@@ -1396,6 +1409,14 @@ medusaIntegrationTestRunner({
             },
           })
 
+          const completeCartStep = Object.values(
+            transaction.getFlow().steps
+          ).find(
+            (step) =>
+              step.definition.action === "complete-cart-after-payment-step"
+          )
+          const completeCartCalled =
+            completeCartStep?.invoke.state === TransactionStepState.DONE
           expect(completeCartCalled).toBe(false)
         })
 
@@ -1506,18 +1527,11 @@ medusaIntegrationTestRunner({
           // cross-tenant incident where an unrelated cart was completed.
           await paymentModule.authorizePaymentSession(paymentSession.id, {})
 
-          let completeCartCalled = false
           const workflow = processPaymentWorkflow(appContainer)
-
-          workflow.addAction("track-complete-cart-step", {
-            invoke: async function trackStep({ invoke }) {
-              completeCartCalled = !!invoke["complete-cart-after-payment-step"]
-            },
-          })
 
           // A webhook whose payment intent has no Medusa session_id (e.g. an
           // event from a co-tenant store sharing the same provider account).
-          await workflow.run({
+          const { transaction } = await workflow.run({
             input: {
               action: "captured",
               data: {
@@ -1527,6 +1541,14 @@ medusaIntegrationTestRunner({
             },
           })
 
+          const completeCartStep = Object.values(
+            transaction.getFlow().steps
+          ).find(
+            (step) =>
+              step.definition.action === "complete-cart-after-payment-step"
+          )
+          const completeCartCalled =
+            completeCartStep?.invoke.state === TransactionStepState.DONE
           expect(completeCartCalled).toBe(false)
 
           const orders = await query.graph({

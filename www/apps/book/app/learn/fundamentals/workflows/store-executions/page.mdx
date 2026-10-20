@@ -1,5 +1,3 @@
-import { Prerequisites } from "docs-ui"
-
 export const metadata = {
   title: `${pageNumber} Store Workflow Executions`,
 }
@@ -23,15 +21,6 @@ You can view stored workflow executions from the Medusa Admin dashboard by going
 ---
 
 ## How to Store Workflow's Executions?
-
-<Prerequisites
-  items={[
-    {
-      text: "Redis Workflow Engine must be installed and configured.",
-      link: "!resources!/infrastructure-modules/workflow-engine/redis"
-    }
-  ]}
-/>
 
 `createWorkflow` from the Workflows SDK can accept an object as a first parameter to set the workflow's configuration. To enable storing a workflow's executions:
 
@@ -76,6 +65,36 @@ Whenever you execute the `helloWorkflow` now, its execution details will be stor
 Storing a workflow's executions also allows you to [cancel an execution](../cancel-workflow/page.mdx) by its transaction ID after it's done.
 
 </Note>
+
+### Durability of Executions
+
+<Note>
+
+The `durability` option is available since [Medusa v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
+
+</Note>
+
+The [Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine) saves an execution to the database at different levels of detail, called durability. Medusa picks the durability of a workflow from its options and steps:
+
+- `none`: The execution isn't saved. Medusa uses this level for short workflows that don't store their executions. It's the fastest level.
+- `summary`: The execution is saved when it starts and when it finishes. Medusa uses this level when you enable `store`, set `retentionTime`, or enable `idempotent`.
+- `full`: The execution is saved after every step, so another instance can resume it after a crash. Medusa uses this level for [long-running workflows](../long-running-workflow/page.mdx), and for workflows with a `timeout` or with steps that set `retryInterval` or `timeout`.
+
+To save more of an execution than Medusa picks, set the `durability` option of the workflow. For example, to resume a workflow after a crash even though it has no async steps:
+
+```ts highlights={[["4"]]}
+export const helloWorkflow = createWorkflow(
+  {
+    name: "hello-workflow",
+    durability: "full",
+  },
+  () => {
+    step1()
+  }
+)
+```
+
+Medusa never uses a lower level than the workflow needs. For example, setting `durability` to `none` on a long-running workflow has no effect.
 
 ---
 

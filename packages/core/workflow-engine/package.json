@@ -1,0 +1,57 @@
+{
+  "name": "@medusajs/workflow-engine",
+  "version": "2.21.2",
+  "description": "Durable workflow engine with pluggable stores",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./postgres": "./dist/store/postgres/index.js",
+    "./testing": "./dist/testing/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medusajs/medusa.git",
+    "directory": "packages/core/workflow-engine"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__fixtures__",
+    "!dist/**/__mocks__"
+  ],
+  "author": "Medusa",
+  "license": "MIT",
+  "dependencies": {
+    "cron-parser": "^4.9.0",
+    "ulid": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.0",
+    "ioredis": "^5.4.1",
+    "pg": "^8.16.3"
+  },
+  "peerDependencies": {
+    "ioredis": "^5.4.1"
+  },
+  "peerDependenciesMeta": {
+    "ioredis": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
+    "watch": "yarn run -T tsc --build --watch",
+    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src",
+    "test:integration": "../../../node_modules/.bin/jest --forceExit --runInBand --testPathPattern=integration-tests/__tests__"
+  }
+}

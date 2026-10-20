@@ -43,7 +43,6 @@
 "@medusajs/notification-local": minor
 "@medusajs/notification-sendgrid": minor
 "@medusajs/notification": minor
-"@medusajs/orchestration": minor
 "@medusajs/order": minor
 "@medusajs/payment-stripe": minor
 "@medusajs/payment": minor
@@ -65,8 +64,6 @@
 "@medusajs/types": minor
 "@medusajs/user": minor
 "@medusajs/utils": minor
-"@medusajs/workflow-engine-inmemory": minor
-"@medusajs/workflow-engine-redis": minor
 "@medusajs/workflows-sdk": minor
 "create-medusa-app": minor
 ---

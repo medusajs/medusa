@@ -1,17 +1,36 @@
 import { container } from "@medusajs/framework"
 import { logger } from "@medusajs/framework/logger"
+import {
+  collectWorkflows,
+  registerWorkflows,
+} from "@medusajs/framework/workflows"
+import { IWorkflowEngineService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import { ModuleCacheManager } from "./module-cache-manager"
 import { RecoveryService } from "./recovery-service"
 import { RouteReloader } from "./reloaders/routes"
 import { SubscriberReloader } from "./reloaders/subscribers"
 import { WorkflowReloader } from "./reloaders/workflows"
 import { ResourceRegistry } from "./resource-registry"
-import { DevServerGlobals, ReloadParams } from "./types"
+import { DevServerGlobals, DevWorkflowRegistry, ReloadParams } from "./types"
 import { JobReloader } from "./reloaders/jobs"
 import { ModuleReloader } from "./reloaders/modules"
 import { HMRReloadError } from "./errors"
 
 let sharedCacheManager!: ModuleCacheManager
+
+const workflowRegistry: DevWorkflowRegistry = {
+  async unregister(id) {
+    await container
+      .resolve<IWorkflowEngineService>(Modules.WORKFLOW_ENGINE, {
+        allowUnregistered: true,
+      })
+      ?.unregisterWorkflows([id])
+  },
+  async register(fileExports) {
+    await registerWorkflows(container, collectWorkflows(fileExports))
+  },
+}
 const sharedRegistry = new ResourceRegistry()
 
 const reloaders = {} as {
@@ -50,7 +69,7 @@ function initializeReloaders(logSource: string, rootDirectory: string) {
 
   if (!reloaders.workflowsReloader) {
     const workflowReloader = new WorkflowReloader(
-      globals.WorkflowManager,
+      workflowRegistry,
       sharedCacheManager,
       sharedRegistry,
       reloadResources,
@@ -63,7 +82,7 @@ function initializeReloaders(logSource: string, rootDirectory: string) {
 
   if (!reloaders.jobsReloader) {
     const jobReloader = new JobReloader(
-      globals.WorkflowManager,
+      workflowRegistry,
       sharedCacheManager,
       container,
       sharedRegistry,

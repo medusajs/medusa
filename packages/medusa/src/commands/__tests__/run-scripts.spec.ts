@@ -47,6 +47,10 @@ jest.mock("@medusajs/framework/utils", () => ({
   Modules: { SEARCH: "search" },
 }))
 
+jest.mock("../../loaders/helpers/register-core-workflows", () => ({
+  registerCoreWorkflows: jest.fn(),
+}))
+
 jest.mock("../utils", () => ({
   ensureDbExists: jest.fn(),
 }))

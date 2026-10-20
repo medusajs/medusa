@@ -1,5 +1,4 @@
 /* eslint-disable no-case-declarations */
-import { WorkflowManager } from "@medusajs/orchestration"
 import * as path from "path"
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "fs"
 import registerWorkflows from "../utils/register-workflows.js"
@@ -27,14 +26,8 @@ export default async function (workflowPath: string, options: Options) {
     )
   }
 
-  for (const [name, code] of workflowDefinitions) {
-    const workflow = WorkflowManager.getWorkflow(name)
-
-    if (!workflow) {
-      continue
-    }
-
-    const diagram = diagramBuilder.buildDiagram(workflow.flow_)
+  for (const [name, { code, definition }] of workflowDefinitions) {
+    const diagram = diagramBuilder.buildDiagram(definition)
     if (!existsSync(options.output)) {
       mkdirSync(options.output, { recursive: true })
     }

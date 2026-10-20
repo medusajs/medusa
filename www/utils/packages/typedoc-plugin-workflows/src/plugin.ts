@@ -13,8 +13,10 @@ import {
   SignatureReflection,
 } from "typedoc"
 import ts, { SyntaxKind, VariableStatement } from "typescript"
-import { WorkflowManager, WorkflowDefinition } from "@medusajs/framework/orchestration"
 import Helper, { WORKFLOW_AS_STEP_SUFFIX } from "./utils/helper.js"
+import WorkflowRegistry, {
+  type WorkflowDefinition,
+} from "./utils/workflow-registry.js"
 import {
   findReflectionInNamespaces,
   isWorkflow,
@@ -44,6 +46,7 @@ class WorkflowsPlugin {
   protected app: Application
   protected helper: Helper
   protected examplesHelper: Examples
+  protected workflowRegistry: WorkflowRegistry
   protected workflowsTagsMap: Map<string, string[]>
   protected addTagsAfterParsing: {
     [k: string]: {
@@ -53,10 +56,11 @@ class WorkflowsPlugin {
   }
   protected events: MedusaEvent[] = []
 
-  constructor(app: Application) {
+  constructor(app: Application, workflowRegistry: WorkflowRegistry) {
     this.app = app
     this.helper = new Helper()
     this.examplesHelper = new Examples()
+    this.workflowRegistry = workflowRegistry
     this.workflowsTagsMap = new Map()
     this.addTagsAfterParsing = {}
 
@@ -171,9 +175,9 @@ class WorkflowsPlugin {
     parentReflection: DeclarationReflection
     workflowReflection: SignatureReflection
   }) {
-    // use the workflow manager to check whether something in the constructor
-    // body is a step/hook
-    const workflow = WorkflowManager.getWorkflow(workflowId)
+    // use the workflow's definition to check whether something in the
+    // constructor body is a step/hook
+    const workflow = this.workflowRegistry.get(workflowId)
     const resources: string[] = []
 
     if (!ts.isBlock(constructorFn.body)) {
@@ -380,7 +384,8 @@ class WorkflowsPlugin {
         stepId &&
         stepType &&
         stepReflection &&
-        workflow?.handlers_.get(stepId)
+        workflow &&
+        this.workflowRegistry.hasStep(workflow, stepId)
       ) {
         steps.push({
           stepReflection,
