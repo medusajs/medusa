@@ -88,6 +88,8 @@ To log into the Medusa Admin of the preview environment, click the "Log in with 
 
 You can also [send requests to the preview deployment's API](../../deployments/page.mdx#access-live-deployment).
 
+Preview environment URLs are publicly accessible, and Cloud doesn't have a built-in option to password-protect them. To keep a preview storefront private, refer to the [Restrict Access to a Deployment](../../deployments/access/page.mdx#restrict-access-to-a-deployment) guide.
+
 ### Preview URL Format
 
 Medusa generates the preview environment URL for the Medusa application by:
@@ -101,6 +103,12 @@ Medusa generates the preview environment URL for the Medusa application by:
 For example, if your PR's branch name is `feat/product-review` and the project's handle is `m1234`, the URL of the deployed preview environment would be `https://featproduct-review-m1234.medusajs.app`.
 
 For the storefront, the same format is used, but with a `medusajs.site` subdomain. For example, the storefront URL could be `https://featproduct-review-m1234.medusajs.site`.
+
+<Note>
+
+Cloud doesn't add a `noindex` directive to preview environment URLs, so search engines can index them if they discover them. Learn how to prevent indexing in the [Access Deployment](../../deployments/access/page.mdx#manage-search-engine-indexing) guide.
+
+</Note>
 
 ---
 

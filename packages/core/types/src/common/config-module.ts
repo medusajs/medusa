@@ -1012,6 +1012,35 @@ export type ProjectConfigOptions = {
       string,
       { entity_type: string; auth_provider: string }[]
     >
+
+    /**
+     * This configuration specifies the auth providers that only authenticate auth identities already associated with an actor of the
+     * requested actor type. For example, you want to refuse logging in to `/auth/user/emailpass` with a customer's credentials.
+     *
+     * `requireActorAssociation` is a map where the auth provider ID (eg. `emailpass`) is the key, and the value is a boolean indicating whether
+     * the association is required. An auth identity is associated with an actor type when its `app_metadata` has the `{actor_type}_id` property.
+     * This only applies to authentication, so registering a new auth identity still works.
+     *
+     * By default, when the option isn't set for a provider, an auth identity can authenticate as any actor type, for example to allow an admin user
+     * to create a customer account with the same email.
+     *
+     * @example
+     *
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       requireActorAssociation: {
+     *         emailpass: true,
+     *       },
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    requireActorAssociation?: Record<string, boolean>
     /**
      * Specifies the fields that can't be selected in the response unless specified in the allowed query config.
      * This is useful to restrict sensitive fields from being exposed in the API.
