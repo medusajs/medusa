@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-fix(medusa): stop exporting sensitive HTTP headers and URL query strings in spans
+fix(medusa): stop exporting sensitive HTTP headers in spans, and redact URL query param values outside a configurable allowlist
