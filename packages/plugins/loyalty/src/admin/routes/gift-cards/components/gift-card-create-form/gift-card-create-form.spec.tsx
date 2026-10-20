@@ -120,6 +120,27 @@ function renderForm(locale: string) {
 }
 
 describe("GiftCardCreateForm", () => {
+  it.each(["k", "m", "b", "K", "M", "B"])(
+    "does not multiply the amount when %s is entered",
+    async (suffix) => {
+      const input = renderForm("fr-FR") as HTMLInputElement
+      fireEvent.change(input, { target: { value: "14" } })
+      fireEvent.change(input, { target: { value: `14${suffix}` } })
+      expect(input.value).toBe("14")
+      fireEvent.change(input, { target: { value: `${input.value},` } })
+      expect(input.value).toBe("14,")
+      fireEvent.change(input, { target: { value: `${input.value}13` } })
+      fireEvent.blur(input)
+      fireEvent.click(screen.getByText("Create"))
+      await waitFor(() =>
+        expect(state.createGiftCard).toHaveBeenCalledWith(
+          expect.objectContaining({ value: 14.13 }),
+          expect.any(Object)
+        )
+      )
+    }
+  )
+
   it.each([
     ["fr-FR", "14,13", 14.13],
     ["pl-PL", "14,13", 14.13],

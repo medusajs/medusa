@@ -161,6 +161,7 @@ export const GiftCardCreateForm = ({
                             allowDecimals={true}
                             formatValueOnBlur={true}
                             allowNegativeValue={false}
+                            disableAbbreviations={true}
                             autoComplete="off"
                             tabIndex={-1}
                             onValueChange={(_value, _name, values) => {
