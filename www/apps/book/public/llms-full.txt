@@ -5159,6 +5159,8 @@ In Medusa, you integrate a third-party system by:
 2. Building workflows that complete tasks spanning across systems. You use the module that integrates a third-party system in the workflow's steps.
 3. Executing the workflows you built in an [API route](undefined/learn/fundamentals/api-routes), at a scheduled time, or when an event is emitted.
 
+Refer to the [Marketplace Integrations](undefined/resources/recipes/omnichannel/marketplaces) guide to learn how to apply this pattern to marketplaces like Amazon, eBay, and TikTok Shop.
+
 ***
 
 ## Next Chapters: Sync Brands Example
@@ -6449,7 +6451,9 @@ The `NodeSDKConfiguration` properties are accepted since Medusa v2.5.1.
 - exporter: (\[SpanExporter]\(https://open-telemetry.github.io/opentelemetry-js/interfaces/\_opentelemetry\_sdk-node.node.SpanExporter.html)) An instance of an exporter, such as Zipkin.
 - instrument: (\`object\`) Options specifying what to trace.
 
-  - http: (\`boolean\`) Whether to trace HTTP requests.
+  - http: (\`boolean\` | \`object\`) Whether to trace HTTP requests. Since Medusa v2.22.0, you can pass an object to configure HTTP tracing instead. Learn more in the \[Configure HTTP Tracing]\(#configure-http-tracing) section.
+
+    - allowedQueryParams: (\`string\[]\` | \`"\*"\`) The query parameters whose values are reported in the \`url.query\` span attribute. Medusa replaces the values of other query parameters with \`REDACTED\`. Pass \`"\*"\` to report the full query string.
 
   - query: (\`boolean\`) Whether to trace Query usages.
 
@@ -6459,6 +6463,50 @@ The `NodeSDKConfiguration` properties are accepted since Medusa v2.5.1.
 
   - cache: (\`boolean\`) Whether to trace cache operations.
 - instrumentations: (\[Instrumentation\[]]\(https://open-telemetry.github.io/opentelemetry-js/interfaces/\_opentelemetry\_instrumentation.Instrumentation.html)) Additional instrumentation options that OpenTelemetry accepts.
+
+### Configure HTTP Tracing
+
+HTTP tracing options are available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
+
+When Medusa traces an HTTP request, it reports the request's URL path, method, route, status code, and headers as span attributes. To avoid leaking sensitive data to your exporter, Medusa:
+
+- Removes the query string from the `http.url` attribute and from span names.
+- Reports the query string in a separate `url.query` attribute, replacing the values of query parameters that aren't allowed with `REDACTED`. By default, Medusa only reports the values of the `fields`, `expand`, `limit`, `offset`, `order`, and `with_deleted` query parameters.
+- Doesn't report request headers whose names contain `authorization`, `cookie`, `key`, `token`, `secret`, `session`, `password`, or `credential`. For example, Medusa doesn't report the `authorization`, `cookie`, and `x-publishable-api-key` headers.
+
+For example, Medusa reports a request to `/store/products?q=shoes&limit=10` with the `url.query` attribute set to `q=REDACTED&limit=10`.
+
+To change the query parameters whose values Medusa reports, pass an object with the `allowedQueryParams` property to the `instrument.http` option:
+
+```ts title="instrumentation.ts"
+export function register() {
+  registerOtel({
+    serviceName: "medusajs",
+    exporter,
+    instrument: {
+      http: {
+        allowedQueryParams: ["q", "limit", "offset"],
+      },
+      workflows: true,
+      query: true,
+      db: true,
+      cache: true,
+    },
+  })
+}
+```
+
+In this example, Medusa reports the values of the `q`, `limit`, and `offset` query parameters, and replaces the values of other query parameters with `REDACTED`. Medusa matches array parameters by their base name, so `category_id` also allows `category_id[]`.
+
+To report the full query string without redaction, set `allowedQueryParams` to `"*"`:
+
+```ts title="instrumentation.ts"
+http: {
+  allowedQueryParams: "*",
+},
+```
+
+Query parameters can hold personal data or secrets, such as search terms, email addresses, or OAuth codes. Only allow query parameters whose values are safe to send to your exporter.
 
 ***
 
@@ -6480,7 +6528,7 @@ If you check traces in your exporter, you'll find new traces reported.
 
 Trace span names start with the following keywords based on what it's reporting:
 
-- `{methodName} {URL}` when reporting HTTP requests, where `{methodName}` is the HTTP method, and `{URL}` is the URL the request is sent to.
+- `{methodName} {URL}` when reporting HTTP requests, where `{methodName}` is the HTTP method, and `{URL}` is the URL path the request is sent to, without the query string.
 - `route:` when reporting route handlers running on an HTTP request.
 - `middleware:` when reporting a middleware running on an HTTP request.
 - `workflow:` when reporting a workflow execution.
@@ -103580,6 +103628,8 @@ You've now set up the product feed API route for your Medusa application. Meta a
 
 You can add more fields to the product feed based on your use case. Refer to [Meta](https://www.facebook.com/business/help/120325381656392) and [Google](https://support.google.com/merchants/answer/7052112)'s product feed specifications for more details on available fields and their formats.
 
+To sell on other marketplaces and channels, such as Amazon, TikTok Shop, or Pinterest, refer to the [Marketplace Integrations](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/recipes/omnichannel/marketplaces) guide.
+
 ### Learn More about Medusa
 
 If you're new to Medusa, check out the [main documentation](undefined/docs/learn), where you'll get a more in-depth understanding of all the concepts you've used in this guide and more.
@@ -131735,7 +131785,7 @@ Next, you set the global propagator to Sentry's propagator, which allows Sentry 
 Finally, you export a `register` function that registers OpenTelemetry. It uses the `registerOtel` function from Medusa, which accepts [OpenTelemetry configurations](https://open-telemetry.github.io/opentelemetry-js/interfaces/_opentelemetry_sdk-node.NodeSDKConfiguration.html) with the following custom Medusa options:
 
 - `serviceName`: The name of your service, which you set to "medusa". You can change it to a more descriptive name if needed.
-- `instrument`: An object that specifies what to trace in your Medusa application. You enable tracing for HTTP requests, workflows, Query usages, and database operations by setting their respective properties to `true`.
+- `instrument`: An object that specifies what to trace in your Medusa application. You enable tracing for HTTP requests, workflows, Query usages, and database operations by setting their respective properties to `true`. Since Medusa v2.22.0, you can also pass an object to `http` to choose which query parameter values Medusa reports to Sentry. Learn more in the [Instrumentation](undefined/docs/learn/debugging-and-testing/instrumentation#configure-http-tracing) chapter.
 
 You can add any additional configurations to either Sentry or OpenTelemetry as needed for your use case.
 
@@ -174905,6 +174955,537 @@ Future versions of the Translation Module will expand translation support to add
 - [Localizing Storefronts](undefined/storefront-development/localization): Learn how to localize your storefront applications.
 
 
+# Integrate External Marketplaces and Social Channels
+
+In this guide, you'll find which external marketplace and social commerce integrations the Medusa documentation covers, and how to integrate a marketplace that doesn't have a dedicated guide.
+
+This guide is about selling your Medusa products on external marketplaces, such as Amazon or TikTok Shop. To build your own marketplace where multiple vendors sell products, refer to the [Marketplace recipe](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/recipes/marketplace).
+
+## Documented Integrations
+
+The following table lists the external channels that have a dedicated guide in the Medusa documentation:
+
+|Channel|Guide|Approach|
+|---|---|---|
+|Meta (Facebook and Instagram)|[Product Feed for Meta and Google](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/how-to-tutorials/tutorials/product-feed)|Product feed that Meta pulls periodically.|
+|Google (Merchant Center)|[Product Feed for Meta and Google](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/how-to-tutorials/tutorials/product-feed)|Product feed that Google pulls periodically.|
+|ChatGPT and other AI agents|[Agentic Commerce](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/how-to-tutorials/tutorials/agentic-commerce)|Product feed and checkout API routes that follow the Agentic Commerce Protocol.|
+
+For any other system, the Medusa documentation provides a generic integration pattern that applies to all third-party systems:
+
+- [Integrate Third-Party Systems](undefined/docs/learn/customization/integrate-systems): Learn how to integrate a system in a module and sync data with workflows, subscribers, and scheduled jobs.
+- [Best Practices for Third-Party Syncing](undefined/docs/learn/best-practices/third-party-sync): Learn how to sync large amounts of data without performance issues.
+- [Integrate ERP](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/recipes/erp): A full example of two-way product and order syncing with an external system. The same patterns apply to marketplaces.
+
+***
+
+## Marketplaces Without a Dedicated Guide
+
+The Medusa documentation doesn't have a dedicated guide for the following marketplaces and channels. You can still integrate them by following the [general approach](#general-approach-to-integrate-a-marketplace) in this guide.
+
+The table also lists the integration approach that commonly fits each channel. Always check the channel's developer documentation for its current requirements and access policies.
+
+|Channel|Suggested Approach|
+|---|---|
+|TikTok Shop|API sync with the [TikTok Shop Partner API](https://partner.tiktokshop.com/) for products, inventory, and orders.|
+|Amazon|API sync with the [Selling Partner API (SP-API)](https://developer-docs.amazon.com/sp-api) for listings, inventory, and orders.|
+|eBay|API sync with eBay's [Sell APIs](https://developer.ebay.com/) for inventory, offers, and order fulfillment.|
+|Walmart Marketplace|API sync with the [Walmart Marketplace APIs](https://developer.walmart.com/) for items, inventory, and orders.|
+|Target Plus (Target+)|API sync. Target Plus is invite-only, so you receive integration details after Target approves you as a partner.|
+|Pinterest|Product feed, similar to the [Meta and Google product feed](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/how-to-tutorials/tutorials/product-feed). Adjust the fields to Pinterest's catalog specifications.|
+|Microsoft (Microsoft Merchant Center)|Product feed, similar to the [Meta and Google product feed](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/how-to-tutorials/tutorials/product-feed). Adjust the fields to Microsoft Merchant Center's feed specifications.|
+|YouTube Shopping|YouTube Shopping uses your Google Merchant Center catalog, so the [Meta and Google product feed](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/how-to-tutorials/tutorials/product-feed) covers the product data.|
+
+***
+
+## Choose an Integration Approach
+
+Marketplace integrations generally use one of the following approaches:
+
+- **Product feed**: You expose an [API route](undefined/docs/learn/fundamentals/api-routes) that returns your product catalog in the format the channel expects, such as XML or CSV. The channel pulls the feed periodically. This approach is one-way and fits channels that only list your products and redirect customers to your storefront for checkout. The [Meta and Google product feed](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/how-to-tutorials/tutorials/product-feed) tutorial shows this approach.
+- **API sync**: You call the marketplace's API to create and update listings, and you import orders placed on the marketplace into Medusa. This approach is two-way and fits marketplaces that handle checkout themselves, such as Amazon, eBay, Walmart, and TikTok Shop.
+
+***
+
+## General Approach to Integrate a Marketplace
+
+The following steps describe how to integrate a marketplace using the API sync approach. They build on the generic [Integrate Third-Party Systems](undefined/docs/learn/customization/integrate-systems) pattern.
+
+### 1. Create a Sales Channel for the Marketplace
+
+Create a [sales channel](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/sales-channel) for each marketplace, such as "Amazon" or "TikTok Shop". Then, add to the sales channel the products you want to sell on that marketplace.
+
+The sales channel lets you:
+
+- Control which products you sync to the marketplace.
+- Track orders that customers placed on the marketplace.
+- Associate the marketplace with specific stock locations to manage its inventory.
+
+You can create the sales channel from the [Medusa Admin](undefined/user-guide/settings/sales-channels), or programmatically in a workflow. For example:
+
+```ts title="src/workflows/create-marketplace-channel.ts"
+import {
+  createWorkflow,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  createSalesChannelsWorkflow,
+  linkProductsToSalesChannelWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+export const createMarketplaceChannelWorkflow = createWorkflow(
+  "create-marketplace-channel",
+  (input: { product_ids: string[] }) => {
+    const salesChannels = createSalesChannelsWorkflow
+      .runAsStep({
+        input: {
+          salesChannelsData: [{ name: "Amazon" }],
+        },
+      })
+
+    linkProductsToSalesChannelWorkflow.runAsStep({
+      input: {
+        id: salesChannels[0].id,
+        add: input.product_ids,
+      },
+    })
+  }
+)
+```
+
+### 2. Integrate the Marketplace in a Module
+
+Create a [module](undefined/docs/learn/fundamentals/modules) whose service wraps the marketplace's API client. For example, the service has methods to create listings, update stock quantities, retrieve new orders, and mark orders as shipped.
+
+Pass the marketplace's credentials, such as API keys or OAuth client details, as [module options](undefined/docs/learn/fundamentals/modules/options), and store their values in environment variables.
+
+For example, the module's service may look like this:
+
+```ts title="src/modules/marketplace/service.ts"
+type Options = {
+  apiKey: string
+}
+
+export default class MarketplaceModuleService {
+  private options: Options
+  private client
+
+  constructor({}, options: Options) {
+    this.options = options
+    // TODO initialize the marketplace's API client
+  }
+
+  async upsertListing(listing: Record<string, unknown>) {
+    // create or update the listing on the marketplace
+    return this.client.listings.upsert(listing)
+  }
+
+  async updateStockQuantity(sku: string, quantity: number) {
+    return this.client.inventory.update(sku, { quantity })
+  }
+
+  async retrieveOrders(createdAfter: Date) {
+    return this.client.orders.list({ createdAfter })
+  }
+
+  async markOrderAsShipped(id: string, trackingIds: string[]) {
+    return this.client.orders.ship(id, { trackingIds })
+  }
+}
+```
+
+Then, register the module in `medusa-config.ts` and pass its options. The rest of the examples in this guide assume that the module's name is `marketplace`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "./src/modules/marketplace",
+      options: {
+        apiKey: process.env.MARKETPLACE_API_KEY,
+      },
+    },
+  ],
+})
+```
+
+If you need to store marketplace data in Medusa, such as the ID of a listing on the marketplace, create a data model in the module and [link it](undefined/docs/learn/fundamentals/module-links) to the related Medusa data model, such as a product variant.
+
+### 3. Sync Products and Prices
+
+Create a [workflow](undefined/docs/learn/fundamentals/workflows) that retrieves products in the marketplace's sales channel and creates or updates their listings using your module's service. Then, execute the workflow from:
+
+- A [subscriber](undefined/docs/learn/fundamentals/events-and-subscribers) that listens to [product events](undefined/references/product/events), such as `product.updated`, to sync changes as they happen.
+- A [scheduled job](undefined/docs/learn/fundamentals/scheduled-jobs) that runs a full sync periodically to catch any missed changes.
+
+For example, the workflow may look like this:
+
+```ts title="src/workflows/sync-listings.ts"
+import {
+  createStep,
+  createWorkflow,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+type Input = {
+  product_ids: string[]
+}
+
+const syncListingsStep = createStep(
+  "sync-listings",
+  async ({ products }, { container }) => {
+    const marketplaceService = container.resolve("marketplace")
+    const salesChannelId = await marketplaceService.getSalesChannelId()
+
+    for (const product of products) {
+      const isInChannel = product.sales_channels.some(
+        (channel) => channel.id === salesChannelId
+      )
+      if (!isInChannel) {
+        continue
+      }
+      // TODO map the product to the marketplace's format
+      await marketplaceService.upsertListing(product)
+    }
+
+    return new StepResponse()
+  }
+)
+
+export const syncListingsWorkflow = createWorkflow(
+  "sync-listings",
+  (input: Input) => {
+    const { data: products } = useQueryGraphStep({
+      entity: "product",
+      fields: [
+        "*",
+        "sales_channels.id",
+        "variants.*",
+        "variants.prices.*",
+      ],
+      filters: { id: input.product_ids },
+    })
+
+    syncListingsStep({
+      products,
+    })
+  }
+)
+```
+
+Then, execute the workflow in a subscriber when a product is updated:
+
+```ts title="src/subscribers/product-updated.ts"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+import {
+  syncListingsWorkflow,
+} from "../workflows/sync-listings"
+
+export default async function productUpdatedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  await syncListingsWorkflow(container).run({
+    input: {
+      product_ids: [data.id],
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "product.updated",
+}
+```
+
+### 4. Sync Inventory
+
+Keep the marketplace's stock quantities in sync with Medusa to avoid overselling. Create a workflow that retrieves the inventory levels of the synced variants and updates the marketplace. Execute it from a scheduled job, or from a subscriber that listens to [Inventory Module events](undefined/references/inventory/events).
+
+For example, the workflow may use the [getVariantAvailability](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/product/guides/variant-inventory) utility to retrieve the available quantity of each variant in the marketplace's sales channel:
+
+```ts title="src/workflows/sync-inventory.ts"
+import {
+  ContainerRegistrationKeys,
+  getVariantAvailability,
+} from "@medusajs/framework/utils"
+import {
+  createStep,
+  createWorkflow,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+type Input = {
+  variants: { id: string; sku: string }[]
+}
+
+const syncStockStep = createStep(
+  "sync-stock",
+  async (input: Input, { container }) => {
+    const query = container.resolve(
+      ContainerRegistrationKeys.QUERY
+    )
+    const marketplaceService = container.resolve("marketplace")
+    const salesChannelId = await marketplaceService.getSalesChannelId()
+
+    const availability = await getVariantAvailability(query, {
+      variant_ids: input.variants.map((variant) => variant.id),
+      sales_channel_id: salesChannelId,
+    })
+
+    for (const variant of input.variants) {
+      await marketplaceService.updateStockQuantity(
+        variant.sku,
+        availability[variant.id].availability
+      )
+    }
+
+    return new StepResponse()
+  }
+)
+
+export const syncInventoryWorkflow = createWorkflow(
+  "sync-inventory",
+  (input: Input) => {
+    syncStockStep(input)
+  }
+)
+```
+
+Then, execute the workflow in a scheduled job:
+
+```ts title="src/jobs/sync-marketplace-inventory.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import {
+  syncInventoryWorkflow,
+} from "../workflows/sync-inventory"
+
+export default async function syncInventoryJob(
+  container: MedusaContainer
+) {
+  // TODO retrieve the variants synced to the marketplace
+  const variants: { id: string; sku: string }[] = []
+
+  await syncInventoryWorkflow(container).run({
+    input: {
+      variants,
+    },
+  })
+}
+
+export const config = {
+  name: "sync-marketplace-inventory",
+  schedule: "*/15 * * * *", // Every 15 minutes
+}
+```
+
+### 5. Import Marketplace Orders
+
+Import orders placed on the marketplace into Medusa so that you fulfill all orders from one system:
+
+- If the marketplace sends webhooks, create an [API route](undefined/docs/learn/fundamentals/api-routes) that receives them. Use the [raw request body](undefined/docs/learn/fundamentals/api-routes/parse-body#preserve-raw-body-data-for-webhooks) to verify the webhook's signature.
+- Otherwise, create a scheduled job that retrieves new orders from the marketplace periodically.
+
+In both cases, create the order in a workflow that uses Medusa's [createOrderWorkflow](undefined/references/medusa-workflows/createOrderWorkflow), and set the order's sales channel to the marketplace's sales channel. Store the marketplace's order ID, for example in the order's `metadata`, to avoid importing the same order twice.
+
+For example, the workflow may look like this:
+
+```ts title="src/workflows/import-marketplace-order.ts"
+import {
+  createWorkflow,
+  transform,
+  when,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  createOrderWorkflow,
+  useQueryGraphStep,
+} from "@medusajs/medusa/core-flows"
+
+type Input = {
+  marketplace_order: Record<string, any>
+  sales_channel_id: string
+  region_id: string
+}
+
+export const importMarketplaceOrderWorkflow = createWorkflow(
+  "import-marketplace-order",
+  (input: Input) => {
+    // retrieve the order if it was already imported
+    const { data: existingOrders } = useQueryGraphStep({
+      entity: "order",
+      fields: ["id"],
+      filters: {
+        // @ts-ignore
+        metadata: {
+          marketplace_order_id: input.marketplace_order.id,
+        },
+      },
+    })
+
+    when(
+      "order-not-imported",
+      { existingOrders },
+      (data) => data.existingOrders.length === 0
+    ).then(() => {
+      const orderData = transform({ input }, ({ input }) => ({
+        region_id: input.region_id,
+        sales_channel_id: input.sales_channel_id,
+        email: input.marketplace_order.buyer_email,
+        // TODO map the marketplace order's items and addresses
+        items: [],
+        metadata: {
+          marketplace_order_id: input.marketplace_order.id,
+        },
+      }))
+
+      createOrderWorkflow.runAsStep({ input: orderData })
+    })
+  }
+)
+```
+
+If the marketplace sends webhooks, execute the workflow in an API route. Make sure to enable `preserveRawBody` for the route in `src/api/middlewares.ts`:
+
+```ts title="src/api/webhooks/marketplace/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  importMarketplaceOrderWorkflow,
+} from "../../../workflows/import-marketplace-order"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  // TODO verify the webhook's signature using req.rawBody
+  const marketplaceOrder = (req.body as any).order
+
+  await importMarketplaceOrderWorkflow(req.scope).run({
+    input: {
+      marketplace_order: marketplaceOrder,
+      sales_channel_id: process.env.AMAZON_SALES_CHANNEL_ID!,
+      region_id: process.env.AMAZON_REGION_ID!,
+    },
+  })
+
+  res.sendStatus(200)
+}
+```
+
+### 6. Sync Fulfillment and Order Changes Back
+
+When you fulfill, ship, or cancel a marketplace order in Medusa, update the order on the marketplace. Create subscribers that listen to [order events](undefined/references/order/events), such as `order.fulfillment_created` and `order.canceled`, and execute a workflow that updates the order on the marketplace using your module's service.
+
+For example, the workflow that marks the order as shipped on the marketplace may look like this:
+
+```ts title="src/workflows/sync-fulfillment.ts"
+import {
+  createStep,
+  createWorkflow,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
+
+type Input = {
+  order_id: string
+  fulfillment_id: string
+}
+
+const markAsShippedStep = createStep(
+  "mark-as-shipped",
+  async ({ order, fulfillment_id }, { container }) => {
+    const marketplaceId = order.metadata?.marketplace_order_id
+    if (!marketplaceId) {
+      // the order wasn't placed on the marketplace
+      return new StepResponse()
+    }
+
+    const fulfillment = order.fulfillments.find(
+      (item) => item.id === fulfillment_id
+    )
+    const trackingNumbers = fulfillment.labels.map(
+      (label) => label.tracking_number
+    )
+
+    const marketplaceService = container.resolve("marketplace")
+    await marketplaceService.markOrderAsShipped(
+      marketplaceId,
+      trackingNumbers
+    )
+
+    return new StepResponse()
+  }
+)
+
+export const syncFulfillmentWorkflow = createWorkflow(
+  "sync-fulfillment",
+  (input: Input) => {
+    const { data: orders } = useQueryGraphStep({
+      entity: "order",
+      fields: [
+        "id",
+        "metadata",
+        "fulfillments.id",
+        "fulfillments.labels.*",
+      ],
+      filters: { id: input.order_id },
+    })
+
+    markAsShippedStep({
+      order: orders[0],
+      fulfillment_id: input.fulfillment_id,
+    })
+  }
+)
+```
+
+Then, execute the workflow in a subscriber:
+
+```ts title="src/subscribers/order-fulfillment-created.ts"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/framework"
+import {
+  syncFulfillmentWorkflow,
+} from "../workflows/sync-fulfillment"
+
+type EventData = {
+  order_id: string
+  fulfillment_id: string
+}
+
+export default async function fulfillmentCreatedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<EventData>) {
+  await syncFulfillmentWorkflow(container).run({
+    input: data,
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "order.fulfillment_created",
+}
+```
+
+Marketplace APIs often have strict rate limits. Refer to the [Best Practices for Third-Party Syncing](undefined/docs/learn/best-practices/third-party-sync) chapter to learn how to batch requests, retry errors, and avoid memory issues when syncing large catalogs.
+
+***
+
+## Learn More
+
+- [Integrate Third-Party Systems](undefined/docs/learn/customization/integrate-systems): Learn the generic pattern to integrate any system.
+- [Product Feed for Meta and Google](undefined/how-to-tutorials/tutorials/product-feed): Build a product feed that social platforms pull.
+- [Integrate ERP](undefined/recipes/erp): Find a full example of two-way syncing.
+- [Omnichannel Commerce](undefined/recipes/omnichannel): Learn how to sell across multiple channels.
+
+
 # Omnichannel Commerce Recipe
 
 This recipe provides the general steps to build an omnichannel store with Medusa.
@@ -174940,6 +175521,8 @@ You can implement this example in Medusa with the Sales Channel Module and a cus
 Then, in the custom module, integrate with Amazon’s seller program. You can then build workflows that sync your products with Amazon’s marketplace.
 
 Another channel that attracts customer sales is social media. You can create a custom module that integrates with social media apps to show your products and sell them to customers.
+
+Refer to the [Marketplace Integrations](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/recipes/omnichannel/marketplaces) guide to find which marketplaces have documented guides, and the general steps to integrate marketplaces like Amazon, eBay, Walmart, and TikTok Shop.
 
 - [Sales Channels](undefined/commerce-modules/sales-channel): Learn about the Sales Channel Module.
 - [Create a Module](undefined/docs/learn/fundamentals/modules): Learn how to create a module.
