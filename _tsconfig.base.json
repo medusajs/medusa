@@ -3,6 +3,8 @@
     "lib": ["ES2021"],
     "target": "ES2021",
     "outDir": "${configDir}/dist",
+    "rootDir": "${configDir}/src",
+    "strict": false,
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,

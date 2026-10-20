@@ -499,10 +499,12 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     const container = args?.container
     delete args?.container
 
-    return await buildRunnerFn<"run", TDataOverride, TResultOverride>(
+    return (await buildRunnerFn<"run", TDataOverride, TResultOverride>(
       "run",
       container
-    )(args)
+    )(args)) as unknown as WorkflowResult<
+      TResultOverride extends undefined ? TResult : TResultOverride
+    >
   }
 
   exportedWorkflow.registerStepSuccess = async <
@@ -520,14 +522,16 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     const container = args?.container
     delete args?.container
 
-    return await buildRunnerFn<
+    return (await buildRunnerFn<
       "registerStepSuccess",
       TDataOverride,
       TResultOverride
     >(
       "registerStepSuccess",
       container
-    )(args)
+    )(args)) as unknown as WorkflowResult<
+      TResultOverride extends undefined ? TResult : TResultOverride
+    >
   }
 
   exportedWorkflow.registerStepFailure = async <
@@ -545,14 +549,16 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     const container = args?.container
     delete args?.container
 
-    return await buildRunnerFn<
+    return (await buildRunnerFn<
       "registerStepFailure",
       TDataOverride,
       TResultOverride
     >(
       "registerStepFailure",
       container
-    )(args)
+    )(args)) as unknown as WorkflowResult<
+      TResultOverride extends undefined ? TResult : TResultOverride
+    >
   }
 
   exportedWorkflow.retryStep = async <

@@ -13,6 +13,11 @@ type InjectedDependencies = {
   logger: Logger
 }
 
+type MailDataRequired = Exclude<
+  Parameters<typeof sendgrid.send>[0],
+  unknown[]
+>
+
 type MailContent = Required<Omit<NotificationTypes.NotificationContent, "text">>
 
 interface SendgridServiceConfig {
@@ -80,10 +85,10 @@ export class SendgridNotificationService extends AbstractNotificationProviderSer
     }
 
     const personalizations = notification.provider_data?.personalizations as
-      | sendgrid.MailDataRequired["personalizations"]
+      | MailDataRequired["personalizations"]
       | undefined
 
-    const message: sendgrid.MailDataRequired = {
+    const message: MailDataRequired = {
       from: from,
       dynamicTemplateData: notification.data as
         | { [key: string]: any }

@@ -6,8 +6,9 @@
     "esModuleInterop": true,
     "declarationMap": true,
     "declaration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "moduleDetection": "legacy",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
@@ -17,7 +18,8 @@
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true // to use ES5 specific tooling
+    "rootDir": "./src",
+    "strict": false
   },
   "include": ["src"],
   "exclude": [

@@ -17,9 +17,7 @@
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true,
-    // to use ES5 specific tooling
-    "baseUrl": ".",
+    "rootDir": "./src",
     "resolveJsonModule": true,
     "paths": {
       "@models": ["./src/models"],

@@ -3,6 +3,8 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "target": "ES6",
     "outDir": "./dist/esm",
+    "rootDir": "./src",
+    "strict": false,
     "esModuleInterop": true,
     "declarationMap": true,
     "declaration": true,
