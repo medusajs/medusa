@@ -80,6 +80,14 @@ After that, Medusa will automatically deploy the environment whenever you push a
 
 Then, wait for the deployment to finish. You can check its status in the "Deployments" section. Once it's deployed, you can [access the environment](#access-deployed-environment) using its URL.
 
+### New Environment's Database
+
+A new long-lived environment starts with a new, empty database. Medusa doesn't copy the Production environment's data, such as products, orders, or customers, into it. During the environment's first deployment, Medusa [runs your migrations and data migration scripts](../../database/page.mdx#running-migrations-on-cloud) to set up the database schema.
+
+To use existing data in the new environment, such as a copy of Production's data, [export a database dump](../../database/page.mdx#importexport-cloud-database-dumps) from the source environment, then import it into the new environment.
+
+This differs from [preview environments](../preview/page.mdx#preview-environments-database), whose database Medusa creates from the Production environment's database by default.
+
 ### Log in to the Medusa Admin
 
 Once the environment is deployed, you can log in to the Medusa Admin with your Cloud account by clicking the "Log in with Medusa Cloud" button. Medusa creates a user in the Medusa application with the same email as your Cloud account.
