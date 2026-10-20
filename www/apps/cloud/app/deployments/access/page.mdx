@@ -40,7 +40,26 @@ You can then log in with your Cloud account by clicking the "Log in with Medusa 
 
 ### Can't Find the Log in with Medusa Cloud Button?
 
-If you don't see the "Log in with Medusa Cloud" button on the Medusa Admin log in page, make sure that your Medusa application's version is using [Medusa v2.12.4 or later](https://github.com/medusajs/medusa/releases/tag/v2.12.4).
+If you don't see the "Log in with Medusa Cloud" button on the Medusa Admin log in page, make sure that:
+
+- Your Medusa application is using [Medusa v2.12.4 or later](https://github.com/medusajs/medusa/releases/tag/v2.12.4).
+- The `MEDUSA_CLOUD_OAUTH_DISABLED` [environment variable](../../environments/environment-variables/page.mdx) of the environment is set to `false` or isn't set.
+- If you set the [http.authMethodsPerActor](!docs!/learn/configurations/medusa-config#httpauthMethodsPerActor) configuration in `medusa-config.ts`, the `user` actor type's authentication methods include `cloud`. For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      // ...
+      authMethodsPerActor: {
+        user: ["emailpass", "cloud"],
+      },
+    },
+  },
+})
+```
+
+After changing the environment variable, [redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment) for the change to take effect. After changing `medusa-config.ts`, push the change to the environment's branch to start a new build.
 
 ---
 
@@ -79,3 +98,164 @@ You can find the storefront URL:
 3. In the project's dashboard, find the storefront URL in the environment's card under the "Storefront" title. You can copy the URL by clicking the copy icon next to it.
 
 You can also set up a custom domain for your storefront. Learn more in the [Custom Domains](../../environments/custom-domains/page.mdx) guide.
+
+---
+
+## Restrict Access to a Deployment
+
+Cloud doesn't have a built-in option to make a deployment private. You can't enable password protection, HTTP basic authentication, or an access allowlist for the backend or storefront URL of a long-lived or [preview environment](../../environments/preview/page.mdx). Anyone who has the URL can access it.
+
+Your deployment already restricts access to some of its parts:
+
+- **Medusa Admin**: Users must log in before they can view or manage your store's data.
+- **Admin API routes**: Requests to `/admin` API routes require an authenticated admin user.
+- **Store API routes**: Requests to `/store` API routes are public by design, with the exception of certain customer-specific routes, since your storefront sends them on behalf of customers. They require a publishable API key.
+
+<Note>
+
+Incoming IP addresses of Cloud deployments are dynamic, so you can't rely on IP-based restrictions in front of your deployment. Learn more in the [IP Addresses](../../ip-addresses/page.mdx) guide.
+
+</Note>
+
+If you want to keep your storefront private while you test it, such as on a staging or preview environment, implement the access gate in your storefront's code, as explained in the next section.
+
+### Add HTTP Basic Authentication to a Next.js Storefront
+
+You can protect a Next.js storefront with HTTP basic authentication using [Next.js Middleware](https://nextjs.org/docs/app/building-your-application/routing/middleware). The browser then prompts visitors for a username and password before it shows any page.
+
+<Note>
+
+Cloud doesn't support Next.js v16 storefronts that use a [proxy](https://nextjs.org/docs/app/getting-started/proxy). Use a `middleware.ts` file with Next.js v15. Learn more in the [Storefront Deployment](../../storefront/page.mdx#supported-storefront-frameworks) guide.
+
+</Note>
+
+First, [add the following environment variables](../../environments/environment-variables/page.mdx#add-environment-variables-on-cloud) to the storefront of the environments you want to protect:
+
+```shell
+STOREFRONT_BASIC_AUTH_USER=tester
+STOREFRONT_BASIC_AUTH_PASSWORD=supersecret
+```
+
+Mark the password as **Sensitive**, and enable both the **Build** and **Runtime** toggles. To protect all preview environments, add the variables in the [shared previews settings](../../environments/preview/page.mdx#manage-shared-previews-settings) instead.
+
+Then, create or update the `src/middleware.ts` file in your storefront with the following content:
+
+```ts title="src/middleware.ts"
+import { NextRequest, NextResponse } from "next/server"
+
+export function middleware(request: NextRequest) {
+  const username = process.env.STOREFRONT_BASIC_AUTH_USER
+  const password = process.env.STOREFRONT_BASIC_AUTH_PASSWORD
+
+  // allow access if the credentials aren't set
+  if (!username || !password) {
+    return NextResponse.next()
+  }
+
+  const header = request.headers.get("authorization")
+
+  if (header?.startsWith("Basic ")) {
+    const decoded = atob(header.slice(6))
+    const separator = decoded.indexOf(":")
+    const user = decoded.slice(0, separator)
+    const pass = decoded.slice(separator + 1)
+
+    if (user === username && pass === password) {
+      return NextResponse.next()
+    }
+  }
+
+  return new NextResponse("Authentication required", {
+    status: 401,
+    headers: {
+      "WWW-Authenticate": "Basic realm=\"Storefront\"",
+    },
+  })
+}
+
+export const config = {
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+  ],
+}
+```
+
+The middleware runs before every storefront request. If the request doesn't have the expected credentials in its `Authorization` header, the middleware returns a `401` response, and the browser prompts the visitor for the username and password.
+
+Since the middleware only applies the gate when both environment variables are set, you can keep the code in your repository and only set the variables on the environments you want to protect, such as staging and preview environments.
+
+If your storefront already has a `src/middleware.ts` file, such as the one in the Next.js Starter Storefront, add the authentication check at the beginning of your existing `middleware` function instead of creating a new file.
+
+Finally, push the changes to the environment's branch to start a new build. If you only changed environment variables, [redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment) for the change to take effect.
+
+<Note type="warning">
+
+HTTP basic authentication is suitable for keeping test environments away from the public and search engines. It isn't a replacement for user authentication. Only share the credentials with people who should access the environment.
+
+</Note>
+
+### Restrict Access in Other Storefront Frameworks
+
+For storefronts built with other frameworks, implement the same check in its request handling layer. For example, use the `handle` hook in `src/hooks.server.ts` for SvelteKit, or a request middleware for Tanstack Start. The check reads the credentials from environment variables, compares them to the request's `Authorization` header, and returns a `401` response with a `WWW-Authenticate` header if they don't match.
+
+---
+
+## Manage Search Engine Indexing
+
+Medusa doesn't control whether search engines index your deployments. Cloud doesn't add a `noindex` directive, such as an `X-Robots-Tag` response header or a `robots` meta tag, to any deployment URL. This applies to the URLs of production, long-lived, and preview environments, whether they use the Medusa-provided `medusajs.app` and `medusajs.site` subdomains or [custom domains](../../environments/custom-domains/page.mdx).
+
+There's also no Cloud setting to enable or disable indexing. Your application's responses reach visitors and search engine crawlers unchanged, so you manage indexing in your application's code.
+
+<Note>
+
+To keep a page out of search results, search engines must be able to crawl it and see its `noindex` directive. If you disallow crawling a page in `robots.txt`, search engines can still index its URL when other sites link to it.
+
+</Note>
+
+### Prevent Indexing of Non-Production Storefronts
+
+Search engines can discover preview and staging storefront URLs, for example, when you share them publicly. To keep these storefronts out of search results, use the `MEDUSA_CLOUD_ENVIRONMENT_TYPE` [system environment variable](../../environments/environment-variables/page.mdx#system-environment-variables) to detect the environment type in your storefront. Its value is `production` only in your project's production environment.
+
+For example, in a Next.js storefront, such as the [Next.js Starter Storefront](!resources!/nextjs-starter), set the `robots` metadata in the root layout to add a `noindex` meta tag to all pages outside the production environment:
+
+```tsx title="src/app/layout.tsx"
+import { Metadata } from "next"
+
+const isProduction =
+  process.env.MEDUSA_CLOUD_ENVIRONMENT_TYPE === "production"
+
+export const metadata: Metadata = {
+  // ...
+  robots: isProduction
+    ? undefined
+    : { index: false, follow: false },
+}
+```
+
+After you push this change, every page of a preview or staging storefront includes the `<meta name="robots" content="noindex, nofollow">` tag, while the production storefront remains indexable.
+
+If you use a different storefront framework, add the same `robots` meta tag or an `X-Robots-Tag: noindex` response header using that framework's equivalent mechanism, based on the value of `MEDUSA_CLOUD_ENVIRONMENT_TYPE`.
+
+### Prevent Crawling of the Medusa Backend
+
+Your environment's backend URL serves the Medusa Admin and the Medusa backend's API routes, which you usually don't want search engines to crawl. To ask crawlers not to crawl the backend's domain, add a [custom API route](!docs!/learn/fundamentals/api-routes) that serves a `robots.txt` file at the root of the backend's URL:
+
+```ts title="src/api/robots.txt/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.type("text/plain").send("User-agent: *\nDisallow: /")
+}
+```
+
+After you push this change, `https://<subdomain>.medusajs.app/robots.txt` returns rules that disallow crawling the entire backend domain.
+
+### Avoid Duplicate Content with Custom Domains
+
+After you set up a custom domain for your production storefront, the storefront remains accessible at its Medusa-provided `medusajs.site` subdomain. To ensure search engines show your custom domain in search results, set [canonical URLs](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls) in your storefront that point to your custom domain.

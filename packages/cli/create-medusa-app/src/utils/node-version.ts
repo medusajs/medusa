@@ -1,4 +1,4 @@
-export const MIN_SUPPORTED_NODE_VERSION = "22.15.0"
+export const MIN_SUPPORTED_NODE_VERSION = "22.22.0"
 
 export function getNodeVersion(): string {
   return process.versions.node

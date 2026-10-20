@@ -10,6 +10,8 @@ In this guide, you'll find answers to frequently asked questions about Cloud.
 
 Yes, when you [sign up for Cloud](../sign-up/page.mdx), Medusa starts a free trial for your organization. You don't need to enter payment details to start the trial.
 
+The free trial is available only in select regions. If it isn't available in your region, Medusa creates your organization without a free trial.
+
 While your organization is on a free trial, the Cloud dashboard shows a banner with the number of days left in your trial. Learn how to view your trial's status in the [Manage Plans](../billing/plans/page.mdx#view-trial-status) guide.
 
 ---
@@ -75,6 +77,14 @@ No, Medusa does not create new Medusa projects for your deployments. Instead, it
 Medusa uses static IP addresses for outgoing requests from your Medusa backend to external services, and dynamic IP addresses for incoming requests to your Medusa backend. You can use the static outgoing IP addresses to whitelist them in your firewall or allowlist them in external services.
 
 You can find the list of static outgoing IP addresses in the [IP Addresses](../ip-addresses/page.mdx) guide.
+
+---
+
+## Can I password-protect my deployment or preview URLs?
+
+No, Cloud doesn't have a built-in option to password-protect or otherwise restrict access to the URLs of long-lived or preview environments. The Medusa Admin and admin API routes already require authentication, but the storefront is publicly accessible.
+
+To keep a storefront private while you test it, you can add HTTP basic authentication in your storefront's code. Learn how in the [Restrict Access to a Deployment](../deployments/access/page.mdx#restrict-access-to-a-deployment) guide.
 
 ---
 

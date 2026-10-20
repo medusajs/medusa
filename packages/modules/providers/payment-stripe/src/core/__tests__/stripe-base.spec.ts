@@ -91,4 +91,50 @@ describe("StripeBase", () => {
       ).toThrow("An error occurred in constructWebhookEvent")
     })
   })
+
+  describe("deletePayment", () => {
+    const stripeError = (status: string) =>
+      Object.assign(new Error("Unexpected state"), {
+        payment_intent: { id: "pi_123", status },
+      })
+
+    it("doesn't throw when the payment intent already succeeded", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      jest
+        .spyOn(service["stripe_"].paymentIntents, "cancel")
+        .mockRejectedValue(stripeError("succeeded"))
+
+      const result = await service.deletePayment({ data: { id: "pi_123" } })
+
+      expect(result.data).toEqual({ id: "pi_123", status: "succeeded" })
+    })
+
+    it("still throws other cancelation errors", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      jest
+        .spyOn(service["stripe_"].paymentIntents, "cancel")
+        .mockRejectedValue(stripeError("processing"))
+
+      await expect(
+        service.deletePayment({ data: { id: "pi_123" } })
+      ).rejects.toThrow("An error occurred in cancelPayment")
+    })
+  })
+
+  describe("cancelPayment", () => {
+    it("throws when the payment intent already succeeded", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      jest
+        .spyOn(service["stripe_"].paymentIntents, "cancel")
+        .mockRejectedValue(
+          Object.assign(new Error("Unexpected state"), {
+            payment_intent: { id: "pi_123", status: "succeeded" },
+          })
+        )
+
+      await expect(
+        service.cancelPayment({ data: { id: "pi_123" } })
+      ).rejects.toThrow("An error occurred in cancelPayment")
+    })
+  })
 })

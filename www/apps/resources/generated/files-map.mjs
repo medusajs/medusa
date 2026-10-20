@@ -1868,6 +1868,10 @@ export const filesMap = [
     "pathname": "/recipes/multi-region-store"
   },
   {
+    "filePath": "/www/apps/resources/app/recipes/omnichannel/marketplaces/page.mdx",
+    "pathname": "/recipes/omnichannel/marketplaces"
+  },
+  {
     "filePath": "/www/apps/resources/app/recipes/omnichannel/page.mdx",
     "pathname": "/recipes/omnichannel"
   },
@@ -2286,6 +2290,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/troubleshooting/query/metadata-filtering/page.mdx",
     "pathname": "/troubleshooting/query/metadata-filtering"
+  },
+  {
+    "filePath": "/www/apps/resources/app/troubleshooting/query/not-assignable-type/page.mdx",
+    "pathname": "/troubleshooting/query/not-assignable-type"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/query/service-list/page.mdx",

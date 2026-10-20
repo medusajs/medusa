@@ -114,6 +114,6 @@
   },
   "packageManager": "yarn@3.2.1",
   "engines": {
-    "node": ">=22.15.0"
+    "node": ">=22.22.0"
   }
 }

@@ -119,6 +119,12 @@ To create a monorepo for projects prior to v2.14.0, you need:
 1. Package manager: Cloud supports `npm`, `yarn` (v1, v3, and v4), and `pnpm` as package managers.
 2. Monorepo tool: You can use [turbo](https://turborepo.com/) or [nx](https://nx.dev/) to manage your monorepo.
 
+<Note type="warning">
+
+Cloud storefront builds don't support pnpm 12 yet. If you use pnpm, use pnpm 11, such as `11.26.0`. Learn more in the [Troubleshooting](../../deployments/troubleshooting/page.mdx#storefront-opennextjs-cloudflare-not-found-with-pnpm-12) guide.
+
+</Note>
+
 You can structure your monorepo as you see fit. You'll be required to specify the paths to your Medusa application and storefront during the project creation process on Cloud.
 
 ![Diagram showcasing the monorepo structure with Medusa application and storefront as separate packages](https://res.cloudinary.com/dza7lstvk/image/upload/v1766044505/Cloud/storefront-overview_ebmefz.jpg)

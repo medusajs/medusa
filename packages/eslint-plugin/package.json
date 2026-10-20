@@ -23,7 +23,7 @@
     "test": "../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathPattern=src"
   },
   "engines": {
-    "node": ">=22.15.0"
+    "node": ">=22.22.0"
   },
   "publishConfig": {
     "access": "public"

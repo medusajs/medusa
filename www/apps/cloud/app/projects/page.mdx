@@ -41,6 +41,7 @@ You can also start the project creation flow from the [command palette](../comma
 
 1. Make sure you're viewing the [correct organization's dashboard in Cloud](../organizations/page.mdx#switch-organization).
 2. Click on the **Create Project** button in your organization's dashboard.
+    - If your organization has no projects yet, the projects list instead shows a **Browse starters** card to [create a project from a starter](#1-create-project-from-a-starter), and an **Import repository** card to [create a project from an existing application](#2-create-project-from-an-existing-application).
 
 In the project-creation page, you can either [create from a starter](#1-create-project-from-a-starter) or [create from an existing application](#2-create-project-from-an-existing-application).
 
@@ -50,24 +51,27 @@ In the project-creation page, you can either [create from a starter](#1-create-p
 
 Medusa provides you with starter templates that you can use to quickly set up your ecommerce application. All templates include a storefront, backend, and admin dashboard. These templates include:
 
-- **DTC Starter**: Standard Medusa application with fully-fledged commerce features.
-- **B2B Starter**: Medusa application with powerful B2B and commerce features.
-- **Configurable product starter**: Medusa application with the configurable product feature. For example, customers can configure their product's attributes, and the price changes accordingly.
-- **Grounded starter**: Medusa application with a storefront having a modern design, ideal for designers, artists, and brands with a focus on aesthetics.
+- **Modern DTC Starter**: Medusa application for direct-to-consumer brands with a TanStack Start storefront.
 - **Industrials B2B starter**: B2B Medusa application with features and a storefront tailored for industrial businesses, such as machinery, equipment, and supplies.
-- **Quiz-to-product starter:** Medusa application with a storefront that includes a quiz to help customers find the right product based on their preferences and needs.
-- **Essentials starter:** Medusa application with storefront suitable for fashion brands.
-- **Uncut Coffee starter:** Medusa application with a storefront that has bold visuals and immersive storytelling. Ideal for modern DTC brands.
+- **Blank DTC Starter**: Standard Medusa application with fully-fledged commerce features and a Next.js storefront.
+- **Minimal B2B Starter**: Medusa application with B2B and commerce features and a Next.js storefront.
 
 ### Browse and Select Templates
 
+Each starter template shows a **DTC** or **B2B** badge indicating its category.
+
 To create a project from a starter template:
 
-1. Click on the **Browse Starters** button at the top right of the [project creation page](#create-a-project).
-  - For each template, you can click on it to view more details, such as its features and the tech stack used in the storefront.
-2. Click the **Clone** button of the starter you want to use.
-3. If GitHub is not connected, you'll be directed to the [new project form](#2-create-project-from-an-existing-application) to set up the repository connection.
-4. If GitHub is already connected:
+1. Open the starter templates page in one of the following ways:
+  - Click on the **Browse Starters** button at the top right of the [project creation page](#create-a-project).
+  - If your organization has no projects yet, click on the **Browse starters** card in the projects list.
+2. Find the starter you want to use:
+  - To show only starters of a specific category, click the **DTC** or **B2B** filter button. Click **All** to show all starters again.
+  - To view more details about a starter, such as its features and the tech stack used in the storefront, click its **Preview** button.
+  - If you prefer to connect your own GitHub repository instead, click the **Import repository** button in the banner at the top of the page. This takes you to the [new project form](#2-create-project-from-an-existing-application).
+3. Click the **Deploy** button of the starter you want to use. While Medusa deploys the starter, the button shows the current phase, such as "Creating repository".
+4. If GitHub is not connected, you'll be directed to the [new project form](#2-create-project-from-an-existing-application) to set up the repository connection.
+5. If GitHub is already connected:
    - Choose a GitHub organization or account to clone the starter into in the "GitHub account" field.
    - In the "Repository name" field, enter a name for your new repository.
    - Once you're done, click the **Clone** button.
@@ -127,6 +131,12 @@ If you click on the project, you'll be taken to the project's dashboard, where y
 Once the project is created and deployed, you'll receive a notification in the Cloud dashboard. You can also view its status in the list of projects and in the project's details.
 
 ![The project status in the list of projects](https://res.cloudinary.com/dza7lstvk/image/upload/v1767786310/Cloud/CleanShot_2026-01-07_at_13.44.17_2x_cggzib.png)
+
+### Production Environment's Branch
+
+When you create a project, Medusa creates its Production environment and links it to your repository's default branch, such as `main`. This applies whether you create the project from a starter or from an existing repository. Medusa then deploys the Production environment every time you push a commit to that branch.
+
+To deploy Production from a different branch, [change the environment's branch](../environments/long-lived/page.mdx#change-environments-branch) after creating the project.
 
 ---
 
@@ -254,6 +264,8 @@ Then, to add a storefront to an existing project:
 4. Once you're done, click the "Create" button.
 
 Cloud will then deploy the storefront along with the Medusa application. Once the deployment is complete, you'll be able to access the storefront from the Production environment card in the project's dashboard.
+
+The storefront belongs to the project, not only to the Production environment. So, Medusa deploys it in every environment of the project, including Production, other long-lived environments like Staging, and preview environments, based on your plan's limits. Each environment's storefront connects to that environment's Medusa application. Learn more in the [Storefront Deployment](../storefront/page.mdx#storefront-deployment-per-environment) guide.
 
 You can also set a custom domain for the storefront, as explained in the [Custom Domains](../environments/custom-domains/page.mdx) guide.
 

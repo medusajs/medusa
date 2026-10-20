@@ -57,6 +57,8 @@ import {
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
+  RefundStatus,
+  SoftDeletableFilterKey,
 } from "@medusajs/framework/utils"
 import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import {
@@ -82,6 +84,14 @@ type InjectedDependencies = {
   accountHolderService: ModulesSdkTypes.IMedusaInternalService<any>
   paymentProviderService: PaymentProviderService
 }
+
+/**
+ * How long a refund may sit in `pending` before a retry with the same
+ * idempotency key is allowed to take it over. It has to comfortably exceed the
+ * slowest provider call, since a retry inside this window is treated as a
+ * conflict rather than a recovery.
+ */
+const PENDING_REFUND_RECOVERY_MS = 15 * 60 * 1000
 
 const generateMethodForModels = {
   PaymentCollection,
@@ -938,19 +948,38 @@ export default class PaymentModuleService
       },
       sharedContext
     )
-    const refund = await this.refundPayment_(payment, data, sharedContext)
-
-    try {
-      await this.refundPaymentFromProvider_(payment, refund, sharedContext)
-    } catch (error) {
-      await super.deleteRefunds({ id: refund.id }, sharedContext)
-      throw error
-    }
-
-    await this.maybeUpdatePaymentCollection_(
-      payment.payment_collection_id,
+    const { refund, alreadyRefunded } = await this.refundPayment_(
+      payment,
+      data,
       sharedContext
     )
+
+    if (!alreadyRefunded) {
+      try {
+        await this.refundPaymentFromProvider_(payment, refund, sharedContext)
+      } catch (error) {
+        // Soft-deleted rather than deleted: the row is the only record that a
+        // request reached the provider, and its id backs the idempotency key a
+        // retry has to reuse. Soft-deleting keeps it out of every refund total
+        // without each caller having to filter it out.
+        await this.refundService_.update(
+          { id: refund.id, status: RefundStatus.FAILED },
+          sharedContext
+        )
+        await this.refundService_.softDelete({ id: refund.id }, sharedContext)
+        throw error
+      }
+
+      await this.refundService_.update(
+        { id: refund.id, status: RefundStatus.SUCCEEDED },
+        sharedContext
+      )
+
+      await this.maybeUpdatePaymentCollection_(
+        payment.payment_collection_id,
+        sharedContext
+      )
+    }
 
     return await this.retrievePayment(
       payment.id,
@@ -959,12 +988,78 @@ export default class PaymentModuleService
     )
   }
 
+  /**
+   * Decides whether a refund request is a new refund, a retry of a failed one,
+   * or a replay of one that already went through. Only a request carrying an
+   * `idempotency_key` can be anything but a new refund.
+   *
+   * Throws when the request collides with an attempt that is still waiting on
+   * the provider: the outcome of that attempt isn't known yet, so neither
+   * answer a replay could be given would be true.
+   */
+  private resolveRefundRequest_(
+    refunds: InferEntityType<typeof Refund>[],
+    data: CreateRefundDTO
+  ): { resume?: InferEntityType<typeof Refund>; replayed: boolean } {
+    if (data.idempotency_key) {
+      const match = refunds.find(
+        (refund) => refund.idempotency_key === data.idempotency_key
+      )
+
+      if (!match) {
+        return { replayed: false }
+      }
+
+      if (!MathBN.eq(match.raw_amount as BigNumberInput, data.amount!)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `A refund with idempotency key ${data.idempotency_key} already exists on payment ${data.payment_id} for a different amount.`
+        )
+      }
+
+      if (match.status === RefundStatus.PENDING) {
+        // A pending refund is normally an attempt still waiting on the provider,
+        // and its outcome isn't known yet. But an attempt whose process died
+        // between the provider call and the status update would stay pending
+        // forever and lock the key out, so past a grace period the refund is
+        // retried instead: the provider sees the same key, which is what makes
+        // re-sending it safe.
+        const startedAt = (match.updated_at ?? match.created_at) as Date
+        const isStale =
+          Date.now() - new Date(startedAt).getTime() >
+          PENDING_REFUND_RECOVERY_MS
+
+        if (!isStale) {
+          throw new MedusaError(
+            MedusaError.Types.CONFLICT,
+            `A refund with idempotency key ${data.idempotency_key} is still in progress on payment ${data.payment_id}.`
+          )
+        }
+
+        return { resume: match, replayed: false }
+      }
+
+      return match.status === RefundStatus.SUCCEEDED
+        ? { resume: match, replayed: true }
+        : { resume: match, replayed: false }
+    }
+
+    // Without a key there is nothing to match a retry against: two refunds of
+    // the same amount are indistinguishable from one refund sent twice. Such a
+    // request always starts a new refund, as it did before refunds could be
+    // resumed at all.
+    return { replayed: false }
+  }
+
   @InjectTransactionManager()
   private async refundPayment_(
     payment: InferEntityType<typeof Payment>,
     data: CreateRefundDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<InferEntityType<typeof Refund>> {
+  ): Promise<{
+    refund: InferEntityType<typeof Refund>
+    alreadyRefunded: boolean
+  }> {
     // If no amount is passed, we assume the full payment amount needs to be
     // refunded. An explicit amount, however, must be strictly positive.
     if (data.amount == null) {
@@ -1003,17 +1098,37 @@ export default class PaymentModuleService
       data.payment_id,
       {
         select: ["id"],
-        relations: ["captures.raw_amount", "refunds.raw_amount"],
+        relations: ["captures.raw_amount", "refunds"],
+        // Soft-deleted refunds are the failed attempts a retry resumes, so
+        // they have to be visible here even though they count for nothing.
+        filters: { [SoftDeletableFilterKey]: { withDeleted: true } },
       },
       sharedContext
     )
+
+    const { resume, replayed } = this.resolveRefundRequest_(
+      lockedPayment.refunds,
+      data
+    )
+
+    // A replay moves no additional funds, so it skips the guard below: the
+    // amount it refunded is already part of the payment's refunded total.
+    if (replayed) {
+      return { refund: resume!, alreadyRefunded: true }
+    }
+
     const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
       const amountAsBigNumber = new BigNumber(next.raw_amount as BigNumberInput)
       return MathBN.add(captureAmount, amountAsBigNumber)
     }, MathBN.convert(0))
-    const refundedAmount = lockedPayment.refunds.reduce((refundedAmount, next) => {
-      return MathBN.add(refundedAmount, next.raw_amount as BigNumberInput)
-    }, MathBN.convert(0))
+    // The refund being resumed is excluded: a soft-deleted one counts for
+    // nothing already, and a stale pending one is this same refund rather than
+    // an additional one, so leaving it in would double-count `data.amount`.
+    const refundedAmount = lockedPayment.refunds
+      .filter((refund) => !refund.deleted_at && refund.id !== resume?.id)
+      .reduce((refundedAmount, next) => {
+        return MathBN.add(refundedAmount, next.raw_amount as BigNumberInput)
+      }, MathBN.convert(0))
 
     const totalRefundedAmount = MathBN.add(refundedAmount, data.amount)
 
@@ -1034,6 +1149,24 @@ export default class PaymentModuleService
       )
     }
 
+    // Resumed only after the guard: a failed refund counts for nothing while it
+    // is soft-deleted, so restoring it adds its amount back to the refunded
+    // total and can push the payment past what was captured.
+    if (resume) {
+      if (resume.deleted_at) {
+        // Restored before the status is set: an update can't see a soft-deleted
+        // row, so the order here is load-bearing.
+        await this.refundService_.restore({ id: resume.id }, sharedContext)
+      }
+
+      const restored = await this.refundService_.update(
+        { id: resume.id, status: RefundStatus.PENDING },
+        sharedContext
+      )
+
+      return { refund: restored, alreadyRefunded: false }
+    }
+
     const refund = await this.refundService_.create(
       {
         payment: data.payment_id,
@@ -1042,11 +1175,13 @@ export default class PaymentModuleService
         note: data.note,
         refund_reason_id: data.refund_reason_id,
         metadata: data.metadata,
+        idempotency_key: data.idempotency_key,
+        status: RefundStatus.PENDING,
       },
       sharedContext
     )
 
-    return refund
+    return { refund, alreadyRefunded: false }
   }
 
   @InjectManager()
@@ -1061,7 +1196,7 @@ export default class PaymentModuleService
         data: payment.data!,
         amount: refund.raw_amount as BigNumberInput,
         context: {
-          idempotency_key: refund.id,
+          idempotency_key: refund.idempotency_key ?? refund.id,
         },
       }
     )
