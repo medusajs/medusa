@@ -26,8 +26,27 @@ export default async ({ container }: LoaderOptions): Promise<void> => {
       display_name: c.name,
     }))
 
-    const resp = await countryService_.upsert(normalizedCountries)
-    logger.debug(`Loaded ${resp.length} countries`)
+    // The defaults only change with Medusa upgrades: write only what's
+    // missing or different, so a boot doesn't rewrite every country
+    const existing = await countryService_.list(
+      {},
+      { select: ["iso_2", "iso_3", "num_code", "name", "display_name"] }
+    )
+    const existingByIso2 = new Map(existing.map((c) => [c.iso_2, c]))
+    const changed = normalizedCountries.filter((country) => {
+      const current = existingByIso2.get(country.iso_2)
+      return (
+        !current ||
+        current.iso_3 !== country.iso_3 ||
+        String(current.num_code) !== String(country.num_code) ||
+        current.name !== country.name ||
+        current.display_name !== country.display_name
+      )
+    })
+    if (changed.length) {
+      await countryService_.upsert(changed)
+    }
+    logger.debug(`Loaded ${changed.length} countries`)
   } catch (error) {
     logger.warn(
       `Failed to load countries, skipping loader. Original error: ${error.message}`
