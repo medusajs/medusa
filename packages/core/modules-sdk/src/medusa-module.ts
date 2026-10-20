@@ -690,7 +690,11 @@ class MedusaModule {
       const keyName = resolution.definition.key
       const known: Record<string | symbol, unknown> = {
         __definition: { ...resolution.definition, resolvePath },
-        __hooks: undefined,
+        // None until loaded (the build keeps modules with hooks eager), then
+        // the service's own
+        get __hooks() {
+          return loaded[keyName]?.__hooks
+        },
       }
 
       if (resolution.definition.isQueryable && joinerConfig) {

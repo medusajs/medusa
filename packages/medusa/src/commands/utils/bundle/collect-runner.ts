@@ -276,7 +276,12 @@ async function main() {
   }
   const hookFiles = new Set<string>()
   for (const { workflowId, file } of (global as any)[HOOK_REGISTRATIONS_KEY]) {
-    if (!file || definingFiles.has(file) || getDefinedFileConfig(file)) {
+    // A file registering a hook on a workflow it defines loads with it
+    if (
+      !file ||
+      workflowFiles.get(workflowId) === file ||
+      getDefinedFileConfig(file)
+    ) {
       continue
     }
     const files = (manifest.workflowHooks![workflowId] ??= [])
@@ -298,38 +303,59 @@ async function main() {
     }
   }
 
-  // Modules with loaders run them at boot, and loaders can persist state that
-  // other code reads directly (e.g. payment and fulfillment providers are
-  // registered in the database): deferring them would change behaviour
-  const hasLoaders = (resolution: any): boolean => {
+  // The module's definition (`Module(key, { service, loaders })`): modules
+  // given by path export it from there
+  const definitionOf = (resolution: any): any => {
     try {
-      // Modules given by path export their definition from it
       const exported =
         resolution.moduleExports ??
         (resolution.resolutionPath
           ? require(resolution.resolutionPath)
           : undefined)
-      return !!(exported?.default ?? exported)?.loaders?.length
+      return exported?.default ?? exported
     } catch {
-      return false
+      return undefined
     }
   }
-  const modulesWithLoaders = new Set(
-    MedusaModule.getAllModuleResolutions()
-      .filter(hasLoaders)
-      .map((resolution) => resolution.definition.key)
-  )
+  // Lifecycle hooks are an instance field (`__hooks = { ... }`), so they're
+  // not on the schema-only service: look for them in the class source
+  const declaresHooks = (service: unknown): boolean => {
+    for (
+      let cls: any = service;
+      typeof cls === "function" && cls !== Function.prototype;
+      cls = Object.getPrototypeOf(cls)
+    ) {
+      if (/\b__hooks\b/.test(Function.prototype.toString.call(cls))) {
+        return true
+      }
+    }
+    return false
+  }
+  // Modules with loaders or lifecycle hooks run them at boot and shutdown.
+  // Loaders can persist state that other code reads directly (e.g. payment
+  // and fulfillment providers are registered in the database), and hooks
+  // start and stop shared resources: deferring either changes behaviour.
+  const modulesWithLoaders = new Set<string>()
+  const modulesWithHooks = new Set<string>()
+  for (const resolution of MedusaModule.getAllModuleResolutions() as any[]) {
+    const definition = definitionOf(resolution)
+    if (definition?.loaders?.length) {
+      modulesWithLoaders.add(resolution.definition.key)
+    }
+    if (declaresHooks(definition?.service)) {
+      modulesWithHooks.add(resolution.definition.key)
+    }
+  }
 
   // Modules that boot doesn't need load on first use
   for (const [key, service] of Object.entries(modules ?? {})) {
     if (Array.isArray(service) || !service) {
       continue
     }
-    const hooks = (service as any).__hooks
     if (EAGER_MODULES.includes(key)) {
       continue
     }
-    if (hooks && Object.keys(hooks).length) {
+    if (modulesWithHooks.has(key)) {
       kept[`module:${key}`] = "has lifecycle hooks"
       continue
     }

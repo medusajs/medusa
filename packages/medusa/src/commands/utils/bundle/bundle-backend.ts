@@ -740,7 +740,13 @@ function createTransforms({
     }
     let count = 0
     const out = src.replace(LAZY_REQUIRE, (line, kind, name, wrap, spec) => {
-      if (Module.isBuiltin(spec) || NEVER_LAZY.test(spec)) {
+      if (
+        Module.isBuiltin(spec) ||
+        NEVER_LAZY.test(spec) ||
+        // The proxy only stands in for property access: a module that's
+        // called, constructed or passed around stays as it is
+        !usedOnlyThroughMembers(name, src.replace(line, ""))
+      ) {
         return line
       }
       count++
@@ -1276,6 +1282,24 @@ const STATIC_TRACE_REASONS = new Set(["initial", "resolve", "dependency"])
 function isBuildToolingPath(file: string): boolean {
   const match = file.match(/.*node_modules[\\/]((?:@[^\\/]+[\\/])?[^\\/]+)/)
   return !!match && BUILD_TOOLING.test(match[1].split(path.sep).join("/"))
+}
+
+/**
+ * Whether every use of a binding is a property access (`x.y`, `x?.y`,
+ * `x[y]`), so a lazy proxy for it behaves exactly like the value. Matches in
+ * strings or comments only make this stricter.
+ */
+export function usedOnlyThroughMembers(name: string, src: string): boolean {
+  const escaped = name.replace(/\$/g, "\\$")
+  for (const match of src.matchAll(
+    new RegExp(`(?<![\\w$.])${escaped}(?![\\w$])`, "g")
+  )) {
+    const after = src.slice(match.index! + name.length).trimStart()
+    if (!/^(\?\.(?!\()|\.|\[)/.test(after)) {
+      return false
+    }
+  }
+  return true
 }
 
 function isRequirableJson(file: string): boolean {
