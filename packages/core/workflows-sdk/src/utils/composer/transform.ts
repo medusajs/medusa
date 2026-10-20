@@ -1,11 +1,12 @@
-import {
-  TransactionContext,
-  WorkflowStepHandlerArguments,
-} from "@medusajs/orchestration"
 import { OrchestrationUtils } from "@medusajs/utils"
+import { getComposerContext } from "../../compiler/recorder"
+import { memoised } from "../../compiler/values"
 import { resolveValue } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import { StepExecutionContext, WorkflowData } from "./type"
+
+// Ids of transforms created outside a workflow definition.
+let detachedTransformIds = 0
 
 type Func1<T extends object | WorkflowData, U> = (
   input: T extends WorkflowData<infer U>
@@ -162,36 +163,11 @@ export function transform(
   values: any | any[],
   ...functions: Function[]
 ): unknown {
-  const uniqId = Math.random().toString(36).substring(2, 20)
+  const id =
+    getComposerContext()?.nextTransformId() ??
+    `detached-transform-${++detachedTransformIds}`
 
-  const ret = {
-    __id: uniqId,
-    __type: OrchestrationUtils.SymbolWorkflowStepTransformer,
-  } as WorkflowData & {
-    __id: string
-    __type: string
-    __temporary_storage_key: string | null
-  }
-
-  const returnFn = async function (
-    // If a transformer is returned as the result of a workflow, then at this point the workflow is entirely done, in that case we have a TransactionContext
-    transactionContext: WorkflowStepHandlerArguments | TransactionContext
-  ): Promise<any> {
-    if ("transaction" in transactionContext) {
-      const temporaryDataKey = `${transactionContext.transaction.modelId}_${transactionContext.transaction.transactionId}_${uniqId}`
-      ret.__temporary_storage_key ??= temporaryDataKey
-
-      if (
-        transactionContext.transaction.hasTemporaryData(
-          ret.__temporary_storage_key
-        )
-      ) {
-        return transactionContext.transaction.getTemporaryData(
-          ret.__temporary_storage_key
-        )
-      }
-    }
-
+  const compute = async function (transactionContext: any): Promise<any> {
     let stepValue = resolveValue(values, transactionContext)
     if (stepValue instanceof Promise) {
       stepValue = await stepValue
@@ -208,22 +184,20 @@ export function transform(
       }
     }
 
-    if ("transaction" in transactionContext) {
-      const temporaryDataKey = ret.__temporary_storage_key!
-      transactionContext.transaction.setTemporaryData(
-        temporaryDataKey,
-        finalResult
-      )
-    }
-
     return finalResult
   }
 
-  const proxyfiedRet = proxify<
-    WorkflowData & { __resolver: any; __temporary_storage_key: string | null }
-  >(ret as unknown as WorkflowData)
-  proxyfiedRet.__resolver = returnFn as any
-  proxyfiedRet.__temporary_storage_key = null as string | null
+  const ret = proxify<WorkflowData & { __resolver: unknown }>({
+    __id: id,
+    __type: OrchestrationUtils.SymbolWorkflowStepTransformer,
+  } as unknown as WorkflowData)
 
-  return proxyfiedRet
+  // Evaluated at most once per run: every consumer, including the workflow
+  // result, reads the same value.
+  ret.__resolver = (transactionContext: any): Promise<any> =>
+    memoised(transactionContext, `transform:${id}`, () =>
+      compute(transactionContext)
+    )
+
+  return ret
 }

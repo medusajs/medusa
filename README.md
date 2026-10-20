@@ -55,7 +55,7 @@ This is a Yarn workspaces monorepo. Every Medusa package published to npm lives 
 | Path | Contents |
 | --- | --- |
 | [`packages/medusa`](./packages/medusa) | `@medusajs/medusa`: the main package installed in Medusa applications. Holds the Store and Admin API routes, CLI commands, subscribers, and jobs, and re-exports the modules and `@medusajs/core-flows`. |
-| [`packages/core/*`](./packages/core) | Core libraries: the framework runtime (`framework`), types, utils, Workflows SDK, Modules SDK, predefined workflows (`core-flows`), Query, orchestration, and the JS SDK. |
+| [`packages/core/*`](./packages/core) | Core libraries: the framework runtime (`framework`), types, utils, Workflows SDK, Modules SDK, predefined workflows (`core-flows`), the workflow engine, Query, and the JS SDK. |
 | [`packages/modules/*`](./packages/modules) | Commerce Modules (product, cart, order, pricing, payment, and more) and Infrastructure Modules (event bus, caching, file, locking, workflow engine, and more). |
 | [`packages/modules/providers/*`](./packages/modules/providers) | Module Providers, such as Stripe payments, S3 file storage, SendGrid notifications, Redis locking and caching, and auth providers for email/password, GitHub, Google, and OIDC. |
 | [`packages/admin/*`](./packages/admin) | The Medusa Admin dashboard and the SDK, Vite plugin, and bundler used to build and extend it. |

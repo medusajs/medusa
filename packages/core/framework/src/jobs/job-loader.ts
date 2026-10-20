@@ -1,5 +1,4 @@
-import type { SchedulerOptions } from "@medusajs/orchestration"
-import { MedusaContainer } from "@medusajs/types"
+import type { MedusaContainer, SchedulerOptions } from "@medusajs/types"
 import {
   dynamicImport,
   isFileSkipped,
@@ -15,6 +14,7 @@ import {
   WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { ResourceLoader } from "../utils/resource-loader"
+import { registerWorkflows } from "../workflows/workflow-loader"
 import {
   ScheduledJobContext,
   ScheduledJobHandler,
@@ -31,6 +31,7 @@ type CronJobHandler = ScheduledJobHandler
 
 export class JobLoader extends ResourceLoader {
   protected resourceName = "job"
+  #workflows: unknown[] = []
 
   constructor(sourceDir: string | string[], container: MedusaContainer) {
     super(sourceDir, container)
@@ -39,6 +40,13 @@ export class JobLoader extends ResourceLoader {
   async loadFile(path: string) {
     const exports = await dynamicImport(path)
     await this.onFileLoaded(path, exports)
+    await this.#registerCollected()
+  }
+
+  async #registerCollected() {
+    const workflows = this.#workflows
+    this.#workflows = []
+    await registerWorkflows(this.container, workflows)
   }
 
   protected async onFileLoaded(
@@ -140,12 +148,13 @@ export class JobLoader extends ResourceLoader {
           },
     }
 
-    createWorkflow(
+    const workflow = createWorkflow(
       workflowConfig,
       (input: WorkflowData<ScheduledJobWorkflowInput>) => {
         return new WorkflowResponse(step(input))
       }
     )
+    this.#workflows.push(workflow)
 
     registerDevServerResource({
       sourcePath: path,
@@ -160,6 +169,7 @@ export class JobLoader extends ResourceLoader {
    */
   async load() {
     await super.discoverResources()
+    await this.#registerCollected()
 
     this.logger.debug(`Jobs registered.`)
   }

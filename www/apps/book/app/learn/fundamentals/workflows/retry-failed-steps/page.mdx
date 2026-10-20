@@ -166,13 +166,19 @@ const step1 = createStep(
 
 In this example, if the step fails, it will be retried after `86400` seconds (one day).
 
-### Interval Changes Workflow to Long-Running
+### Interval Waits Before Returning
 
-By setting `retryInterval` on a step, a workflow that uses that step becomes a [long-running workflow](../long-running-workflow/page.mdx) that runs asynchronously in the background. This is useful when creating workflows that may fail and should run for a long time until they succeed, such as waiting for a payment to be captured or a shipment to be delivered.
+<Note>
 
-However, since the long-running workflow runs in the background, you won't receive its result or errors immediately when you execute the workflow.
+Before [Medusa v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0), setting `retryInterval` on a step made the workflow [long-running](../long-running-workflow/page.mdx), so the Workflow Engine Module's `run` method returned while the step waited for its next retry. Now, `run` waits until the step succeeds or fails after its retries.
 
-Instead, you must subscribe to the workflow's execution using the Workflow Engine Module's service. Learn more about this in the [Long-Running Workflows](../long-running-workflow/page.mdx#access-long-running-workflow-status-and-result) chapter.
+</Note>
+
+When a step with a `retryInterval` fails, the Workflow Engine Module stores the execution and schedules the step's next retry. The `run` method waits until the workflow finishes, then returns its result or throws its error.
+
+The Workflow Engine Module stores the timer of the next retry in the database. So, if the Medusa application restarts or another instance picks up the retry, the execution still continues after the interval.
+
+For very long intervals, such as a day, you may not want to wait for the result. In that case, make the step [async](../long-running-workflow/page.mdx) instead, and subscribe to the workflow's execution to receive its result. Learn more in the [Long-Running Workflows](../long-running-workflow/page.mdx#access-long-running-workflow-status-and-result) chapter.
 
 ---
 

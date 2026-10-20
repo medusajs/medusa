@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework"
 import { asValue, createContainer } from "@medusajs/framework/awilix"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { registerWorkflowEngine } from "../../../common/steps/__fixtures__/workflow-engine"
 import { listShippingOptionsForCartWithPricingWorkflow } from "../list-shipping-options-for-cart-with-pricing"
 
 const stockLocation = {
@@ -20,7 +21,7 @@ describe("listShippingOptionsForCartWithPricingWorkflow", () => {
   let container!: MedusaContainer
   let calculateShippingOptionsPrices: jest.Mock
 
-  beforeEach(() => {
+  beforeEach(async () => {
     calculateShippingOptionsPrices = jest.fn(async (data: any[]) =>
       data.map(() => ({
         calculated_amount: 20,
@@ -90,6 +91,10 @@ describe("listShippingOptionsForCartWithPricingWorkflow", () => {
       [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(remoteQuery),
       [Modules.FULFILLMENT]: asValue({ calculateShippingOptionsPrices }),
     })
+    await registerWorkflowEngine(
+      container,
+      listShippingOptionsForCartWithPricingWorkflow
+    )
   })
 
   it("should map each fulfillment set to its stock location without the location's fulfillment sets", async () => {

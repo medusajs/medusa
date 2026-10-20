@@ -1,11 +1,14 @@
 import {
   createAndLinkProductOptionsToProductWorkflow,
   setProductProductOptionsWorkflow,
-  setProductProductOptionsWorkflowId,
   updateProductOptionsWorkflow,
   updateProductsWorkflow,
-  updateProductsWorkflowId,
 } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   IFulfillmentModuleService,
@@ -506,13 +509,23 @@ medusaIntegrationTestRunner({
 
         describe("compensation", () => {
           it("should restore only the linked option values after a failed removal", async () => {
-            const workflow = setProductProductOptionsWorkflow(appContainer)
-
-            workflow.appendAction("throw", setProductProductOptionsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Fail`)
             })
+            const failingWorkflow = createWorkflow(
+              "test-update-product-options-then-fail-1",
+              (input: any) => {
+                const result = setProductProductOptionsWorkflow.runAsStep({
+                  input,
+                })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const product = await service.createProducts({
               title: "Test Product",
@@ -583,13 +596,23 @@ medusaIntegrationTestRunner({
           })
 
           it("should remove newly added values after a failed update", async () => {
-            const workflow = setProductProductOptionsWorkflow(appContainer)
-
-            workflow.appendAction("throw", setProductProductOptionsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Fail`)
             })
+            const failingWorkflow = createWorkflow(
+              "test-update-product-options-then-fail-2",
+              (input: any) => {
+                const result = setProductProductOptionsWorkflow.runAsStep({
+                  input,
+                })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const product = await service.createProducts({
               title: "Test Product",
@@ -641,13 +664,23 @@ medusaIntegrationTestRunner({
           })
 
           it("should not invert no-op updates when compensating", async () => {
-            const workflow = setProductProductOptionsWorkflow(appContainer)
-
-            workflow.appendAction("throw", setProductProductOptionsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Fail`)
             })
+            const failingWorkflow = createWorkflow(
+              "test-update-product-options-then-fail-3",
+              (input: any) => {
+                const result = setProductProductOptionsWorkflow.runAsStep({
+                  input,
+                })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const product = await service.createProducts({
               title: "Test Product",
@@ -905,13 +938,21 @@ medusaIntegrationTestRunner({
       describe("updateProductsWorkflow", () => {
         describe("compensation", () => {
           it("restores and re-links an exclusive option orphaned by an option_ids change on rollback", async () => {
-            const workflow = updateProductsWorkflow(appContainer)
-
-            workflow.appendAction("throw", updateProductsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Fail`)
             })
+            const failingWorkflow = createWorkflow(
+              "test-update-product-options-then-fail-4",
+              (input: any) => {
+                const result = updateProductsWorkflow.runAsStep({ input })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const product = await service.createProducts({
               title: "Test Product",
@@ -972,13 +1013,21 @@ medusaIntegrationTestRunner({
           })
 
           it("re-links a dropped option with the product's prior value subset, not all the option's values, on rollback", async () => {
-            const workflow = updateProductsWorkflow(appContainer)
-
-            workflow.appendAction("throw", updateProductsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Fail`)
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Fail`)
             })
+            const failingWorkflow = createWorkflow(
+              "test-update-product-options-then-fail-5",
+              (input: any) => {
+                const result = updateProductsWorkflow.runAsStep({ input })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             // A global option with three values; the product links to only two.
             const globalOption = await service.createProductOptions({

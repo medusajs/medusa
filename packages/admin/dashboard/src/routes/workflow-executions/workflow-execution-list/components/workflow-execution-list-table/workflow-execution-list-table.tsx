@@ -59,7 +59,10 @@ export const WorkflowExecutionListTable = () => {
         filters={filters}
         isLoading={isLoading}
         pageSize={PAGE_SIZE}
-        orderBy={[{ key: "created_at", label: t("fields.createdAt") }]}
+        orderBy={[
+          { key: "created_at", label: t("fields.createdAt") },
+          { key: "updated_at", label: t("fields.updatedAt") },
+        ]}
         navigateTo={(row) => `${row.id}`}
         search
         pagination

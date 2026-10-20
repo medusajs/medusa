@@ -7,6 +7,7 @@ import {
   createWorkflow,
   WorkflowResponse,
 } from "@medusajs/workflows-sdk"
+import { registerWorkflowEngine } from "../../../common/steps/__fixtures__/workflow-engine"
 import { deleteRoleAssignmentsStep } from "../delete-role-assignments"
 
 // Forces the workflow to roll back so the delete step's compensation runs.
@@ -46,7 +47,7 @@ const makeContainer = (existingRows: any[], recorded: Recorded) => {
             recorded.created.push(data)
             return Promise.resolve(data)
           },
-        } as any)
+        }) as any
     )
   )
 
@@ -85,6 +86,7 @@ describe("deleteRoleAssignmentsStep", () => {
       )
     })
 
+    await registerWorkflowEngine(container, workflow)
     await workflow(container).run({ input: {} })
 
     expect(recorded.listFilters).toEqual([{ id: ["rasgn_1", "rasgn_3"] }])
@@ -102,6 +104,7 @@ describe("deleteRoleAssignmentsStep", () => {
       return new WorkflowResponse(deleteRoleAssignmentsStep({ id: "rasgn_1" }))
     })
 
+    await registerWorkflowEngine(container, workflow)
     await workflow(container).run({ input: {} })
 
     expect(recorded.listFilters).toEqual([{ id: ["rasgn_1"] }])
@@ -116,6 +119,7 @@ describe("deleteRoleAssignmentsStep", () => {
       return new WorkflowResponse(deleteRoleAssignmentsStep({ id: [] }))
     })
 
+    await registerWorkflowEngine(container, workflow)
     await workflow(container).run({ input: {} })
 
     expect(recorded.listFilters).toEqual([])
@@ -135,6 +139,7 @@ describe("deleteRoleAssignmentsStep", () => {
       )
     })
 
+    await registerWorkflowEngine(container, workflow)
     await workflow(container).run({ input: {} })
 
     expect(recorded.deleted).toEqual([])
@@ -154,6 +159,7 @@ describe("deleteRoleAssignmentsStep", () => {
       }
     )
 
+    await registerWorkflowEngine(container, workflow)
     await workflow(container)
       .run({ input: {} })
       .catch(() => void 0)

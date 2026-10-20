@@ -1,6 +1,12 @@
 import { updateRegionsWorkflow } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { MedusaContainer, RegionDTO } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(200000)
@@ -70,18 +76,21 @@ medusaIntegrationTestRunner({
           payment_providers: [paymentProviderId, paymentProvider2Id],
         }
 
-        const workflow = updateRegionsWorkflow(container)
-        workflow.addAction(
-          "throw",
-          {
-            invoke: async function failStep() {
-              throw new Error(`Failed to update region`)
-            },
-          },
-          {
-            noCompensation: true,
+        const failStep = createStep("throw", async () => {
+          throw new Error(`Failed to update region`)
+        })
+        const failingWorkflow = createWorkflow(
+          "test-update-regions-then-fail",
+          (input: any) => {
+            const res = updateRegionsWorkflow.runAsStep({ input })
+            failStep(res)
+            return new WorkflowResponse(res)
           }
         )
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([failingWorkflow])
+        const workflow = failingWorkflow(container)
 
         const { errors } = await workflow.run({
           input: {

@@ -35,6 +35,12 @@ export const whatsNewItems: WhatsNewItem[] = [
     link: "https://docs.medusajs.com/resources/enterprise",
   },
   {
+    title: "Postgres-backed Workflow Engine Module",
+    tag: "Framework",
+    date: "2026-10-19",
+    link: "https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine",
+  },
+  {
     title: "Medusa MCP",
     tag: "Medusa Cloud",
     date: "2026-10-20",

@@ -1,6 +1,6 @@
 # @medusajs/framework
 
-The umbrella package every Medusa application, plugin, and module imports from. It re-exports the core packages (`types`, `utils`, `workflows-sdk`, `orchestration`, `modules-sdk`) under subpaths and owns the runtime loaders (config, HTTP, subscribers, jobs, links, workflows, database) that `@medusajs/medusa` runs at boot.
+The umbrella package every Medusa application, plugin, and module imports from. It re-exports the core packages (`types`, `utils`, `workflows-sdk`, `modules-sdk`) under subpaths and owns the runtime loaders (config, HTTP, subscribers, jobs, links, workflows, database) that `@medusajs/medusa` runs at boot.
 
 ## Using this package
 
@@ -69,7 +69,7 @@ export default defineMiddlewares({
 
 ## Architecture
 
-- `src/<subpath>/index.ts` maps 1:1 to the `exports` map in `package.json`; subpaths like `utils`, `types`, `workflows-sdk`, `orchestration`, `modules-sdk` are thin `export *` wrappers.
+- `src/<subpath>/index.ts` maps 1:1 to the `exports` map in `package.json`; subpaths like `utils`, `types`, `workflows-sdk`, `modules-sdk` are thin `export *` wrappers.
 - `src/types/container.ts` augments `ModuleImplementations` so `container.resolve(Modules.PRODUCT)` / `ContainerRegistrationKeys.QUERY` are typed. The `utils`, `http`, `config`, `workflows-sdk`, `database` index files `import "../types/container"` to pull that augmentation in.
 - `src/container.ts` exports the singleton `container`; `config/loader.ts` registers `configModule` on it at import time.
 - `medusa-app-loader.ts` (`MedusaAppLoader`) bootstraps modules and links via `@medusajs/modules-sdk`.

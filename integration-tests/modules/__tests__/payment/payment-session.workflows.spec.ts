@@ -1,7 +1,9 @@
 import {
-  createPaymentSessionsWorkflow,
-  createPaymentSessionsWorkflowId,
-} from "@medusajs/core-flows"
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { createPaymentSessionsWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   ICustomerModuleService,
@@ -220,15 +222,25 @@ medusaIntegrationTestRunner({
 
         describe("compensation", () => {
           it("should delete created payment collection if a subsequent step fails", async () => {
-            const workflow = createPaymentSessionsWorkflow(appContainer)
-
-            workflow.appendAction("throw", createPaymentSessionsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed to do something after creating payment sessions`
-                )
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(
+                `Failed to do something after creating payment sessions`
+              )
             })
+            const failingWorkflow = createWorkflow(
+              "test-create-payment-sessions-then-fail-1",
+              (input: any) => {
+                const result = createPaymentSessionsWorkflow.runAsStep({
+                  input,
+                })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const region = await regionModule.createRegions({
               currency_code: "usd",
@@ -301,15 +313,25 @@ medusaIntegrationTestRunner({
                 amount: 2000,
               })
 
-            const workflow = createPaymentSessionsWorkflow(appContainer)
-
-            workflow.appendAction("throw", createPaymentSessionsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed to do something after creating payment sessions`
-                )
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(
+                `Failed to do something after creating payment sessions`
+              )
             })
+            const failingWorkflow = createWorkflow(
+              "test-create-payment-sessions-then-fail-2",
+              (input: any) => {
+                const result = createPaymentSessionsWorkflow.runAsStep({
+                  input,
+                })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const { errors } = await workflow.run({
               input: {
@@ -370,15 +392,25 @@ medusaIntegrationTestRunner({
                 amount: 3000,
               })
 
-            const workflow = createPaymentSessionsWorkflow(appContainer)
-
-            workflow.appendAction("throw", createPaymentSessionsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed to do something after creating payment sessions`
-                )
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(
+                `Failed to do something after creating payment sessions`
+              )
             })
+            const failingWorkflow = createWorkflow(
+              "test-create-payment-sessions-then-fail-3",
+              (input: any) => {
+                const result = createPaymentSessionsWorkflow.runAsStep({
+                  input,
+                })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const { errors } = await workflow.run({
               input: {

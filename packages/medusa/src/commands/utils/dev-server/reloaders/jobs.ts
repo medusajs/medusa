@@ -2,7 +2,7 @@ import { JobLoader } from "@medusajs/framework/jobs"
 import { Logger, MedusaContainer } from "@medusajs/framework/types"
 import { ModuleCacheManager } from "../module-cache-manager"
 import { ResourceRegistry } from "../resource-registry"
-import { CONFIG, DevServerGlobals, FileChangeAction } from "../types"
+import { CONFIG, DevWorkflowRegistry, FileChangeAction } from "../types"
 import { BaseReloader } from "./base"
 
 /**
@@ -18,7 +18,7 @@ export class JobReloader extends BaseReloader {
   #logger: Logger
 
   constructor(
-    private workflowManager: DevServerGlobals["WorkflowManager"],
+    private workflowRegistry: DevWorkflowRegistry,
     cacheManager: ModuleCacheManager,
     private container: MedusaContainer,
     private registry: ResourceRegistry,
@@ -41,7 +41,7 @@ export class JobReloader extends BaseReloader {
    * Unregister a subscriber from the event-bus
    */
   private unregisterJob(metadata: JobMetadata): void {
-    this.workflowManager?.unregister(metadata.name)
+    void this.workflowRegistry.unregister(metadata.name)
     this.#logger.debug(`${this.#logSource} Unregistered job ${metadata.name}`)
   }
 

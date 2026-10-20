@@ -2,6 +2,7 @@ import { MedusaContainer } from "@medusajs/framework"
 import { asFunction, createContainer } from "@medusajs/framework/awilix"
 import { Modules } from "@medusajs/framework/utils"
 import { createWorkflow, WorkflowResponse } from "@medusajs/workflows-sdk"
+import { registerWorkflowEngine } from "../../../common/steps/__fixtures__/workflow-engine"
 import { processProductOptionsForImportStep } from "../process-product-options-for-import"
 
 const buildContainer = (
@@ -44,6 +45,7 @@ const runStep = async (
       return new WorkflowResponse(out)
     }
   )
+  await registerWorkflowEngine(container, workflow)
   return workflow(container).run({ input: {} })
 }
 
@@ -101,9 +103,7 @@ describe("processProductOptionsForImportStep", () => {
       products: [
         {
           title: "P1",
-          options: [
-            { title: "Size", values: ["S"], is_exclusive: false },
-          ],
+          options: [{ title: "Size", values: ["S"], is_exclusive: false }],
         },
       ],
     })
@@ -210,9 +210,6 @@ describe("processProductOptionsForImportStep", () => {
 
     // Newly created ids land in the correct product/positions.
     expect(result.result[0].option_ids).toEqual(["opt_created_1"])
-    expect(result.result[1].option_ids).toEqual([
-      "opt_pre",
-      "opt_created_2",
-    ])
+    expect(result.result[1].option_ids).toEqual(["opt_pre", "opt_created_2"])
   })
 })

@@ -20,13 +20,11 @@ export const WorkflowExecutionDetailBreadcrumb = (
     return null
   }
 
-  const cleanId = workflow_execution.id.replace("wf_exec_", "")
-
-  return <span>{cleanId}</span>
+  return <span>{workflow_execution.id}</span>
 }
 
 export const seo = (
   match: UIMatch<HttpTypes.AdminWorkflowExecutionResponse>
 ) => ({
-  title: match.loaderData?.workflow_execution?.id?.replace("wf_exec_", ""),
+  title: match.loaderData?.workflow_execution?.id,
 })

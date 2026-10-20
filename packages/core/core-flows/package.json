@@ -33,7 +33,8 @@
   "author": "Medusa",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@medusajs/framework": "2.22.6"
+    "@medusajs/framework": "2.22.6",
+    "@medusajs/workflow-engine": "2.22.6"
   },
   "dependencies": {
     "csv-parse": "^7.0.2",

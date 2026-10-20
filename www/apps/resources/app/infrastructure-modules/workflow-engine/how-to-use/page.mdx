@@ -38,9 +38,152 @@ const step1 = createStep(
 )
 ```
 
-This will resolve the service of the configured Workflow Engine Module, which is the [In-Memory Workflow Engine Module](../in-memory/page.mdx) by default.
+This resolves the service of the [Workflow Engine Module](../page.mdx).
 
 You can then use the Workflow Engine Module's service's methods in the step. The rest of this guide details these methods.
+
+---
+
+## run
+
+This method runs a workflow and returns its result.
+
+<Note>
+
+This method is available since [Medusa v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0). Running a workflow directly, such as `helloWorldWorkflow(container).run()`, keeps working.
+
+</Note>
+
+### Example
+
+```ts
+import helloWorldWorkflow from "../workflows/hello-world"
+
+const { result } = await workflowEngineModuleService.run(
+  helloWorldWorkflow,
+  {
+    input: {
+      name: "John",
+    },
+  }
+)
+```
+
+### Parameters
+
+<TypeList types={[
+  {
+    "name": "workflow",
+    "type": "`Workflow` | `string`",
+    "description": "The workflow to run, as returned by `createWorkflow`, or its ID. When you pass the workflow, the method infers the types of its input and result.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`object`",
+    "description": "Options of the execution.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "input",
+        "type": "`object`",
+        "description": "The workflow's input.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "The ID of the execution's transaction. If an execution with this ID is already running, the method throws an error.",
+        "optional": true,
+        "defaultValue": "A generated ID",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "throwOnError",
+        "type": "`boolean`",
+        "description": "Whether to throw the error of a failed execution. If `false`, the method returns the error in the `errors` property of the result.",
+        "optional": true,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "context",
+        "type": "`Context`",
+        "description": "The context to run the workflow in, such as an event group ID.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} sectionTitle="run"/>
+
+---
+
+## cancel
+
+This method cancels a workflow execution and runs the compensation functions of its completed steps.
+
+### Example
+
+```ts
+await workflowEngineModuleService.cancel(helloWorldWorkflow, {
+  transactionId,
+})
+```
+
+### Parameters
+
+<TypeList types={[
+  {
+    "name": "workflow",
+    "type": "`Workflow` | `string`",
+    "description": "The workflow, as returned by `createWorkflow`, or its ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`object`",
+    "description": "Options of the cancellation.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "The ID of the execution's transaction to cancel.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "throwOnError",
+        "type": "`boolean`",
+        "description": "Whether to throw an error if a compensation function fails.",
+        "optional": true,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} sectionTitle="cancel"/>
 
 ---
 

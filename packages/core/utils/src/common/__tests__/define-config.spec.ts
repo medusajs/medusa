@@ -193,7 +193,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -547,7 +547,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -755,7 +755,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -964,7 +964,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -1163,7 +1163,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -1365,7 +1365,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -1615,11 +1615,12 @@ describe("defineConfig", function () {
           },
           "workflows": {
             "options": {
-              "redis": {
+              "notifier": {
+                "type": "redis",
                 "url": "redis://localhost:6379",
               },
             },
-            "resolve": "@medusajs/medusa/workflow-engine-redis",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -1833,7 +1834,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -2085,11 +2086,12 @@ describe("defineConfig", function () {
           },
           "workflows": {
             "options": {
-              "redis": {
+              "notifier": {
+                "type": "redis",
                 "url": "redis://localhost:6379",
               },
             },
-            "resolve": "@medusajs/medusa/workflow-engine-redis",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -2357,11 +2359,12 @@ describe("defineConfig", function () {
           },
           "workflows": {
             "options": {
-              "redis": {
+              "notifier": {
+                "type": "redis",
                 "url": "redis://localhost:6379",
               },
             },
-            "resolve": "@medusajs/medusa/workflow-engine-redis",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -2663,7 +2666,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -2912,7 +2915,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -3175,7 +3178,7 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/user",
           },
           "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
+            "resolve": "@medusajs/medusa/workflows",
           },
         },
         "plugins": [
@@ -3366,6 +3369,102 @@ describe("defineConfig", function () {
       expect((config.modules!["user"] as any).options.jwt_secret).toBe(
         "configured-jwt-secret"
       )
+    })
+  })
+
+  describe("legacy workflow engine modules", () => {
+    let warn: jest.SpyInstance
+
+    beforeEach(() => {
+      warn = jest.spyOn(console, "warn").mockImplementation(() => {})
+    })
+
+    afterEach(() => {
+      warn.mockRestore()
+    })
+
+    it.each([
+      "@medusajs/medusa/workflow-engine-inmemory",
+      "@medusajs/medusa/workflow-engine-redis",
+      "@medusajs/workflow-engine-inmemory",
+      "@medusajs/workflow-engine-redis",
+    ])("replaces %s with the workflows module", (resolve) => {
+      const config = defineConfig({ modules: [{ resolve }] })
+
+      expect(config.modules![Modules.WORKFLOW_ENGINE]).toEqual({
+        resolve: "@medusajs/medusa/workflows",
+        options: {},
+      })
+      expect(warn).toHaveBeenCalledTimes(1)
+      expect(warn.mock.calls[0][0]).toContain(resolve)
+      expect(warn.mock.calls[0][0]).toContain("@medusajs/medusa/workflows")
+    })
+
+    it("keeps the Redis URL of the old engine as the notifier", () => {
+      const config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/workflow-engine-redis",
+            options: {
+              redis: { url: "redis://old:6379" },
+              queueName: "medusa-workflows",
+            },
+          },
+        ],
+      })
+
+      expect(config.modules![Modules.WORKFLOW_ENGINE]).toEqual({
+        resolve: "@medusajs/medusa/workflows",
+        options: {
+          notifier: { type: "redis", url: "redis://old:6379" },
+        },
+      })
+      expect(warn.mock.calls[0][0]).toContain("queue and worker options")
+    })
+
+    it.each([
+      [{ redis: { redisUrl: "redis://a" } }, "redis://a"],
+      [{ url: "redis://b" }, "redis://b"],
+    ])("reads the Redis URL from %j", (options, redisUrl) => {
+      const config = defineConfig({
+        modules: [{ resolve: "@medusajs/workflow-engine-redis", options }],
+      })
+
+      expect((config.modules![Modules.WORKFLOW_ENGINE] as any).options).toEqual(
+        { notifier: { type: "redis", url: redisUrl } }
+      )
+    })
+
+    it("replaces an old engine in the object form", () => {
+      const config = defineConfig({
+        modules: {
+          [Modules.WORKFLOW_ENGINE]: {
+            resolve: "@medusajs/medusa/workflow-engine-inmemory",
+          },
+        },
+      })
+
+      expect(config.modules![Modules.WORKFLOW_ENGINE]).toEqual({
+        resolve: "@medusajs/medusa/workflows",
+        options: {},
+      })
+    })
+
+    it("leaves the workflows module alone", () => {
+      const config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/workflows",
+            options: { notifier: { type: "redis", url: "redis://new" } },
+          },
+        ],
+      })
+
+      expect(config.modules![Modules.WORKFLOW_ENGINE]).toEqual({
+        resolve: "@medusajs/medusa/workflows",
+        options: { notifier: { type: "redis", url: "redis://new" } },
+      })
+      expect(warn).not.toHaveBeenCalled()
     })
   })
 })

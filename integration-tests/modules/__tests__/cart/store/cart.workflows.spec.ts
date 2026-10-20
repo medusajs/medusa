@@ -5,19 +5,20 @@ import {
   createCartWorkflow,
   createPaymentCollectionForCartWorkflow,
   deleteCartCreditLinesWorkflow,
-  deleteLineItemsStepId,
   deleteLineItemsWorkflow,
-  findOrCreateCustomerStepId,
   listShippingOptionsForCartWithPricingWorkflow,
   listShippingOptionsForCartWorkflow,
   refreshPaymentCollectionForCartWorkflow,
   updateCartWorkflow,
   updateLineItemInCartWorkflow,
-  updateLineItemsStepId,
-  updatePaymentCollectionStepId,
   updateTaxLinesWorkflow,
 } from "@medusajs/core-flows"
-import { StepResponse } from "@medusajs/framework/workflows-sdk"
+import {
+  createStep,
+  createWorkflow,
+  StepResponse,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   ICartModuleService,
@@ -38,6 +39,7 @@ import {
   PriceListType,
   ProductStatus,
   RuleOperator,
+  TransactionState,
 } from "@medusajs/utils"
 import {
   adminHeaders,
@@ -78,6 +80,29 @@ medusaIntegrationTestRunner({
       let storeHeadersWithCustomer
       let setPricingContextHook: any
       let setShippingOptionsContextHook: any
+
+      /**
+       * Wraps a workflow in a registered workflow that fails with `message`
+       * after the wrapped workflow finishes, so its compensation runs.
+       */
+      const failAfterWorkflow = async (
+        workflow: any,
+        workflowId: string,
+        message: string
+      ) => {
+        const failStep = createStep("throw", async () => {
+          throw new Error(message)
+        })
+        const failingWorkflow = createWorkflow(workflowId, (input: any) => {
+          const result = workflow.runAsStep({ input })
+          failStep(result)
+          return new WorkflowResponse(result)
+        })
+        await appContainer
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([failingWorkflow])
+        return failingWorkflow(appContainer)
+      }
 
       beforeAll(async () => {
         appContainer = getContainer()
@@ -513,18 +538,10 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const workflow = createCartWorkflow(appContainer)
-
-          workflow.addAction(
-            "throw",
-            {
-              invoke: async function failStep() {
-                throw new Error(`Failed to create cart`)
-              },
-            },
-            {
-              noCompensation: true,
-            }
+          const workflow = await failAfterWorkflow(
+            createCartWorkflow,
+            "test-create-cart-then-fail",
+            `Failed to create cart`
           )
 
           const { transaction } = await workflow.run({
@@ -543,8 +560,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          // TODO: the state must be "reverted" when runAsStep of sync flows can be reverted
-          expect(transaction.flow.state).toEqual("failed")
+          expect(transaction.getState()).toEqual(TransactionState.REVERTED)
         })
 
         it("should throw when no regions exist", async () => {
@@ -1312,13 +1328,11 @@ medusaIntegrationTestRunner({
         describe("compensation", () => {
           it("should delete created customer if cart-creation fails", async () => {
             expect.assertions(2)
-            const workflow = createCartWorkflow(appContainer)
-
-            workflow.appendAction("throw", findOrCreateCustomerStepId, {
-              invoke: async function failStep() {
-                throw new Error(`Failed to create cart`)
-              },
-            })
+            const workflow = await failAfterWorkflow(
+              createCartWorkflow,
+              "test-create-cart-new-customer-then-fail",
+              `Failed to create cart`
+            )
 
             const { errors } = await workflow.run({
               input: {
@@ -1346,13 +1360,11 @@ medusaIntegrationTestRunner({
 
           it("should not delete existing customer if cart-creation fails", async () => {
             expect.assertions(2)
-            const workflow = createCartWorkflow(appContainer)
-
-            workflow.appendAction("throw", findOrCreateCustomerStepId, {
-              invoke: async function failStep() {
-                throw new Error(`Failed to create cart`)
-              },
-            })
+            const workflow = await failAfterWorkflow(
+              createCartWorkflow,
+              "test-create-cart-existing-customer-then-fail",
+              `Failed to create cart`
+            )
 
             const customer = await customerModule.createCustomers({
               email: "tony@stark-industries.com",
@@ -1836,13 +1848,11 @@ medusaIntegrationTestRunner({
           const originalShippingAddress = { ...cart.shipping_address }
           const shippingAddressId = cart.shipping_address?.id
 
-          const workflow = updateCartWorkflow(appContainer)
-
-          workflow.appendAction("throw", "update-carts", {
-            invoke: async function failStep() {
-              throw new Error("Simulated failure")
-            },
-          })
+          const workflow = await failAfterWorkflow(
+            updateCartWorkflow,
+            "test-update-cart-then-fail",
+            "Simulated failure"
+          )
 
           const { errors } = await workflow.run({
             input: {
@@ -3715,13 +3725,11 @@ medusaIntegrationTestRunner({
         describe("compensation", () => {
           it("should revert line item update to original state", async () => {
             expect.assertions(2)
-            const workflow = updateLineItemInCartWorkflow(appContainer)
-
-            workflow.appendAction("throw", updateLineItemsStepId, {
-              invoke: async function failStep() {
-                throw new Error(`Failed to update something after line items`)
-              },
-            })
+            const workflow = await failAfterWorkflow(
+              updateLineItemInCartWorkflow,
+              "test-update-line-item-then-fail",
+              `Failed to update something after line items`
+            )
 
             const salesChannel = await scModuleService.createSalesChannels({
               name: "Webshop",
@@ -3885,15 +3893,11 @@ medusaIntegrationTestRunner({
 
         describe("compensation", () => {
           it("should restore line item if delete fails", async () => {
-            const workflow = deleteLineItemsWorkflow(appContainer)
-
-            workflow.appendAction("throw", deleteLineItemsStepId, {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed to do something after deleting line items`
-                )
-              },
-            })
+            const workflow = await failAfterWorkflow(
+              deleteLineItemsWorkflow,
+              "test-delete-line-items-then-fail",
+              `Failed to do something after deleting line items`
+            )
 
             const cart = await cartModuleService.createCarts({
               currency_code: "usd",
@@ -3987,16 +3991,11 @@ medusaIntegrationTestRunner({
 
         describe("compensation", () => {
           it("should dismiss cart <> payment collection link and delete created payment collection", async () => {
-            const workflow =
-              createPaymentCollectionForCartWorkflow(appContainer)
-
-            workflow.addAction("throw", {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed to do something after linking cart and payment collection`
-                )
-              },
-            })
+            const workflow = await failAfterWorkflow(
+              createPaymentCollectionForCartWorkflow,
+              "test-create-payment-collection-then-fail",
+              `Failed to do something after linking cart and payment collection`
+            )
 
             const region = await regionModuleService.createRegions({
               name: "US",
@@ -4177,16 +4176,11 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const workflow =
-              refreshPaymentCollectionForCartWorkflow(appContainer)
-
-            workflow.appendAction("throw", updatePaymentCollectionStepId, {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed to do something after updating payment collections`
-                )
-              },
-            })
+            const workflow = await failAfterWorkflow(
+              refreshPaymentCollectionForCartWorkflow,
+              "test-refresh-payment-collection-then-fail",
+              `Failed to do something after updating payment collections`
+            )
 
             const { errors } = await workflow.run({
               input: {
@@ -5292,9 +5286,8 @@ medusaIntegrationTestRunner({
           })
 
           expect(
-            // @ts-expect-error - transaction.context.invoke is private but we can still access it at runtime
-            transaction.context.invoke["fetch-cart"].output.output.data
-              .shipping_address.metadata
+            (transaction.getContext().invoke["fetch-cart"].output.output as any)
+              .data.shipping_address.metadata
           ).toEqual({
             testing_tax: true,
           })
@@ -5333,9 +5326,9 @@ medusaIntegrationTestRunner({
             throwOnError: false,
           })
 
-          const fetchedCart =
-            // @ts-expect-error - transaction.context.invoke is private but we can still access it at runtime
-            transaction.context.invoke["fetch-cart"].output.output.data
+          const fetchedCart = (
+            transaction.getContext().invoke["fetch-cart"].output.output as any
+          ).data
 
           expect(fetchedCart.shipping_methods).toHaveLength(1)
           expect(fetchedCart.shipping_methods[0].id).toBeDefined()
