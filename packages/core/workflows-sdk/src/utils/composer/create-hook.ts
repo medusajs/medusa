@@ -1,13 +1,7 @@
 import { OrchestrationUtils } from "@medusajs/utils"
-import {
-  CompensateFn,
-  createStep,
-  InvokeFn,
-  wrapConditionalStep,
-} from "./create-step"
+import { getComposerContext } from "../../compiler/recorder"
+import { CompensateFn, createStep, InvokeFn } from "./create-step"
 import { StepResponse } from "./helpers"
-import { createStepHandler } from "./helpers/create-step-handler"
-import type { CreateWorkflowComposerContext } from "./type"
 
 type ZodLike<T = any> = {
   parse(data: unknown): T
@@ -79,9 +73,12 @@ export function createHook<Name extends string, TInvokeInput, TInvokeOutput>(
     resultValidator?: ZodLike<TInvokeOutput>
   } = {}
 ): Hook<Name, TInvokeInput, TInvokeOutput> {
-  const context = global[
-    OrchestrationUtils.SymbolMedusaWorkflowComposerContext
-  ] as CreateWorkflowComposerContext
+  const context = getComposerContext()
+  if (!context) {
+    throw new Error(
+      "createHook must be used inside a createWorkflow definition"
+    )
+  }
 
   const getHookResultStep = createStep(
     `get-${name}-result`,
@@ -101,44 +98,36 @@ export function createHook<Name extends string, TInvokeInput, TInvokeOutput>(
     () => void 0
   )
 
-  context.hookBinder(name, function (this: CreateWorkflowComposerContext) {
-    /**
-     * We start by registering a new step within the workflow. This will be a noop
-     * step that can be replaced (optionally) by the workflow consumer.
-     */
-    createStep(
-      name,
-      (_: TInvokeInput) => new StepResponse(NOOP_RESULT),
-      () => void 0
-    )(hookInput)
+  /**
+   * A no-op step that the workflow's consumer can replace with a handler.
+   * The handler is read when the step runs, so it may be attached later.
+   */
+  createStep(
+    name,
+    (_: TInvokeInput) => new StepResponse(NOOP_RESULT),
+    () => void 0
+  )(hookInput)
 
-    function hook<
-      TInvokeResultCompensateInput
-    >(this: CreateWorkflowComposerContext, invokeFn: InvokeFn<TInvokeInput, unknown, TInvokeResultCompensateInput>, compensateFn?: CompensateFn<TInvokeResultCompensateInput>) {
-      const handlers = createStepHandler.bind(this)({
-        stepName: name,
-        input: hookInput,
-        invokeFn,
-        compensateFn: compensateFn ?? (() => void 0),
-      })
+  const recorded = context.findStep(name)
+  if (recorded) {
+    recorded.hook = name
+  }
 
-      if (this.hooks_.registered.includes(name)) {
-        throw new Error(
-          `Cannot define multiple hook handlers for the ${name} hook`
-        )
-      }
-
-      const conditional = this.stepConditions_[name]
-      if (conditional) {
-        wrapConditionalStep(conditional.input, conditional.condition, handlers)
-      }
-
-      this.hooks_.registered.push(name)
-      this.handlers.set(name, handlers)
+  context.hooks[name] = function hook<TInvokeResultCompensateInput>(
+    invokeFn: InvokeFn<TInvokeInput, unknown, TInvokeResultCompensateInput>,
+    compensateFn?: CompensateFn<TInvokeResultCompensateInput>
+  ) {
+    if (context.hookHandlers.has(name)) {
+      throw new Error(
+        `Cannot define multiple hook handlers for the ${name} hook`
+      )
     }
 
-    return hook
-  })
+    context.hookHandlers.set(name, {
+      invoke: invokeFn,
+      compensate: compensateFn ?? (() => void 0),
+    })
+  }
 
   return {
     __type: OrchestrationUtils.SymbolWorkflowHook,

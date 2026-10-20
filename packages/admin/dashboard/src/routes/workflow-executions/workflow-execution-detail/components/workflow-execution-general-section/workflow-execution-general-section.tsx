@@ -8,7 +8,11 @@ import {
   clx,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { getTransactionState, getTransactionStateColor } from "../../../utils"
+import {
+  getExecutionSteps,
+  getTransactionState,
+  getTransactionStateColor,
+} from "../../../utils"
 import { HttpTypes } from "@medusajs/types"
 import { TransactionState, TransactionStepState } from "../../../types"
 
@@ -21,7 +25,6 @@ export const WorkflowExecutionGeneralSection = ({
 }: WorkflowExecutionGeneralSectionProps) => {
   const { t } = useTranslation()
 
-  const cleanId = execution.id.replace("wf_exec_", "")
   const translatedState = getTransactionState(
     t,
     execution.state as TransactionState
@@ -34,8 +37,8 @@ export const WorkflowExecutionGeneralSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-x-0.5">
-          <Heading>{cleanId}</Heading>
-          <Copy content={cleanId} className="text-ui-fg-muted" />
+          <Heading>{execution.id}</Heading>
+          <Copy content={execution.id} className="text-ui-fg-muted" />
         </div>
         <StatusBadge color={stateColor}>{translatedState}</StatusBadge>
       </div>
@@ -65,8 +68,6 @@ export const WorkflowExecutionGeneralSection = ({
   )
 }
 
-const ROOT_PREFIX = "_root"
-
 const Progress = ({
   steps,
 }: {
@@ -85,9 +86,7 @@ const Progress = ({
     )
   }
 
-  const actionableSteps = Object.values(steps).filter(
-    (step) => step.id !== ROOT_PREFIX
-  )
+  const actionableSteps = getExecutionSteps(steps)
 
   const completedSteps = actionableSteps.filter(
     (step) => step.invoke.state === TransactionStepState.DONE

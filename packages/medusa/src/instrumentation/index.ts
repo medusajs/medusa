@@ -8,11 +8,11 @@ import { ApiLoader, getHttpResponseFromError } from "@medusajs/framework/http"
 import { Span, SpanStatusCode } from "@medusajs/framework/opentelemetry/api"
 import type { NodeSDKConfiguration } from "@medusajs/framework/opentelemetry/sdk-node"
 import type { SpanExporter } from "@medusajs/framework/opentelemetry/sdk-trace-node"
-import { TransactionOrchestrator } from "@medusajs/framework/orchestration"
 import { Tracer } from "@medusajs/framework/telemetry"
 import { ICachingModuleService } from "@medusajs/framework/types"
 import { camelToSnakeCase, FeatureFlag } from "@medusajs/framework/utils"
 import CacheModule from "../modules/caching"
+import { configureWorkflowTracing } from "../modules/workflows"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
@@ -266,39 +266,41 @@ export function instrumentWorkflows() {
     "2.0.0"
   )
 
-  TransactionOrchestrator.traceTransaction = async (
-    transactionResumeFn,
-    metadata
-  ) => {
-    return await WorkflowsTracer.trace(
-      `workflow:${camelToSnakeCase(metadata.model_id)}`,
-      async function (span) {
-        span.setAttribute("workflow.transaction_id", metadata.transaction_id)
+  configureWorkflowTracing({
+    traceRun: async (run, metadata) => {
+      return await WorkflowsTracer.trace(
+        `workflow:${camelToSnakeCase(metadata.model_id)}`,
+        async function (span) {
+          span.setAttribute("workflow.transaction_id", metadata.transaction_id)
 
-        if (metadata.flow_metadata) {
-          Object.entries(metadata.flow_metadata).forEach(([key, value]) => {
-            span.setAttribute(`workflow.flow_metadata.${key}`, value as string)
-          })
+          if (metadata.flow_metadata) {
+            Object.entries(metadata.flow_metadata).forEach(([key, value]) => {
+              if (value !== undefined) {
+                span.setAttribute(
+                  `workflow.flow_metadata.${key}`,
+                  value as string
+                )
+              }
+            })
+          }
+
+          return await run().finally(() => span.end())
         }
+      )
+    },
+    traceStep: async (step, metadata) => {
+      return await WorkflowsTracer.trace(
+        `step:${camelToSnakeCase(metadata.action)}:${metadata.type}`,
+        async function (span) {
+          Object.entries(metadata).forEach(([key, value]) => {
+            span.setAttribute(`workflow.step.${key}`, value)
+          })
 
-        return await transactionResumeFn().finally(() => span.end())
-      }
-    )
-  }
-
-  TransactionOrchestrator.traceStep = async (stepHandler, metadata) => {
-    return await WorkflowsTracer.trace(
-      `step:${camelToSnakeCase(metadata.action)}:${metadata.type}`,
-      async function (span) {
-        Object.entries(metadata).forEach(([key, value]) => {
-          span.setAttribute(`workflow.step.${key}`, value)
-        })
-
-        // TODO: should we report error and re throw it?
-        return await stepHandler().finally(() => span.end())
-      }
-    )
-  }
+          return await step().finally(() => span.end())
+        }
+      )
+    },
+  })
 }
 
 export function instrumentCache() {

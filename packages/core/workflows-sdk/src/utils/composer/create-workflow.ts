@@ -1,28 +1,34 @@
 import {
-  TransactionModelOptions,
-  WorkflowHandler,
-  WorkflowManager,
-} from "@medusajs/orchestration"
-import {
   IWorkflowEngineService,
   LoadedModule,
   MedusaContainer,
+  WorkflowConfigOptions,
 } from "@medusajs/types"
 import {
   getCallerFilePath,
   isString,
-  Modules,
+  MedusaError,
   OrchestrationUtils,
   registerDevServerResource,
 } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { exportWorkflow, WorkflowResult } from "../../helper"
+import { brandWorkflow } from "../../brand"
+import {
+  getComposerContext,
+  setComposerContext,
+  WorkflowRecorder,
+} from "../../compiler/recorder"
+import { toDefinition } from "../../compiler/to-definition"
+import { WorkflowResult } from "../../helper"
+import {
+  createWorkflowRunner,
+  resolveWorkflowEngine,
+} from "../../helper/runner"
 import { createStep } from "./create-step"
 import { proxify } from "./helpers/proxy"
 import { StepResponse } from "./helpers/step-response"
 import { WorkflowResponse } from "./helpers/workflow-response"
 import {
-  CreateWorkflowComposerContext,
   HookHandler,
   ReturnWorkflow,
   StepExecutionContext,
@@ -30,17 +36,22 @@ import {
   WorkflowData,
 } from "./type"
 
-global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
-
+// An async child keeps the same id across invoke and compensation, whose
+// attempts are counted separately: a retried attempt starts a new run under it
+// once the failed one has finished. A sync child is retried with a fresh run
+// per attempt and cancelled by its stored id.
 const buildTransactionId = (
   step: { __step__: string },
-  stepContext: StepExecutionContext
+  stepContext: StepExecutionContext,
+  isAsync?: boolean
 ) => {
   return (
     step.__step__ +
     "-" +
     (stepContext.transactionId ?? ulid()) +
-    (stepContext.attempt > 1 ? `-attempt-${stepContext.attempt}` : "")
+    (!isAsync && stepContext.attempt > 1
+      ? `-attempt-${stepContext.attempt}`
+      : "")
   )
 }
 
@@ -103,7 +114,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
   /**
    * The name of the workflow or its configuration.
    */
-  nameOrConfig: string | ({ name: string } & TransactionModelOptions),
+  nameOrConfig: string | ({ name: string } & WorkflowConfigOptions),
   /**
    * The constructor function that is executed when the `run` method in {@link ReturnWorkflow} is used.
    * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
@@ -115,7 +126,10 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
 ): ReturnWorkflow<TData, TResult, THooks> {
   const fileSourcePath = getCallerFilePath() as string
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
-  const options = isString(nameOrConfig) ? {} : nameOrConfig
+  const options: WorkflowConfigOptions = isString(nameOrConfig)
+    ? {}
+    : { ...nameOrConfig }
+  delete (options as { name?: string }).name
 
   registerDevServerResource({
     sourcePath: fileSourcePath,
@@ -123,94 +137,73 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     type: "workflow",
   })
 
-  const handlers: WorkflowHandler = new Map()
+  const recorder = new WorkflowRecorder(name)
+  const outerContext = getComposerContext()
+  setComposerContext(recorder)
 
-  let newWorkflow = false
-  if (!WorkflowManager.getWorkflow(name)) {
-    newWorkflow = true
-    WorkflowManager.register(name, undefined, handlers, options)
+  let returned: unknown
+  try {
+    const inputPlaceHolder = proxify<WorkflowData>({
+      __type: OrchestrationUtils.SymbolInputReference,
+      __step__: "",
+      config: () => {
+        throw new Error("Config is not available for the input object.")
+      },
+    })
+
+    returned = composer.apply(recorder, [inputPlaceHolder])
+  } finally {
+    setComposerContext(outerContext)
   }
 
-  const context: CreateWorkflowComposerContext = {
-    __type: OrchestrationUtils.SymbolMedusaWorkflowComposerContext,
-    workflowId: name,
-    flow: WorkflowManager.getEmptyTransactionDefinition(),
-    isAsync: false,
-    handlers,
-    overriddenHandler: new Map(),
-    hooks_: {
-      declared: [],
-      registered: [],
-    },
-    hooksCallback_: {},
-    stepConditions_: {},
-    hookBinder: (name, fn) => {
-      context.hooks_.declared.push(name)
-      context.hooksCallback_[name] = fn.bind(context)()
-    },
-    stepBinder: (fn) => {
-      return fn.bind(context)()
-    },
-    parallelizeBinder: (fn) => {
-      return fn.bind(context)()
-    },
+  if (recorder.openConditions) {
+    throw new Error(
+      `Workflow "${name}": ".then" is missing after "when" condition`
+    )
   }
 
-  global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = context
-
-  const inputPlaceHolder = proxify<WorkflowData>({
-    __type: OrchestrationUtils.SymbolInputReference,
-    __step__: "",
-    config: () => {
-      // TODO: config default value?
-      throw new Error("Config is not available for the input object.")
-    },
+  const definition = toDefinition({
+    recorder,
+    options,
+    returned,
+    hooks: (hookName) => recorder.hookHandlers.get(hookName),
   })
 
-  const returnedStep = composer.apply(context, [inputPlaceHolder])
-
-  delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
-
-  if (newWorkflow) {
-    WorkflowManager.update(name, context.flow, handlers, options)
-  } else {
-    WorkflowManager.register(name, context.flow, handlers, options)
-  }
-
-  const workflow = exportWorkflow<TData, TResult>(name, returnedStep, {
-    wrappedInput: true,
-    sourcePath: fileSourcePath,
-  })
-
-  const mainFlow = <TDataOverride = undefined, TResultOverride = undefined>(
-    container?: LoadedModule[] | MedusaContainer
-  ) => {
-    const workflow_ = workflow<TDataOverride, TResultOverride>(container)
-    const expandedFlow: any = workflow_
-    expandedFlow.config = (config) => {
-      workflow_.setOptions(config)
+  // Workflow-level options set with `.config()`, applied to every run.
+  const runOptions: WorkflowConfigOptions = {}
+  const runnerFor = (container?: LoadedModule[] | MedusaContainer) => {
+    const runner = createWorkflowRunner(mainFlow, container)
+    if (Object.keys(runOptions).length) {
+      runner.config(runOptions)
     }
-
-    return expandedFlow
+    return runner
   }
 
-  mainFlow.hooks = {} as Record<string, HookHandler>
-  for (const hook of context.hooks_.declared) {
-    mainFlow.hooks[hook] = context.hooksCallback_[hook].bind(context)
-  }
+  const mainFlow: any = (container?: LoadedModule[] | MedusaContainer) =>
+    runnerFor(container)
+
+  mainFlow.hooks = recorder.hooks as Record<string, HookHandler>
 
   mainFlow.getName = () => name
-  mainFlow.run = mainFlow().run
+  mainFlow.run = (args?: any) => runnerFor().run(args)
+  mainFlow.config = (config: WorkflowConfigOptions) => {
+    Object.assign(runOptions, config)
+  }
+
   mainFlow.runAsStep = ({
     input,
   }: {
     input: TData
   }): ReturnType<StepFunction<TData, TResult>> => {
-    // Get current workflow composition context
-    const workflowCompositionContext =
-      global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
+    const parentRecorder = getComposerContext()
+    if (!parentRecorder) {
+      throw new Error(
+        "runAsStep must be used inside a createWorkflow definition"
+      )
+    }
 
-    const runAsAsync = workflowCompositionContext.isAsync || context.isAsync
+    parentRecorder.children.add(mainFlow)
+    const runAsAsync = parentRecorder.isAsync || recorder.isAsync
     const step = createStep(
       {
         name: `${name}-as-step`,
@@ -221,79 +214,92 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
         const { container, ...sharedContext } = stepContext
         const isAsync = stepContext[" stepDefinition"]?.async
 
-        const workflowEngine = container.resolve(Modules.WORKFLOW_ENGINE, {
-          allowUnregistered: true,
-        }) as IWorkflowEngineService
+        const workflowEngine = resolveWorkflowEngine(
+          container,
+          name
+        ) as IWorkflowEngineService
 
         const executionContext = {
           ...(sharedContext?.context ?? {}),
-          transactionId: buildTransactionId(step, stepContext),
+          transactionId: buildTransactionId(step, stepContext, isAsync),
           parentStepIdempotencyKey: stepContext.idempotencyKey,
           preventReleaseEvents: true,
           runId: stepContext.runId,
         }
 
-        let transaction
-        if (workflowEngine && isAsync) {
-          transaction = await workflowEngine.run(name, {
-            input: stepInput as any,
-            transactionId: executionContext.transactionId,
-            context: executionContext,
-            throwOnError: false,
-            logOnError: true,
-          })
-        } else {
-          transaction = await workflow.run({
-            input: stepInput as any,
-            container,
-            context: executionContext,
-          })
+        if (isAsync) {
+          // The engine completes this step when the child finishes.
+          try {
+            await workflowEngine.run(mainFlow, {
+              input: stepInput as any,
+              transactionId: executionContext.transactionId,
+              context: executionContext,
+              throwOnError: false,
+              logOnError: true,
+              container,
+            })
+          } catch (error) {
+            // A retried attempt keeps waiting on the child already running.
+            if ((error as MedusaError)?.type !== MedusaError.Types.CONFLICT) {
+              throw error
+            }
+          }
+          return
         }
 
-        return new StepResponse(
-          transaction.result,
-          isAsync ? stepContext.transactionId : transaction
-        )
-      },
-      async (transaction, stepContext) => {
-        // The step itself has failed, there is nothing to revert
+        const transaction = (await workflowEngine.run(mainFlow, {
+          input: stepInput as any,
+          context: executionContext,
+          container,
+        })) as WorkflowResult<TResult>
 
+        // Only what cancel needs, since compensation input may be stored.
+        const child = transaction.transaction
+        return new StepResponse(transaction.result, {
+          transactionId: child?.transactionId ?? executionContext.transactionId,
+          snapshot: (child as { snapshot?: unknown } | undefined)?.snapshot,
+        })
+      },
+      async (child, stepContext) => {
         const { container, ...sharedContext } = stepContext
         const isAsync = stepContext[" stepDefinition"]?.async
 
-        const workflowEngine = container.resolve(Modules.WORKFLOW_ENGINE, {
-          allowUnregistered: true,
-        }) as IWorkflowEngineService
+        // A child that failed has already compensated itself.
+        if (!isAsync && !child) {
+          return
+        }
+
+        const workflowEngine = resolveWorkflowEngine(
+          container,
+          name
+        ) as IWorkflowEngineService
 
         const executionContext = {
           ...(sharedContext?.context ?? {}),
-          transactionId: buildTransactionId(step, stepContext),
+          transactionId: buildTransactionId(step, stepContext, isAsync),
           parentStepIdempotencyKey: stepContext.idempotencyKey,
           preventReleaseEvents: true,
           cancelingFromParentStep: true,
         }
 
-        if (workflowEngine && isAsync) {
-          await workflowEngine.cancel(name, {
-            transactionId: executionContext.transactionId,
-            context: executionContext,
-          })
-        } else {
-          await workflow(container).cancel({
-            transaction: ((transaction as WorkflowResult<any>) ?? {})
-              ?.transaction,
-            transactionId: executionContext.transactionId,
-            container,
-            context: executionContext,
-          })
-        }
-
-        return
+        await workflowEngine.cancel(mainFlow, {
+          transaction:
+            isAsync || !child?.snapshot
+              ? undefined
+              : ({ snapshot: child.snapshot } as any),
+          transactionId: isAsync
+            ? executionContext.transactionId
+            : child?.transactionId ?? executionContext.transactionId,
+          context: executionContext,
+          container,
+        })
       }
     )(input) as ReturnType<StepFunction<TData, TResult>>
 
     return step
   }
+
+  brandWorkflow(mainFlow, definition, recorder.children, runOptions)
 
   return mainFlow as ReturnWorkflow<TData, TResult, THooks>
 }

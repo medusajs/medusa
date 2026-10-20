@@ -13,6 +13,11 @@ export const useWorkflowExecutionTableFilters = () => {
       type: "string",
     },
     {
+      label: t("workflowExecutions.transactionIdLabel"),
+      key: "transaction_id",
+      type: "string",
+    },
+    {
       label: t("fields.status"),
       key: "state",
       type: "select",

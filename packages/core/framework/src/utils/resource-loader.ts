@@ -33,9 +33,11 @@ export abstract class ResourceLoader {
   ]
 
   protected logger: Logger
+  protected container: MedusaContainer
 
   constructor(sourceDir: string | string[], container: MedusaContainer) {
     this.#sourceDir = sourceDir
+    this.container = container
     this.logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   }
 

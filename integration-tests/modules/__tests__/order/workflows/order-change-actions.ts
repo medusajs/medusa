@@ -1,11 +1,13 @@
 import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import {
   createOrderChangeActionsWorkflow,
-  createOrderChangeActionsWorkflowId,
   createOrderChangeWorkflow,
   deleteOrderChangeActionsWorkflow,
-  deleteOrderChangeActionsWorkflowId,
   updateOrderChangeActionsWorkflow,
-  updateOrderChangeActionsWorkflowId,
 } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
@@ -90,13 +92,23 @@ medusaIntegrationTestRunner({
         })
 
         it("should delete created actions when a rollback occurs on a workflow", async () => {
-          const workflow = createOrderChangeActionsWorkflow(container)
-
-          workflow.appendAction("throw", createOrderChangeActionsWorkflowId, {
-            invoke: async function failStep() {
-              throw new Error(`Fail`)
-            },
+          const failStep = createStep("throw", async () => {
+            throw new Error(`Fail`)
           })
+          const failingWorkflow = createWorkflow(
+            "test-create-order-change-actions-then-fail-1",
+            (input: any) => {
+              const result = createOrderChangeActionsWorkflow.runAsStep({
+                input,
+              })
+              failStep(result)
+              return new WorkflowResponse(result)
+            }
+          )
+          await container
+            .resolve(Modules.WORKFLOW_ENGINE)
+            .registerWorkflows([failingWorkflow])
+          const workflow = failingWorkflow(container)
 
           const {
             errors: [error],
@@ -181,13 +193,23 @@ medusaIntegrationTestRunner({
               ],
             })
 
-          const workflow = deleteOrderChangeActionsWorkflow(container)
-
-          workflow.appendAction("throw", deleteOrderChangeActionsWorkflowId, {
-            invoke: async function failStep() {
-              throw new Error(`Fail`)
-            },
+          const failStep = createStep("throw", async () => {
+            throw new Error(`Fail`)
           })
+          const failingWorkflow = createWorkflow(
+            "test-delete-order-change-actions-then-fail-2",
+            (input: any) => {
+              const result = deleteOrderChangeActionsWorkflow.runAsStep({
+                input,
+              })
+              failStep(result)
+              return new WorkflowResponse(result)
+            }
+          )
+          await container
+            .resolve(Modules.WORKFLOW_ENGINE)
+            .registerWorkflows([failingWorkflow])
+          const workflow = failingWorkflow(container)
 
           const {
             errors: [error],
@@ -261,13 +283,23 @@ medusaIntegrationTestRunner({
         })
 
         it("should rollback to original state when a future step has an error", async () => {
-          const workflow = updateOrderChangeActionsWorkflow(container)
-
-          workflow.appendAction("throw", updateOrderChangeActionsWorkflowId, {
-            invoke: async function failStep() {
-              throw new Error(`Fail`)
-            },
+          const failStep = createStep("throw", async () => {
+            throw new Error(`Fail`)
           })
+          const failingWorkflow = createWorkflow(
+            "test-update-order-change-actions-then-fail-3",
+            (input: any) => {
+              const result = updateOrderChangeActionsWorkflow.runAsStep({
+                input,
+              })
+              failStep(result)
+              return new WorkflowResponse(result)
+            }
+          )
+          await container
+            .resolve(Modules.WORKFLOW_ENGINE)
+            .registerWorkflows([failingWorkflow])
+          const workflow = failingWorkflow(container)
 
           const {
             errors: [error],

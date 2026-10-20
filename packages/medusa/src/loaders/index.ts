@@ -30,6 +30,7 @@ import { v4 } from "uuid"
 import adminLoader from "./admin"
 import apiLoader from "./api"
 import { loadSearchIndexes } from "./search"
+import { registerCoreWorkflows } from "./helpers/register-core-workflows"
 
 type Options = {
   directory: string
@@ -207,6 +208,8 @@ export default async ({
     modules,
     gqlSchema,
   } = await new MedusaAppLoader().load()
+
+  await registerCoreWorkflows(container)
 
   const workflowsSourcePaths = plugins.map((p) => join(p.resolve, "workflows"))
   const workflowLoader = new WorkflowLoader(workflowsSourcePaths, container)

@@ -33,6 +33,7 @@ import {
   ModulesSdkUtils,
   stringifyCircular,
   toMikroOrmEntities,
+  withEventGrouping,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "@medusajs/deps/awilix"
 import { statSync } from "fs"
@@ -448,11 +449,16 @@ export async function loadInternalModule(args: {
     container.register({
       [keyName]: asFunction((cradle) => {
         ;(moduleService as any).__type = MedusaModuleType
-        return new moduleService(
+        const service = new moduleService(
           localContainer.cradle,
           resolution.options,
           resolution.moduleDeclaration
         )
+        // Every module gets the event bus through this registration, so a
+        // workflow engine can take over grouped events later.
+        return keyName === Modules.EVENT_BUS
+          ? withEventGrouping(service)
+          : service
       }).singleton(),
     })
   }

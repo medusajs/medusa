@@ -94,6 +94,28 @@ To disable a scheduled job, move its file out of the `src/jobs` directory. For e
 
 If your scheduled job is not running at the expected times, refer to the [Scheduled Job Troubleshooting Guide](!resources!/troubleshooting/scheduled-job-not-running).
 
+### Overlapping Executions
+
+<Note>
+
+Before [Medusa v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0), a scheduled job could start while its previous execution was still running.
+
+</Note>
+
+If a scheduled job is still running when its next execution is due, Medusa skips the new execution. This prevents two executions of the same job from running at the same time, for example when syncing data takes longer than the schedule's interval.
+
+To allow executions to overlap, pass an object to the `schedule` property with `concurrency` set to `allow`:
+
+```ts title="src/jobs/hello-world.ts" highlights={[["5"]]}
+export const config = {
+  name: "greeting-every-minute",
+  schedule: {
+    cron: "* * * * *",
+    concurrency: "allow",
+  },
+}
+```
+
 ---
 
 ## Example: Sync Products Once a Day

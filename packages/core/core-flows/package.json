@@ -29,7 +29,8 @@
   "author": "Medusa",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@medusajs/framework": "2.21.2"
+    "@medusajs/framework": "2.21.2",
+    "@medusajs/workflow-engine": "2.21.2"
   },
   "dependencies": {
     "csv-parse": "^7.0.2",

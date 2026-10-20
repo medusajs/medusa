@@ -209,6 +209,12 @@ To execute the workflow, invoke it passing the [Medusa container](../medusa-cont
   </CodeTab>
 </CodeTabs>
 
+<Note title="Important">
+
+Medusa only runs workflows defined in your project's `src/workflows` directory, along with the workflows they run as steps. Executing a workflow defined elsewhere throws an error that the workflow isn't registered.
+
+</Note>
+
 ### 4. Test Workflow
 
 To test out your workflow, start your Medusa application:

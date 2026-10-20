@@ -1,3 +1,4 @@
+import { Modules } from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
@@ -57,7 +58,7 @@ medusaIntegrationTestRunner({
     describe("Workflow Engine API", () => {
       let medusaContainer
 
-      beforeAll(() => {
+      beforeAll(async () => {
         medusaContainer = getContainer()
 
         const step1 = createStep(
@@ -78,7 +79,7 @@ medusaIntegrationTestRunner({
           async () => {}
         )
 
-        createWorkflow(
+        const workflow = createWorkflow(
           {
             name: "my-workflow-name",
             retentionTime: 1000,
@@ -89,6 +90,9 @@ medusaIntegrationTestRunner({
             return new WorkflowResponse(res)
           }
         )
+        await medusaContainer
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([workflow])
       })
 
       beforeAll(async () => {
@@ -309,12 +313,15 @@ medusaIntegrationTestRunner({
               data: expect.objectContaining({
                 invoke: expect.objectContaining({
                   "my-step-async": {
-                    __type: "Symbol(WorkflowStepResponse)",
+                    __type: "Symbol(WorkflowWorkflowData)",
                     output: {
-                      all: "good",
-                    },
-                    compensateInput: {
-                      all: "good",
+                      __type: "Symbol(WorkflowStepResponse)",
+                      output: {
+                        all: "good",
+                      },
+                      compensateInput: {
+                        all: "good",
+                      },
                     },
                   },
                 }),

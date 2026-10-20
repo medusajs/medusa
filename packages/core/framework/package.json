@@ -33,7 +33,6 @@
       "default": "./dist/types/index.js"
     },
     "./build-tools": "./dist/build-tools/index.js",
-    "./orchestration": "./dist/orchestration/index.js",
     "./workflows-sdk": "./dist/workflows-sdk/index.js",
     "./workflows-sdk/composer": "./dist/workflows-sdk/composer.js",
     "./modules-sdk": "./dist/modules-sdk/index.js",
@@ -75,14 +74,14 @@
     "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src"
   },
   "devDependencies": {
-    "@medusajs/cli": "2.21.2"
+    "@medusajs/cli": "2.21.2",
+    "@medusajs/workflow-engine": "2.21.2"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.980.0",
     "@jercle/yargonaut": "^1.1.5",
     "@medusajs/deps": "2.21.2",
     "@medusajs/modules-sdk": "2.21.2",
-    "@medusajs/orchestration": "2.21.2",
     "@medusajs/telemetry": "2.21.2",
     "@medusajs/types": "2.21.2",
     "@medusajs/utils": "2.21.2",

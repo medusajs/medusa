@@ -3,7 +3,7 @@ import { ModuleCacheManager } from "../module-cache-manager"
 import { ResourceRegistry } from "../resource-registry"
 import {
   CONFIG,
-  DevServerGlobals,
+  DevWorkflowRegistry,
   ReloadParams,
   FileChangeAction,
 } from "../types"
@@ -19,7 +19,7 @@ export class WorkflowReloader extends BaseReloader {
   #rootDirectory: string
 
   constructor(
-    private workflowManager: DevServerGlobals["WorkflowManager"],
+    private workflowRegistry: DevWorkflowRegistry,
     cacheManager: ModuleCacheManager,
     private registry: ResourceRegistry,
     private reloadResources: (params: ReloadParams) => Promise<void>,
@@ -53,11 +53,11 @@ export class WorkflowReloader extends BaseReloader {
       return
     }
 
-    if (!this.workflowManager) {
+    if (!this.workflowRegistry) {
       this.#logger.error(
         `${
           this.#logSource
-        } WorkflowManager not available - cannot reload workflows`
+        } The workflow engine is not available - cannot reload workflows`
       )
       return
     }
@@ -82,7 +82,10 @@ export class WorkflowReloader extends BaseReloader {
 
     // Reload workflows that were affected
     if (action !== "unlink") {
-      this.reloadWorkflowModules(requirableWorkflowPaths, absoluteFilePath)
+      await this.reloadWorkflowModules(
+        requirableWorkflowPaths,
+        absoluteFilePath
+      )
     }
 
     // Execute deferred reloaders
@@ -106,7 +109,7 @@ export class WorkflowReloader extends BaseReloader {
     for (const [type, resourceList] of resources.entries()) {
       for (const resource of resourceList) {
         if (type === "workflow") {
-          this.workflowManager!.unregister(resource.id)
+          void this.workflowRegistry.unregister(resource.id)
         } else if (type === "step") {
           this.handleStepUnregister(resource, affectedWorkflows)
         }
@@ -157,7 +160,7 @@ export class WorkflowReloader extends BaseReloader {
       }
 
       for (const workflow of resourceList) {
-        this.workflowManager!.unregister(workflow.id)
+        void this.workflowRegistry.unregister(workflow.id)
         affectedWorkflows.add(sourcePath)
       }
     }
@@ -166,13 +169,13 @@ export class WorkflowReloader extends BaseReloader {
   /**
    * Reload workflow modules using require
    */
-  private reloadWorkflowModules(
+  private async reloadWorkflowModules(
     workflowPaths: Set<string>,
     mainFilePath: string
-  ): void {
+  ): Promise<void> {
     for (const workflowPath of workflowPaths) {
-      require(workflowPath)
+      await this.workflowRegistry.register(require(workflowPath))
     }
-    require(mainFilePath)
+    await this.workflowRegistry.register(require(mainFilePath))
   }
 }

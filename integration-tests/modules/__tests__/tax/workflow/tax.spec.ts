@@ -1,9 +1,11 @@
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { ITaxModuleService } from "@medusajs/types"
 
-import {
-  createTaxRateRulesStepId,
-  updateTaxRatesWorkflow,
-} from "@medusajs/core-flows"
+import { updateTaxRatesWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { Modules } from "@medusajs/utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
@@ -63,13 +65,21 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const workflow = updateTaxRatesWorkflow(appContainer)
-
-        workflow.appendAction("throw", createTaxRateRulesStepId, {
-          invoke: async function failStep() {
-            throw new Error(`Failed to update`)
-          },
+        const failStep = createStep("throw", async () => {
+          throw new Error(`Failed to update`)
         })
+        const failingWorkflow = createWorkflow(
+          "test-update-tax-rates-then-fail-1",
+          (input: any) => {
+            const result = updateTaxRatesWorkflow.runAsStep({ input })
+            failStep(result)
+            return new WorkflowResponse(result)
+          }
+        )
+        await appContainer
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([failingWorkflow])
+        const workflow = failingWorkflow(appContainer)
 
         await workflow.run({
           input: {

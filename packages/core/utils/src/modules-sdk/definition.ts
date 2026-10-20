@@ -51,7 +51,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.STOCK_LOCATION]: "@medusajs/medusa/stock-location",
   [Modules.TAX]: "@medusajs/medusa/tax",
   [Modules.USER]: "@medusajs/medusa/user",
-  [Modules.WORKFLOW_ENGINE]: "@medusajs/medusa/workflow-engine-inmemory",
+  [Modules.WORKFLOW_ENGINE]: "@medusajs/medusa/workflows",
   [Modules.REGION]: "@medusajs/medusa/region",
   [Modules.ORDER]: "@medusajs/medusa/order",
   [Modules.API_KEY]: "@medusajs/medusa/api-key",
@@ -76,10 +76,20 @@ export const REVERSED_MODULE_PACKAGE_NAMES = Object.entries(
 }, {})
 
 // TODO: temporary fix until the event bus, cache and workflow engine are migrated to use providers and therefore only a single resolution will be good
+/**
+ * Workflow engine modules replaced by `@medusajs/medusa/workflows`.
+ * `defineConfig` drops them, and loading one directly fails.
+ */
+export const LEGACY_WORKFLOW_ENGINE_PACKAGE_NAMES = [
+  "@medusajs/medusa/workflow-engine-inmemory",
+  "@medusajs/medusa/workflow-engine-redis",
+  "@medusajs/workflow-engine-inmemory",
+  "@medusajs/workflow-engine-redis",
+]
+
 export const TEMPORARY_REDIS_MODULE_PACKAGE_NAMES = {
   [Modules.EVENT_BUS]: "@medusajs/medusa/event-bus-redis",
   [Modules.CACHE]: "@medusajs/medusa/cache-redis",
-  [Modules.WORKFLOW_ENGINE]: "@medusajs/medusa/workflow-engine-redis",
   [Modules.LOCKING]: "@medusajs/medusa/locking-redis",
 }
 
@@ -89,9 +99,6 @@ REVERSED_MODULE_PACKAGE_NAMES[
 REVERSED_MODULE_PACKAGE_NAMES[
   TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.CACHE]
 ] = Modules.CACHE
-REVERSED_MODULE_PACKAGE_NAMES[
-  TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE]
-] = Modules.WORKFLOW_ENGINE
 REVERSED_MODULE_PACKAGE_NAMES[
   TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.LOCKING]
 ] = Modules.LOCKING

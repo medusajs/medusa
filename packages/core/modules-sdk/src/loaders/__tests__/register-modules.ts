@@ -252,4 +252,20 @@ describe("module definitions loader", () => {
       )
     })
   })
+
+  it.each([
+    "@medusajs/medusa/workflow-engine-redis",
+    { resolve: "@medusajs/workflow-engine-inmemory" },
+  ])("fails for a removed workflow engine module (%j)", (declaration) => {
+    Object.assign(ModulesDefinition, {
+      [defaultDefinition.key]: defaultDefinition,
+    })
+
+    expect(() =>
+      registerMedusaModule({
+        moduleKey: defaultDefinition.key,
+        moduleDeclaration: declaration as any,
+      })
+    ).toThrow(/no longer available. Use "@medusajs\/medusa\/workflows"/)
+  })
 })

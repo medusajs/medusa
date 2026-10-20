@@ -97,10 +97,10 @@ Every change to a published package needs a changeset. Generate it from the repo
 
 ```md
 ---
-"@medusajs/workflow-engine-redis": patch
+"@medusajs/workflows": patch
 ---
 
-fix(workflow-engine-redis): short description of the change
+fix(workflows): short description of the change
 ```
 
 - `patch`: non-breaking changes (fixes, features, refactors)

@@ -79,7 +79,7 @@ You can replace any of the third-party services mentioned above to build your pr
 - [File Module](!resources!/infrastructure-modules/file): Manages file uploads and storage, such as upload of product images. You can integrate [AWS S3](!resources!/infrastructure-modules/file/s3) for file storage.
 - [Locking Module](!resources!/infrastructure-modules/locking): Manages access to shared resources by multiple processes or threads, preventing conflict between processes and ensuring data consistency. You can integrate [Redis](!resources!/infrastructure-modules/locking/redis) for locking.
 - [Notification Module](!resources!/infrastructure-modules/notification): Sends notifications to customers and users, such as for order updates or newsletters. You can integrate [SendGrid](!resources!/infrastructure-modules/notification/sendgrid) for sending emails.
-- [Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine): Orchestrates workflows that hold the business logic of your application. You can integrate [Redis](!resources!/infrastructure-modules/workflow-engine/redis) to orchestrate workflows.
+- [Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine): Orchestrates workflows that hold the business logic of your application. It stores workflow executions in your database, and you can use Redis to notify instances of new work.
 
 All of the third-party services mentioned above can be replaced to help you build your preferred architecture and ecosystem.
 
