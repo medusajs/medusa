@@ -1,0 +1,306 @@
+---
+products:
+  - sales channel
+  - product
+  - inventory
+  - order
+---
+
+import { AcademicCapSolid, BoltSolid } from "@medusajs/icons"
+import { CardList, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Integrate External Marketplaces and Social Channels`,
+}
+
+# {metadata.title}
+
+In this guide, you'll find which external marketplace and social commerce integrations the Medusa documentation covers, and how to integrate a marketplace that doesn't have a dedicated guide.
+
+<Note title="Looking to build a multi-vendor marketplace?">
+
+This guide is about selling your Medusa products on external marketplaces, such as Amazon or TikTok Shop. To build your own marketplace where multiple vendors sell products, refer to the [Marketplace recipe](../../marketplace/page.mdx).
+
+</Note>
+
+## Documented Integrations
+
+The following table lists the external channels that have a dedicated guide in the Medusa documentation:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Channel</Table.HeaderCell>
+      <Table.HeaderCell>Guide</Table.HeaderCell>
+      <Table.HeaderCell>Approach</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      Meta (Facebook and Instagram)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      [Product Feed for Meta and Google](../../../how-to-tutorials/tutorials/product-feed/page.mdx)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Product feed that Meta pulls periodically.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Google (Merchant Center)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      [Product Feed for Meta and Google](../../../how-to-tutorials/tutorials/product-feed/page.mdx)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Product feed that Google pulls periodically.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      ChatGPT and other AI agents
+
+      </Table.Cell>
+      <Table.Cell>
+
+      [Agentic Commerce](../../../how-to-tutorials/tutorials/agentic-commerce/page.mdx)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Product feed and checkout API routes that follow the Agentic Commerce Protocol.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+For any other system, the Medusa documentation provides a generic integration pattern that applies to all third-party systems:
+
+- [Integrate Third-Party Systems](!docs!/learn/customization/integrate-systems): Learn how to integrate a system in a module and sync data with workflows, subscribers, and scheduled jobs.
+- [Best Practices for Third-Party Syncing](!docs!/learn/best-practices/third-party-sync): Learn how to sync large amounts of data without performance issues.
+- [Integrate ERP](../../erp/page.mdx): A full example of two-way product and order syncing with an external system. The same patterns apply to marketplaces.
+
+---
+
+## Marketplaces Without a Dedicated Guide
+
+The Medusa documentation doesn't have a dedicated guide for the following marketplaces and channels. You can still integrate them by following the [general approach](#general-approach-to-integrate-a-marketplace) in this guide.
+
+The table also lists the integration approach that commonly fits each channel. Always check the channel's developer documentation for its current requirements and access policies.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Channel</Table.HeaderCell>
+      <Table.HeaderCell>Suggested Approach</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      TikTok Shop
+
+      </Table.Cell>
+      <Table.Cell>
+
+      API sync with the [TikTok Shop Partner API](https://partner.tiktokshop.com/) for products, inventory, and orders.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Amazon
+
+      </Table.Cell>
+      <Table.Cell>
+
+      API sync with the [Selling Partner API (SP-API)](https://developer-docs.amazon.com/sp-api) for listings, inventory, and orders.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      eBay
+
+      </Table.Cell>
+      <Table.Cell>
+
+      API sync with eBay's [Sell APIs](https://developer.ebay.com/) for inventory, offers, and order fulfillment.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Walmart Marketplace
+
+      </Table.Cell>
+      <Table.Cell>
+
+      API sync with the [Walmart Marketplace APIs](https://developer.walmart.com/) for items, inventory, and orders.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Target Plus (Target+)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      API sync. Target Plus is invite-only, so you receive integration details after Target approves you as a partner.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Pinterest
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Product feed, similar to the [Meta and Google product feed](../../../how-to-tutorials/tutorials/product-feed/page.mdx). Adjust the fields to Pinterest's catalog specifications.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      Microsoft (Microsoft Merchant Center)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Product feed, similar to the [Meta and Google product feed](../../../how-to-tutorials/tutorials/product-feed/page.mdx). Adjust the fields to Microsoft Merchant Center's feed specifications.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      YouTube Shopping
+
+      </Table.Cell>
+      <Table.Cell>
+
+      YouTube Shopping uses your Google Merchant Center catalog, so the [Meta and Google product feed](../../../how-to-tutorials/tutorials/product-feed/page.mdx) covers the product data.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Choose an Integration Approach
+
+Marketplace integrations generally use one of the following approaches:
+
+- **Product feed**: You expose an [API route](!docs!/learn/fundamentals/api-routes) that returns your product catalog in the format the channel expects, such as XML or CSV. The channel pulls the feed periodically. This approach is one-way and fits channels that only list your products and redirect customers to your storefront for checkout. The [Meta and Google product feed](../../../how-to-tutorials/tutorials/product-feed/page.mdx) tutorial shows this approach.
+- **API sync**: You call the marketplace's API to create and update listings, and you import orders placed on the marketplace into Medusa. This approach is two-way and fits marketplaces that handle checkout themselves, such as Amazon, eBay, Walmart, and TikTok Shop.
+
+---
+
+## General Approach to Integrate a Marketplace
+
+The following steps describe how to integrate a marketplace using the API sync approach. They build on the generic [Integrate Third-Party Systems](!docs!/learn/customization/integrate-systems) pattern.
+
+### 1. Create a Sales Channel for the Marketplace
+
+Create a [sales channel](../../../commerce-modules/sales-channel/page.mdx) for each marketplace, such as "Amazon" or "TikTok Shop". Then, add to the sales channel the products you want to sell on that marketplace.
+
+The sales channel lets you:
+
+- Control which products you sync to the marketplace.
+- Track orders that customers placed on the marketplace.
+- Associate the marketplace with specific stock locations to manage its inventory.
+
+### 2. Integrate the Marketplace in a Module
+
+Create a [module](!docs!/learn/fundamentals/modules) whose service wraps the marketplace's API client. For example, the service has methods to create listings, update stock quantities, retrieve new orders, and mark orders as shipped.
+
+Pass the marketplace's credentials, such as API keys or OAuth client details, as [module options](!docs!/learn/fundamentals/modules/options), and store their values in environment variables.
+
+If you need to store marketplace data in Medusa, such as the ID of a listing on the marketplace, create a data model in the module and [link it](!docs!/learn/fundamentals/module-links) to the related Medusa data model, such as a product variant.
+
+### 3. Sync Products and Prices
+
+Create a [workflow](!docs!/learn/fundamentals/workflows) that retrieves products in the marketplace's sales channel and creates or updates their listings using your module's service. Then, execute the workflow from:
+
+- A [subscriber](!docs!/learn/fundamentals/events-and-subscribers) that listens to [product events](/references/product/events), such as `product.updated`, to sync changes as they happen.
+- A [scheduled job](!docs!/learn/fundamentals/scheduled-jobs) that runs a full sync periodically to catch any missed changes.
+
+### 4. Sync Inventory
+
+Keep the marketplace's stock quantities in sync with Medusa to avoid overselling. Create a workflow that retrieves the inventory levels of the synced variants and updates the marketplace. Execute it from a scheduled job, or from a subscriber that listens to [Inventory Module events](/references/inventory/events).
+
+### 5. Import Marketplace Orders
+
+Import orders placed on the marketplace into Medusa so that you fulfill all orders from one system:
+
+- If the marketplace sends webhooks, create an [API route](!docs!/learn/fundamentals/api-routes) that receives them. Use the [raw request body](!docs!/learn/fundamentals/api-routes/parse-body#preserve-raw-body-data-for-webhooks) to verify the webhook's signature.
+- Otherwise, create a scheduled job that retrieves new orders from the marketplace periodically.
+
+In both cases, create the order in a workflow that uses Medusa's [createOrderWorkflow](/references/medusa-workflows/createOrderWorkflow), and set the order's sales channel to the marketplace's sales channel. Store the marketplace's order ID, for example in the order's `metadata`, to avoid importing the same order twice.
+
+### 6. Sync Fulfillment and Order Changes Back
+
+When you fulfill, ship, or cancel a marketplace order in Medusa, update the order on the marketplace. Create subscribers that listen to [order events](/references/order/events), such as `order.fulfillment_created` and `order.canceled`, and execute a workflow that updates the order on the marketplace using your module's service.
+
+<Note title="Tip">
+
+Marketplace APIs often have strict rate limits. Refer to the [Best Practices for Third-Party Syncing](!docs!/learn/best-practices/third-party-sync) chapter to learn how to batch requests, retry errors, and avoid memory issues when syncing large catalogs.
+
+</Note>
+
+---
+
+## Learn More
+
+<CardList items={[
+  {
+    href: "!docs!/learn/customization/integrate-systems",
+    title: "Integrate Third-Party Systems",
+    text: "Learn the generic pattern to integrate any system.",
+    icon: AcademicCapSolid,
+  },
+  {
+    href: "/how-to-tutorials/tutorials/product-feed",
+    title: "Product Feed for Meta and Google",
+    text: "Build a product feed that social platforms pull.",
+    icon: BoltSolid,
+  },
+  {
+    href: "/recipes/erp",
+    title: "Integrate ERP",
+    text: "Find a full example of two-way syncing.",
+    icon: BoltSolid,
+  },
+  {
+    href: "/recipes/omnichannel",
+    title: "Omnichannel Commerce",
+    text: "Learn how to sell across multiple channels.",
+    icon: AcademicCapSolid,
+  },
+]} />
