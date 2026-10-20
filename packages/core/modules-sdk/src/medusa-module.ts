@@ -23,6 +23,7 @@ import {
   promiseAll,
   simpleHash,
   stringifyCircular,
+  timeBoot,
 } from "@medusajs/utils"
 import { asValue } from "@medusajs/deps/awilix"
 import { EOL } from "os"
@@ -136,9 +137,17 @@ class MedusaModule {
       [...MedusaModule.instances_.values()]
         .map((instances) => {
           return Object.values(instances).map((instance: IModuleService) => {
-            return instance.__hooks?.onApplicationStart
-              ?.bind(instance)()
-              .then(() => {
+            const onApplicationStart = instance.__hooks?.onApplicationStart
+            return (
+              onApplicationStart &&
+              timeBoot(
+                `module ${
+                  (instance as any).__definition?.key ?? "?"
+                }: start hook`,
+                () => onApplicationStart.bind(instance)()
+              )
+            )
+              ?.then(() => {
                 onApplicationStartCb?.()
               })
               .catch(() => {
@@ -583,14 +592,16 @@ class MedusaModule {
         }
 
         try {
-          await moduleLoader({
-            container,
-            moduleResolutions,
-            logger: logger_,
-            migrationOnly,
-            schemaOnly,
-            loaderOnly,
-          })
+          await timeBoot(`module ${moduleKey}: load`, () =>
+            moduleLoader({
+              container,
+              moduleResolutions,
+              logger: logger_,
+              migrationOnly,
+              schemaOnly,
+              loaderOnly,
+            })
+          )
         } catch (err) {
           errorLoading(err)
           throw err
@@ -620,12 +631,16 @@ class MedusaModule {
           container,
           finishLoading,
         }) => {
-          const service = await MedusaModule.resolveLoadedModule({
-            hashKey,
-            modDeclaration,
-            moduleResolutions,
-            container,
-          })
+          const service = await timeBoot(
+            `module ${Object.keys(moduleResolutions).join(",")}: service`,
+            () =>
+              MedusaModule.resolveLoadedModule({
+                hashKey,
+                modDeclaration,
+                moduleResolutions,
+                container,
+              })
+          )
 
           MedusaModule.instances_.set(hashKey, service)
           finishLoading(service)
@@ -669,7 +684,10 @@ class MedusaModule {
 
     const load = () =>
       (loading ??= (async () => {
-        await moduleLoader({ container, moduleResolutions, logger: logger_ })
+        await timeBoot(
+          `module ${Object.keys(moduleResolutions).join(",")}: first use`,
+          () => moduleLoader({ container, moduleResolutions, logger: logger_ })
+        )
         for (const resolution of Object.values(
           moduleResolutions
         ) as ModuleResolution[]) {

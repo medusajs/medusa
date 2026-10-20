@@ -20,6 +20,7 @@ import {
   GraphQLSchema,
   mergePluginModules,
   promiseAll,
+  timeBoot,
   validateModuleName,
 } from "@medusajs/framework/utils"
 import { WorkflowLoader } from "@medusajs/framework/workflows"
@@ -116,16 +117,22 @@ async function loadEntrypoints(
   })
 
   const [{ shutdown }] = await promiseAll([
-    expressLoader({
-      app: expressApp,
-      container,
-    }),
-    adminLoader({ app: expressApp, configModule, rootDirectory, plugins }),
-    apiLoader({
-      container,
-      plugins,
-      app: expressApp,
-    }),
+    timeBoot("http: express and sessions", () =>
+      expressLoader({
+        app: expressApp,
+        container,
+      })
+    ),
+    timeBoot("http: admin", () =>
+      adminLoader({ app: expressApp, configModule, rootDirectory, plugins })
+    ),
+    timeBoot("http: api routes", () =>
+      apiLoader({
+        container,
+        plugins,
+        app: expressApp,
+      })
+    ),
   ])
 
   return shutdown
@@ -138,15 +145,20 @@ export async function initializeContainer(
     throwOnValidationError?: boolean
   }
 ): Promise<MedusaContainer> {
-  await featureFlagsLoader(rootDirectory)
-  const configDir = await configLoader(rootDirectory, "medusa-config", {
-    throwOnValidationError: options?.throwOnValidationError,
+  const configDir = await timeBoot("config and feature flags", async () => {
+    await featureFlagsLoader(rootDirectory)
+    const configDir = await configLoader(rootDirectory, "medusa-config", {
+      throwOnValidationError: options?.throwOnValidationError,
+    })
+    await featureFlagsLoader(join(__dirname, ".."))
+    return configDir
   })
-  await featureFlagsLoader(join(__dirname, ".."))
 
   // Load policies from core medusa package and project root
-  await policiesLoader(join(__dirname, ".."))
-  await policiesLoader(rootDirectory)
+  await timeBoot("policies", async () => {
+    await policiesLoader(join(__dirname, ".."))
+    await policiesLoader(rootDirectory)
+  })
 
   const customLogger = configDir.logger ?? defaultLogger
   container.register({
@@ -155,7 +167,7 @@ export async function initializeContainer(
   })
 
   if (!options?.skipDbConnection) {
-    await pgConnectionLoader()
+    await timeBoot("database connection", () => pgConnectionLoader())
   }
 
   return container
@@ -172,7 +184,9 @@ export default async ({
   shutdown: () => Promise<void>
   gqlSchema?: GraphQLSchema
 }> => {
-  const container = await initializeContainer(rootDirectory)
+  const container = await timeBoot("container", () =>
+    initializeContainer(rootDirectory)
+  )
   const configModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )
@@ -188,12 +202,14 @@ export default async ({
   const linksSourcePaths = plugins.map((plugin) =>
     join(plugin.resolve, "links")
   )
-  await new LinkLoader(linksSourcePaths, logger).load()
+  await timeBoot("links", () => new LinkLoader(linksSourcePaths, logger).load())
 
   // Before the app boots: the Search Module resolves the definitions when it is
   // constructed, and the seed on application start only fills indexes it knows
   // about. A no-op unless the module is registered.
-  await loadSearchIndexes({ plugins, configModule, logger })
+  await timeBoot("search index definitions", () =>
+    loadSearchIndexes({ plugins, configModule, logger })
+  )
 
   // Load policies from all plugins (rootDirectory already loaded in initializeContainer)
   for (const plugin of plugins) {
@@ -206,31 +222,35 @@ export default async ({
     onApplicationPrepareShutdown,
     modules,
     gqlSchema,
-  } = await new MedusaAppLoader().load()
+  } = await timeBoot("modules", () => new MedusaAppLoader().load())
 
   const workflowsSourcePaths = plugins.map((p) => join(p.resolve, "workflows"))
   const workflowLoader = new WorkflowLoader(workflowsSourcePaths, container)
-  await workflowLoader.load()
+  await timeBoot("workflows", () => workflowLoader.load())
 
   // Subscribers should be loaded no matter the worker mode, simply they will never handle anything
   // since worker/shared instances only will have a running worker to process events.
-  await subscribersLoader(plugins, container)
+  await timeBoot("subscribers", () => subscribersLoader(plugins, container))
 
   if (shouldLoadBackgroundProcessors(configModule)) {
-    await jobsLoader(plugins, container)
+    await timeBoot("jobs", () => jobsLoader(plugins, container))
   }
 
   const entrypointsShutdown = skipLoadingEntryPoints
     ? () => {}
-    : await loadEntrypoints(plugins, container, expressApp, rootDirectory)
+    : await timeBoot("http (express, api routes, admin)", () =>
+        loadEntrypoints(plugins, container, expressApp, rootDirectory)
+      )
 
   // Import only the defaults workflow: the package root evaluates every
   // workflow in core-flows, which isn't needed to boot.
   const { createDefaultsWorkflow } = await import(
     "@medusajs/core-flows/defaults"
   )
-  await createDefaultsWorkflow(container).run()
-  await onApplicationStart()
+  await timeBoot("defaults workflow", () =>
+    createDefaultsWorkflow(container).run()
+  )
+  await timeBoot("application start hooks", () => onApplicationStart())
 
   const shutdown = async () => {
     const pgConnection = container.resolve(
