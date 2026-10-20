@@ -128,7 +128,7 @@ module.exports = defineConfig({
     },
     {
       key: Modules.WORKFLOW_ENGINE,
-      resolve: "@medusajs/workflow-engine-inmemory",
+      resolve: "@medusajs/workflows",
     },
     {
       key: Modules.API_KEY,

@@ -35,14 +35,13 @@
   "dependencies": {
     "@medusajs/deps": "2.21.2",
     "@medusajs/modules-sdk": "2.21.2",
-    "@medusajs/orchestration": "2.21.2",
     "@medusajs/utils": "2.21.2",
+    "@medusajs/workflow-engine": "2.21.2",
     "ulid": "^2.3.0"
   },
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --build --watch",
-    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src",
-    "test:run": "node ./dist/utils/_playground.js"
+    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src"
   }
 }

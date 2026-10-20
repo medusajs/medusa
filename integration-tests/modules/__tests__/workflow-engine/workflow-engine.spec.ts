@@ -44,7 +44,7 @@ medusaIntegrationTestRunner({
             }
           )
 
-          createWorkflow(
+          const workflow = createWorkflow(
             {
               name: "my-workflow-name",
             },
@@ -54,6 +54,9 @@ medusaIntegrationTestRunner({
               return new WorkflowResponse(stepRes)
             }
           )
+          await getContainer()
+            .resolve(Modules.WORKFLOW_ENGINE)
+            .registerWorkflows([workflow])
         })
 
         it("Should invoke modules passing the current medusa context as argument", async () => {
@@ -106,7 +109,7 @@ medusaIntegrationTestRunner({
             }
           )
 
-          createWorkflow(
+          const workflow = createWorkflow(
             {
               name: "my-workflow-name-2",
               retentionTime: 50,
@@ -137,6 +140,7 @@ medusaIntegrationTestRunner({
           })
 
           const engine = container.resolve(Modules.WORKFLOW_ENGINE)
+          await engine.registerWorkflows([workflow])
 
           const transactionId = "trx-id-failing-event"
           const res = await engine.run("my-workflow-name-2", {
@@ -220,7 +224,7 @@ medusaIntegrationTestRunner({
             }
           )
 
-          createWorkflow(
+          const workflow = createWorkflow(
             {
               name: "wf-timeout-continue",
               retentionTime: 50,
@@ -236,6 +240,7 @@ medusaIntegrationTestRunner({
 
           const container = getContainer()
           const engine = container.resolve(Modules.WORKFLOW_ENGINE)
+          await engine.registerWorkflows([workflow])
 
           const transactionId = "trx-timeout-continue"
           const { transaction } = await engine.run("wf-timeout-continue", {

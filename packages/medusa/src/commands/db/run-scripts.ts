@@ -16,6 +16,7 @@ import {
   PluginDetails,
 } from "@medusajs/framework/types"
 import { initializeContainer } from "../../loaders"
+import { registerCoreWorkflows } from "../../loaders/helpers/register-core-workflows"
 import { loadSearchIndexes } from "../../loaders/search"
 import { ensureDbExists } from "../utils"
 
@@ -127,6 +128,7 @@ async function loadResources(
   const onApplicationPrepareShutdown =
     medusaAppResources.onApplicationPrepareShutdown
   const onApplicationShutdown = medusaAppResources.onApplicationShutdown
+  await registerCoreWorkflows(container)
   await medusaAppResources.onApplicationStart()
 
   // Load workflow hooks from all plugins (including the app directory,

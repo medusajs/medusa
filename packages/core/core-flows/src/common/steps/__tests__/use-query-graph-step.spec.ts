@@ -4,6 +4,7 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createWorkflow, WorkflowResponse } from "@medusajs/workflows-sdk"
 import { expectTypeOf } from "expect-type"
 import { FixtureEntryPoints } from "../__fixtures__/remote-query"
+import { registerWorkflowEngine } from "../__fixtures__/workflow-engine"
 import { useQueryGraphStep } from "../use-query-graph"
 
 describe("useQueryGraphStep", () => {
@@ -40,6 +41,7 @@ describe("useQueryGraphStep", () => {
       return new WorkflowResponse(result)
     })
 
+    await registerWorkflowEngine(container, workflow)
     const result = await workflow(container).run()
 
     type Result = (typeof result)["result"]
@@ -65,6 +67,7 @@ describe("useQueryGraphStep", () => {
       return new WorkflowResponse(result)
     })
 
+    await registerWorkflowEngine(container, workflow)
     const result = await workflow(container).run()
 
     type Result = (typeof result)["result"]
@@ -87,6 +90,7 @@ describe("useQueryGraphStep", () => {
       return new WorkflowResponse(result)
     })
 
+    await registerWorkflowEngine(container, workflow)
     const result = await workflow(container).run()
 
     type Result = (typeof result)["result"]

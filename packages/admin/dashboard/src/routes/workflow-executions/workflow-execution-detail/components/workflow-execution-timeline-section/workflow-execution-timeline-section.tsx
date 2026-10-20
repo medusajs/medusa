@@ -19,6 +19,11 @@ import {
   STEP_SKIPPED_STATES,
 } from "../../../constants"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
+import {
+  getExecutionSteps,
+  getStepName,
+  groupStepsByDepth,
+} from "../../../utils"
 
 type WorkflowExecutionTimelineSectionProps = {
   execution: HttpTypes.AdminWorkflowExecutionResponse["workflow_execution"]
@@ -39,34 +44,6 @@ export const WorkflowExecutionTimelineSection = ({
       </div>
     </Container>
   )
-}
-
-const createNodeClusters = (
-  steps: Record<string, HttpTypes.AdminWorkflowExecutionStep>
-) => {
-  const actionableSteps = Object.values(steps).filter(
-    (step) => step.id !== "_root"
-  )
-
-  const clusters: Record<number, HttpTypes.AdminWorkflowExecutionStep[]> = {}
-
-  actionableSteps.forEach((step) => {
-    if (!clusters[step.depth]) {
-      clusters[step.depth] = []
-    }
-
-    clusters[step.depth].push(step)
-  })
-
-  return clusters
-}
-
-const getNextCluster = (
-  clusters: Record<number, HttpTypes.AdminWorkflowExecutionStep[]>,
-  depth: number
-) => {
-  const nextDepth = depth + 1
-  return clusters[nextDepth]
 }
 
 type ZoomScale = 0.5 | 0.75 | 1
@@ -111,7 +88,9 @@ const Canvas = ({
     }
   }, [scale])
 
-  const clusters = createNodeClusters(execution.execution?.steps || {})
+  const clusters = groupStepsByDepth(
+    getExecutionSteps(execution.execution?.steps)
+  )
 
   function scaleXandY(
     prevScale: number,
@@ -187,11 +166,11 @@ const Canvas = ({
             >
               <main className="size-full">
                 <div className="absolute left-[1100px] top-[1100px] flex select-none items-start">
-                  {Object.entries(clusters).map(([depth, cluster]) => {
-                    const next = getNextCluster(clusters, Number(depth))
+                  {clusters.map((cluster, index) => {
+                    const next = clusters[index + 1]
 
                     return (
-                      <div key={depth} className="flex items-start">
+                      <div key={index} className="flex items-start">
                         <div className="flex flex-col justify-center gap-y-2">
                           {cluster.map((step) => (
                             <Node key={step.id} step={step} />
@@ -365,21 +344,13 @@ const Line = ({ next }: { next?: HttpTypes.AdminWorkflowExecutionStep[] }) => {
 }
 
 const Node = ({ step }: { step: HttpTypes.AdminWorkflowExecutionStep }) => {
-  if (step.id === "_root") {
-    return null
-  }
-
-  const stepId = step.id.split(".").pop()
+  const stepId = getStepName(step)
 
   /**
    * We can't rely on the built-in hash scrolling because the collapsible,
    * so we instead need to manually scroll to the step when the hash changes
    */
   const handleScrollTo = () => {
-    if (!stepId) {
-      return
-    }
-
     const historyItem = document.getElementById(stepId)
 
     if (!historyItem) {
@@ -400,7 +371,7 @@ const Node = ({ step }: { step: HttpTypes.AdminWorkflowExecutionStep }) => {
 
   return (
     <Link
-      to={`#${stepId}`}
+      to={`#${encodeURIComponent(stepId)}`}
       onClick={handleScrollTo}
       className="focus-visible:shadow-borders-focus transition-fg rounded-md outline-none"
     >

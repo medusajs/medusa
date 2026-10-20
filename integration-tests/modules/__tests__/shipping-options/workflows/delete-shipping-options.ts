@@ -2,6 +2,11 @@ import {
   createShippingOptionsWorkflow,
   deleteShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   FulfillmentSetDTO,
@@ -218,19 +223,21 @@ medusaIntegrationTestRunner({
             ],
           }
 
-        const deleteWorkflow = await deleteShippingOptionsWorkflow(container)
-
-        deleteWorkflow.addAction(
-          "throw",
-          {
-            invoke: async function failStep() {
-              throw new Error(`Failed to delete shipping options`)
-            },
-          },
-          {
-            noCompensation: true,
+        const failStep = createStep("throw", async () => {
+          throw new Error(`Failed to delete shipping options`)
+        })
+        const failingWorkflow = createWorkflow(
+          "test-delete-shipping-options-then-fail",
+          (input: any) => {
+            const res = deleteShippingOptionsWorkflow.runAsStep({ input })
+            failStep(res)
+            return new WorkflowResponse(res)
           }
         )
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([failingWorkflow])
+        const deleteWorkflow = failingWorkflow(container)
 
         const { result } = await createShippingOptionsWorkflow(container).run({
           input: [shippingOptionData],

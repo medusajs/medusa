@@ -32,6 +32,23 @@ export interface AdminWorkflowExecutionExecution {
    * The key is the step's ID, and the value is the step's details.
    */
   steps: Record<string, AdminWorkflowExecutionStep>
+  /**
+   * The ID of the run.
+   */
+  runId?: string
+  /**
+   * The date the workflow execution started, in milliseconds.
+   */
+  startedAt?: number
+  /**
+   * The date the workflow execution timed out, in milliseconds. Only set
+   * when the workflow execution timed out.
+   */
+  timedOutAt?: number | null
+  /**
+   * The date cancelling the workflow execution was requested, in milliseconds.
+   */
+  cancelledAt?: number | null
 }
 
 export type StepInvokeResult = {
@@ -98,6 +115,10 @@ export interface WorkflowExecutionContext {
 }
 
 export interface WorkflowExecutionDefinition {
+  /**
+   * The ID of the step.
+   */
+  action?: string
   /**
    * If true, the step is executed asynchronously. This means that the workflow will not wait for the response of this step.
    * Async steps require to have their responses set using `setStepSuccess` or `setStepFailure`, unless it is combined with `backgroundExecution: true`.
@@ -197,9 +218,34 @@ export interface AdminWorkflowExecutionStep {
    */
   depth: number
   /**
-   * The date the step was started.
+   * The date the step's latest attempt was started, in milliseconds.
    */
   startedAt: number
+  /**
+   * The ID of the step, as defined in the workflow.
+   */
+  step_id?: string
+  /**
+   * The IDs of the steps this step runs after. Empty for the first steps.
+   */
+  depends_on?: string[]
+  /**
+   * The number of times the step was attempted.
+   */
+  attempts?: number
+  /**
+   * The number of failed attempts of the step.
+   */
+  failures?: number
+  /**
+   * The date the step's latest attempt was started, in milliseconds.
+   */
+  lastAttempt?: number | null
+  /**
+   * The date the step timed out, in milliseconds. Only set when the step
+   * timed out.
+   */
+  timedOutAt?: number | null
 }
 
 export interface AdminWorkflowExecution {
@@ -215,6 +261,10 @@ export interface AdminWorkflowExecution {
    * The ID of the transaction.
    */
   transaction_id: string
+  /**
+   * The ID of the run.
+   */
+  run_id?: string
   /**
    * The execution details of the workflow.
    */

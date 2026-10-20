@@ -2,6 +2,11 @@ import {
   batchShippingOptionRulesWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   BatchWorkflowInput,
@@ -296,19 +301,21 @@ medusaIntegrationTestRunner({
           delete: [ruleToDelete.id],
         }
 
-        const workflow = batchShippingOptionRulesWorkflow(container)
-
-        workflow.addAction(
-          "throw",
-          {
-            invoke: async function failStep() {
-              throw new Error(`Failed to update shipping option rules`)
-            },
-          },
-          {
-            noCompensation: true,
+        const failStep = createStep("throw", async () => {
+          throw new Error(`Failed to update shipping option rules`)
+        })
+        const failingWorkflow = createWorkflow(
+          "test-batch-shipping-option-rules-then-fail",
+          (input: any) => {
+            const res = batchShippingOptionRulesWorkflow.runAsStep({ input })
+            failStep(res)
+            return new WorkflowResponse(res)
           }
         )
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([failingWorkflow])
+        const workflow = failingWorkflow(container)
 
         const { errors } = await workflow.run({
           input: workflowInput,

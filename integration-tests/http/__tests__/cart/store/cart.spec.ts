@@ -8083,6 +8083,9 @@ medusaIntegrationTestRunner({
         const workflow = createWorkflow("test-workflow", () => {
           return new WorkflowResponse(updateCartsStep([]))
         })
+        await appContainer
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([workflow])
 
         const { result } = await workflow(appContainer).run({
           input: [],

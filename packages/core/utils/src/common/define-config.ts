@@ -10,6 +10,7 @@ import {
 } from "@medusajs/types"
 import { FeatureFlag } from "../feature-flags/flag-router"
 import {
+  LEGACY_WORKFLOW_ENGINE_PACKAGE_NAMES,
   MODULE_PACKAGE_NAMES,
   Modules,
   REVERSED_MODULE_PACKAGE_NAMES,
@@ -416,10 +417,9 @@ function resolveModules(
     cloudModules.push(
       ...[
         {
-          resolve:
-            TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE],
+          resolve: MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE],
           options: {
-            redis: { url: process.env.REDIS_URL },
+            notifier: { type: "redis", url: process.env.REDIS_URL },
           },
         },
         {
@@ -516,7 +516,48 @@ function resolveModules(
 
   applyDefaultAuthMfaOptions(modules, authModuleOptions)
 
-  return transformModules(modules, projectDir)
+  return transformModules(replaceLegacyWorkflowEngines(modules), projectDir)
+}
+
+/**
+ * The in-memory and Redis workflow engines are replaced by the workflows
+ * module. A Redis URL configured for the old engine is kept as the new
+ * module's notifier; its queue and worker options have no equivalent.
+ */
+function replaceLegacyWorkflowEngines(
+  modules: InputConfigModules
+): InputConfigModules {
+  return modules.map((moduleConfig) => {
+    const resolve = "resolve" in moduleConfig ? moduleConfig.resolve : undefined
+    if (
+      !isString(resolve) ||
+      !LEGACY_WORKFLOW_ENGINE_PACKAGE_NAMES.includes(resolve)
+    ) {
+      return moduleConfig
+    }
+
+    const options = asRecord(moduleConfig.options)
+    const redis = asRecord(options.redis)
+    const redisUrl = (redis.url ?? redis.redisUrl ?? options.url) as
+      | string
+      | undefined
+    const replacement = MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE]
+
+    console.warn(
+      `The workflow engine module "${resolve}" is no longer available and was replaced by "${replacement}". ` +
+        (redisUrl
+          ? "Its Redis URL is used to notify workers; its queue and worker options are ignored. "
+          : "") +
+        `Remove "${resolve}" from the modules in medusa-config.ts.`
+    )
+
+    const { key } = moduleConfig as { key?: string }
+    return {
+      ...(key ? { key } : {}),
+      resolve: replacement,
+      options: redisUrl ? { notifier: { type: "redis", url: redisUrl } } : {},
+    } as InputConfigModules[number]
+  })
 }
 
 function normalizeProjectConfig(

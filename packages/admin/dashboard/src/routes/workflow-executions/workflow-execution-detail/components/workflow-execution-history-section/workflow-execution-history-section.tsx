@@ -20,7 +20,12 @@ import {
   STEP_OK_STATES,
   STEP_SKIPPED_STATES,
 } from "../../../constants"
-import { TransactionStepState, TransactionStepStatus } from "../../../types"
+import { TransactionStepState } from "../../../types"
+import {
+  getExecutionSteps,
+  getStepName,
+  getUnreachableStepNames,
+} from "../../../utils"
 
 type WorkflowExecutionHistorySectionProps = {
   execution: HttpTypes.AdminWorkflowExecution
@@ -31,23 +36,8 @@ export const WorkflowExecutionHistorySection = ({
 }: WorkflowExecutionHistorySectionProps) => {
   const { t } = useTranslation()
 
-  const map = Object.values(execution.execution?.steps || {})
-  const steps = map.filter((step) => step.id !== "_root")
-
-  // check if any of the steps have a .invoke.state of "permanent_failure" and if that is the case then return its id
-  const unreachableStepId = steps.find(
-    (step) => step.invoke.status === TransactionStepStatus.PERMANENT_FAILURE
-  )?.id
-
-  // return an array of step ids of all steps that come after the unreachable step if there is one
-  const unreachableSteps = unreachableStepId
-    ? steps
-        .filter(
-          (step) =>
-            step.id !== unreachableStepId && step.id.includes(unreachableStepId)
-        )
-        .map((step) => step.id)
-    : []
+  const steps = getExecutionSteps(execution.execution?.steps)
+  const unreachableSteps = getUnreachableStepNames(steps)
 
   return (
     <Container className="divide-y p-0">
@@ -58,25 +48,20 @@ export const WorkflowExecutionHistorySection = ({
       </div>
       <div className="flex flex-col gap-y-0.5 px-6 py-4">
         {steps.map((step, index) => {
-          const stepId = step.id.split(".").pop()
-
-          if (!stepId) {
-            return null
-          }
-
-          const context = execution.context?.data.invoke[stepId]
-          const error = execution.context?.errors.find(
-            (e) => e.action === stepId
-          )
+          const stepName = getStepName(step)
+          const context = execution.context?.data.invoke[stepName]
+          const errors =
+            execution.context?.errors.filter((e) => e.action === stepName) ?? []
 
           return (
             <Event
               key={step.id}
               step={step}
+              stepName={stepName}
               stepInvokeContext={context}
-              stepError={error}
+              stepErrors={errors}
               isLast={index === steps.length - 1}
-              isUnreachable={unreachableSteps.includes(step.id)}
+              isUnreachable={unreachableSteps.has(stepName)}
             />
           )
         })}
@@ -87,14 +72,16 @@ export const WorkflowExecutionHistorySection = ({
 
 const Event = ({
   step,
+  stepName,
   stepInvokeContext,
-  stepError,
+  stepErrors,
   isLast,
   isUnreachable,
 }: {
   step: HttpTypes.AdminWorkflowExecutionStep
+  stepName: string
   stepInvokeContext: HttpTypes.StepInvokeResult | undefined
-  stepError?: HttpTypes.StepError | undefined
+  stepErrors: HttpTypes.StepError[]
   isLast: boolean
   isUnreachable?: boolean
 }) => {
@@ -105,20 +92,16 @@ const Event = ({
 
   const { t } = useTranslation()
 
-  const stepId = step.id.split(".").pop()!
-
   useEffect(() => {
-    if (hash === `#${stepId}`) {
+    if (safeDecode(hash.slice(1)) === stepName) {
       setOpen(true)
     }
-  }, [hash, stepId])
-
-  const identifier = step.id.split(".").pop()
+  }, [hash, stepName])
 
   return (
     <div
       className="grid grid-cols-[20px_1fr] items-start gap-x-2 px-2"
-      id={stepId}
+      id={stepName}
     >
       <div className="grid h-full grid-rows-[20px_1fr] items-center justify-center gap-y-0.5">
         <div className="flex size-5 items-center justify-center">
@@ -158,12 +141,15 @@ const Event = ({
         <RadixCollapsible.Trigger asChild>
           <div className="group flex cursor-pointer items-start justify-between outline-none">
             <Text size="small" leading="compact" weight="plus">
-              {identifier}
+              {stepName}
             </Text>
             <div className="flex items-center gap-x-2">
               <StepState
                 state={step.invoke.state}
                 startedAt={step.startedAt}
+                isReverted={
+                  step.compensate.state === TransactionStepState.REVERTED
+                }
                 isUnreachable={isUnreachable}
               />
               <IconButton size="2xsmall" variant="transparent">
@@ -242,8 +228,11 @@ const Event = ({
                   </CodeBlock>
                 </div>
               )}
-            {stepError && (
-              <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            {stepErrors.map((stepError, index) => (
+              <div
+                key={`${stepError.handlerType}-${index}`}
+                className="text-ui-fg-subtle flex flex-col gap-y-2"
+              >
                 <Text size="small" leading="compact">
                   {t("workflowExecutions.history.errorLabel")}
                 </Text>
@@ -267,7 +256,7 @@ const Event = ({
                   <CodeBlock.Body />
                 </CodeBlock>
               </div>
-            )}
+            ))}
           </div>
         </RadixCollapsible.Content>
       </RadixCollapsible.Root>
@@ -275,13 +264,23 @@ const Event = ({
   )
 }
 
+const safeDecode = (value: string) => {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
 const StepState = ({
   state,
   startedAt,
+  isReverted,
   isUnreachable,
 }: {
   state: HttpTypes.TransactionStepState
   startedAt?: number | null
+  isReverted?: boolean
   isUnreachable?: boolean
 }) => {
   const { t } = useTranslation()
@@ -290,6 +289,7 @@ const StepState = ({
   const isRunning = state === TransactionStepState.INVOKING
   const isSkipped = state === TransactionStepState.SKIPPED
   const isSkippedFailure = state === TransactionStepState.SKIPPED_FAILURE
+  const isTimeout = state === TransactionStepState.TIMEOUT
 
   if (isUnreachable) {
     return null
@@ -314,9 +314,13 @@ const StepState = ({
     stateText = t("workflowExecutions.history.skippedFailureState")
   } else if (isFailed) {
     stateText = t("workflowExecutions.history.failedState")
+  } else if (isTimeout) {
+    stateText = t("workflowExecutions.step.state.timeout")
+  } else if (isReverted) {
+    stateText = t("workflowExecutions.history.revertedLabel")
   }
 
-  if (stateText !== null) {
+  if (stateText) {
     return (
       <Text size="small" leading="compact" className="text-ui-fg-subtle">
         {stateText}
@@ -331,4 +335,6 @@ const StepState = ({
       </Text>
     )
   }
+
+  return null
 }

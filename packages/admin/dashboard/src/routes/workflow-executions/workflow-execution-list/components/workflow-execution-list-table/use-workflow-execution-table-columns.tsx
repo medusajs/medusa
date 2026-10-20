@@ -4,7 +4,11 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
 import { TransactionStepState } from "../../../types"
-import { getTransactionState, getTransactionStateColor } from "../../../utils"
+import {
+  getExecutionSteps,
+  getTransactionState,
+  getTransactionStateColor,
+} from "../../../utils"
 import { HttpTypes } from "@medusajs/types"
 import {
   DateCell,
@@ -54,13 +58,7 @@ export const useWorkflowExecutionTableColumns = (): ColumnDef<
             | Record<string, HttpTypes.AdminWorkflowExecutionStep>
             | undefined
 
-          if (!steps) {
-            return "0 of 0 steps"
-          }
-
-          const actionableSteps = Object.values(steps).filter(
-            (step) => step.id !== ROOT_PREFIX
-          )
+          const actionableSteps = getExecutionSteps(steps)
 
           const completedSteps = actionableSteps.filter(
             (step) => step.invoke.state === TransactionStepState.DONE
@@ -83,5 +81,3 @@ export const useWorkflowExecutionTableColumns = (): ColumnDef<
     [t]
   )
 }
-
-const ROOT_PREFIX = "_root"

@@ -485,22 +485,6 @@ export const infrastructureModulesSidebar = [
       },
       {
         type: "sub-category",
-        title: "Modules",
-        children: [
-          {
-            type: "link",
-            path: "/infrastructure-modules/workflow-engine/in-memory",
-            title: "In-Memory",
-          },
-          {
-            type: "link",
-            path: "/infrastructure-modules/workflow-engine/redis",
-            title: "Redis",
-          },
-        ],
-      },
-      {
-        type: "sub-category",
         title: "Guides",
         children: [
           {

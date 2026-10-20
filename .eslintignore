@@ -27,13 +27,12 @@ packages/*
 !packages/modules/product
 !packages/modules/locking
 !packages/modules/translation
-!packages/core/orchestration
+!packages/core/workflow-engine
 !packages/core/workflows-sdk
 !packages/core/core-flows
 !packages/core/types
 !packages/medusa-react
-!packages/modules/workflow-engine-redis
-!packages/modules/workflow-engine-inmemory
+!packages/modules/workflows
 !packages/modules/fulfillment
 !packages/modules/providers/fulfillment-manual
 !packages/modules/providers/locking-postgres

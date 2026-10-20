@@ -1,4 +1,5 @@
-import { MedusaWorkflow } from "@medusajs/framework/workflows-sdk"
+import { IWorkflowEngineService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import path from "path"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
@@ -8,7 +9,14 @@ jest.setTimeout(100000)
 
 medusaIntegrationTestRunner({
   cwd: path.join(__dirname, "../../__fixtures__/feature-flag"),
-  testSuite: ({ api, dbConnection }) => {
+  testSuite: ({ api, dbConnection, getContainer }) => {
+    const registeredWorkflow = async (id: string) =>
+      (
+        await getContainer()
+          .resolve<IWorkflowEngineService>(Modules.WORKFLOW_ENGINE)
+          .listRegisteredWorkflows()
+      ).find((workflow) => workflow.id === id)
+
     describe("Resources loaded without feature flags", () => {
       it("should not load migration when feature flag is disabled and not run job", async () => {
         const migrationNotExecuted = await dbConnection.raw(
@@ -29,13 +37,11 @@ medusaIntegrationTestRunner({
       })
 
       it("should not load workflow when feature flag is disabled", async () => {
-        expect(MedusaWorkflow.getWorkflow("test-workflow")).toBeUndefined()
+        expect(await registeredWorkflow("test-workflow")).toBeUndefined()
       })
 
       it("should not load scheduled job when feature flag is disabled", async () => {
-        expect(
-          MedusaWorkflow.getWorkflow("job-greeting-every-second")
-        ).toBeUndefined()
+        expect(await registeredWorkflow("job-greeting-every-second")).toBeUndefined()
       })
 
       it("should not load endpoint when feature flag is disabled", async () => {

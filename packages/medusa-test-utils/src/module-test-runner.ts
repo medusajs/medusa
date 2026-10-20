@@ -222,7 +222,12 @@ class ModuleTestRunner<TService = any> {
       {},
       {
         get: (target, prop) => {
-          return this.moduleService?.[prop]
+          const value = this.moduleService?.[prop]
+          // Bound so that services using private class members work through
+          // the proxy.
+          return typeof value === "function"
+            ? value.bind(this.moduleService)
+            : value
         },
       }
     )
