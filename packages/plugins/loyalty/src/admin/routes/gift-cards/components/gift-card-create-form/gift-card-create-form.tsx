@@ -32,7 +32,7 @@ export const GiftCardCreateForm = ({
 
   const form = useForm<z.infer<typeof GiftCardCreateSchema>>({
     defaultValues: {
-      value: undefined,
+      value: { value: "", float: null },
       currency_code: supportedCurrencies?.[0] ?? "eur",
       expires_at: null,
       metadata: {},
@@ -44,15 +44,18 @@ export const GiftCardCreateForm = ({
   const { mutateAsync: createGiftCard, isPending } = useCreateGiftCard()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await createGiftCard(data, {
-      onSuccess: (data) => {
-        toast.success("Gift card was successfully created")
-        handleSuccess(`../${data.gift_card.id}`)
-      },
-      onError: (error) => {
-        toast.error(error.message)
-      },
-    })
+    await createGiftCard(
+      { ...data, value: data.value.float! },
+      {
+        onSuccess: (data) => {
+          toast.success("Gift card was successfully created")
+          handleSuccess(`../${data.gift_card.id}`)
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   })
 
   // Set up currency options
@@ -150,7 +153,7 @@ export const GiftCardCreateForm = ({
                         <Form.Label className="font-normal">Value</Form.Label>
                         <Form.Control>
                           <CurrencyInput
-                            value={field.value}
+                            value={field.value.value}
                             code={currentCurrency.code}
                             symbol={currentCurrency.symbol_native}
                             decimalScale={currentCurrency.decimal_digits}
@@ -161,7 +164,10 @@ export const GiftCardCreateForm = ({
                             autoComplete="off"
                             tabIndex={-1}
                             onValueChange={(_value, _name, values) => {
-                              field.onChange(values?.value ? values?.value : "")
+                              field.onChange({
+                                value: values?.value ?? "",
+                                float: values?.float ?? null,
+                              })
                             }}
                           />
                         </Form.Control>
