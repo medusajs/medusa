@@ -118,12 +118,6 @@ After selecting the repository, you'll move on to the project configuration step
 
 After creating the project, it will take a few minutes to create the necessary resources for it and deploy it. Once the deployment is complete, you'll be able to access the project from your organization's dashboard.
 
-### Production Environment's Branch
-
-When you create a project, Medusa creates its Production environment and links it to your repository's default branch, such as `main`. This applies whether you create the project from a starter or from an existing repository. Medusa then deploys the Production environment every time you push a commit to that branch.
-
-To deploy Production from a different branch, [change the environment's branch](../environments/long-lived/page.mdx#change-environments-branch) after creating the project.
-
 <Note>
 
 If the project creation takes too long, check out the [troubleshooting section](#troubleshooting-project-creation).
@@ -137,6 +131,12 @@ If you click on the project, you'll be taken to the project's dashboard, where y
 Once the project is created and deployed, you'll receive a notification in the Cloud dashboard. You can also view its status in the list of projects and in the project's details.
 
 ![The project status in the list of projects](https://res.cloudinary.com/dza7lstvk/image/upload/v1767786310/Cloud/CleanShot_2026-01-07_at_13.44.17_2x_cggzib.png)
+
+### Production Environment's Branch
+
+When you create a project, Medusa creates its Production environment and links it to your repository's default branch, such as `main`. This applies whether you create the project from a starter or from an existing repository. Medusa then deploys the Production environment every time you push a commit to that branch.
+
+To deploy Production from a different branch, [change the environment's branch](../environments/long-lived/page.mdx#change-environments-branch) after creating the project.
 
 ---
 
