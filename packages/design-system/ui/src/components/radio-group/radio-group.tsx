@@ -145,7 +145,7 @@ const ChoiceBox = React.forwardRef<
           {label}
         </Label>
         <Hint
-          className="txt-small text-ui-fg-subtle group-disabled:text-ui-fg-disabled text-left"
+          className="txt-small text-ui-fg-subtle group-disabled:text-ui-fg-disabled text-start"
           id={descriptionId}
         >
           {description}

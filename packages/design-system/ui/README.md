@@ -48,6 +48,7 @@ Medusa UI: the React component library of Medusa's design system, used to build 
 
 - Components such as `Button`, `Container`, `Heading`, `Input`, `Select`, `Table`, `FocusModal`, `Drawer`, `DatePicker`, and `Toaster`.
 - A `DataTable` block for filterable, sortable, paginated tables.
+- Table headers, progress tab labels, choice descriptions, and data table filter options align text to the start of the current writing direction. Use `className` on `Table.HeaderCell` or `ProgressTabs.Trigger` to override their alignment with classes such as `text-left`, `text-right`, or `text-center`.
 - Hooks: `usePrompt` and `useToggleState`.
 - Utilities: `clx` for merging class names, and `toast` for showing toasts.
 

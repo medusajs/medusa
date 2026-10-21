@@ -647,7 +647,7 @@ const DataTableFilterSelectContent = ({
               key={String(option.value)}
               onClick={() => onValueChange(option.value)}
               className={clx(
-                "flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-left",
+                "flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-start",
                 "hover:bg-ui-bg-base-hover"
               )}
             >
@@ -923,7 +923,7 @@ const DataTableFilterMultiselectContent = ({
                 onClick={() => onValueChange(option.value)}
                 className={clx(
                   "flex w-full items-center gap-x-2 rounded-md px-2 py-1.5 text-sm",
-                  "hover:bg-ui-bg-base-hover cursor-pointer text-left"
+                  "hover:bg-ui-bg-base-hover cursor-pointer text-start"
                 )}
               >
                 <Checkbox
@@ -975,7 +975,7 @@ const DataTableFilterMultiselectContent = ({
               key={String(option.value)}
               onClick={() => onValueChange(option.value)}
               className={clx(
-                "flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-left",
+                "flex w-full cursor-pointer items-center gap-x-2 rounded-md px-2 py-1.5 text-sm text-start",
                 "hover:bg-ui-bg-base-hover"
               )}
             >

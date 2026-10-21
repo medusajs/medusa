@@ -80,7 +80,7 @@ const ProgressTabsTrigger = React.forwardRef<
     <RadixTabs.Trigger
       ref={ref}
       className={clx(
-        "txt-compact-small-plus transition-fg text-ui-fg-muted bg-ui-bg-subtle border-r-ui-border-base inline-flex h-[52px] w-full max-w-[200px] flex-1 items-center gap-x-2 border-r px-4 text-left outline-none",
+        "txt-compact-small-plus transition-fg text-ui-fg-muted bg-ui-bg-subtle border-r-ui-border-base inline-flex h-[52px] w-full max-w-[200px] flex-1 items-center gap-x-2 border-r px-4 text-start outline-none",
         "group/trigger overflow-hidden text-ellipsis whitespace-nowrap",
         "disabled:bg-ui-bg-disabled disabled:text-ui-fg-muted",
         "hover:bg-ui-bg-subtle-hover",

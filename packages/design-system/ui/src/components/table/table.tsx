@@ -75,7 +75,7 @@ const HeaderCell = React.forwardRef<
   <th
     ref={ref}
     className={clx(
-      "txt-compact-small-plus h-12 py-0 pl-0 pr-6 text-left",
+      "txt-compact-small-plus h-12 py-0 pl-0 pr-6 text-start",
       className
     )}
     {...props}
