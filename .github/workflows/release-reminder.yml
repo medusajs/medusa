@@ -50,14 +50,21 @@ jobs:
           fi
           echo "Release PR: $CURRENT -> $NEXT ($BUMP)"
 
+          DOCS_URL=$(gh pr list --repo "$REPO" --base develop --head docs/release-docs-staging --state open \
+            --json url --jq '.[0].url // empty')
+
           jq -n --arg text "Time to put out a new release! The next release is a *$BUMP* update: v$CURRENT → *v$NEXT*." \
             --arg url "$URL" \
+            --arg docs_url "$DOCS_URL" \
             '{
               blocks: [
                 {type: "section", text: {type: "mrkdwn", text: $text}},
-                {type: "actions", elements: [
-                  {type: "button", style: "primary", url: $url, text: {type: "plain_text", text: "View release PR"}}
-                ]}
+                {type: "actions", elements: (
+                  [{type: "button", style: "primary", url: $url, text: {type: "plain_text", text: "View release PR"}}]
+                  + (if $docs_url == "" then [] else
+                    [{type: "button", url: $docs_url, text: {type: "plain_text", text: "View release docs PR"}}]
+                  end)
+                )}
               ]
             }' > slack-payload.json
           echo "notify=true" >> "$GITHUB_OUTPUT"
