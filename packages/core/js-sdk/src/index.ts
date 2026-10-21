@@ -56,6 +56,13 @@ export {
 } from "./auth/index.js"
 export { Store } from "./store/index.js"
 export {
+  type AdminCreateNote,
+  type AdminNoteDeleteResponse,
+  type AdminNoteListParams,
+  type AdminNoteListResponse,
+  type AdminNoteResponse,
+} from "./admin/notes.js"
+export {
   Config,
   ClientHeaders,
   ClientFetch,

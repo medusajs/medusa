@@ -12,6 +12,7 @@ import { FulfillmentProvider } from "./fulfillment-provider.js"
 import { FulfillmentSet } from "./fulfillment-set.js"
 import { InventoryItem } from "./inventory-item.js"
 import { Invite } from "./invite.js"
+import { Notes } from "./notes.js"
 import { Notification } from "./notification.js"
 import { Order } from "./order.js"
 import { OrderEdit } from "./order-edit.js"
@@ -280,6 +281,10 @@ export class Admin {
    * @since 2.15.5
    */
   public rbacPolicy: RbacPolicy
+  /**
+   * @tags note
+   */
+  public notes: Notes
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -336,5 +341,6 @@ export class Admin {
     this.layouts = new Layouts(client)
     this.rbacRole = new RbacRole(client)
     this.rbacPolicy = new RbacPolicy(client)
+    this.notes = new Notes(client)
   }
 }
