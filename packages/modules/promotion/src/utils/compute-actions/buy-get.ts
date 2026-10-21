@@ -462,7 +462,8 @@ function updateEligibleItems(
 
 function createComputedActionsFromPromotionApplication(
   itemIdPromotionAmountMap: Map<string, BigNumberInput>,
-  promotionCode: string
+  promotionCode: string,
+  isTaxInclusive?: boolean
 ): PromotionTypes.ComputeActions[] {
   const computedActions: PromotionTypes.ComputeActions[] = []
 
@@ -473,6 +474,7 @@ function createComputedActionsFromPromotionApplication(
         item_id: itemId,
         amount: totalAmount,
         code: promotionCode,
+        is_tax_inclusive: isTaxInclusive,
       })
     }
   }
@@ -626,7 +628,8 @@ export function getComputedActionsForBuyGet(
 
   const finalActions = createComputedActionsFromPromotionApplication(
     itemIdPromotionAmountMap,
-    promotion.code!
+    promotion.code!,
+    promotion.is_tax_inclusive
   )
   computedActions.push(...finalActions)
 
