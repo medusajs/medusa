@@ -38,10 +38,10 @@ Medusa UI: the React component library of Medusa's design system, used to build 
 
 ## At a glance
 
-| | |
-|---|---|
-| Package | `@medusajs/ui` |
-| Type | Design system |
+|             |                |
+| ----------- | -------------- |
+| Package     | `@medusajs/ui` |
+| Type        | Design system  |
 | Import from | `@medusajs/ui` |
 
 ## Features
@@ -69,6 +69,12 @@ import { Button } from "@medusajs/ui"
 
 const App = () => <Button variant="primary">Hello World</Button>
 ```
+
+## Internationalization
+
+Wrap components with `I18nProvider` and a locale, such as `<I18nProvider locale="ar-EG">`. It shares React Aria's resolved reading direction with Radix primitives, including their horizontal keyboard navigation. An explicit primitive `dir` prop still takes precedence.
+
+Applications remain responsible for document `lang`/`dir` attributes and direction-aware CSS.
 
 ## Resources
 

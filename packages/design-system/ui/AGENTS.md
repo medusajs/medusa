@@ -7,7 +7,14 @@ Medusa's React component library (Radix UI / react-aria primitives styled with T
 In Medusa Admin customizations (`src/admin/**`), `@medusajs/ui` and `@medusajs/icons` are already available through the dashboard, and Tailwind is pre-configured by `@medusajs/admin-bundler`:
 
 ```tsx
-import { Button, Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
+import {
+  Button,
+  Container,
+  Heading,
+  Text,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
 
 const Section = () => {
   const prompt = usePrompt()
@@ -30,7 +37,9 @@ const Section = () => {
           Delete
         </Button>
       </div>
-      <Text size="small" className="text-ui-fg-subtle px-6 py-4">...</Text>
+      <Text size="small" className="text-ui-fg-subtle px-6 py-4">
+        ...
+      </Text>
     </Container>
   )
 }
@@ -46,6 +55,7 @@ const Section = () => {
 - Standalone projects need Tailwind v3 with `presets: [require("@medusajs/ui-preset")]` and `@medusajs/ui`'s `dist` in `content`.
 
 Docs:
+
 - https://docs.medusajs.com/ui/index.html.md
 - https://docs.medusajs.com/ui/installation/medusa-admin-extension.md
 - https://docs.medusajs.com/ui/installation/standalone-project.md
@@ -75,6 +85,8 @@ yarn storybook         # port 6006, loads src/main.css
 ```
 
 ## Gotchas
+
+- `I18nProvider` shares React Aria locale direction with Radix primitives; explicit primitive `dir` props still win. Applications supply document direction and direction-aware CSS.
 
 - `CONTRIBUTING.md`: new components from external contributors are not accepted. Propose them in an issue instead.
 - Peer deps are `react` / `react-dom` `^18.3.1`. Don't use React 19-only APIs.
