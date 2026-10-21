@@ -38,10 +38,10 @@ Low-level transaction orchestration for Medusa: the engine that executes workflo
 
 ## At a glance
 
-| | |
-| --- | --- |
-| Package | `@medusajs/orchestration` |
-| Type | Core library |
+|             |                                     |
+| ----------- | ----------------------------------- |
+| Package     | `@medusajs/orchestration`           |
+| Type        | Core library                        |
 | Import from | `@medusajs/framework/orchestration` |
 
 ## Features
@@ -50,6 +50,13 @@ Low-level transaction orchestration for Medusa: the engine that executes workflo
 - `LocalWorkflow`, `GlobalWorkflow`, and `WorkflowManager` to register and run workflow definitions.
 - `DistributedTransactionStorage` and `DistributedSchedulerStorage` abstract classes that workflow engines implement to persist executions and scheduled workflows.
 - Step error classes, such as `PermanentStepFailureError` and `SkipStepResponse`, and state enums, such as `TransactionState`.
+
+For an active execution, errors after a successful step start compensation when
+its recovery checkpoint can be saved, retaining the successful response and original
+error without invoking the step again. Storage availability is required. A concurrent
+background sibling can still persist the shared successful state and finalize the
+transaction before the error is observed; this path cannot recover an already-finalized
+execution.
 
 ## Installation
 

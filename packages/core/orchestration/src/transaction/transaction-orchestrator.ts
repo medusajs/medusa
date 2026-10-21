@@ -1368,6 +1368,34 @@ export class TransactionOrchestrator extends EventEmitter {
       ? step.definition.compensateAsync
       : step.definition.async
 
+    if (step.getStates().status === TransactionStepStatus.OK) {
+      if (step.isCompensating()) {
+        throw error
+      }
+
+      transaction.addError(
+        step.definition.action!,
+        TransactionHandlerType.INVOKE,
+        isErrorLike(error) ? serializeError(error) : error
+      )
+      transaction.getFlow().state = TransactionState.WAITING_TO_COMPENSATE
+
+      try {
+        // Persist the transaction failure without replaying a completed step.
+        await transaction.saveCheckpoint()
+      } catch (checkpointError) {
+        if (!TransactionOrchestrator.isExpectedError(checkpointError)) {
+          throw checkpointError
+        }
+        return
+      }
+
+      if (isAsync) {
+        await transaction.scheduleRetry(step, 0)
+      }
+      return
+    }
+
     if (isDefined(response) && step.saveResponse) {
       transaction.addResponse(
         step.definition.action!,
