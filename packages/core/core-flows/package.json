@@ -4,7 +4,8 @@
   "description": "Set of workflow definitions for Medusa",
   "main": "dist/index.js",
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./defaults": "./dist/defaults/index.js"
   },
   "repository": {
     "type": "git",

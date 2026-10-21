@@ -14,6 +14,7 @@ import {
   Modules,
   OrchestrationUtils,
   registerDevServerResource,
+  setWorkflowBeingDefined,
 } from "@medusajs/utils"
 import { ulid } from "ulid"
 import { exportWorkflow, WorkflowResult } from "../../helper"
@@ -115,6 +116,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
 ): ReturnWorkflow<TData, TResult, THooks> {
   const fileSourcePath = getCallerFilePath() as string
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
+  setWorkflowBeingDefined(name, true)
   const options = isString(nameOrConfig) ? {} : nameOrConfig
 
   registerDevServerResource({
@@ -156,7 +158,15 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     },
   }
 
+  // A workflow can be created while another one is being composed (e.g. when
+  // composing references a workflow whose module loads lazily), so restore
+  // the outer context afterwards instead of clearing it.
+  const parentContext =
+    global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
+  const parentCondition =
+    global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
   global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = context
+  delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
 
   const inputPlaceHolder = proxify<WorkflowData>({
     __type: OrchestrationUtils.SymbolInputReference,
@@ -169,7 +179,16 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
 
   const returnedStep = composer.apply(context, [inputPlaceHolder])
 
-  delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
+  if (parentContext) {
+    global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] =
+      parentContext
+  } else {
+    delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
+  }
+  if (parentCondition) {
+    global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition] =
+      parentCondition
+  }
 
   if (newWorkflow) {
     WorkflowManager.update(name, context.flow, handlers, options)
@@ -201,6 +220,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
 
   mainFlow.getName = () => name
   mainFlow.run = mainFlow().run
+  setWorkflowBeingDefined(name, false)
   mainFlow.runAsStep = ({
     input,
   }: {

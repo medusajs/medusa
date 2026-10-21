@@ -1,5 +1,4 @@
-import { codegen } from "@graphql-codegen/core"
-import * as typescriptPlugin from "@graphql-codegen/typescript"
+import type { codegen } from "@graphql-codegen/core"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import {
   EnumTypeDefinitionNode,
@@ -60,6 +59,10 @@ async function generateTypes({
   joinerConfigs: ModuleJoinerConfig[]
 }) {
   const fileSystem = new FileSystem(outputDir)
+
+  // Loaded on demand: codegen is only needed when generating types, and is
+  // heavy to load as part of @medusajs/utils at boot
+  const { codegen } = await import("@graphql-codegen/core")
 
   let output = 'import "@medusajs/framework/types"\n'
   output += await codegen(config)
@@ -137,6 +140,7 @@ export async function gqlSchemaToTypes({
   joinerConfigs: ModuleJoinerConfig[]
   interfaceName: string
 }) {
+  const typescriptPlugin = await import("@graphql-codegen/typescript")
   const config = {
     documents: [],
     config: {

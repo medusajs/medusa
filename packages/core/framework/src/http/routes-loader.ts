@@ -1,4 +1,9 @@
-import { dynamicImport, isFileSkipped, readDirRecursive } from "@medusajs/utils"
+import {
+  dynamicImport,
+  getBuildManifest,
+  isFileSkipped,
+  readDirRecursive,
+} from "@medusajs/utils"
 import { join, parse, sep } from "path"
 import { logger } from "../logger"
 import { HTTP_METHODS, type RouteDescriptor, type RouteVerb } from "./types"
@@ -20,6 +25,34 @@ const AUTHTHENTICATION_FLAG = "AUTHENTICATE"
  * policy.
  */
 const CORS_FLAG = "CORS"
+
+/**
+ * Exports for a route file described in the build manifest, without importing
+ * it: each method handler imports the file on its first request.
+ */
+function routeExportsFromBuildManifest(
+  absolutePath: string
+): Record<string, unknown> | undefined {
+  const entry = getBuildManifest()?.routes?.[absolutePath]
+  if (!entry) {
+    return
+  }
+
+  const routeExports: Record<string, unknown> = {}
+  for (const method of entry.methods) {
+    routeExports[method] = async (req, res, next) => {
+      const fileExports = await dynamicImport(absolutePath)
+      return fileExports[method](req, res, next)
+    }
+  }
+  if (entry.authenticate !== undefined) {
+    routeExports[AUTHTHENTICATION_FLAG] = entry.authenticate
+  }
+  if (entry.cors !== undefined) {
+    routeExports[CORS_FLAG] = entry.cors
+  }
+  return routeExports
+}
 
 /**
  * The matcher to use to convert the dynamic params from the filesystem
@@ -90,7 +123,9 @@ export class RoutesLoader {
     routePath: string,
     absolutePath: string
   ): Promise<RouteDescriptor[]> {
-    const routeExports = await dynamicImport(absolutePath)
+    const routeExports =
+      routeExportsFromBuildManifest(absolutePath) ??
+      (await dynamicImport(absolutePath))
 
     if (isFileSkipped(routeExports)) {
       return []

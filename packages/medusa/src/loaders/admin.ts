@@ -4,7 +4,7 @@ import {
   ConfigModule,
   PluginDetails,
 } from "@medusajs/framework/types"
-import { Express } from "express"
+import { Express, IRouter } from "express"
 import path from "path"
 import { ADMIN_RELATIVE_OUTPUT_DIR } from "../utils"
 
@@ -15,7 +15,9 @@ type Options = {
   plugins: PluginDetails[]
 }
 
-type InitializedOptions = Required<Pick<AdminOptions, "path" | "disable">> &
+export type InitializedAdminOptions = Required<
+  Pick<AdminOptions, "path" | "disable">
+> &
   AdminOptions & {
     outDir: string
     sources?: string[]
@@ -24,12 +26,22 @@ type InitializedOptions = Required<Pick<AdminOptions, "path" | "disable">> &
 
 const NOT_ALLOWED_PATHS = ["/auth", "/store", "/admin"]
 
-export default async function adminLoader({
-  app,
+/**
+ * Router serving the admin from a dev server created ahead of the loaders
+ * (the Vite dev server shared with the backend). When set, the admin loader
+ * mounts it instead of starting its own dev server.
+ */
+let providedDevRouter: IRouter | undefined
+
+export function provideAdminDevRouter(router: IRouter) {
+  providedDevRouter = router
+}
+
+export function resolveAdminOptions({
   configModule,
   rootDirectory,
   plugins,
-}: Options) {
+}: Omit<Options, "app">): InitializedAdminOptions {
   const { admin } = configModule
 
   const sources: string[] = []
@@ -46,13 +58,28 @@ export default async function adminLoader({
     }
   }
 
-  const adminOptions: InitializedOptions = {
+  const adminOptions: InitializedAdminOptions = {
     disable: false,
     sources,
     plugins: pluginAdminPaths,
     ...admin,
     outDir: path.join(rootDirectory, ADMIN_RELATIVE_OUTPUT_DIR),
   }
+
+  return adminOptions
+}
+
+export default async function adminLoader({
+  app,
+  configModule,
+  rootDirectory,
+  plugins,
+}: Options) {
+  const adminOptions = resolveAdminOptions({
+    configModule,
+    rootDirectory,
+    plugins,
+  })
 
   if (adminOptions?.disable) {
     return app
@@ -75,16 +102,16 @@ export default async function adminLoader({
 
 async function initDevelopmentServer(
   app: Express,
-  options: InitializedOptions
+  options: InitializedAdminOptions
 ) {
   const { develop } = await import("@medusajs/admin-bundler")
 
-  const adminMiddleware = await develop(options)
+  const adminMiddleware = providedDevRouter ?? (await develop(options))
   app.use(options.path, adminMiddleware)
   return app
 }
 
-async function serveProductionBuild(app: Express, options: InitializedOptions) {
+async function serveProductionBuild(app: Express, options: InitializedAdminOptions) {
   const { serve } = await import("@medusajs/admin-bundler")
 
   const adminRoute = await serve(options)

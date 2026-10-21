@@ -16,8 +16,11 @@ export function getCallerFilePath(position = 2) {
       // stack[0] holds this file
       // stack[1] holds where this function was called
       // stack[2] holds the file we're interested in, in most cases, otherwise we need to get higher
-      result = stack[position]
-        ? (stack[position] as any).getFileName()
+      // Code evaluated from a string (e.g. by a dev module loader) has no
+      // file name, only the `//# sourceURL` it was given.
+      const callSite = stack[position] as any
+      result = callSite
+        ? callSite.getFileName() ?? callSite.getScriptNameOrSourceURL?.()
         : undefined
     }
     return stack

@@ -38,14 +38,24 @@ export default async function ({ types, directory, lint, fix }) {
     failureSuffix: "Dev server not started.",
   })
 
-  const isBackendHmrEnabled = FeatureFlag.isFeatureEnabled(
-    BackendHmrFeatureFlag.key
-  )
+  // Vite mode loads project sources through Vite's module runner and reuses
+  // the HMR plumbing (IPC reloads, resource registry) to apply changes.
+  const isViteEnabled = process.env.MEDUSA_DEV_VITE === "true"
+  const isBackendHmrEnabled =
+    isViteEnabled || FeatureFlag.isFeatureEnabled(BackendHmrFeatureFlag.key)
 
   const reloadActionVerb = isBackendHmrEnabled ? "reloading" : "restarting"
-  const logSource = isBackendHmrEnabled ? "[HMR]" : "[Watcher]"
+  const logSource = isViteEnabled
+    ? "[Vite]"
+    : isBackendHmrEnabled
+    ? "[HMR]"
+    : "[Watcher]"
 
-  if (isBackendHmrEnabled) {
+  if (isViteEnabled) {
+    logger.info(
+      `${logSource} Using Vite dev server (reload on file change)`
+    )
+  } else if (isBackendHmrEnabled) {
     logger.info(
       `${logSource} Using backend HMR dev server (reload on file change)`
     )
@@ -106,7 +116,10 @@ export default async function ({ types, directory, lint, fix }) {
         env: {
           ...process.env,
           NODE_ENV: "development",
-          ...(isBackendHmrEnabled && { MEDUSA_HMR_ENABLED: "true" }),
+          ...(isBackendHmrEnabled && {
+            MEDUSA_HMR_ENABLED: "true",
+            [BackendHmrFeatureFlag.env_key]: "true",
+          }),
         },
         execArgv: argv,
       }

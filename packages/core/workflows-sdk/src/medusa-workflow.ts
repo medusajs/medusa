@@ -1,5 +1,6 @@
 import { LocalWorkflow } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
+import { loadWorkflowFromManifest } from "@medusajs/utils"
 import { ExportedWorkflow } from "./helper"
 
 class MedusaWorkflow {
@@ -27,6 +28,10 @@ class MedusaWorkflow {
   }
 
   static getWorkflow(workflowId): ExportedWorkflow {
+    // Workflows listed in the build manifest are loaded on first use
+    if (!(workflowId in MedusaWorkflow.workflows)) {
+      loadWorkflowFromManifest(workflowId)
+    }
     return MedusaWorkflow.workflows[workflowId] as unknown as ExportedWorkflow
   }
 }

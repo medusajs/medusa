@@ -7,7 +7,7 @@ import {
   getResolvedPlugins,
   mergePluginModules,
 } from "@medusajs/framework/utils"
-import { dirname, join } from "path"
+import { join } from "path"
 
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
@@ -56,7 +56,9 @@ export async function runMigrationScripts({
     onApplicationShutdown = resources.onApplicationShutdown
 
     const scriptsSourcePaths = [
-      join(dirname(require.resolve("@medusajs/medusa")), "migration-scripts"),
+      // This package's own scripts (dist/migration-scripts), located without
+      // resolving the package so it also works from a bundled build
+      join(__dirname, "..", "..", "migration-scripts"),
       ...plugins.map((plugin) => join(plugin.resolve, "migration-scripts")),
     ]
 

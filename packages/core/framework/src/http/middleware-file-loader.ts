@@ -1,5 +1,10 @@
 import { z } from "@medusajs/deps/zod"
-import { dynamicImport, FileSystem, isFileSkipped } from "@medusajs/utils"
+import {
+  dynamicImport,
+  FileSystem,
+  getBuildManifest,
+  isFileSkipped,
+} from "@medusajs/utils"
 import { join } from "path"
 
 import { logger } from "../logger"
@@ -16,6 +21,54 @@ import {
  * File name that is used to indicate that the file is a middleware file
  */
 const MIDDLEWARE_FILE_NAME = "middlewares"
+
+/**
+ * Exports for a middleware file described in the build manifest, without
+ * importing it: each middleware imports the file on its first request and
+ * delegates to the middleware at the same position.
+ */
+function middlewareExportsFromBuildManifest(
+  absolutePath: string
+): Record<string, unknown> | undefined {
+  const entry = getBuildManifest()?.middlewares?.[absolutePath]
+  if (!entry) {
+    return
+  }
+
+  let config: Promise<MiddlewaresConfig> | undefined
+  const loadConfig = () =>
+    (config ??= dynamicImport(absolutePath).then(
+      (fileExports) => fileExports.default
+    ))
+
+  const routes = entry.routes.map((route, routeIndex) => {
+    const middlewares = route.middlewareArity.map((arity, middlewareIndex) => {
+      const delegate = async (...args: unknown[]) => {
+        const real = (await loadConfig()).routes![routeIndex].middlewares![
+          middlewareIndex
+        ] as Function
+        return real(...args)
+      }
+      // Express tells error middlewares apart by their arity
+      return arity === 4
+        ? (err, req, res, next) => delegate(err, req, res, next)
+        : (req, res, next) => delegate(req, res, next)
+    })
+
+    return {
+      matcher:
+        typeof route.matcher === "string"
+          ? route.matcher
+          : new RegExp(route.matcher.regexp, route.matcher.flags),
+      methods: route.methods,
+      policies: route.policies,
+      bodyParser: route.bodyParser,
+      middlewares,
+    }
+  })
+
+  return { default: { routes } }
+}
 
 /**
  * Exposes the API to scan a directory and load the `middleware.ts` file. This file contains
@@ -49,7 +102,9 @@ export class MiddlewareFileLoader {
    * routes config exported by it.
    */
   async #processMiddlewareFile(absolutePath: string): Promise<void> {
-    const middlewareExports = await dynamicImport(absolutePath)
+    const middlewareExports =
+      middlewareExportsFromBuildManifest(absolutePath) ??
+      (await dynamicImport(absolutePath))
 
     if (isFileSkipped(middlewareExports)) {
       return

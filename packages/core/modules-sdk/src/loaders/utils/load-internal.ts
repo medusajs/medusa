@@ -32,6 +32,7 @@ import {
   Modules,
   ModulesSdkUtils,
   stringifyCircular,
+  timeBoot,
   toMikroOrmEntities,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "@medusajs/deps/awilix"
@@ -767,15 +768,21 @@ async function runLoaders(
 ): Promise<void | { error: Error }> {
   try {
     for (const loader of loaders) {
-      await loader(
-        {
-          container: localContainer,
-          logger,
-          options: providerOptions ?? resolution.options,
-          dataLoaderOnly: loaderOnly,
-          moduleOptions: providerOptions ? resolution.options : undefined,
-        },
-        resolution.moduleDeclaration as InternalModuleDeclaration
+      await timeBoot(
+        `module ${keyName ?? resolution.definition.key} loader ${
+          loader.name || "(anonymous)"
+        }`,
+        () =>
+          loader(
+            {
+              container: localContainer,
+              logger,
+              options: providerOptions ?? resolution.options,
+              dataLoaderOnly: loaderOnly,
+              moduleOptions: providerOptions ? resolution.options : undefined,
+            },
+            resolution.moduleDeclaration as InternalModuleDeclaration
+          )
       )
     }
   } catch (err) {

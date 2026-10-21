@@ -94,11 +94,18 @@ export function when(...args) {
     throw new Error(`"when condition" must be a function`)
   }
 
-  global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition] = {
+  // Kept locally: another workflow can be composed while this condition's
+  // steps are being defined (e.g. a lazily loaded workflow module), which
+  // replaces the global until it's done.
+  const parentCondition =
+    global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
+  const conditionContext = {
     input,
     condition,
-    steps: [],
+    steps: [] as any[],
   }
+  global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition] =
+    conditionContext
 
   let thenCalled = false
   process.nextTick(() => {
@@ -113,8 +120,7 @@ export function when(...args) {
       const ret = fn()
       let returnStep = ret
 
-      const applyCondition =
-        global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition].steps
+      const applyCondition = conditionContext.steps
 
       if (
         isDefined(ret) &&
@@ -153,7 +159,12 @@ export function when(...args) {
         step.if(input, condition)
       }
 
-      delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
+      if (parentCondition) {
+        global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition] =
+          parentCondition
+      } else {
+        delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
+      }
 
       return returnStep
     },
