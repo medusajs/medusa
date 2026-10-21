@@ -1,4 +1,5 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+import { existsSync } from "fs"
 import { mikroOrmCreateConnection } from "../../dal"
 import { loadDatabaseConfig } from "../load-module-database-config"
 import { Migrations } from "../../migrations"
@@ -32,6 +33,13 @@ export function buildMigrationScript({ moduleName, pathToMigrations }) {
     logger.info(new Array(TERMINAL_SIZE).join("-"))
     logger.info("")
     logger.info(`MODULE: ${moduleName}`)
+
+    // MikroORM creates a missing migrations folder before running, which fails
+    // on read-only filesystems. A module without one has nothing to run.
+    if (!existsSync(pathToMigrations)) {
+      logger.info(`Skipped. No migrations found for module.`)
+      return []
+    }
 
     const dbData = loadDatabaseConfig(moduleName, options)!
     const orm = await mikroOrmCreateConnection(
