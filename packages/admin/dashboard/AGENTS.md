@@ -31,8 +31,7 @@ Expose injection zones on a custom page with `LayoutComposer` (zones are `<prefi
 
 ```tsx
 import { LayoutComposer } from "@medusajs/dashboard/components"
-
-<LayoutComposer
+;<LayoutComposer
   widgetsZonePrefix="brand.details"
   preferredLayoutId="core:two-column"
   data={brand}
@@ -41,6 +40,7 @@ import { LayoutComposer } from "@medusajs/dashboard/components"
 ```
 
 Docs:
+
 - https://docs.medusajs.com/resources/admin-components.md
 - https://docs.medusajs.com/resources/admin-components/layouts/layout-composer.md
 - https://docs.medusajs.com/resources/admin-components/hooks.md
@@ -87,3 +87,5 @@ yarn i18n:sync missing
 - The `src/exports/*` surface is documented API for extensions. Changing a signature breaks plugins; update the matching page under `www/apps/resources/app/admin-components`.
 - A new virtual module must be added to `external` in `tsup.config.cjs` and to `VIRTUAL_MODULES` in `@medusajs/admin-shared`.
 - `yarn generate:static` writes `src/lib/currencies.ts`, but the app imports `src/lib/data/currencies.ts`. Move the output before relying on it.
+
+- Ordinary product/variant media editor cards use native `loading="lazy"` and `decoding="async"` hints, including available-image cards in both sidebar layouts. Keep the visible `MediaGridItemOverlay` eager. These hints preserve original URLs and leave loading thresholds to the browser; they do not generate thumbnails or cap the gallery.

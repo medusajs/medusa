@@ -201,7 +201,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
   return (
     <RouteFocusModal.Form blockSearchParams form={form}>
       <KeyboundForm
-        className="flex size-full flex-col overflow-hidden"
+        className="size-full flex flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
         <RouteFocusModal.Header>
@@ -214,7 +214,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex flex-col overflow-hidden">
-          <div className="flex size-full flex-col-reverse lg:grid lg:grid-cols-[1fr_560px]">
+          <div className="size-full flex flex-col-reverse lg:grid lg:grid-cols-[1fr_560px]">
             <DndContext
               sensors={sensors}
               onDragEnd={handleDragEnd}
@@ -420,6 +420,8 @@ const MediaGridItem = ({
       <img
         src={media.url}
         alt=""
+        loading="lazy"
+        decoding="async"
         className="size-full object-cover object-center"
       />
     </div>

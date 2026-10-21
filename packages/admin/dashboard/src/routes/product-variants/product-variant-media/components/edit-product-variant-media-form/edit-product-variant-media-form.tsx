@@ -188,12 +188,12 @@ export const EditProductVariantMediaForm = ({
   return (
     <RouteFocusModal.Form blockSearchParams form={form}>
       <KeyboundForm
-        className="flex size-full flex-col overflow-hidden"
+        className="size-full flex flex-col overflow-hidden"
         onSubmit={handleSubmit}
       >
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col overflow-hidden">
-          <div className="relative flex size-full">
+          <div className="size-full relative flex">
             <div className="bg-ui-bg-subtle flex-1 overflow-auto">
               <div className="flex items-center justify-between p-4 lg:hidden">
                 <h3 className="text-sm font-medium">
@@ -393,7 +393,12 @@ const MediaGridItem = ({
           onCheckedChange={handleToggle}
         />
       </div>
-      <img src={media.url} className="size-full object-cover object-center" />
+      <img
+        src={media.url}
+        loading="lazy"
+        decoding="async"
+        className="size-full object-cover object-center"
+      />
     </div>
   )
 }
@@ -427,7 +432,12 @@ const UnassociatedImageItem = ({
           <Plus />
         </div>
       </div>
-      <img src={media.url} className="size-full object-cover object-center" />
+      <img
+        src={media.url}
+        loading="lazy"
+        decoding="async"
+        className="size-full object-cover object-center"
+      />
     </div>
   )
 }

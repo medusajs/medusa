@@ -38,12 +38,12 @@ The Medusa Admin dashboard: the React and Vite single-page app that merchants us
 
 ## At a glance
 
-| | |
-|---|---|
-| Package | `@medusajs/dashboard` |
-| Type | Admin |
-| Import from | `@medusajs/dashboard/components`, `@medusajs/dashboard/hooks`, `@medusajs/dashboard/lib` |
-| Entry points | `.` (the app), `./components`, `./hooks`, `./lib`, `./css` |
+|              |                                                                                          |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| Package      | `@medusajs/dashboard`                                                                    |
+| Type         | Admin                                                                                    |
+| Import from  | `@medusajs/dashboard/components`, `@medusajs/dashboard/hooks`, `@medusajs/dashboard/lib` |
+| Entry points | `.` (the app), `./components`, `./hooks`, `./lib`, `./css`                               |
 
 ## Usage
 
@@ -57,27 +57,27 @@ import { getStylizedAmount } from "@medusajs/dashboard/lib"
 
 Run these from `packages/admin/dashboard`:
 
-| Command | Description |
-|---|---|
-| `yarn dev` | Start the Vite dev server. |
-| `yarn build` | Type-check and build the package with tsup. |
-| `yarn build:preview` | Build the app with Vite. |
-| `yarn preview` | Preview the Vite build. |
-| `yarn test` | Run the Vitest tests. |
-| `yarn lint` | Run ESLint. |
-| `yarn typecheck` | Type-check the package. |
-| `yarn i18n:validate <file>` | Validate a translation file, such as `de.json`, against the schema. |
-| `yarn i18n:schema` | Regenerate `src/i18n/translations/$schema.json` from `en.json`. Run it after adding or removing keys in `en.json`. |
-| `yarn i18n:sync` | Find or apply missing translations. See [Translations](#translations). |
+| Command                     | Description                                                                                                        |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `yarn dev`                  | Start the Vite dev server.                                                                                         |
+| `yarn build`                | Type-check and build the package with tsup.                                                                        |
+| `yarn build:preview`        | Build the app with Vite.                                                                                           |
+| `yarn preview`              | Preview the Vite build.                                                                                            |
+| `yarn test`                 | Run the Vitest tests.                                                                                              |
+| `yarn lint`                 | Run ESLint.                                                                                                        |
+| `yarn typecheck`            | Type-check the package.                                                                                            |
+| `yarn i18n:validate <file>` | Validate a translation file, such as `de.json`, against the schema.                                                |
+| `yarn i18n:schema`          | Regenerate `src/i18n/translations/$schema.json` from `en.json`. Run it after adding or removing keys in `en.json`. |
+| `yarn i18n:sync`            | Find or apply missing translations. See [Translations](#translations).                                             |
 
 The dev server reads these variables from a `.env` file:
 
-| Variable | Description | Default |
-|---|---|---|
-| `VITE_MEDUSA_BACKEND_URL` | URL of the Medusa server. | `http://localhost:9000` |
-| `VITE_MEDUSA_STOREFRONT_URL` | URL of the storefront. | `http://localhost:8000` |
-| `VITE_MEDUSA_BASE` | Base path the app is served from. | `/` |
-| `VITE_MEDUSA_PROJECT` | Path to a Medusa project to load admin extensions from. | - |
+| Variable                     | Description                                             | Default                 |
+| ---------------------------- | ------------------------------------------------------- | ----------------------- |
+| `VITE_MEDUSA_BACKEND_URL`    | URL of the Medusa server.                               | `http://localhost:9000` |
+| `VITE_MEDUSA_STOREFRONT_URL` | URL of the storefront.                                  | `http://localhost:8000` |
+| `VITE_MEDUSA_BASE`           | Base path the app is served from.                       | `/`                     |
+| `VITE_MEDUSA_PROJECT`        | Path to a Medusa project to load admin extensions from. | -                       |
 
 ## Translations
 
@@ -124,3 +124,10 @@ The [Admin i18n Sync](../../../.github/workflows/admin-i18n-sync.yml) workflow r
 - [Admin Components](https://docs.medusajs.com/resources/admin-components)
 - [Admin Utilities](https://docs.medusajs.com/resources/admin-components/utilities)
 - [Contribute Admin Translations](https://docs.medusajs.com/learn/resources/contribution-guidelines/admin-translations)
+
+## Media editors
+
+Product and variant media editor grids use native lazy loading and asynchronous
+decoding hints for images, including the available-image sidebar. Browsers decide
+how far ahead to load images; URLs still point to the original files. The visible
+product drag preview loads eagerly.
