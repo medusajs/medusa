@@ -14,7 +14,7 @@ import {
 import path from "path"
 import redirects from "./utils/redirects.mjs"
 import { generatedSidebars } from "./generated/sidebar.mjs"
-import { catchBadRedirects } from "build-scripts"
+import { catchBadRedirects, withMdxWebpackLayers } from "build-scripts"
 import remarkFrontmatter from "remark-frontmatter"
 import withExtractedTableOfContents from "@stefanprobst/rehype-extract-toc"
 
@@ -396,4 +396,4 @@ const nextConfig = {
   },
 }
 
-export default withMDX(nextConfig)
+export default withMdxWebpackLayers(withMDX(nextConfig))
