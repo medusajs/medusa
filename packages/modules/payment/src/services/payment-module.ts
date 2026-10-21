@@ -32,6 +32,7 @@ import {
   ProviderWebhookPayload,
   RefundDTO,
   RefundReasonDTO,
+  ReplaceAccountHolderDTO,
   UpdateAccountHolderDTO,
   UpdateAccountHolderOutput,
   UpdatePaymentCollectionDTO,
@@ -1452,6 +1453,59 @@ export default class PaymentModuleService
         metadata: input.metadata,
       },
       sharedContext
+    )
+
+    return await this.baseRepository_.serialize(accountHolder)
+  }
+
+  @InjectManager()
+  @EmitEvents()
+  async replaceAccountHolder(
+    input: ReplaceAccountHolderDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<AccountHolderDTO> {
+    const existing = await this.accountHolderService_.retrieve(
+      input.id,
+      { select: ["id", "provider_id", "external_id", "email", "data"] },
+      sharedContext
+    )
+
+    // Providers return the account holder they're given instead of creating one, so it's left out.
+    const { account_holder: _, ...context } = input.context
+
+    const providerAccountHolder =
+      await this.paymentProviderService_.createAccountHolder(
+        input.provider_id,
+        {
+          context: {
+            idempotency_key: `${existing.id}-${existing.external_id}`,
+            ...context,
+          },
+        }
+      )
+
+    if (!isPresent(providerAccountHolder)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Provider ${input.provider_id} does not support account holders`
+      )
+    }
+
+    const accountHolder = await this.accountHolderService_.update(
+      {
+        id: input.id,
+        external_id: providerAccountHolder.id,
+        email: input.context.customer?.email,
+        data: providerAccountHolder.data ?? {},
+      },
+      sharedContext
+    )
+
+    await this.paymentProviderService_.deleteAccountHolder(
+      existing.provider_id,
+      {
+        context: { account_holder: existing },
+      }
     )
 
     return await this.baseRepository_.serialize(accountHolder)

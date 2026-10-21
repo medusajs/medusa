@@ -2068,6 +2068,41 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
         })
       })
 
+      describe("AccountHolder", () => {
+        describe("replace", () => {
+          it("replaces the account holder in the provider and keeps its id", async () => {
+            const accountHolder = await service.createAccountHolder({
+              provider_id: "pp_system_default",
+              context: {
+                customer: { id: "cus_copied", email: "old@example.com" },
+              },
+            })
+
+            const replaced = await service.replaceAccountHolder({
+              id: accountHolder.id,
+              provider_id: "pp_system_default",
+              context: {
+                customer: { id: "cus_123", email: "new@example.com" },
+              },
+            })
+
+            expect(replaced).toEqual(
+              expect.objectContaining({
+                id: accountHolder.id,
+                external_id: "cus_123",
+                email: "new@example.com",
+              })
+            )
+            expect(await service.listAccountHolders({})).toEqual([
+              expect.objectContaining({
+                id: accountHolder.id,
+                external_id: "cus_123",
+              }),
+            ])
+          })
+        })
+      })
+
       describe("getWebhookActionAndData", () => {
         it("resolves the provider when given a bare provider identifier", async () => {
           const result = await service.getWebhookActionAndData({
