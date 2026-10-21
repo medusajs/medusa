@@ -98,6 +98,8 @@ Run the server with the Medusa CLI:
 npx medusa develop
 ```
 
+The per-file backend transforms in `medusa plugin:develop` honor TypeScript `compilerOptions.paths`, including exact aliases, wildcard aliases, and inherited configurations. Mappings resolve from the parsed `baseUrl` or, without one, the configuration that defines them. This applies to backend source updates; Admin extension browser hot reload is handled separately.
+
 ## Resources
 
 - [Installation](https://docs.medusajs.com/learn/installation)

@@ -16,6 +16,7 @@ export default async function developPlugin({
     return
   }
 
+  const compilerOptions = parsedConfig.options
   const yalcBin = path.join(path.dirname(require.resolve("yalc")), "yalc.js")
 
   /**
@@ -91,7 +92,13 @@ export default async function developPlugin({
           },
         },
         keepClassNames: true,
-        baseUrl: directory,
+        baseUrl: path.resolve(
+          compilerOptions.baseUrl ??
+            (typeof compilerOptions.pathsBasePath === "string"
+              ? compilerOptions.pathsBasePath
+              : directory)
+        ),
+        paths: compilerOptions.paths,
       },
     })
     return output.code

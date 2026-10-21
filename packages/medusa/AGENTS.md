@@ -73,6 +73,8 @@ export default defineMiddlewares({
 
 ## Gotchas
 
+- `src/commands/plugin/develop.ts` passes parsed TypeScript `paths` to SWC for backend file updates. Keep the absolute parsed `baseUrl` or the mapping's defining config directory (including inherited configs without `baseUrl`); resolving every mapping from the plugin root breaks `extends`. This backend transform does not control Admin extension browser hot reload.
+
 - `discoveryPath` is load-bearing: the module loader (`packages/core/modules-sdk/src/loaders/utils/load-internal.ts`) imports it to find the real package for migrations and models. Omitting it breaks module discovery through the re-export.
 - `buildAllowedFields` strips leading `*` and trailing `.*` from defaults, so `*variants` in `defaults` allows `variants`, not `variants.*`.
 - Store `query-config.ts` files may set `storeRelationsLimit` per route (e.g. `4` for products); a lower route value overrides `http.storeRelationsLimit` from `medusa-config`, and exceeding it is a `400`, not a silent drop.
