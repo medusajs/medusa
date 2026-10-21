@@ -1117,6 +1117,24 @@
       "hint": "Vytvořte nového zákazníka a spravujte jeho detaily.",
       "successToast": "Zákazník {{email}} byl úspěšně vytvořen."
     },
+    "export": {
+      "header": "Exportovat seznam zákazníků",
+      "description": "Exportovat seznam zákazníků do souboru.",
+      "success": {
+        "title": "Zpracováváme váš export",
+        "description": "Export dat může trvat několik minut. Oznámíme vám, až budeme hotovi."
+      },
+      "format": {
+        "label": "Formát",
+        "description": "Vyberte formát exportovaného souboru. JSON zachycuje vnořená data napříč moduly bez ztráty, což se doporučuje pro žádosti o přístup k osobním údajům.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtry",
+        "description": "Použijte filtry v přehledu tabulky pro úpravu tohoto zobrazení"
+      }
+    },
     "groups": {
       "label": "Skupiny zákazníků",
       "remove": "Jste si jisti, že chcete odstranit zákazníka ze skupiny zákazníků \"{{name}}\"?",

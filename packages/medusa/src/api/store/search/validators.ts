@@ -122,12 +122,22 @@ const StoreSearchOptions = z
   })
   .strict()
 
+const toUpperCase = (value: unknown) => {
+  return typeof value === "string" ? value.toUpperCase() : value
+}
+
+// Upper-cased before it reaches the module, so no engine has to handle `asc`.
+const StoreSearchOrderDirection = z.preprocess(
+  toUpperCase,
+  z.enum(["ASC", "DESC"])
+)
+
 const StoreSearchPagination = z
   .object({
     skip: z.number().int().nonnegative().optional(),
     // `0` is what InstantSearch sends for a facet-only search.
     take: z.number().int().nonnegative().max(MAX_SEARCH_TAKE).optional(),
-    order: z.record(z.string(), z.enum(["ASC", "DESC"])).optional(),
+    order: z.record(z.string(), StoreSearchOrderDirection).optional(),
     cursor: z.string().optional(),
   })
   .strict()

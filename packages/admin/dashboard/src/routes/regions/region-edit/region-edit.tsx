@@ -8,6 +8,7 @@ import { useStore } from "../../../hooks/api/store"
 import { currencies } from "../../../lib/data/currencies"
 import { EditRegionForm } from "./components/edit-region-form"
 import { usePricePreferences } from "../../../hooks/api/price-preferences"
+import { REGION_DETAIL_FIELDS } from "../region-detail/constants"
 
 export const RegionEdit = () => {
   const { t } = useTranslation()
@@ -19,7 +20,7 @@ export const RegionEdit = () => {
     isError: isRegionError,
     error: regionError,
   } = useRegion(id!, {
-    fields: "*payment_providers,*countries,+automatic_taxes",
+    fields: REGION_DETAIL_FIELDS,
   })
 
   const {
