@@ -201,9 +201,21 @@ In this example, Medusa reports the values of the `q`, `limit`, and `offset` que
 To report the full query string without redaction, set `allowedQueryParams` to `"*"`:
 
 ```ts title="instrumentation.ts"
-http: {
-  allowedQueryParams: "*",
-},
+export function register() {
+  registerOtel({
+    serviceName: "medusajs",
+    exporter,
+    instrument: {
+      http: {
+        allowedQueryParams: "*",
+      },
+      workflows: true,
+      query: true,
+      db: true,
+      cache: true,
+    },
+  })
+}
 ```
 
 <Note type="warning">

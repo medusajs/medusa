@@ -265,7 +265,7 @@ The `remove` array accepts the IDs of options to remove from the product.
 
 ### Remove an Option from a Product with Variants
 
-Since Medusa v2.21.3, you can remove an option from a product even when the product's variants use that option's values. Medusa removes the option's values from the product's variants. The variants themselves aren't deleted.
+Since Medusa v2.22.0, you can remove an option from a product even when the product's variants use that option's values. Medusa removes the option's values from the product's variants. The variants themselves aren't deleted.
 
 However, if removing the option's values makes two or more variants have the same combination of option values, Medusa throws an error and doesn't remove the option. For example, if a product has the options Size and Color, and has the variants "S / Blue" and "S / Red", removing the Color option fails because both variants would only have the value "S".
 
