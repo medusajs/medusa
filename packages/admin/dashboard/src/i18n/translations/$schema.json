@@ -2143,6 +2143,12 @@
             "label": {
               "type": "string"
             },
+            "showAllImages": {
+              "type": "string"
+            },
+            "showFewerImages": {
+              "type": "string"
+            },
             "editHint": {
               "type": "string"
             },
@@ -2252,6 +2258,8 @@
           },
           "required": [
             "label",
+            "showAllImages",
+            "showFewerImages",
             "editHint",
             "manageImageVariants",
             "makeThumbnail",

@@ -10,7 +10,7 @@ import {
   clx,
   usePrompt,
 } from "@medusajs/ui"
-import { useState } from "react"
+import { useId, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -21,14 +21,23 @@ type ProductMedisaSectionProps = {
   product: HttpTypes.AdminProduct
 }
 
-export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
+const MEDIA_PREVIEW_LIMIT = 12
+
+export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => (
+  <ProductMediaSectionContent key={product.id} product={product} />
+)
+
+const ProductMediaSectionContent = ({ product }: ProductMedisaSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
 
+  const gridId = useId()
+  const [expanded, setExpanded] = useState(false)
   const [selection, setSelection] = useState<Record<string, boolean>>({})
 
   const media = getMedia(product)
+  const visibleMedia = expanded ? media : media.slice(0, MEDIA_PREVIEW_LIMIT)
 
   const handleCheckedChange = (id: string) => {
     setSelection((prev) => {
@@ -87,28 +96,47 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.media.label")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.editImages"),
-                  to: "media?view=edit",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        <div className="flex items-center gap-x-2">
+          {media.length > MEDIA_PREVIEW_LIMIT && (
+            <Button
+              type="button"
+              variant="secondary"
+              size="small"
+              aria-expanded={expanded}
+              aria-controls={gridId}
+              onClick={() => setExpanded((prev) => !prev)}
+            >
+              {expanded
+                ? t("products.media.showFewerImages")
+                : t("products.media.showAllImages", { count: media.length })}
+            </Button>
+          )}
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.editImages"),
+                    to: "media?view=edit",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        </div>
       </div>
       {media.length > 0 ? (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-4 px-6 py-4">
-          {media.map((i, index) => {
+        <div
+          id={gridId}
+          className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-4 px-6 py-4"
+        >
+          {visibleMedia.map((i, index) => {
             const isSelected = selection[i.id]
 
             return (
               <div
-                className="shadow-elevation-card-rest hover:shadow-elevation-card-hover transition-fg group relative aspect-square size-full cursor-pointer overflow-hidden rounded-[8px]"
+                className="shadow-elevation-card-rest hover:shadow-elevation-card-hover transition-fg size-full group relative aspect-square cursor-pointer overflow-hidden rounded-[8px]"
                 key={i.id}
               >
                 <div

@@ -31,8 +31,7 @@ Expose injection zones on a custom page with `LayoutComposer` (zones are `<prefi
 
 ```tsx
 import { LayoutComposer } from "@medusajs/dashboard/components"
-
-<LayoutComposer
+;<LayoutComposer
   widgetsZonePrefix="brand.details"
   preferredLayoutId="core:two-column"
   data={brand}
@@ -41,6 +40,7 @@ import { LayoutComposer } from "@medusajs/dashboard/components"
 ```
 
 Docs:
+
 - https://docs.medusajs.com/resources/admin-components.md
 - https://docs.medusajs.com/resources/admin-components/layouts/layout-composer.md
 - https://docs.medusajs.com/resources/admin-components/hooks.md
@@ -79,6 +79,8 @@ yarn i18n:sync missing
 - Tests live in `__tests__/` directories or as `*.spec.tsx` beside the source.
 
 ## Gotchas
+
+- Product and variant detail media sections preview 12 images. Apply the limit after thumbnail insertion or variant filtering, preserve gallery indices and selection when toggling, and keep entity changes keyed so disclosure and selection reset together.
 
 - After adding or removing keys in `en.json`, run `yarn i18n:schema` and commit `$schema.json`; `src/i18n/translations/__tests__/validate-translations.spec.ts` validates every locale against it.
 - Add new strings to `en.json` only. Other locales are filled by the daily `.github/workflows/admin-i18n-sync.yml` workflow.

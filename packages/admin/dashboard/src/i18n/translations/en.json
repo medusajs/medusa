@@ -547,6 +547,8 @@
     "editPrices": "Edit prices",
     "media": {
       "label": "Media",
+      "showAllImages": "Show all images ({{count}})",
+      "showFewerImages": "Show fewer images",
       "editHint": "Add media to the product to showcase it in your storefront.",
       "manageImageVariants": "Manage associated variants",
       "makeThumbnail": "Make thumbnail",

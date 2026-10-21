@@ -1,4 +1,5 @@
-import { Container, Heading, Text, Tooltip } from "@medusajs/ui"
+import { Button, Container, Heading, Text, Tooltip } from "@medusajs/ui"
+import { useId, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { HttpTypes } from "@medusajs/types"
 import { PencilSquare, ThumbnailBadge } from "@medusajs/icons"
@@ -13,38 +14,66 @@ type VariantMediaSectionProps = {
   }
 }
 
-export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => {
+const MEDIA_PREVIEW_LIMIT = 12
+
+export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => (
+  <VariantMediaSectionContent key={variant.id} variant={variant} />
+)
+
+const VariantMediaSectionContent = ({ variant }: VariantMediaSectionProps) => {
   const { t } = useTranslation()
+  const gridId = useId()
+  const [expanded, setExpanded] = useState(false)
 
   // show only variant scoped images
   const media = (variant.images || []).filter((image) =>
     image.variants?.some((imageVariant) => imageVariant.id === variant.id)
   )
+  const visibleMedia = expanded ? media : media.slice(0, MEDIA_PREVIEW_LIMIT)
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.media.label")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.editImages"),
-                  to: "media",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        <div className="flex items-center gap-x-2">
+          {media.length > MEDIA_PREVIEW_LIMIT && (
+            <Button
+              type="button"
+              variant="secondary"
+              size="small"
+              aria-expanded={expanded}
+              aria-controls={gridId}
+              onClick={() => setExpanded((prev) => !prev)}
+            >
+              {expanded
+                ? t("products.media.showFewerImages")
+                : t("products.media.showAllImages", { count: media.length })}
+            </Button>
+          )}
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.editImages"),
+                    to: "media",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        </div>
       </div>
       {media.length > 0 ? (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-4 px-6 py-4">
-          {media.map((i) => {
+        <div
+          id={gridId}
+          className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-4 px-6 py-4"
+        >
+          {visibleMedia.map((i) => {
             return (
               <div
-                className="shadow-elevation-card-rest hover:shadow-elevation-card-hover transition-fg group relative aspect-square size-full overflow-hidden rounded-[8px]"
+                className="shadow-elevation-card-rest hover:shadow-elevation-card-hover transition-fg size-full group relative aspect-square overflow-hidden rounded-[8px]"
                 key={i.id}
               >
                 {i.url === variant.thumbnail && (
