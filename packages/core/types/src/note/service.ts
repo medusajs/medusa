@@ -23,7 +23,10 @@ export interface INoteModuleService extends IModuleService {
    *   author_id: "user_123"
    * }])
    */
-  createNotes(data: CreateNoteDTO[], sharedContext?: Context): Promise<NoteDTO[]>
+  createNotes(
+    data: CreateNoteDTO[],
+    sharedContext?: Context
+  ): Promise<NoteDTO[]>
 
   /**
    * This method creates a note.

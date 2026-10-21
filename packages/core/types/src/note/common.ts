@@ -46,7 +46,8 @@ export interface NoteDTO {
  *
  * The filters to apply on the retrieved notes.
  */
-export interface FilterableNoteProps extends BaseFilterable<FilterableNoteProps> {
+export interface FilterableNoteProps
+  extends BaseFilterable<FilterableNoteProps> {
   /**
    * The IDs to filter the notes by.
    */
