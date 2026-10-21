@@ -1,5 +1,19 @@
 # @medusajs/js-sdk
 
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.22.0 or later
+
+### Patch Changes
+
+- [#17157](https://github.com/medusajs/medusa/pull/17157) [`c522ce6c070a85ed735fa0e1ea281b7641935a96`](https://github.com/medusajs/medusa/commit/c522ce6c070a85ed735fa0e1ea281b7641935a96) Thanks [@sarmah-rup](https://github.com/sarmah-rup)! - fix(js-sdk): don't throw a ReferenceError when `setLocale` is called outside the browser
+
+- [#17382](https://github.com/medusajs/medusa/pull/17382) [`1db74006ede40300afe64970024688a1a9c2a936`](https://github.com/medusajs/medusa/commit/1db74006ede40300afe64970024688a1a9c2a936) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: ship AGENTS.md in published packages and add agent discovery fields to package.json
+
+- [#16142](https://github.com/medusajs/medusa/pull/16142) [`a491ca71f438e1f35a496d63d29141e15bc56c93`](https://github.com/medusajs/medusa/commit/a491ca71f438e1f35a496d63d29141e15bc56c93) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(dashboard, core-flows, js-sdk, types, medusa): add export customers feature
+
 ## 2.21.2
 
 ## 2.21.1
