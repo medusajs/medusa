@@ -18,8 +18,12 @@
   },
   "files": [
     "dist",
-    "package.json"
+    "package.json",
+    "AGENTS.md"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "devDependencies": {
     "@medusajs/types": "2.21.2"
   },

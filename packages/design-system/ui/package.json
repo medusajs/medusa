@@ -29,8 +29,12 @@
   "sideEffects": false,
   "files": [
     "dist/**",
-    "styles.css"
+    "styles.css",
+    "AGENTS.md"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "scripts": {
     "build": "yarn clean && yarn build:js:cjs && yarn build:js:esm",
     "build:js:cjs": "yarn run -T tsc --project tsconfig.cjs.json && yarn run -T tsc-alias -p tsconfig.cjs.json",
