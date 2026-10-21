@@ -19,8 +19,12 @@
   "typings": "dist/index.d.ts",
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "scripts": {
     "build": "yarn build:bundles && yarn build:types",
     "build:bundles": "rollup -c ./rollup.config.mjs",
