@@ -35,6 +35,7 @@ import {
   useRemoteQueryStep,
 } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 import { adjustInventoryLevelsStep } from "../../inventory"
 import {
   deleteReservationsStep,
@@ -416,6 +417,12 @@ export const createOrderFulfillmentWorkflowId = "create-order-fulfillment"
 export const createOrderFulfillmentWorkflow = createWorkflow(
   createOrderFulfillmentWorkflowId,
   (input: WorkflowData<CreateOrderFulfillmentWorkflowInput>) => {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const { data: order } = useQueryGraphStep({
       entity: "order",
       filters: { id: input.order_id },
@@ -650,7 +657,8 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
       additional_data: input.additional_data,
     })
 
-    // trigger event OrderModuleService.Events.FULFILLMENT_CREATED
+    releaseLockStep({ key: input.order_id })
+
     return new WorkflowResponse(fulfillment, {
       hooks: [fulfillmentCreated],
     })

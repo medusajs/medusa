@@ -52,6 +52,7 @@ createProductsWorkflow.hooks.productsCreated(
   - `index.ts` barrels re-exported by `src/index.ts`.
 - `common/` holds cross-domain steps/workflows: `useQueryGraphStep`, `useRemoteQueryStep`, `emitEventStep`, `createRemoteLinkStep`, `dismissRemoteLinkStep`, `updateRemoteLinksStep`, `createEntitiesStep`, `deleteEntitiesStep`, and `createLinksWorkflow`/`updateLinksWorkflow`/`dismissLinksWorkflow`/`batchLinksWorkflow`.
 - Cart and other concurrency-sensitive workflows wrap their body in `acquireLockStep({ key: input.cart_id, ... })` / `releaseLockStep` (from `locking/`).
+- Order fulfillment creation, shipment, cancellation, and delivery share a lock keyed by the order ID, acquired before reading the order and released after the workflow's writes and hooks. They use the existing 2-second acquisition timeout and 10-second TTL. Callers composing them as subworkflows must hold the parent workflow's order lock.
 - Step convention (see `product/steps/create-products.ts`):
 
 ```ts

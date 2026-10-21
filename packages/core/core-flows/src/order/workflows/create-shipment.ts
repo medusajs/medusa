@@ -24,6 +24,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useQueryGraphStep } from "../../common"
 import { createShipmentWorkflow } from "../../fulfillment"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 import { registerOrderShipmentStep } from "../steps"
 import {
   throwIfItemsDoesNotExistsInOrder,
@@ -202,6 +203,12 @@ export const createOrderShipmentWorkflowId = "create-order-shipment"
 export const createOrderShipmentWorkflow = createWorkflow(
   createOrderShipmentWorkflowId,
   (input: WorkflowData<CreateOrderShipmentWorkflowInput>) => {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const { data: order } = useQueryGraphStep({
       entity: "order",
       filters: { id: input.order_id },
@@ -255,6 +262,8 @@ export const createOrderShipmentWorkflow = createWorkflow(
       shipment,
       additional_data: input.additional_data,
     })
+
+    releaseLockStep({ key: input.order_id })
 
     return new WorkflowResponse(void 0, {
       hooks: [shipmentCreated],

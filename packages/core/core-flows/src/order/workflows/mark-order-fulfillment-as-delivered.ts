@@ -227,6 +227,12 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
   (input: WorkflowData<MarkOrderFulfillmentAsDeliveredWorkflowInput>) => {
     const { fulfillmentId, orderId } = input
 
+    acquireLockStep({
+      key: orderId,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const { data: fulfillment } = useQueryGraphStep({
       entity: "fulfillment",
       filters: { id: fulfillmentId },
@@ -264,18 +270,8 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
       prepareRegisterDeliveryData
     )
 
-    acquireLockStep({
-      key: orderId,
-      timeout: 2,
-      ttl: 10,
-    })
-
     const deliveredFulfillment = markFulfillmentAsDeliveredWorkflow.runAsStep({
       input: { id: fulfillment.id },
-    })
-
-    releaseLockStep({
-      key: orderId,
     })
 
     registerOrderDeliveryStep(deliveryData)
@@ -286,6 +282,10 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
         id: deliveredFulfillment.id,
         no_notification: input.no_notification,
       },
+    })
+
+    releaseLockStep({
+      key: orderId,
     })
 
     return new WorkflowResponse(void 0)

@@ -81,6 +81,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
 Steps, such as `useQueryGraphStep`, are used inside your own workflows created with `createWorkflow` from `@medusajs/framework/workflows-sdk`.
 
+Order fulfillment creation, shipment, cancellation, and delivery workflows use a shared lock keyed by the order ID to serialize their validation and writes, using the existing 2-second acquisition timeout and 10-second TTL. When composing these as subworkflows, acquire and release the order lock in the parent workflow, since the lock steps are skipped inside subworkflows.
+
 ## Resources
 
 - [Workflows reference](https://docs.medusajs.com/resources/medusa-workflows-reference)

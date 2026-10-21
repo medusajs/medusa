@@ -32,6 +32,7 @@ import {
   useRemoteQueryStep,
 } from "../../common"
 import { cancelFulfillmentWorkflow } from "../../fulfillment"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 import { adjustInventoryLevelsStep } from "../../inventory"
 import { cancelOrderFulfillmentStep } from "../steps/cancel-fulfillment"
 import {
@@ -317,6 +318,12 @@ export const cancelOrderFulfillmentWorkflowId = "cancel-order-fulfillment"
 export const cancelOrderFulfillmentWorkflow = createWorkflow(
   cancelOrderFulfillmentWorkflowId,
   (input: WorkflowData<CancelOrderFulfillmentWorkflowInput>) => {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const { data: order } = useQueryGraphStep({
       entity: "order",
       filters: { id: input.order_id },
@@ -447,6 +454,8 @@ export const cancelOrderFulfillmentWorkflow = createWorkflow(
       fulfillment,
       additional_data: input.additional_data,
     })
+
+    releaseLockStep({ key: input.order_id })
 
     return new WorkflowResponse(void 0, {
       hooks: [orderFulfillmentCanceled],
