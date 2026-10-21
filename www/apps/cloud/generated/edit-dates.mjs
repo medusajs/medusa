@@ -81,10 +81,10 @@ export const generatedEditDates = {
   "app/search/analytics/page.mdx": "2026-09-22T11:07:49.287Z",
   "app/medusa-mcp/chatgpt/page.mdx": "2026-10-08T08:52:22.668Z",
   "app/medusa-mcp/claude/page.mdx": "2026-10-08T08:52:22.668Z",
-  "app/medusa-mcp/page.mdx": "2026-10-19T12:17:32.173Z",
+  "app/medusa-mcp/page.mdx": "2026-10-20T12:49:24.619Z",
   "app/organizations/connections/page.mdx": "2026-10-08T07:45:03.390Z",
   "app/medusa-mcp/custom-agents/page.mdx": "2026-10-08T08:52:22.668Z",
-  "app/medusa-mcp/custom-data/page.mdx": "2026-10-08T08:23:15.268Z",
+  "app/medusa-mcp/custom-data/page.mdx": "2026-10-20T12:53:55.860Z",
   "app/medusa-mcp/n8n/page.mdx": "2026-10-08T08:58:01.127Z",
   "app/usage/compute/page.mdx": "2026-10-19T11:11:24.460Z"
 }
