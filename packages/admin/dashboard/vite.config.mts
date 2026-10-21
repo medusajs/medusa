@@ -30,6 +30,14 @@ export default defineConfig(({ mode }) => {
       __BASE__: JSON.stringify(BASE),
       __BACKEND_URL__: JSON.stringify(BACKEND_URL),
       __STOREFRONT_URL__: JSON.stringify(STOREFRONT_URL),
+      /**
+       * Set by the admin bundler in production builds. Left undefined here so
+       * the dashboard falls back to its defaults (session auth, 1MB uploads)
+       * instead of throwing a ReferenceError when the dev server starts.
+       */
+      __AUTH_TYPE__: "undefined",
+      __JWT_TOKEN_STORAGE_KEY__: "undefined",
+      __MAX_UPLOAD_FILE_SIZE__: "undefined",
     },
     server: {
       open: true,
