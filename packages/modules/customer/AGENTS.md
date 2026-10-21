@@ -69,5 +69,6 @@ yarn migration:create      # after any change to src/models; never hand-write mi
 
 - `updateCustomers` takes `(ids, data)`, not an array of `{ id, ...data }` objects. An array is always treated as a list of IDs, so `updateCustomers([{ id, first_name }])` does not do a batch update.
 - The same email can exist twice: once as a guest (`has_account: false`) and once registered (`has_account: true`).
+- `createCustomerAccountWorkflow` rejects a customer email that doesn't match the auth identity's email (the `emailpass` `entity_id` or a provider's `user_metadata.email`, case-insensitive) and stores the auth identity's email. Auth identities without an email skip this check.
 - Setting a second default shipping/billing address for a customer violates a unique index. The module does not unset the previous default; the core-flows steps `maybe-unset-default-*-addresses` do.
 - Deleting a customer cascades to its addresses and detaches group memberships; deleting a group only detaches customers.

@@ -1,6 +1,37 @@
-import { MedusaError, Modules } from "@medusajs/framework/utils"
-import { createStep } from "@medusajs/framework/workflows-sdk"
+import type {
+  AuthIdentityDTO,
+  IAuthModuleService,
+} from "@medusajs/framework/types"
+import { isString, MedusaError, Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { CreateCustomerAccountWorkflowInput } from "../workflows"
+
+/**
+ * The validated data of the customer account to create.
+ */
+export type ValidateCustomerAccountCreationStepOutput = {
+  /**
+   * The email to create the customer with.
+   */
+  email: string
+}
+
+const getAuthIdentityEmails = (authIdentity: AuthIdentityDTO): string[] => {
+  const emails: string[] = []
+
+  for (const providerIdentity of authIdentity.provider_identities ?? []) {
+    if (providerIdentity.provider === "emailpass") {
+      emails.push(providerIdentity.entity_id)
+    }
+
+    const metadataEmail = providerIdentity.user_metadata?.email
+    if (isString(metadataEmail) && metadataEmail) {
+      emails.push(metadataEmail)
+    }
+  }
+
+  return emails
+}
 
 export const validateCustomerAccountCreationStepId =
   "validate-customer-account-creation"
@@ -10,6 +41,7 @@ export const validateCustomerAccountCreationStepId =
  * The step throws an error if:
  * 
  * - The email is missing
+ * - The email doesn't match the email of the auth identity, if the auth identity has one
  * - A customer with the email already exists and has an account
  * - A guest customer with the email already exists
  * 
@@ -28,13 +60,39 @@ export const validateCustomerAccountCreation = createStep(
   async (input: CreateCustomerAccountWorkflowInput, { container }) => {
     const customerService = container.resolve(Modules.CUSTOMER)
 
-    const { email } = input.customerData
+    let { email } = input.customerData
 
     if (!email) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Email is required to create a customer"
       )
+    }
+
+    if (input.authIdentityId) {
+      const authService = container.resolve<IAuthModuleService>(Modules.AUTH)
+      const authIdentity = await authService.retrieveAuthIdentity(
+        input.authIdentityId,
+        { relations: ["provider_identities"] }
+      )
+
+      const authIdentityEmails = getAuthIdentityEmails(authIdentity)
+
+      if (authIdentityEmails.length) {
+        const matchingEmail = authIdentityEmails.find(
+          (authIdentityEmail) =>
+            authIdentityEmail.toLowerCase() === email!.toLowerCase()
+        )
+
+        if (!matchingEmail) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "The email of the customer must match the email of the authenticated identity"
+          )
+        }
+
+        email = matchingEmail
+      }
     }
 
     // Check if customer with email already exists
@@ -59,5 +117,9 @@ export const validateCustomerAccountCreation = createStep(
         )
       }
     }
+
+    return new StepResponse<ValidateCustomerAccountCreationStepOutput>({
+      email,
+    })
   }
 )

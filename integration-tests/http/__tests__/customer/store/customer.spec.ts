@@ -1,5 +1,7 @@
-import { MedusaContainer } from "@medusajs/types"
+import { createCustomerAccountWorkflow } from "@medusajs/core-flows"
+import { IAuthModuleService, MedusaContainer } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import { Modules } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -218,6 +220,167 @@ medusaIntegrationTestRunner({
         expect(customer.response.data.message).toEqual(
           "Request already authenticated as a customer."
         )
+      })
+
+      it("should fail to create a customer with an email that doesn't match the auth identity's email", async () => {
+        const signup = await api.post("/auth/customer/emailpass/register", {
+          email: "registered@medusa.js",
+          password: "secret_password",
+        })
+
+        expect(signup.status).toEqual(200)
+
+        const error = await api
+          .post(
+            "/store/customers",
+            {
+              email: "other@medusa.js",
+              first_name: "John",
+              last_name: "Doe",
+            },
+            {
+              headers: {
+                authorization: `Bearer ${signup.data.token}`,
+                ...storeHeaders.headers,
+              },
+            }
+          )
+          .catch((e) => e)
+
+        expect(error.response?.status).toEqual(400)
+        expect(error.response.data).toEqual({
+          type: "invalid_data",
+          message:
+            "The email of the customer must match the email of the authenticated identity",
+        })
+
+        const customers = await api.get(
+          "/admin/customers?email=other@medusa.js",
+          adminHeaders
+        )
+
+        expect(customers.data.customers).toHaveLength(0)
+      })
+
+      it("should create a customer with the auth identity's email when the emails only differ in casing", async () => {
+        const signup = await api.post("/auth/customer/emailpass/register", {
+          email: "registered@medusa.js",
+          password: "secret_password",
+        })
+
+        const customer = await api.post(
+          "/store/customers",
+          {
+            email: "Registered@Medusa.js",
+            first_name: "John",
+            last_name: "Doe",
+          },
+          {
+            headers: {
+              authorization: `Bearer ${signup.data.token}`,
+              ...storeHeaders.headers,
+            },
+          }
+        )
+
+        expect(customer.status).toEqual(200)
+        expect(customer.data.customer).toEqual(
+          expect.objectContaining({
+            email: "registered@medusa.js",
+            has_account: true,
+          })
+        )
+      })
+
+      describe("With an auth identity from a provider other than emailpass", () => {
+        const createAuthIdentity = async (
+          providerIdentity: Record<string, unknown>
+        ) => {
+          const authModule = appContainer.resolve<IAuthModuleService>(
+            Modules.AUTH
+          )
+
+          return await authModule.createAuthIdentities({
+            provider_identities: [providerIdentity as any],
+          })
+        }
+
+        it("should create a customer when the email matches the provider's user metadata email", async () => {
+          const authIdentity = await createAuthIdentity({
+            provider: "google",
+            entity_id: "google_user_1",
+            user_metadata: { email: "social@medusa.js" },
+          })
+
+          const { result } = await createCustomerAccountWorkflow(
+            appContainer
+          ).run({
+            input: {
+              authIdentityId: authIdentity.id,
+              customerData: { email: "social@medusa.js", first_name: "John" },
+            },
+          })
+
+          expect(result).toEqual(
+            expect.objectContaining({
+              email: "social@medusa.js",
+              has_account: true,
+            })
+          )
+        })
+
+        it("should fail to create a customer when the email doesn't match the provider's user metadata email", async () => {
+          const authIdentity = await createAuthIdentity({
+            provider: "google",
+            entity_id: "google_user_1",
+            user_metadata: { email: "social@medusa.js" },
+          })
+
+          const { errors } = await createCustomerAccountWorkflow(
+            appContainer
+          ).run({
+            input: {
+              authIdentityId: authIdentity.id,
+              customerData: { email: "other@medusa.js", first_name: "John" },
+            },
+            throwOnError: false,
+          })
+
+          expect(errors.map((e) => e.error?.message)).toContain(
+            "The email of the customer must match the email of the authenticated identity"
+          )
+
+          const customerModule = appContainer.resolve(Modules.CUSTOMER)
+          const customers = await customerModule.listCustomers({
+            email: "other@medusa.js",
+          })
+
+          expect(customers).toHaveLength(0)
+        })
+
+        it("should create a customer when the auth identity has no email", async () => {
+          const authIdentity = await createAuthIdentity({
+            provider: "github",
+            entity_id: "github_user_1",
+            user_metadata: { email: null },
+          })
+
+          const { result } = await createCustomerAccountWorkflow(
+            appContainer
+          ).run({
+            input: {
+              authIdentityId: authIdentity.id,
+              customerData: { email: "social@medusa.js", first_name: "John" },
+            },
+          })
+
+          expect(result).toEqual(
+            expect.objectContaining({
+              email: "social@medusa.js",
+              has_account: true,
+            })
+          )
+        })
       })
 
       describe("With ensurePublishableApiKey middleware", () => {
