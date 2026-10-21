@@ -981,6 +981,31 @@ medusaIntegrationTestRunner({
               email: "retail-order@test.com",
             })
           )
+
+          // Pagination switches the order module onto findAndCount. The
+          // cross-module EXISTS fragment has to survive both the page query
+          // and the count query.
+          const { data: pagedOrders, metadata } = await query.graph({
+            entity: "order",
+            fields: ["id", "email"],
+            filters: {
+              sales_channel: {
+                name: "Order Retail Channel",
+              },
+            },
+            pagination: {
+              skip: 0,
+              take: 10,
+            },
+          })
+
+          expect(pagedOrders).toHaveLength(1)
+          expect(metadata?.count).toEqual(1)
+          expect(pagedOrders[0]).toEqual(
+            expect.objectContaining({
+              email: "retail-order@test.com",
+            })
+          )
         })
 
         it("should filter carts by a field of the read-only linked product", async () => {

@@ -49,14 +49,14 @@ Bundled shortcuts in `src/services/actions/` create and immediately confirm a ch
 
 - Action types are registered with `OrderChangeProcessing.registerActionType(ChangeActionType.X, { operation, validate, isDeduction? })` in `src/utils/actions/*.ts`; they mutate a virtual order copy. A new action type needs a file there, an export in `src/utils/actions/index.ts`, and the enum value in `packages/core/utils/src/order/order-change-action.ts`.
 - `src/utils/transform-order.ts` `formatOrder` reshapes versioned rows (`items[].detail`, `shipping_methods`) into the DTO and decorates totals.
-- `src/repositories/{order,return,claim,exchange}.ts` use the version-aware `base-repository-find.ts`.
+- `src/repositories/{order,return,claim,exchange}.ts` use the version-aware `base-repository-find.ts`. `findAndCount` clones cross-module `raw()` filters before the count query, because MikroORM consumes each fragment once.
 
 ## Development
 
 ```bash
 cd packages/modules/order
 yarn build
-yarn test                      # src/services/__tests__ (action calculations, transform-order)
+yarn test                      # unit tests under src/ (action calculations, transform-order, findAndCount)
 yarn test:integration          # needs Postgres
 ../../../node_modules/.bin/jest integration-tests/__tests__/order-edit.spec.ts
 yarn migration:create          # after any change in src/models

@@ -1,4 +1,8 @@
-import { LoadStrategy, raw } from "@medusajs/framework/mikro-orm/core"
+import {
+  LoadStrategy,
+  raw,
+  RawQueryFragment,
+} from "@medusajs/framework/mikro-orm/core"
 import { Constructor, Context, DAL } from "@medusajs/framework/types"
 import {
   augmentFindOptionsWithCrossModuleJoins,
@@ -457,10 +461,15 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     // that don't exist in the JOINED count context. Since version filters only
     // control which items to load (not which root entities to count), we run
     // find and count separately with different populateWhere options.
+    //
+    // Those two queries also cannot share `where`. MikroORM drops a raw
+    // fragment from its cache the first time a query reads it, so the second
+    // query would treat a cross-module EXISTS filter as a column name.
+    const countWhere = cloneRawQueryFragments(config.where)
     const countOptions = { ...config.options, populateWhere: undefined }
     const [result, count] = await Promise.all([
       manager.find(this.entity, config.where, config.options),
-      manager.count(this.entity, config.where, countOptions),
+      manager.count(this.entity, countWhere, countOptions),
     ])
 
     if (loadAdjustments || shouldLoadShippingAdjustments) {
@@ -562,6 +571,40 @@ async function loadShippingAdjustments(manager, orders) {
       shippingMethod.adjustments.add(adjustment)
     }
   }
+}
+
+/**
+ * Copy a filter tree, replacing each MikroORM raw fragment with a new one.
+ * `find` and `count` each need their own fragment: the cache entry is removed
+ * on first use.
+ */
+function cloneRawQueryFragments<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((entry) => cloneRawQueryFragments(entry)) as T
+  }
+
+  if (RawQueryFragment.isRaw(value)) {
+    return (value as unknown as RawQueryFragment).clone() as T
+  }
+
+  if (
+    value === null ||
+    typeof value !== "object" ||
+    Object.getPrototypeOf(value) !== Object.prototype
+  ) {
+    return value
+  }
+
+  const source = value as Record<string, unknown>
+  const cloned: Record<string, unknown> = {}
+
+  for (const key of Object.keys(source)) {
+    const fragment = RawQueryFragment.getKnownFragment(key, false)
+    const clonedKey = fragment ? fragment.clone() : key
+    cloned[clonedKey as unknown as string] = cloneRawQueryFragments(source[key])
+  }
+
+  return cloned as T
 }
 
 function getVersionSubQuery(manager, alias, field = "order_id") {
