@@ -23,6 +23,10 @@ jobs:
       matrix:
         repo:
           - medusa-mcp
+          - dtc-starter
+          - b2b-starter
+          - modern-dtc-starter
+          - industrials-b2b-starter
     steps:
       - name: Resolve the release
         id: release

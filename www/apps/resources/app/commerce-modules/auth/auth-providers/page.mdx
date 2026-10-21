@@ -71,3 +71,39 @@ module.exports = defineConfig({
 When you specify the `authMethodsPerActor` configuration, it overrides the default. So, if you don't specify any providers for an actor type, users of that actor type can't authenticate with any provider.
 
 </Note>
+
+---
+
+## Require Actor Association for Auth Providers
+
+<Note>
+
+This option is available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
+
+</Note>
+
+By default, an auth identity can authenticate as any actor type. For example, an admin user can use their credentials with the `/auth/customer/emailpass` route to create a customer account with the same email.
+
+To only authenticate auth identities that are already associated with an actor of the requested actor type, use the [requireActorAssociation option](!docs!/learn/configurations/medusa-config#httprequireActorAssociation) in Medusa's configurations:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      requireActorAssociation: {
+        emailpass: true,
+      },
+      // ...
+    },
+    // ...
+  },
+})
+```
+
+With the above configuration, logging in to `/auth/user/emailpass` with a customer's credentials fails with a generic `Authentication failed` error. An auth identity is associated with an actor type when its `app_metadata` has the `{actor_type}_id` property, such as `user_id`. Learn more in the [Auth Identity and Actor Type](../auth-identity-and-actor-types/page.mdx) guide.
+
+<Note>
+
+This option only applies to authentication. Registering a new auth identity with the provider still works.
+
+</Note>
