@@ -16,6 +16,11 @@ order tagging**, including bulk tagging. The remaining subsystems (batches,
 allocations, shipping/labels, documents, and merge/unmerge of duplicate
 orders) are deferred to their own future specs.
 
+A live inspection of Veeqo's order list (via REA, passively observing the
+page) confirmed the tags-column design below and surfaced one addition worth
+folding in now: Veeqo shows a glanceable "has notes" indicator per row in the
+order list itself, not just inside order detail. That's included below.
+
 ## Goals
 
 - Finish the order-notes feature, which already exists as disabled/dead code
@@ -27,6 +32,8 @@ orders) are deferred to their own future specs.
 - Add a shared, bulk-manageable tag vocabulary for orders, mirroring the
   existing `ProductTag` pattern, including bulk-applying/removing tags across
   many selected orders at once from the order list.
+- Show a glanceable "has notes" indicator per row in the order list, so
+  staff can spot noted orders without opening each one.
 
 ## Non-goals
 
@@ -86,7 +93,9 @@ within `packages/modules/order`.
   request body.
 - `GET /admin/notes?resource_type=&resource_id=` — list notes for a given
   resource; used by the order timeline, the customer notes section, and the
-  line-item notes popover.
+  line-item notes popover. `resource_id` also accepts an array
+  (`resource_id[]=...`) for the order-list's batched "has notes" lookup
+  across a page of visible order ids in one call.
 - `DELETE /admin/notes/:id` — any authenticated admin may delete.
 - Workflows:
   - `createNoteWorkflow` — step creates the note via the note module
@@ -127,6 +136,10 @@ within `packages/modules/order`.
 - Line-item notes: a small note icon/button per line item (in the
   fulfillment/items list) opening a popover using the shared component with
   `resource_type: "order_line_item"`.
+- Order list: add a "Notes" indicator column — the list fetches one batched
+  `GET /admin/notes?resource_type=order&resource_id[]=...` for the current
+  page's order ids and renders a filled vs. empty icon per row (no schema
+  change needed; `Note` stays decoupled from `Order` by design).
 
 ### Tags
 
@@ -147,7 +160,9 @@ within `packages/modules/order`.
   many-to-many assignment to `Order`.
 - `integration-tests/http/__tests__/` — route tests for `/admin/notes`,
   `/admin/order-tags`, and `/admin/orders/tags/batch`, including the
-  add+remove-together case and the "tag id doesn't exist" error case.
+  add+remove-together case, the "tag id doesn't exist" error case, and the
+  batched `resource_id[]` lookup returning only the ids that actually have
+  notes.
 - Workflow tests for `createNoteWorkflow`, `deleteNoteWorkflow`, and
   `bulkTagOrdersWorkflow` — the last one must specifically test the
   compensation path (force a failure partway through a batch and assert
