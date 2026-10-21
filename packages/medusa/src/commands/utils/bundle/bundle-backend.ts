@@ -18,6 +18,7 @@ import {
 } from "fs"
 import { mkdtemp, readFile, writeFile } from "fs/promises"
 import Module, { createRequire } from "module"
+import { createHash } from "crypto"
 import os from "os"
 import path from "path"
 import { createPathKeys, RUNTIME_PATH_KEYS } from "./paths"
@@ -30,6 +31,9 @@ import { createPathKeys, RUNTIME_PATH_KEYS } from "./paths"
 export const BUNDLE_FILE_NAME = "medusa-bundle.js"
 export const BUNDLE_MARKER = "/* @medusajs/medusa bundle */"
 const MAIN_FILE_NAME = "medusa-bundle.main.js"
+// Modules loaded on first use, one file each, and their index (key -> file)
+const COLD_DIR = "medusa-bundle.cold"
+const COLD_INDEX = `${COLD_DIR}/index.json`
 const COMPILE_CACHE_DIR = ".medusa-compile-cache"
 
 /**
@@ -162,7 +166,8 @@ function createEntry({
     )
     .join("\n")
 
-  return `${RUNTIME_PATH_KEYS}
+  return `${RUNTIME_BOOT_PROFILE}
+${RUNTIME_PATH_KEYS}
 ${RUNTIME_VIRTUAL_FS}
 // Required directly by another program (e.g. a test runner) rather than run
 // through the launcher: expose the bundle's modules and run nothing. The
@@ -195,6 +200,37 @@ var __Module = require("module");
 var __path = require("path");
 var __r = new Map();
 ${entries}
+// Modules loaded on first use (see COLD_DIR): one file each, required when the
+// registry is first asked for them
+var __coldProfile = globalThis.__MEDUSA_BOOT_EVAL_PROFILE__ && globalThis.__MEDUSA_BOOT_EVAL_PROFILE__.coldLoads;
+try {
+  var __cold = JSON.parse(require("fs").readFileSync(__path.join(__medusaAppRoot, ${JSON.stringify(
+    COLD_INDEX
+  )}), "utf8"));
+  for (var __coldKey in __cold) {
+    if (!__r.has(__coldKey)) {
+      __r.set(__coldKey, ((file) => {
+        var load = () => {
+          if (!__coldProfile) return require(file);
+          var outer = __coldProfile.depth++ === 0, startedAt = performance.now();
+          var first = !require.cache[file];
+          try { return require(file); } finally {
+            __coldProfile.depth--;
+            if (first) __coldProfile.count++;
+            // Nested loads are part of the outer one's time
+            if (first && outer) __coldProfile.ms += performance.now() - startedAt;
+          }
+        };
+        // A plain require of the module's own file: Node's module cache
+        // handles require cycles through it, so it's safe to re-enter
+        load.reentrant = true;
+        return load;
+      })(__path.join(__medusaAppRoot, __cold[__coldKey])));
+    }
+  }
+} catch (e) {
+  if (e.code !== "ENOENT") throw e;
+}
 var __lookup = (file) => {
   var key = __medusaPathToKey(file);
   return __r.get(key) || __r.get(key + ".js") || __r.get(key + ".json") || __r.get(__medusaPathToKey(__path.join(file, "index.js")));
@@ -259,8 +295,9 @@ __Module._load = function (request, parent, isMain) {
     if (!hit) {
       try { hit = __lookup(__Module._resolveFilename(request, parent, isMain)); } catch (e) {}
     }
-    // Entries left external are plain requires: don't loop back here
-    if (hit && !__loading.has(hit)) {
+    // Entries left external are plain requires: don't loop back here. Cold
+    // modules are safe to re-enter (a require cycle through them).
+    if (hit && (hit.reentrant || !__loading.has(hit))) {
       __loading.add(hit);
       try { return hit(); } finally { __loading.delete(hit); }
     }
@@ -355,22 +392,27 @@ export async function bundleBackend({
   // jobs, instrumentation, ...), each module's package (providers, loaders),
   // and whatever else the collection pass loaded
   const registry = new Map<string, string>()
-  const add = (file: string) => {
+  const registrable = (file: string) => {
     if (!/\.(c|m)?js$|\.json$/.test(file) || file.endsWith(".d.ts")) {
-      return
+      return false
     }
     // Build tooling the collection pass happened to load isn't needed to run
     const root = findPackageRoot(file)
     const name = root ? readPackageName(root) : undefined
     if (name && BUILD_TOOLING.test(name)) {
-      return
+      return false
     }
     // Scanned folders can hold JSON with comments (e.g. tsconfig.json),
     // which nothing can require
     if (file.endsWith(".json") && !isRequirableJson(file)) {
-      return
+      return false
     }
-    registry.set(toKey(file), file)
+    return true
+  }
+  const add = (file: string) => {
+    if (registrable(file)) {
+      registry.set(toKey(file), file)
+    }
   }
   const skipDir =
     /[\\/](node_modules|__tests__|__fixtures__|__mocks__|integration-tests|public)([\\/]|$)/
@@ -464,16 +506,22 @@ export async function bundleBackend({
   }
   // Node's module loader reads every module it loads with fs too: those are
   // bundled as code, not embedded again as text
-  const bundledFiles = new Set(registry.values())
+  const registeredFiles = new Set(registry.values())
   const files: Record<string, string> = {}
   for (const file of [...reads, ...bundledPackageJsons]) {
-    if (bundledFiles.has(file)) {
+    if (registeredFiles.has(file)) {
       continue
     }
     if (existsSync(file) && statSync(file).size < 512 * 1024) {
       files[toKey(file)] = readFileSync(file, "utf8")
     }
   }
+
+  // Packages first-party code resolves by name depending on the runtime
+  // configuration (e.g. `@medusajs/medusa/locking-redis` once Redis is
+  // configured): answer every specifier the bundled @medusajs packages
+  // export, so a bundle resolves them without node_modules
+  addPackageExportResolutions(new Set(registry.values()), resolutions)
 
   const resolutionKeys = Object.fromEntries(
     Object.entries(resolutions)
@@ -482,58 +530,182 @@ export async function bundleBackend({
   )
 
   const startFile = path.join(__dirname, "../../start.js")
+  const migrateFiles = {
+    "db:migrate": path.join(__dirname, "../../db/migrate.js"),
+    "db:migrate:scripts": path.join(__dirname, "../../db/run-scripts.js"),
+    "db:migrate:search": path.join(__dirname, "../../db/migrate-search.js"),
+  }
+  const globalSetupFiles = [...registry.values()].filter(
+    (file) =>
+      file.endsWith(".js") &&
+      readPackageName(findPackageRoot(file) ?? "")?.startsWith("@medusajs/") &&
+      SIDE_EFFECT.test(readFileSync(file, "utf8"))
+  )
+
+  // Hot: what the collection pass evaluated (a superset of what boot runs),
+  // bundled into the main file. Cold: everything else, built as one file per
+  // module and loaded on first use, so boot only parses what it may run.
+  // MEDUSA_BUNDLE_SPLIT=false bundles everything into the main file.
+  const split = process.env.MEDUSA_BUNDLE_SPLIT !== "false"
+  const hotFiles = new Set<string>(
+    split
+      ? [
+          ...loaded,
+          ...globalSetupFiles,
+          startFile,
+          ...Object.values(migrateFiles),
+        ].filter(registrable)
+      : registry.values()
+  )
   const entryFile = path.join(outDir, "__medusa-entry.js")
+  const transform = createTransforms({ outDir, entryFile, toKey })
+  if (split) {
+    // What starting the server imports before modules load (the app's
+    // instrumentation, the start command), which the collection pass never
+    // evaluates: hot, with everything they import
+    const bootRoots = [startFile, path.join(outDir, "instrumentation.js")].filter(
+      (file) => existsSync(file)
+    )
+    const analysis = await esbuild.build({
+      entryPoints: bootRoots,
+      bundle: true,
+      write: false,
+      metafile: true,
+      outdir: os.tmpdir(),
+      platform: "node",
+      format: "cjs",
+      logLevel: "silent",
+      // The same transforms as the bundle (e.g. computed requires), so the
+      // analysis sees the same imports
+      plugins: [transform.externals(), transform.sources],
+    })
+    for (const input of Object.keys(analysis.metafile.inputs)) {
+      const file = path.resolve(input)
+      if (registrable(file)) {
+        hotFiles.add(file)
+      }
+    }
+  }
+  const hotRegistry = new Map<string, string>()
+  for (const file of hotFiles) {
+    hotRegistry.set(toKey(file), file)
+  }
+  const coldPending = new Set(
+    [...registry.values()].filter((file) => !hotFiles.has(file))
+  )
+
   await writeFile(
     entryFile,
     createEntry({
       manifest: keyManifest(manifest, toKey),
-      registry,
+      registry: hotRegistry,
       startFile,
-      migrateFiles: {
-        "db:migrate": path.join(__dirname, "../../db/migrate.js"),
-        "db:migrate:scripts": path.join(__dirname, "../../db/run-scripts.js"),
-        "db:migrate:search": path.join(__dirname, "../../db/migrate-search.js"),
-      },
-      globalSetupFiles: [...registry.values()].filter(
-        (file) =>
-          file.endsWith(".js") &&
-          readPackageName(findPackageRoot(file) ?? "")?.startsWith(
-            "@medusajs/"
-          ) &&
-          SIDE_EFFECT.test(readFileSync(file, "utf8"))
-      ),
+      migrateFiles,
+      globalSetupFiles,
       directories,
       files,
       resolutions: resolutionKeys,
     })
   )
 
-  const transform = createTransforms({ outDir, entryFile, toKey })
-  let bundledInputs: any
+  const buildOptions = {
+    // Which files were compiled in, to tell what still has to be on disk
+    metafile: true,
+    bundle: true,
+    platform: "node",
+    format: "cjs",
+    // The build runs on the Node version that runs the app (e.g. the same
+    // Docker image)
+    target: `node${process.versions.node.split(".")[0]}`,
+    minifySyntax: true,
+    minifyWhitespace: true,
+    // A smaller file is faster to load and parse. Names stay as written
+    // (keepNames): Medusa reads class and function names at runtime.
+    minifyIdentifiers: true,
+    keepNames: true,
+    legalComments: "none",
+    // import() becomes require(), so every load goes through the entry's
+    // loader hook (bundled lookups, external keys)
+    supported: { "dynamic-import": false },
+    logLevel: "error",
+  }
+  const bundledFiles = new Set<string>()
+  const collectInputs = (result: any) => {
+    for (const input of Object.keys(result.metafile.inputs)) {
+      bundledFiles.add(path.resolve(input))
+    }
+  }
   try {
-    bundledInputs = await esbuild.build({
-      // Which files were compiled in, to tell what still has to be on disk
-      metafile: true,
-      entryPoints: [entryFile],
-      outfile: path.join(outDir, MAIN_FILE_NAME),
-      bundle: true,
-      platform: "node",
-      format: "cjs",
-      // The build runs on the Node version that runs the app (e.g. the same
-      // Docker image)
-      target: `node${process.versions.node.split(".")[0]}`,
-      minifySyntax: true,
-      minifyWhitespace: true,
-      keepNames: true,
-      legalComments: "none",
-      // import() becomes require(), so every load goes through the entry's
-      // loader hook (bundled lookups, external keys)
-      supported: { "dynamic-import": false },
-      logLevel: "error",
-      plugins: [transform.externals, transform.sources],
-    })
+    collectInputs(
+      await esbuild.build({
+        ...buildOptions,
+        entryPoints: [entryFile],
+        outfile: path.join(outDir, MAIN_FILE_NAME),
+        plugins: [
+          transform.externals(
+            split
+              ? {
+                  inline: (file) => hotFiles.has(file),
+                  onExternal: (file) => coldPending.add(file),
+                }
+              : undefined
+          ),
+          transform.sources,
+        ],
+      })
+    )
   } finally {
     rmSync(entryFile, { force: true })
+  }
+
+  // Cold modules, one file each: every import they make goes through the
+  // registry, so each module exists once (here or in the main file). Built in
+  // rounds, as each round finds the modules the previous one imports.
+  const coldFiles = new Map<string, string>()
+  while (coldPending.size) {
+    const entryPoints: Record<string, string> = {}
+    for (const file of coldPending) {
+      if (!coldFiles.has(file) && !hotFiles.has(file)) {
+        const name = createHash("sha1")
+          .update(toKey(file))
+          .digest("hex")
+          .slice(0, 16)
+        entryPoints[name] = file
+        coldFiles.set(file, `${COLD_DIR}/${name}.js`)
+      }
+    }
+    coldPending.clear()
+    if (!Object.keys(entryPoints).length) {
+      break
+    }
+    collectInputs(
+      await esbuild.build({
+        ...buildOptions,
+        entryPoints,
+        outdir: path.join(outDir, COLD_DIR),
+        plugins: [
+          transform.externals({
+            inline: () => false,
+            onExternal: (file) => {
+              if (!hotFiles.has(file) && !coldFiles.has(file)) {
+                coldPending.add(file)
+              }
+            },
+          }),
+          transform.sources,
+        ],
+      })
+    )
+  }
+  if (coldFiles.size) {
+    await writeFile(
+      path.join(outDir, COLD_INDEX),
+      JSON.stringify(
+        Object.fromEntries(
+          [...coldFiles].map(([file, out]) => [toKey(file), out])
+        )
+      )
+    )
   }
 
   const vendored = vendorPackages(transform.vendorRoots, outDir)
@@ -543,12 +715,13 @@ export async function bundleBackend({
 
   const traced = await copyTracedFiles({
     entries: [...registry.values()].filter((file) => /\.(c|m)?js$/.test(file)),
-    bundled: new Set(
-      Object.keys(bundledInputs.metafile.inputs).map((input) =>
-        path.resolve(input)
-      )
-    ),
-    addressable: new Set(registry.values()),
+    bundled: bundledFiles,
+    // Every module the build compiled is in the registry, by key
+    addressable: new Set([
+      ...registry.values(),
+      ...hotFiles,
+      ...coldFiles.keys(),
+    ]),
     outDir,
     nodeModulesRoot,
     directory,
@@ -564,7 +737,9 @@ export async function bundleBackend({
   await writeFile(path.join(outDir, BUNDLE_FILE_NAME), LAUNCHER)
 
   logger.info(
-    `Bundled backend into ${BUNDLE_FILE_NAME} (${(
+    `Bundled backend into ${BUNDLE_FILE_NAME}: ${
+      hotFiles.size
+    } modules at boot, ${coldFiles.size} loaded on first use (${(
       (performance.now() - startedAt) /
       1000
     ).toFixed(1)}s)`
@@ -572,7 +747,7 @@ export async function bundleBackend({
 }
 
 const BUILD_TOOLING =
-  /^(vite|rollup|esbuild|ts-node|typescript|tailwindcss|postcss|autoprefixer|lightningcss|@medusajs\/admin-vite-plugin)(\/|$)|^(@vitejs|@rollup|@esbuild|@swc|@tailwindcss)\//
+  /^(vite|rollup|esbuild|ts-node|typescript|tailwindcss|postcss|autoprefixer|lightningcss|@medusajs\/admin-vite-plugin|@vercel\/nft)(\/|$)|^(@vitejs|@rollup|@esbuild|@swc|@tailwindcss)\//
 
 const LAZY_HELPER = `var __lazyReq = (load) => { let m; const get = () => (m ??= load()); return new Proxy({}, { get: (_, k) => get()[k], has: (_, k) => k in get(), ownKeys: () => Reflect.ownKeys(get()), getOwnPropertyDescriptor: (_, k) => { const d = Reflect.getOwnPropertyDescriptor(get(), k); if (d) d.configurable = true; return d; }, set: (_, k, v) => { get()[k] = v; return true; } }); };`
 const LAZY_REQUIRE =
@@ -838,7 +1013,15 @@ function createTransforms({
 
   return {
     vendorRoots,
-    externals: {
+    /**
+     * Resolves imports for a build. With a split policy, files the build
+     * doesn't inline become by-key externals, resolved through the bundle's
+     * registry at runtime (see the cold files in `bundleBackend`).
+     */
+    externals: (split?: {
+      inline: (file: string) => boolean
+      onExternal: (file: string) => void
+    }) => ({
       name: "medusa-externals",
       setup(build: any) {
         build.onResolve({ filter: /.*/ }, async (args: any) => {
@@ -857,6 +1040,12 @@ function createTransforms({
           // Not installed at build time (optional dependencies, unused
           // drivers): leave the require as is
           if (result.errors.length) {
+            return { path: args.path, external: true }
+          }
+          // Files that aren't code (e.g. a package requiring an .html file)
+          // can't be compiled in: left as runtime requires, of the traced
+          // files copied next to the bundle
+          if (!/\.(c|m)?(js|ts)x?$|\.json$|\.node$/.test(result.path)) {
             return { path: args.path, external: true }
           }
           // Build tooling (Vite and friends) is only used by the admin's dev
@@ -884,10 +1073,21 @@ function createTransforms({
               }
             }
           }
+          if (
+            split &&
+            /\.(c|m)?js$|\.json$/.test(result.path) &&
+            !split.inline(result.path)
+          ) {
+            split.onExternal(result.path)
+            return {
+              path: `${EXTERNAL_PREFIX}${toKey(result.path)}`,
+              external: true,
+            }
+          }
           return result
         })
       },
-    },
+    }),
     sources: {
       name: "medusa-sources",
       setup(build: any) {
@@ -999,6 +1199,37 @@ function vendorPackages(roots: Iterable<string>, outDir: string) {
   }
   return [...copied.keys()]
 }
+
+/**
+ * Inlined first in the entry: with MEDUSA_LOG_BOOT_TIMINGS=true, records the
+ * self time spent evaluating each bundled file. Every file pushes its path on
+ * __MEDUSA_FILE_STACK__ when it starts and pops it when done (see
+ * keepIdentity), so the time between two of those marks belongs to the file
+ * on top. logBootSummary (@medusajs/utils) reports it.
+ */
+const RUNTIME_BOOT_PROFILE = `
+if (process.env.MEDUSA_LOG_BOOT_TIMINGS === "true") {
+  (function () {
+    var stack = [], self = new Map(), last = performance.now();
+    var charge = function () {
+      var now = performance.now();
+      if (stack.length) {
+        var file = stack[stack.length - 1];
+        self.set(file, (self.get(file) || 0) + now - last);
+      }
+      last = now;
+    };
+    stack.push = function (file) { charge(); return Array.prototype.push.call(this, file); };
+    stack.pop = function () { charge(); return Array.prototype.pop.call(this); };
+    globalThis.__MEDUSA_FILE_STACK__ = stack;
+    globalThis.__MEDUSA_BOOT_EVAL_PROFILE__ = {
+      startedAt: process.uptime(),
+      self: self,
+      coldLoads: { count: 0, ms: 0, depth: 0 },
+    };
+  })();
+}
+`
 
 /**
  * Inlined in the entry: an fs layer serving the directories and files the
@@ -1342,6 +1573,73 @@ export function usedOnlyThroughMembers(name: string, src: string): boolean {
     }
   }
   return true
+}
+
+/**
+ * Adds a resolution for each specifier the bundled @medusajs packages export
+ * (`exports` subpaths, wildcards expanded against the bundled files) that
+ * isn't resolved yet.
+ */
+export function addPackageExportResolutions(
+  bundledFiles: Set<string>,
+  resolutions: Record<string, string>
+) {
+  const roots = new Set<string>()
+  for (const file of bundledFiles) {
+    const root = findPackageRoot(file)
+    if (root && readPackageName(root)?.startsWith("@medusajs/")) {
+      roots.add(root)
+    }
+  }
+  for (const root of roots) {
+    const pkg = JSON.parse(
+      readFileSync(path.join(root, "package.json"), "utf8")
+    )
+    const exportsMap =
+      typeof pkg.exports === "string" ? { ".": pkg.exports } : pkg.exports ?? {}
+    const filesInRoot = [...bundledFiles].filter((file) =>
+      file.startsWith(root + path.sep)
+    )
+    for (const [subpath, value] of Object.entries<any>(exportsMap)) {
+      const target =
+        typeof value === "string"
+          ? value
+          : value?.require ?? value?.node ?? value?.default
+      if (typeof target !== "string" || !subpath.startsWith(".")) {
+        continue
+      }
+      const request = pkg.name + subpath.slice(1)
+      if (!subpath.includes("*")) {
+        const file = path.resolve(root, target)
+        if (bundledFiles.has(file)) {
+          resolutions[request] ??= file
+        }
+        continue
+      }
+      // Patterns map one wildcard onto one wildcard; anything else (e.g. a
+      // pattern pointing at a single file) isn't expanded
+      const targetParts = path.resolve(root, target).split("*")
+      const requestParts = request.split("*")
+      if (targetParts.length !== 2 || requestParts.length !== 2) {
+        continue
+      }
+      const [targetPrefix, targetSuffix] = targetParts
+      const [requestPrefix, requestSuffix] = requestParts
+      for (const file of filesInRoot) {
+        if (
+          file.length > targetPrefix.length + targetSuffix.length &&
+          file.startsWith(targetPrefix) &&
+          file.endsWith(targetSuffix)
+        ) {
+          const match = file
+            .slice(targetPrefix.length, file.length - targetSuffix.length)
+            .split(path.sep)
+            .join("/")
+          resolutions[requestPrefix + match + requestSuffix] ??= file
+        }
+      }
+    }
+  }
 }
 
 function isRequirableJson(file: string): boolean {
