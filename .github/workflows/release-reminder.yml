@@ -10,9 +10,15 @@ permissions:
   pull-requests: read
 
 jobs:
-  remind:
-    name: Post release reminder to Slack
+  evaluate:
+    name: Evaluate release PR
     runs-on: ubuntu-latest
+    outputs:
+      notify: ${{ steps.evaluate.outputs.notify }}
+      version: ${{ steps.evaluate.outputs.version }}
+      text: ${{ steps.evaluate.outputs.text }}
+      url: ${{ steps.evaluate.outputs.url }}
+      docs_url: ${{ steps.evaluate.outputs.docs_url }}
     steps:
       - name: Evaluate release PR
         id: evaluate
@@ -53,9 +59,50 @@ jobs:
           DOCS_URL=$(gh pr list --repo "$REPO" --base develop --head docs/release-docs-staging --state open \
             --json url --jq '.[0].url // empty')
 
-          jq -n --arg text "Time to put out a new release! The next release is a *$BUMP* update: v$CURRENT → *v$NEXT*." \
+          {
+            echo "version=$NEXT"
+            echo "text=Time to put out a new release! The next release is a *$BUMP* update: v$CURRENT → *v$NEXT*."
+            echo "url=$URL"
+            echo "docs_url=$DOCS_URL"
+            echo "notify=true"
+          } >> "$GITHUB_OUTPUT"
+
+  release-notes:
+    name: Generate draft release notes
+    needs: evaluate
+    if: needs.evaluate.outputs.notify == 'true'
+    permissions:
+      contents: write
+      id-token: write
+    uses: ./.github/workflows/draft-release.yml
+    with:
+      version: ${{ needs.evaluate.outputs.version }}
+      draft: true
+    secrets: inherit
+
+  notify:
+    name: Post release reminder to Slack
+    needs: [evaluate, release-notes]
+    if: always() && needs.evaluate.outputs.notify == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Slack message
+        env:
+          TEXT: ${{ needs.evaluate.outputs.text }}
+          URL: ${{ needs.evaluate.outputs.url }}
+          DOCS_URL: ${{ needs.evaluate.outputs.docs_url }}
+          NOTES_URL: ${{ needs.release-notes.outputs.release_url }}
+        run: |
+          set -euo pipefail
+          if [ -z "$NOTES_URL" ]; then
+            TEXT="$TEXT
+          _Generating the draft release notes failed._"
+          fi
+
+          jq -n --arg text "$TEXT" \
             --arg url "$URL" \
             --arg docs_url "$DOCS_URL" \
+            --arg notes_url "$NOTES_URL" \
             '{
               blocks: [
                 {type: "section", text: {type: "mrkdwn", text: $text}},
@@ -64,13 +111,14 @@ jobs:
                   + (if $docs_url == "" then [] else
                     [{type: "button", url: $docs_url, text: {type: "plain_text", text: "View release docs PR"}}]
                   end)
+                  + (if $notes_url == "" then [] else
+                    [{type: "button", url: $notes_url, text: {type: "plain_text", text: "View draft release notes"}}]
+                  end)
                 )}
               ]
             }' > slack-payload.json
-          echo "notify=true" >> "$GITHUB_OUTPUT"
 
       - name: Post to Slack
-        if: steps.evaluate.outputs.notify == 'true'
         uses: slackapi/slack-github-action@v1.23.0
         with:
           payload-file-path: ./slack-payload.json
