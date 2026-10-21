@@ -12,10 +12,16 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
+import {
+  createRemoteLinkStep,
+  dismissRemoteLinkStep,
+  useRemoteQueryStep,
+} from "../../common"
 import {
   createPaymentAccountHolderStep,
   createPaymentSessionStep,
+  deletePaymentAccountHolderStep,
+  tryCreatePaymentSessionStep,
   validatePaymentProviderInRegionStep,
 } from "../steps"
 import { deletePaymentSessionsWorkflow } from "./delete-payment-sessions"
@@ -204,11 +210,84 @@ export const createPaymentSessionsWorkflow = createWorkflow(
     // for a payment collection as we don't support split payments at the moment.
     // When we are ready to accept split payments, this along with other workflows
     // need to be handled correctly
-    const [created] = parallelize(
-      createPaymentSessionStep(paymentSessionInput),
+    const [attempt] = parallelize(
+      tryCreatePaymentSessionStep(paymentSessionInput),
       deletePaymentSessionsWorkflow.runAsStep({
         input: deletePaymentSessionInput,
       })
+    )
+
+    // The provider can lose an account holder, eg. when the database was copied from a setup that uses another
+    // provider account. The customer then gets a new one, and the payment session is created with it.
+    const retried = when(
+      "account-holder-not-found",
+      { attempt, existingAccountHolder },
+      ({ attempt, existingAccountHolder }) =>
+        attempt.account_holder_not_found && isPresent(existingAccountHolder)
+    ).then(() => {
+      const replacementInput = transform(
+        { input, paymentCustomer },
+        (data) => ({
+          provider_id: data.input.provider_id,
+          context: { customer: data.paymentCustomer },
+        })
+      )
+
+      // Like the original account holder, the replacement is kept if the payment session fails, so the next
+      // attempt reuses it.
+      const replacement = createPaymentAccountHolderStep(
+        replacementInput
+      ).config({
+        name: "replace-payment-account-holder",
+        noCompensation: true,
+      })
+
+      dismissRemoteLinkStep([
+        {
+          [Modules.CUSTOMER]: { customer_id: paymentCustomer.id },
+          [Modules.PAYMENT]: { account_holder_id: existingAccountHolder.id },
+        },
+      ]).config({
+        name: "unlink-missing-account-holder",
+        noCompensation: true,
+      })
+
+      createRemoteLinkStep([
+        {
+          [Modules.CUSTOMER]: { customer_id: paymentCustomer.id },
+          [Modules.PAYMENT]: { account_holder_id: replacement.id },
+        },
+      ]).config({
+        name: "link-replacement-account-holder",
+        noCompensation: true,
+      })
+
+      // Providers delete account holders idempotently. It runs once the replacement is linked, and doesn't fail the
+      // checkout, as it's only cleanup.
+      deletePaymentAccountHolderStep({ id: existingAccountHolder.id }).config({
+        name: "delete-missing-account-holder",
+        continueOnPermanentFailure: true,
+      })
+
+      const retryInput = transform(
+        { paymentSessionInput, replacement },
+        (data) => ({
+          ...data.paymentSessionInput,
+          context: {
+            ...data.paymentSessionInput.context,
+            account_holder: data.replacement,
+          },
+        })
+      )
+
+      return createPaymentSessionStep(retryInput).config({
+        name: "create-payment-session-with-replacement-account-holder",
+      })
+    })
+
+    const created = transform(
+      { attempt, retried },
+      (data) => (data.retried ?? data.attempt.session) as PaymentSessionDTO
     )
 
     return new WorkflowResponse(created)

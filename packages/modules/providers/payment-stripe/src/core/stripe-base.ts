@@ -38,6 +38,7 @@ import {
   AbstractPaymentProvider,
   isDefined,
   isPresent,
+  MedusaError,
   PaymentActions,
   PaymentSessionStatus,
 } from "@medusajs/framework/utils"
@@ -160,6 +161,16 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   }
 
   handleStripeError(error: any): HandledErrorType {
+    // The customer doesn't exist in the Stripe account, eg. when the database was copied from a setup that uses
+    // another account. Lets workflows replace the account holder.
+    if (error.code === "resource_missing" && error.param === "customer") {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        error.message,
+        MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND
+      )
+    }
+
     switch (error.type) {
       case "StripeCardError":
         // Stripe has created a payment intent but it failed
@@ -579,6 +590,10 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       await this.stripe_.customers.del(accountHolderId)
       return {}
     } catch (e) {
+      // Deleting a customer that's already gone is a no-op.
+      if (e?.code === "resource_missing") {
+        return {}
+      }
       throw this.buildError("An error occurred in deleteAccountHolder", e)
     }
   }

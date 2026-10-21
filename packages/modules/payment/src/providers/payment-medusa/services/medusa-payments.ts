@@ -40,6 +40,7 @@ import {
   AbstractPaymentProvider,
   isDefined,
   isPresent,
+  MedusaError,
   PaymentActions,
   PaymentSessionStatus,
 } from "@medusajs/framework/utils"
@@ -124,6 +125,15 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
       const body = await res.json().catch(() => ({}))
 
       if (!res.ok) {
+        // Lets workflows replace the account holder, eg. one copied over with the database from another environment.
+        if (body.type === "MedusaAccountHolderNotFoundError") {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            body.message,
+            MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND
+          )
+        }
+
         throw new CloudServiceError(
           body.type,
           body.originalType,
@@ -573,6 +583,11 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
           method: "DELETE",
         }
       )
+    }).catch((error) => {
+      // Deleting an account holder that's already gone is a no-op.
+      if (error?.code !== MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND) {
+        throw error
+      }
     })
 
     return {}
