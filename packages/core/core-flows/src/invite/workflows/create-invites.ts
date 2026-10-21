@@ -5,9 +5,11 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
 import { emitEventStep } from "../../common/steps/emit-event"
+import { validateUserRolePermissionsStep } from "../../user/steps/validate-user-role-permissions"
 import { createInviteStep, validateRolesExistStep } from "../steps"
 export const createInvitesWorkflowId = "create-invite-step"
 /**
@@ -15,6 +17,8 @@ export const createInvitesWorkflowId = "create-invite-step"
  * [Create Invite Admin API Route](https://docs.medusajs.com/api/admin/invites/create-invite).
  *
  * You can provide roles to be assigned to each user when the invite is accepted.
+ * If you pass an `actor_id`, the workflow validates that the actor has all the policies
+ * of the roles being assigned.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create invites within your custom flows.
@@ -52,6 +56,14 @@ export const createInvitesWorkflow = createWorkflow(
     })
 
     validateRolesExistStep(allRoleIds)
+
+    when({ input }, ({ input }) => !!input.actor_id).then(() => {
+      validateUserRolePermissionsStep({
+        actor_id: input.actor_id!,
+        actor: input.actor,
+        role_ids: allRoleIds,
+      })
+    })
 
     const createdInvites = createInviteStep(input.invites)
 

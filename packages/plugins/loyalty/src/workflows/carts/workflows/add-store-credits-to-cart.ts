@@ -72,7 +72,7 @@ export interface ValidateCartStepInput {
   /**
    * The workflow input containing the cart ID used in error messages.
    */
-  input: { cart_id: string }
+  input: { cart_id: string; customer_id?: string }
 }
 
 /**
@@ -103,6 +103,16 @@ export const validateCartStep = createStep(
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Cart's customer must be set to add store credits`
+      );
+    }
+
+    if (
+      isDefined(input.customer_id) &&
+      cart.customer_id !== input.customer_id
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Store credits can only be added to a cart that belongs to the authenticated customer`
       );
     }
 
@@ -206,6 +216,11 @@ export interface AddStoreCreditsToCartWorkflowInput {
    * The amount of store credits to apply. If not provided, the full balance is applied.
    */
   amount?: number
+  /**
+   * The ID of the customer applying the store credits. If provided, the cart
+   * must belong to this customer.
+   */
+  customer_id?: string
 }
 
 /**
