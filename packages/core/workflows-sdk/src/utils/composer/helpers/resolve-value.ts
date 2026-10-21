@@ -19,7 +19,7 @@ function resolveProperty(property: any, transactionContext: any) {
   } else if (
     property.__type === OrchestrationUtils.SymbolMedusaWorkflowResponse
   ) {
-    res = resolveValue(property.$result, transactionContext)
+    res = resolveValueWithoutCopy(property.$result, transactionContext)
   } else if (
     property.__type === OrchestrationUtils.SymbolWorkflowStepTransformer
   ) {
@@ -65,7 +65,7 @@ function unwrapInput({
       if (item == null || typeof item !== "object") {
         resolvedItems[i] = item
       } else {
-        const resolved = resolveValue(item, transactionContext)
+        const resolved = resolveValueWithoutCopy(item, transactionContext)
         if (resolved instanceof Promise) {
           promises.push({ promise: resolved, index: i })
         } else {
@@ -186,7 +186,7 @@ function unwrapInput({
   return parentRef
 }
 
-export function resolveValue(
+function resolveValueWithoutCopy(
   input: InputPrimitive | InputObject | unknown | undefined,
   transactionContext: any
 ): Promise<any> | any {
@@ -200,23 +200,29 @@ export function resolveValue(
       ? (input as InputObject).output
       : input
 
-  let result: any
-
   if (input_?.__type) {
-    result = resolveProperty(input_, transactionContext)
-    if (result instanceof Promise) {
-      return result.then((r) => parseStringifyIfNecessary(r))
-    }
-    return parseStringifyIfNecessary(result)
-  } else {
-    result = unwrapInput({
-      inputTOUnwrap: input_,
-      parentRef: {},
-      transactionContext,
-    })
-    if (result instanceof Promise) {
-      return result.then((r) => parseStringifyIfNecessary(r))
-    }
-    return parseStringifyIfNecessary(result)
+    return resolveProperty(input_, transactionContext)
   }
+
+  return unwrapInput({
+    inputTOUnwrap: input_,
+    parentRef: {},
+    transactionContext,
+  })
+}
+
+export function resolveValue(
+  input: InputPrimitive | InputObject | unknown | undefined,
+  transactionContext: any
+): Promise<any> | any {
+  if (input == null || typeof input !== "object") {
+    return input
+  }
+
+  // Detach the completed input once, rather than copying every nested subtree.
+  const result = resolveValueWithoutCopy(input, transactionContext)
+  if (result instanceof Promise) {
+    return result.then((r) => parseStringifyIfNecessary(r))
+  }
+  return parseStringifyIfNecessary(result)
 }
