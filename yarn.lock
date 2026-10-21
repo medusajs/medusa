@@ -3990,6 +3990,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/note@workspace:packages/modules/note":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/note@workspace:packages/modules/note"
+  dependencies:
+    "@medusajs/framework": 2.21.2
+    "@medusajs/test-utils": 2.21.2
+  peerDependencies:
+    "@medusajs/framework": 2.21.2
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/notification-local@2.21.2, @medusajs/notification-local@workspace:packages/modules/providers/notification-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification-local@workspace:packages/modules/providers/notification-local"

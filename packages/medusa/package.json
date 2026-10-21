@@ -90,6 +90,7 @@
     "@medusajs/locking": "2.21.2",
     "@medusajs/locking-postgres": "2.21.2",
     "@medusajs/locking-redis": "2.21.2",
+    "@medusajs/note": "2.21.2",
     "@medusajs/notification": "2.21.2",
     "@medusajs/notification-local": "2.21.2",
     "@medusajs/notification-sendgrid": "2.21.2",
