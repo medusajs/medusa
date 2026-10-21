@@ -743,6 +743,12 @@ const currentLocale = sdk.getLocale()
 console.log(currentLocale) // "fr-FR"
 ```
 
+<Note title="Important">
+
+The `setLocale` method is only available in browser environments. If you call it in a server environment, it logs a warning and doesn't set the locale. Instead, pass the `x-medusa-locale` header in your requests, as explained in the [Localization](../storefront-development/localization/page.mdx#set-locale-in-server-environments) guide.
+
+</Note>
+
 <Note>
 
 Learn more about localization and translations in the [Translation Module](../commerce-modules/translation/page.mdx) guide.

@@ -832,6 +832,46 @@ module.exports = defineConfig({
 
 The above configurations allow admin users to login using email/password, and customers to login using email/password and Google.
 
+#### http.requireActorAssociation
+
+<Note>
+
+This option is available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
+
+</Note>
+
+The `projectConfig.http.requireActorAssociation` configuration specifies the auth providers that only authenticate auth identities already associated with an actor of the requested actor type. For example, you can refuse logins to `/auth/user/emailpass` that use a customer's credentials.
+
+`requireActorAssociation` is an object whose key is the auth provider ID (for example, `emailpass`), and the value is a boolean indicating whether the association is required.
+
+An auth identity is associated with an actor type when its `app_metadata` has the `{actor_type}_id` property, such as `user_id` or `customer_id`. Learn more in the [Auth Identity and Actor Type documentation](!resources!/commerce-modules/auth/auth-identity-and-actor-types).
+
+By default, when you don't set the option for a provider, an auth identity can authenticate as any actor type. For example, this allows an admin user to create a customer account with the same email.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      requireActorAssociation: {
+        emailpass: true,
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+With the above configuration, the `emailpass` provider only authenticates an auth identity as an actor type that the auth identity is already associated with. Otherwise, the authentication route returns a generic `Authentication failed` error that doesn't reveal whether the credentials are valid.
+
+<Note>
+
+This configuration only applies to authentication. Registering a new auth identity still works, so a user can still register as a new actor type.
+
+</Note>
+
 #### http.restrictedFields
 
 The `projectConfig.http.restrictedFields` configuration specifies the fields that can't be selected in API routes (using the `fields` query parameter) unless they're allowed in the [request's Query configurations](../../fundamentals/query/page.mdx#request-query-configurations). This is useful to restrict sensitive fields from being exposed in the API.
