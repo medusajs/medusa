@@ -7,7 +7,10 @@ Implements Query, the cross-module read layer: it takes `query.graph()` / `query
 Do not import this package directly. Resolve Query from the container:
 
 ```ts
-import { ContainerRegistrationKeys, QueryContext } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  QueryContext,
+} from "@medusajs/framework/utils"
 
 const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
@@ -60,6 +63,8 @@ yarn test src/joiner/__tests__/cross-module-joins.spec.ts
 - Real end-to-end Query behavior is exercised in `integration-tests/modules/` and `integration-tests/http/` at the repo root.
 
 ## Gotchas
+
+- Cached queries with `locale` also depend on `Translation:list:*`, so translation writes invalidate localized results across locales. Caller tags and automatic-tag policy are preserved; `autoInvalidate: false` still opts out.
 
 - Caching is off unless `options.cache` is passed with `enable: true` or any of `key`/`ttl`/`tags`/`computeAutomaticTags`/`autoInvalidate`/`providers`; `cache.enable: false` always wins.
 - Cross-module filter pushdown restricts root rows (same semantics as `query.index`), and expand nodes that existed only to carry those filters are dropped.

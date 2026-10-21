@@ -38,10 +38,10 @@ Query and Remote Joiner for Medusa: the engine behind Query, which retrieves dat
 
 ## At a glance
 
-| | |
-| --- | --- |
-| Package | `@medusajs/query` |
-| Type | Core library |
+|             |                                                                              |
+| ----------- | ---------------------------------------------------------------------------- |
+| Package     | `@medusajs/query`                                                            |
+| Type        | Core library                                                                 |
 | Import from | Resolved from the container as `ContainerRegistrationKeys.QUERY` (`"query"`) |
 
 ## Features
@@ -72,6 +72,12 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   res.json({ products })
 }
 ```
+
+## Localized query caching
+
+Cached queries with a `locale` depend on translation data as well as the returned entities. Translation creation, updates, and deletion invalidate these localized results through `Translation:list:*`, including lookups that previously found no translation. This dependency invalidates localized results across locales.
+
+Caller-provided tags and `computeAutomaticTags` keep their existing policy. Without custom tags, automatic entity tags remain enabled. Explicit `autoInvalidate: false` continues to opt out of automatic invalidation.
 
 ## Resources
 

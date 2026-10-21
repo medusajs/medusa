@@ -133,7 +133,7 @@ export async function applyTranslations({
         },
       },
       {
-        cache: { enable: true },
+        cache: { enable: true, tags: ["Translation:list:*"] },
       }
     )
 

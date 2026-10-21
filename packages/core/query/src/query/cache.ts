@@ -24,6 +24,33 @@ function isCacheEnabled(args: any[]) {
   )
 }
 
+type QueryCacheArguments = Parameters<Query["graph"]>
+
+// Cached resolves these options separately; share tag callback results per call.
+const localizedCacheOptions = new WeakMap<
+  QueryCacheArguments,
+  { tags: string[]; computeAutomaticTags: boolean | undefined }
+>()
+
+function resolveLocalizedCacheOptions(args: QueryCacheArguments) {
+  const existing = localizedCacheOptions.get(args)
+  if (existing) {
+    return existing
+  }
+
+  const tags = args[1]?.cache?.tags
+  const resolvedTags = typeof tags === "function" ? tags(args) : tags
+  const options = {
+    tags: [...new Set([...(resolvedTags ?? []), "Translation:list:*"])],
+    // Internal dependency tags must not disable the caller's automatic tags.
+    computeAutomaticTags:
+      resolvedTags == null ? true : args[1]?.cache?.computeAutomaticTags,
+  }
+
+  localizedCacheOptions.set(args, options)
+  return options
+}
+
 export const queryCacheDecoratorOptions = {
   enable: isCacheEnabled,
   key: async (args, cachingModule) => {
@@ -43,8 +70,18 @@ export const queryCacheDecoratorOptions = {
     return await cachingModule.computeKey(keyInput)
   },
   ttl: extractCacheOptions("ttl"),
-  tags: extractCacheOptions("tags"),
-  computeAutomaticTags: extractCacheOptions("computeAutomaticTags"),
+  tags: (args: QueryCacheArguments) => {
+    if (!args[1]?.locale || args[1]?.cache?.enable === false) {
+      return extractCacheOptions("tags")(args)
+    }
+    return resolveLocalizedCacheOptions(args).tags
+  },
+  computeAutomaticTags: (args: QueryCacheArguments) => {
+    if (!args[1]?.locale || args[1]?.cache?.enable === false) {
+      return extractCacheOptions("computeAutomaticTags")(args)
+    }
+    return resolveLocalizedCacheOptions(args).computeAutomaticTags
+  },
   autoInvalidate: extractCacheOptions("autoInvalidate"),
   providers: extractCacheOptions("providers"),
   container: function (this: Query): MedusaContainer {

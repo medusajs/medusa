@@ -83,9 +83,7 @@ describe("applyTranslations", () => {
     expect(inputObjects[0].title).toBe("Original Title")
     expect(inputObjects[0].description).toBe("Translated description")
 
-    const inputObjects2 = [
-      { id: "prod_2", title: "Original Title 2" },
-    ]
+    const inputObjects2 = [{ id: "prod_2", title: "Original Title 2" }]
     mockQuery.graph.mockResolvedValue({
       data: [
         {
@@ -198,6 +196,7 @@ describe("applyTranslations", () => {
       expect.objectContaining({
         cache: expect.objectContaining({
           enable: true,
+          tags: ["Translation:list:*"],
         }),
       })
     )
@@ -216,6 +215,9 @@ describe("applyTranslations", () => {
     })
 
     expect(mockQuery.graph).toHaveBeenCalledTimes(2)
+    for (const [, options] of mockQuery.graph.mock.calls) {
+      expect(options.cache.tags).toEqual(["Translation:list:*"])
+    }
   })
 
   it("should apply translations to multiple input objects", async () => {
@@ -289,6 +291,9 @@ describe("applyTranslations", () => {
     })
 
     expect(inputObjects[0].title).toBe("Original Title")
+    expect(mockQuery.graph).toHaveBeenCalledWith(expect.anything(), {
+      cache: { enable: true, tags: ["Translation:list:*"] },
+    })
   })
 
   it("should handle empty input array without errors", async () => {
