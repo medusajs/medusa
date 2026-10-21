@@ -1,0 +1,72 @@
+name: Release Reminder
+
+on:
+  schedule:
+    - cron: "0 8 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  remind:
+    name: Post release reminder to Slack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate release PR
+        id: evaluate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          PR=$(gh pr list --repo "$REPO" --base develop --head changeset-release/develop --state open \
+            --json url,headRefOid --jq '.[0] // empty')
+          if [ -z "$PR" ]; then
+            echo "No open release PR; skipping the reminder."
+            exit 0
+          fi
+
+          URL=$(jq -r '.url' <<< "$PR")
+          HEAD_SHA=$(jq -r '.headRefOid' <<< "$PR")
+
+          medusa_version() {
+            gh api "repos/$REPO/contents/packages/medusa/package.json?ref=$1" --jq '.content' \
+              | base64 -d | jq -r '.version'
+          }
+          CURRENT=$(medusa_version develop)
+          NEXT=$(medusa_version "$HEAD_SHA")
+
+          IFS=. read -r CUR_MAJOR CUR_MINOR _ <<< "$CURRENT"
+          IFS=. read -r NEXT_MAJOR NEXT_MINOR _ <<< "$NEXT"
+          if [ "$NEXT_MAJOR" != "$CUR_MAJOR" ]; then
+            BUMP=major
+          elif [ "$NEXT_MINOR" != "$CUR_MINOR" ]; then
+            BUMP=minor
+          else
+            BUMP=patch
+          fi
+          echo "Release PR: $CURRENT -> $NEXT ($BUMP)"
+
+          jq -n --arg text "Time to put out a new release! The next release is a *$BUMP* update: v$CURRENT → *v$NEXT*." \
+            --arg url "$URL" \
+            '{
+              blocks: [
+                {type: "section", text: {type: "mrkdwn", text: $text}},
+                {type: "actions", elements: [
+                  {type: "button", style: "primary", url: $url, text: {type: "plain_text", text: "View release PR"}}
+                ]}
+              ]
+            }' > slack-payload.json
+          echo "notify=true" >> "$GITHUB_OUTPUT"
+
+      - name: Post to Slack
+        if: steps.evaluate.outputs.notify == 'true'
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload-file-path: ./slack-payload.json
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_RELEASE }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

@@ -1,4 +1,4 @@
-name: Draft Release
+name: Publish Release
 
 on:
   workflow_dispatch:
@@ -11,13 +11,18 @@ on:
         description: "Additional instructions for Claude (e.g. 'Make sure to highlight the new Subscriptions module' or 'The cart breaking change is the most important one')"
         required: false
         type: string
+      draft:
+        description: "Create the release as a draft instead of publishing it"
+        required: false
+        default: false
+        type: boolean
 concurrency:
   group: draft-release
   cancel-in-progress: false
 
 jobs:
   draft-release:
-    name: Generate draft release with Claude
+    name: Generate and publish release with Claude
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -329,7 +334,7 @@ jobs:
           console.log(`Inserted banner above line ${headingAt + 1}`)
           EOF
 
-      - name: Create draft GitHub release
+      - name: Create GitHub release
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
@@ -354,9 +359,12 @@ jobs:
             "$TAG"
             --title "$RELEASE_TITLE"
             --notes-file /tmp/release-notes.md
-            --draft
             --target "${{ github.sha }}"
           )
 
+          if [ "${{ inputs.draft }}" = "true" ]; then
+            ARGS+=(--draft)
+          fi
+
           gh release create "${ARGS[@]}"
-          echo "Draft release created for $TAG"
+          echo "Release created for $TAG"
