@@ -7,7 +7,7 @@
     "dev:wrangler": "wrangler dev --port 3000",
     "dev:monorepo": "yarn dev -p 3000",
     "build": "next build",
-    "build:cloudflare": "node ./scripts/prepare.mjs && opennextjs-cloudflare build",
+    "build:cloudflare": "node ./scripts/prepare.mjs && opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion",
     "build:dev": "NODE_ENV=test next build",
     "build:prod": "NEXT_PUBLIC_ENV=production next build",
     "start": "next start",
