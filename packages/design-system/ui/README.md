@@ -38,10 +38,10 @@ Medusa UI: the React component library of Medusa's design system, used to build 
 
 ## At a glance
 
-| | |
-|---|---|
-| Package | `@medusajs/ui` |
-| Type | Design system |
+|             |                |
+| ----------- | -------------- |
+| Package     | `@medusajs/ui` |
+| Type        | Design system  |
 | Import from | `@medusajs/ui` |
 
 ## Features
@@ -50,6 +50,7 @@ Medusa UI: the React component library of Medusa's design system, used to build 
 - A `DataTable` block for filterable, sortable, paginated tables.
 - Hooks: `usePrompt` and `useToggleState`.
 - Utilities: `clx` for merging class names, and `toast` for showing toasts.
+- Switch thumbs mirror their positions in RTL documents for both sizes.
 
 ## Installation
 

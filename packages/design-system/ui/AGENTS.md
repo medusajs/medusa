@@ -7,7 +7,14 @@ Medusa's React component library (Radix UI / react-aria primitives styled with T
 In Medusa Admin customizations (`src/admin/**`), `@medusajs/ui` and `@medusajs/icons` are already available through the dashboard, and Tailwind is pre-configured by `@medusajs/admin-bundler`:
 
 ```tsx
-import { Button, Container, Heading, Text, toast, usePrompt } from "@medusajs/ui"
+import {
+  Button,
+  Container,
+  Heading,
+  Text,
+  toast,
+  usePrompt,
+} from "@medusajs/ui"
 
 const Section = () => {
   const prompt = usePrompt()
@@ -30,7 +37,9 @@ const Section = () => {
           Delete
         </Button>
       </div>
-      <Text size="small" className="text-ui-fg-subtle px-6 py-4">...</Text>
+      <Text size="small" className="text-ui-fg-subtle px-6 py-4">
+        ...
+      </Text>
     </Container>
   )
 }
@@ -46,6 +55,7 @@ const Section = () => {
 - Standalone projects need Tailwind v3 with `presets: [require("@medusajs/ui-preset")]` and `@medusajs/ui`'s `dist` in `content`.
 
 Docs:
+
 - https://docs.medusajs.com/ui/index.html.md
 - https://docs.medusajs.com/ui/installation/medusa-admin-extension.md
 - https://docs.medusajs.com/ui/installation/standalone-project.md
@@ -80,4 +90,5 @@ yarn storybook         # port 6006, loads src/main.css
 - Peer deps are `react` / `react-dom` `^18.3.1`. Don't use React 19-only APIs.
 - `clx` uses `tailwind-merge`, so a consumer's `className` overrides conflicting variant classes. Pass user `className` last.
 - Test config sets `css: false`. Tests can't assert on computed styles, only on class names.
+- Switch thumb margins follow the inherited or explicit direction for both sizes. Check positioning with compiled CSS in a browser; jsdom does not provide layout measurements.
 - Changing a component's props or the exports in `src/index.ts` is a public API change for every admin extension. Regenerate the UI docs specs.
