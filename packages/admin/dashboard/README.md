@@ -1,33 +1,83 @@
-# React + TypeScript + Vite
+<p align="center">
+  <a href="https://www.medusajs.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
+  </a>
+</p>
+<h1 align="center">
+  @medusajs/dashboard
+</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h4 align="center">
+  <a href="https://docs.medusajs.com">Documentation</a> |
+  <a href="https://www.medusajs.com">Website</a>
+</h4>
 
-Currently, two official plugins are available:
+<p align="center">
+  Building blocks for digital commerce
+</p>
+<p align="center">
+  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
+  </a>
+  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
+  </a>
+  <a href="https://discord.gg/xpCwq3Kfn8">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+  </a>
+  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
+    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
+  </a>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The Medusa Admin dashboard: the React and Vite single-page app that merchants use to manage a Medusa store. `@medusajs/medusa` builds it with `@medusajs/admin-bundler` and serves it at the `admin.path` set in `medusa-config.ts` (`/app` by default), so you don't install or run it yourself. Admin extensions can import its components, hooks, and utilities from the subpaths below.
 
-## Expanding the ESLint configuration
+## At a glance
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+| | |
+|---|---|
+| Package | `@medusajs/dashboard` |
+| Type | Admin |
+| Import from | `@medusajs/dashboard/components`, `@medusajs/dashboard/hooks`, `@medusajs/dashboard/lib` |
+| Entry points | `.` (the app), `./components`, `./hooks`, `./lib`, `./css` |
 
-- Configure the top-level `parserOptions` property like this:
+## Usage
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+Import shared admin components, hooks, and utilities in your admin extensions:
+
+```tsx
+import { getStylizedAmount } from "@medusajs/dashboard/lib"
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Development
+
+Run these from `packages/admin/dashboard`:
+
+| Command | Description |
+|---|---|
+| `yarn dev` | Start the Vite dev server. |
+| `yarn build` | Type-check and build the package with tsup. |
+| `yarn build:preview` | Build the app with Vite. |
+| `yarn preview` | Preview the Vite build. |
+| `yarn test` | Run the Vitest tests. |
+| `yarn lint` | Run ESLint. |
+| `yarn typecheck` | Type-check the package. |
+| `yarn i18n:validate <file>` | Validate a translation file, such as `de.json`, against the schema. |
+| `yarn i18n:schema` | Regenerate `src/i18n/translations/$schema.json` from `en.json`. Run it after adding or removing keys in `en.json`. |
+| `yarn i18n:sync` | Find or apply missing translations. See [Translations](#translations). |
+
+The dev server reads these variables from a `.env` file:
+
+| Variable | Description | Default |
+|---|---|---|
+| `VITE_MEDUSA_BACKEND_URL` | URL of the Medusa server. | `http://localhost:9000` |
+| `VITE_MEDUSA_STOREFRONT_URL` | URL of the storefront. | `http://localhost:8000` |
+| `VITE_MEDUSA_BASE` | Base path the app is served from. | `/` |
+| `VITE_MEDUSA_PROJECT` | Path to a Medusa project to load admin extensions from. | - |
 
 ## Translations
 
@@ -67,3 +117,10 @@ New keys are inserted next to their neighbors in `en.json`, and existing keys ke
 ### Automated sync
 
 The [Admin i18n Sync](../../../.github/workflows/admin-i18n-sync.yml) workflow runs daily. It finds missing translations, translates them with Claude, and opens a PR on the `chore/admin-i18n-sync-translations` branch. It skips runs while a previous sync PR is still open.
+
+## Resources
+
+- [Admin Development](https://docs.medusajs.com/learn/fundamentals/admin)
+- [Admin Components](https://docs.medusajs.com/resources/admin-components)
+- [Admin Utilities](https://docs.medusajs.com/resources/admin-components/utilities)
+- [Contribute Admin Translations](https://docs.medusajs.com/learn/resources/contribution-guidelines/admin-translations)

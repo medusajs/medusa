@@ -13,8 +13,12 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "files": [
-    ".medusa/server"
+    ".medusa/server",
+    "AGENTS.md"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "exports": {
     "./package.json": "./package.json",
     "./modules/loyalty/*": "./.medusa/server/src/modules/loyalty/index.js",

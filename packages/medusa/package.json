@@ -31,6 +31,7 @@
   "files": [
     "dist",
     "oas",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
