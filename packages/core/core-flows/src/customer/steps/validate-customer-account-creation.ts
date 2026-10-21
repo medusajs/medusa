@@ -1,3 +1,4 @@
+import type { IAuthModuleService } from "@medusajs/framework/types"
 import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 import { CreateCustomerAccountWorkflowInput } from "../workflows"
@@ -10,6 +11,11 @@ export const validateCustomerAccountCreationStepId =
  * The step throws an error if:
  * 
  * - The email is missing
+ * - An auth identity is provided, and the email doesn't match the auth identity's email.
+ *   The auth identity's email is the `entity_id` of its `emailpass` provider identity, or the
+ *   `user_metadata.email` of any of its provider identities (for example, Google or GitHub).
+ *   The comparison ignores case and surrounding whitespace. If the auth identity has no email,
+ *   the step also throws an error.
  * - A customer with the email already exists and has an account
  * - A guest customer with the email already exists
  * 
@@ -35,6 +41,33 @@ export const validateCustomerAccountCreation = createStep(
         MedusaError.Types.INVALID_DATA,
         "Email is required to create a customer"
       )
+    }
+
+    if (input.authIdentityId) {
+      const authService = container.resolve<IAuthModuleService>(Modules.AUTH)
+      const authIdentity = await authService.retrieveAuthIdentity(
+        input.authIdentityId,
+        { relations: ["provider_identities"] }
+      )
+
+      const normalize = (value: unknown) =>
+        typeof value === "string" ? value.trim().toLowerCase() : undefined
+
+      const identityEmails = (authIdentity.provider_identities ?? [])
+        .flatMap((providerIdentity) => [
+          providerIdentity.provider === "emailpass"
+            ? normalize(providerIdentity.entity_id)
+            : undefined,
+          normalize(providerIdentity.user_metadata?.email),
+        ])
+        .filter(Boolean)
+
+      if (!identityEmails.includes(normalize(email))) {
+        throw new MedusaError(
+          MedusaError.Types.UNAUTHORIZED,
+          "The customer's email must match the email of the authenticated identity"
+        )
+      }
     }
 
     // Check if customer with email already exists
