@@ -47,8 +47,6 @@ export const POST = async (
   const input = {
     input: {
       invites: [req.validatedBody],
-      actor_id: req.auth_context.actor_id,
-      actor: req.auth_context.actor_type,
     },
   }
 
