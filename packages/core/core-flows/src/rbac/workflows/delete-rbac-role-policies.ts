@@ -50,9 +50,7 @@ export const deleteRbacRolePoliciesWorkflow = createWorkflow(
       const { data: rolePolicies } = useQueryGraphStep({
         entity: "rbac_role_policy",
         fields: ["policy_id"],
-        filters: transform({ input }, ({ input }) => ({
-          id: input.role_policy_ids,
-        })),
+        filters: input.role_policy_ids,
       }).config({ name: "query-role-policies-to-detach" })
 
       const validationData = transform(

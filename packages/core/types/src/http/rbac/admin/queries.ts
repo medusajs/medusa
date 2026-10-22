@@ -125,21 +125,3 @@ export interface AdminRbacRoleAssignmentListParams
    */
   reference_id?: string | string[]
 }
-
-export interface AdminRbacScopesParams {
-  /**
-   * The actor type from which to traverse grantees to resolve scopes.
-   */
-  actor_type: string
-  /**
-   * The grantee type to resolve scopes for.
-   */
-  grantee_type: string
-}
-
-export interface AdminRbacScopeOptionsParams extends AdminRbacScopesParams {
-  /**
-   * The actor ID to resolve scopes for.
-   */
-  actor_id: string
-}
