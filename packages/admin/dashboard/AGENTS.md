@@ -84,6 +84,7 @@ yarn i18n:sync missing
 - Add new strings to `en.json` only. Other locales are filled by the daily `.github/workflows/admin-i18n-sync.yml` workflow.
 - A new `widgetsZonePrefix` on a core page also needs its zones added to `INJECTION_ZONES` in `@medusajs/admin-shared`. Do not add `.before` / `.after` zones; they are legacy.
 - Layout preferences are stored per `widgetsZonePrefix`, keyed by widget id and `LayoutComposer.Entry` id. Renaming an entry id drops users' saved placement for it.
+- Keep NavItem base, nested, settings, and mobile-trigger padding logical and preserve clx precedence when adjusting indentation.
 - The `src/exports/*` surface is documented API for extensions. Changing a signature breaks plugins; update the matching page under `www/apps/resources/app/admin-components`.
 - A new virtual module must be added to `external` in `tsup.config.cjs` and to `VIRTUAL_MODULES` in `@medusajs/admin-shared`.
 - `yarn generate:static` writes `src/lib/currencies.ts`, but the app imports `src/lib/data/currencies.ts`. Move the output before relying on it.

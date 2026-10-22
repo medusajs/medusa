@@ -53,6 +53,10 @@ Import shared admin components, hooks, and utilities in your admin extensions:
 import { getStylizedAmount } from "@medusajs/dashboard/lib"
 ```
 
+### Navigation direction
+
+Sidebar navigation mirrors its inline padding for RTL, including nested links and mobile group controls. Existing settings indentation and navigation interactions are preserved.
+
 ## Development
 
 Run these from `packages/admin/dashboard`:
