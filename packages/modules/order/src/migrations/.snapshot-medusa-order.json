@@ -4691,11 +4691,11 @@
           "mappedType": "text"
         }
       },
-      "name": "order_order_tags",
+      "name": "order_tags",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "order_order_tags_pkey",
+          "keyName": "order_tags_pkey",
           "columnNames": [
             "order_id",
             "order_tag_id"
@@ -4708,12 +4708,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "order_order_tags_order_id_foreign": {
-          "constraintName": "order_order_tags_order_id_foreign",
+        "order_tags_order_id_foreign": {
+          "constraintName": "order_tags_order_id_foreign",
           "columnNames": [
             "order_id"
           ],
-          "localTableName": "public.order_order_tags",
+          "localTableName": "public.order_tags",
           "referencedColumnNames": [
             "id"
           ],
@@ -4721,12 +4721,12 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "order_order_tags_order_tag_id_foreign": {
-          "constraintName": "order_order_tags_order_tag_id_foreign",
+        "order_tags_order_tag_id_foreign": {
+          "constraintName": "order_tags_order_tag_id_foreign",
           "columnNames": [
             "order_tag_id"
           ],
-          "localTableName": "public.order_order_tags",
+          "localTableName": "public.order_tags",
           "referencedColumnNames": [
             "id"
           ],

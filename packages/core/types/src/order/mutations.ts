@@ -202,7 +202,7 @@ export interface CreateOrderDTO {
   /**
    * The tags to associate with the order.
    */
-  tags?: (CreateOrderTagDTO | { id: string })[]
+  tags?: CreateOrderTagDTO[]
 }
 
 /**
@@ -281,9 +281,9 @@ export interface UpdateOrderDTO {
   metadata?: Record<string, unknown> | null
 
   /**
-   * The tags to associate with the order.
+   * The IDs of the tags to associate with the order.
    */
-  tags?: (CreateOrderTagDTO | { id: string })[]
+  tag_ids?: string[]
 }
 
 /** ORDER END */

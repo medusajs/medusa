@@ -130,6 +130,7 @@ const _Order = model
      */
     tags: model.manyToMany(() => OrderTag, {
       mappedBy: "orders",
+      pivotTable: "order_tags",
     }),
   })
   .cascades({
