@@ -7841,6 +7841,97 @@ moduleIntegrationTestRunner({
             expect(JSON.parse(JSON.stringify(result))).toEqual([])
           })
         })
+
+        describe("when items are not discountable", () => {
+          const createBuyGetPromotion = async (
+            buyCategory: string,
+            targetCategories: string[]
+          ) =>
+            await createDefaultPromotion(service, {
+              type: PromotionType.BUYGET,
+              application_method: {
+                type: "percentage",
+                target_type: "items",
+                value: 100,
+                allocation: "each",
+                max_quantity: 1,
+                apply_to_quantity: 1,
+                buy_rules_min_quantity: 1,
+                buy_rules: [
+                  {
+                    attribute: "items.product_category.id",
+                    operator: "eq",
+                    values: [buyCategory],
+                  },
+                ],
+                target_rules: [
+                  {
+                    attribute: "items.product_category.id",
+                    operator: "in",
+                    values: targetCategories,
+                  },
+                ],
+              } as any,
+            })
+
+          const context = {
+            currency_code: "usd",
+            items: [
+              {
+                id: "item_discountable",
+                quantity: 1,
+                subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
+                product_category: { id: "catg_discountable" },
+                product: { id: "prod_discountable" },
+              },
+              {
+                id: "item_not_discountable",
+                quantity: 1,
+                subtotal: 500,
+                original_total: 500,
+                is_discountable: false,
+                product_category: { id: "catg_not_discountable" },
+                product: { id: "prod_not_discountable" },
+              },
+            ],
+          }
+
+          it("should not discount a target item that is not discountable", async () => {
+            const promotion = await createBuyGetPromotion("catg_discountable", [
+              "catg_not_discountable",
+            ])
+
+            const result = await service.computeActions(
+              [promotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
+
+          it("should discount a discountable target bought with an item that is not discountable", async () => {
+            const promotion = await createBuyGetPromotion(
+              "catg_not_discountable",
+              ["catg_discountable", "catg_not_discountable"]
+            )
+
+            const result = await service.computeActions(
+              [promotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_discountable",
+                amount: 1000,
+                code: "PROMOTION_TEST",
+              },
+            ])
+          })
+        })
       })
 
       describe("when promotion allocation is once", () => {
