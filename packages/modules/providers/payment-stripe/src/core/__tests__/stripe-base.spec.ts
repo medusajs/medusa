@@ -272,6 +272,85 @@ describe("StripeBase", () => {
       expect(result.data).toEqual(succeededIntent)
     })
 
+    it("throws when a second equal capture finds the stored payment already succeeded", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      const collectedForty = {
+        id: "pi_123",
+        status: "succeeded",
+        currency: "usd",
+        amount_received: 4000,
+      }
+      jest
+        .spyOn(service["stripe_"].paymentIntents, "capture")
+        .mockRejectedValue(
+          Object.assign(new Error("Unexpected state"), {
+            code: "payment_intent_unexpected_state",
+            payment_intent: collectedForty,
+          })
+        )
+
+      await expect(
+        service.capturePayment({
+          data: {
+            id: "pi_123",
+            currency: "usd",
+            status: "succeeded",
+            amount_capturable: 10000,
+          },
+          amount: 40,
+          context: { idempotency_key: "capt_second_forty" },
+        })
+      ).rejects.toThrow("An error occurred in capturePayment")
+    })
+
+    it("returns the payment intent when a retry still has requires_capture and the received amount matches", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      const collectedForty = {
+        id: "pi_123",
+        status: "succeeded",
+        currency: "usd",
+        amount_received: 4000,
+      }
+      jest
+        .spyOn(service["stripe_"].paymentIntents, "capture")
+        .mockRejectedValue(
+          Object.assign(new Error("Unexpected state"), {
+            code: "payment_intent_unexpected_state",
+            payment_intent: collectedForty,
+          })
+        )
+
+      const result = await service.capturePayment({
+        data: {
+          id: "pi_123",
+          currency: "usd",
+          status: "requires_capture",
+          amount_capturable: 10000,
+        },
+        amount: 40,
+        context: { idempotency_key: "capt_retry" },
+      })
+
+      expect(result.data).toEqual(collectedForty)
+    })
+
+    it("sends amount_to_capture when the stored intent has no capturable amount", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      const capture = mockCapture(service)
+
+      await service.capturePayment({
+        data: { id: "pi_123", currency: "usd" },
+        amount: 40,
+        context: { idempotency_key: "capt_unknown" },
+      })
+
+      expect(capture).toHaveBeenCalledWith(
+        "pi_123",
+        { amount_to_capture: 4000 },
+        { idempotencyKey: "capt_unknown" }
+      )
+    })
+
     it("throws when a second capture hits a payment intent that already collected a different amount", async () => {
       const service = new StripeProviderService({}, defaultOptions)
       jest

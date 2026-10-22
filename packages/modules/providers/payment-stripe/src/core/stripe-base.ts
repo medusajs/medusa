@@ -348,10 +348,11 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     const capturableAmount = (data?.amount_capturable ?? data?.amount) as
       | number
       | undefined
+    // A stale capturable amount can only over-state the hold; Stripe rejects an over-capture.
     const capturePartially =
       requestedAmount != null &&
-      typeof capturableAmount === "number" &&
-      requestedAmount < capturableAmount
+      (typeof capturableAmount !== "number" ||
+        requestedAmount < capturableAmount)
 
     try {
       const intent = capturePartially
@@ -374,7 +375,8 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         error.code === ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE &&
         paymentIntent?.status === ErrorIntentStatus.SUCCEEDED &&
         (requestedAmount == null ||
-          paymentIntent.amount_received === requestedAmount)
+          (data?.status !== ErrorIntentStatus.SUCCEEDED &&
+            paymentIntent.amount_received === requestedAmount))
       ) {
         return { data: paymentIntent }
       }
