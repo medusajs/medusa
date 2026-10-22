@@ -13,9 +13,7 @@ import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
 
 const { result } = await createProductsWorkflow(req.scope).run({
   input: {
-    products: [
-      { title: "Shirt", options: [{ title: "Size", values: ["S"] }] },
-    ],
+    products: [{ title: "Shirt", options: [{ title: "Size", values: ["S"] }] }],
     additional_data: { erp_id: "123" },
   },
 })
@@ -34,7 +32,10 @@ import { StepResponse } from "@medusajs/framework/workflows-sdk"
 
 createProductsWorkflow.hooks.productsCreated(
   async ({ products, additional_data }, { container }) => {
-    return new StepResponse(undefined, products.map((p) => p.id))
+    return new StepResponse(
+      undefined,
+      products.map((p) => p.id)
+    )
   },
   async (productIds, { container }) => {}
 )
@@ -61,7 +62,10 @@ export const createProductsStep = createStep(
   async (data: ProductTypes.CreateProductDTO[], { container }) => {
     const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
     const created = await service.createProducts(data)
-    return new StepResponse(created, created.map((product) => product.id))
+    return new StepResponse(
+      created,
+      created.map((product) => product.id)
+    )
   },
   async (createdIds, { container }) => {
     if (!createdIds?.length) {
@@ -93,4 +97,4 @@ cd packages/core/core-flows && ../../../node_modules/.bin/jest src/cart/utils/__
 - Steps must stay compensatable: return the data needed to undo the action as the second `StepResponse` argument and guard against `undefined` in the compensation.
 - `emitEventStep` emits with the workflow's `eventGroupId`; its compensation clears those grouped events, so emit inside the workflow rather than calling the event bus directly.
 - Adding a step to an existing workflow that already uses the same step needs a unique `.config({ name })`, or registration fails with `Step <name> is already defined in workflow.`
-- `createCustomerAccountWorkflow` requires the customer's email to match the auth identity's email (the `emailpass` provider identity's `entity_id`, or any provider identity's `user_metadata.email`), ignoring case and surrounding whitespace. Otherwise it throws an `UNAUTHORIZED` error, so custom auth providers must set `user_metadata.email` for their customers to register.
+- `createCustomerAccountWorkflow` requires the customer's email to match the auth identity's `entity_id`, or any provider identity's `user_metadata.email`, ignoring case and surrounding whitespace. Otherwise it throws an `UNAUTHORIZED` error, so custom auth providers must set `user_metadata.email` for their customers to register.
