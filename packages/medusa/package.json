@@ -96,6 +96,7 @@
     "@medusajs/notification-sendgrid": "2.22.1",
     "@medusajs/order": "2.22.1",
     "@medusajs/payment": "2.22.1",
+    "@medusajs/payment-adyen": "2.22.1",
     "@medusajs/payment-stripe": "2.22.1",
     "@medusajs/pricing": "2.22.1",
     "@medusajs/product": "2.22.1",
