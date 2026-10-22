@@ -1,0 +1,282 @@
+name: PR Guardrails
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
+  schedule:
+    # Closes PRs still missing a linked issue 8 hours after the warning.
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Check only this PR (e.g. 16248). Leave empty to check every open PR."
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: "Log the actions each PR would get without commenting, labeling, closing, or reopening."
+        required: false
+        default: true
+        type: boolean
+
+permissions: {}
+
+concurrency:
+  group: pr-guardrails-${{ github.event.pull_request.number || 'sweep' }}
+  cancel-in-progress: false
+
+jobs:
+  # Deterministic checks, no model. PR head code is never checked out: the PR
+  # is read through the API only, and scripts/templates come from develop.
+  guardrails:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        # Always develop, even for PRs into other base branches, so the
+        # scripts and templates used here are the current ones.
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: develop
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+          permission-pull-requests: write
+          permission-issues: read
+
+      - name: Run guardrails
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          REPO: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_PR_NUMBER: ${{ github.event.pull_request.number }}
+          INPUT_PR_NUMBER: ${{ inputs.pr_number }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          set -euo pipefail
+
+          LABEL="requires-linked-issue"
+          TRANSLATIONS_DIR="packages/admin/dashboard/src/i18n/translations/"
+          GRACE_SECONDS=$((8 * 3600))
+          BOT_LOGIN="${APP_SLUG}[bot]"
+
+          if [[ ! -f scripts/is_team_member.sh ]]; then
+            echo "::error::scripts/is_team_member.sh is missing; refusing to run without the team exemption." >&2
+            exit 1
+          fi
+
+          # Writes always target the PR passed as $1 through GITHUB_EVENT_NUMBER.
+          act() {
+            local pr="$1"; shift
+            if [[ "$DRY_RUN" == "true" ]]; then
+              echo "[dry run] #$pr: $*"
+              return 0
+            fi
+            GITHUB_EVENT_NUMBER="$pr" "$@"
+          }
+
+          is_team() {
+            local login="$1" rc=0
+            [[ "$login" =~ ^[A-Za-z0-9-]+$ ]] || return 1
+            bash scripts/is_team_member.sh "$login" >/dev/null || rc=$?
+            case "$rc" in
+              0) return 0 ;;
+              1) return 1 ;;
+              *) echo "::error::is_team_member.sh failed for $login (exit $rc)" >&2; exit 1 ;;
+            esac
+          }
+
+          evaluate() {
+            local pr="$1"
+            local pull files timeline state author author_type changed_lines has_label
+
+            pull=$(gh api "repos/$REPO/pulls/$pr")
+            state=$(jq -r .state <<<"$pull")
+            author=$(jq -r .user.login <<<"$pull")
+            author_type=$(jq -r .user.type <<<"$pull")
+            changed_lines=$(jq -r '.additions + .deletions' <<<"$pull")
+            has_label=$(jq -r --arg l "$LABEL" '[.labels[].name] | index($l) != null' <<<"$pull")
+
+            if [[ "$(jq -r .merged <<<"$pull")" == "true" ]]; then
+              echo "#$pr: merged, skipping."
+              return 0
+            fi
+            if [[ "$author_type" == "Bot" || "$author" == *"[bot]" ]]; then
+              echo "#$pr: bot author, exempt."
+              return 0
+            fi
+            if is_team "$author"; then
+              echo "#$pr: team member author, exempt."
+              return 0
+            fi
+
+            timeline=$(gh api --paginate "repos/$REPO/issues/$pr/timeline?per_page=100" | jq -s -c 'add // []')
+
+            # A team member reopening the PR or removing the label overrides
+            # the guardrails for this PR from then on.
+            local actor
+            for actor in $(jq -r --arg l "$LABEL" '[.[]
+                | select(.event == "reopened" or (.event == "unlabeled" and .label.name == $l))
+                | .actor.login // empty] | unique | .[]' <<<"$timeline"); do
+              if is_team "$actor"; then
+                echo "#$pr: overridden by team member $actor."
+                if [[ "$has_label" == "true" && "$state" == "open" ]]; then
+                  act "$pr" bash scripts/labels.sh --workflow guardrails --action remove --label "$LABEL"
+                fi
+                return 0
+              fi
+            done
+
+            local reopenable=false
+            if [[ "$state" == "closed" ]]; then
+              reopenable=$(jq -r --arg bot "$BOT_LOGIN" '
+                ([.[] | select(.event == "closed")] | last) as $c
+                | if $c == null or $c.actor.login != $bot then false
+                  else ([.[] | select(.event == "commented" and .user.login == $bot and .created_at <= $c.created_at)]
+                        | last | .body // ""
+                        | test("<!-- pr-guardrails:close-(no-linked-issue|not-assigned) -->"))
+                  end' <<<"$timeline")
+              if [[ "$reopenable" != "true" ]]; then
+                echo "#$pr: closed, not by the guardrails; skipping."
+                return 0
+              fi
+            fi
+
+            files=$(gh api --paginate "repos/$REPO/pulls/$pr/files?per_page=100" | jq -s -c 'add // []')
+
+            # Locale edits that ship with dashboard changes are fine; only a PR made
+            # of nothing but translation files that edits an existing locale is closed.
+            local translation_only
+            translation_only=$(jq -r --arg dir "$TRANSLATIONS_DIR" '
+              def locale_file: startswith($dir) and (ltrimstr($dir) | test("^[^/]+\\.json$"))
+                and (ltrimstr($dir) as $f | $f != "en.json" and $f != "$schema.json");
+              length > 0
+              and all(.[]; (.filename | startswith($dir)) and ((.previous_filename // $dir) | startswith($dir)))
+              and any(.[]; (.status == "modified" or .status == "removed" or .status == "renamed" or .status == "changed")
+                           and ((.filename | locale_file) or ((.previous_filename // "") | locale_file)))' <<<"$files")
+            if [[ "$translation_only" == "true" ]]; then
+              if [[ "$state" == "open" ]]; then
+                echo "#$pr: only edits existing translation files, closing."
+                act "$pr" bash scripts/add_comment.sh --workflow guardrails --template closed-translation
+                act "$pr" bash scripts/close_issue.sh --workflow guardrails
+              fi
+              return 0
+            fi
+
+            local is_typo
+            is_typo=$(jq -r --argjson lines "$changed_lines" \
+              'length > 0 and all(.[]; .filename | test("\\.mdx?$")) and $lines <= 20' <<<"$files")
+
+            local linked="[]" linked_count assigned=false
+            if [[ "$is_typo" == "true" ]]; then
+              echo "#$pr: typo fix, linked issue and assignment not required."
+              assigned=true
+              linked_count=1
+            else
+              linked=$(bash scripts/get_linked_issues.sh "$pr" \
+                | jq -c '[.[] | select(.state == "OPEN") | {number, assignees: [.assignees[].login]}]')
+              linked_count=$(jq -r length <<<"$linked")
+              assigned=$(jq -r --arg a "$author" \
+                'any(.[]; .assignees | map(ascii_downcase) | index($a | ascii_downcase) != null)' <<<"$linked")
+            fi
+
+            if [[ "$linked_count" -eq 0 ]]; then
+              [[ "$state" == "open" ]] || { echo "#$pr: closed and still unlinked."; return 0; }
+
+              if [[ "$has_label" != "true" ]]; then
+                echo "#$pr: no linked issue, warning."
+                act "$pr" bash scripts/labels.sh --workflow guardrails --action add --label "$LABEL"
+                if ! jq -e --arg bot "$BOT_LOGIN" 'any(.[]; .event == "commented" and .user.login == $bot
+                    and ((.body // "") | contains("<!-- pr-guardrails:needs-linked-issue -->")))' <<<"$timeline" >/dev/null; then
+                  act "$pr" bash scripts/add_comment.sh --workflow guardrails --template needs-linked-issue
+                fi
+                return 0
+              fi
+
+              local labeled_at age
+              labeled_at=$(jq -r --arg l "$LABEL" \
+                '[.[] | select(.event == "labeled" and .label.name == $l)] | last | .created_at // empty' <<<"$timeline")
+              if [[ -z "$labeled_at" ]]; then
+                echo "::warning::#$pr carries $LABEL but its timeline has no labeled event; not closing."
+                return 0
+              fi
+              age=$(( $(date -u +%s) - $(date -u -d "$labeled_at" +%s) ))
+              if [[ "$age" -ge "$GRACE_SECONDS" ]]; then
+                echo "#$pr: no linked issue after $((age / 3600))h, closing."
+                act "$pr" bash scripts/add_comment.sh --workflow guardrails --template closed-no-linked-issue
+                act "$pr" bash scripts/close_issue.sh --workflow guardrails
+              else
+                echo "#$pr: no linked issue, $(( (GRACE_SECONDS - age) / 60 ))m left."
+              fi
+              return 0
+            fi
+
+            if [[ "$has_label" == "true" ]]; then
+              act "$pr" bash scripts/labels.sh --workflow guardrails --action remove --label "$LABEL"
+            fi
+
+            if [[ "$assigned" != "true" ]]; then
+              if [[ "$state" == "open" ]]; then
+                echo "#$pr: author is not assigned to a linked issue, closing."
+                act "$pr" bash scripts/add_comment.sh --workflow guardrails --template closed-not-assigned
+                act "$pr" bash scripts/close_issue.sh --workflow guardrails
+              elif ! jq -e --arg bot "$BOT_LOGIN" '[.[] | select(.event == "commented" and .user.login == $bot)]
+                  | last | (.body // "") | contains("<!-- pr-guardrails:close-not-assigned -->")' <<<"$timeline" >/dev/null; then
+                echo "#$pr: now linked but author is not assigned; staying closed."
+                act "$pr" bash scripts/add_comment.sh --workflow guardrails --template closed-not-assigned
+              fi
+              return 0
+            fi
+
+            if [[ "$state" == "closed" ]]; then
+              echo "#$pr: guardrails now pass, reopening."
+              act "$pr" bash scripts/reopen.sh --workflow guardrails \
+                || echo "::warning::Could not reopen #$pr (the head branch may have been deleted or force-pushed)."
+            else
+              echo "#$pr: passes."
+            fi
+          }
+
+          case "$EVENT_NAME" in
+            pull_request_target)
+              PRS="$EVENT_PR_NUMBER"
+              ;;
+            schedule)
+              PRS=$(gh pr list --repo "$REPO" --state open --label "$LABEL" --limit 500 --json number --jq '.[].number')
+              ;;
+            workflow_dispatch)
+              if [[ -n "$INPUT_PR_NUMBER" ]]; then
+                if ! [[ "$INPUT_PR_NUMBER" =~ ^[0-9]+$ ]]; then
+                  echo "::error::pr_number must be a positive integer, got '$INPUT_PR_NUMBER'" >&2
+                  exit 1
+                fi
+                PRS="$INPUT_PR_NUMBER"
+              else
+                PRS=$(gh pr list --repo "$REPO" --state open --limit 1000 --json number --jq '.[].number')
+              fi
+              ;;
+            *)
+              echo "::error::Unsupported event $EVENT_NAME" >&2
+              exit 1
+              ;;
+          esac
+
+          # Each PR runs in a background job so `set -e` still applies inside
+          # it (errexit is ignored in functions called from `if`/`||`).
+          FAILED=0
+          for PR in $PRS; do
+            evaluate "$PR" &
+            if ! wait $!; then
+              echo "::warning::Guardrails failed for #$PR"
+              FAILED=1
+            fi
+          done
+          exit "$FAILED"

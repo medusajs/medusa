@@ -2,7 +2,7 @@ name: Issue Triage
 
 on:
   issues:
-    types: [opened]
+    types: [opened, edited]
   issue_comment:
     types: [created]
   workflow_dispatch:
@@ -13,12 +13,64 @@ on:
         default: ''
         type: string
       skip_triaged:
-        description: 'Skip issues that already have triage labels (type: bug, requires-more, requires-team, good first issue, help-wanted, feedback). Ignored when issue_number is set.'
+        description: 'Skip issues that already have triage labels (type: bug for fix-queued bugs, requires-more for needs-info, requires-team for escalated or hidden content, requires-rewrite for issues awaiting an AI-content rewrite, good first issue, help-wanted, feedback). Closed outcomes are never listed. Ignored when issue_number is set.'
         required: false
         default: true
         type: boolean
 
 jobs:
+  # Gate for issue_comment events: a maintainer's `@medusajs-bot triage`
+  # always re-triages; a reply by the issue author re-triages an open issue at
+  # most 5 times per 24h, counted from the author's own comments.
+  check-comment:
+    if: |
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request == null &&
+      github.event.comment.user.type != 'Bot' &&
+      ((contains(github.event.comment.body, '@medusajs-bot triage') &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) ||
+       (github.event.comment.user.login == github.event.issue.user.login &&
+        github.event.issue.state == 'open'))
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - name: Check trigger and rate limit
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+          ASSOCIATION: ${{ github.event.comment.author_association }}
+          IS_MAINTAINER_TRIGGER: ${{ contains(github.event.comment.body, '@medusajs-bot triage') }}
+          MAX_AUTHOR_RETRIAGES: 5
+        run: |
+          set -euo pipefail
+
+          if [[ "$IS_MAINTAINER_TRIGGER" == "true" ]] && [[ "$ASSOCIATION" =~ ^(OWNER|MEMBER|COLLABORATOR)$ ]]; then
+            echo "Maintainer requested triage."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          SINCE=$(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+          # `since` filters on updated_at, so created_at is re-checked.
+          COUNT=$(gh api --paginate "repos/$REPO/issues/$ISSUE_NUMBER/comments?since=$SINCE&per_page=100" \
+            | jq -r --arg author "$AUTHOR" --arg since "$SINCE" \
+              '.[] | select(.user.login == $author and .created_at >= $since) | .id' \
+            | wc -l)
+
+          if [[ "$COUNT" -gt "$MAX_AUTHOR_RETRIAGES" ]]; then
+            echo "::notice::Issue #$ISSUE_NUMBER author posted $COUNT comments in the last 24h (cap $MAX_AUTHOR_RETRIAGES); skipping re-triage."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Author reply $COUNT/$MAX_AUTHOR_RETRIAGES in the last 24h; re-triaging."
+          echo "run=true" >> "$GITHUB_OUTPUT"
+
   # Runs only on workflow_dispatch: resolves which issues to triage. With
   # `issue_number` set it emits that single issue; otherwise it collects all
   # open non-bot issues for the matrix below.
@@ -59,6 +111,7 @@ jobs:
                   contains([\"type: bug\"]) or
                   contains([\"requires-more\"]) or
                   contains([\"requires-team\"]) or
+                  contains([\"requires-rewrite\"]) or
                   contains([\"good first issue\"]) or
                   contains([\"help-wanted\"]) or
                   contains([\"feedback\"])
@@ -84,16 +137,30 @@ jobs:
       MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
       CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+      LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
 
-  # Runs on issues/issue_comment events: triages a single issue
+  # Runs on issues/issue_comment events: triages a single issue. An edit
+  # re-triages only when the author rewrites an open issue that is waiting on
+  # an AI-content rewrite.
   triage:
+    needs: check-comment
     if: |
-      (github.event_name == 'issues' &&
-       github.event.issue.user.type != 'Bot') ||
-      (github.event_name == 'issue_comment' &&
-       github.event.issue.pull_request == null &&
-       github.event.comment.user.type != 'Bot' &&
-       contains(github.event.comment.body, '@medusajs-bot triage'))
+      !cancelled() &&
+      ((github.event_name == 'issues' &&
+        github.event.issue.user.type != 'Bot' &&
+        (github.event.action == 'opened' ||
+         (github.event.action == 'edited' &&
+          github.event.sender.login == github.event.issue.user.login &&
+          github.event.issue.state == 'open' &&
+          contains(github.event.issue.labels.*.name, 'requires-rewrite')))) ||
+       (github.event_name == 'issue_comment' &&
+        needs.check-comment.outputs.run == 'true'))
+    # The latest pending run replaces an older pending one, which is fine: it
+    # triages the full thread. Must differ from the callee's group name, or the
+    # nested runs deadlock.
+    concurrency:
+      group: triage-issues-event-${{ github.event.issue.number }}
+      cancel-in-progress: false
     uses: ./.github/workflows/triage-issue-action.yml
     with:
       issue_number: '${{ github.event.issue.number }}'
@@ -101,3 +168,4 @@ jobs:
       MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
       MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
       CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+      LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
