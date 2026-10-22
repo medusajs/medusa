@@ -52,4 +52,3 @@ module.exports = defineConfig({
 - `paymentMethodConfiguration` is ignored whenever `payment_method_types` is set, so it never applies to the fixed-method variants (iDEAL, OXXO, ...).
 - Methods in `asyncPaymentMethodTypes` turn `payment_intent.processing` into `PENDING_AUTHORIZATION`, letting orders be placed while Stripe is still `pending`.
 - `deletePayment` tolerates already-succeeded intents; `cancelPayment` throws for them.
-- `capturePayment` sends `amount` as Stripe `amount_to_capture` in the smallest currency unit (`getSmallestUnit`, same as refunds). With no `amount`, the whole PaymentIntent is captured. A smaller capture releases the rest of the authorization unless the intent was created with multicapture.

@@ -341,18 +341,24 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     context,
   }: CapturePaymentInput): Promise<CapturePaymentOutput> {
     const id = data?.id as string
+    const currencyCode = data?.currency as string
+    const requestedAmount = isPresent(amount)
+      ? getSmallestUnit(amount as BigNumberInput, currencyCode)
+      : undefined
+    const capturableAmount = (data?.amount_capturable ?? data?.amount) as
+      | number
+      | undefined
+    const capturePartially =
+      requestedAmount != null &&
+      typeof capturableAmount === "number" &&
+      requestedAmount < capturableAmount
 
     try {
-      // Stripe reads idempotencyKey as request options and drops every other
-      // field in that object, so the amount has to be a separate argument.
-      const intent = isPresent(amount)
+      const intent = capturePartially
         ? await this.stripe_.paymentIntents.capture(
             id,
             {
-              amount_to_capture: getSmallestUnit(
-                amount as BigNumberInput,
-                data?.currency as string
-              ),
+              amount_to_capture: requestedAmount,
             },
             {
               idempotencyKey: context?.idempotency_key,
@@ -363,10 +369,14 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
           })
       return { data: intent as unknown as Record<string, unknown> }
     } catch (error) {
-      if (error.code === ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE) {
-        if (error.payment_intent?.status === ErrorIntentStatus.SUCCEEDED) {
-          return { data: error.payment_intent }
-        }
+      const paymentIntent = error.payment_intent
+      if (
+        error.code === ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE &&
+        paymentIntent?.status === ErrorIntentStatus.SUCCEEDED &&
+        (requestedAmount == null ||
+          paymentIntent.amount_received === requestedAmount)
+      ) {
+        return { data: paymentIntent }
       }
 
       throw this.buildError("An error occurred in capturePayment", error)
