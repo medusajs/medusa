@@ -182,14 +182,16 @@ Other state values include `done`, `invoking`, and `compensating`.
 
 ## Run a Workflow with an Existing Transaction ID
 
-When you execute a workflow, you can pass a `transactionId` to the `run` method to set the ID of the execution's transaction. If you don't pass one, Medusa generates a unique ID for every execution.
+When you execute a workflow, you can pass a `transactionId` in the `context` parameter of the `run` method to set the ID of the execution's transaction. If you don't pass one, Medusa generates a unique ID for every execution.
 
 For example:
 
 ```ts
 const { result } = await helloWorkflow(container).run({
   input: {},
-  transactionId: "hello-123",
+  context: {
+    transactionId: "hello-123",
+  },
 })
 ```
 
@@ -248,7 +250,7 @@ export const helloWorkflow = createWorkflow(
 )
 ```
 
-Now, when you run `helloWorkflow` with the transaction ID of an execution that finished, Medusa returns the existing execution without running its steps again. This applies to executions that completed successfully, failed, or reverted.
+Now, when you run `helloWorkflow` with the transaction ID of an execution that finished, Medusa returns the existing execution without running its steps again. This applies to executions that completed successfully, failed, or reverted. If the existing execution failed or reverted, the `run` method throws the execution's original error again, unless you set its `throwOnError` option to `false`.
 
 Once the retention time passes and Medusa deletes the execution, running the workflow with the same transaction ID starts a new execution.
 
@@ -257,13 +259,15 @@ Once the retention time passes and Medusa deletes the execution, running the wor
 Based on the behavior above, you can use the transaction ID as an idempotency key to make sure a workflow runs only once for the same operation. For example, use the ID of a webhook event as the transaction ID, so that receiving the same event multiple times doesn't run the workflow multiple times:
 
 export const idempotencyKeyHighlights = [
-  ["3", "transactionId", "Use the webhook event's ID as the transaction ID."],
+  ["4", "transactionId", "Use the webhook event's ID as the transaction ID."],
 ]
 
 ```ts highlights={idempotencyKeyHighlights}
 await helloWorkflow(container).run({
   input: {},
-  transactionId: `webhook-${event.id}`,
+  context: {
+    transactionId: `webhook-${event.id}`,
+  },
 })
 ```
 
