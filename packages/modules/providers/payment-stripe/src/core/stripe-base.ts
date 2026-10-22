@@ -3,6 +3,7 @@ import { setTimeout } from "timers/promises"
 import {
   AuthorizePaymentInput,
   AuthorizePaymentOutput,
+  BigNumberInput,
   CancelPaymentInput,
   CancelPaymentOutput,
   CapturePaymentInput,
@@ -336,14 +337,30 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 
   async capturePayment({
     data,
+    amount,
     context,
   }: CapturePaymentInput): Promise<CapturePaymentOutput> {
     const id = data?.id as string
 
     try {
-      const intent = await this.stripe_.paymentIntents.capture(id, {
-        idempotencyKey: context?.idempotency_key,
-      })
+      // Stripe reads idempotencyKey as request options and drops every other
+      // field in that object, so the amount has to be a separate argument.
+      const intent = isPresent(amount)
+        ? await this.stripe_.paymentIntents.capture(
+            id,
+            {
+              amount_to_capture: getSmallestUnit(
+                amount as BigNumberInput,
+                data?.currency as string
+              ),
+            },
+            {
+              idempotencyKey: context?.idempotency_key,
+            }
+          )
+        : await this.stripe_.paymentIntents.capture(id, {
+            idempotencyKey: context?.idempotency_key,
+          })
       return { data: intent as unknown as Record<string, unknown> }
     } catch (error) {
       if (error.code === ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE) {

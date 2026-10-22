@@ -121,6 +121,106 @@ describe("StripeBase", () => {
     })
   })
 
+  describe("capturePayment", () => {
+    const succeededIntent = {
+      id: "pi_123",
+      status: "succeeded",
+      currency: "usd",
+    }
+
+    const mockCapture = (service: StripeProviderService) => {
+      return jest
+        .spyOn(service["stripe_"].paymentIntents, "capture")
+        .mockResolvedValue(succeededIntent as never)
+    }
+
+    it("captures the whole payment intent when no amount is given", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      const capture = mockCapture(service)
+
+      const result = await service.capturePayment({
+        data: { id: "pi_123", currency: "usd" },
+        context: { idempotency_key: "capt_full" },
+      })
+
+      expect(capture).toHaveBeenCalledWith("pi_123", {
+        idempotencyKey: "capt_full",
+      })
+      expect(result.data).toEqual(succeededIntent)
+    })
+
+    it("sends the requested amount as amount_to_capture in the smallest currency unit", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      const capture = mockCapture(service)
+
+      await service.capturePayment({
+        data: { id: "pi_123", currency: "usd" },
+        amount: 60,
+        context: { idempotency_key: "capt_partial" },
+      })
+
+      expect(capture).toHaveBeenCalledWith(
+        "pi_123",
+        { amount_to_capture: 6000 },
+        { idempotencyKey: "capt_partial" }
+      )
+    })
+
+    it("converts a raw capture amount the same way the payment module stores it", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      const capture = mockCapture(service)
+
+      await service.capturePayment({
+        data: { id: "pi_123", currency: "usd" },
+        amount: { value: "60", precision: 20 },
+        context: { idempotency_key: "capt_raw" },
+      })
+
+      expect(capture).toHaveBeenCalledWith(
+        "pi_123",
+        { amount_to_capture: 6000 },
+        { idempotencyKey: "capt_raw" }
+      )
+    })
+
+    it("does not scale a zero-decimal currency", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      const capture = mockCapture(service)
+
+      await service.capturePayment({
+        data: { id: "pi_123", currency: "jpy" },
+        amount: 60,
+        context: { idempotency_key: "capt_jpy" },
+      })
+
+      expect(capture).toHaveBeenCalledWith(
+        "pi_123",
+        { amount_to_capture: 60 },
+        { idempotencyKey: "capt_jpy" }
+      )
+    })
+
+    it("returns the payment intent when Stripe says it already succeeded", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      jest
+        .spyOn(service["stripe_"].paymentIntents, "capture")
+        .mockRejectedValue(
+          Object.assign(new Error("Unexpected state"), {
+            code: "payment_intent_unexpected_state",
+            payment_intent: succeededIntent,
+          })
+        )
+
+      const result = await service.capturePayment({
+        data: { id: "pi_123", currency: "usd" },
+        amount: 60,
+        context: { idempotency_key: "capt_done" },
+      })
+
+      expect(result.data).toEqual(succeededIntent)
+    })
+  })
+
   describe("cancelPayment", () => {
     it("throws when the payment intent already succeeded", async () => {
       const service = new StripeProviderService({}, defaultOptions)
