@@ -121,17 +121,18 @@ export const AdminGetRoleAssignmentsParams = createFindParams({
 
 /**
  * Optional scope constraint stored on (or filtering) role assignments. Both
- * fields must be provided together.
+ * fields must be provided together: a lone `scope` would otherwise be dropped
+ * and silently produce an unscoped, broader assignment.
  */
-const assignmentScopeFields = {
+export const assignmentScopeFields = {
   scope: z.string().min(1).optional(),
   scope_id: z.string().min(1).optional(),
 }
 
-const requireScopePair = (data: { scope?: string; scope_id?: string }) =>
+export const requireScopePair = (data: { scope?: string; scope_id?: string }) =>
   !data.scope === !data.scope_id
 
-const scopePairError = {
+export const scopePairError = {
   message: "scope and scope_id must be provided together",
 }
 

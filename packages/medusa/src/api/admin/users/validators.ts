@@ -5,6 +5,11 @@ import {
   createSelectParams,
 } from "../../utils/validators"
 import { applyAndAndOrOperators } from "../../utils/common-validators"
+import {
+  assignmentScopeFields,
+  requireScopePair,
+  scopePairError,
+} from "../../rbac/roles/validators"
 
 export const AdminGetUserParams = createSelectParams()
 
@@ -41,26 +46,21 @@ export const AdminUpdateUser = z.object({
   metadata: z.record(z.string(), z.unknown()).nullish().optional(),
 })
 
+const UserRoleAssignment = z
+  .object({
+    role_id: z.string().min(1),
+    ...assignmentScopeFields,
+  })
+  .refine(requireScopePair, scopePairError)
+
 export type AdminAssignUserRoleType = z.infer<typeof AdminAssignUserRole>
 export const AdminAssignUserRole = z.object({
-  assignments: z.array(
-    z.object({
-      role_id: z.string().min(1),
-      scope: z.string().optional(),
-      scope_id: z.string().optional(),
-    })
-  ),
+  assignments: z.array(UserRoleAssignment),
 })
 
 export type AdminUnassignUserRolesType = z.infer<typeof AdminUnassignUserRoles>
 export const AdminUnassignUserRoles = z.object({
-  assignments: z.array(
-    z.object({
-      role_id: z.string().min(1),
-      scope: z.string().optional(),
-      scope_id: z.string().optional(),
-    })
-  ),
+  assignments: z.array(UserRoleAssignment),
 })
 
 export const AdminGetUserRolesParamsFields = z.object({
@@ -81,8 +81,6 @@ export const AdminGetUserRolesParams = createFindParams({
 
 export type AdminUnassignUserRoleType = z.infer<typeof AdminUnassignUserRole>
 export const AdminUnassignUserRole = z
-  .object({
-    scope: z.string().optional(),
-    scope_id: z.string().optional(),
-  })
+  .object(assignmentScopeFields)
+  .refine(requireScopePair, scopePairError)
   .optional()

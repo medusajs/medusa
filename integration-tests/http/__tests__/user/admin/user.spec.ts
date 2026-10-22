@@ -1045,6 +1045,49 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("scope validation on user role routes", () => {
+        it("rejects a scope without a scope_id when assigning", async () => {
+          const error = await api
+            .post(
+              `/admin/users/${testUser.id}/roles`,
+              {
+                assignments: [
+                  { role_id: viewerRole.id, scope: "organization" },
+                ],
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+          expect(error.response.status).toEqual(400)
+
+          const roles = await api.get(
+            `/admin/users/${testUser.id}/roles`,
+            adminHeaders
+          )
+          expect(roles.data.count).toEqual(0)
+        })
+
+        it("rejects an incomplete scope pair when unassigning", async () => {
+          const batch = await api
+            .delete(`/admin/users/${testUser.id}/roles`, {
+              ...adminHeaders,
+              data: {
+                assignments: [{ role_id: viewerRole.id, scope_id: "org_1" }],
+              },
+            })
+            .catch((e) => e)
+          expect(batch.response.status).toEqual(400)
+
+          const single = await api
+            .delete(`/admin/users/${testUser.id}/roles/${viewerRole.id}`, {
+              ...adminHeaders,
+              data: { scope: "organization" },
+            })
+            .catch((e) => e)
+          expect(single.response.status).toEqual(400)
+        })
+      })
+
       describe("DELETE /admin/users/:id/roles/:role_id", () => {
         it("should remove a role from a user", async () => {
           const rbacModule = container.resolve(Modules.RBAC)
