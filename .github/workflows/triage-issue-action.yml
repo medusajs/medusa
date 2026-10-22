@@ -786,19 +786,14 @@ jobs:
     needs: apply
     if: needs.apply.outputs.dispatch_fix == '1'
     runs-on: ubuntu-latest
-    permissions: {}
+    # GITHUB_TOKEN can start workflow_dispatch runs (unlike its other events),
+    # and the Medusa GitHub App has no Actions permission.
+    permissions:
+      actions: write
     steps:
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1
-        with:
-          app-id: ${{ secrets.MEDUSA_APP_ID }}
-          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
-          permission-actions: write
-
       - name: Dispatch fix-issue workflow
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           ISSUE_NUMBER: ${{ inputs.issue_number }}
           FIX_ROUTE: ${{ needs.apply.outputs.fix_route }}
