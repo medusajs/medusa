@@ -209,7 +209,10 @@ Medusa doesn't run the steps that already finished again, and it leaves steps th
 
 ### Concurrent Executions with the Same Transaction ID
 
-If you start two executions of a workflow with the same transaction ID at the same time, only the first one runs. The second `run` call throws a `SkipExecutionError` with the message `Transaction already started for transactionId: {id}`.
+If you start two executions of a workflow with the same transaction ID at the same time, Medusa doesn't run the workflow twice. Instead, the second `run` call either:
+
+- Throws a `SkipExecutionError` with the message `Transaction already started for transactionId: {id}`. This happens when both calls start before either of them saves the execution.
+- Loads the execution that the first call saved and continues it, as explained in the [previous section](#execution-is-still-running). Medusa doesn't run the steps that the first call already finished or is still running. In this case, the second call may also throw a `SkipExecutionError` with a different message if the first call moves ahead of it.
 
 This prevents duplicate executions, for example, when a client retries a request or a third-party service sends the same webhook twice.
 
@@ -269,4 +272,4 @@ To deduplicate executions reliably:
 - Enable the `idempotent` option so that Medusa doesn't run the workflow again after an execution finishes.
 - Set the `retentionTime` option to at least the period during which duplicates may arrive. After the retention time passes, Medusa no longer deduplicates executions with that transaction ID.
 - Use the [Redis Workflow Engine](!resources!/infrastructure-modules/workflow-engine/redis) in production so that all Medusa instances detect concurrent executions.
-- Handle the `Transaction already started for transactionId` error in your code, since a concurrent duplicate throws it instead of returning a result.
+- Handle the `SkipExecutionError` in your code, since a concurrent duplicate may throw it instead of returning a result. You can treat this error as a sign that another execution is already handling the operation.
