@@ -17,6 +17,8 @@ Each project environment has a dedicated PostgreSQL database. These databases ar
 
 This isolation allows you to safely make or test changes in environments without affecting one another, especially the production environment and its data.
 
+When you create a new long-lived environment, its database starts empty rather than as a copy of the Production environment's database. Learn more in the [Long-Lived Environments](../environments/long-lived/page.mdx#new-environments-database) guide.
+
 ![Diagram showcasing isolation between environment databases](https://res.cloudinary.com/dza7lstvk/image/upload/v1750174759/Cloud/databases-cloud_hzjyrn.jpg)
 
 ---
@@ -128,6 +130,12 @@ To restore your database from a backup:
 4. Click **Restore backup** to confirm.
 
 Medusa notifies you when the restore completes or if an error occurs.
+
+<Note title="Important" type="warning">
+
+After the restore completes, [redeploy the environment's live deployment](../deployments/page.mdx#redeploy-a-deployment). The restore drops and recreates your database's tables, so the running application can fail with `relation does not exist` errors, or return `401` errors for all requests when it can't read the `api_key` table. These errors can persist after the restore finishes until you redeploy.
+
+</Note>
 
 <Note title="Tip">
 
@@ -286,6 +294,12 @@ pg_dump -Fc -d postgres://postgres:secret@localhost:5432/mydatabase -f mydata.du
 <Note>
 
 Make sure you're generating the database dump from PostgreSQL v16 and that [pg_dump](https://www.postgresql.org/docs/16/app-pgdump.html) is compatible with that version.
+
+</Note>
+
+<Note title="Important" type="warning">
+
+After the import completes, [redeploy the environment's live deployment](../deployments/page.mdx#redeploy-a-deployment). The import drops and recreates your database's tables, so the running application can fail with `relation does not exist` errors, or return `401` errors for all requests when it can't read the `api_key` table. These errors can persist after the import finishes until you redeploy.
 
 </Note>
 

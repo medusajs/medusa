@@ -1,0 +1,68 @@
+name: Agent-Friendly Docs Scan
+
+# Scans the deployed docs against the Agent-Friendly Documentation Spec with AFDocs
+# and opens a Linear ticket per failing check. Dedup is handled in the script.
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # Every day at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-docs-scan
+  cancel-in-progress: false
+
+env:
+  AFDOCS_VERSION: 0.22.2
+
+jobs:
+  scan:
+    name: Scan docs
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # afdocs exits 1 when any check fails, so only a missing or empty report is an error.
+      - name: Run AFDocs
+        run: |
+          npx -y "afdocs@${AFDOCS_VERSION}" check https://docs.medusajs.com \
+            --format json \
+            --score \
+            --sampling deterministic \
+            --network-context ci \
+            --max-links 50 \
+            --skip-checks page-size-html,page-size-markdown \
+            --llms-txt-url https://docs.medusajs.com/llms.txt \
+            --quiet > "$RUNNER_TEMP/agent-docs.json" || true
+          test -s "$RUNNER_TEMP/agent-docs.json"
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-docs
+          path: ${{ runner.temp }}/agent-docs.json
+          retention-days: 30
+
+      - name: Install www/utils dependencies
+        run: yarn install
+        working-directory: www/utils
+
+      - name: Build scripts package
+        run: yarn build --filter=scripts...
+        working-directory: www/utils
+
+      - name: Create Linear tickets
+        run: yarn report:agent-docs "$RUNNER_TEMP/agent-docs.json"
+        working-directory: www/utils/packages/scripts
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}

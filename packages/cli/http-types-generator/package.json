@@ -1,14 +1,18 @@
 {
   "name": "@medusajs/http-types-generator",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "Generate and validate HTTP TypeScript types",
   "main": "dist/index.js",
   "bin": {
     "medusa-http-types": "dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/medusajs/medusa.git",

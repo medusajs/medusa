@@ -119,6 +119,7 @@ export const NoteLayout = ({
           <span
             className={clsx("text-small-plus text-medusa-fg-base")}
             data-testid="note-layout-title"
+            data-markdown-ignore
           >
             {title}
             {showColon ? ":" : ""}&nbsp;

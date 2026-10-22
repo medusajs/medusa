@@ -151,6 +151,12 @@ const currentLocale = sdk.getLocale()
 console.log(currentLocale) // "fr-FR"
 ```
 
+<Note>
+
+The `setLocale` method is only available in browser environments. If you call it in a server environment, such as Next.js server components, it logs a warning and doesn't set the locale. Instead, pass the `x-medusa-locale` header directly, as explained in the [Set Locale in Server Environments](#set-locale-in-server-environments) section.
+
+</Note>
+
 ### Set Locale without JS SDK
 
 If you're sending requests to the Store API without using the JS SDK, you can set the locale using either the `locale` query parameter or the `x-medusa-locale` header.

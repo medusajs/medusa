@@ -90,6 +90,14 @@ Refer to the [Access Deployment](../../deployments/access/page.mdx#cant-find-the
 
 </Note>
 
+### New Environment's Database
+
+A new long-lived environment starts with a new, empty database. Medusa doesn't copy the Production environment's data, such as products, orders, or customers, into it. During the environment's first deployment, Medusa [runs your migrations and data migration scripts](../../database/page.mdx#running-migrations-on-cloud) to set up the database schema.
+
+To use existing data in the new environment, such as a copy of Production's data, [export a database dump](../../database/page.mdx#importexport-cloud-database-dumps) from the source environment, then import it into the new environment.
+
+This differs from [preview environments](../preview/page.mdx#preview-environments-database), whose database Medusa creates from the Production environment's database by default.
+
 
 ---
 

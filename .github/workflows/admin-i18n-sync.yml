@@ -142,12 +142,18 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: develop
-          # Use a PAT so the created PR triggers other workflows
-          token: ${{ secrets.REFERENCE_PAT }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -189,7 +195,7 @@ jobs:
       - name: Create Pull Request
         if: steps.apply.outputs.has_changes == 'true'
         env:
-          GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REPO: ${{ github.repository }}
         run: |
           BODY_FILE=$(mktemp)

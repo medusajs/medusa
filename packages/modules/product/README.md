@@ -1,194 +1,100 @@
-# Product Module
+<p align="center">
+  <a href="https://www.medusajs.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
+  </a>
+</p>
+<h1 align="center">
+  @medusajs/product
+</h1>
 
-The Product Module gives you access Products, Variants, Categories, and more through a standalone package that can be installed and run in Next.js functions and other Node.js compatible runtimes.
+<h4 align="center">
+  <a href="https://docs.medusajs.com">Documentation</a> |
+  <a href="https://www.medusajs.com">Website</a>
+</h4>
 
-[Product Module documentation](https://docs.medusajs.com/v2/resources/commerce-modules/product) | [Medusa Website](https://medusajs.com/) | [Medusa Repository](https://github.com/medusajs/medusa)
+<p align="center">
+  Building blocks for digital commerce
+</p>
+<p align="center">
+  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
+  </a>
+  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
+  </a>
+  <a href="https://discord.gg/xpCwq3Kfn8">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+  </a>
+  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
+    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
+  </a>
+</p>
 
-> The Product Module is currently in beta. The beta version comes with limited functionality, primarily centered around retrieving products. In the official version, the product module will be fully-fledged and on par with the product functionality in our core package.
+Product Module for Medusa: manages products, product variants, options and option values, categories, collections, tags, types, and images. Use it to build and organize a product catalog. It ships with `@medusajs/medusa` and is registered by default, so Medusa applications don't install it directly.
 
----
+## At a glance
 
-## Installing and using it in Next.js
+| | |
+| --- | --- |
+| Package | `@medusajs/product` |
+| Type | Commerce Module |
+| Module key | `Modules.PRODUCT` (`"product"`) |
+| Registered by default | Yes |
+| Import from | `@medusajs/medusa/product` |
 
-### Prerequisites
+## Features
 
-- [Next.js project](https://nextjs.org/docs/pages/api-reference/create-next-app)
+- Store products with options, such as color or size, and variants for each option combination.
+- Share options across products, or keep an option exclusive to one product.
+- Organize products with nested categories, collections, tags, and types.
+- Attach images to products and to specific variants.
 
-1\. Run the following command in your project
+## Installation
 
-```bash
-npm install @medusajs/product
-```
+No installation needed. The module is included in `@medusajs/medusa` and registered by default.
 
-2\. Add Database URL to your environment variables
+## Usage
 
-```bash
-DATABASE_URL=<URL_GOES_HERE>
-```
-
-3\. Apply database migrations
-
-> If you are using an existing Medusa database, you can skip this step. This step is only applicable when the module is used in isolation from a full Medusa setup
-
-Before you can run migrations, add in your `package.json` the following scripts:
-
-```json
-"scripts": {
-    //...other scripts
-    "product:migrations:run": "medusa-product-migrations-up",
-    "product:seed": "medusa-product-seed ./seed-data.js"
-},
-```
-
-The first command runs the migrations, and the second command allows you to optionally seed your database with demo products.
-
-For the second command to work, you'll need to add the dummy seed data to the root of your Next.js project:
-
-<details>
-  <summary>Seed file</summary>
-
-```js
-const productCategoriesData = [
-  {
-    id: "category-0",
-    name: "category 0",
-    parent_category_id: null,
-  },
-  {
-    id: "category-1",
-    name: "category 1",
-    parent_category_id: "category-0",
-  },
-  {
-    id: "category-1-a",
-    name: "category 1 a",
-    parent_category_id: "category-1",
-  },
-  {
-    id: "category-1-b",
-    name: "category 1 b",
-    parent_category_id: "category-1",
-    is_internal: true,
-  },
-  {
-    id: "category-1-b-1",
-    name: "category 1 b 1",
-    parent_category_id: "category-1-b",
-  },
-]
-
-const productsData = [
-  {
-    id: "test-1",
-    title: "product 1",
-    status: "published",
-    descriptions: "Lorem ipsum dolor sit amet, consectetur.",
-    tags: [
-      {
-        id: "tag-1",
-        value: "France",
-      },
-    ],
-    categories: [
-      {
-        id: "category-0",
-      },
-    ],
-  },
-  {
-    id: "test-2",
-    title: "product",
-    status: "published",
-    descriptions: "Lorem ipsum dolor sit amet, consectetur.",
-    tags: [
-      {
-        id: "tag-2",
-        value: "Germany",
-      },
-    ],
-    categories: [
-      {
-        id: "category-1",
-      },
-    ],
-  },
-]
-
-const variantsData = [
-  {
-    id: "test-1",
-    title: "variant title",
-    sku: "sku 1",
-    product: { id: productsData[0].id },
-  },
-  {
-    id: "test-2",
-    title: "variant title",
-    sku: "sku 2",
-    product: { id: productsData[1].id },
-  },
-]
-
-module.exports = {
-  productCategoriesData,
-  productsData,
-  variantsData,
-}
-```
-
-</details>
-
-Then run the first and optionally the second command to migrate and seed the database:
-
-```bash
-npm run product:migrations:run
-# optionally
-npm run product:seed
-```
-
-4\. Adjust Next.js config
-
-Next.js uses Webpack for compilation. Since quite a few of the dependencies used by the product module are not Webpack optimized, you have to add the product module as an external dependency.
-
-To do that, add the serverComponentsExternalPackages option in `next.config.js`:
-
-```js
-/** @type {import('next').NextConfig} */
-
-const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ["@medusajs/product"],
-  },
-}
-
-module.exports = nextConfig
-```
-
-5\. Create API Route
-
-The product module is ready for use now! You can now use it to create API endpoints within your Next.js application.
-
-For example, create the file `app/api/products/route.ts` with the following content:
+Resolve the module's service from the container, for example in a workflow step:
 
 ```ts
-import { NextResponse } from "next/server"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
 
-import { initialize as initializeProductModule } from "@medusajs/product"
+const createProductStep = createStep(
+  "create-product",
+  async ({}, { container }) => {
+    const productService = container.resolve(Modules.PRODUCT)
 
-export async function GET(request: Request) {
-  const productService = await initializeProductModule()
+    const product = await productService.createProducts({
+      title: "Medusa Shirt",
+      options: [
+        {
+          title: "Color",
+          values: ["Black", "White"],
+        },
+      ],
+      variants: [
+        {
+          title: "Black Shirt",
+          options: {
+            Color: "Black",
+          },
+        },
+      ],
+    })
 
-  const data = await productService.list()
-
-  return NextResponse.json({ products: data })
-}
+    return new StepResponse({ product }, product.id)
+  }
+)
 ```
 
-6\. Test your Next.js application
-To test the endpoint you added, start your Next.js application with the following command:
+## Resources
 
-```
-npm run dev
-```
-
-Then, open in your browser the URL `http://localhost:3000/api/products`. If you seeded your database with demo products, or you’re using a Medusa database schema, you’ll receive the products in your database. Otherwise, the request will return an empty array.
+- [Product Module](https://docs.medusajs.com/resources/commerce-modules/product)
+- [Product Module workflows](https://docs.medusajs.com/resources/commerce-modules/product/workflows)
+- [Extend the Product Module](https://docs.medusajs.com/resources/commerce-modules/product/extend)

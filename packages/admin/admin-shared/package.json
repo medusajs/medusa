@@ -1,7 +1,7 @@
 {
   "name": "@medusajs/admin-shared",
   "description": "Shared code for Medusa admin packages.",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
@@ -16,8 +16,12 @@
   },
   "files": [
     "dist",
-    "package.json"
+    "package.json",
+    "AGENTS.md"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "scripts": {
     "build": "yarn run -T tsup"
   },

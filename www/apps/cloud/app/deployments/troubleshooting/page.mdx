@@ -558,6 +558,43 @@ After adding this export, commit the change and push to trigger a new deployment
 
 ---
 
+## Storefront Prerender Error from React Version Mismatch in Monorepos
+
+If your storefront build fails while prerendering error pages, such as `/404` or `/500`, with an error similar to the following, your monorepo may install more than one version of React:
+
+```bash
+Error: Minified React error #31; visit
+https://react.dev/errors/31?args[]=object%20with%20keys
+```
+
+This happens when the root `package.json` and the storefront's `package.json` require different major versions of React. For example, the root `package.json` has React 18 in its `devDependencies`, while the storefront requires React 19. The storefront then renders with a mix of React 18 and React 19 packages, which fails during prerendering.
+
+Type overrides can hide this mismatch. For example, if your root `package.json` forces `@types/react` to version 19 with pnpm `overrides`, type checking passes even though React 18 is still installed at runtime.
+
+### Detect the React Version Mismatch
+
+Compare the versions of `react`, `react-dom`, `@types/react`, and `@types/react-dom` in your root `package.json` and in your storefront's `package.json`. Also check the `overrides` or `resolutions` fields in your root `package.json`.
+
+Then, list the installed React versions from the storefront's directory. For example, with pnpm:
+
+```bash
+pnpm why react react-dom
+```
+
+If the output shows more than one major version of `react` or `react-dom`, your monorepo has a React version mismatch.
+
+### Fix the React Version Mismatch
+
+Align React to the version that your storefront requires across all `package.json` files in your monorepo:
+
+1. Update or remove `react` and `react-dom` in your root `package.json` so they match the storefront's versions. If the root package doesn't use React, remove them.
+2. Make sure any `overrides` or `resolutions` for `@types/react` and `@types/react-dom` match the installed React version.
+3. Run your package manager's install command locally to update the lockfile.
+4. Run the storefront's `build` script locally to confirm the build succeeds.
+5. Commit the updated `package.json` files and lockfile, then push to trigger a new deployment.
+
+---
+
 ## Next.js 16 Middlewares Not Supported on Cloud
 
 If you're using a Next.js 16 storefront with a middleware, also known as proxy, your build will fail with the following error:

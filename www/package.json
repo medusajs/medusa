@@ -35,12 +35,13 @@
     "@babel/eslint-parser": "^7.25.9",
     "@eslint/js": "9.13.0",
     "@medusajs/eslint-plugin": "link:../packages/eslint-plugin",
+    "@next/eslint-plugin-next": "16.4.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@types/eslint__js": "8.42.3",
     "@vitejs/plugin-react": "^4.3.4",
-    "eslint-config-next": "15.3.6",
+    "eslint-config-next": "16.4.2",
     "eslint-config-prettier": "9.1.0",
     "eslint-config-turbo": "2.2.3",
     "eslint-plugin-markdown": "5.1.0",
@@ -52,6 +53,6 @@
     "vitest": "^2.1.8"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=20.9.0"
   }
 }

@@ -1,4 +1,4 @@
-name: Draft Release
+name: Publish Release
 
 on:
   workflow_dispatch:
@@ -11,17 +11,40 @@ on:
         description: "Additional instructions for Claude (e.g. 'Make sure to highlight the new Subscriptions module' or 'The cart breaking change is the most important one')"
         required: false
         type: string
+      draft:
+        description: "Create the release as a draft instead of publishing it"
+        required: false
+        default: false
+        type: boolean
+  workflow_call:
+    inputs:
+      version:
+        required: false
+        type: string
+      additional_instructions:
+        required: false
+        type: string
+      draft:
+        required: false
+        default: false
+        type: boolean
+    outputs:
+      release_url:
+        value: ${{ jobs.draft-release.outputs.release_url }}
+
 concurrency:
   group: draft-release
   cancel-in-progress: false
 
 jobs:
   draft-release:
-    name: Generate draft release with Claude
+    name: Generate and publish release with Claude
     runs-on: ubuntu-latest
     permissions:
       contents: write
       id-token: write
+    outputs:
+      release_url: ${{ steps.release.outputs.url }}
 
     steps:
       - name: Checkout repository
@@ -41,8 +64,8 @@ jobs:
         run: |
           git fetch --tags
 
-          if [ -n "${{ github.event.inputs.version }}" ]; then
-            VERSION="${{ github.event.inputs.version }}"
+          if [ -n "${{ inputs.version }}" ]; then
+            VERSION="${{ inputs.version }}"
           else
             # Auto-detect: use the latest stable tag
             VERSION=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | sed 's/^v//')
@@ -71,6 +94,50 @@ jobs:
           echo "tag=$PREVIOUS_TAG" >> "$GITHUB_OUTPUT"
           echo "Previous release tag: $PREVIOUS_TAG"
 
+      # Draft notes carry a `release-notes-sha` marker with the commit they were
+      # written up to, so a later run only feeds Claude the commits merged since.
+      - name: Find existing draft release notes
+        id: existing
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ steps.version.outputs.tag }}
+          RANGE_END: ${{ steps.version.outputs.range_end }}
+          PREVIOUS_TAG: ${{ steps.previous.outputs.tag }}
+        run: |
+          set -euo pipefail
+
+          HEAD_SHA=$(git rev-parse "$RANGE_END")
+          echo "notes_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+
+          RELEASE=$(gh api "repos/$REPO/releases?per_page=30" \
+            --jq '[.[] | select(.draft and ((.body // "") | contains("<!-- release-notes-sha: ")))][0] // empty')
+          if [ -z "$RELEASE" ]; then
+            echo "No existing draft release notes; generating them from scratch."
+            echo "mode=create" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "id=$(jq -r '.id' <<< "$RELEASE")" >> "$GITHUB_OUTPUT"
+          DRAFT_TAG=$(jq -r '.tag_name' <<< "$RELEASE")
+          jq -r '.body' <<< "$RELEASE" | grep -v '^<!-- release-notes-sha: ' > /tmp/existing-notes.md
+          NOTES_SHA=$(jq -r '.body' <<< "$RELEASE" | sed -nE 's/^<!-- release-notes-sha: ([0-9a-f]{40}) -->$/\1/p' | tail -1)
+
+          if [ -n "$NOTES_SHA" ] && git merge-base --is-ancestor "$NOTES_SHA" "$HEAD_SHA" 2>/dev/null; then
+            git rev-list "$NOTES_SHA..$HEAD_SHA" > /tmp/new-shas.txt
+          else
+            git rev-list "$PREVIOUS_TAG..$HEAD_SHA" > /tmp/new-shas.txt
+          fi
+          NEW_COMMITS=$(wc -l < /tmp/new-shas.txt | tr -d ' ')
+          echo "Found draft $DRAFT_TAG written up to ${NOTES_SHA:0:7}; $NEW_COMMITS new commit(s)."
+
+          if [ "$NEW_COMMITS" = "0" ] && [ "$DRAFT_TAG" = "$TAG" ]; then
+            cp /tmp/existing-notes.md /tmp/release-notes.md
+            echo "mode=unchanged" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=update" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
@@ -93,6 +160,7 @@ jobs:
       # warns — the notes are the deliverable and the banner is decoration.
       - name: Render and upload banner to Cloudinary
         id: banner
+        if: steps.existing.outputs.mode != 'unchanged'
         continue-on-error: true
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
@@ -213,13 +281,22 @@ jobs:
 
       - name: Build Claude prompt
         id: prompt
+        if: steps.existing.outputs.mode != 'unchanged'
         run: |
           TAG="${{ steps.version.outputs.tag }}"
           PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
           REPO="${{ github.repository }}"
           MINOR_CHANGESETS="${{ steps.changesets.outputs.minor_changesets }}"
-          ADDITIONAL_INSTRUCTIONS="${{ github.event.inputs.additional_instructions }}"
-          COMMITS=$(cat /tmp/commits.json)
+          ADDITIONAL_INSTRUCTIONS="${{ inputs.additional_instructions }}"
+          if [ "${{ steps.existing.outputs.mode }}" = "update" ]; then
+            COMMITS=$(jq --rawfile shas /tmp/new-shas.txt '[.[] | select(.hash as $h | $shas | contains($h))]' /tmp/commits.json)
+            TASK="Release notes for this release were already drafted, and maintainers may have edited them since. Read them from /tmp/existing-notes.md. Update them for Medusa ${TAG} using the commits below, which were merged after the notes were written: add, change, or remove entries as those commits require, and update the tag and highlights in the title block if needed. Keep all other existing content, including manual edits, exactly as it is. Follow every rule in those files for anything you add or change."
+            COMMITS_HEADING="Commits merged since the notes were written (JSON):"
+          else
+            COMMITS=$(cat /tmp/commits.json)
+            TASK="Write GitHub release notes for Medusa ${TAG} by strictly following every rule in those files."
+            COMMITS_HEADING="Commits JSON:"
+          fi
 
           DELIMITER="CLAUDE_PROMPT_EOF"
           {
@@ -229,7 +306,7 @@ jobs:
 
           Step 1 — You MUST load the /writing-releases skill and read all its files, especially the SKILL.md which defines the rules, format, structure, and constraints for writing release notes. Then read the reference files that it links to.
 
-          Step 2 — Write GitHub release notes for Medusa ${TAG} by strictly following every rule in those files.
+          Step 2 — ${TASK}
 
           IMPORTANT: Only create /tmp/release-notes.md using the Write tool. Do not use git commands. Do not create any other files.
 
@@ -264,7 +341,7 @@ jobs:
           - pr_author_login: GitHub username of PR author (if available)
           - pr_labels: labels on the PR
 
-          Commits JSON:
+          ${COMMITS_HEADING}
           ${COMMITS}
           PROMPT
 
@@ -284,6 +361,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Generate release notes with Claude
+        if: steps.existing.outputs.mode != 'unchanged'
         uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
@@ -308,6 +386,13 @@ jobs:
 
           const lines = readFileSync(path, "utf8").split("\n")
 
+          const oldBannerAt = lines.findIndex((line) =>
+            /^!\[v\d+\.\d+\.\d+\]\(/.test(line)
+          )
+          if (oldBannerAt !== -1) {
+            lines.splice(oldBannerAt, lines[oldBannerAt + 1] === "" ? 2 : 1)
+          }
+
           // The banner belongs inside the CMS block, above the title heading —
           // it is consumed by the CMS and never rendered on the release page.
           const breakAt = lines.findIndex((line) =>
@@ -329,12 +414,17 @@ jobs:
           console.log(`Inserted banner above line ${headingAt + 1}`)
           EOF
 
-      - name: Create draft GitHub release
+      - name: Create or update GitHub release
+        id: release
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          RELEASE_ID: ${{ steps.existing.outputs.id }}
+          NOTES_SHA: ${{ steps.existing.outputs.notes_sha }}
+          DRAFT: ${{ inputs.draft && 'true' || 'false' }}
         run: |
+          set -euo pipefail
           TAG="${{ steps.version.outputs.tag }}"
-          PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
 
           if [ ! -f /tmp/release-notes.md ]; then
             echo "ERROR: /tmp/release-notes.md was not created by Claude"
@@ -350,13 +440,23 @@ jobs:
           fi
           echo "Release title: $RELEASE_TITLE"
 
-          ARGS=(
-            "$TAG"
-            --title "$RELEASE_TITLE"
-            --notes-file /tmp/release-notes.md
-            --draft
-            --target "${{ github.sha }}"
-          )
+          if [ "$DRAFT" = "true" ]; then
+            printf '\n<!-- release-notes-sha: %s -->\n' "$NOTES_SHA" >> /tmp/release-notes.md
+          fi
 
-          gh release create "${ARGS[@]}"
-          echo "Draft release created for $TAG"
+          PAYLOAD=$(jq -n \
+            --arg tag "$TAG" \
+            --arg name "$RELEASE_TITLE" \
+            --arg target "${{ github.sha }}" \
+            --rawfile body /tmp/release-notes.md \
+            --argjson draft "$DRAFT" \
+            '{tag_name: $tag, name: $name, target_commitish: $target, body: $body, draft: $draft}')
+
+          if [ -n "$RELEASE_ID" ]; then
+            URL=$(gh api -X PATCH "repos/$REPO/releases/$RELEASE_ID" --input - --jq '.html_url' <<< "$PAYLOAD")
+          else
+            URL=$(gh api -X POST "repos/$REPO/releases" --input - --jq '.html_url' <<< "$PAYLOAD")
+          fi
+
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Release $TAG saved (draft: $DRAFT): $URL"

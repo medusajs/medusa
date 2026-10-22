@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/deps",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "Dependencies for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -12,14 +12,18 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=22.15.0"
+    "node": ">=22.22.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "exports": {
     ".": "./dist/index.js",
     "./opentelemetry/instrumentation-pg": "./dist/opentelemetry-instrumentation-pg.js",
@@ -48,7 +52,7 @@
     "@mikro-orm/migrations": "6.6.14",
     "@mikro-orm/postgresql": "6.6.14",
     "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/instrumentation-pg": "^0.52.0",
+    "@opentelemetry/instrumentation-pg": "^0.73.0",
     "@opentelemetry/resources": "^2.7.0",
     "@opentelemetry/sdk-node": "^0.220.0",
     "@opentelemetry/sdk-trace-node": "^2.7.0",

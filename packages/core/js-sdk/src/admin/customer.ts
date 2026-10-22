@@ -143,6 +143,51 @@ export class Customer {
   }
 
   /**
+   * This method exports the customers matching the specified filters. It sends
+   * a request to the Export Customers API route.
+   *
+   * The export runs in the background. When it finishes, a notification with a
+   * link to the exported file is sent through the `feed` channel, which the
+   * admin dashboard displays.
+   *
+   * This is useful for satisfying data subject access requests (for example,
+   * GDPR Article 15).
+   *
+   * @param body - The export's configuration, such as the file format.
+   * @param query - Filters and fields to determine which customers to export.
+   * @param headers - Headers to pass in the request.
+   * @returns The export's transaction details.
+   *
+   * @since 2.18.0
+   *
+   * @example
+   * sdk.admin.customer.export({
+   *   format: "json"
+   * }, {
+   *   fields: "id,email,*addresses,*orders",
+   *   id: "cus_123"
+   * })
+   * .then(({ transaction_id }) => {
+   *   console.log(transaction_id)
+   * })
+   */
+  async export(
+    body: HttpTypes.AdminExportCustomerRequest,
+    query?: HttpTypes.AdminCustomerFilters,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminExportCustomerResponse>(
+      `/admin/customers/export`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  /**
    * This method retrieves a customer by its ID. It sends a request to the
    * [Get Customer](https://docs.medusajs.com/api/admin/customers/get-a-customer)
    * API route.
