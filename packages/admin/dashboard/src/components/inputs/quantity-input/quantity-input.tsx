@@ -62,7 +62,7 @@ export const QuantityInput = forwardRef<
         )}
         {...props}
       />
-      <div className="flex h-full max-w-16 shrink-0 items-center border-l px-2">
+      <div className="flex h-full max-w-16 shrink-0 items-center border-s px-2">
         <Text
           className="text-ui-fg-muted truncate"
           size="small"

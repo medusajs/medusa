@@ -81,6 +81,7 @@ yarn i18n:sync missing
 ## Gotchas
 
 - After adding or removing keys in `en.json`, run `yarn i18n:schema` and commit `$schema.json`; `src/i18n/translations/__tests__/validate-translations.spec.ts` validates every locale against it.
+- Keep the QuantityInput unit separator on the inline start of the suffix; preserve input dimensions, native props, and the unitless Input fallback.
 - Add new strings to `en.json` only. Other locales are filled by the daily `.github/workflows/admin-i18n-sync.yml` workflow.
 - A new `widgetsZonePrefix` on a core page also needs its zones added to `INJECTION_ZONES` in `@medusajs/admin-shared`. Do not add `.before` / `.after` zones; they are legacy.
 - Layout preferences are stored per `widgetsZonePrefix`, keyed by widget id and `LayoutComposer.Entry` id. Renaming an entry id drops users' saved placement for it.

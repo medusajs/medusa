@@ -47,6 +47,8 @@ The Medusa Admin dashboard: the React and Vite single-page app that merchants us
 
 ## Usage
 
+Quantity input unit separators follow the reading direction. Numeric input behavior and controls without a unit are preserved.
+
 Import shared admin components, hooks, and utilities in your admin extensions:
 
 ```tsx
