@@ -35,7 +35,7 @@ const FilterChip = ({
         className={clx(
           "flex items-center justify-center whitespace-nowrap px-2 py-1",
           {
-            "border-r": !!(value || hadPreviousValue),
+            "border-e": !!(value || hadPreviousValue),
           }
         )}
       >
@@ -45,7 +45,7 @@ const FilterChip = ({
       </div>
       <div className="flex w-full items-center overflow-hidden">
         {hasOperator && !!(value || hadPreviousValue) && (
-          <div className="border-r p-1 px-2">
+          <div className="border-e p-1 px-2">
             <Text
               size="small"
               weight="plus"
@@ -60,7 +60,7 @@ const FilterChip = ({
           <RadixPopover.Trigger
             asChild
             className={clx(
-              "flex-1 cursor-pointer overflow-hidden border-r p-1 px-2",
+              "flex-1 cursor-pointer overflow-hidden border-e p-1 px-2",
               {
                 "hover:bg-ui-bg-field-hover": !readonly,
                 "data-[state=open]:bg-ui-bg-field-hover": !readonly,

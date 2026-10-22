@@ -36,6 +36,10 @@
 
 The Medusa Admin dashboard: the React and Vite single-page app that merchants use to manage a Medusa store. `@medusajs/medusa` builds it with `@medusajs/admin-bundler` and serves it at the `admin.path` set in `medusa-config.ts` (`/app` by default), so you don't install or run it yourself. Admin extensions can import its components, hooks, and utilities from the subpaths below.
 
+## Layout direction
+
+Filter-chip label, operator, and value separators follow the nearest HTML direction: right in LTR and left in RTL. Existing separator visibility and filter interactions are preserved.
+
 ## At a glance
 
 | | |

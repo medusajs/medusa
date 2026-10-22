@@ -83,6 +83,7 @@ yarn i18n:sync missing
 - After adding or removing keys in `en.json`, run `yarn i18n:schema` and commit `$schema.json`; `src/i18n/translations/__tests__/validate-translations.spec.ts` validates every locale against it.
 - Add new strings to `en.json` only. Other locales are filled by the daily `.github/workflows/admin-i18n-sync.yml` workflow.
 - A new `widgetsZonePrefix` on a core page also needs its zones added to `INJECTION_ZONES` in `@medusajs/admin-shared`. Do not add `.before` / `.after` zones; they are legacy.
+- Keep filter-chip separators on the inline end so nested HTML direction overrides work without changing filter state or interaction behavior.
 - Layout preferences are stored per `widgetsZonePrefix`, keyed by widget id and `LayoutComposer.Entry` id. Renaming an entry id drops users' saved placement for it.
 - The `src/exports/*` surface is documented API for extensions. Changing a signature breaks plugins; update the matching page under `www/apps/resources/app/admin-components`.
 - A new virtual module must be added to `external` in `tsup.config.cjs` and to `VIRTUAL_MODULES` in `@medusajs/admin-shared`.
