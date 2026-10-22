@@ -198,3 +198,6 @@ export const AdminBulkTagOrders = z
     remove: z.array(z.string()).optional(),
   })
   .strict()
+  .refine((data) => !!data.add?.length || !!data.remove?.length, {
+    message: "At least one of `add` or `remove` must be a non-empty array",
+  })

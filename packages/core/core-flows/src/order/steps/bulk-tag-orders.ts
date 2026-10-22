@@ -45,22 +45,24 @@ export type BulkTagOrdersStepInput = {
   remove?: string[]
 }
 
-type BulkTagOrdersCompensationInput = {
-  /**
-   * Each order's tag ids before the step ran, so compensation can restore
-   * them exactly.
-   */
-  prevTagIdsByOrder: Record<string, string[]>
-}
-
 /**
  * Builds a `sharedContext` that keeps every `IOrderModuleService` call it's
  * passed to on the same `EntityManager`/identity map instead of each
  * forking its own, and returns that manager alongside it so the caller can
  * flush it explicitly - see the `bulkTagOrdersStep` doc comment below for
  * why both of those are necessary.
+ *
+ * Starts from the step's own ambient `Context` (the `context` field of its
+ * `StepExecutionContext`) rather than building one from scratch, so
+ * `eventGroupId`/`transactionId`/`idempotencyKey` etc. - which the
+ * workflow engine already put there for this run - survive onto every
+ * call made through the returned context instead of silently getting
+ * dropped.
  */
-function buildSharedEntityManagerContext(service: IOrderModuleService): {
+function buildSharedEntityManagerContext(
+  service: IOrderModuleService,
+  ambientContext: Context
+): {
   context: Context
   manager: { flush(): Promise<void> }
 } {
@@ -68,11 +70,36 @@ function buildSharedEntityManagerContext(service: IOrderModuleService): {
   return {
     manager,
     context: {
+      ...ambientContext,
       __type: MedusaContextType,
       manager,
       transactionManager: manager,
     },
   }
+}
+
+/**
+ * `updateOrders`'s array-form overload only declares `sharedContext` as
+ * its 2nd parameter in `IOrderModuleService`, but the real
+ * implementation's `@MedusaContext`-decorated parameter is the 3rd
+ * (`dataOrIdOrSelector, data?, sharedContext`) - calling through the
+ * 2-arg overload silently drops the context into the unused `data` slot
+ * instead (the same class of bug fixed for `updateOrderTags` in a prior
+ * task). Calling with the explicit 3-arg shape below lines the context up
+ * with the real parameter position so the update actually runs on the
+ * manager the context carries.
+ */
+function updateOrdersWithContext(
+  service: IOrderModuleService,
+  data: UpdateOrderTagsRelationDTO[],
+  sharedContext: Context
+): Promise<OrderDTO[]> {
+  const updateOrders = service.updateOrders as unknown as (
+    data: UpdateOrderTagsRelationDTO[],
+    data2: undefined,
+    sharedContext: Context
+  ) => Promise<OrderDTO[]>
+  return updateOrders(data, undefined, sharedContext)
 }
 
 export const bulkTagOrdersStepId = "bulk-tag-orders"
@@ -92,7 +119,7 @@ export const bulkTagOrdersStepId = "bulk-tag-orders"
  * already present in the *same* `EntityManager`'s identity map that
  * performs the update.
  *
- * Getting that sharing to actually happen takes three things, all verified
+ * Getting that sharing to actually happen takes four things, all verified
  * empirically against the real `ValidationError: Value for OrderTag.value
  * is required` crash (reproduced, then fixed, by iterating on this exact
  * step):
@@ -108,17 +135,25 @@ export const bulkTagOrdersStepId = "bulk-tag-orders"
  *    instead of calling `MikroOrmBaseRepository.transaction()` - which
  *    unconditionally forks *another* fresh manager, ignoring any `manager`
  *    option it's given).
- * 2. Mark the context with `__type: MedusaContextType`. Workflow steps
+ * 2. Build that context by *extending* the step's own ambient `Context`
+ *    (`StepExecutionContext.context`, carrying `eventGroupId`/
+ *    `transactionId`/`idempotencyKey`/etc. for this workflow run) rather
+ *    than constructing one from scratch, and mark it with
+ *    `__type: MedusaContextType`. Both parts matter: workflow steps
  *    resolve modules through a container whose `resolve()` wraps every
  *    module in a `Proxy` (`packages/core/orchestration/src/workflow/
- *    local-workflow.ts`, `contextualizedMedusaModules`). That proxy
- *    inspects the `@MedusaContext`-decorated argument of every call and,
- *    if it doesn't already look like a Medusa context (no `__type:
- *    MedusaContextType`), *replaces* it with the workflow's own ambient
- *    context - stripping `manager`/`transactionManager` off that
- *    replacement in the process. Without this marker, our carefully built
- *    `sharedContext` above never even reaches the decorators: the proxy
- *    silently substitutes it first.
+ *    local-workflow.ts`, `contextualizedMedusaModules`) that inspects the
+ *    `@MedusaContext`-decorated argument of every call and, if it doesn't
+ *    already carry `__type: MedusaContextType`, *replaces* it with the
+ *    workflow's own ambient context - stripping `manager`/
+ *    `transactionManager` off that replacement in the process. Without
+ *    the marker, a carefully built `sharedContext` never even reaches the
+ *    decorators: the proxy silently substitutes it first. And without
+ *    extending the ambient context first, the replacement we *do* control
+ *    would itself silently drop `eventGroupId`/`transactionId`/
+ *    `idempotencyKey` - latent today (nothing in the order module reacts
+ *    to an `ORDER_UPDATED` event yet), but a correctness trap for event
+ *    grouping/idempotency the day one is added.
  * 3. Pass the exact same `sharedContext` object into every call below -
  *    the validation lookups and the final batched `updateOrders` call.
  * 4. Flush the manager ourselves afterwards. Taking `updateOrders_`'s
@@ -138,10 +173,12 @@ export const bulkTagOrdersStepId = "bulk-tag-orders"
  */
 export const bulkTagOrdersStep = createStep(
   bulkTagOrdersStepId,
-  async (input: BulkTagOrdersStepInput, { container }) => {
+  async (input: BulkTagOrdersStepInput, { container, context }) => {
     const service = container.resolve<IOrderModuleService>(Modules.ORDER)
-    const { context: sharedContext, manager } =
-      buildSharedEntityManagerContext(service)
+    const { context: sharedContext, manager } = buildSharedEntityManagerContext(
+      service,
+      context
+    )
 
     const orderIds = input.order_ids
     const addIds = input.add ?? []
@@ -215,35 +252,23 @@ export const bulkTagOrdersStep = createStep(
       }
     })
 
-    // `updateOrders`'s array-form overload only declares `sharedContext` as
-    // its 2nd parameter in `IOrderModuleService`, but the real
-    // implementation's `@MedusaContext`-decorated parameter is the 3rd
-    // (`dataOrIdOrSelector, data?, sharedContext`) - calling through the
-    // 2-arg overload silently drops our `sharedContext` into the unused
-    // `data` slot instead (the same class of bug fixed for
-    // `updateOrderTags` in a prior task). Calling with the explicit 3-arg
-    // shape below lines our `sharedContext` up with the real parameter
-    // position so this one batched update actually runs on the same
-    // manager that loaded the orders/tags above.
-    const updateOrders = service.updateOrders as unknown as (
-      data: UpdateOrderTagsRelationDTO[],
-      data2: undefined,
-      sharedContext: Context
-    ) => Promise<OrderDTO[]>
-    const updatedOrders = await updateOrders(toUpdate, undefined, sharedContext)
+    const updatedOrders = await updateOrdersWithContext(
+      service,
+      toUpdate,
+      sharedContext
+    )
 
     // See point 4 above: nothing else flushes this manager.
     await manager.flush()
 
     return new StepResponse(updatedOrders, { prevTagIdsByOrder })
   },
-  async (compensationData, { container }) => {
+  async (compensationData, { container, context }) => {
     if (!compensationData?.prevTagIdsByOrder) {
       return
     }
 
-    const { prevTagIdsByOrder } =
-      compensationData as BulkTagOrdersCompensationInput
+    const { prevTagIdsByOrder } = compensationData
     const toRestore = Object.entries(prevTagIdsByOrder).map(
       ([orderId, tagIds]) => ({
         id: orderId,
@@ -256,8 +281,10 @@ export const bulkTagOrdersStep = createStep(
     }
 
     const service = container.resolve<IOrderModuleService>(Modules.ORDER)
-    const { context: sharedContext, manager } =
-      buildSharedEntityManagerContext(service)
+    const { context: sharedContext, manager } = buildSharedEntityManagerContext(
+      service,
+      context
+    )
 
     // Same reasoning as the main step: the tags being restored need to be
     // loaded into this same `sharedContext`/manager before `updateOrders`
@@ -274,12 +301,7 @@ export const bulkTagOrdersStep = createStep(
       )
     }
 
-    const updateOrders = service.updateOrders as unknown as (
-      data: UpdateOrderTagsRelationDTO[],
-      data2: undefined,
-      sharedContext: Context
-    ) => Promise<OrderDTO[]>
-    await updateOrders(toRestore, undefined, sharedContext)
+    await updateOrdersWithContext(service, toRestore, sharedContext)
     await manager.flush()
   }
 )

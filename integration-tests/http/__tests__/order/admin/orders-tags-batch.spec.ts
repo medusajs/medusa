@@ -73,12 +73,28 @@ medusaIntegrationTestRunner({
         expect(a.data.order.tags.map((t) => t.id)).toContain(tagPriority.id)
         expect(b.data.order.tags.map((t) => t.id)).toContain(tagPriority.id)
 
-        // Remove it again so later assertions in this test file aren't
-        // affected by order mutation ordering.
+        // Removing an already-persisted tag association also works, not
+        // just adding one.
         await api.post(
           "/admin/orders/tags/batch",
           { order_ids: [orderA.id, orderB.id], remove: [tagPriority.id] },
           adminHeaders
+        )
+
+        const aAfterRemove = await api.get(
+          `/admin/orders/${orderA.id}?fields=*tags`,
+          adminHeaders
+        )
+        const bAfterRemove = await api.get(
+          `/admin/orders/${orderB.id}?fields=*tags`,
+          adminHeaders
+        )
+
+        expect(aAfterRemove.data.order.tags.map((t) => t.id)).not.toContain(
+          tagPriority.id
+        )
+        expect(bAfterRemove.data.order.tags.map((t) => t.id)).not.toContain(
+          tagPriority.id
         )
       })
 
@@ -147,6 +163,18 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
         expect(after.data.order.tags).toEqual(before.data.order.tags)
+      })
+
+      it("rejects a request with neither add nor remove", async () => {
+        const response = await api
+          .post(
+            "/admin/orders/tags/batch",
+            { order_ids: [orderA.id] },
+            adminHeaders
+          )
+          .catch((e) => e.response)
+
+        expect(response.status).toEqual(400)
       })
     })
   },
