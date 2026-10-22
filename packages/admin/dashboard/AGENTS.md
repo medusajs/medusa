@@ -77,6 +77,7 @@ yarn i18n:sync missing
 - `yarn dev` env vars (in `.env`): `VITE_MEDUSA_BACKEND_URL` (default `http://localhost:9000`), `VITE_MEDUSA_STOREFRONT_URL`, `VITE_MEDUSA_BASE`, and `VITE_MEDUSA_PROJECT`: path to a project's `src/admin` directory whose extensions should be loaded.
 - Vitest runs in the `node` environment by default. Component tests need `// @vitest-environment jsdom` on the first line.
 - Tests live in `__tests__/` directories or as `*.spec.tsx` beside the source.
+- Keep CampaignBudget and CampaignSpend accent borders and their spacing on inline start; preserve translated content and budget-menu navigation.
 
 ## Gotchas
 

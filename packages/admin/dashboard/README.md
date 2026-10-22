@@ -83,6 +83,8 @@ The dev server reads these variables from a `.env` file:
 
 Translation files live in `src/i18n/translations`. `en.json` is the source of truth, and every other `<locale>.json` file is translated from it.
 
+Campaign budget and spend accents follow the reading direction, preserving displayed amounts and budget editing.
+
 ### Find missing translations
 
 ```bash

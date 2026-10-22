@@ -57,7 +57,7 @@ export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
 
       <div>
         <Text
-          className="text-ui-fg-subtle border-ui-border-strong border-l-4 ps-3"
+          className="text-ui-fg-subtle border-ui-border-strong border-s-4 ps-3"
           size="small"
           leading="compact"
         >

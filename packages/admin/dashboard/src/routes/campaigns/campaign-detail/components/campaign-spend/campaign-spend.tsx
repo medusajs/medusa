@@ -30,7 +30,7 @@ export const CampaignSpend = ({ campaign }: CampaignSpendProps) => {
 
       <div>
         <Text
-          className="text-ui-fg-subtle border-ui-border-strong border-l-4 pl-3"
+          className="text-ui-fg-subtle border-ui-border-strong border-s-4 ps-3"
           size="small"
           leading="compact"
         >
