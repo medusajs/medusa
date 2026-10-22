@@ -6501,9 +6501,21 @@ In this example, Medusa reports the values of the `q`, `limit`, and `offset` que
 To report the full query string without redaction, set `allowedQueryParams` to `"*"`:
 
 ```ts title="instrumentation.ts"
-http: {
-  allowedQueryParams: "*",
-},
+export function register() {
+  registerOtel({
+    serviceName: "medusajs",
+    exporter,
+    instrument: {
+      http: {
+        allowedQueryParams: "*",
+      },
+      workflows: true,
+      query: true,
+      db: true,
+      cache: true,
+    },
+  })
+}
 ```
 
 Query parameters can hold personal data or secrets, such as search terms, email addresses, or OAuth codes. Only allow query parameters whose values are safe to send to your exporter.
@@ -33439,7 +33451,7 @@ Learn more about using the publishable API key in the [Storefront Development gu
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.21.2. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.21.2).
+Medusa's current version is v2.22. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
 
 ## Medusa Versioning
 
@@ -45707,9 +45719,9 @@ The `metadata` property is available since Medusa [v2.15.0](https://github.com/m
 
 #### Retry Refunds Safely with an Idempotency Key
 
-The `idempotency_key` property is available since Medusa [v2.21.3](https://github.com/medusajs/medusa/releases/tag/v2.21.3).
+The `idempotency_key` property is available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
 
-If you may retry a refund, such as when a background job or a return flow issues it, pass an `idempotency_key` to the `refundPaymentWorkflow` or the Payment Module's `refundPayment` method. The Payment Module forwards the key to the payment provider, so retrying a refund with the same key never refunds the customer twice, even when the response of the original request was lost.
+To retry a refund, such as when a background job or a return flow issues it, pass an `idempotency_key` to the `refundPaymentWorkflow` or the Payment Module's `refundPayment` method. The Payment Module forwards the key to the payment provider, so retrying a refund with the same key never refunds the customer twice, even when the response of the original request was lost.
 
 Without a key, every request starts a new refund. So, if you retry a refund whose first attempt may have succeeded, the customer can receive the refund twice.
 
@@ -45751,7 +45763,7 @@ When you pass an `idempotency_key`, the Payment Module handles a retry with the 
 
 You can also pass the `idempotency_key` in the request body of the [Refund Payment API route](undefined/api/admin#payments_postpaymentsidrefund).
 
-Since Medusa v2.21.3, a refund has a `status` property whose value is `pending` while the payment provider processes the refund, `succeeded` once the provider confirms it, or `failed` if the provider doesn't confirm it. Medusa soft-deletes failed refunds, so they don't count toward the payment's refunded amount.
+Since Medusa v2.22.0, a refund has a `status` property whose value is `pending` while the payment provider processes the refund, `succeeded` once the provider confirms it, or `failed` if the provider doesn't confirm it. Medusa soft-deletes failed refunds, so they don't count toward the payment's refunded amount.
 
 The `refundPaymentWorkflow` returns the payment, which it retrieves before issuing the refund. So, the payment's `refunds` property doesn't include the new refund. To get the new refund, retrieve the payment again after the workflow finishes.
 
@@ -48179,7 +48191,7 @@ The `remove` array accepts the IDs of options to remove from the product.
 
 ### Remove an Option from a Product with Variants
 
-Since Medusa v2.21.3, you can remove an option from a product even when the product's variants use that option's values. Medusa removes the option's values from the product's variants. The variants themselves aren't deleted.
+Since Medusa v2.22.0, you can remove an option from a product even when the product's variants use that option's values. Medusa removes the option's values from the product's variants. The variants themselves aren't deleted.
 
 However, if removing the option's values makes two or more variants have the same combination of option values, Medusa throws an error and doesn't remove the option. For example, if a product has the options Size and Color, and has the variants "S / Blue" and "S / Red", removing the Color option fails because both variants would only have the value "S".
 
@@ -63317,7 +63329,7 @@ If your store has more than 200 products in a channel, page through the results 
 
 ### Changing Price Lists
 
-The price list events are available since Medusa [v2.21.3](https://github.com/medusajs/medusa/releases/tag/v2.21.3).
+The price list events are available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
 
 A price list overrides the prices of the variants it holds prices for, so changing a price list changes the prices in the products' documents. Medusa emits the following events when a price list or its prices change:
 
