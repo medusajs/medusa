@@ -354,7 +354,13 @@ export type RbacScopeConfig = {
 }
 
 export type AuthzContextConfig = {
-  /**x
+  /**
+   * The `query.graph` entity the actor is read from when walking the grantee
+   * paths. Defaults to the actor type itself, which is right when the two
+   * share a name (`user`) and wrong when they do not (`api-key` -> `api_key`).
+   */
+  actor_entity?: string
+  /**
    * Entities that can hold role assignments reachable from the actor in the graph. Used
    * to build the AuthzContext necessary to resolve the actor's roles.
    */

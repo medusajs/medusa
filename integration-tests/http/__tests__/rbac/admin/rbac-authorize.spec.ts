@@ -206,6 +206,70 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("secret API keys", () => {
+      const basicAuth = (token: string) => ({
+        headers: {
+          authorization: `Basic ${Buffer.from(`${token}:`).toString("base64")}`,
+        },
+      })
+
+      // A key acts with the roles of the user that created it (the default
+      // `api-key` actor config). Created through the module so that creators
+      // without `api_key:create` can be exercised too.
+      const createSecretKey = async (createdBy: string) => {
+        const apiKeyModule = container.resolve(Modules.API_KEY)
+        const apiKey = await apiKeyModule.createApiKeys({
+          title: `key of ${createdBy}`,
+          type: "secret",
+          created_by: createdBy,
+        })
+        return basicAuth(apiKey.token)
+      }
+
+      it("resolves api keys through their creator by default", async () => {
+        const rbacModule = container.resolve(Modules.RBAC)
+
+        expect(
+          await rbacModule.retrieveActorAutzContextConfig("api-key")
+        ).toEqual({
+          actor_entity: "api_key",
+          grantees: [{ entity: "user", path: "created_by" }],
+        })
+        expect(await rbacModule.retrieveActorAutzContextConfig("user")).toEqual(
+          {
+            grantees: [{ entity: "user", path: "id" }],
+          }
+        )
+      })
+
+      it("acts with the roles of the user that created the key", async () => {
+        const [admin] = await container
+          .resolve(Modules.USER)
+          .listUsers({ email: "admin@medusa.js" })
+        const headers = await createSecretKey(admin.id)
+
+        const response = await api.get("/admin/products", headers)
+        expect(response.status).toEqual(200)
+      })
+
+      it("is limited to the creator's policies", async () => {
+        const headers = await createSecretKey(unscopedReaderId)
+
+        const products = await api.get("/admin/products", headers)
+        expect(products.status).toEqual(200)
+
+        const error = await api.get("/admin/customers", headers).catch((e) => e)
+        expect(error.response.status).toEqual(403)
+      })
+
+      it("is forbidden when the creator holds no roles", async () => {
+        const headers = await createSecretKey(noRolesId)
+
+        const error = await api.get("/admin/products", headers).catch((e) => e)
+        expect(error.response.status).toEqual(403)
+      })
+    })
+
     describe("scope matching", () => {
       const permissionsFor = async (headers, scope?: typeof SCOPE) => {
         const query = scope ? `?scope=${scope.type}&scope_id=${scope.id}` : ""

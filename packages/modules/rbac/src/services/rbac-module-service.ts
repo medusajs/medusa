@@ -6,6 +6,7 @@ import {
   RbacRoleDTO,
 } from "@medusajs/framework/types"
 import {
+  deduplicate,
   InjectManager,
   MedusaContext,
   MedusaService,
@@ -82,18 +83,18 @@ export default class RbacModuleService
     this.rbacRoleService = rbacRoleService
     this.rbacPolicyService = rbacPolicyService
 
-    // We always auto inject the user actor authz config
     this.options_ = {
-      ...options,
       actors: {
-        ...(options.actors ?? {}),
+        ...options.actors,
         user: {
-          grantees: [
-            {
-              entity: "user",
-              path: "id",
-            },
-          ],
+          grantees: deduplicate([
+            ...(options.actors?.user?.grantees ?? []),
+            { entity: "user", path: "id" },
+          ]),
+        },
+        "api-key": options.actors?.["api-key"] ?? {
+          actor_entity: "api_key",
+          grantees: [{ entity: "user", path: "created_by" }],
         },
       },
     }

@@ -53,7 +53,7 @@ export async function buildAuthzContext({
   const {
     data: [root],
   } = await query.graph({
-    entity: actor_type,
+    entity: config.actor_entity ?? actor_type,
     fields,
     filters: { id: actor_id },
   })
