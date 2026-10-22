@@ -505,7 +505,7 @@ Refer to the [Caching Module documentation](!resources!/infrastructure-modules/c
     {
       type: "`number` \| `((args: any[]) => number \| undefined)`",
       name: "ttl",
-      description: "The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the [configured TTL of the Caching Module](!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns a number indicating the TTL.",
+      description: "The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the [configured TTL of the Caching Module](!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.\n\nSet the TTL to `0` to cache the results without expiry. Learn more in the [Set TTL](#set-ttl) section.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns a number indicating the TTL.",
     },
     {
       type: "`boolean` \| `((args: any[]) => boolean \| undefined)`",
@@ -674,6 +674,30 @@ const { data: products } = await query.index({
 In the example above, you use a function to determine the TTL. The function accepts the arguments passed to `query.index` as an array.
 
 Then, you set the TTL based on the ID of the product passed in the filters.
+
+#### Cache Without Expiry
+
+To cache query results without expiry, set `cache.ttl` to `0`. The Redis Caching Module Provider and the in-memory cache don't set an expiry time in this case. So, the cached results remain in the cache until they're invalidated, either [automatically](#set-auto-invalidation) when the data changes or [manually](!resources!/infrastructure-modules/caching/guides/clear-cache) by clearing the cache.
+
+<Note title="Important">
+
+Setting `cache.ttl` to `0` doesn't enable caching on its own. Make sure to also set `cache.enable` to `true`.
+
+</Note>
+
+```ts highlights={[["6"], ["7"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    ttl: 0, // no expiry
+  },
+})
+```
+
+If you disable auto invalidation for results cached without expiry, they remain in the cache until you clear them manually. If you use a custom Caching Module Provider, make sure its [set method](!resources!/references/caching-module-provider#set) handles a TTL of `0`.
 
 ### Set Auto Invalidation
 
