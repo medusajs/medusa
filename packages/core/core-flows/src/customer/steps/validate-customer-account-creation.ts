@@ -1,5 +1,10 @@
 import type { IAuthModuleService } from "@medusajs/framework/types"
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import {
+  isString,
+  MedusaError,
+  Modules,
+  normalizeString,
+} from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 import { CreateCustomerAccountWorkflowInput } from "../workflows"
 
@@ -9,16 +14,13 @@ export const validateCustomerAccountCreationStepId =
 /**
  * This step validates the input data for creating a customer account.
  * The step throws an error if:
- * 
+ *
  * - The email is missing
- * - An auth identity is provided, and the email doesn't match the auth identity's email.
- *   The auth identity's email is the `entity_id` of its `emailpass` provider identity, or the
- *   `user_metadata.email` of any of its provider identities (for example, Google or GitHub).
- *   The comparison ignores case and surrounding whitespace. If the auth identity has no email,
- *   the step also throws an error.
+ * - An auth identity is provided, and the email doesn't match the auth identity's
+ *   `entity_id` or the `user_metadata.email` of any of its provider identities.
  * - A customer with the email already exists and has an account
  * - A guest customer with the email already exists
- * 
+ *
  * @example
  * const data = validateCustomerAccountCreation({
  *   authIdentityId: "au_1234",
@@ -50,19 +52,20 @@ export const validateCustomerAccountCreation = createStep(
         { relations: ["provider_identities"] }
       )
 
-      const normalize = (value: unknown) =>
-        typeof value === "string" ? value.trim().toLowerCase() : undefined
-
       const identityEmails = (authIdentity.provider_identities ?? [])
-        .flatMap((providerIdentity) => [
-          providerIdentity.provider === "emailpass"
-            ? normalize(providerIdentity.entity_id)
-            : undefined,
-          normalize(providerIdentity.user_metadata?.email),
-        ])
+        .flatMap((providerIdentity) => {
+          const userMetadataEmail = providerIdentity.user_metadata?.email
+
+          return [
+            normalizeString(providerIdentity.entity_id),
+            isString(userMetadataEmail)
+              ? normalizeString(userMetadataEmail)
+              : undefined,
+          ]
+        })
         .filter(Boolean)
 
-      if (!identityEmails.includes(normalize(email))) {
+      if (!identityEmails.includes(normalizeString(email))) {
         throw new MedusaError(
           MedusaError.Types.UNAUTHORIZED,
           "The customer's email must match the email of the authenticated identity"
