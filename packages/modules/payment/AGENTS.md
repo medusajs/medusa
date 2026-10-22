@@ -65,3 +65,5 @@ yarn migration:create          # after any change in src/models
 - Refund `idempotency_key`: same key + same amount replays a succeeded refund or retries a failed one, different amount throws, a recent `pending` one throws `CONFLICT` (a stale pending one is retried). Failed provider refunds are marked `failed` and soft-deleted.
 - Providers removed from config are not disabled: the loader only lists rows whose IDs are currently registered, so stale `payment_provider` rows keep their `is_enabled` value.
 - `getWebhookActionAndData` prefixes `pp_` to `provider` if missing.
+- `updatePaymentSession` passes the caller's `data` to the provider's `updatePayment` and deep-merges the returned data into the stored `data`, so providers can only clear keys by setting them to `null`.
+- `POST /store/payment-collections/:id/payment-sessions/:session_id` merges storefront input into `data.client` only. Providers must treat `data.client` as untrusted and keep amounts and references outside it.
