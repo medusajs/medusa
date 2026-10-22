@@ -97,9 +97,7 @@ medusaIntegrationTestRunner({
           `/admin/orders/${orderA.id}?fields=*tags`,
           adminHeaders
         )
-        expect(a.data.order.tags.map((t) => t.id)).not.toContain(
-          tagPriority.id
-        )
+        expect(a.data.order.tags.map((t) => t.id)).not.toContain(tagPriority.id)
       })
 
       it("fails the whole batch without mutating any order when one tag id doesn't exist", async () => {
