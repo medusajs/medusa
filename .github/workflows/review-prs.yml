@@ -19,6 +19,11 @@ on:
         required: false
         default: true
         type: boolean
+      skip_team:
+        description: "Skip PRs authored by members of .github/teams.yml. Ignored when pr_number is set."
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   # Runs only on workflow_dispatch: resolves which PRs to review. With
@@ -32,12 +37,19 @@ jobs:
     outputs:
       matrix: ${{ steps.get-prs.outputs.matrix }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
       - name: Get open non-draft PRs
         id: get-prs
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ inputs.pr_number }}
           SKIP_REVIEWED: ${{ inputs.skip_reviewed }}
+          SKIP_TEAM: ${{ inputs.skip_team }}
         run: |
           set -euo pipefail
 
@@ -59,11 +71,23 @@ jobs:
               .author.is_bot == false and
               ([.labels[].name] | contains([\"requires-linked-issue\"]) | not) and
               (if \"$SKIP_REVIEWED\" == \"true\" then ([.labels[].name] | contains([\"requires-rewrite\"])) or (([.labels[].name] | contains([\"initial-approval\"]) | not) and ([.labels[].name] | contains([\"requires-more\"]) | not)) else true end)
-            ) | {number: .number}]")
+            ) | {number: .number, author: .author.login}]")
+
+          if [[ "$SKIP_TEAM" == "true" ]]; then
+            KEEP="[]"
+            while IFS=$'\t' read -r NUMBER AUTHOR; do
+              if ! bash scripts/is_team_member.sh "$AUTHOR"; then
+                KEEP=$(jq -c --argjson n "$NUMBER" '. + [{number: $n}]' <<<"$KEEP")
+              fi
+            done < <(jq -r '.[] | [.number, .author] | @tsv' <<<"$matrix")
+            matrix="$KEEP"
+          else
+            matrix=$(jq -c 'map({number})' <<<"$matrix")
+          fi
 
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
-  # Runs on workflow_dispatch: reviews every open non-draft PR (team members included)
+  # Runs on workflow_dispatch: reviews every open non-draft PR (team members included unless skip_team)
   review-all:
     needs: get-open-prs
     if: needs.get-open-prs.outputs.matrix != '[]' && needs.get-open-prs.outputs.matrix != ''
