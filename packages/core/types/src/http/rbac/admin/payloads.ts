@@ -134,19 +134,13 @@ export interface AdminCreateRbacPolicy {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The policy's `key`, `resource` and `operation` are its identity and cannot be
+ * changed through the API: every role holding the policy would silently gain
+ * the new permission. Create a new policy instead, or change them from a
+ * migration script you control.
+ */
 export interface AdminUpdateRbacPolicy {
-  /**
-   * The policy's unique key.
-   */
-  key?: string
-  /**
-   * The resource the policy applies to.
-   */
-  resource?: PolicyResourceValue
-  /**
-   * The operation the policy allows.
-   */
-  operation?: PolicyOperationValue
   /**
    * The policy's name.
    */

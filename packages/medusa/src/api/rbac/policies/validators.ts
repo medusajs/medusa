@@ -48,11 +48,15 @@ export const AdminCreateRbacPolicy = z
   .strict()
 
 export type AdminUpdateRbacPolicyType = z.infer<typeof AdminUpdateRbacPolicy>
+/**
+ * `key`, `resource` and `operation` are deliberately not updatable through the
+ * API: they are the policy's identity, and every role holding the policy would
+ * silently gain the new permission. Allowing it would let any actor with
+ * `rbac_policy:update` widen a policy they hold into `*:*`. Create a new policy
+ * instead, or change them from a migration script you control.
+ */
 export const AdminUpdateRbacPolicy = z
   .object({
-    key: z.string().optional(),
-    resource: z.string().optional(),
-    operation: z.string().optional(),
     name: z.string().nullish(),
     description: z.string().nullish(),
     metadata: z.record(z.string(), z.unknown()).nullish(),

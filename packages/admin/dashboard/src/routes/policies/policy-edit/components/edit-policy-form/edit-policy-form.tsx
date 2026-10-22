@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
-import { Button, Input, Textarea, toast } from "@medusajs/ui"
+import { Button, Hint, Input, Label, Textarea, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -9,13 +9,12 @@ import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateRbacPolicy } from "../../../../../hooks/api/rbac-policies"
-import { PermissionOperation } from "../../../../../lib/permissions"
-import { PermissionResource } from "../../../../../lib/permissions"
 
+/**
+ * The key, resource and operation identify the policy and are immutable
+ * through the API, so the form only edits the descriptive fields.
+ */
 const EditPolicySchema = z.object({
-  key: z.string().min(1),
-  resource: z.string().min(1),
-  operation: z.string().min(1),
   name: z.string().optional(),
   description: z.string().optional(),
 })
@@ -30,9 +29,6 @@ export const EditPolicyForm = ({ policy }: EditPolicyFormProps) => {
 
   const form = useForm<z.infer<typeof EditPolicySchema>>({
     defaultValues: {
-      key: policy.key,
-      resource: policy.resource,
-      operation: policy.operation,
       name: policy.name ?? "",
       description: policy.description ?? "",
     },
@@ -44,9 +40,6 @@ export const EditPolicyForm = ({ policy }: EditPolicyFormProps) => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        key: data.key.trim(),
-        resource: data.resource.trim() as PermissionResource,
-        operation: data.operation.trim() as PermissionOperation,
         name: data.name?.trim() || null,
         description: data.description?.trim() || null,
       },
@@ -69,45 +62,27 @@ export const EditPolicyForm = ({ policy }: EditPolicyFormProps) => {
         className="flex flex-1 flex-col overflow-hidden"
       >
         <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-y-auto">
-          <Form.Field
-            control={form.control}
-            name="key"
-            render={({ field }) => (
-              <Form.Item>
-                <Form.Label>{t("fields.key")}</Form.Label>
-                <Form.Control>
-                  <Input {...field} />
-                </Form.Control>
-                <Form.ErrorMessage />
-              </Form.Item>
-            )}
-          />
-          <Form.Field
-            control={form.control}
-            name="resource"
-            render={({ field }) => (
-              <Form.Item>
-                <Form.Label>{t("fields.resource")}</Form.Label>
-                <Form.Control>
-                  <Input {...field} />
-                </Form.Control>
-                <Form.ErrorMessage />
-              </Form.Item>
-            )}
-          />
-          <Form.Field
-            control={form.control}
-            name="operation"
-            render={({ field }) => (
-              <Form.Item>
-                <Form.Label>{t("fields.operation")}</Form.Label>
-                <Form.Control>
-                  <Input {...field} />
-                </Form.Control>
-                <Form.ErrorMessage />
-              </Form.Item>
-            )}
-          />
+          <div className="flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-2">
+              <Label size="small" weight="plus">
+                {t("fields.key")}
+              </Label>
+              <Input value={policy.key} disabled />
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <Label size="small" weight="plus">
+                {t("fields.resource")}
+              </Label>
+              <Input value={policy.resource} disabled />
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <Label size="small" weight="plus">
+                {t("fields.operation")}
+              </Label>
+              <Input value={policy.operation} disabled />
+            </div>
+            <Hint>{t("policies.edit.identityHint")}</Hint>
+          </div>
           <Form.Field
             control={form.control}
             name="name"

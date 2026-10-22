@@ -2896,6 +2896,7 @@
     },
     "edit": {
       "header": "Edit policy",
+      "identityHint": "The key, resource and operation identify the policy and cannot be changed. Create a new policy instead.",
       "successToast": "Policy {{key}} updated"
     },
     "delete": {

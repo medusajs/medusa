@@ -255,6 +255,84 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("rejects changing the key, resource or operation", async () => {
+          const { data } = await api.post(
+            "/rbac/policies",
+            {
+              key: "report:export",
+              resource: "report",
+              operation: "export",
+              name: "Export Reports",
+            },
+            adminHeaders
+          )
+          const policyId = data.policy.id
+
+          for (const update of [
+            { key: "report:*" },
+            { resource: "*" },
+            { operation: "*" },
+          ]) {
+            const error = await api
+              .post(`/rbac/policies/${policyId}`, update, adminHeaders)
+              .catch((e) => e)
+            expect(error.response.status).toEqual(400)
+          }
+
+          const { data: after } = await api.get(
+            `/rbac/policies/${policyId}`,
+            adminHeaders
+          )
+          expect(after.policy).toEqual(
+            expect.objectContaining({
+              key: "report:export",
+              resource: "report",
+              operation: "export",
+            })
+          )
+        })
+
+        it("does not let an actor widen a policy they hold into a wildcard", async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const [productRead] = await rbacModule.listRbacPolicies({
+            key: "product:read",
+          })
+          const [policyUpdate] = await rbacModule.listRbacPolicies({
+            key: "rbac_policy:update",
+          })
+          const role = await rbacModule.createRbacRoles({
+            name: "Policy Editor",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: role.id, policy_id: productRead.id },
+            { role_id: role.id, policy_id: policyUpdate.id },
+          ])
+          const editorHeaders = { headers: { ...adminHeaders.headers } }
+          await createAdminUser(dbConnection, editorHeaders, container, {
+            email: "policy-editor@medusa.js",
+            roles: [role.id],
+          })
+
+          const before = await api
+            .get("/admin/customers", editorHeaders)
+            .catch((e) => e.response)
+          expect(before.status).toEqual(403)
+
+          const error = await api
+            .post(
+              `/rbac/policies/${productRead.id}`,
+              { resource: "*", operation: "*" },
+              editorHeaders
+            )
+            .catch((e) => e)
+          expect(error.response.status).toEqual(400)
+
+          const after = await api
+            .get("/admin/customers", editorHeaders)
+            .catch((e) => e.response)
+          expect(after.status).toEqual(403)
+        })
       })
 
       describe("DELETE /rbac/policies/:id", () => {
@@ -284,10 +362,7 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const listResponse = await api.get(
-            "/rbac/policies",
-            adminHeaders
-          )
+          const listResponse = await api.get("/rbac/policies", adminHeaders)
           expect(
             listResponse.data.policies.find((p) => p.id === policyId)
           ).toBeUndefined()

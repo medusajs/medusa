@@ -666,6 +666,7 @@
         "reset",
         "confirm",
         "edit",
+        "view",
         "addItems",
         "download",
         "clear",
@@ -11005,7 +11006,7 @@
                   "type": "string"
                 }
               },
-              "required": ["manage"],
+              "required": ["successToast"],
               "additionalProperties": false
             }
           },
@@ -11091,11 +11092,14 @@
             "header": {
               "type": "string"
             },
+            "identityHint": {
+              "type": "string"
+            },
             "successToast": {
               "type": "string"
             }
           },
-          "required": ["header", "successToast"],
+          "required": ["header", "identityHint", "successToast"],
           "additionalProperties": false
         },
         "delete": {
@@ -14766,6 +14770,7 @@
       },
       "required": [
         "accessDenied",
+        "noPermissions",
         "requiredPermissions",
         "resources",
         "actions"
