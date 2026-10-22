@@ -63,6 +63,14 @@ export {
   type AdminNoteResponse,
 } from "./admin/notes.js"
 export {
+  type AdminCreateOrderTag,
+  type AdminUpdateOrderTag,
+  type AdminOrderTagDeleteResponse,
+  type AdminOrderTagListParams,
+  type AdminOrderTagListResponse,
+  type AdminOrderTagResponse,
+} from "./admin/order-tags.js"
+export {
   Config,
   ClientHeaders,
   ClientFetch,

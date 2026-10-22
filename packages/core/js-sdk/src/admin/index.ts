@@ -16,6 +16,7 @@ import { Notes } from "./notes.js"
 import { Notification } from "./notification.js"
 import { Order } from "./order.js"
 import { OrderEdit } from "./order-edit.js"
+import { OrderTags } from "./order-tags.js"
 import { Payment } from "./payment.js"
 import { PaymentCollection } from "./payment-collection.js"
 import { Plugin } from "./plugin.js"
@@ -285,6 +286,10 @@ export class Admin {
    * @tags note
    */
   public notes: Notes
+  /**
+   * @tags order-tags
+   */
+  public orderTags: OrderTags
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -342,5 +347,6 @@ export class Admin {
     this.rbacRole = new RbacRole(client)
     this.rbacPolicy = new RbacPolicy(client)
     this.notes = new Notes(client)
+    this.orderTags = new OrderTags(client)
   }
 }

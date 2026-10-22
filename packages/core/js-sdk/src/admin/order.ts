@@ -787,4 +787,41 @@ export class Order {
       }
     )
   }
+
+  /**
+   * This method adds or removes tags across multiple orders in a single request. It sends
+   * a request to the [Bulk Tag Orders](https://docs.medusajs.com/api/admin/orders/bulk-tag-orders)
+   * API route.
+   *
+   * @param body - The order IDs, along with the tag IDs to add and/or remove.
+   * @param headers - Headers to pass in the request.
+   * @returns The IDs of the orders that were updated.
+   *
+   * @example
+   * sdk.admin.order.bulkTag({
+   *   order_ids: ["order_123", "order_321"],
+   *   add: ["ordtag_123"],
+   *   remove: ["ordtag_456"],
+   * })
+   * .then(({ order_ids }) => {
+   *   console.log(order_ids)
+   * })
+   */
+  async bulkTag(
+    body: {
+      order_ids: string[]
+      add?: string[]
+      remove?: string[]
+    },
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<{ order_ids: string[] }>(
+      `/admin/orders/tags/batch`,
+      {
+        method: "POST",
+        headers,
+        body,
+      }
+    )
+  }
 }
