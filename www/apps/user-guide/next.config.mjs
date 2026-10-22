@@ -16,6 +16,7 @@ import {
   validateHighlightsPlugin,
 } from "remark-rehype-plugins"
 import bundleAnalyzer from "@next/bundle-analyzer"
+import { withMdxWebpackLayers } from "build-scripts"
 import withExtractedTableOfContents from "@stefanprobst/rehype-extract-toc"
 
 const withMDX = mdx({
@@ -215,4 +216,4 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 })
 
-export default withMDX(withBundleAnalyzer(nextConfig))
+export default withMdxWebpackLayers(withMDX(withBundleAnalyzer(nextConfig)))

@@ -131,6 +131,12 @@ To restore your database from a backup:
 
 Medusa notifies you when the restore completes or if an error occurs.
 
+<Note title="Important" type="warning">
+
+After the restore completes, [redeploy the environment's live deployment](../deployments/page.mdx#redeploy-a-deployment). The restore drops and recreates your database's tables, so the running application can fail with `relation does not exist` errors, or return `401` errors for all requests when it can't read the `api_key` table. These errors can persist after the restore finishes until you redeploy.
+
+</Note>
+
 <Note title="Tip">
 
 You can't restore a backup while a database import is in progress.
@@ -288,6 +294,12 @@ pg_dump -Fc -d postgres://postgres:secret@localhost:5432/mydatabase -f mydata.du
 <Note>
 
 Make sure you're generating the database dump from PostgreSQL v16 and that [pg_dump](https://www.postgresql.org/docs/16/app-pgdump.html) is compatible with that version.
+
+</Note>
+
+<Note title="Important" type="warning">
+
+After the import completes, [redeploy the environment's live deployment](../deployments/page.mdx#redeploy-a-deployment). The import drops and recreates your database's tables, so the running application can fail with `relation does not exist` errors, or return `401` errors for all requests when it can't read the `api_key` table. These errors can persist after the import finishes until you redeploy.
 
 </Note>
 
