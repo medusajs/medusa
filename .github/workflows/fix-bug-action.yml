@@ -288,6 +288,7 @@ jobs:
             Bash(npx jest:*),Bash(npx vitest:*),
             Bash(yarn test:*),Bash(yarn test:integration:*),
             Bash(yarn i18n:schema:*),
+            Bash(yarn build:*),
             Bash(git log:*),Bash(git show:*),Bash(git diff:*),Bash(git status:*),Bash(git stash:*)"
           prompt: |
             You are fixing a single bug in the medusajs/medusa monorepo.
