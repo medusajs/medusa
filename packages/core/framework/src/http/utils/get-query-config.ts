@@ -4,12 +4,13 @@ import {
   RbacContext,
   RequestQueryFields,
 } from "@medusajs/types"
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   buildOrder,
-  FeatureFlag,
   isDefined,
   isPresent,
   MedusaError,
+  Modules,
   pickDeep,
   promiseAll,
   stringToSelectRelationObject,
@@ -69,16 +70,13 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   const parsedFields = FieldParser.parse(fields, defaults as string[])
   const { fields: allFields, starFields } = parsedFields
 
-  const rbacFilterFieldsFeatureFlag =
-    FeatureFlag.isFeatureEnabled("rbac_filter_fields")
-
   const filters: IFieldFilter[] = []
 
   if (
     req?.rbac_context?.policies &&
     req?.auth_context &&
     entity &&
-    rbacFilterFieldsFeatureFlag
+    MedusaModule.isInstalled(Modules.RBAC)
   ) {
     filters.push(
       new RBACFieldFilter({

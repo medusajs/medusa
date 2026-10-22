@@ -14,7 +14,7 @@ import {
 
 jest.setTimeout(30000)
 
-process.env.MEDUSA_FF_RBAC = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {

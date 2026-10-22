@@ -17,7 +17,7 @@ import {
 
 jest.setTimeout(60000)
 
-process.env.MEDUSA_FF_RBAC = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 /**
  * Covers the `authorize` middleware guarding core routes, and how role
@@ -148,7 +148,7 @@ medusaIntegrationTestRunner({
     })
 
     afterAll(async () => {
-      delete process.env.MEDUSA_FF_RBAC
+      delete process.env.ENABLE_RBAC_MODULE
     })
 
     describe("authorize on a guarded core route", () => {

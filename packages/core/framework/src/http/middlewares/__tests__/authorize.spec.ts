@@ -1,12 +1,17 @@
 import { PolicyAction } from "@medusajs/types"
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/utils"
 import { NextFunction } from "express"
 import { authorize } from "../authorize"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "../../types"
 
+const mockRbac = { installed: true }
 const resolveRolesMock = jest.fn()
 const hasPermissionMock = jest.fn()
 const listRolePermissionsMock = jest.fn()
+
+jest.mock("@medusajs/modules-sdk", () => ({
+  MedusaModule: { isInstalled: () => mockRbac.installed },
+}))
 
 jest.mock("../../utils/resolve-roles", () => ({
   resolveRoles: (...args: unknown[]) => resolveRolesMock(...args),
@@ -30,18 +35,12 @@ const createRequest = ({
   authContext?: Record<string, unknown> | null
   rbacContext?: AuthenticatedMedusaRequest["rbac_context"]
 } = {}): AuthenticatedMedusaRequest => {
-  const resolve = jest.fn((key: string) => {
-    if (key === ContainerRegistrationKeys.FEATURE_FLAG_ROUTER) {
-      return { isFeatureEnabled: () => rbacEnabled }
-    }
-
-    return undefined
-  })
+  mockRbac.installed = rbacEnabled
 
   return {
     auth_context: authContext,
     rbac_context: rbacContext,
-    scope: { resolve },
+    scope: { resolve: jest.fn() },
   } as unknown as AuthenticatedMedusaRequest
 }
 
@@ -81,7 +80,7 @@ describe("authorize", () => {
     expect(authorize([readPolicy]).policies).toEqual([readPolicy])
   })
 
-  it("calls next without checking anything when rbac is disabled", async () => {
+  it("calls next without checking anything when the rbac module is not installed", async () => {
     const req = createRequest({ rbacEnabled: false })
     const next = await run(authorize(readPolicy), req)
 

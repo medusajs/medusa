@@ -1,10 +1,6 @@
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/framework/types"
-import {
-  defineFileConfig,
-  FeatureFlag,
-  LINKS,
-  Modules,
-} from "@medusajs/framework/utils"
+import { defineFileConfig, LINKS, Modules } from "@medusajs/framework/utils"
 
 // Legacy link, superseded by rbac_role_assignment (see user-rbac-role-assignment.ts).
 // Kept registered WITHOUT its former `extends` field aliases (those now belong to the
@@ -54,5 +50,5 @@ export const UserRbacRole: ModuleJoinerConfig = {
 }
 
 defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled("rbac"),
+  isDisabled: () => !MedusaModule.isInstalled(Modules.RBAC),
 })

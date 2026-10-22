@@ -1,5 +1,6 @@
 import { IRbacModuleService } from "@medusajs/framework/types"
-import { FeatureFlag, Modules } from "@medusajs/framework/utils"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -29,7 +30,7 @@ export const deleteRoleAssignmentsStep = createStep(
   async (input: DeleteRoleAssignmentsStepInput, { container }) => {
     const normalizedIds = Array.isArray(input.id) ? input.id : [input.id]
 
-    if (!normalizedIds.length || !FeatureFlag.isFeatureEnabled("rbac")) {
+    if (!normalizedIds.length || !MedusaModule.isInstalled(Modules.RBAC)) {
       return new StepResponse([], [])
     }
 

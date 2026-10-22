@@ -1,9 +1,6 @@
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/framework/types"
-import {
-  defineFileConfig,
-  FeatureFlag,
-  Modules,
-} from "@medusajs/framework/utils"
+import { defineFileConfig, Modules } from "@medusajs/framework/utils"
 
 /**
  * Read-only link exposing the `rbac_roles` graph field on `Invite`, resolved
@@ -37,5 +34,5 @@ export const InviteRbacRoleAssignment: ModuleJoinerConfig = {
 }
 
 defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled("rbac"),
+  isDisabled: () => !MedusaModule.isInstalled(Modules.RBAC),
 })

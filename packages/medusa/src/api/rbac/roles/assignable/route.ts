@@ -3,9 +3,9 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { defineFileConfig, FeatureFlag } from "@medusajs/framework/utils"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { defineFileConfig, Modules } from "@medusajs/framework/utils"
 
-import RbacFeatureFlag from "../../../../feature-flags/rbac"
 import { HttpTypes } from "@medusajs/framework/types"
 
 /**
@@ -45,5 +45,5 @@ export const GET = async (
 }
 
 defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key),
+  isDisabled: () => !MedusaModule.isInstalled(Modules.RBAC),
 })

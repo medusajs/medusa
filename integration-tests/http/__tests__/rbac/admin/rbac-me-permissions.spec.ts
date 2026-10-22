@@ -7,7 +7,7 @@ import {
 
 jest.setTimeout(60000)
 
-process.env.MEDUSA_FF_RBAC = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
@@ -135,15 +135,12 @@ medusaIntegrationTestRunner({
     })
 
     afterAll(async () => {
-      delete process.env.MEDUSA_FF_RBAC
+      delete process.env.ENABLE_RBAC_MODULE
     })
 
     describe("GET /rbac/me/permissions", () => {
       it("returns the full universe for a super-admin (`*:*`)", async () => {
-        const response = await api.get(
-          "/rbac/me/permissions",
-          adminHeaders
-        )
+        const response = await api.get("/rbac/me/permissions", adminHeaders)
 
         expect(response.status).toEqual(200)
         // Super-admin should receive every concrete permission seeded above.
@@ -159,10 +156,7 @@ medusaIntegrationTestRunner({
       })
 
       it("does not include wildcard-only entries in the response", async () => {
-        const response = await api.get(
-          "/rbac/me/permissions",
-          adminHeaders
-        )
+        const response = await api.get("/rbac/me/permissions", adminHeaders)
 
         // `*:*`, `*:read`, `product:*` are grants — the response only carries
         // concrete `resource:operation` entries.
@@ -172,10 +166,7 @@ medusaIntegrationTestRunner({
       })
 
       it("returns sorted output for deterministic ordering", async () => {
-        const response = await api.get(
-          "/rbac/me/permissions",
-          adminHeaders
-        )
+        const response = await api.get("/rbac/me/permissions", adminHeaders)
 
         const sorted = [...response.data.permissions].sort()
         expect(response.data.permissions).toEqual(sorted)
@@ -254,10 +245,7 @@ medusaIntegrationTestRunner({
       it("covers roles whose grants the actor's permissions encompass, without assignment", async () => {
         // The super-admin (`*:*`) is not assigned any of the roles created in
         // setup, but their permissions encompass all of them.
-        const response = await api.get(
-          "/rbac/me/permissions",
-          adminHeaders
-        )
+        const response = await api.get("/rbac/me/permissions", adminHeaders)
 
         expect(response.status).toEqual(200)
         expect(response.data.covered_roles).toEqual(
@@ -292,10 +280,7 @@ medusaIntegrationTestRunner({
           await rbacModule.createRbacRoles({ name: "Empty Role" })
         }
 
-        const response = await api.get(
-          "/rbac/me/permissions",
-          adminHeaders
-        )
+        const response = await api.get("/rbac/me/permissions", adminHeaders)
 
         // Even the super-admin does not cover a role with no grants — an
         // empty role must not open its guards to all actors.
@@ -321,10 +306,7 @@ medusaIntegrationTestRunner({
           ])
         }
 
-        const response = await api.get(
-          "/rbac/me/permissions",
-          adminHeaders
-        )
+        const response = await api.get("/rbac/me/permissions", adminHeaders)
 
         expect(response.data.permissions).toContain("shipment:dispatch")
       })
@@ -352,10 +334,7 @@ medusaIntegrationTestRunner({
           roles: [productReaderOnly.id, customerCreatorOnly.id],
         })
 
-        const response = await api.get(
-          "/rbac/me/permissions",
-          multiRoleHeaders
-        )
+        const response = await api.get("/rbac/me/permissions", multiRoleHeaders)
 
         expect(response.status).toEqual(200)
         expect(response.data.permissions).toEqual(

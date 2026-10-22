@@ -11,9 +11,6 @@ import { join } from "path"
 jest.setTimeout(60000)
 
 medusaIntegrationTestRunner({
-  env: {
-    MEDUSA_FF_RBAC: true,
-  },
   testSuite: ({ getContainer }) => {
     describe("RBAC - Endpoint entities match policy resources", () => {
       it("should have all endpoint entities present in policy resources", async () => {

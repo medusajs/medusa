@@ -5,13 +5,13 @@ import {
   resolveRoles,
 } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
-  FeatureFlag,
+  Modules,
   WILDCARD,
 } from "@medusajs/framework/utils"
-import RbacFeatureFlag from "../../../../feature-flags/rbac"
 
 /**
  * Returns the authenticated actor's effective permission set as a flat array
@@ -154,5 +154,5 @@ export const GET = async (
 }
 
 defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key),
+  isDisabled: () => !MedusaModule.isInstalled(Modules.RBAC),
 })

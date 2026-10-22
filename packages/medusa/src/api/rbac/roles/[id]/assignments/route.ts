@@ -7,13 +7,13 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
-  FeatureFlag,
   MedusaError,
+  Modules,
 } from "@medusajs/framework/utils"
-import RbacFeatureFlag from "../../../../../feature-flags/rbac"
 import {
   AdminCreateRoleAssignmentsType,
   AdminGetRoleAssignmentsParamsType,
@@ -153,5 +153,5 @@ export const DELETE = async (
 }
 
 defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key),
+  isDisabled: () => !MedusaModule.isInstalled(Modules.RBAC),
 })

@@ -8,7 +8,7 @@ import {
 
 jest.setTimeout(30000)
 
-process.env.MEDUSA_FF_RBAC = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
@@ -563,6 +563,7 @@ medusaIntegrationTestRunner({
             "invite",
             "create"
           )
+          const inviteRead = await ensurePolicy(rbacModule, "invite", "read")
           const productRead = await ensurePolicy(rbacModule, "product", "read")
           const customerCreate = await ensurePolicy(
             rbacModule,
@@ -570,7 +571,8 @@ medusaIntegrationTestRunner({
             "create"
           )
 
-          // The inviter: can create invites and holds product:read only.
+          // The inviter: can create and read invites (read is needed to see
+          // the created invite in the response) and holds product:read only.
           const inviterRole = await rbacModule.createRbacRoles({
             name: "Inviter",
             description: "invite:create and product:read",
@@ -587,6 +589,7 @@ medusaIntegrationTestRunner({
 
           await rbacModule.createRbacRolePolicies([
             { role_id: inviterRole.id, policy_id: inviteCreate.id },
+            { role_id: inviterRole.id, policy_id: inviteRead.id },
             { role_id: inviterRole.id, policy_id: productRead.id },
             { role_id: productReaderRole.id, policy_id: productRead.id },
             { role_id: mixedRole.id, policy_id: productRead.id },

@@ -15,7 +15,7 @@ import {
 
 jest.setTimeout(60000)
 
-process.env.MEDUSA_FF_RBAC = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 const ensureRbacPolicy = async (
   rbacModule,
@@ -51,7 +51,7 @@ medusaIntegrationTestRunner({
     })
 
     afterAll(async () => {
-      delete process.env.MEDUSA_FF_RBAC
+      delete process.env.ENABLE_RBAC_MODULE
     })
 
     describe("RBAC Roles - Admin API", () => {
@@ -1907,6 +1907,146 @@ medusaIntegrationTestRunner({
           const ids = response.data.roles.map((r: { id: string }) => r.id)
           expect(ids).toEqual([emptyRoleId])
           expect(response.data.count).toEqual(1)
+        })
+      })
+
+      describe("assignment route guards", () => {
+        let targetRole
+        let targetUser
+        const assignerHeaders = { headers: {} }
+        const roleEditorHeaders = { headers: {} }
+
+        const attachPolicies = async (roleId: string, keys: string[]) => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const policies = await rbacModule.listRbacPolicies({ key: keys })
+          await rbacModule.createRbacRolePolicies(
+            policies.map((policy) => ({
+              role_id: roleId,
+              policy_id: policy.id,
+            }))
+          )
+        }
+
+        beforeEach(async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const [target, assigner, roleEditor] =
+            await rbacModule.createRbacRoles([
+              { name: "Assignment Target" },
+              { name: "Assigner" },
+              { name: "Role Editor" },
+            ])
+          targetRole = target
+
+          await attachPolicies(target.id, ["product:read"])
+          // Holds the target's policies plus the assignment policies.
+          await attachPolicies(assigner.id, [
+            "product:read",
+            "user:read",
+            "user:update",
+            "rbac_role_assignment:read",
+            "rbac_role_assignment:create",
+            "rbac_role_assignment:delete",
+          ])
+          // Holds the target's policies and can edit roles and users, but
+          // has no say over assignments.
+          await attachPolicies(roleEditor.id, [
+            "product:read",
+            "user:read",
+            "user:update",
+            "rbac_role:read",
+            "rbac_role:update",
+          ])
+
+          await createAdminUser(dbConnection, assignerHeaders, container, {
+            email: "assigner@medusa.js",
+            roles: [assigner.id],
+          })
+          await createAdminUser(dbConnection, roleEditorHeaders, container, {
+            email: "role-editor@medusa.js",
+            roles: [roleEditor.id],
+          })
+
+          const { result: users } = await createUsersWorkflow(container).run({
+            input: { users: [{ email: "target@example.com" }] },
+          })
+          targetUser = users[0]
+        })
+
+        it("denies the assignment routes to an actor without rbac_role_assignment policies", async () => {
+          const attempts = [
+            () =>
+              api.post(
+                `/rbac/roles/${targetRole.id}/users`,
+                { users: [targetUser.id] },
+                roleEditorHeaders
+              ),
+            () =>
+              api.post(
+                `/rbac/roles/${targetRole.id}/assignments`,
+                { reference: "user", reference_ids: [targetUser.id] },
+                roleEditorHeaders
+              ),
+            () =>
+              api.post(
+                `/admin/users/${targetUser.id}/roles`,
+                { assignments: [{ role_id: targetRole.id }] },
+                roleEditorHeaders
+              ),
+            () =>
+              api.get(
+                `/rbac/roles/${targetRole.id}/assignments`,
+                roleEditorHeaders
+              ),
+            () =>
+              api.get(`/admin/users/${targetUser.id}/roles`, roleEditorHeaders),
+          ]
+
+          for (const attempt of attempts) {
+            const error = await attempt().catch((e) => e)
+            expect(error.response.status).toEqual(403)
+          }
+
+          const assignments = await container
+            .resolve(Modules.RBAC)
+            .listRbacRoleAssignments({ role_id: targetRole.id })
+          expect(assignments).toHaveLength(0)
+        })
+
+        it("lets an actor holding rbac_role_assignment policies assign, list and unassign", async () => {
+          const assign = await api.post(
+            `/rbac/roles/${targetRole.id}/users`,
+            { users: [targetUser.id] },
+            assignerHeaders
+          )
+          expect(assign.status).toEqual(200)
+
+          const list = await api.get(
+            `/rbac/roles/${targetRole.id}/assignments`,
+            assignerHeaders
+          )
+          expect(list.status).toEqual(200)
+          expect(list.data.count).toEqual(1)
+
+          const userRoles = await api.get(
+            `/admin/users/${targetUser.id}/roles`,
+            assignerHeaders
+          )
+          expect(userRoles.data.count).toEqual(1)
+
+          const remove = await api.delete(
+            `/rbac/roles/${targetRole.id}/assignments`,
+            {
+              ...assignerHeaders,
+              data: { reference: "user", reference_ids: [targetUser.id] },
+            }
+          )
+          expect(remove.status).toEqual(200)
+
+          const after = await api.get(
+            `/admin/users/${targetUser.id}/roles`,
+            assignerHeaders
+          )
+          expect(after.data.count).toEqual(0)
         })
       })
 

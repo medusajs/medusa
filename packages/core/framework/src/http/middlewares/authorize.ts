@@ -1,6 +1,6 @@
 import type { PolicyAction } from "@medusajs/types"
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
-import type { FlagRouter } from "../../feature-flags/flag-router"
+import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaError, Modules } from "@medusajs/utils"
 import {
   hasPermission,
   listRolePermissions,
@@ -64,11 +64,7 @@ export function authorize(
     _: MedusaResponse,
     next: MedusaNextFunction
   ) => {
-    const featureFlagRouter = req.scope.resolve<FlagRouter>(
-      ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
-    )
-
-    if (!featureFlagRouter.isFeatureEnabled("rbac") || !policyList.length) {
+    if (!MedusaModule.isInstalled(Modules.RBAC) || !policyList.length) {
       return next()
     }
 

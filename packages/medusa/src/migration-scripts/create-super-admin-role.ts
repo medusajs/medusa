@@ -15,7 +15,6 @@ import { ExecArgs } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
-  FeatureFlag,
   Modules,
 } from "@medusajs/framework/utils"
 import dotenv from "dotenv"
@@ -172,5 +171,5 @@ export default async function createSuperAdminRole({ container }: ExecArgs) {
 }
 
 defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled("rbac"),
+  isDisabled: () => !MedusaModule.isInstalled(Modules.RBAC),
 })

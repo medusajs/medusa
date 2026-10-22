@@ -53,8 +53,6 @@ RBAC (role-based access control) and SSO (single sign-on) are Medusa Enterprise 
 - `packages/core/framework/src/http/utils/policies/rbac-field-filter.ts`
 - `packages/core/utils/src/modules-sdk/define-policies.ts`
 - `packages/core/utils/src/modules-sdk/policy-to-types.ts`
-- `packages/medusa/src/feature-flags/rbac.ts`
-- `packages/medusa/src/feature-flags/rbac-filter-fields.ts`
 - `packages/medusa/src/modules/rbac.ts`
 - `packages/modules/link-modules/src/definitions/invite-rbac-role.ts`
 - `packages/modules/link-modules/src/definitions/user-rbac-role.ts`

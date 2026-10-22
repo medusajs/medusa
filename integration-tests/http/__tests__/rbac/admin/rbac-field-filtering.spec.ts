@@ -8,8 +8,7 @@ import { getProductFixture } from "../../../../helpers/fixtures"
 
 jest.setTimeout(60000)
 
-process.env.MEDUSA_FF_RBAC = "true"
-process.env.MEDUSA_FF_RBAC_FILTER_FIELDS = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
@@ -209,7 +208,7 @@ medusaIntegrationTestRunner({
     })
 
     afterAll(async () => {
-      delete process.env.MEDUSA_FF_RBAC
+      delete process.env.ENABLE_RBAC_MODULE
     })
 
     describe("RBAC Middleware Integration", () => {

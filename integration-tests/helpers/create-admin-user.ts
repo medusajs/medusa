@@ -5,10 +5,10 @@ import {
   IUserModuleService,
   MedusaContainer,
 } from "@medusajs/framework/types"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ApiKeyType,
   ContainerRegistrationKeys,
-  FeatureFlag,
   generateJwtToken,
   Modules,
   PUBLISHABLE_KEY_HEADER,
@@ -32,7 +32,7 @@ export const createAdminUser = async (
   const userModule: IUserModuleService = appContainer.resolve(Modules.USER)
   const authModule: IAuthModuleService = appContainer.resolve(Modules.AUTH)
 
-  const rbacEnabled = FeatureFlag.isFeatureEnabled("rbac")
+  const rbacEnabled = MedusaModule.isInstalled(Modules.RBAC)
 
   let userRoles = options?.roles
 

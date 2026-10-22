@@ -3,7 +3,6 @@ import { ExecArgs, IRbacModuleService } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
-  FeatureFlag,
   Modules,
 } from "@medusajs/framework/utils"
 
@@ -89,5 +88,5 @@ export default async function migrateRbacRoleAssignments({
 }
 
 defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled("rbac"),
+  isDisabled: () => !MedusaModule.isInstalled(Modules.RBAC),
 })

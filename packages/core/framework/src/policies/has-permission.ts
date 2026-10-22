@@ -1,6 +1,11 @@
 import { MedusaContainer } from "@medusajs/types"
-import { ContainerRegistrationKeys, useCache, WILDCARD } from "@medusajs/utils"
-import { FlagRouter } from "../feature-flags/flag-router"
+import { MedusaModule } from "@medusajs/modules-sdk"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  useCache,
+  WILDCARD,
+} from "@medusajs/utils"
 
 export type PermissionAction = {
   resource: string
@@ -89,11 +94,7 @@ export async function hasPermission(
 
   const roleIds = Array.isArray(roles) ? roles : [roles]
   const actionList = Array.isArray(actions) ? actions : [actions]
-  const ffRouter = container.resolve(
-    ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
-  ) as FlagRouter
-
-  const isDisabled = !ffRouter.isFeatureEnabled("rbac")
+  const isDisabled = !MedusaModule.isInstalled(Modules.RBAC)
   if (isDisabled || !roleIds?.length || !actionList?.length) {
     return true
   }
@@ -142,11 +143,7 @@ export async function resolvePermissions(
   const { roles, universe, container } = input
 
   const roleIds = Array.isArray(roles) ? roles : [roles]
-  const ffRouter = container.resolve(
-    ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
-  ) as FlagRouter
-
-  if (!ffRouter.isFeatureEnabled("rbac")) {
+  if (!MedusaModule.isInstalled(Modules.RBAC)) {
     return new Set(
       universe.map(({ resource, operation }) => `${resource}:${operation}`)
     )
@@ -266,11 +263,7 @@ async function fetchSingleRolePolicies(
 export async function fetchPolicyResources(
   container: MedusaContainer
 ): Promise<Set<string>> {
-  const ffRouter = container.resolve(
-    ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
-  ) as FlagRouter
-
-  if (!ffRouter.isFeatureEnabled("rbac")) {
+  if (!MedusaModule.isInstalled(Modules.RBAC)) {
     return new Set()
   }
 

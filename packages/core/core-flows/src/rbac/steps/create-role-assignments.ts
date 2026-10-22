@@ -2,7 +2,8 @@ import {
   CreateRbacRoleAssignmentDTO,
   IRbacModuleService,
 } from "@medusajs/framework/types"
-import { FeatureFlag, Modules } from "@medusajs/framework/utils"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -27,7 +28,7 @@ export const createRoleAssignmentsStepId = "create-role-assignments"
 export const createRoleAssignmentsStep = createStep(
   createRoleAssignmentsStepId,
   async (data: CreateRoleAssignmentsStepInput, { container }) => {
-    if (!data?.length || !FeatureFlag.isFeatureEnabled("rbac")) {
+    if (!data?.length || !MedusaModule.isInstalled(Modules.RBAC)) {
       return new StepResponse([], [])
     }
 

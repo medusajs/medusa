@@ -10,7 +10,6 @@ import { Modules } from "@medusajs/utils"
 jest.setTimeout(60000)
 
 medusaIntegrationTestRunner({
-  env: { MEDUSA_FF_RBAC: true },
   testSuite: ({ getContainer }) => {
     describe("Workflows: RBAC", () => {
       let appContainer: MedusaContainer
