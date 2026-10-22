@@ -21,7 +21,8 @@ import { Promotion } from "@models"
  *  1. discounted amount in case of spend budget
  *  2. number of times the promotion has been used in case of usage budget
  *  3. number of times the promotion has been used by a specific attribute value in case of use_by_attribute budget
- * @param attributeUsage - the attribute usage in case of use_by_attribute budget
+ *  4. discounted amount in case of spend_by_attribute budget
+ * @param attributeUsage - the attribute usage in case of use_by_attribute or spend_by_attribute budget
  * @returns the exceeded action if the budget is exceeded, otherwise undefined
  */
 export function computeActionForBudgetExceeded(
@@ -42,12 +43,19 @@ export function computeActionForBudgetExceeded(
     return
   }
 
+  const isSpendByAttribute =
+    campaignBudget.type === CampaignBudgetType.SPEND_BY_ATTRIBUTE
+
+  // A spend_by_attribute budget's own `used` is the aggregate across all
+  // attribute values, so it never applies to a single attribute value.
   const campaignBudgetUsed = attributeUsage
     ? attributeUsage.used
+    : isSpendByAttribute
+    ? 0
     : campaignBudget.used ?? 0
 
   const totalUsed =
-    campaignBudget.type === CampaignBudgetType.SPEND
+    campaignBudget.type === CampaignBudgetType.SPEND || isSpendByAttribute
       ? MathBN.add(campaignBudgetUsed, amount)
       : MathBN.add(campaignBudgetUsed, 1)
 

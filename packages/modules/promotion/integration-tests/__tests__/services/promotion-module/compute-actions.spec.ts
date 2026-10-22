@@ -3243,6 +3243,91 @@ moduleIntegrationTestRunner({
               },
             ])
           })
+
+          it("should compute budget exceeded action when the discounted amount exceeds the per attribute limit for type spend_by_attribute", async () => {
+            const testCampaign = await service.createCampaigns({
+              name: "test",
+              campaign_identifier: "test",
+              budget: {
+                type: CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+                attribute: "customer_email",
+                currency_code: "usd",
+                limit: 100,
+              },
+            })
+
+            await createDefaultPromotion(service, {
+              campaign_id: testCampaign.id,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 15,
+                target_rules: [
+                  {
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
+                  },
+                ],
+              } as any,
+            })
+
+            const context = (email: string, subtotal: number) => ({
+              currency_code: "usd",
+              email,
+              customer: { email },
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal,
+                  original_total: subtotal,
+                  is_discountable: true,
+                  product_category: { id: "catg_cotton" },
+                  product: { id: "prod_tshirt" },
+                },
+              ],
+            })
+
+            let result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context("test@test.com", 1000)
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+
+            await service.registerUsage(
+              [{ amount: 60, code: "PROMOTION_TEST" }],
+              { customer_id: null, customer_email: "test@test.com" }
+            )
+
+            result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context("test@test.com", 400)
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+
+            result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context("another@test.com", 400)
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                code: "PROMOTION_TEST",
+                amount: 60,
+                is_tax_inclusive: false,
+                item_id: "item_cotton_tshirt",
+              },
+            ])
+          })
         })
       })
 
