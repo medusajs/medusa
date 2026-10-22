@@ -137,6 +137,7 @@ export const deleteProductsWorkflow = createWorkflow(
       removeRemoteLinkStep({
         [Modules.PRODUCT]: {
           variant_id: allVariantsIds,
+          product_variant_id: allVariantsIds,
           product_id: input.ids,
         },
       }).config({ name: "remove-product-variant-link-step" }),
