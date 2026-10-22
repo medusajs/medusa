@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/caching",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "Caching Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -13,10 +13,14 @@
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "publishConfig": {
     "access": "public"
   },
@@ -31,12 +35,12 @@
     "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.ts\""
   },
   "devDependencies": {
-    "@medusajs/framework": "2.21.2",
-    "@medusajs/test-utils": "2.21.2",
+    "@medusajs/framework": "2.22.0",
+    "@medusajs/test-utils": "2.22.0",
     "awilix": "^8.0.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.21.2",
+    "@medusajs/framework": "2.22.0",
     "awilix": "^8.0.1"
   },
   "dependencies": {

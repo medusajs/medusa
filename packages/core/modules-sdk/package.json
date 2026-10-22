@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/modules-sdk",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "SDK for medusa modules",
   "main": "dist/index.js",
   "export": {
@@ -22,10 +22,14 @@
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__fixtures__",
     "!dist/**/__mocks__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
@@ -34,11 +38,11 @@
     "watch": "yarn run -T tsc --build --watch"
   },
   "devDependencies": {
-    "@medusajs/types": "2.21.2"
+    "@medusajs/types": "2.22.0"
   },
   "dependencies": {
-    "@medusajs/deps": "2.21.2",
-    "@medusajs/query": "2.21.2",
-    "@medusajs/utils": "2.21.2"
+    "@medusajs/deps": "2.22.0",
+    "@medusajs/query": "2.22.0",
+    "@medusajs/utils": "2.22.0"
   }
 }

@@ -1,5 +1,26 @@
 # Change Log
 
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.22.0 or later
+
+### Patch Changes
+
+- [#16678](https://github.com/medusajs/medusa/pull/16678) [`44db0ca6357ab4d4681a8004e869fde339c3117a`](https://github.com/medusajs/medusa/commit/44db0ca6357ab4d4681a8004e869fde339c3117a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(medusa,framework,utils,modules-sdk,test-utils): add license key checks
+
+- [#17382](https://github.com/medusajs/medusa/pull/17382) [`1db74006ede40300afe64970024688a1a9c2a936`](https://github.com/medusajs/medusa/commit/1db74006ede40300afe64970024688a1a9c2a936) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: ship AGENTS.md in published packages and add agent discovery fields to package.json
+
+- [#17129](https://github.com/medusajs/medusa/pull/17129) [`0fdcf25c29f3da6d36eb11855ef10044db7da1f1`](https://github.com/medusajs/medusa/commit/0fdcf25c29f3da6d36eb11855ef10044db7da1f1) Thanks [@bhupinder759](https://github.com/bhupinder759)! - fix(test-utils): remove the unused `inApp` option from `medusaIntegrationTestRunner`
+
+  `medusaIntegrationTestRunner` accepted an `inApp` option and stored it on the runner, but no code path ever read it, so passing it had no effect. The option and its private field are removed. TypeScript code that still passes `inApp` needs to drop it.
+
+- Updated dependencies [[`9aa921a62139888fed08aee7db1480cff0a3ee40`](https://github.com/medusajs/medusa/commit/9aa921a62139888fed08aee7db1480cff0a3ee40), [`0e087453a34fea61d39d1e416a52ef3417220b2e`](https://github.com/medusajs/medusa/commit/0e087453a34fea61d39d1e416a52ef3417220b2e), [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a), [`673d03edafd30beef18286bbef8a737ff332d541`](https://github.com/medusajs/medusa/commit/673d03edafd30beef18286bbef8a737ff332d541), [`06bc7ec543e823c92321d582e1faa7f800985fb9`](https://github.com/medusajs/medusa/commit/06bc7ec543e823c92321d582e1faa7f800985fb9), [`14499a2e9309d653c0e4ec6aec3f88079751b4d2`](https://github.com/medusajs/medusa/commit/14499a2e9309d653c0e4ec6aec3f88079751b4d2), [`fdac7de4c3268ccf0f86c47c140662d84c141832`](https://github.com/medusajs/medusa/commit/fdac7de4c3268ccf0f86c47c140662d84c141832), [`780a69aad3ea20beadf82e9c5351a6633de45b64`](https://github.com/medusajs/medusa/commit/780a69aad3ea20beadf82e9c5351a6633de45b64), [`906433ac6b1d5ec3cc23f88c8297d29fa87427fd`](https://github.com/medusajs/medusa/commit/906433ac6b1d5ec3cc23f88c8297d29fa87427fd), [`44db0ca6357ab4d4681a8004e869fde339c3117a`](https://github.com/medusajs/medusa/commit/44db0ca6357ab4d4681a8004e869fde339c3117a), [`1db74006ede40300afe64970024688a1a9c2a936`](https://github.com/medusajs/medusa/commit/1db74006ede40300afe64970024688a1a9c2a936), [`a491ca71f438e1f35a496d63d29141e15bc56c93`](https://github.com/medusajs/medusa/commit/a491ca71f438e1f35a496d63d29141e15bc56c93), [`3755f0f08c02548fb97a7b3f5c3403c2f1919ab6`](https://github.com/medusajs/medusa/commit/3755f0f08c02548fb97a7b3f5c3403c2f1919ab6)]:
+  - @medusajs/medusa@2.22.0
+  - @medusajs/core-flows@2.22.0
+  - @medusajs/framework@2.22.0
+
 ## 2.21.2
 
 ### Patch Changes

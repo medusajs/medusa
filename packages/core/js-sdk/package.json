@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/js-sdk",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "SDK for the Medusa API",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -25,14 +25,18 @@
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "author": "Medusa",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@medusajs/types": "2.21.2"
+    "@medusajs/types": "2.22.0"
   },
   "dependencies": {
     "fetch-event-stream": "^0.1.5",

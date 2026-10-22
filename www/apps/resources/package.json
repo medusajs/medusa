@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "dev:monorepo": "yarn dev -p 3003",
     "dev:wrangler": "wrangler dev --port 3000 --env=production",
-    "build": "next build",
+    "build": "next build --webpack",
     "build:cloudflare": "CLOUDFLARE_ENV=production yarn prep && NEXT_PUBLIC_ENV=production NODE_OPTIONS=\"--max-old-space-size=4096\" opennextjs-cloudflare build",
     "start": "next start",
     "start:monorepo": "yarn start -p 3003",
-    "lint": "next lint --fix",
+    "lint": "eslint app pages components lib src --no-error-on-unmatched-pattern --fix",
     "lint:content": "eslint --no-config-lookup -c .content.eslintrc.mjs app/**/*.mdx --fix --quiet",
     "prep": "node ./scripts/prepare.mjs",
     "prep:turbo": "npx turbo run prep",
@@ -23,12 +23,12 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@medusajs/icons": "2.21.2",
-    "@next/mdx": "15.5.18",
+    "@medusajs/icons": "2.22.0",
+    "@next/mdx": "16.4.2",
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
     "clsx": "^2.1.0",
     "docs-ui": "*",
-    "next": "15.5.21",
+    "next": "16.4.2",
     "next-mdx-remote-client": "2",
     "posthog-js": "^1.298.1",
     "posthog-node": "^5.29.0",
@@ -41,8 +41,8 @@
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3",
-    "@next/bundle-analyzer": "15.5.18",
-    "@opennextjs/cloudflare": "^1.19.9",
+    "@next/bundle-analyzer": "16.4.2",
+    "@opennextjs/cloudflare": "^1.20.12",
     "@types/mdx": "^2.0.13",
     "@types/node": "^20",
     "@types/react": "19.2.9",
@@ -63,10 +63,10 @@
     "tsconfig": "*",
     "types": "*",
     "typescript": "^5",
-    "wrangler": "^4.90.0"
+    "wrangler": "^4.151.3"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.9.0"
   },
   "overrides": {
     "@types/react": "19.2.9",

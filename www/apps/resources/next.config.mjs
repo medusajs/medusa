@@ -12,7 +12,7 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 import mdx from "@next/mdx"
 import mdxPluginOptions from "./mdx-options.mjs"
 import path from "node:path"
-import { catchBadRedirects } from "build-scripts"
+import { catchBadRedirects, withMdxWebpackLayers } from "build-scripts"
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -412,4 +412,4 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 })
 
-export default withMDX(withBundleAnalyzer(nextConfig))
+export default withMdxWebpackLayers(withMDX(withBundleAnalyzer(nextConfig)))
