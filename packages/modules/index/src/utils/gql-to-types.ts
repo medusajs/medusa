@@ -4,6 +4,8 @@ import {
   GraphQLUtils,
   gqlSchemaToTypes as ModulesSdkGqlSchemaToTypes,
 } from "@medusajs/framework/utils"
+import { randomUUID } from "crypto"
+import { rename } from "fs/promises"
 import { join } from "path"
 import * as process from "process"
 
@@ -25,8 +27,6 @@ export async function gqlSchemaToTypes(
   const fileSystem = new FileSystem(dir)
   let content = await fileSystem.contents(filenameWithExt)
 
-  await fileSystem.remove(filenameWithExt)
-
   const entryPoints = buildEntryPointsTypeMap(content)
 
   const indexEntryPoints = `
@@ -44,7 +44,16 @@ ${entryPoints
   )
   content = content.replace(contentToReplaceMatcher, indexEntryPoints)
 
-  await fileSystem.create(filenameWithExt, content)
+  // Write through a unique temp file and rename it so that concurrent
+  // processes sharing the same cwd never observe a missing file
+  const tmpFilename = `${filenameWithExt}.${process.pid}-${randomUUID()}.tmp`
+  await fileSystem.create(tmpFilename, content)
+  await rename(join(dir, tmpFilename), join(dir, filenameWithExt)).catch(
+    async (e) => {
+      await fileSystem.remove(tmpFilename)
+      throw e
+    }
+  )
 }
 
 function buildEntryPointsTypeMap(
