@@ -189,3 +189,12 @@ export const AdminCreateOrderCreditLines = z.object({
   reference_id: z.string(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
+
+export type AdminBulkTagOrdersType = z.infer<typeof AdminBulkTagOrders>
+export const AdminBulkTagOrders = z
+  .object({
+    order_ids: z.array(z.string()).min(1),
+    add: z.array(z.string()).optional(),
+    remove: z.array(z.string()).optional(),
+  })
+  .strict()

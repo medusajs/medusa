@@ -81,7 +81,7 @@ describe("updateOrderTagsStep compensation", () => {
     // already-completed `updateOrderTagsStep`.
     const forceFailureStep = createStep(
       `force-failure-${Math.random().toString(36).slice(2)}`,
-      async () => {
+      async (_input: unknown[]) => {
         throw new Error("force compensation")
       }
     )

@@ -1,5 +1,6 @@
 export * from "./add-line-items"
 export * from "./archive-orders"
+export * from "./bulk-tag-orders"
 export * from "./cancel-order"
 export * from "./cancel-order-change"
 export * from "./cancel-order-fulfillment"
