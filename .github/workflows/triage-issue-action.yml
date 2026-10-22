@@ -583,8 +583,10 @@ jobs:
               exit 1
             fi
             WORDS=$(jq '[.linear.problem, .linear.evidence, .linear.root_cause, .linear.fix_options, .linear.recommendation] | map([scan("\\S+")] | length) | add' triage-decision.json)
-            if [[ "$WORDS" -ge 200 ]]; then
-              echo "::error::linear sections total $WORDS words; must be under 200" >&2
+            # The model is asked for under 200 words; the hard cap leaves headroom so a
+            # small overshoot doesn't throw away the whole triage decision.
+            if [[ "$WORDS" -gt 300 ]]; then
+              echo "::error::linear sections total $WORDS words; must be at most 300" >&2
               exit 1
             fi
           elif ! jq -e '.linear == null' triage-decision.json >/dev/null; then
@@ -865,8 +867,8 @@ jobs:
             exit 1
           fi
           WORDS=$(jq '[.problem, .evidence, .root_cause, .fix_options, .recommendation] | map([scan("\\S+")] | length) | add' /tmp/triage/linear.json)
-          if [[ "$WORDS" -ge 200 ]]; then
-            echo "::error::Linear sections total $WORDS words; must be under 200." >&2
+          if [[ "$WORDS" -gt 300 ]]; then
+            echo "::error::Linear sections total $WORDS words; must be at most 300." >&2
             exit 1
           fi
 
