@@ -3,10 +3,18 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { defineFileConfig, FeatureFlag } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  defineFileConfig,
+  FeatureFlag,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import RbacFeatureFlag from "../../../../../../feature-flags/rbac"
 
 /**
+ * Detaches a policy from a role. The actor must hold the policy being
+ * detached, the same requirement as for attaching it.
+ *
  * @ignore
  * @featureFlag rbac
  */
@@ -16,8 +24,7 @@ export const DELETE = async (
 ) => {
   const { policy_id, id: role_id } = req.params
 
-  // First, we need to find the role_policy_id that connects this role and policy
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const { data: rolePolicies } = await query.graph({
     entity: "rbac_role_policy",
     fields: ["id"],
@@ -26,9 +33,18 @@ export const DELETE = async (
 
   const rolePolicyId = rolePolicies[0]?.id
 
+  if (!rolePolicyId) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Policy with id "${policy_id}" is not attached to role "${role_id}"`
+    )
+  }
+
   await deleteRbacRolePoliciesWorkflow(req.scope).run({
     input: {
-      role_policy_ids: rolePolicyId ? [rolePolicyId] : [],
+      role_policy_ids: [rolePolicyId],
+      actor_id: req.auth_context.actor_id,
+      actor: req.auth_context.actor_type,
     },
   })
 

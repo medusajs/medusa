@@ -865,6 +865,85 @@ medusaIntegrationTestRunner({
           })
         })
 
+        describe("DELETE /rbac/roles/:id/policies/:policy_id", () => {
+          beforeEach(async () => {
+            await api.post(
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
+              { policies: [productReadPolicyId, customerReadPolicyId] },
+              adminHeaders
+            )
+          })
+
+          it("allows super-admin (`*:*`) to detach any policy", async () => {
+            const response = await api.delete(
+              `/rbac/roles/${emptyTargetRoleId}/policies/${customerReadPolicyId}`,
+              adminHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data).toEqual({
+              id: expect.stringContaining("rlpl_"),
+              object: "rbac_role_policy",
+              deleted: true,
+            })
+          })
+
+          it("allows an exact `resource:op` holder to detach that policy", async () => {
+            const response = await api.delete(
+              `/rbac/roles/${emptyTargetRoleId}/policies/${productReadPolicyId}`,
+              productReaderHeaders
+            )
+
+            expect(response.status).toEqual(200)
+          })
+
+          it("denies detaching a policy the actor does not hold", async () => {
+            const error = await api
+              .delete(
+                `/rbac/roles/${emptyTargetRoleId}/policies/${customerReadPolicyId}`,
+                productReaderHeaders
+              )
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(403)
+
+            const rolePolicies = await container
+              .resolve(Modules.RBAC)
+              .listRbacRolePolicies({ role_id: emptyTargetRoleId })
+            expect(rolePolicies.map((rp) => rp.policy_id)).toEqual(
+              expect.arrayContaining([
+                productReadPolicyId,
+                customerReadPolicyId,
+              ])
+            )
+          })
+
+          it("denies stripping `*:*` from the super admin role without holding it", async () => {
+            const error = await api
+              .delete(
+                `/rbac/roles/role_super_admin/policies/rpol_super_admin`,
+                noPolicyHeaders
+              )
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(403)
+
+            const response = await api.get("/admin/customers", adminHeaders)
+            expect(response.status).toEqual(200)
+          })
+
+          it("returns 404 when the policy is not attached to the role", async () => {
+            const error = await api
+              .delete(
+                `/rbac/roles/${emptyTargetRoleId}/policies/${productUpdatePolicyId}`,
+                adminHeaders
+              )
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(404)
+          })
+        })
+
         describe("workflows", () => {
           it("createRbacRolesWorkflow: super-admin can create a role with any policy_ids", async () => {
             const userModule = container.resolve(Modules.USER)
