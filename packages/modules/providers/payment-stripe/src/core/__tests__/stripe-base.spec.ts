@@ -253,6 +253,25 @@ describe("StripeBase", () => {
       expect(result.data).toEqual(succeededIntent)
     })
 
+    it("returns the payment intent when Stripe says it already succeeded and no amount was given", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      jest
+        .spyOn(service["stripe_"].paymentIntents, "capture")
+        .mockRejectedValue(
+          Object.assign(new Error("Unexpected state"), {
+            code: "payment_intent_unexpected_state",
+            payment_intent: succeededIntent,
+          })
+        )
+
+      const result = await service.capturePayment({
+        data: { id: "pi_123", currency: "usd" },
+        context: { idempotency_key: "capt_full_done" },
+      })
+
+      expect(result.data).toEqual(succeededIntent)
+    })
+
     it("throws when a second capture hits a payment intent that already collected a different amount", async () => {
       const service = new StripeProviderService({}, defaultOptions)
       jest
