@@ -208,8 +208,7 @@ jobs:
             nodejs.org:443
 
       # Not a service container: harden-runner's disable-sudo-and-containers removes docker, failing
-      # the post-job container teardown. Trust auth because the subprocess env scrub strips DB_PASSWORD;
-      # it listens on localhost only.
+      # the post-job container teardown. Trust auth; it listens on localhost only.
       - name: Start Postgres
         run: |
           set -euo pipefail
@@ -253,7 +252,9 @@ jobs:
       - name: Fix bug with Claude
         uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         env:
-          CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "1"
+          # Scrubbing needs bubblewrap, which isn't on the runner and can't be installed with sudo
+          # disabled. Test code can still read the Anthropic key, but egress is blocked (harden-runner).
+          CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "0"
           CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"
           DB_HOST: localhost
           DB_USERNAME: postgres
