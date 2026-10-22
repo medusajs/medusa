@@ -226,7 +226,7 @@ export type AbstractModuleService<
 
 // TODO: Because of a bug, those methods were not made visible which now cause issues with the fix as our interface are not consistent with the expectations
 
-// are not consistent accross modules
+// are not consistent across modules
 /* & {
   [TModelName in keyof TModelsDtoConfig as `create${ExtractPluralName<
     TModelsDtoConfig,

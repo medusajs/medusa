@@ -15,7 +15,10 @@ import { track } from "@medusajs/telemetry"
 // @ts-ignore
 import inquirer from "inquirer"
 
-import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
+import {
+  isNodeVersionSupported,
+  MIN_SUPPORTED_NODE_VERSION,
+} from "@medusajs/utils"
 import reporter from "../reporter"
 import { PanicId } from "../reporter/panic-handler"
 import { getPackageManager } from "../util/package-manager"
@@ -384,10 +387,9 @@ type NewCommandArgs = {
  * Main function that clones or copies the starter.
  */
 export const newStarter = async (args: NewCommandArgs) => {
-  const nodeVersion = getNodeVersion()
-  if (nodeVersion < MIN_SUPPORTED_NODE_VERSION) {
+  if (!isNodeVersionSupported()) {
     reporter.error(
-      `Medusa requires at least v20 of Node.js. You're using v${nodeVersion}. Please install at least v20 and try again: https://nodejs.org/en/download`
+      `Medusa requires at least v${MIN_SUPPORTED_NODE_VERSION} of Node.js. You're using v${process.versions.node}. Please install v${MIN_SUPPORTED_NODE_VERSION} or later and try again: https://nodejs.org/en/download`
     )
     process.exit(1)
   }

@@ -7,6 +7,7 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 import js from "@eslint/js"
 import { FlatCompat } from "@eslint/eslintrc"
+import nextPlugin from "@next/eslint-plugin-next"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -37,9 +38,9 @@ export default [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended",
-    "plugin:@next/next/recommended"
+    "plugin:react-hooks/recommended"
   ),
+  nextPlugin.configs.recommended,
   {
     languageOptions: {
       globals: {

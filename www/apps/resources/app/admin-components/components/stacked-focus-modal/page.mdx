@@ -1,0 +1,252 @@
+---
+sidebar_label: "Stacked Focus Modal"
+---
+
+import { Table, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `StackedFocusModal - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `StackedFocusModal` component renders a full-screen modal above a route modal. The Medusa Admin uses it for selections that need a lot of space, such as the table that adds countries to a region.
+
+```tsx
+import {
+  StackedFocusModal,
+} from "@medusajs/dashboard/components"
+```
+
+---
+
+## Stacked Modals
+
+Render a `StackedFocusModal` inside a [RouteFocusModal](../route-focus-modal/page.mdx) or a [RouteDrawer](../route-drawer/page.mdx), which both provide the stacked modal context. Unlike route modals, a `StackedFocusModal` is not tied to a route. The user opens it with a trigger, and the parent modal stays mounted underneath.
+
+Every `StackedFocusModal` requires an `id` prop. The parent modal uses the ID to track which stacked modal is open, so you can render more than one stacked modal in the same form.
+
+Use a `StackedFocusModal` when the content needs the full screen, such as a data table. For narrower content, use the [StackedDrawer](../stacked-drawer/page.mdx).
+
+---
+
+## Example
+
+The following UI route renders a `StackedFocusModal` inside a `RouteFocusModal` to select products:
+
+```tsx title="src/admin/routes/brands/[id]/products/page.tsx"
+import { Button, Heading } from "@medusajs/ui"
+import {
+  RouteFocusModal,
+  StackedFocusModal,
+} from "@medusajs/dashboard/components"
+
+const STACKED_MODAL_ID = "select-products"
+
+const BrandProducts = () => {
+  return (
+    <RouteFocusModal>
+      <RouteFocusModal.Header />
+      <RouteFocusModal.Body>
+        <StackedFocusModal id={STACKED_MODAL_ID}>
+          <StackedFocusModal.Trigger asChild>
+            <Button variant="secondary" size="small">
+              Add Products
+            </Button>
+          </StackedFocusModal.Trigger>
+          <StackedFocusModal.Content>
+            <StackedFocusModal.Header>
+              <StackedFocusModal.Title asChild>
+                <Heading>Add Products</Heading>
+              </StackedFocusModal.Title>
+            </StackedFocusModal.Header>
+            <StackedFocusModal.Body>
+              <ProductTable />
+            </StackedFocusModal.Body>
+            <StackedFocusModal.Footer>
+              <StackedFocusModal.Close asChild>
+                <Button variant="secondary" size="small">
+                  Cancel
+                </Button>
+              </StackedFocusModal.Close>
+            </StackedFocusModal.Footer>
+          </StackedFocusModal.Content>
+        </StackedFocusModal>
+      </RouteFocusModal.Body>
+    </RouteFocusModal>
+  )
+}
+
+export default BrandProducts
+```
+
+To close the modal from your own code, such as after the user confirms the selection, use the `useStackedModal` hook. Refer to the [Stacked Drawer](../stacked-drawer/page.mdx#usestackedmodal) documentation for the hook's returned values.
+
+---
+
+## Props
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description:
+        "A unique identifier for the modal. It differentiates stacked modals registered to the same parent modal. This prop is required.",
+    },
+    {
+      name: "onOpenChangeCallback",
+      type: "`(open: boolean) => void`",
+      optional: true,
+      description:
+        "A function to run when the modal opens or closes. For example, reset the selection when the user closes the modal.",
+    },
+  ]}
+/>
+
+---
+
+## Sub-components
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Component
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedFocusModal.Trigger`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Opens the modal when clicked. Pass `asChild` to use your own button.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedFocusModal.Content`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The modal's content. It renders a transparent overlay so that the parent modal stays visible.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedFocusModal.Header`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The modal's header. It renders the close button, so render it even when it has no children.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedFocusModal.Title`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The modal's title. Pass `asChild` to render your own heading element.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedFocusModal.Description`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An accessible description of the modal's purpose.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedFocusModal.Body`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The modal's scrollable content area.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedFocusModal.Footer`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The modal's footer. Place the cancel and confirm buttons in it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `StackedFocusModal.Close`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Closes the modal when clicked, keeping the parent modal open. Pass `asChild` to use your own button.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## useStackedModal
+
+`StackedFocusModal` shares the `useStackedModal` hook with the [StackedDrawer](../stacked-drawer/page.mdx#usestackedmodal). The hook returns `getIsOpen` and `setIsOpen` to read and change a stacked modal's open state by its ID, and `register` and `unregister` that the components call for you.
+
+```tsx title="src/admin/routes/brands/[id]/products/page.tsx"
+import { Button } from "@medusajs/ui"
+import { useStackedModal } from "@medusajs/dashboard/components"
+
+const ProductTable = () => {
+  const { setIsOpen } = useStackedModal()
+
+  const handleSave = () => {
+    setIsOpen("select-products", false)
+  }
+
+  return (
+    <Button size="small" onClick={handleSave}>
+      Save
+    </Button>
+  )
+}
+```

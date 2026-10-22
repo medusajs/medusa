@@ -1,0 +1,229 @@
+import { CardList, Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Search Module Providers`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about Search Module Providers in Medusa, including how to register them and choose which one holds each index.
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.21.1+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1"
+    }
+  ]}
+/>
+
+<Note title="Easier setup with Cloud">
+
+Cloud provides pre-configured search infrastructure for your Medusa application. You can use it to set up without configuring and managing your own search engine. Learn more in the [Medusa Search](!cloud!/search) documentation.
+
+</Note>
+
+## What is a Search Module Provider?
+
+A Search Module Provider implements the logic of talking to a search engine, including creating indexes, writing documents, and running queries. The [Search Module](../page.mdx) then uses the registered providers to serve every index.
+
+A provider holds the integration logic only. It never decides when a document changes or when an index is filled, as the Search Module drives all of that and calls the provider to carry it out.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        The provider is responsible for
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        The Search Module is responsible for
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Creating and migrating the physical indexes in the search engine.
+      </Table.Cell>
+      <Table.Cell>
+        Reading your [index definitions](../index-definitions/page.mdx) and deciding which indexes exist and when they change.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Writing and deleting the documents the module hands it.
+      </Table.Cell>
+      <Table.Cell>
+        [Filling an index](../reindexing/page.mdx) by running the definition's `seed` function, then batching the results into provider writes.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Translating a search query into the engine's own query language.
+      </Table.Cell>
+      <Table.Cell>
+        Subscribing to events and routing each one to the definitions that declared it, so indexes stay current.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Reporting whether a write finished, which lets the module wait on engines that apply writes asynchronously.
+      </Table.Cell>
+      <Table.Cell>
+        Versioning an index, rebuilding it when its definition changes, and running the [catch-up pass](../reindexing/page.mdx#the-catch-up-pass) that follows a full run.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Available Search Module Providers
+
+Medusa provides the following Search Module Providers:
+
+<CardList
+  items={[
+    {
+      title: "PostgreSQL",
+      href: "/infrastructure-modules/search/providers/postgres",
+    },
+    {
+      title: "Medusa Search",
+      href: "!cloud!/search",
+      badge: {
+        variant: "blue",
+        children: "Cloud"
+      }
+    },
+  ]}
+/>
+
+<Note>
+
+Refer to the [Compare Search Providers guide](https://docs.medusajs.com/cloud/search/comparison) for a detailed comparison of the features and capabilities of each provider.
+
+</Note>
+
+### Custom Search Module Providers
+
+You can also create a custom provider to integrate a search engine that Medusa doesn't support out of the box. You only implement the methods that talk to that engine, as shown in the table above. Refer to the [Create Search Module Provider guide](/references/search/provider) for the methods to implement.
+
+---
+
+## Register Multiple Providers
+
+The Search Module supports more than one provider at a time. Each [index definition](../index-definitions/page.mdx) picks one through its `provider` property, so a high-traffic index can live on a dedicated engine while quieter indexes stay on PostgreSQL.
+
+For example:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/search",
+      options: {
+        default_provider: "search-postgres",
+        providers: [
+          {
+            resolve: "@medusajs/medusa/search-postgres",
+            id: "search-postgres",
+            options: {
+              language: "english",
+            },
+          },
+          {
+            resolve: "./src/modules/my-search-provider",
+            id: "my-engine",
+            options: {
+              // provider options...
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+<Note>
+
+Register each provider once. Two registrations of the same provider share one identifier, so an index definition couldn't tell them apart, and the module throws at startup.
+
+</Note>
+
+### Default Search Module Provider
+
+An index definition that names no provider uses the module's default provider. The Search Module resolves the default once when it initializes, so a misconfiguration fails at startup rather than on the first query.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Scenario
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default Provider
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        One provider is registered.
+      </Table.Cell>
+      <Table.Cell>
+        The registered provider.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Multiple providers are registered and the module has a `default_provider` option.
+      </Table.Cell>
+      <Table.Cell>
+        The provider whose identifier matches `default_provider`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Multiple providers are registered and the module doesn't have a `default_provider` option.
+      </Table.Cell>
+      <Table.Cell>
+        The module throws at startup because it can't determine a default provider.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Multiple providers are registered and the module has a `default_provider` option that doesn't match any registered provider.
+      </Table.Cell>
+      <Table.Cell>
+        The module throws at startup because it can't determine a default provider.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Select a Provider by its Identifier
+
+Every provider declares its own identifier, such as `search-postgres` for the PostgreSQL provider and `search-medusa` for the Medusa Search provider. A custom provider declares one too, as a static `identifier` property on the service it exports:
+
+```ts title="src/modules/my-search-provider/service.ts"
+import {
+  AbstractSearchProviderService,
+} from "@medusajs/framework/utils"
+
+export class MySearchService
+  extends AbstractSearchProviderService
+{
+  static identifier = "my-engine"
+  // ...
+}
+```
+
+An index definition then selects a provider by that identifier:
+
+```ts title="src/search/brand.ts"
+export const brandIndex = defineSearchIndex({
+  provider: "my-engine",
+  // ...
+})
+```

@@ -62,6 +62,7 @@ describe("validateAndTransformQuery", () => {
     // `RestrictedFields` is nominal (it has a `#private` field), so the partial
     // literal is not comparable to `MedusaRequest` directly.
     let mockRequest = {
+      allowed: [],
       restrictedFields: new RestrictedFields(),
       query: {},
     } as unknown as MedusaRequest
@@ -207,6 +208,7 @@ describe("validateAndTransformQuery", () => {
 
   it("should transform the input query taking into account the fields symbols (+,- or no symbol)", async () => {
     let mockRequest = {
+      allowed: [],
       restrictedFields: new RestrictedFields(),
       query: {
         fields: "id",
@@ -325,6 +327,7 @@ describe("validateAndTransformQuery", () => {
   it(`should transform the input and manage the allowed fields and relations properly without error`, async () => {
     const restrictedFields = new RestrictedFields()
     let mockRequest = {
+      allowed: [],
       restrictedFields,
       query: {
         fields: "product.*, *product.variants,+product.id",
@@ -356,6 +359,7 @@ describe("validateAndTransformQuery", () => {
         "metadata.children.id",
         "metadata.product.id",
         "product",
+        "product.id",
         "product.variants",
       ],
       isList: true,
@@ -478,6 +482,7 @@ describe("validateAndTransformQuery", () => {
     expect(queryConfig.allowed).toEqual(["id"])
 
     const secondRequest = {
+      allowed: [],
       restrictedFields: new RestrictedFields(),
       query: {
         order: "created_at",

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/orchestration",
-  "version": "2.20.1",
+  "version": "2.22.0",
   "description": "Medusa utilities to orchestrate modules",
   "main": "dist/index.js",
   "exports": {
@@ -15,25 +15,29 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__fixtures__",
     "!dist/**/__mocks__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "2.20.1"
+    "@medusajs/types": "2.22.0"
   },
   "dependencies": {
-    "@medusajs/deps": "2.20.1",
-    "@medusajs/utils": "2.20.1",
+    "@medusajs/deps": "2.22.0",
+    "@medusajs/utils": "2.22.0",
     "ulid": "^2.3.0"
   },
   "scripts": {

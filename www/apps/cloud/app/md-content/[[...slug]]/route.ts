@@ -1,4 +1,4 @@
-import { addExtraToMd, getCleanMd, workerCompatibleFetch } from "docs-utils"
+import { addExtraToMd, getCleanMd } from "docs-utils"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
@@ -10,8 +10,9 @@ import {
   localLinksRehypePlugin,
 } from "remark-rehype-plugins"
 import type { Plugin } from "unified"
-import { fetchFromAssetsBinding } from "../../../utils/fetch-from-assets-binding"
+import { fetchRawMdx } from "../../../utils/fetch-raw-mdx"
 import { getChangelogMarkdown } from "../../../utils/changelog"
+import { getPricingMarkdown } from "../../../utils/pricing"
 
 type Params = {
   params: Promise<{ slug?: string[] }>
@@ -22,52 +23,24 @@ export async function GET(req: NextRequest, { params }: Params) {
   const slug = rawSlug?.filter(Boolean) ?? []
   const origin = process.env.NEXT_PUBLIC_BASE_URL || new URL(req.url).origin
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
+  const appDir = path.join(process.cwd(), "app")
   const isCloudflare = !!process.env.CLOUDFLARE_ENV
 
-  const rawMdxUrl = `${origin}${basePath}/raw-mdx/${[...slug, "page.mdx"].join("/")}`
-  const fileContent =
-    (await fetchFromAssetsBinding(rawMdxUrl)) ??
-    (await workerCompatibleFetch<string | null>({
-      url: rawMdxUrl,
-      responseTransformer: async (res) => {
-        return res.ok ? res.text() : null
-      },
-      fallbackAction: async () => {
-        try {
-          const { promises: fs } = await import("fs")
-          // eslint-disable-next-line no-console
-          console.log(
-            "Attempting to read file from filesystem for slug:",
-            path.join(process.cwd(), "app", ...slug, "page.mdx")
-          )
-          return await fs.readFile(
-            path.join(process.cwd(), "app", ...slug, "page.mdx"),
-            "utf-8"
-          )
-        } catch {
-          return null
-        }
-      },
-      useRemote: isCloudflare,
-    }))
+  const result = await fetchRawMdx(origin, basePath, slug)
 
-  if (!fileContent) {
+  if (!result) {
     return notFound()
   }
 
-  // The changelog page renders its entries from generated files with a
-  // `<ChangelogList />` component, so its Markdown must be built here rather
-  // than read from the MDX file.
-  const parserOptions =
-    slug[0] === "changelog" && slug.length === 1
-      ? {
-          ChangelogList: {
-            content: await getChangelogMarkdown(
-              process.env.NEXT_PUBLIC_BASE_URL || origin
-            ),
-          },
-        }
-      : undefined
+  const { content: fileContent, isOverride } = result
+
+  // The changelog and pricing pages render their content from generated files
+  // and Sanity, so their Markdown must be built here rather than read from the
+  // MDX file.
+  const parserOptions = await getParserOptions(
+    slug,
+    process.env.NEXT_PUBLIC_BASE_URL || origin
+  )
 
   const cleanMdContent = await getCleanMd_(fileContent, parserOptions, {
     before: [
@@ -99,10 +72,19 @@ export async function GET(req: NextRequest, { params }: Params) {
             isCloudflare,
         },
       ],
-      [localLinksRehypePlugin],
+      [
+        localLinksRehypePlugin,
+        {
+          filePath: path.join(appDir, ...slug, "page.mdx"),
+          basePath: appDir,
+        },
+      ],
     ] as unknown as Plugin[],
     after: [
-      [addUrlToRelativeLink, { url: process.env.NEXT_PUBLIC_BASE_URL }],
+      [
+        addUrlToRelativeLink,
+        { url: `${process.env.NEXT_PUBLIC_BASE_URL || ""}${basePath}` },
+      ],
     ] as unknown as Plugin[],
   })
 
@@ -135,10 +117,12 @@ export async function GET(req: NextRequest, { params }: Params) {
   }
 
   return new NextResponse(
-    addExtraToMd(cleanMdContent, {
-      baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
-      basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
-    }),
+    isOverride
+      ? cleanMdContent
+      : addExtraToMd(cleanMdContent, {
+          baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+          basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+        }),
     {
       headers: {
         "Content-Type": "text/markdown",
@@ -147,6 +131,26 @@ export async function GET(req: NextRequest, { params }: Params) {
       status: 200,
     }
   )
+}
+
+const getParserOptions = async (
+  slug: string[],
+  baseUrl: string
+): Promise<Record<string, unknown> | undefined> => {
+  if (slug.length !== 1) {
+    return
+  }
+
+  switch (slug[0]) {
+    case "changelog":
+      return {
+        ChangelogList: { content: await getChangelogMarkdown(baseUrl) },
+      }
+    case "pricing":
+      return {
+        PricingContent: { content: await getPricingMarkdown(baseUrl) },
+      }
+  }
 }
 
 const getCleanMd_ = unstable_cache(

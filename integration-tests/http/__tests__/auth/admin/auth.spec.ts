@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken"
 import {
   adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(100000)
@@ -128,6 +130,86 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should reject re-registering an incomplete signup with a different password", async () => {
+        const firstSignup = await api.post("/auth/user/emailpass/register", {
+          email: "incomplete@medusa.js",
+          password: "first_password",
+        })
+
+        expect(firstSignup.status).toEqual(200)
+        expect(firstSignup.data).toEqual({ token: expect.any(String) })
+
+        const reclaim = await api
+          .post("/auth/user/emailpass/register", {
+            email: "incomplete@medusa.js",
+            password: "attacker_password",
+          })
+          .catch((e) => e.response)
+
+        expect(reclaim.status).toEqual(401)
+        expect(reclaim.data.message).toEqual(
+          "Identity with email already exists"
+        )
+
+        const attackerSignin = await api
+          .post("/auth/user/emailpass", {
+            email: "incomplete@medusa.js",
+            password: "attacker_password",
+          })
+          .catch((e) => e.response)
+
+        expect(attackerSignin.status).toEqual(401)
+        expect(attackerSignin.data.message).toEqual("Invalid email or password")
+
+        const signin = await api.post("/auth/user/emailpass", {
+          email: "incomplete@medusa.js",
+          password: "first_password",
+        })
+
+        expect(signin.status).toEqual(200)
+        expect(signin.data).toEqual({ token: expect.any(String) })
+      })
+
+      it("should allow resuming an incomplete signup with the original password", async () => {
+        const { token: inviteToken } = (
+          await api.post(
+            "/admin/invites",
+            { email: "resumed@medusa.js" },
+            adminHeaders
+          )
+        ).data.invite
+
+        const firstSignup = await api.post("/auth/user/emailpass/register", {
+          email: "resumed@medusa.js",
+          password: "secret_password",
+        })
+
+        expect(firstSignup.status).toEqual(200)
+
+        // The invite acceptance failed, so the identity is still actorless and
+        // the user retries the whole flow from the registration form.
+        const retriedSignup = await api.post("/auth/user/emailpass/register", {
+          email: "resumed@medusa.js",
+          password: "secret_password",
+        })
+
+        expect(retriedSignup.status).toEqual(200)
+        expect(retriedSignup.data).toEqual({ token: expect.any(String) })
+
+        const accepted = await api.post(
+          `/admin/invites/accept?token=${inviteToken}`,
+          { first_name: "John", last_name: "Doe" },
+          {
+            headers: { authorization: `Bearer ${retriedSignup.data.token}` },
+          }
+        )
+
+        expect(accepted.status).toEqual(200)
+        expect(accepted.data.user).toEqual(
+          expect.objectContaining({ email: "resumed@medusa.js" })
+        )
+      })
+
       it("should respond with 401 on sign in, if email does not exist", async () => {
         const signup = await api
           .post("/auth/user/emailpass", {
@@ -139,6 +221,46 @@ medusaIntegrationTestRunner({
         expect(signup.response.status).toEqual(401)
         expect(signup.response.data.message).toEqual(
           "Invalid email or password"
+        )
+      })
+
+      it("should allow an admin identity to sign in as a customer to create a customer account by default", async () => {
+        const publishableKey = await generatePublishableKey(container)
+        const storeHeaders = generateStoreHeaders({ publishableKey })
+
+        const register = await api
+          .post("/auth/customer/emailpass/register", {
+            email: "admin@medusa.js",
+            password: "somepassword",
+          })
+          .catch((e) => e)
+
+        expect(register.response.status).toEqual(401)
+
+        const login = await api.post("/auth/customer/emailpass", {
+          email: "admin@medusa.js",
+          password: "somepassword",
+        })
+
+        expect(login.status).toEqual(200)
+        expect(jwt.decode(login.data.token)).toEqual(
+          expect.objectContaining({ actor_type: "customer", actor_id: "" })
+        )
+
+        const customer = await api.post(
+          "/store/customers",
+          { email: "admin@medusa.js", first_name: "Admin" },
+          {
+            headers: {
+              authorization: `Bearer ${login.data.token}`,
+              ...storeHeaders.headers,
+            },
+          }
+        )
+
+        expect(customer.status).toEqual(200)
+        expect(customer.data.customer).toEqual(
+          expect.objectContaining({ email: "admin@medusa.js" })
         )
       })
     })
@@ -171,13 +293,17 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(201)
       })
 
-      it("should fail to generate token for existing user but no provider, but still respond with 201", async () => {
-        const response = await api.post(
-          "/auth/user/non-existing-provider/reset-password",
-          { identifier: "admin@medusa.js" }
-        )
+      it("should reject a provider that is not allowed for the user actor type", async () => {
+        const response = await api
+          .post("/auth/user/non-existing-provider/reset-password", {
+            identifier: "admin@medusa.js",
+          })
+          .catch((e) => e.response)
 
-        expect(response.status).toEqual(201)
+        expect(response.status).toEqual(400)
+        expect(response.data.message).toEqual(
+          "The actor type user is not allowed to use the auth provider non-existing-provider"
+        )
       })
 
       it("should successfully reset password", async () => {

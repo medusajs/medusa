@@ -1,0 +1,19 @@
+/**
+ * @schema AdminDebitStoreCreditAccountParams
+ * type: object
+ * description: The details of debiting a store credit account.
+ * x-schemaName: AdminDebitStoreCreditAccountParams
+ * required:
+ *   - amount
+ * properties:
+ *   amount:
+ *     type: number
+ *     title: amount
+ *     description: The amount to debit from the store credit account, in the major currency unit. It's deducted from the customer's store credit balance.
+ *   note:
+ *     type: string
+ *     title: note
+ *     description: An additional note to add to the store credit transaction.
+ * 
+*/
+

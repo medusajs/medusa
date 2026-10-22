@@ -188,11 +188,16 @@ Refer to the [Set Up React Email Templates](./react-email/page.mdx) guide to lea
 
 <Note>
 
-Verified email sender domains are available for Launch, Scale, and Enterprise plans only. Learn more about plan features on the [pricing page](../pricing/page.mdx).
+Verified email sender domains are available for Launch, Scale, and Enterprise plans only. The number of sender domains you can add depends on your plan:
+
+- Launch plan: one sender domain.
+- Scale plan: up to three sender domains.
+
+Learn more about plan features on the [pricing page](../pricing/page.mdx).
 
 </Note>
 
-To send emails to external email addresses using Medusa Emails, you need to add an email sender domain in your Cloud organization. You can add multiple sender domains if needed.
+To send emails to external email addresses using Medusa Emails, you need to add an email sender domain in your Cloud organization. Depending on your plan, you can add more than one sender domain.
 
 To add your email sender domain:
 
@@ -223,6 +228,10 @@ The domain will then be verified periodically. This process may take a few minut
 After adding a sender domain, you can view its verification status on the domain detail page. To open it, click the domain name in the **Sender Domains** list.
 
 The detail page is organized into three sections: **DKIM**, **SPF**, and **DMARC**. Each section shows whether the corresponding DNS records have been verified. The domain header also shows when the most recent verification check ran.
+
+### Provisioning Failure
+
+If the domain's status is **Provisioning failed**, the domain detail page replaces the DNS configuration instructions with an alert explaining the failure. The **Check records** and **Restart verification** buttons are not available when provisioning has failed. Contact support if you encounter this state.
 
 ### Verify DNS Records Manually
 

@@ -97,7 +97,12 @@ export async function migrateSearchIndexes(
       Modules.SEARCH
     ) as SearchTypes.ISearchModuleService
 
-    const plan = await searchModule.createIndexMigrationPlan()
+    // Drops are left out: a test run starts from a fresh database, so a drop
+    // here could only come from a definition this particular suite happens not
+    // to declare, and deleting another suite's index is never the intent.
+    const plan = (await searchModule.createIndexMigrationPlan()).filter(
+      (action) => action.action !== "drop"
+    )
     const pending = plan.filter((action) => action.action !== "noop")
 
     if (!pending.length) {

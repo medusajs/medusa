@@ -31,6 +31,13 @@ export const TYPES_SOURCES: ReadonlySet<string> = new Set([
   LEGACY_TYPES_SOURCE,
 ])
 
+/**
+ * First Medusa version that ships the `allowFields` middleware from
+ * `@medusajs/framework/http`. Rules quote it in their messages because the
+ * plugin version and the project's Medusa version can differ.
+ */
+export const ALLOW_FIELDS_MIN_MEDUSA_VERSION = "2.21.0"
+
 /** The name of the `Modules` enum as imported from `@medusajs/framework/utils`. */
 export const MODULES_ENUM = "Modules"
 

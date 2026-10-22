@@ -40,6 +40,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
   },
   {
+    "title": "Manage Products with Admin API",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/manage-with-admin-api"
+  },
+  {
     "title": "Get Variant Prices",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/price"
   },
@@ -134,6 +138,10 @@ export const howTo = [
   {
     "title": "Create Payment Provider",
     "path": "https://docs.medusajs.com/resources/references/payment/provider"
+  },
+  {
+    "title": "Use Search Module",
+    "path": "https://docs.medusajs.com/resources/references/search/service"
   },
   {
     "title": "Create Tax Provider",

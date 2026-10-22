@@ -58,11 +58,11 @@ Medusa will satisfy this version by the following priority:
 
 ```mermaid
 flowchart LR
-    A[Start] --> B{engines field\nspecified?}
-    B -- Yes --> C{"Found minimum secure\nversion matching range?"}
-    C -- Yes --> D[Use minimum secure\nversion matching the range]
-    C -- No --> E[Use minimum version\nsatisfying the range]
-    B -- No --> F["Use default\nNode.js version (20.x)"]
+    A[Start] --> B{"engines field<br/>specified?"}
+    B -- Yes --> C{"Found minimum secure<br/>version matching range?"}
+    C -- Yes --> D["Use minimum secure<br/>version matching the range"]
+    C -- No --> E["Use minimum version<br/>satisfying the range"]
+    B -- No --> F["Use default<br/>Node.js version (20.x)"]
 ```
 
 1. Find the minimum secure version that matches the range specified in the `engines` field. For example, if your `package.json` specifies `>=21.0.0`, Medusa will use Node.js v22.x since v21.x is no longer supported.
@@ -118,6 +118,12 @@ To create a monorepo for projects prior to v2.14.0, you need:
 
 1. Package manager: Cloud supports `npm`, `yarn` (v1, v3, and v4), and `pnpm` as package managers.
 2. Monorepo tool: You can use [turbo](https://turborepo.com/) or [nx](https://nx.dev/) to manage your monorepo.
+
+<Note type="warning">
+
+Cloud storefront builds don't support pnpm 12 yet. If you use pnpm, use pnpm 11, such as `11.26.0`. Learn more in the [Troubleshooting](../../deployments/troubleshooting/page.mdx#storefront-opennextjs-cloudflare-not-found-with-pnpm-12) guide.
+
+</Note>
 
 You can structure your monorepo as you see fit. You'll be required to specify the paths to your Medusa application and storefront during the project creation process on Cloud.
 

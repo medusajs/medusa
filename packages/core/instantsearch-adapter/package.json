@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/instantsearch-adapter",
-  "version": "2.20.1",
+  "version": "2.22.0",
   "description": "Algolia InstantSearch adapter for Medusa Search",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -22,17 +22,21 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "author": "Medusa",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {

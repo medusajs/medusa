@@ -1,0 +1,37 @@
+/**
+ * @schema SearchResultMetadata
+ * type: object
+ * description: The pagination and timing details of a search result.
+ * x-schemaName: SearchResultMetadata
+ * required:
+ *   - skip
+ *   - take
+ *   - count
+ * properties:
+ *   skip:
+ *     type: number
+ *     title: skip
+ *     description: The number of documents skipped before the returned hits.
+ *   take:
+ *     type: number
+ *     title: take
+ *     description: The maximum number of hits returned.
+ *   count:
+ *     type: number
+ *     title: count
+ *     description: The total number of matching documents. Most providers only estimate it, and it's `null` when the query sets its `count` strategy to `none`.
+ *   next_cursor:
+ *     type: string
+ *     title: next_cursor
+ *     description: The cursor to pass in the next query's pagination to retrieve the next page, on providers that paginate with cursors.
+ *   query:
+ *     type: string
+ *     title: query
+ *     description: The free-text query that the result was computed for.
+ *   processing_time_ms:
+ *     type: number
+ *     title: processing_time_ms
+ *     description: How long the search engine took to run the query, in milliseconds.
+ * 
+*/
+

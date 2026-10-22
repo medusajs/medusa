@@ -1,5 +1,9 @@
 # Resources app — References architecture
 
+> **Shipping something new?** Add it to the docs homepage's What's New list in
+> `www/apps/book/components/Homepage/WhatsNewSection/data.ts`. See
+> [`www/apps/book/CLAUDE.md`](../book/CLAUDE.md) for the entry format and rules.
+
 This documents how the API **references** (`/references/...`) are generated and
 served. Non-reference pages in this app are ordinary MDX under `app/`; this file
 is only about references.

@@ -1,0 +1,163 @@
+---
+sidebar_label: "Regions"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Region Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The region hooks fetch regions from the Medusa backend. Use them to show or select regions in your admin customizations.
+
+```tsx
+import {
+  regionsQueryKeys,
+  useRegion,
+  useRegions,
+} from "@medusajs/dashboard/hooks"
+```
+
+These hooks are built on [TanStack Query](https://tanstack.com/query/latest). Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+
+---
+
+## useRegion
+
+Fetches a single region by ID.
+
+```tsx
+const { region, isPending } = useRegion(regionId, {
+  fields: "+countries.*",
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The region's ID.",
+    },
+    {
+      name: "query",
+      type: "`Record<string, any>`",
+      optional: true,
+      description: "Optional query parameters, such as `fields`.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "region",
+      type: "`AdminRegion`",
+      description: "The region's details. It's `undefined` while the request is loading.",
+    },
+  ]}
+/>
+
+---
+
+## useRegions
+
+Fetches a paginated list of regions.
+
+```tsx
+const { regions, count } = useRegions({ limit: 20 })
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "query",
+      type: "`Record<string, any>`",
+      optional: true,
+      description: "Optional query parameters, such as `limit`, `offset`, or `fields`.",
+    },
+    {
+      name: "options",
+      type: "`UseQueryOptions`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "regions",
+      type: "`AdminRegion[]`",
+      description: "The list of regions. It's `undefined` while the request is loading.",
+    },
+    {
+      name: "count",
+      type: "`number`",
+      description: "The total number of regions matching the query.",
+    },
+    {
+      name: "limit",
+      type: "`number`",
+      description: "The maximum number of regions returned in the request.",
+    },
+    {
+      name: "offset",
+      type: "`number`",
+      description: "The number of regions skipped before the returned ones.",
+    },
+  ]}
+/>
+
+---
+
+## regionsQueryKeys
+
+A TanStack Query key factory for region queries. Use it to invalidate cached region data after you change a region.
+
+It provides `all`, `lists()`, `list(query)`, `details()`, and `detail(id, query)`.
+
+```tsx
+import { useQueryClient } from "@tanstack/react-query"
+import { regionsQueryKeys } from "@medusajs/dashboard/hooks"
+
+const Widget = () => {
+  const queryClient = useQueryClient()
+
+  const refreshRegions = () => {
+    queryClient.invalidateQueries({
+      queryKey: regionsQueryKeys.lists(),
+    })
+  }
+
+  // ...
+}
+```

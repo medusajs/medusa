@@ -1,5 +1,5 @@
 import { Container, Text } from "@medusajs/ui";
-import { CreditCard } from "@medusajs/icons";
+import { CreditCard, MinusMini } from "@medusajs/icons";
 
 import { AdminStoreCreditAccount } from "../../../../../types";
 import DisplayId from "../../../../components/display-id";
@@ -53,6 +53,12 @@ const StoreCreditAccountDetailsSection = ({
                   icon: <CreditCard />,
                   label: "Credit the account",
                   to: "credit",
+                },
+                {
+                  icon: <MinusMini />,
+                  label: "Debit the account",
+                  to: "debit",
+                  disabled: !Number(storeCreditAccount.balance),
                 },
               ],
             },

@@ -14,7 +14,10 @@ export const createCompleteReturnStep = createStep(
   async (data: CreateOrderReturnDTO, { container }) => {
     const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
-    const orderReturn = await service.createReturn(data)
+    const orderReturn = await service.createReturn({
+      requested_at: new Date(),
+      ...data,
+    })
     return new StepResponse(orderReturn, data.order_id)
   },
   async (orderId, { container }) => {

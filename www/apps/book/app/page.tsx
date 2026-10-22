@@ -1,7 +1,12 @@
 export const revalidate = 3600
 
 import clsx from "clsx"
-import { AiAssistantChatWindow, MainNav, RootProviders } from "docs-ui"
+import {
+  AgentDirective,
+  AiAssistantChatWindow,
+  MainNav,
+  RootProviders,
+} from "docs-ui"
 import Providers from "../providers"
 import HomepageTopSection from "../components/Homepage/TopSection"
 import HomepageSectionsSeparator from "../components/Homepage/SectionsSeparator"
@@ -13,6 +18,7 @@ import HomepageRecipesSection from "../components/Homepage/RecipesSection"
 import HomepageCommerceModulesSection from "../components/Homepage/CommerceModulesSection"
 import HomepageFooter from "../components/Homepage/Footer"
 import HomepageStartPrompt from "../components/Homepage/StartPrompt"
+import HomepageWhatsNewSection from "../components/Homepage/WhatsNewSection"
 
 const Homepage = () => {
   return (
@@ -23,6 +29,7 @@ const Homepage = () => {
         "h-screen overflow-hidden"
       )}
     >
+      <AgentDirective />
       <RootProviders
         layoutProviderProps={{
           disableResizeObserver: true,
@@ -55,6 +62,8 @@ const Homepage = () => {
               <HomepageStartPrompt />
               <HomepageSectionsSeparator />
               <HomepageBloom />
+              <HomepageSectionsSeparator />
+              <HomepageWhatsNewSection />
               <HomepageSectionsSeparator />
               <HomepageLinksSection />
               <HomepageSectionsSeparator />

@@ -494,7 +494,33 @@ const redirects = async () => {
       source:
         "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms",
       destination:
-        "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-shopify",
+        "/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-shopify",
+      permanent: true,
+    },
+    {
+      source: "/learn/fundamentals/module-links/query",
+      destination: "/learn/fundamentals/query",
+      permanent: true,
+    },
+    {
+      source: "/learn/fundamentals/module-links/query-context",
+      destination: "/learn/fundamentals/query/query-context",
+      permanent: true,
+    },
+    {
+      source: "/learn/fundamentals/module-links/index-module",
+      destination: "/learn/fundamentals/query/index-module",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/mcp-server",
+      destination: "/learn/introduction/build-with-llms-ai/docs-mcp-server",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/mcp-server/:path*",
+      destination:
+        "/learn/introduction/build-with-llms-ai/docs-mcp-server/:path*",
       permanent: true,
     },
   ]

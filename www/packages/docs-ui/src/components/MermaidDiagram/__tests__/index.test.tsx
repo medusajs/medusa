@@ -42,12 +42,12 @@ vi.mock("react", async () => {
 // mock mermaid
 const mockRender = vi.fn()
 const mockInitialize = vi.fn()
+const mockRegisterIconPacks = vi.fn()
 
 vi.mock("mermaid", () => ({
   default: {
-    mermaidAPI: {
-      initialize: () => mockInitialize(),
-    },
+    initialize: () => mockInitialize(),
+    registerIconPacks: (packs: unknown) => mockRegisterIconPacks(packs),
     render: (id: string, content: string) => mockRender(id, content),
   },
 }))
@@ -74,6 +74,15 @@ describe("rendering", () => {
     render(<MermaidDiagram diagramContent="graph TD; A-->B" />)
     await waitFor(() => {
       expect(mockInitialize).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  test("registers the Medusa icon pack", async () => {
+    render(<MermaidDiagram diagramContent="graph TD; A-->B" />)
+    await waitFor(() => {
+      expect(mockRegisterIconPacks).toHaveBeenCalledWith([
+        expect.objectContaining({ name: "medusa" }),
+      ])
     })
   })
 
@@ -122,17 +131,19 @@ describe("rendering", () => {
     })
   })
 
-  test("renders SVG with 100% width when not zoomed", async () => {
+  test("renders the diagram in a 16:9 container when not zoomed", async () => {
     const { container } = render(
       <MermaidDiagram diagramContent="graph TD; A-->B" />
     )
     await waitFor(() => {
-      const svg = container.querySelector("svg")
-      expect(svg).toHaveAttribute("width", "100%")
+      const wrapper = container.querySelector("svg")?.parentElement
+      expect(wrapper).toHaveClass("aspect-video")
+      expect(wrapper).toHaveClass("items-center")
+      expect(wrapper).toHaveClass("justify-center")
     })
   })
 
-  test("renders SVG with viewBox height when available", async () => {
+  test("renders SVG with the diagram's viewBox and width", async () => {
     const mockSvg = `<svg viewBox="0 0 100 200"><rect width="100" height="200" /></svg>`
     mockRender.mockResolvedValue({
       svg: mockSvg,
@@ -142,12 +153,13 @@ describe("rendering", () => {
     )
     await waitFor(() => {
       const svg = container.querySelector("svg")
-      // The regex extracts the last number from viewBox (height), which is "200"
-      expect(svg).toHaveAttribute("height", "200px")
+      expect(svg).toHaveAttribute("viewBox", "0 0 100 200")
+      expect(svg).toHaveAttribute("preserveAspectRatio", "xMidYMid meet")
+      expect(svg).toHaveStyle({ width: "100px" })
     })
   })
 
-  test("renders SVG with 100% height when viewBox is not available", async () => {
+  test("renders SVG with a full width when viewBox is not available", async () => {
     const mockSvg = `<svg><rect width="100" height="200" /></svg>`
     mockRender.mockResolvedValue({
       svg: mockSvg,
@@ -157,13 +169,14 @@ describe("rendering", () => {
     )
     await waitFor(() => {
       const svg = container.querySelector("svg")
-      expect(svg).toHaveAttribute("height", "100%")
+      expect(svg).not.toHaveAttribute("viewBox")
+      expect(svg).toHaveStyle({ width: "100%" })
     })
   })
 })
 
 describe("zoom functionality", () => {
-  test("renders SVG with 100vw width when zoomed", async () => {
+  test("fills the viewport when zoomed", async () => {
     const { container } = render(
       <MermaidDiagram diagramContent="graph TD; A-->B" />
     )
@@ -178,28 +191,10 @@ describe("zoom functionality", () => {
     })
 
     await waitFor(() => {
-      const svg = container.querySelector("svg")
-      expect(svg).toHaveAttribute("width", "100vw")
-    })
-  })
-
-  test("renders SVG with 100vh height when zoomed", async () => {
-    const { container } = render(
-      <MermaidDiagram diagramContent="graph TD; A-->B" />
-    )
-    await waitFor(() => {
-      const svg = container.querySelector("svg")
-      expect(svg).toBeInTheDocument()
-    })
-
-    const zoom = container.querySelector("[data-testid='controlled-zoom']")
-    await act(async () => {
-      fireEvent.click(zoom!)
-    })
-
-    await waitFor(() => {
-      const svg = container.querySelector("svg")
-      expect(svg).toHaveAttribute("height", "100vh")
+      const wrapper = container.querySelector("svg")?.parentElement
+      expect(wrapper).toHaveClass("h-screen")
+      expect(wrapper).toHaveClass("w-screen")
+      expect(wrapper).not.toHaveClass("aspect-video")
     })
   })
 
@@ -274,8 +269,7 @@ describe("viewBox regex matching", () => {
     await waitFor(() => {
       const svg = container.querySelector("svg")
       expect(svg).toBeInTheDocument()
-      // The regex extracts the last number from viewBox (height), which is "400"
-      expect(svg).toHaveAttribute("height", "400px")
+      expect(svg).toHaveAttribute("viewBox", "0 0 300 400")
     })
   })
 
@@ -290,8 +284,7 @@ describe("viewBox regex matching", () => {
     await waitFor(() => {
       const svg = container.querySelector("svg")
       expect(svg).toBeInTheDocument()
-      // The regex extracts the last number from viewBox (height), which is "400"
-      expect(svg).toHaveAttribute("height", "400px")
+      expect(svg).toHaveAttribute("viewBox", "-10 -20 300 400")
     })
   })
 })

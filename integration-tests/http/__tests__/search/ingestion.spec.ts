@@ -34,10 +34,6 @@ medusaIntegrationTestRunner({
 
       searchModule = container.resolve(Modules.SEARCH)
       eventBus = container.resolve(Modules.EVENT_BUS)
-
-      await searchModule.executeIndexMigrationPlan(
-        await searchModule.createIndexMigrationPlan()
-      )
     })
 
     describe("built-in search ingestion subscriber", () => {

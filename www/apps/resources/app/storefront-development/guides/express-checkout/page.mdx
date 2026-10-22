@@ -126,6 +126,53 @@ You can add other origins as well if necessary.
 
 Learn more about CORS configurations in [this guide](!docs!/learn/configurations/medusa-config#httpauthcors).
 
+### Allow Cart Variant Option Fields
+
+Medusa restricts the fields that you can request from a Store API route through an allowed-fields list. Later in this guide, you'll retrieve a cart with its line items' variant options and its products' options, which the cart routes don't allow by default. Medusa omits any field that isn't allowed from the response.
+
+To allow those fields, create the file `src/api/middlewares.ts` in the Medusa application with the following content:
+
+```ts title="src/api/middlewares.ts"
+import {
+  allowFields,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/carts",
+      middlewares: [
+        allowFields(
+          "items.variant.options",
+          "items.product.options"
+        ),
+      ],
+    },
+  ],
+})
+```
+
+<Note>
+
+`allowFields` is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0). In earlier versions, write the middleware yourself, as explained in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields#how-to-override-allowed-fields-of-medusas-api-routes) documentation.
+
+</Note>
+
+<Note>
+
+The Store Cart API routes expand at most three levels of relations, so you can't request `items.variant.options.option` to get an option's title. Instead, you allow `items.product.options`, which holds the same titles at three levels, and match each variant option to its product option in the storefront. Learn more in the [storeRelationsLimit](!docs!/learn/configurations/medusa-config#httpstorerelationslimit) configuration.
+
+</Note>
+
+<Note title="Important">
+
+Don't add a `method` or `methods` key to the middleware's object. Medusa runs a method-scoped middleware after it validates the query parameters, so it has no effect there.
+
+</Note>
+
+Learn more about allowed fields and how to override them in the [Allowed Fields](!docs!/learn/fundamentals/api-routes/allowed-fields) documentation.
+
 ---
 
 ## Step 2: Install Next.js Project
@@ -569,7 +616,7 @@ useEffect(() => {
     // retrieve cart
     sdk.store.cart.retrieve(cartId, {
       fields: 
-        "+items.variant.*,+items.variant.options.*,+items.variant.options.option.*",
+        "+items.variant.*,+items.variant.options.*,+items.product.options.*",
     })
     .then(({ cart: dataCart }) => {
       setCart(dataCart)
@@ -2520,17 +2567,7 @@ import { Button, Input, RadioGroup } from "@medusajs/ui"
 
 Then, replace the last `TODO` in the `Payment` component with the following:
 
-export const paymentHighlights5 = [
-  ["1", "getProviderTitle", "Get the title to display to the customer for each provider."],
-  ["18", "", "Show the items in the cart."],
-  ["61", "", "Show the cart's total."],
-  ["68", "", "Show the cart's shipping address."],
-  ["77", "RadioGroup", "Show the payment methods to choose from as a radio group."],
-  ["91", "paymentUi", "Show additional UI based on the selected payment provider."],
-  ["93", "Button", "Show a button to complete the cart and place the order."],
-]
-
-```tsx title="components/Payment/index.tsx" highlights={paymentHighlights5}
+```tsx title="components/Payment/index.tsx"
 const getProviderTitle = (providerId: string) => {
   switch(true) {
     case providerId.startsWith("pp_system_default"):
@@ -2555,7 +2592,11 @@ return (
           <span className="text-base">{item.product_title}</span>
           {item.variant?.options?.map((option) => (
             <span className="flex gap-1 text-sm" key={option.id}>
-              <span className="text-ui-fg-muted">{option.option?.title}</span>
+              <span className="text-ui-fg-muted">
+                {item.product?.options?.find(
+                  (productOption) => productOption.id === option.option_id
+                )?.title}
+              </span>
               <span className="text-ui-fg-base">{option.value}</span>
             </span>
           ))}

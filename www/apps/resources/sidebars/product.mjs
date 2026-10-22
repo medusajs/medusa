@@ -94,6 +94,13 @@ export const productSidebar = [
         sort_sidebar: "alphabetize",
         description:
           "Learn how to utilize administative features of the Product Module.",
+        children: [
+          {
+            type: "link",
+            path: "/commerce-modules/product/guides/manage-with-admin-api",
+            title: "Manage Products with Admin API",
+          },
+        ],
       },
       {
         type: "category",

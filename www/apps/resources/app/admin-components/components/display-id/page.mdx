@@ -1,0 +1,69 @@
+---
+sidebar_label: "Display ID"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `DisplayId - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `DisplayId` component shows the last seven characters of an ID, prefixed by a hash. When the user hovers over it, Medusa shows the full ID in a tooltip, and when the user clicks it, Medusa copies the full ID to the clipboard and shows a success toast.
+
+```tsx
+import { DisplayId } from "@medusajs/dashboard/components"
+```
+
+---
+
+## Example
+
+Use `DisplayId` in a [widget](!docs!/learn/fundamentals/admin/widgets) or [UI route](!docs!/learn/fundamentals/admin/ui-routes) to show a record's ID in a compact way:
+
+```tsx
+import {
+  DisplayId,
+  SectionRow,
+} from "@medusajs/dashboard/components"
+
+const BrandIdRow = ({ brand }) => {
+  return (
+    <SectionRow
+      title="ID"
+      value={<DisplayId id={brand.id} />}
+    />
+  )
+}
+```
+
+---
+
+## Props
+
+The component accepts the `DisplayIdProps` type:
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description:
+        "The ID to show. Medusa shows only its last seven characters, but it copies the full ID.",
+    },
+    {
+      name: "className",
+      type: "`string`",
+      optional: true,
+      description: `Additional CSS classes to add to the ID's element.`,
+    },
+  ]}
+/>

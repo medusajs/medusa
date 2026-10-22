@@ -489,5 +489,62 @@ moduleIntegrationTestRunner<SearchService>({
           expect(ids(result).sort()).toEqual(["prod_2", "prod_3"])
         })
       })
+
+      describe("vector fields", () => {
+        const vectorIndex = {
+          name: "vector_product",
+          entity: "vector_product",
+          primary_key: "id",
+          provider: "search-postgres",
+          physical_name: "vector_product_v1",
+          definition_hash: "vector-1",
+          settings: {},
+          seed: async function* () {},
+          fields: {
+            id: { type: "keyword", filterable: true },
+            title: { type: "text", searchable: true },
+            embedding: { type: "vector", dimensions: 3 },
+          },
+        } as unknown as SearchTypes.ResolvedSearchIndexDefinition
+
+        afterEach(async () => {
+          await provider(service).deleteIndex({
+            index: vectorIndex.physical_name,
+          })
+        })
+
+        it("ignores vector fields rather than refusing the index", async () => {
+          const p = provider(service)
+
+          await p.upsertIndex({ index: vectorIndex })
+          await p.upsertDocuments({
+            index: vectorIndex.physical_name,
+            definition: vectorIndex,
+            documents: [
+              {
+                id: "vec_1",
+                title: "Red running shoe",
+                embedding: [0.1, 0.2, 0.3],
+              },
+            ],
+          })
+
+          const result = await p.search({
+            index: vectorIndex,
+            q: "shoe",
+            attributes_to_retrieve: ["id"],
+          })
+          expect(ids(result)).toEqual(["vec_1"])
+
+          const columns = (await p.manager_.execute(
+            `SELECT "column_name" FROM information_schema.columns WHERE "table_name" = ?`,
+            ["search_pg_vector_product_v1"]
+          )) as { column_name: string }[]
+
+          expect(columns.map((column) => column.column_name)).not.toContain(
+            "v_embedding"
+          )
+        })
+      })
     }),
 })

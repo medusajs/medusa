@@ -106,9 +106,15 @@ The `Medusa` initializer accepts as a parameter an object with the following pro
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Property</Table.HeaderCell>
-      <Table.HeaderCell className="w-2/5">Description</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
+      <Table.HeaderCell>
+        Property
+      </Table.HeaderCell>
+      <Table.HeaderCell className="w-2/5">
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -736,6 +742,12 @@ You can also retrieve the currently set locale using the `getLocale` method:
 const currentLocale = sdk.getLocale()
 console.log(currentLocale) // "fr-FR"
 ```
+
+<Note title="Important">
+
+The `setLocale` method is only available in browser environments. If you call it in a server environment, it logs a warning and doesn't set the locale. Instead, pass the `x-medusa-locale` header in your requests, as explained in the [Localization](../storefront-development/localization/page.mdx#set-locale-in-server-environments) guide.
+
+</Note>
 
 <Note>
 

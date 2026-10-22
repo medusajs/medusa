@@ -1,0 +1,80 @@
+---
+sidebar_label: "Users"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `User Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The user hooks retrieve admin users from the Medusa backend, such as the user that created an order edit or the user assigned to a task.
+
+```tsx
+import { useUser } from "@medusajs/dashboard/hooks"
+```
+
+These hooks are built on [TanStack Query](https://tanstack.com/query/latest). Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+
+---
+
+## useUser
+
+Retrieve a single admin user by its ID. Pass a query object as the second parameter to select the fields and relations to retrieve.
+
+```tsx
+const { user, isPending } = useUser("user_123")
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The user's ID.",
+    },
+    {
+      name: "query",
+      type: "`AdminUserParams`",
+      optional: true,
+      description: "Optional selection parameters, such as `fields`.",
+    },
+    {
+      name: "options",
+      type: "`object`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+<Note>
+
+This hook retrieves the user with the specified ID, not the currently authenticated user.
+
+</Note>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "user",
+      type: "`AdminUser`",
+      description: "The retrieved user. It's `undefined` until the request resolves.",
+    },
+  ]}
+/>

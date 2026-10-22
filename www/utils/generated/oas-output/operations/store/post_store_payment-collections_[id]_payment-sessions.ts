@@ -97,6 +97,20 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createPaymentSessionsWorkflow
  * x-events: []
+ * x-allowed:
+ *   - id
+ *   - currency_code
+ *   - amount
+ *   - payment_sessions
+ *   - status
+ *   - payment_providers
+ *   - payment_providers.id
+ *   - payment_sessions.id
+ *   - payment_sessions.amount
+ *   - payment_sessions.currency_code
+ *   - payment_sessions.provider_id
+ *   - payment_sessions.data
+ *   - payment_sessions.status
  * 
 */
 

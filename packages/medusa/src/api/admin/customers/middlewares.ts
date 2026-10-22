@@ -8,6 +8,7 @@ import {
   AdminCustomerAddressParams,
   AdminCustomerParams,
   AdminCustomersParams,
+  AdminExportCustomer,
   AdminUpdateCustomer,
   AdminUpdateCustomerAddress,
 } from "./validators"
@@ -216,6 +217,23 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformQuery(
         AdminCustomerParams,
         QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/customers/export",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.customer,
+          operation: PolicyOperation.read,
+        },
+      ]),
+      validateAndTransformBody(AdminExportCustomer),
+      validateAndTransformQuery(
+        AdminCustomersParams,
+        QueryConfig.exportTransformQueryConfig
       ),
     ],
   },

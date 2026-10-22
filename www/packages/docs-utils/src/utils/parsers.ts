@@ -327,12 +327,13 @@ export const parseTable: ComponentParser = (
   )
   const bodyNode = node.children?.find((child) => child.name === "Table.Body")
 
-  let nodeText = ``
+  const children: UnistNode[] = []
+  const addText = (value: string) => children.push({ type: "text", value })
   let headerCellsCount = 0
 
   headerNode?.children?.forEach((headerRow, rowIndex) => {
     if (rowIndex > 0) {
-      nodeText += `\n`
+      addText(`\n`)
     }
     const childCells =
       headerRow.children?.length === 1 &&
@@ -344,31 +345,26 @@ export const parseTable: ComponentParser = (
       if (headerCell.name !== "Table.HeaderCell") {
         return
       }
-      nodeText += `|`
-      nodeText += formatNodeText(getTextNode(headerCell))
+      addText(`|`)
+      children.push(...getTableCellContent(headerCell))
     })
-    nodeText += `|`
+    addText(`|`)
   })
 
-  nodeText += `\n|${new Array(headerCellsCount).fill(`---`).join(`|`)}|`
+  addText(`\n|${new Array(headerCellsCount).fill(`---`).join(`|`)}|`)
 
   bodyNode?.children?.forEach((bodyRow) => {
-    nodeText += `\n`
+    addText(`\n`)
     bodyRow.children?.forEach((bodyCell) => {
-      nodeText += `|`
-      nodeText += formatNodeText(getTextNode(bodyCell))
+      addText(`|`)
+      children.push(...getTableCellContent(bodyCell))
     })
-    nodeText += `|`
+    addText(`|`)
   })
 
   parent.children?.splice(index, 1, {
     type: "paragraph",
-    children: [
-      {
-        type: "text",
-        value: nodeText,
-      },
-    ],
+    children,
   })
 }
 
@@ -1429,6 +1425,58 @@ const getTextNode = (node: UnistNode): UnistNode | undefined => {
   return textNode
 }
 
+/**
+ * Returns the inline content of a table cell, with its blocks joined by spaces,
+ * so that the cell fits in a single Markdown table row.
+ */
+const getTableCellContent = (cell: UnistNode): UnistNode[] => {
+  const content: UnistNode[] = []
+  const visitChildren = (node: UnistNode) => {
+    node.children?.forEach((child) => {
+      switch (child.type) {
+        case "paragraph":
+        case "heading":
+        case "list":
+        case "listItem":
+        case "blockquote":
+          if (content.length) {
+            content.push({ type: "text", value: " " })
+          }
+          visitChildren(child)
+          break
+        case "text":
+          // `html` nodes are output as-is, so the escaped pipe isn't escaped again.
+          child.value
+            ?.replace(/\s*\n\s*/g, " ")
+            .split("|")
+            .forEach((value, valueIndex) => {
+              if (valueIndex > 0) {
+                content.push({ type: "html", value: "\\|" })
+              }
+              content.push({ type: "text", value })
+            })
+          break
+        case "inlineCode":
+        case "code":
+          content.push({
+            type: "inlineCode",
+            value: child.value?.replace(/\|/g, "\\|"),
+          })
+          break
+        case "break":
+          content.push({ type: "text", value: " " })
+          break
+        default:
+          content.push(child)
+      }
+    })
+  }
+
+  visitChildren(cell)
+
+  return content
+}
+
 const formatNodeText = (node?: UnistNode): string => {
   if (!node) {
     return ""
@@ -1444,22 +1492,22 @@ const formatNodeText = (node?: UnistNode): string => {
   return node.value || ""
 }
 
-export type ChangelogListParserOptions = {
+export type InjectedMarkdownParserOptions = {
   /**
-   * The Markdown of the changelog entries that the component renders. The
-   * component loads its entries from generated files, so the content can't be
-   * derived from the MDX file and must be passed by the consuming project.
+   * The Markdown of the content that the component renders. The component
+   * loads its content from outside the MDX file, such as generated files or a
+   * CMS, so the content must be passed by the consuming project.
    */
   content?: string
 }
 
 /**
- * Replaces a `<ChangelogList />` component with the Markdown of the changelog
- * entries it renders, so the Markdown version of a changelog page holds the
- * same content as the page itself.
+ * Replaces a component, such as `<ChangelogList />`, with the Markdown of the
+ * content it renders, so the Markdown version of a page holds the same content
+ * as the page itself.
  */
-export const parseChangelogList: ComponentParser<
-  ChangelogListParserOptions
+export const parseInjectedMarkdown: ComponentParser<
+  InjectedMarkdownParserOptions
 > = async (
   node: UnistNodeWithData,
   index: number,
@@ -1469,7 +1517,7 @@ export const parseChangelogList: ComponentParser<
   const content = options?.content?.trim()
 
   if (!content) {
-    // no entries available: drop the component so no broken output remains
+    // no content available: drop the component so no broken output remains
     parent?.children.splice(index, 1)
     return [SKIP, index]
   }

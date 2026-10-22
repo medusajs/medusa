@@ -1,3 +1,5 @@
+import { buildAllowedFields } from "../utils/allowed-fields"
+
 export const defaultStoreCurrencyFields = [
   "code",
   "name",
@@ -7,8 +9,14 @@ export const defaultStoreCurrencyFields = [
   "rounding",
 ]
 
+const additionalStoreCurrencyFields = ["created_at", "updated_at", "deleted_at"]
+
 export const retrieveTransformQueryConfig = {
   defaults: defaultStoreCurrencyFields,
+  allowed: buildAllowedFields(
+    defaultStoreCurrencyFields,
+    additionalStoreCurrencyFields
+  ),
   isList: false,
 }
 

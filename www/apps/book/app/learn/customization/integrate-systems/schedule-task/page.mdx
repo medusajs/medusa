@@ -295,9 +295,14 @@ A scheduled job is created in a TypeScript or JavaScript file under the `src/job
 ```ts title="src/jobs/sync-brands-from-cms.ts"
 import { MedusaContainer } from "@medusajs/framework/types"
 import { syncBrandsFromCmsWorkflow } from "../workflows/sync-brands-from-cms"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export default async function (container: MedusaContainer) {
-  const logger = container.resolve("logger")
+  const logger = container.resolve(
+    ContainerRegistrationKeys.LOGGER
+  )
 
   const { result } = await syncBrandsFromCmsWorkflow(container).run()
 

@@ -4073,8 +4073,8 @@ const generatedgeneratedAdminSidebarSidebar = {
       "children": [
         {
           "type": "link",
-          "path": "/admin/search/list-search",
-          "title": "List Search",
+          "path": "/admin/search/search-admin",
+          "title": "Search Admin",
           "loaded": true,
           "badge": {
             "variant": "green",
@@ -4111,12 +4111,22 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
-          "path": "/admin/search-indexes/add-reindex-to-search-index",
-          "title": "Add Reindex to Search Index",
+          "path": "/admin/search-indexes/reindex-a-search-index",
+          "title": "Reindex a Search Index",
           "loaded": true,
           "badge": {
             "variant": "blue",
             "text": "Post"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/delete-a-search-index",
+          "title": "Delete a Search Index",
+          "loaded": true,
+          "badge": {
+            "variant": "red",
+            "text": "Del"
           }
         }
       ]
@@ -4493,6 +4503,16 @@ const generatedgeneratedAdminSidebarSidebar = {
           "type": "link",
           "path": "/admin/store-credit-accounts/create-store-credit-account",
           "title": "Create Store Credit Account",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/store-credit-accounts/debit-a-store-credit-account",
+          "title": "Debit a Store Credit Account",
           "loaded": true,
           "badge": {
             "variant": "blue",
@@ -4917,8 +4937,8 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
-          "path": "/admin/users/add-reset-password-to-user",
-          "title": "Add Reset Password to User",
+          "path": "/admin/users/generate-reset-password-token",
+          "title": "Generate Reset Password Token",
           "loaded": true,
           "badge": {
             "variant": "blue",

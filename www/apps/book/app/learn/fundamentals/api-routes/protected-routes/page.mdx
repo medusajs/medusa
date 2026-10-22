@@ -136,7 +136,7 @@ The `authenticate` middleware function accepts three parameters:
 1. The type of user authenticating. Use `user` for authenticating admin users, and `customer` for authenticating customers. You can also pass `*` to allow all types of users, or pass an array of actor types.
 2. An array of types of authentication methods allowed. Both `user` and `customer` scopes support `session` and `bearer`. The `admin` scope also supports the `api-key` authentication method.
 3. An optional object of configurations accepting the following properties:
-    - `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too.
+    - `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too. Learn more about how the middleware handles invalid credentials in the [next section](#invalid-credentials-in-unauthenticated-routes).
     - `allowUnregistered` (default: `false`): A boolean indicating whether users can access this route with a registration token, instead of an authentication token. This is useful if you have a custom actor type, such as `manager`, and you're creating an API route that allows these users to register themselves. Learn more in the [Custom Actor-Type Guide](!resources!/commerce-modules/auth/create-actor-type).
     - `requireMfa` (default: `true` for authenticated routes, since [Medusa v2.20.0](https://github.com/medusajs/medusa/releases/tag/v2.20.0)): A boolean or an object `{ maxAgeSeconds: number }` indicating whether a completed MFA challenge is required to access this route. When set to `true`, any request from an identity with MFA enabled must have completed an MFA challenge. When set to `{ maxAgeSeconds: number }`, the challenge must also have been completed within the specified number of seconds. Set to `false` to allow access regardless of MFA status (for example, on the MFA challenge verification route itself). Learn more in the [Multi-Factor Authentication guide](!resources!/commerce-modules/auth/mfa).
 
@@ -185,6 +185,99 @@ export default defineMiddlewares({
   ],
 })
 ```
+
+### Invalid Credentials in Unauthenticated Routes
+
+When you set `allowUnauthenticated` to `true`, the `authenticate` middleware never rejects a request. It verifies the credentials of the request, if any, then passes the request to the next handler in both of the following cases:
+
+- The request carries no credentials at all.
+- The request carries credentials that fail verification, such as an expired or a tampered JWT token.
+
+In both cases, the middleware doesn't set the `auth_context` property of the request object. This is the intended behavior: the middleware's only job is to attach an authenticated actor when it can verify one, and the route decides what to do when it can't.
+
+<Note title="Warning" type="warning">
+
+Because both cases look the same to your route handler, don't treat a missing `auth_context` as proof that the request presented no credentials. If your route's logic differs between a signed-out request and an expired session, add the check explained next.
+
+</Note>
+
+#### Reject Invalid Credentials
+
+To answer with a `401` error when a request presents credentials that fail verification, while still allowing requests that present no credentials, add a middleware that runs after the `authenticate` middleware.
+
+Create the file `src/api/middlewares/reject-invalid-auth.ts` with the following content:
+
+export const rejectInvalidAuthHighlights = [
+  ["15", "authorization", "Check whether the request sent a bearer token."],
+  ["19", "session", "Check whether the request sent a session cookie holding an authentication context."],
+  ["21", "auth_context", "The `authenticate` middleware didn't verify the presented credentials."],
+]
+
+```ts title="src/api/middlewares/reject-invalid-auth.ts" highlights={rejectInvalidAuthHighlights}
+import {
+  AuthenticatedMedusaRequest,
+  MedusaNextFunction,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  MedusaError,
+} from "@medusajs/framework/utils"
+
+export async function rejectInvalidAuth(
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) {
+  const authHeader = req.headers.authorization ?? ""
+  const hasToken = authHeader
+    .toLowerCase()
+    .startsWith("bearer ")
+  const hasSession = Boolean(req.session?.auth_context)
+
+  if ((hasToken || hasSession) && !req.auth_context) {
+    return next(
+      new MedusaError(
+        MedusaError.Types.UNAUTHORIZED,
+        "Your session is invalid or has expired."
+      )
+    )
+  }
+
+  next()
+}
+```
+
+The middleware considers a request as presenting credentials if it has an `Authorization` header with a bearer token, or a session cookie holding an authentication context. If the request presents credentials but the `authenticate` middleware didn't set `auth_context`, the middleware rejects the request with a `401` error.
+
+Then, apply the middleware after the `authenticate` middleware:
+
+```ts title="src/api/middlewares.ts" highlights={[["17", "rejectInvalidAuth", "Run the check after authentication."]]}
+import {
+  defineMiddlewares,
+  authenticate,
+} from "@medusajs/framework/http"
+import {
+  rejectInvalidAuth,
+} from "./middlewares/reject-invalid-auth"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom/public*",
+      middlewares: [
+        authenticate("customer", ["session", "bearer"], {
+          allowUnauthenticated: true,
+        }),
+        rejectInvalidAuth,
+      ],
+    },
+  ],
+})
+```
+
+The order of the middlewares matters, since `rejectInvalidAuth` reads the `auth_context` that the `authenticate` middleware sets.
+
+Now, a request with no credentials reaches the route as a guest, a request with valid credentials reaches the route with its `auth_context` set, and a request with expired or invalid credentials receives a `401` error. A storefront can then prompt the customer to log in again instead of showing them the guest experience.
 
 ### Override Authentication for Medusa's API Routes
 
@@ -244,14 +337,14 @@ If you opt-out of authentication in a route as mentioned in the [Opt-Out section
 
 ### Retrieve Logged-In Customer's Details
 
-You can access the logged-in customer’s ID in all API routes starting with `/store` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object. You can then use [Query](../../module-links/query/page.mdx) to retrieve the customer details, or pass the ID to a [workflow](../../workflows/page.mdx) that performs business logic.
+You can access the logged-in customer’s ID in all API routes starting with `/store` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object. You can then use [Query](../../query/page.mdx) to retrieve the customer details, or pass the ID to a [workflow](../../workflows/page.mdx) that performs business logic.
 
 For example:
 
 export const customerHighlights = [
-  ["10", "customerId", "Retrieve the logged-in customer's ID."],
-  ["13", "query", "Retrieve the customer details."],
-  ["20", "throwIfKeyNotFound", "Throw an error if the customer with\nthe specified ID is not found."],
+  ["13", "customerId", "Retrieve the logged-in customer's ID."],
+  ["18", "query", "Retrieve the customer details."],
+  ["25", "throwIfKeyNotFound", "Throw an error if the customer with\nthe specified ID is not found."],
 ]
 
 ```ts title="src/api/store/custom/route.ts" highlights={customerHighlights}
@@ -259,13 +352,18 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const customerId = req.auth_context?.actor_id
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [customer] } = await query.graph({
     entity: "customer",
@@ -289,14 +387,14 @@ After that, you can use the customer's details in your API route.
 
 ### Retrieve Logged-In Admin User's Details
 
-You can access the logged-in admin user’s ID in all API routes starting with `/admin` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object. You can then use [Query](../../module-links/query/page.mdx) to retrieve the user details, or pass the ID to a [workflow](../../workflows/page.mdx) that performs business logic.
+You can access the logged-in admin user’s ID in all API routes starting with `/admin` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object. You can then use [Query](../../query/page.mdx) to retrieve the user details, or pass the ID to a [workflow](../../workflows/page.mdx) that performs business logic.
 
 For example:
 
 export const adminHighlights = [
-  ["10", "userId", "Retrieve the logged-in admin user's ID."],
-  ["13", "query", "Retrieve the user details."],
-  ["20", "throwIfKeyNotFound", "Throw an error if the user with\nthe specified ID is not found."],
+  ["13", "userId", "Retrieve the logged-in admin user's ID."],
+  ["18", "query", "Retrieve the user details."],
+  ["25", "throwIfKeyNotFound", "Throw an error if the user with\nthe specified ID is not found."],
 ]
 
 ```ts title="src/api/admin/custom/route.ts" highlights={adminHighlights}
@@ -304,13 +402,18 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const userId = req.auth_context?.actor_id
-  const query = req.scope.resolve("query")
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
 
   const { data: [user] } = await query.graph({
     entity: "user",

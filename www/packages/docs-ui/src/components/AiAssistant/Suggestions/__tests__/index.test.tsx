@@ -126,7 +126,7 @@ describe("rendering", () => {
     expect(container).toHaveTextContent(
       "What other recipes are available in the Medusa documentation?"
     )
-    expect(container).toHaveTextContent("Medusa MCP server")
+    expect(container).toHaveTextContent("Docs MCP server")
   })
 })
 
@@ -147,7 +147,7 @@ describe("hideAiToolsMessage", () => {
   test("shows AI tools message by default", () => {
     const { container } = render(<AiAssistantSuggestions />)
     expect(container).toHaveTextContent("Claude Code Plugins")
-    expect(container).toHaveTextContent("Medusa MCP server")
+    expect(container).toHaveTextContent("Docs MCP server")
   })
 
   test("hides AI tools message when hideAiToolsMessage is true", () => {
@@ -158,7 +158,7 @@ describe("hideAiToolsMessage", () => {
 
     const { container } = render(<AiAssistantSuggestions />)
     expect(container).not.toHaveTextContent("Claude Code Plugins")
-    expect(container).not.toHaveTextContent("Medusa MCP server")
+    expect(container).not.toHaveTextContent("Docs MCP server")
   })
 })
 

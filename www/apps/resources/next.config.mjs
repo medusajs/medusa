@@ -12,7 +12,7 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 import mdx from "@next/mdx"
 import mdxPluginOptions from "./mdx-options.mjs"
 import path from "node:path"
-import { catchBadRedirects } from "build-scripts"
+import { catchBadRedirects, withMdxWebpackLayers } from "build-scripts"
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -79,8 +79,61 @@ const nextConfig = {
   transpilePackages: ["docs-ui", "next-mdx-remote"],
 
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/resources",
+  async headers() {
+    const headers = [
+      {
+        key: "Cache-Control",
+        value: "public, max-age=3600, must-revalidate",
+      },
+    ]
+
+    return [
+      { source: "/", headers },
+      { source: "/:path((?!_next/).*)", headers },
+    ]
+  },
   async redirects() {
     return catchBadRedirects([
+      {
+        source: "/admin-components/components/data-table",
+        destination: "/admin-components/guides/data-table",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/forms",
+        destination: "/admin-components/guides/forms",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/table",
+        destination: "/admin-components/guides/table",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/layouts/single-column",
+        destination: "/admin-components/archive/single-column-layout",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/layouts/two-column",
+        destination: "/admin-components/archive/two-column-layout",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/layout-composer",
+        destination: "/admin-components/layouts/layout-composer",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/container",
+        destination: "/admin-components/guides/container",
+        permanent: true,
+      },
+      {
+        source: "/admin-components/components/header",
+        destination: "/admin-components/guides/header",
+        permanent: true,
+      },
       {
         source: "/commerce-modules/order/relations-to-other-modules",
         destination: "/commerce-modules/order/links-to-other-modules",
@@ -292,6 +345,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ["@medusajs/icons", "@medusajs/ui", "elkjs"],
+    webpackMemoryOptimizations: true,
   },
   rewrites: async () => {
     return {
@@ -358,4 +412,4 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 })
 
-export default withMDX(withBundleAnalyzer(nextConfig))
+export default withMdxWebpackLayers(withMDX(withBundleAnalyzer(nextConfig)))

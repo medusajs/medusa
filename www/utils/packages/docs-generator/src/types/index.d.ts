@@ -15,6 +15,8 @@ export declare type OpenApiOperation = Partial<OpenAPIV3.OperationObject> & {
   "x-since"?: string
   "x-featureFlag"?: string
   "x-ignoreCleanup"?: boolean
+  "x-allowed"?: string[]
+  "x-disallowed"?: string[]
 }
 
 export declare type CommonCliOptions = {

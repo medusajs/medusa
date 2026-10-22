@@ -1,5 +1,47 @@
 # Change Log
 
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.22.0 or later
+
+### Patch Changes
+
+- Updated dependencies [[`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a), [`14499a2e9309d653c0e4ec6aec3f88079751b4d2`](https://github.com/medusajs/medusa/commit/14499a2e9309d653c0e4ec6aec3f88079751b4d2), [`1db74006ede40300afe64970024688a1a9c2a936`](https://github.com/medusajs/medusa/commit/1db74006ede40300afe64970024688a1a9c2a936)]:
+  - @medusajs/deps@2.22.0
+  - @medusajs/telemetry@2.22.0
+
+## 2.21.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.21.2
+  - @medusajs/telemetry@2.21.2
+
+## 2.21.1
+
+### Patch Changes
+
+- [`2eed2802541493e99fc048d35a22c336daba833f`](undefined) - chore(create-medusa-app): clarify database connection problem before asking for DB credentials
+
+- Updated dependencies []:
+  - @medusajs/deps@2.21.1
+  - @medusajs/telemetry@2.21.1
+
+## 2.21.0
+
+### Patch Changes
+
+- [#16780](https://github.com/medusajs/medusa/pull/16780) [`f9d061686e1e013a2783b5350aab346e664e2103`](https://github.com/medusajs/medusa/commit/f9d061686e1e013a2783b5350aab346e664e2103) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(create-medusa-app): remove unused node-fetch dependency
+
+- [#16712](https://github.com/medusajs/medusa/pull/16712) [`5ccbfec87f4a809fcd0568a2c0c7954c9335608a`](https://github.com/medusajs/medusa/commit/5ccbfec87f4a809fcd0568a2c0c7954c9335608a) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore(create-medusa-app): change Next.js starter wording
+
+- Updated dependencies []:
+  - @medusajs/deps@2.21.0
+  - @medusajs/telemetry@2.21.0
+
 ## 2.20.1
 
 ### Patch Changes

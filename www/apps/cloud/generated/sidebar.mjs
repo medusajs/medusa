@@ -54,6 +54,21 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Changelog",
+            "path": "/changelog",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "AI Tools",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Cloud Assistant",
             "path": "/assistant",
             "children": []
@@ -61,9 +76,45 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Changelog",
-            "path": "/changelog",
-            "children": []
+            "title": "Medusa MCP",
+            "path": "/medusa-mcp",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Claude Connector",
+                "path": "/medusa-mcp/claude",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "ChatGPT App",
+                "path": "/medusa-mcp/chatgpt",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "n8n",
+                "path": "/medusa-mcp/n8n",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Custom Agents",
+                "path": "/medusa-mcp/custom-agents",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Retrieve Custom Data",
+                "path": "/medusa-mcp/custom-data",
+                "children": []
+              }
+            ]
           }
         ]
       },
@@ -78,7 +129,15 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Organizations",
             "path": "/organizations",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Connections",
+                "path": "/organizations/connections",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
@@ -112,6 +171,13 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Log Drains",
                 "path": "/projects/log-drains",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Troubleshooting",
+                "path": "/projects/troubleshooting",
                 "children": []
               }
             ]
@@ -214,8 +280,162 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "CLI",
+        "title": "Resources",
         "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Storefront",
+            "path": "/storefront",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Database",
+            "path": "/database",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Redis",
+            "path": "/redis",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "S3",
+            "path": "/s3",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Cache",
+            "path": "/cache",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Emails",
+            "path": "/emails",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "React Email Templates",
+                "path": "/emails/react-email",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Search",
+        "badge": {
+          "variant": "green",
+          "text": "New"
+        },
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Overview",
+            "path": "/search",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Analytics",
+            "path": "/search/analytics",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "sub-category",
+            "title": "API",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Index Settings",
+                "path": "/search/settings",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Semantic Search",
+                "path": "/search/semantic-search",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Comparison",
+            "path": "/search/comparison",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to Algolia",
+                "path": "/search/algolia",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to Meilisearch",
+                "path": "/search/meilisearch",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compare to PostgreSQL",
+                "path": "/search/postgres",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "sub-category",
+            "title": "Migration",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Algolia",
+                "path": "/search/migrate-from-algolia",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Meilisearch",
+                "path": "/search/migrate-from-meilisearch",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "CLI",
+        "initialOpen": false,
         "children": [
           {
             "loaded": true,
@@ -336,94 +556,6 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "Resources",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Storefront",
-            "path": "/storefront",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Database",
-            "path": "/database",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Redis",
-            "path": "/redis",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "S3",
-            "path": "/s3",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Cache",
-            "path": "/cache",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Emails",
-            "path": "/emails",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "React Email Templates",
-                "path": "/emails/react-email",
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Plugins",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Loyalty",
-            "path": "https://docs.medusajs.com/resources/commerce-modules/loyalty",
-            "badge": {
-              "text": "Published",
-              "variant": "blue"
-            },
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Draft Orders",
-            "path": "https://docs.medusajs.com/resources/commerce-modules/order/draft-orders",
-            "badge": {
-              "text": "Published",
-              "variant": "blue"
-            },
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
         "title": "Billing",
         "initialOpen": true,
         "children": [
@@ -489,7 +621,15 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Usage",
             "path": "/usage",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compute Hours",
+                "path": "/usage/compute",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,

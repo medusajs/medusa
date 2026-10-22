@@ -30,13 +30,23 @@ export async function GET(req: NextRequest, { params }: Params) {
     return notFound()
   }
 
-  const fileContent = await fetchMdxContent(
-    `${origin}${basePath}`,
-    filePathFromMap
-  )
+  // An `_md-content.mdx` file next to the page overrides it for this route,
+  // so a page can serve agents different content than it renders.
+  const overrideContent = filePathFromMap.endsWith("page.mdx")
+    ? await fetchMdxContent(
+        `${origin}${basePath}`,
+        filePathFromMap.replace(/page\.mdx$/, "_md-content.mdx")
+      )
+    : null
+
+  const fileContent =
+    overrideContent ??
+    (await fetchMdxContent(`${origin}${basePath}`, filePathFromMap))
   if (!fileContent) {
     return notFound()
   }
+
+  const isOverride = !!overrideContent
 
   // Reference pages are the JSON doc-model (page.json) — convert the DocPage to
   // Markdown directly rather than running the MDX cleaner over it.
@@ -119,10 +129,12 @@ export async function GET(req: NextRequest, { params }: Params) {
   }
 
   return new NextResponse(
-    addExtraToMd(cleanMdContent, {
-      baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
-      basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
-    }),
+    isOverride
+      ? cleanMdContent
+      : addExtraToMd(cleanMdContent, {
+          baseUrl: process.env.NEXT_PUBLIC_BASE_URL || "",
+          basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+        }),
     {
       headers: {
         "Content-Type": "text/markdown",

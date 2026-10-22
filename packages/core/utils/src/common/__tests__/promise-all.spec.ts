@@ -56,3 +56,32 @@ describe("promiseAll", function () {
     expect(res).toEqual([1, undefined, 3])
   })
 })
+
+describe("promiseAll with non-Error rejection reasons", function () {
+  it("should aggregate rejections whose reason is not an Error", async function () {
+    const res = await promiseAll(
+      [
+        Promise.resolve(1),
+        Promise.reject("plain string reason"),
+        Promise.reject(undefined),
+        Promise.reject(null),
+        Promise.reject(42),
+      ],
+      { aggregateErrors: true }
+    ).catch((e) => e)
+
+    expect(res).toBeInstanceOf(Error)
+    expect(res.message).toBe(
+      ["plain string reason", "undefined", "null", "42"].join(EOL)
+    )
+  })
+
+  it("should still use the message of Error rejections when aggregating", async function () {
+    const res = await promiseAll(
+      [Promise.reject(new Error("boom")), Promise.reject("raw")],
+      { aggregateErrors: true }
+    ).catch((e) => e)
+
+    expect(res.message).toBe(["boom", "raw"].join(EOL))
+  })
+})

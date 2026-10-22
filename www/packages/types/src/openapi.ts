@@ -29,6 +29,8 @@ export type Operation = OpenAPIV3.OperationObject<{
   "x-events"?: OasEvents[]
   "x-since"?: string
   "x-deprecated_message"?: string
+  "x-allowed"?: string[]
+  "x-disallowed"?: string[]
   "x-badges"?: {
     text: string
     description: string

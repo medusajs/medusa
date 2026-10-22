@@ -1,0 +1,148 @@
+---
+sidebar_label: "Product Table Cells"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Product Table Cells - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These components are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The product table cells render a product's data in a [data table](!ui!/components/data-table) column the same way the Medusa Admin does. The Medusa Admin uses them in its products list and in the tables that let the user pick items when creating an order edit, return, or claim.
+
+```tsx
+import {
+  ProductCell,
+  ProductHeader,
+} from "@medusajs/dashboard/components"
+```
+
+Each cell has a matching header component that renders the column's translated label. The header components accept no props.
+
+---
+
+## Example
+
+Pass a header component to a column's `header` and a cell component to its `cell`:
+
+```tsx title="src/admin/routes/products/page.tsx"
+import {
+  DataTable,
+  ProductCell,
+  ProductHeader,
+  ProductStatusCell,
+  ProductStatusHeader,
+} from "@medusajs/dashboard/components"
+import { createDataTableColumnHelper } from "@medusajs/ui"
+
+const columnHelper = createDataTableColumnHelper()
+
+const columns = [
+  columnHelper.display({
+    id: "product",
+    header: () => <ProductHeader />,
+    cell: ({ row }) => (
+      <ProductCell product={row.original} />
+    ),
+  }),
+  columnHelper.accessor("status", {
+    header: () => <ProductStatusHeader />,
+    cell: ({ row }) => (
+      <ProductStatusCell status={row.original.status} />
+    ),
+  }),
+]
+```
+
+Every cell renders a placeholder when its value is missing or empty, except for `ProductCell`, which always renders a thumbnail and a title.
+
+---
+
+## ProductCell
+
+Shows a product's thumbnail next to its title. The title truncates when it doesn't fit the cell.
+
+<TypeList
+  types={[
+    {
+      name: "product",
+      type: `\`Pick<AdminProduct, "thumbnail" | "title">\``,
+      optional: false,
+      description: "The product to show. It only needs the `thumbnail` and `title` properties.",
+    },
+  ]}
+/>
+
+`ProductHeader` renders the "Product" label and accepts no props.
+
+---
+
+## ProductStatusCell
+
+Shows a product's status as a colored status indicator. It renders a placeholder when the status isn't one of the four product statuses.
+
+<TypeList
+  types={[
+    {
+      name: "status",
+      type: "`AdminProductStatus`",
+      optional: true,
+      description: "The product's status. The cell shows `draft` in grey, `proposed` in orange, `published` in green, and `rejected` in red.",
+    },
+  ]}
+/>
+
+`ProductStatusHeader` renders the "Status" label and accepts no props.
+
+---
+
+## SalesChannelsCell
+
+Shows the names of the sales channels that a product is available in. If there are more than two, the cell shows the first two and a tooltip listing the rest.
+
+<TypeList
+  types={[
+    {
+      name: "salesChannels",
+      type: "`SalesChannelDTO[]` \\| `null`",
+      optional: true,
+      description: "The sales channels to show. The cell ignores empty entries and renders a placeholder when the list is empty.",
+    },
+  ]}
+/>
+
+`SalesChannelHeader` renders the "Sales Channels" label and accepts no props.
+
+---
+
+## VariantCell
+
+Shows the number of a product's variants, such as "3 variants".
+
+<TypeList
+  types={[
+    {
+      name: "variants",
+      type: "`AdminProductVariant[]` \\| `null`",
+      optional: true,
+      description: "The product's variants. The cell renders a placeholder when the list is empty.",
+    },
+  ]}
+/>
+
+`VariantHeader` renders the "Variants" label and accepts no props.
+
+---
+
+## Related Components
+
+- [Data Table](../../guides/data-table/page.mdx): how to build a data table that fetches its records from the Medusa backend.
+- [Thumbnail](../thumbnail/page.mdx): the component that `ProductCell` uses to show a product's thumbnail.

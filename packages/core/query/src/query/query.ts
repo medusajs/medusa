@@ -13,6 +13,7 @@ import {
   RemoteQueryInput,
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
+  QueryContextType,
   SearchResultSet,
   SearchTypes,
 } from "@medusajs/types"
@@ -246,6 +247,7 @@ export class Query {
     entity: string
     engineQuery: SearchTypes.SearchQuery<TEntry>
     graphFields: string[]
+    context?: QueryContextType
   } {
     const entity = queryOptions.entity
     const retrievableFields = this.#searchModule!.listRetrievableFields(entity)
@@ -253,10 +255,15 @@ export class Query {
     const requested = queryOptions.fields ?? retrievableFields
     const retrievable = new Set(retrievableFields)
 
+    // `context` shapes the hydration, not the engine query — the provider
+    // never sees it.
+    const { context, ...engineQuery } = queryOptions
+
     return {
       entity,
+      context,
       engineQuery: {
-        ...queryOptions,
+        ...engineQuery,
         fields: requested.filter((field) => retrievable.has(field)),
       },
       graphFields: requested.filter((field) => !retrievable.has(field)),
@@ -264,7 +271,11 @@ export class Query {
   }
 
   private async hydrateSearchResult<const TEntry extends string>(
-    prepared: { entity: string; graphFields: string[] },
+    prepared: {
+      entity: string
+      graphFields: string[]
+      context?: QueryContextType
+    },
     searchResult: SearchTypes.SearchResult,
     options?: RemoteJoinerOptions
   ): Promise<SearchResultSet<TEntry>> {
@@ -288,6 +299,7 @@ export class Query {
           filters: {
             [primaryKey]: searchResult.hits.map((hit) => hit.id),
           } as any,
+          context: prepared.context,
           // `take` forces the select-in strategy, as in `index`.
           pagination: { take: searchResult.hits.length },
         } as RemoteQueryInput<TEntry>,

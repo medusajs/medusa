@@ -101,6 +101,33 @@ export interface AdminSearchIndexListResponse {
 }
 
 /**
+ * The result of deleting a search index. Every physical index built for it is
+ * dropped, so the next migration rebuilds it from scratch at version 1.
+ */
+export interface AdminSearchIndexDeleteResponse {
+  /**
+   * The name of the deleted index.
+   */
+  id: string
+
+  /**
+   * The type of the item that was deleted.
+   */
+  object: "search_index"
+
+  /**
+   * Whether the index was deleted successfully.
+   */
+  deleted: boolean
+
+  /**
+   * How many of the index's versions were dropped. `0` when the index is
+   * registered but was never migrated.
+   */
+  deleted_versions: number
+}
+
+/**
  * The result of triggering a search index reindex. The reindex runs in the
  * background - check the index's `status` to know when it's done.
  */

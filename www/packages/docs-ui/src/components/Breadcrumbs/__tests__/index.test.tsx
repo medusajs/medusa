@@ -59,6 +59,12 @@ const mockUseSidebar = vi.fn(() => ({
 }))
 
 // mock components
+vi.mock("next/link", () => ({
+  default: ({ children, ...props }: React.ComponentProps<"a">) => (
+    <a {...props}>{children}</a>
+  ),
+}))
+
 vi.mock("@/providers/Sidebar", () => ({
   useSidebar: () => mockUseSidebar(),
 }))

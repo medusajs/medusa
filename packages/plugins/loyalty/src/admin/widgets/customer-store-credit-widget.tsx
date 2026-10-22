@@ -1,6 +1,6 @@
 import { defineWidgetConfig } from "@medusajs/admin-sdk";
-import { Container } from "@medusajs/ui";
-import { useParams } from "react-router-dom";
+import { Button, Container } from "@medusajs/ui";
+import { Link, useParams } from "react-router-dom";
 import { Header } from "../components/header";
 import { NoRecords } from "../components/no-records";
 import { SidebarLink } from "../components/sidebar-link";
@@ -16,19 +16,35 @@ const CustomerStoreCreditWidget = () => {
       customer_id: params.id!,
     });
 
-  if (isPending || !storeCreditAccounts?.length) {
+  if (isPending) {
     return null;
   }
 
+  const createHref = `/store-credit-accounts/create?prefill_customer_id=${params.id}`;
+
   return (
     <Container className="p-0">
-      <Header title="Store Credit Accounts" />
+      <Header
+        title="Store Credit Accounts"
+        actions={[
+          {
+            type: "custom",
+            children: (
+              <Link to={createHref}>
+                <Button variant="secondary" size="small">
+                  Create
+                </Button>
+              </Link>
+            ),
+          },
+        ]}
+      />
 
-      {storeCreditAccounts?.length === 0 && (
+      {!storeCreditAccounts?.length && (
         <NoRecords
           className="border-t"
           title="No store credit accounts"
-          message="There are no store credit accounts to show"
+          message="Create an account to credit this customer"
           icon={null}
         />
       )}

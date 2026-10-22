@@ -180,6 +180,7 @@ export const ProductOrganizationForm = ({
                           options={collections.options}
                           onSearchValueChange={collections.onSearchValueChange}
                           searchValue={collections.searchValue}
+                          fetchNextPage={collections.fetchNextPage}
                           allowClear
                         />
                       </Form.Control>
@@ -225,6 +226,7 @@ export const ProductOrganizationForm = ({
                           options={tags.options}
                           onSearchValueChange={tags.onSearchValueChange}
                           searchValue={tags.searchValue}
+                          fetchNextPage={tags.fetchNextPage}
                         />
                       </Form.Control>
                       <Form.ErrorMessage />

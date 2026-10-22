@@ -26,6 +26,7 @@ import { Logger, MedusaContainer } from "@medusajs/framework/types"
 import { parse } from "url"
 import loaders, { initializeContainer } from "../loaders"
 import { reloadResources } from "./utils/dev-server"
+import { startLicenseRemoteCheck } from "./utils/license-check"
 import { HMRReloadError } from "./utils/dev-server/errors"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
@@ -317,6 +318,7 @@ async function start(args: {
           logger.success(serverActivity, `Server is ready on port: ${port}`)
           displayAdminUrl({ container, host, port })
           track("CLI_START_COMPLETED")
+          void startLicenseRemoteCheck(container)
         })
       )
 

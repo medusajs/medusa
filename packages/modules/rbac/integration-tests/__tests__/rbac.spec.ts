@@ -1,8 +1,15 @@
 import { IRbacModuleService } from "@medusajs/framework/types"
-import { Module, Modules, WILDCARD } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  LicenseFeature,
+  Module,
+  Modules,
+  WILDCARD,
+} from "@medusajs/framework/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
+  testLicense,
 } from "@medusajs/test-utils"
 import { RbacModuleService } from "@services"
 
@@ -14,6 +21,7 @@ moduleIntegrationTestRunner<IRbacModuleService>({
   moduleOptions: {},
   injectedDependencies: {
     [Modules.EVENT_BUS]: new MockEventBusService(),
+    [ContainerRegistrationKeys.LICENSE]: testLicense([LicenseFeature.RBAC]),
   },
   testSuite: ({ service }) => {
     it.skip(`should export the appropriate linkable configuration`, () => {

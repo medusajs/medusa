@@ -1,4 +1,7 @@
-import { applyEnvVarsToProcess } from "../medusa-test-runner-utils/utils"
+import {
+  applyEnvVarsToProcess,
+  formatError,
+} from "../medusa-test-runner-utils/utils"
 
 describe("applyEnvVarsToProcess", () => {
   const NEW_KEY = "MEDUSA_TEST_UTILS_NEW_ENV"
@@ -43,5 +46,36 @@ describe("applyEnvVarsToProcess", () => {
     process.env[EXISTING_KEY] = "changed-after-restore"
     restore()
     expect(process.env[EXISTING_KEY]).toBe("changed-after-restore")
+  })
+})
+
+describe("formatError", () => {
+  it("includes the postgres error details", () => {
+    const error = Object.assign(new Error("database does not exist"), {
+      code: "3D000",
+      detail: "some detail",
+    })
+
+    expect(formatError(error)).toBe(
+      "database does not exist\ncode: 3D000\ndetail: some detail"
+    )
+  })
+
+  it("falls back to the error name when there is no message", () => {
+    expect(formatError(new AggregateError([]))).toBe("AggregateError")
+  })
+
+  it("includes aggregated errors", () => {
+    const error = new AggregateError([new Error("first"), new Error("second")])
+
+    expect(formatError(error)).toBe("AggregateError\nfirst\nsecond")
+  })
+
+  it("includes the error cause", () => {
+    const error = Object.assign(new Error("outer"), {
+      cause: new Error("inner"),
+    })
+
+    expect(formatError(error)).toBe("outer\ncaused by: inner")
   })
 })

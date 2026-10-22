@@ -10,10 +10,15 @@ jest.setTimeout(60000)
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let order
+    let adminUser
 
     beforeAll(async () => {
       const container = getContainer()
-      await createAdminUser(dbConnection, adminHeaders, container)
+      ;({ user: adminUser } = await createAdminUser(
+        dbConnection,
+        adminHeaders,
+        container
+      ))
       const result = await createOrderSeeder({ api, container })
       order = result.order
 
@@ -85,6 +90,26 @@ medusaIntegrationTestRunner({
           }),
         ])
         expect(payments[0].captured_at).toBeTruthy()
+      })
+
+      it("records the acting admin user on the capture", async () => {
+        const collection = await createCollection()
+
+        await api.post(
+          `/admin/payment-collections/${collection.id}/mark-as-paid`,
+          { order_id: order.id },
+          adminHeaders
+        )
+
+        const payments = await getCollectionPayments(collection.id)
+        const { data } = await api.get(
+          `/admin/payments/${payments[0].id}?fields=id,*captures`,
+          adminHeaders
+        )
+
+        expect(data.payment.captures).toEqual([
+          expect.objectContaining({ created_by: adminUser.id }),
+        ])
       })
     })
   },

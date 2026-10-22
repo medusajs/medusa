@@ -13,6 +13,8 @@ const main = async function ({
   skipSearch,
   executeAllLinks,
   executeSafeLinks,
+  executeAllSearch,
+  executeSafeSearch,
 }) {
   let logger: Logger | undefined
 
@@ -36,6 +38,8 @@ const main = async function ({
       skipSearch,
       executeAllLinks,
       executeSafeLinks,
+      executeAllSearch,
+      executeSafeSearch,
       logger,
       container,
     })

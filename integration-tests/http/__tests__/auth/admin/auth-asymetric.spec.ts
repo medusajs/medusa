@@ -165,13 +165,17 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(201)
       })
 
-      it("should fail to generate token for existing user but no provider, but still respond with 201", async () => {
-        const response = await api.post(
-          "/auth/user/non-existing-provider/reset-password",
-          { identifier: "admin@medusa.js" }
-        )
+      it("should reject a provider that is not allowed for the user actor type", async () => {
+        const response = await api
+          .post("/auth/user/non-existing-provider/reset-password", {
+            identifier: "admin@medusa.js",
+          })
+          .catch((e) => e.response)
 
-        expect(response.status).toEqual(201)
+        expect(response.status).toEqual(400)
+        expect(response.data.message).toEqual(
+          "The actor type user is not allowed to use the auth provider non-existing-provider"
+        )
       })
 
       it("should successfully reset password", async () => {

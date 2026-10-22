@@ -2,6 +2,7 @@
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "medusa-docs-api-reference",
   "main": ".open-next/worker.js",
+  "minify": true,
   "compatibility_date": "2024-12-30",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
@@ -17,16 +18,10 @@
   "images": {
     "binding": "IMAGES",
   },
-  "observability": {
-    "enabled": true,
-    "logs": {
-      "enabled": true,
-      "invocation_logs": true,
-    },
-  },
   "env": {
     "production": {
       "name": "medusa-docs-api-reference",
+      "minify": true,
       "services": [
         {
           "binding": "WORKER_SELF_REFERENCE",
@@ -46,7 +41,7 @@
       "r2_buckets": [
         {
           "binding": "NEXT_INC_CACHE_R2_BUCKET",
-          "bucket_name": "docs-references",
+          "bucket_name": "docs-incremental-cache",
         },
         {
           "binding": "SPECS_R2_BUCKET",
@@ -55,13 +50,14 @@
       ],
       "vars": {
         "NEXT_INC_CACHE_R2_PREFIX": "incremental-cache/api-reference",
+        "SPECS_R2_BASE_URL": "https://assets.docs.medusajs.com/api-reference"
       },
     },
   },
   "r2_buckets": [
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "docs-references",
+      "bucket_name": "docs-incremental-cache",
     },
     {
       "binding": "SPECS_R2_BUCKET",
@@ -70,5 +66,6 @@
   ],
   "vars": {
     "NEXT_INC_CACHE_R2_PREFIX": "incremental-cache/api-reference",
+    "SPECS_R2_BASE_URL": "https://assets.docs.medusajs.com/api-reference"
   },
 }

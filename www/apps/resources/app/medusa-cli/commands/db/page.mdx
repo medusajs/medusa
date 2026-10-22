@@ -34,10 +34,18 @@ Use this command if you're setting up a Medusa project or database manually.
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Option</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
-      <Table.HeaderCell>Required</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -151,6 +159,76 @@ Use this command if you're setting up a Medusa project or database manually.
 
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--skip-search`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip creating, altering, and dropping search indexes. This option is added starting from
+      [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The command migrates search indexes by default if your application registers the [Search Module](../../../infrastructure-modules/search/page.mdx),
+      which is the default since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--execute-safe-search`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when migrating search indexes and leave every index that no definition declares any more in place. This option is added starting from
+      [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--execute-all-search`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when migrating search indexes and drop every index that no definition declares any more. This option is added starting from
+      [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -177,10 +255,18 @@ Use this command if you want to only create a database.
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Option</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
-      <Table.HeaderCell>Required</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -246,9 +332,15 @@ npx medusa db:generate <module_names...>
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Argument</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
-      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>
+        Argument
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -293,10 +385,18 @@ Use this command if you've updated the Medusa packages, or you've created custom
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Option</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
-      <Table.HeaderCell>Required</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -390,6 +490,161 @@ Use this command if you've updated the Medusa packages, or you've created custom
 
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--skip-search`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip creating, altering, and dropping search indexes. This option is added starting from
+      [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The command migrates search indexes by default if your application registers the [Search Module](../../../infrastructure-modules/search/page.mdx),
+      which is the default since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--execute-safe-search`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when migrating search indexes and leave every index that no definition declares any more in place. This option is added starting from
+      [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--execute-all-search`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when migrating search indexes and drop every index that no definition declares any more. This option is added starting from
+      [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## db\:migrate\:search
+
+Create, alter, and drop the physical search indexes that match the search index definitions in your application. The `db:migrate` command runs this command for you if your application registers the [Search Module](../../../infrastructure-modules/search/page.mdx), which is the default since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1). So, run it on its own to migrate the search indexes without touching the database.
+
+```bash npx2yarn
+npx medusa db:migrate:search
+```
+
+<Note>
+
+This command is available since [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1). Learn more about index migrations in the [Reindexing and Migrations guide](../../../infrastructure-modules/search/reindexing/page.mdx).
+
+</Note>
+
+The command prompts you to select which indexes to drop when no definition declares them any more. Pass one of the options below to skip the prompt, which you must do when you run the command in a CI pipeline or another environment without a terminal. Otherwise, the command leaves those indexes in place.
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `--execute-safe-search`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts and leave every index that no definition declares any more in place.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `--execute-all-search`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts and drop every index that no definition declares any more.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -408,9 +663,15 @@ npx medusa db:rollback <module_names...>
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Argument</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
-      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>
+        Argument
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -449,10 +710,18 @@ npx medusa db:sync-links
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Option</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
-      <Table.HeaderCell>Required</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>

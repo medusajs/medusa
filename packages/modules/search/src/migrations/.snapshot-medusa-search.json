@@ -453,6 +453,22 @@
           "enumItems": [],
           "mappedType": "text"
         },
+        "resumable": {
+          "name": "resumable",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "true",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "boolean"
+        },
         "documents_synced": {
           "name": "documents_synced",
           "type": "integer",

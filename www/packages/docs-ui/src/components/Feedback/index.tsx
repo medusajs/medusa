@@ -169,6 +169,7 @@ export const Feedback = ({
                 )}
                 ref={inlineFeedbackRef}
                 data-testid="feedback-form"
+                data-markdown-ignore
               >
                 <Label
                   className={clsx(

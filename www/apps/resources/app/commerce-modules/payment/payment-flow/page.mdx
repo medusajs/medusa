@@ -65,7 +65,7 @@ await createPaymentCollectionForCartWorkflow(container)
 const paymentCollection =
   await paymentModuleService.createPaymentCollections({
     currency_code: "usd",
-    amount: 5000,
+    amount: 50,
   })
 ```
 
@@ -76,13 +76,13 @@ const paymentCollection =
 
 Next, you'll show the customer the available payment providers to choose from.
 
-In the Medusa application, you need to use [Query](!docs!/learn/fundamentals/module-links/query) to retrieve the available payment providers in a region.
+In the Medusa application, you need to use [Query](!docs!/learn/fundamentals/query) to retrieve the available payment providers in a region.
 
 <CodeTabs group="query-service">
   <CodeTab label="Using Query" value="query">
 
 ```ts
-const query = container.resolve("query")
+const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
 const { data: regionPaymentProviders } = await query.graph({
   entryPoint: "region_payment_provider",
@@ -152,7 +152,7 @@ const paymentSession =
     {
       provider_id: "pp_stripe_stripe",
       currency_code: "usd",
-      amount: 5000,
+      amount: 50,
       data: {
         // any necessary data for the
         // payment provider
@@ -310,7 +310,7 @@ await refundPaymentsWorkflow(container)
     input: [
       {
         payment_id: "pay_123",
-        amount: 1000, // refund amount
+        amount: 10, // refund amount
         note: "Customer requested refund", // optional note
         metadata: { // optional custom data
           reason: "damaged_goods",
@@ -327,7 +327,7 @@ await refundPaymentsWorkflow(container)
 ```ts
 const refund = await paymentModuleService.refundPayment({
   payment_id: "pay_123",
-  amount: 1000,
+  amount: 10,
   refund_reason_id: "rr_123",
   note: "Customer requested refund",
   metadata: {
@@ -343,5 +343,72 @@ const refund = await paymentModuleService.refundPayment({
 <Note>
 
 The `metadata` property is available since Medusa [v2.15.0](https://github.com/medusajs/medusa/releases/tag/v2.15.0).
+
+</Note>
+
+#### Retry Refunds Safely with an Idempotency Key
+
+<Note>
+
+The `idempotency_key` property is available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
+
+</Note>
+
+To retry a refund, such as when a background job or a return flow issues it, pass an `idempotency_key` to the `refundPaymentWorkflow` or the Payment Module's `refundPayment` method. The Payment Module forwards the key to the payment provider, so retrying a refund with the same key never refunds the customer twice, even when the response of the original request was lost.
+
+Without a key, every request starts a new refund. So, if you retry a refund whose first attempt may have succeeded, the customer can receive the refund twice.
+
+For example:
+
+<CodeTabs group="workflow-service">
+  <CodeTab label="Using Workflow" value="workflow">
+
+```ts
+import { refundPaymentWorkflow } from "@medusajs/medusa/core-flows"
+
+// ...
+
+await refundPaymentWorkflow(container)
+  .run({
+    input: {
+      payment_id: "pay_123",
+      amount: 10,
+      idempotency_key: "return_123_refund",
+    },
+  })
+```
+
+  </CodeTab>
+  <CodeTab label="Using Service" value="service">
+
+```ts
+const payment = await paymentModuleService.refundPayment({
+  payment_id: "pay_123",
+  amount: 10,
+  idempotency_key: "return_123_refund",
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+When you pass an `idempotency_key`, the Payment Module handles a retry with the same key as follows:
+
+- If the previous refund with that key succeeded, the Payment Module doesn't send the refund to the payment provider again. The `refundPaymentWorkflow` also doesn't create credit lines or emit the `payment.refunded` event a second time.
+- If the previous refund with that key failed, the Payment Module retries it with the same key.
+- If the previous refund with that key is still waiting for the payment provider's response, the Payment Module throws a conflict error. It only retries the refund if it has been pending for more than 15 minutes.
+- If the amount is different from the amount of the previous refund with that key, the Payment Module throws an error.
+
+You can also pass the `idempotency_key` in the request body of the [Refund Payment API route](!api!/admin#payments_postpaymentsidrefund).
+
+<Note title="Refund Status">
+
+Since Medusa v2.22.0, a refund has a `status` property whose value is `pending` while the payment provider processes the refund, `succeeded` once the provider confirms it, or `failed` if the provider doesn't confirm it. Medusa soft-deletes failed refunds, so they don't count toward the payment's refunded amount.
+
+</Note>
+
+<Note title="Tip">
+
+The `refundPaymentWorkflow` returns the payment, which it retrieves before issuing the refund. So, the payment's `refunds` property doesn't include the new refund. To get the new refund, retrieve the payment again after the workflow finishes.
 
 </Note>

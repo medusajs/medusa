@@ -3,13 +3,21 @@ import {
   UpdatePricesDTO,
   CreatePriceSetDTO,
 } from "@medusajs/framework/types"
-import { Modules, arrayDifference } from "@medusajs/framework/utils"
+import {
+  Modules,
+  ProductVariantWorkflowEvents,
+  arrayDifference,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { removeRemoteLinkStep, useRemoteQueryStep } from "../../common"
+import {
+  emitEventStep,
+  removeRemoteLinkStep,
+  useRemoteQueryStep,
+} from "../../common"
 import { createPriceSetsStep, updatePriceSetsStep } from "../../pricing"
 import { createVariantPricingLinkStep } from "../steps"
 
@@ -168,5 +176,14 @@ export const upsertVariantPricesWorkflow = createWorkflow(
     )
 
     createVariantPricingLinkStep(variantAndPriceSetLinks)
+
+    const variantIdEvents = transform({ input }, ({ input }) =>
+      input.variantPrices.map((v) => ({ id: v.variant_id }))
+    )
+
+    emitEventStep({
+      eventName: ProductVariantWorkflowEvents.UPDATED,
+      data: variantIdEvents,
+    })
   }
 )

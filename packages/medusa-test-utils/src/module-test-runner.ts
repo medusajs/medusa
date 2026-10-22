@@ -11,6 +11,7 @@ import {
 } from "@medusajs/framework/utils"
 import * as fs from "fs"
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
+import { formatError } from "./medusa-test-runner-utils"
 import { initModules, InitModulesOptions } from "./init-modules"
 import { default as MockEventBusService } from "./mock-event-bus-service"
 import { ulid } from "ulid"
@@ -259,7 +260,7 @@ class ModuleTestRunner<TService = any> {
       // Deliberately not cleaning up: the shared connection lives for the whole
       // suite, so destroying it here would replace every later failure with an
       // unrelated "Unable to acquire a connection". `afterAll` still cleans up.
-      logger.error("Error in beforeEach:", error?.message)
+      logger.error(`Error in beforeEach:\n${formatError(error)}`)
       throw error
     }
   }
@@ -273,7 +274,7 @@ class ModuleTestRunner<TService = any> {
       this.moduleService = {}
       this.medusaApp = {}
     } catch (error) {
-      logger.error("Error in afterEach:", error?.message)
+      logger.error(`Error in afterEach:\n${formatError(error)}`)
       throw error
     }
   }
@@ -294,7 +295,7 @@ class ModuleTestRunner<TService = any> {
         global.gc()
       }
     } catch (error) {
-      logger.error("Error during cleanup:", error?.message)
+      logger.error(`Error during cleanup:\n${formatError(error)}`)
     }
   }
 

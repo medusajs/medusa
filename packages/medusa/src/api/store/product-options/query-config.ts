@@ -1,4 +1,4 @@
-import { disallowedStoreFields } from "../utils/disallowed-fields"
+import { buildAllowedFields } from "../utils/allowed-fields"
 
 export const defaults = [
   "id",
@@ -10,15 +10,20 @@ export const defaults = [
   "metadata",
 ]
 
+export const allowedStoreProductOptionExtraFields = [
+  "values.id",
+  "values.value",
+]
+
 export const retrieveProductOptionConfig = {
   defaults,
-  disallowed: disallowedStoreFields,
+  allowed: buildAllowedFields(defaults, allowedStoreProductOptionExtraFields),
   isList: false,
 }
 
 export const listProductOptionConfig = {
   defaults,
-  disallowed: disallowedStoreFields,
+  allowed: buildAllowedFields(defaults, allowedStoreProductOptionExtraFields),
   defaultLimit: 50,
   isList: true,
 }

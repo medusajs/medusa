@@ -11,6 +11,7 @@ import {
 import {
   AdminCreateStoreCreditAccount,
   AdminCreditStoreCreditAccountParams,
+  AdminDebitStoreCreditAccountParams,
   AdminGetStoreCreditAccountsParams,
   AdminGetStoreCreditAccountTransactionsParams,
 } from "./validators";
@@ -51,6 +52,17 @@ export const adminStoreCreditAccountMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/store-credit-accounts/:id/credit",
     middlewares: [
       validateAndTransformBody(AdminCreditStoreCreditAccountParams),
+      validateAndTransformQuery(
+        AdminGetStoreCreditAccountsParams,
+        retrieveStoreCreditAccountTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/store-credit-accounts/:id/debit",
+    middlewares: [
+      validateAndTransformBody(AdminDebitStoreCreditAccountParams),
       validateAndTransformQuery(
         AdminGetStoreCreditAccountsParams,
         retrieveStoreCreditAccountTransformQueryConfig

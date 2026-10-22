@@ -101,13 +101,14 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/:auth_provider/user",
     middlewares: [
+      validateScopeProviderAssociation("user"),
       authenticate("user", "bearer", {
         allowUnregistered: true,
       }),
     ],
   },
   {
-    method: ["POST"],
+    method: ["GET", "POST"],
     matcher: "/auth/:actor_type/:auth_provider/callback",
     middlewares: [validateScopeProviderAssociation()],
   },

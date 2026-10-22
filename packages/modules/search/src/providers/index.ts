@@ -1,1 +1,4 @@
-export { MedusaSearchService } from "./search-medusa"
+export {
+  hasMedusaSearchCredentials,
+  MedusaSearchService,
+} from "./search-medusa"

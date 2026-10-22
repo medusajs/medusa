@@ -306,10 +306,14 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     return this.getPaymentStatus(input)
   }
 
-  async cancelPayment({
-    data,
-    context,
-  }: CancelPaymentInput): Promise<CancelPaymentOutput> {
+  async cancelPayment(input: CancelPaymentInput): Promise<CancelPaymentOutput> {
+    return await this.cancelPaymentIntent(input, [ErrorIntentStatus.CANCELED])
+  }
+
+  protected async cancelPaymentIntent(
+    { data, context }: CancelPaymentInput,
+    ignoredStatuses: string[]
+  ): Promise<CancelPaymentOutput> {
     try {
       const id = data?.id as string
 
@@ -322,7 +326,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       })
       return { data: res as unknown as Record<string, unknown> }
     } catch (error) {
-      if (error.payment_intent?.status === ErrorIntentStatus.CANCELED) {
+      if (ignoredStatuses.includes(error.payment_intent?.status)) {
         return { data: error.payment_intent }
       }
 
@@ -353,7 +357,11 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   }
 
   async deletePayment(input: DeletePaymentInput): Promise<DeletePaymentOutput> {
-    return await this.cancelPayment(input)
+    // A succeeded PaymentIntent can't be canceled, but its session can still be deleted.
+    return await this.cancelPaymentIntent(input, [
+      ErrorIntentStatus.CANCELED,
+      ErrorIntentStatus.SUCCEEDED,
+    ])
   }
 
   async refundPayment({
@@ -801,11 +809,15 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   constructWebhookEvent(data: ProviderWebhookPayload["payload"]): Stripe.Event {
     const signature = data.headers["stripe-signature"] as string
 
-    return this.stripe_.webhooks.constructEvent(
-      data.rawData as string | Buffer,
-      signature,
-      this.options_.webhookSecret
-    )
+    try {
+      return this.stripe_.webhooks.constructEvent(
+        data.rawData as string | Buffer,
+        signature,
+        this.options_.webhookSecret
+      )
+    } catch (error) {
+      throw this.buildError("An error occurred in constructWebhookEvent", error)
+    }
   }
   protected buildError(message: string, error: Error): Error {
     const errorDetails =

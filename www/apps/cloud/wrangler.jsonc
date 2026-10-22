@@ -2,6 +2,7 @@
   "$schema": "../../node_modules/wrangler/config-schema.json",
   "name": "medusa-docs-cloud",
   "main": ".open-next/worker.js",
+  "minify": true,
   "compatibility_date": "2024-12-30",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
@@ -17,16 +18,10 @@
   "images": {
     "binding": "IMAGES",
   },
-  "observability": {
-    "enabled": true,
-    "logs": {
-      "enabled": true,
-      "invocation_logs": true,
-    },
-  },
   "env": {
     "production": {
       "name": "medusa-docs-cloud",
+      "minify": true,
       "services": [
         {
           "binding": "WORKER_SELF_REFERENCE",
@@ -46,7 +41,7 @@
       "r2_buckets": [
         {
           "binding": "NEXT_INC_CACHE_R2_BUCKET",
-          "bucket_name": "docs-references",
+          "bucket_name": "docs-incremental-cache",
         },
       ],
       "vars": {
@@ -57,7 +52,7 @@
   "r2_buckets": [
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "docs-references",
+      "bucket_name": "docs-incremental-cache",
     },
   ],
   "vars": {

@@ -5,127 +5,71 @@ sidebar_label: "Action Menu"
 import { TypeList } from "docs-ui"
 
 export const metadata = {
-  title: `Action Menu - Admin Components`,
+  title: `ActionMenu - Admin Components`,
 }
 
 # {metadata.title}
 
-In this guide, you'll learn how to add an action menu to your Medusa Admin customizations.
+<Note>
 
-The Medusa Admin often provides additional actions in a dropdown shown when users click a three-dot icon.
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
 
-![Example of an action menu in the Medusa Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1728291319/Medusa%20Resources/action-menu_jnus6k.png)
+</Note>
 
-To create a component that shows this menu in your customizations, create the file `src/admin/components/action-menu.tsx` with the following content:
+The `ActionMenu` component shows a dropdown of actions when the user clicks a trigger, which is a three-dot icon button by default. The Medusa Admin uses it in page headers, section headers, and table rows.
 
-```tsx title="src/admin/components/action-menu.tsx"
-import { 
-  DropdownMenu,
-  IconButton,
-  clx,
-} from "@medusajs/ui"
-import { EllipsisHorizontal } from "@medusajs/icons"
-import { Link } from "react-router-dom"
+```tsx
+import { ActionMenu } from "@medusajs/dashboard/components"
+```
 
-export type Action = {
-  icon: React.ReactNode
-  label: string
-  disabled?: boolean
-} & (
-  | {
-      to: string
-      onClick?: never
-    }
-  | {
-      onClick: () => void
-      to?: never
-    }
-)
+---
 
-export type ActionGroup = {
-  actions: Action[]
-}
+## Example
 
-export type ActionMenuProps = {
-  groups: ActionGroup[]
-}
+Use `ActionMenu` in a [widget](!docs!/learn/fundamentals/admin/widgets) or [UI route](!docs!/learn/fundamentals/admin/ui-routes) to show the actions of a record:
 
-export const ActionMenu = ({ groups }: ActionMenuProps) => {
+```tsx
+import { ActionMenu } from "@medusajs/dashboard/components"
+import { PencilSquare, Trash } from "@medusajs/icons"
+
+const BrandActions = ({ brand, onDelete }) => {
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger asChild>
-        <IconButton size="small" variant="transparent">
-          <EllipsisHorizontal />
-        </IconButton>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        {groups.map((group, index) => {
-          if (!group.actions.length) {
-            return null
-          }
-
-          const isLast = index === groups.length - 1
-
-          return (
-            <DropdownMenu.Group key={index}>
-              {group.actions.map((action, index) => {
-                if (action.onClick) {
-                  return (
-                    <DropdownMenu.Item
-                      disabled={action.disabled}
-                      key={index}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        action.onClick()
-                      }}
-                      className={clx(
-                        "[&_svg]:text-ui-fg-subtle flex items-center gap-x-2",
-                        {
-                          "[&_svg]:text-ui-fg-disabled": action.disabled,
-                        }
-                      )}
-                    >
-                      {action.icon}
-                      <span>{action.label}</span>
-                    </DropdownMenu.Item>
-                  )
-                }
-
-                return (
-                  <div key={index}>
-                    <DropdownMenu.Item
-                      className={clx(
-                        "[&_svg]:text-ui-fg-subtle flex items-center gap-x-2",
-                        {
-                          "[&_svg]:text-ui-fg-disabled": action.disabled,
-                        }
-                      )}
-                      asChild
-                      disabled={action.disabled}
-                    >
-                      <Link to={action.to} onClick={(e) => e.stopPropagation()}>
-                        {action.icon}
-                        <span>{action.label}</span>
-                      </Link>
-                    </DropdownMenu.Item>
-                  </div>
-                )
-              })}
-              {!isLast && <DropdownMenu.Separator />}
-            </DropdownMenu.Group>
-          )
-        })}
-      </DropdownMenu.Content>
-    </DropdownMenu>
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              icon: <PencilSquare />,
+              label: "Edit",
+              to: `/brands/${brand.id}/edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              icon: <Trash />,
+              label: "Delete",
+              onClick: () => onDelete(brand.id),
+              disabled: brand.is_default,
+              disabledTooltip:
+                "You can't delete the default brand.",
+            },
+          ],
+        },
+      ]}
+    />
   )
 }
 ```
 
-The `ActionMenu` component shows a three-dots icon (or `EllipsisHorizontal`) from the [Medusa Icons package](!ui!/icons/overview) in a button.
+Medusa shows a separator between every two groups, and it doesn't render a group that has an empty `actions` array.
 
-When the button is clicked, a dropdown menu is shown with the actions passed in the props.
+---
 
-The component accepts the following props:
+## Props
+
+The component accepts the `ActionMenuProps` type:
 
 <TypeList
   types={[
@@ -133,141 +77,79 @@ The component accepts the following props:
       name: "groups",
       type: "`object[]`",
       optional: false,
-      description: "Groups of actions to be shown in the dropdown. Each group is separated by a divider.",
+      description:
+        "The groups of actions to show in the dropdown. Medusa shows a separator between every two groups, and it doesn't render a group that has an empty `actions` array.",
       children: [
         {
           name: "actions",
           type: "`object[]`",
           optional: false,
-          description: "Actions in the group.",
+          description:
+            "The actions to show in the group. Each action must have either a `to` or an `onClick` property, but not both.",
           children: [
             {
               name: "icon",
               type: "`React.ReactNode`",
               optional: false,
-              description: `The icon of the action. You can use icons from the [Medusa Icons package](https://docs.medusajs.com/ui/icons/overview).`
+              description: `The icon to show before the action's label. Use an icon from the [Medusa Icons package](!ui!/icons/overview).`,
             },
             {
               name: "label",
               type: "`string`",
               optional: false,
-              description: "The action's text."
+              description: `The action's label.`,
+            },
+            {
+              name: "to",
+              type: "`string`",
+              optional: true,
+              description:
+                "The path to navigate to when the user clicks the action. Medusa renders the action as a link. Required if `onClick` isn't provided, and can't be used with `onClick`.",
+            },
+            {
+              name: "onClick",
+              type: "`() => void`",
+              optional: true,
+              description:
+                "The function to execute when the user clicks the action. Required if `to` isn't provided, and can't be used with `to`.",
             },
             {
               name: "disabled",
               type: "`boolean`",
               optional: true,
-              defaultValue: false,
-              description: "Whether the action is shown as disabled."
+              description: "Whether the action is disabled.",
             },
             {
-              name: "`to`",
-              type: "`string`",
+              name: "disabledTooltip",
+              type: "`string` \\| `React.ReactNode`",
               optional: true,
-              description: "The link to take the user to when they click the action. This is required if `onClick` isn't provided."
+              description:
+                "The tooltip to show when the user hovers over the action while it's disabled. Medusa shows the tooltip to the right of the action.",
             },
-            {
-              name: "`onClick`",
-              type: "`() => void`",
-              optional: true,
-              description: "The function to execute when the action is clicked. This is required if `to` isn't provided."
-            }
-          ]
-        }
-      ]
-    }
+          ],
+        },
+      ],
+    },
+    {
+      name: "variant",
+      type: '`"transparent"` \\| `"primary"`',
+      optional: true,
+      defaultValue: "transparent",
+      description:
+        "The variant of the default trigger button. Medusa ignores it when you pass your own trigger as `children`.",
+    },
+    {
+      name: "children",
+      type: "`React.ReactNode`",
+      optional: true,
+      description:
+        "A custom trigger element. If you don't pass one, Medusa shows a small icon button with a three-dot icon.",
+    },
   ]}
 />
 
 ---
 
-## Example
+## Related Components
 
-Use the `ActionMenu` component in any widget or UI route.
-
-For example, create the widget `src/admin/widgets/product-widget.tsx` with the following content:
-
-```tsx title="src/admin/widgets/product-widget.tsx"
-import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { Pencil } from "@medusajs/icons"
-import { Container } from "../components/container"
-import { ActionMenu } from "../components/action-menu"
-
-const ProductWidget = () => {
-  return (
-    <Container>
-      <ActionMenu groups={[
-        {
-          actions: [
-            {
-              icon: <Pencil />,
-              label: "Edit",
-              onClick: () => {
-                alert("You clicked the edit action!")
-              },
-            },
-          ],
-        },
-      ]} />
-    </Container>
-  )
-}
-
-export const config = defineWidgetConfig({
-  zone: "product.details",
-})
-
-export default ProductWidget
-```
-
-This widget also uses a [Container](../container/page.mdx) custom component.
-
-### Use in Header
-
-You can also use the action menu in the [Header](../header/page.mdx) component as part of its actions.
-
-For example:
-
-```tsx title="src/admin/widgets/product-widget.tsx"
-import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { Pencil } from "@medusajs/icons"
-import { Container } from "../components/container"
-import { Header } from "../components/header"
-
-const ProductWidget = () => {
-  return (
-    <Container>
-      <Header 
-        title="Product Widget"
-        subtitle="This is my custom product widget"
-        actions={[
-          {
-            type: "action-menu",
-            props: {
-              groups: [
-                {
-                  actions: [
-                    {
-                      icon: <Pencil />,
-                      label: "Edit",
-                      onClick: () => {
-                        alert("You clicked the edit action!")
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        ]}
-      />
-    </Container>
-  )
-}
-
-export const config = defineWidgetConfig({
-  zone: "product.details",
-})
-
-export default ProductWidget
-```
+- [SectionRow](../section-row/page.mdx): pass an `ActionMenu` as the row's `actions`.

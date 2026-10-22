@@ -1,0 +1,167 @@
+---
+sidebar_label: "Shipping Options"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Shipping Option Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The shipping option hooks retrieve shipping options from the Medusa backend, either a single option by ID or a paginated list.
+
+```tsx
+import {
+  shippingOptionsQueryKeys,
+  useShippingOption,
+  useShippingOptions,
+} from "@medusajs/dashboard/hooks"
+```
+
+These hooks are built on [TanStack Query](https://tanstack.com/query/latest). Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+
+---
+
+## useShippingOption
+
+Retrieve a single shipping option by its ID. Pass a query object as the second parameter to select the fields and relations to retrieve.
+
+```tsx
+const { shipping_option, isPending } = useShippingOption(
+  "so_123"
+)
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The shipping option's ID.",
+    },
+    {
+      name: "query",
+      type: "`Record<string, any>`",
+      optional: true,
+      description: "Optional query parameters passed to the request, such as `fields`.",
+    },
+    {
+      name: "options",
+      type: "`object`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+<Note>
+
+The query key of this hook only includes the shipping option's ID. If you use different `query` values for the same ID, set a custom `queryKey` through a separate query instead.
+
+</Note>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "shipping_option",
+      type: "`AdminShippingOption`",
+      description: "The retrieved shipping option. It's `undefined` until the request resolves.",
+    },
+  ]}
+/>
+
+---
+
+## useShippingOptions
+
+Retrieve a paginated list of shipping options. Pass query parameters to filter the shipping options, for example by stock location or shipping profile.
+
+```tsx
+const { shipping_options, count } = useShippingOptions({
+  limit: 20,
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "query",
+      type: "`AdminShippingOptionListParams`",
+      optional: true,
+      description: "Optional filters and pagination parameters, such as `limit`, `offset`, and `stock_location_id`.",
+    },
+    {
+      name: "options",
+      type: "`object`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "shipping_options",
+      type: "`AdminShippingOption[]`",
+      description: "The list of retrieved shipping options.",
+    },
+    {
+      name: "count",
+      type: "`number`",
+      description: "The total number of shipping options matching the query.",
+    },
+    {
+      name: "limit",
+      type: "`number`",
+      description: "The maximum number of shipping options returned.",
+    },
+    {
+      name: "offset",
+      type: "`number`",
+      description: "The number of shipping options skipped before the returned ones.",
+    },
+  ]}
+/>
+
+---
+
+## shippingOptionsQueryKeys
+
+`shippingOptionsQueryKeys` is the query key factory for shipping option queries. Use `all`, `lists()`, `list(query)`, `details()`, and `detail(id)` to build the keys that the hooks above register.
+
+Use it to invalidate cached shipping option data after a custom mutation:
+
+```tsx
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  shippingOptionsQueryKeys,
+} from "@medusajs/dashboard/hooks"
+
+const queryClient = useQueryClient()
+
+queryClient.invalidateQueries({
+  queryKey: shippingOptionsQueryKeys.all,
+})
+```

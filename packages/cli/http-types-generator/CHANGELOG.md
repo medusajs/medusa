@@ -1,5 +1,17 @@
 # @medusajs/http-types-generator
 
+## 2.22.0
+
+### Patch Changes
+
+- [#17382](https://github.com/medusajs/medusa/pull/17382) [`1db74006ede40300afe64970024688a1a9c2a936`](https://github.com/medusajs/medusa/commit/1db74006ede40300afe64970024688a1a9c2a936) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: ship AGENTS.md in published packages and add agent discovery fields to package.json
+
+## 2.21.2
+
+## 2.21.1
+
+## 2.21.0
+
 ## 2.20.1
 
 ## 2.20.0

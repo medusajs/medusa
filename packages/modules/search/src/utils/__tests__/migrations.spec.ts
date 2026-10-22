@@ -4,7 +4,6 @@ import { SearchIndexRegistry } from "@types"
 import {
   createIndexMigrationPlan,
   executeIndexMigrationPlan,
-  versionPhysicalName,
 } from "../migrations"
 
 const definition = (
@@ -76,6 +75,7 @@ const registry = ({
   providers: SearchTypes.ISearchProvider[]
 }): SearchIndexRegistry & {
   versionService: { softDelete: jest.Mock; create: jest.Mock }
+  indexService: { softDelete: jest.Mock }
 } => {
   const byId = new Map(providers.map((item) => [item.identifier, item]))
 
@@ -94,6 +94,7 @@ const registry = ({
         Promise.resolve([{ id: "srhidx_new", ...data[0] }])
       ),
       update: jest.fn(),
+      softDelete: jest.fn(),
     } as any,
     versionService: {
       list: jest
@@ -138,13 +139,6 @@ const registry = ({
 describe("search index migrations", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-  })
-
-  describe("versionPhysicalName", () => {
-    it("appends the version number to the definition's physical name", () => {
-      expect(versionPhysicalName(definition(), 1)).toBe("product_v1")
-      expect(versionPhysicalName(definition(), 12)).toBe("product_v12")
-    })
   })
 
   describe("createIndexMigrationPlan", () => {
@@ -265,6 +259,83 @@ describe("search index migrations", () => {
           definition_hash: index.definition_hash,
         },
       ])
+    })
+
+    it("plans a drop for an index no definition declares any more", async () => {
+      const index = definition()
+      const plan = await createIndexMigrationPlan(
+        registry({
+          indexes: [index],
+          records: [
+            { id: "idx_1", name: "product", active_version: 1 },
+            { id: "idx_2", name: "blog", active_version: 2 },
+          ],
+          versions: [
+            {
+              id: "ver_1",
+              search_index_id: "idx_1",
+              version: 1,
+              provider: "search-new",
+              physical_name: "product_v1",
+              definition_hash: index.definition_hash,
+            },
+            {
+              id: "ver_2",
+              search_index_id: "idx_2",
+              version: 1,
+              provider: "search-new",
+              physical_name: "blog_v1",
+              definition_hash: "whatever",
+            },
+            {
+              id: "ver_3",
+              search_index_id: "idx_2",
+              version: 2,
+              provider: "search-new",
+              physical_name: "blog_v2",
+              definition_hash: "whatever",
+            },
+          ],
+          providers: [provider("search-new")],
+        })
+      )
+
+      expect(plan).toEqual([
+        {
+          action: "noop",
+          index: "product",
+          physical_name: "product_v1",
+          definition_hash: index.definition_hash,
+        },
+        {
+          action: "drop",
+          index: "blog",
+          // Newest first, and every version — a drop takes all of them.
+          physical_names: ["blog_v2", "blog_v1"],
+        },
+      ])
+    })
+
+    it("plans a drop for a record whose version was never built", async () => {
+      const plan = await createIndexMigrationPlan(
+        registry({
+          indexes: [],
+          records: [{ id: "idx_1", name: "blog", active_version: null }],
+          providers: [provider("search-new")],
+        })
+      )
+
+      expect(plan).toEqual([
+        { action: "drop", index: "blog", physical_names: [] },
+      ])
+    })
+
+    it("plans nothing when there is neither a definition nor a record", async () => {
+      const plan = await createIndexMigrationPlan(
+        registry({ indexes: [], providers: [provider("search-new")] })
+      )
+
+      expect(plan).toEqual([])
     })
 
     it("records the previous provider when the engine changed", async () => {
@@ -469,6 +540,143 @@ describe("search index migrations", () => {
       expect(current.upsertIndex).not.toHaveBeenCalled()
       expect(old.deleteIndex).toHaveBeenCalledWith({ index: "product_v1" })
       expect(context.versionService.softDelete).toHaveBeenCalledWith(["ver_1"])
+    })
+
+    it("drops every physical index of an index nothing declares any more", async () => {
+      const current = provider("search-new")
+      const context = registry({
+        indexes: [],
+        records: [{ id: "idx_1", name: "blog", active_version: 2 }],
+        versions: [
+          {
+            id: "ver_1",
+            search_index_id: "idx_1",
+            version: 1,
+            provider: "search-new",
+            physical_name: "blog_v1",
+            definition_hash: "whatever",
+          },
+          {
+            id: "ver_2",
+            search_index_id: "idx_1",
+            version: 2,
+            provider: "search-new",
+            physical_name: "blog_v2",
+            definition_hash: "whatever",
+          },
+        ],
+        providers: [current],
+      })
+
+      await executeIndexMigrationPlan(context, [
+        {
+          action: "drop",
+          index: "blog",
+          physical_names: ["blog_v2", "blog_v1"],
+        },
+      ])
+
+      // The active version goes too — unlike a cleanup, a drop keeps nothing.
+      expect(current.deleteIndex.mock.calls.map(([call]) => call.index)).toEqual(
+        ["blog_v2", "blog_v1"]
+      )
+      expect(context.versionService.softDelete).toHaveBeenCalledWith(["ver_2"])
+      expect(context.versionService.softDelete).toHaveBeenCalledWith(["ver_1"])
+      expect(context.indexService.softDelete).toHaveBeenCalledWith(["idx_1"])
+    })
+
+    it("keeps the record when one of the versions could not be removed", async () => {
+      const current = provider("search-new")
+      const context = registry({
+        indexes: [],
+        records: [{ id: "idx_1", name: "blog", active_version: 2 }],
+        versions: [
+          {
+            id: "ver_1",
+            search_index_id: "idx_1",
+            version: 1,
+            provider: "search-gone",
+            physical_name: "blog_v1",
+            definition_hash: "whatever",
+          },
+          {
+            id: "ver_2",
+            search_index_id: "idx_1",
+            version: 2,
+            provider: "search-new",
+            physical_name: "blog_v2",
+            definition_hash: "whatever",
+          },
+        ],
+        providers: [current],
+      })
+
+      await executeIndexMigrationPlan(context, [
+        {
+          action: "drop",
+          index: "blog",
+          physical_names: ["blog_v2", "blog_v1"],
+        },
+      ])
+
+      // What could go, went...
+      expect(current.deleteIndex).toHaveBeenCalledWith({ index: "blog_v2" })
+      expect(context.versionService.softDelete).toHaveBeenCalledWith(["ver_2"])
+
+      // ...but the record stays, so the next migration plans the drop again
+      // rather than leaving a physical index nothing points at.
+      expect(context.indexService.softDelete).not.toHaveBeenCalled()
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining("search-gone")
+      )
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringContaining('Keeping the record for search index "blog"')
+      )
+    })
+
+    it("drops nothing that the plan it is handed does not ask for", async () => {
+      const index = definition()
+      const current = provider("search-new")
+      const context = registry({
+        indexes: [index],
+        records: [
+          { id: "idx_1", name: "product", active_version: 1 },
+          // Undeclared, and so droppable — but this plan leaves it out, the way
+          // `db:migrate` does when the drop was declined or never confirmed.
+          { id: "idx_2", name: "blog", active_version: 1 },
+        ],
+        versions: [
+          {
+            id: "ver_1",
+            search_index_id: "idx_1",
+            version: 1,
+            provider: "search-new",
+            physical_name: "product_v1",
+            definition_hash: index.definition_hash,
+          },
+          {
+            id: "ver_2",
+            search_index_id: "idx_2",
+            version: 1,
+            provider: "search-new",
+            physical_name: "blog_v1",
+            definition_hash: "whatever",
+          },
+        ],
+        providers: [current],
+      })
+
+      await executeIndexMigrationPlan(context, [
+        {
+          action: "noop",
+          index: "product",
+          physical_name: "product_v1",
+          definition_hash: index.definition_hash,
+        },
+      ])
+
+      expect(current.deleteIndex).not.toHaveBeenCalled()
+      expect(context.indexService.softDelete).not.toHaveBeenCalled()
     })
 
     it("warns and continues when a stale version's provider is no longer registered", async () => {

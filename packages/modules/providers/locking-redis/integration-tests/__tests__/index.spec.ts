@@ -216,5 +216,49 @@ moduleIntegrationTestRunner<ILockingModule>({
       expect(fn_2).toHaveBeenCalledTimes(0)
       expect(fn_3).toHaveBeenCalledTimes(1)
     })
+
+    it("should hold the keys until the job is done", async () => {
+      const result = await service.execute("held_key", async () => {
+        // No wait needed to see this: an acquisition that isn't queueing is
+        // refused as soon as it finds the keys taken.
+        await expect(
+          service.acquire("held_key", { ownerId: "someone_else" })
+        ).rejects.toThrow()
+
+        return "done"
+      })
+
+      expect(result).toEqual("done")
+
+      // And the job being done is what frees them, under the same owner that
+      // took them — a release under a different owner would leave them locked.
+      await service.acquire("held_key", { ownerId: "someone_else" })
+
+      await expect(
+        service.release("held_key", { ownerId: "someone_else" })
+      ).resolves.toBe(true)
+    })
+
+    it("should renew the lease of a job that outlives it", async () => {
+      // One second is the shortest lease the provider allows, and the only way
+      // to watch a lease being extended is to outlast it, so this test waits
+      // out one. Everything else about renewal is covered by the unit tests.
+      const result = await service.execute(
+        "renewed_key",
+        async () => {
+          await setTimeout(1200)
+
+          // Still exclusively held, well past the lease it was acquired with.
+          await expect(
+            service.acquire("renewed_key", { ownerId: "someone_else" })
+          ).rejects.toThrow()
+
+          return "done"
+        },
+        { expire: 1 }
+      )
+
+      expect(result).toEqual("done")
+    })
   },
 })

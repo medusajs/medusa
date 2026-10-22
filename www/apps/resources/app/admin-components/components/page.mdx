@@ -1,0 +1,155 @@
+---
+sidebar_label: "Components"
+---
+
+import { CardList } from "docs-ui"
+
+export const metadata = {
+  title: `Components - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These components are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `@medusajs/dashboard/components` subpath exports the React components that the Medusa Admin uses to build its pages. Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes) to match the Medusa Admin's design conventions without re-implementing the components.
+
+```tsx
+import {
+  ActionMenu,
+  SectionRow,
+} from "@medusajs/dashboard/components"
+```
+
+<Note title="Tip">
+
+These components build on the [Medusa UI package](!ui!). Refer to the [Medusa UI documentation](!ui!) for the underlying primitives, such as buttons and inputs.
+
+</Note>
+
+---
+
+## Layout Components
+
+<CardList items={[
+  {
+    title: "LayoutComposer",
+    href: "/admin-components/layouts/layout-composer",
+  },
+]} />
+
+---
+
+## Common Components
+
+<CardList items={[
+  {
+    title: "ActionMenu",
+    href: "/admin-components/components/action-menu",
+  },
+  {
+    title: "ConditionalTooltip",
+    href: "/admin-components/components/conditional-tooltip",
+  },
+  {
+    title: "DisplayId",
+    href: "/admin-components/components/display-id",
+  },
+  {
+    title: "Empty States",
+    href: "/admin-components/components/empty-states",
+  },
+  {
+    title: "IconAvatar",
+    href: "/admin-components/components/icon-avatar",
+  },
+  {
+    title: "JsonViewSection",
+    href: "/admin-components/components/json-view-section",
+  },
+  {
+    title: "Listicle",
+    href: "/admin-components/components/listicle",
+  },
+  {
+    title: "SectionRow",
+    href: "/admin-components/components/section-row",
+  },
+  {
+    title: "Thumbnail",
+    href: "/admin-components/components/thumbnail",
+  },
+]} />
+
+---
+
+## Form and Input Components
+
+<CardList items={[
+  {
+    title: "KeyboundForm",
+    href: "/admin-components/components/keybound-form",
+  },
+  {
+    title: "Combobox",
+    href: "/admin-components/components/combobox",
+  },
+  {
+    title: "CountrySelect",
+    href: "/admin-components/components/country-select",
+  },
+  {
+    title: "HandleInput",
+    href: "/admin-components/components/handle-input",
+  },
+]} className="mb-1" />
+
+Refer to the [Forms guide](../guides/forms/page.mdx) to build create and edit forms with the `Form` component.
+
+---
+
+## Modal Components
+
+Use these components to build modals in UI routes that Medusa opens as a route. When the user closes the modal, Medusa navigates back to the previous route.
+
+<CardList items={[
+  {
+    title: "RouteDrawer",
+    href: "/admin-components/components/route-drawer",
+  },
+  {
+    title: "RouteFocusModal",
+    href: "/admin-components/components/route-focus-modal",
+  },
+  {
+    title: "StackedDrawer",
+    href: "/admin-components/components/stacked-drawer",
+  },
+  {
+    title: "StackedFocusModal",
+    href: "/admin-components/components/stacked-focus-modal",
+  },
+]} />
+
+---
+
+## Table Components
+
+<CardList items={[
+  {
+    title: "ConfigurableDataTable",
+    href: "/admin-components/components/configurable-data-table",
+  },
+  {
+    title: "DataGrid",
+    href: "/admin-components/components/data-grid",
+  },
+  {
+    title: "Product Table Cells",
+    href: "/admin-components/components/product-table-cells",
+  },
+]} />

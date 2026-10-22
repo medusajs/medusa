@@ -1009,6 +1009,11 @@ export function getRouteMap({
                         import("../../routes/customers/customer-create"),
                       handle: { permissions: "customer:create" },
                     },
+                    {
+                      path: "export",
+                      lazy: () =>
+                        import("../../routes/customers/customer-export"),
+                    },
                   ],
                 },
                 {

@@ -62,8 +62,12 @@ A variant is in stock if:
 
 1. Its `manage_inventory`'s value is `false`, meaning that Medusa doesn't keep track of its inventory.
 2. If its `inventory_quantity`'s value is greater than `0`.
-    - This property is only available on variants whose `manage_inventory` is `false`.
-    - If the variant doesn't have inventory levels in the stock location associated with the API's scope, its `inventory_quantity` will be `null`.
+    - This property is only available on variants whose `manage_inventory` is `true`.
+    - `inventory_quantity` can be one of three values:
+        - `null`: the variant has no inventory item linked to it.
+        - `0`: the variant has an inventory item, but no available quantity at stock locations linked to the publishable API key's sales channel. This happens when the stock location is not linked to the sales channel, or when all stock is reserved.
+        - A positive number: the total available quantity across stock locations linked to the sales channel.
+    - Availability is determined by the stock locations linked to the sales channel associated with the publishable API key. The region does not affect which stock locations are used.
 
 ---
 

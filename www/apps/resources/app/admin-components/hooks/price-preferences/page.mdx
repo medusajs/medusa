@@ -1,0 +1,109 @@
+---
+sidebar_label: "Price Preferences"
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Price Preference Hooks - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These hooks are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The price preference hooks retrieve price preferences from the Medusa backend. A price preference controls how prices are displayed and entered for a region or a currency, such as whether prices are tax inclusive.
+
+```tsx
+import {
+  pricePreferencesQueryKeys,
+  usePricePreferences,
+} from "@medusajs/dashboard/hooks"
+```
+
+These hooks are built on [TanStack Query](https://tanstack.com/query/latest). Use them in your [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+
+---
+
+## usePricePreferences
+
+Retrieve a paginated list of price preferences. Pass query parameters to filter the price preferences, for example by attribute or value.
+
+```tsx
+const { price_preferences, count } = usePricePreferences({
+  limit: 20,
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "query",
+      type: "`AdminPricePreferenceListParams`",
+      optional: true,
+      description: "Optional filters and pagination parameters, such as `limit`, `offset`, `attribute`, and `value`.",
+    },
+    {
+      name: "options",
+      type: "`object`",
+      optional: true,
+      description: "Optional TanStack Query options, excluding `queryKey` and `queryFn`.",
+    },
+  ]}
+/>
+
+### Returns
+
+Along with the following, the hook returns the rest of TanStack Query's [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) result.
+
+<TypeList
+  types={[
+    {
+      name: "price_preferences",
+      type: "`AdminPricePreference[]`",
+      description: "The list of retrieved price preferences.",
+    },
+    {
+      name: "count",
+      type: "`number`",
+      description: "The total number of price preferences matching the query.",
+    },
+    {
+      name: "limit",
+      type: "`number`",
+      description: "The maximum number of price preferences returned.",
+    },
+    {
+      name: "offset",
+      type: "`number`",
+      description: "The number of price preferences skipped before the returned ones.",
+    },
+  ]}
+/>
+
+---
+
+## pricePreferencesQueryKeys
+
+`pricePreferencesQueryKeys` is the query key factory for price preference queries. Use `all`, `lists()`, `list(query)`, `details()`, and `detail(id)` to build the keys that the hook above registers.
+
+Use it to invalidate cached price preference data after a custom mutation:
+
+```tsx
+import { useQueryClient } from "@tanstack/react-query"
+import {
+  pricePreferencesQueryKeys,
+} from "@medusajs/dashboard/hooks"
+
+const queryClient = useQueryClient()
+
+queryClient.invalidateQueries({
+  queryKey: pricePreferencesQueryKeys.lists(),
+})
+```

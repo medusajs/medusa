@@ -88,7 +88,7 @@ export const Modal = ({
       {...props}
       className={clsx(
         "fixed top-0 left-0 flex h-screen w-screen items-center justify-center",
-        "bg-medusa-bg-overlay z-50",
+        "bg-medusa-bg-overlay z-[499]",
         "hidden open:flex border-0 px-docs_0.5 lg:p-0",
         className
       )}

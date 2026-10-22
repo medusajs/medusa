@@ -31,7 +31,7 @@ There are multiple ways to enable or disable feature flags in Medusa:
 
 The Medusa configurations in `medusa-config.ts` accept a `featureFlags` configuration to toggle feature flags. Its value is an object whose key is the feature flag key (defined in the feature flag's file), and the value is a boolean indicating whether the feature is enabled.
 
-For example, to enable the [Index Module](../../fundamentals/module-links/index-module/page.mdx)'s feature flag in `medusa-config.ts`:
+For example, to enable the [Index Module](../../fundamentals/query/index-module/page.mdx)'s feature flag in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -52,7 +52,7 @@ The feature flags can also be enabled or disabled using environment variables. T
 
 To toggle a feature flag using an environment variable, set an environment variable with its environment variable name (defined in the feature flag's file) and set its value to `true` or `false`.
 
-For example, to enable the [Index Module](../../fundamentals/module-links/index-module/page.mdx)'s feature flag using an environment variable:
+For example, to enable the [Index Module](../../fundamentals/query/index-module/page.mdx)'s feature flag using an environment variable:
 
 ```shell
 MEDUSA_FF_INDEX_ENGINE=true

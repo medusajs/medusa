@@ -37,8 +37,12 @@ To check the outstanding amount of an order, the transaction amounts from the `T
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Condition</Table.HeaderCell>
-      <Table.HeaderCell>Result</Table.HeaderCell>
+      <Table.HeaderCell>
+        Condition
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Result
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -100,12 +104,14 @@ The transaction's `amount` for refunds will be a negative value, indicating that
 
 #### Example: Retrieve Order's Refunds
 
-To retrieve an order's refunds, you can retrieve the order's transactions using [Query](!docs!/learn/fundamentals/module-links/query) and filter the transactions by their `reference` property.
+To retrieve an order's refunds, you can retrieve the order's transactions using [Query](!docs!/learn/fundamentals/query) and filter the transactions by their `reference` property.
 
 For example:
 
 ```ts
-const query = container.resolve("query") // or req.scope.resolve("query")
+const query = container.resolve(
+  ContainerRegistrationKeys.QUERY
+) // or req.scope.resolve("query")
 
 const { data: [order] } = await query.graph({
   entity: "order",

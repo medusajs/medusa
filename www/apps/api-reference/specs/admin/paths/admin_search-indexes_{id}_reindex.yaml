@@ -1,0 +1,61 @@
+post:
+  operationId: PostSearchIndexesIdReindex
+  summary: Reindex a Search Index
+  description: >-
+    Rebuild a search index's documents using the `seed` function of its index
+    definition. The rebuild runs in the background, so the response is returned
+    immediately with the ID of the triggered job. Use the List Search Indexes
+    API route to check the index's `status` and know when the rebuild is done.
+  externalDocs:
+    description: Learn about reindexing and index migrations
+    url: >-
+      https://docs.medusajs.com/resources/infrastructure-modules/search/reindexing
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The search index's name, such as `product`.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminReindexSearchIndex.yaml
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_search-indexes_{id}_reindex/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_search-indexes_{id}_reindex/post.sh
+  tags:
+    - Search Indexes
+  responses:
+    '202':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminSearchIndexReindexResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: reindexSearchIndexesWorkflow
+  x-events: []

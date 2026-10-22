@@ -583,6 +583,41 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-since: 2.11.2
+ * x-allowed:
+ *   - id
+ *   - title
+ *   - sku
+ *   - barcode
+ *   - ean
+ *   - upc
+ *   - allow_backorder
+ *   - manage_inventory
+ *   - variant_rank
+ *   - product_id
+ *   - thumbnail
+ *   - hs_code
+ *   - origin_country
+ *   - mid_code
+ *   - material
+ *   - weight
+ *   - length
+ *   - height
+ *   - width
+ *   - created_at
+ *   - updated_at
+ *   - metadata
+ *   - options
+ *   - images
+ *   - product.id
+ *   - product.type_id
+ *   - deleted_at
+ *   - calculated_price
+ *   - inventory_quantity
+ *   - options.id
+ *   - options.value
+ *   - images.id
+ *   - images.url
+ *   - images.rank
  * 
 */
 

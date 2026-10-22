@@ -45,7 +45,7 @@ Use custom cache keys when you're caching custom data with the Caching Module's 
 
 You can also pass a custom key to Query or the Index Module when caching data. This is useful when you want to use the key for custom invalidation or retrieval.
 
-Learn more about passing custom keys in the [Query guide](!docs!/learn/fundamentals/module-links/query#set-cache-key).
+Learn more about passing custom keys in the [Query guide](!docs!/learn/fundamentals/query#set-cache-key).
 
 ---
 
@@ -119,7 +119,7 @@ await cachingModuleService.set({
 
 In the example above, the Caching Module applies the two explicit tags you provided plus all tags it computes automatically from `data`. This way you only specify what automatic computation cannot see, without restating every entity the response already exposes.
 
-When using [Query](!docs!/learn/fundamentals/module-links/query), pass `computeAutomaticTags` in the `cache` option:
+When using [Query](!docs!/learn/fundamentals/query), pass `computeAutomaticTags` in the `cache` option:
 
 ```ts
 const { data: products } = await query.graph({

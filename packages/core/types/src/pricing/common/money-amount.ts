@@ -13,7 +13,7 @@ export interface MoneyAmountDTO {
    */
   id: string
   /**
-   * The currency code of this money amount.
+   * The currency code of this money amount. It's always lowercase, such as `usd`. To compare it with your own data, normalize your value with `normalizeCurrencyCode` from `@medusajs/framework/utils`.
    */
   currency_code?: string
   /**
@@ -63,7 +63,7 @@ export interface CreateMoneyAmountDTO {
    */
   id?: string
   /**
-   * The currency code of this money amount.
+   * The currency code of this money amount. It's normalized to lowercase when stored. For example, `EUR` is stored as `eur`.
    */
   currency_code: string
   /**
@@ -91,7 +91,7 @@ export interface UpdateMoneyAmountDTO {
    */
   id: string
   /**
-   * The code of the currency to associate with the money amount.
+   * The code of the currency to associate with the money amount. It's normalized to lowercase when stored. For example, `EUR` is stored as `eur`.
    */
   currency_code?: string | null
   /**
@@ -119,7 +119,7 @@ export interface UpsertMoneyAmountDTO {
    */
   id?: string
   /**
-   * The currency code of this money amount.
+   * The currency code of this money amount. It's normalized to lowercase when stored. For example, `EUR` is stored as `eur`.
    */
   currency_code?: string
   /**

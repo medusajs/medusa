@@ -1,0 +1,103 @@
+---
+sidebar_label: "allow-fields-must-be-global-middleware"
+---
+
+export const metadata = {
+  title: `allow-fields-must-be-global-middleware - ESLint plugin rules`,
+}
+
+# {metadata.title}
+
+This rule requires that `allowFields`, `req.allowed`, and `req.disallowed` are only set in a global middleware, not in a method-scoped one.
+
+<Note>
+
+This rule is available since [Medusa v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+## Severity
+
+`error`. This rule is enabled in the [recommended](../../page.mdx#recommended) preset.
+
+## What it Targets
+
+This rule targets the `src/api/middlewares.ts` file. It reports any middleware that uses `allowFields`, writes to `req.allowed`, or assigns `req.disallowed` when the route object includes a `method` or `methods` property.
+
+Medusa validates the request's query parameters before it runs method-scoped middlewares, so setting allowed or disallowed fields in a method-scoped middleware has no effect.
+
+The following code is reported by the rule:
+
+```ts title="src/api/middlewares.ts"
+import { allowFields, defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/products",
+      method: "GET",
+      middlewares: [allowFields("brand")],
+    },
+  ],
+})
+```
+
+Instead, remove the `method` property so the middleware applies to every request that matches the route:
+
+```ts title="src/api/middlewares.ts"
+import { allowFields, defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/products",
+      middlewares: [allowFields("brand")],
+    },
+  ],
+})
+```
+
+The same applies when writing to `req.allowed` or `req.disallowed` directly:
+
+```ts title="src/api/middlewares.ts"
+// non-compliant — method-scoped
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/products",
+      method: "GET",
+      middlewares: [
+        (req, res, next) => {
+          req.allowed.push("brand")
+          next()
+        },
+      ],
+    },
+  ],
+})
+
+// compliant — global middleware
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/products",
+      middlewares: [
+        (req, res, next) => {
+          req.allowed.push("brand")
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+## Why it's Important
+
+Medusa runs query-parameter validation before method-scoped middlewares execute. By the time a method-scoped middleware runs, the allowed or disallowed field lists are already applied, so any changes the middleware makes are ignored silently. To actually expand or restrict the retrievable fields, the middleware must be global (no `method` or `methods` property on the route).
+
+Learn more in the [Allowed Fields in API Routes documentation](!docs!/learn/fundamentals/api-routes/allowed-fields).
+
+## Fixable
+
+This rule isn't auto-fixable.

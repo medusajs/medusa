@@ -85,13 +85,13 @@ export const updateDraftOrderShippingMethodStep = createStep(
       beforeUpdate
     )
   },
-  (input, { container }) => {
+  async (input, { container }) => {
     const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     if (!input) {
       return
     }
 
-    service.updateOrderShippingMethods([input])
+    await service.updateOrderShippingMethods([input])
   }
 )

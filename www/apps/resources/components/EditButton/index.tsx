@@ -7,16 +7,10 @@ import { EditButton as UiEditButton } from "docs-ui"
 const EditButton = () => {
   const pathname = usePathname()
   const [editDate, setEditDate] = useState<string | undefined>()
-  const [filePath, setFilePath] = useState<string | undefined>()
 
   const loadData = useCallback(async () => {
-    const filesMap = await import("../../generated/files-map.mjs")
     const generatedEditDates = await import("../../generated/edit-dates.mjs")
 
-    setFilePath(
-      filesMap.filesMap.find((file) => file.pathname === pathname)?.filePath ||
-        undefined
-    )
     setEditDate(
       (generatedEditDates.generatedEditDates as Record<string, string>)[
         `app${pathname.replace(/\/$/, "")}/page.mdx`
@@ -28,11 +22,19 @@ const EditButton = () => {
     void loadData()
   }, [loadData])
 
-  if (!editDate || !filePath) {
+  if (!editDate) {
     return <></>
   }
 
-  return <UiEditButton filePath={filePath} editDate={editDate} />
+  return (
+    <UiEditButton
+      filePath={`/www/apps/resources/app${pathname.replace(
+        /\/$/,
+        ""
+      )}/page.mdx`}
+      editDate={editDate}
+    />
+  )
 }
 
 export default EditButton

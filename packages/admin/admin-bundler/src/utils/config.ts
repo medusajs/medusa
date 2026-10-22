@@ -30,6 +30,9 @@ export async function getViteConfig(
   const baseConfig: InlineConfig = {
     root,
     base: options.path,
+    resolve: {
+      dedupe: ["react", "react-dom"],
+    },
     build: {
       emptyOutDir: true,
       outDir: path.resolve(process.cwd(), options.outDir),

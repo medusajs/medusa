@@ -38,31 +38,6 @@ export const howToTutorialsSidebar = [
           "These how-to guides help you customize the Medusa Admin dashboard with practical examples.",
         children: [
           {
-            type: "sidebar",
-            sidebar_id: "admin-components-layouts",
-            title: "Components & Layouts",
-            children: [
-              {
-                type: "link",
-                path: "/admin-components",
-                title: "Overview",
-              },
-              {
-                type: "separator",
-              },
-              {
-                type: "category",
-                title: "Layouts",
-                autogenerate_path: "/admin-components/layouts",
-              },
-              {
-                type: "category",
-                title: "Components",
-                autogenerate_path: "/admin-components/components",
-              },
-            ],
-          },
-          {
             type: "link",
             title: "Custom Admin Authentication",
             path: "/how-to-tutorials/how-to/admin/auth",

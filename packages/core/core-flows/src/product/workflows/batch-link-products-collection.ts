@@ -1,5 +1,11 @@
 import type { LinkWorkflowInput } from "@medusajs/framework/types"
-import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
+import { ProductWorkflowEvents } from "@medusajs/framework/utils"
+import {
+  WorkflowData,
+  createWorkflow,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { batchLinkProductsToCollectionStep } from "../steps/batch-link-products-collection"
 
 export const batchLinkProductsToCollectionWorkflowId =
@@ -29,5 +35,16 @@ export const batchLinkProductsToCollectionWorkflow = createWorkflow(
   batchLinkProductsToCollectionWorkflowId,
   (input: WorkflowData<LinkWorkflowInput>): WorkflowData<void> => {
     batchLinkProductsToCollectionStep(input)
+
+    const eventData = transform({ input }, ({ input }) =>
+      [...new Set([...(input.add ?? []), ...(input.remove ?? [])])].map(
+        (id) => ({ id })
+      )
+    )
+
+    emitEventStep({
+      eventName: ProductWorkflowEvents.UPDATED,
+      data: eventData,
+    })
   }
 )

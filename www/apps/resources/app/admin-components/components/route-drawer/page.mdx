@@ -1,0 +1,373 @@
+---
+sidebar_label: "Route Drawer"
+---
+
+import { Table, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `RouteDrawer - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+This component is available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `RouteDrawer` component renders a drawer that slides in from the side of the screen. The Medusa Admin uses it for edit forms, such as the form that edits a customer's details.
+
+```tsx
+import { RouteDrawer } from "@medusajs/dashboard/components"
+```
+
+---
+
+## Route Modals
+
+`RouteDrawer` is tied to a route, not to a trigger button. You render it as the root element of a [UI route](!docs!/learn/fundamentals/admin/ui-routes) that is nested under the page it edits. When the user navigates to that route, the drawer opens. When the user closes the drawer, `RouteDrawer` navigates back to the previous route.
+
+So, to open the drawer, link the user to the drawer's route. For example, link to `/brands/:id/edit` from the brand's details page.
+
+---
+
+## Example
+
+Consider a UI route at `src/admin/routes/brands/[id]/edit/page.tsx` that edits a brand:
+
+```tsx title="src/admin/routes/brands/[id]/edit/page.tsx"
+import { Heading } from "@medusajs/ui"
+import { RouteDrawer } from "@medusajs/dashboard/components"
+import { useParams } from "react-router-dom"
+
+const BrandEdit = () => {
+  const { id } = useParams()
+
+  return (
+    <RouteDrawer>
+      <RouteDrawer.Header>
+        <RouteDrawer.Title asChild>
+          <Heading>Edit Brand</Heading>
+        </RouteDrawer.Title>
+      </RouteDrawer.Header>
+      <EditBrandForm id={id!} />
+    </RouteDrawer>
+  )
+}
+
+export default BrandEdit
+```
+
+`EditBrandForm` renders the form's fields, as explained in the [useRouteModal](#useroutemodal) section.
+
+---
+
+## Props
+
+`RouteDrawer` accepts the following props, in addition to its children:
+
+<TypeList
+  types={[
+    {
+      name: "prev",
+      type: "`string` \\| `object` \\| `number`",
+      optional: true,
+      defaultValue: "..",
+      description:
+        "The route to navigate to when the drawer closes. Pass a string, such as `\"../..\"`, or an object with the path's parts. You can also pass a number, such as `-1`, to go back that many entries in the browser's history instead of navigating to a route.",
+      children: [
+        {
+          name: "pathname",
+          type: "`string`",
+          optional: true,
+          description: "The path to navigate to, such as `/brands`.",
+        },
+        {
+          name: "search",
+          type: "`string`",
+          optional: true,
+          description:
+            "The query string to append to the path, such as `?order=created_at`.",
+        },
+        {
+          name: "hash",
+          type: "`string`",
+          optional: true,
+          description: "The hash to append to the path, such as `#details`.",
+        },
+      ],
+    },
+  ]}
+/>
+
+---
+
+## Sub-components
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Component
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteDrawer.Header`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The drawer's header. Place the title and description in it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteDrawer.Title`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The drawer's title. Pass `asChild` to render your own heading element.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteDrawer.Description`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An accessible description of the drawer's purpose.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteDrawer.Body`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The drawer's scrollable content area.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteDrawer.Footer`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The drawer's footer. Place the cancel and submit buttons in it.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteDrawer.Close`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Closes the drawer when clicked, which navigates back to the `prev` route. Pass `asChild` to use your own button.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `RouteDrawer.Form`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Wraps a [React Hook Form](https://react-hook-form.com/) form. It provides the form's context to the fields, and shows a confirmation prompt if the user leaves the route while the form has unsaved changes.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### RouteDrawer.Form Props
+
+<TypeList
+  types={[
+    {
+      name: "form",
+      type: "`object`",
+      optional: false,
+      description: `The form instance returned by the \`useForm\` hook of [React Hook Form](https://react-hook-form.com/). Refer to [React Hook Form's documentation](https://react-hook-form.com/docs/useform) for all of its properties.`,
+      children: [
+        {
+          name: "control",
+          type: "`object`",
+          optional: false,
+          description:
+            "The object that registers the form's fields and manages their state. Pass it to the fields you render in the form.",
+        },
+        {
+          name: "formState",
+          type: "`object`",
+          optional: false,
+          description:
+            "The form's state, including whether it has unsaved changes. The modal uses it to decide whether to show the unsaved-changes prompt.",
+          children: [
+            {
+              name: "isDirty",
+              type: "`boolean`",
+              optional: false,
+              description:
+                "Whether the user changed any of the form's fields.",
+            },
+          ],
+        },
+        {
+          name: "handleSubmit",
+          type: "`(onValid: (data: object) => unknown, onInvalid?: (errors: object) => unknown) => (event?: React.BaseSyntheticEvent) => Promise<void>`",
+          optional: false,
+          description:
+            "Creates the submit handler that you pass to the `onSubmit` prop of the `form` element. It validates the fields before running your callback.",
+        },
+        {
+          name: "register",
+          type: "`(name: string, options?: object) => object`",
+          optional: false,
+          description:
+            "Registers an input in the form. Spread its returned value on the input you render.",
+        },
+        {
+          name: "watch",
+          type: "`(name?: string) => unknown`",
+          optional: false,
+          description:
+            "Returns the current value of a field, or of the entire form if you don't pass a name.",
+        },
+        {
+          name: "setValue",
+          type: "`(name: string, value: unknown, options?: object) => void`",
+          optional: false,
+          description: "Sets a field's value programmatically.",
+        },
+        {
+          name: "reset",
+          type: "`(values?: object, options?: object) => void`",
+          optional: false,
+          description:
+            "Resets the form's fields to the specified values, or to their default values.",
+        },
+      ],
+    },
+    {
+      name: "blockSearchParams",
+      type: "`boolean`",
+      optional: true,
+      defaultValue: "false",
+      description:
+        "Whether to also show the unsaved-changes prompt when only the search parameters of the route change.",
+    },
+    {
+      name: "onClose",
+      type: "`(isSubmitSuccessful: boolean) => void`",
+      optional: true,
+      description:
+        "A function to run when the user leaves the form's route. It receives whether the form was submitted successfully.",
+    },
+  ]}
+/>
+
+---
+
+## useRouteModal
+
+Use the `useRouteModal` hook in components rendered inside a `RouteDrawer` or a [RouteFocusModal](../route-focus-modal/page.mdx). It gives you access to the modal's route context.
+
+```tsx
+import { useRouteModal } from "@medusajs/dashboard/components"
+```
+
+The hook throws an error if you use it outside of a route modal.
+
+### Returned Values
+
+<TypeList
+  types={[
+    {
+      name: "handleSuccess",
+      type: "`(path?: string) => void`",
+      optional: false,
+      description:
+        "Closes the modal after a successful submission, without showing the unsaved-changes prompt. Pass a path to navigate to a route other than `prev`.",
+    },
+    {
+      name: "setCloseOnEscape",
+      type: "`(value: boolean) => void`",
+      optional: false,
+      description:
+        "Controls whether the `Escape` key closes the modal. Pass `false` while the user edits an inline element, such as a cell in a data grid, then pass `true` again.",
+    },
+  ]}
+/>
+
+### Example
+
+The form component uses `handleSuccess` to close the drawer after the brand is updated:
+
+```tsx title="src/admin/routes/brands/[id]/edit/page.tsx"
+import { Button, Input, toast } from "@medusajs/ui"
+import {
+  RouteDrawer,
+  useRouteModal,
+} from "@medusajs/dashboard/components"
+import { useForm } from "react-hook-form"
+
+const EditBrandForm = ({ id }: { id: string }) => {
+  const { handleSuccess } = useRouteModal()
+  const form = useForm({
+    defaultValues: {
+      name: "",
+    },
+  })
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    await updateBrand(id, data)
+    toast.success("Brand updated")
+    handleSuccess()
+  })
+
+  return (
+    <RouteDrawer.Form form={form}>
+      <form onSubmit={handleSubmit}>
+        <RouteDrawer.Body>
+          <Input {...form.register("name")} />
+        </RouteDrawer.Body>
+        <RouteDrawer.Footer>
+          <RouteDrawer.Close asChild>
+            <Button variant="secondary" size="small">
+              Cancel
+            </Button>
+          </RouteDrawer.Close>
+          <Button type="submit" size="small">
+            Save
+          </Button>
+        </RouteDrawer.Footer>
+      </form>
+    </RouteDrawer.Form>
+  )
+}
+```

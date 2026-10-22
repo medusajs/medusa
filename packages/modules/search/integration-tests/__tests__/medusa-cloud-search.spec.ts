@@ -85,6 +85,16 @@ if (apiKey && endpoint && environmentHandle) {
           })
         })
 
+        it("counts distinct values when results are deduplicated", async () => {
+          const result = await service.search({
+            entity: productIndex.name,
+            search_options: { distinct: "status" },
+          })
+
+          expect(result.hits).toHaveLength(1)
+          expect(result.metadata.count).toBe(1)
+        })
+
         it("matches text case-insensitively", async () => {
           const result = await service.search({
             entity: productIndex.name,

@@ -121,16 +121,18 @@ export const SidebarItemCategory = ({
               className="text-compact-x-small-plus"
             />
           )}
-          {item.additionalElms}
-          {item.badge && (
-            <Badge variant={item.badge.variant}>{item.badge.text}</Badge>
-          )}
-          {!item.additionalElms && (
-            <>
-              {open && <TriangleDownMini />}
-              {!open && <TriangleUpMini />}
-            </>
-          )}
+          <div className="flex gap-docs_0.25 flex-wrap items-center">
+            {item.additionalElms}
+            {item.badge && (
+              <Badge variant={item.badge.variant}>{item.badge.text}</Badge>
+            )}
+            {!item.additionalElms && (
+              <>
+                {open && <TriangleDownMini />}
+                {!open && <TriangleUpMini />}
+              </>
+            )}
+          </div>
         </div>
       </div>
       {!item.hideChildren && (

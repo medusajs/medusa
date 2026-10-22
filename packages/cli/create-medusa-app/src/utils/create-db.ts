@@ -67,6 +67,23 @@ export async function runCreateDb({
   return newClient
 }
 
+/**
+ * Connects to the server's `postgres` maintenance database, falling back to the
+ * connection's default database (which Postgres resolves to the username).
+ */
+async function connectToMaintenanceDb(
+  connection: Parameters<typeof postgresClient>[0]
+): Promise<pg.Client> {
+  try {
+    return await postgresClient({
+      ...connection,
+      database: "postgres",
+    })
+  } catch (e) {
+    return await postgresClient(connection)
+  }
+}
+
 async function getForDbName({
   dbName,
   verbose = false,
@@ -100,6 +117,10 @@ async function getForDbName({
         type: "verbose",
       })
     }
+    logMessage({
+      message: `${EOL}Couldn't connect to PostgreSQL with the default credentials (user "postgres" without a password).${EOL}Medusa needs to connect to your PostgreSQL server to create the database of your project, so please enter your PostgreSQL credentials below.${EOL}`,
+    })
+
     // ask for the user's postgres credentials
     const answers = await inquirer.prompt([
       {
@@ -116,28 +137,26 @@ async function getForDbName({
         name: "postgresPassword",
         message: "Enter your Postgres password",
       },
-    ])
-
-    postgresUsername = answers.postgresUsername
-    postgresPassword = answers.postgresPassword
-
-    const { userDbName } = await inquirer.prompt([
       {
-        type: "database",
-        name: "userDbName",
-        message: "Enter your Postgres user's database name",
-        default: answers.postgresUsername,
+        type: "input",
+        name: "newDbName",
+        message:
+          "Enter the name of the database to create for your Medusa project",
+        default: dbName,
         validate: (input) => {
           return typeof input === "string" && input.length > 0
         },
       },
     ])
 
+    postgresUsername = answers.postgresUsername
+    postgresPassword = answers.postgresPassword
+    dbName = answers.newDbName
+
     try {
-      client = await postgresClient({
+      client = await connectToMaintenanceDb({
         user: postgresUsername,
         password: postgresPassword,
-        database: userDbName,
         ...defaultConnectionOptions,
       })
     } catch (e) {

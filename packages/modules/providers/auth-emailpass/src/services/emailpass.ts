@@ -132,20 +132,10 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       return { success: false, error: error.message }
     }
 
-    const providerIdentity = authIdentity.provider_identities?.find(
-      (pi) => pi.provider === this.provider
-    )!
-    const passwordHash = providerIdentity.provider_metadata?.password
-
-    if (isString(passwordHash)) {
-      const buf = Buffer.from(passwordHash as string, "base64")
-      const success = await Scrypt.verify(buf, password)
-
-      if (success) {
-        return {
-          success,
-          authIdentity: this.sanitizeAuthIdentity_(authIdentity),
-        }
+    if (await this.isPasswordMatch_(password, authIdentity)) {
+      return {
+        success: true,
+        authIdentity: this.sanitizeAuthIdentity_(authIdentity),
       }
     }
 
@@ -180,17 +170,13 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         entity_id: email,
       })
 
-      // If app_metadata is not defined or empty, it means no actor was assigned to the auth_identity yet (still "claimable")
-      if (!isPresent(identity.app_metadata)) {
-        const updatedAuthIdentity = await this.upsertAuthIdentity("update", {
-          email,
-          password,
-          authIdentityService,
-        })
-
+      if (
+        !isPresent(identity.app_metadata) &&
+        (await this.isPasswordMatch_(password, identity))
+      ) {
         return {
           success: true,
-          authIdentity: updatedAuthIdentity,
+          authIdentity: this.sanitizeAuthIdentity_(identity),
         }
       }
 
@@ -200,7 +186,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       }
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
-        const createdAuthIdentity = await this.upsertAuthIdentity("create", {
+        const createdAuthIdentity = await this.createAuthIdentity({
           email,
           password,
           authIdentityService,
@@ -216,29 +202,33 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     }
   }
 
-  private async upsertAuthIdentity(
-    type: "update" | "create",
-    { email, password, authIdentityService }: AuthIdentityParams
-  ) {
-    const passwordHash = await this.hashPassword(password)
-    const providerMetadata: ProviderMetadata =
-      type === "update"
-        ? await this.getProviderMetadata_(email, authIdentityService)
-        : {}
-
-    providerMetadata.password = passwordHash
-
-    const authIdentity =
-      type === "create"
-        ? await authIdentityService.create({
-            entity_id: email,
-            provider_metadata: providerMetadata,
-          })
-        : await authIdentityService.update(email, {
-            provider_metadata: providerMetadata,
-          })
+  private async createAuthIdentity({
+    email,
+    password,
+    authIdentityService,
+  }: AuthIdentityParams) {
+    const authIdentity = await authIdentityService.create({
+      entity_id: email,
+      provider_metadata: {
+        password: await this.hashPassword(password),
+      },
+    })
 
     return this.sanitizeAuthIdentity_(authIdentity)
+  }
+
+  private async isPasswordMatch_(
+    password: string,
+    authIdentity: AuthIdentityDTO
+  ): Promise<boolean> {
+    const providerIdentity = this.getProviderIdentity_(authIdentity)
+    const passwordHash = providerIdentity?.provider_metadata?.password
+
+    if (!isString(passwordHash)) {
+      return false
+    }
+
+    return await Scrypt.verify(Buffer.from(passwordHash, "base64"), password)
   }
 
   private async getProviderMetadata_(

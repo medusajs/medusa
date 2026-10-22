@@ -1,0 +1,331 @@
+---
+sidebar_label: "Search Entities"
+---
+
+import { Table, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Search Entity Utilities - Admin Components`,
+}
+
+# {metadata.title}
+
+<Note>
+
+These utilities are available since Medusa [v2.21.0](https://github.com/medusajs/medusa/releases/tag/v2.21.0).
+
+</Note>
+
+The `@medusajs/dashboard/lib` subpath exports the utilities that manage the registry of entities in the Medusa Admin's global search. Use them to add your custom entities to the search palette, or to override the entities that Medusa registers by default.
+
+```tsx
+import {
+  clearSearchEntities,
+  defineSearchEntity,
+  getSearchEntity,
+  getSearchEntityNames,
+  hasSearchEntity,
+} from "@medusajs/dashboard/lib"
+```
+
+Apps and plugins register their entities from the file `src/admin/search-entities.tsx`. The Medusa Admin seeds the registry with its built-in commerce entities before it runs your registrations, so you can override a built-in entity by registering it again under the same name.
+
+---
+
+## defineSearchEntity
+
+Registers or replaces a searchable entity in the Medusa Admin's global search. The entity's definition sets the group heading in the search palette, an optional keyboard shortcut, and how to turn a search result into a palette item.
+
+```tsx title="src/admin/search-entities.tsx"
+import { defineSearchEntity } from "@medusajs/dashboard/lib"
+
+defineSearchEntity("organization", {
+  groupLabel: "Organizations",
+  shortcut: {
+    keys: { Mac: ["G", "Z"] },
+    label: "Go to Organizations",
+    to: "/organizations",
+  },
+  transform: (org) => ({
+    id: org.id,
+    title: org.name,
+    subtitle: org.billing_email,
+    to: `/organizations/${org.id}`,
+    value: `organization:${org.id}`,
+  }),
+})
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "name",
+      type: "`string`",
+      optional: false,
+      description: "The entity's name, which the Medusa Admin uses as the search area.",
+    },
+    {
+      name: "definition",
+      type: "`object`",
+      optional: false,
+      description: "The entity's definition.",
+      children: [
+        {
+          name: "groupLabel",
+          type: "`string` \\| `((t: SearchLabelTranslator) => string)`",
+          optional: true,
+          description: "The group heading shown in the search palette. Pass a string to use it as-is, or a function to build it from the translation function. When you omit it, the Medusa Admin translates the key `app.search.groups.<name>` and falls back to the entity's name.",
+        },
+        {
+          name: "shortcut",
+          type: "`object`",
+          optional: true,
+          description: `A "Jump to" entry that navigates to the entity's list page. Omit it for entities that have no page of their own.`,
+          children: [
+            {
+              name: "keys",
+              type: "`Keys`",
+              optional: false,
+              description: `The key sequence that triggers the shortcut, keyed by platform, such as \`{ Mac: ["G", "Z"] }\`.`,
+            },
+            {
+              name: "to",
+              type: "`string`",
+              optional: false,
+              description: "The path the shortcut navigates to.",
+            },
+            {
+              name: "label",
+              type: "`string` \\| `((t: SearchLabelTranslator) => string)`",
+              optional: true,
+              description: "The shortcut's label. Falls back to the entity's group label.",
+            },
+            {
+              name: "type",
+              type: `\`"pageShortcut"\` \\| \`"settingShortcut"\``,
+              optional: true,
+              defaultValue: "pageShortcut",
+              description: "Whether the entry is grouped with the page or the settings shortcuts.",
+            },
+          ],
+        },
+        {
+          name: "transform",
+          type: "`(item: TItem) => object`",
+          optional: true,
+          description: "Maps a result from the Medusa backend's search route to a palette item. Omit it for entries that only contribute a shortcut. Entities without it aren't queried and aren't offered as a search area. It returns an object with the following properties.",
+          children: [
+            {
+              name: "id",
+              type: "`string`",
+              optional: false,
+              description: "The item's ID.",
+            },
+            {
+              name: "title",
+              type: "`string`",
+              optional: false,
+              description: "The item's main label in the palette.",
+            },
+            {
+              name: "to",
+              type: "`string`",
+              optional: false,
+              description: "The path the item navigates to.",
+            },
+            {
+              name: "value",
+              type: "`string`",
+              optional: false,
+              description: "A unique value the palette uses to identify the item.",
+            },
+            {
+              name: "subtitle",
+              type: "`string`",
+              optional: true,
+              description: "A secondary label shown under the title.",
+            },
+            {
+              name: "thumbnail",
+              type: "`string`",
+              optional: true,
+              description: "The URL of an image shown next to the item.",
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+/>
+
+---
+
+## clearSearchEntities
+
+Removes every registered search entity, including the commerce entities that Medusa registers by default. Call it before registering your own set when the default entities shouldn't appear in the Medusa Admin's search.
+
+```tsx title="src/admin/search-entities.tsx"
+import {
+  clearSearchEntities,
+  defineSearchEntity,
+} from "@medusajs/dashboard/lib"
+
+clearSearchEntities()
+
+defineSearchEntity("brand", {
+  groupLabel: "Brands",
+  transform: (brand) => ({
+    id: brand.id,
+    title: brand.name,
+    to: `/brands/${brand.id}`,
+    value: `brand:${brand.id}`,
+  }),
+})
+```
+
+---
+
+## getSearchEntity
+
+Returns a registered entity's definition by its name.
+
+```tsx
+import { getSearchEntity } from "@medusajs/dashboard/lib"
+
+const definition = getSearchEntity("brand")
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "name",
+      type: "`string`",
+      optional: false,
+      description: "The entity's name.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns the `SearchEntityDefinition`, or `undefined` when no entity is registered under that name.
+
+---
+
+## getSearchEntityNames
+
+Returns the names of the entities that can be searched, in registration order. Entities that only contribute a shortcut are left out, since there's nothing to query for them.
+
+```tsx
+import {
+  getSearchEntityNames,
+} from "@medusajs/dashboard/lib"
+
+const names = getSearchEntityNames()
+```
+
+### Returns
+
+Returns a `string[]` of the searchable entities' names.
+
+---
+
+## hasSearchEntity
+
+Returns whether a name is registered as a searchable entity. It returns `false` for entries that only contribute a shortcut.
+
+```tsx
+import { hasSearchEntity } from "@medusajs/dashboard/lib"
+
+if (hasSearchEntity("brand")) {
+  // ...
+}
+```
+
+### Parameters
+
+<TypeList
+  types={[
+    {
+      name: "name",
+      type: "`string`",
+      optional: false,
+      description: "The entity's name.",
+    },
+  ]}
+/>
+
+### Returns
+
+Returns a `boolean` that is `true` when the entity is registered and has a `transform` function.
+
+---
+
+## Types
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Type
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `SearchEntityDefinition<TItem>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An entity's definition, holding its `groupLabel`, `shortcut`, and `transform`.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `SearchEntityShortcut`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A "Jump to" entry with its key sequence, label, type, and path.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `SearchEntityTransform<TItem>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The signature of a `transform` function, which maps a search result to a palette item.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `SearchLabelTranslator`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The translation function handed to a `groupLabel` or `label` function. It accepts a translation key and options, and returns a string.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

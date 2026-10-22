@@ -25,10 +25,6 @@ medusaIntegrationTestRunner({
       query = container.resolve(ContainerRegistrationKeys.QUERY)
       searchModule = container.resolve(Modules.SEARCH)
 
-      await searchModule.executeIndexMigrationPlan(
-        await searchModule.createIndexMigrationPlan()
-      )
-
       await api.post(
         "/admin/products",
         {
