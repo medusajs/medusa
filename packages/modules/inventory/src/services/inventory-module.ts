@@ -1,3 +1,4 @@
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import {
   BigNumberInput,
   Context,
@@ -99,13 +100,66 @@ export default class InventoryModuleService
     return joinerConfig
   }
 
+  private async lockRows_(
+    table: "inventory_level" | "reservation_item",
+    filters: Record<string, string | string[]>[],
+    context: Context,
+    withDeleted = false
+  ): Promise<string[]> {
+    if (!filters.length) return []
+    const manager = context.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Reservation inventory mutations must run inside a transaction."
+      )
+    }
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+    // Raw selects must see the caller's pending ORM writes.
+    await manager.flush()
+    // Lock only the owning table, not the inventory-item joins added by ORM
+    // filters. All writers acquire reservation rows before ordered level rows.
+    const query = knex(table).where((builder) => {
+      for (const filter of filters) {
+        builder.orWhere((match) => {
+          for (const [key, value] of Object.entries(filter)) {
+            match.whereIn(key, Array.isArray(value) ? value : [value])
+          }
+        })
+      }
+    })
+    if (!withDeleted) query.whereNull("deleted_at")
+    const rows = await query.orderBy("id").forUpdate().select("id")
+    return rows.map(({ id }) => id)
+  }
+
+  private async listLockedReservations_(
+    selector: Record<string, string | string[]>,
+    context: Context,
+    withDeleted = false
+  ): Promise<ReservationItemDTO[]> {
+    const ids = await this.lockRows_(
+      "reservation_item",
+      [selector],
+      context,
+      withDeleted
+    )
+    return await this.reservationItemService_.list(
+      { id: ids },
+      { withDeleted, options: { refresh: true } },
+      context
+    )
+  }
+
   private async ensureInventoryLevels(
     data: InventoryItemCheckLevel[],
     options?: {
       validateQuantityAtLocation?: boolean
     },
-    context?: Context
+    context: Context = {}
   ): Promise<InventoryTypes.InventoryLevelDTO[]> {
+    if (!data.length) return []
     options ??= {}
     const validateQuantityAtLocation =
       options.validateQuantityAtLocation ?? false
@@ -123,14 +177,14 @@ export default class InventoryModuleService
       { location_id: string; inventory_item_id: string }[]
     ]
 
+    const ids = await this.lockRows_(
+      "inventory_level",
+      [{ id: idData.map((e) => e.id) }, ...itemLocationData],
+      context
+    )
     const inventoryLevels = await this.inventoryLevelService_.list(
-      {
-        $or: [
-          { id: idData.filter(({ id }) => !!id).map((e) => e.id) },
-          ...itemLocationData,
-        ],
-      },
-      {},
+      { id: ids },
+      { options: { refresh: true } },
       context
     )
 
@@ -182,7 +236,12 @@ export default class InventoryModuleService
 
         const level = locations?.get(item.location_id)!
 
-        if (MathBN.lt(level.available_quantity, item.quantity!)) {
+        if (
+          MathBN.lt(
+            MathBN.sub(level.stocked_quantity, level.reserved_quantity),
+            item.quantity!
+          )
+        ) {
           throw new MedusaError(
             MedusaError.Types.NOT_ALLOWED,
             `Not enough stock available for item ${item.inventory_item_id} at location ${item.location_id}`
@@ -588,9 +647,8 @@ export default class InventoryModuleService
     @MedusaContext() context: Context = {}
   ): Promise<InferEntityType<typeof ReservationItem>[]> {
     const ids = input.map((u) => u.id)
-    const reservationItems = await this.reservationItemService_.list(
+    const reservationItems = await this.listLockedReservations_(
       { id: ids },
-      {},
       context
     )
 
@@ -634,7 +692,7 @@ export default class InventoryModuleService
             update.location_id,
             MathBN.add(
               updateLocationAdjustment,
-              update.quantity || reservation.quantity
+              update.quantity ?? reservation.quantity
             )
           )
         } else if (
@@ -662,9 +720,11 @@ export default class InventoryModuleService
     const availabilityData = input.map((data) => {
       const reservation = reservationMap.get(data.id)!
 
-      let adjustment = data.quantity
-        ? MathBN.sub(data.quantity, reservation.quantity)
-        : 0
+      const quantity = data.quantity ?? reservation.quantity
+      let adjustment =
+        data.location_id && data.location_id !== reservation.location_id
+          ? quantity
+          : MathBN.sub(quantity, reservation.quantity)
 
       if (MathBN.lt(adjustment, 0)) {
         adjustment = 0
@@ -675,12 +735,19 @@ export default class InventoryModuleService
         location_id: data.location_id ?? reservation.location_id,
         quantity: adjustment,
         allow_backorder:
-          data.allow_backorder || reservation.allow_backorder || false,
+          data.allow_backorder ?? reservation.allow_backorder ?? false,
       }
     })
 
     const inventoryLevels = await this.ensureInventoryLevels(
-      availabilityData,
+      [
+        ...availabilityData,
+        ...reservationItems.map((reservation) => ({
+          inventory_item_id: reservation.inventory_item_id,
+          location_id: reservation.location_id,
+          allow_backorder: true,
+        })),
+      ],
       {
         validateQuantityAtLocation: true,
       },
@@ -726,13 +793,20 @@ export default class InventoryModuleService
     ids: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    const reservations: InventoryTypes.ReservationItemDTO[] =
-      await this.reservationItemService_.list({ id: ids }, {}, context)
-
-    await super.deleteReservationItems(ids, context)
-
+    const reservations = await this.listLockedReservations_(
+      { id: ids },
+      context,
+      true
+    )
+    const active = reservations.filter((reservation) => !reservation.deleted_at)
+    const levels = await this.lockReservationLevels_(active, context)
+    await super.deleteReservationItems(
+      reservations.map(({ id }) => id),
+      context
+    )
     await this.adjustInventoryLevelsForReservationsDeletion(
-      reservations,
+      active,
+      levels,
       context
     )
   }
@@ -754,13 +828,19 @@ export default class InventoryModuleService
     config?: SoftDeleteReturn<string>,
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    const reservations: InventoryTypes.ReservationItemDTO[] =
-      await this.reservationItemService_.list({ id: ids }, {}, context)
-
-    await super.softDeleteReservationItems(ids, config, context)
-
+    const reservations = await this.listLockedReservations_(
+      { id: ids },
+      context
+    )
+    const levels = await this.lockReservationLevels_(reservations, context)
+    await super.softDeleteReservationItems(
+      reservations.map(({ id }) => id),
+      config,
+      context
+    )
     await this.adjustInventoryLevelsForReservationsDeletion(
       reservations,
+      levels,
       context
     )
   }
@@ -782,13 +862,18 @@ export default class InventoryModuleService
     config?: RestoreReturn<string>,
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    await super.restoreReservationItems({ id: ids }, config, context)
-
-    const reservations: InventoryTypes.ReservationItemDTO[] =
-      await super.listReservationItems({ id: ids }, {}, context)
-
+    const reservations = (
+      await this.listLockedReservations_({ id: ids }, context, true)
+    ).filter((reservation) => !!reservation.deleted_at)
+    const levels = await this.lockReservationLevels_(reservations, context)
+    await super.restoreReservationItems(
+      { id: reservations.map(({ id }) => id) },
+      config,
+      context
+    )
     await this.adjustInventoryLevelsForReservationsRestore(
       reservations,
+      levels,
       context
     )
   }
@@ -807,20 +892,18 @@ export default class InventoryModuleService
     locationId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    const reservations: InventoryTypes.ReservationItemDTO[] =
-      await this.reservationItemService_.list(
-        { location_id: locationId },
-        {},
-        context
-      )
-
-    await this.reservationItemService_.softDelete(
+    const reservations = await this.listLockedReservations_(
       { location_id: locationId },
       context
     )
-
+    const levels = await this.lockReservationLevels_(reservations, context)
+    await this.reservationItemService_.softDelete(
+      { id: reservations.map(({ id }) => id) },
+      context
+    )
     await this.adjustInventoryLevelsForReservationsDeletion(
       reservations,
+      levels,
       context
     )
   }
@@ -845,20 +928,18 @@ export default class InventoryModuleService
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    const reservations: InventoryTypes.ReservationItemDTO[] =
-      await this.reservationItemService_.list(
-        { line_item_id: lineItemId },
-        {},
-        context
-      )
-
-    await this.reservationItemService_.softDelete(
+    const reservations = await this.listLockedReservations_(
       { line_item_id: lineItemId },
       context
     )
-
+    const levels = await this.lockReservationLevels_(reservations, context)
+    await this.reservationItemService_.softDelete(
+      { id: reservations.map(({ id }) => id) },
+      context
+    )
     await this.adjustInventoryLevelsForReservationsDeletion(
       reservations,
+      levels,
       context
     )
   }
@@ -883,20 +964,21 @@ export default class InventoryModuleService
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
+    const reservations = (
+      await this.listLockedReservations_(
+        { line_item_id: lineItemId },
+        context,
+        true
+      )
+    ).filter((reservation) => !!reservation.deleted_at)
+    const levels = await this.lockReservationLevels_(reservations, context)
     await this.reservationItemService_.restore(
-      { line_item_id: lineItemId },
+      { id: reservations.map(({ id }) => id) },
       context
     )
-
-    const reservations: InventoryTypes.ReservationItemDTO[] =
-      await this.reservationItemService_.list(
-        { line_item_id: lineItemId },
-        {},
-        context
-      )
-
     await this.adjustInventoryLevelsForReservationsRestore(
       reservations,
+      levels,
       context
     )
   }
@@ -1156,10 +1238,12 @@ export default class InventoryModuleService
 
   private async adjustInventoryLevelsForReservationsDeletion(
     reservations: ReservationItemDTO[],
+    inventoryLevels: InventoryTypes.InventoryLevelDTO[],
     context: Context
   ): Promise<void> {
     await this.adjustInventoryLevelsForReservations_(
       reservations,
+      inventoryLevels,
       true,
       context
     )
@@ -1167,22 +1251,22 @@ export default class InventoryModuleService
 
   private async adjustInventoryLevelsForReservationsRestore(
     reservations: ReservationItemDTO[],
+    inventoryLevels: InventoryTypes.InventoryLevelDTO[],
     context: Context
   ): Promise<void> {
     await this.adjustInventoryLevelsForReservations_(
       reservations,
+      inventoryLevels,
       false,
       context
     )
   }
 
-  private async adjustInventoryLevelsForReservations_(
+  private async lockReservationLevels_(
     reservations: ReservationItemDTO[],
-    isDelete: boolean,
     context: Context
-  ): Promise<void> {
-    const multiplier = isDelete ? -1 : 1
-    const inventoryLevels = await this.ensureInventoryLevels(
+  ): Promise<InventoryTypes.InventoryLevelDTO[]> {
+    return await this.ensureInventoryLevels(
       reservations.map((r) => ({
         inventory_item_id: r.inventory_item_id,
         location_id: r.location_id,
@@ -1190,7 +1274,15 @@ export default class InventoryModuleService
       undefined,
       context
     )
+  }
 
+  private async adjustInventoryLevelsForReservations_(
+    reservations: ReservationItemDTO[],
+    inventoryLevels: InventoryTypes.InventoryLevelDTO[],
+    isDelete: boolean,
+    context: Context
+  ): Promise<void> {
+    const multiplier = isDelete ? -1 : 1
     const inventoryLevelAdjustments: Map<
       string,
       Map<string, number>

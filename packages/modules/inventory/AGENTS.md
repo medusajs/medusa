@@ -51,6 +51,10 @@ yarn migration:create          # after any change in src/models
 
 ## Gotchas
 
+- Reservation mutations and `updateInventoryLevels` use ordered row locks in the injected transaction with a three-second transaction-local lock timeout. Existing reservation rows are locked before affected levels; locked state is refreshed without clearing the parent identity map. Pending caller writes are flushed before raw selection; caller-owned transactions retain rollback support.
+- Reservation moves update both locations and validate the full destination quantity. Delete/restore counters count only active/deleted transitions; a real restore emits `inventory.reservation-item.restored`, while repeating an active restore is a no-op. Compensation restore can exceed current stock.
+- Concurrent separate calls serialize at the level rows. Callers still need to account for cumulative demand from multiple entries for the same item/location in one batch.
+
 - `reserved_quantity` cannot be set through `createInventoryLevels` / `updateInventoryLevels`; it is stripped from input. It only moves when reservations are created, updated (quantity or location change), deleted, soft-deleted or restored.
 - `location_levels` is stripped from `createInventoryItems` / `updateInventoryItems` input; create levels separately.
 - `createReservationItems` throws `NOT_FOUND` if the item is not stocked at the location and `NOT_ALLOWED` ("Not enough stock available") when `available_quantity < quantity`, unless `allow_backorder` is true.

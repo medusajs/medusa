@@ -38,12 +38,12 @@ Inventory Module for Medusa: manages inventory items, their stock levels per loc
 
 ## At a glance
 
-| | |
-| --- | --- |
-| Package | `@medusajs/inventory` |
-| Type | Commerce Module |
-| Module key | `Modules.INVENTORY` (`"inventory"`) |
-| Registered by default | Yes |
+|                       |                                     |
+| --------------------- | ----------------------------------- |
+| Package               | `@medusajs/inventory`               |
+| Type                  | Commerce Module                     |
+| Module key            | `Modules.INVENTORY` (`"inventory"`) |
+| Registered by default | Yes                                 |
 
 ## Installation
 
@@ -59,6 +59,10 @@ const inventoryModuleService = container.resolve(Modules.INVENTORY)
 const [inventoryItems, count] =
   await inventoryModuleService.listAndCountInventoryItems({})
 ```
+
+Reservation mutations and `updateInventoryLevels` acquire ordered database row locks in their transaction. Lock waits use a transaction-local timeout of three seconds. Separate direct reservation calls validate committed stock after acquiring the level locks; pending caller writes are flushed before raw selection and caller-owned transactions retain rollback support. Continue using commerce workflows for their cross-module compensation and locking guarantees.
+
+Moving a reservation updates both locations and checks the full moved quantity at the destination. Deletion and restoration adjust counters only for rows that change state. Restoring a deleted reservation emits `inventory.reservation-item.restored`; repeating an active restore is a no-op. Compensation can still restore reservations beyond current stock. For multiple entries for the same item and location in one batch, account for their total requested quantity.
 
 ## Resources
 
