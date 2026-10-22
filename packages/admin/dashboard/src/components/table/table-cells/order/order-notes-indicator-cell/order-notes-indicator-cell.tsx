@@ -4,6 +4,13 @@ import { useTranslation } from "react-i18next"
 import { useNotes } from "../../../../../hooks/api/notes"
 import { PlaceholderCell } from "../../common/placeholder-cell"
 
+/**
+ * Arbitrary high limit to ensure all notes for the page's orders are fetched.
+ * Notes are not 1:1 with orders, so a page of orders can have more notes than
+ * the backend's default limit, which would otherwise cause false "no notes".
+ */
+const NOTE_LIMIT = 9999
+
 type OrderNotesIndicatorCellProps = {
   /**
    * The id of the order this cell's row represents.
@@ -28,6 +35,7 @@ export const OrderNotesIndicatorCell = ({
     {
       resource_type: "order",
       resource_id: orderIdsOnPage,
+      limit: NOTE_LIMIT,
     },
     {
       enabled: orderIdsOnPage.length > 0,
