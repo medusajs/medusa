@@ -29,6 +29,11 @@ const RbacRoleAssignment = model
       unique: true,
       where: "deleted_at IS NULL",
     },
+    {
+      on: ["role_id", "reference", "reference_id"],
+      unique: true,
+      where: "scope IS NULL AND scope_id IS NULL AND deleted_at IS NULL",
+    },
   ])
 
 export default RbacRoleAssignment

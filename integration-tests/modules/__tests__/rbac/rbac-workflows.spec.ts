@@ -1,4 +1,5 @@
 import {
+  assignRolesWorkflow,
   createRbacPoliciesWorkflow,
   createRbacRolesWorkflow,
 } from "@medusajs/core-flows"
@@ -18,6 +19,30 @@ medusaIntegrationTestRunner({
       beforeAll(async () => {
         appContainer = getContainer()
         rbacService = appContainer.resolve(Modules.RBAC) as IRbacModuleService
+      })
+
+      describe("assignRolesWorkflow", () => {
+        it("rejects assigning a role the reference already holds", async () => {
+          const role = await rbacService.createRbacRoles({ name: "Twice" })
+          const assignment = {
+            role_id: role.id,
+            reference: "user",
+            reference_id: "user_twice",
+          }
+
+          await assignRolesWorkflow(appContainer).run({
+            input: { assignments: [assignment] },
+          })
+          const error = await assignRolesWorkflow(appContainer)
+            .run({ input: { assignments: [assignment] } })
+            .catch((e) => e)
+          expect(error.message).toContain("already exists")
+
+          const assignments = await rbacService.listRbacRoleAssignments({
+            role_id: role.id,
+          })
+          expect(assignments).toHaveLength(1)
+        })
       })
 
       describe("Role Parent and Policy Management", () => {

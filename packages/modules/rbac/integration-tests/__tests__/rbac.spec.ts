@@ -81,6 +81,54 @@ moduleIntegrationTestRunner<IRbacModuleService>({
     })
 
     describe("RBAC Module Service", () => {
+      describe("role assignments", () => {
+        it("rejects a duplicate unscoped assignment", async () => {
+          const role = await service.createRbacRoles({ name: "Duplicate" })
+          const assignment = {
+            role_id: role.id,
+            reference: "user",
+            reference_id: "user_1",
+          }
+
+          await service.createRbacRoleAssignments(assignment)
+          await expect(
+            service.createRbacRoleAssignments(assignment)
+          ).rejects.toThrow()
+
+          const assignments = await service.listRbacRoleAssignments({
+            role_id: role.id,
+          })
+          expect(assignments).toHaveLength(1)
+        })
+
+        it("allows the same role on the same reference in different scopes", async () => {
+          const role = await service.createRbacRoles({ name: "Scoped" })
+
+          await service.createRbacRoleAssignments([
+            {
+              role_id: role.id,
+              reference: "user",
+              reference_id: "user_1",
+              scope: "organization",
+              scope_id: "org_1",
+            },
+            {
+              role_id: role.id,
+              reference: "user",
+              reference_id: "user_1",
+              scope: "organization",
+              scope_id: "org_2",
+            },
+            { role_id: role.id, reference: "user", reference_id: "user_1" },
+          ])
+
+          const assignments = await service.listRbacRoleAssignments({
+            role_id: role.id,
+          })
+          expect(assignments).toHaveLength(3)
+        })
+      })
+
       it("should create and manage roles and policies", async () => {
         // Create a custom policy
         const customPolicy = await service.createRbacPolicies({
