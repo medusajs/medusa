@@ -118,8 +118,7 @@ export default class InventoryModuleService
     await knex.raw("SET LOCAL lock_timeout = '3s'")
     // Raw selects must see the caller's pending ORM writes.
     await manager.flush()
-    // Lock only the owning table, not the inventory-item joins added by ORM
-    // filters. All writers acquire reservation rows before ordered level rows.
+    // Avoid ORM parent joins; lock reservations before ordered level rows.
     const query = knex(table).where((builder) => {
       for (const filter of filters) {
         builder.orWhere((match) => {
@@ -722,7 +721,8 @@ export default class InventoryModuleService
 
       const quantity = data.quantity ?? reservation.quantity
       let adjustment =
-        data.location_id && data.location_id !== reservation.location_id
+        isDefined(data.location_id) &&
+        data.location_id !== reservation.location_id
           ? quantity
           : MathBN.sub(quantity, reservation.quantity)
 
@@ -739,15 +739,28 @@ export default class InventoryModuleService
       }
     })
 
+    // Lock movement rows together without changing the counter write set.
+    if (
+      input.some(
+        ({ id, location_id }) =>
+          isDefined(location_id) &&
+          location_id !== reservationMap.get(id)!.location_id
+      )
+    ) {
+      await this.lockRows_(
+        "inventory_level",
+        [...availabilityData, ...reservationItems].map(
+          ({ inventory_item_id, location_id }) => ({
+            inventory_item_id,
+            location_id,
+          })
+        ),
+        context
+      )
+    }
+
     const inventoryLevels = await this.ensureInventoryLevels(
-      [
-        ...availabilityData,
-        ...reservationItems.map((reservation) => ({
-          inventory_item_id: reservation.inventory_item_id,
-          location_id: reservation.location_id,
-          allow_backorder: true,
-        })),
-      ],
+      availabilityData,
       {
         validateQuantityAtLocation: true,
       },

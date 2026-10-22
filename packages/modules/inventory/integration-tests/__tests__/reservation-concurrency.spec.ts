@@ -111,39 +111,28 @@ moduleIntegrationTestRunner<IInventoryService>({
       expect(level.reserved_quantity).toBe(5)
     })
 
-    it.each([1, 10])(
-      "accounts for both locations when moving to stock %i",
-      async (stocked) => {
-        const item = await service.createInventoryItems({ sku: "movement" })
-        const key = { inventory_item_id: item.id, location_id: "source" }
-        await service.createInventoryLevels([
-          { ...key, stocked_quantity: 10 },
-          { ...key, location_id: "destination", stocked_quantity: stocked },
-        ])
-        const row = await service.createReservationItems({
-          ...key,
-          quantity: 8,
+    it.each(["destination", ""])("checks move stock at %j", async (to) => {
+      const item = await service.createInventoryItems({ sku: "movement" })
+      const key = { inventory_item_id: item.id, location_id: "source" }
+      await service.createInventoryLevels([
+        { ...key, stocked_quantity: 10 },
+        { ...key, location_id: to, stocked_quantity: 1 },
+      ])
+      const row = await service.createReservationItems({ ...key, quantity: 8 })
+      await expect(
+        service.updateReservationItems({
+          id: row.id,
+          location_id: to,
         })
-        const [outcome] = await Promise.allSettled([
-          service.updateReservationItems({
-            id: row.id,
-            location_id: "destination",
-          }),
-        ])
-        const levels = await service.listInventoryLevels(
-          { inventory_item_id: item.id },
-          { order: { location_id: "ASC" } }
-        )
-        expect({
-          outcome: outcome.status,
-          reserved: levels.map((level) => level.reserved_quantity),
-        }).toEqual(
-          stocked === 1
-            ? { outcome: "rejected", reserved: [0, 8] }
-            : { outcome: "fulfilled", reserved: [8, 0] }
-        )
-      }
-    )
+      ).rejects.toThrow("Not enough stock available")
+      const unchanged = await service.retrieveReservationItem(row.id)
+      expect([unchanged.location_id, unchanged.quantity]).toEqual(["source", 8])
+      const levels = await service.listInventoryLevels(
+        { inventory_item_id: item.id },
+        { order: { location_id: "ASC" } }
+      )
+      expect(levels.map((level) => level.reserved_quantity)).toEqual([0, 8])
+    })
     it.each(["hard", "soft", "location", "line"] as const)(
       "coordinates %s deletion with a concurrent creation",
       async (kind) => {

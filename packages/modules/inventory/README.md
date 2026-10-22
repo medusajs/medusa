@@ -62,7 +62,7 @@ const [inventoryItems, count] =
 
 Reservation mutations and `updateInventoryLevels` acquire ordered database row locks in their transaction. Lock waits use a transaction-local timeout of three seconds. Separate direct reservation calls validate committed stock after acquiring the level locks; pending caller writes are flushed before raw selection and caller-owned transactions retain rollback support. Continue using commerce workflows for their cross-module compensation and locking guarantees.
 
-Moving a reservation updates both locations and checks the full moved quantity at the destination. Deletion and restoration adjust counters only for rows that change state. Restoring a deleted reservation emits `inventory.reservation-item.restored`; repeating an active restore is a no-op. Compensation can still restore reservations beyond current stock. For multiple entries for the same item and location in one batch, account for their total requested quantity.
+Moving a reservation checks the full moved quantity at the destination. Successful-move source-counter release remains tracked by #17215/#17283 and active #17216/#17321; that existing accounting defect is outside this change. Deletion and restoration adjust counters only for rows that change state. Restoring a deleted reservation emits `inventory.reservation-item.restored`; repeating an active restore is a no-op. Compensation can still restore reservations beyond current stock. For multiple entries for the same item and location in one batch, account for their total requested quantity.
 
 ## Resources
 
