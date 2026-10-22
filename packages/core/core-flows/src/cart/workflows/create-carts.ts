@@ -211,7 +211,7 @@ export const createCartWorkflow = createWorkflow(
       findOrCreateCustomerStep({
         customerId: input.customer_id,
         email: input.email,
-        guestOnly: true,
+        hasAccount: false,
       })
     )
 
