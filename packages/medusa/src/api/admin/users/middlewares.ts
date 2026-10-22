@@ -122,7 +122,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
           operation: PolicyOperation.read,
         },
         {
-          resource: Entities.rbac_role,
+          resource: Entities.rbac_role_assignment,
           operation: PolicyOperation.read,
         },
       ]),
@@ -142,8 +142,8 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
           operation: PolicyOperation.update,
         },
         {
-          resource: Entities.rbac_role,
-          operation: PolicyOperation.update,
+          resource: Entities.rbac_role_assignment,
+          operation: PolicyOperation.create,
         },
       ]),
       validateAndTransformBody(AdminAssignUserRole),
@@ -159,8 +159,8 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
           operation: PolicyOperation.update,
         },
         {
-          resource: Entities.rbac_role,
-          operation: PolicyOperation.update,
+          resource: Entities.rbac_role_assignment,
+          operation: PolicyOperation.delete,
         },
       ]),
       validateAndTransformBody(AdminUnassignUserRole),
@@ -176,8 +176,8 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
           operation: PolicyOperation.update,
         },
         {
-          resource: Entities.rbac_role,
-          operation: PolicyOperation.update,
+          resource: Entities.rbac_role_assignment,
+          operation: PolicyOperation.delete,
         },
       ]),
       validateAndTransformBody(AdminUnassignUserRoles),

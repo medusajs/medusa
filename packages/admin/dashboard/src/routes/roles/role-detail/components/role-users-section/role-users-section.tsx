@@ -31,7 +31,11 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
   const { offset } = useQueryParams(["offset"])
   const { hasAllPermissions } = usePermissions()
 
-  const canManageRole = hasAllPermissions(["user:update", "rbac_role:update"])
+  const canManageRole = hasAllPermissions([
+    "user:update",
+    "rbac_role_assignment:create",
+    "rbac_role_assignment:delete",
+  ])
 
   const { data: assignableData } = useRbacAssignableRoles(undefined, {
     enabled: canManageRole,

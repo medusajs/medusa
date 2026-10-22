@@ -160,6 +160,10 @@ export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
           resource: Entities.user,
           operation: PolicyOperation.read,
         },
+        {
+          resource: Entities.rbac_role_assignment,
+          operation: PolicyOperation.read,
+        },
       ]),
       validateAndTransformQuery(
         AdminGetRoleUsersParams,
@@ -177,8 +181,8 @@ export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
           operation: PolicyOperation.update,
         },
         {
-          resource: Entities.rbac_role,
-          operation: PolicyOperation.update,
+          resource: Entities.rbac_role_assignment,
+          operation: PolicyOperation.create,
         },
       ]),
       validateAndTransformBody(AdminAssignRoleUsers),
@@ -194,8 +198,8 @@ export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
           operation: PolicyOperation.update,
         },
         {
-          resource: Entities.rbac_role,
-          operation: PolicyOperation.update,
+          resource: Entities.rbac_role_assignment,
+          operation: PolicyOperation.delete,
         },
       ]),
       validateAndTransformBody(AdminRemoveRoleUsers),
@@ -207,7 +211,7 @@ export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       authorize([
         {
-          resource: Entities.rbac_role,
+          resource: Entities.rbac_role_assignment,
           operation: PolicyOperation.read,
         },
       ]),
@@ -223,8 +227,8 @@ export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       authorize([
         {
-          resource: Entities.rbac_role,
-          operation: PolicyOperation.update,
+          resource: Entities.rbac_role_assignment,
+          operation: PolicyOperation.create,
         },
       ]),
       validateAndTransformBody(AdminCreateRoleAssignments),
@@ -240,8 +244,8 @@ export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       authorize([
         {
-          resource: Entities.rbac_role,
-          operation: PolicyOperation.update,
+          resource: Entities.rbac_role_assignment,
+          operation: PolicyOperation.delete,
         },
       ]),
       validateAndTransformBody(AdminRemoveRoleAssignments),
