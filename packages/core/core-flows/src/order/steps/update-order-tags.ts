@@ -65,13 +65,19 @@ export const updateOrderTagsStep = createStep(
     // the interface to only the methods order-tags actually need - so
     // compensation restores each tag individually with `updateOrderTags`
     // instead of a single upsert batch.
+    //
+    // `prevData` is only fetched with the fields present in the original
+    // `data.update` (via `getSelectsAndRelationsFromObjectArray`), so a
+    // metadata-only update never selects `value`. Spreading the fetched
+    // object - rather than hand-picking `value`/`metadata` - restores only
+    // the fields that were actually fetched, mirroring
+    // `upsertProductTags_`'s pass-through behavior and avoiding
+    // `value: undefined` reaching MikroORM for a non-nullable column.
     await Promise.all(
-      prevData.map((tag) =>
-        service.updateOrderTags(tag.id, {
-          value: tag.value,
-          metadata: tag.metadata,
-        })
-      )
+      prevData.map((tag) => {
+        const { id, ...update } = tag
+        return service.updateOrderTags(id, update)
+      })
     )
   }
 )
