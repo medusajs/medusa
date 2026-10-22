@@ -55,7 +55,6 @@ bash scripts/get_issue.sh <issue_number>
 bash scripts/get_issue.sh <issue_number>          # Issue details (title, body, author, state)
 bash scripts/get_comments.sh <issue_number>       # All comments on the issue
 bash scripts/get_labels.sh <issue_number>         # Current labels on the issue
-bash scripts/get_linked_prs.sh <issue_number>     # PRs linked to the issue
 bash scripts/search_issues.sh <query>             # Search for similar/duplicate issues
 ```
 
@@ -169,26 +168,6 @@ one), the outcome is `rewrite`, whatever the category, unless a verified
 fabrication makes it `slop`. **Stop.** Otherwise continue. Skip this step
 when the author is listed in `.github/teams.yml`: team members may write
 issues with AI.
-
-### Step 0.5 — Check for Linked PRs
-
-After fetching context, check if any PRs are already linked to this issue:
-
-```bash
-bash scripts/get_linked_prs.sh <issue_number>
-```
-
-If one or more PRs are linked:
-
-1. **PR is MERGED** — The fix may already be shipped. Pick `needs-info`
-   with `needs-info` and a summary asking the reporter to confirm whether
-   the problem persists on a release that includes PR #N. **Stop.**
-2. **PR is OPEN** — A fix is in progress. Never pick `fix` (that would open
-   a second PR). Pick `none` on a comment event; on a new issue, pick
-   `escalate` only if the open PR clearly doesn't address the problem,
-   otherwise `none`. **Stop.**
-
-If no linked PRs, continue to Step 0.75.
 
 ### Step 0.75 — Comment Events
 
