@@ -2,7 +2,9 @@ name: PR Review
 
 on:
   pull_request_target:
-    types: [opened, reopened, synchronize, edited, ready_for_review]
+    # `unlabeled` re-runs the review once pr-guardrails.yml removes
+    # `requires-linked-issue`; every other label removal is ignored below.
+    types: [opened, reopened, synchronize, edited, ready_for_review, unlabeled]
   issue_comment:
     types: [created]
   workflow_dispatch:
@@ -13,9 +15,14 @@ on:
         default: ''
         type: string
       skip_reviewed:
-        description: "Skip PRs that already have initial-approval or requires-more labels. Ignored when pr_number is set."
+        description: "Skip PRs that already have initial-approval or requires-more labels (PRs waiting on a requires-rewrite are always reviewed). Ignored when pr_number is set."
         required: false
         default: true
+        type: boolean
+      skip_team:
+        description: "Skip PRs authored by members of .github/teams.yml. Ignored when pr_number is set."
+        required: false
+        default: false
         type: boolean
 
 jobs:
@@ -30,12 +37,19 @@ jobs:
     outputs:
       matrix: ${{ steps.get-prs.outputs.matrix }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
       - name: Get open non-draft PRs
         id: get-prs
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ inputs.pr_number }}
           SKIP_REVIEWED: ${{ inputs.skip_reviewed }}
+          SKIP_TEAM: ${{ inputs.skip_team }}
         run: |
           set -euo pipefail
 
@@ -55,12 +69,25 @@ jobs:
             --jq "[.[] | select(
               .isDraft == false and
               .author.is_bot == false and
-              (if \"$SKIP_REVIEWED\" == \"true\" then ([.labels[].name] | contains([\"initial-approval\"]) | not) and ([.labels[].name] | contains([\"requires-more\"]) | not) else true end)
-            ) | {number: .number}]")
+              ([.labels[].name] | contains([\"requires-linked-issue\"]) | not) and
+              (if \"$SKIP_REVIEWED\" == \"true\" then ([.labels[].name] | contains([\"requires-rewrite\"])) or (([.labels[].name] | contains([\"initial-approval\"]) | not) and ([.labels[].name] | contains([\"requires-more\"]) | not)) else true end)
+            ) | {number: .number, author: .author.login}]")
+
+          if [[ "$SKIP_TEAM" == "true" ]]; then
+            KEEP="[]"
+            while IFS=$'\t' read -r NUMBER AUTHOR; do
+              if ! bash scripts/is_team_member.sh "$AUTHOR"; then
+                KEEP=$(jq -c --argjson n "$NUMBER" '. + [{number: $n}]' <<<"$KEEP")
+              fi
+            done < <(jq -r '.[] | [.number, .author] | @tsv' <<<"$matrix")
+            matrix="$KEEP"
+          else
+            matrix=$(jq -c 'map({number})' <<<"$matrix")
+          fi
 
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
-  # Runs on workflow_dispatch: reviews every open non-draft PR (team members included)
+  # Runs on workflow_dispatch: reviews every open non-draft PR (team members included unless skip_team)
   review-all:
     needs: get-open-prs
     if: needs.get-open-prs.outputs.matrix != '[]' && needs.get-open-prs.outputs.matrix != ''
@@ -84,9 +111,12 @@ jobs:
     if: |
       (github.event_name == 'pull_request_target' &&
        github.event.pull_request.draft == false &&
-       github.event.pull_request.user.login != 'github-actions[bot]') ||
+       github.event.pull_request.state == 'open' &&
+       github.event.pull_request.user.login != 'github-actions[bot]' &&
+       (github.event.action != 'unlabeled' || github.event.label.name == 'requires-linked-issue')) ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request.url != '' &&
+       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) &&
        contains(github.event.comment.body, '@medusajs-bot review'))
     runs-on: ubuntu-latest
     outputs:
@@ -95,14 +125,16 @@ jobs:
       trigger_reason: ${{ steps.set.outputs.trigger_reason }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 1
+          persist-credentials: false
 
-      - name: Set PR number and check team membership
+      - name: Set PR number
         id: set
         env:
           GH_TOKEN: ${{ github.token }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
         run: |
           if [ "${{ github.event_name }}" == "issue_comment" ]; then
             echo "pr_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
@@ -133,11 +165,13 @@ jobs:
               synchronize) echo "trigger_reason=new commit pushed" >> $GITHUB_OUTPUT ;;
               edited)    echo "trigger_reason=PR description updated" >> $GITHUB_OUTPUT ;;
               ready_for_review) echo "trigger_reason=PR marked as ready for review" >> $GITHUB_OUTPUT ;;
+              unlabeled) echo "trigger_reason=linked issue added" >> $GITHUB_OUTPUT ;;
               *)         echo "trigger_reason=${{ github.event.action }}" >> $GITHUB_OUTPUT ;;
             esac
 
-            AUTHOR="${{ github.event.pull_request.user.login }}"
-            if grep -qF "\"@${AUTHOR}\"" ./.github/teams.yml; then
+            # Team PRs are reviewed once: when opened or marked ready for review.
+            if bash scripts/is_team_member.sh "$AUTHOR" \
+              && [[ "${{ github.event.action }}" != "opened" && "${{ github.event.action }}" != "ready_for_review" ]]; then
               echo "should_review=false" >> $GITHUB_OUTPUT
             else
               echo "should_review=true" >> $GITHUB_OUTPUT
