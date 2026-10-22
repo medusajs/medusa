@@ -16,6 +16,7 @@ import {
   FilterableOrderShippingMethodAdjustmentProps,
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
+  FilterableOrderTagProps,
   FilterableOrderTransactionProps,
   FilterableReturnProps,
   OrderAddressDTO,
@@ -38,6 +39,7 @@ import {
   OrderShippingMethodAdjustmentDTO,
   OrderShippingMethodDTO,
   OrderShippingMethodTaxLineDTO,
+  OrderTagDTO,
   OrderTransactionDTO,
   ReturnDTO,
 } from "./common"
@@ -66,6 +68,7 @@ import {
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
+  CreateOrderTagDTO,
   CreateOrderTransactionDTO,
   DeclineOrderChangeDTO,
   ReceiveOrderReturnDTO,
@@ -91,6 +94,7 @@ import {
   UpdateOrderShippingMethodAdjustmentDTO,
   UpdateOrderShippingMethodDTO,
   UpdateOrderShippingMethodTaxLineDTO,
+  UpdateOrderTagDTO,
   UpdateReturnDTO,
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
@@ -4140,6 +4144,161 @@ export interface IOrderModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method retrieves an order tag by its ID.
+   *
+   * @param {string} tagId - The order tag's ID.
+   * @param {FindConfig<OrderTagDTO>} config - The configurations determining how the order tag is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with an order tag.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderTagDTO>} The retrieved order tag.
+   *
+   * @example
+   * const tag = await orderModuleService.retrieveOrderTag("otag_123")
+   */
+  retrieveOrderTag(
+    tagId: string,
+    config?: FindConfig<OrderTagDTO>,
+    sharedContext?: Context
+  ): Promise<OrderTagDTO>
+
+  /**
+   * This method retrieves a paginated list of order tags based on optional filters and configuration.
+   *
+   * @param {FilterableOrderTagProps} filters - The filters to apply on the retrieved order tags.
+   * @param {FindConfig<OrderTagDTO>} config - The configurations determining how the order tag is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with an order tag.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderTagDTO[]>} The list of order tags.
+   *
+   * @example
+   * const tags = await orderModuleService.listOrderTags({
+   *   id: ["123", "321"]
+   * })
+   */
+  listOrderTags(
+    filters?: FilterableOrderTagProps,
+    config?: FindConfig<OrderTagDTO>,
+    sharedContext?: Context
+  ): Promise<OrderTagDTO[]>
+
+  /**
+   * This method retrieves a paginated list of order tags along with the total count of available order tags satisfying the provided filters.
+   *
+   * @param {FilterableOrderTagProps} filters - The filters to apply on the retrieved order tags.
+   * @param {FindConfig<OrderTagDTO>} config - The configurations determining how the order tag is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with an order tag.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[OrderTagDTO[], number]>} The list of order tags along with the total count.
+   *
+   * @example
+   * const [tags, count] =
+   *   await orderModuleService.listAndCountOrderTags({
+   *     id: ["123", "321"]
+   *   })
+   */
+  listAndCountOrderTags(
+    filters?: FilterableOrderTagProps,
+    config?: FindConfig<OrderTagDTO>,
+    sharedContext?: Context
+  ): Promise<[OrderTagDTO[], number]>
+
+  /**
+   * This method creates order tags.
+   *
+   * @param {CreateOrderTagDTO[]} data - The order tags to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderTagDTO[]>} The list of created order tags.
+   *
+   * @example
+   * const orderTags = await orderModuleService.createOrderTags([
+   *   {
+   *     value: "priority"
+   *   }
+   * ])
+   */
+  createOrderTags(
+    data: CreateOrderTagDTO[],
+    sharedContext?: Context
+  ): Promise<OrderTagDTO[]>
+
+  /**
+   * This method creates an order tag.
+   *
+   * @param {CreateOrderTagDTO} data - The order tag to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderTagDTO>} The created order tag.
+   *
+   * @example
+   * const orderTag = await orderModuleService.createOrderTags({
+   *   value: "priority"
+   * })
+   */
+  createOrderTags(
+    data: CreateOrderTagDTO,
+    sharedContext?: Context
+  ): Promise<OrderTagDTO>
+
+  /**
+   * This method updates an existing order tag.
+   *
+   * @param {string} id - The ID of the order tag.
+   * @param {UpdateOrderTagDTO} data - The attributes of the order tag to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderTagDTO>} The updated order tag.
+   *
+   * @example
+   * const orderTag = await orderModuleService.updateOrderTags(
+   *   "123",
+   *   {
+   *     value: "urgent"
+   *   }
+   * )
+   */
+  updateOrderTags(
+    id: string,
+    data: UpdateOrderTagDTO,
+    sharedContext?: Context
+  ): Promise<OrderTagDTO>
+
+  /**
+   * This method updates existing order tags matching the specified filters.
+   *
+   * @param {FilterableOrderTagProps} selector - The filters specifying which order tags to update.
+   * @param {UpdateOrderTagDTO} data - The attributes to be updated on the selected order tags.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<OrderTagDTO[]>} The updated order tags.
+   *
+   * @example
+   * const orderTags = await orderModuleService.updateOrderTags(
+   *   {
+   *     id: ["123", "321"]
+   *   },
+   *   {
+   *     value: "urgent"
+   *   }
+   * )
+   */
+  updateOrderTags(
+    selector: FilterableOrderTagProps,
+    data: UpdateOrderTagDTO,
+    sharedContext?: Context
+  ): Promise<OrderTagDTO[]>
+
+  /**
+   * This method deletes order tags by their IDs.
+   *
+   * @param {string[]} ids - The IDs of the order tags.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the order tags are deleted successfully.
+   *
+   * @example
+   * await orderModuleService.deleteOrderTags([
+   *   "123", "321"
+   * ])
+   */
+  deleteOrderTags(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method creates a return item.

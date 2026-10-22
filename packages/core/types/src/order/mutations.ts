@@ -198,6 +198,11 @@ export interface CreateOrderDTO {
    * The promo codes of the order.
    */
   promo_codes?: string[]
+
+  /**
+   * The tags to associate with the order.
+   */
+  tags?: (CreateOrderTagDTO | { id: string })[]
 }
 
 /**
@@ -274,9 +279,50 @@ export interface UpdateOrderDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
+
+  /**
+   * The tags to associate with the order.
+   */
+  tags?: (CreateOrderTagDTO | { id: string })[]
 }
 
 /** ORDER END */
+/** TAG START */
+/**
+ * The order tag to be created.
+ */
+export interface CreateOrderTagDTO {
+  /**
+   * The unique value of the order tag.
+   */
+  value: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+}
+
+/**
+ * The attributes to update in the order tag.
+ */
+export interface UpdateOrderTagDTO {
+  /**
+   * The ID of the order tag.
+   */
+  id?: string
+
+  /**
+   * The unique value of the order tag.
+   */
+  value?: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+}
+/** TAG END */
 /** ADJUSTMENT START */
 /**
  * The data of the order adjustment to be created.

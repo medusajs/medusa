@@ -1164,6 +1164,13 @@ export interface OrderDTO {
   credit_lines?: OrderCreditLineDTO[]
 
   /**
+   * The associated order tags.
+   *
+   * @expandable
+   */
+  tags?: OrderTagDTO[]
+
+  /**
    * The summary of the order totals.
    *
    * @expandable
@@ -2509,6 +2516,45 @@ export interface OrderReturnReasonDTO {
 }
 
 /**
+ * @interface
+ *
+ * An order tag's data.
+ */
+export interface OrderTagDTO {
+  /**
+   * The ID of the order tag.
+   */
+  id: string
+
+  /**
+   * The value of the order tag.
+   */
+  value: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
+
+  /**
+   * The associated orders.
+   *
+   * @expandable
+   */
+  orders?: OrderDTO[]
+
+  /**
+   * When the order tag was created.
+   */
+  created_at: Date | string
+
+  /**
+   * When the order tag was updated.
+   */
+  updated_at: Date | string
+}
+
+/**
  * The filters to apply on the retrieved orders.
  */
 export interface FilterableOrderProps
@@ -2912,6 +2958,27 @@ export interface FilterableOrderReturnReasonProps
    * Filter the return reason by their description.
    */
   description?: string | OperatorMap<string>
+}
+
+/**
+ * The filters to apply on the retrieved order tags.
+ */
+export interface FilterableOrderTagProps
+  extends BaseFilterable<FilterableOrderTagProps> {
+  /**
+   * Find order tags through this search term
+   */
+  q?: string
+
+  /**
+   * The IDs to filter the order tags by.
+   */
+  id?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * Filter the order tags by their value.
+   */
+  value?: string | string[] | OperatorMap<string | string[]>
 }
 
 /**

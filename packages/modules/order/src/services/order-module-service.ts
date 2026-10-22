@@ -64,6 +64,7 @@ import {
   OrderShippingMethodAdjustment,
   OrderShippingMethodTaxLine,
   OrderSummary,
+  OrderTag,
   OrderTransaction,
   Return,
   ReturnItem,
@@ -131,6 +132,7 @@ const generateMethodForModels = {
   OrderItem,
   OrderSummary,
   OrderShipping,
+  OrderTag,
   ReturnReason,
   Return,
   ReturnItem,
@@ -206,6 +208,7 @@ export default class OrderModuleService
     OrderItem: { dto: OrderTypes.OrderItemDTO }
     ReturnReason: { dto: OrderTypes.OrderReturnReasonDTO }
     OrderSummary: { dto: OrderTypes.OrderSummaryDTO }
+    OrderTag: { dto: OrderTypes.OrderTagDTO }
     OrderTransaction: { dto: OrderTypes.OrderTransactionDTO }
     Return: { dto: OrderTypes.ReturnDTO }
     ReturnItem: { dto: OrderTypes.OrderReturnItemDTO }
