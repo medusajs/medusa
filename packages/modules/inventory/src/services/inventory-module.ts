@@ -1,3 +1,4 @@
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import {
   BigNumberInput,
   Context,
@@ -972,9 +973,26 @@ export default class InventoryModuleService
     adjustment: BigNumberInput,
     @MedusaContext() context: Context = {}
   ): Promise<InferEntityType<typeof InventoryLevel>> {
+    const manager = context.transactionManager as SqlEntityManager
+    const knex = manager?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Stock adjustments must run inside a transaction."
+      )
+    }
+    await knex.raw("SET LOCAL lock_timeout = '3s'")
+    // Raw locking must include the caller's pending inventory levels.
+    await manager.flush()
+    const locked = await knex("inventory_level")
+      .where({ inventory_item_id: inventoryItemId, location_id: locationId })
+      .whereNull("deleted_at")
+      .orderBy("id")
+      .forUpdate()
+      .select("id")
     const [inventoryLevel] = await this.inventoryLevelService_.list(
-      { inventory_item_id: inventoryItemId, location_id: locationId },
-      {},
+      { id: locked.map(({ id }) => id) },
+      { options: { refresh: true } },
       context
     )
 

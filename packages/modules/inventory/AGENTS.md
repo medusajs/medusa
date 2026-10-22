@@ -57,3 +57,5 @@ yarn migration:create          # after any change in src/models
 - `updateInventoryLevels` addresses levels by `inventory_item_id` + `location_id`, not by `id`.
 - `adjustInventory` with an array runs each adjustment sequentially in its own transaction.
 - Quantities are `bigNumber` columns; use `MathBN` / `BigNumber` from `@medusajs/framework/utils`, not JS arithmetic.
+
+- Direct `adjustInventory` calls lock and refresh the exact live level before the BigNumber update, with a three-second transaction-local lock timeout. Scalar caller transactions flush pending writes and retain rollback; the raw query avoids locking the parent item.

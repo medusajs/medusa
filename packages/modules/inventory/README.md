@@ -38,16 +38,20 @@ Inventory Module for Medusa: manages inventory items, their stock levels per loc
 
 ## At a glance
 
-| | |
-| --- | --- |
-| Package | `@medusajs/inventory` |
-| Type | Commerce Module |
-| Module key | `Modules.INVENTORY` (`"inventory"`) |
-| Registered by default | Yes |
+|                       |                                     |
+| --------------------- | ----------------------------------- |
+| Package               | `@medusajs/inventory`               |
+| Type                  | Commerce Module                     |
+| Module key            | `Modules.INVENTORY` (`"inventory"`) |
+| Registered by default | Yes                                 |
 
 ## Installation
 
 No installation needed. The module ships with `@medusajs/medusa`.
+
+## Stock adjustments
+
+Direct `adjustInventory` calls lock the live inventory level before reading its stocked quantity, so concurrent signed and decimal adjustments accumulate. Pending scalar caller writes are flushed before locking, and the locked level is refreshed without clearing the caller identity map. Scalar caller transactions retain rollback support. Lock waits use a three-second transaction-local timeout; callers with conflicting prior locks must roll back normally. Arrays keep their existing per-adjustment transactions.
 
 ## Usage
 
