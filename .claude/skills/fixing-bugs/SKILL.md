@@ -85,7 +85,7 @@ Write `fix-result.json` and (for `confirmed`) `pr-body.md` at the repo root.
 - [ ] Writing a closing keyword (`Fixes #N`) in `pr-body.md`; the workflow adds it
 - [ ] Copying reporter emails, names, or URLs into code, tests, PR body, or changeset
 - [ ] Leaving throwaway repro files in the working tree
-- [ ] Missing a changeset, or using `minor`/`major` for a non-breaking fix
+- [ ] Missing a changeset for a change under `packages/`, or using `minor`/`major` for a non-breaking fix
 - [ ] Adding or editing a migration (out of scope: emit `needs-team`)
 - [ ] Changing source when validation did not confirm the bug
 

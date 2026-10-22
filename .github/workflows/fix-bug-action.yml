@@ -397,7 +397,7 @@ jobs:
           fi
 
           TITLE=$(jq -r '.pr_title // ""' fix-result.json)
-          if [[ "$TITLE" == *$'\n'* || ${#TITLE} -gt 500 || ! "$TITLE" =~ ^fix\([a-z0-9-]+\):\ [[:print:]]+$ ]]; then
+          if [[ "$TITLE" == *$'\n'* || ${#TITLE} -gt 500 || ! "$TITLE" =~ ^fix\([a-z0-9-]+(,[a-z0-9-]+)*\):\ [[:print:]]+$ ]]; then
             echo "::error::Invalid pr_title." >&2
             exit 1
           fi
@@ -448,8 +448,10 @@ jobs:
           echo "Changed files:"
           echo "$CHANGED"
 
-          if ! echo "$CHANGED" | grep -qE '^\.changeset/[a-z0-9-]+\.md$'; then
-            echo "::error::Patch has no changeset." >&2
+          # Only workspace packages under packages/ are published; www/ and other paths take no changeset.
+          if echo "$CHANGED" | grep -vE "$EXCLUDED" | grep -q '^packages/' \
+            && ! echo "$CHANGED" | grep -qE '^\.changeset/[a-z0-9-]+\.md$'; then
+            echo "::error::Patch changes packages/ but has no changeset." >&2
             exit 1
           fi
           if ! echo "$CHANGED" | grep -qE '(__tests__/|integration-tests/|\.spec\.[jt]sx?$|\.test\.[jt]sx?$)'; then
