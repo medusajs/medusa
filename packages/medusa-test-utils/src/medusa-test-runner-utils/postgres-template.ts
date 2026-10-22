@@ -1,11 +1,14 @@
 import { Client } from "@medusajs/framework/pg"
 
-const DB_HOST = process.env.DB_HOST ?? "localhost"
-const DB_USERNAME = process.env.DB_USERNAME ?? "postgres"
-const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
-const DB_PORT = process.env.DB_PORT ?? "5432"
-const DB_WAITINGROOM_DATABASE =
-  process.env.DB_WAITINGROOM_DATABASE ?? "postgres"
+function getWaitingroomCredentials() {
+  return {
+    host: process.env.DB_HOST ?? "localhost",
+    user: process.env.DB_USERNAME ?? "postgres",
+    password: process.env.DB_PASSWORD || undefined,
+    port: parseInt(process.env.DB_PORT ?? "5432"),
+    database: process.env.DB_WAITINGROOM_DATABASE ?? "postgres",
+  }
+}
 
 type DatabaseTemplateOptions = {
   databaseName: string
@@ -24,21 +27,28 @@ function quoteIdentifier(identifier: string) {
 // The client is created lazily and reused across calls, since restores run before every
 // test and reconnecting each time adds 10-30ms per test.
 let waitingroomClientPromise: Promise<Client> | null = null
+let waitingroomClientCredentialsKey: string | null = null
 
 function resetWaitingroomClient() {
   waitingroomClientPromise = null
+  waitingroomClientCredentialsKey = null
 }
 
 async function getWaitingroomClient(): Promise<Client> {
+  const credentials = getWaitingroomCredentials()
+  const credentialsKey = JSON.stringify(credentials)
+
+  if (
+    waitingroomClientPromise &&
+    waitingroomClientCredentialsKey !== credentialsKey
+  ) {
+    await closeWaitingroomClient()
+  }
+
   if (!waitingroomClientPromise) {
+    waitingroomClientCredentialsKey = credentialsKey
     waitingroomClientPromise = (async () => {
-      const client = new Client({
-        host: DB_HOST,
-        user: DB_USERNAME,
-        password: DB_PASSWORD || undefined,
-        port: parseInt(DB_PORT),
-        database: DB_WAITINGROOM_DATABASE,
-      })
+      const client = new Client(credentials)
 
       try {
         await client.connect()
