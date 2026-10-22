@@ -465,6 +465,34 @@
       "required": ["header", "edit"],
       "additionalProperties": false
     },
+    "notes": {
+      "type": "object",
+      "properties": {
+        "header": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "addButtonText": {
+          "type": "string"
+        },
+        "deleteButtonText": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "header",
+        "label",
+        "placeholder",
+        "addButtonText",
+        "deleteButtonText"
+      ],
+      "additionalProperties": false
+    },
     "validation": {
       "type": "object",
       "properties": {
@@ -14693,6 +14721,7 @@
     "general",
     "json",
     "metadata",
+    "notes",
     "validation",
     "actions",
     "operators",

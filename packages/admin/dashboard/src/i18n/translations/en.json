@@ -105,6 +105,13 @@
       }
     }
   },
+  "notes": {
+    "header": "Notes",
+    "label": "Note",
+    "placeholder": "Leave a note",
+    "addButtonText": "Add note",
+    "deleteButtonText": "Delete note"
+  },
   "validation": {
     "mustBeInt": "The value must be a whole number.",
     "mustBePositive": "The value must be a positive number."
