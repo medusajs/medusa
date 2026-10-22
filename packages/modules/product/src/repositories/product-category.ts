@@ -392,66 +392,72 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
   ): Promise<InferEntityType<typeof ProductCategory>[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
 
-    const categories = await Promise.all(
-      data.map(async (entry, i) => {
-        const categoryData: Partial<InferEntityType<typeof ProductCategory>> = {
-          ...entry,
-        }
-        const siblingsCount = await manager.count(ProductCategory.name, {
-          parent_category_id: categoryData?.parent_category_id || null,
+    // Count siblings before creating any category, as counting flushes the pending ones.
+    const siblingsCounts: number[] = []
+    for (const entry of data) {
+      siblingsCounts.push(
+        await manager.count(ProductCategory.name, {
+          parent_category_id: entry.parent_category_id || null,
         })
+      )
+    }
 
-        categoryData.rank ??= siblingsCount + i
-        if (categoryData.rank > siblingsCount + i) {
-          categoryData.rank = siblingsCount + i
-        }
+    const categories: InferEntityType<typeof ProductCategory>[] = []
+    for (const [i, entry] of data.entries()) {
+      const categoryData: Partial<InferEntityType<typeof ProductCategory>> = {
+        ...entry,
+      }
+      const siblingsCount = siblingsCounts[i]
 
-        // There is no need to rerank if it is the last item in the list
-        if (categoryData.rank < siblingsCount + i) {
-          await this.rerankSiblingsAfterCreation(manager, categoryData)
-        }
+      categoryData.rank ??= siblingsCount + i
+      if (categoryData.rank > siblingsCount + i) {
+        categoryData.rank = siblingsCount + i
+      }
 
-        // Set the base mpath if the category has a parent. The model `create` hook will append the own id to the base mpath.
-        let parentCategory: InferEntityType<typeof ProductCategory> | null =
-          null
-        const parentCategoryId =
-          categoryData.parent_category_id ?? categoryData.parent_category?.id
+      // There is no need to rerank if it is the last item in the list
+      if (categoryData.rank < siblingsCount + i) {
+        await this.rerankSiblingsAfterCreation(manager, categoryData)
+      }
 
-        if (parentCategoryId) {
-          parentCategory = await manager.findOne<
-            InferEntityType<typeof ProductCategory>
-          >(ProductCategory.name, parentCategoryId)
+      // Set the base mpath if the category has a parent. The model `create` hook will append the own id to the base mpath.
+      let parentCategory: InferEntityType<typeof ProductCategory> | null = null
+      const parentCategoryId =
+        categoryData.parent_category_id ?? categoryData.parent_category?.id
 
-          if (!parentCategory) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              `Parent category with id: '${parentCategoryId}' does not exist`
-            )
-          }
-        }
-
-        const result = await manager.create<
+      if (parentCategoryId) {
+        parentCategory = await manager.findOne<
           InferEntityType<typeof ProductCategory>
-        >(
-          ProductCategory.name,
-          categoryData as unknown as InferEntityType<typeof ProductCategory>
-        )
+        >(ProductCategory.name, parentCategoryId)
 
-        /**
-         * Since "mpath" calculation relies on the id of the created
-         * category, we have to compute it after calling manager.create. So
-         * that we can access the "category.id" which is under the hood
-         * defined by DML.
-         */
-        manager.assign(result, {
-          mpath: parentCategory
-            ? `${parentCategory.mpath}.${result.id}`
-            : result.id,
-        })
+        if (!parentCategory) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_ARGUMENT,
+            `Parent category with id: '${parentCategoryId}' does not exist`
+          )
+        }
+      }
 
-        return result
+      const result = await manager.create<
+        InferEntityType<typeof ProductCategory>
+      >(
+        ProductCategory.name,
+        categoryData as unknown as InferEntityType<typeof ProductCategory>
+      )
+
+      /**
+       * Since "mpath" calculation relies on the id of the created
+       * category, we have to compute it after calling manager.create. So
+       * that we can access the "category.id" which is under the hood
+       * defined by DML.
+       */
+      manager.assign(result, {
+        mpath: parentCategory
+          ? `${parentCategory.mpath}.${result.id}`
+          : result.id,
       })
-    )
+
+      categories.push(result)
+    }
 
     manager.persist(categories)
     return categories
