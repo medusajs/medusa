@@ -266,6 +266,85 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             })
           )
         })
+
+        it("should round captures to zero decimals for zero-decimal currencies", async () => {
+          const paymentCollection = await service.createPaymentCollections({
+            currency_code: "jpy",
+            amount: 1999.6,
+          })
+
+          const paymentSession = await service.createPaymentSession(
+            paymentCollection.id,
+            {
+              provider_id: "pp_system_default",
+              amount: 1999.6,
+              currency_code: "jpy",
+              data: {},
+            }
+          )
+
+          const payment = await service.authorizePaymentSession(
+            paymentSession.id,
+            {}
+          )
+
+          const captured = await service.capturePayment({
+            amount: 2000,
+            payment_id: payment.id,
+          })
+
+          expect(captured).toEqual(
+            expect.objectContaining({
+              captured_at: expect.any(Date),
+              captures: [expect.objectContaining({ amount: 2000 })],
+            })
+          )
+        })
+
+        it("should round captures to the currency precision regardless of the server locale", async () => {
+          const OriginalNumberFormat = Intl.NumberFormat
+          const numberFormatSpy = jest
+            .spyOn(Intl, "NumberFormat")
+            .mockImplementation(
+              (_locales, options) => new OriginalNumberFormat("de-DE", options)
+            )
+
+          try {
+            const paymentCollection = await service.createPaymentCollections({
+              currency_code: "eur",
+              amount: 200.129,
+            })
+
+            const paymentSession = await service.createPaymentSession(
+              paymentCollection.id,
+              {
+                provider_id: "pp_system_default",
+                amount: 200.129,
+                currency_code: "eur",
+                data: {},
+              }
+            )
+
+            const payment = await service.authorizePaymentSession(
+              paymentSession.id,
+              {}
+            )
+
+            const captured = await service.capturePayment({
+              amount: 200.13,
+              payment_id: payment.id,
+            })
+
+            expect(captured).toEqual(
+              expect.objectContaining({
+                captured_at: expect.any(Date),
+                captures: [expect.objectContaining({ amount: 200.13 })],
+              })
+            )
+          } finally {
+            numberFormatSpy.mockRestore()
+          }
+        })
       })
 
       describe("PaymentCollection", () => {
