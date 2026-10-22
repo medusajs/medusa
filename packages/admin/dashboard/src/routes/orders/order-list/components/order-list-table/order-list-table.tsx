@@ -41,6 +41,9 @@ export const OrderListTable = () => {
     enablePagination: true,
     count,
     pageSize: PAGE_SIZE,
+    meta: {
+      orderIdsOnPage: orders?.map((order) => order.id) ?? [],
+    },
   })
 
   if (isError) {

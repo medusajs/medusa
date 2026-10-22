@@ -116,7 +116,7 @@ const CustomerOrderActions = ({ order }: { order: HttpTypes.AdminOrder }) => {
 const columnHelper = createColumnHelper<HttpTypes.AdminOrder>()
 
 const useColumns = () => {
-  const base = useOrderTableColumns({ exclude: ["customer"] })
+  const base = useOrderTableColumns({ exclude: ["customer", "notes"] })
 
   return useMemo(
     () => [

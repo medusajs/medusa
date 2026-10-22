@@ -24,6 +24,10 @@ import {
   FulfillmentStatusHeader,
 } from "../../../components/table/table-cells/order/fulfillment-status-cell"
 import {
+  OrderNotesIndicatorCell,
+  OrderNotesIndicatorHeader,
+} from "../../../components/table/table-cells/order/order-notes-indicator-cell"
+import {
   PaymentStatusCell,
   PaymentStatusHeader,
 } from "../../../components/table/table-cells/order/payment-status-cell"
@@ -124,6 +128,22 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
           const country = countries.find((c) => c.iso_2 === countryCode)
 
           return <CountryCell country={country} />
+        },
+      }),
+      columnHelper.display({
+        id: "notes",
+        header: () => <OrderNotesIndicatorHeader />,
+        cell: ({ row, table }) => {
+          const { orderIdsOnPage } = (table.options.meta ?? {}) as {
+            orderIdsOnPage?: string[]
+          }
+
+          return (
+            <OrderNotesIndicatorCell
+              orderId={row.original.id}
+              orderIdsOnPage={orderIdsOnPage ?? []}
+            />
+          )
         },
       }),
     ],
