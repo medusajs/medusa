@@ -8,6 +8,8 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 if [[ -n "${1:-}" ]]; then
   PR="$1"
 else
@@ -19,4 +21,6 @@ if ! [[ "$PR" =~ ^[0-9]+$ ]]; then
   exit 1
 fi
 
-gh pr diff "$PR"
+REPO="${GITHUB_REPOSITORY:-medusajs/medusa}"
+
+gh pr diff "$PR" --repo "$REPO" | python3 "$SCRIPT_DIR/sanitize_untrusted.py"

@@ -36,50 +36,27 @@ Always look at the underlying source code (under `packages/`) when the generated
 
 ---
 
-## Step 3 — Respond
+## Step 3 — Decide
 
 ### Issue is VALID
 
-Add a comment confirming the issue and indicating where the fix should go. Then add the `good first issue` label.
+- Fix fits the limits in `reference/outcomes.md` (typically a wrong
+  sentence, example, link, or TSDoc description in a few files): pick
+  `fix` with `fix_route: "docs"` and template `fix-queued`. The summary
+  says what's wrong and the fix location from the table below.
+- Needs a new guide, a restructure, or a decision about intended behavior:
+  pick `escalate` with template `escalated` and fill `linear`.
 
-**Comment template — valid doc issue:**
+**Fix location by doc type:**
 
-```markdown
-Thanks for pointing this out! You're right that the documentation [is missing / has incorrect information about / is unclear about] [topic].
-
-[Include the fix location guidance below if it's non-obvious to contributors]
-
-This is a great opportunity for a community contribution — we'd welcome a PR! Check out our [docs contribution guidelines](https://docs.medusajs.com/learn/resources/contribution-guidelines/docs) to get started.
-```
-
-**Fix location wording by doc type:**
-
-- **Auto-generated references:** "The reference docs are auto-generated from TSDoc comments. The fix should be made in the TSDoc comments of [relevant source file]."
-- **API reference descriptions:** "The API reference is generated from OpenAPI specs. The description fix should be made in `www/utils/generated/oas-output/`."
-- **API reference schema:** "The schema structure comes from the HTTP types. The fix should be made in `packages/core/types/src/http/`."
-- **UI component props:** "The component prop descriptions come from the component specs. The fix should be made in `www/apps/ui/specs/`."
-- **General MDX docs:** No special routing needed.
-
-```bash
-bash scripts/labels.sh <issue_number> add good first issue
-```
-
----
+- **Auto-generated references:** TSDoc comments in the relevant source file under `packages/`.
+- **API reference descriptions:** `www/utils/generated/oas-output/`.
+- **API reference schema:** HTTP types in `packages/core/types/src/http/`. A schema change that alters the actual API response is a public API change: `escalate`.
+- **UI component props:** `www/apps/ui/specs/`.
+- **General MDX docs:** the MDX file in `www/apps/`.
 
 ### Issue is NOT valid
 
-Add a comment explaining what the docs actually say or why the report is inaccurate, then close the issue.
-
-**Comment template — not a valid doc issue:**
-
-```markdown
-Thanks for the report! After reviewing the documentation, [explanation of why the docs are actually correct / where the correct information is].
-
-[Link to the relevant docs section if helpful]
-
-I'm going to close this, but please feel free to reopen if you believe something is still unclear or incorrect.
-```
-
-```bash
-bash scripts/close_issue.sh <issue_number>
-```
+Pick `close` with `close-invalid`. The summary explains what the docs
+actually say or where the correct information is, with a link (see
+`doc-links.md`).

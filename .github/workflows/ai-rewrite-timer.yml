@@ -1,0 +1,112 @@
+name: AI Rewrite Timer
+
+on:
+  schedule:
+    # Closes issues and PRs still labeled requires-rewrite 8 hours after the request.
+    - cron: "41 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Log the issues and PRs that would be closed without commenting, closing, or removing labels."
+        required: false
+        default: true
+        type: boolean
+
+permissions: {}
+
+concurrency:
+  group: ai-rewrite-timer
+  cancel-in-progress: false
+
+jobs:
+  # Deterministic, no model. Issues and PRs are read through the API only.
+  close-expired:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+          permission-issues: write
+          permission-pull-requests: write
+
+      - name: Close expired rewrite requests
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          set -euo pipefail
+
+          LABEL="requires-rewrite"
+          GRACE_SECONDS=$((8 * 3600))
+
+          # Writes always target the number passed as $1 through GITHUB_EVENT_NUMBER.
+          act() {
+            local number="$1"; shift
+            if [[ "$DRY_RUN" == "true" ]]; then
+              echo "[dry run] #$number: $*"
+              return 0
+            fi
+            GITHUB_EVENT_NUMBER="$number" "$@"
+          }
+
+          evaluate() {
+            local number="$1" kind="$2" workflow timeline labeled_at age
+
+            case "$kind" in
+              issue) workflow="triage" ;;
+              pr)    workflow="review" ;;
+              *) echo "::error::Unknown kind '$kind' for #$number" >&2; return 1 ;;
+            esac
+
+            timeline=$(gh api --paginate "repos/$REPO/issues/$number/timeline?per_page=100" | jq -s -c 'add // []')
+            labeled_at=$(jq -r --arg l "$LABEL" \
+              '[.[] | select(.event == "labeled" and .label.name == $l)] | last | .created_at // empty' <<<"$timeline")
+            if [[ -z "$labeled_at" ]]; then
+              echo "::warning::#$number carries $LABEL but its timeline has no labeled event; not closing."
+              return 0
+            fi
+
+            age=$(( $(date -u +%s) - $(date -u -d "$labeled_at" +%s) ))
+            if [[ "$age" -lt "$GRACE_SECONDS" ]]; then
+              echo "#$number ($kind): waiting on a rewrite, $(( (GRACE_SECONDS - age) / 60 ))m left."
+              return 0
+            fi
+
+            echo "#$number ($kind): not rewritten after $((age / 3600))h, closing."
+            act "$number" bash scripts/add_comment.sh --workflow "$workflow" --template closed-ai-rewrite
+            act "$number" bash scripts/close_issue.sh --workflow "$workflow"
+            act "$number" bash scripts/labels.sh --workflow "$workflow" --action remove --label "$LABEL"
+          }
+
+          ITEMS=$(gh api --paginate "repos/$REPO/issues?state=open&labels=$LABEL&per_page=100" \
+            --jq '.[] | "\(.number) \(if .pull_request then "pr" else "issue" end)"')
+
+          if [[ -z "$ITEMS" ]]; then
+            echo "No open issues or PRs labeled $LABEL."
+            exit 0
+          fi
+
+          # Each item runs in a background job so `set -e` still applies inside
+          # it (errexit is ignored in functions called from `if`/`||`).
+          FAILED=0
+          while read -r NUMBER KIND; do
+            [[ "$NUMBER" =~ ^[0-9]+$ ]] || continue
+            evaluate "$NUMBER" "$KIND" </dev/null &
+            if ! wait $!; then
+              echo "::warning::Rewrite timer failed for #$NUMBER"
+              FAILED=1
+            fi
+          done <<<"$ITEMS"
+          exit "$FAILED"
