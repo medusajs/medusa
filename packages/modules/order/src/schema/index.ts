@@ -269,6 +269,16 @@ enum OrderStatus {
   requires_action
 }
 
+type OrderTag {
+  id: ID!
+  value: String!
+  metadata: JSON
+  orders: [Order]
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime
+}
+
 type Order {
   id: ID!
   version: Int!
@@ -292,6 +302,7 @@ type Order {
   credit_lines: [OrderCreditLine]
   returns: [Return]
   summary: OrderSummary
+  tags: [OrderTag]
   metadata: JSON
   canceled_at: DateTime
   created_at: DateTime!
@@ -573,6 +584,7 @@ type OrderDetail {
   credit_lines: [OrderCreditLine]
   returns: [Return]
   summary: OrderSummary
+  tags: [OrderTag]
   metadata: JSON
   canceled_at: DateTime
   created_at: DateTime!

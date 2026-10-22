@@ -17,6 +17,7 @@ import { adminNoteRoutesMiddlewares } from "./admin/notes/middlewares"
 import { adminNotificationRoutesMiddlewares } from "./admin/notifications/middlewares"
 import { adminOrderChangesRoutesMiddlewares } from "./admin/order-changes/middlewares"
 import { adminOrderEditRoutesMiddlewares } from "./admin/order-edits/middlewares"
+import { adminOrderTagRoutesMiddlewares } from "./admin/order-tags/middlewares"
 import { adminOrderRoutesMiddlewares } from "./admin/orders/middlewares"
 import { adminPaymentCollectionsMiddlewares } from "./admin/payment-collections/middlewares"
 import { adminPaymentRoutesMiddlewares } from "./admin/payments/middlewares"
@@ -138,6 +139,7 @@ export default defineMiddlewares([
   ...adminNoteRoutesMiddlewares,
   ...adminNotificationRoutesMiddlewares,
   ...adminOrderRoutesMiddlewares,
+  ...adminOrderTagRoutesMiddlewares,
   ...adminReservationRoutesMiddlewares,
   ...adminProductCategoryRoutesMiddlewares,
   ...adminShippingProfilesMiddlewares,
