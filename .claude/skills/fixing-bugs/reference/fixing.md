@@ -10,7 +10,7 @@
 
 ## Changesets
 
-Every published package whose source changed needs a changeset. Write the file directly:
+Every published package whose source changed needs a changeset. Only workspace packages under `packages/` are published; changes elsewhere (e.g. `www/`) take no changeset. Write the file directly:
 
 ```md
 ---
