@@ -61,5 +61,5 @@ yarn migration:create          # after any change in src/models
 
 - Requires the Event Bus Module in the container; the constructor throws otherwise. With the in-memory event bus, incremental updates are not received across processes, so the index only catches up on the next start (docs recommend Redis event bus).
 - Worker mode is anything except `worker_mode: "server"`. Server-mode instances neither subscribe to events nor sync; `sync()` there only resets metadata status (and `last_key` for `full`, or TRUNCATEs all index tables for `reset`) and emits the internal `index.continue-sync` / `index.full-sync` / `index.reset-sync` event for a worker to pick up.
-- `onApplicationStart` catches and only logs errors, so a broken schema does not crash boot; check logs prefixed `[Index engine]`.
+- `onApplicationStart` catches and only logs errors, so a broken schema does not crash boot; check logs prefixed `[Index engine]`. A failure while generating `.medusa/types/index-service-entry-points.d.ts` is only logged as a warning and does not skip the data sync.
 - Changing the schema (or a link's `filterable`) changes `fields_hash`; the entity is re-synced on the next start.
