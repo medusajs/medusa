@@ -31,18 +31,23 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
   const { offset } = useQueryParams(["offset"])
   const { hasAllPermissions } = usePermissions()
 
-  const canManageRole = hasAllPermissions([
+  const canAddUsers = hasAllPermissions([
     "user:update",
     "rbac_role_assignment:create",
+  ])
+  const canRemoveUsers = hasAllPermissions([
+    "user:update",
     "rbac_role_assignment:delete",
   ])
 
   const { data: assignableData } = useRbacAssignableRoles(undefined, {
-    enabled: canManageRole,
+    enabled: canAddUsers || canRemoveUsers,
   })
-  const isRoleAssignable = (assignableData?.roles ?? []).some(
+  const isAssignable = (assignableData?.roles ?? []).some(
     (r) => r.id === role.id
   )
+  const canAdd = isAssignable && canAddUsers
+  const isRoleAssignable = isAssignable && canRemoveUsers
 
   useEffect(() => {
     if (!isRoleAssignable && Object.keys(rowSelection).length) {
@@ -124,7 +129,7 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("users.domain")}</Heading>
-        {isRoleAssignable && (
+        {canAdd && (
           <Link to="add-users">
             <Button variant="secondary" size="small">
               {t("general.add")}

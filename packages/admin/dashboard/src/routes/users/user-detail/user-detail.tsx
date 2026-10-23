@@ -43,7 +43,10 @@ export const UserDetail = () => {
               <UserGeneralSection user={user} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="UserRoleSection">
-              <PermissionGuard permission="rbac_role:read">
+              <PermissionGuard
+                permissions={["rbac_role:read", "rbac_role_assignment:read"]}
+                requireAll
+              >
                 <UserRoleSection user={user} />
               </PermissionGuard>
             </LayoutComposer.Entry>

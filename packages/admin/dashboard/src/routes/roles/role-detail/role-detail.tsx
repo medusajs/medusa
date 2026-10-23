@@ -55,7 +55,10 @@ export const RoleDetail = () => {
               <RoleGeneralSection role={role} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="RoleUsersSection">
-              <PermissionGuard permission="user:read">
+              <PermissionGuard
+                permissions={["user:read", "rbac_role_assignment:read"]}
+                requireAll
+              >
                 <RoleUsersSection role={role} />
               </PermissionGuard>
             </LayoutComposer.Entry>

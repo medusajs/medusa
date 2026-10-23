@@ -1669,7 +1669,10 @@ export function getRouteMap({
                       path: "add-users",
                       element: <RoutePermissionGuard />,
                       handle: {
-                        permissions: ["user:update", "rbac_role:update"],
+                        permissions: [
+                          "user:update",
+                          "rbac_role_assignment:create",
+                        ],
                       },
                       children: [
                         {

@@ -14,11 +14,16 @@ export const modulesQueryOptions = {
   staleTime: Infinity,
 }
 
+export const isModuleInstalled = (
+  modules: { key: string }[] | undefined,
+  key: string
+) => !!modules?.some((module) => module.key === key)
+
 export const useIsModuleInstalled = (key: string) => {
   const { data, isLoading } = useQuery(modulesQueryOptions)
 
   return {
-    isInstalled: !!data?.modules?.some((module) => module.key === key),
+    isInstalled: isModuleInstalled(data?.modules, key),
     isLoading,
   }
 }

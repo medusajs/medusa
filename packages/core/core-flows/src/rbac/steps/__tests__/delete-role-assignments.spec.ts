@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework"
 import { asFunction, createContainer } from "@medusajs/framework/awilix"
-import { FeatureFlag, Modules } from "@medusajs/framework/utils"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { Modules } from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
@@ -60,7 +61,11 @@ const emptyRecorded = (): Recorded => ({
 
 describe("deleteRoleAssignmentsStep", () => {
   beforeAll(() => {
-    FeatureFlag.setFlag("rbac", true)
+    jest.spyOn(MedusaModule, "isInstalled").mockReturnValue(true)
+  })
+
+  afterAll(() => {
+    jest.restoreAllMocks()
   })
 
   it("deletes the given ids", async () => {

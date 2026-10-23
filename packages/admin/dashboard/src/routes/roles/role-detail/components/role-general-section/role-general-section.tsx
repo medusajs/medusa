@@ -18,8 +18,8 @@ import {
 import {
   useRbacPolicyPermissions,
   useRbacRolePermissions,
-  useUserPermissions,
 } from "../../../../../hooks/use-resource-permissions"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type RoleGeneralSectionProps = {
   role: HttpTypes.AdminRbacRole
@@ -28,7 +28,11 @@ type RoleGeneralSectionProps = {
 export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
   const { t } = useTranslation()
   const { canUpdate, canDelete } = useRbacRolePermissions()
-  const { canRead: canReadUsers } = useUserPermissions()
+  const { hasAllPermissions } = usePermissions()
+  const canReadUsers = hasAllPermissions([
+    "user:read",
+    "rbac_role_assignment:read",
+  ])
   const { canRead: canReadPolicies } = useRbacPolicyPermissions()
   const prompt = usePrompt()
   const navigate = useNavigate()
