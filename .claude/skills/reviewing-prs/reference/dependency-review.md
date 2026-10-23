@@ -147,3 +147,10 @@ A clearly malicious dependency swap (typosquat, exfil script) is a
 Because the review's `summary` is capped (600 chars) and `blocking_points` are
 one line each, lead with the highest-blast-radius findings and the test areas;
 summarise the long tail of safe patch bumps in a single clause.
+
+## Common Mistakes
+
+- [ ] Nagging a Dependabot/Renovate PR for a missing PR template or blocking it for lockfile size — branch to the dependency-update flow (Step 4b) instead
+- [ ] Approving a dependency-update PR without retrieving the release notes and stating the areas to test
+- [ ] Reviewing a dependency-update PR without running the supply-chain security checks (typosquats, lifecycle scripts, lockfile/manifest mismatch)
+- [ ] Inventing release-note content when `get_dependency_releases.sh` and the PR body return nothing — say so instead

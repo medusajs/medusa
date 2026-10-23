@@ -1,6 +1,7 @@
 import {
   ApplicationMethodAllocationValues,
   BigNumberInput,
+  CampaignBudgetUsageDTO,
   InferEntityType,
   PromotionTypes,
 } from "@medusajs/framework/types"
@@ -34,7 +35,8 @@ export function getComputedActionsForItems(
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   items: PromotionTypes.ComputeActionContext[TargetType.ITEMS],
   appliedPromotionsMap: Map<string, number>,
-  allocationOverride?: ApplicationMethodAllocationValues
+  allocationOverride?: ApplicationMethodAllocationValues,
+  attributeUsage?: CampaignBudgetUsageDTO
 ): PromotionTypes.ComputeActions[] {
   validateContext("items", items)
 
@@ -42,7 +44,8 @@ export function getComputedActionsForItems(
     promotion,
     items,
     appliedPromotionsMap,
-    allocationOverride
+    allocationOverride,
+    attributeUsage
   )
 }
 
@@ -50,7 +53,8 @@ function applyPromotionToItems(
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   items: PromotionTypes.ComputeActionContext[TargetType.ITEMS],
   appliedPromotionsMap: Map<string, BigNumberInput>,
-  allocationOverride?: ApplicationMethodAllocationValues
+  allocationOverride?: ApplicationMethodAllocationValues,
+  attributeUsage?: CampaignBudgetUsageDTO
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
 
@@ -156,7 +160,8 @@ function applyPromotionToItems(
 
     const budgetExceededAction = computeActionForBudgetExceeded(
       promotion,
-      amount
+      amount,
+      attributeUsage
     )
 
     if (budgetExceededAction) {

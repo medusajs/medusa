@@ -366,7 +366,7 @@ export const generatedEditDates = {
   "app/how-to-tutorials/tutorials/agentic-commerce/page.mdx": "2026-08-28T13:56:38.691Z",
   "app/storefront-development/production-optimizations/page.mdx": "2025-10-03T13:28:37.909Z",
   "app/how-to-tutorials/tutorials/category-images/page.mdx": "2026-08-21T06:05:37.060Z",
-  "app/infrastructure-modules/caching/page.mdx": "2026-08-21T06:05:37.183Z",
+  "app/infrastructure-modules/caching/page.mdx": "2026-10-22T10:18:26.628Z",
   "app/troubleshooting/subscribers/not-working/page.mdx": "2025-12-04T14:15:27.288Z",
   "app/integrations/guides/avalara/page.mdx": "2025-10-22T09:56:11.929Z",
   "app/how-to-tutorials/tutorials/product-rentals/page.mdx": "2026-10-05T08:39:14.282Z",

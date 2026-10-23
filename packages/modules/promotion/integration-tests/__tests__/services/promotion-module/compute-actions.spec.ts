@@ -3243,6 +3243,179 @@ moduleIntegrationTestRunner({
               },
             ])
           })
+
+          it("should compute budget exceeded action when the discounted amount exceeds the per attribute limit for type spend_by_attribute", async () => {
+            const testCampaign = await service.createCampaigns({
+              name: "test",
+              campaign_identifier: "test",
+              budget: {
+                type: CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+                attribute: "customer_email",
+                currency_code: "usd",
+                limit: 100,
+              },
+            })
+
+            await createDefaultPromotion(service, {
+              campaign_id: testCampaign.id,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 15,
+                target_rules: [
+                  {
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
+                  },
+                ],
+              } as any,
+            })
+
+            const context = (email: string, subtotal: number) => ({
+              currency_code: "usd",
+              email,
+              customer: { email },
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal,
+                  original_total: subtotal,
+                  is_discountable: true,
+                  product_category: { id: "catg_cotton" },
+                  product: { id: "prod_tshirt" },
+                },
+              ],
+            })
+
+            let result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context("test@test.com", 1000)
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+
+            await service.registerUsage(
+              [{ amount: 60, code: "PROMOTION_TEST" }],
+              { customer_id: null, customer_email: "test@test.com" }
+            )
+
+            result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context("test@test.com", 400)
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+
+            result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context("another@test.com", 400)
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                code: "PROMOTION_TEST",
+                amount: 60,
+                is_tax_inclusive: false,
+                item_id: "item_cotton_tshirt",
+              },
+            ])
+          })
+
+          it("should skip an automatic promotion when the spend_by_attribute budget attribute is missing", async () => {
+            const testCampaign = await service.createCampaigns({
+              name: "test",
+              campaign_identifier: "test",
+              budget: {
+                type: CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+                attribute: "customer_email",
+                currency_code: "usd",
+                limit: 100,
+              },
+            })
+
+            await createDefaultPromotion(service, {
+              is_automatic: true,
+              campaign_id: testCampaign.id,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 15,
+              } as any,
+            })
+
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 400,
+                  original_total: 400,
+                  is_discountable: true,
+                  product_category: { id: "catg_cotton" },
+                  product: { id: "prod_tshirt" },
+                },
+              ],
+            }
+
+            const result = await service.computeActions([], context)
+
+            expect(result).toEqual([])
+          })
+
+          it("should throw for a code-applied promotion when the spend_by_attribute budget attribute is missing", async () => {
+            const testCampaign = await service.createCampaigns({
+              name: "test",
+              campaign_identifier: "test",
+              budget: {
+                type: CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+                attribute: "customer_email",
+                currency_code: "usd",
+                limit: 100,
+              },
+            })
+
+            await createDefaultPromotion(service, {
+              is_automatic: false,
+              campaign_id: testCampaign.id,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 15,
+              } as any,
+            })
+
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 400,
+                  original_total: 400,
+                  is_discountable: true,
+                  product_category: { id: "catg_cotton" },
+                  product: { id: "prod_tshirt" },
+                },
+              ],
+            }
+
+            await expect(
+              service.computeActions(["PROMOTION_TEST"], context)
+            ).rejects.toThrow(
+              `Attribute value for "customer_email" is required by promotion campaing budget`
+            )
+          })
         })
       })
 
@@ -5902,6 +6075,170 @@ moduleIntegrationTestRunner({
       })
 
       describe("when promotion of type buyget", () => {
+        describe("when the promotion is tax inclusive", () => {
+          // 20% tax: subtotal 250 (excl), original_total 300 (incl)
+          const context = {
+            currency_code: "usd",
+            items: [
+              {
+                id: "item_buy",
+                quantity: 1,
+                subtotal: 100,
+                original_total: 120,
+                is_discountable: true,
+                product_category: { id: "catg_buy" },
+                product: { id: "prod_buy" },
+              },
+              {
+                id: "item_target",
+                quantity: 1,
+                subtotal: 250,
+                original_total: 300,
+                is_discountable: true,
+                product_category: { id: "catg_target" },
+                product: { id: "prod_target" },
+              },
+            ],
+          }
+
+          const createTaxInclusiveBuyGet = async (
+            type: "fixed" | "percentage",
+            value: number,
+            code = "PROMOTION_TEST"
+          ) =>
+            createDefaultPromotion(service, {
+              code,
+              type: PromotionType.BUYGET,
+              is_tax_inclusive: true,
+              application_method: {
+                type,
+                target_type: "items",
+                value,
+                allocation: "each",
+                max_quantity: 1,
+                apply_to_quantity: 1,
+                buy_rules_min_quantity: 1,
+                target_rules: [
+                  {
+                    attribute: "items.product_category.id",
+                    operator: "eq",
+                    values: ["catg_target"],
+                  },
+                ],
+                buy_rules: [
+                  {
+                    attribute: "items.product_category.id",
+                    operator: "eq",
+                    values: ["catg_buy"],
+                  },
+                ],
+              } as any,
+            })
+
+          it("should apply a fixed value as a tax-inclusive adjustment", async () => {
+            await createTaxInclusiveBuyGet("fixed", 100)
+
+            const result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_target",
+                amount: 100,
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: true,
+              },
+            ])
+          })
+
+          it("should cap a fixed value at the tax-inclusive item total", async () => {
+            await createTaxInclusiveBuyGet("fixed", 1000)
+
+            const result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_target",
+                amount: 300,
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: true,
+              },
+            ])
+          })
+
+          it("should compute a percentage from the tax-inclusive item total", async () => {
+            await createTaxInclusiveBuyGet("percentage", 50)
+
+            const result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_target",
+                amount: 150,
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: true,
+              },
+            ])
+          })
+
+          it("should not let a following promotion exceed the item total", async () => {
+            await createTaxInclusiveBuyGet("percentage", 50, "BUYGET_TAX_INCL")
+            await createDefaultPromotion(service, {
+              code: "STANDARD_TAX_INCL",
+              is_tax_inclusive: true,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 1000,
+                max_quantity: 1,
+                target_rules: [
+                  {
+                    attribute: "items.product_category.id",
+                    operator: "eq",
+                    values: ["catg_target"],
+                  },
+                ],
+              } as any,
+            })
+
+            const result = await service.computeActions(
+              ["BUYGET_TAX_INCL", "STANDARD_TAX_INCL"],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual(
+              expect.arrayContaining([
+                {
+                  action: "addItemAdjustment",
+                  item_id: "item_target",
+                  amount: 150,
+                  code: "BUYGET_TAX_INCL",
+                  is_tax_inclusive: true,
+                },
+                {
+                  action: "addItemAdjustment",
+                  item_id: "item_target",
+                  amount: 150,
+                  code: "STANDARD_TAX_INCL",
+                  is_tax_inclusive: true,
+                },
+              ])
+            )
+          })
+        })
+
         it("should compute adjustment when target and buy rules match", async () => {
           const context = {
             currency_code: "usd",
@@ -7742,6 +8079,76 @@ moduleIntegrationTestRunner({
             )
 
             expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
+
+          it("should rank eligible lines by unit price when they have different quantities", async () => {
+            const buyThreeGetOnePromotion = await createDefaultPromotion(
+              service,
+              {
+                code: "BUY3GET1",
+                type: PromotionType.BUYGET,
+                application_method: {
+                  type: "percentage",
+                  target_type: "items",
+                  value: 100,
+                  allocation: "each",
+                  max_quantity: 1,
+                  apply_to_quantity: 1,
+                  buy_rules_min_quantity: 3,
+                  target_rules: [
+                    {
+                      attribute: "items.product.id",
+                      operator: "in",
+                      values: [product1, product2],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "items.product.id",
+                      operator: "in",
+                      values: [product1, product2],
+                    },
+                  ],
+                } as any,
+              }
+            )
+
+            const expensiveItem = {
+              id: "item_expensive",
+              quantity: 1,
+              subtotal: 379,
+              original_total: 379,
+              is_discountable: true,
+              product: { id: product1 },
+            }
+
+            const cheapItem = {
+              id: "item_cheap",
+              quantity: 3,
+              subtotal: 597,
+              original_total: 597,
+              is_discountable: true,
+              product: { id: product2 },
+            }
+
+            for (const items of [
+              [expensiveItem, cheapItem],
+              [cheapItem, expensiveItem],
+            ]) {
+              const result = await service.computeActions(
+                [buyThreeGetOnePromotion.code!],
+                { currency_code: "usd", items }
+              )
+
+              expect(JSON.parse(JSON.stringify(result))).toEqual([
+                {
+                  action: "addItemAdjustment",
+                  item_id: "item_cheap",
+                  amount: 199,
+                  code: "BUY3GET1",
+                },
+              ])
+            }
           })
         })
 

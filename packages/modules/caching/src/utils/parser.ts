@@ -127,7 +127,7 @@ export class CacheInvalidationParser {
    * Detect entity type based on object structure and GraphQL type map
    */
   private detectEntityType(obj: any, suggestedType?: string): string | null {
-    if (obj.id) {
+    if (typeof obj.id === "string") {
       const idParts = obj.id.split("_")
       if (idParts.length > 1 && this.idPrefixToEntityName[idParts[0]]) {
         return this.idPrefixToEntityName[idParts[0]]

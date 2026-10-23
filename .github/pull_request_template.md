@@ -1,5 +1,9 @@
 ## Summary
 
+**Linked issue** — The issue this PR fixes. You must be assigned to it. Typo fixes to `.md`/`.mdx` files can skip this.
+
+Fixes #
+
 **What** — What changes are introduced in this PR?
 
 *Please provide answer here*
@@ -38,7 +42,16 @@ Please ensure the following before requesting a review:
     - To add a changeset, run `yarn changeset` and follow the prompts
 - [ ] The changes are covered by relevant **tests**
 - [ ] I have verified the code works as intended locally
-- [ ] I have linked the related issue(s) if applicable
+- [ ] I have linked the issue this PR fixes, and I'm assigned to it
+- [ ] I wrote this description myself and can explain every change in this PR
+
+---
+
+## AI Usage
+
+Did you use AI tools for this PR? If yes, which ones and for what (for example, generating tests, refactoring, translating this description)?
+
+*Please provide answer here*
 
 ---
 

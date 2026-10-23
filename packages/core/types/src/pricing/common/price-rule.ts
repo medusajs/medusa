@@ -136,6 +136,21 @@ export interface FilterablePriceRuleProps
    * The IDs to filter the price rule's associated price.
    */
   price_id?: string | string[] | OperatorMap<string | string[]>
+  /**
+   * The attributes to filter price rules by.
+   */
+  attribute?: string | string[] | OperatorMap<string | string[]>
+  /**
+   * The values to filter price rules by. Values are stored as strings.
+   */
+  value?: string | string[] | OperatorMap<string | string[]>
+  /**
+   * The operators to filter price rules by.
+   */
+  operator?:
+    | PricingRuleOperatorValues
+    | PricingRuleOperatorValues[]
+    | OperatorMap<PricingRuleOperatorValues | PricingRuleOperatorValues[]>
 }
 
 /**
