@@ -34,7 +34,7 @@ module.exports = defineConfig({
 
 ## Architecture
 
-- `src/loaders/index.ts`: creates a lazy ioredis client (it connects on the first lock command, so migration-only loads open no connection) and registers `redisClient` and `prefix` in the provider container.
+- `src/loaders/index.ts`: creates the ioredis connection and registers `redisClient` and `prefix` in the provider container.
 - `shutdown()` disconnects the client; the Locking Module calls it from its `onApplicationShutdown` hook.
 - `src/services/redis-lock.ts`: `RedisLockingProvider implements ILockingProvider`, `static identifier = "locking-redis"`. Implements `execute`, `acquire`, `release`, `releaseAll`. Atomic acquire/extend/release are custom Lua commands defined with `defineCommand`, all owner-checked.
 - `execute(keys, job, { timeout?, expire? })`: acquires with a per-call owner `execute:{uuid}`, retries with exponential backoff + jitter until `timeout`, then renews the lease (`expire`, default 60 s) every `expire / 3` while `job` runs. If renewal finds the key lost, `job`'s `AbortSignal` is aborted and `execute` throws a `CONFLICT` error even if `job` resolved.
@@ -47,7 +47,7 @@ module.exports = defineConfig({
 
 ## Gotchas
 
-- Missing `redisUrl` throws at boot. The connection isn't checked at boot; an unreachable Redis surfaces on the first lock command.
+- Missing `redisUrl` throws at boot. A failed initial connect is only logged.
 - The `ttl` option in the type is unused.
 - `acquire`/`release`/`releaseAll` without `ownerId` use the owner `"*"`; `releaseAll()` only deletes keys owned by `"*"`, not every lock.
 - Long jobs passed to `execute` should honor the `signal` argument; ignoring it still makes `execute` throw once the lease is lost.

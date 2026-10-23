@@ -46,15 +46,6 @@ describe("locking-redis loader", () => {
     return new RedisLockingProvider(container.cradle as any, {} as any)
   }
 
-  it("should not open a Redis connection until a lock command is sent", async () => {
-    const provider = await loadProvider()
-    await setTimeout(100)
-
-    expect(openConnections).toBe(0)
-
-    await provider.shutdown()
-  })
-
   it("should close the Redis connection on shutdown", async () => {
     const initialConnections = openConnections
     const provider = await loadProvider()
