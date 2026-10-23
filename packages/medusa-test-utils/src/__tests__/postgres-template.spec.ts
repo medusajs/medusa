@@ -13,8 +13,10 @@ jest.mock("@medusajs/framework/pg", () => ({
 
 import { Client } from "@medusajs/framework/pg"
 import {
+  closeWaitingroomClient,
   createDatabase,
   dropDatabase,
+  dropPostgresDatabaseTemplate,
 } from "../medusa-test-runner-utils/postgres-template"
 
 const pgError = (code: string, message = "pg error") =>
@@ -135,6 +137,50 @@ describe("test-utils database management (pg-god replacement)", () => {
       await expect(
         dropDatabase({ databaseName: "test_db" })
       ).rejects.toThrow("in use")
+      expect(mockEnd).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe("waiting room client", () => {
+    const originalEnv = process.env
+
+    afterEach(async () => {
+      await closeWaitingroomClient()
+      process.env = originalEnv
+    })
+
+    it("should connect with the DB env vars set after the module was loaded", async () => {
+      process.env = {
+        ...originalEnv,
+        DB_HOST: "runner-host",
+        DB_PORT: "6543",
+        DB_USERNAME: "runner-user",
+        DB_PASSWORD: "runner-secret",
+        DB_WAITINGROOM_DATABASE: "runner-waitingroom",
+      }
+
+      await dropPostgresDatabaseTemplate("test_db-template")
+
+      expect(Client).toHaveBeenCalledWith({
+        host: "runner-host",
+        user: "runner-user",
+        password: "runner-secret",
+        port: 6543,
+        database: "runner-waitingroom",
+      })
+    })
+
+    it("should reconnect with the new credentials when the DB env vars change", async () => {
+      process.env = { ...originalEnv, DB_PASSWORD: "first-secret" }
+      await dropPostgresDatabaseTemplate("test_db-template")
+
+      process.env = { ...originalEnv, DB_PASSWORD: "second-secret" }
+      await dropPostgresDatabaseTemplate("test_db-template")
+
+      expect(Client).toHaveBeenCalledTimes(2)
+      expect(Client).toHaveBeenLastCalledWith(
+        expect.objectContaining({ password: "second-secret" })
+      )
       expect(mockEnd).toHaveBeenCalledTimes(1)
     })
   })
