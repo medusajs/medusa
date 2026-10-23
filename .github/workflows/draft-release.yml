@@ -142,6 +142,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          check-latest: true
           cache: "yarn"
           # Only the docs-util workspace is installed in this job, so key the
           # cache on its lockfile rather than the repository root's.
