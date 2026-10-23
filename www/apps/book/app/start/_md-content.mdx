@@ -84,7 +84,7 @@ Ask the user for a project name (default: `my-medusa-store`).
 psql -lqt | cut -d\| -f1 | grep -qw "<project-name>"
 ```
 
-- **Exit code `0`** (database exists) → generate a randomised project suffix to use with `create-medusa-app. For example:
+- **Exit code `0`** (database exists) → generate a randomized project suffix to use with `create-medusa-app`. For example:
 
   ```bash
   PROJECT_SUFFIX=$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c6)
@@ -98,7 +98,7 @@ psql -lqt | cut -d\| -f1 | grep -qw "<project-name>"
 
 From the directory where the project should be created, run `create-medusa-app` with `CI=true` to skip interactive prompts and `--no-browser` to prevent the command from starting servers and opening a browser (which would hang).
 
-**If didn't set a randomised project suffix** (no collision detected):
+**If you didn't set a randomized project suffix** (no collision detected):
 
 ```bash
 # pnpm (preferred)
@@ -111,32 +111,32 @@ CI=true yarn dlx create-medusa-app@latest <project-name> --with-nextjs-starter -
 CI=true npx create-medusa-app@latest <project-name> --with-nextjs-starter --no-browser
 ```
 
-**If set a randomised project suffix** (collision detected):
+**If you set a randomized project suffix** (collision detected):
 
 ```bash
 # pnpm (preferred)
 CI=true pnpm dlx create-medusa-app@latest <project-name>-$PROJECT_SUFFIX --with-nextjs-starter --no-browser
 
 # yarn
-CI=true yarn dlx create-medusa-app@latest <project-name> --with-nextjs-starter --no-browser
+CI=true yarn dlx create-medusa-app@latest <project-name>-$PROJECT_SUFFIX --with-nextjs-starter --no-browser
 
 # npm
-CI=true npx create-medusa-app@latest <project-name> --with-nextjs-starter --no-browser
+CI=true npx create-medusa-app@latest <project-name>-$PROJECT_SUFFIX --with-nextjs-starter --no-browser
 ```
 
 The command:
 
 - Creates a monorepo at `./<project-name>` with `apps/backend` (Medusa server + admin) and `apps/storefront` (Next.js Starter Storefront).
-- Creates a PostgreSQL database named `$DB_NAME` and runs migrations.
+- Creates a PostgreSQL database named after the project (for example, `medusa-<project-name>`) and runs migrations.
 - Does **not** start the dev servers and does **not** open a browser (because of `--no-browser`).
 
-After the install completes, `cd` into `<project-name>` for all subsequent steps.
+After the install completes, `cd` into the project directory (`<project-name>`, or `<project-name>-$PROJECT_SUFFIX` if you set a suffix) for all subsequent steps.
 
 ---
 
 ## Step 3: Create the Admin User
 
-Because we used `--no-browser`, no admin user has been created yet. Create a local test user with preset credentials — these are for local development only and will not transfer to any deployed application.
+Because you used `--no-browser`, no admin user has been created yet. Create a local test user with preset credentials — these are for local development only and will not transfer to any deployed application.
 
 From the backend directory (`apps/backend`), run:
 
@@ -192,7 +192,7 @@ Then ask the user: **"Would you like to deploy your store to Medusa Cloud for se
 - **Yes** → continue to Step 5.
 - **No / Later** → skip to Step 4a and finish local-only setup.
 
-DO NOT show wrap up yet. Wait until user confirms deployment or skipping before showing the next steps.
+DO NOT show wrap up yet. Wait until the user confirms deployment or skipping before showing the next steps.
 
 ---
 
@@ -347,7 +347,7 @@ Add the following to `.cursor/mcp.json` (project) or the user's Cursor settings:
 }
 ```
 
-Then ask user to authenticate with Medusa Cloud from the Cursor settings.
+Then ask the user to authenticate with Medusa Cloud from the Cursor settings.
 
 ### VS Code (with MCP support)
 
@@ -364,7 +364,7 @@ Add the following to `.vscode/mcp.json`:
 }
 ```
 
-Then ask user to authenticate with Medusa Cloud from the VS Code MCP extension.
+Then ask the user to authenticate with Medusa Cloud from the VS Code MCP extension.
 
 ### Other agents
 
@@ -468,7 +468,7 @@ mcloud environments get "$ENV_HANDLE" --json | jq '{backend_url, storefront_url}
 
 Show the user:
 
-- **Admin dashboard**: `<backend_url>/app` (login with Medusa Cloud account, button is on the dashboard)
+- **Admin dashboard**: `<backend_url>/app` (log in with the Medusa Cloud account using the login button on the dashboard)
 - **Storefront**: `<storefront_url>` (if a storefront was deployed)
 - **API base**: `<backend_url>`
 
