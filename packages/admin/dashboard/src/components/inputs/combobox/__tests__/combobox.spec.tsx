@@ -48,6 +48,11 @@ Object.defineProperty(window, "IntersectionObserver", {
   value: MockIntersectionObserver,
 })
 
+// jsdom has no layout, so Ariakit treats every element as hidden and can't scroll
+// the active option into view, which drops keystrokes while typing.
+HTMLElement.prototype.checkVisibility = () => true
+HTMLElement.prototype.scrollIntoView = vi.fn()
+
 afterEach(() => {
   cleanup()
 })
