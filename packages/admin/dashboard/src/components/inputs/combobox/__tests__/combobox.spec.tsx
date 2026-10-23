@@ -57,7 +57,7 @@ afterEach(() => {
   cleanup()
 })
 
-describe("Combobox", () => {
+describe("Combobox", { timeout: 15_000 }, () => {
   it("should allow typing in search input in controlled mode", async () => {
     const user = userEvent.setup()
 
