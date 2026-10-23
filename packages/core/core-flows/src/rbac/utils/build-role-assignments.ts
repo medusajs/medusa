@@ -10,7 +10,6 @@ import {
  * assignment per scope, a role without scopes in a single unscoped assignment.
  *
  * @ignore
- * @featureFlag rbac
  */
 export const buildRoleAssignments = (
   roles: CreateActorRoleDTO[] | null | undefined,
@@ -45,7 +44,6 @@ export const buildRoleAssignments = (
  * unscoped pair.
  *
  * @ignore
- * @featureFlag rbac
  */
 export const buildRoleScopePairs = (
   roles: CreateActorRoleDTO[] | null | undefined

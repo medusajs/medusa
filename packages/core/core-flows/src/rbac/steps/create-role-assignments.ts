@@ -8,13 +8,11 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type CreateRoleAssignmentsStepInput = CreateRbacRoleAssignmentDTO[]
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRoleAssignmentsStepId = "create-role-assignments"
 
@@ -23,7 +21,6 @@ export const createRoleAssignmentsStepId = "create-role-assignments"
  * cached resolved-roles entries of the affected reference entities.
  *
  * @ignore
- * @featureFlag rbac
  */
 export const createRoleAssignmentsStep = createStep(
   createRoleAssignmentsStepId,

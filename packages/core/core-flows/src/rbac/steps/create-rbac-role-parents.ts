@@ -4,7 +4,6 @@ import { IRbacModuleService } from "@medusajs/types"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type CreateRbacRoleParentDTO = {
   role_id: string
@@ -14,7 +13,6 @@ export type CreateRbacRoleParentDTO = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type CreateRbacRoleParentsStepInput = {
   role_parents: CreateRbacRoleParentDTO[]
@@ -22,13 +20,11 @@ export type CreateRbacRoleParentsStepInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRoleParentsStepId = "create-rbac-role-parents"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRoleParentsStep = createStep(
   createRbacRoleParentsStepId,

@@ -17,7 +17,6 @@ import {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminRbacPolicyParams>,
@@ -44,7 +43,6 @@ export const GET = async (
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateRbacPolicy>,
@@ -85,7 +83,6 @@ export const POST = async (
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,

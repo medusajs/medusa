@@ -8,7 +8,6 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export interface GetInviteRolesStepInput {
   invite_id: string
@@ -16,7 +15,6 @@ export interface GetInviteRolesStepInput {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const getInviteRolesStepId = "get-invite-roles-step"
 /**
@@ -29,7 +27,6 @@ export const getInviteRolesStepId = "get-invite-roles-step"
  *   invite_id: "invite_123"
  * })
  * @ignore
- * @featureFlag rbac
  */
 export const getInviteRolesStep = createStep(
   getInviteRolesStepId,

@@ -5,7 +5,6 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
  * @ignore
- * @featureFlag rbac
  * @since 2.16.0
  */
 export type GetAssignablePoliciesStepInput = {
@@ -42,7 +41,6 @@ type AssignablePolicy = {
 
 /**
  * @ignore
- * @featureFlag rbac
  * @since 2.16.0
  */
 export type GetAssignablePoliciesStepOutput = {
@@ -52,7 +50,6 @@ export type GetAssignablePoliciesStepOutput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  * @since 2.16.0
  */
 export const getAssignablePoliciesStepId = "get-assignable-policies"
@@ -61,7 +58,6 @@ export const getAssignablePoliciesStepId = "get-assignable-policies"
  * Resolves the set of policies the actor is allowed to assign.
  *
  * @ignore
- * @featureFlag rbac
  * @since 2.16.0
  */
 export const getAssignablePoliciesStep = createStep(

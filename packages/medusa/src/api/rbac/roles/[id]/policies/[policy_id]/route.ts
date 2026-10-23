@@ -16,7 +16,6 @@ import {
  * detached, the same requirement as for attaching it.
  *
  * @ignore
- * @featureFlag rbac
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,

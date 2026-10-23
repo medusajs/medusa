@@ -13,7 +13,6 @@ import {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type CreateRbacRolePoliciesWorkflowInput = {
   actor_id?: string
@@ -26,13 +25,11 @@ export type CreateRbacRolePoliciesWorkflowInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRolePoliciesWorkflowId = "create-rbac-role-policies"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRolePoliciesWorkflow = createWorkflow(
   createRbacRolePoliciesWorkflowId,

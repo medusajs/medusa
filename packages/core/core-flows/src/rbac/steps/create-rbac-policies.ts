@@ -9,7 +9,6 @@ import {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type CreateRbacPoliciesStepInput = {
   policies: CreateRbacPolicyDTO[]
@@ -17,13 +16,11 @@ export type CreateRbacPoliciesStepInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacPoliciesStepId = "create-rbac-policies"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacPoliciesStep = createStep(
   createRbacPoliciesStepId,

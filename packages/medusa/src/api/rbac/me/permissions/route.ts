@@ -33,7 +33,6 @@ import {
  * being assigned any. Assigned roles are always covered.
  *
  * @ignore
- * @featureFlag rbac
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<

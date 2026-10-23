@@ -9,7 +9,6 @@ import { defineFileConfig, Modules } from "@medusajs/framework/utils"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUnassignUserRole>,

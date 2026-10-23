@@ -8,7 +8,6 @@ import { createRbacPoliciesStep } from "../steps"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type CreateRbacPoliciesWorkflowInput = {
   policies: CreateRbacPolicyDTO[]
@@ -16,13 +15,11 @@ export type CreateRbacPoliciesWorkflowInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacPoliciesWorkflowId = "create-rbac-policies"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacPoliciesWorkflow = createWorkflow(
   createRbacPoliciesWorkflowId,

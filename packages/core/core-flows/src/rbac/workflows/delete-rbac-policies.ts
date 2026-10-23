@@ -3,7 +3,6 @@ import { deleteRbacPoliciesStep } from "../steps"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type DeleteRbacPoliciesWorkflowInput = {
   ids: string[]
@@ -11,13 +10,11 @@ export type DeleteRbacPoliciesWorkflowInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const deleteRbacPoliciesWorkflowId = "delete-rbac-policies"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const deleteRbacPoliciesWorkflow = createWorkflow(
   deleteRbacPoliciesWorkflowId,

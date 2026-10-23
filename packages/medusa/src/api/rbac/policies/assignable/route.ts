@@ -16,7 +16,6 @@ import { HttpTypes } from "@medusajs/framework/types"
  * request's ambient scope set applies.
  *
  * @ignore
- * @featureFlag rbac
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<

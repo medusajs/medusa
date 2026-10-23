@@ -5,7 +5,6 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type GetRoleAssignmentIdsStepInput = {
   /**
@@ -20,7 +19,6 @@ export type GetRoleAssignmentIdsStepInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const getRoleAssignmentIdsStepId = "get-role-assignment-ids"
 
@@ -33,7 +31,6 @@ export const getRoleAssignmentIdsStepId = "get-role-assignment-ids"
  * RBAC is enabled.
  *
  * @ignore
- * @featureFlag rbac
  */
 export const getRoleAssignmentIdsStep = createStep(
   getRoleAssignmentIdsStepId,

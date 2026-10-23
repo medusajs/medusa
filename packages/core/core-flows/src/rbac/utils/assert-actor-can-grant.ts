@@ -5,7 +5,6 @@ import { MedusaError } from "@medusajs/framework/utils"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type AssertActorCanGrantInput = {
   container: MedusaContainer
@@ -27,7 +26,6 @@ export type AssertActorCanGrantInput = {
  * optionally evaluated within a scope context.
  * An actor can only grant permissions they themselves have.
  * @ignore
- * @featureFlag rbac
  */
 export const assertActorCanGrant = async ({
   container,

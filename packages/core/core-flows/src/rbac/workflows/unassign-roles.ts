@@ -12,7 +12,6 @@ import { useQueryGraphStep } from "../../common"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type UnassignRole = {
   role_id: string
@@ -44,7 +43,6 @@ export type UnassignRolesWorkflowInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const unassignRolesWorkflowId = "unassign-roles"
 
@@ -57,7 +55,6 @@ export const unassignRolesWorkflowId = "unassign-roles"
  * It validates that the granting actor holds all the policies of the roles
  * being removed.
  * @ignore
- * @featureFlag rbac
  */
 export const unassignRolesWorkflow = createWorkflow(
   unassignRolesWorkflowId,

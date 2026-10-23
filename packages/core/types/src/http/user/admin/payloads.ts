@@ -25,7 +25,7 @@ export interface AdminUpdateUser {
 }
 
 /**
- * @featureFlag rbac
+ * The RBAC roles to assign to a user.
  */
 export interface AdminAssignUserRoles {
   assignments: {
@@ -45,7 +45,7 @@ export interface AdminAssignUserRoles {
 }
 
 /**
- * @featureFlag rbac
+ * The RBAC roles to unassign from a user.
  */
 export interface AdminUnassignUserRoles {
   assignments: {

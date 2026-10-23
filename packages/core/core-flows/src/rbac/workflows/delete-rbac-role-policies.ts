@@ -11,7 +11,6 @@ import { validateActorPermissionsStep } from "../steps/validate-actor-permission
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type DeleteRbacRolePoliciesWorkflowInput = {
   role_policy_ids: string[]
@@ -29,7 +28,6 @@ export type DeleteRbacRolePoliciesWorkflowInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const deleteRbacRolePoliciesWorkflowId = "delete-rbac-role-policies"
 
@@ -38,7 +36,6 @@ export const deleteRbacRolePoliciesWorkflowId = "delete-rbac-role-policies"
  * validates that the actor holds every policy being detached, so that an
  * actor cannot strip a role of permissions they do not have themselves.
  * @ignore
- * @featureFlag rbac
  */
 export const deleteRbacRolePoliciesWorkflow = createWorkflow(
   deleteRbacRolePoliciesWorkflowId,

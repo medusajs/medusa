@@ -22,8 +22,6 @@ export type AdminCreateInvite = {
    * The RBAC roles to assign to the user when the invite is accepted. A role
    * can be constrained to one or more scopes, creating one role assignment per
    * scope.
-   *
-   * @featureFlag rbac
    */
   roles?:
     | {

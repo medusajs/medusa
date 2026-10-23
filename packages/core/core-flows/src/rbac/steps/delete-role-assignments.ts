@@ -5,7 +5,6 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type DeleteRoleAssignmentsStepInput = {
   id: string | string[]
@@ -13,7 +12,6 @@ export type DeleteRoleAssignmentsStepInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const deleteRoleAssignmentsStepId = "delete-role-assignments"
 
@@ -23,7 +21,6 @@ export const deleteRoleAssignmentsStepId = "delete-role-assignments"
  * entities.
  *
  * @ignore
- * @featureFlag rbac
  */
 export const deleteRoleAssignmentsStep = createStep(
   deleteRoleAssignmentsStepId,

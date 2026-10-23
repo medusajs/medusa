@@ -13,7 +13,6 @@ import {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type UpdateRbacPoliciesStepInput = {
   selector: FilterableRbacPolicyProps
@@ -22,13 +21,11 @@ export type UpdateRbacPoliciesStepInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const updateRbacPoliciesStepId = "update-rbac-policies"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const updateRbacPoliciesStep = createStep(
   updateRbacPoliciesStepId,

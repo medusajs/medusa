@@ -5,7 +5,6 @@ import { RbacScope } from "@medusajs/framework/types"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type ValidateActorRolePermissionsStepInput = {
   actor_id: string
@@ -25,7 +24,6 @@ export type ValidateActorRolePermissionsStepInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const validateActorRolePermissionsStepId =
   "validate-actor-role-permissions"
@@ -45,7 +43,6 @@ const scopeKey = (scope?: RbacScope) =>
  * So an actor acting within a scope can't grant a role outside of it, or
  * across all scopes, unless they hold its policies unscoped.
  * @ignore
- * @featureFlag rbac
  */
 export const validateActorRolePermissionsStep = createStep(
   validateActorRolePermissionsStepId,

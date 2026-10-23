@@ -14,7 +14,6 @@ import { validateActorPermissionsStep } from "../steps/validate-actor-permission
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type CreateRbacRolesWorkflowInput = {
   actor_id?: string
@@ -30,13 +29,11 @@ export type CreateRbacRolesWorkflowInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRolesWorkflowId = "create-rbac-roles"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRolesWorkflow = createWorkflow(
   createRbacRolesWorkflowId,

@@ -13,7 +13,6 @@ import { CreateRbacRoleAssignmentDTO } from "@medusajs/framework/types"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type AssignRole = {
   role_id: string
@@ -43,7 +42,6 @@ export type AssignRolesWorkflowInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const assignRolesWorkflowId = "assign-roles"
 
@@ -56,7 +54,6 @@ export const assignRolesWorkflowId = "assign-roles"
  * It validates that the roles exist and that the granting actor holds all the
  * policies of the roles being assigned.
  * @ignore
- * @featureFlag rbac
  */
 export const assignRolesWorkflow = createWorkflow(
   assignRolesWorkflowId,

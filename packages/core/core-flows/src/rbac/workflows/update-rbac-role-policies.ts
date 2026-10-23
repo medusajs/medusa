@@ -8,7 +8,6 @@ import { updateRbacRolePoliciesStep } from "../steps/update-rbac-role-policies"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type UpdateRbacRolePoliciesWorkflowInput = {
   selector: Record<string, any>
@@ -17,13 +16,11 @@ export type UpdateRbacRolePoliciesWorkflowInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const updateRbacRolePoliciesWorkflowId = "update-rbac-role-policies"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const updateRbacRolePoliciesWorkflow = createWorkflow(
   updateRbacRolePoliciesWorkflowId,

@@ -9,7 +9,6 @@ import { assertActorCanGrant } from "../utils/assert-actor-can-grant"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type ValidateActorPermissionsStepInput = {
   actor_id: string
@@ -28,7 +27,6 @@ export type ValidateActorPermissionsStepInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const validateActorPermissionsStepId = "validate-actor-permissions"
 
@@ -36,7 +34,6 @@ export const validateActorPermissionsStepId = "validate-actor-permissions"
  * Validates that an actor has access to all the policies they are trying to assign.
  * An actor can only create roles and add policies that they themselves have access to.
  * @ignore
- * @featureFlag rbac
  */
 export const validateActorPermissionsStep = createStep(
   validateActorPermissionsStepId,
