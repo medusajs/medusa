@@ -521,6 +521,26 @@ moduleIntegrationTestRunner<IProductModuleService>({
             { name: "Child B", rank: 2 },
           ])
         })
+
+        it("should rank categories per parent when creating under different parents", async () => {
+          const [childOne, childTwo] = await service.createProductCategories([
+            { name: "Child of one", parent_category_id: productCategoryOne.id },
+            { name: "Child of two", parent_category_id: productCategoryTwo.id },
+          ])
+
+          expect(childOne).toEqual(
+            expect.objectContaining({
+              rank: 0,
+              mpath: `${productCategoryOne.mpath}.${childOne.id}`,
+            })
+          )
+          expect(childTwo).toEqual(
+            expect.objectContaining({
+              rank: 0,
+              mpath: `${productCategoryTwo.mpath}.${childTwo.id}`,
+            })
+          )
+        })
       })
 
       describe("updateCategory", () => {

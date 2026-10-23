@@ -392,30 +392,59 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
   ): Promise<InferEntityType<typeof ProductCategory>[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
 
+    const parentIds = [
+      ...new Set(data.map((entry) => entry.parent_category_id || null)),
+    ]
+
     // Count siblings before creating any category, as counting flushes the pending ones.
-    const siblingsCounts: number[] = []
-    for (const entry of data) {
-      siblingsCounts.push(
+    const nextRankByParentId = new Map<string | null, number>()
+    for (const parentId of parentIds) {
+      nextRankByParentId.set(
+        parentId,
         await manager.count(ProductCategory.name, {
-          parent_category_id: entry.parent_category_id || null,
+          parent_category_id: parentId,
         })
       )
     }
 
+    const parentCategoryIds = [
+      ...new Set(
+        data
+          .map(
+            (entry) =>
+              entry.parent_category_id ??
+              (entry as Partial<InferEntityType<typeof ProductCategory>>)
+                .parent_category?.id
+          )
+          .filter((id): id is string => !!id)
+      ),
+    ]
+    const parentCategories = parentCategoryIds.length
+      ? await manager.find<InferEntityType<typeof ProductCategory>>(
+          ProductCategory.name,
+          { id: parentCategoryIds }
+        )
+      : []
+    const parentCategoriesById = new Map(
+      parentCategories.map((category) => [category.id, category])
+    )
+
     const categories: InferEntityType<typeof ProductCategory>[] = []
-    for (const [i, entry] of data.entries()) {
+    for (const entry of data) {
       const categoryData: Partial<InferEntityType<typeof ProductCategory>> = {
         ...entry,
       }
-      const siblingsCount = siblingsCounts[i]
+      const parentId = entry.parent_category_id || null
+      const maxRank = nextRankByParentId.get(parentId)!
+      nextRankByParentId.set(parentId, maxRank + 1)
 
-      categoryData.rank ??= siblingsCount + i
-      if (categoryData.rank > siblingsCount + i) {
-        categoryData.rank = siblingsCount + i
+      categoryData.rank ??= maxRank
+      if (categoryData.rank > maxRank) {
+        categoryData.rank = maxRank
       }
 
       // There is no need to rerank if it is the last item in the list
-      if (categoryData.rank < siblingsCount + i) {
+      if (categoryData.rank < maxRank) {
         await this.rerankSiblingsAfterCreation(manager, categoryData)
       }
 
@@ -425,9 +454,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
         categoryData.parent_category_id ?? categoryData.parent_category?.id
 
       if (parentCategoryId) {
-        parentCategory = await manager.findOne<
-          InferEntityType<typeof ProductCategory>
-        >(ProductCategory.name, parentCategoryId)
+        parentCategory = parentCategoriesById.get(parentCategoryId) ?? null
 
         if (!parentCategory) {
           throw new MedusaError(
