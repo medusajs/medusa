@@ -86,7 +86,16 @@ export const OrderEditItemsSection = ({
             </StackedFocusModal.Trigger>
 
             <StackedFocusModal.Content>
-              <StackedFocusModal.Header />
+              <StackedFocusModal.Header>
+                <StackedFocusModal.Title asChild>
+                  <span className="sr-only">{t("orders.edits.addItems")}</span>
+                </StackedFocusModal.Title>
+                <StackedFocusModal.Description asChild>
+                  <span className="sr-only">
+                    {t("orders.edits.addItemsDescription")}
+                  </span>
+                </StackedFocusModal.Description>
+              </StackedFocusModal.Header>
 
               <AddOrderEditItemsTable
                 currencyCode={order.currency_code}
