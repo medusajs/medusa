@@ -2,4 +2,4 @@
 "@medusajs/utils": patch
 ---
 
-fix(utils): accept Variant Thumbnail and Variant Image columns in product import
+fix(utils): import the Variant Thumbnail column and ignore Variant Image columns in product import
