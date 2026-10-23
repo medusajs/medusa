@@ -17,6 +17,7 @@ import { Order } from "./order.js"
 import { OrderEdit } from "./order-edit.js"
 import { Payment } from "./payment.js"
 import { PaymentCollection } from "./payment-collection.js"
+import { Module } from "./module.js"
 import { Plugin } from "./plugin.js"
 import { PriceList } from "./price-list.js"
 import { PricePreference } from "./price-preference.js"
@@ -253,6 +254,10 @@ export class Admin {
    */
   public plugin: Plugin
   /**
+   * @tags module
+   */
+  public module: Module
+  /**
    * @tags search
    */
   public search: Search
@@ -329,6 +334,7 @@ export class Admin {
     this.promotion = new Promotion(client)
     this.campaign = new Campaign(client)
     this.plugin = new Plugin(client)
+    this.module = new Module(client)
     this.search = new Search(client)
     this.taxProvider = new TaxProvider(client)
     this.views = new Views(client)

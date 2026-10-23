@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
+import { RBAC_MODULE_KEY, useIsModuleInstalled } from "../../../hooks/api/modules"
 import { useSearchIndexes } from "../../../hooks/api/search-indexes"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { useExtension } from "../../../providers/extension-provider"
@@ -42,7 +43,7 @@ export const SettingsLayout = () => {
 
 const useSettingRoutes = (): INavItem[] => {
   const isTranslationsEnabled = useFeatureFlag("translation")
-  const isRbacEnabled = useFeatureFlag("rbac")
+  const { isInstalled: isRbacEnabled } = useIsModuleInstalled(RBAC_MODULE_KEY)
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const { t } = useTranslation()
 

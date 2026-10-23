@@ -4,7 +4,11 @@ import {
   readRequirementFromHandle,
   type ResolvedRequirement,
 } from "../../components/authentication/route-permission-guard"
-import { featureFlagsQueryOptions } from "../../hooks/api/feature-flags"
+import {
+  isModuleInstalled,
+  modulesQueryOptions,
+  RBAC_MODULE_KEY,
+} from "../../hooks/api/modules"
 import { mePermissionsQueryOptions } from "../../hooks/api/rbac-roles"
 import { checkPermissions, PermissionError } from "../../lib/permissions"
 import { queryClient } from "../../lib/query-client"
@@ -16,10 +20,10 @@ type MutableRoute = Omit<RouteObject, "children" | "loader" | "lazy"> & {
 }
 
 const enforcePermissions = async (requirement: ResolvedRequirement) => {
-  const flags = await queryClient.ensureQueryData(featureFlagsQueryOptions)
+  const { modules } = await queryClient.ensureQueryData(modulesQueryOptions)
 
-  // When RBAC is disabled every check passes.
-  if (!flags?.rbac) {
+  // When RBAC is not installed every check passes.
+  if (!isModuleInstalled(modules, RBAC_MODULE_KEY)) {
     return
   }
 

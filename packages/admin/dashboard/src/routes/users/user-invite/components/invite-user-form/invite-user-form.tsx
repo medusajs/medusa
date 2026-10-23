@@ -35,11 +35,11 @@ import {
   useInvites,
   useResendInvite,
 } from "../../../../../hooks/api/invites"
+import { RBAC_MODULE_KEY, useIsModuleInstalled } from "../../../../../hooks/api/modules"
 import { useRbacAssignableRoles } from "../../../../../hooks/api/rbac-roles"
 import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-user-invite-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import {
   useInvitePermissions,
   useRbacRolePermissions,
@@ -58,7 +58,7 @@ const INVITE_URL = `${window.location.origin}${
 
 export const InviteUserForm = () => {
   const { t } = useTranslation()
-  const isRbacEnabled = useFeatureFlag("rbac")
+  const { isInstalled: isRbacEnabled } = useIsModuleInstalled(RBAC_MODULE_KEY)
   const { canRead: canReadRbacRoles } = useRbacRolePermissions()
   const showRbacRolesField = isRbacEnabled && canReadRbacRoles
 

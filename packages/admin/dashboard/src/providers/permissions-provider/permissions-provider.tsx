@@ -22,7 +22,7 @@ interface PermissionsProviderProps extends PropsWithChildren {
    */
   isLoading?: boolean
   /**
-   * Whether the RBAC feature flag is enabled. When `false`, every permission
+   * Whether the RBAC module is installed. When `false`, every permission
    * check resolves to `true`.
    */
   isRbacEnabled?: boolean
