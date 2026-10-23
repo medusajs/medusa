@@ -47,10 +47,15 @@ export const processPaymentWorkflowId = "process-payment-workflow"
 export const processPaymentWorkflow = createWorkflow(
   processPaymentWorkflowId,
   (input: ProcessPaymentWorkflowInput) => {
+    const webhookData = transform({ input }, ({ input }) => ({
+      session_id: input.data?.session_id,
+      amount: input.data?.amount,
+    }))
+
     const paymentData = useQueryGraphStep({
       entity: "payment",
       fields: ["id"],
-      filters: { payment_session_id: input.data!.session_id },
+      filters: { payment_session_id: webhookData.session_id },
     }).config({
       name: "payment-query",
     })
@@ -58,7 +63,7 @@ export const processPaymentWorkflow = createWorkflow(
     const paymentSessionResult = useQueryGraphStep({
       entity: "payment_session",
       fields: ["payment_collection_id"],
-      filters: { id: input.data!.session_id },
+      filters: { id: webhookData.session_id },
     }).config({
       name: "payment-session-query",
     })
@@ -124,7 +129,7 @@ export const processPaymentWorkflow = createWorkflow(
         .runAsStep({
           input: {
             payment_id: paymentData.data[0].id,
-            amount: input.data!.amount,
+            amount: webhookData.amount,
           },
         })
         .config({
@@ -145,7 +150,7 @@ export const processPaymentWorkflow = createWorkflow(
       }
     ).then(() => {
       return authorizePaymentSessionStep({
-        id: input.data!.session_id,
+        id: webhookData.session_id!,
         context: {},
       }).config({
         name: "authorize-payment-session-autocapture",
@@ -167,7 +172,7 @@ export const processPaymentWorkflow = createWorkflow(
         .runAsStep({
           input: {
             payment_id: autocapturePayment!.id,
-            amount: input.data!.amount,
+            amount: webhookData.amount,
           },
         })
         .config({
@@ -188,7 +193,7 @@ export const processPaymentWorkflow = createWorkflow(
       }
     ).then(() => {
       authorizePaymentSessionStep({
-        id: input.data!.session_id,
+        id: webhookData.session_id!,
         context: {},
       }).config({
         name: "authorize-payment-session",
@@ -212,7 +217,7 @@ export const processPaymentWorkflow = createWorkflow(
       }
     ).then(() => {
       authorizePaymentSessionStep({
-        id: input.data!.session_id,
+        id: webhookData.session_id!,
         context: {},
       }).config({
         name: "authorize-payment-session-deferred",
