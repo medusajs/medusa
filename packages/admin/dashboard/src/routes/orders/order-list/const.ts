@@ -16,6 +16,7 @@ export const DEFAULT_RELATIONS = [
   "*sales_channel",
   "*payment_collections",
   "*shipping_address",
+  "*tags",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(

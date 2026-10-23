@@ -1219,7 +1219,15 @@
     "orderCanceled": "Order canceled successfully",
     "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
     "tags": {
-      "placeholder": "Add a tag"
+      "placeholder": "Add a tag",
+      "addAction": "Add tags",
+      "removeAction": "Remove tags",
+      "addModalHeader": "Add tag to orders",
+      "addModalDescription": "Select a tag to add to the selected orders.",
+      "removeModalHeader": "Remove tag from orders",
+      "removeModalDescription": "Select a tag to remove from the selected orders.",
+      "bulkAddSuccess": "Tag added to the selected orders.",
+      "bulkRemoveSuccess": "Tag removed from the selected orders."
     },
     "list": {
       "noRecordsMessage": "Your orders will show up here."

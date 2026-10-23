@@ -4769,9 +4769,43 @@
           "properties": {
             "placeholder": {
               "type": "string"
+            },
+            "addAction": {
+              "type": "string"
+            },
+            "removeAction": {
+              "type": "string"
+            },
+            "addModalHeader": {
+              "type": "string"
+            },
+            "addModalDescription": {
+              "type": "string"
+            },
+            "removeModalHeader": {
+              "type": "string"
+            },
+            "removeModalDescription": {
+              "type": "string"
+            },
+            "bulkAddSuccess": {
+              "type": "string"
+            },
+            "bulkRemoveSuccess": {
+              "type": "string"
             }
           },
-          "required": ["placeholder"],
+          "required": [
+            "placeholder",
+            "addAction",
+            "removeAction",
+            "addModalHeader",
+            "addModalDescription",
+            "removeModalHeader",
+            "removeModalDescription",
+            "bulkAddSuccess",
+            "bulkRemoveSuccess"
+          ],
           "additionalProperties": false
         },
         "list": {

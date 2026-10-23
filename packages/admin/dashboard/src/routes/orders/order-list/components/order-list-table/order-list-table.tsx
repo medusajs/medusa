@@ -1,5 +1,7 @@
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
+import { RowSelectionState } from "@tanstack/react-table"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, Outlet, useLocation } from "react-router-dom"
 
@@ -11,12 +13,20 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 
 import { DEFAULT_FIELDS } from "../../const"
 import { useOrderTableFilters } from "../../../../../hooks/table/filters"
+import {
+  BulkTagOrdersAction,
+  BulkTagOrdersModal,
+} from "./components/bulk-tag-orders-modal"
 
 const PAGE_SIZE = 20
 
 export const OrderListTable = () => {
   const { t } = useTranslation()
   const location = useLocation()
+
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [bulkTagAction, setBulkTagAction] =
+    useState<BulkTagOrdersAction | null>(null)
 
   const { searchParams, raw } = useOrderTableQuery({
     pageSize: PAGE_SIZE,
@@ -33,7 +43,7 @@ export const OrderListTable = () => {
   )
 
   const filters = useOrderTableFilters()
-  const columns = useOrderTableColumns({})
+  const columns = useOrderTableColumns({ enableRowSelection: true })
 
   const { table } = useDataTable({
     data: orders ?? [],
@@ -41,6 +51,12 @@ export const OrderListTable = () => {
     enablePagination: true,
     count,
     pageSize: PAGE_SIZE,
+    getRowId: (row) => row.id,
+    enableRowSelection: true,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
+    },
     meta: {
       orderIdsOnPage: orders?.map((order) => order.id) ?? [],
     },
@@ -77,8 +93,36 @@ export const OrderListTable = () => {
         noRecords={{
           message: t("orders.list.noRecordsMessage"),
         }}
+        commands={[
+          {
+            action: async (selection) => {
+              setBulkTagAction({
+                mode: "add",
+                orderIds: Object.keys(selection),
+              })
+            },
+            label: t("orders.tags.addAction"),
+            shortcut: "t",
+          },
+          {
+            action: async (selection) => {
+              setBulkTagAction({
+                mode: "remove",
+                orderIds: Object.keys(selection),
+              })
+            },
+            label: t("orders.tags.removeAction"),
+            shortcut: "r",
+          },
+        ]}
       />
       <Outlet />
+      {bulkTagAction && (
+        <BulkTagOrdersModal
+          action={bulkTagAction}
+          onClose={() => setBulkTagAction(null)}
+        />
+      )}
     </Container>
   )
 }
