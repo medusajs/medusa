@@ -83,6 +83,10 @@ export function buildReport({ plan, results, dryRun, runUrl }) {
     if (pr?.url) {
       const risk = result?.risk ? `, ${result.risk} risk` : ""
       review.push(`- ${label}${risk}: ${pr.url}`)
+    } else if (pr?.violation === "conflict") {
+      decide.push(
+        `- ${label}: develop changed while it ran, so the update no longer applies; it'll be retried next week`
+      )
     } else if (pr?.violation) {
       decide.push(
         `- ${label}: the change broke a workflow limit (${pr.violation}), so no PR was opened`
