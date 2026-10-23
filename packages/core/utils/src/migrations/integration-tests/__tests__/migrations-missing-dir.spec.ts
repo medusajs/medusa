@@ -2,8 +2,8 @@ import { access, rm } from "fs/promises"
 import { join } from "path"
 import { createDatabase, dropDatabase } from "pg-god"
 
-import { Migrations } from "../../../../migrations"
-import { mikroOrmCreateConnection } from "../../mikro-orm-create-connection"
+import { Migrations } from "../../index"
+import { mikroOrmCreateConnection } from "../../../dal/mikro-orm/mikro-orm-create-connection"
 
 jest.setTimeout(30000)
 
@@ -12,8 +12,8 @@ const DB_USERNAME = process.env.DB_USERNAME ?? ""
 const DB_PASSWORD = process.env.DB_PASSWORD ?? " "
 process.env.DB_PASSWORD = DB_PASSWORD
 
-const dbName = "my-test-custom-db-migrator"
-const migrationsPath = join(__dirname, "./custom-db-migrator-migrations")
+const dbName = "my-test-migrations-missing-dir"
+const migrationsPath = join(__dirname, "./missing-dir-migrations")
 
 const pgGodCredentials = {
   user: DB_USERNAME ?? "postgres",
@@ -36,7 +36,7 @@ const createConnection = () =>
     migrationsPath
   )
 
-describe("CustomDBMigrator", () => {
+describe("Migrations - missing migrations directory", () => {
   beforeEach(async () => {
     await rm(migrationsPath, { recursive: true, force: true })
     await dropDatabase(

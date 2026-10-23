@@ -10,22 +10,6 @@ import { dynamicImport } from "../../common/dynamic-import"
 import { promiseAll } from "../../common/promise-all"
 
 export class CustomDBMigrator extends BaseMigrator {
-  constructor(em: ConstructorParameters<typeof BaseMigrator>[0]) {
-    super(em)
-
-    // Unlike the base implementation, don't create the migrations directory here:
-    // running migrations must work on a read-only filesystem, and generating
-    // migrations already creates the directory itself.
-    const $this = this as any
-    $this.ensureDatabase = async () => {
-      const created = await $this.schemaGenerator.ensureDatabase()
-      if (created) {
-        $this.createUmzug()
-      }
-      await $this.storage.ensureTable()
-    }
-  }
-
   static register(orm: MikroORM): void {
     orm.config.registerExtension(
       "@mikro-orm/migrator",

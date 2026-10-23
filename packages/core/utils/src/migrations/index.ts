@@ -135,6 +135,10 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
     })
 
     try {
+      if (!(await this.#pathExists(migrator["absolutePath"]))) {
+        return []
+      }
+
       const res = await migrator.up(options)
       return res
     } finally {
@@ -160,6 +164,10 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
     })
 
     try {
+      if (!(await this.#pathExists(migrator["absolutePath"]))) {
+        return []
+      }
+
       return await migrator.down(options)
     } catch (error) {
       /**
@@ -188,6 +196,12 @@ export class Migrations extends EventEmitter<MigrationsEvents> {
       migrator["umzug"].clearListeners()
       await connection.close(true)
     }
+  }
+
+  async #pathExists(path: string) {
+    return await access(path)
+      .then(() => true)
+      .catch(() => false)
   }
 
   /**
