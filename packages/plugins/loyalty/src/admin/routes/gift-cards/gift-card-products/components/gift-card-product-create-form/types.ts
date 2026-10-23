@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@medusajs/framework/zod";
 import { EditProductMediaSchema, ProductCreateSchema } from "./schema";
 
 export type ProductCreateSchemaType = z.infer<typeof ProductCreateSchema>;
