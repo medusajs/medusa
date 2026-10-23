@@ -1,5 +1,18 @@
 # @medusajs/promotion
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17447](https://github.com/medusajs/medusa/pull/17447) [`64d564119d212b439e7f6192f71ec48ffbe6ff93`](https://github.com/medusajs/medusa/commit/64d564119d212b439e7f6192f71ec48ffbe6ff93) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(promotion): apply tax-inclusive buy-get promotions as tax-inclusive adjustments
+
+- [#17444](https://github.com/medusajs/medusa/pull/17444) [`9e1b2ae94330588cd172a71307bc0874fd8228cc`](https://github.com/medusajs/medusa/commit/9e1b2ae94330588cd172a71307bc0874fd8228cc) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(promotion): rank buy-get eligible items by unit price instead of line total
+
+- [#17446](https://github.com/medusajs/medusa/pull/17446) [`a0b1fffe7082ee326f16f50a1e2bfc978032a2bf`](https://github.com/medusajs/medusa/commit/a0b1fffe7082ee326f16f50a1e2bfc978032a2bf) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(promotion): enforce and track spend_by_attribute campaign budgets, and skip automatic per-attribute budget promotions when the budget attribute is missing instead of throwing
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

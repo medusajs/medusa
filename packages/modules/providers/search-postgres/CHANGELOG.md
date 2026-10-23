@@ -1,5 +1,14 @@
 # @medusajs/search-postgres
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17437](https://github.com/medusajs/medusa/pull/17437) [`99bcfeb5ee60b9e2df56d3d2d38e82470eaab68d`](https://github.com/medusajs/medusa/commit/99bcfeb5ee60b9e2df56d3d2d38e82470eaab68d) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(search-postgres): apply min_score to facet counts for keyword search
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

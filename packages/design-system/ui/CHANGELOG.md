@@ -1,5 +1,14 @@
 # @medusajs/ui
 
+## 4.2.8
+
+### Patch Changes
+
+- [#17456](https://github.com/medusajs/medusa/pull/17456) [`89f67a6a0bc8183fb5fa3243138a2d38e247774c`](https://github.com/medusajs/medusa/commit/89f67a6a0bc8183fb5fa3243138a2d38e247774c) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(ui): respect the dismissable prop in toast.loading
+
+- Updated dependencies []:
+  - @medusajs/icons@2.22.1
+
 ## 4.2.7
 
 ### Patch Changes
