@@ -19,6 +19,7 @@ import {
   ActionMenu,
 } from "../../../../../components/common/action-menu"
 import { Form } from "../../../../../components/common/form"
+import { getReturnableQuantity } from "../../../../../lib/rma"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
@@ -104,7 +105,7 @@ function ExchangeInboundItem({
                         {...field}
                         className="bg-ui-bg-base txt-small w-[67px] rounded-lg"
                         min={1}
-                        max={item.quantity}
+                        max={getReturnableQuantity(item)}
                         type="number"
                         onBlur={(e) => {
                           const val = e.target.value

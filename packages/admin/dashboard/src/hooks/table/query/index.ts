@@ -1,4 +1,5 @@
 export * from "./parse-filter-param"
+export * from "./parse-prefixed-query-params"
 export * from "./use-campaign-table-query"
 export * from "./use-collection-table-query"
 export * from "./use-customer-group-table-query"

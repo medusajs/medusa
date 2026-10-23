@@ -12,6 +12,7 @@ import { ChatBubble, DocumentText, XCircle, XMark } from "@medusajs/icons"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
 import { Form } from "../../../../../components/common/form"
+import { getReturnableQuantity } from "../../../../../lib/rma"
 import {
   Action,
   ActionMenu,
@@ -79,7 +80,7 @@ function ReturnItem({
                       <Input
                         className="bg-ui-bg-base txt-small w-[67px] rounded-lg"
                         min={1}
-                        max={item.quantity}
+                        max={getReturnableQuantity(item)}
                         type="number"
                         {...field}
                         onChange={(e) => {

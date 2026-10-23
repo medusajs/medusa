@@ -114,6 +114,50 @@ describe("Order Return - Actions", function () {
     }).toThrow(`Item ID "333" not found.`)
   })
 
+  it("should not allow returning units already received or dismissed on an earlier return", function () {
+    const partlyReturned = {
+      ...originalOrder,
+      items: originalOrder.items.map((item) =>
+        item.id === "3"
+          ? {
+              ...item,
+              detail: {
+                ...item.detail,
+                return_received_quantity: 1,
+                return_dismissed_quantity: 1,
+              },
+            }
+          : item
+      ),
+    }
+
+    expect(() =>
+      calculateOrderChange({
+        order: partlyReturned,
+        actions: [
+          {
+            action: ChangeActionType.RETURN_ITEM,
+            details: { reference_id: "3", quantity: 2 },
+          },
+        ],
+      })
+    ).toThrow(
+      "Cannot request to return more items than what was fulfilled for item 3."
+    )
+
+    expect(() =>
+      calculateOrderChange({
+        order: partlyReturned,
+        actions: [
+          {
+            action: ChangeActionType.RETURN_ITEM,
+            details: { reference_id: "3", quantity: 1 },
+          },
+        ],
+      })
+    ).not.toThrow()
+  })
+
   it("should validate return received", function () {
     const [] = []
 

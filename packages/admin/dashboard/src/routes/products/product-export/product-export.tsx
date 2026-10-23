@@ -1,9 +1,15 @@
+import { HttpTypes } from "@medusajs/types"
 import { Button, Heading, toast } from "@medusajs/ui"
+import { useSearchParams } from "react-router-dom"
 import { RouteDrawer, useRouteModal } from "../../../components/modals"
 import { useTranslation } from "react-i18next"
 import { ExportFilters } from "./components/export-filters"
 import { useExportProducts } from "../../../hooks/api"
-import { useProductTableQuery } from "../../../hooks/table/query"
+import {
+  parsePrefixedQueryParams,
+  useProductTableQuery,
+} from "../../../hooks/table/query"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 
 export const ProductExport = () => {
   const { t } = useTranslation()
@@ -25,8 +31,7 @@ export const ProductExport = () => {
 
 const ProductExportContent = () => {
   const { t } = useTranslation()
-  const { searchParams } = useProductTableQuery({ prefix: "p" })
-  delete searchParams.fields
+  const exportQuery = useExportQuery()
 
   const { mutateAsync } = useExportProducts()
   const { handleSuccess } = useRouteModal()
@@ -35,7 +40,7 @@ const ProductExportContent = () => {
     await mutateAsync(
       {
         payload: {},
-        query: searchParams,
+        query: exportQuery,
       },
       {
         onSuccess: () => {
@@ -71,4 +76,19 @@ const ProductExportContent = () => {
       </RouteDrawer.Footer>
     </>
   )
+}
+
+const PRODUCT_TABLE_QUERY_PREFIX = "p"
+
+const useExportQuery = (): HttpTypes.AdminProductListParams => {
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
+  const [urlSearchParams] = useSearchParams()
+  const { searchParams } = useProductTableQuery({})
+
+  if (isViewConfigEnabled) {
+    return parsePrefixedQueryParams(urlSearchParams, PRODUCT_TABLE_QUERY_PREFIX)
+  }
+
+  const { fields: _fields, ...query } = searchParams
+  return query
 }
