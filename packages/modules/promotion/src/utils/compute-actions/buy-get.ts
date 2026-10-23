@@ -22,16 +22,19 @@ export type EligibleItem = {
 }
 
 function sortByPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
-  // Returning a non-zero value for equal subtotals makes this an inconsistent
+  const priceA = MathBN.div(a.subtotal, a.quantity)
+  const priceB = MathBN.div(b.subtotal, b.quantity)
+
+  // Returning a non-zero value for equal prices makes this an inconsistent
   // comparator, which leaves the order of equally priced items up to the sort
   // implementation rather than keeping it stable. Since the resulting order
   // decides which items are reserved for the buy side below, that turned into
   // the promotion being applied or not depending on line item order.
-  if (MathBN.eq(a.subtotal, b.subtotal)) {
+  if (MathBN.eq(priceA, priceB)) {
     return 0
   }
 
-  return MathBN.lt(a.subtotal, b.subtotal) ? 1 : -1
+  return MathBN.lt(priceA, priceB) ? 1 : -1
 }
 
 function isValidPromotionContext(
