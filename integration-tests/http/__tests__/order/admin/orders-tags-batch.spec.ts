@@ -117,26 +117,83 @@ medusaIntegrationTestRunner({
       })
 
       it("fails the whole batch without mutating any order when one tag id doesn't exist", async () => {
-        const before = await api.get(
+        // Give orderB an existing, valid tag via a separate successful call
+        // first, so there's something for a partial-application bug to
+        // leak through - a batch that adds nothing to either order can't
+        // actually prove the whole batch didn't partially apply.
+        await api.post(
+          "/admin/orders/tags/batch",
+          { order_ids: [orderB.id], add: [tagPriority.id] },
+          adminHeaders
+        )
+
+        const tagSecondary = await createTag(`secondary-${Math.random()}`)
+
+        const beforeA = await api.get(
           `/admin/orders/${orderA.id}?fields=*tags`,
+          adminHeaders
+        )
+        const beforeB = await api.get(
+          `/admin/orders/${orderB.id}?fields=*tags`,
           adminHeaders
         )
 
         const response = await api
           .post(
             "/admin/orders/tags/batch",
-            { order_ids: [orderA.id], add: ["otag_does_not_exist"] },
+            {
+              order_ids: [orderB.id, orderA.id],
+              add: [tagSecondary.id, "otag_does_not_exist"],
+            },
             adminHeaders
           )
           .catch((e) => e.response)
 
         expect(response.status).toEqual(404)
 
+        const afterA = await api.get(
+          `/admin/orders/${orderA.id}?fields=*tags`,
+          adminHeaders
+        )
+        const afterB = await api.get(
+          `/admin/orders/${orderB.id}?fields=*tags`,
+          adminHeaders
+        )
+
+        expect(afterA.data.order.tags).toEqual(beforeA.data.order.tags)
+        expect(afterB.data.order.tags).toEqual(beforeB.data.order.tags)
+
+        // Specifically prove the order that WOULD have received the valid
+        // tag (orderB, listed first in order_ids) did not get it applied
+        // before the batch hit the missing tag id.
+        expect(afterB.data.order.tags.map((t) => t.id)).not.toContain(
+          tagSecondary.id
+        )
+      })
+
+      it("preserves an order's existing tags when adding another tag", async () => {
+        const tagSecondary = await createTag(`secondary-${Math.random()}`)
+
+        await api.post(
+          "/admin/orders/tags/batch",
+          { order_ids: [orderA.id], add: [tagPriority.id] },
+          adminHeaders
+        )
+
+        await api.post(
+          "/admin/orders/tags/batch",
+          { order_ids: [orderA.id], add: [tagSecondary.id] },
+          adminHeaders
+        )
+
         const after = await api.get(
           `/admin/orders/${orderA.id}?fields=*tags`,
           adminHeaders
         )
-        expect(after.data.order.tags).toEqual(before.data.order.tags)
+        const tagIds = after.data.order.tags.map((t) => t.id)
+
+        expect(tagIds).toContain(tagPriority.id)
+        expect(tagIds).toContain(tagSecondary.id)
       })
 
       it("fails the whole batch without mutating any order when one order id doesn't exist", async () => {

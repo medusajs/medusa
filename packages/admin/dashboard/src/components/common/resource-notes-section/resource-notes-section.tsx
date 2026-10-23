@@ -44,7 +44,6 @@ export const ResourceNotesSection = ({
   const {
     notes = [],
     isError,
-    error,
   } = useNotes({
     resource_type: resourceType,
     resource_id: resourceId,
@@ -52,15 +51,22 @@ export const ResourceNotesSection = ({
     offset: 0,
   })
 
-  if (isError) {
-    throw error
-  }
-
   const sortedNotes = useMemo(() => {
     return [...notes].sort((a, b) => {
       return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     })
   }, [notes])
+
+  if (isError) {
+    return (
+      <Container className="flex flex-col gap-y-4 px-6 py-4">
+        <Heading level="h2">{t("notes.header")}</Heading>
+        <Text size="small" leading="compact" className="text-ui-fg-subtle">
+          {t("notes.loadError")}
+        </Text>
+      </Container>
+    )
+  }
 
   return (
     <Container className="flex flex-col gap-y-4 px-6 py-4">

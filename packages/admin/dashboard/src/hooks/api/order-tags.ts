@@ -114,12 +114,12 @@ export const useBulkTagOrders = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.order.bulkTag(payload),
+    ...options,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: ordersQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: orderTagsQueryKeys.lists() })
 
       options?.onSuccess?.(data, variables, context)
     },
-    ...options,
   })
 }

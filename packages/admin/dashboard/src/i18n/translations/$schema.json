@@ -482,6 +482,9 @@
         },
         "deleteButtonText": {
           "type": "string"
+        },
+        "loadError": {
+          "type": "string"
         }
       },
       "required": [
@@ -489,7 +492,8 @@
         "label",
         "placeholder",
         "addButtonText",
-        "deleteButtonText"
+        "deleteButtonText",
+        "loadError"
       ],
       "additionalProperties": false
     },

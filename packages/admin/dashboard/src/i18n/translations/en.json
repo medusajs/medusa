@@ -110,7 +110,8 @@
     "label": "Note",
     "placeholder": "Leave a note",
     "addButtonText": "Add note",
-    "deleteButtonText": "Delete note"
+    "deleteButtonText": "Delete note",
+    "loadError": "Notes could not be loaded."
   },
   "validation": {
     "mustBeInt": "The value must be a whole number.",

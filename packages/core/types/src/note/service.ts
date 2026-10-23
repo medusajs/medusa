@@ -1,4 +1,5 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import { FilterableNoteProps, NoteDTO } from "./common"
@@ -128,4 +129,90 @@ export interface INoteModuleService extends IModuleService {
    * await noteModuleService.deleteNotes("note_123")
    */
   deleteNotes(id: string, sharedContext?: Context): Promise<void>
+
+  /**
+   * This method soft deletes notes by their IDs.
+   *
+   * @param {string[]} ids - The IDs of the notes.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated items.
+   * The object's keys are the ID attribute names of the note entity's relations, and its value is an array of strings, each being the ID of a record associated
+   * with the note through this relation.
+   *
+   * If there are no related records, the promise resolves to `void`.
+   *
+   * @example
+   * await noteModuleService.softDeleteNotes(["note_123"])
+   */
+  softDeleteNotes<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method soft deletes a note by its ID.
+   *
+   * @param {string} id - The ID of the note.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated items.
+   * The object's keys are the ID attribute names of the note entity's relations, and its value is an array of strings, each being the ID of a record associated
+   * with the note through this relation.
+   *
+   * If there are no related records, the promise resolves to `void`.
+   *
+   * @example
+   * await noteModuleService.softDeleteNotes("note_123")
+   */
+  softDeleteNotes<TReturnableLinkableKeys extends string = string>(
+    id: string,
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method restores soft deleted notes by their IDs.
+   *
+   * @param {string[]} ids - The IDs of the notes.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the notes. You can pass to its `returnLinkableKeys`
+   * property any of the note's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored.
+   * The object's keys are the ID attribute names of the note entity's relations,
+   * and its value is an array of strings, each being the ID of the record associated with the note through this relation.
+   *
+   * If there are no related records restored, the promise resolves to `void`.
+   *
+   * @example
+   * await noteModuleService.restoreNotes(["note_123"])
+   */
+  restoreNotes<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method restores a soft deleted note by its ID.
+   *
+   * @param {string} id - The ID of the note.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with the note. You can pass to its `returnLinkableKeys`
+   * property any of the note's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored.
+   * The object's keys are the ID attribute names of the note entity's relations,
+   * and its value is an array of strings, each being the ID of the record associated with the note through this relation.
+   *
+   * If there are no related records restored, the promise resolves to `void`.
+   *
+   * @example
+   * await noteModuleService.restoreNotes("note_123")
+   */
+  restoreNotes<TReturnableLinkableKeys extends string = string>(
+    id: string,
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }

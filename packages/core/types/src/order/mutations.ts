@@ -279,11 +279,6 @@ export interface UpdateOrderDTO {
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null
-
-  /**
-   * The IDs of the tags to associate with the order.
-   */
-  tag_ids?: string[]
 }
 
 /** ORDER END */

@@ -14,10 +14,9 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 /**
  * `tags: [{ id }]` is how an order's tag associations are assigned via the
  * generic `updateOrders` DTO today - the same relation-reference shape the
- * `product` module uses for `category_ids`/`tag_ids` internally. It isn't
- * part of the public `UpdateOrderDTO` type (which only declares
- * `tag_ids?: string[]`, currently unwired - see Task 9's report), so this
- * local type documents the shape we actually send.
+ * `product` module uses for `category_ids`/`tag_ids` internally. There's no
+ * public field for this today on `UpdateOrderDTO`, so this local type
+ * documents the shape we actually send.
  */
 type UpdateOrderTagsRelationDTO = {
   id: string

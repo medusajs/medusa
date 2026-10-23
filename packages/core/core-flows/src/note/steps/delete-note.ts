@@ -4,17 +4,26 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteNoteStepId = "delete-note"
 /**
- * This step deletes a note.
+ * This step soft deletes a note.
  *
- * Notes have no soft-delete column, so a deleted note cannot be restored.
- * This step therefore has no compensation function.
+ * The compensation function restores the note by its ID if the step
+ * had already run.
  */
 export const deleteNoteStep = createStep(
   deleteNoteStepId,
   async (id: string, { container }) => {
     const service = container.resolve<INoteModuleService>(Modules.NOTE)
 
-    await service.deleteNotes(id)
+    await service.softDeleteNotes(id)
     return new StepResponse(void 0, id)
+  },
+  async (id, { container }) => {
+    if (!id) {
+      return
+    }
+
+    const service = container.resolve<INoteModuleService>(Modules.NOTE)
+
+    await service.restoreNotes(id)
   }
 )
