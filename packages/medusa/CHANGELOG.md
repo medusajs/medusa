@@ -1,5 +1,69 @@
 # Change Log
 
+## 2.22.2
+
+### Patch Changes
+
+- [#17494](https://github.com/medusajs/medusa/pull/17494) [`029fb31fd077ab9c6d6fd9d68c676c17c71294c7`](https://github.com/medusajs/medusa/commit/029fb31fd077ab9c6d6fd9d68c676c17c71294c7) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(medusa): stop logging user emails in the super admin role migration script
+
+- Updated dependencies []:
+  - @medusajs/analytics@2.22.2
+  - @medusajs/api-key@2.22.2
+  - @medusajs/auth@2.22.2
+  - @medusajs/caching@2.22.2
+  - @medusajs/cart@2.22.2
+  - @medusajs/currency@2.22.2
+  - @medusajs/customer@2.22.2
+  - @medusajs/file@2.22.2
+  - @medusajs/fulfillment@2.22.2
+  - @medusajs/index@2.22.2
+  - @medusajs/inventory@2.22.2
+  - @medusajs/link-modules@2.22.2
+  - @medusajs/locking@2.22.2
+  - @medusajs/notification@2.22.2
+  - @medusajs/order@2.22.2
+  - @medusajs/payment@2.22.2
+  - @medusajs/pricing@2.22.2
+  - @medusajs/product@2.22.2
+  - @medusajs/promotion@2.22.2
+  - @medusajs/search-postgres@2.22.2
+  - @medusajs/rbac@2.22.2
+  - @medusajs/region@2.22.2
+  - @medusajs/sales-channel@2.22.2
+  - @medusajs/search@2.22.2
+  - @medusajs/settings@2.22.2
+  - @medusajs/stock-location@2.22.2
+  - @medusajs/store@2.22.2
+  - @medusajs/tax@2.22.2
+  - @medusajs/translation@2.22.2
+  - @medusajs/user@2.22.2
+  - @medusajs/workflow-engine-inmemory@2.22.2
+  - @medusajs/workflow-engine-redis@2.22.2
+  - @medusajs/draft-order@2.22.2
+  - @medusajs/admin-bundler@2.22.2
+  - @medusajs/core-flows@2.22.2
+  - @medusajs/framework@2.22.2
+  - @medusajs/telemetry@2.22.2
+  - @medusajs/cache-inmemory@2.22.2
+  - @medusajs/cache-redis@2.22.2
+  - @medusajs/event-bus-local@2.22.2
+  - @medusajs/event-bus-redis@2.22.2
+  - @medusajs/analytics-local@2.22.2
+  - @medusajs/analytics-posthog@2.22.2
+  - @medusajs/auth-emailpass@2.22.2
+  - @medusajs/auth-github@2.22.2
+  - @medusajs/auth-google@2.22.2
+  - @medusajs/auth-oidc@2.22.2
+  - @medusajs/caching-redis@2.22.2
+  - @medusajs/file-local@2.22.2
+  - @medusajs/file-s3@2.22.2
+  - @medusajs/fulfillment-manual@2.22.2
+  - @medusajs/locking-postgres@2.22.2
+  - @medusajs/locking-redis@2.22.2
+  - @medusajs/notification-local@2.22.2
+  - @medusajs/notification-sendgrid@2.22.2
+  - @medusajs/payment-stripe@2.22.2
+
 ## 2.22.1
 
 ### Patch Changes
