@@ -883,56 +883,16 @@ jobs:
       - name: Create Linear issue
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ISSUE: ${{ inputs.issue_number }}
         run: |
           set -euo pipefail
-          LINEAR_TEAM_KEY=$(jq -r '.team_key' /tmp/triage/linear.json)
-          if [[ ! "$LINEAR_TEAM_KEY" =~ ^(CORE|CLO)$ ]]; then
-            echo "::error::Unexpected Linear team key." >&2
-            exit 1
-          fi
-
-          linear() {
-            curl -sSf https://api.linear.app/graphql \
-              -H "Content-Type: application/json" \
-              -H "Authorization: $LINEAR_API_KEY" \
-              --data @-
-          }
-
-          TEAM_ID=$(jq -n --arg key "$LINEAR_TEAM_KEY" '{
-            query: "query($key: String!) { teams(filter: { key: { eq: $key } }) { nodes { id } } }",
-            variables: { key: $key }
-          }' | linear | jq -r '.data.teams.nodes[0].id // empty')
-          if [[ -z "$TEAM_ID" ]]; then
-            echo "::error::Linear team $LINEAR_TEAM_KEY not found." >&2
-            exit 1
-          fi
-
-          jq --arg teamId "$TEAM_ID" '{
-            query: "mutation($input: IssueCreateInput!) { issueCreate(input: $input) { success issue { id identifier url } } }",
-            variables: { input: {
-              teamId: $teamId,
-              title: .title,
-              description: (
-                "## Problem\n\n\(.problem)\n\n## Evidence\n\n\(.evidence)\n\n## Root cause\n\n\(.root_cause)\n\n"
-                + "## Fix options\n\n\(.fix_options)\n\n## Recommendation\n\n\(.recommendation)\n\n"
-                + "GitHub issue: \(.url)"
-              )
-            } }
-          }' /tmp/triage/linear.json | linear > /tmp/triage/created.json
-
-          if ! jq -e '.data.issueCreate.success == true' /tmp/triage/created.json >/dev/null; then
-            echo "::error::Failed to create the Linear issue." >&2
-            jq '.errors' /tmp/triage/created.json >&2 || true
-            exit 1
-          fi
-          LINEAR_ID=$(jq -r '.data.issueCreate.issue.id' /tmp/triage/created.json)
-          IDENTIFIER=$(jq -r '.data.issueCreate.issue.identifier' /tmp/triage/created.json)
-
-          jq -n --arg issueId "$LINEAR_ID" --arg url "$(jq -r '.url' /tmp/triage/linear.json)" '{
-            query: "mutation($issueId: String!, $url: String!) { attachmentLinkURL(issueId: $issueId, url: $url) { success } }",
-            variables: { issueId: $issueId, url: $url }
-          }' | linear > /tmp/triage/attachment.json || true
-          if ! jq -e '.data.attachmentLinkURL.success == true' /tmp/triage/attachment.json >/dev/null 2>&1; then
-            echo "::warning::Created $IDENTIFIER but could not attach the GitHub issue link (it is still in the description)."
-          fi
-          echo "### Created Linear issue $IDENTIFIER" >> "$GITHUB_STEP_SUMMARY"
+          jq -r '
+            "## Problem\n\n\(.problem)\n\n## Evidence\n\n\(.evidence)\n\n## Root cause\n\n\(.root_cause)\n\n"
+            + "## Fix options\n\n\(.fix_options)\n\n## Recommendation\n\n\(.recommendation)\n\n"
+            + "GitHub issue: \(.url)"
+          ' /tmp/triage/linear.json > /tmp/triage/description.md
+          bash scripts/escalate_to_linear.sh \
+            --issue "$ISSUE" \
+            --title "$(jq -r '.title' /tmp/triage/linear.json)" \
+            --team "$(jq -r '.team_key' /tmp/triage/linear.json)" \
+            --description-file /tmp/triage/description.md
