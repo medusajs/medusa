@@ -87,7 +87,7 @@ function normalizePromotionApplicationConfiguration(
 
 function calculateRemainingQuantities(
   eligibleItems: ComputeActionItemLine[],
-  itemsMap: Map<string, EligibleItem[]>,
+  consumedItemMaps: Map<string, EligibleItem[]>[],
   currentPromotionCode: string
 ): Map<string, BigNumberInput> {
   const remainingQuantities = new Map<string, BigNumberInput>()
@@ -95,17 +95,19 @@ function calculateRemainingQuantities(
   for (const item of eligibleItems) {
     let consumedByOtherPromotions = MathBN.convert(0)
 
-    for (const [code, eligibleItems] of itemsMap) {
-      if (code === currentPromotionCode) {
-        continue
-      }
+    for (const itemsMap of consumedItemMaps) {
+      for (const [code, eligibleItems] of itemsMap) {
+        if (code === currentPromotionCode) {
+          continue
+        }
 
-      for (const eligibleItem of eligibleItems) {
-        if (eligibleItem.item_id === item.id) {
-          consumedByOtherPromotions = MathBN.add(
-            consumedByOtherPromotions,
-            eligibleItem.quantity
-          )
+        for (const eligibleItem of eligibleItems) {
+          if (eligibleItem.item_id === item.id) {
+            consumedByOtherPromotions = MathBN.add(
+              consumedByOtherPromotions,
+              eligibleItem.quantity
+            )
+          }
         }
       }
     }
@@ -527,15 +529,19 @@ export function getComputedActionsForBuyGet(
     promotion.application_method?.target_rules
   )
 
+  // A unit consumed by another promotion is unavailable in either role, whether
+  // it was used to satisfy that promotion's buy rules or received its discount.
+  const consumedItemMaps = [eligibleBuyItemMap, eligibleTargetItemMap]
+
   const remainingBuyQuantities = calculateRemainingQuantities(
     eligibleBuyItems,
-    eligibleBuyItemMap,
+    consumedItemMaps,
     promotion.code!
   )
 
   const remainingTargetQuantities = calculateRemainingQuantities(
     eligibleTargetItems,
-    eligibleTargetItemMap,
+    consumedItemMaps,
     promotion.code!
   )
 

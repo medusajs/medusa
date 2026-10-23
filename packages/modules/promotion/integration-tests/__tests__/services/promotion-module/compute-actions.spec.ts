@@ -6871,7 +6871,7 @@ moduleIntegrationTestRunner({
               },
             ])
 
-            // Test with 6 items - should get 2 free total (2 from first promotion and 1 from second promotion)
+            // Test with 6 items - should get 2 free total, all from the first promotion
             context = {
               currency_code: "usd",
               items: [
@@ -6894,7 +6894,7 @@ moduleIntegrationTestRunner({
               context
             )
 
-            // Both promotions should apply: 6 items allows for 2 applications from first promotion and 1 from second promotion
+            // Only first promotion should apply: it applies twice and uses all 6 items, no items left for second
             expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
@@ -6902,15 +6902,9 @@ moduleIntegrationTestRunner({
                 amount: 1000, // 2 item * (3000/6) = 1000
                 code: "FIRST2PLUS1FREE",
               },
-              {
-                action: "addItemAdjustment",
-                item_id: "item_1",
-                amount: 500, // 1 item * (3000/6) = 500
-                code: "SECOND2PLUS1FREE",
-              },
             ])
 
-            // Test with 7 items - should still get 2 free total (not 3) (2 from first promotion and 1 from second promotion)
+            // Test with 7 items - should still get 2 free total, all from the first promotion
             context = {
               currency_code: "usd",
               items: [
@@ -6933,19 +6927,13 @@ moduleIntegrationTestRunner({
               context
             )
 
-            // 7 items: first promotion uses 3 (2+1), second uses 3 (2+1), 1 item left over (2 from first promotion and 1 from second promotion)
+            // 7 items: first promotion applies twice and uses 6, the 1 item left over is not enough for second
             expect(JSON.parse(JSON.stringify(result))).toEqual([
               {
                 action: "addItemAdjustment",
                 item_id: "item_1",
                 amount: 1000, // 2 item * (3500/7) = 1000
                 code: "FIRST2PLUS1FREE",
-              },
-              {
-                action: "addItemAdjustment",
-                item_id: "item_1",
-                amount: 500, // 1 item * (3500/7) = 500
-                code: "SECOND2PLUS1FREE",
               },
             ])
 
@@ -7238,12 +7226,112 @@ moduleIntegrationTestRunner({
                 },
                 {
                   action: "addItemAdjustment",
-                  item_id: "item_cotton_tshirt",
+                  item_id: "item_cotton_tshirt2",
                   amount: 10,
                   code: "BUY10GET200",
                 },
               ])
             )
+          })
+
+          describe("when multiple buyget promotions overlap on the same item", () => {
+            const createBuyOneGetOnePromotion = async (code: string) =>
+              await createDefaultPromotion(service, {
+                code,
+                type: PromotionType.BUYGET,
+                campaign_id: undefined,
+                application_method: {
+                  type: "percentage",
+                  target_type: "items",
+                  value: 100,
+                  allocation: "each",
+                  max_quantity: 1,
+                  apply_to_quantity: 1,
+                  buy_rules_min_quantity: 1,
+                  target_rules: [
+                    {
+                      attribute: "items.product.id",
+                      operator: "in",
+                      values: [product1],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "items.product.id",
+                      operator: "in",
+                      values: [product1],
+                    },
+                  ],
+                } as any,
+              })
+
+            it("should not reuse units consumed by another promotion", async () => {
+              const promotion1 = await createBuyOneGetOnePromotion("BOGO1")
+              const promotion2 = await createBuyOneGetOnePromotion("BOGO2")
+
+              const result = await service.computeActions(
+                [promotion1.code!, promotion2.code!],
+                {
+                  currency_code: "usd",
+                  items: [
+                    {
+                      id: "item_cotton_tshirt",
+                      quantity: 3,
+                      subtotal: 15000,
+                      original_total: 15000,
+                      is_discountable: true,
+                      product: { id: product1 },
+                    },
+                  ],
+                }
+              )
+
+              expect(JSON.parse(JSON.stringify(result))).toEqual([
+                {
+                  action: "addItemAdjustment",
+                  item_id: "item_cotton_tshirt",
+                  amount: 5000,
+                  code: "BOGO1",
+                },
+              ])
+            })
+
+            it("should apply each promotion when there are enough units for both", async () => {
+              const promotion1 = await createBuyOneGetOnePromotion("BOGO1")
+              const promotion2 = await createBuyOneGetOnePromotion("BOGO2")
+
+              const result = await service.computeActions(
+                [promotion1.code!, promotion2.code!],
+                {
+                  currency_code: "usd",
+                  items: [
+                    {
+                      id: "item_cotton_tshirt",
+                      quantity: 4,
+                      subtotal: 20000,
+                      original_total: 20000,
+                      is_discountable: true,
+                      product: { id: product1 },
+                    },
+                  ],
+                }
+              )
+
+              expect(JSON.parse(JSON.stringify(result))).toEqual([
+                {
+                  action: "addItemAdjustment",
+                  item_id: "item_cotton_tshirt",
+                  amount: 5000,
+                  code: "BOGO1",
+                },
+                {
+                  action: "addItemAdjustment",
+                  item_id: "item_cotton_tshirt",
+                  amount: 5000,
+                  code: "BOGO2",
+                },
+              ])
+            })
           })
 
           it("should apply buyget promotion multiple times until eligible quantity is exhausted", async () => {
