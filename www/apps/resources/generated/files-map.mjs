@@ -7240,6 +7240,10 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/steps/updatePaymentCollectionStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentSessionStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/updatePaymentSessionStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updateRefundReasonsStep/page.json",
     "pathname": "/references/medusa-workflows/steps/updateRefundReasonsStep"
   },
@@ -7250,6 +7254,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentProviderInRegionStep/page.json",
     "pathname": "/references/medusa-workflows/steps/validatePaymentProviderInRegionStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionUpdateStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/validatePaymentSessionUpdateStep"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.createPaymentAccountHolderStepId/page.json",
@@ -7276,6 +7284,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentCollectionStepId"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentSessionStepId/page.json",
+    "pathname": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentSessionStepId"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.updateRefundReasonStepId/page.json",
     "pathname": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.updateRefundReasonStepId"
   },
@@ -7286,6 +7298,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentProviderInRegionStepId/page.json",
     "pathname": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentProviderInRegionStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionUpdateStepId/page.json",
+    "pathname": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionUpdateStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.createPaymentSessionsWorkflow/page.json",
@@ -7302,6 +7318,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.deleteRefundReasonsWorkflow/page.json",
     "pathname": "/references/medusa-workflows/deleteRefundReasonsWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.updatePaymentSessionClientDataWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/updatePaymentSessionClientDataWorkflow"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.updateRefundReasonsWorkflow/page.json",
@@ -7322,6 +7342,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/variables/core_flows.Payment_Collection.Workflows_Payment_Collection.deleteRefundReasonsWorkflowId/page.json",
     "pathname": "/references/core_flows/Payment_Collection/Workflows_Payment_Collection/variables/core_flows.Payment_Collection.Workflows_Payment_Collection.deleteRefundReasonsWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/variables/core_flows.Payment_Collection.Workflows_Payment_Collection.updatePaymentSessionClientDataWorkflowId/page.json",
+    "pathname": "/references/core_flows/Payment_Collection/Workflows_Payment_Collection/variables/core_flows.Payment_Collection.Workflows_Payment_Collection.updatePaymentSessionClientDataWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/variables/core_flows.Payment_Collection.Workflows_Payment_Collection.updateRefundReasonsWorkflowId/page.json",
@@ -9976,6 +10000,14 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdatePaymentCollectionStepInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdatePaymentSessionClientDataWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdatePaymentSessionClientDataWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdatePaymentSessionStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdatePaymentSessionStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdatePropertyLabelsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdatePropertyLabelsStepInput"
   },
@@ -10022,6 +10054,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidatePaymentProviderInRegionStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidatePaymentProviderInRegionStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidatePaymentSessionUpdateStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidatePaymentSessionUpdateStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateProductInputStepInput/page.json",
@@ -12038,6 +12074,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_flows.User/page.json",
     "pathname": "/references/core_flows/core_flows.User"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_flows.__tests__/page.json",
+    "pathname": "/references/core_flows/core_flows.__tests__"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/modules/core_flows.core_core_flows_src/page.json",
@@ -27460,6 +27500,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreUpdateCustomerAddress"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreUpdatePaymentSession/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreUpdatePaymentSession"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.WorkflowExecutionContext/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.WorkflowExecutionContext"
   },
@@ -31414,6 +31458,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/interfaces/utils.WorkflowResourceData/page.json",
     "pathname": "/references/utils/interfaces/utils.WorkflowResourceData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.CSVNormalizerContext/page.json",
+    "pathname": "/references/utils/types/utils.CSVNormalizerContext"
   },
   {
     "filePath": "/www/apps/resources/references/utils/types/utils.GraphRow/page.json",
