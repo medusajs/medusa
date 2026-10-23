@@ -684,6 +684,8 @@ jobs:
             fi
 
             if [[ -z "$BLOCKER" ]]; then
+              # Only PRs by the bot or by team members block a fix: other external PRs are
+              # closed by pr-guardrails.yml unless the author is assigned to the issue.
               # GraphQL returns an app author as its slug; REST search returns "app/<slug>".
               LINKED=$(gh api graphql \
                 -f owner="$OWNER" -f name="$NAME" -F number="$ISSUE_NUMBER" \
@@ -691,19 +693,25 @@ jobs:
                   repository(owner: $owner, name: $name) { issue(number: $number) {
                     closedByPullRequestsReferences(first: 50, includeClosedPrs: false) {
                       nodes { number state author { login } } } } } }' \
-                | jq -r --arg slug "$APP_SLUG" '
+                | jq -r '
                   .data.repository.issue.closedByPullRequestsReferences.nodes[]
-                  | select(.state == "OPEN" and (.author.login | IN($slug, "\($slug)[bot]", "app/\($slug)")))
-                  | .number')
+                  | select(.state == "OPEN") | "\(.number) \(.author.login)"')
               SEARCHED=$(gh pr list --repo "$REPO" --state open --search "#$ISSUE_NUMBER in:body" \
                   --json number,author,body --limit 50 \
-                | jq -r --arg slug "$APP_SLUG" --arg ref "#$ISSUE_NUMBER" '
-                  .[] | select((.author.login | IN($slug, "\($slug)[bot]", "app/\($slug)"))
-                    and (.body | test("(^|[^0-9A-Za-z_])" + $ref + "([^0-9]|$)")))
-                  | .number')
-              PR=$(printf '%s\n%s\n' "$LINKED" "$SEARCHED" | grep -m1 -E '^[0-9]+$' || true)
+                | jq -r --arg ref "#$ISSUE_NUMBER" '
+                  .[] | select(.body | test("(^|[^0-9A-Za-z_])" + $ref + "([^0-9]|$)"))
+                  | "\(.number) \(.author.login)"')
+              PR=""
+              while read -r NUMBER AUTHOR; do
+                [[ "$NUMBER" =~ ^[0-9]+$ ]] || continue
+                if [[ "$AUTHOR" == "$APP_SLUG" || "$AUTHOR" == "$APP_SLUG[bot]" || "$AUTHOR" == "app/$APP_SLUG" ]] \
+                  || bash scripts/is_team_member.sh "$AUTHOR"; then
+                  PR="$NUMBER"
+                  break
+                fi
+              done < <(printf '%s\n%s\n' "$LINKED" "$SEARCHED")
               if [[ -n "$PR" ]]; then
-                BLOCKER="open fix PR #$PR already references it"
+                BLOCKER="open PR #$PR by the bot or a team member already references it"
               fi
             fi
 
