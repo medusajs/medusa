@@ -1,6 +1,8 @@
 # Output: Result File and PR Body
 
-Write both files at the repository root. Do not print them to stdout. Do not commit, push, or open the PR.
+Write both files at the repository root, using its absolute path (`$GITHUB_WORKSPACE` in CI), never relative to a directory you `cd`'d into. Do not print them to stdout. Do not commit, push, or open the PR.
+
+Write `update-result.json` as soon as you've read the group: `status` `"failed"`, every package `skipped` with the reason `not attempted`, and `verify` all `false`. Update it after each step, so a result exists even if you stop early. Never leave it deleted: `git stash` and `git restore` don't touch it while it's untracked, but `rm` and `git clean` do.
 
 ## `update-result.json`
 

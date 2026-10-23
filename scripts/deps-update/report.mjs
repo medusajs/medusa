@@ -129,15 +129,25 @@ async function postToLinear(title, description) {
   const existing = await linear(
     `query ($teamId: ID!, $title: String!) {
       issues(filter: { team: { id: { eq: $teamId } }, title: { eq: $title } }, first: 1) {
-        nodes { identifier }
+        nodes { id identifier }
       }
     }`,
     { teamId, title }
   )
-  if (existing.issues.nodes.length) {
-    console.log(
-      `Report already posted as ${existing.issues.nodes[0].identifier}`
+  const issue = existing.issues.nodes[0]
+  if (issue) {
+    const data = await linear(
+      `mutation ($input: CommentCreateInput!) {
+        commentCreate(input: $input) { success }
+      }`,
+      { input: { issueId: issue.id, body: description } }
     )
+    if (!data.commentCreate.success) {
+      throw new Error(
+        `commentCreate returned success=false on ${issue.identifier}`
+      )
+    }
+    console.log(`Added the report as a comment on ${issue.identifier}`)
     return
   }
   const data = await linear(

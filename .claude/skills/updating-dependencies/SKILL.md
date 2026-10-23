@@ -63,7 +63,7 @@ Build, lint the changed source, and run the unit and integration tests of every 
 
 ### Step 5: Emit the result
 
-Run `node scripts/deps-update/check-patch.mjs --group <group.json> --worktree` and fix every violation it reports, then write `update-result.json` and (when something is proposed) `pr-body.md` at the repo root.
+Run `node scripts/deps-update/check-patch.mjs --group <group.json> --worktree` and fix every violation it reports, then finish `update-result.json` and (when something is proposed) write `pr-body.md` at the repo root. Write the first version of `update-result.json` in Step 1, not here (`reference/output.md`).
 
 ## Common Mistakes Checklist
 
@@ -77,6 +77,8 @@ Run `node scripts/deps-update/check-patch.mjs --group <group.json> --worktree` a
 - [ ] Missing a changeset for a published package whose `package.json` changed
 - [ ] Leaving throwaway files or debug logging in the working tree
 - [ ] Committing, pushing, or running `gh pr create`
+- [ ] Running `yarn set resolution` per package instead of `apply-lockfile.mjs`
+- [ ] Leaving `update-result.json` unwritten until the end, or writing it outside the repo root
 
 ## Reference Files
 

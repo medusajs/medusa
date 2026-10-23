@@ -15,8 +15,13 @@ type ColumnProcessor<Output> = (
   csvRow: Record<string, string | boolean | number>,
   rowColumns: string[],
   rowNumber: number,
-  output: Output
+  output: Output,
+  context?: CSVNormalizerContext
 ) => void
+
+type CSVNormalizerContext = {
+  regions?: { id: string; name: string; currency_code: string }[]
+}
 
 type NormalizedRow =
   | (Record<string, string | number | boolean> & {
@@ -47,9 +52,13 @@ function createError(rowNumber: number, message: string) {
  * and the region name. The iso is converted to lowercase
  */
 function parseVariantPriceColumn(columnName: string, rowNumber: number) {
-  const normalizedValue = columnName
-  const potentialRegion = /\[(.*)\]/g.exec(normalizedValue)?.[1]
-  const iso = normalizedValue.split(" ").pop()
+  const normalizedValue = columnName.replace(/^variant price /, "")
+  // Product export writes region prices as "<Region Name> [<ISO>]"
+  const exportMatch = /^(.+) \[([^\]]+)\]$/.exec(normalizedValue)
+  const potentialRegion = exportMatch
+    ? exportMatch[1]
+    : /\[(.*)\]/g.exec(normalizedValue)?.[1]
+  const iso = exportMatch ? exportMatch[2] : normalizedValue.split(" ").pop()
 
   if (!iso) {
     throw createError(
@@ -314,14 +323,17 @@ const variantWildcardColumns: {
     [K in keyof AdminCreateProductVariant]?: any
   }>
 } = {
-  "variant price": (csvRow, rowColumns, rowNumber, output) => {
+  "variant price": (csvRow, rowColumns, rowNumber, output, context) => {
     const pricesColumns = rowColumns.filter((rowKey) => {
       return rowKey.startsWith("variant price ") && isPresent(csvRow[rowKey])
     })
     output["prices"] = output["prices"] ?? []
 
     pricesColumns.forEach((columnName) => {
-      const { iso } = parseVariantPriceColumn(columnName, rowNumber)
+      const { iso, region: regionName } = parseVariantPriceColumn(
+        columnName,
+        rowNumber
+      )
       const value = csvRow[columnName]
 
       const numericValue = tryConvertToNumber(value)
@@ -330,12 +342,31 @@ const variantWildcardColumns: {
           rowNumber,
           `Invalid value provided for "${columnName}". Expected value to be a number, received "${value}"`
         )
-      } else {
+      }
+
+      if (regionName === undefined) {
         output["prices"].push({
           currency_code: iso,
           amount: numericValue,
         })
+        return
       }
+
+      const region = context?.regions?.find(
+        (r) => r.name.toLowerCase() === regionName
+      )
+      if (!region) {
+        throw createError(
+          rowNumber,
+          `Region with name "${regionName}" not found, used by "${columnName}"`
+        )
+      }
+
+      output["prices"].push({
+        currency_code: region.currency_code,
+        amount: numericValue,
+        rules: { region_id: region.id },
+      })
     })
   },
 }
@@ -474,8 +505,14 @@ export class CSVNormalizer {
     toUpdate: {},
   }
 
-  constructor(rows: NormalizedRow[]) {
+  #context: CSVNormalizerContext
+
+  /**
+   * The "regions" are used to resolve region prices, e.g. "Variant Price Europe [EUR]"
+   */
+  constructor(rows: NormalizedRow[], context: CSVNormalizerContext = {}) {
     this.#rows = rows
+    this.#context = context
   }
 
   /**
@@ -536,7 +573,13 @@ export class CSVNormalizer {
       variantStaticColumns[column](row, rowColumns, rowNumber, variant)
     })
     Object.keys(variantWildcardColumns).forEach((column) => {
-      variantWildcardColumns[column](row, rowColumns, rowNumber, variant)
+      variantWildcardColumns[column](
+        row,
+        rowColumns,
+        rowNumber,
+        variant,
+        this.#context
+      )
     })
 
     /**
