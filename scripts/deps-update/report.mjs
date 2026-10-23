@@ -8,9 +8,15 @@
 //
 // <dir> holds the downloaded artifacts: deps-result-<key>/update-result.json
 // and deps-pr-<key>/pr.json per group.
-// --post requires LINEAR_API_KEY and LINEAR_TEAM_ID (DX).
+// --post requires LINEAR_API_KEY and LINEAR_TEAM_ID (DX); without it the report
+// only goes to the step summary.
 
-import { existsSync, readFileSync, writeFileSync } from "node:fs"
+import {
+  appendFileSync,
+  existsSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { parseArgs } from "node:util"
@@ -68,7 +74,7 @@ export function buildReport({ plan, results, dryRun, runUrl }) {
         ? `Minor updates (${group.packages.length} packages)`
         : `${group.packages
             .map((p) => `${p.name} ${versionRange(p)}`)
-            .join(", ")} (major)`
+            .join(", ")} (${group.pinned ? "pinned" : "major"})`
     if (dryRun) {
       review.push(`- ${label}`)
       continue
@@ -220,11 +226,14 @@ async function main() {
     return
   }
   console.log(report)
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    appendFileSync(
+      process.env.GITHUB_STEP_SUMMARY,
+      `### Linear report${values.post ? "" : " (not posted)"}\n\n${report}\n`
+    )
+  }
   if (values.post) {
-    const title = `${
-      values["dry-run"] ? "[Dry run] " : ""
-    }Dependency updates: week of ${today}`
-    await postToLinear(title, report)
+    await postToLinear(`Dependency updates: week of ${today}`, report)
   }
 }
 
