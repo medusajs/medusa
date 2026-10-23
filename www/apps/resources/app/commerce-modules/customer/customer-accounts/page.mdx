@@ -70,6 +70,12 @@ export default async function importCustomers({
 
 The workflow creates one customer per run, so run it for each customer you import.
 
+<Note>
+
+The customer's email must match the email of the auth identity. Otherwise, the workflow throws an error. Learn more in the [Email Must Match the Auth Identity](#email-must-match-the-auth-identity) section.
+
+</Note>
+
 #### Auth Identity Is Created on First Login
 
 Some auth providers, such as passwordless providers, create the auth identity when the customer first logs in. In that case, create the customers with `has_account` set to `true` using the [createCustomersWorkflow](/references/medusa-workflows/createCustomersWorkflow). It accepts multiple customers in one run:
@@ -142,6 +148,17 @@ Execute the workflow in your login flow after the auth provider creates the auth
 When a guest customer registers, use the [createCustomerAccountWorkflow](/references/medusa-workflows/createCustomerAccountWorkflow) to create a registered customer with the same email. The workflow also sets the customer's ID in the auth identity's app metadata. It doesn't change the existing guest customer.
 
 The guest customer's orders stay linked to the guest customer. To move them to the registered customer, the customer can request an order transfer using the [Request Order Transfer API route](!api!/store#orders_postordersidtransferrequest).
+
+### Email Must Match the Auth Identity
+
+When you pass an `authIdentityId` to the `createCustomerAccountWorkflow`, the workflow retrieves the auth identity and its provider identities. It then checks that the customer's email matches one of the following values of a provider identity:
+
+- The `entity_id`, which holds the email for providers like the `emailpass` provider.
+- The `email` property in the `user_metadata`, which third-party providers like Google set.
+
+The comparison ignores letter case and leading or trailing whitespace. If the email doesn't match, the workflow throws an `unauthorized` error with the message `The customer's email must match the email of the authenticated identity`.
+
+This check prevents a customer from creating an account with an email they didn't authenticate with. If you use a custom auth provider, make sure it stores the customer's email in the provider identity's `entity_id` or `user_metadata.email`.
 
 ---
 
