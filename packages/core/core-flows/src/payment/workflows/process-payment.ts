@@ -50,7 +50,7 @@ export const processPaymentWorkflow = createWorkflow(
     const paymentData = useQueryGraphStep({
       entity: "payment",
       fields: ["id"],
-      filters: { payment_session_id: input.data?.session_id },
+      filters: { payment_session_id: input.data!.session_id },
     }).config({
       name: "payment-query",
     })
@@ -58,7 +58,7 @@ export const processPaymentWorkflow = createWorkflow(
     const paymentSessionResult = useQueryGraphStep({
       entity: "payment_session",
       fields: ["payment_collection_id"],
-      filters: { id: input.data?.session_id },
+      filters: { id: input.data!.session_id },
     }).config({
       name: "payment-session-query",
     })
@@ -124,7 +124,7 @@ export const processPaymentWorkflow = createWorkflow(
         .runAsStep({
           input: {
             payment_id: paymentData.data[0].id,
-            amount: input.data?.amount,
+            amount: input.data!.amount,
           },
         })
         .config({
@@ -167,7 +167,7 @@ export const processPaymentWorkflow = createWorkflow(
         .runAsStep({
           input: {
             payment_id: autocapturePayment!.id,
-            amount: input.data?.amount,
+            amount: input.data!.amount,
           },
         })
         .config({
