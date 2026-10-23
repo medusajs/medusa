@@ -92,6 +92,36 @@ describe("buildReport", () => {
     )
   })
 
+  it("labels pinned groups so they stand apart from majors", () => {
+    const pinnedPlan = {
+      ...plan,
+      groups: [
+        {
+          key: "major-bullmq",
+          kind: "major",
+          pinned: true,
+          packages: [pkg("bullmq", "5.13.0", "5.81.5")],
+        },
+      ],
+    }
+    const report = buildReport({
+      plan: pinnedPlan,
+      results: [
+        {
+          key: "major-bullmq",
+          result: { status: "proposed", risk: "high" },
+          pr: { url: "https://x/3" },
+        },
+      ],
+      dryRun: false,
+      runUrl,
+    })
+    assert.match(
+      report,
+      /^- bullmq 5\.13\.0 → 5\.81\.5 \(pinned\), high risk: https:\/\/x\/3$/m
+    )
+  })
+
   it("lists what would be opened in a dry run", () => {
     const report = buildReport({ plan, results: [], dryRun: true, runUrl })
     assert.match(

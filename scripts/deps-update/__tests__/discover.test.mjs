@@ -97,21 +97,13 @@ describe("collectDeclarations", () => {
 })
 
 describe("buildPlan", () => {
-  it("refreshes the lockfile for in-range updates and bumps exact pins", () => {
+  it("refreshes the lockfile for in-range updates", () => {
     const result = plan({
-      declarations: [
-        { name: "uuid", spec: "^9.0.0" },
-        { name: "pinned", spec: "1.5.7" },
-      ],
-      locked: { "uuid@npm:^9.0.0": "9.0.0", "pinned@npm:1.5.7": "1.5.7" },
-      entries: [
-        ["uuid", { "9.0.0": {}, "9.0.1": {} }],
-        ["pinned", { "1.5.7": {}, "1.6.0": {} }],
-      ],
+      declarations: [{ name: "uuid", spec: "^9.0.0" }],
+      locked: { "uuid@npm:^9.0.0": "9.0.0" },
+      entries: [["uuid", { "9.0.0": {}, "9.0.1": {} }]],
     })
-    const patch = result.groups.find((g) => g.key === "patch")
-    const minor = result.groups.find((g) => g.key === "minor")
-    assert.deepEqual(patch.packages[0].changes[0], {
+    assert.deepEqual(result.groups[0].packages[0].changes[0], {
       workspace: "packages/a",
       field: "dependencies",
       spec: "^9.0.0",
@@ -120,8 +112,129 @@ describe("buildPlan", () => {
       newSpec: "^9.0.0",
       action: "lockfile",
     })
-    assert.equal(minor.packages[0].changes[0].newSpec, "1.6.0")
-    assert.equal(minor.packages[0].changes[0].action, "range")
+  })
+
+  it("plans exact pins like majors: own group, capped, off with majors", () => {
+    const base = {
+      declarations: [
+        { name: "bullmq", spec: "5.13.0" },
+        { name: "bullmq", spec: "^5.13.0", workspace: "packages/b" },
+        { name: "express", spec: "^4.0.0" },
+      ],
+      locked: {
+        "bullmq@npm:5.13.0": "5.13.0",
+        "bullmq@npm:^5.13.0": "5.13.0",
+        "express@npm:^4.0.0": "4.22.1",
+      },
+      entries: [
+        ["bullmq", { "5.13.0": {}, "5.81.5": {} }],
+        ["express", { "4.22.1": {}, "5.1.0": {} }],
+      ],
+    }
+
+    const result = plan(base)
+    assert.deepEqual(
+      result.groups.map((g) => g.key),
+      ["major-express", "minor"]
+    )
+    assert.deepEqual(result.deferred, [
+      { key: "major-bullmq", reason: "weekly major cap reached" },
+    ])
+    assert.deepEqual(
+      result.groups[1].packages[0].changes.map((c) => c.workspace),
+      ["packages/b"]
+    )
+
+    const only = plan({ ...base, only: "major-bullmq" })
+    const unit = only.groups[0]
+    assert.equal(unit.kind, "major")
+    assert.equal(unit.pinned, true)
+    assert.deepEqual(
+      unit.packages[0].changes.map((c) => `${c.workspace} ${c.newSpec}`),
+      ["packages/a 5.81.5", "packages/b ^5.13.0"]
+    )
+
+    const off = plan({ ...base, includeMajors: false })
+    assert.deepEqual(
+      off.deferred.map((d) => d.key),
+      ["major-express", "major-bullmq"]
+    )
+  })
+
+  it("keeps a pinned package in its major group when both apply", () => {
+    const result = plan({
+      declarations: [
+        { name: "stripe", spec: "19.1.0" },
+        { name: "stripe", spec: "^15.5.0", workspace: "packages/b" },
+      ],
+      locked: {
+        "stripe@npm:19.1.0": "19.1.0",
+        "stripe@npm:^15.5.0": "15.12.0",
+      },
+      entries: [
+        ["stripe", { "15.12.0": {}, "19.1.0": {}, "19.3.0": {}, "23.0.0": {} }],
+      ],
+    })
+    const unit = result.groups[0]
+    assert.equal(unit.key, "major-stripe")
+    assert.equal(unit.pinned, false)
+    assert.deepEqual(
+      unit.packages[0].changes.map((c) => `${c.workspace} ${c.to}`),
+      ["packages/a 23.0.0", "packages/b 23.0.0"]
+    )
+  })
+
+  it("pairs @types packages with the package they type", () => {
+    const result = plan({
+      declarations: [
+        { name: "express", spec: "^4.0.0" },
+        { name: "@types/express", spec: "^4.0.0", field: "devDependencies" },
+        { name: "@types/scope__pkg", spec: "^1.0.0", field: "devDependencies" },
+        { name: "@scope/pkg", spec: "^1.0.0" },
+        { name: "@types/node", spec: "^20.0.0", field: "devDependencies" },
+      ],
+      locked: {
+        "express@npm:^4.0.0": "4.22.1",
+        "@types/express@npm:^4.0.0": "4.17.21",
+        "@types/scope__pkg@npm:^1.0.0": "1.0.0",
+        "@scope/pkg@npm:^1.0.0": "1.0.0",
+        "@types/node@npm:^20.0.0": "20.19.27",
+      },
+      entries: [
+        ["express", { "4.22.1": {}, "5.1.0": {} }],
+        ["@types/express", { "4.17.21": {}, "5.0.3": {} }],
+        ["@types/scope__pkg", { "1.0.0": {}, "2.0.0": {} }],
+        ["@scope/pkg", { "1.0.0": {}, "2.0.0": {} }],
+        ["@types/node", { "20.19.27": {}, "24.0.0": {} }],
+      ],
+      only: "major-express",
+    })
+    assert.deepEqual(
+      result.groups[0].packages.map((p) => p.name),
+      ["express", "@types/express"]
+    )
+    const all = plan({
+      declarations: [
+        { name: "@scope/pkg", spec: "^1.0.0" },
+        { name: "@types/scope__pkg", spec: "^1.0.0", field: "devDependencies" },
+        { name: "@types/node", spec: "^20.0.0", field: "devDependencies" },
+      ],
+      locked: {
+        "@scope/pkg@npm:^1.0.0": "1.0.0",
+        "@types/scope__pkg@npm:^1.0.0": "1.0.0",
+        "@types/node@npm:^20.0.0": "20.19.27",
+      },
+      entries: [
+        ["@scope/pkg", { "1.0.0": {}, "2.0.0": {} }],
+        ["@types/scope__pkg", { "1.0.0": {}, "2.0.0": {} }],
+        ["@types/node", { "20.19.27": {}, "24.0.0": {} }],
+      ],
+      includeMajors: false,
+    })
+    assert.deepEqual(
+      all.deferred.map((d) => d.key),
+      ["major-scope-pkg", "major-types-node"]
+    )
   })
 
   it("skips releases inside the cooldown, deprecated releases, and prereleases", () => {
