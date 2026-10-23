@@ -4,17 +4,17 @@
 
 Handle each change by its `action`:
 
-- **`lockfile`**: leave the manifest alone and pin the descriptor to the target:
+- **`lockfile`**: apply every lockfile change in the group with one command, then read its last line:
 
   ```bash
-  yarn set resolution "<name>@npm:<spec>" npm:<to>
+  node scripts/deps-update/apply-lockfile.mjs --group <group.json>
   ```
 
-  Use the exact `spec` from the change, so other ranges of the same package are untouched.
+  It leaves manifests alone, refreshes packages whose target is their newest in-range release in a single install, pins the rest with `yarn set resolution`, and lists any range that didn't land on its target. For a package it lists, pin it yourself with `yarn set resolution "<name>@npm:<spec>" npm:<to>`, or drop it. Never run `yarn set resolution` once per package for the whole group: each call is a full install.
 
 - **`range`**: set the manifest range to `newSpec` in that `workspace`'s `package.json`, in the same dependency field. Keep the file's formatting and key order.
 
-After all changes, run `yarn install` once to refresh `yarn.lock`.
+After the range changes, run `yarn install` once to refresh `yarn.lock`.
 
 Never run `yarn up <package>` without an explicit version: it resolves the newest release, which may be inside the cooldown.
 
