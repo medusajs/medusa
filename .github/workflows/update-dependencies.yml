@@ -394,6 +394,21 @@ jobs:
             6. Never run git commands that stage, commit, push, or switch branches. Leave your changes in the working tree.
             7. Write update-result.json (and pr-body.md when status is "proposed") at the repository root, as described in the skill's reference/output.md.
 
+      # Only the denied commands are published: the full transcript can hold unmasked tool output.
+      - name: Show denied tool calls
+        if: always()
+        env:
+          KEY: ${{ matrix.group.key }}
+        run: |
+          FILE="$RUNNER_TEMP/claude-execution-output.json"
+          [[ -f "$FILE" ]] || exit 0
+          {
+            echo "### Denied tool calls (\`$KEY\`)"
+            echo
+            jq -r '.[] | select(.type == "result") | .permission_denials[]?
+              | "- `\(.tool_name)`: `\((.tool_input.command // (.tool_input | tostring)) | .[0:200] | gsub("`"; "'"'"'"))`"' "$FILE"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Package result
         run: |
           set -euo pipefail
