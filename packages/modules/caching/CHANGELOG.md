@@ -1,5 +1,14 @@
 # @medusajs/caching
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17457](https://github.com/medusajs/medusa/pull/17457) [`0a4b00585cd7d9c7d99a11c3502ca9da0cdd75aa`](https://github.com/medusajs/medusa/commit/0a4b00585cd7d9c7d99a11c3502ca9da0cdd75aa) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(caching): don't throw when computing cache tags for entities with numeric ids
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Patch Changes

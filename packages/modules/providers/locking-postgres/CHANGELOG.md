@@ -1,5 +1,12 @@
 # @medusajs/locking-postgres
 
+## 2.22.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes
