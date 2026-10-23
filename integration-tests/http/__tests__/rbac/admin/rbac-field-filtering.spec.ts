@@ -1,4 +1,4 @@
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { Modules, PolicyOperation } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -8,8 +8,7 @@ import { getProductFixture } from "../../../../helpers/fixtures"
 
 jest.setTimeout(60000)
 
-process.env.MEDUSA_FF_RBAC = "true"
-process.env.MEDUSA_FF_RBAC_FILTER_FIELDS = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
@@ -177,15 +176,13 @@ medusaIntegrationTestRunner({
         { role_id: testRole[0].id, policy_id: salesChannelUpdatePolicy[0].id },
       ])
 
-      const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
-      await remoteLink.create({
-        [Modules.USER]: {
-          user_id: testUser.id,
+      await rbacModule.createRbacRoleAssignments([
+        {
+          role_id: testRole[0].id,
+          reference: "user",
+          reference_id: testUser.id,
         },
-        [Modules.RBAC]: {
-          rbac_role_id: testRole[0].id,
-        },
-      })
+      ])
 
       // Login the user to get a proper JWT token with roles
       const loginResponse = await api.post("/auth/user/emailpass", {
@@ -211,7 +208,7 @@ medusaIntegrationTestRunner({
     })
 
     afterAll(async () => {
-      delete process.env.MEDUSA_FF_RBAC
+      delete process.env.ENABLE_RBAC_MODULE
     })
 
     describe("RBAC Middleware Integration", () => {

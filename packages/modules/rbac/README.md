@@ -34,7 +34,7 @@
   </a>
 </p>
 
-RBAC (role-based access control) Module for Medusa: manages roles, policies, role-policy assignments, and role inheritance. Use it to control which admin users can perform which operations on which resources. It ships with `@medusajs/medusa` but is disabled unless the `rbac` feature flag is enabled.
+RBAC (role-based access control) Module for Medusa: manages roles, policies, role-policy assignments, and role inheritance. Use it to control which admin users can perform which operations on which resources. It ships with `@medusajs/medusa` and is registered by adding it to the `modules` of your `medusa-config.ts`.
 
 ## At a glance
 
@@ -43,7 +43,7 @@ RBAC (role-based access control) Module for Medusa: manages roles, policies, rol
 | Package | `@medusajs/rbac` |
 | Type | Commerce Module |
 | Module key | `Modules.RBAC` (`"rbac"`) |
-| Registered by default | No (only when the `rbac` feature flag is enabled) |
+| Registered by default | No |
 | Import from | `@medusajs/medusa/rbac` |
 
 ## Features
@@ -51,36 +51,31 @@ RBAC (role-based access control) Module for Medusa: manages roles, policies, rol
 - Define policies as a resource and operation pair, such as `product:read`.
 - Group policies into roles, and let roles inherit from other roles.
 - Seeds a Super Admin role with a wildcard policy that grants full access.
-- Powers the Admin API routes under `/admin/rbac`, which are also gated by the `rbac` feature flag.
+- Powers the `/rbac/*` Admin API routes and the `authorize` route middleware, which are active only while the module is installed.
 
 ## Installation
 
-No installation needed. The module is included in `@medusajs/medusa`. Enable the `rbac` feature flag to register it.
+No installation needed. The module is included in `@medusajs/medusa`. Register it in `medusa-config.ts`.
 
 ## Usage
 
-Enable the feature flag in `medusa-config.ts`:
+Add the module to `medusa-config.ts`:
 
 ```ts
 import { defineConfig } from "@medusajs/framework/utils"
 
 module.exports = defineConfig({
   // ...
-  featureFlags: {
-    rbac: true,
-  },
+  modules: [
+    {
+      resolve: "@medusajs/medusa/rbac",
+    },
+  ],
 })
-```
-
-Or set the environment variable:
-
-```bash
-MEDUSA_FF_RBAC=true
 ```
 
 Then run migrations with `npx medusa db:migrate`.
 
 ## Resources
 
-- [Feature flags](https://docs.medusajs.com/learn/debugging-and-testing/feature-flags)
 - [Modules](https://docs.medusajs.com/learn/fundamentals/modules)

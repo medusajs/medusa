@@ -4,23 +4,20 @@ import { IRbacModuleService } from "@medusajs/types"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type DeleteRbacRolesStepInput = string[]
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const deleteRbacRolesStepId = "delete-rbac-roles"
 
 /**
- * This step deletes one or more RBAC roles.
+ * This step soft-deletes one or more RBAC roles.
  * @param ids - The IDs of the roles to delete
  * @param container - The workflow container
  * @returns A step response with the deleted role IDs
  * @ignore
- * @featureFlag rbac
  */
 export const deleteRbacRolesStep = createStep(
   deleteRbacRolesStepId,
@@ -28,12 +25,12 @@ export const deleteRbacRolesStep = createStep(
     const service = container.resolve<IRbacModuleService>(Modules.RBAC)
 
     if (!ids?.length) {
-      return new StepResponse([] as any, [])
+      return new StepResponse([], [])
     }
 
-    const deleted = await service.deleteRbacRoles(ids)
+    await service.softDeleteRbacRoles(ids)
 
-    return new StepResponse(deleted, ids)
+    return new StepResponse(ids, ids)
   },
   async (deletedRoleIds, { container }) => {
     if (!deletedRoleIds?.length) {
@@ -42,7 +39,6 @@ export const deleteRbacRolesStep = createStep(
 
     const service = container.resolve<IRbacModuleService>(Modules.RBAC)
 
-    // Restore the soft-deleted roles during compensation
     await service.restoreRbacRoles(deletedRoleIds)
   }
 )

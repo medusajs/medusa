@@ -8,7 +8,7 @@ import { PermissionGuard } from "../../../../../components/common/permission-gua
 import { DataTable } from "../../../../../components/data-table"
 import { useRbacPolicyRoles } from "../../../../../hooks/api/rbac-policies"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import { useRbacRolePermissions } from "../../../../../hooks/use-resource-permissions"
 
 type PolicyRolesSectionProps = {
   policy: HttpTypes.AdminRbacPolicy
@@ -24,8 +24,7 @@ const PREFIX = "pr"
 export const PolicyRolesSection = ({ policy }: PolicyRolesSectionProps) => {
   const { t } = useTranslation()
   const { offset } = useQueryParams(["offset"], PREFIX)
-  const { hasPermission } = usePermissions()
-  const canReadRoles = hasPermission("rbac_role:read")
+  const { canRead: canReadRoles } = useRbacRolePermissions()
 
   const { roles, count, isPending, isError, error } = useRbacPolicyRoles(
     policy.id,

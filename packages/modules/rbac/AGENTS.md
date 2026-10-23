@@ -4,9 +4,27 @@ Role-based access control module: stores roles, policies (`resource:operation` p
 
 ## Using this package
 
-- Included in `defineConfig` (`@medusajs/medusa/rbac`) but disabled unless the `rbac` feature flag is on (`MEDUSA_FF_RBAC=true`, default `false`).
+- Not registered by default: applications add `{ resolve: "@medusajs/medusa/rbac" }` to `modules` in `medusa-config.ts`. Everything RBAC (the `authorize` middleware, the `/rbac/*` routes, role assignment on users and invites, response field filtering) switches on when the module is installed and is a no-op otherwise.
 - It is a licensed module: the loader (`packages/core/modules-sdk/src/loaders/utils/load-internal.ts`, `LICENSED_MODULES`) only loads it when the license covers `LicenseFeature.RBAC`.
-- No module options and no providers.
+- One module option, `actors`, says how each authenticated actor type reaches the entities that can hold role assignments for it (its grantees), and no providers. `user` always keeps `{ entity: "user", path: "id" }` as a grantee; configured grantees are added to it. Secret API keys authenticate as `api-key` and by default act with the roles of the user that created them. Set `actor_entity` when the actor type is not the name of a `query.graph` entity.
+
+```ts
+// medusa-config.ts
+{
+  resolve: "@medusajs/medusa/rbac",
+  options: {
+    actors: {
+      user: { grantees: [{ entity: "team", path: "teams.id" }] },
+      // Give each secret key its own role assignments (reference: "api_key")
+      // instead of inheriting its creator's roles:
+      "api-key": {
+        actor_entity: "api_key",
+        grantees: [{ entity: "api_key", path: "id" }],
+      },
+    },
+  },
+}
+```
 
 ```ts
 import { Modules } from "@medusajs/framework/utils"
@@ -59,6 +77,7 @@ yarn migration:create           # after any change in src/models
 
 ## Gotchas
 
+- A policy's `key`, `resource` and `operation` cannot be changed through `POST /rbac/policies/:id` (only `name`, `description` and `metadata` can). Every role holding the policy would silently gain the new permission, so an actor with `rbac_policy:update` could widen a policy they hold into `*:*`. Create a new policy, or change them from a migration script you control.
 - Policies created by hand that are not registered via `definePolicies` are soft-deleted on the next application start.
 - Role parent validation throws plain `Error`, not `MedusaError`.
 - Inheritance traversal skips soft-deleted roles and parent rows, and guards against cycles with a path array.

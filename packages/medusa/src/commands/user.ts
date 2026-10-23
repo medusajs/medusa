@@ -1,8 +1,5 @@
-import {
-  ContainerRegistrationKeys,
-  FeatureFlag,
-  Modules,
-} from "@medusajs/framework/utils"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { track } from "@medusajs/telemetry"
 import express from "express"
 import loaders from "../loaders"
@@ -33,8 +30,8 @@ export default async function ({
     const provider = "emailpass"
 
     // Check if RBAC is enabled and get super admin role
-    let userRoles: string[] = []
-    const rbacEnabled = FeatureFlag.isFeatureEnabled("rbac")
+    let userRoles: { role_id: string }[] = []
+    const rbacEnabled = MedusaModule.isInstalled(Modules.RBAC)
 
     if (rbacEnabled) {
       const rbacService = container.resolve(Modules.RBAC)
@@ -43,7 +40,7 @@ export default async function ({
       })
 
       if (superAdminRoles.length > 0) {
-        userRoles = [superAdminRoles[0].id]
+        userRoles = [{ role_id: superAdminRoles[0].id }]
       }
     }
 

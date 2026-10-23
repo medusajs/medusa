@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -14,28 +14,30 @@ import {
 export const adminOrderChangesRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/order-changes/*",
-    policies: [
-      {
-        resource: Entities.order_change,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.order_change,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/order-changes/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.order_change,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminPostOrderChangesReqSchema),
       validateAndTransformQuery(
         AdminOrderChangeParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.order_change,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 ]

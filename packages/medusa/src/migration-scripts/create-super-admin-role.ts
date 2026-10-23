@@ -9,12 +9,12 @@
  * Usage: npx tsx packages/medusa/src/migration-scripts/create-super-admin-role.ts
  */
 
+import { assignRolesWorkflow } from "@medusajs/core-flows"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { ExecArgs } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
-  FeatureFlag,
   Modules,
 } from "@medusajs/framework/utils"
 import dotenv from "dotenv"
@@ -100,19 +100,20 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
     let successCount = 0
     let errorCount = 0
 
-    const link = container.resolve(ContainerRegistrationKeys.LINK)
-
     for (const user of users) {
       try {
         logger.info(`  Processing user: ${user.id}`)
 
         // Link the user to the super admin role
-        await link.create({
-          [Modules.USER]: {
-            user_id: user.id,
-          },
-          [Modules.RBAC]: {
-            rbac_role_id: superAdminRole.id,
+        await assignRolesWorkflow(container).run({
+          input: {
+            assignments: [
+              {
+                role_id: superAdminRole.id,
+                reference: Modules.USER,
+                reference_id: user.id,
+              },
+            ],
           },
         })
 
@@ -156,9 +157,7 @@ export default async function createSuperAdminRole({ container }: ExecArgs) {
     !MedusaModule.isInstalled(Modules.RBAC)
   ) {
     const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
-    logger.info(
-      "Required modules (USER, AUTH, RBAC) not installed. Skipping."
-    )
+    logger.info("Required modules (USER, AUTH, RBAC) not installed. Skipping.")
     return
   }
 
@@ -172,5 +171,5 @@ export default async function createSuperAdminRole({ container }: ExecArgs) {
 }
 
 defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled("rbac"),
+  isDisabled: () => !MedusaModule.isInstalled(Modules.RBAC),
 })

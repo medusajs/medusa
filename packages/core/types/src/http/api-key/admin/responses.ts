@@ -1,7 +1,7 @@
 import { ApiKeyType } from "../../../api-key"
 import { DeleteResponse, PaginatedResponse } from "../../common"
 
-interface AdminApiKey {
+export interface AdminApiKey {
   /**
    * The API key's ID.
    */

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { HttpTypes } from "@medusajs/types"
 import { useNavigate } from "react-router-dom"
 import { useCancelExchangeRequest } from "../../../../../hooks/api/exchanges"
+import { useOrderExchangePermissions } from "../../../../../hooks/use-resource-permissions"
 
 type ActiveOrderExchangeSectionProps = {
   orderPreview: HttpTypes.AdminOrderPreview
@@ -14,6 +15,13 @@ export const ActiveOrderExchangeSection = ({
   orderPreview,
 }: ActiveOrderExchangeSectionProps) => {
   const { t } = useTranslation()
+  const {
+    canCreate: canCreateExchange,
+    canUpdate: canUpdateExchange,
+    canDelete: canDeleteExchange,
+  } = useOrderExchangePermissions()
+  const canContinue = canCreateExchange && canUpdateExchange
+  const canDiscard = canDeleteExchange
   const exchangeId = orderPreview?.order_change?.exchange_id
 
   const { mutateAsync: cancelExchange } = useCancelExchangeRequest(
@@ -63,19 +71,29 @@ export const ActiveOrderExchangeSection = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-            <Button size="small" variant="secondary" onClick={onCancelExchange}>
-              {t("orders.exchanges.cancel.title")}
-            </Button>
+          {(canDiscard || canContinue) && (
+            <div className="flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+              {canDiscard && (
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={onCancelExchange}
+                >
+                  {t("orders.exchanges.cancel.title")}
+                </Button>
+              )}
 
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={onContinueExchange}
-            >
-              {t("actions.continue")}
-            </Button>
-          </div>
+              {canContinue && (
+                <Button
+                  size="small"
+                  variant="secondary"
+                  onClick={onContinueExchange}
+                >
+                  {t("actions.continue")}
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </Container>
     </div>

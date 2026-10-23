@@ -1,6 +1,7 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import {
   LayoutComposer,
@@ -49,16 +50,17 @@ export const ApiKeyManagementDetail = () => {
             </LayoutComposer.Entry>
             {isPublishable && (
               <LayoutComposer.Entry id="ApiKeySalesChannelSection">
-                {isViewConfigEnabled ? (
-                  <ConfigurableApiKeySalesChannelSection apiKey={api_key} />
-                ) : (
-                  <ApiKeySalesChannelSection apiKey={api_key} />
-                )}
+                <PermissionGuard permission="sales_channel:read">
+                  {isViewConfigEnabled ? (
+                    <ConfigurableApiKeySalesChannelSection apiKey={api_key} />
+                  ) : (
+                    <ApiKeySalesChannelSection apiKey={api_key} />
+                  )}
+                </PermissionGuard>
               </LayoutComposer.Entry>
             )}
             {detailPageDefaultEntries(api_key, {
               metadata: false,
-              permissions: false,
             })}
           </>
         ),

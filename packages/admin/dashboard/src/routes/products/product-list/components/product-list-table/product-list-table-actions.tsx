@@ -3,9 +3,16 @@ import { HttpTypes } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import {
+  useProductPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 export const ProductActions = ({
   product,
@@ -16,6 +23,9 @@ export const ProductActions = ({
   const prompt = usePrompt()
   const { mutateAsync } = useDeleteProduct(product.id)
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const { canUpdate, canDelete } = useProductPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -47,41 +57,47 @@ export const ProductActions = ({
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/products/${product.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/products/${product.id}/edit`,
         },
-        ...(isTranslationsEnabled
-          ? [
-              {
-                actions: [
-                  {
-                    icon: <GlobeEurope />,
-                    label: t("translations.actions.manage"),
-                    to: `/settings/translations/edit?reference=product&reference_id=${product.id}`,
-                  },
-                ],
-              },
-            ]
-          : []),
+      ],
+    })
+  }
+
+  if (canManageTranslations) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <GlobeEurope />,
+          label: t("translations.actions.manage"),
+          to: `/settings/translations/edit?reference=product&reference_id=${product.id}`,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
+        {
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
+        },
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

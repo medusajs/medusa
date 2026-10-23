@@ -40,7 +40,7 @@ export const ShippingProfileDetail = () => {
             <LayoutComposer.Entry id="ShippingProfileGeneralSection">
               <ShippingProfileGeneralSection profile={shipping_profile} />
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(shipping_profile, { permissions: false })}
+            {detailPageDefaultEntries(shipping_profile)}
           </>
         ),
       }}

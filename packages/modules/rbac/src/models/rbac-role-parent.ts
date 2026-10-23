@@ -5,7 +5,7 @@ const RbacRoleParent = model
   .define("rbac_role_parent", {
     id: model.id({ prefix: "rlin" }).primaryKey(),
     role: model.belongsTo(() => RbacRole, { mappedBy: "parents" }),
-    parent: model.belongsTo(() => RbacRole),
+    parent: model.belongsTo(() => RbacRole, { mappedBy: "children" }),
     metadata: model.json().nullable(),
   })
   .indexes([

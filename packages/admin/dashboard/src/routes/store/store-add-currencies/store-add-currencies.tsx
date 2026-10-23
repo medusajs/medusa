@@ -1,10 +1,12 @@
 import { RouteFocusModal } from "../../../components/modals"
 import { usePricePreferences } from "../../../hooks/api/price-preferences"
 import { useStore } from "../../../hooks/api/store"
+import { usePricePreferencePermissions } from "../../../hooks/use-resource-permissions"
 import { AddCurrenciesForm } from "./components/add-currencies-form/add-currencies-form"
 
 export const StoreAddCurrencies = () => {
   const { store, isPending, isError, error } = useStore()
+  const { canRead: canReadPricePreferences } = usePricePreferencePermissions()
 
   const {
     price_preferences: pricePreferences,
@@ -17,7 +19,7 @@ export const StoreAddCurrencies = () => {
       value: store?.supported_currencies?.map((c) => c.currency_code),
     },
     {
-      enabled: !!store,
+      enabled: canReadPricePreferences && !!store,
     }
   )
 
@@ -35,7 +37,11 @@ export const StoreAddCurrencies = () => {
   return (
     <RouteFocusModal>
       {ready && (
-        <AddCurrenciesForm store={store} pricePreferences={pricePreferences} />
+        <AddCurrenciesForm
+          store={store}
+          pricePreferences={pricePreferences}
+          canReadPricePreferences={canReadPricePreferences}
+        />
       )}
     </RouteFocusModal>
   )

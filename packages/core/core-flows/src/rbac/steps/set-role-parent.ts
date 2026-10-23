@@ -4,7 +4,6 @@ import { IRbacModuleService } from "@medusajs/types"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type SetRoleParentStepInput = Array<{
   role_id: string
@@ -13,13 +12,11 @@ export type SetRoleParentStepInput = Array<{
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const setRoleParentStepId = "set-role-parent"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const setRoleParentStep = createStep(
   setRoleParentStepId,

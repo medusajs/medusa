@@ -8,8 +8,9 @@ import * as hooks from "../../../../components/data-table/helpers/sales-channels
 import { useStore } from "../../../../hooks/api"
 import { useSalesChannels } from "../../../../hooks/api/sales-channels"
 import { SalesChannelListTableActions } from "./sales-channel-list-table-actions"
+import { useSalesChannelPermissions } from "../../../../hooks/use-resource-permissions"
 
-type SalesChannelWithIsDefault = HttpTypes.AdminSalesChannel & {
+export type SalesChannelWithIsDefault = HttpTypes.AdminSalesChannel & {
   is_default?: boolean
 }
 
@@ -17,6 +18,7 @@ const PAGE_SIZE = 20
 
 export const SalesChannelListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useSalesChannelPermissions()
 
   const { store } = useStore()
 
@@ -60,10 +62,14 @@ export const SalesChannelListTable = () => {
         emptyState={emptyState}
         heading={t("salesChannels.domain")}
         subHeading={t("salesChannels.subtitle")}
-        action={{
-          label: t("actions.create"),
-          to: "/settings/sales-channels/create",
-        }}
+        action={
+          canCreate
+            ? {
+                label: t("actions.create"),
+                to: "/settings/sales-channels/create",
+              }
+            : undefined
+        }
         rowHref={(row) => `/settings/sales-channels/${row.id}`}
       />
     </Container>

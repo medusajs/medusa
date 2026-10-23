@@ -1,5 +1,6 @@
 export enum Entities {
   customer_group = "customer_group",
+  customer = "customer",
 }
 
 export const defaultAdminCustomerGroupFields = [

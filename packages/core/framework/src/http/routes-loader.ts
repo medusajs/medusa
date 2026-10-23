@@ -39,6 +39,13 @@ const STORE_ROUTE_MATCH = /(\/store$|\/store\/)/
 const AUTH_ROUTE_MATCH = /(\/auth$|\/auth\/)/
 
 /**
+ * The "/rbac" routes are not admin routes (they authenticate any actor type
+ * allowed by "http.rbacActorTypes"), but they are consumed by the admin
+ * dashboard and therefore share its CORS configuration.
+ */
+const RBAC_ROUTE_MATCH = /^\/rbac(\/|$)/
+
+/**
  * Exposes to API to register routes manually or by scanning the filesystem from a
  * source directory.
  *
@@ -99,13 +106,15 @@ export class RoutesLoader {
     /**
      * Find the route type based upon its prefix.
      */
-    const routeType = ADMIN_ROUTE_MATCH.test(routePath)
-      ? "admin"
-      : STORE_ROUTE_MATCH.test(routePath)
-      ? "store"
-      : AUTH_ROUTE_MATCH.test(routePath)
-      ? "auth"
-      : undefined
+    const routeType =
+      // TODO: [rbac] define if we want to have a separate cors config for rbac
+      ADMIN_ROUTE_MATCH.test(routePath) || RBAC_ROUTE_MATCH.test(routePath)
+        ? "admin"
+        : STORE_ROUTE_MATCH.test(routePath)
+        ? "store"
+        : AUTH_ROUTE_MATCH.test(routePath)
+        ? "auth"
+        : undefined
 
     /**
      * Check if the route file has decided to opt-out of authentication

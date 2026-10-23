@@ -16,6 +16,10 @@ const usersQueryKeys = {
   ...queryKeysFactory(USERS_QUERY_KEY),
   me: (query?: HttpTypes.AdminUserParams) =>
     [USERS_QUERY_KEY, "me", query ? { query } : undefined].filter((k) => !!k),
+  roles: (id: string, query?: HttpTypes.AdminRbacRoleUserListParams) =>
+    [USERS_QUERY_KEY, id, "roles", query ? { query } : undefined].filter(
+      (k) => !!k
+    ),
   authProviders: (id: string) => [USERS_QUERY_KEY, id, "auth-providers"],
 }
 
@@ -56,6 +60,28 @@ export const useUser = (
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.user.retrieve(id, query),
     queryKey: usersQueryKeys.detail(id),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
+export const useUserRoles = (
+  id: string,
+  query?: HttpTypes.AdminRbacRoleUserListParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminUserRoleListResponse,
+      FetchError,
+      HttpTypes.AdminUserRoleListResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => sdk.admin.user.listRoles(id, query),
+    queryKey: usersQueryKeys.roles(id, query),
     ...options,
   })
 

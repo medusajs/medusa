@@ -59,6 +59,8 @@ describe("validateAndTransformQuery", () => {
   })
 
   it("should transform the input query", async () => {
+    // `RestrictedFields` is nominal (it has a `#private` field), so the partial
+    // literal is not comparable to `MedusaRequest` directly.
     let mockRequest = {
       allowed: [],
       restrictedFields: new RestrictedFields(),

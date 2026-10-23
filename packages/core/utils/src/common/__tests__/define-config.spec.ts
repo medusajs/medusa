@@ -147,10 +147,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -219,6 +215,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -502,10 +501,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -574,6 +569,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -711,10 +709,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -783,6 +777,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -921,10 +918,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -993,6 +986,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1121,10 +1117,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1193,6 +1185,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1324,10 +1319,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1396,6 +1387,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1574,10 +1568,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1651,6 +1641,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1794,10 +1787,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1866,6 +1855,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2046,10 +2038,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2123,6 +2111,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2319,10 +2310,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2396,6 +2383,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2627,10 +2617,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2699,6 +2685,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2873,10 +2862,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2969,6 +2954,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -3130,10 +3118,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -3223,6 +3207,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -3393,10 +3380,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -3486,6 +3469,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",

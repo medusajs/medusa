@@ -2,9 +2,16 @@ import { GlobeEurope, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteCollection } from "../../../../../hooks/api/collections"
 import { useNavigate } from "react-router-dom"
+import {
+  useProductCollectionPermissions,
+  useTranslationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 type CollectionGeneralSectionProps = {
@@ -18,6 +25,10 @@ export const CollectionGeneralSection = ({
   const prompt = usePrompt()
   const navigate = useNavigate()
   const isTranslationsEnabled = useFeatureFlag("translation")
+  const { canUpdate, canDelete } = useProductCollectionPermissions()
+  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+
+  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
 
   const { mutateAsync } = useDeleteCollection(collection.id!)
 
@@ -38,47 +49,51 @@ export const CollectionGeneralSection = ({
     navigate("../", { replace: true })
   }
 
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
+        {
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/collections/${collection.id}/edit`,
+          disabled: !collection.id,
+        },
+      ],
+    })
+  }
+
+  if (canManageTranslations) {
+    groups.push({
+      actions: [
+        {
+          label: t("translations.actions.manage"),
+          to: `/settings/translations/edit?reference=product_collection&reference_id=${collection.id}`,
+          icon: <GlobeEurope />,
+        },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
+        {
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
+          disabled: !collection.id,
+        },
+      ],
+    })
+  }
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{collection.title}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <PencilSquare />,
-                  label: t("actions.edit"),
-                  to: `/collections/${collection.id}/edit`,
-                  disabled: !collection.id,
-                },
-              ],
-            },
-            ...(isTranslationsEnabled
-              ? [
-                  {
-                    actions: [
-                      {
-                        label: t("translations.actions.manage"),
-                        to: `/settings/translations/edit?reference=product_collection&reference_id=${collection.id}`,
-                        icon: <GlobeEurope />,
-                      },
-                    ],
-                  },
-                ]
-              : []),
-            {
-              actions: [
-                {
-                  icon: <Trash />,
-                  label: t("actions.delete"),
-                  onClick: handleDelete,
-                  disabled: !collection.id,
-                },
-              ],
-            },
-          ]}
-        />
+        {groups.length > 0 && <ActionMenu groups={groups} />}
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
         <Text size="small" leading="compact" weight="plus">

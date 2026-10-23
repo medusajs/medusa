@@ -22,6 +22,7 @@ import { Providers } from "../providers"
 import coreTranslations from "../i18n/translations"
 import { getRouteMap } from "./routes/get-route.map"
 import { createRouteMap, getRouteExtensions } from "./routes/utils"
+import { wrapRouteLoaders } from "./routes/wrap-route-loaders"
 import { sortMenuItemsByRank } from "./utils/sort-menu-items-by-rank"
 import { CORE_LAYOUTS } from "../components/layout-composer/core-layouts"
 import {
@@ -572,10 +573,12 @@ export class DashboardApp {
   }
 
   render() {
-    const routes = getRouteMap({
-      settingsRoutes: this.settingsRoutes,
-      coreRoutes: this.coreRoutes,
-    })
+    const routes = wrapRouteLoaders(
+      getRouteMap({
+        settingsRoutes: this.settingsRoutes,
+        coreRoutes: this.coreRoutes,
+      })
+    )
 
     const router = createBrowserRouter(routes, {
       basename: __BASE__ || "/",

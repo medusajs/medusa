@@ -35,6 +35,10 @@ import {
   TotalCell,
   TotalHeader,
 } from "../../../components/table/table-cells/order/total-cell"
+import {
+  useCustomerPermissions,
+  useSalesChannelPermissions,
+} from "../../use-resource-permissions"
 
 // We have to use any here, as the type of Order is so complex that it lags the TS server
 const columnHelper = createColumnHelper<HttpTypes.AdminOrder>()
@@ -44,6 +48,9 @@ type UseOrderTableColumnsProps = {
 }
 
 export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
+  const { canRead: canReadCustomers } = useCustomerPermissions()
+  const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
+
   const { exclude = [] } = props ?? {}
 
   const columns = useMemo(
@@ -64,22 +71,30 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
           return <DateCell date={date} />
         },
       }),
-      columnHelper.accessor("customer", {
-        header: () => <CustomerHeader />,
-        cell: ({ getValue }) => {
-          const customer = getValue()
+      ...(canReadCustomers
+        ? [
+            columnHelper.accessor("customer", {
+              header: () => <CustomerHeader />,
+              cell: ({ getValue }) => {
+                const customer = getValue()
 
-          return <CustomerCell customer={customer} />
-        },
-      }),
-      columnHelper.accessor("sales_channel", {
-        header: () => <SalesChannelHeader />,
-        cell: ({ getValue }) => {
-          const channel = getValue()
+                return <CustomerCell customer={customer} />
+              },
+            }),
+          ]
+        : []),
+      ...(canReadSalesChannels
+        ? [
+            columnHelper.accessor("sales_channel", {
+              header: () => <SalesChannelHeader />,
+              cell: ({ getValue }) => {
+                const channel = getValue()
 
-          return <SalesChannelCell channel={channel} />
-        },
-      }),
+                return <SalesChannelCell channel={channel} />
+              },
+            }),
+          ]
+        : []),
       columnHelper.accessor("payment_status", {
         header: () => <PaymentStatusHeader />,
         cell: ({ getValue }) => {

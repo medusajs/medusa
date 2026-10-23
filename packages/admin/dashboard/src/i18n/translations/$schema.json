@@ -580,6 +580,9 @@
         "edit": {
           "type": "string"
         },
+        "view": {
+          "type": "string"
+        },
         "addItems": {
           "type": "string"
         },
@@ -663,6 +666,7 @@
         "reset",
         "confirm",
         "edit",
+        "view",
         "addItems",
         "download",
         "clear",
@@ -10994,9 +10998,19 @@
               },
               "required": ["heading", "description"],
               "additionalProperties": false
+            },
+            "manage": {
+              "type": "object",
+              "properties": {
+                "successToast": {
+                  "type": "string"
+                }
+              },
+              "required": ["successToast"],
+              "additionalProperties": false
             }
           },
-          "required": ["header", "hint", "empty", "filtered"],
+          "required": ["header", "hint", "empty", "filtered", "manage"],
           "additionalProperties": false
         },
         "list": {
@@ -11078,11 +11092,14 @@
             "header": {
               "type": "string"
             },
+            "identityHint": {
+              "type": "string"
+            },
             "successToast": {
               "type": "string"
             }
           },
-          "required": ["header", "successToast"],
+          "required": ["header", "identityHint", "successToast"],
           "additionalProperties": false
         },
         "delete": {
@@ -14576,6 +14593,19 @@
           "required": ["title", "description", "requiredPermission", "action"],
           "additionalProperties": false
         },
+        "noPermissions": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description"],
+          "additionalProperties": false
+        },
         "requiredPermissions": {
           "type": "object",
           "properties": {
@@ -14740,6 +14770,7 @@
       },
       "required": [
         "accessDenied",
+        "noPermissions",
         "requiredPermissions",
         "resources",
         "actions"
