@@ -218,6 +218,7 @@ export const updateCartWorkflow = createWorkflow(
       findOrCreateCustomerStep({
         customerId: cartDataInput.customer_id,
         email: cartDataInput.email,
+        hasAccount: false,
       })
     )
 
