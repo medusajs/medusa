@@ -54,6 +54,8 @@ From the S3 file URL, you can extract the bucket name and region. For example, i
 - The bucket name is `medusajs.cloud-data-prod-euc1-123`.
 - The region is `eu-central-1`.
 
+If you enabled the [Medusa CDN for files](#serve-files-through-medusa-cdn) for the environment, the page also shows a **Medusa CDN** section with the environment's CDN file URL. Click the copy icon next to the URL to copy it.
+
 ### Override S3 Configurations on Cloud
 
 If you need to override the default S3 configurations of your Cloud project, such as changing public access to assets, you can do so by setting up and managing your own S3 bucket externally.
@@ -73,6 +75,28 @@ To set the connection options of your external S3 instance, refer to the [Enviro
 When you upload files through your Medusa application hosted on Cloud, such as product images or other assets, the files are stored in the S3 bucket prefix associated with that application's environment.
 
 You can also upload files using Medusa's [Upload Files API route](!api!/admin/uploads/upload-files), or in a [custom API route that handles file upload](!docs!/learn/fundamentals/api-routes/parse-body#configure-file-uploads).
+
+---
+
+## Serve Files Through Medusa CDN
+
+<Note>
+
+The Medusa CDN for files is gradually rolling out, so it may not be available for your organization yet.
+
+</Note>
+
+Medusa can serve the files stored in your environments' S3 bucket prefixes through a Content Delivery Network (CDN). You choose which of your project's environments use the CDN from the project's CDN settings.
+
+To choose the environments that use the Medusa CDN for files:
+
+1. From the [organization's dashboard](../organizations/page.mdx), click on the project.
+2. In the project's dashboard, open the **CDN** settings page.
+3. In the **Files CDN** section, use the environment selector to choose the environments that the CDN applies to.
+
+Cloud saves your selection as soon as you change it, and shows a notification confirming the change.
+
+After the CDN is configured for an environment, you can find the environment's CDN file URL in the **Medusa CDN** section of its storage page, as explained in the [Access S3 Configurations](#access-s3-configurations-on-cloud) section.
 
 ---
 
