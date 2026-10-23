@@ -1034,6 +1034,56 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
         })
+
+        it("should update every price identified by id when quantity fields are omitted", async () => {
+          const [priceSet] = await service.createPriceSets([{}])
+
+          await service.addPriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                {
+                  id: "price-band-1",
+                  amount: 80,
+                  currency_code: "eur",
+                  price_set_id: priceSet.id,
+                  min_quantity: 1,
+                  max_quantity: 9,
+                },
+                {
+                  id: "price-band-2",
+                  amount: 76,
+                  currency_code: "eur",
+                  price_set_id: priceSet.id,
+                  min_quantity: 10,
+                },
+              ],
+            },
+          ])
+
+          await service.updatePriceListPrices([
+            {
+              price_list_id: "price-list-1",
+              prices: [
+                { id: "price-band-1", price_set_id: priceSet.id, amount: 78 },
+                { id: "price-band-2", price_set_id: priceSet.id, amount: 74 },
+              ],
+            },
+          ])
+
+          const prices = await service.listPrices(
+            { price_list_id: ["price-list-1"] },
+            { order: { min_quantity: "ASC" } }
+          )
+
+          expect(
+            prices.map((p) => [p.id, Number(p.min_quantity), Number(p.amount)])
+          ).toEqual([
+            ["price-band-1", 1, 78],
+            ["price-band-2", 10, 74],
+          ])
+        })
+
       })
 
       describe("removePrices", () => {

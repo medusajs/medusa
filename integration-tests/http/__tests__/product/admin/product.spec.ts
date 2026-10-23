@@ -3793,6 +3793,68 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("DELETE /admin/products/:id/variants/:variant_id", () => {
+        it("deletes a variant that belongs to the product in the URL", async () => {
+          const variant = baseProduct.variants[0]
+
+          const response = await api.delete(
+            `/admin/products/${baseProduct.id}/variants/${variant.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual(
+            expect.objectContaining({
+              id: variant.id,
+              object: "variant",
+              deleted: true,
+              parent: expect.objectContaining({ id: baseProduct.id }),
+            })
+          )
+        })
+
+        it("returns 404 and keeps the variant when it belongs to another product", async () => {
+          const variant = publishedProduct.variants[0]
+
+          const error = await api
+            .delete(
+              `/admin/products/${baseProduct.id}/variants/${variant.id}`,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(404)
+          expect(error.response.data.message).toEqual(
+            `Variant with id: ${variant.id} was not found on product with id: ${baseProduct.id}`
+          )
+
+          const persisted = (
+            await api.get(
+              `/admin/products/${publishedProduct.id}/variants/${variant.id}`,
+              adminHeaders
+            )
+          ).data.variant
+
+          expect(persisted.id).toEqual(variant.id)
+        })
+
+        it("keeps the existing response when the variant does not exist", async () => {
+          const response = await api.delete(
+            `/admin/products/${baseProduct.id}/variants/variant_does_not_exist`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data).toEqual(
+            expect.objectContaining({
+              id: "variant_does_not_exist",
+              object: "variant",
+              deleted: true,
+            })
+          )
+        })
+      })
+
       describe("POST /admin/products/:id/variants/:id", () => {
         it("successfully updates variant without prices", async () => {
           const res = await api
