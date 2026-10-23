@@ -229,6 +229,31 @@ export async function fetchPackument(
   }
 }
 
+export function linearTeamId() {
+  if (!process.env.LINEAR_API_KEY || !process.env.LINEAR_TEAM_ID) {
+    throw new Error("Missing LINEAR_API_KEY or LINEAR_TEAM_ID env variable.")
+  }
+  return process.env.LINEAR_TEAM_ID
+}
+
+export async function linear(query, variables) {
+  const res = await fetch("https://api.linear.app/graphql", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: process.env.LINEAR_API_KEY,
+    },
+    body: JSON.stringify({ query, variables }),
+  })
+  const json = await res.json()
+  if (!res.ok || json.errors) {
+    throw new Error(
+      `Linear API error: ${res.status} ${JSON.stringify(json.errors ?? json)}`
+    )
+  }
+  return json.data
+}
+
 // Model-written text: single line, no markdown links, mentions, or HTML, capped.
 export function plainText(text, max = 140) {
   const clean = String(text ?? "")

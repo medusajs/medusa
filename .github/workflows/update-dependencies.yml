@@ -35,8 +35,9 @@ concurrency:
 permissions: {}
 
 jobs:
-  # Holds the read-only default token. Writes the plan, each group's input,
-  # and (for a revision) the sanitized review comments for the update job.
+  # Holds the read-only default token and, to read the state issue, the Linear key.
+  # Writes the plan, each group's input, and (for a revision) the sanitized
+  # review comments for the update job.
   plan:
     if: >-
       github.event_name != 'issue_comment' || (
@@ -183,7 +184,8 @@ jobs:
       - name: Read state
         if: steps.mode.outputs.mode == 'weekly'
         env:
-          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LINEAR_TEAM_ID: ${{ secrets.LINEAR_TEAM_ID }} # DX team
         run: node scripts/deps-update/state.mjs read --out /tmp/deps-update/state.json
 
       - name: Plan updates
@@ -662,8 +664,8 @@ jobs:
           path: /tmp/deps-update/pr/
           retention-days: 7
 
-  # Holds the Linear key and an App token that can only write issues. Builds the
-  # report from fixed text plus capped, de-linked model summaries.
+  # Holds the Linear key. Builds the report from fixed text plus capped,
+  # de-linked model summaries, and writes the state issue.
   report:
     needs: [plan, update, open-pr]
     if: always() && needs.plan.result == 'success' && needs.plan.outputs.mode == 'weekly'
@@ -718,15 +720,8 @@ jobs:
           fi
           node scripts/deps-update/report.mjs "${ARGS[@]}"
 
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1
-        with:
-          app-id: ${{ secrets.MEDUSA_APP_ID }}
-          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
-          permission-issues: write
-
       - name: Write state
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LINEAR_TEAM_ID: ${{ secrets.LINEAR_TEAM_ID }} # DX team
         run: node scripts/deps-update/state.mjs write --in "$RUNNER_TEMP/new-state.json"

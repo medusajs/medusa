@@ -1,19 +1,18 @@
 #!/usr/bin/env node
-// Reads and writes the dependency update state kept in a pinned GitHub issue.
+// Reads and writes the dependency update state kept in an In Progress Linear
+// issue in the DX team.
 //
 // Usage:
 //   node scripts/deps-update/state.mjs read --out state.json
 //   node scripts/deps-update/state.mjs write --in state.json
 //
-// Requires GH_TOKEN (issues: read for `read`, issues: write for `write`).
+// Requires LINEAR_API_KEY and LINEAR_TEAM_ID.
 
-import { execFileSync } from "node:child_process"
 import { readFileSync, writeFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
+import { linear, linearTeamId } from "./lib.mjs"
 
-export const STATE_LABEL = "dependency-update-state"
 const TITLE = "Dependency update state"
-const REPO = process.env.GITHUB_REPOSITORY || "medusajs/medusa"
 
 export function parseStateBody(body) {
   const match = /```json\n([\s\S]*?)\n```/.exec(body ?? "")
@@ -60,35 +59,39 @@ export function renderStateBody(state) {
   ].join("\n")
 }
 
-function gh(args) {
-  return execFileSync("gh", args, {
-    encoding: "utf8",
-    maxBuffer: 10 * 1024 * 1024,
-  })
-}
-
-// Only an issue opened by a bot is trusted, so a look-alike issue can't feed the plan.
-function findIssue() {
-  const issues = JSON.parse(
-    gh([
-      "issue",
-      "list",
-      "--repo",
-      REPO,
-      "--label",
-      STATE_LABEL,
-      "--state",
-      "open",
-      "--json",
-      "number,body,author",
-      "--limit",
-      "20",
-    ])
+// Only an open issue created by the workflow's own Linear key is trusted.
+async function findIssue(teamId) {
+  const data = await linear(
+    `query ($teamId: ID!, $title: String!) {
+      issues(
+        filter: {
+          team: { id: { eq: $teamId } }
+          title: { eq: $title }
+          creator: { isMe: { eq: true } }
+          state: { type: { nin: ["completed", "canceled", "duplicate"] } }
+        }
+        first: 1
+      ) { nodes { id identifier description } }
+    }`,
+    { teamId, title: TITLE }
   )
-  return issues.find((issue) => issue.author?.is_bot) ?? null
+  return data.issues.nodes[0] ?? null
 }
 
-function main() {
+async function inProgressStateId(teamId) {
+  const data = await linear(
+    `query ($teamId: String!) {
+      team(id: $teamId) { states { nodes { id name type position } } }
+    }`,
+    { teamId }
+  )
+  const started = data.team.states.nodes
+    .filter((s) => s.type === "started")
+    .sort((a, b) => a.position - b.position)
+  return (started.find((s) => s.name === "In Progress") ?? started[0])?.id
+}
+
+async function main() {
   const [command, flag, file] = process.argv.slice(2)
   if (
     !["read", "write"].includes(command) ||
@@ -100,72 +103,58 @@ function main() {
     )
     process.exit(1)
   }
+  const teamId = linearTeamId()
 
   if (command === "read") {
-    const issue = findIssue()
+    const issue = await findIssue(teamId)
     writeFileSync(
       file,
-      JSON.stringify(issue ? parseStateBody(issue.body) : {}, null, 2) + "\n"
+      JSON.stringify(issue ? parseStateBody(issue.description) : {}, null, 2) +
+        "\n"
     )
     console.log(
       issue
-        ? `Read state from #${issue.number}`
+        ? `Read state from ${issue.identifier}`
         : "No state issue yet; starting empty."
     )
     return
   }
 
-  const bodyFile = `${file}.md`
-  writeFileSync(
-    bodyFile,
-    renderStateBody(JSON.parse(readFileSync(file, "utf8")))
-  )
-  const issue = findIssue()
+  const description = renderStateBody(JSON.parse(readFileSync(file, "utf8")))
+  const issue = await findIssue(teamId)
   if (issue) {
-    gh([
-      "issue",
-      "edit",
-      String(issue.number),
-      "--repo",
-      REPO,
-      "--body-file",
-      bodyFile,
-    ])
-    console.log(`Updated state issue #${issue.number}`)
+    await linear(
+      `mutation ($id: String!, $input: IssueUpdateInput!) {
+        issueUpdate(id: $id, input: $input) { success }
+      }`,
+      { id: issue.id, input: { description } }
+    )
+    console.log(`Updated state issue ${issue.identifier}`)
     return
   }
-  gh([
-    "label",
-    "create",
-    STATE_LABEL,
-    "--repo",
-    REPO,
-    "--color",
-    "ededed",
-    "--description",
-    "State for the dependency update workflow",
-    "--force",
-  ])
-  const url = gh([
-    "issue",
-    "create",
-    "--repo",
-    REPO,
-    "--title",
-    TITLE,
-    "--label",
-    STATE_LABEL,
-    "--body-file",
-    bodyFile,
-  ]).trim()
-  try {
-    gh(["issue", "pin", url, "--repo", REPO])
-  } catch {
-    console.warn("Could not pin the state issue.")
+  const stateId = await inProgressStateId(teamId)
+  const data = await linear(
+    `mutation ($input: IssueCreateInput!) {
+      issueCreate(input: $input) { success issue { identifier url } }
+    }`,
+    {
+      input: {
+        teamId,
+        title: TITLE,
+        description,
+        ...(stateId ? { stateId } : {}),
+      },
+    }
+  )
+  if (!data.issueCreate.success) {
+    throw new Error("issueCreate returned success=false")
   }
-  console.log(`Created state issue ${url}`)
+  console.log(`Created state issue ${data.issueCreate.issue.url}`)
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main()
+  main().catch((err) => {
+    console.error(err)
+    process.exit(1)
+  })
 }
