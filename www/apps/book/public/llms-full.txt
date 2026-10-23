@@ -50971,7 +50971,11 @@ A tax-inclusive promotion is a promotion for which taxes are calculated from the
 
 When a promotion is tax-inclusive, the discount amount is reduced by the calculated tax amount based on the [tax region's rate](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/tax/tax-region). The reduced discount amount is then applied to the cart total.
 
-Tax-inclusiveness doesn't apply to Buy X Get Y promotions.
+Tax-inclusiveness applies to Buy X Get Y promotions since [Medusa v2.22.1](https://github.com/medusajs/medusa/releases/tag/v2.22.1). In earlier versions, Medusa ignores the `is_tax_inclusive` property of Buy X Get Y promotions.
+
+### Tax-Inclusive Buy X Get Y Promotions
+
+When a Buy X Get Y promotion is tax-inclusive, Medusa calculates the discount from the target items' tax-inclusive totals rather than their subtotals. For example, a tax-inclusive Buy X Get Y promotion that gives a target item for free discounts the item's full price, including taxes, so the customer pays nothing for that item.
 
 ### When to Use Tax-Inclusive Promotions
 

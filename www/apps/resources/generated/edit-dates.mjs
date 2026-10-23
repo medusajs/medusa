@@ -334,7 +334,7 @@ export const generatedEditDates = {
   "app/how-to-tutorials/tutorials/first-purchase-discounts/page.mdx": "2026-01-12T12:21:16.880Z",
   "app/how-to-tutorials/tutorials/gift-message/page.mdx": "2026-10-05T08:39:15.341Z",
   "app/how-to-tutorials/tutorials/re-order/page.mdx": "2026-10-05T08:39:11.024Z",
-  "app/commerce-modules/promotion/promotion-taxes/page.mdx": "2025-06-27T15:44:46.638Z",
+  "app/commerce-modules/promotion/promotion-taxes/page.mdx": "2026-10-23T08:33:38.685Z",
   "app/troubleshooting/payment/page.mdx": "2025-12-04T14:17:03.273Z",
   "app/recipes/personalized-products/example/page.mdx": "2026-07-28T05:43:12.321Z",
   "app/how-to-tutorials/tutorials/preorder/page.mdx": "2026-10-05T08:39:17.428Z",
