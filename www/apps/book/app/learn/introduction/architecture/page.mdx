@@ -18,14 +18,14 @@ Medusa is a headless commerce platform. So, storefronts, admin dashboards, and o
 
 In a common Medusa application, requests go through four layers in the stack. In order of entry, those are:
 
-1. API Routes (HTTP): Our API Routes are the typical entry point. The Medusa server is based on Express.js, which handles incoming requests. It can also connect to a Redis database that stores the server session data.
+1. API Routes (HTTP): API routes are the typical entry point. The Medusa server is based on Express.js, which handles incoming requests. It can also connect to a Redis database that stores the server session data.
 2. Workflows: API Routes consume workflows that hold the opinionated business logic of your application.
 3. Modules: Workflows use domain-specific modules for resource management.
-3. Data store: Modules query the underlying datastore, which is a PostgreSQL database in common cases.
+4. Data store: Modules query the underlying data store, which is a PostgreSQL database in common cases.
 
 <Note>
 
-These layers of stack can be implemented within [plugins](../../fundamentals/plugins/page.mdx).
+These layers of the stack can be implemented within [plugins](../../fundamentals/plugins/page.mdx).
 
 </Note>
 
@@ -51,7 +51,7 @@ Modules can be implemented within [plugins](../../fundamentals/plugins/page.mdx)
 
 ## Third-Party Integrations Layer
 
-Third-party services and systems are integrated through Medusa's Commerce and Infrastructure Modules. You also create custom third-party integrations through a [custom module](../../fundamentals/modules/page.mdx).
+Third-party services and systems are integrated through Medusa's Commerce and Infrastructure Modules. For other third-party services, create a custom integration in a [custom module](../../fundamentals/modules/page.mdx).
 
 <Note>
 
@@ -61,11 +61,11 @@ Modules can be implemented within [plugins](../../fundamentals/plugins/page.mdx)
 
 ### Commerce Modules
 
-[Commerce Modules](!resources!/commerce-modules) integrate third-party services relevant for commerce or user-facing features. For example, you can integrate [Stripe](!resources!/commerce-modules/payment/payment-provider/stripe) through a Payment Module Provider, or [ShipStation](!resources!/integrations/guides/shipstation) through a Fulfillment Module Provider.
+[Commerce Modules](!resources!/commerce-modules) integrate third-party services relevant to commerce or user-facing features. For example, you can integrate [Stripe](!resources!/commerce-modules/payment/payment-provider/stripe) through a Payment Module Provider, or [ShipStation](!resources!/integrations/guides/shipstation) through a Fulfillment Module Provider.
 
 You can also integrate third-party services for custom functionalities. For example, you can integrate [Sanity](!resources!/integrations/guides/sanity) for rich CMS capabilities, or [Odoo](!resources!/recipes/erp/odoo) to sync your Medusa application with your ERP system.
 
-You can replace any of the third-party services mentioned above to build your preferred commerce ecosystem.
+You can replace any of these third-party services to build your preferred commerce ecosystem.
 
 ![Diagram illustrating the Commerce Modules integration to third-party services](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175357/Medusa%20Book/service-commerce_qcbdsl.jpg)
 
@@ -77,11 +77,11 @@ You can replace any of the third-party services mentioned above to build your pr
 - [Caching Module](!resources!/infrastructure-modules/caching): Caches data that require heavy computation. You can integrate a custom module to handle the caching with services like Memcached, or use the existing [Redis Caching Module Provider](!resources!/infrastructure-modules/caching/providers/redis).
 - [Event Module](!resources!/infrastructure-modules/event): A pub/sub system that allows you to subscribe to events and trigger them. You can integrate [Redis](!resources!/infrastructure-modules/event/redis) as the pub/sub system.
 - [File Module](!resources!/infrastructure-modules/file): Manages file uploads and storage, such as upload of product images. You can integrate [AWS S3](!resources!/infrastructure-modules/file/s3) for file storage.
-- [Locking Module](!resources!/infrastructure-modules/locking): Manages access to shared resources by multiple processes or threads, preventing conflict between processes and ensuring data consistency. You can integrate [Redis](!resources!/infrastructure-modules/locking/redis) for locking.
+- [Locking Module](!resources!/infrastructure-modules/locking): Manages access to shared resources by multiple processes or threads, preventing conflicts between processes and ensuring data consistency. You can integrate [Redis](!resources!/infrastructure-modules/locking/redis) for locking.
 - [Notification Module](!resources!/infrastructure-modules/notification): Sends notifications to customers and users, such as for order updates or newsletters. You can integrate [SendGrid](!resources!/infrastructure-modules/notification/sendgrid) for sending emails.
 - [Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine): Orchestrates workflows that hold the business logic of your application. You can integrate [Redis](!resources!/infrastructure-modules/workflow-engine/redis) to orchestrate workflows.
 
-All of the third-party services mentioned above can be replaced to help you build your preferred architecture and ecosystem.
+All these third-party services can be replaced to help you build your preferred architecture and ecosystem.
 
 <Note>
 
