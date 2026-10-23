@@ -1,6 +1,14 @@
 import { readFileSync } from "fs"
 import { resolve } from "path"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
+
+vi.mock("vite", () => ({
+  defineConfig: (config: unknown) => config,
+  loadEnv: () => ({}),
+}))
+vi.mock("@medusajs/admin-vite-plugin", () => ({ default: () => ({}) }))
+vi.mock("@vitejs/plugin-react", () => ({ default: () => ({}) }))
+vi.mock("vite-plugin-inspect", () => ({ default: () => ({}) }))
 
 const getDefine = async () => {
   const configPath = resolve(__dirname, "../../vite.config.mts")
