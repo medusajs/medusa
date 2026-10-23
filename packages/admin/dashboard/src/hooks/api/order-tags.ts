@@ -52,6 +52,7 @@ export const useCreateOrderTag = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.orderTags.create(payload),
+    ...options,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: orderTagsQueryKeys.lists(),
@@ -59,7 +60,6 @@ export const useCreateOrderTag = (
 
       options?.onSuccess?.(data, variables, context)
     },
-    ...options,
   })
 }
 
@@ -73,6 +73,7 @@ export const useUpdateOrderTag = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.orderTags.update(id, payload),
+    ...options,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: orderTagsQueryKeys.lists(),
@@ -80,7 +81,6 @@ export const useUpdateOrderTag = (
 
       options?.onSuccess?.(data, variables, context)
     },
-    ...options,
   })
 }
 
@@ -90,6 +90,7 @@ export const useDeleteOrderTag = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.orderTags.delete(id),
+    ...options,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: orderTagsQueryKeys.lists(),
@@ -97,7 +98,6 @@ export const useDeleteOrderTag = (
 
       options?.onSuccess?.(data, variables, context)
     },
-    ...options,
   })
 }
 
