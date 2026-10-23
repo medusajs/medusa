@@ -1,0 +1,42 @@
+{
+  "dryRun": true,
+  "includeMajors": false,
+  "cooldownDays": 3,
+  "maxMajorsPerWeek": 2,
+  "maxMajorJump": 20,
+  "limits": {
+    "patch": { "files": 10, "lines": 200, "newDependencies": 0 },
+    "minor": { "files": 20, "lines": 400, "newDependencies": 0 },
+    "major": { "files": 80, "lines": 2000, "newDependencies": 5 }
+  },
+  "ignore": ["@medusajs/*", "create-medusa-app", "medusa-*"],
+  "groups": [
+    {
+      "name": "vite",
+      "packages": ["vite", "vitest", "@vitest/*", "@vitejs/*"]
+    },
+    { "name": "mikro-orm", "packages": ["@mikro-orm/*"] },
+    {
+      "name": "eslint",
+      "packages": ["eslint", "@typescript-eslint/*", "typescript-eslint"]
+    },
+    {
+      "name": "react",
+      "packages": ["react", "react-dom", "@types/react", "@types/react-dom"]
+    },
+    {
+      "name": "jest",
+      "packages": ["jest", "@types/jest", "ts-jest", "jest-*"]
+    },
+    { "name": "i18next", "packages": ["i18next", "react-i18next"] },
+    { "name": "opentelemetry", "packages": ["@opentelemetry/*"] }
+  ],
+  "context7": {
+    "vite": "/vitejs/vite",
+    "vitest": "/vitest-dev/vitest",
+    "@mikro-orm/core": "/mikro-orm/mikro-orm",
+    "eslint": "/eslint/eslint",
+    "typescript-eslint": "/typescript-eslint/typescript-eslint",
+    "react": "/reactjs/react.dev"
+  }
+}
