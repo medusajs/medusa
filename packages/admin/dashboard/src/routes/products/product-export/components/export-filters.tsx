@@ -2,10 +2,12 @@ import { Heading, Text } from "@medusajs/ui"
 import { DataTableFilter } from "../../../../components/table/data-table/data-table-filter"
 import { useTranslation } from "react-i18next"
 import { useProductTableFilters } from "../../../../hooks/table/filters"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import { ConfigurableExportFilters } from "./configurable-export-filters"
 
 export const ExportFilters = () => {
   const { t } = useTranslation()
-  const filters = useProductTableFilters()
+  const isViewConfigEnabled = useFeatureFlag("view_configurations")
 
   return (
     <div>
@@ -15,8 +17,18 @@ export const ExportFilters = () => {
       </Text>
 
       <div className="mt-4">
-        <DataTableFilter filters={filters} readonly />
+        {isViewConfigEnabled ? (
+          <ConfigurableExportFilters />
+        ) : (
+          <LegacyExportFilters />
+        )}
       </div>
     </div>
   )
+}
+
+const LegacyExportFilters = () => {
+  const filters = useProductTableFilters()
+
+  return <DataTableFilter filters={filters} readonly />
 }

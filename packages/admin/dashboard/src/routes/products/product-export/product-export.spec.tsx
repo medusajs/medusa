@@ -7,6 +7,7 @@ import { ProductExport } from "./product-export"
 
 const mocks = vi.hoisted(() => ({
   mutateAsync: vi.fn(),
+  isViewConfigEnabled: false,
   buttonClicks: {} as Record<string, () => unknown>,
 }))
 
@@ -52,6 +53,10 @@ vi.mock("./components/export-filters", () => ({
   ExportFilters: () => null,
 }))
 
+vi.mock("../../../providers/feature-flag-provider", () => ({
+  useFeatureFlag: () => mocks.isViewConfigEnabled,
+}))
+
 vi.mock("../../../hooks/api", () => ({
   useExportProducts: () => ({ mutateAsync: mocks.mutateAsync }),
 }))
@@ -70,6 +75,7 @@ describe("ProductExport", () => {
   afterEach(() => {
     mocks.mutateAsync.mockReset()
     mocks.buttonClicks = {}
+    mocks.isViewConfigEnabled = false
   })
 
   it("should send the product list filters from the URL with the export request", async () => {
@@ -96,5 +102,30 @@ describe("ProductExport", () => {
     expect(mocks.mutateAsync.mock.calls[0][0].query).not.toHaveProperty(
       "fields"
     )
+  })
+
+  it("should send the configurable product list filters from the URL with the export request", async () => {
+    mocks.isViewConfigEnabled = true
+    const params = new URLSearchParams({
+      p_status: JSON.stringify(["draft"]),
+      p_q: "shirt",
+      "p_collection.id": JSON.stringify(["pcol_1"]),
+      p_created_at: JSON.stringify({ $gte: "2024-01-01" }),
+      p_handle: JSON.stringify(""),
+      p_order: "-created_at",
+      p_offset: "20",
+    })
+
+    await exportAt(`/products/export?${params.toString()}`)
+
+    expect(mocks.mutateAsync.mock.calls[0][0]).toEqual({
+      payload: {},
+      query: {
+        status: ["draft"],
+        q: "shirt",
+        collection: { id: ["pcol_1"] },
+        created_at: { $gte: "2024-01-01" },
+      },
+    })
   })
 })
