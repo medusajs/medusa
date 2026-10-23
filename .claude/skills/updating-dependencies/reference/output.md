@@ -15,8 +15,8 @@ Write both files at the repository root. Do not print them to stdout. Do not com
       "name": "<package>",
       "from": "<locked version before>",
       "to": "<planned target>",
-      "outcome": "updated" | "dropped" | "blocked",
-      "reason": "<why it was dropped or blocked, max 300 chars; empty when updated>"
+      "outcome": "updated" | "dropped" | "blocked" | "skipped",
+      "reason": "<why it was dropped, blocked, or skipped, max 300 chars; empty when updated>"
     }
   ],
   "verify": {
@@ -37,7 +37,11 @@ Write both files at the repository root. Do not print them to stdout. Do not com
 
 Rules:
 
-- One `packages` entry per package in the group, including dropped and blocked ones.
+- One `packages` entry per package in the group, including dropped, blocked, and skipped ones.
+- Outcomes other than `updated` are recorded in the state issue, so next week's run skips that package until a newer version comes out. Pick the one that matches the cause:
+  - `dropped`: you updated and verified it, and it still failed after the retries in `verifying.md`.
+  - `blocked`: something outside this repo prevents the update (see `research.md`).
+  - `skipped`: you never got to try it, for example because a command you needed was denied or the environment broke. This is not recorded, so next week's run tries again. When nothing in the group could be attempted, mark every package `skipped` and set `status` to `failed`.
 - `status: "proposed"`: at least one package is `updated`, and `verify.build` and `verify.unit` are `true` for what's left. `integration` is `null` only when no affected workspace has integration tests.
 - `status: "failed"`: nothing could be shipped. `pr_title` is `null` and no `pr-body.md` is written; the working tree must have no changes left.
 - `status: "no-change"`: the targets were already in place (for example on a revision with nothing to address).

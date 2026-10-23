@@ -92,6 +92,25 @@ describe("buildReport", () => {
     )
   })
 
+  it("explains a patch that no longer applies to develop", () => {
+    const report = buildReport({
+      plan,
+      results: [
+        {
+          key: "minor",
+          result: { status: "proposed" },
+          pr: { violation: "conflict" },
+        },
+      ],
+      dryRun: false,
+      runUrl,
+    })
+    assert.match(
+      report,
+      /^- Minor updates \(2 packages\): develop changed while it ran, so the update no longer applies; it'll be retried next week$/m
+    )
+  })
+
   it("labels pinned groups so they stand apart from majors", () => {
     const pinnedPlan = {
       ...plan,
@@ -170,6 +189,34 @@ describe("nextState", () => {
       next.metrics.map((m) => m.date),
       ["2026-10-19", "2026-10-26"]
     )
+  })
+})
+
+describe("nextState with skipped packages", () => {
+  it("doesn't record packages the agent never attempted", () => {
+    const state = {
+      packages: {
+        uuid: { status: "failed", target: "9.0.1", since: "2026-10-19" },
+      },
+    }
+    const results = [
+      {
+        result: {
+          status: "failed",
+          packages: [
+            {
+              name: "axios",
+              to: "1.20.0",
+              outcome: "skipped",
+              reason: "yarn was denied",
+            },
+            { name: "uuid", to: "9.0.1", outcome: "skipped" },
+          ],
+        },
+      },
+    ]
+    const next = nextState({ state, plan, results, today: "2026-10-26" })
+    assert.deepEqual(next.packages, state.packages)
   })
 })
 
