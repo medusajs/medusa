@@ -66,6 +66,6 @@ yarn migration:create           # after any change in src/models
 
 - `registerUsage` must run inside a transaction: it takes `SELECT ... FOR UPDATE` locks on `promotion` and `promotion_campaign_budget` rows (ordered by id, `lock_timeout = '3s'`) and throws `UNEXPECTED_STATE` otherwise. Re-reads use `options: { refresh: true }`; keep that when touching this code.
 - Exceeding `promotion.limit` or a budget limit in `registerUsage` throws `NOT_ALLOWED`; `computeActions` instead returns `promotionLimitExceeded` / `campaignBudgetExceeded` actions unless `skip_usage_limit_checks` is set.
-- `use_by_attribute` budgets require the budget `attribute` value (e.g. `customer_id`) in the compute context, otherwise `computeActions` throws `INVALID_DATA`.
+- `use_by_attribute` and `spend_by_attribute` budgets require the budget `attribute` value (e.g. `customer_id`) in the compute context. Without it, `computeActions` skips automatic promotions and throws `INVALID_DATA` for code-applied ones. Per-attribute usage (count or spent amount) is stored in `CampaignBudgetUsage`; the budget's own `used` is only an aggregate.
 - Rule attributes for target rules are prefixed by scope (`items.` / `shipping_methods.`); the prefix is stripped before evaluating against the item or shipping method.
 - `buyget` promotions require `apply_to_quantity`, `buy_rules_min_quantity`, and `max_quantity >= apply_to_quantity`; `max_quantity` is not allowed with `across` allocation; percentage values must be 0-100.
