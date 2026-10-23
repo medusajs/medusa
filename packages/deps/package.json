@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/deps",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "Dependencies for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -18,8 +18,12 @@
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "exports": {
     ".": "./dist/index.js",
     "./opentelemetry/instrumentation-pg": "./dist/opentelemetry-instrumentation-pg.js",

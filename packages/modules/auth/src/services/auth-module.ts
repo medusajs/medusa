@@ -1189,7 +1189,7 @@ export default class AuthModuleService
         }
 
         const providerIdentityData = authIdentities[0].provider_identities.find(
-          (pi) => pi.provider === provider
+          (pi) => pi.provider === provider && pi.entity_id === entity_id
         )
 
         if (!providerIdentityData) {
@@ -1216,7 +1216,7 @@ export default class AuthModuleService
 
         serializedResponse.provider_identities = [
           ...(serializedResponse.provider_identities?.filter(
-            (p) => p.provider !== provider
+            (p) => p.id !== providerIdentityData.id
           ) ?? []),
           serializedProviderIdentity,
         ]

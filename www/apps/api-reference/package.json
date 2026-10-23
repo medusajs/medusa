@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev",
+    "dev": "NODE_OPTIONS='--inspect' next dev --webpack",
     "dev:wrangler": "wrangler dev --port 3000",
     "dev:monorepo": "yarn dev -p 3000",
-    "build": "next build",
+    "build": "next build --webpack",
     "build:cloudflare": "node ./scripts/prepare.mjs && opennextjs-cloudflare build",
-    "build:dev": "NODE_ENV=test next build",
-    "build:prod": "NEXT_PUBLIC_ENV=production next build",
+    "build:dev": "NODE_ENV=test next build --webpack",
+    "build:prod": "NEXT_PUBLIC_ENV=production next build --webpack",
     "start": "next start",
     "start:monorepo": "yarn start -p 3000",
-    "lint": "next lint --fix",
+    "lint": "eslint app pages components lib src --no-error-on-unmatched-pattern --fix",
     "prep": "node ./scripts/prepare.mjs",
     "upload:r2": "node ./scripts/upload-specs-to-r2.mjs",
     "test": "vitest",
@@ -24,9 +24,9 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@medusajs/icons": "2.21.2",
-    "@medusajs/ui": "4.2.6",
-    "@next/mdx": "15.5.18",
+    "@medusajs/icons": "2.22.0",
+    "@medusajs/ui": "4.2.7",
+    "@next/mdx": "16.4.2",
     "@react-hook/resize-observer": "^2.0.2",
     "@readme/openapi-parser": "^2.5.0",
     "algoliasearch": "4",
@@ -37,7 +37,7 @@
     "jsdom": "^27.1.0",
     "json-schema": "^0.4.0",
     "json-stringify-pretty-compact": "^4.0.0",
-    "next": "15.5.21",
+    "next": "16.4.2",
     "next-mdx-remote": "5.0.0",
     "openapi-sampler": "^1.3.1",
     "pluralize": "^8.0.0",
@@ -62,8 +62,8 @@
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3",
-    "@next/bundle-analyzer": "15.5.18",
-    "@opennextjs/cloudflare": "1.19.9",
+    "@next/bundle-analyzer": "16.4.2",
+    "@opennextjs/cloudflare": "^1.20.12",
     "@types/jsdom": "^27.0.0",
     "@types/mapbox__rehype-prism": "^0.8.0",
     "@types/mdx": "^2.0.13",
@@ -79,10 +79,10 @@
     "types": "*",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8",
-    "wrangler": "^4.90.0"
+    "wrangler": "^4.151.3"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.9.0"
   },
   "overrides": {
     "@types/react": "19.2.9",

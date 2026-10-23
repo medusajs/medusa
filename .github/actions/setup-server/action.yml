@@ -22,6 +22,7 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
+        check-latest: true
         cache: "yarn"
 
     - name: Install dependencies

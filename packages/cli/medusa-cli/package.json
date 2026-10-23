@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/cli",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
   "bin": {
@@ -20,10 +20,14 @@
   "files": [
     "cli.js",
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "engines": {
     "node": ">=22.22.0"
   },
@@ -35,9 +39,9 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "dependencies": {
-    "@medusajs/deps": "2.21.2",
-    "@medusajs/telemetry": "2.21.2",
-    "@medusajs/utils": "2.21.2",
+    "@medusajs/deps": "2.22.0",
+    "@medusajs/telemetry": "2.22.0",
+    "@medusajs/utils": "2.22.0",
     "@types/express": "^4.17.21",
     "chalk": "^4.1.2",
     "configstore": "^5.0.1",

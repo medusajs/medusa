@@ -412,6 +412,43 @@ describe("applyTranslations", () => {
     expect(inputObjects[0].category.parent.name).toBe("Translated Parent")
   })
 
+  it("should only query translations for string ids and ignore non-string ids from linked services", async () => {
+    const inputObjects = [
+      {
+        id: "prod_1",
+        title: "Product",
+        cms: {
+          id: 770,
+          meta_description: "Description",
+          sections: [{ id: 12, label: "Section" }],
+        },
+      },
+    ]
+
+    mockQuery.graph.mockResolvedValue({
+      data: [
+        {
+          reference_id: "prod_1",
+          translations: { title: "Translated Product" },
+        },
+      ],
+    })
+
+    await applyTranslations({
+      localeCode: mockReq.locale as string,
+      objects: inputObjects,
+      container: mockContainer as any,
+    })
+
+    expect(mockQuery.graph).toHaveBeenCalledTimes(1)
+    expect(mockQuery.graph.mock.calls[0][0].filters.reference_id).toEqual([
+      "prod_1",
+    ])
+    expect(inputObjects[0].title).toBe("Translated Product")
+    expect(inputObjects[0].cms.id).toBe(770)
+    expect(inputObjects[0].cms.meta_description).toBe("Description")
+  })
+
   it("should gracefully handle arrays of primitives without crashing", async () => {
     const data = [
       {

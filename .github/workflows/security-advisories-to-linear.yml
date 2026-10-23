@@ -31,6 +31,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          check-latest: true
 
       # The built-in GITHUB_TOKEN cannot read repository security advisories
       # (especially drafts). The Medusa GitHub App must be granted the

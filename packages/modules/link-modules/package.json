@@ -1,15 +1,19 @@
 {
   "name": "@medusajs/link-modules",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "Medusa Default Link Modules Package and Definitions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/medusajs/medusa.git",
@@ -36,10 +40,10 @@
     "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.ts\""
   },
   "devDependencies": {
-    "@medusajs/framework": "2.21.2",
-    "@medusajs/test-utils": "2.21.2"
+    "@medusajs/framework": "2.22.0",
+    "@medusajs/test-utils": "2.22.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.21.2"
+    "@medusajs/framework": "2.22.0"
   }
 }

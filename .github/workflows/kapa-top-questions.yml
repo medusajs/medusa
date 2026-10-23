@@ -228,7 +228,8 @@ jobs:
     uses: ./.github/workflows/kapa-doc-fixes.yml
     secrets:
       CLAUDE_CODE_API_TOKEN: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
-      REFERENCE_PAT: ${{ secrets.REFERENCE_PAT }}
+      MEDUSA_APP_ID: ${{ secrets.MEDUSA_APP_ID }}
+      MEDUSA_APP_PRIVATE_KEY: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
     with:
       indices: ${{ needs.find-uncovered.outputs.indices }}
       sha: ${{ needs.find-uncovered.outputs.sha }}

@@ -1,4 +1,8 @@
-import { LoadStrategy, raw } from "@medusajs/framework/mikro-orm/core"
+import {
+  LoadStrategy,
+  raw,
+  RawQueryFragment,
+} from "@medusajs/framework/mikro-orm/core"
 import { Constructor, Context, DAL } from "@medusajs/framework/types"
 import {
   augmentFindOptionsWithCrossModuleJoins,
@@ -53,6 +57,36 @@ function applyCrossModuleJoins(
   }
 
   return augmented
+}
+
+/**
+ * MikroORM consumes a raw fragment key (e.g. a cross-module EXISTS filter) the
+ * first time a query uses it, so a `where` shared by two queries needs its own
+ * copy of every raw fragment for the second one.
+ */
+function cloneWhereWithFreshRawFragments(where: any): any {
+  if (Array.isArray(where)) {
+    return where.map(cloneWhereWithFreshRawFragments)
+  }
+
+  if (
+    where === null ||
+    typeof where !== "object" ||
+    Object.getPrototypeOf(where) !== Object.prototype
+  ) {
+    return where
+  }
+
+  const cloned = {}
+  for (const key of Object.keys(where)) {
+    const fragment = RawQueryFragment.getKnownFragment(key, false)
+    const clonedKey = fragment
+      ? raw(fragment.sql, fragment.params).toString()
+      : key
+    cloned[clonedKey] = cloneWhereWithFreshRawFragments(where[key])
+  }
+
+  return cloned
 }
 
 function ensureOrderItemFieldsSelection(config: any, isRelatedEntity: boolean) {
@@ -458,9 +492,10 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     // control which items to load (not which root entities to count), we run
     // find and count separately with different populateWhere options.
     const countOptions = { ...config.options, populateWhere: undefined }
+    const countWhere = cloneWhereWithFreshRawFragments(config.where)
     const [result, count] = await Promise.all([
       manager.find(this.entity, config.where, config.options),
-      manager.count(this.entity, config.where, countOptions),
+      manager.count(this.entity, countWhere, countOptions),
     ])
 
     if (loadAdjustments || shouldLoadShippingAdjustments) {

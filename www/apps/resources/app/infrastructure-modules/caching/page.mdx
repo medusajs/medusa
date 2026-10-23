@@ -301,6 +301,7 @@ You can pass the following options to the Caching Module when registering it in 
       <Table.Cell>
         A number indicating the default time-to-live (TTL) in seconds for cached items. After this period, cached items will be removed from the cache.
         This number is passed to the underlying caching provider if no TTL is specified when caching data.
+        Set it to `0` to cache items without expiry. The Redis Caching Module Provider and the in-memory cache keep such items until they're invalidated automatically or [cleared manually](./guides/clear-cache/page.mdx).
       </Table.Cell>
       <Table.Cell>
         `3600` (1 hour)

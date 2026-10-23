@@ -1,14 +1,18 @@
 {
   "name": "@medusajs/event-bus-redis",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "Redis Event Bus Module for Medusa",
   "main": "dist/index.js",
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/medusajs/medusa.git",
@@ -26,9 +30,9 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.21.2",
-    "@medusajs/types": "2.21.2",
-    "@medusajs/utils": "2.21.2"
+    "@medusajs/framework": "2.22.0",
+    "@medusajs/types": "2.22.0",
+    "@medusajs/utils": "2.22.0"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
@@ -41,6 +45,6 @@
     "ioredis": "^5.4.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.21.2"
+    "@medusajs/framework": "2.22.0"
   }
 }

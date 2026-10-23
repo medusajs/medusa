@@ -15,7 +15,11 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { emitEventStep, useRemoteQueryStep } from "../../common"
+import {
+  emitEventStep,
+  useQueryGraphStep,
+  useRemoteQueryStep,
+} from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { createOrderRefundCreditLinesWorkflow } from "../../order/workflows/payments/create-order-refund-credit-lines"
 import { refundPaymentStep } from "../steps/refund-payment"
@@ -44,6 +48,12 @@ export type RefundPaymentWorkflowInput = {
    * The ID of the refund reason to attach to the refund.
    */
   refund_reason_id?: string
+  /**
+   * A caller-supplied key that makes the refund idempotent at the payment
+   * provider. Retrying the workflow with the same key never moves funds twice,
+   * even when the response of the original request was lost.
+   */
+  idempotency_key?: string
 }
 
 /**
@@ -114,11 +124,24 @@ export const refundPaymentWorkflowId = "refund-payment-workflow"
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to refund a payment in your custom flows.
  *
+ * The workflow returns the **payment**, not the refund it created, and the payment is
+ * retrieved before the refund is issued. So its `refunds` property doesn't include the
+ * new refund. To get the refund itself, retrieve the payment again after the workflow
+ * resolves, or use the Payment Module's `refundPayment` method instead.
+ *
+ * Pass an `idempotency_key` if the refund may be retried, such as when it's issued by a
+ * background job or a return flow. The key is forwarded to the payment provider, so
+ * retrying with the same key never refunds twice, even when the response of the original
+ * request was lost. Without a key every run starts a new refund, so a retry whose first
+ * attempt may have gone through can refund twice: only the key tells the provider that
+ * the second request is the same request.
+ *
  * @example
  * const { result } = await refundPaymentWorkflow(container)
  * .run({
  *   input: {
  *     payment_id: "payment_123",
+ *     idempotency_key: "return_123_refund",
  *   }
  * })
  *
@@ -182,6 +205,48 @@ export const refundPaymentWorkflow = createWorkflow(
       }).config({ name: "refund-reason" })
     })
 
+    // A replay of an already-succeeded refund moves no funds, so the credit line
+    // and the event below must not run a second time. The module de-duplicates
+    // the provider call but has no way to tell the workflow it did, so the
+    // replay is detected here instead.
+    const existingRefund = when(
+      "fetch-refund-by-idempotency-key",
+      { input },
+      ({ input }) => !!input.idempotency_key
+    ).then(() => {
+      const { data } = useQueryGraphStep({
+        entity: "refund",
+        fields: ["id"],
+        filters: {
+          payment_id: input.payment_id,
+          idempotency_key: input.idempotency_key,
+        },
+        options: { isList: false },
+      }).config({ name: "refund-by-idempotency-key" })
+
+      return data
+    })
+
+    const refundTransaction = when(
+      "fetch-refund-order-transaction",
+      { existingRefund },
+      ({ existingRefund }) => !!existingRefund?.id
+    ).then(() => {
+      const { data } = useQueryGraphStep({
+        entity: "order_transaction",
+        fields: ["id"],
+        filters: { reference: "refund", reference_id: existingRefund.id },
+        options: { isList: false },
+      }).config({ name: "order-transaction-by-refund" })
+
+      return data
+    })
+
+    const isReplay = transform(
+      { refundTransaction },
+      ({ refundTransaction }) => !!refundTransaction?.id
+    )
+
     const refundPayment = refundPaymentStep(input)
 
     const creditLineAmount = transform(
@@ -206,6 +271,8 @@ export const refundPaymentWorkflow = createWorkflow(
       }
     )
 
+    // Always run, replay or not: the step skips transactions it already wrote,
+    // so a retry after a half-finished attempt still records the refund.
     when({ orderPaymentCollection }, ({ orderPaymentCollection }) => {
       return !!orderPaymentCollection?.order?.id
     }).then(() => {
@@ -230,27 +297,36 @@ export const refundPaymentWorkflow = createWorkflow(
       addOrderTransactionStep(orderTransactionData)
     })
 
-    when({ creditLineAmount }, ({ creditLineAmount }) =>
-      MathBN.gt(creditLineAmount, 0)
+    when(
+      { creditLineAmount, isReplay },
+      ({ creditLineAmount, isReplay }) =>
+        !isReplay && MathBN.gt(creditLineAmount, 0)
     ).then(() => {
-      const createRefundCreditLinesData = transform({
-        order, creditLineAmount, refundReason,
-      }, (data) => {
-        return {
-          order_id: data.order.id,
-          amount: data.creditLineAmount,
-          reference: data.refundReason?.label,
-          referenceId: data.refundReason?.code,
+      const createRefundCreditLinesData = transform(
+        {
+          order,
+          creditLineAmount,
+          refundReason,
+        },
+        (data) => {
+          return {
+            order_id: data.order.id,
+            amount: data.creditLineAmount,
+            reference: data.refundReason?.label,
+            referenceId: data.refundReason?.code,
+          }
         }
-      })
+      )
       createOrderRefundCreditLinesWorkflow.runAsStep({
         input: createRefundCreditLinesData,
       })
     })
 
-    emitEventStep({
-      eventName: PaymentEvents.REFUNDED,
-      data: { id: payment.id },
+    when({ isReplay }, ({ isReplay }) => !isReplay).then(() => {
+      emitEventStep({
+        eventName: PaymentEvents.REFUNDED,
+        data: { id: payment.id },
+      })
     })
 
     return new WorkflowResponse(payment)

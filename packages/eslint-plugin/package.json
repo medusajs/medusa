@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/eslint-plugin",
-  "version": "2.21.2",
+  "version": "2.22.0",
   "description": "Official ESLint plugin for Medusa projects. Enforces Medusa's framework conventions across API routes, modules, workflows, subscribers, jobs, admin extensions, and module links.",
   "repository": {
     "type": "git",
@@ -30,10 +30,14 @@
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/*.spec.*",
     "!dist/**/*.test.*"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "keywords": [
     "eslint",
     "eslintplugin",

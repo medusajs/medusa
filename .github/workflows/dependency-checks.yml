@@ -1,0 +1,92 @@
+name: Dependency Checks
+
+# Drift checks are non-blocking until the dependency cleanup lands: they report
+# mismatched ranges, lockfile duplicates, and deprecated packages without failing the PR.
+
+on:
+  pull_request:
+    paths:
+      - "**/package.json"
+      - "yarn.lock"
+      - ".syncpackrc.json"
+      - ".github/dependency-updates.json"
+      - "scripts/deps-update/**"
+
+permissions:
+  contents: read
+
+jobs:
+  scripts:
+    name: Dependency update scripts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          check-latest: true
+
+      - name: Run tests
+        run: node --test "scripts/deps-update/__tests__/*.test.mjs"
+
+  drift:
+    name: Dependency drift (non-blocking)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          check-latest: true
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: dependency-checks
+          skip-build: "true"
+
+      - name: Mismatched ranges
+        id: syncpack
+        continue-on-error: true
+        run: npx -y syncpack@15.3.3 lint
+
+      - name: Lockfile duplicates
+        id: dedupe
+        continue-on-error: true
+        run: yarn dedupe --check
+
+      - name: Deprecated packages
+        id: deprecated
+        continue-on-error: true
+        run: node scripts/deps-update/check-deprecated.mjs
+
+      - name: Summarize
+        env:
+          SYNCPACK: ${{ steps.syncpack.outcome }}
+          DEDUPE: ${{ steps.dedupe.outcome }}
+          DEPRECATED: ${{ steps.deprecated.outcome }}
+        run: |
+          {
+            echo "### Dependency drift"
+            echo
+            echo "| Check | Result |"
+            echo "| --- | --- |"
+            echo "| Mismatched ranges (\`syncpack lint\`) | $SYNCPACK |"
+            echo "| Lockfile duplicates (\`yarn dedupe --check\`) | $DEDUPE |"
+            echo "| Deprecated packages | $DEPRECATED |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$SYNCPACK" != "success" || "$DEDUPE" != "success" || "$DEPRECATED" != "success" ]]; then
+            echo "::warning::Dependency drift found. See the step logs; this check doesn't block the PR yet."
+            exit 1
+          fi

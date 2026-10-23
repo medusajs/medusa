@@ -177,5 +177,112 @@ describe("HTTP Instrumentation", () => {
       expect(span!.status.code).toEqual(SpanStatusCode.ERROR)
       expect(span!.attributes["http.status_code"]).toEqual(500)
     })
+
+    it("should not report sensitive headers or query param values as span attributes", async () => {
+      const { traceRequestHandler } = require("../../commands/start")
+      const res = createFakeResponse()
+
+      await traceRequestHandler(
+        async () => {
+          setImmediate(() => res.finishWith(200))
+        },
+        {
+          method: "GET",
+          url: "/admin/customers?q=jane%40example.com&limit=10",
+          headers: {
+            authorization: "Bearer secret-token",
+            "proxy-authorization": "Basic secret",
+            cookie: "connect.sid=secret-session",
+            "x-publishable-api-key": "pk_secret",
+            "x-api-key": "sk_secret",
+            "x-custom-auth-token": "secret",
+            "user-agent": "jest",
+            "x-request-id": "req_123",
+          },
+        },
+        res,
+        "/admin/customers"
+      )
+
+      const span = findSpan("/admin/customers")!
+
+      expect(span.attributes).toEqual(
+        expect.objectContaining({
+          "http.route": "/admin/customers",
+          "http.url": "/admin/customers",
+          "http.method": "GET",
+          "http.status_code": 200,
+          "url.query": "q=REDACTED&limit=10",
+          "user-agent": "jest",
+          "x-request-id": "req_123",
+        })
+      )
+      for (const header of [
+        "authorization",
+        "proxy-authorization",
+        "cookie",
+        "x-publishable-api-key",
+        "x-api-key",
+        "x-custom-auth-token",
+      ]) {
+        expect(span.attributes).not.toHaveProperty([header])
+      }
+      expect(JSON.stringify(span.attributes)).not.toContain("secret")
+      expect(JSON.stringify(span.attributes)).not.toContain("jane")
+    })
+
+    describe("url.query", () => {
+      const traceQuery = async (url: string) => {
+        const { traceRequestHandler } = require("../../commands/start")
+        const res = createFakeResponse()
+
+        await traceRequestHandler(
+          async () => {
+            setImmediate(() => res.finishWith(200))
+          },
+          { method: "GET", url, headers: {} },
+          res,
+          "/store/products"
+        )
+
+        return findSpan("/store/products")!.attributes["url.query"]
+      }
+
+      afterEach(() => {
+        instrumentHttpLayer()
+      })
+
+      it("should report allowed query params and redact the others by default", async () => {
+        const query = await traceQuery(
+          "/store/products?fields=*variants,%2Bthumbnail&limit=50&offset=100&order=-created_at&q=shoes&category_id[]=pcat_1&code=oauth_code"
+        )
+
+        expect(query).toEqual(
+          "fields=*variants,%2Bthumbnail&limit=50&offset=100&order=-created_at&q=REDACTED&category_id[]=REDACTED&code=REDACTED"
+        )
+      })
+
+      it("should not report url.query when the url has no query string", async () => {
+        expect(await traceQuery("/store/products")).toBeUndefined()
+      })
+
+      it("should only report the configured query params", async () => {
+        instrumentHttpLayer({ allowedQueryParams: ["q", "category_id"] })
+
+        const query = await traceQuery(
+          "/store/products?q=shoes&category_id[]=pcat_1&limit=50"
+        )
+
+        expect(query).toEqual("q=shoes&category_id[]=pcat_1&limit=REDACTED")
+      })
+
+      it("should report the full query string when all query params are allowed", async () => {
+        instrumentHttpLayer({ allowedQueryParams: "*" })
+
+        const query = await traceQuery("/store/products?q=shoes&code=abc")
+
+        expect(query).toEqual("q=shoes&code=abc")
+      })
+    })
   })
 })

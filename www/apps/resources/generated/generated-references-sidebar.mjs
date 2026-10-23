@@ -1071,6 +1071,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/exportCustomersWorkflow",
+                  "title": "exportCustomersWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/removeCustomerAccountWorkflow",
                   "title": "removeCustomerAccountWorkflow",
                   "description": "Delete a customer account and its auth identity association.",
@@ -1102,6 +1110,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/collectCustomerIdsToExportStep",
+                  "title": "collectCustomerIdsToExportStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/createCustomerAddressesStep",
                   "title": "createCustomerAddressesStep",
                   "description": "",
@@ -1128,6 +1144,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/deleteCustomersStep",
                   "title": "deleteCustomersStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/exportCustomersStep",
+                  "title": "exportCustomersStep",
                   "description": "",
                   "children": []
                 },

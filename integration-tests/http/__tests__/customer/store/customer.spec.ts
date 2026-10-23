@@ -1,5 +1,10 @@
-import { MedusaContainer } from "@medusajs/types"
+import { IAuthModuleService, MedusaContainer } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import {
+  ContainerRegistrationKeys,
+  generateJwtToken,
+  Modules,
+} from "@medusajs/framework/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -218,6 +223,185 @@ medusaIntegrationTestRunner({
         expect(customer.response.data.message).toEqual(
           "Request already authenticated as a customer."
         )
+      })
+
+      describe("Email ownership", () => {
+        const generateCustomerRegistrationToken = async (providerIdentity: {
+          provider: string
+          entity_id: string
+          user_metadata?: Record<string, unknown>
+        }) => {
+          const authModule = appContainer.resolve<IAuthModuleService>(
+            Modules.AUTH
+          )
+          const authIdentity = await authModule.createAuthIdentities({
+            provider_identities: [providerIdentity],
+          })
+
+          const { jwtSecret, jwtOptions } = appContainer.resolve(
+            ContainerRegistrationKeys.CONFIG_MODULE
+          ).projectConfig.http
+
+          return generateJwtToken(
+            {
+              actor_id: "",
+              actor_type: "customer",
+              auth_identity_id: authIdentity.id,
+              auth_provider: providerIdentity.provider,
+              app_metadata: {},
+            },
+            { secret: jwtSecret, expiresIn: "1d", jwtOptions }
+          )
+        }
+
+        it("should fail to create a customer with an email that doesn't match the identity's email", async () => {
+          const signup = await api.post("/auth/customer/emailpass/register", {
+            email: "registered@medusa.js",
+            password: "secret_password",
+          })
+
+          const response = await api
+            .post(
+              "/store/customers",
+              {
+                email: "other@medusa.js",
+                first_name: "John",
+                last_name: "Doe",
+              },
+              {
+                headers: {
+                  authorization: `Bearer ${signup.data.token}`,
+                  ...storeHeaders.headers,
+                },
+              }
+            )
+            .catch((e) => e)
+
+          expect(response.response?.status).toEqual(401)
+          expect(response.response.data.message).toEqual(
+            "The customer's email must match the email of the authenticated identity"
+          )
+
+          const customers = await api.get(
+            "/admin/customers?email=other@medusa.js",
+            adminHeaders
+          )
+          expect(customers.data.customers).toHaveLength(0)
+        })
+
+        it("should create a customer when the email matches the identity's email case-insensitively", async () => {
+          const signup = await api.post("/auth/customer/emailpass/register", {
+            email: "Registered@Medusa.js",
+            password: "secret_password",
+          })
+
+          const response = await api.post(
+            "/store/customers",
+            {
+              email: "registered@medusa.js",
+              first_name: "John",
+              last_name: "Doe",
+            },
+            {
+              headers: {
+                authorization: `Bearer ${signup.data.token}`,
+                ...storeHeaders.headers,
+              },
+            }
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.customer).toEqual(
+            expect.objectContaining({
+              email: "registered@medusa.js",
+              has_account: true,
+            })
+          )
+        })
+
+        it("should create a customer with the email provided by a third-party identity", async () => {
+          const token = await generateCustomerRegistrationToken({
+            provider: "google",
+            entity_id: "google_user_1",
+            user_metadata: { email: "social@medusa.js" },
+          })
+
+          const response = await api.post(
+            "/store/customers",
+            {
+              email: "social@medusa.js",
+              first_name: "John",
+              last_name: "Doe",
+            },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+                ...storeHeaders.headers,
+              },
+            }
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.customer).toEqual(
+            expect.objectContaining({
+              email: "social@medusa.js",
+              has_account: true,
+            })
+          )
+        })
+
+        it("should fail to create a customer with an email that doesn't match a third-party identity's email", async () => {
+          const token = await generateCustomerRegistrationToken({
+            provider: "google",
+            entity_id: "google_user_2",
+            user_metadata: { email: "social@medusa.js" },
+          })
+
+          const response = await api
+            .post(
+              "/store/customers",
+              {
+                email: "other@medusa.js",
+                first_name: "John",
+                last_name: "Doe",
+              },
+              {
+                headers: {
+                  authorization: `Bearer ${token}`,
+                  ...storeHeaders.headers,
+                },
+              }
+            )
+            .catch((e) => e)
+
+          expect(response.response?.status).toEqual(401)
+        })
+
+        it("should fail to create a customer when the identity has no email", async () => {
+          const token = await generateCustomerRegistrationToken({
+            provider: "google",
+            entity_id: "google_user_3",
+          })
+
+          const response = await api
+            .post(
+              "/store/customers",
+              {
+                email: "other@medusa.js",
+                first_name: "John",
+                last_name: "Doe",
+              },
+              {
+                headers: {
+                  authorization: `Bearer ${token}`,
+                  ...storeHeaders.headers,
+                },
+              }
+            )
+            .catch((e) => e)
+
+          expect(response.response?.status).toEqual(401)
+        })
       })
 
       describe("With ensurePublishableApiKey middleware", () => {

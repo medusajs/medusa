@@ -35,6 +35,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          check-latest: true
 
       - name: Assert changed
         run: ./scripts/assert-changed-files-actions.sh "packages"

@@ -99,3 +99,29 @@ Conventions to verify when reviewing code contributions. Focus on areas relevant
 - **Async parallelism**: Use `Promise.all()` when multiple independent async operations can run concurrently. Sequential `await` in a loop is a red flag.
 
 - **Database indexes**: New fields used in `filters` or `order` inside a `query.graph()` / `remoteQueryObjectFromString()` call must have a corresponding index in the entity decorator or migration.
+
+## Step 9b — Issue/PR References in Code Comments (ALL PRs)
+
+> **CRITICAL:** Applies to **all PRs**, including team members. Only flag added (`+`) lines.
+
+Scan the added lines of the diff for **code comments** that reference a
+GitHub issue or PR — e.g. `// fixes #1234`, `// see PR #5678`,
+`/* related to https://github.com/medusajs/medusa/issues/1234 */`, or a
+comment naming an issue/PR number in prose. The link between a change and
+an issue belongs in the PR body and commit messages, not in the source —
+in the code it goes stale, loses context, and adds noise.
+
+Only flag references inside **comments** in changed source files. Do not
+flag issue/PR references in the PR body, commit messages, changelog files,
+test fixtures, or strings that are legitimately data.
+
+Each such comment is a **required change**: emit
+`review_template: "needs-changes"` with `"requires-more"` in
+`labels_to_add`, `"initial-approval"` in `labels_to_remove`, and a
+`blocking_points` entry of the form:
+*"\<file\>:\<approximate location\>: comment references issue/PR #\<n\> — remove the reference (move any needed context into a plain comment or the PR description)."*
+
+## Common Mistakes
+
+- [ ] Missing a code comment that references an issue/PR number (Step 9b) — those must be flagged as a required change
+- [ ] Flagging an issue/PR reference that lives in the PR body, commit message, or a changelog file rather than a code comment
