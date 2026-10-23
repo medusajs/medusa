@@ -841,6 +841,11 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
   is_tax_inclusive: boolean
 
   /**
+   * Indicates whether the line item's unit price is a custom price.
+   */
+  is_custom_price: boolean
+
+  /**
    * The compare at unit price of the line item.
    */
   compare_at_unit_price?: number
