@@ -62,7 +62,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: develop
           fetch-depth: 1
           persist-credentials: false
 
@@ -101,6 +100,11 @@ jobs:
               INCLUDE_MAJORS=true
               ;;
           esac
+          # A live run off another branch would open PRs into develop carrying that branch's commits.
+          if [[ "$MODE" == "weekly" && "$DRY_RUN" != "true" && "$GITHUB_REF" != "refs/heads/develop" ]]; then
+            echo "::error::Runs from $GITHUB_REF must use dry_run: true." >&2
+            exit 1
+          fi
           if [[ -n "$ONLY" && ! "$ONLY" =~ ^(patch|minor|major-[a-z0-9-]+)$ ]]; then
             echo "::error::only must be patch, minor, or major-<name>, got '$ONLY'" >&2
             exit 1
@@ -279,7 +283,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: ${{ needs.plan.outputs.head_sha || 'develop' }}
+          ref: ${{ needs.plan.outputs.head_sha || github.sha }}
           fetch-depth: 100
           persist-credentials: false
 
@@ -670,7 +674,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: develop
           fetch-depth: 1
           persist-credentials: false
 
