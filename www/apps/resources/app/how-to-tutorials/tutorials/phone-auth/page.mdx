@@ -253,7 +253,7 @@ In the method, you throw an error if the `jwtSecret` option is not set.
 
 ### d. Implement register Method
 
-When a customer (or another actor type) registers in your application, they must also have an [auth identity](../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx) that allows them to login.
+When a customer (or another actor type) registers in your application, they must also have an [auth identity](../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx) that allows them to log in.
 
 The `register` method of an auth provider uses custom logic to create the auth identity for the actor type (such as customer). In the method, you can perform custom validation and specify the custom authentication details to store for the user's auth identity.
 
@@ -1506,7 +1506,7 @@ Then, after setting the registration token in the cookies, you create a customer
 - `last_name`: The last name of the customer.
 - `phone`: The phone number of the customer.
 
-Finally, you call the `authenticateWithPhone` function to authenticate the customer using their phone number. At this step, the customer would receive an OTP to login.
+Finally, you call the `authenticateWithPhone` function to authenticate the customer using their phone number. At this step, the customer would receive an OTP to log in.
 
 ### e. Add OTP Form
 
@@ -2142,7 +2142,7 @@ You can also switch to the registration form by clicking on the "Join" link belo
 
 ![Registration form with phone number input](https://res.cloudinary.com/dza7lstvk/image/upload/v1747739988/Medusa%20Resources/CleanShot_2025-05-20_at_14.19.35_2x_btlc2s.png)
 
-You can try to login with the account you created before, or register with a new one. Once successful, you'll see the OTP form to enter the OTP you received as SMS.
+You can try to log in with the account you created before, or register with a new one. Once successful, you'll see the OTP form to enter the OTP you received as SMS.
 
 ![OTP form](https://res.cloudinary.com/dza7lstvk/image/upload/v1747740102/Medusa%20Resources/CleanShot_2025-05-20_at_14.21.18_2x_yrkuyg.png)
 
