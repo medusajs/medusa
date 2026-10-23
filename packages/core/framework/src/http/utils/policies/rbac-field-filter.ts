@@ -4,7 +4,7 @@ import {
   toSnakeCase,
 } from "@medusajs/framework/utils"
 import { MedusaModule } from "@medusajs/modules-sdk"
-import type { MedusaContainer, PolicyAction } from "@medusajs/types"
+import type { MedusaContainer } from "@medusajs/types"
 import {
   fetchPolicyResources,
   hasPermission,
@@ -403,20 +403,16 @@ function collectUniqueEntityPaths(
  * Optimized for parallel permission checks
  */
 export class RBACFieldFilter implements IFieldFilter {
-  private policies: PolicyAction[]
   private getActorRoles: () => Promise<string[]>
   private container: MedusaContainer
 
   constructor({
-    policies,
     getActorRoles,
     container,
   }: {
-    policies: PolicyAction[]
     getActorRoles: () => Promise<string[]>
     container: MedusaContainer
   }) {
-    this.policies = policies
     this.getActorRoles = getActorRoles
     this.container = container
   }
@@ -426,7 +422,7 @@ export class RBACFieldFilter implements IFieldFilter {
     const { fields, starFields } = parsedFields
     const fieldsToCheck = [...fields, ...Array.from(starFields)]
 
-    if (!fieldsToCheck.length || !this.policies.length || !entity) {
+    if (!fieldsToCheck.length || !entity) {
       return []
     }
 

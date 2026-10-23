@@ -73,14 +73,13 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   const filters: IFieldFilter[] = []
 
   if (
-    req?.rbac_context?.policies &&
+    req?.rbac_context?.policies?.length &&
     req?.auth_context &&
     entity &&
     MedusaModule.isInstalled(Modules.RBAC)
   ) {
     filters.push(
       new RBACFieldFilter({
-        policies: req.rbac_context.policies,
         getActorRoles: async () =>
           resolveRoles({
             authContext: req.auth_context!,
