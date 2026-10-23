@@ -46,6 +46,9 @@ import {
  * - initiatePayment fails on demand (when the session data carries `fail:
  *   true`), so a test can drive a workflow rollback after the account holder
  *   has been created and linked.
+ * - initiatePayment reports an account holder it didn't create for the
+ *   customer as not found, like a provider customer copied over from another
+ *   provider account.
  */
 export class AccountHolderPaymentProvider extends AbstractPaymentProvider {
   static identifier = "account-holder"
@@ -72,6 +75,20 @@ export class AccountHolderPaymentProvider extends AbstractPaymentProvider {
       throw new MedusaError(
         MedusaError.Types.UNEXPECTED_STATE,
         "Simulated payment session failure"
+      )
+    }
+
+    const accountHolder = input.context?.account_holder as
+      | { external_id?: string }
+      | undefined
+    if (
+      accountHolder &&
+      accountHolder.external_id !== input.context?.customer?.id
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "Simulated missing account holder",
+        MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND
       )
     }
 

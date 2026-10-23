@@ -1,4 +1,6 @@
 export * from "./create-payment-session"
+export * from "./delete-payment-account-holder"
+export * from "./try-create-payment-session"
 export * from "./create-refund-reasons"
 export * from "./delete-payment-sessions"
 export * from "./delete-refund-reasons"
