@@ -69,6 +69,7 @@ const DEFAULT_RELATIONS = [
   "*payment_collections.payments.refunds",
   "*payment_collections.payments.refunds.refund_reason",
   "region.automatic_taxes",
+  "*tags",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(

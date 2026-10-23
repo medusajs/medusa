@@ -1218,6 +1218,9 @@
     "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
     "orderCanceled": "Order canceled successfully",
     "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
+    "tags": {
+      "placeholder": "Add a tag"
+    },
     "list": {
       "noRecordsMessage": "Your orders will show up here."
     },

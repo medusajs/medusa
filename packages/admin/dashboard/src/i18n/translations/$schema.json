@@ -4764,6 +4764,16 @@
         "onDateFromSalesChannel": {
           "type": "string"
         },
+        "tags": {
+          "type": "object",
+          "properties": {
+            "placeholder": {
+              "type": "string"
+            }
+          },
+          "required": ["placeholder"],
+          "additionalProperties": false
+        },
         "list": {
           "type": "object",
           "properties": {
@@ -6628,6 +6638,7 @@
         "cancelWarning",
         "orderCanceled",
         "onDateFromSalesChannel",
+        "tags",
         "list",
         "export",
         "status",

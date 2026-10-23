@@ -11,6 +11,7 @@ import {
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { SectionRow } from "../../../../../components/common/section/section-row"
 import { useCancelOrder } from "../../../../../hooks/api/orders"
 import { useDate } from "../../../../../hooks/use-date"
 import {
@@ -19,6 +20,7 @@ import {
   getOrderPaymentStatus,
 } from "../../../../../lib/order-helpers"
 import { ExtendedOrder } from "../../constants"
+import { OrderTagsRow } from "./order-tags-row"
 
 type OrderGeneralSectionProps = {
   order: ExtendedOrder
@@ -56,41 +58,55 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
   }
 
   return (
-    <Container className="flex items-center justify-between px-6 py-4">
-      <div>
-        <div className="flex items-center gap-x-1">
-          <Heading>#{order.display_id}</Heading>
-          <Copy content={`#${order.display_id}`} className="text-ui-fg-muted" />
+    <>
+      <Container className="flex items-center justify-between px-6 py-4">
+        <div>
+          <div className="flex items-center gap-x-1">
+            <Heading>#{order.display_id}</Heading>
+            <Copy
+              content={`#${order.display_id}`}
+              className="text-ui-fg-muted"
+            />
+          </div>
+          <Text size="small" className="text-ui-fg-subtle">
+            {t("orders.onDateFromSalesChannel", {
+              date: getFullDate({ date: order.created_at, includeTime: true }),
+              salesChannel: order.sales_channel?.name,
+            })}
+          </Text>
         </div>
-        <Text size="small" className="text-ui-fg-subtle">
-          {t("orders.onDateFromSalesChannel", {
-            date: getFullDate({ date: order.created_at, includeTime: true }),
-            salesChannel: order.sales_channel?.name,
-          })}
-        </Text>
-      </div>
-      <div className="flex items-center gap-x-4">
-        <div className="flex items-center gap-x-1.5">
-          <OrderBadge order={order} />
-          <PaymentBadge order={order} />
-          <FulfillmentBadge order={order} />
+        <div className="flex items-center gap-x-4">
+          <div className="flex items-center gap-x-1.5">
+            <OrderBadge order={order} />
+            <PaymentBadge order={order} />
+            <FulfillmentBadge order={order} />
+          </div>
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.cancel"),
+                    onClick: handleCancel,
+                    disabled: !!order.canceled_at,
+                    icon: <XCircle />,
+                  },
+                ],
+              },
+            ]}
+          />
         </div>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.cancel"),
-                  onClick: handleCancel,
-                  disabled: !!order.canceled_at,
-                  icon: <XCircle />,
-                },
-              ],
-            },
-          ]}
+      </Container>
+      <Container className="divide-y p-0">
+        <div className="flex items-center justify-between px-6 py-4">
+          <Heading level="h2">{t("fields.tags")}</Heading>
+        </div>
+        <SectionRow
+          title={t("fields.tags")}
+          value={<OrderTagsRow order={order} />}
         />
-      </div>
-    </Container>
+      </Container>
+    </>
   )
 }
 

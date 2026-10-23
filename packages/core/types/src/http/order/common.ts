@@ -1,5 +1,10 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
-import { ChangeActionType, OrderChangeStatus, OrderStatus } from "../../order"
+import {
+  ChangeActionType,
+  OrderChangeStatus,
+  OrderStatus,
+  OrderTagDTO,
+} from "../../order"
 import { BaseClaim } from "../claim/common"
 import { FindParams } from "../common"
 import { BaseExchange } from "../exchange/common"
@@ -792,6 +797,10 @@ export interface BaseOrder {
    * The order's transactions.
    */
   transactions?: BaseOrderTransaction[]
+  /**
+   * The order's tags.
+   */
+  tags?: OrderTagDTO[] | null
   /**
    * The order's summary.
    */
