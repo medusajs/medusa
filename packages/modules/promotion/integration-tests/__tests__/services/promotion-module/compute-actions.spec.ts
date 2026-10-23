@@ -5902,6 +5902,170 @@ moduleIntegrationTestRunner({
       })
 
       describe("when promotion of type buyget", () => {
+        describe("when the promotion is tax inclusive", () => {
+          // 20% tax: subtotal 250 (excl), original_total 300 (incl)
+          const context = {
+            currency_code: "usd",
+            items: [
+              {
+                id: "item_buy",
+                quantity: 1,
+                subtotal: 100,
+                original_total: 120,
+                is_discountable: true,
+                product_category: { id: "catg_buy" },
+                product: { id: "prod_buy" },
+              },
+              {
+                id: "item_target",
+                quantity: 1,
+                subtotal: 250,
+                original_total: 300,
+                is_discountable: true,
+                product_category: { id: "catg_target" },
+                product: { id: "prod_target" },
+              },
+            ],
+          }
+
+          const createTaxInclusiveBuyGet = async (
+            type: "fixed" | "percentage",
+            value: number,
+            code = "PROMOTION_TEST"
+          ) =>
+            createDefaultPromotion(service, {
+              code,
+              type: PromotionType.BUYGET,
+              is_tax_inclusive: true,
+              application_method: {
+                type,
+                target_type: "items",
+                value,
+                allocation: "each",
+                max_quantity: 1,
+                apply_to_quantity: 1,
+                buy_rules_min_quantity: 1,
+                target_rules: [
+                  {
+                    attribute: "items.product_category.id",
+                    operator: "eq",
+                    values: ["catg_target"],
+                  },
+                ],
+                buy_rules: [
+                  {
+                    attribute: "items.product_category.id",
+                    operator: "eq",
+                    values: ["catg_buy"],
+                  },
+                ],
+              } as any,
+            })
+
+          it("should apply a fixed value as a tax-inclusive adjustment", async () => {
+            await createTaxInclusiveBuyGet("fixed", 100)
+
+            const result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_target",
+                amount: 100,
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: true,
+              },
+            ])
+          })
+
+          it("should cap a fixed value at the tax-inclusive item total", async () => {
+            await createTaxInclusiveBuyGet("fixed", 1000)
+
+            const result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_target",
+                amount: 300,
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: true,
+              },
+            ])
+          })
+
+          it("should compute a percentage from the tax-inclusive item total", async () => {
+            await createTaxInclusiveBuyGet("percentage", 50)
+
+            const result = await service.computeActions(
+              ["PROMOTION_TEST"],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_target",
+                amount: 150,
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: true,
+              },
+            ])
+          })
+
+          it("should not let a following promotion exceed the item total", async () => {
+            await createTaxInclusiveBuyGet("percentage", 50, "BUYGET_TAX_INCL")
+            await createDefaultPromotion(service, {
+              code: "STANDARD_TAX_INCL",
+              is_tax_inclusive: true,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: 1000,
+                max_quantity: 1,
+                target_rules: [
+                  {
+                    attribute: "items.product_category.id",
+                    operator: "eq",
+                    values: ["catg_target"],
+                  },
+                ],
+              } as any,
+            })
+
+            const result = await service.computeActions(
+              ["BUYGET_TAX_INCL", "STANDARD_TAX_INCL"],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual(
+              expect.arrayContaining([
+                {
+                  action: "addItemAdjustment",
+                  item_id: "item_target",
+                  amount: 150,
+                  code: "BUYGET_TAX_INCL",
+                  is_tax_inclusive: true,
+                },
+                {
+                  action: "addItemAdjustment",
+                  item_id: "item_target",
+                  amount: 150,
+                  code: "STANDARD_TAX_INCL",
+                  is_tax_inclusive: true,
+                },
+              ])
+            )
+          })
+        })
+
         it("should compute adjustment when target and buy rules match", async () => {
           const context = {
             currency_code: "usd",
