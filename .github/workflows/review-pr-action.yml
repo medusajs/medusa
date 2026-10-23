@@ -61,10 +61,12 @@ jobs:
             exit 1
           fi
 
-          SKIP=$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json state,labels \
-            --jq '.state != "OPEN" or ([.labels[].name] | index("requires-linked-issue") != null)')
+          SKIP=$(gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json state,labels,headRefName \
+            --jq '.state != "OPEN"
+              or ([.labels[].name] | index("requires-linked-issue") != null)
+              or (.headRefName | IN("changeset-release/develop", "docs/release-docs-staging"))')
           if [[ "$SKIP" == "true" ]]; then
-            echo "PR #$PR_NUMBER is closed or waiting for a linked issue; skipping the review."
+            echo "PR #$PR_NUMBER is closed, waiting for a linked issue, or from an excluded release branch; skipping the review."
             echo "decision=skip" >> "$GITHUB_OUTPUT"
             exit 0
           fi
