@@ -1,5 +1,12 @@
 # @medusajs/search-postgres
 
+## 2.22.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.2
+
 ## 2.22.1
 
 ### Patch Changes
