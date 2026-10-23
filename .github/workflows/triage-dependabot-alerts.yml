@@ -29,6 +29,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          check-latest: true
           cache: yarn
 
       # node_modules must be present so the script can resolve each dependency's
@@ -84,6 +85,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          check-latest: true
           cache: yarn
 
       # Working manifests + lockfile must be present so Claude can trace the
