@@ -4343,6 +4343,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/updatePaymentSessionClientDataWorkflow",
+                  "title": "updatePaymentSessionClientDataWorkflow",
+                  "description": "Update a payment session's client data.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/updateRefundReasonsWorkflow",
                   "title": "updateRefundReasonsWorkflow",
                   "description": "Update refund reasons.",
@@ -4406,6 +4414,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/updatePaymentSessionStep",
+                  "title": "updatePaymentSessionStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/updateRefundReasonsStep",
                   "title": "updateRefundReasonsStep",
                   "description": "",
@@ -4424,6 +4440,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/validatePaymentProviderInRegionStep",
                   "title": "validatePaymentProviderInRegionStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validatePaymentSessionUpdateStep",
+                  "title": "validatePaymentSessionUpdateStep",
                   "description": "",
                   "children": []
                 }
