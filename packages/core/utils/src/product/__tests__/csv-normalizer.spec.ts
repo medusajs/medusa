@@ -1,6 +1,7 @@
 import { join } from "node:path"
 import { readFile } from "node:fs/promises"
 import { CSVNormalizer } from "../csv-normalizer"
+import { CreateProduct, UpdateProduct } from "../validators"
 
 async function loadFixtureFile(fileName: string) {
   return JSON.parse(
@@ -1191,6 +1192,60 @@ describe("CSV processor", () => {
       expect(() => processor.proccess()).toThrow(
         'Row 1: Region with name "europe" not found, used by "variant price [europe] eur"'
       )
+    })
+  })
+
+  describe("Variant thumbnail and image columns", () => {
+    const variantImageColumns = {
+      "Variant Thumbnail": "https://example.com/variant-thumb.png",
+      "Variant Image 1": "https://example.com/variant-1.png",
+      "Variant Image 2": "https://example.com/variant-2.png",
+    }
+
+    it("should import the variant thumbnail and ignore variant images written by the product export when creating", () => {
+      const normalized = CSVNormalizer.preProcess(
+        {
+          "Product Handle": "t-shirt",
+          "Product Title": "T-Shirt",
+          "Variant Title": "S",
+          "Variant Price USD": 10,
+          ...variantImageColumns,
+        },
+        1
+      )
+      const result = new CSVNormalizer([normalized]).proccess()
+      const product = CreateProduct.parse(result.toCreate["t-shirt"])
+
+      expect(product.variants![0]).toEqual(
+        expect.objectContaining({
+          title: "S",
+          thumbnail: "https://example.com/variant-thumb.png",
+        })
+      )
+      expect(product.variants![0]).not.toHaveProperty("images")
+    })
+
+    it("should import the variant thumbnail and ignore variant images written by the product export when updating", () => {
+      const normalized = CSVNormalizer.preProcess(
+        {
+          "Product Id": "prod_1",
+          "Variant Id": "variant_1",
+          "Variant Title": "S",
+          ...variantImageColumns,
+        },
+        1
+      )
+      const result = new CSVNormalizer([normalized]).proccess()
+      const product = UpdateProduct.parse(result.toUpdate["prod_1"])
+
+      expect(product.variants).toEqual([
+        {
+          id: "variant_1",
+          title: "S",
+          prices: [],
+          thumbnail: "https://example.com/variant-thumb.png",
+        },
+      ])
     })
   })
 
