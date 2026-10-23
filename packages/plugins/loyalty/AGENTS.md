@@ -28,7 +28,7 @@ module.exports = defineConfig({
 - Store-credit service extras: `creditAccounts`, `debitAccounts`, `retrieveAccountStats({ account_id })` (returns `balance`, `credits`, `debits`). `listStoreCreditAccounts` also fills these fields on each account.
 - Routes:
   - Admin: `/admin/gift-cards`, `/admin/store-credit-accounts` (with `/:id/credit`, `/:id/debit`, `/:id/transactions`).
-  - Store: `GET /store/gift-cards/:idOrCode`, `POST|DELETE /store/carts/:id/gift-cards` (`{ code }`), `POST /store/carts/:id/store-credits` (`{ amount? }`, customer auth), `/store/store-credit-accounts` (customer auth) and its `/claim`.
+  - Store: `GET /store/gift-cards/:idOrCode`, `POST|DELETE /store/carts/:id/gift-cards` (`{ code }`), `POST /store/carts/:id/store-credits` (`{ amount? }`, customer auth; the cart must belong to the authenticated customer), `/store/store-credit-accounts` (customer auth) and its `/claim`.
 - Docs: https://docs.medusajs.com/resources/commerce-modules/loyalty.md, https://docs.medusajs.com/resources/commerce-modules/loyalty/module-options.md, https://docs.medusajs.com/resources/commerce-modules/loyalty/gift-cards.md, https://docs.medusajs.com/resources/commerce-modules/loyalty/workflows.md
 
 ## Architecture
