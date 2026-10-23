@@ -523,7 +523,9 @@ export function getComputedActionsForBuyGet(
   )
 
   const eligibleTargetItems = filterItemsByPromotionRules(
-    itemsContext,
+    itemsContext.filter(
+      (item) => !("is_discountable" in item) || item.is_discountable
+    ),
     promotion.application_method?.target_rules
   )
 
