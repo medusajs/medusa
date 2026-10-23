@@ -57,4 +57,19 @@ Please make sure that the provider is registered in the container and it is conf
       throw new Error(errMessage)
     }
   }
+
+  async shutdown(): Promise<void> {
+    const providers = new Set(
+      Object.keys(this.__container__)
+        .filter((key) => key.startsWith(LockingProviderRegistrationPrefix))
+        .map(
+          (key) =>
+            this.__container__[key as `lp_${string}`] as ILockingProvider & {
+              shutdown?: () => Promise<void>
+            }
+        )
+    )
+
+    await Promise.all([...providers].map((provider) => provider.shutdown?.()))
+  }
 }
