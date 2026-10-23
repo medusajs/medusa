@@ -4109,6 +4109,58 @@ describe("Entity builder", () => {
       ])
     })
 
+    test("should quote camelCase column names in index where condition", () => {
+      const widget = model
+        .define("widget", {
+          id: model.id().primaryKey(),
+          externalCode: model.text().nullable(),
+          isSpecial: model.boolean().nullable(),
+          snake_case_col: model.text().nullable(),
+        })
+        .indexes([
+          {
+            on: ["externalCode"],
+            unique: true,
+            where: { externalCode: { $ne: null } },
+          },
+          {
+            on: ["isSpecial"],
+            where: { isSpecial: true },
+          },
+          {
+            on: ["snake_case_col"],
+            where: { snake_case_col: "active" },
+          },
+        ])
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(
+        toMikroORMEntity(widget)
+      )
+
+      expect(metaData.indexes).toEqual([
+        {
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_widget_externalCode_unique" ON "widget" ("externalCode") WHERE "externalCode" IS NOT NULL AND deleted_at IS NULL',
+          name: "IDX_widget_externalCode_unique",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_widget_isSpecial" ON "widget" ("isSpecial") WHERE "isSpecial" IS TRUE AND deleted_at IS NULL',
+          name: "IDX_widget_isSpecial",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_widget_snake_case_col" ON "widget" ("snake_case_col") WHERE snake_case_col = \'active\' AND deleted_at IS NULL',
+          name: "IDX_widget_snake_case_col",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_widget_deleted_at" ON "widget" ("deleted_at") WHERE deleted_at IS NULL',
+          name: "IDX_widget_deleted_at",
+        },
+      ])
+    })
+
     test("should throw an error if field is unknown for an index", () => {
       const group = model.define("group", {
         id: model.number(),

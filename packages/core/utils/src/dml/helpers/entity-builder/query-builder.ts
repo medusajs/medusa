@@ -1,5 +1,8 @@
-import { QueryCondition, QueryValue, SimpleQueryValue } from "@medusajs/types"
-import { isBoolean, isDefined, isObject, isString } from "../../../common"
+import type { QueryCondition, QueryValue, SimpleQueryValue } from "@medusajs/types"
+import { isBoolean } from "../../../common/is-boolean"
+import { isDefined } from "../../../common/is-defined"
+import { isObject } from "../../../common/is-object"
+import { isString } from "../../../common/is-string"
 
 /*
   When creating indexes on the entity, we provide a basic query builder to generate
@@ -37,21 +40,42 @@ function isQueryCondition(value: any): value is QueryCondition {
   return isObject(value) && value !== null && !("$ne" in value)
 }
 
+function quoteKey(key: string): string {
+  if (key.startsWith('"') && key.endsWith('"')) {
+    return key
+  }
+
+  if (key.includes(".")) {
+    return key
+      .split(".")
+      .map((part) => quoteKey(part))
+      .join(".")
+  }
+
+  if (!/^[a-z_][a-z0-9_]*$/.test(key)) {
+    return `"${key.replace(/"/g, '""')}"`
+  }
+
+  return key
+}
+
 function buildCondition(key: string, value: QueryValue): string {
+  const column = quoteKey(key)
+
   if (value === null) {
-    return `${key} IS NULL`
+    return `${column} IS NULL`
   } else if (isObject(value) && "$ne" in value) {
     if (value.$ne === null) {
-      return `${key} IS NOT NULL`
+      return `${column} IS NOT NULL`
     } else {
-      return `${key} != ${formatValue(value.$ne)}`
+      return `${column} != ${formatValue(value.$ne)}`
     }
   } else if (isBoolean(value)) {
-    return `${key} IS ${formatValue(value)}`
+    return `${column} IS ${formatValue(value)}`
   } else if (!isDefined(value)) {
     return ""
   } else {
-    return `${key} = ${formatValue(value)}`
+    return `${column} = ${formatValue(value)}`
   }
 }
 
