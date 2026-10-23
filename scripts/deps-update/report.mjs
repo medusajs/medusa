@@ -20,9 +20,8 @@ import {
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { parseArgs } from "node:util"
-import { plainText } from "./lib.mjs"
+import { linear, linearTeamId, plainText } from "./lib.mjs"
 
-const LINEAR_API = "https://api.linear.app/graphql"
 const METRICS_HISTORY = 26
 
 function readJson(file) {
@@ -121,29 +120,8 @@ export function buildReport({ plan, results, dryRun, runUrl }) {
   return lines.join("\n")
 }
 
-async function linear(query, variables) {
-  const res = await fetch(LINEAR_API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: process.env.LINEAR_API_KEY,
-    },
-    body: JSON.stringify({ query, variables }),
-  })
-  const json = await res.json()
-  if (!res.ok || json.errors) {
-    throw new Error(
-      `Linear API error: ${res.status} ${JSON.stringify(json.errors ?? json)}`
-    )
-  }
-  return json.data
-}
-
 async function postToLinear(title, description) {
-  const teamId = process.env.LINEAR_TEAM_ID
-  if (!process.env.LINEAR_API_KEY || !teamId) {
-    throw new Error("Missing LINEAR_API_KEY or LINEAR_TEAM_ID env variable.")
-  }
+  const teamId = linearTeamId()
   const existing = await linear(
     `query ($teamId: ID!, $title: String!) {
       issues(filter: { team: { id: { eq: $teamId } }, title: { eq: $title } }, first: 1) {
