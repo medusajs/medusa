@@ -624,6 +624,90 @@ medusaIntegrationTestRunner({
         expect(product.variants[0].prices).toHaveLength(2)
       })
 
+      it("should update region prices of an existing variant in the format written by the product export", async () => {
+        const variantId = baseProduct.variants[0].id
+        await api.post(
+          `/admin/products/${baseProduct.id}/variants/${variantId}`,
+          {
+            prices: [
+              { currency_code: "usd", amount: 100 },
+              {
+                currency_code: "usd",
+                amount: 40,
+                rules: { region_id: baseRegion.id },
+              },
+            ],
+          },
+          adminHeaders
+        )
+
+        const subscriberExecution = TestEventUtils.waitSubscribersExecution(
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
+          eventBus
+        )
+
+        const csvContents = json2csv([
+          {
+            "Product Id": baseProduct.id,
+            "Product Handle": baseProduct.handle,
+            "Product Title": baseProduct.title,
+            "Variant Id": variantId,
+            "Variant Title": baseProduct.variants[0].title,
+            "Variant Price USD": 110,
+            "Variant Price Test Region [USD]": 55,
+          },
+        ])
+        const { id } = await fileModule.createFiles({
+          filename: "test.csv",
+          content: csvContents,
+          mimeType: "text/csv",
+        })
+
+        const { body, meta } = getUploadReq({
+          name: "test.csv",
+          key: id,
+          size: csvContents.length,
+        })
+
+        const batchJobRes = await api.post(
+          "/admin/products/imports",
+          body,
+          meta
+        )
+
+        const transactionId = batchJobRes.data.transaction_id
+        expect(transactionId).toBeTruthy()
+        expect(batchJobRes.data.summary).toEqual({ toCreate: 0, toUpdate: 1 })
+
+        await api.post(
+          `/admin/products/imports/${transactionId}/confirm`,
+          {},
+          meta
+        )
+
+        await subscriberExecution
+        const product = (
+          await api.get(`/admin/products/${baseProduct.id}`, adminHeaders)
+        ).data.product
+        const variant = product.variants.find((v) => v.id === variantId)
+
+        expect(variant.prices).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: 110,
+              rules: {},
+            }),
+            expect.objectContaining({
+              currency_code: "usd",
+              amount: 55,
+              rules: { region_id: baseRegion.id },
+            }),
+          ])
+        )
+        expect(variant.prices).toHaveLength(2)
+      })
+
       it("should complain about region prices for a non-existent region", async () => {
         const csvContents = json2csv([
           {
