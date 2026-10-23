@@ -55,7 +55,6 @@ bash scripts/get_issue.sh <issue_number>
 bash scripts/get_issue.sh <issue_number>          # Issue details (title, body, author, state)
 bash scripts/get_comments.sh <issue_number>       # All comments on the issue
 bash scripts/get_labels.sh <issue_number>         # Current labels on the issue
-bash scripts/get_linked_prs.sh <issue_number>     # PRs linked to the issue
 bash scripts/search_issues.sh <query>             # Search for similar/duplicate issues
 ```
 
@@ -170,25 +169,13 @@ fabrication makes it `slop`. **Stop.** Otherwise continue. Skip this step
 when the author is listed in `.github/teams.yml`: team members may write
 issues with AI.
 
-### Step 0.5 — Check for Linked PRs
+### Open PRs
 
-After fetching context, check if any PRs are already linked to this issue:
-
-```bash
-bash scripts/get_linked_prs.sh <issue_number>
-```
-
-If one or more PRs are linked:
-
-1. **PR is MERGED** — The fix may already be shipped. Pick `needs-info`
-   with `needs-info` and a summary asking the reporter to confirm whether
-   the problem persists on a release that includes PR #N. **Stop.**
-2. **PR is OPEN** — A fix is in progress. Never pick `fix` (that would open
-   a second PR). Pick `none` on a comment event; on a new issue, pick
-   `escalate` only if the open PR clearly doesn't address the problem,
-   otherwise `none`. **Stop.**
-
-If no linked PRs, continue to Step 0.75.
+Ignore open PRs that reference the issue: pick the outcome as if none existed, and
+don't mention them in the summary or the Linear ticket. External PRs are closed by
+`pr-guardrails.yml` unless their author is assigned to the issue. The workflow
+itself skips dispatching a fix when an open PR by the bot or a team member already
+references the issue.
 
 ### Step 0.75 — Comment Events
 
@@ -379,7 +366,7 @@ identified by the workflow event — never from JSON-supplied numbers.
 - [ ] Picking `slop` without a verified fabrication — style alone is `rewrite`
 - [ ] Picking `none` on an issue labeled `requires-rewrite` (it removes the label); pick `rewrite` or a real outcome
 - [ ] Picking `fix` for something that touches a data model, migration, public API, event, or more than one module
-- [ ] Picking `fix` when an open PR is already linked to the issue
+- [ ] Letting an open PR change the outcome or mentioning it in the comment or Linear ticket (see **Open PRs**)
 - [ ] Missing `fix_route` on `fix`, or a `linear` object that is missing a section or runs over 200 words
 - [ ] Pasting the reporter's text into `linear` or `summary` instead of paraphrasing verified facts
 - [ ] Converting a feature request or support question to a discussion instead of closing it (`feature` / `close`)
