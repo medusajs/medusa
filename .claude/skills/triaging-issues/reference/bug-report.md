@@ -147,7 +147,6 @@ Load `reference/outcomes.md` and apply the fix limits.
 
 | Condition | Outcome |
 |-----------|---------|
-| Open PR already linked | Never `fix` (see SKILL.md Step 0.5) |
 | `critical` priority, security, or data loss | `escalate` |
 | Fits every fix limit, root cause confirmed in code | `fix`, `fix_route: "bug"`, template `fix-queued` |
 | Anything architectural or over the limits | `escalate`, template `escalated`, plus `linear` |
