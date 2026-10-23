@@ -1,5 +1,14 @@
 # @medusajs/pricing
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17439](https://github.com/medusajs/medusa/pull/17439) [`f7d822b12fcb09120b5c8392f9a5ad10bfcdeb22`](https://github.com/medusajs/medusa/commit/f7d822b12fcb09120b5c8392f9a5ad10bfcdeb22) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(pricing): don't drop price updates that share identity fields but have different ids
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

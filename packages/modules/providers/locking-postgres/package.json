@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/locking-postgres",
-  "version": "2.22.0",
+  "version": "2.22.1",
   "description": "Postgres Advisory Locks for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -27,10 +27,10 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.22.0"
+    "@medusajs/framework": "2.22.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.22.0"
+    "@medusajs/framework": "2.22.1"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
