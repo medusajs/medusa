@@ -49,9 +49,11 @@ linear() {
 }
 
 EXISTING=$(jq -n --arg url "$URL" '{
-  query: "query($url: String!) { attachmentsForURL(url: $url) { nodes { issue { identifier } } } }",
+  query: "query($url: String!) { attachmentsForURL(url: $url) { nodes { issue { identifier team { key } } } } }",
   variables: { url: $url }
-}' | linear | jq -r '[.data.attachmentsForURL.nodes[]?.issue.identifier // empty][0] // empty')
+}' | linear | jq -r --arg team "$TEAM_KEY" '
+  [.data.attachmentsForURL.nodes[]?.issue | select(.team.key == $team) | .identifier][0] // empty
+')
 if [[ -n "$EXISTING" ]]; then
   echo "Linear ticket $EXISTING already links to #$ISSUE; not creating another."
   echo "### Linear ticket $EXISTING already exists" >> "${GITHUB_STEP_SUMMARY:-/dev/null}"
