@@ -10,6 +10,9 @@ import {
   OxxoProviderService,
 } from "./services"
 
+// Public so an application can extend a bundled provider instead of importing from dist.
+export * from "./services"
+
 const services = [
   StripeBancontactService,
   StripeBlikService,
