@@ -18,7 +18,6 @@ import {
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { pricingContextResult } from "../utils/schemas"
 import { getVariantsAndItemsWithPrices } from "./get-variants-and-items-with-prices"
-import { refreshCartShippingMethodsWorkflow } from "./refresh-cart-shipping-methods"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
@@ -68,7 +67,7 @@ export type RefreshCartItemsWorkflowInput = {
 
 /**
  * The ID of the {@link refreshCartItemsWorkflow}.
- * 
+ *
  * @since 2.13.7
  */
 export const refreshCartItemsWorkflowId = "refresh-cart-items"
@@ -192,13 +191,6 @@ export const refreshCartItemsWorkflow = createWorkflow(
       options: { isList: false },
     }).config({ name: "refetch-cart" })
 
-    refreshCartShippingMethodsWorkflow.runAsStep({
-      input: {
-        cart: refetchedCart, // Pass cart to avoid refetch
-        additional_data: input.additional_data,
-      },
-    })
-
     when("force-refresh-update-tax-lines", { input }, ({ input }) => {
       return !!input.force_refresh
     }).then(() => {
@@ -245,6 +237,7 @@ export const refreshCartItemsWorkflow = createWorkflow(
         promo_codes: cartPromoCodes,
         action: PromotionActions.REPLACE,
         force_refresh_payment_collection: false,
+        additional_data: input.additional_data,
       },
     })
 

@@ -1,4 +1,4 @@
-import { isDefined, isPresent } from "@medusajs/framework/utils"
+import { isDefined, isPresent, MathBN } from "@medusajs/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -33,7 +33,7 @@ export const refreshCartShippingMethodsWorkflowId =
   "refresh-cart-shipping-methods"
 /**
  * This workflow refreshes a cart's shipping methods, ensuring that their associated shipping options can still be used on the cart,
- * and retrieve their correct pricing after a cart update. This workflow is used by the {@link refreshCartItemsWorkflow}.
+ * and retrieve their correct pricing after a cart update. This workflow is used by the {@link updateCartPromotionsWorkflow}.
  *
  * You can use this workflow within your own customizations or custom workflows, allowing you to refresh the cart's shipping method after making updates to the cart.
  *
@@ -133,7 +133,7 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
       cart,
     })
 
-    when(
+    const hasChanges = when(
       "should-prepare-shipping-methods",
       { listShippingOptionsInput },
       ({ listShippingOptionsInput }) => {
@@ -227,9 +227,21 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
             }
           )
 
+          const hasAmountChanges = shippingMethodsToUpdate.some((update) => {
+            const shippingMethod = shippingMethods.find(
+              (sm) => sm.id === update.id
+            )
+
+            return (
+              !MathBN.eq(shippingMethod.amount, update.amount) ||
+              shippingMethod.is_tax_inclusive !== update.is_tax_inclusive
+            )
+          })
+
           return {
             shippingMethodsToRemove: invalidShippingMethodIds,
             shippingMethodsToUpdate,
+            hasChanges: invalidShippingMethodIds.length > 0 || hasAmountChanges,
           }
         }
       )
@@ -244,9 +256,15 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
       releaseLockStep({
         key: cart.id,
       })
+
+      return shippingMethodsData.hasChanges
     })
 
-    return new WorkflowResponse(void 0, {
+    const result = transform({ hasChanges }, ({ hasChanges }) => ({
+      has_changes: !!hasChanges,
+    }))
+
+    return new WorkflowResponse(result, {
       hooks: [validate],
     })
   }
