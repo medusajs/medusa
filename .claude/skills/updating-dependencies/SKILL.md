@@ -43,13 +43,15 @@ The group file has `kind` (`patch`, `minor`, or `major`) and `packages`. Each pa
 - `lockfile`: the target is inside the current range; only `yarn.lock` changes.
 - `range`: the manifest range changes to `newSpec`.
 
-A package may also carry a `context7` library ID for its docs.
+A package may also carry a `context7` library ID for its docs. A `@types/<name>` package shares a group with `<name>`; update them together.
+
+**Pinned groups:** a `major` group with `pinned: true` updates exact version pins (`spec` like `5.13.0`) within the same major. Pins are usually deliberate, so treat it like a major: find why the version was pinned (`git log -S'"<name>": "<version>"' -- <workspace>/package.json`), research every release between `from` and `to`, keep the new version exact (`newSpec`), and explain the original reason for the pin and why the update is safe in the PR body.
 
 **Revising a PR:** the working tree is the PR branch and a review comments file is given. Address only what the comments ask, keep the versions already on the branch, and re-verify. If a comment asks for something outside these constraints, leave it and say so in the result summary.
 
 ### Step 2: Research
 
-Patch and minor batches skip this step unless a package fails Step 4. For majors, find every breaking change between `from` and `to` and every place in the repo that uses an affected API, before changing anything.
+Patch and minor batches skip this step unless a package fails Step 4. For majors (including pinned groups), find every breaking change between `from` and `to` and every place in the repo that uses an affected API, before changing anything.
 
 ### Step 3: Apply
 

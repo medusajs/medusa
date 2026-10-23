@@ -79,8 +79,21 @@ function eligibleVersions(abbreviated, times, cutoff) {
     .sort(compareVersions)
 }
 
-function groupNameOf(name, config) {
-  return config.groups?.find((g) => matchesAny(name, g.packages))?.name ?? null
+export function typesTarget(name) {
+  const bare = name.slice("@types/".length)
+  return bare.includes("__") ? `@${bare.replace("__", "/")}` : bare
+}
+
+// @types/<x> moves with <x> when the repo declares <x>.
+function unitNameOf(name, config, declaredNames) {
+  const group = config.groups?.find((g) => matchesAny(name, g.packages))?.name
+  if (group) {
+    return group
+  }
+  if (name.startsWith("@types/") && declaredNames.has(typesTarget(name))) {
+    return unitNameOf(typesTarget(name), config, declaredNames)
+  }
+  return name
 }
 
 function isSkippedByState(state, name, target, kind) {
@@ -169,8 +182,11 @@ export function buildPlan({
   now = Date.now(),
 }) {
   const cutoff = now - config.cooldownDays * DAY_MS
+  const declaredNames = new Set(declarations.map((d) => d.name))
+  const unitOf = (name) => unitNameOf(name, config, declaredNames)
   const skipped = []
   const inMajor = new Map()
+  const pinned = new Map()
   const majors = new Map()
 
   const eligibleCache = new Map()
@@ -237,13 +253,19 @@ export function buildPlan({
     if (sameLine.length) {
       const target = sameLine[sameLine.length - 1]
       const kind = bumpKind(current, target)
-      const reason = isSkippedByState(state, d.name, target, kind)
+      // An exact pin is usually deliberate, so it's planned like a major.
+      const reason = isSkippedByState(
+        state,
+        d.name,
+        target,
+        range.exact ? "major" : kind
+      )
       if (reason) {
         skipped.push({ name: d.name, workspace: d.workspace, reason })
       } else {
         const lockfileOnly = satisfies(target, range)
         addChange(
-          inMajor,
+          range.exact ? pinned : inMajor,
           d.name,
           {
             ...base,
@@ -304,17 +326,36 @@ export function buildPlan({
   })
 
   const majorUnits = new Map()
-  for (const entry of majors.values()) {
-    const unitName = groupNameOf(entry.name, config) ?? entry.name
+  const addToUnit = (entry, isPinned) => {
+    const unitName = unitOf(entry.name)
     if (!majorUnits.has(unitName)) {
       majorUnits.set(unitName, {
         key: `major-${slugify(unitName)}`,
         kind: "major",
         name: unitName,
+        pinned: isPinned,
         packages: [],
       })
     }
-    majorUnits.get(unitName).packages.push(withDocs(entry))
+    const unit = majorUnits.get(unitName)
+    unit.pinned = unit.pinned && isPinned
+    const existing = unit.packages.find((p) => p.name === entry.name)
+    if (!existing) {
+      unit.packages.push(withDocs(entry))
+      return
+    }
+    const covered = new Set(
+      existing.changes.map((c) => `${c.workspace}:${c.field}`)
+    )
+    existing.changes.push(
+      ...entry.changes.filter((c) => !covered.has(`${c.workspace}:${c.field}`))
+    )
+  }
+  for (const entry of majors.values()) {
+    addToUnit(entry, false)
+  }
+  for (const entry of pinned.values()) {
+    addToUnit(entry, true)
   }
   const majorsBehind = (unit) =>
     Math.max(
@@ -375,7 +416,7 @@ export function buildPlan({
   }
   const batchKind = new Map()
   for (const entry of inMajor.values()) {
-    const group = groupNameOf(entry.name, config) ?? entry.name
+    const group = unitOf(entry.name)
     batchKind.set(group, riskier(batchKind.get(group), entry.kind))
   }
   for (const kind of ["patch", "minor"]) {
@@ -384,7 +425,7 @@ export function buildPlan({
       .filter(
         (entry) =>
           !takenByMajors.has(entry.name) &&
-          batchKind.get(groupNameOf(entry.name, config) ?? entry.name) === kind
+          batchKind.get(unitOf(entry.name)) === kind
       )
       .map(withDocs)
     if (!packages.length || (only && only !== key)) {

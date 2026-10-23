@@ -68,7 +68,7 @@ export function buildReport({ plan, results, dryRun, runUrl }) {
         ? `Minor updates (${group.packages.length} packages)`
         : `${group.packages
             .map((p) => `${p.name} ${versionRange(p)}`)
-            .join(", ")} (major)`
+            .join(", ")} (${group.pinned ? "pinned" : "major"})`
     if (dryRun) {
       review.push(`- ${label}`)
       continue
