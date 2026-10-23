@@ -989,6 +989,10 @@ export default class PromotionModuleService
         const attributeValue = budgetUsageContext[attribute]
 
         if (!attributeValue) {
+          if (promotion.is_automatic) {
+            continue
+          }
+
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `Attribute value for "${attribute}" is required by promotion campaing budget`

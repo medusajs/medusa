@@ -3328,6 +3328,94 @@ moduleIntegrationTestRunner({
               },
             ])
           })
+
+          it("should skip an automatic promotion when the spend_by_attribute budget attribute is missing", async () => {
+            const testCampaign = await service.createCampaigns({
+              name: "test",
+              campaign_identifier: "test",
+              budget: {
+                type: CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+                attribute: "customer_email",
+                currency_code: "usd",
+                limit: 100,
+              },
+            })
+
+            await createDefaultPromotion(service, {
+              is_automatic: true,
+              campaign_id: testCampaign.id,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 15,
+              } as any,
+            })
+
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 400,
+                  original_total: 400,
+                  is_discountable: true,
+                  product_category: { id: "catg_cotton" },
+                  product: { id: "prod_tshirt" },
+                },
+              ],
+            }
+
+            const result = await service.computeActions([], context)
+
+            expect(result).toEqual([])
+          })
+
+          it("should throw for a code-applied promotion when the spend_by_attribute budget attribute is missing", async () => {
+            const testCampaign = await service.createCampaigns({
+              name: "test",
+              campaign_identifier: "test",
+              budget: {
+                type: CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+                attribute: "customer_email",
+                currency_code: "usd",
+                limit: 100,
+              },
+            })
+
+            await createDefaultPromotion(service, {
+              is_automatic: false,
+              campaign_id: testCampaign.id,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 15,
+              } as any,
+            })
+
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 400,
+                  original_total: 400,
+                  is_discountable: true,
+                  product_category: { id: "catg_cotton" },
+                  product: { id: "prod_tshirt" },
+                },
+              ],
+            }
+
+            await expect(
+              service.computeActions(["PROMOTION_TEST"], context)
+            ).rejects.toThrow(
+              `Attribute value for "customer_email" is required by promotion campaing budget`
+            )
+          })
         })
       })
 
