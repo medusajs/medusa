@@ -273,7 +273,7 @@ const productWildcardColumns: {
  */
 const variantStaticColumns: {
   [columnName: string]: ColumnProcessor<{
-    [K in keyof AdminCreateProductVariant | "id"]?: any
+    [K in keyof AdminCreateProductVariant | "id" | "thumbnail"]?: any
   }>
 } = {
   "variant id": processAsString("variant id", "id"),
