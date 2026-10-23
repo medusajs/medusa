@@ -321,6 +321,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Payments",
+            "path": "/payments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Emails",
             "path": "/emails",
             "children": [

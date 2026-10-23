@@ -242,6 +242,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Payments",
+            path: "/payments",
+          },
+          {
+            type: "link",
             title: "Emails",
             path: "/emails",
             children: [

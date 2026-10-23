@@ -1,0 +1,125 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Payments`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to connect Stripe accounts to your Cloud environments and manage them from the Cloud dashboard.
+
+## Payments on Cloud
+
+Each environment of a project has a **Payments** section in the Cloud dashboard. From there, you can connect Stripe accounts, link them to the environment, view their balances and payouts, and get the publishable key to use in your storefront.
+
+What you see in the **Payments** section depends on the environment's type:
+
+- [Production environments](#manage-payments-in-production-environments): You connect and manage your Stripe accounts.
+- [Non-production environments](#manage-payments-in-sandbox-environments), such as staging or preview environments: You view sandbox payment accounts to test payments without processing real transactions.
+
+---
+
+## Manage Payments in Production Environments
+
+To open the payments of a production environment:
+
+1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the production environment.
+3. Click **Payments** in the sidebar.
+
+### Connect a Stripe Account
+
+If you haven't connected a Stripe account yet, the **Payments** section shows a setup screen.
+
+To connect a Stripe account:
+
+1. Click **Connect Stripe**.
+2. Follow the steps in Stripe to authorize the connection.
+
+After you finish the connection flow, the account appears as a card in the **Payments** section.
+
+To connect additional Stripe accounts, click **Connect another** and follow the same flow.
+
+### View Stripe Account Details
+
+Each connected Stripe account is shown as a card with the following details:
+
+- The account's name and Stripe account ID.
+- A status badge showing whether the account is active, onboarding, setting up, or inactive. If the account isn't active yet, the card shows a hint explaining what's left to do.
+- When the account is active, a balance overview showing the available balance, the pending balance, and the latest payout's amount, date, and status.
+
+If Stripe needs more information about the account, such as verification requirements, the card shows a warning banner.
+
+To manage the account in Stripe, click **Open in Stripe** on its card. This opens the account's Stripe dashboard.
+
+### Link a Stripe Account to the Environment
+
+A connected Stripe account only processes payments for the environment when it's linked to the environment.
+
+To link or unlink a Stripe account, use the toggle on the account's card.
+
+### Disconnect a Stripe Account
+
+To disconnect a Stripe account:
+
+1. Click the three dots icon on the account's card.
+2. Choose **Disconnect** from the dropdown.
+3. Confirm disconnecting the account.
+
+---
+
+## Manage Payments in Sandbox Environments
+
+Non-production environments use sandbox payment accounts, which let you test payments without processing real transactions.
+
+To open the payments of a non-production environment:
+
+1. From the [organization's dashboard](../organizations/page.mdx), click on the environment's project.
+2. In the project's dashboard, click on the name of the environment.
+3. Click **Payments** in the sidebar.
+
+If no sandbox payment accounts are available, the **Payments** section shows a button that takes you to the production environment's **Payments** section, where you can [connect a Stripe account](#connect-a-stripe-account).
+
+Otherwise, each sandbox account is shown as a card with:
+
+- The account's email and Stripe account ID, or a pending indicator if the account ID isn't available yet.
+- A status badge, and a **Sandbox** badge for accounts in sandbox mode.
+- An overview of the account's balances and payouts.
+- Embedded Stripe panels to view the account's payments and payouts.
+
+---
+
+## Manage Medusa-Managed Payment Accounts
+
+If your environment has a Stripe account managed by Medusa, the **Payments** section includes additional pages to manage it:
+
+- **Account Settings**: Shows the account's email and status, whether charges and payouts are enabled, an embedded Stripe panel to manage the account, and the [publishable key snippet](#use-payments-in-your-storefront) for your storefront.
+- **Payments and Payouts**: Shows embedded Stripe panels to view the account's payments and payouts. If the account isn't active yet, the page prompts you to activate it.
+- **Onboarding**: Shows Stripe's embedded onboarding flow to finish setting up the account. When you exit the flow, Cloud takes you to the **Account Settings** page.
+
+---
+
+## Use Payments in Your Storefront
+
+When an environment has at least one active Stripe account linked to it, or an active sandbox account, the **Payments** section shows a snippet with the publishable key to set in your storefront's environment variables.
+
+The snippet has tabs for Next.js and Vite storefronts. Copy the snippet that matches your storefront and add it to your storefront's environment variables:
+
+<CodeTabs group="storefront-framework">
+  <CodeTab label="Next.js" value="nextjs">
+
+  ```bash
+  NEXT_PUBLIC_MEDUSA_PAYMENTS_PUBLISHABLE_KEY=pk_...
+  ```
+
+  </CodeTab>
+  <CodeTab label="Vite" value="vite">
+
+  ```bash
+  VITE_MEDUSA_PAYMENTS_PUBLISHABLE_KEY=pk_...
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+If your storefront is deployed on Cloud, refer to the [Environment Variables](../environments/environment-variables/page.mdx) guide to learn how to add environment variables.
