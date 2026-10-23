@@ -344,7 +344,7 @@ export const generatedEditDates = {
   "app/how-to-tutorials/tutorials/invoice-generator/page.mdx": "2026-07-28T05:43:12.300Z",
   "app/how-to-tutorials/tutorials/product-builder/page.mdx": "2026-07-28T05:43:12.292Z",
   "app/integrations/guides/payload/page.mdx": "2026-06-04T06:32:27.301Z",
-  "app/commerce-modules/order/draft-orders/page.mdx": "2026-08-25T10:24:09.264Z",
+  "app/commerce-modules/order/draft-orders/page.mdx": "2026-10-23T08:46:52.273Z",
   "app/troubleshooting/scheduled-job-not-running/page.mdx": "2025-12-04T14:15:34.338Z",
   "app/troubleshooting/pnpm/page.mdx": "2026-03-16T14:36:54.157Z",
   "app/how-to-tutorials/tutorials/product-feed/page.mdx": "2026-10-05T08:39:16.375Z",
