@@ -710,8 +710,12 @@ jobs:
           set -euo pipefail
           mkdir -p /tmp/deps-update/results
           ARGS=(--plan /tmp/deps-update/plan/plan.json --state /tmp/deps-update/plan/state.json
-            --results /tmp/deps-update/results --state-out "$RUNNER_TEMP/new-state.json" --post)
-          [[ "$DRY_RUN" == "true" ]] && ARGS+=(--dry-run)
+            --results /tmp/deps-update/results --state-out "$RUNNER_TEMP/new-state.json")
+          if [[ "$DRY_RUN" == "true" ]]; then
+            ARGS+=(--dry-run)
+          else
+            ARGS+=(--post)
+          fi
           node scripts/deps-update/report.mjs "${ARGS[@]}"
 
       - name: Generate GitHub App token
