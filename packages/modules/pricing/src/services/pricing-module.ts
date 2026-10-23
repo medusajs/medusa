@@ -987,7 +987,7 @@ export default class PricingModuleService
         entry.price_rules = existing.price_rules ?? entry.price_rules
       }
 
-      pricesToUpsert.set(entryHash, entry)
+      pricesToUpsert.set(entry.id ?? entryHash, entry)
     })
 
     return Array.from(pricesToUpsert.values())
@@ -1558,7 +1558,6 @@ export default class PricingModuleService
       .filter(Boolean) as ServiceTypes.UpsertPriceDTO[]
 
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
-
     for (const { price_list_id: priceListId } of data) {
       const priceList = priceListMap.get(priceListId)
 

@@ -3,7 +3,7 @@ import {
   IFulfillmentModuleService,
   ValidateFulfillmentDataContext,
 } from "@medusajs/framework/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
  * The details of the shipping methods to validate.
