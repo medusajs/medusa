@@ -245,7 +245,7 @@ Refer to the [Protected Routes](!docs!/learn/fundamentals/api-routes/protected-r
 
 Finally, you should create a custom validation middleware that ensures only users authenticated through the custom Authentication Module Provider can access the API route. If you don't add this middleware, users authenticated through other methods, such as email and password, can also access the route and create accounts.
 
-To create the custom validation middleware, create thefile `src/api/middlewares/validate-custom-auth-provider.ts` with the following content:
+To create the custom validation middleware, create the file `src/api/middlewares/validate-custom-auth-provider.ts` with the following content:
 
 ```ts title="src/api/middlewares/validate-custom-auth-provider.ts"
 import { 

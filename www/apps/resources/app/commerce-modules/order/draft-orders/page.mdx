@@ -119,6 +119,8 @@ Medusa automatically keeps calculated shipping prices up to date during the edit
 
 Shipping methods with a custom amount (`is_custom_amount: true`) and flat-rate methods are never repriced automatically.
 
+When you pass an `amount` to `updateDraftOrderShippingMethodWorkflow` to override a shipping method's price, Medusa sets the method's `is_custom_amount` property to `true`. So, Medusa keeps the amount you set and doesn't reprice the method later.
+
 The `fetchShippingOptionForDraftOrderWorkflow` exposes two hooks you can use to inject additional context before the fulfillment provider calculates the price:
 
 - `setPricingContext`: inject additional pricing context (for example, a `location_id`) used when resolving flat-rate prices from the Pricing Module. The context is merged with the order's `currency_code`.

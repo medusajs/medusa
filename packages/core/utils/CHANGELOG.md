@@ -1,5 +1,22 @@
 # @medusajs/utils
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17459](https://github.com/medusajs/medusa/pull/17459) [`3a3207347379b065142895fb0740442fea5f4033`](https://github.com/medusajs/medusa/commit/3a3207347379b065142895fb0740442fea5f4033) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils,dashboard,loyalty-plugin): add the Haitian Gourde (HTG) currency
+
+- [#17441](https://github.com/medusajs/medusa/pull/17441) [`d731a694cdb83c158fb78b5d85ecba8909150945`](https://github.com/medusajs/medusa/commit/d731a694cdb83c158fb78b5d85ecba8909150945) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils): don't create module migration folders when running migrations
+
+- [#17440](https://github.com/medusajs/medusa/pull/17440) [`ccee953690a41e14e7520e7e2d97272f25d1ff69`](https://github.com/medusajs/medusa/commit/ccee953690a41e14e7520e7e2d97272f25d1ff69) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils): copy null-prototype objects and objects with a hasOwnProperty key
+
+- [#17464](https://github.com/medusajs/medusa/pull/17464) [`c959d5e3e7d4b482d0784eef67ef8ef766442d5e`](https://github.com/medusajs/medusa/commit/c959d5e3e7d4b482d0784eef67ef8ef766442d5e) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils,core-flows): import region price columns written by the product export
+
+- [#17451](https://github.com/medusajs/medusa/pull/17451) [`3a4fa0cc36a82dba9481e87c20e423cb65c2ee91`](https://github.com/medusajs/medusa/commit/3a4fa0cc36a82dba9481e87c20e423cb65c2ee91) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils): ignore non-string ids from linked services when applying translations
+
+- Updated dependencies []:
+  - @medusajs/deps@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

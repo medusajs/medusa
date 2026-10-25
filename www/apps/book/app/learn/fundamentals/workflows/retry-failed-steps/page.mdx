@@ -14,7 +14,7 @@ By default, when a step fails, the workflow execution stops, and the workflow is
 
 When a step fails, you can configure the workflow engine to automatically retry the step a specified number of times before marking the workflow as failed. This can help improve the reliability and resilience of your workflows.
 
-You can also configure the interval between retries, awllowing you to wait for a certain period before attempting the step again. This is useful when the failure is due to a temporary issue that may resolve itself after some time.
+You can also configure the interval between retries, allowing you to wait for a certain period before attempting the step again. This is useful when the failure is due to a temporary issue that may resolve itself after some time.
 
 For example, if a step captures a payment, you may want to retry it daily until the payment is successful or the maximum number of retries is reached.
 
@@ -176,6 +176,94 @@ Instead, you must subscribe to the workflow's execution using the Workflow Engin
 
 ---
 
+## Retry Waiting Async Steps
+
+An [async step](../long-running-workflow/page.mdx) whose function doesn't return a `StepResponse` stays in a waiting state until you set its status with the Workflow Engine Module's `setStepSuccess` or `setStepFailure` methods. The `maxRetries` and `retryInterval` properties don't apply to a waiting step, because the step hasn't failed.
+
+So, an async step can stay waiting indefinitely. For example:
+
+- The process running the step dies or restarts before the step finishes, so nothing sets the step's status.
+- The step starts a job in a third-party service, and you want to check the job's status periodically until it finishes.
+
+To execute a step again while it's still waiting, pass the following properties to the step's configuration object:
+
+- `retryIntervalAwaiting`: The number of seconds to wait after the step's last execution before executing it again, if the step is still waiting.
+- `maxAwaitingRetries`: The maximum number of times the step can execute, including its first execution. If you don't set it, the workflow engine keeps executing the step until its status changes.
+
+For example:
+
+export const awaitingHighlights = [
+  ["9", "async", "Mark the step as async."],
+  ["10", "retryIntervalAwaiting", "Execute the step again after one minute if it's still waiting."],
+  ["11", "maxAwaitingRetries", "Execute the step at most ten times."],
+  ["19", "return", "Return nothing to keep the step waiting."],
+  ["22", "StepResponse", "Return a `StepResponse` to complete the step."],
+]
+
+```ts title="src/workflows/sync-products.ts" highlights={awaitingHighlights}
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const waitForImportStep = createStep(
+  {
+    name: "wait-for-import",
+    async: true,
+    retryIntervalAwaiting: 60, // 1 minute
+    maxAwaitingRetries: 10,
+  },
+  async ({ job_id }: { job_id: string }, { container }) => {
+    const erpModuleService = container.resolve("erp")
+
+    const job = await erpModuleService.getImportJob(job_id)
+
+    if (job.status !== "completed") {
+      return
+    }
+
+    return new StepResponse(job.result)
+  }
+)
+```
+
+In this example, the step retrieves the status of an import job from a custom ERP Module. If the job isn't completed, the step returns nothing, so it stays waiting. The workflow engine executes the step again after one minute.
+
+Once the job is completed, the step returns a `StepResponse`, and the workflow continues to the next step.
+
+### How the Workflow Engine Counts Awaiting Retries
+
+The `maxAwaitingRetries` and `maxRetries` properties count executions differently:
+
+- The workflow engine compares `maxAwaitingRetries` to the step's attempt counter. The counter includes every execution of the step, including the first one. So, a step with `maxAwaitingRetries: 10` executes at most ten times in total.
+- The workflow engine compares `maxRetries` to the number of times the step failed. So, a step with `maxRetries: 2` executes at most three times in total: the first execution and two retries.
+
+You can access the current attempt number in the step function using the `attempt` property of the step's second parameter.
+
+### Step Stays Waiting After the Last Awaiting Retry
+
+When a step reaches `maxAwaitingRetries` and is still waiting, the workflow engine stops executing it. However, the step doesn't fail. It stays waiting, and the workflow doesn't continue.
+
+To fail the step after a period of time instead, set the step's `timeout` property, as explained in the [Workflow Timeout](../workflow-timeout/page.mdx#configure-step-timeout) chapter. You can also set the step's status with the Workflow Engine Module's `setStepSuccess` or `setStepFailure` methods, or retry it as explained in the [Manually Retry a Step](#manually-retry-a-step) section.
+
+### Make the Step Safe to Execute Multiple Times
+
+The workflow engine executes a waiting step again even if a previous execution is still running, for example, when an external job takes longer than `retryIntervalAwaiting`. So, make sure that executing the step multiple times doesn't cause side effects, such as creating duplicate records or charging a customer twice.
+
+<Note title="Warning" type="warning">
+
+Don't set both `retryInterval` and `retryIntervalAwaiting` on the same step. If such a step throws an error, the workflow engine doesn't retry it, and the workflow stays stuck. Use `retryInterval` to retry a step that fails, and `retryIntervalAwaiting` to execute a waiting step again.
+
+</Note>
+
+<Note>
+
+The [In-Memory Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine/in-memory) keeps scheduled retries in memory, so the Medusa application loses them when it restarts. To recover async steps after a process dies or restarts, use the [Redis Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine/redis) in production.
+
+</Note>
+
+---
+
 ## Manually Retry a Step
 
 In some cases, you may need to manually retry a step. For example:
@@ -183,6 +271,8 @@ In some cases, you may need to manually retry a step. For example:
 - If a step's `autoRetry` property is set to `false`.
 - If the machine running the Medusa application in development or [worker mode](../../../configurations/medusa-config/page.mdx#workermode) dies or shuts down.
 - If the step takes longer than expected to complete.
+
+For async steps, you can also configure the workflow engine to execute a waiting step again automatically, as explained in the [Retry Waiting Async Steps](#retry-waiting-async-steps) section.
 
 To retry a step manually, resolve the Workflow Engine Module's service from the Medusa container and call its `retryStep` method.
 

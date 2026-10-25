@@ -1528,7 +1528,7 @@ To run queries on the database in a service's method, you need to:
 - Add the `InjectManager` decorator to the method.
 - Pass as the last parameter a context parameter that has the `MedusaContext` decorator.
 
-By doing the above, Medusa injects the method with a context parameter that has a `manger` property whose value is a [forked entity manager](https://mikro-orm.io/docs/identity-map#forking-entity-manager).
+By doing the above, Medusa injects the method with a context parameter that has a `manager` property whose value is a [forked entity manager](https://mikro-orm.io/docs/identity-map#forking-entity-manager).
 
 Then, you run a raw SQL query to calculate the average rating of the reviews for a product with the given ID. You also filter the reviews by the status `approved`.
 

@@ -1,5 +1,14 @@
 # @medusajs/index
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17419](https://github.com/medusajs/medusa/pull/17419) [`85d1481f546e0a7ca34ab2fc888606cfa5772817`](https://github.com/medusajs/medusa/commit/85d1481f546e0a7ca34ab2fc888606cfa5772817) Thanks [@medusa-agents](https://github.com/apps/medusa-agents)! - fix(index): don't skip the index data sync when entry point types generation fails
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

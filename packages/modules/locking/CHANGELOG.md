@@ -1,5 +1,14 @@
 # @medusajs/locking
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17460](https://github.com/medusajs/medusa/pull/17460) [`afa4b15c1653d045fde6c2371395ce5df2987822`](https://github.com/medusajs/medusa/commit/afa4b15c1653d045fde6c2371395ce5df2987822) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(locking,locking-redis): close the Redis client on shutdown
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Patch Changes

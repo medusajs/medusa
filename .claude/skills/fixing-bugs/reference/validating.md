@@ -4,7 +4,7 @@ Decide whether the reported bug exists on the current branch before writing any 
 
 ## Steps
 
-1. **Check open PRs.** Scan the open PR list (in CI: `/tmp/fix-bug/open-prs.md`; locally: `gh pr list --state open --search "<keywords>"`) for a PR that references the same ticket or fixes the same root cause. If one does, read its diff (`gh pr diff <number>` locally) only as far as needed to confirm, and stop with `already-fixed`.
+1. **Check open PRs.** Scan the open PR list (in CI: `/tmp/fix-bug/open-prs.md`; locally: `bash scripts/search_prs.sh <issue number or Linear ID>`) for a PR that references the same ticket or fixes the same root cause. If one does, read its diff (`bash scripts/get_pr_diff.sh <number>` locally) only as far as needed to confirm, and stop with `already-fixed`.
 2. **Check the version gap.** Compare the reporter's version with the package's current `version` in its `package.json`. If they differ, check `git log --oneline -- <file>` on the suspected file for a fix since then.
 3. **Locate the code path.** Grep for the symbols, error messages, or file names in the report. Read only the relevant line ranges.
 4. **Trace the claim.** Follow the data from entry point to the reported symptom. Confirm the exact line(s) that cause it. Reporter claims about internals ("X calls Y with the wrong handler") must be verified in the code, not trusted.
@@ -21,6 +21,7 @@ Decide whether the reported bug exists on the current branch before writing any 
 | `not-a-bug` | Behavior is intended/documented, or caused by user code/config | Step 7, explain why |
 | `not-reproducible` | Code path doesn't do what the report says and repro passes | Step 7, describe what was tried |
 | `needs-info` | Report lacks the detail needed to locate or reproduce | Step 7, list exactly what's missing |
+| `needs-team` | Bug is real, but the fix exceeds the size/path limits or needs a migration, dependency, public API, or event change (see `fixing.md`) | Step 7, name what the fix would need |
 
 > **CRITICAL:** Only `confirmed` proceeds to code changes. When in doubt between `confirmed` and `needs-info`, pick `needs-info`.
 

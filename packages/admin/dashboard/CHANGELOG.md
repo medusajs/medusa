@@ -1,5 +1,27 @@
 # @medusajs/dashboard
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17459](https://github.com/medusajs/medusa/pull/17459) [`3a3207347379b065142895fb0740442fea5f4033`](https://github.com/medusajs/medusa/commit/3a3207347379b065142895fb0740442fea5f4033) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils,dashboard,loyalty-plugin): add the Haitian Gourde (HTG) currency
+
+- [#17458](https://github.com/medusajs/medusa/pull/17458) [`8ef41c356312e73b76cdcf19be19cff80c466b76`](https://github.com/medusajs/medusa/commit/8ef41c356312e73b76cdcf19be19cff80c466b76) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): define missing build-time constants in the dev server config
+
+- [#17438](https://github.com/medusajs/medusa/pull/17438) [`33deceee8465af8e04f0cfa77090c2208db51658`](https://github.com/medusajs/medusa/commit/33deceee8465af8e04f0cfa77090c2208db51658) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): let Enter activate buttons and links inside modal and drawer forms
+
+- [#17469](https://github.com/medusajs/medusa/pull/17469) [`6917a271ff2dd5afbd98c27bdca44c6bdfbd1630`](https://github.com/medusajs/medusa/commit/6917a271ff2dd5afbd98c27bdca44c6bdfbd1630) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): apply the product list filters to product exports
+
+- [#17431](https://github.com/medusajs/medusa/pull/17431) [`879fb81983bc33ae3901a9aecba63dfebe040c43`](https://github.com/medusajs/medusa/commit/879fb81983bc33ae3901a9aecba63dfebe040c43) Thanks [@vethan](https://github.com/vethan)! - fix(order,dashboard): stop return requests exceeding the returnable quantity. Units already received or dismissed on an earlier return are no longer counted as available to return, and the return, exchange and claim forms cap the quantity input at the returnable quantity.
+
+- [#17445](https://github.com/medusajs/medusa/pull/17445) [`8604053686b9b4c5bf033f03dc32412f9de902ce`](https://github.com/medusajs/medusa/commit/8604053686b9b4c5bf033f03dc32412f9de902ce) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): stop product media edit on failed upload and show the error
+
+- Updated dependencies [[`7c3b0339379efeda7863f48b9f60e3391cece091`](https://github.com/medusajs/medusa/commit/7c3b0339379efeda7863f48b9f60e3391cece091), [`89f67a6a0bc8183fb5fa3243138a2d38e247774c`](https://github.com/medusajs/medusa/commit/89f67a6a0bc8183fb5fa3243138a2d38e247774c)]:
+  - @medusajs/js-sdk@2.22.1
+  - @medusajs/ui@4.2.8
+  - @medusajs/admin-shared@2.22.1
+  - @medusajs/icons@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

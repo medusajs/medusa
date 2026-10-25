@@ -1281,6 +1281,53 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should throw if the cart does not belong to the authenticated customer", async () => {
+        const customerAccount = (
+          await api.post(
+            `/admin/store-credit-accounts`,
+            { currency_code: giftCard.currency_code, customer_id: customer.id },
+            adminHeaders
+          )
+        ).data.store_credit_account
+
+        await api.post(
+          `/admin/store-credit-accounts/${customerAccount.id}/credit`,
+          { amount: 150, note: "Crediting customers account" },
+          adminHeaders
+        )
+
+        const otherUser = await createAuthenticatedCustomer(api, storeHeaders, {
+          email: "other@customer.com",
+        })
+
+        const response = await api
+          .post(
+            `/store/carts/${cart.id}/store-credits`,
+            {},
+            {
+              headers: {
+                ...storeHeaders.headers,
+                Authorization: `Bearer ${otherUser.jwt}`,
+              },
+            }
+          )
+          .catch((err) => err.response)
+
+        expect(response.status).toEqual(400)
+        expect(response.data.message).toEqual(
+          "Store credits can only be added to a cart that belongs to the authenticated customer"
+        )
+
+        const updatedCart = (
+          await api.get(
+            `/store/carts/${cart.id}?fields=*credit_lines`,
+            storeHeadersWithAuth
+          )
+        ).data.cart
+
+        expect(updatedCart.credit_lines).toEqual([])
+      })
+
       it("should remove the store credits from the cart when the amount is 0", async () => {
         const customerAccount = (
           await api.post(

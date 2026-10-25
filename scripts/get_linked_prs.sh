@@ -8,6 +8,8 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 if [[ -z "${1:-}" ]] || ! [[ "$1" =~ ^[0-9]+$ ]]; then
   echo "Usage: $0 <issue_number>" >&2
   exit 1
@@ -57,4 +59,4 @@ echo "$RESULT" | jq '[
   elif .__typename == "CrossReferencedEvent" then .source
   else empty end |
   select(.number != null)
-] | unique_by(.number)'
+] | unique_by(.number)' | python3 "$SCRIPT_DIR/sanitize_untrusted.py" --json

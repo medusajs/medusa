@@ -233,6 +233,15 @@ Like target rules, a buy rule's `attribute` must be prefixed based on the `targe
 
 A `buyget` promotion only discounts a matching "Get Y" item that is already in the cart. It doesn't add the free product to the cart automatically. If the target item isn't in the cart, Medusa doesn't apply the promotion. This is true whether the promotion is automatic or the customer applies it with a code.
 
+### How Items are Selected for Buy X Get Y Promotions
+
+When the cart has more eligible items than the promotion needs, the Promotion Module ranks the eligible items by their unit price, from highest to lowest. It uses the unit price rather than the line item's subtotal, so a line item with a high quantity of a cheap product doesn't rank above a single expensive product.
+
+Then, the Promotion Module selects the items as follows:
+
+1. It reserves items to satisfy the "buy X" condition, starting with the highest-priced items. It prefers items that don't match the target rules, so that matching "get Y" items remain available for the discount.
+2. It applies the discount to the highest-priced items that match the target rules and weren't reserved in the previous step, up to the `apply_to_quantity` and `max_quantity` limits.
+
 ---
 
 ## Maximum Quantity Restriction

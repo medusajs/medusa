@@ -18,7 +18,8 @@ describe("CSV processor", () => {
   it("should process a CSV row", async () => {
     const csvData: any[] = await loadFixtureFile("single-row-create.json")
     const processor = new CSVNormalizer(
-      csvData.map((row, index) => CSVNormalizer.preProcess(row, index + 1))
+      csvData.map((row, index) => CSVNormalizer.preProcess(row, index + 1)),
+      { regions: [{ id: "reg_eu", name: "Europe", currency_code: "eur" }] }
     )
 
     const products = processor.proccess()
@@ -65,6 +66,9 @@ describe("CSV processor", () => {
                   {
                     "amount": 10,
                     "currency_code": "eur",
+                    "rules": {
+                      "region_id": "reg_eu",
+                    },
                   },
                   {
                     "amount": 15,
@@ -1113,6 +1117,79 @@ describe("CSV processor", () => {
 
       expect(() => processor.proccess()).toThrow(
         'Row 1: Invalid value provided for "variant metadata". Expected a valid JSON string, received "invalid json"'
+      )
+    })
+  })
+
+  describe("Variant region price columns", () => {
+    const regions = [
+      { id: "reg_test", name: "Test Region", currency_code: "usd" },
+      { id: "reg_eu", name: "Europe", currency_code: "eur" },
+    ]
+
+    it("should import region prices written by the product export", () => {
+      const normalized = CSVNormalizer.preProcess(
+        {
+          "Product Handle": "t-shirt",
+          "Variant Title": "S",
+          "Variant Price USD": 40,
+          "Variant Price Test Region [USD]": 45,
+        },
+        1
+      )
+      const result = new CSVNormalizer([normalized], { regions }).proccess()
+
+      expect(result.toCreate["t-shirt"].variants[0].prices).toEqual([
+        { currency_code: "usd", amount: 40 },
+        { currency_code: "usd", amount: 45, rules: { region_id: "reg_test" } },
+      ])
+    })
+
+    it("should import region prices using the bracketed region name format", () => {
+      const normalized = CSVNormalizer.preProcess(
+        {
+          "Product Handle": "t-shirt",
+          "Variant Title": "S",
+          "Variant Price [Europe] EUR": 30,
+        },
+        1
+      )
+      const result = new CSVNormalizer([normalized], { regions }).proccess()
+
+      expect(result.toCreate["t-shirt"].variants[0].prices).toEqual([
+        { currency_code: "eur", amount: 30, rules: { region_id: "reg_eu" } },
+      ])
+    })
+
+    it("should throw when the region in a price column does not exist", () => {
+      const normalized = CSVNormalizer.preProcess(
+        {
+          "Product Handle": "t-shirt",
+          "Variant Title": "S",
+          "Variant Price Nonexistent [EUR]": 30,
+        },
+        1
+      )
+      const processor = new CSVNormalizer([normalized], { regions })
+
+      expect(() => processor.proccess()).toThrow(
+        'Row 1: Region with name "nonexistent" not found, used by "variant price nonexistent [eur]"'
+      )
+    })
+
+    it("should throw for region price columns when no regions are provided", () => {
+      const normalized = CSVNormalizer.preProcess(
+        {
+          "Product Handle": "t-shirt",
+          "Variant Title": "S",
+          "Variant Price [Europe] EUR": 30,
+        },
+        1
+      )
+      const processor = new CSVNormalizer([normalized])
+
+      expect(() => processor.proccess()).toThrow(
+        'Row 1: Region with name "europe" not found, used by "variant price [europe] eur"'
       )
     })
   })
