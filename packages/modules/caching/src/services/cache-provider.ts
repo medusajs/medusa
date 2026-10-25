@@ -57,4 +57,18 @@ Please make sure that the provider is registered in the container and it is conf
       throw new Error(errMessage)
     }
   }
+
+  async shutdown(): Promise<void> {
+    type ShutdownableProvider = ICachingProviderService & {
+      shutdown?: () => Promise<void>
+    }
+
+    const providers = new Set(
+      Object.keys(this.#container)
+        .filter((key) => key.startsWith(CachingProviderRegistrationPrefix))
+        .map((key) => this.#container[key] as ShutdownableProvider)
+    )
+
+    await Promise.all([...providers].map((provider) => provider.shutdown?.()))
+  }
 }
