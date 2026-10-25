@@ -209,7 +209,7 @@ export const generatedEditDates = {
   "app/commerce-modules/promotion/links-to-other-modules/page.mdx": "2025-04-17T15:59:11.667Z",
   "app/commerce-modules/order/edit/page.mdx": "2026-09-17T06:40:12.678Z",
   "app/commerce-modules/order/links-to-other-modules/page.mdx": "2025-04-17T15:57:52.146Z",
-  "app/commerce-modules/order/order-change/page.mdx": "2026-09-11T07:40:12.247Z",
+  "app/commerce-modules/order/order-change/page.mdx": "2026-10-25T21:20:39.432Z",
   "app/commerce-modules/payment/links-to-other-modules/page.mdx": "2025-04-17T15:53:23.515Z",
   "app/commerce-modules/region/links-to-other-modules/page.mdx": "2025-04-17T15:59:34.123Z",
   "app/commerce-modules/sales-channel/links-to-other-modules/page.mdx": "2025-04-17T16:00:09.483Z",

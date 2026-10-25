@@ -304,7 +304,7 @@ The following table lists the possible `action` values that Medusa uses and the 
       `details` is an object having the following properties:
 
       - `reference_id`: the ID of the item.
-      - `quantity`: The quantity to write off.
+      - `quantity`: The quantity to write off. It must be greater than `0` and can't exceed the item's quantity that isn't already written off.
       - `metadata`: The item's metadata.
 
       </Table.Cell>
@@ -325,7 +325,7 @@ The following table lists the possible `action` values that Medusa uses and the 
       `details` is an object having the following properties:
 
       - `reference_id`: the ID of the item.
-      - `quantity`: The quantity to reinstate.
+      - `quantity`: The quantity to reinstate. It must be greater than `0` and can't exceed the item's written-off quantity.
 
       </Table.Cell>
     </Table.Row>
