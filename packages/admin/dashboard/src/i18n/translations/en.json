@@ -105,6 +105,14 @@
       }
     }
   },
+  "notes": {
+    "header": "Notes",
+    "label": "Note",
+    "placeholder": "Leave a note",
+    "addButtonText": "Add note",
+    "deleteButtonText": "Delete note",
+    "loadError": "Notes could not be loaded."
+  },
   "validation": {
     "mustBeInt": "The value must be a whole number.",
     "mustBePositive": "The value must be a positive number."
@@ -1211,6 +1219,17 @@
     "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
     "orderCanceled": "Order canceled successfully",
     "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
+    "tags": {
+      "placeholder": "Add a tag",
+      "addAction": "Add tags",
+      "removeAction": "Remove tags",
+      "addModalHeader": "Add tag to orders",
+      "addModalDescription": "Select a tag to add to the selected orders.",
+      "removeModalHeader": "Remove tag from orders",
+      "removeModalDescription": "Select a tag to remove from the selected orders.",
+      "bulkAddSuccess": "Tag added to the selected orders.",
+      "bulkRemoveSuccess": "Tag removed from the selected orders."
+    },
     "list": {
       "noRecordsMessage": "Your orders will show up here."
     },

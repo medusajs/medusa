@@ -12,6 +12,10 @@ export interface AdminOrderFilters extends FindParams, BaseOrderFilters {
    */
   sales_channel_id?: string[]
   /**
+   * Filter by tag IDs to retrieve their associated orders.
+   */
+  tag_id?: string[]
+  /**
    * Filter by region IDs to retrieve their associated orders.
    */
   region_id?: string[] | string

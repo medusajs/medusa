@@ -63,6 +63,7 @@ import { getTotalCaptured } from "../../../../../lib/payment"
 import { getLoyaltyPlugin } from "../../../../../lib/plugins"
 import { getReturnableQuantity } from "../../../../../lib/rma"
 import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link"
+import { OrderLineItemNotesPopover } from "../order-line-item-notes-popover"
 import ReturnInfoPopover from "./return-info-popover"
 import ShippingInfoPopover from "./shipping-info-popover"
 import { formatPercentage } from "../../../../../lib/percentage-helpers.ts"
@@ -437,19 +438,22 @@ const Item = ({
               </Text>
             </div>
           </div>
-          {appliedPromoCodes.length > 0 && (
-            <Tooltip
-              content={
-                <span className="text-pretty">
-                  {appliedPromoCodes.map((code) => (
-                    <div key={code}>{code}</div>
-                  ))}
-                </span>
-              }
-            >
-              <ReceiptPercent className="text-ui-fg-subtle flex-shrink self-center " />
-            </Tooltip>
-          )}
+          <div className="flex items-center gap-x-1 self-center">
+            {appliedPromoCodes.length > 0 && (
+              <Tooltip
+                content={
+                  <span className="text-pretty">
+                    {appliedPromoCodes.map((code) => (
+                      <div key={code}>{code}</div>
+                    ))}
+                  </span>
+                }
+              >
+                <ReceiptPercent className="text-ui-fg-subtle flex-shrink" />
+              </Tooltip>
+            )}
+            <OrderLineItemNotesPopover lineItemId={item.id} />
+          </div>
         </div>
 
         <div className="grid grid-cols-3 items-center gap-x-4">

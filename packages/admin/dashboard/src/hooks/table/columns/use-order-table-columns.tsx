@@ -1,10 +1,13 @@
 import { HttpTypes } from "@medusajs/types"
+import { Badge, Checkbox } from "@medusajs/ui"
 import {
   ColumnDef,
   ColumnDefBase,
   createColumnHelper,
 } from "@tanstack/react-table"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
+import { PlaceholderCell } from "../../../components/table/table-cells/common/placeholder-cell"
 import {
   DateCell,
   DateHeader,
@@ -24,6 +27,10 @@ import {
   FulfillmentStatusHeader,
 } from "../../../components/table/table-cells/order/fulfillment-status-cell"
 import {
+  OrderNotesIndicatorCell,
+  OrderNotesIndicatorHeader,
+} from "../../../components/table/table-cells/order/order-notes-indicator-cell"
+import {
   PaymentStatusCell,
   PaymentStatusHeader,
 } from "../../../components/table/table-cells/order/payment-status-cell"
@@ -41,13 +48,50 @@ const columnHelper = createColumnHelper<HttpTypes.AdminOrder>()
 
 type UseOrderTableColumnsProps = {
   exclude?: string[]
+  /**
+   * Whether to render a leading checkbox column for row selection. Only
+   * list pages that wire up `enableRowSelection`/`rowSelection` on
+   * `useDataTable` (e.g. the order list, for its bulk-tag command bar)
+   * should pass this - other consumers of this hook don't support
+   * selection and would otherwise get a non-functional checkbox column.
+   */
+  enableRowSelection?: boolean
 }
 
 export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
-  const { exclude = [] } = props ?? {}
+  const { exclude = [], enableRowSelection = false } = props ?? {}
+  const { t } = useTranslation()
 
   const columns = useMemo(
     () => [
+      ...(enableRowSelection
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => (
+                <Checkbox
+                  checked={
+                    table.getIsSomePageRowsSelected()
+                      ? "indeterminate"
+                      : table.getIsAllPageRowsSelected()
+                  }
+                  onCheckedChange={(value) =>
+                    table.toggleAllPageRowsSelected(!!value)
+                  }
+                />
+              ),
+              cell: ({ row }) => (
+                <Checkbox
+                  checked={row.getIsSelected()}
+                  onCheckedChange={(value) => row.toggleSelected(!!value)}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                />
+              ),
+            }),
+          ]
+        : []),
       columnHelper.accessor("display_id", {
         header: () => <DisplayIdHeader />,
         cell: ({ getValue }) => {
@@ -126,8 +170,53 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
           return <CountryCell country={country} />
         },
       }),
+      columnHelper.display({
+        id: "notes",
+        header: () => <OrderNotesIndicatorHeader />,
+        cell: ({ row, table }) => {
+          const { orderIdsOnPage } = (table.options.meta ?? {}) as {
+            orderIdsOnPage?: string[]
+          }
+
+          return (
+            <OrderNotesIndicatorCell
+              orderId={row.original.id}
+              orderIdsOnPage={orderIdsOnPage ?? []}
+            />
+          )
+        },
+      }),
+      columnHelper.display({
+        id: "tags",
+        header: () => (
+          <div className="flex h-full w-full items-center">
+            <span className="truncate">{t("fields.tags")}</span>
+          </div>
+        ),
+        cell: ({ row }) => {
+          const tags = row.original.tags
+
+          if (!tags?.length) {
+            return <PlaceholderCell />
+          }
+
+          return (
+            <div className="flex h-full w-full flex-wrap items-center gap-1 overflow-hidden py-2">
+              {tags.map((tag) => (
+                <Badge
+                  key={tag.id}
+                  size="2xsmall"
+                  className="max-w-full overflow-hidden pl-1.5 pr-1.5"
+                >
+                  <span className="truncate">{tag.value}</span>
+                </Badge>
+              ))}
+            </div>
+          )
+        },
+      }),
     ],
-    []
+    [enableRowSelection, t]
   )
 
   const isAccessorColumnDef = (

@@ -119,6 +119,15 @@ moduleIntegrationTestRunner<IOrderModuleService>({
               field: "orderShippingMethod",
             },
           },
+          orderTag: {
+            id: {
+              linkable: "order_tag_id",
+              entity: "OrderTag",
+              primaryKey: "id",
+              serviceName: "order",
+              field: "orderTag",
+            },
+          },
           orderTransaction: {
             id: {
               linkable: "order_transaction_id",

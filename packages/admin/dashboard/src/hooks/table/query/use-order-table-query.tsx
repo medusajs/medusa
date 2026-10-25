@@ -18,6 +18,7 @@ export const useOrderTableQuery = ({
       "updated_at",
       "region_id",
       "sales_channel_id",
+      "tag_id",
       // "payment_status",
       // "fulfillment_status",
       "order",
@@ -29,6 +30,7 @@ export const useOrderTableQuery = ({
   const {
     offset,
     sales_channel_id,
+    tag_id,
     created_at,
     updated_at,
     // fulfillment_status,
@@ -43,6 +45,7 @@ export const useOrderTableQuery = ({
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     sales_channel_id: sales_channel_id?.split(","),
+    tag_id: tag_id?.split(","),
     // fulfillment_status: fulfillment_status?.split(","),
     // payment_status: payment_status?.split(","),
     created_at: created_at ? JSON.parse(created_at) : undefined,

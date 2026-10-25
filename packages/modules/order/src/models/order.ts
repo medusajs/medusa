@@ -5,6 +5,7 @@ import { OrderCreditLine } from "./credit-line"
 import { OrderItem } from "./order-item"
 import { OrderShipping } from "./order-shipping-method"
 import { OrderSummary } from "./order-summary"
+import { OrderTag } from "./order-tag"
 import { OrderTransaction } from "./transaction"
 
 const _Order = model
@@ -123,6 +124,13 @@ const _Order = model
      */
     returns: model.hasMany<any>(() => Return, {
       mappedBy: "order",
+    }),
+    /**
+     * The associated order tags.
+     */
+    tags: model.manyToMany(() => OrderTag, {
+      mappedBy: "orders",
+      pivotTable: "order_tags",
     }),
   })
   .cascades({

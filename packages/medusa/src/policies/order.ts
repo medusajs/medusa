@@ -8,6 +8,7 @@ const orderResources = [
   "order_claim",
   "order_claim_item",
   "order_exchange",
+  "order_tag",
   "return",
   "return_reason",
 ]

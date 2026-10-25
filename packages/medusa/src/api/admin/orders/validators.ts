@@ -6,7 +6,7 @@ import {
   createSelectParams,
   WithAdditionalData,
 } from "../../utils/validators"
-import { isString } from "@medusajs/framework/utils"
+import { isPresent, isString } from "@medusajs/framework/utils"
 
 export const AdminGetOrdersOrderParams = createSelectParams().merge(
   z.object({
@@ -58,6 +58,7 @@ const AdminGetOrdersParamsBase = createFindParams({
       .union([z.string(), z.array(z.string()), createOperatorMap()])
       .optional(),
     sales_channel_id: z.array(z.string()).optional(),
+    tag_id: z.union([z.string(), z.array(z.string())]).optional(),
     region_id: z.union([z.string(), z.array(z.string())]).optional(),
     customer_id: z.union([z.string(), z.array(z.string())]).optional(),
     q: z.string().optional(),
@@ -70,10 +71,11 @@ const AdminGetOrdersParamsBase = createFindParams({
 type AdminGetOrdersParamsInput = z.infer<typeof AdminGetOrdersParamsBase>
 
 const AdminGetOrdersParamsTransform = (v: AdminGetOrdersParamsInput) => {
-  const { total, ...rest } = v
+  const { total, tag_id, ...rest } = v
   return {
     ...rest,
     ...(total ? { summary: { totals: { current_order_total: total } } } : {}),
+    ...(isPresent(tag_id) ? { tags: { id: tag_id as string[] } } : {}),
   }
 }
 
@@ -189,3 +191,15 @@ export const AdminCreateOrderCreditLines = z.object({
   reference_id: z.string(),
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
+
+export type AdminBulkTagOrdersType = z.infer<typeof AdminBulkTagOrders>
+export const AdminBulkTagOrders = z
+  .object({
+    order_ids: z.array(z.string()).min(1),
+    add: z.array(z.string()).optional(),
+    remove: z.array(z.string()).optional(),
+  })
+  .strict()
+  .refine((data) => !!data.add?.length || !!data.remove?.length, {
+    message: "At least one of `add` or `remove` must be a non-empty array",
+  })

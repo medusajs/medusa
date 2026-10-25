@@ -274,6 +274,17 @@ export const ModulesDefinition: {
       scope: MODULE_SCOPE.INTERNAL,
     },
   },
+  [Modules.NOTE]: {
+    key: Modules.NOTE,
+    defaultPackage: false,
+    label: upperCaseFirst(Modules.NOTE),
+    isRequired: false,
+    isQueryable: true,
+    dependencies: [ContainerRegistrationKeys.LOGGER],
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+    },
+  },
   [Modules.NOTIFICATION]: {
     key: Modules.NOTIFICATION,
     defaultPackage: false,

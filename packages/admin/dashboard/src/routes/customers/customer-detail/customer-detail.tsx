@@ -12,6 +12,7 @@ import { PermissionsRequirementsProvider } from "../../../providers/permissions-
 import { CustomerAddressSection } from "./components/customer-address-section/customer-address-section"
 import { CustomerGeneralSection } from "./components/customer-general-section"
 import { CustomerGroupSection } from "./components/customer-group-section"
+import { CustomerNotesSection } from "./components/customer-notes-section"
 import { ConfigurableCustomerGroupSection } from "./components/customer-group-section/configurable-customer-group-section"
 import { CustomerOrderSection } from "./components/customer-order-section"
 import { ConfigurableCustomerOrderSection } from "./components/customer-order-section/configurable-customer-order-section"
@@ -71,6 +72,9 @@ export const CustomerDetail = () => {
             <>
               <LayoutComposer.Entry id="CustomerAddressSection">
                 <CustomerAddressSection customer={customer} />
+              </LayoutComposer.Entry>
+              <LayoutComposer.Entry id="CustomerNotesSection">
+                <CustomerNotesSection customer={customer} />
               </LayoutComposer.Entry>
             </>
           ),

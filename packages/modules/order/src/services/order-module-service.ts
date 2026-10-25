@@ -64,6 +64,7 @@ import {
   OrderShippingMethodAdjustment,
   OrderShippingMethodTaxLine,
   OrderSummary,
+  OrderTag,
   OrderTransaction,
   Return,
   ReturnItem,
@@ -114,6 +115,7 @@ type InjectedDependencies = {
   orderClaimService: ModulesSdkTypes.IMedusaInternalService<any>
   orderExchangeService: ModulesSdkTypes.IMedusaInternalService<any>
   orderCreditLineService: ModulesSdkTypes.IMedusaInternalService<any>
+  orderTagService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 const generateMethodForModels = {
@@ -131,6 +133,7 @@ const generateMethodForModels = {
   OrderItem,
   OrderSummary,
   OrderShipping,
+  OrderTag,
   ReturnReason,
   Return,
   ReturnItem,
@@ -206,6 +209,7 @@ export default class OrderModuleService
     OrderItem: { dto: OrderTypes.OrderItemDTO }
     ReturnReason: { dto: OrderTypes.OrderReturnReasonDTO }
     OrderSummary: { dto: OrderTypes.OrderSummaryDTO }
+    OrderTag: { dto: OrderTypes.OrderTagDTO }
     OrderTransaction: { dto: OrderTypes.OrderTransactionDTO }
     Return: { dto: OrderTypes.ReturnDTO }
     ReturnItem: { dto: OrderTypes.OrderReturnItemDTO }
@@ -294,6 +298,9 @@ export default class OrderModuleService
   protected orderCreditLineService_: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof OrderCreditLine>
   >
+  protected orderTagService_: ModulesSdkTypes.IMedusaInternalService<
+    InferEntityType<typeof OrderTag>
+  >
 
   constructor(
     {
@@ -318,6 +325,7 @@ export default class OrderModuleService
       orderClaimService,
       orderExchangeService,
       orderCreditLineService,
+      orderTagService,
     }: InjectedDependencies,
     options?: {
       generateCustomDisplayId?: (
@@ -351,6 +359,7 @@ export default class OrderModuleService
     this.orderClaimService_ = orderClaimService
     this.orderExchangeService_ = orderExchangeService
     this.orderCreditLineService_ = orderCreditLineService
+    this.orderTagService_ = orderTagService
 
     this.generateCustomDisplayId_ =
       options?.generateCustomDisplayId ?? this.generateCustomDisplayId_
@@ -358,6 +367,57 @@ export default class OrderModuleService
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  // @ts-expect-error
+  updateOrderTags(
+    id: string,
+    data: OrderTypes.UpdateOrderTagDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderTagDTO>
+  // @ts-expect-error
+  updateOrderTags(
+    selector: OrderTypes.FilterableOrderTagProps,
+    data: OrderTypes.UpdateOrderTagDTO,
+    sharedContext?: Context
+  ): Promise<OrderTypes.OrderTagDTO[]>
+
+  @InjectManager()
+  @EmitEvents()
+  // @ts-expect-error
+  async updateOrderTags(
+    idOrSelector: string | OrderTypes.FilterableOrderTagProps,
+    data: OrderTypes.UpdateOrderTagDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<OrderTypes.OrderTagDTO[] | OrderTypes.OrderTagDTO> {
+    let normalizedInput: ({ id: string } & OrderTypes.UpdateOrderTagDTO)[] = []
+    if (isString(idOrSelector)) {
+      // Check if the tag exists in the first place
+      await this.orderTagService_.retrieve(idOrSelector, {}, sharedContext)
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const tags = await this.orderTagService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = tags.map((tag) => ({
+        id: tag.id,
+        ...data,
+      }))
+    }
+
+    const tags = await this.orderTagService_.update(
+      normalizedInput,
+      sharedContext
+    )
+
+    const updatedTags = await this.baseRepository_.serialize<
+      OrderTypes.OrderTagDTO[]
+    >(tags)
+
+    return isString(idOrSelector) ? updatedTags[0] : updatedTags
   }
 
   private shouldIncludeTotals(config: FindConfig<any>): boolean {
@@ -797,7 +857,7 @@ export default class OrderModuleService
       if (ord.currency_code) {
         ord.currency_code = normalizeCurrencyCode(ord.currency_code)
       }
-      
+
       ord.custom_display_id = await this.generateCustomDisplayId_.bind(this)(
         data_,
         sharedContext

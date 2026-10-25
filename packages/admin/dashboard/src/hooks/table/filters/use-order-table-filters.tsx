@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next"
 
 import type { Filter } from "../../../components/table/data-table"
+import { useOrderTags } from "../../api/order-tags"
 import { useRegions } from "../../api/regions"
 import { useSalesChannels } from "../../api/sales-channels"
 import { useMemo } from "react"
@@ -19,6 +20,11 @@ export const useOrderTableFilters = (): Filter[] => {
   const { sales_channels } = useSalesChannels({
     limit: 1000,
     fields: "id,name",
+  })
+
+  const { order_tags: tags } = useOrderTags({
+    limit: 1000,
+    fields: "id,value",
   })
 
   return useMemo(() => {
@@ -54,6 +60,22 @@ export const useOrderTableFilters = (): Filter[] => {
       }
 
       filters.push(salesChannelFilter)
+    }
+
+    if (tags) {
+      const tagFilter: Filter = {
+        key: "tag_id",
+        label: t("fields.tags"),
+        type: "select",
+        multiple: true,
+        searchable: true,
+        options: tags.map((tag) => ({
+          label: tag.value,
+          value: tag.id,
+        })),
+      }
+
+      filters.push(tagFilter)
     }
 
     // const paymentStatusFilter: Filter = {
@@ -154,5 +176,5 @@ export const useOrderTableFilters = (): Filter[] => {
     // filters.push(fulfillmentStatusFilter)
 
     return filters
-  }, [regions, sales_channels, t])
+  }, [regions, sales_channels, tags, t])
 }

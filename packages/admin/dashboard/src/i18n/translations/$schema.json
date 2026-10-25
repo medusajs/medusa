@@ -465,6 +465,38 @@
       "required": ["header", "edit"],
       "additionalProperties": false
     },
+    "notes": {
+      "type": "object",
+      "properties": {
+        "header": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "addButtonText": {
+          "type": "string"
+        },
+        "deleteButtonText": {
+          "type": "string"
+        },
+        "loadError": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "header",
+        "label",
+        "placeholder",
+        "addButtonText",
+        "deleteButtonText",
+        "loadError"
+      ],
+      "additionalProperties": false
+    },
     "validation": {
       "type": "object",
       "properties": {
@@ -4736,6 +4768,50 @@
         "onDateFromSalesChannel": {
           "type": "string"
         },
+        "tags": {
+          "type": "object",
+          "properties": {
+            "placeholder": {
+              "type": "string"
+            },
+            "addAction": {
+              "type": "string"
+            },
+            "removeAction": {
+              "type": "string"
+            },
+            "addModalHeader": {
+              "type": "string"
+            },
+            "addModalDescription": {
+              "type": "string"
+            },
+            "removeModalHeader": {
+              "type": "string"
+            },
+            "removeModalDescription": {
+              "type": "string"
+            },
+            "bulkAddSuccess": {
+              "type": "string"
+            },
+            "bulkRemoveSuccess": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "placeholder",
+            "addAction",
+            "removeAction",
+            "addModalHeader",
+            "addModalDescription",
+            "removeModalHeader",
+            "removeModalDescription",
+            "bulkAddSuccess",
+            "bulkRemoveSuccess"
+          ],
+          "additionalProperties": false
+        },
         "list": {
           "type": "object",
           "properties": {
@@ -6600,6 +6676,7 @@
         "cancelWarning",
         "orderCanceled",
         "onDateFromSalesChannel",
+        "tags",
         "list",
         "export",
         "status",
@@ -14693,6 +14770,7 @@
     "general",
     "json",
     "metadata",
+    "notes",
     "validation",
     "actions",
     "operators",

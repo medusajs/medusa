@@ -115,6 +115,9 @@ describe("defineConfig", function () {
           "locking": {
             "resolve": "@medusajs/medusa/locking",
           },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
+          },
           "notification": {
             "options": {
               "providers": [
@@ -470,6 +473,9 @@ describe("defineConfig", function () {
           "locking": {
             "resolve": "@medusajs/medusa/locking",
           },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
+          },
           "notification": {
             "options": {
               "providers": [
@@ -678,6 +684,9 @@ describe("defineConfig", function () {
           },
           "locking": {
             "resolve": "@medusajs/medusa/locking",
+          },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
           },
           "notification": {
             "options": {
@@ -889,6 +898,9 @@ describe("defineConfig", function () {
           "locking": {
             "resolve": "@medusajs/medusa/locking",
           },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
+          },
           "notification": {
             "options": {
               "providers": [
@@ -1088,6 +1100,9 @@ describe("defineConfig", function () {
           },
           "locking": {
             "resolve": "@medusajs/medusa/locking",
+          },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
           },
           "notification": {
             "options": {
@@ -1291,6 +1306,9 @@ describe("defineConfig", function () {
           },
           "locking": {
             "resolve": "@medusajs/medusa/locking",
+          },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
           },
           "notification": {
             "options": {
@@ -1542,6 +1560,9 @@ describe("defineConfig", function () {
             },
             "resolve": "@medusajs/medusa/locking",
           },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
+          },
           "notification": {
             "options": {
               "providers": [
@@ -1761,6 +1782,9 @@ describe("defineConfig", function () {
           },
           "locking": {
             "resolve": "@medusajs/medusa/locking",
+          },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
           },
           "notification": {
             "options": {
@@ -2013,6 +2037,9 @@ describe("defineConfig", function () {
               ],
             },
             "resolve": "@medusajs/medusa/locking",
+          },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
           },
           "notification": {
             "options": {
@@ -2286,6 +2313,9 @@ describe("defineConfig", function () {
               ],
             },
             "resolve": "@medusajs/medusa/locking",
+          },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
           },
           "notification": {
             "options": {
@@ -2595,6 +2625,9 @@ describe("defineConfig", function () {
           "locking": {
             "resolve": "@medusajs/medusa/locking",
           },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
+          },
           "notification": {
             "options": {
               "providers": [
@@ -2821,6 +2854,9 @@ describe("defineConfig", function () {
           },
           "locking": {
             "resolve": "@medusajs/medusa/locking",
+          },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
           },
           "notification": {
             "options": {
@@ -3081,6 +3117,9 @@ describe("defineConfig", function () {
           },
           "locking": {
             "resolve": "@medusajs/medusa/locking",
+          },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
           },
           "notification": {
             "options": {
@@ -3344,6 +3383,9 @@ describe("defineConfig", function () {
           },
           "locking": {
             "resolve": "@medusajs/medusa/locking",
+          },
+          "note": {
+            "resolve": "@medusajs/medusa/note",
           },
           "notification": {
             "options": {

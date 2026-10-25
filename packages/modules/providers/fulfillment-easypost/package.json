@@ -1,0 +1,35 @@
+{
+  "name": "@dtc/fulfillment-easypost",
+  "version": "0.1.0",
+  "description": "EasyPost fulfillment provider for Medusa",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
+  ],
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build ./tsconfig.json",
+    "watch": "yarn run -T tsc --watch"
+  },
+  "devDependencies": {
+    "@medusajs/framework": "2.21.2"
+  },
+  "peerDependencies": {
+    "@medusajs/framework": "2.21.2"
+  },
+  "dependencies": {
+    "@easypost/api": "^8.9.0"
+  },
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-fulfillment"
+  ]
+}
