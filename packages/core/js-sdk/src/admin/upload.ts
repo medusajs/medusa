@@ -52,7 +52,7 @@ export class Upload {
     headers?: ClientHeaders
   ) {
     const form = new FormData()
-    if (body instanceof FileList) {
+    if (typeof FileList !== "undefined" && body instanceof FileList) {
       Array.from(body).forEach((file) => {
         form.append("files", file)
       })
