@@ -61,11 +61,17 @@ jobs:
 
       - name: Determine release version and tag
         id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
           git fetch --tags
 
-          if [ -n "${{ inputs.version }}" ]; then
-            VERSION="${{ inputs.version }}"
+          if [ -n "$INPUT_VERSION" ]; then
+            if ! [[ "$INPUT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "::error::version must look like 2.14.0" >&2
+              exit 1
+            fi
+            VERSION="$INPUT_VERSION"
           else
             # Auto-detect: use the latest stable tag
             VERSION=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | sed 's/^v//')
