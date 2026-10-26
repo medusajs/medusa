@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   ApplicationMethodAllocationValues,
+  ApplicationMethodTargetSelectionStrategyValues,
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
   PromotionRuleOperatorValues,
@@ -63,6 +64,8 @@ const defaultValues = {
     type: "fixed" as ApplicationMethodTypeValues,
     target_type: "items" as ApplicationMethodTargetTypeValues,
     max_quantity: 1,
+    target_selection_strategy:
+      "most_expensive_first" as ApplicationMethodTargetSelectionStrategyValues,
     target_rules: [],
     buy_rules: [],
   },
@@ -104,6 +107,7 @@ export const CreatePromotionForm = () => {
       const {
         target_rules: targetRulesData = [],
         buy_rules: buyRulesData = [],
+        target_selection_strategy,
         ...applicationMethodData
       } = application_method
 
@@ -156,6 +160,9 @@ export const CreatePromotionForm = () => {
             value: parseFloat(applicationMethodData.value as string) as number,
             target_rules: buildRulesData(targetRulesData),
             buy_rules: buildRulesData(buyRulesData),
+            ...(promotionData.type === "buyget" && {
+              target_selection_strategy,
+            }),
           },
           is_tax_inclusive,
           is_automatic: is_automatic === "true",
@@ -883,6 +890,56 @@ export const CreatePromotionForm = () => {
                         }}
                       />
                     </>
+                  )}
+
+                  {isTypeBuyGet && (
+                    <Form.Field
+                      control={form.control}
+                      name="application_method.target_selection_strategy"
+                      render={({ field }) => {
+                        return (
+                          <Form.Item>
+                            <Form.Label
+                              tooltip={t(
+                                "promotions.fields.targetSelectionStrategyTooltip"
+                              )}
+                            >
+                              {t("promotions.fields.targetSelectionStrategy")}
+                            </Form.Label>
+                            <Form.Control>
+                              <RadioGroup
+                                dir={direction}
+                                className="flex gap-y-3"
+                                {...field}
+                                onValueChange={field.onChange}
+                              >
+                                <RadioGroup.ChoiceBox
+                                  value={"most_expensive_first"}
+                                  label={t(
+                                    "promotions.form.target_selection_strategy.most_expensive_first.title"
+                                  )}
+                                  description={t(
+                                    "promotions.form.target_selection_strategy.most_expensive_first.description"
+                                  )}
+                                  className={clx("basis-1/2")}
+                                />
+                                <RadioGroup.ChoiceBox
+                                  value={"cheapest_first"}
+                                  label={t(
+                                    "promotions.form.target_selection_strategy.cheapest_first.title"
+                                  )}
+                                  description={t(
+                                    "promotions.form.target_selection_strategy.cheapest_first.description"
+                                  )}
+                                  className={clx("basis-1/2")}
+                                />
+                              </RadioGroup>
+                            </Form.Control>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
                   )}
 
                   {isTypeStandard &&

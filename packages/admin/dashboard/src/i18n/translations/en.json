@@ -2255,6 +2255,8 @@
       "method": "Method",
       "allocation": "Allocation",
       "allocationTooltip": "Each enforces the quantity limit per item, while Once enforces the quantity limit across the entire cart",
+      "targetSelectionStrategy": "Discounted items",
+      "targetSelectionStrategyTooltip": "Which eligible items in the cart receive the discount",
       "addCondition": "Add condition",
       "clearAll": "Clear all",
       "taxInclusive": "Tax Inclusive",
@@ -2402,6 +2404,16 @@
         "once": {
           "title": "Once",
           "description": "Applies value to a limited number of items"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Most expensive first",
+          "description": "Default. The most expensive items pay, and the most expensive one left is discounted"
+        },
+        "cheapest_first": {
+          "title": "Cheapest first",
+          "description": "Always discounts the cheapest eligible items in the cart"
         }
       },
       "code": {

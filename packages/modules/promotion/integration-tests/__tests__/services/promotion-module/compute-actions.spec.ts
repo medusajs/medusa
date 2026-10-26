@@ -97,9 +97,7 @@ moduleIntegrationTestRunner({
               (acc, a) =>
                 MathBN.add(
                   acc,
-                  a.is_tax_inclusive
-                    ? MathBN.div(a.amount, taxRatio)
-                    : a.amount
+                  a.is_tax_inclusive ? MathBN.div(a.amount, taxRatio) : a.amount
                 ),
               MathBN.convert(0)
             )
@@ -5902,7 +5900,7 @@ moduleIntegrationTestRunner({
       })
 
       describe("when promotion of type buyget", () => {
-        describe("when buyget_selection is cheapest_eligible_first", () => {
+        describe("when target_selection_strategy is cheapest_first", () => {
           const eligibleProduct = "prod_eligible"
           const otherProduct = "prod_other"
 
@@ -5921,7 +5919,6 @@ moduleIntegrationTestRunner({
             return createDefaultPromotion(service, {
               code: "CHEAPEST_4_FOR_3",
               type: PromotionType.BUYGET,
-              metadata: { buyget_selection: "cheapest_eligible_first" },
               ...promotion,
               application_method: {
                 type: "percentage",
@@ -5933,6 +5930,7 @@ moduleIntegrationTestRunner({
                 buy_rules_min_quantity: 3,
                 buy_rules: eligibleRules,
                 target_rules: eligibleRules,
+                target_selection_strategy: "cheapest_first",
                 ...application_method,
               } as any,
             })
@@ -6007,8 +6005,10 @@ moduleIntegrationTestRunner({
             ])
           })
 
-          it("should keep the default selection when the option is not set", async () => {
-            await createBuyThreeGetOne({ metadata: {} })
+          it("should keep the default selection when the strategy is not set", async () => {
+            await createBuyThreeGetOne({
+              application_method: { target_selection_strategy: undefined },
+            })
 
             const result = await computeAdjustments(
               ["CHEAPEST_4_FOR_3"],
@@ -6019,6 +6019,44 @@ moduleIntegrationTestRunner({
               adjustment("item_100", 100),
               adjustment("item_500", 500),
             ])
+          })
+
+          it("should keep the default selection when the strategy is most_expensive_first", async () => {
+            await createBuyThreeGetOne({
+              application_method: {
+                target_selection_strategy: "most_expensive_first",
+              },
+            })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits(prices)
+            )
+
+            expect(result).toEqual([
+              adjustment("item_100", 100),
+              adjustment("item_500", 500),
+            ])
+          })
+
+          it("should not allow cheapest_first on a standard promotion", async () => {
+            const error = await createDefaultPromotion(service, {
+              code: "STANDARD_CHEAPEST_FIRST",
+              type: PromotionType.STANDARD,
+              application_method: {
+                type: "percentage",
+                target_type: "items",
+                value: 10,
+                allocation: "each",
+                max_quantity: 1,
+                target_rules: eligibleRules,
+                target_selection_strategy: "cheapest_first",
+              } as any,
+            }).catch((e) => e)
+
+            expect(error.message).toContain(
+              "application_method.target_selection_strategy 'cheapest_first' is only allowed for Promotion type of buyget"
+            )
           })
 
           it("should discount the cheaper line when lines hold several units", async () => {
@@ -8191,9 +8229,7 @@ moduleIntegrationTestRunner({
                 context
               )
 
-              const targetItemId = `item_${productOrder.indexOf(
-                targetProduct
-              )}`
+              const targetItemId = `item_${productOrder.indexOf(targetProduct)}`
 
               expect(JSON.parse(JSON.stringify(result))).toEqual([
                 {

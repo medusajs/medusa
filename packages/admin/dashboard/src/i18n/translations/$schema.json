@@ -8714,6 +8714,12 @@
             "allocationTooltip": {
               "type": "string"
             },
+            "targetSelectionStrategy": {
+              "type": "string"
+            },
+            "targetSelectionStrategyTooltip": {
+              "type": "string"
+            },
             "addCondition": {
               "type": "string"
             },
@@ -8827,6 +8833,8 @@
             "method",
             "allocation",
             "allocationTooltip",
+            "targetSelectionStrategy",
+            "targetSelectionStrategyTooltip",
             "addCondition",
             "clearAll",
             "taxInclusive",
@@ -9220,6 +9228,39 @@
               "required": ["each", "across", "once"],
               "additionalProperties": false
             },
+            "target_selection_strategy": {
+              "type": "object",
+              "properties": {
+                "most_expensive_first": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["title", "description"],
+                  "additionalProperties": false
+                },
+                "cheapest_first": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["title", "description"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["most_expensive_first", "cheapest_first"],
+              "additionalProperties": false
+            },
             "code": {
               "type": "object",
               "properties": {
@@ -9304,6 +9345,7 @@
             "max_quantity",
             "type",
             "allocation",
+            "target_selection_strategy",
             "code",
             "value",
             "value_type",

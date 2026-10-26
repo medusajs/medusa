@@ -24,7 +24,8 @@ const ApplicationMethod = model
         .nullable(),
       target_selection_strategy: model
         .enum(PromotionUtils.ApplicationMethodTargetSelectionStrategy)
-        .default(PromotionUtils.ApplicationMethodTargetSelectionStrategy
+        .default(
+          PromotionUtils.ApplicationMethodTargetSelectionStrategy
             .MOST_EXPENSIVE_FIRST
         ),
       promotion: model.belongsTo(() => Promotion, {

@@ -5,6 +5,7 @@ import {
   PromotionTypes,
 } from "@medusajs/framework/types"
 import {
+  ApplicationMethodTargetSelectionStrategy,
   ApplicationMethodTargetType,
   ApplicationMethodType,
   ComputedActions,
@@ -509,20 +510,18 @@ function filterItemsByPromotionRules(
 }
 
 /*
-  Opt-in selection strategy, enabled with
-  `promotion.metadata.buyget_selection = "cheapest_eligible_first"`.
+  Opt-in target selection strategy, enabled with
+  `application_method.target_selection_strategy = "cheapest_first"`.
 
-  By default each application round pays with the most expensive eligible
-  units and discounts the most expensive target left over. With this option
-  the target is the cheapest one left over instead, so across the cart the
-  cheapest eligible units are the ones discounted. For "buy 3, get 1 free" with
+  By default (`most_expensive_first`) each application round pays with the
+  most expensive eligible units and discounts the most expensive target left
+  over. With this option the target is the cheapest one left over instead, so
+  across the cart the cheapest eligible units are the ones discounted. For "buy 3, get 1 free" with
   eight units priced 100 to 800, the 100 and 200 units are discounted.
 
   Both sides are ranked by unit price: three units at 199 have a higher line
   subtotal than one unit at 379, but they are still the cheaper units.
 */
-const BUYGET_SELECTION_CHEAPEST_ELIGIBLE_FIRST = "cheapest_eligible_first"
-
 function compareUnitPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
   const aUnitPrice = getUnitPrice(a)
   const bUnitPrice = getUnitPrice(b)
@@ -579,15 +578,15 @@ export function getComputedActionsForBuyGet(
   // Buy items are reserved in the order given (after the items that can't be
   // targets) and targets are picked in the order given, so ordering the two
   // lists is all the option needs.
-  const cheapestEligibleFirst =
-    promotion.metadata?.buyget_selection ===
-    BUYGET_SELECTION_CHEAPEST_ELIGIBLE_FIRST
+  const cheapestFirst =
+    promotion.application_method?.target_selection_strategy ===
+    ApplicationMethodTargetSelectionStrategy.CHEAPEST_FIRST
 
-  const buyItemsInSelectionOrder = cheapestEligibleFirst
+  const buyItemsInSelectionOrder = cheapestFirst
     ? [...eligibleBuyItems].sort((a, b) => compareUnitPrice(b, a))
     : eligibleBuyItems
 
-  const targetItemsInSelectionOrder = cheapestEligibleFirst
+  const targetItemsInSelectionOrder = cheapestFirst
     ? [...eligibleTargetItems].sort(compareUnitPrice)
     : eligibleTargetItems
 
