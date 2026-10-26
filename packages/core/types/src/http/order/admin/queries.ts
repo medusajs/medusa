@@ -16,6 +16,14 @@ export interface AdminOrderFilters extends FindParams, BaseOrderFilters {
    */
   tag_id?: string[]
   /**
+   * Filter by fulfillment status(es) to retrieve their associated orders.
+   */
+  fulfillment_status?: string[] | string
+  /**
+   * Filter by payment status(es) to retrieve their associated orders.
+   */
+  payment_status?: string[] | string
+  /**
    * Filter by region IDs to retrieve their associated orders.
    */
   region_id?: string[] | string
