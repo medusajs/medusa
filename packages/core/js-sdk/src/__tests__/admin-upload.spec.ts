@@ -1,4 +1,3 @@
-import { File } from "buffer"
 import { Client } from "../client"
 import { Upload } from "../admin/upload"
 
