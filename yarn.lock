@@ -3437,7 +3437,7 @@ __metadata:
     "@medusajs/framework": 2.22.1
     csv-parse: ^7.0.2
     deeks: ^3.2.1
-    json-2-csv: ^5.5.11
+    json-2-csv: ^5.6.0
   peerDependencies:
     "@medusajs/framework": 2.22.1
   languageName: unknown
@@ -16496,7 +16496,7 @@ __metadata:
     "@swc/jest": ^0.2.36
     form-data: ^4.0.4
     jest: ^29.7.0
-    json-2-csv: ^5.5.11
+    json-2-csv: ^5.6.0
     jsonwebtoken: ^9.0.2
     pg: ^8.11.3
     typescript: ^5.6.2
@@ -17936,13 +17936,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-2-csv@npm:^5.5.11":
-  version: 5.5.11
-  resolution: "json-2-csv@npm:5.5.11"
+"json-2-csv@npm:^5.6.0":
+  version: 5.6.0
+  resolution: "json-2-csv@npm:5.6.0"
   dependencies:
     deeks: 3.2.1
     doc-path: 4.1.4
-  checksum: d83a3494f791e5018778d3ce05f4bd20a190f40ea217ebf19e66e22be373fd56890b3100369549ac9814dee1bc9b431a0971f136434dc5468e2355d9fb324818
+  checksum: 4205d7e12f902ced3f3c23ee5f996537f83069feaedea217364419a02e161d6e7e01b18778e721e5c330552050d41227ff7b32960f79b00cfae320a9223605c2
   languageName: node
   linkType: hard
 
