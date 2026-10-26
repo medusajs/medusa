@@ -3,26 +3,16 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
-import {
-  AdminCloudAnnouncementListResponse,
-  CloudPluginOptions,
-} from "../../../../types"
+import { AdminCloudAnnouncementListResponse } from "../../../../types"
 import { fetchAnnouncements } from "../../../../utils/fetch-announcements"
-
-const PLUGIN_NAME = "@medusajs/cloud"
+import { getPluginOptions } from "../../../../utils/get-plugin-options"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<AdminCloudAnnouncementListResponse>
 ) => {
-  const { plugins } = req.scope.resolve(ContainerRegistrationKeys.CONFIG_MODULE)
-  const plugin = plugins.find(
-    (p) => typeof p !== "string" && p.resolve === PLUGIN_NAME
-  ) as { options?: CloudPluginOptions } | undefined
-  const options = plugin?.options ?? {}
-
   try {
-    const announcements = await fetchAnnouncements(options)
+    const announcements = await fetchAnnouncements(getPluginOptions(req.scope))
     res.json({ announcements })
   } catch (error) {
     req.scope

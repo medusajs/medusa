@@ -3,6 +3,7 @@ import {
   clearAnnouncementsCache,
   DEFAULT_CLOUD_API_URL,
   fetchAnnouncements,
+  fetchHints,
 } from "../fetch-announcements"
 
 const rawAnnouncement = {
@@ -42,9 +43,19 @@ describe("fetchAnnouncements", () => {
     const announcements = await fetchAnnouncements()
 
     const [url, init] = fetchMock.mock.calls[0]
-    expect(url.toString()).toEqual(
-      `${DEFAULT_CLOUD_API_URL}/v1/announcements?limit=10&offset=0&order=-published_at`
+    expect(url.origin + url.pathname).toEqual(
+      `${DEFAULT_CLOUD_API_URL}/v1/announcements`
     )
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      limit: "10",
+      offset: "0",
+      order: "-published_at",
+      "type[0]": "info",
+      "type[1]": "feature",
+      "type[2]": "warning",
+      "type[3]": "incident",
+      "type[4]": "release",
+    })
     expect(init.headers).not.toHaveProperty("x-medusa-organization")
     expect(announcements).toEqual([
       {
@@ -114,5 +125,81 @@ describe("fetchAnnouncements", () => {
     await expect(fetchAnnouncements()).rejects.toThrow(
       "Medusa Cloud announcements request failed with status 500"
     )
+  })
+})
+
+describe("fetchHints", () => {
+  let fetchMock: jest.Mock
+
+  beforeEach(() => {
+    clearAnnouncementsCache()
+    fetchMock = jest.fn()
+    global.fetch = fetchMock
+  })
+
+  it("should request only hints and map them for the admin", async () => {
+    fetchMock.mockResolvedValue(
+      mockResponse({
+        announcements: [
+          {
+            id: "anno_hint",
+            title: "Ask AI about your orders",
+            subtitle: "Connect your AI tool to the Medusa MCP",
+            type: "hint",
+            admin_path: "/orders",
+            link_url: "https://docs.medusajs.com/cloud/medusa-mcp",
+          },
+        ],
+      })
+    )
+
+    const hints = await fetchHints()
+
+    const [url] = fetchMock.mock.calls[0]
+    expect(url.searchParams.get("type[0]")).toEqual("hint")
+    expect(url.searchParams.get("type[1]")).toBeNull()
+    expect(hints).toEqual([
+      {
+        id: "anno_hint",
+        title: "Ask AI about your orders",
+        description: "Connect your AI tool to the Medusa MCP",
+        link_url: "https://docs.medusajs.com/cloud/medusa-mcp",
+        admin_path: "/orders",
+      },
+    ])
+  })
+
+  it("should drop hints without a valid admin path", async () => {
+    fetchMock.mockResolvedValue(
+      mockResponse({
+        announcements: [
+          { id: "anno_1", title: "No path", type: "hint" },
+          {
+            id: "anno_2",
+            title: "Absolute URL",
+            type: "hint",
+            admin_path: "https://example.com/orders",
+          },
+          {
+            id: "anno_3",
+            title: "Not a hint",
+            type: "feature",
+            admin_path: "/orders",
+          },
+        ],
+      })
+    )
+
+    expect(await fetchHints()).toEqual([])
+  })
+
+  it("should cache hints separately from announcements", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ announcements: [] }))
+
+    await fetchAnnouncements()
+    await fetchHints()
+    await fetchHints()
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
   })
 })

@@ -19,7 +19,7 @@ Adds Medusa Cloud features, such as in-app announcements, to the Medusa Admin of
 
 The plugin is added automatically to projects running on [Medusa Cloud](https://docs.medusajs.com/cloud). You don't need to install or configure it.
 
-It adds a "What's new" button to the Medusa Admin topbar that lists the latest Medusa Cloud announcements, and shows a toast when a new announcement is published.
+It adds a "What's new" button to the Medusa Admin topbar that lists the latest Medusa Cloud announcements, and shows a toast when a new announcement is published. On some pages, such as Orders, it also shows a one-time toast with a hint from Medusa Cloud, such as what you can ask an AI tool connected to the [Medusa MCP server](https://docs.medusajs.com/cloud/medusa-mcp).
 
 ## Options
 

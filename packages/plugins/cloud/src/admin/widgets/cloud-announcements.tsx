@@ -4,10 +4,12 @@ import { Badge, Drawer, Heading, IconButton, Text, toast } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { CloudAnnouncement } from "../../types"
 import { useCloudAnnouncements } from "../hooks/announcements"
+import { useCloudHints } from "../hooks/hints"
 import {
   getLastSeenAt,
   getLastToastedId,
   setLastSeenAt,
+  setLastToastAt,
   setLastToastedId,
 } from "../lib/storage"
 
@@ -26,6 +28,7 @@ const formatDate = (value: string | null) =>
     : null
 
 const CloudAnnouncementsWidget = () => {
+  useCloudHints()
   const { announcements } = useCloudAnnouncements()
   const [open, setOpen] = useState(false)
   // Lags behind storage until the drawer closes, so items opened as unread stay marked while viewed.
@@ -48,6 +51,7 @@ const CloudAnnouncementsWidget = () => {
     }
 
     setLastToastedId(latest.id)
+    setLastToastAt(Date.now())
     toast.info(latest.title, {
       description: latest.subtitle ?? undefined,
       duration: 10000,

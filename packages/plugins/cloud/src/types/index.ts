@@ -30,3 +30,18 @@ export type CloudAnnouncement = {
 export type AdminCloudAnnouncementListResponse = {
   announcements: CloudAnnouncement[]
 }
+
+export type CloudHint = {
+  id: string
+  title: string
+  description: string | null
+  link_url: string | null
+  /**
+   * The Medusa Admin path the hint is shown on, such as `/orders`.
+   */
+  admin_path: string
+}
+
+export type AdminCloudHintListResponse = {
+  hints: CloudHint[]
+}
