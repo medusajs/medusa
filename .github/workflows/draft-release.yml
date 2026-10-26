@@ -42,7 +42,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write
     outputs:
       release_url: ${{ steps.release.outputs.url }}
 
@@ -51,6 +50,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Generate GitHub App token
         id: app-token
@@ -283,12 +283,13 @@ jobs:
       - name: Build Claude prompt
         id: prompt
         if: steps.existing.outputs.mode != 'unchanged'
+        env:
+          ADDITIONAL_INSTRUCTIONS: ${{ inputs.additional_instructions }}
         run: |
           TAG="${{ steps.version.outputs.tag }}"
           PREVIOUS_TAG="${{ steps.previous.outputs.tag }}"
           REPO="${{ github.repository }}"
           MINOR_CHANGESETS="${{ steps.changesets.outputs.minor_changesets }}"
-          ADDITIONAL_INSTRUCTIONS="${{ inputs.additional_instructions }}"
           if [ "${{ steps.existing.outputs.mode }}" = "update" ]; then
             COMMITS=$(jq --rawfile shas /tmp/new-shas.txt '[.[] | select(.hash as $h | $shas | contains($h))]' /tmp/commits.json)
             TASK="Release notes for this release were already drafted, and maintainers may have edited them since. Read them from /tmp/existing-notes.md. Update them for Medusa ${TAG} using the commits below, which were merged after the notes were written: add, change, or remove entries as those commits require, and update the tag and highlights in the title block if needed. Keep all other existing content, including manual edits, exactly as it is. Follow every rule in those files for anything you add or change."
@@ -366,6 +367,22 @@ jobs:
         uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          # `_temp` holds the runner's GITHUB_ENV/GITHUB_PATH files, which would let the model set env vars for later steps.
+          settings: |
+            {
+              "permissions": {
+                "deny": [
+                  "Read(//proc/**)",
+                  "Read(//home/runner/work/_temp/**)",
+                  "Write(//home/runner/work/_temp/**)",
+                  "Edit(//home/runner/work/_temp/**)",
+                  "Write(//**/.claude/**)",
+                  "Edit(//**/.claude/**)",
+                  "Write(//**/.mcp.json)",
+                  "Edit(//**/.mcp.json)"
+                ]
+              }
+            }
           claude_args: >-
             --model claude-sonnet-4-6
             --max-turns 25
