@@ -577,10 +577,25 @@ export interface ICachingProviderService {
     options?: {
       /**
        * Whether to clear item(s) that were set to automatically invalidate.
-       */ 
+       */
       autoInvalidate?: boolean
     }
   }): Promise<void>
+  /**
+   * This method is called when the application shuts down. Use it to release resources
+   * held by the provider, such as closing connections or clearing timers.
+   *
+   * @returns A promise that resolves when the provider has been shut down.
+   *
+   * @example
+   * class MyCachingModuleProvider implements ICachingProviderService {
+   *   // ...
+   *   async shutdown(): Promise<void> {
+   *     await this.client.close()
+   *   }
+   * }
+   */
+  shutdown?(): Promise<void>
 }
 
 /**

@@ -109,6 +109,7 @@ export default class CachingModuleService implements ICachingModuleService {
 
   protected async onApplicationShutdown() {
     await this.strategy.onApplicationShutdown?.()
+    await this.providerService.shutdown()
   }
 
   protected async onApplicationPrepareShutdown() {
