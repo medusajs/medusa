@@ -726,7 +726,6 @@ moduleIntegrationTestRunner({
                 {
                   id: createdPromotion.id,
                   application_method: {
-                    id: createdPromotion.application_method?.id as string,
                     allocation: allocation as any,
                   },
                 },
