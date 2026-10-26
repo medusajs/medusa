@@ -4411,7 +4411,7 @@ __metadata:
     dotenv: ^16.4.5
     dotenv-expand: ^11.0.6
     express: ^4.21.0
-    graphql: ^16.9.0
+    graphql: ^16.14.2
     jsonwebtoken: ^9.0.2
     pg-connection-string: ^2.7.0
     pluralize: ^8.0.0
@@ -15928,17 +15928,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^16.13.2":
+"graphql@npm:^16.13.2, graphql@npm:^16.14.2":
   version: 16.14.2
   resolution: "graphql@npm:16.14.2"
   checksum: a95a96961eaff55cc9fe9d31fae6f33499ac988b972d07ea5085024cb1333f515b902f376e7393a5489aa82200a8aff3eb96580e4d1b69d702ed19b6eb1ce97a
-  languageName: node
-  linkType: hard
-
-"graphql@npm:^16.9.0":
-  version: 16.12.0
-  resolution: "graphql@npm:16.12.0"
-  checksum: b6fffa4e8a4e4a9933ebe85e7470b346dbf49050c1a482fac5e03e4a1a7bed2ecd3a4c97e29f04457af929464bc5e4f2aac991090c2f320111eef26e902a5c75
   languageName: node
   linkType: hard
 
