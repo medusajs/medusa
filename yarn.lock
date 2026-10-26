@@ -3503,7 +3503,7 @@ __metadata:
     match-sorter: ^6.3.4
     motion: ^11.15.0
     qrcode: ^1.5.4
-    qs: ^6.15.2
+    qs: ^6.16.0
     radix-ui: 1.1.2
     react: ^18.3.1
     react-country-flag: ^3.1.0
@@ -3799,7 +3799,7 @@ __metadata:
   dependencies:
     "@medusajs/types": 2.22.1
     fetch-event-stream: ^0.1.5
-    qs: ^6.15.2
+    qs: ^6.16.0
   languageName: unknown
   linkType: soft
 
@@ -3992,7 +3992,7 @@ __metadata:
     jsonwebtoken: ^9.0.2
     multer: ^2.5.0
     node-schedule: ^2.1.1
-    qs: ^6.15.2
+    qs: ^6.16.0
     request-ip: ^3.3.0
     slugify: ^1.6.6
     uuid: ^11.1.1
@@ -21104,7 +21104,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.11.0, qs@npm:^6.15.2":
+"qs@npm:^6.11.0":
   version: 6.15.3
   resolution: "qs@npm:6.15.3"
   dependencies:
@@ -21121,6 +21121,16 @@ __metadata:
     es-define-property: ^1.0.1
     side-channel: ^1.1.1
   checksum: 84ee9124b251ab2953132fbea1d70c966aa6e6496cccabedbbb83afa412bf4177bddebc779ca3ddafe23da83b2f593d530b41be6a726e971404fabb20ff22c94
+  languageName: node
+  linkType: hard
+
+"qs@npm:^6.16.0":
+  version: 6.16.0
+  resolution: "qs@npm:6.16.0"
+  dependencies:
+    es-define-property: ^1.0.1
+    side-channel: ^1.1.1
+  checksum: eb3e31992fbd70e31a1791e571ed817d70975de7d3bfcbbbec93d77d1dd305877e9e8fdbcc62303c228ee5c3606685622cd6231c042dbc4790bb4e7c65fcbe18
   languageName: node
   linkType: hard
 
