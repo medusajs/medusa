@@ -568,6 +568,21 @@ jobs:
           bash scripts/add_comment.sh --workflow fix --template fix-escalated --params-file "$RUNNER_TEMP/params.json"
           bash scripts/labels.sh --workflow fix --action add --label requires-team
 
+      - name: Create Linear ticket
+        if: steps.decide.outputs.reason != '' && steps.decide.outputs.kind == 'github'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ISSUE: ${{ inputs.issue }}
+          REASON: ${{ steps.decide.outputs.reason }}
+          ISSUE_URL: ${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          printf '## Problem\n\nThe automated fix workflow could not open a PR for this issue.\n\n%s\n\nGitHub issue: %s\n\nWorkflow run: %s\n' \
+            "$REASON" "$ISSUE_URL" "$RUN_URL" > "$RUNNER_TEMP/linear-description.md"
+          bash scripts/escalate_to_linear.sh --issue "$ISSUE" --description-file "$RUNNER_TEMP/linear-description.md"
+
       - name: Escalate Linear ticket
         if: steps.decide.outputs.reason != '' && steps.decide.outputs.kind == 'linear'
         env:

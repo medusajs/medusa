@@ -4,7 +4,8 @@
 
 - **Root cause, not symptom.** Change the line(s) identified in validation. A null-guard that hides wrong data is not a fix.
 - **Minimal diff.** No refactors, renames, reformatting, or unrelated cleanups. Match the surrounding code style.
-- **Keep public API stable.** If the fix requires a change to an exported type, method, or emitted event, stop and emit `needs-team` explaining the trade-off; don't ship it.
+- **No breaking public API changes.** If the fix requires removing or renaming an exported type member, method, or emitted event, changing a signature, or making an optional member required, stop and emit `needs-team` explaining the trade-off; don't ship it.
+- **Update the shared type, not a local one.** When the fix needs a member that an interface or type in `packages/core/types` doesn't declare (e.g. a provider method like `ICachingProviderService.shutdown`), add it there as an optional member with TSDoc. Never work around it with a local type, intersection (`IFoo & { bar?: ... }`), `as any`, or cast: external providers and other packages implement and consume that interface, so they need the declaration too. Adding an optional member is not a breaking change.
 - **No new comments** unless the fixed line would look deletable or wrong to a reader without one (max 3 lines).
 - **Related bugs found nearby:** don't fix them; list them in `pr-body.md` under Additional Context.
 

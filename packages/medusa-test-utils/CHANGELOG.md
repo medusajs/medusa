@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17461](https://github.com/medusajs/medusa/pull/17461) [`bb1cece185d747fcac1e9bd15d99e1189b0d9973`](https://github.com/medusajs/medusa/commit/bb1cece185d747fcac1e9bd15d99e1189b0d9973) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(test-utils): read database credentials when connecting instead of at import
+
+- Updated dependencies [[`ea2d48190febf36389aa66242247c180f9f48212`](https://github.com/medusajs/medusa/commit/ea2d48190febf36389aa66242247c180f9f48212), [`67aa48d6b1bbac622d261808b4351521fad8cf42`](https://github.com/medusajs/medusa/commit/67aa48d6b1bbac622d261808b4351521fad8cf42), [`5aebc3e4a163c0e401d8794b2e961021eea5aea0`](https://github.com/medusajs/medusa/commit/5aebc3e4a163c0e401d8794b2e961021eea5aea0), [`7ce874c0ce4df5d9942130a28067ced8b23b126d`](https://github.com/medusajs/medusa/commit/7ce874c0ce4df5d9942130a28067ced8b23b126d), [`52f4c751d2277ab704c1a184c7971a6684e11a74`](https://github.com/medusajs/medusa/commit/52f4c751d2277ab704c1a184c7971a6684e11a74), [`a0b1fffe7082ee326f16f50a1e2bfc978032a2bf`](https://github.com/medusajs/medusa/commit/a0b1fffe7082ee326f16f50a1e2bfc978032a2bf), [`4e723121b0f9e3792b61306af5cbf2ebd9e84d20`](https://github.com/medusajs/medusa/commit/4e723121b0f9e3792b61306af5cbf2ebd9e84d20), [`347a34dc5a193ac2117cbbda6956c3932f40e693`](https://github.com/medusajs/medusa/commit/347a34dc5a193ac2117cbbda6956c3932f40e693), [`c959d5e3e7d4b482d0784eef67ef8ef766442d5e`](https://github.com/medusajs/medusa/commit/c959d5e3e7d4b482d0784eef67ef8ef766442d5e), [`7c3b0339379efeda7863f48b9f60e3391cece091`](https://github.com/medusajs/medusa/commit/7c3b0339379efeda7863f48b9f60e3391cece091), [`4a75f02fbadb204f390bd5989dd0302f8a3f6774`](https://github.com/medusajs/medusa/commit/4a75f02fbadb204f390bd5989dd0302f8a3f6774), [`e07eb2b001fa52621e3176efb36fdf53863d4a80`](https://github.com/medusajs/medusa/commit/e07eb2b001fa52621e3176efb36fdf53863d4a80)]:
+  - @medusajs/medusa@2.22.1
+  - @medusajs/core-flows@2.22.1
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

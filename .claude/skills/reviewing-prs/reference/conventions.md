@@ -53,6 +53,7 @@ Conventions to verify when reviewing code contributions. Focus on areas relevant
 - **Mutations**: Must go through workflows (`createWorkflow` / `createStep`). API routes must not call module services directly for writes.
 - **Errors**: Use `new MedusaError(MedusaError.Types.NOT_FOUND, "...")` — never raw `throw new Error(...)`.
 - **Barrel exports**: Use `export * from` for module re-exports.
+- **Shared types over local ones**: If code needs a member that a type in `packages/core/types` doesn't declare (e.g. a new optional provider method), the PR must add it to that type. Flag local types, intersections (`IFoo & { bar?: ... }`), `as any`, or casts that patch around a shared interface: external providers and other packages implement and consume it.
 - **Step compensation**: `createStep` should include a compensation function when the step has side effects that can be rolled back.
 
 ## Testing
@@ -123,5 +124,6 @@ Each such comment is a **required change**: emit
 
 ## Common Mistakes
 
+- [ ] Not flagging a local type, intersection, or cast that patches an interface from `packages/core/types` instead of updating it
 - [ ] Missing a code comment that references an issue/PR number (Step 9b) — those must be flagged as a required change
 - [ ] Flagging an issue/PR reference that lives in the PR body, commit message, or a changelog file rather than a code comment

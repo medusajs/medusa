@@ -6501,9 +6501,21 @@ In this example, Medusa reports the values of the `q`, `limit`, and `offset` que
 To report the full query string without redaction, set `allowedQueryParams` to `"*"`:
 
 ```ts title="instrumentation.ts"
-http: {
-  allowedQueryParams: "*",
-},
+export function register() {
+  registerOtel({
+    serviceName: "medusajs",
+    exporter,
+    instrument: {
+      http: {
+        allowedQueryParams: "*",
+      },
+      workflows: true,
+      query: true,
+      db: true,
+      cache: true,
+    },
+  })
+}
 ```
 
 Query parameters can hold personal data or secrets, such as search terms, email addresses, or OAuth codes. Only allow query parameters whose values are safe to send to your exporter.
@@ -22434,6 +22446,8 @@ Refer to the [Caching Module documentation](undefined/resources/infrastructure-m
   Has no effect when \`tags\` is omitted, since tags are computed automatically in that case.
 - ttl: (\`number\` | \`((args: any\[]) => number | undefined)\`) The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the \[configured TTL of the Caching Module]\(!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.
 
+  Set the TTL to \`0\` to cache the results without expiry. Learn more in the \[Set TTL]\(#set-ttl) section.
+
   If a function is passed, it receives as a parameter the \`query.index\` parameters, and returns a number indicating the TTL.
 - autoInvalidate: (\`boolean\` | \`((args: any\[]) => boolean | undefined)\`) Whether to automatically invalidate the cached data when it expires.
 
@@ -22586,6 +22600,26 @@ const { data: products } = await query.index({
 In the example above, you use a function to determine the TTL. The function accepts the arguments passed to `query.index` as an array.
 
 Then, you set the TTL based on the ID of the product passed in the filters.
+
+#### Cache Without Expiry
+
+To cache query results without expiry, set `cache.ttl` to `0`. The Redis Caching Module Provider and the in-memory cache don't set an expiry time in this case. So, the cached results remain in the cache until they're invalidated, either [automatically](#set-auto-invalidation) when the data changes or [manually](undefined/resources/infrastructure-modules/caching/guides/clear-cache) by clearing the cache.
+
+Setting `cache.ttl` to `0` doesn't enable caching on its own. Make sure to also set `cache.enable` to `true`.
+
+```ts
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    ttl: 0, // no expiry
+  },
+})
+```
+
+If you disable auto invalidation for results cached without expiry, they remain in the cache until you clear them manually. If you use a custom Caching Module Provider, make sure its [set method](undefined/resources/references/caching-module-provider#set) handles a TTL of `0`.
 
 ### Set Auto Invalidation
 
@@ -24056,6 +24090,8 @@ Refer to the [Caching Module documentation](undefined/resources/infrastructure-m
   Has no effect when \`tags\` is omitted, since tags are computed automatically in that case.
 - ttl: (\`number\` | \`((args: any\[]) => number | undefined)\`) The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the \[configured TTL of the Caching Module]\(!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.
 
+  Set the TTL to \`0\` to cache the results without expiry. Learn more in the \[Set TTL]\(#set-ttl) section.
+
   If a function is passed, it receives as a parameter the \`query.graph\` parameters, and returns a number indicating the TTL.
 - autoInvalidate: (\`boolean\` | \`((args: any\[]) => boolean | undefined)\`) Whether to automatically invalidate the cached data when it expires.
 
@@ -24286,6 +24322,26 @@ const { data: products } = await query.graph({
 In the example above, you use a function to determine the TTL. The function accepts the arguments passed to `query.graph` as an array.
 
 Then, you set the TTL based on the ID of the product passed in the filters.
+
+#### Cache Without Expiry
+
+To cache query results without expiry, set `cache.ttl` to `0`. The Redis Caching Module Provider and the in-memory cache don't set an expiry time in this case. So, the cached results remain in the cache until they're invalidated, either [automatically](#set-auto-invalidation) when the data changes or [manually](undefined/resources/infrastructure-modules/caching/guides/clear-cache) by clearing the cache.
+
+Setting `cache.ttl` to `0` doesn't enable caching on its own. Make sure to also set `cache.enable` to `true`.
+
+```ts
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    ttl: 0, // no expiry
+  },
+})
+```
+
+If you disable auto invalidation for results cached without expiry, they remain in the cache until you clear them manually. If you use a custom Caching Module Provider, make sure its [set method](undefined/resources/references/caching-module-provider#set) handles a TTL of `0`.
 
 ### Set Auto Invalidation
 
@@ -28182,7 +28238,7 @@ By default, when a step fails, the workflow execution stops, and the workflow is
 
 When a step fails, you can configure the workflow engine to automatically retry the step a specified number of times before marking the workflow as failed. This can help improve the reliability and resilience of your workflows.
 
-You can also configure the interval between retries, awllowing you to wait for a certain period before attempting the step again. This is useful when the failure is due to a temporary issue that may resolve itself after some time.
+You can also configure the interval between retries, allowing you to wait for a certain period before attempting the step again. This is useful when the failure is due to a temporary issue that may resolve itself after some time.
 
 For example, if a step captures a payment, you may want to retry it daily until the payment is successful or the maximum number of retries is reached.
 
@@ -28340,6 +28396,78 @@ Instead, you must subscribe to the workflow's execution using the Workflow Engin
 
 ***
 
+## Retry Waiting Async Steps
+
+An [async step](undefined/learn/fundamentals/workflows/long-running-workflow) whose function doesn't return a `StepResponse` stays in a waiting state until you set its status with the Workflow Engine Module's `setStepSuccess` or `setStepFailure` methods. The `maxRetries` and `retryInterval` properties don't apply to a waiting step, because the step hasn't failed.
+
+So, an async step can stay waiting indefinitely. For example:
+
+- The process running the step dies or restarts before the step finishes, so nothing sets the step's status.
+- The step starts a job in a third-party service, and you want to check the job's status periodically until it finishes.
+
+To execute a step again while it's still waiting, pass the following properties to the step's configuration object:
+
+- `retryIntervalAwaiting`: The number of seconds to wait after the step's last execution before executing it again, if the step is still waiting.
+- `maxAwaitingRetries`: The maximum number of times the step can execute, including its first execution. If you don't set it, the workflow engine keeps executing the step until its status changes.
+
+For example:
+
+```ts title="src/workflows/sync-products.ts"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const waitForImportStep = createStep(
+  {
+    name: "wait-for-import",
+    async: true,
+    retryIntervalAwaiting: 60, // 1 minute
+    maxAwaitingRetries: 10,
+  },
+  async ({ job_id }: { job_id: string }, { container }) => {
+    const erpModuleService = container.resolve("erp")
+
+    const job = await erpModuleService.getImportJob(job_id)
+
+    if (job.status !== "completed") {
+      return
+    }
+
+    return new StepResponse(job.result)
+  }
+)
+```
+
+In this example, the step retrieves the status of an import job from a custom ERP Module. If the job isn't completed, the step returns nothing, so it stays waiting. The workflow engine executes the step again after one minute.
+
+Once the job is completed, the step returns a `StepResponse`, and the workflow continues to the next step.
+
+### How the Workflow Engine Counts Awaiting Retries
+
+The `maxAwaitingRetries` and `maxRetries` properties count executions differently:
+
+- The workflow engine compares `maxAwaitingRetries` to the step's attempt counter. The counter includes every execution of the step, including the first one. So, a step with `maxAwaitingRetries: 10` executes at most ten times in total.
+- The workflow engine compares `maxRetries` to the number of times the step failed. So, a step with `maxRetries: 2` executes at most three times in total: the first execution and two retries.
+
+You can access the current attempt number in the step function using the `attempt` property of the step's second parameter.
+
+### Step Stays Waiting After the Last Awaiting Retry
+
+When a step reaches `maxAwaitingRetries` and is still waiting, the workflow engine stops executing it. However, the step doesn't fail. It stays waiting, and the workflow doesn't continue.
+
+To fail the step after a period of time instead, set the step's `timeout` property, as explained in the [Workflow Timeout](undefined/learn/fundamentals/workflows/workflow-timeout#configure-step-timeout) chapter. You can also set the step's status with the Workflow Engine Module's `setStepSuccess` or `setStepFailure` methods, or retry it as explained in the [Manually Retry a Step](#manually-retry-a-step) section.
+
+### Make the Step Safe to Execute Multiple Times
+
+The workflow engine executes a waiting step again even if a previous execution is still running, for example, when an external job takes longer than `retryIntervalAwaiting`. So, make sure that executing the step multiple times doesn't cause side effects, such as creating duplicate records or charging a customer twice.
+
+Don't set both `retryInterval` and `retryIntervalAwaiting` on the same step. If such a step throws an error, the workflow engine doesn't retry it, and the workflow stays stuck. Use `retryInterval` to retry a step that fails, and `retryIntervalAwaiting` to execute a waiting step again.
+
+The [In-Memory Workflow Engine Module](undefined/resources/infrastructure-modules/workflow-engine/in-memory) keeps scheduled retries in memory, so the Medusa application loses them when it restarts. To recover async steps after a process dies or restarts, use the [Redis Workflow Engine Module](undefined/resources/infrastructure-modules/workflow-engine/redis) in production.
+
+***
+
 ## Manually Retry a Step
 
 In some cases, you may need to manually retry a step. For example:
@@ -28347,6 +28475,8 @@ In some cases, you may need to manually retry a step. For example:
 - If a step's `autoRetry` property is set to `false`.
 - If the machine running the Medusa application in development or [worker mode](undefined/learn/configurations/medusa-config#workermode) dies or shuts down.
 - If the step takes longer than expected to complete.
+
+For async steps, you can also configure the workflow engine to execute a waiting step again automatically, as explained in the [Retry Waiting Async Steps](#retry-waiting-async-steps) section.
 
 To retry a step manually, resolve the Workflow Engine Module's service from the Medusa container and call its `retryStep` method.
 
@@ -28389,7 +28519,7 @@ Learn more about the `retryStep` method in the [Workflow Engine Module Service r
 
 # Store Workflow Executions
 
-In this chapter, you'll learn how to store workflow executions in the database and access them later.
+In this chapter, you'll learn how to store workflow executions in the database, access them later, and use a workflow's transaction ID to avoid duplicate executions.
 
 ## Workflow Execution Retention
 
@@ -28532,6 +28662,89 @@ if (workflowExecution.state === "failed") {
 ```
 
 Other state values include `done`, `invoking`, and `compensating`.
+
+***
+
+## Run a Workflow with an Existing Transaction ID
+
+When you execute a workflow, you can pass a `transactionId` in the `context` parameter of the `run` method to set the ID of the execution's transaction. If you don't pass one, Medusa generates a unique ID for every execution.
+
+For example:
+
+```ts
+const { result } = await helloWorkflow(container).run({
+  input: {},
+  context: {
+    transactionId: "hello-123",
+  },
+})
+```
+
+If the workflow stores its executions, Medusa looks up an existing execution with the same transaction ID before running the workflow. What happens next depends on the state of that execution, as explained in the following sections.
+
+This behavior only applies to workflows that store their executions. Medusa stores a workflow's executions if you enable its `store`, `retentionTime`, or `idempotent` options, or if it's a [Long-Running Workflow](undefined/learn/fundamentals/workflows/long-running-workflow), has a [timeout](undefined/learn/fundamentals/workflows/workflow-timeout), or has steps with a timeout or retry interval. Otherwise, Medusa runs the workflow from the start every time, even if you pass the same transaction ID.
+
+### Execution Is Still Running
+
+If an execution with the same transaction ID is still in progress, Medusa loads the execution from its last saved checkpoint and resumes it instead of starting a new execution.
+
+Medusa doesn't run the steps that already finished again, and it leaves steps that are waiting for a status change as they are. For example, if a [Long-Running Workflow](undefined/learn/fundamentals/workflows/long-running-workflow) is waiting for an async step, the step keeps waiting until you change its status with the Workflow Engine Module's `setStepSuccess` or `setStepFailure` methods.
+
+### Concurrent Executions with the Same Transaction ID
+
+If you start two executions of a workflow with the same transaction ID at the same time, Medusa doesn't run the workflow twice. Instead, the second `run` call either:
+
+- Throws a `SkipExecutionError` with the message `Transaction already started for transactionId: {id}`. This happens when both calls start before either of them saves the execution.
+- Loads the execution that the first call saved and continues it, as explained in the [previous section](#execution-is-still-running). Medusa doesn't run the steps that the first call already finished or is still running. In this case, the second call may also throw a `SkipExecutionError` with a different message if the first call moves ahead of it.
+
+This prevents duplicate executions, for example, when a client retries a request or a third-party service sends the same webhook twice.
+
+The [In-Memory Workflow Engine](undefined/resources/infrastructure-modules/workflow-engine/in-memory) only detects concurrent executions within the same process. If you run multiple Medusa instances, use the [Redis Workflow Engine](undefined/resources/infrastructure-modules/workflow-engine/redis) so that all instances share the same executions.
+
+### Execution Has Finished
+
+When an execution finishes, Medusa deletes it unless you set the workflow's `retentionTime` option. So, if you run the workflow again with the same transaction ID, Medusa runs it from the start as a new execution.
+
+Setting the `retentionTime` option alone keeps the finished execution stored, but doesn't prevent running the workflow again. Medusa still runs the workflow from the start and stores the new execution with the same transaction ID, but a different run ID.
+
+To return the finished execution instead of running the workflow again, enable the `idempotent` option and set the `retentionTime` option:
+
+```ts
+export const helloWorkflow = createWorkflow(
+  {
+    name: "hello-workflow",
+    idempotent: true,
+    retentionTime: 86400,
+  },
+  () => {
+    step1()
+  }
+)
+```
+
+Now, when you run `helloWorkflow` with the transaction ID of an execution that finished, Medusa returns the existing execution without running its steps again. This applies to executions that completed successfully, failed, or reverted. If the existing execution failed or reverted, the `run` method throws the execution's original error again, unless you set its `throwOnError` option to `false`.
+
+Once the retention time passes and Medusa deletes the execution, running the workflow with the same transaction ID starts a new execution.
+
+### Use the Transaction ID as an Idempotency Key
+
+Based on the behavior above, you can use the transaction ID as an idempotency key to make sure a workflow runs only once for the same operation. For example, use the ID of a webhook event as the transaction ID, so that receiving the same event multiple times doesn't run the workflow multiple times:
+
+```ts
+await helloWorkflow(container).run({
+  input: {},
+  context: {
+    transactionId: `webhook-${event.id}`,
+  },
+})
+```
+
+To deduplicate executions reliably:
+
+- Enable the `idempotent` option so that Medusa doesn't run the workflow again after an execution finishes.
+- Set the `retentionTime` option to at least the period during which duplicates may arrive. After the retention time passes, Medusa no longer deduplicates executions with that transaction ID.
+- Use the [Redis Workflow Engine](undefined/resources/infrastructure-modules/workflow-engine/redis) in production so that all Medusa instances detect concurrent executions.
+- Handle the `SkipExecutionError` in your code, since a concurrent duplicate may throw it instead of returning a result. You can treat this error as a sign that another execution is already handling the operation.
 
 
 # Data Manipulation in Workflows with transform
@@ -33439,7 +33652,7 @@ Learn more about using the publishable API key in the [Storefront Development gu
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.21.2. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.21.2).
+Medusa's current version is v2.22. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
 
 ## Medusa Versioning
 
@@ -39075,6 +39288,8 @@ export default async function importCustomers({
 
 The workflow creates one customer per run, so run it for each customer you import.
 
+The customer's email must match the email of the auth identity. Otherwise, the workflow throws an error. Learn more in the [Email Must Match the Auth Identity](#email-must-match-the-auth-identity) section.
+
 #### Auth Identity Is Created on First Login
 
 Some auth providers, such as passwordless providers, create the auth identity when the customer first logs in. In that case, create the customers with `has_account` set to `true` using the [createCustomersWorkflow](undefined/references/medusa-workflows/createCustomersWorkflow). It accepts multiple customers in one run:
@@ -39138,6 +39353,17 @@ Execute the workflow in your login flow after the auth provider creates the auth
 When a guest customer registers, use the [createCustomerAccountWorkflow](undefined/references/medusa-workflows/createCustomerAccountWorkflow) to create a registered customer with the same email. The workflow also sets the customer's ID in the auth identity's app metadata. It doesn't change the existing guest customer.
 
 The guest customer's orders stay linked to the guest customer. To move them to the registered customer, the customer can request an order transfer using the [Request Order Transfer API route](undefined/api/store#orders_postordersidtransferrequest).
+
+### Email Must Match the Auth Identity
+
+When you pass an `authIdentityId` to the `createCustomerAccountWorkflow`, the workflow retrieves the auth identity and its provider identities. It then checks that the customer's email matches one of the following values of a provider identity:
+
+- The `entity_id`, which holds the email for providers like the `emailpass` provider.
+- The `email` property in the `user_metadata`, which third-party providers like Google set.
+
+The comparison ignores letter case and leading or trailing whitespace. If the email doesn't match, the workflow throws an `unauthorized` error with the message `The customer's email must match the email of the authenticated identity`.
+
+This check prevents a customer from creating an account with an email they didn't authenticate with. If you use a custom auth provider, make sure it stores the customer's email in the provider identity's `entity_id` or `user_metadata.email`.
 
 ***
 
@@ -42409,6 +42635,8 @@ Medusa automatically keeps calculated shipping prices up to date during the edit
 
 Shipping methods with a custom amount (`is_custom_amount: true`) and flat-rate methods are never repriced automatically.
 
+When you pass an `amount` to `updateDraftOrderShippingMethodWorkflow` to override a shipping method's price, Medusa sets the method's `is_custom_amount` property to `true`. So, Medusa keeps the amount you set and doesn't reprice the method later.
+
 The `fetchShippingOptionForDraftOrderWorkflow` exposes two hooks you can use to inject additional context before the fulfillment provider calculates the price:
 
 - `setPricingContext`: inject additional pricing context (for example, a `location_id`) used when resolving flat-rate prices from the Pricing Module. The context is merged with the order's `currency_code`.
@@ -44056,6 +44284,18 @@ The `ReturnItem` model has two properties storing the item's quantity:
 
 1. `received_quantity`: The quantity of the item that's received and can be added to the item's inventory quantity.
 2. `damaged_quantity`: The quantity of the item that's damaged, meaning it can't be sold again or added to the item's inventory quantity.
+
+### Returnable Quantity
+
+The Order Module only allows returning items that are still with the customer. When you request to return an item, the Order Module calculates its returnable quantity by subtracting the following quantities from the item's fulfilled quantity:
+
+- The quantity already requested for return in other returns.
+- The quantity already received in previous returns.
+- The quantity dismissed in previous returns.
+
+If the requested quantity is greater than the returnable quantity, the Order Module throws an `invalid_data` error.
+
+For example, if you fulfilled three units of an item and already received two of them in a previous return, you can only request to return one more unit.
 
 ***
 
@@ -45707,9 +45947,9 @@ The `metadata` property is available since Medusa [v2.15.0](https://github.com/m
 
 #### Retry Refunds Safely with an Idempotency Key
 
-The `idempotency_key` property is available since Medusa [v2.21.3](https://github.com/medusajs/medusa/releases/tag/v2.21.3).
+The `idempotency_key` property is available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
 
-If you may retry a refund, such as when a background job or a return flow issues it, pass an `idempotency_key` to the `refundPaymentWorkflow` or the Payment Module's `refundPayment` method. The Payment Module forwards the key to the payment provider, so retrying a refund with the same key never refunds the customer twice, even when the response of the original request was lost.
+To retry a refund, such as when a background job or a return flow issues it, pass an `idempotency_key` to the `refundPaymentWorkflow` or the Payment Module's `refundPayment` method. The Payment Module forwards the key to the payment provider, so retrying a refund with the same key never refunds the customer twice, even when the response of the original request was lost.
 
 Without a key, every request starts a new refund. So, if you retry a refund whose first attempt may have succeeded, the customer can receive the refund twice.
 
@@ -45751,7 +45991,7 @@ When you pass an `idempotency_key`, the Payment Module handles a retry with the 
 
 You can also pass the `idempotency_key` in the request body of the [Refund Payment API route](undefined/api/admin#payments_postpaymentsidrefund).
 
-Since Medusa v2.21.3, a refund has a `status` property whose value is `pending` while the payment provider processes the refund, `succeeded` once the provider confirms it, or `failed` if the provider doesn't confirm it. Medusa soft-deletes failed refunds, so they don't count toward the payment's refunded amount.
+Since Medusa v2.22.0, a refund has a `status` property whose value is `pending` while the payment provider processes the refund, `succeeded` once the provider confirms it, or `failed` if the provider doesn't confirm it. Medusa soft-deletes failed refunds, so they don't count toward the payment's refunded amount.
 
 The `refundPaymentWorkflow` returns the payment, which it retrieves before issuing the refund. So, the payment's `refunds` property doesn't include the new refund. To get the new refund, retrieve the payment again after the workflow finishes.
 
@@ -46000,6 +46240,35 @@ If you're building a custom payment provider, learn more about initializing the 
 This `data` property is accessible in the storefront as well. So, only store in it data that can be publicly shared, and data that is useful in the storefront.
 
 For example, you can also store the client token used to initialize the payment session in the storefront with the third-party provider.
+
+### Update Client Data from the Storefront
+
+Updating a payment session's client data is available since Medusa [v2.22.1](https://github.com/medusajs/medusa/releases/tag/v2.22.1).
+
+Some payment providers collect details in the storefront after you initialize the payment session. For example, a provider's checkout component may return a payment method ID that the provider needs to authorize the payment.
+
+To pass these details to the payment session, use the [Update Payment Session API route](undefined/api/store/payment-collections/update-payment-session) or the JS SDK's `sdk.store.payment.updatePaymentSession` method. Medusa sets the `client_data` you pass as the payment session's `data.client` property, then passes the updated `data` to the payment provider's `updatePayment` method. The rest of the `data` property is owned by the payment provider, and you can't change it from the storefront.
+
+```ts
+sdk.store.payment.updatePaymentSession(
+  "paycol_123",
+  "payses_123",
+  {
+    client_data: {
+      payment_method: "pm_123",
+    },
+  }
+)
+.then(({ payment_collection }) => {
+  console.log(payment_collection)
+})
+```
+
+You can only update a payment session whose status is `pending`, `requires_more`, or `error`. Medusa throws an error for other statuses, since they indicate that the authorization is in progress or done.
+
+Under the hood, the API route uses the [updatePaymentSessionClientDataWorkflow](undefined/references/medusa-workflows/updatePaymentSessionClientDataWorkflow). You can also execute this workflow in your custom flows.
+
+If you're building a custom payment provider, read the client data from `data.client` in the provider's `updatePayment` method.
 
 ***
 
@@ -48179,7 +48448,7 @@ The `remove` array accepts the IDs of options to remove from the product.
 
 ### Remove an Option from a Product with Variants
 
-Since Medusa v2.21.3, you can remove an option from a product even when the product's variants use that option's values. Medusa removes the option's values from the product's variants. The variants themselves aren't deleted.
+Since Medusa v2.22.0, you can remove an option from a product even when the product's variants use that option's values. Medusa removes the option's values from the product's variants. The variants themselves aren't deleted.
 
 However, if removing the option's values makes two or more variants have the same combination of option values, Medusa throws an error and doesn't remove the option. For example, if a product has the options Size and Color, and has the variants "S / Blue" and "S / Red", removing the Color option fails because both variants would only have the value "S".
 
@@ -49907,6 +50176,15 @@ Like target rules, a buy rule's `attribute` must be prefixed based on the `targe
 
 A `buyget` promotion only discounts a matching "Get Y" item that is already in the cart. It doesn't add the free product to the cart automatically. If the target item isn't in the cart, Medusa doesn't apply the promotion. This is true whether the promotion is automatic or the customer applies it with a code.
 
+### How Items are Selected for Buy X Get Y Promotions
+
+When the cart has more eligible items than the promotion needs, the Promotion Module ranks the eligible items by their unit price, from highest to lowest. It uses the unit price rather than the line item's subtotal, so a line item with a high quantity of a cheap product doesn't rank above a single expensive product.
+
+Then, the Promotion Module selects the items as follows:
+
+1. It reserves items to satisfy the "buy X" condition, starting with the highest-priced items. It prefers items that don't match the target rules, so that matching "get Y" items remain available for the discount.
+2. It applies the discount to the highest-priced items that match the target rules and weren't reserved in the previous step, up to the `apply_to_quantity` and `max_quantity` limits.
+
 ***
 
 ## Maximum Quantity Restriction
@@ -50720,7 +50998,11 @@ A tax-inclusive promotion is a promotion for which taxes are calculated from the
 
 When a promotion is tax-inclusive, the discount amount is reduced by the calculated tax amount based on the [tax region's rate](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/tax/tax-region). The reduced discount amount is then applied to the cart total.
 
-Tax-inclusiveness doesn't apply to Buy X Get Y promotions.
+Tax-inclusiveness applies to Buy X Get Y promotions since [Medusa v2.22.1](https://github.com/medusajs/medusa/releases/tag/v2.22.1). In earlier versions, Medusa ignores the `is_tax_inclusive` property of Buy X Get Y promotions.
+
+### Tax-Inclusive Buy X Get Y Promotions
+
+When a Buy X Get Y promotion is tax-inclusive, Medusa calculates the discount from the target items' tax-inclusive totals rather than their subtotals. For example, a tax-inclusive Buy X Get Y promotion that gives a target item for free discounts the item's full price, including taxes, so the customer pays nothing for that item.
 
 ### When to Use Tax-Inclusive Promotions
 
@@ -58362,7 +58644,7 @@ You can pass the following options to the Caching Module when registering it in 
 
 |Option|Description|Default|
 |---|---|---|
-|`ttl`|A number indicating the default time-to-live (TTL) in seconds for cached items. After this period, cached items will be removed from the cache. This number is passed to the underlying caching provider if no TTL is specified when caching data.|`3600` (1 hour)|
+|`ttl`|A number indicating the default time-to-live (TTL) in seconds for cached items. After this period, cached items will be removed from the cache. This number is passed to the underlying caching provider if no TTL is specified when caching data. Set it to `0` to cache items without expiry. The Redis Caching Module Provider and the in-memory cache keep such items until they're invalidated automatically or [cleared manually](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/infrastructure-modules/caching/guides/clear-cache).|`3600` (1 hour)|
 |`providers`|An array of caching providers to use. This allows you to configure multiple caching providers for different use cases.|No providers by default|
 
 ***
@@ -63317,7 +63599,7 @@ If your store has more than 200 products in a channel, page through the results 
 
 ### Changing Price Lists
 
-The price list events are available since Medusa [v2.21.3](https://github.com/medusajs/medusa/releases/tag/v2.21.3).
+The price list events are available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
 
 A price list overrides the prices of the variants it holds prices for, so changing a price list changes the prices in the products' documents. Medusa emits the following events when a price list or its prices change:
 

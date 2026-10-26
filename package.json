@@ -124,7 +124,7 @@
     "vite-plugin-inspect": "^11.4.1",
     "vitest": "^4.1.10",
     "yalc": "^1.0.0-pre.53",
-    "zod": "4.2.0",
+    "zod": "4.6.6",
     "zod-validation-error": "5.0.0"
   },
   "lint-staged": {

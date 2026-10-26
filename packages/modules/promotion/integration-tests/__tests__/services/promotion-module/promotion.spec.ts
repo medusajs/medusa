@@ -283,6 +283,22 @@ moduleIntegrationTestRunner({
           )
         })
 
+        it.each(["each", "once"])(
+          "should throw error when creating an item application, %s allocation, with a null max quantity",
+          async (allocation) => {
+            const error = await createDefaultPromotion(service, {
+              application_method: {
+                allocation,
+                max_quantity: null,
+              } as any,
+            }).catch((e) => e)
+
+            expect(error.message).toContain(
+              "application_method.max_quantity is required when application_method.allocation is 'each OR once'"
+            )
+          }
+        )
+
         it("should throw error when creating an order application method with rules", async () => {
           const error = await createDefaultPromotion(service, {
             application_method: {
@@ -695,6 +711,32 @@ moduleIntegrationTestRunner({
             })
           )
         })
+
+        it.each(["each", "once"])(
+          "should throw error when updating allocation to %s while the stored max quantity is null",
+          async (allocation) => {
+            const createdPromotion = await createDefaultPromotion(service, {
+              application_method: { allocation: "across" },
+            } as any)
+
+            expect(createdPromotion.application_method?.max_quantity).toBeNull()
+
+            const error = await service
+              .updatePromotions([
+                {
+                  id: createdPromotion.id,
+                  application_method: {
+                    allocation: allocation as any,
+                  },
+                },
+              ])
+              .catch((e) => e)
+
+            expect(error.message).toContain(
+              "application_method.max_quantity is required when application_method.allocation is 'each OR once'"
+            )
+          }
+        )
 
         it("should validate the attributes of a application method successfully", async () => {
           const createdPromotion = await createDefaultPromotion(service, {

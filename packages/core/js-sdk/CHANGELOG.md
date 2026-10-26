@@ -1,5 +1,11 @@
 # @medusajs/js-sdk
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17432](https://github.com/medusajs/medusa/pull/17432) [`7c3b0339379efeda7863f48b9f60e3391cece091`](https://github.com/medusajs/medusa/commit/7c3b0339379efeda7863f48b9f60e3391cece091) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,core-flows,types,js-sdk): add store route to update a payment session's client data
+
 ## 2.22.0
 
 ### Minor Changes

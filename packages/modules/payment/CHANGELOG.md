@@ -1,5 +1,16 @@
 # @medusajs/payment
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17452](https://github.com/medusajs/medusa/pull/17452) [`b07a970d9f1ff305b5421cc5e27436d1f5624a8a`](https://github.com/medusajs/medusa/commit/b07a970d9f1ff305b5421cc5e27436d1f5624a8a) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(payment): round amounts to the currency precision regardless of server locale
+
+- [#17432](https://github.com/medusajs/medusa/pull/17432) [`7c3b0339379efeda7863f48b9f60e3391cece091`](https://github.com/medusajs/medusa/commit/7c3b0339379efeda7863f48b9f60e3391cece091) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,core-flows,types,js-sdk): add store route to update a payment session's client data
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

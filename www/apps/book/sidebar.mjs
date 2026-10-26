@@ -719,7 +719,7 @@ export const sidebars = [
           },
           {
             type: "link",
-            title: "Medusa Configuations",
+            title: "Medusa Configurations",
             path: "/learn/configurations/medusa-config",
             children: [
               {

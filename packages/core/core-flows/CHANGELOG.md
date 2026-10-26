@@ -1,5 +1,32 @@
 # @medusajs/core-flows
 
+## 2.22.1
+
+### Patch Changes
+
+- [#17462](https://github.com/medusajs/medusa/pull/17462) [`67aa48d6b1bbac622d261808b4351521fad8cf42`](https://github.com/medusajs/medusa/commit/67aa48d6b1bbac622d261808b4351521fad8cf42) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): cascade delete records linked to deleted variants via defineLink
+
+- [#17470](https://github.com/medusajs/medusa/pull/17470) [`5aebc3e4a163c0e401d8794b2e961021eea5aea0`](https://github.com/medusajs/medusa/commit/5aebc3e4a163c0e401d8794b2e961021eea5aea0) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): import only declared dependencies at runtime
+
+- [#17450](https://github.com/medusajs/medusa/pull/17450) [`7ce874c0ce4df5d9942130a28067ced8b23b126d`](https://github.com/medusajs/medusa/commit/7ce874c0ce4df5d9942130a28067ced8b23b126d) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): mark draft order shipping methods updated with a custom amount as custom
+
+- [#17446](https://github.com/medusajs/medusa/pull/17446) [`a0b1fffe7082ee326f16f50a1e2bfc978032a2bf`](https://github.com/medusajs/medusa/commit/a0b1fffe7082ee326f16f50a1e2bfc978032a2bf) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(promotion): enforce and track spend_by_attribute campaign budgets, and skip automatic per-attribute budget promotions when the budget attribute is missing instead of throwing
+
+- [#17448](https://github.com/medusajs/medusa/pull/17448) [`4e723121b0f9e3792b61306af5cbf2ebd9e84d20`](https://github.com/medusajs/medusa/commit/4e723121b0f9e3792b61306af5cbf2ebd9e84d20) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): persist refund_amount on returns created by createAndCompleteReturnOrderWorkflow
+
+- [#17479](https://github.com/medusajs/medusa/pull/17479) [`347a34dc5a193ac2117cbbda6956c3932f40e693`](https://github.com/medusajs/medusa/commit/347a34dc5a193ac2117cbbda6956c3932f40e693) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): remove optional chaining from processPaymentWorkflow constructor
+
+- [#17464](https://github.com/medusajs/medusa/pull/17464) [`c959d5e3e7d4b482d0784eef67ef8ef766442d5e`](https://github.com/medusajs/medusa/commit/c959d5e3e7d4b482d0784eef67ef8ef766442d5e) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils,core-flows): import region price columns written by the product export
+
+- [#17432](https://github.com/medusajs/medusa/pull/17432) [`7c3b0339379efeda7863f48b9f60e3391cece091`](https://github.com/medusajs/medusa/commit/7c3b0339379efeda7863f48b9f60e3391cece091) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,core-flows,types,js-sdk): add store route to update a payment session's client data
+
+- [#17402](https://github.com/medusajs/medusa/pull/17402) [`4a75f02fbadb204f390bd5989dd0302f8a3f6774`](https://github.com/medusajs/medusa/commit/4a75f02fbadb204f390bd5989dd0302f8a3f6774) Thanks [@medusa-agents](https://github.com/apps/medusa-agents)! - fix(core-flows, loyalty-plugin): validate cart customer ownership checks
+
+- [#17415](https://github.com/medusajs/medusa/pull/17415) [`e07eb2b001fa52621e3176efb36fdf53863d4a80`](https://github.com/medusajs/medusa/commit/e07eb2b001fa52621e3176efb36fdf53863d4a80) Thanks [@medusa-agents](https://github.com/apps/medusa-agents)! - fix(core-flows): validate customer account email matches the authenticated identity
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes
