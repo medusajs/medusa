@@ -3146,7 +3146,7 @@ __metadata:
   resolution: "@medusajs/admin-sdk@workspace:packages/admin/admin-sdk"
   dependencies:
     "@medusajs/admin-shared": 2.22.1
-    zod: 4.2.0
+    zod: 4.6.6
   languageName: unknown
   linkType: soft
 
@@ -3457,7 +3457,7 @@ __metadata:
     react-jwt: ^1.2.0
     react-router-dom: 7.18.2
     typescript: 5.9.3
-    zod: 4.2.0
+    zod: 4.6.6
   languageName: unknown
   linkType: soft
 
@@ -3477,7 +3477,7 @@ __metadata:
     "@opentelemetry/sdk-trace-node": ^2.7.0
     awilix: ^8.0.1
     pg: ^8.16.3
-    zod: 4.2.0
+    zod: 4.6.6
   languageName: unknown
   linkType: soft
 
@@ -3506,7 +3506,7 @@ __metadata:
     match-sorter: ^6.3.4
     radix-ui: 1.1.2
     react-hook-form: 7.83.0
-    zod: 4.2.0
+    zod: 4.6.6
   peerDependencies:
     "@medusajs/admin-sdk": 2.22.1
     "@medusajs/cli": 2.22.1
@@ -22368,7 +22368,7 @@ __metadata:
     vite-plugin-inspect: ^11.4.1
     vitest: ^4.1.10
     yalc: ^1.0.0-pre.53
-    zod: 4.2.0
+    zod: 4.6.6
     zod-validation-error: 5.0.0
   languageName: unknown
   linkType: soft
@@ -25597,9 +25597,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:4.2.0":
-  version: 4.2.0
-  resolution: "zod@npm:4.2.0"
-  checksum: c9fa563f4866f5554c84728f69fe01979d5ab41a104176a4b9f1a182fa670b6e55ffe1be81863dc03d8b36c90ee9e917353b429f4aa3615b5f63dc4c8d5d92d3
+"zod@npm:4.6.6":
+  version: 4.6.6
+  resolution: "zod@npm:4.6.6"
+  checksum: 447a3113bb743c54ab839213ff95e9e8c197cc1206f65270c18aac35aa70c47a5c8cab753be911b574df9a8a9801ea74ed6be776575232cae0084e51dab3e970
   languageName: node
   linkType: hard
