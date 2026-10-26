@@ -18,25 +18,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  docs-automation:
+  # Runs the model with no App token and no write access. Its only output is a
+  # patch and a PR body, which `open-pr` validates before the App token exists.
+  generate:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.head_commit.author.name != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
+      pull-requests: read
+    outputs:
+      has_changes: ${{ steps.changes.outputs.has_changes }}
+      develop_sha: ${{ steps.branch.outputs.develop_sha }}
+      staging_sha: ${{ steps.branch.outputs.staging_sha }}
+      pr_number: ${{ steps.existing-pr.outputs.number }}
     steps:
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ secrets.MEDUSA_APP_ID }}
-          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -95,11 +95,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Checkout or create release docs branch
+        id: branch
         if: steps.check.outputs.needs_docs == 'true'
         run: |
           git fetch origin
+          echo "develop_sha=$(git rev-parse origin/develop)" >> "$GITHUB_OUTPUT"
           if git ls-remote --exit-code origin docs/release-docs-staging > /dev/null 2>&1; then
             git checkout docs/release-docs-staging
+            echo "staging_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
             git merge -X theirs origin/develop -m "chore: sync docs/release-docs-staging with develop"
             echo "Checked out and synced existing branch docs/release-docs-staging"
           else
@@ -111,7 +114,7 @@ jobs:
         id: existing-pr
         if: steps.check.outputs.needs_docs == 'true'
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
           # The docs/release-docs-staging branch is long-lived: its PR is reused
@@ -204,15 +207,39 @@ jobs:
             )
           EOF
 
+      - name: Lock down repo automation files
+        if: steps.check.outputs.needs_docs == 'true'
+        run: chmod -R a-w .github .claude scripts
+
       - name: Run Claude Code to update docs
         if: steps.check.outputs.needs_docs == 'true'
         uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
+          # `_temp` holds the runner's GITHUB_ENV/GITHUB_PATH files, which would let the model set env vars for later steps.
+          settings: |
+            {
+              "permissions": {
+                "deny": [
+                  "Read(//proc/**)",
+                  "Read(//home/runner/work/_temp/**)",
+                  "Write(//home/runner/work/_temp/**)",
+                  "Edit(//home/runner/work/_temp/**)",
+                  "Write(//**/.claude/**)",
+                  "Edit(//**/.claude/**)",
+                  "Write(//**/.github/**)",
+                  "Edit(//**/.github/**)",
+                  "Write(//**/.mcp.json)",
+                  "Edit(//**/.mcp.json)",
+                  "Write(//**/package.json)",
+                  "Edit(//**/package.json)"
+                ]
+              }
+            }
           claude_args: >-
             --model claude-opus-5-5
             --max-turns 40
-            --allowedTools "Skill,Read,Write,Edit,Glob,Grep,Bash(git diff:*),Bash(ls:*),Bash(find:*),Bash(cat:*)"
+            --allowedTools "Skill,Read,Write,Edit,Glob,Grep,Bash(ls:*)"
           prompt: ${{ steps.extract-prompt.outputs.CLAUDE_PROMPT }}
 
       - name: Verify no protected files were modified
@@ -266,15 +293,6 @@ jobs:
           else
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: Commit documentation changes
-        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        run: |
-          git commit -m "chore(docs): automated documentation update for ${{ inputs.commit_sha || github.sha }}"
-
-      - name: Push release docs branch
-        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
-        run: git push origin docs/release-docs-staging
 
       - name: Resolve PR body
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
@@ -336,12 +354,112 @@ jobs:
             writeFileSync("/tmp/pr-body.md", `${base}\n\n---\n\n${newEntry}`)
           EOF
 
-      - name: Create or update Pull Request
+      - name: Package result
         if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/docs-out
+          git diff --cached --binary > /tmp/docs-out/docs.patch
+          cp /tmp/pr-body.md /tmp/docs-out/pr-body.md
+
+      - name: Upload result
+        if: steps.check.outputs.needs_docs == 'true' && steps.changes.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: docs-automation-${{ github.run_id }}
+          path: /tmp/docs-out/
+          if-no-files-found: error
+          retention-days: 1
+
+  # Never runs code from the model's job. Validates the patch against fixed
+  # paths and limits before the App token exists.
+  open-pr:
+    needs: generate
+    if: needs.generate.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Download result
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: docs-automation-${{ github.run_id }}
+          path: /tmp/docs-out
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Recreate release docs branch
+        env:
+          DEVELOP_SHA: ${{ needs.generate.outputs.develop_sha }}
+          STAGING_SHA: ${{ needs.generate.outputs.staging_sha }}
+        run: |
+          set -euo pipefail
+          git fetch origin
+          if [ -n "$STAGING_SHA" ]; then
+            git checkout -b docs/release-docs-staging "$STAGING_SHA"
+            git merge -X theirs "$DEVELOP_SHA" -m "chore: sync docs/release-docs-staging with develop"
+          else
+            git checkout -b docs/release-docs-staging "$DEVELOP_SHA"
+          fi
+
+      - name: Validate and apply patch
+        run: |
+          set -euo pipefail
+          cd /tmp/docs-out
+          if [[ ! -s docs.patch || "$(wc -c < docs.patch)" -gt 5242880 ]]; then
+            echo "::error::docs.patch is empty or exceeds 5 MB." >&2
+            exit 1
+          fi
+          if [[ "$(wc -c < pr-body.md)" -gt 60000 ]]; then
+            echo "::error::pr-body.md exceeds 60 KB." >&2
+            exit 1
+          fi
+          cd "$GITHUB_WORKSPACE"
+          git apply --index /tmp/docs-out/docs.patch
+
+          CHANGED=$(git diff --cached --no-renames --name-only)
+          OUTSIDE=$(echo "$CHANGED" | grep -vE '^www/apps/(book|resources|ui|user-guide)/' || true)
+          PROTECTED=$(echo "$CHANGED" | grep -E \
+            '^www/apps/resources/references/|^www/apps/ui/specs/components/|^www/apps/api-reference/|(^|/)(package\.json|yarn\.lock)$|(^|/)scripts/|(^|/)[^/]*\.config\.[cm]?[jt]s$|(^|/)\.' \
+            || true)
+          if [[ -n "$OUTSIDE" || -n "$PROTECTED" ]]; then
+            echo "::error::Patch touches disallowed paths:" >&2
+            printf '%s\n' "$OUTSIDE" "$PROTECTED" >&2
+            exit 1
+          fi
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
+      - name: Commit and push release docs branch
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          COMMIT_SHA: ${{ inputs.commit_sha || github.sha }}
+        run: |
+          set -euo pipefail
+          git commit -m "chore(docs): automated documentation update for $COMMIT_SHA"
+          AUTH="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          echo "::add-mask::$AUTH"
+          git -c "http.extraheader=$AUTH" push "https://github.com/$GITHUB_REPOSITORY.git" HEAD:refs/heads/docs/release-docs-staging
+
+      - name: Create or update Pull Request
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REPO: ${{ github.repository }}
-          PR_NUMBER: ${{ steps.existing-pr.outputs.number }}
+          PR_NUMBER: ${{ needs.generate.outputs.pr_number }}
           # The branch is long-lived, so the title stays static
           PR_TITLE: "docs: doc changes for next release [automated]"
         run: |
@@ -349,12 +467,12 @@ jobs:
             gh api "repos/$REPO/pulls/$PR_NUMBER" \
               --method PATCH \
               --field title="$PR_TITLE" \
-              --field body="$(cat /tmp/pr-body.md)"
+              --field body="$(cat /tmp/docs-out/pr-body.md)"
           else
             PR_NUMBER=$(gh api "repos/$REPO/pulls" \
               --method POST \
               --field title="$PR_TITLE" \
-              --field body="$(cat /tmp/pr-body.md)" \
+              --field body="$(cat /tmp/docs-out/pr-body.md)" \
               --field base="develop" \
               --field head="docs/release-docs-staging" \
               --jq '.number')
