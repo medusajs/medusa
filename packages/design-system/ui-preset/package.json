@@ -26,7 +26,6 @@
     "generate": "toolbox tokens -o './src/theme'"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.5.3",
     "tailwindcss-animate": "^1.0.6"
   },
   "peerDependencies": {
