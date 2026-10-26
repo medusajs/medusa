@@ -1221,7 +1221,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@changesets/cli@npm:^2.26.0":
+"@changesets/cli@npm:^2.31.1":
   version: 2.31.1
   resolution: "@changesets/cli@npm:2.31.1"
   dependencies:
@@ -3603,9 +3603,9 @@ __metadata:
   resolution: "@medusajs/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@types/eslint": ^9.6.1
-    "@typescript-eslint/parser": ^8.0.0
-    "@typescript-eslint/rule-tester": ^8.0.0
-    "@typescript-eslint/utils": ^8.0.0
+    "@typescript-eslint/parser": ^8.72.0
+    "@typescript-eslint/rule-tester": ^8.72.0
+    "@typescript-eslint/utils": ^8.72.0
     cron-parser: ^4.9.0
     eslint: ^9.0.0
     typescript: ^5.4.0
@@ -3860,7 +3860,7 @@ __metadata:
     "@medusajs/types": 2.22.1
     "@medusajs/ui": 4.2.8
     "@medusajs/ui-preset": 2.22.1
-    "@swc/core": 1.5.7
+    "@swc/core": ^1.16.20
     "@types/node": ^20.0.0
     cross-env: ^7.0.3
     ts-node: ^10.9.2
@@ -9391,7 +9391,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-themes@npm:^10.5.6":
+"@storybook/addon-themes@npm:^10.6.3":
   version: 10.6.3
   resolution: "@storybook/addon-themes@npm:10.6.3"
   dependencies:
@@ -9448,7 +9448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react-vite@npm:^10.5.6":
+"@storybook/react-vite@npm:^10.6.3":
   version: 10.6.3
   resolution: "@storybook/react-vite@npm:10.6.3"
   dependencies:
@@ -9474,7 +9474,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react@npm:10.6.3, @storybook/react@npm:^10.5.6":
+"@storybook/react@npm:10.6.3, @storybook/react@npm:^10.6.3":
   version: 10.6.3
   resolution: "@storybook/react@npm:10.6.3"
   dependencies:
@@ -9659,23 +9659,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-darwin-arm64@npm:1.5.7"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@swc/core-darwin-x64@npm:1.16.20":
   version: 1.16.20
   resolution: "@swc/core-darwin-x64@npm:1.16.20"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core-darwin-x64@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-darwin-x64@npm:1.5.7"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -9687,13 +9673,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.5.7"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-arm64-gnu@npm:1.16.20":
   version: 1.16.20
   resolution: "@swc/core-linux-arm64-gnu@npm:1.16.20"
@@ -9701,23 +9680,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-gnu@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.5.7"
-  conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-arm64-musl@npm:1.16.20":
   version: 1.16.20
   resolution: "@swc/core-linux-arm64-musl@npm:1.16.20"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm64-musl@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-arm64-musl@npm:1.5.7"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
@@ -9743,23 +9708,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-gnu@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-x64-gnu@npm:1.5.7"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@swc/core-linux-x64-musl@npm:1.16.20":
   version: 1.16.20
   resolution: "@swc/core-linux-x64-musl@npm:1.16.20"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-x64-musl@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-x64-musl@npm:1.5.7"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
@@ -9771,23 +9722,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-win32-arm64-msvc@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.5.7"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@swc/core-win32-ia32-msvc@npm:1.16.20":
   version: 1.16.20
   resolution: "@swc/core-win32-ia32-msvc@npm:1.16.20"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-ia32-msvc@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.5.7"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
@@ -9799,60 +9736,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-win32-x64-msvc@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-win32-x64-msvc@npm:1.5.7"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core@npm:1.5.7"
-  dependencies:
-    "@swc/core-darwin-arm64": 1.5.7
-    "@swc/core-darwin-x64": 1.5.7
-    "@swc/core-linux-arm-gnueabihf": 1.5.7
-    "@swc/core-linux-arm64-gnu": 1.5.7
-    "@swc/core-linux-arm64-musl": 1.5.7
-    "@swc/core-linux-x64-gnu": 1.5.7
-    "@swc/core-linux-x64-musl": 1.5.7
-    "@swc/core-win32-arm64-msvc": 1.5.7
-    "@swc/core-win32-ia32-msvc": 1.5.7
-    "@swc/core-win32-x64-msvc": 1.5.7
-    "@swc/counter": ^0.1.2
-    "@swc/types": 0.1.7
-  peerDependencies:
-    "@swc/helpers": ^0.5.0
-  dependenciesMeta:
-    "@swc/core-darwin-arm64":
-      optional: true
-    "@swc/core-darwin-x64":
-      optional: true
-    "@swc/core-linux-arm-gnueabihf":
-      optional: true
-    "@swc/core-linux-arm64-gnu":
-      optional: true
-    "@swc/core-linux-arm64-musl":
-      optional: true
-    "@swc/core-linux-x64-gnu":
-      optional: true
-    "@swc/core-linux-x64-musl":
-      optional: true
-    "@swc/core-win32-arm64-msvc":
-      optional: true
-    "@swc/core-win32-ia32-msvc":
-      optional: true
-    "@swc/core-win32-x64-msvc":
-      optional: true
-  peerDependenciesMeta:
-    "@swc/helpers":
-      optional: true
-  checksum: 83ab96bee5d448e580d8a6c8c1d1fbfdfaf5561f8904140122e49c428c2336790d31e7bdcdf610ce8f20c7f682785263d2ebab7cb56c2dcb5ea46be54eab2c03
-  languageName: node
-  linkType: hard
-
-"@swc/core@npm:^1.7.28":
+"@swc/core@npm:^1.16.20":
   version: 1.16.20
   resolution: "@swc/core@npm:1.16.20"
   dependencies:
@@ -9904,7 +9788,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/counter@npm:^0.1.2, @swc/counter@npm:^0.1.3":
+"@swc/counter@npm:^0.1.3":
   version: 0.1.3
   resolution: "@swc/counter@npm:0.1.3"
   checksum: 8424f60f6bf8694cfd2a9bca45845bce29f26105cda8cf19cdb9fd3e78dc6338699e4db77a89ae449260bafa1cc6bec307e81e7fb96dbf7dcfce0eea55151356
@@ -9930,15 +9814,6 @@ __metadata:
   peerDependencies:
     "@swc/core": "*"
   checksum: 2df5f215bb7a3f31e1db606e3ac01c4e67900e8db004b38dbfaa09f87bcc2b054070211086e095eddcd174ee561b696fcf679ea38263fa6daf69fee37dacbdc9
-  languageName: node
-  linkType: hard
-
-"@swc/types@npm:0.1.7":
-  version: 0.1.7
-  resolution: "@swc/types@npm:0.1.7"
-  dependencies:
-    "@swc/counter": ^0.1.3
-  checksum: da7c542de0a44b85a98139db03920448e86309d28ad9e9335f91b4025e5f32ae4fbbfdd0f287330fb0de737e7c5ec4f64ade0fc5fffea6c2fd9ac681b1e97bea
   languageName: node
   linkType: hard
 
@@ -10524,7 +10399,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/multer@npm:^2.0.0":
+"@types/multer@npm:^2.3.0":
   version: 2.3.0
   resolution: "@types/multer@npm:2.3.0"
   dependencies:
@@ -10901,7 +10776,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:8.72.0, @typescript-eslint/parser@npm:^8.0.0":
+"@typescript-eslint/parser@npm:8.72.0, @typescript-eslint/parser@npm:^8.72.0":
   version: 8.72.0
   resolution: "@typescript-eslint/parser@npm:8.72.0"
   dependencies:
@@ -10948,7 +10823,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/rule-tester@npm:^8.0.0":
+"@typescript-eslint/rule-tester@npm:^8.72.0":
   version: 8.72.0
   resolution: "@typescript-eslint/rule-tester@npm:8.72.0"
   dependencies:
@@ -11081,7 +10956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.72.0, @typescript-eslint/utils@npm:^8.0.0":
+"@typescript-eslint/utils@npm:8.72.0, @typescript-eslint/utils@npm:^8.72.0":
   version: 8.72.0
   resolution: "@typescript-eslint/utils@npm:8.72.0"
   dependencies:
@@ -16604,7 +16479,7 @@ __metadata:
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
     "@medusajs/workflow-engine-inmemory": "workspace:*"
-    "@swc/core": ^1.7.28
+    "@swc/core": ^1.16.20
     "@swc/jest": ^0.2.36
     form-data: ^4.0.4
     jest: ^29.7.0
@@ -16648,7 +16523,7 @@ __metadata:
     "@medusajs/user": "workspace:^"
     "@medusajs/utils": "workspace:^"
     "@medusajs/workflow-engine-inmemory": "workspace:*"
-    "@swc/core": ^1.7.28
+    "@swc/core": ^1.16.20
     "@swc/jest": ^0.2.36
     faker: ^5.5.3
     jest: ^29.7.0
@@ -17995,7 +17870,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^5.3.0":
+"js-yaml@npm:^5.5.0":
   version: 5.5.0
   resolution: "js-yaml@npm:5.5.0"
   dependencies:
@@ -18006,7 +17881,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsdom@npm:^27.1.0":
+"jsdom@npm:^27.4.0":
   version: 27.4.0
   resolution: "jsdom@npm:27.4.0"
   dependencies:
@@ -19298,7 +19173,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msw@npm:^2.3.0":
+"msw@npm:^2.15.0":
   version: 2.15.0
   resolution: "msw@npm:2.15.0"
   dependencies:
@@ -22257,7 +22132,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^4.34.8, rollup@npm:^4.43.0, rollup@npm:^4.62.4":
+"rollup@npm:^4.34.8, rollup@npm:^4.43.0, rollup@npm:^4.65.0":
   version: 4.65.0
   resolution: "rollup@npm:4.65.0"
   dependencies:
@@ -22356,15 +22231,15 @@ __metadata:
   dependencies:
     "@atomico/rollup-plugin-sizes": ^1.1.4
     "@changesets/changelog-github": ^0.4.8
-    "@changesets/cli": ^2.26.0
+    "@changesets/cli": ^2.31.1
     "@faker-js/faker": ^9.2.0
     "@medusajs/eslint-plugin": "workspace:^"
     "@rollup/plugin-node-resolve": ^15.1.0
     "@rollup/plugin-replace": ^5.0.2
-    "@storybook/addon-themes": ^10.5.6
-    "@storybook/react": ^10.5.6
-    "@storybook/react-vite": ^10.5.6
-    "@swc/core": ^1.7.28
+    "@storybook/addon-themes": ^10.6.3
+    "@storybook/react": ^10.6.3
+    "@storybook/react-vite": ^10.6.3
+    "@swc/core": ^1.16.20
     "@swc/helpers": ^0.5.11
     "@swc/jest": ^0.2.36
     "@testing-library/dom": ^9.3.1
@@ -22387,7 +22262,7 @@ __metadata:
     "@types/lodash.debounce": ^4.0.9
     "@types/lodash.isequal": ^4.5.8
     "@types/lodash.mergewith": ^4.6.9
-    "@types/multer": ^2.0.0
+    "@types/multer": ^2.3.0
     "@types/node": ^20.12.11
     "@types/node-emoji": ^1.8.2
     "@types/react": ^18.3.2
@@ -22396,7 +22271,7 @@ __metadata:
     "@types/yargs": ^15.0.15
     "@typescript-eslint/eslint-plugin": ^6.19.0
     "@typescript-eslint/parser": ^6.19.0
-    "@typescript-eslint/rule-tester": ^8.0.0
+    "@typescript-eslint/rule-tester": ^8.72.0
     "@vitejs/plugin-react": ^5.2.0
     "@vitest/coverage-v8": ^4.1.10
     ajv: ^8.18.0
@@ -22424,10 +22299,10 @@ __metadata:
     import-from: ^3.0.0
     ioredis: ^5.4.1
     jest: ^29.7.0
-    js-yaml: ^5.3.0
-    jsdom: ^27.1.0
+    js-yaml: ^5.5.0
+    jsdom: ^27.4.0
     lint-staged: ^11.2.6
-    msw: ^2.3.0
+    msw: ^2.15.0
     node-notifier: ^10.0.1
     nodemon: ^2.0.20
     pg-god: ^1.0.12
@@ -22442,16 +22317,16 @@ __metadata:
     resize-observer-polyfill: ^1.5.1
     resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
-    rollup: ^4.62.4
+    rollup: ^4.65.0
     rollup-plugin-esbuild: ^5.0.0
     rollup-plugin-ts: ^3.2.0
     rollup-plugin-visualizer: ^5.9.2
-    storybook: ^10.5.6
-    supertest: ^7.1.4
+    storybook: ^10.6.3
+    supertest: ^7.3.1
     tailwindcss: ^3.4.3
     ts-jest: ^29.1.0
     ts-node: ^10.9.2
-    tsc-alias: ^1.8.7
+    tsc-alias: ^1.9.9
     tsup: ^8.4.0
     turbo: ^1.6.3
     typescript: ^5.6.2
@@ -23266,7 +23141,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"storybook@npm:^10.5.6":
+"storybook@npm:^10.6.3":
   version: 10.6.3
   resolution: "storybook@npm:10.6.3"
   dependencies:
@@ -23627,7 +23502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supertest@npm:^7.1.4":
+"supertest@npm:^7.3.1":
   version: 7.3.1
   resolution: "supertest@npm:7.3.1"
   dependencies:
@@ -24251,7 +24126,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsc-alias@npm:^1.8.7":
+"tsc-alias@npm:^1.9.9":
   version: 1.9.9
   resolution: "tsc-alias@npm:1.9.9"
   dependencies:
