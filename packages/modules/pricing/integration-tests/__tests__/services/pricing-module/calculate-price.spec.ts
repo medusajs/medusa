@@ -1393,6 +1393,134 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             ])
           })
 
+          it("should return the override as calculated_amount when a higher sale with more rules is stacked on it", async () => {
+            await createPriceLists(
+              service,
+              {
+                title: "Group Override",
+                description: "test description",
+                type: PriceListType.OVERRIDE,
+                status: PriceListStatus.ACTIVE,
+              },
+              { customer_group_id: ["vip-customer-group-id"] },
+              [
+                {
+                  amount: 600,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            await createPriceLists(
+              service,
+              {
+                title: "Group Sale",
+                description: "test description",
+                type: PriceListType.SALE,
+                status: PriceListStatus.ACTIVE,
+              },
+              defaultRules,
+              [
+                {
+                  amount: 900,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "pln",
+                  region_id: "DE",
+                  customer_group_id: "vip-customer-group-id",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                is_calculated_price_price_list: true,
+                calculated_amount: 600,
+                is_original_price_price_list: true,
+                original_amount: 600,
+                calculated_price: expect.objectContaining({
+                  price_list_type: "override",
+                }),
+                original_price: expect.objectContaining({
+                  price_list_type: "override",
+                }),
+              }),
+            ])
+          })
+
+          it("should return the sale as calculated_amount when a lower sale with more rules is stacked on an override", async () => {
+            await createPriceLists(
+              service,
+              {
+                title: "Group Override",
+                description: "test description",
+                type: PriceListType.OVERRIDE,
+                status: PriceListStatus.ACTIVE,
+              },
+              { customer_group_id: ["vip-customer-group-id"] },
+              [
+                {
+                  amount: 600,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            await createPriceLists(
+              service,
+              {
+                title: "Group Sale",
+                description: "test description",
+                type: PriceListType.SALE,
+                status: PriceListStatus.ACTIVE,
+              },
+              defaultRules,
+              [
+                {
+                  amount: 400,
+                  currency_code: "pln",
+                  price_set_id: "price-set-PLN",
+                },
+              ]
+            )
+
+            const priceSetsResult = await service.calculatePrices(
+              { id: ["price-set-PLN"] },
+              {
+                context: {
+                  currency_code: "pln",
+                  region_id: "DE",
+                  customer_group_id: "vip-customer-group-id",
+                },
+              }
+            )
+
+            expect(priceSetsResult).toEqual([
+              expect.objectContaining({
+                id: "price-set-PLN",
+                calculated_amount: 400,
+                original_amount: 600,
+                calculated_price: expect.objectContaining({
+                  price_list_type: "sale",
+                }),
+                original_price: expect.objectContaining({
+                  price_list_type: "override",
+                }),
+              }),
+            ])
+          })
+
           it("should return price list prices when price list dont have rules, but context is loaded", async () => {
             await createPriceLists(service, {}, {})
 
