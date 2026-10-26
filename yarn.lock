@@ -3185,7 +3185,7 @@ __metadata:
     outdent: ^0.8.0
     postcss: ^8.5.10
     tailwindcss: ^3.4.3
-    vite: ^7.3.6
+    vite: ^7.3.7
   languageName: unknown
   linkType: soft
 
@@ -10814,13 +10814,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/validator@npm:^13.7.17":
-  version: 13.15.10
-  resolution: "@types/validator@npm:13.15.10"
-  checksum: 3e2e65fcd37dd6961ca3fd0535293d0c42f5911dc3ca44b96f458835e6db2392b678ccbb0c9815d8c0a14e653439e6c62c7b8758a6cd1d6e390551c9e56618ac
-  languageName: node
-  linkType: hard
-
 "@types/wait-on@npm:^5.3.1":
   version: 5.3.4
   resolution: "@types/wait-on@npm:5.3.4"
@@ -12181,8 +12174,8 @@ __metadata:
   linkType: hard
 
 "body-parser@npm:~1.20.5":
-  version: 1.20.8
-  resolution: "body-parser@npm:1.20.8"
+  version: 1.20.9
+  resolution: "body-parser@npm:1.20.9"
   dependencies:
     bytes: ~3.1.2
     content-type: ~1.0.5
@@ -12196,7 +12189,7 @@ __metadata:
     raw-body: ~2.5.3
     type-is: ~1.6.18
     unpipe: ~1.0.0
-  checksum: 7edc8c4762d52ff685af081b1d5ccad860edcec662c25893be452b16042fd55b9c9869a194bd282e0ad936c34eb07866b2b33f0cc02ff916597058fd229c13d2
+  checksum: 685d3208335377a3dfc6d7bc8b2af6d40d38b9a72e25bab4d9f7aff19d059729d5b1b3a9f5561274f460020bb9166c211d5302abe0b45452665420ca5e16013b
   languageName: node
   linkType: hard
 
@@ -13409,7 +13402,6 @@ __metadata:
     slugify: ^1.6.6
     terminal-link: ^5.0.0
     uuid: ^11.1.1
-    validator: ^13.15.22
     wait-on: ^9.0.1
     winston: ^3.9.0
     yaml: ^2.8.4
@@ -22348,7 +22340,6 @@ __metadata:
     "@types/node-emoji": ^1.8.2
     "@types/react": ^18.3.2
     "@types/react-dom": ^18.2.25
-    "@types/validator": ^13.7.17
     "@types/wait-on": ^5.3.1
     "@types/yargs": ^15.0.15
     "@typescript-eslint/eslint-plugin": ^6.19.0
@@ -24845,13 +24836,6 @@ __metadata:
     "@types/istanbul-lib-coverage": ^2.0.1
     convert-source-map: ^2.0.0
   checksum: 968bcf1c7c88c04df1ffb463c179558a2ec17aa49e49376120504958239d9e9dad5281aa05f2a78542b8557f2be0b0b4c325710262f3b838b40d703d5ed30c23
-  languageName: node
-  linkType: hard
-
-"validator@npm:^13.15.20":
-  version: 13.15.35
-  resolution: "validator@npm:13.15.35"
-  checksum: 1958ebcad578128d154853a2b9bf5b95e7738dcc7d1d065e50a969812272312ec379dcaf375b9d7545e04a71de6755f60f5a4b49c1405737a9c80e11da297eef
   languageName: node
   linkType: hard
 
