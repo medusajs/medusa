@@ -3696,7 +3696,7 @@ __metadata:
     cookie-parser: ^1.4.6
     cors: ^2.8.5
     express: ^4.21.0
-    express-session: ^1.17.3
+    express-session: ^1.19.0
     glob: 13.0.6
     http-errors: 2.0.0
     jsonwebtoken: ^9.0.2
@@ -13198,13 +13198,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie-signature@npm:1.0.7, cookie-signature@npm:~1.0.6":
-  version: 1.0.7
-  resolution: "cookie-signature@npm:1.0.7"
-  checksum: e7731ad2995ae2efeed6435ec1e22cdd21afef29d300c27281438b1eab2bae04ef0d1a203928c0afec2cee72aa36540b8747406ebe308ad23c8e8cc3c26c9c51
-  languageName: node
-  linkType: hard
-
 "cookie-signature@npm:^1.2.2":
   version: 1.2.2
   resolution: "cookie-signature@npm:1.2.2"
@@ -13212,7 +13205,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.7.2, cookie@npm:~0.7.1":
+"cookie-signature@npm:~1.0.6, cookie-signature@npm:~1.0.7":
+  version: 1.0.7
+  resolution: "cookie-signature@npm:1.0.7"
+  checksum: e7731ad2995ae2efeed6435ec1e22cdd21afef29d300c27281438b1eab2bae04ef0d1a203928c0afec2cee72aa36540b8747406ebe308ad23c8e8cc3c26c9c51
+  languageName: node
+  linkType: hard
+
+"cookie@npm:0.7.2, cookie@npm:~0.7.1, cookie@npm:~0.7.2":
   version: 0.7.2
   resolution: "cookie@npm:0.7.2"
   checksum: 9596e8ccdbf1a3a88ae02cf5ee80c1c50959423e1022e4e60b91dd87c622af1da309253d8abdb258fb5e3eacb4f08e579dc58b4897b8087574eee0fd35dfa5d2
@@ -13629,7 +13629,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:2.6.9":
+"debug@npm:2.6.9, debug@npm:~2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
   dependencies:
@@ -15075,19 +15075,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-session@npm:^1.17.3":
-  version: 1.18.2
-  resolution: "express-session@npm:1.18.2"
+"express-session@npm:^1.19.0":
+  version: 1.19.0
+  resolution: "express-session@npm:1.19.0"
   dependencies:
-    cookie: 0.7.2
-    cookie-signature: 1.0.7
-    debug: 2.6.9
+    cookie: ~0.7.2
+    cookie-signature: ~1.0.7
+    debug: ~2.6.9
     depd: ~2.0.0
     on-headers: ~1.1.0
     parseurl: ~1.3.3
-    safe-buffer: 5.2.1
+    safe-buffer: ~5.2.1
     uid-safe: ~2.1.5
-  checksum: 27e17c3d365e3543ba7c1315ff14916b8347a2fd28f94817c6d2e2425923e61fa97fc23e0933015981c3358ba6f11964666249f046c4f93d22015fe2a95140ac
+  checksum: b1766010a728c58ca1b93ea33d49008b0b16a8751e5767d36b5bf3dd2f7f77d9933bb55352d296edbad4824c8c65e33554f058a33f201406557c1b3615fd10dc
   languageName: node
   linkType: hard
 
@@ -22418,7 +22418,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.0.1, safe-buffer@npm:^5.1.0, safe-buffer@npm:~5.2.0":
+"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.0.1, safe-buffer@npm:^5.1.0, safe-buffer@npm:~5.2.0, safe-buffer@npm:~5.2.1":
   version: 5.2.1
   resolution: "safe-buffer@npm:5.2.1"
   checksum: 6501914237c0a86e9675d4e51d89ca3c21ffd6a31642efeba25ad65720bce6921c9e7e974e5be91a786b25aa058b5303285d3c15dbabf983a919f5f630d349f3
