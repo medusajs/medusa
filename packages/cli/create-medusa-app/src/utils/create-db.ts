@@ -17,7 +17,7 @@ type CreateDbOptions = {
 }
 
 export default async function createDb({ client, db }: CreateDbOptions) {
-  await client.query(`CREATE DATABASE "${db}"`)
+  await client.query(`CREATE DATABASE ${client.escapeIdentifier(db)}`)
 }
 
 async function doesDbExist(
@@ -25,7 +25,8 @@ async function doesDbExist(
   dbName: string
 ): Promise<boolean> {
   const result = await client.query(
-    `SELECT datname FROM pg_catalog.pg_database WHERE datname='${dbName}';`
+    `SELECT datname FROM pg_catalog.pg_database WHERE datname = $1;`,
+    [dbName]
   )
 
   return !!result.rowCount
