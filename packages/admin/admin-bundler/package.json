@@ -32,7 +32,7 @@
     "@medusajs/admin-vite-plugin": "2.22.1",
     "@medusajs/dashboard": "2.22.1",
     "@vitejs/plugin-react": "^5.2.0",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.6.1",
     "compression": "^1.8.2",
     "express": "^4.21.0",
     "get-port": "^5.1.1",
