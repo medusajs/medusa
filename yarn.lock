@@ -13322,7 +13322,7 @@ __metadata:
     slugify: ^1.6.6
     terminal-link: ^5.0.0
     uuid: ^11.1.1
-    wait-on: ^9.0.1
+    wait-on: ^9.5.1
     winston: ^3.9.0
     yaml: ^2.8.4
   bin:
@@ -17810,9 +17810,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"joi@npm:^18.0.1":
-  version: 18.2.9
-  resolution: "joi@npm:18.2.9"
+"joi@npm:^18.2.9":
+  version: 18.3.0
+  resolution: "joi@npm:18.3.0"
   dependencies:
     "@hapi/address": ^5.1.1
     "@hapi/formula": ^3.0.2
@@ -17821,7 +17821,7 @@ __metadata:
     "@hapi/tlds": ^1.1.1
     "@hapi/topo": ^6.0.2
     "@standard-schema/spec": ^1.1.0
-  checksum: ac4934ea6aa4b3f9f6df28369d6ba9a4d585685822a171b93c0ce2e3c28d2dcf91bad1b3f34f6eb2f9d01165a5f84fe36eecb5a32b45bfa6538a7ce0895b2b4f
+  checksum: 13b4ab345a79562fa57e483208c1fcb71fbb56bd52ccd97c295db80a5d40e03ec130364080375afe2035f33b3b9f79a9b1b0bb508b90b8f2517eb3e52c9bb27b
   languageName: node
   linkType: hard
 
@@ -24963,18 +24963,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wait-on@npm:^9.0.1":
-  version: 9.0.3
-  resolution: "wait-on@npm:9.0.3"
+"wait-on@npm:^9.5.1":
+  version: 9.5.1
+  resolution: "wait-on@npm:9.5.1"
   dependencies:
-    axios: ^1.13.2
-    joi: ^18.0.1
-    lodash: ^4.17.21
-    minimist: ^1.2.8
+    axios: ^1.20.0
+    joi: ^18.2.9
+    lodash: ^4.18.1
     rxjs: ^7.8.2
   bin:
     wait-on: bin/wait-on
-  checksum: f5f8cb57be2dbf89edacd104916d5ee0211064c86324ab466c1da0965af77638615258ff612aa4cb16207770b772524bf2d9e583e890d96dd80315dca5733591
+  checksum: 6ff776a9a289db217febd4d399ce65931d38cec328382d209f5fd972729d7423dda0befd9ce00dc7e13d0d49ddd78bca0d6896e6a077fe4a24d62f885b7be73b
   languageName: node
   linkType: hard
 
