@@ -40,7 +40,14 @@ jobs:
         if: inputs.commit_sha != ''
         id: dispatch_base
         working-directory: .
-        run: echo "base_sha=$(git rev-parse ${{ inputs.commit_sha }}^)" >> "$GITHUB_OUTPUT"
+        env:
+          COMMIT_SHA: ${{ inputs.commit_sha }}
+        run: |
+          if ! [[ "$COMMIT_SHA" =~ ^[0-9a-f]{7,40}$ ]]; then
+            echo "::error::commit_sha must be a hex commit SHA" >&2
+            exit 1
+          fi
+          echo "base_sha=$(git rev-parse "${COMMIT_SHA}^")" >> "$GITHUB_OUTPUT"
 
       - name: Get changed spec files
         id: changed

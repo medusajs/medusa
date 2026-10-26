@@ -187,6 +187,8 @@ jobs:
           #   - `/proc/**`: reading the tokens straight out of the agent's own
           #     process environment via `/proc/self/environ`. Read rules also
           #     apply to Glob and Grep.
+          #   - `_temp/**`: the runner's GITHUB_ENV/GITHUB_PATH files, which would
+          #     let the model set env vars (e.g. NODE_OPTIONS) for later steps.
           #   - `.claude/**` and `.mcp.json`: writing agent config into the
           #     checkout. The action loads project and local setting sources,
           #     so this keeps a prompt-injected model from trying to widen its
@@ -198,6 +200,9 @@ jobs:
               "permissions": {
                 "deny": [
                   "Read(//proc/**)",
+                  "Read(//home/runner/work/_temp/**)",
+                  "Write(//home/runner/work/_temp/**)",
+                  "Edit(//home/runner/work/_temp/**)",
                   "Write(//**/.claude/**)",
                   "Edit(//**/.claude/**)",
                   "Write(//**/.mcp.json)",
