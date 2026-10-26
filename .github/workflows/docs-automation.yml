@@ -69,8 +69,9 @@ jobs:
       - name: Analyze commit diff
         id: analyze
         working-directory: www/utils/packages/docs-automator
-        run: yarn analyze --commit-sha ${{ inputs.commit_sha || github.sha }} --output /tmp/analysis.json
+        run: yarn analyze --commit-sha "$COMMIT_SHA" --output /tmp/analysis.json
         env:
+          COMMIT_SHA: ${{ inputs.commit_sha || github.sha }}
           MONOREPO_ROOT_PATH: ${{ github.workspace }}
         continue-on-error: true
 
