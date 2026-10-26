@@ -11,6 +11,12 @@ Refer to the [Webhook Reference](../reference/page.mdx) for the current payload 
 {/* Entries are added automatically when webhook changes are deployed.
     Keep them newest-first, with an `## {Month} {Day}, {Year}` heading. */}
 
+## October 23, 2026
+
+### Delivery
+
+Cloud now blocks webhook delivery to endpoints that resolve to private or internal network addresses. Attempts to deliver to such URLs will fail immediately with a network error rather than timing out or returning an HTTP error. This affects any customer whose webhook endpoint URL resolves to a loopback, link-local, or other non-public IP address; those deliveries will be recorded as failed and will be retried according to the normal retry schedule.
+
 ## August 10, 2026
 
 Medusa released webhooks for Cloud organizations with the following events:
