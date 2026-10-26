@@ -1,4 +1,4 @@
-import coreConfig from "tailwind"
+import coreConfig from "docs-tailwind"
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
