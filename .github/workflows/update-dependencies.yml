@@ -337,6 +337,10 @@ jobs:
           # disabled. Test code can still read the Anthropic key, but egress is blocked (harden-runner).
           CLAUDE_CODE_SUBPROCESS_ENV_SCRUB: "0"
           CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"
+          # Headless runs end when the turn ends, so a backgrounded build is never waited on.
+          CLAUDE_CODE_DISABLE_BACKGROUND_TASKS: "1"
+          BASH_DEFAULT_TIMEOUT_MS: "1800000"
+          BASH_MAX_TIMEOUT_MS: "3600000"
           CONTEXT7_API_KEY: ${{ secrets.CONTEXT7_API_KEY }}
           # Read-only, for scripts/get_dependency_releases.sh.
           GH_TOKEN: ${{ github.token }}
@@ -394,6 +398,7 @@ jobs:
             6. Never run git commands that stage, commit, push, or switch branches. Leave your changes in the working tree.
             7. Only some command shapes are allowed. If a command is denied, retry it in a plain form: one command per call, no pipes, no `VAR=value` prefixes, no `&&` chains (for example `yarn install`, not `yarn install 2>&1 | tail`). Never stop, or mark a package blocked or dropped, because a command was denied; if the commands you need stay denied, follow the "skipped" rule in reference/output.md. Inspect files with the Read and Grep tools, not `cat` or `node -e`.
             8. Write ${{ github.workspace }}/update-result.json right after reading the group, with every package `skipped` and `status` "failed", then update it as you go, so a result exists even if you stop early. Write pr-body.md next to it when status is "proposed". Both are described in the skill's reference/output.md.
+            9. Run every command in the foreground and wait for it to finish. Never end your turn while a build, install, or test is still pending: the run ends with your turn, and nothing resumes you.
 
       # Only the denied commands and the final message are published: the full transcript can hold unmasked tool output.
       - name: Show denied tool calls and final message
@@ -434,6 +439,12 @@ jobs:
             proposed|failed|no-change) ;;
             *) echo "::error::Unknown status '$STATUS'." >&2; exit 1 ;;
           esac
+          if jq -e '[.packages[]? | .reason == "not attempted"] | length > 0 and all' update-result.json > /dev/null; then
+            echo "::warning::The agent stopped before attempting any package." >&2
+            jq '.status = "failed" | .summary = "The agent stopped before attempting any package. See its final message in the update job summary."' \
+              update-result.json > update-result.tmp && mv update-result.tmp update-result.json
+            STATUS=failed
+          fi
           cp update-result.json /tmp/deps-update/out/
 
           if [[ "$STATUS" == "proposed" ]]; then
