@@ -3372,6 +3372,57 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/cloud@2.22.1, @medusajs/cloud@workspace:packages/plugins/cloud":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/cloud@workspace:packages/plugins/cloud"
+  dependencies:
+    "@medusajs/admin-sdk": 2.22.1
+    "@medusajs/cli": 2.22.1
+    "@medusajs/dashboard": 2.22.1
+    "@medusajs/framework": 2.22.1
+    "@medusajs/icons": 2.22.1
+    "@medusajs/js-sdk": 2.22.1
+    "@medusajs/types": 2.22.1
+    "@medusajs/ui": 4.2.8
+    "@medusajs/ui-preset": 2.22.1
+    "@swc/core": 1.5.7
+    "@tanstack/react-query": 5.64.2
+    "@types/node": ^20.0.0
+    cross-env: ^7.0.3
+    typescript: ^5.7.3
+  peerDependencies:
+    "@medusajs/admin-sdk": 2.22.1
+    "@medusajs/cli": 2.22.1
+    "@medusajs/dashboard": 2.22.1
+    "@medusajs/framework": 2.22.1
+    "@medusajs/icons": 2.22.1
+    "@medusajs/test-utils": 2.22.1
+    "@medusajs/ui": 4.2.8
+    react: ^18.3.1
+    react-dom: ^18.3.1
+    react-router-dom: ^6.30.4 || ^7.0.0
+  peerDependenciesMeta:
+    "@medusajs/admin-sdk":
+      optional: true
+    "@medusajs/cli":
+      optional: true
+    "@medusajs/dashboard":
+      optional: true
+    "@medusajs/icons":
+      optional: true
+    "@medusajs/test-utils":
+      optional: true
+    "@medusajs/ui":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+    react-router-dom:
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/core-flows@2.22.1, @medusajs/core-flows@workspace:*, @medusajs/core-flows@workspace:^, @medusajs/core-flows@workspace:packages/core/core-flows":
   version: 0.0.0-use.local
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
@@ -3884,6 +3935,7 @@ __metadata:
     "@medusajs/caching": 2.22.1
     "@medusajs/caching-redis": 2.22.1
     "@medusajs/cart": 2.22.1
+    "@medusajs/cloud": 2.22.1
     "@medusajs/core-flows": 2.22.1
     "@medusajs/currency": 2.22.1
     "@medusajs/customer": 2.22.1

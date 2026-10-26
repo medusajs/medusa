@@ -237,6 +237,16 @@ function resolvePlugins(
     ],
   ])
 
+  if (isCloud) {
+    defaultPlugins.set("@medusajs/cloud", {
+      resolve: "@medusajs/cloud",
+      options: {
+        apiUrl: process.env.MEDUSA_CLOUD_API_URL,
+        organizationId: process.env.MEDUSA_CLOUD_ORGANIZATION_ID,
+      },
+    })
+  }
+
   if (configPlugins?.length) {
     configPlugins.forEach((plugin) => {
       if (typeof plugin === "string") {
@@ -247,10 +257,7 @@ function resolvePlugins(
     })
   }
 
-  // We don't have any cloud plugins yet, but we might in the future
-  const cloudPlugins = [...Array.from(defaultPlugins.values())]
-
-  return isCloud ? cloudPlugins : Array.from(defaultPlugins.values())
+  return Array.from(defaultPlugins.values())
 }
 
 /**

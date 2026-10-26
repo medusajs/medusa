@@ -74,6 +74,7 @@
     "@medusajs/caching": "2.22.1",
     "@medusajs/caching-redis": "2.22.1",
     "@medusajs/cart": "2.22.1",
+    "@medusajs/cloud": "2.22.1",
     "@medusajs/core-flows": "2.22.1",
     "@medusajs/currency": "2.22.1",
     "@medusajs/customer": "2.22.1",
