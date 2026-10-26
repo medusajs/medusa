@@ -1,5 +1,5 @@
 import type { OrderDetailDTO, OrderDTO } from "@medusajs/framework/types"
-import { deduplicate } from "@medusajs/framework/utils"
+import { deduplicate, isPresent } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
@@ -11,6 +11,13 @@ import {
   getLastFulfillmentStatus,
   getLastPaymentStatus,
 } from "../utils/aggregate-status"
+
+const toStatusArray = (value: unknown): string[] => {
+  if (!isPresent(value)) {
+    return []
+  }
+  return Array.isArray(value) ? (value as string[]) : [value as string]
+}
 
 /**
  * The retrieved list of orders. If you passed pagination configurations in the
@@ -134,16 +141,51 @@ export const getOrdersListWorkflow = createWorkflow(
       ])
     })
 
+    /**
+     * `fulfillment_status` and `payment_status` aren't persisted columns on
+     * the order - they're computed below from `payment_collections` and
+     * `fulfillments` once those relations are fetched. The remote query has
+     * no column to filter on, so these are pulled out of the filters here
+     * and applied as an in-memory filter (with in-memory pagination) once
+     * the statuses have been computed.
+     */
+    const remoteQueryInput = transform(input, ({ variables }) => {
+      const { filters, skip, take, ...restVariables } = variables ?? {}
+      const { fulfillment_status, payment_status, ...restFilters } =
+        filters ?? {}
+
+      const statusFilter = {
+        fulfillment_status: toStatusArray(fulfillment_status),
+        payment_status: toStatusArray(payment_status),
+      }
+      const hasStatusFilter =
+        !!statusFilter.fulfillment_status.length ||
+        !!statusFilter.payment_status.length
+
+      return {
+        queryVariables: {
+          ...restVariables,
+          filters: restFilters,
+          // Defer DB-level pagination until the in-memory status filter has
+          // been applied, otherwise matching rows outside the DB-level page
+          // would be silently dropped.
+          ...(hasStatusFilter ? {} : { skip, take }),
+        },
+        statusFilter: hasStatusFilter ? statusFilter : null,
+        pagination: { skip, take },
+      }
+    })
+
     const orders: OrderDTO[] = useRemoteQueryStep({
       entry_point: "orders",
       fields,
-      variables: input.variables,
+      variables: remoteQueryInput.queryVariables,
       list: true,
     })
 
     const aggregatedOrders = transform(
-      { orders, input },
-      ({ orders, input }) => {
+      { orders, input, remoteQueryInput },
+      ({ orders, input, remoteQueryInput }) => {
         const fields = input.fields
         const requiredPaymentFields = fields.some((f) =>
           f.includes("payment_collections")
@@ -153,7 +195,8 @@ export const getOrdersListWorkflow = createWorkflow(
         )
 
         const orders_ = orders as any
-        const data = orders_.rows ? orders_.rows : orders_
+        const isPaginated = !!orders_?.rows
+        let data: OrderDetailDTO[] = isPaginated ? orders_.rows : orders_
 
         for (const order of data) {
           const order_ = order as OrderDetailDTO
@@ -164,18 +207,67 @@ export const getOrdersListWorkflow = createWorkflow(
           order_.fulfillment_status = getLastFulfillmentStatus(
             order_
           ) as OrderDetailDTO["fulfillment_status"]
+        }
 
+        const { statusFilter, pagination } = remoteQueryInput
+
+        if (statusFilter) {
+          data = data.filter((order) => {
+            const matchesFulfillment =
+              !statusFilter.fulfillment_status.length ||
+              statusFilter.fulfillment_status.includes(
+                order.fulfillment_status as unknown as string
+              )
+            const matchesPayment =
+              !statusFilter.payment_status.length ||
+              statusFilter.payment_status.includes(
+                order.payment_status as unknown as string
+              )
+
+            return matchesFulfillment && matchesPayment
+          })
+        }
+
+        for (const order of data) {
+          const order_ = order as any
           if (!requiredPaymentFields) {
-            // @ts-ignore
             delete order_.payment_collections
           }
           if (!requiredFulfillmentFields) {
-            // @ts-ignore
             delete order_.fulfillments
           }
         }
 
-        return orders
+        if (!statusFilter) {
+          return orders
+        }
+
+        // The remote query was called without pagination above (so the
+        // in-memory filter above doesn't drop matches outside the DB-level
+        // page), so whether the *caller* wanted a paginated response has to
+        // be read from the original pagination input, not from the shape
+        // the remote query happened to return.
+        const callerWantsPagination =
+          pagination.skip !== undefined || pagination.take !== undefined
+
+        if (!callerWantsPagination) {
+          return data
+        }
+
+        const skip = pagination.skip ?? 0
+        const take = pagination.take
+        const count = data.length
+        const pagedData =
+          take === undefined ? data.slice(skip) : data.slice(skip, skip + take)
+
+        return {
+          rows: pagedData,
+          metadata: {
+            count,
+            skip,
+            take: take ?? count,
+          },
+        }
       }
     )
 
