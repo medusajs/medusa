@@ -149,7 +149,7 @@
     "validate:http-types": "yarn workspace @medusajs/http-types-generator validate:http-types",
     "openapi:generate": "yarn ./packages/cli/oas/oas-github-ci run ci --with-full-file",
     "medusa-oas": "yarn ./packages/cli/oas/medusa-oas-cli run medusa-oas",
-    "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
+    "release:snapshot": "changeset publish --tag snapshot",
     "release:next": "chgstangeset publish --no-git-tags --snapshot --tag next",
     "version:next": "changeset version --snapshot next",
     "release": "changeset publish",
