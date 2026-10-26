@@ -22,6 +22,11 @@ const ApplicationMethod = model
         .enum(PromotionUtils.ApplicationMethodAllocation)
         .index("IDX_application_method_allocation")
         .nullable(),
+      target_selection_strategy: model
+        .enum(PromotionUtils.ApplicationMethodTargetSelectionStrategy)
+        .default(PromotionUtils.ApplicationMethodTargetSelectionStrategy
+            .MOST_EXPENSIVE_FIRST
+        ),
       promotion: model.belongsTo(() => Promotion, {
         mappedBy: "application_method",
       }),

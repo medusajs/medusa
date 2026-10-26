@@ -38,6 +38,9 @@ export const CreatePromotionSchema = z
       buy_rules: RuleSchema,
       type: z.enum(["fixed", "percentage"]),
       target_type: z.enum(["order", "shipping_methods", "items"]),
+      target_selection_strategy: z
+        .enum(["most_expensive_first", "cheapest_first"])
+        .optional(),
     }),
     campaign: CreateCampaignSchema.optional(),
   })
