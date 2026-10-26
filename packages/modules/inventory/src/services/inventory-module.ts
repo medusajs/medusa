@@ -782,13 +782,12 @@ export default class InventoryModuleService
     config?: RestoreReturn<string>,
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    const reservations: InventoryTypes.ReservationItemDTO[] = (
+    const reservations: InventoryTypes.ReservationItemDTO[] =
       await this.reservationItemService_.list(
-        { id: ids },
+        { id: ids, deleted_at: { $ne: null } },
         { withDeleted: true },
         context
       )
-    ).filter((reservation) => !!reservation.deleted_at)
 
     await super.restoreReservationItems({ id: ids }, config, context)
 
@@ -888,13 +887,12 @@ export default class InventoryModuleService
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    const reservations: InventoryTypes.ReservationItemDTO[] = (
+    const reservations: InventoryTypes.ReservationItemDTO[] =
       await this.reservationItemService_.list(
-        { line_item_id: lineItemId },
+        { line_item_id: lineItemId, deleted_at: { $ne: null } },
         { withDeleted: true },
         context
       )
-    ).filter((reservation) => !!reservation.deleted_at)
 
     await this.reservationItemService_.restore(
       { line_item_id: lineItemId },
