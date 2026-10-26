@@ -8884,6 +8884,7 @@ __metadata:
     autoprefixer: 10.4.14
     build-scripts: "*"
     clsx: ^2.0.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     docs-utils: "*"
     eslint: ^9.13.0
@@ -8894,7 +8895,7 @@ __metadata:
     json-stringify-pretty-compact: ^4.0.0
     mime-types: ^3
     next: 16.4.2
-    next-mdx-remote: 5.0.0
+    next-mdx-remote: 6.0.0
     openapi-sampler: ^1.3.1
     pluralize: ^8.0.0
     postcss: ^8.5.10
@@ -8911,7 +8912,6 @@ __metadata:
     remark-rehype-plugins: "*"
     slugify: ^1.6.6
     swr: ^2.2.0
-    tailwind: "*"
     tailwindcss: 3.3.3
     types: "*"
     typescript: 5.1.6
@@ -9375,6 +9375,7 @@ __metadata:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     docs-utils: "*"
     eslint: ^9.13.0
@@ -9392,7 +9393,6 @@ __metadata:
     remark-frontmatter: ^5.0.0
     remark-rehype-plugins: "*"
     tags: "*"
-    tailwind: "*"
     tailwindcss: ^3.3.0
     tsconfig: "*"
     types: "*"
@@ -9833,6 +9833,7 @@ __metadata:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
@@ -9849,7 +9850,6 @@ __metadata:
     remark-frontmatter: ^5.0.0
     remark-rehype-plugins: "*"
     slugify: ^1.6.6
-    tailwind: "*"
     tailwindcss: ^3.3.0
     tsconfig: "*"
     types: "*"
@@ -10963,6 +10963,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"docs-tailwind@workspace:*, docs-tailwind@workspace:packages/tailwind":
+  version: 0.0.0-use.local
+  resolution: "docs-tailwind@workspace:packages/tailwind"
+  dependencies:
+    "@medusajs/ui-preset": 2.22.1
+    tailwindcss-animate: ^1.0.7
+  peerDependencies:
+    docs-ui: "*"
+  languageName: unknown
+  linkType: soft
+
 "docs-ui@*, docs-ui@workspace:packages/docs-ui":
   version: 0.0.0-use.local
   resolution: "docs-ui@workspace:packages/docs-ui"
@@ -10980,6 +10991,7 @@ __metadata:
     algoliasearch: ^5.2.1
     clsx: ^2.0.0
     cpy-cli: ^5.0.0
+    docs-tailwind: "workspace:*"
     docs-utils: "*"
     eslint: ^9.13.0
     framer-motion: ^11.11.9
@@ -11001,7 +11013,6 @@ __metadata:
     rimraf: ^5.0.1
     schema-dts: ^1.1.5
     slugify: ^1.6.6
-    tailwind: "*"
     tailwindcss: ^3.3.3
     tsc-alias: ^1.8.7
     types: "*"
@@ -15932,19 +15943,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-mdx-remote@npm:5.0.0":
-  version: 5.0.0
-  resolution: "next-mdx-remote@npm:5.0.0"
+"next-mdx-remote@npm:6.0.0":
+  version: 6.0.0
+  resolution: "next-mdx-remote@npm:6.0.0"
   dependencies:
     "@babel/code-frame": ^7.23.5
     "@mdx-js/mdx": ^3.0.1
     "@mdx-js/react": ^3.0.1
-    unist-util-remove: ^3.1.0
+    unist-util-remove: ^4.0.0
+    unist-util-visit: ^5.1.0
     vfile: ^6.0.1
     vfile-matter: ^5.0.0
   peerDependencies:
     react: ">=16"
-  checksum: bf96d57bf978c477b6b4e0d330889d3293f99c16f82e92b960a676cb80cd656f5d4427717ec3377323d604330eddd8fcb05a74740c10e03092a3b9888079a250
+  checksum: b85c24034ab6139d8fc6696c66b614d7707a46814739b3e050b4878973ce7ceabf196e8e4cf3a420790811daa763a5678dbbe00d74cce5bf1c4ab6b064407a82
   languageName: node
   linkType: hard
 
@@ -17808,6 +17820,7 @@ __metadata:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     docs-utils: "*"
     eslint: ^9.13.0
@@ -17827,7 +17840,6 @@ __metadata:
     remark-rehype-plugins: "*"
     swr: ^2.3.6
     tags: "*"
-    tailwind: "*"
     tailwindcss: ^3.3.0
     ts-node: ^10.9.2
     tsconfig: "*"
@@ -19106,17 +19118,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind@*, tailwind@workspace:packages/tailwind":
-  version: 0.0.0-use.local
-  resolution: "tailwind@workspace:packages/tailwind"
-  dependencies:
-    "@medusajs/ui-preset": 2.22.1
-    tailwindcss-animate: ^1.0.7
-  peerDependencies:
-    docs-ui: "*"
-  languageName: unknown
-  linkType: soft
-
 "tailwindcss-animate@npm:^1.0.6, tailwindcss-animate@npm:^1.0.7":
   version: 1.0.7
   resolution: "tailwindcss-animate@npm:1.0.7"
@@ -19980,6 +19981,7 @@ turbo@latest:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
@@ -19997,7 +19999,6 @@ turbo@latest:
     remark-frontmatter: ^5.0.0
     remark-rehype-plugins: "*"
     slugify: ^1.6.6
-    tailwind: "*"
     tailwindcss: ^3.3.0
     tsconfig: "*"
     types: "*"
@@ -20177,17 +20178,6 @@ turbo@latest:
   languageName: node
   linkType: hard
 
-"unist-util-remove@npm:^3.1.0":
-  version: 3.1.1
-  resolution: "unist-util-remove@npm:3.1.1"
-  dependencies:
-    "@types/unist": ^2.0.0
-    unist-util-is: ^5.0.0
-    unist-util-visit-parents: ^5.0.0
-  checksum: c0dae9fd9f2b119d3fa56e4937499858b9d81a1bd91eb85e6e5a1b053f8ffc5e319c410baa4968f062557380c0d1d29ec0c7622c83f54303a54c668c18d68c53
-  languageName: node
-  linkType: hard
-
 "unist-util-remove@npm:^4.0.0":
   version: 4.0.0
   resolution: "unist-util-remove@npm:4.0.0"
@@ -20226,7 +20216,7 @@ turbo@latest:
   languageName: node
   linkType: hard
 
-"unist-util-visit-parents@npm:^5.0.0, unist-util-visit-parents@npm:^5.1.1":
+"unist-util-visit-parents@npm:^5.1.1":
   version: 5.1.3
   resolution: "unist-util-visit-parents@npm:5.1.3"
   dependencies:
@@ -20243,6 +20233,16 @@ turbo@latest:
     "@types/unist": ^3.0.0
     unist-util-is: ^6.0.0
   checksum: 51b1a5b0aa23c97d3e03e7288f0cdf136974df2217d0999d3de573c05001ef04cccd246f51d2ebdfb9e8b0ed2704451ad90ba85ae3f3177cf9772cef67f56206
+  languageName: node
+  linkType: hard
+
+"unist-util-visit-parents@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "unist-util-visit-parents@npm:6.1.0"
+  dependencies:
+    "@types/unist": ^3.0.0
+    unist-util-is: ^6.0.0
+  checksum: 276587df818147483253a10f1c90733febe2d2c51d46900435563164cf5a8d113dc408bd932fa9b30cdf81c18db2e12546c6d7be1a24f9aa1dfce9ae282e123c
   languageName: node
   linkType: hard
 
@@ -20265,6 +20265,17 @@ turbo@latest:
     unist-util-is: ^6.0.0
     unist-util-visit-parents: ^6.0.0
   checksum: 51434a1d80252c1540cce6271a90fd1a106dbe624997c09ed8879279667fb0b2d3a685e02e92bf66598dcbe6cdffa7a5f5fb363af8fdf90dda6c855449ae39a5
+  languageName: node
+  linkType: hard
+
+"unist-util-visit@npm:^5.1.0":
+  version: 5.2.0
+  resolution: "unist-util-visit@npm:5.2.0"
+  dependencies:
+    "@types/unist": ^3.0.0
+    unist-util-is: ^6.0.0
+    unist-util-visit-parents: ^6.1.0
+  checksum: 7ec83a1e0e55ecc45acb16f10e2953fdb0fa0b1e78a9c6df1b30b87c3d9169f1f4bc65457f165f782edb1a8b33eb86b843ef128127d535fba6aca3684282bd81
   languageName: node
   linkType: hard
 
@@ -20385,6 +20396,7 @@ turbo@latest:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
@@ -20400,7 +20412,6 @@ turbo@latest:
     remark-directive: ^3.0.0
     remark-frontmatter: ^5.0.0
     remark-rehype-plugins: "*"
-    tailwind: "*"
     tailwindcss: ^3.3.0
     tsconfig: "*"
     types: "*"
