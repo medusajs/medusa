@@ -99,7 +99,7 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.21.0",
-    "express-session": "^1.17.3",
+    "express-session": "^1.19.0",
     "glob": "13.0.6",
     "http-errors": "2.0.0",
     "jsonwebtoken": "^9.0.2",
