@@ -8884,6 +8884,7 @@ __metadata:
     autoprefixer: 10.4.14
     build-scripts: "*"
     clsx: ^2.0.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     docs-utils: "*"
     eslint: ^9.13.0
@@ -8911,7 +8912,6 @@ __metadata:
     remark-rehype-plugins: "*"
     slugify: ^1.6.6
     swr: ^2.2.0
-    tailwind: "*"
     tailwindcss: 3.3.3
     types: "*"
     typescript: 5.1.6
@@ -9375,6 +9375,7 @@ __metadata:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     docs-utils: "*"
     eslint: ^9.13.0
@@ -9392,7 +9393,6 @@ __metadata:
     remark-frontmatter: ^5.0.0
     remark-rehype-plugins: "*"
     tags: "*"
-    tailwind: "*"
     tailwindcss: ^3.3.0
     tsconfig: "*"
     types: "*"
@@ -9833,6 +9833,7 @@ __metadata:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
@@ -9849,7 +9850,6 @@ __metadata:
     remark-frontmatter: ^5.0.0
     remark-rehype-plugins: "*"
     slugify: ^1.6.6
-    tailwind: "*"
     tailwindcss: ^3.3.0
     tsconfig: "*"
     types: "*"
@@ -10963,6 +10963,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"docs-tailwind@workspace:*, docs-tailwind@workspace:packages/tailwind":
+  version: 0.0.0-use.local
+  resolution: "docs-tailwind@workspace:packages/tailwind"
+  dependencies:
+    "@medusajs/ui-preset": 2.22.1
+    tailwindcss-animate: ^1.0.7
+  peerDependencies:
+    docs-ui: "*"
+  languageName: unknown
+  linkType: soft
+
 "docs-ui@*, docs-ui@workspace:packages/docs-ui":
   version: 0.0.0-use.local
   resolution: "docs-ui@workspace:packages/docs-ui"
@@ -10980,6 +10991,7 @@ __metadata:
     algoliasearch: ^5.2.1
     clsx: ^2.0.0
     cpy-cli: ^5.0.0
+    docs-tailwind: "workspace:*"
     docs-utils: "*"
     eslint: ^9.13.0
     framer-motion: ^11.11.9
@@ -11001,7 +11013,6 @@ __metadata:
     rimraf: ^5.0.1
     schema-dts: ^1.1.5
     slugify: ^1.6.6
-    tailwind: "*"
     tailwindcss: ^3.3.3
     tsc-alias: ^1.8.7
     types: "*"
@@ -17809,6 +17820,7 @@ __metadata:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     docs-utils: "*"
     eslint: ^9.13.0
@@ -17828,7 +17840,6 @@ __metadata:
     remark-rehype-plugins: "*"
     swr: ^2.3.6
     tags: "*"
-    tailwind: "*"
     tailwindcss: ^3.3.0
     ts-node: ^10.9.2
     tsconfig: "*"
@@ -19107,17 +19118,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind@*, tailwind@workspace:packages/tailwind":
-  version: 0.0.0-use.local
-  resolution: "tailwind@workspace:packages/tailwind"
-  dependencies:
-    "@medusajs/ui-preset": 2.22.1
-    tailwindcss-animate: ^1.0.7
-  peerDependencies:
-    docs-ui: "*"
-  languageName: unknown
-  linkType: soft
-
 "tailwindcss-animate@npm:^1.0.6, tailwindcss-animate@npm:^1.0.7":
   version: 1.0.7
   resolution: "tailwindcss-animate@npm:1.0.7"
@@ -19981,6 +19981,7 @@ turbo@latest:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
@@ -19998,7 +19999,6 @@ turbo@latest:
     remark-frontmatter: ^5.0.0
     remark-rehype-plugins: "*"
     slugify: ^1.6.6
-    tailwind: "*"
     tailwindcss: ^3.3.0
     tsconfig: "*"
     types: "*"
@@ -20396,6 +20396,7 @@ turbo@latest:
     autoprefixer: ^10.0.1
     build-scripts: "*"
     clsx: ^2.1.0
+    docs-tailwind: "workspace:*"
     docs-ui: "*"
     eslint: ^9.13.0
     eslint-plugin-prettier: ^5.2.1
@@ -20411,7 +20412,6 @@ turbo@latest:
     remark-directive: ^3.0.0
     remark-frontmatter: ^5.0.0
     remark-rehype-plugins: "*"
-    tailwind: "*"
     tailwindcss: ^3.3.0
     tsconfig: "*"
     types: "*"

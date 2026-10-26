@@ -32,6 +32,7 @@
     "algoliasearch": "4",
     "autoprefixer": "10.4.14",
     "clsx": "^2.0.0",
+    "docs-tailwind": "workspace:*",
     "docs-ui": "*",
     "docs-utils": "*",
     "jsdom": "^27.1.0",
@@ -55,7 +56,6 @@
     "remark-rehype-plugins": "*",
     "slugify": "^1.6.6",
     "swr": "^2.2.0",
-    "tailwind": "*",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6",
     "yaml": "^2.3.1"
