@@ -3925,6 +3925,7 @@ __metadata:
     "@medusajs/locking": 2.21.2
     "@medusajs/locking-postgres": 2.21.2
     "@medusajs/locking-redis": 2.21.2
+    "@medusajs/note": 2.21.2
     "@medusajs/notification": 2.21.2
     "@medusajs/notification-local": 2.21.2
     "@medusajs/notification-sendgrid": 2.21.2
@@ -3990,7 +3991,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/note@workspace:packages/modules/note":
+"@medusajs/note@2.21.2, @medusajs/note@workspace:packages/modules/note":
   version: 0.0.0-use.local
   resolution: "@medusajs/note@workspace:packages/modules/note"
   dependencies:
