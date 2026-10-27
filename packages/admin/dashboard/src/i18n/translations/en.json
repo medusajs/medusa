@@ -1233,6 +1233,17 @@
     "list": {
       "noRecordsMessage": "Your orders will show up here."
     },
+    "readyToShip": {
+      "shipFrom": "Ship From",
+      "package": "Package",
+      "weight": "Weight",
+      "notSet": "Not set",
+      "shippingRate": "Shipping Rate",
+      "orderDate": "Order Date",
+      "fulfill": "Fulfill",
+      "noShippingMethod": "No shipping method",
+      "noRecordsMessage": "Orders ready to ship will show up here."
+    },
     "export": {
       "header": "Export Order List",
       "description": "Export the order list to a CSV file.",

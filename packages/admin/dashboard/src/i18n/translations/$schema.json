@@ -4822,6 +4822,50 @@
           "required": ["noRecordsMessage"],
           "additionalProperties": false
         },
+        "readyToShip": {
+          "type": "object",
+          "properties": {
+            "shipFrom": {
+              "type": "string"
+            },
+            "package": {
+              "type": "string"
+            },
+            "weight": {
+              "type": "string"
+            },
+            "notSet": {
+              "type": "string"
+            },
+            "shippingRate": {
+              "type": "string"
+            },
+            "orderDate": {
+              "type": "string"
+            },
+            "fulfill": {
+              "type": "string"
+            },
+            "noShippingMethod": {
+              "type": "string"
+            },
+            "noRecordsMessage": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "shipFrom",
+            "package",
+            "weight",
+            "notSet",
+            "shippingRate",
+            "orderDate",
+            "fulfill",
+            "noShippingMethod",
+            "noRecordsMessage"
+          ],
+          "additionalProperties": false
+        },
         "export": {
           "type": "object",
           "properties": {
@@ -6678,6 +6722,7 @@
         "onDateFromSalesChannel",
         "tags",
         "list",
+        "readyToShip",
         "export",
         "status",
         "summary",
