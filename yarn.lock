@@ -8616,13 +8616,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:11.0.1":
-  version: 11.0.1
-  resolution: "@types/fs-extra@npm:11.0.1"
+"@types/fs-extra@npm:11.0.4":
+  version: 11.0.4
+  resolution: "@types/fs-extra@npm:11.0.4"
   dependencies:
     "@types/jsonfile": "*"
     "@types/node": "*"
-  checksum: a65f1fae47849fe1a17441dcabc9400390303405972ff3cbb3578746cea8916b23d5e7652bf57a87767f75a9b2f37caac499b78b5230ae08fef0ba58b34c3a85
+  checksum: 9e34f9b24ea464f3c0b18c3f8a82aefc36dc524cc720fc2b886e5465abc66486ff4e439ea3fb2c0acebf91f6d3f74e514f9983b1f02d4243706bdbb7511796ad
   languageName: node
   linkType: hard
 
@@ -20567,7 +20567,7 @@ __metadata:
     "@types/configstore": ^6.0.0
     "@types/cors": ^2.8.17
     "@types/express": ^4.17.21
-    "@types/fs-extra": 11.0.1
+    "@types/fs-extra": 11.0.4
     "@types/inquirer": ^9.0.3
     "@types/js-yaml": ^4.0.9
     "@types/jsdom": ^27.0.0
