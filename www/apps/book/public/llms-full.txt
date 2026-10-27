@@ -45767,6 +45767,13 @@ This will also initialize the payment session in the third-party payment provide
 
 When creating a payment session through `createPaymentSessionsWorkflow`, Medusa validates that the chosen payment provider is enabled in the cart's region. If the provider is not enabled in the region, the workflow throws an error. This validation only applies to payment collections linked to an active (not yet completed) cart; payment collections on orders are not affected.
 
+Medusa doesn't support split payments, so `createPaymentSessionsWorkflow` deletes the payment collection's existing payment sessions before it creates the new one. The workflow throws a `not_allowed` error instead of replacing them if an existing payment session:
+
+- Has the `pending_authorization` status, meaning its authorization is in progress.
+- Has an authorized or captured payment that isn't canceled or fully refunded.
+
+This prevents the workflow from detaching an active payment from its payment collection. To change the payment provider in this case, cancel or fully refund the existing payment first.
+
 For example:
 
 ### Using Workflow
