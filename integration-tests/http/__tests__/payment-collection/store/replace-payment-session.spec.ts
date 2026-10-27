@@ -11,6 +11,9 @@ import { getProductFixture } from "../../../../helpers/fixtures"
 jest.setTimeout(60000)
 
 const providerId = "pp_system_default"
+// pp_pending-auth_pending-auth returns `pending` from authorizePayment unless
+// the session data has `payment_received` set.
+const pendingAuthProviderId = "pp_pending-auth_pending-auth"
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
@@ -19,17 +22,20 @@ medusaIntegrationTestRunner({
     let salesChannel
     let product
 
-    const initPaymentSession = async (paymentCollectionId: string) => {
+    const initPaymentSession = async (
+      paymentCollectionId: string,
+      provider = providerId
+    ) => {
       return (
         await api.post(
           `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
-          { provider_id: providerId },
+          { provider_id: provider },
           storeHeaders
         )
       ).data.payment_collection
     }
 
-    const createAuthorizedPayment = async () => {
+    const createPaymentCollection = async () => {
       const cart = (
         await api.post(
           "/store/carts",
@@ -42,13 +48,17 @@ medusaIntegrationTestRunner({
         )
       ).data.cart
 
-      const paymentCollection = (
+      return (
         await api.post(
           "/store/payment-collections",
           { cart_id: cart.id },
           storeHeaders
         )
       ).data.payment_collection
+    }
+
+    const createAuthorizedPayment = async () => {
+      const paymentCollection = await createPaymentCollection()
 
       const {
         payment_sessions: [paymentSession],
@@ -74,7 +84,7 @@ medusaIntegrationTestRunner({
             name: "Test Region",
             currency_code: "usd",
             countries: ["us"],
-            payment_providers: [providerId],
+            payment_providers: [providerId, pendingAuthProviderId],
           },
           adminHeaders
         )
@@ -165,6 +175,30 @@ medusaIntegrationTestRunner({
         expect(error.response.status).toEqual(400)
       })
 
+      it("rejects replacing a session whose authorization is pending", async () => {
+        const paymentCollection = await createPaymentCollection()
+
+        const {
+          payment_sessions: [paymentSession],
+        } = await initPaymentSession(
+          paymentCollection.id,
+          pendingAuthProviderId
+        )
+
+        await getContainer()
+          .resolve(Modules.PAYMENT)
+          .authorizePaymentSession(paymentSession.id, {})
+
+        const error = await initPaymentSession(paymentCollection.id).catch(
+          (e) => e
+        )
+
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          `Payment session with id: ${paymentSession.id} can't be replaced because its status is pending_authorization`
+        )
+      })
+
       it("replaces a session with a fully refunded payment", async () => {
         const { paymentCollection, paymentSession, payment } =
           await createAuthorizedPayment()
@@ -205,25 +239,7 @@ medusaIntegrationTestRunner({
       })
 
       it("replaces a pending session", async () => {
-        const cart = (
-          await api.post(
-            "/store/carts",
-            {
-              region_id: region.id,
-              sales_channel_id: salesChannel.id,
-              items: [{ variant_id: product.variants[0].id, quantity: 1 }],
-            },
-            storeHeaders
-          )
-        ).data.cart
-
-        const paymentCollection = (
-          await api.post(
-            "/store/payment-collections",
-            { cart_id: cart.id },
-            storeHeaders
-          )
-        ).data.payment_collection
+        const paymentCollection = await createPaymentCollection()
 
         const {
           payment_sessions: [paymentSession],
