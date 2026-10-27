@@ -38,7 +38,7 @@
     "test": "../../../node_modules/.bin/jest --passWithNoTests"
   },
   "dependencies": {
-    "ioredis": "^5.4.1"
+    "ioredis": "^5.11.1"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.1"

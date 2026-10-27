@@ -45,7 +45,7 @@
     "@medusajs/deps": "2.22.1"
   },
   "peerDependencies": {
-    "ioredis": "^5.4.1",
+    "ioredis": "^5.11.1",
     "vite": ">=5"
   },
   "peerDependenciesMeta": {
