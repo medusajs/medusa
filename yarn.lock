@@ -3179,10 +3179,10 @@ __metadata:
   resolution: "@medusajs/analytics-posthog@workspace:packages/modules/providers/analytics-posthog"
   dependencies:
     "@medusajs/framework": 2.22.1
-    posthog-node: ^5.11.0
+    posthog-node: ^5.57.0
   peerDependencies:
     "@medusajs/framework": 2.22.1
-    posthog-node: ^5.11.0
+    posthog-node: ^5.57.0
   languageName: unknown
   linkType: soft
 
@@ -3931,7 +3931,7 @@ __metadata:
   peerDependencies:
     "@medusajs/framework": 2.22.1
     "@swc/core": ^1.7.28
-    posthog-node: ^5.11.0
+    posthog-node: ^5.57.0
     react-dom: ^18.3.1
     yalc: ^1.0.0-pre.53
   peerDependenciesMeta:
@@ -5639,12 +5639,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@posthog/core@npm:1.7.1":
-  version: 1.7.1
-  resolution: "@posthog/core@npm:1.7.1"
+"@posthog/core@npm:^1.60.0":
+  version: 1.60.0
+  resolution: "@posthog/core@npm:1.60.0"
   dependencies:
-    cross-spawn: ^7.0.6
-  checksum: 4c496078b59eb60adbf18257c36d13b91b7f2a58c24c0d0464c826cfb2a8714c8d16c695737e5578495a2854efb7caa5251fc914971bf298e24f4f2eac27e2e8
+    "@posthog/types": ^1.416.0
+  checksum: 8a84af28b0620b227e0da9f0181a25fe338d20d2d8302e3aefcb18b6fa271fca43b58afd73707cb447165995f74e991bb02a7bf2a045a326f140e1da82e385b4
+  languageName: node
+  linkType: hard
+
+"@posthog/types@npm:^1.416.0":
+  version: 1.416.0
+  resolution: "@posthog/types@npm:1.416.0"
+  checksum: d3227a4b6423a1ce69db9c8e74ada17a5c3fd8ba824b0e6ed496744d907859717a0d3ad162bde08d5908679916896e7a1c4f1793ea74c6e641cf08928fe80c4e
   languageName: node
   linkType: hard
 
@@ -19205,12 +19212,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"posthog-node@npm:^5.11.0":
-  version: 5.17.2
-  resolution: "posthog-node@npm:5.17.2"
+"posthog-node@npm:^5.57.0":
+  version: 5.57.0
+  resolution: "posthog-node@npm:5.57.0"
   dependencies:
-    "@posthog/core": 1.7.1
-  checksum: fd68100456ee7500de16478dd875e6aa5d0e2abb0a094d1766843fbcaccf5aca623e4360ae29dfc9b1699d19c80059fbe149c1bd0d82ebf9ee74d584bdbd7ed9
+    "@posthog/core": ^1.60.0
+  peerDependencies:
+    "@opentelemetry/api": ^1.2.0
+    rxjs: ^7.0.0
+  peerDependenciesMeta:
+    "@opentelemetry/api":
+      optional: true
+    rxjs:
+      optional: true
+  checksum: de8040db2162a09a7d2f108cf2903efd1563f75f3f2a2a7ef8c6902d9ab7180015881ad8e68df66374ce23ac46b386ddb83e6a4ecfe5de2214bd4f3147a01e07
   languageName: node
   linkType: hard
 
@@ -20627,7 +20642,7 @@ __metadata:
     nodemon: ^2.0.20
     pg-god: ^1.0.12
     postcss: ^8.5.10
-    posthog-node: ^5.11.0
+    posthog-node: ^5.57.0
     prettier: ^2.8.8
     prettier-plugin-tailwindcss: ^0.2.3
     prop-types: ^15.8.1
