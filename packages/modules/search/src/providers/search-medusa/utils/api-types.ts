@@ -144,6 +144,7 @@ export type IndexQuery = {
   filters?: Filter
   include_attributes?: string[] | boolean
   limit?: number | Limit
+  offset?: number
   top_k?: number
   aggregate_by?: Record<string, unknown>
   group_by?: Array<string | Record<string, unknown>>
