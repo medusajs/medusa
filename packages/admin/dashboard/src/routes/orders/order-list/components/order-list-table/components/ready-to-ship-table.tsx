@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { Button, Checkbox, Tooltip, toast } from "@medusajs/ui"
+import { Button, Checkbox, Tooltip, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper, RowSelectionState } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
@@ -79,6 +79,17 @@ export const getShipFromLocationId = (
 ): string | null =>
   shippingMethod?.shipping_option?.service_zone?.fulfillment_set?.location
     ?.id ?? null
+
+/**
+ * Whether the order has a shipping method at all - the single precondition
+ * the Shipping Rate/Ship From columns, the Fulfill button
+ * (`FulfillConfirmPopover`/`DisabledFulfillCell`), and the bulk row
+ * selection checkbox below all gate on. Centralized here so the bulk
+ * checkbox can't drift from the single-row Fulfill button's own guard.
+ */
+export const orderHasShippingMethod = (
+  order: Pick<ReadyToShipOrder, "shipping_methods">
+): boolean => !!order.shipping_methods?.[0]
 
 /**
  * Renders the stock location a Ready to Ship order will fulfill from,
@@ -170,31 +181,21 @@ export const ShippingRateCell = ({
 }
 
 /**
- * Renders the (currently inert) Fulfill action button. Disabled when the
- * order has no shipping method at all - the same precondition the Shipping
- * Rate and Ship From columns fail under. Task 6 wires this up to the real
- * confirm popover by modifying this file.
+ * Renders the disabled Fulfill button for an order with no shipping method
+ * at all - the same precondition the Shipping Rate and Ship From columns
+ * fail under. `FulfillConfirmPopover` renders this directly for that case
+ * and wires up the real confirm popover itself for every order that does
+ * have a shipping method, so this component only ever renders the single,
+ * disabled state - there is no enabled rendering to toggle between here.
  */
-export const FulfillCell = ({
-  hasShippingMethod,
-}: {
-  hasShippingMethod: boolean
-}) => {
+export const DisabledFulfillCell = () => {
   const { t } = useTranslation()
-
-  const button = (
-    <Button size="small" variant="secondary" disabled={!hasShippingMethod}>
-      {t("orders.readyToShip.fulfill")}
-    </Button>
-  )
-
-  if (hasShippingMethod) {
-    return button
-  }
 
   return (
     <Tooltip content={t("orders.readyToShip.noShippingMethod")}>
-      {button}
+      <Button size="small" variant="secondary" disabled>
+        {t("orders.readyToShip.fulfill")}
+      </Button>
     </Tooltip>
   )
 }
@@ -220,15 +221,27 @@ const useReadyToShipTableColumns = () => {
             }
           />
         ),
-        cell: ({ row }) => (
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-            onClick={(e) => {
-              e.stopPropagation()
-            }}
-          />
-        ),
+        cell: ({ row }) => {
+          // `enableRowSelection` (set on `useDataTable` below, keyed off
+          // the same `orderHasShippingMethod` check the single-row Fulfill
+          // button uses) makes `getCanSelect()` false for an order with no
+          // shipping method - mirrored here so the bulk checkbox can't
+          // select an order the single-row path would already refuse to
+          // fulfill, which would otherwise only fail later, server-side,
+          // once the batch runs.
+          const isSelectable = row.getCanSelect()
+
+          return (
+            <Checkbox
+              disabled={!isSelectable}
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            />
+          )
+        },
       }),
       columnHelper.accessor("display_id", {
         header: () => <DisplayIdHeader />,
@@ -311,11 +324,19 @@ const useReadyToShipTableColumns = () => {
  */
 export const ReadyToShipTable = () => {
   const { t } = useTranslation()
+  const prompt = usePrompt()
   const [searchParams] = useSearchParams()
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [bulkFulfillResult, setBulkFulfillResult] =
     useState<BulkFulfillOrdersResult | null>(null)
+  // Guards the *entire* bulk-fulfill flow below (confirm prompt through the
+  // mutation settling), not just the mutation call itself - each
+  // fulfillment buys a real EasyPost shipping label, so a second click or
+  // repeated "f" keypress while one batch (or even its confirm prompt) is
+  // still in flight must be a no-op rather than firing a second, possibly
+  // overlapping request for the same selection.
+  const [isBulkFulfilling, setIsBulkFulfilling] = useState(false)
 
   const offsetKey = `${QUERY_PREFIX}_offset`
   const offset = Number(searchParams.get(offsetKey) ?? 0)
@@ -346,7 +367,11 @@ export const ReadyToShipTable = () => {
     pageSize: PAGE_SIZE,
     getRowId: (row) => row.id,
     prefix: QUERY_PREFIX,
-    enableRowSelection: true,
+    // Keyed off the same `shipping_methods` check the single-row Fulfill
+    // button (`FulfillConfirmPopover`/`DisabledFulfillCell`) already gates
+    // on, so an order that button would refuse to fulfill can't be
+    // selected via the bulk checkbox either - see `orderHasShippingMethod`.
+    enableRowSelection: (row) => orderHasShippingMethod(row.original),
     rowSelection: {
       state: rowSelection,
       updater: setRowSelection,
@@ -382,10 +407,36 @@ export const ReadyToShipTable = () => {
             // request-level failure, as opposed to a per-order one in the
             // structured result, still surfaces via a toast) so that
             // clear-on-settle always runs.
+            //
+            // The `isBulkFulfilling` guard below covers a second click or
+            // a repeated "f" keypress arriving while a prior invocation
+            // (confirm prompt or mutation) hasn't settled yet - the
+            // command bar/keyboard shortcut (`command-bar.tsx`'s
+            // `Command`) has no such guard of its own.
             action: async (selection) => {
-              const orderIds = Object.keys(selection)
+              if (isBulkFulfilling) {
+                return
+              }
+
+              setIsBulkFulfilling(true)
 
               try {
+                const orderIds = Object.keys(selection)
+
+                const confirmed = await prompt({
+                  title: t("general.areYouSure"),
+                  description: t(
+                    "orders.readyToShip.fulfillSelectedConfirmDescription",
+                    { count: orderIds.length }
+                  ),
+                  confirmText: t("actions.continue"),
+                  cancelText: t("actions.cancel"),
+                })
+
+                if (!confirmed) {
+                  return
+                }
+
                 const result = await bulkFulfillOrders({
                   order_ids: orderIds,
                 })
@@ -396,6 +447,8 @@ export const ReadyToShipTable = () => {
                     ? e.message
                     : t("errorBoundary.defaultTitle")
                 )
+              } finally {
+                setIsBulkFulfilling(false)
               }
             },
             label: t("orders.readyToShip.fulfillSelected"),

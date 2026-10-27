@@ -4865,6 +4865,9 @@
             "fulfillSelected": {
               "type": "string"
             },
+            "fulfillSelectedConfirmDescription": {
+              "type": "string"
+            },
             "noShippingMethod": {
               "type": "string"
             },
@@ -4887,6 +4890,7 @@
             "orderDate",
             "fulfill",
             "fulfillSelected",
+            "fulfillSelectedConfirmDescription",
             "noShippingMethod",
             "noRecordsMessage",
             "confirmHeading",

@@ -1247,6 +1247,7 @@
       "orderDate": "Order Date",
       "fulfill": "Fulfill",
       "fulfillSelected": "Fulfill selected",
+      "fulfillSelectedConfirmDescription": "Fulfill {{count}} order(s)? This purchases real shipping labels and cannot be undone.",
       "noShippingMethod": "No shipping method",
       "noRecordsMessage": "Orders ready to ship will show up here.",
       "confirmHeading": "Confirm fulfillment",

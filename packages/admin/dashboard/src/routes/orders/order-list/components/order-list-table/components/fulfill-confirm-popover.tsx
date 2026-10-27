@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { useCreateOrderFulfillment } from "../../../../../../hooks/api/orders"
 import { getFulfillableQuantity } from "../../../../../../lib/order-item"
 import {
-  FulfillCell,
+  DisabledFulfillCell,
   getShipFromLocationId,
   getShipFromLocationName,
   ReadyToShipOrder,
@@ -48,10 +48,18 @@ export const FulfillConfirmPopover = ({
   const { mutateAsync, isPending } = useCreateOrderFulfillment(order.id)
 
   const shippingMethod = order.shipping_methods?.[0]
+  // Deliberately `!!shippingMethod`, not `orderHasShippingMethod(order)`:
+  // TS's control-flow narrowing of `shippingMethod` after the `if
+  // (!hasShippingMethod) return` below only works for a directly aliased
+  // condition - routing it through a separate function call would lose
+  // that narrowing and need a cast everywhere `shippingMethod` is used
+  // past this point. Both forms are equivalent; `orderHasShippingMethod`
+  // exists for the bulk row-selection check in `ready-to-ship-table.tsx`,
+  // which has no such narrowing to preserve.
   const hasShippingMethod = !!shippingMethod
 
   if (!hasShippingMethod) {
-    return <FulfillCell hasShippingMethod={false} />
+    return <DisabledFulfillCell />
   }
 
   const locationId = getShipFromLocationId(shippingMethod)
@@ -96,18 +104,38 @@ export const FulfillConfirmPopover = ({
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       {/*
-       * `FulfillCell` isn't used as the trigger here: Radix's `asChild`
-       * clones its injected props (ref, onClick, aria attributes) onto the
-       * literal child element, which only works when that child forwards
-       * them on to a real DOM node (as `Button` does). `FulfillCell` is a
-       * plain function component that ignores extra props, so the button
-       * below mirrors its enabled-state rendering (same label, size and
-       * variant) instead. The no-shipping-method/disabled rendering above
-       * still reuses `FulfillCell` (and its `Tooltip`) verbatim, since that
-       * branch never needs to compose with the popover trigger.
+       * `DisabledFulfillCell` isn't used as the trigger here: Radix's
+       * `asChild` clones its injected props (ref, onClick, aria
+       * attributes) onto the literal child element, which only works when
+       * that child forwards them on to a real DOM node (as `Button`
+       * does). `DisabledFulfillCell` is a plain function component that
+       * ignores extra props, so the button below mirrors its rendering
+       * (same label, size and variant) instead. The no-shipping-method
+       * case above still reuses `DisabledFulfillCell` (and its `Tooltip`)
+       * verbatim, since that branch never needs to compose with the
+       * popover trigger.
        */}
       <Popover.Trigger asChild>
-        <Button size="small" variant="secondary">
+        <Button
+          size="small"
+          variant="secondary"
+          onClick={(e) => {
+            // This cell sits inside `_DataTable`'s own `navigateTo` `Link`
+            // (`data-table-root.tsx`'s `shouldRenderAsLink`), which wraps
+            // every non-`select` cell. `Link`'s own navigation is just
+            // another React click handler (react-router is client-side
+            // routing, not a real anchor follow), so stopping this
+            // synthetic event from bubbling up to it - the same pattern
+            // the "select" checkbox column and `ActionMenu` already use -
+            // is enough to keep this click from navigating away instead of
+            // opening the popover. Deliberately not `preventDefault`: Radix
+            // composes this handler with its own open-toggle handler via
+            // `composeEventHandlers`, which skips its handler once
+            // `defaultPrevented` is set, so calling it here would stop the
+            // popover from ever opening.
+            e.stopPropagation()
+          }}
+        >
           {t("orders.readyToShip.fulfill")}
         </Button>
       </Popover.Trigger>
@@ -115,6 +143,16 @@ export const FulfillConfirmPopover = ({
         align="end"
         side="top"
         className="w-[320px] overflow-hidden"
+        // Radix portals this content elsewhere in the DOM, but React's
+        // synthetic event system still dispatches through the *original*
+        // component tree (the row's `Link` is an ancestor there), so a
+        // click on Confirm/Cancel/the content itself would otherwise still
+        // bubble up to - and navigate via - that `Link`. Stopping it here
+        // covers the whole popover (content background, Cancel, Confirm)
+        // in one place rather than on each button individually.
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
       >
         <div className="flex flex-col gap-y-3 p-3">
           <Text size="small" weight="plus">
