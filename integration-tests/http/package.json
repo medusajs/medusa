@@ -38,7 +38,7 @@
     "@medusajs/workflow-engine-inmemory": "workspace:*",
     "form-data": "^4.0.4",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.11.3"
+    "pg": "^8.23.1"
   },
   "devDependencies": {
     "@medusajs/types": "workspace:^",

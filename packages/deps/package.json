@@ -57,7 +57,7 @@
     "@opentelemetry/sdk-node": "^0.220.0",
     "@opentelemetry/sdk-trace-node": "^2.7.0",
     "awilix": "^8.0.1",
-    "pg": "^8.16.3",
+    "pg": "^8.23.1",
     "zod": "4.6.6"
   },
   "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
