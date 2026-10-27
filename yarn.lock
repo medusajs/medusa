@@ -3179,10 +3179,10 @@ __metadata:
   resolution: "@medusajs/analytics-posthog@workspace:packages/modules/providers/analytics-posthog"
   dependencies:
     "@medusajs/framework": 2.22.1
-    posthog-node: ^5.11.0
+    posthog-node: ^5.57.0
   peerDependencies:
     "@medusajs/framework": 2.22.1
-    posthog-node: ^5.11.0
+    posthog-node: ^5.57.0
   languageName: unknown
   linkType: soft
 
@@ -3258,10 +3258,10 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.22.1
     "@medusajs/test-utils": 2.22.1
-    "@otplib/core": ^13.4.0
-    "@otplib/plugin-crypto-node": ^13.4.0
-    "@otplib/totp": ^13.4.0
-    "@otplib/uri": ^13.4.0
+    "@otplib/core": ^13.5.0
+    "@otplib/plugin-crypto-node": ^13.5.0
+    "@otplib/totp": ^13.5.0
+    "@otplib/uri": ^13.5.0
     jsonwebtoken: ^9.0.2
     jwks-rsa: ^3.1.0
     scrypt-kdf: ^2.0.1
@@ -3931,7 +3931,7 @@ __metadata:
   peerDependencies:
     "@medusajs/framework": 2.22.1
     "@swc/core": ^1.7.28
-    posthog-node: ^5.11.0
+    posthog-node: ^5.57.0
     react-dom: ^18.3.1
     yalc: ^1.0.0-pre.53
   peerDependenciesMeta:
@@ -5282,49 +5282,49 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@otplib/core@npm:13.4.0, @otplib/core@npm:^13.4.0":
-  version: 13.4.0
-  resolution: "@otplib/core@npm:13.4.0"
-  checksum: 9d3721df328d73a49829b838171aecc18dc54b820795dde3a8644e96d954734a895247790c3f27d1f8023e715dd1c5cbd8264df86dbffe8b401c28164ae0d525
+"@otplib/core@npm:13.5.0, @otplib/core@npm:^13.5.0":
+  version: 13.5.0
+  resolution: "@otplib/core@npm:13.5.0"
+  checksum: acb763bf6450821220bb207457edf4fd73aeadd36ef56df6692c3527d02fb97f7c35847f07cca9ec9c24402e9dc9fa2ae40c79172ab9c1053a0da4cfc9d31328
   languageName: node
   linkType: hard
 
-"@otplib/hotp@npm:13.4.0":
-  version: 13.4.0
-  resolution: "@otplib/hotp@npm:13.4.0"
+"@otplib/hotp@npm:13.5.0":
+  version: 13.5.0
+  resolution: "@otplib/hotp@npm:13.5.0"
   dependencies:
-    "@otplib/core": 13.4.0
-    "@otplib/uri": 13.4.0
-  checksum: 8bea65184989cc6b6999aadf3a821e7d4168393cb03ae0e3235cd3402f469f783fd09e3740be4b6368044c4705b439dcaa1ffa9fbfd4a6790e698e5b4a32aae9
+    "@otplib/core": 13.5.0
+    "@otplib/uri": 13.5.0
+  checksum: f41af3565a7c766b5e23a0d0a1d4d167a7624496f1116127258d36e40ccdd9e06448dc51e75fe61f67288e3cf09161b707fd33c104626eac1ef0cf7c4c1b2d43
   languageName: node
   linkType: hard
 
-"@otplib/plugin-crypto-node@npm:^13.4.0":
-  version: 13.4.0
-  resolution: "@otplib/plugin-crypto-node@npm:13.4.0"
+"@otplib/plugin-crypto-node@npm:^13.5.0":
+  version: 13.5.0
+  resolution: "@otplib/plugin-crypto-node@npm:13.5.0"
   dependencies:
-    "@otplib/core": 13.4.0
-  checksum: c931380b4a2da23d7e4344bf4d20e2d7b32097dbc7ffd1b41972ea83b8fc7c59f37e29853a7fefe19ef3a545d6e0e4f4643d2140f19507814120acf36a759031
+    "@otplib/core": 13.5.0
+  checksum: b1740f8b832d21b345ee1134b845edd97abcfa05b41b5b710e62b8aec9a58abab1a207c467010b789762de984ce335d52afd7a6c731fb03755e7156877154077
   languageName: node
   linkType: hard
 
-"@otplib/totp@npm:^13.4.0":
-  version: 13.4.0
-  resolution: "@otplib/totp@npm:13.4.0"
+"@otplib/totp@npm:^13.5.0":
+  version: 13.5.0
+  resolution: "@otplib/totp@npm:13.5.0"
   dependencies:
-    "@otplib/core": 13.4.0
-    "@otplib/hotp": 13.4.0
-    "@otplib/uri": 13.4.0
-  checksum: a0cb4241ff5581e7e299f814303dcb883c509f17228c067cfc17c3c9f50203198d7c3b1ec8efd977b2587cc3bd7b36912b89c5ed8fd6303e587c48080be76449
+    "@otplib/core": 13.5.0
+    "@otplib/hotp": 13.5.0
+    "@otplib/uri": 13.5.0
+  checksum: 1e4b45de046c1842d58e6459998d705760505a6736da5ea731c939b44f6c80ecd221cffd2dd6a435f0069219803773c4e61de7874fbba8c4e6c2f0ca65935305
   languageName: node
   linkType: hard
 
-"@otplib/uri@npm:13.4.0, @otplib/uri@npm:^13.4.0":
-  version: 13.4.0
-  resolution: "@otplib/uri@npm:13.4.0"
+"@otplib/uri@npm:13.5.0, @otplib/uri@npm:^13.5.0":
+  version: 13.5.0
+  resolution: "@otplib/uri@npm:13.5.0"
   dependencies:
-    "@otplib/core": 13.4.0
-  checksum: ce818377dcf2e8b5fd2fa0aa39d23e4717ab22de9f2ec6ddfde8635db938dabaf3347d0aacbff06fad819de0838da5525679ffa68615a4fc7e4a8ace15cc120e
+    "@otplib/core": 13.5.0
+  checksum: 36330a0452dfe04b3bc480d335abb1d85da6e39ff171007fa0bd6e6bffc15413cf86c40ce47eb06c619dbe9378712b1d1959ea06e76f9e15a473fa03f624c356
   languageName: node
   linkType: hard
 
@@ -5639,12 +5639,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@posthog/core@npm:1.7.1":
-  version: 1.7.1
-  resolution: "@posthog/core@npm:1.7.1"
+"@posthog/core@npm:^1.60.0":
+  version: 1.60.0
+  resolution: "@posthog/core@npm:1.60.0"
   dependencies:
-    cross-spawn: ^7.0.6
-  checksum: 4c496078b59eb60adbf18257c36d13b91b7f2a58c24c0d0464c826cfb2a8714c8d16c695737e5578495a2854efb7caa5251fc914971bf298e24f4f2eac27e2e8
+    "@posthog/types": ^1.416.0
+  checksum: 8a84af28b0620b227e0da9f0181a25fe338d20d2d8302e3aefcb18b6fa271fca43b58afd73707cb447165995f74e991bb02a7bf2a045a326f140e1da82e385b4
+  languageName: node
+  linkType: hard
+
+"@posthog/types@npm:^1.416.0":
+  version: 1.416.0
+  resolution: "@posthog/types@npm:1.416.0"
+  checksum: d3227a4b6423a1ce69db9c8e74ada17a5c3fd8ba824b0e6ed496744d907859717a0d3ad162bde08d5908679916896e7a1c4f1793ea74c6e641cf08928fe80c4e
   languageName: node
   linkType: hard
 
@@ -19205,12 +19212,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"posthog-node@npm:^5.11.0":
-  version: 5.17.2
-  resolution: "posthog-node@npm:5.17.2"
+"posthog-node@npm:^5.57.0":
+  version: 5.57.0
+  resolution: "posthog-node@npm:5.57.0"
   dependencies:
-    "@posthog/core": 1.7.1
-  checksum: fd68100456ee7500de16478dd875e6aa5d0e2abb0a094d1766843fbcaccf5aca623e4360ae29dfc9b1699d19c80059fbe149c1bd0d82ebf9ee74d584bdbd7ed9
+    "@posthog/core": ^1.60.0
+  peerDependencies:
+    "@opentelemetry/api": ^1.2.0
+    rxjs: ^7.0.0
+  peerDependenciesMeta:
+    "@opentelemetry/api":
+      optional: true
+    rxjs:
+      optional: true
+  checksum: de8040db2162a09a7d2f108cf2903efd1563f75f3f2a2a7ef8c6902d9ab7180015881ad8e68df66374ce23ac46b386ddb83e6a4ecfe5de2214bd4f3147a01e07
   languageName: node
   linkType: hard
 
@@ -20627,7 +20642,7 @@ __metadata:
     nodemon: ^2.0.20
     pg-god: ^1.0.12
     postcss: ^8.5.10
-    posthog-node: ^5.11.0
+    posthog-node: ^5.57.0
     prettier: ^2.8.8
     prettier-plugin-tailwindcss: ^0.2.3
     prop-types: ^15.8.1
