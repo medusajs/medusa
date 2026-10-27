@@ -965,6 +965,12 @@ export default class PaymentModuleService
           sharedContext
         )
         await this.refundService_.softDelete({ id: refund.id }, sharedContext)
+        // A concurrent refund may have totaled the collection while this row
+        // was still live, so recompute now that it's excluded.
+        await this.maybeUpdatePaymentCollection_(
+          payment.payment_collection_id,
+          sharedContext
+        )
         throw error
       }
 
