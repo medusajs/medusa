@@ -266,17 +266,11 @@ jobs:
               "permissions": {
                 "deny": [
                   "Read(//proc/**)",
-                  "Write(//**/.claude/**)",
                   "Edit(//**/.claude/**)",
-                  "Write(//**/.github/**)",
                   "Edit(//**/.github/**)",
-                  "Write(//**/.mcp.json)",
                   "Edit(//**/.mcp.json)",
-                  "Write(//**/scripts/**)",
                   "Edit(//**/scripts/**)",
-                  "Write(//**/migrations/**)",
                   "Edit(//**/migrations/**)",
-                  "Write(//**/package.json)",
                   "Edit(//**/package.json)"
                 ]
               }
