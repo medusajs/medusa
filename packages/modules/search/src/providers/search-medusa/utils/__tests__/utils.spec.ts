@@ -4,10 +4,12 @@ import {
   buildIndexPlan,
   buildQueryPlan,
   fromSearchDocument,
+  packAggregations,
   parseFacetResults,
   parseHighlights,
   toSearchDocument,
   toSearchFilter,
+  unpackResults,
 } from ".."
 
 const definition: SearchTypes.ResolvedSearchIndexDefinition = {
@@ -186,7 +188,7 @@ describe("Medusa search utilities", () => {
     ])
   })
 
-  it("builds weighted BM25 and offset over-fetching", () => {
+  it("builds weighted BM25 and pages with offset", () => {
     const query = buildQueryPlan(
       {
         index: definition,
@@ -207,7 +209,27 @@ describe("Medusa search utilities", () => {
       "ContainsAllTokens",
       "red shoe",
     ])
-    expect(query.query.limit).toBe(15)
+    expect(query.query.limit).toBe(5)
+    expect(query.query.offset).toBe(10)
+  })
+
+  it("over-fetches instead of using offset when deduplicating", () => {
+    const query = buildQueryPlan(
+      {
+        index: definition,
+        q: "red shoe",
+        attributes_to_retrieve: ["title"],
+        pagination: { skip: 10, take: 5 },
+        search_options: { distinct: "status" },
+      },
+      plan
+    )
+
+    expect(query.query.limit).toEqual({
+      total: 15,
+      per: { attributes: ["status"], limit: 1 },
+    })
+    expect(query.query.offset).toBeUndefined()
   })
 
   it("ANDs the text match filter with attribute filters", () => {
@@ -1306,6 +1328,76 @@ describe("Medusa search utilities", () => {
           plan
         )
       ).toThrow(/expected 3 dimensions/)
+    })
+  })
+
+  describe("aggregation packing", () => {
+    const count = {
+      aggregate_by: { count: ["Count"] },
+      filters: ["a", "Eq", 1],
+    }
+    const sum = (field: string) => ({
+      aggregate_by: { sum: ["Sum", field] },
+      filters: ["a", "Eq", 1],
+    })
+
+    it("merges aggregations over the same filters and dedupes identical ones", () => {
+      const hits = { rank_by: ["id", "asc"], limit: 5 }
+      const packed = packAggregations([
+        hits,
+        count,
+        count,
+        sum("price"),
+        sum("weight"),
+      ] as any)
+
+      expect(packed.queries).toEqual([
+        hits,
+        {
+          aggregate_by: {
+            count: ["Count"],
+            sum: ["Sum", "price"],
+            sum_2: ["Sum", "weight"],
+          },
+          filters: ["a", "Eq", 1],
+        },
+      ])
+
+      expect(
+        unpackResults(
+          [
+            { rows: [{ id: "p" }] },
+            { aggregations: { count: 3, sum: 30, sum_2: 9 } },
+          ],
+          packed.slots
+        )
+      ).toEqual([
+        { rows: [{ id: "p" }] },
+        { aggregations: { count: 3 } },
+        { aggregations: { count: 3 } },
+        { aggregations: { sum: 30 } },
+        { aggregations: { sum: 9 } },
+      ])
+    })
+
+    it("keeps different filters and grouped aggregations apart", () => {
+      const other = {
+        aggregate_by: { count: ["Count"] },
+        filters: ["b", "Eq", 2],
+      }
+      const grouped = { ...count, group_by: ["status"], top_k: 10 }
+      const packed = packAggregations([count, other, grouped] as any)
+
+      expect(packed.queries).toEqual([count, other, grouped])
+    })
+
+    it("starts a new query past eight aggregations", () => {
+      const sums = Array.from({ length: 9 }, (_, i) => sum(`f${i}`))
+      const packed = packAggregations(sums as any)
+
+      expect(packed.queries).toHaveLength(2)
+      expect(Object.keys(packed.queries[0].aggregate_by!)).toHaveLength(8)
+      expect(packed.queries[1].aggregate_by).toEqual({ sum: ["Sum", "f8"] })
     })
   })
 })

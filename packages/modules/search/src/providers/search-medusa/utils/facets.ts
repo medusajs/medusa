@@ -31,11 +31,11 @@ export type FacetQuery = {
   request: RangeFacetRequest | ValueFacetRequest | StatsFacetRequest
   range?: RangeFacetRequest["ranges"][number]
   /**
-   * Medusa Search has no Min/Max aggregates yet, and Cloud accepts only one
-   * aggregate function per request. A numeric stats facet is therefore four
-   * sub-queries: attribute order for min and max, then Count, then Sum.
-   * Dates skip Sum (scalar numeric only) and keep Count so the result still
-   * has a document total.
+   * Cloud has no Min/Max aggregates, so a numeric stats facet orders by the
+   * attribute for min and max, plus a Count and a Sum. Count and Sum are
+   * packed with the other aggregations over the same filters before sending
+   * (see `packAggregations`). Dates skip Sum (scalar numeric only) and keep
+   * Count so the result still has a document total.
    */
   stats?: "min" | "max" | "count" | "sum"
   is_date?: boolean

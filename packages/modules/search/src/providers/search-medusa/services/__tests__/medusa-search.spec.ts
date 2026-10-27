@@ -418,7 +418,7 @@ describe("MedusaSearchService", () => {
     )
   })
 
-  it("maps stats facets from min/max rank queries and separate Count and Sum aggregations", async () => {
+  it("maps stats facets from min/max rank queries and packs Count and Sum with the total count", async () => {
     const service = createService()
     const priced: SearchTypes.ResolvedSearchIndexDefinition = {
       ...definition,
@@ -434,11 +434,9 @@ describe("MedusaSearchService", () => {
     const multiQuery = jest.fn().mockResolvedValue({
       results: [
         { rows: [{ id: "prod_1", title: "Red shoe", price: 20 }] },
-        { aggregations: { count: 2 } },
+        { aggregations: { count: 2, sum: 50 } },
         { rows: [{ id: "prod_1", price: 10 }] },
         { rows: [{ id: "prod_2", price: 40 }] },
-        { aggregations: { count: 2 } },
-        { aggregations: { sum: 50 } },
       ],
       billing: {},
       performance: { server_total_ms: 5 },
@@ -463,7 +461,11 @@ describe("MedusaSearchService", () => {
     })
 
     const queries = multiQuery.mock.calls[0][0].queries
-    expect(queries).toHaveLength(6)
+    expect(queries).toHaveLength(4)
+    expect(queries[1].aggregate_by).toEqual({
+      count: ["Count"],
+      sum: ["Sum", "price"],
+    })
     expect(queries[2]).toMatchObject({
       rank_by: ["price", "asc"],
       limit: 1,
@@ -474,8 +476,6 @@ describe("MedusaSearchService", () => {
       rank_by: ["price", "desc"],
       limit: 1,
     })
-    expect(queries[4].aggregate_by).toEqual({ count: ["Count"] })
-    expect(queries[5].aggregate_by).toEqual({ sum: ["Sum", "price"] })
   })
 
   it("packs searchMany into one multiQuery per index", async () => {
@@ -561,7 +561,7 @@ describe("MedusaSearchService", () => {
     })
   })
 
-  it("returns an empty result for an index Cloud has not created yet", async () => {
+  it("returns an empty result for an index Medusa search has not created yet", async () => {
     const service = createService()
     const multiQuery = jest
       .fn()
@@ -641,5 +641,32 @@ describe("MedusaSearchService", () => {
         attributes_to_retrieve: ["title"],
       })
     ).rejects.toBe(error)
+  })
+
+  it("asks Cloud for the page with offset and reads it from the first row", async () => {
+    const service = createService()
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        { rows: [{ id: "prod_11", title: "Eleventh" }] },
+        { aggregations: { count: 11 } },
+      ],
+      billing: {},
+      performance: { server_total_ms: 1 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const result = await service.search({
+      index: definition,
+      attributes_to_retrieve: ["title"],
+      pagination: { skip: 10, take: 1 },
+    })
+
+    expect(result.hits.map((hit) => hit.id)).toEqual(["prod_11"])
+    expect(result.metadata).toMatchObject({ skip: 10, take: 1, count: 11 })
+
+    const [hitsQuery] = multiQuery.mock.calls[0][0].queries
+    expect(hitsQuery).toMatchObject({ limit: 1, offset: 10 })
   })
 })

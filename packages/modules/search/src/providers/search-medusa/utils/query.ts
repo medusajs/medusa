@@ -509,7 +509,8 @@ export function buildQueryPlan(
     rankBy = ordered ?? (["id", "asc"] as RankBy)
   }
 
-  let limit: number | Limit = skip + take
+  let limit: number | Limit = take
+  let offset: number | undefined = skip || undefined
   const distinct = options.distinct ?? input.index.settings.distinct_attribute
   if (distinct) {
     const planned = plan.fields.get(distinct)
@@ -521,10 +522,13 @@ export function buildQueryPlan(
     if (planned.is_array || planned.field.type === "vector") {
       fail(`The Medusa search provider cannot deduplicate by "${distinct}"`)
     }
+    // Cloud doesn't define `offset` alongside `limit.per`, so deduplicated
+    // pages are still fetched from the top and sliced.
     limit = {
       total: skip + take,
       per: { attributes: [distinct], limit: 1 },
     }
+    offset = undefined
   }
 
   const highlight = resolveHighlightOptions(input, plan)
@@ -538,6 +542,7 @@ export function buildQueryPlan(
       filters: buildQueryFilters(input, plan),
       include_attributes: input.attributes_to_retrieve,
       limit,
+      offset,
       compute_attributes: highlightPlan?.compute_attributes,
     },
     skip,
