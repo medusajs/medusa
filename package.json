@@ -96,7 +96,7 @@
     "nodemon": "^2.0.20",
     "pg-god": "^1.0.12",
     "postcss": "^8.5.10",
-    "posthog-node": "^5.11.0",
+    "posthog-node": "^5.57.0",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.3",
     "prop-types": "^15.8.1",
