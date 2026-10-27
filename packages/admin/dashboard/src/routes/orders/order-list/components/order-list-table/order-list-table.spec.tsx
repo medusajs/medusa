@@ -27,6 +27,13 @@ vi.mock("../../../../../hooks/api/orders", () => ({
     isError: false,
     error: undefined,
   }),
+  // `ReadyToShipTable` (the Ready to Ship tab) also calls this unconditionally
+  // for its "Fulfill selected" command bar action. This test never selects
+  // rows or triggers it, so a bare stub is enough.
+  useBulkFulfillOrders: () => ({
+    mutateAsync: vi.fn(),
+    isPending: false,
+  }),
 }))
 
 // `useOrderTableFilters` (the All tab only) calls `useRegions` /

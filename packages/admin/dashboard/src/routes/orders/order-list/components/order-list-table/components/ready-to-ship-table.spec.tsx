@@ -1,39 +1,121 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen, waitFor } from "@testing-library/react"
+import {
+  cleanup,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { afterEach, describe, expect, it, vi } from "vitest"
 import { TooltipProvider } from "@medusajs/ui"
+import { MemoryRouter } from "react-router-dom"
+import { afterEach, describe, expect, it, vi } from "vitest"
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
-    t: (key: string) => key,
+    t: (key: string, options?: Record<string, unknown>) => {
+      return options ? `${key}:${JSON.stringify(options)}` : key
+    },
+    // `use-date.tsx` (behind `DateCell`, rendered by the bulk-command
+    // tests' full `ReadyToShipTable` render below) reads `i18n.language`
+    // directly, not just `t`.
+    i18n: { language: "en" },
   }),
 }))
 
-// `ready-to-ship-table.tsx` imports `useOrders`, which pulls in
-// `lib/client` - that module reads build-time defines (`__AUTH_TYPE__`
-// etc.) injected by the Vite config and isn't available under a plain
-// component test. These cell components don't exercise data fetching, so
-// the hook is mocked out purely to keep module evaluation side-effect free.
+const {
+  mockUseOrders,
+  mockBulkFulfillOrders,
+  mockUseCreateOrderFulfillment,
+  mockBulkFulfillResultSummary,
+  mockToastError,
+} = vi.hoisted(() => ({
+  mockUseOrders: vi.fn(),
+  mockBulkFulfillOrders: vi.fn(),
+  mockUseCreateOrderFulfillment: vi.fn(),
+  mockBulkFulfillResultSummary: vi.fn(),
+  mockToastError: vi.fn(),
+}))
+
+// Only `toast.error` is swapped out for a spy - everything else
+// (`Button`, `Checkbox`, `CommandBar`, `Alert`, ...) stays the real
+// `@medusajs/ui` implementation, since the bulk-command tests below render
+// the real `_DataTable`/`CommandBar` to exercise row selection and the
+// command bar, not a stub of them.
+vi.mock("@medusajs/ui", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@medusajs/ui")>()
+  return {
+    ...actual,
+    toast: {
+      ...actual.toast,
+      error: mockToastError,
+    },
+  }
+})
+
+// `ready-to-ship-table.tsx` imports `useOrders`/`useBulkFulfillOrders`
+// (and, transitively via `FulfillConfirmPopover`, `useCreateOrderFulfillment`),
+// which pull in `lib/client` - that module reads build-time defines
+// (`__AUTH_TYPE__` etc.) injected by the Vite config and isn't available
+// under a plain component test. Mocked out purely to keep module
+// evaluation side-effect free; `mockUseOrders`'s return value is
+// configured per test via `mockReturnValue` so the plain-cell tests below
+// (which never render `ReadyToShipTable` itself) and the bulk-command
+// tests (which do) can use different fixtures in the same file.
 vi.mock("../../../../../../hooks/api/orders", () => ({
-  useOrders: () => ({
-    orders: [],
-    count: 0,
-    isLoading: false,
-    isError: false,
-    error: undefined,
+  useOrders: (...args: any[]) => mockUseOrders(...args),
+  useBulkFulfillOrders: () => ({
+    mutateAsync: mockBulkFulfillOrders,
+    isPending: false,
   }),
+  useCreateOrderFulfillment: () => ({
+    mutateAsync: mockUseCreateOrderFulfillment,
+    isPending: false,
+  }),
+}))
+
+// Stubbed so the bulk-command tests below can assert exactly what props
+// `ReadyToShipTable` passes it, without depending on its own i18n
+// interpolation - that's covered directly in
+// `bulk-fulfill-result-summary.spec.tsx`.
+vi.mock("./bulk-fulfill-result-summary", () => ({
+  BulkFulfillResultSummary: (props: any) => {
+    mockBulkFulfillResultSummary(props)
+    return (
+      <div data-testid="bulk-fulfill-result-summary">
+        succeeded:{props.result.succeeded.join(",")}|failed:
+        {props.result.failed
+          .map((f: any) => `${f.order_id}:${f.error}`)
+          .join(",")}
+        <button onClick={props.onDismiss}>dismiss</button>
+      </div>
+    )
+  },
 }))
 
 import {
   FulfillCell,
   PackageCell,
+  ReadyToShipTable,
   ShipFromCell,
   ShippingRateCell,
 } from "./ready-to-ship-table"
 
 afterEach(() => {
   cleanup()
+  mockUseOrders.mockReset()
+  mockBulkFulfillOrders.mockReset()
+  mockUseCreateOrderFulfillment.mockReset()
+  mockBulkFulfillResultSummary.mockReset()
+  mockToastError.mockReset()
+})
+
+mockUseOrders.mockReturnValue({
+  orders: [],
+  count: 0,
+  isLoading: false,
+  isError: false,
+  error: undefined,
 })
 
 describe("ReadyToShipTable shipping rate / fulfill", () => {
@@ -195,5 +277,223 @@ describe("PackageCell", () => {
 
     expect(screen.getByText("orders.readyToShip.weight: 10")).toBeTruthy()
     expect(screen.getByText("10 x 20 x 30")).toBeTruthy()
+  })
+})
+
+/**
+ * A minimal but render-complete `ReadyToShipOrder` fixture: one value for
+ * every field each column in `useReadyToShipTableColumns` reads (customer,
+ * shipping method -> shipping option -> service zone -> fulfillment set ->
+ * location, items/variant dimensions, total, created_at), so the full
+ * `ReadyToShipTable` - not just an individual cell - renders without
+ * throwing or falling back to placeholder cells.
+ */
+const makeReadyToShipOrder = (id: string): any => ({
+  id,
+  display_id: Number(id.replace(/\D/g, "")) || 1,
+  customer: {
+    first_name: "Jane",
+    last_name: "Doe",
+    email: "jane@example.com",
+  },
+  currency_code: "usd",
+  total: 1000,
+  created_at: "2024-01-01T00:00:00.000Z",
+  shipping_methods: [
+    {
+      id: `sm_${id}`,
+      name: "Standard Shipping",
+      amount: 500,
+      shipping_option_id: `so_${id}`,
+      shipping_option: {
+        service_zone: {
+          fulfillment_set: {
+            location: { id: `loc_${id}`, name: "Warehouse A" },
+          },
+        },
+      },
+    },
+  ],
+  items: [
+    {
+      id: `item_${id}`,
+      quantity: 1,
+      detail: { fulfilled_quantity: 0 },
+      variant: { weight: 1, length: 1, width: 1, height: 1 },
+    },
+  ],
+})
+
+// jsdom doesn't implement `Element.prototype.scroll` - `_DataTable`
+// (`data-table-root.tsx`) calls it unconditionally on every page-index
+// change, which would otherwise throw as soon as the full table (not just
+// an individual cell, like the describe blocks above this one) is
+// rendered.
+if (!Element.prototype.scroll) {
+  Element.prototype.scroll = vi.fn()
+}
+
+const renderReadyToShipTable = () =>
+  render(
+    <MemoryRouter>
+      <TooltipProvider>
+        <ReadyToShipTable />
+      </TooltipProvider>
+    </MemoryRouter>
+  )
+
+describe("ReadyToShipTable bulk Fulfill command", () => {
+  it("renders no 'Fulfill selected' command when no rows are selected - _DataTable's own CommandBar open-gating (data-table-root.tsx:97,331-332), not duplicated in this component", () => {
+    mockUseOrders.mockReturnValue({
+      orders: [makeReadyToShipOrder("order_1")],
+      count: 1,
+      isLoading: false,
+      isError: false,
+      error: undefined,
+    })
+
+    renderReadyToShipTable()
+
+    expect(screen.queryByRole("button", { name: /fulfillSelected/ })).toBeNull()
+  })
+
+  it("selecting a single row and triggering 'Fulfill selected' calls useBulkFulfillOrders's mutateAsync with exactly that row's id", async () => {
+    mockUseOrders.mockReturnValue({
+      orders: [
+        makeReadyToShipOrder("order_1"),
+        makeReadyToShipOrder("order_2"),
+      ],
+      count: 2,
+      isLoading: false,
+      isError: false,
+      error: undefined,
+    })
+    mockBulkFulfillOrders.mockResolvedValue({
+      succeeded: ["order_1"],
+      failed: [],
+    })
+
+    const user = userEvent.setup()
+    renderReadyToShipTable()
+
+    // index 0 is the header "select all" checkbox; data rows start at 1.
+    const checkboxes = screen.getAllByRole("checkbox")
+    await user.click(checkboxes[1])
+
+    const fulfillSelected = await screen.findByRole("button", {
+      name: /fulfillSelected/,
+    })
+    await user.click(fulfillSelected)
+
+    await waitFor(() => {
+      expect(mockBulkFulfillOrders).toHaveBeenCalledWith({
+        order_ids: ["order_1"],
+      })
+    })
+    expect(mockBulkFulfillOrders).toHaveBeenCalledTimes(1)
+  })
+
+  it("selecting multiple rows calls mutateAsync with exactly the selected rows' ids", async () => {
+    mockUseOrders.mockReturnValue({
+      orders: [
+        makeReadyToShipOrder("order_1"),
+        makeReadyToShipOrder("order_2"),
+        makeReadyToShipOrder("order_3"),
+      ],
+      count: 3,
+      isLoading: false,
+      isError: false,
+      error: undefined,
+    })
+    mockBulkFulfillOrders.mockResolvedValue({
+      succeeded: ["order_1", "order_2"],
+      failed: [],
+    })
+
+    const user = userEvent.setup()
+    renderReadyToShipTable()
+
+    // Re-queried between clicks (rather than reusing one stale snapshot of
+    // `getAllByRole`), since selecting the first row re-renders the table.
+    await user.click(screen.getAllByRole("checkbox")[1])
+    await user.click(screen.getAllByRole("checkbox")[2])
+
+    const fulfillSelected = await screen.findByRole("button", {
+      name: /fulfillSelected/,
+    })
+    await user.click(fulfillSelected)
+
+    await waitFor(() => {
+      expect(mockBulkFulfillOrders).toHaveBeenCalledTimes(1)
+    })
+    const call = mockBulkFulfillOrders.mock.calls[0][0]
+    expect([...call.order_ids].sort()).toEqual(["order_1", "order_2"])
+  })
+
+  it("on a successful mutation, passes the exact structured { succeeded, failed } result to BulkFulfillResultSummary, and dismissing it removes it from the DOM", async () => {
+    mockUseOrders.mockReturnValue({
+      orders: [makeReadyToShipOrder("order_1")],
+      count: 1,
+      isLoading: false,
+      isError: false,
+      error: undefined,
+    })
+    const result = {
+      succeeded: ["order_1"],
+      failed: [
+        { order_id: "order_2", error: "Unable to buy a shipping label" },
+      ],
+    }
+    mockBulkFulfillOrders.mockResolvedValue(result)
+
+    const user = userEvent.setup()
+    renderReadyToShipTable()
+
+    const checkboxes = screen.getAllByRole("checkbox")
+    await user.click(checkboxes[1])
+    await user.click(
+      await screen.findByRole("button", { name: /fulfillSelected/ })
+    )
+
+    const summary = await screen.findByTestId("bulk-fulfill-result-summary")
+
+    expect(mockBulkFulfillResultSummary).toHaveBeenCalledWith(
+      expect.objectContaining({ result })
+    )
+    expect(summary.textContent).toContain("succeeded:order_1")
+    expect(summary.textContent).toContain(
+      "failed:order_2:Unable to buy a shipping label"
+    )
+
+    await user.click(within(summary).getByRole("button", { name: "dismiss" }))
+
+    expect(screen.queryByTestId("bulk-fulfill-result-summary")).toBeNull()
+  })
+
+  it("on a request-level failure (the mutation's promise rejecting, not a per-order failure in a successful response), shows a toast and never renders BulkFulfillResultSummary", async () => {
+    mockUseOrders.mockReturnValue({
+      orders: [makeReadyToShipOrder("order_1")],
+      count: 1,
+      isLoading: false,
+      isError: false,
+      error: undefined,
+    })
+    mockBulkFulfillOrders.mockRejectedValue(new Error("Network request failed"))
+
+    const user = userEvent.setup()
+    renderReadyToShipTable()
+
+    const checkboxes = screen.getAllByRole("checkbox")
+    await user.click(checkboxes[1])
+    await user.click(
+      await screen.findByRole("button", { name: /fulfillSelected/ })
+    )
+
+    await waitFor(() => {
+      expect(mockToastError).toHaveBeenCalledWith("Network request failed")
+    })
+
+    expect(screen.queryByTestId("bulk-fulfill-result-summary")).toBeNull()
+    expect(mockBulkFulfillResultSummary).not.toHaveBeenCalled()
   })
 })

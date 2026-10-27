@@ -824,4 +824,40 @@ export class Order {
       }
     )
   }
+
+  /**
+   * This method fulfills one or more orders in a single request. It sends a
+   * request to the [Bulk Fulfill Orders](https://docs.medusajs.com/api/admin/orders/bulk-fulfill-orders)
+   * API route. Each order's fulfillment attempt is independent - one
+   * order's failure doesn't stop or roll back the fulfillment of the
+   * others in the same batch.
+   *
+   * @param body - The IDs of the orders to fulfill.
+   * @param headers - Headers to pass in the request.
+   * @returns The IDs of the orders that were fulfilled successfully, and
+   * the orders that failed along with their error message.
+   *
+   * @example
+   * sdk.admin.order.bulkFulfill({
+   *   order_ids: ["order_123", "order_321"],
+   * })
+   * .then(({ succeeded, failed }) => {
+   *   console.log(succeeded, failed)
+   * })
+   */
+  async bulkFulfill(
+    body: {
+      order_ids: string[]
+    },
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<{
+      succeeded: string[]
+      failed: { order_id: string; error: string }[]
+    }>(`/admin/orders/fulfillments/batch`, {
+      method: "POST",
+      headers,
+      body,
+    })
+  }
 }

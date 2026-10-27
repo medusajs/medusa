@@ -237,6 +237,55 @@ export const useCreateOrderFulfillment = (
   })
 }
 
+/**
+ * The Bulk Fulfill Orders API route's response shape, reused as-is by
+ * `BulkFulfillResultSummary` (the UI that renders it) rather than each
+ * side redeclaring its own copy of the same shape.
+ */
+export type BulkFulfillOrdersResult = {
+  succeeded: string[]
+  failed: { order_id: string; error: string }[]
+}
+
+/**
+ * Bulk-fulfills one or more orders in a single request, used by the Ready
+ * to Ship table's "Fulfill selected" command bar action. Mirrors
+ * `useBulkTagOrders` (`hooks/api/order-tags.ts`): a dedicated mutation
+ * hook wrapping the SDK's own `bulkFulfill` method, invalidating the same
+ * query keys `useCreateOrderFulfillment` does on success since this is the
+ * same underlying operation (fulfillment creation) applied to many orders
+ * at once - including `ordersQueryKeys.all` broadly, since a successful
+ * batch likely moves some orders out of the Ready to Ship view entirely.
+ */
+export const useBulkFulfillOrders = (
+  options?: UseMutationOptions<
+    BulkFulfillOrdersResult,
+    FetchError,
+    { order_ids: string[] }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: { order_ids: string[] }) =>
+      sdk.admin.order.bulkFulfill(payload),
+    ...options,
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.all,
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: reservationItemsQueryKeys.lists(),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.details(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+  })
+}
+
 export const useCancelOrderFulfillment = (
   orderId: string,
   fulfillmentId: string,

@@ -1246,9 +1246,11 @@
       "shippingRate": "Shipping Rate",
       "orderDate": "Order Date",
       "fulfill": "Fulfill",
+      "fulfillSelected": "Fulfill selected",
       "noShippingMethod": "No shipping method",
       "noRecordsMessage": "Orders ready to ship will show up here.",
-      "confirmHeading": "Confirm fulfillment"
+      "confirmHeading": "Confirm fulfillment",
+      "bulkFulfillSummary": "{{succeeded}} fulfilled, {{failed}} failed"
     },
     "shipped": {
       "trackingStatus": "Tracking Status",

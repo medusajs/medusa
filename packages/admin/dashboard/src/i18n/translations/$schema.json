@@ -4862,6 +4862,9 @@
             "fulfill": {
               "type": "string"
             },
+            "fulfillSelected": {
+              "type": "string"
+            },
             "noShippingMethod": {
               "type": "string"
             },
@@ -4869,6 +4872,9 @@
               "type": "string"
             },
             "confirmHeading": {
+              "type": "string"
+            },
+            "bulkFulfillSummary": {
               "type": "string"
             }
           },
@@ -4880,9 +4886,11 @@
             "shippingRate",
             "orderDate",
             "fulfill",
+            "fulfillSelected",
             "noShippingMethod",
             "noRecordsMessage",
-            "confirmHeading"
+            "confirmHeading",
+            "bulkFulfillSummary"
           ],
           "additionalProperties": false
         },

@@ -1,8 +1,8 @@
 import { HttpTypes } from "@medusajs/types"
-import { Button, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Tooltip, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { createColumnHelper } from "@tanstack/react-table"
-import { useMemo } from "react"
+import { createColumnHelper, RowSelectionState } from "@tanstack/react-table"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useSearchParams } from "react-router-dom"
 
@@ -20,11 +20,16 @@ import {
   TotalCell,
   TotalHeader,
 } from "../../../../../../components/table/table-cells/order/total-cell"
-import { useOrders } from "../../../../../../hooks/api/orders"
+import {
+  BulkFulfillOrdersResult,
+  useBulkFulfillOrders,
+  useOrders,
+} from "../../../../../../hooks/api/orders"
 import { useDataTable } from "../../../../../../hooks/use-data-table"
 import { getStylizedAmount } from "../../../../../../lib/money-amount-helpers"
 import { computeOrderParcel } from "../../../../../../lib/order-parcel"
 import { READY_TO_SHIP_FIELDS } from "../../../const"
+import { BulkFulfillResultSummary } from "./bulk-fulfill-result-summary"
 import { FulfillConfirmPopover } from "./fulfill-confirm-popover"
 
 const PAGE_SIZE = 20
@@ -201,6 +206,30 @@ const useReadyToShipTableColumns = () => {
 
   return useMemo(
     () => [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsSomePageRowsSelected()
+                ? "indeterminate"
+                : table.getIsAllPageRowsSelected()
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          />
+        ),
+      }),
       columnHelper.accessor("display_id", {
         header: () => <DisplayIdHeader />,
         cell: ({ getValue }) => <DisplayIdCell displayId={getValue()} />,
@@ -284,6 +313,10 @@ export const ReadyToShipTable = () => {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
 
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [bulkFulfillResult, setBulkFulfillResult] =
+    useState<BulkFulfillOrdersResult | null>(null)
+
   const offsetKey = `${QUERY_PREFIX}_offset`
   const offset = Number(searchParams.get(offsetKey) ?? 0)
 
@@ -303,6 +336,8 @@ export const ReadyToShipTable = () => {
 
   const columns = useReadyToShipTableColumns()
 
+  const { mutateAsync: bulkFulfillOrders } = useBulkFulfillOrders()
+
   const { table } = useDataTable({
     data: (orders as ReadyToShipOrder[] | undefined) ?? [],
     columns,
@@ -311,6 +346,11 @@ export const ReadyToShipTable = () => {
     pageSize: PAGE_SIZE,
     getRowId: (row) => row.id,
     prefix: QUERY_PREFIX,
+    enableRowSelection: true,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
+    },
   })
 
   if (isError) {
@@ -318,18 +358,57 @@ export const ReadyToShipTable = () => {
   }
 
   return (
-    <_DataTable
-      columns={columns}
-      table={table}
-      pagination
-      navigateTo={(row) => `/orders/${row.original.id}`}
-      count={count}
-      isLoading={isLoading}
-      pageSize={PAGE_SIZE}
-      prefix={QUERY_PREFIX}
-      noRecords={{
-        message: t("orders.readyToShip.noRecordsMessage"),
-      }}
-    />
+    <>
+      <_DataTable
+        columns={columns}
+        table={table}
+        pagination
+        navigateTo={(row) => `/orders/${row.original.id}`}
+        count={count}
+        isLoading={isLoading}
+        pageSize={PAGE_SIZE}
+        prefix={QUERY_PREFIX}
+        noRecords={{
+          message: t("orders.readyToShip.noRecordsMessage"),
+        }}
+        commands={[
+          {
+            // `_DataTable`'s own `handleAction` clears `rowSelection` once
+            // this returned promise resolves (`data-table-root.tsx`'s
+            // `handleAction` calls `table.resetRowSelection()` after
+            // `action(...)` settles), so this never resets it itself -
+            // doing so here too would just duplicate that guarantee. The
+            // catch below keeps this promise always resolving (a
+            // request-level failure, as opposed to a per-order one in the
+            // structured result, still surfaces via a toast) so that
+            // clear-on-settle always runs.
+            action: async (selection) => {
+              const orderIds = Object.keys(selection)
+
+              try {
+                const result = await bulkFulfillOrders({
+                  order_ids: orderIds,
+                })
+                setBulkFulfillResult(result)
+              } catch (e) {
+                toast.error(
+                  e instanceof Error
+                    ? e.message
+                    : t("errorBoundary.defaultTitle")
+                )
+              }
+            },
+            label: t("orders.readyToShip.fulfillSelected"),
+            shortcut: "f",
+          },
+        ]}
+      />
+      {bulkFulfillResult && (
+        <BulkFulfillResultSummary
+          result={bulkFulfillResult}
+          onDismiss={() => setBulkFulfillResult(null)}
+        />
+      )}
+    </>
   )
 }
