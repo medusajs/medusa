@@ -48,7 +48,7 @@
     "dotenv-expand": "^11.0.6",
     "graphql": "^16.14.2",
     "jsonwebtoken": "^9.0.2",
-    "pg-connection-string": "^2.7.0",
+    "pg-connection-string": "^2.14.1",
     "pluralize": "^8.0.0",
     "ulid": "^2.3.0"
   },

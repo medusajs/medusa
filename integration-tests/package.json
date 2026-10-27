@@ -22,8 +22,8 @@
     "jsonwebtoken": "^9.0.2",
     "@medusajs/framework": "^1.0.1",
     "awilix": "^8.0.1",
-    "ioredis": "^5.4.1",
-    "pg": "^8.13.0",
+    "ioredis": "^5.11.1",
+    "pg": "^8.23.1",
     "pg-god": "^1.0.12",
     "glob": "13.0.6"
   }
