@@ -40,7 +40,13 @@ import {
   deleteReservationsStep,
   updateReservationsStep,
 } from "../../reservation"
-import { registerOrderFulfillmentStep } from "../steps"
+// Imported from its own file rather than the `../steps` barrel: the new
+// `bulkFulfillOrdersStep` (in that same barrel) calls this workflow
+// directly, and barrel-importing it back here would create a circular
+// require - `../steps` would still be mid-evaluation the first time it's
+// required again, so `registerOrderFulfillmentStep` would resolve to
+// `undefined` at the call site below.
+import { registerOrderFulfillmentStep } from "../steps/register-fulfillment"
 import { buildReservationsMap } from "../utils/build-reservations-map"
 import {
   throwIfItemsAreNotGroupedByShippingRequirement,

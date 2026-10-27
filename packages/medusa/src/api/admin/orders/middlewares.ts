@@ -8,6 +8,7 @@ import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
 import {
   AdminAuthorizeOrderPaymentSession,
+  AdminBulkFulfillOrders,
   AdminBulkTagOrders,
   AdminCompleteOrder,
   AdminCreateOrderCreditLines,
@@ -75,6 +76,17 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
       {
         resource: Entities.order,
         operation: PolicyOperation.update,
+      },
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/orders/fulfillments/batch",
+    middlewares: [validateAndTransformBody(AdminBulkFulfillOrders)],
+    policies: [
+      {
+        resource: Entities.fulfillment,
+        operation: PolicyOperation.create,
       },
     ],
   },

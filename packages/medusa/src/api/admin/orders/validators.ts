@@ -194,6 +194,13 @@ export const AdminCreateOrderCreditLines = z.object({
   metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
+export type AdminBulkFulfillOrdersType = z.infer<typeof AdminBulkFulfillOrders>
+export const AdminBulkFulfillOrders = z
+  .object({
+    order_ids: z.array(z.string()).min(1),
+  })
+  .strict()
+
 export type AdminBulkTagOrdersType = z.infer<typeof AdminBulkTagOrders>
 export const AdminBulkTagOrders = z
   .object({
