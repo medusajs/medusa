@@ -36,7 +36,7 @@ export const generatedEditDates = {
   "app/commerce-modules/payment/payment-provider/stripe/page.mdx": "2026-09-11T07:40:12.259Z",
   "app/commerce-modules/payment/payment-provider/page.mdx": "2025-05-20T07:51:40.708Z",
   "app/commerce-modules/payment/payment-session/page.mdx": "2026-10-22T11:43:58.323Z",
-  "app/commerce-modules/payment/webhook-events/page.mdx": "2026-09-25T12:33:45.656Z",
+  "app/commerce-modules/payment/webhook-events/page.mdx": "2026-10-27T21:56:24.114Z",
   "app/commerce-modules/payment/page.mdx": "2025-04-17T08:48:11.702Z",
   "app/commerce-modules/pricing/concepts/page.mdx": "2026-04-30T16:49:10.611Z",
   "app/commerce-modules/pricing/price-calculation/page.mdx": "2025-09-05T07:54:21.322Z",

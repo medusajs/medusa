@@ -41,6 +41,12 @@ For example, when integrating basic Stripe payments with the [Stripe Module Prov
 
 You can use this webhook listener when configuring webhook events in your third-party payment provider.
 
+<Note title="Unconfigured providers">
+
+Starting from Medusa v2.22.2, the webhook listener route checks that the payment provider in the route is registered and enabled before processing the webhook event. If you send a webhook event for a provider that isn't configured in `medusa-config.ts` or is disabled, the route responds with a `400` status code and doesn't process the event.
+
+</Note>
+
 ### getWebhookActionAndData Method
 
 The webhook listener API route executes the [getWebhookActionAndData method](/references/payment/getWebhookActionAndData) of the Payment Module's main service. This method delegates handling of incoming webhook events to the relevant payment provider.
