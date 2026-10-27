@@ -1,9 +1,10 @@
-import { execSync } from "child_process"
+import { execFileSync } from "child_process"
 import { ChangedPackage, PackageKind } from "../types/index.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
 
 const MAX_DIFF_LINES_PER_FILE = 500
 const MAX_FILES_PER_PACKAGE = 10
+const COMMIT_SHA_REGEX = /^[0-9a-f]{7,40}$/i
 
 // File patterns that are not doc-relevant regardless of content
 const SKIP_FILE_PATTERNS = [
@@ -32,6 +33,10 @@ export class DiffAnalyzer {
   }
 
   async analyze(commitSha: string): Promise<ChangedPackage[]> {
+    if (!COMMIT_SHA_REGEX.test(commitSha)) {
+      throw new Error(`Invalid commit SHA: ${commitSha}`)
+    }
+
     const allFiles = this.getCommitFiles(commitSha)
     const packageFiles = allFiles.filter((f) => f.startsWith("packages/"))
 
@@ -70,8 +75,9 @@ export class DiffAnalyzer {
 
   private getCommitFiles(commitSha: string): string[] {
     try {
-      const output = execSync(
-        `git diff-tree --no-commit-id -r --name-only ${commitSha}`,
+      const output = execFileSync(
+        "git",
+        ["diff-tree", "--no-commit-id", "-r", "--name-only", commitSha],
         { cwd: this.monorepoRoot }
       )
         .toString()
@@ -146,8 +152,9 @@ export class DiffAnalyzer {
 
     for (const file of filesToDiff) {
       try {
-        const raw = execSync(
-          `git diff ${commitSha}~1 ${commitSha} -- "${file}"`,
+        const raw = execFileSync(
+          "git",
+          ["diff", `${commitSha}~1`, commitSha, "--", file],
           { cwd: this.monorepoRoot }
         ).toString()
 

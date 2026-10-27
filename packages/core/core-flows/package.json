@@ -38,7 +38,7 @@
   "dependencies": {
     "csv-parse": "^7.0.2",
     "deeks": "^3.2.1",
-    "json-2-csv": "^5.5.11"
+    "json-2-csv": "^5.6.0"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.1"

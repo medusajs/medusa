@@ -82,7 +82,7 @@
     "@medusajs/cli": "2.22.1"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.980.0",
+    "@aws-sdk/client-dynamodb": "^3.1156.0",
     "@jercle/yargonaut": "^1.1.5",
     "@medusajs/deps": "2.22.1",
     "@medusajs/modules-sdk": "2.22.1",
@@ -99,7 +99,7 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.21.0",
-    "express-session": "^1.17.3",
+    "express-session": "^1.19.0",
     "glob": "13.0.6",
     "http-errors": "2.0.0",
     "jsonwebtoken": "^9.0.2",
@@ -111,7 +111,7 @@
   },
   "peerDependencies": {
     "@medusajs/cli": "2.22.1",
-    "ioredis": "^5.4.1"
+    "ioredis": "^5.11.1"
   },
   "peerDependenciesMeta": {
     "ioredis": {
