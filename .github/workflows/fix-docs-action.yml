@@ -240,6 +240,7 @@ jobs:
           claude_args: >-
             --model claude-opus-5-5
             --max-turns 80
+            --add-dir /tmp/fix-docs
             --allowedTools "Read,Glob,Grep,
             Edit(www/apps/book/**),Write(www/apps/book/**),
             Edit(www/apps/resources/**),Write(www/apps/resources/**),
@@ -290,6 +291,21 @@ jobs:
             - `pr_title`: single line, starts with `docs: `, ends with ` [automated]`, under 100 characters.
             - `summary`: plain markdown, no headings, no links to the issue, no closing keywords, no @mentions, and never pasted issue text.
             - For `skip`, set `branch_name` and `pr_title` to null.
+
+      # Only the denied calls are published: the full transcript can hold unmasked tool output.
+      - name: Show denied tool calls
+        if: always()
+        env:
+          ISSUE: ${{ inputs.issue }}
+        run: |
+          FILE="$RUNNER_TEMP/claude-execution-output.json"
+          [[ -f "$FILE" ]] || exit 0
+          {
+            echo "### Denied tool calls (\`$ISSUE\`)"
+            echo
+            jq -r '.[] | select(.type == "result") | .permission_denials[]?
+              | "- `\(.tool_name)`: `\((.tool_input.command // .tool_input.file_path // (.tool_input | tostring)) | .[0:200] | gsub("`"; "'"'"'"))`"' "$FILE"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Package result
         id: result

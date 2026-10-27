@@ -302,6 +302,21 @@ jobs:
             6. Respect the size and path limits in the skill. If the fix can't fit them, write a `needs-team` result instead of a fix.
             7. Write fix-result.json (and pr-body.md when status is "confirmed") at the repository root, as described in the skill's reference/output.md.
 
+      # Only the denied calls are published: the full transcript can hold unmasked tool output.
+      - name: Show denied tool calls
+        if: always()
+        env:
+          ISSUE: ${{ inputs.issue }}
+        run: |
+          FILE="$RUNNER_TEMP/claude-execution-output.json"
+          [[ -f "$FILE" ]] || exit 0
+          {
+            echo "### Denied tool calls (\`$ISSUE\`)"
+            echo
+            jq -r '.[] | select(.type == "result") | .permission_denials[]?
+              | "- `\(.tool_name)`: `\((.tool_input.command // .tool_input.file_path // (.tool_input | tostring)) | .[0:200] | gsub("`"; "'"'"'"))`"' "$FILE"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Package result
         id: result
         run: |
