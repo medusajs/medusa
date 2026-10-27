@@ -1247,7 +1247,8 @@
       "orderDate": "Order Date",
       "fulfill": "Fulfill",
       "noShippingMethod": "No shipping method",
-      "noRecordsMessage": "Orders ready to ship will show up here."
+      "noRecordsMessage": "Orders ready to ship will show up here.",
+      "confirmHeading": "Confirm fulfillment"
     },
     "shipped": {
       "trackingStatus": "Tracking Status",

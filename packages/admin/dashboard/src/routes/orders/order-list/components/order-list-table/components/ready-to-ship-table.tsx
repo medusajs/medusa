@@ -25,6 +25,7 @@ import { useDataTable } from "../../../../../../hooks/use-data-table"
 import { getStylizedAmount } from "../../../../../../lib/money-amount-helpers"
 import { computeOrderParcel } from "../../../../../../lib/order-parcel"
 import { READY_TO_SHIP_FIELDS } from "../../../const"
+import { FulfillConfirmPopover } from "./fulfill-confirm-popover"
 
 const PAGE_SIZE = 20
 const QUERY_PREFIX = "rts"
@@ -36,11 +37,12 @@ const QUERY_PREFIX = "rts"
  * this mirrors the local augmentation pattern used for order fulfillments
  * in `order-detail/constants.ts`.
  */
-type ReadyToShipShippingMethod = HttpTypes.AdminOrderShippingMethod & {
+export type ReadyToShipShippingMethod = HttpTypes.AdminOrderShippingMethod & {
   shipping_option?: {
     service_zone?: {
       fulfillment_set?: {
         location?: {
+          id?: string | null
           name?: string | null
         } | null
       } | null
@@ -48,15 +50,30 @@ type ReadyToShipShippingMethod = HttpTypes.AdminOrderShippingMethod & {
   } | null
 }
 
-type ReadyToShipOrder = Omit<HttpTypes.AdminOrder, "shipping_methods"> & {
+export type ReadyToShipOrder = Omit<
+  HttpTypes.AdminOrder,
+  "shipping_methods"
+> & {
   shipping_methods?: ReadyToShipShippingMethod[] | null
 }
 
-const getShipFromLocationName = (
+export const getShipFromLocationName = (
   shippingMethod?: ReadyToShipShippingMethod | null
 ): string | null =>
   shippingMethod?.shipping_option?.service_zone?.fulfillment_set?.location
     ?.name ?? null
+
+/**
+ * Resolves the stock location's id from the same shipping method ->
+ * shipping option -> service zone -> fulfillment set -> location chain as
+ * `getShipFromLocationName`. Used by `FulfillConfirmPopover` to build the
+ * fulfillment payload's `location_id` - the `name` alone isn't a usable id.
+ */
+export const getShipFromLocationId = (
+  shippingMethod?: ReadyToShipShippingMethod | null
+): string | null =>
+  shippingMethod?.shipping_option?.service_zone?.fulfillment_set?.location
+    ?.id ?? null
 
 /**
  * Renders the stock location a Ready to Ship order will fulfill from,
@@ -249,11 +266,7 @@ const useReadyToShipTableColumns = () => {
       }),
       columnHelper.display({
         id: "fulfill",
-        cell: ({ row }) => (
-          <FulfillCell
-            hasShippingMethod={!!row.original.shipping_methods?.length}
-          />
-        ),
+        cell: ({ row }) => <FulfillConfirmPopover order={row.original} />,
       }),
     ],
     [t]

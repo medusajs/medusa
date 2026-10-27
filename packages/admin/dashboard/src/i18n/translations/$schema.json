@@ -4867,6 +4867,9 @@
             },
             "noRecordsMessage": {
               "type": "string"
+            },
+            "confirmHeading": {
+              "type": "string"
             }
           },
           "required": [
@@ -4878,7 +4881,8 @@
             "orderDate",
             "fulfill",
             "noShippingMethod",
-            "noRecordsMessage"
+            "noRecordsMessage",
+            "confirmHeading"
           ],
           "additionalProperties": false
         },
