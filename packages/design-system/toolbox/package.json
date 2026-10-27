@@ -10,10 +10,10 @@
     "build": "yarn run -T tsup"
   },
   "dependencies": {
-    "@svgr/core": "8.0.0",
-    "@svgr/plugin-jsx": "8.0.1",
-    "@svgr/plugin-prettier": "8.0.1",
-    "@svgr/plugin-svgo": "8.0.1",
+    "@svgr/core": "8.1.0",
+    "@svgr/plugin-jsx": "8.1.0",
+    "@svgr/plugin-prettier": "8.1.0",
+    "@svgr/plugin-svgo": "8.1.0",
     "axios": "^1.20.0",
     "axios-retry": "^3.1.9",
     "commander": "^11.0.0",
