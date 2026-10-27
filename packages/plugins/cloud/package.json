@@ -1,0 +1,109 @@
+{
+  "name": "@medusajs/cloud",
+  "version": "2.22.1",
+  "description": "A Medusa plugin that adds Medusa Cloud features, such as in-app announcements, to the Medusa Admin of Cloud projects.",
+  "author": "Medusa (https://medusajs.com)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medusajs/medusa.git",
+    "directory": "packages/plugins/cloud"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
+  "files": [
+    ".medusa/server",
+    "AGENTS.md"
+  ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": "./.medusa/server/src/*.js",
+    "./admin": {
+      "import": "./.medusa/server/src/admin/index.mjs",
+      "require": "./.medusa/server/src/admin/index.js",
+      "default": "./.medusa/server/src/admin/index.js"
+    }
+  },
+  "keywords": [
+    "medusa",
+    "plugin",
+    "medusa-plugin",
+    "medusa-v2",
+    "medusa-cloud"
+  ],
+  "scripts": {
+    "build:plugin": "medusa plugin:build",
+    "dev": "medusa plugin:develop",
+    "prepare": "cross-env NODE_ENV=production yarn run build:plugin",
+    "link:watch": "medusa plugin:publish && medusa plugin:develop",
+    "watch": "medusa plugin:develop",
+    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src"
+  },
+  "dependencies": {
+    "@medusajs/js-sdk": "2.22.1",
+    "@tanstack/react-query": "5.64.2"
+  },
+  "devDependencies": {
+    "@medusajs/admin-sdk": "2.22.1",
+    "@medusajs/cli": "2.22.1",
+    "@medusajs/dashboard": "2.22.1",
+    "@medusajs/framework": "2.22.1",
+    "@medusajs/icons": "2.22.1",
+    "@medusajs/types": "2.22.1",
+    "@medusajs/ui": "4.2.8",
+    "@medusajs/ui-preset": "2.22.1",
+    "@swc/core": "1.5.7",
+    "@types/node": "^20.0.0",
+    "cross-env": "^7.0.3",
+    "typescript": "^5.7.3"
+  },
+  "peerDependencies": {
+    "@medusajs/admin-sdk": "2.22.1",
+    "@medusajs/cli": "2.22.1",
+    "@medusajs/dashboard": "2.22.1",
+    "@medusajs/framework": "2.22.1",
+    "@medusajs/icons": "2.22.1",
+    "@medusajs/test-utils": "2.22.1",
+    "@medusajs/ui": "4.2.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.4 || ^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@medusajs/admin-sdk": {
+      "optional": true
+    },
+    "@medusajs/cli": {
+      "optional": true
+    },
+    "@medusajs/dashboard": {
+      "optional": true
+    },
+    "@medusajs/icons": {
+      "optional": true
+    },
+    "@medusajs/test-utils": {
+      "optional": true
+    },
+    "@medusajs/ui": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "react-router-dom": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "packageManager": "yarn@3.2.1"
+}

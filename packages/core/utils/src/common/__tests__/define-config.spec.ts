@@ -1637,6 +1637,13 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -1851,6 +1858,13 @@ describe("defineConfig", function () {
           {
             "options": {},
             "resolve": "@medusajs/draft-order",
+          },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
           },
         ],
         "projectConfig": {
@@ -2108,6 +2122,13 @@ describe("defineConfig", function () {
           {
             "options": {},
             "resolve": "@medusajs/draft-order",
+          },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
           },
         ],
         "projectConfig": {
@@ -2382,6 +2403,13 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -2484,8 +2512,60 @@ describe("defineConfig", function () {
 
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: { apiUrl: undefined, organizationId: undefined },
+      },
       { resolve: "@medusajs/cloud-plugin", options: { cloud: true } },
     ])
+  })
+
+  it("should pass Medusa Cloud env variables to the cloud plugin", function () {
+    const originalEnv = { ...process.env }
+    process.env.EXECUTION_CONTEXT = "medusa-cloud"
+    process.env.MEDUSA_CLOUD_API_URL = "https://api.staging.medusajs.cloud"
+    process.env.MEDUSA_CLOUD_ORGANIZATION_ID = "org_123"
+
+    const config = defineConfig()
+
+    process.env = { ...originalEnv }
+
+    expect(config.plugins).toContainEqual({
+      resolve: "@medusajs/cloud",
+      options: {
+        apiUrl: "https://api.staging.medusajs.cloud",
+        organizationId: "org_123",
+      },
+    })
+  })
+
+  it("should let the user override the cloud plugin options", function () {
+    const originalEnv = { ...process.env }
+    process.env.EXECUTION_CONTEXT = "medusa-cloud"
+
+    const config = defineConfig({
+      plugins: [
+        { resolve: "@medusajs/cloud", options: { organizationId: "org_1" } },
+      ],
+    })
+
+    process.env = { ...originalEnv }
+
+    expect(config.plugins).toEqual([
+      { resolve: "@medusajs/draft-order", options: {} },
+      { resolve: "@medusajs/cloud", options: { organizationId: "org_1" } },
+    ])
+  })
+
+  it("should not include the cloud plugin outside of Medusa Cloud", function () {
+    const config = defineConfig()
+
+    expect(
+      config.plugins.some(
+        (plugin) =>
+          typeof plugin !== "string" && plugin.resolve === "@medusajs/cloud"
+      )
+    ).toBe(false)
   })
 
   it("should handle empty plugins array", function () {
