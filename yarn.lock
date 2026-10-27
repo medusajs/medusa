@@ -3442,7 +3442,7 @@ __metadata:
     react-currency-input-field: ^3.6.11
     react-dom: ^18.3.1
     react-helmet-async: ^2.0.5
-    react-hook-form: 7.83.0
+    react-hook-form: 7.91.0
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
     react-router-dom: 7.18.2
@@ -3495,7 +3495,7 @@ __metadata:
     lodash.isequal: ^4.5.0
     match-sorter: ^6.3.4
     radix-ui: 1.8.1
-    react-hook-form: 7.83.0
+    react-hook-form: 7.91.0
     zod: 4.6.6
   peerDependencies:
     "@medusajs/admin-sdk": 2.22.1
@@ -19775,12 +19775,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.83.0":
-  version: 7.83.0
-  resolution: "react-hook-form@npm:7.83.0"
+"react-hook-form@npm:7.91.0":
+  version: 7.91.0
+  resolution: "react-hook-form@npm:7.91.0"
   peerDependencies:
+    "@types/react": "*"
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 3a1cfbb6bd614833675e1db1c079e05dc51c4f26c5259424023846a380de22d51748a755032a9983af492d25cbe98c524eecadce3c75e6997ff136e7538be06e
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 21c6164024082331242eaf7dd865ca6ac905af5a4941da60dc302337f0190635be7e73af30954cb7a310f5d94883e851b1d79322415aca796b81877085ef1c7c
   languageName: node
   linkType: hard
 
