@@ -1,4 +1,5 @@
 import { SearchTypes } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import { CloudServiceError } from "../../utils"
 import { MedusaSearchService } from "../medusa-search"
 
@@ -558,5 +559,87 @@ describe("MedusaSearchService", () => {
     expect(results[1].facets).toMatchObject({
       status: { type: "value" },
     })
+  })
+
+  it("returns an empty result for an index Cloud has not created yet", async () => {
+    const service = createService()
+    const multiQuery = jest
+      .fn()
+      .mockRejectedValue(
+        new CloudServiceError(
+          "upstream_error",
+          "not_found",
+          {},
+          "namespace not found",
+          404
+        )
+      )
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const result = await service.search({
+      index: definition,
+      q: "a",
+      attributes_to_retrieve: ["title"],
+      search_options: { facets: [{ field: "status" }] },
+    })
+
+    expect(result.hits).toEqual([])
+    expect(result.metadata.count).toBe(0)
+    expect(result.facets).toEqual({ status: { type: "value", values: [] } })
+  })
+
+  it("surfaces a query the engine rejects as invalid data", async () => {
+    const service = createService()
+    const multiQuery = jest
+      .fn()
+      .mockRejectedValue(
+        new CloudServiceError(
+          "upstream_error",
+          "invalid_request",
+          {},
+          "query is too complex",
+          400
+        )
+      )
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    await expect(
+      service.search({
+        index: definition,
+        q: "table",
+        attributes_to_retrieve: ["title"],
+      })
+    ).rejects.toMatchObject({
+      type: MedusaError.Types.INVALID_DATA,
+      message: "Medusa search rejected the query: query is too complex",
+    })
+  })
+
+  it("rethrows other Cloud errors unchanged", async () => {
+    const service = createService()
+    const error = new CloudServiceError(
+      "search_rate_limit",
+      "rate_limited",
+      {},
+      "Search engine is rate limiting requests",
+      429
+    )
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({
+        multiQuery: jest.fn().mockRejectedValue(error),
+      })),
+    }
+
+    await expect(
+      service.search({
+        index: definition,
+        q: "table",
+        attributes_to_retrieve: ["title"],
+      })
+    ).rejects.toBe(error)
   })
 })

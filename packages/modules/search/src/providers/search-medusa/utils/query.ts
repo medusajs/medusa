@@ -141,27 +141,46 @@ function fuzzyMatchFilter(
 ): Filter | undefined {
   const fields = fuzzyFields(input, plan)
   const words = (input.q ?? "").trim().split(/\s+/).filter(Boolean)
+  // The engine's Fuzzy matches nothing for a word under the one-typo
+  // threshold, which would sink the whole "all"/"last" conjunction.
+  const tolerant = (word: string) =>
+    [...word].length >= plan.typo_tolerance.min_word_size_for_one_typo
 
-  if (!fields.length || !words.length) {
+  if (!fields.length || !words.some(tolerant)) {
     return undefined
   }
 
+  const strategy = input.search_options?.match_strategy
   const maxEditDistance = fuzzyMaxEditDistance(plan)
-  const wordClauses = words.map((word): Filter => {
-    const fieldClauses = fields.map(
-      (path): Filter => [
-        path,
-        "Fuzzy",
+  const wordClauses = words.flatMap((word, index): Filter[] => {
+    if (tolerant(word)) {
+      const fieldClauses = fields.map(
+        (path): Filter => [
+          path,
+          "Fuzzy",
+          word,
+          { max_edit_distance: maxEditDistance, case_sensitive: false },
+        ]
+      )
+      return [mergeFilters(fieldClauses, "Or")!]
+    }
+
+    if (strategy === "any") {
+      return []
+    }
+
+    // Still required, so it has to match exactly.
+    const last = strategy === "last" && index === words.length - 1
+    return [
+      textMatchFilter(
         word,
-        { max_edit_distance: maxEditDistance, case_sensitive: false },
-      ]
-    )
-    return mergeFilters(fieldClauses, "Or")!
+        searchableFields(input, plan),
+        last ? "last" : undefined
+      )!,
+    ]
   })
 
-  const combinator =
-    input.search_options?.match_strategy === "any" ? "Or" : "And"
-  return mergeFilters(wordClauses, combinator)
+  return mergeFilters(wordClauses, strategy === "any" ? "Or" : "And")
 }
 
 function boostWithTypoTolerance(

@@ -19,6 +19,7 @@ import {
   resolveMedusaSearchOptions,
   type FacetQuery,
   type IndexQuery,
+  type IndexMultiQueryParams,
   type IndexMultiQueryResponse,
   type IndexQueryResult,
   type QueryPlan,
@@ -288,7 +289,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         await Promise.all(
           chunks.map(async (chunk) => {
             const queries = chunk.flatMap((entry) => entry.item.queries)
-            const response = await this.index(physicalName).multiQuery({
+            const response = await this.multiQuery(physicalName, {
               queries,
               consistency: consistency ? { level: consistency } : undefined,
             })
@@ -315,6 +316,34 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     )
 
     return results
+  }
+
+  protected async multiQuery(
+    index: string,
+    body: IndexMultiQueryParams
+  ): Promise<IndexMultiQueryResponse> {
+    try {
+      return await this.index(index).multiQuery(body)
+    } catch (error) {
+      if (!(error instanceof CloudServiceError)) {
+        throw error
+      }
+
+      // Cloud creates an index on its first write, so one seeded with no
+      // documents doesn't exist yet and has nothing to return.
+      if (error.isNotFound) {
+        return { results: [], performance: {} }
+      }
+
+      if (error.status === 400 || error.status === 422) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Medusa search rejected the query: ${error.message}`
+        )
+      }
+
+      throw error
+    }
   }
 
   protected buildMultiQuery(

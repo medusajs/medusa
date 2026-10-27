@@ -655,7 +655,7 @@ describe("Medusa search utilities", () => {
       const query = buildQueryPlan(
         {
           index: definition,
-          q: "shoo",
+          q: "sneakr",
           attributes_to_retrieve: ["title"],
           search_options: { typo_tolerance: true },
         },
@@ -665,14 +665,14 @@ describe("Medusa search utilities", () => {
       expect(query.query.rank_by).toEqual([
         "Sum",
         [
-          ["Product", 3, ["title", "BM25", "shoo"]],
+          ["Product", 3, ["title", "BM25", "sneakr"]],
           [
             "Product",
             0.01,
             [
               "title",
               "Fuzzy",
-              "shoo",
+              "sneakr",
               {
                 max_edit_distance: [
                   { min_query_chars: 6, distance: 1 },
@@ -687,11 +687,11 @@ describe("Medusa search utilities", () => {
       expect(query.query.filters).toEqual([
         "Or",
         [
-          ["title", "ContainsAllTokens", "shoo"],
+          ["title", "ContainsAllTokens", "sneakr"],
           [
             "title",
             "Fuzzy",
-            "shoo",
+            "sneakr",
             {
               max_edit_distance: [
                 { min_query_chars: 6, distance: 1 },
@@ -704,7 +704,7 @@ describe("Medusa search utilities", () => {
       ])
     })
 
-    it("honors custom index-level edit-distance thresholds and requires every word to match", () => {
+    it("honors custom index-level edit-distance thresholds and matches words under them exactly", () => {
       const custom = buildIndexPlan({
         ...definition,
         settings: {
@@ -718,7 +718,7 @@ describe("Medusa search utilities", () => {
       const query = buildQueryPlan(
         {
           index: definition,
-          q: "red shoo",
+          q: "red sneakerz",
           attributes_to_retrieve: ["title"],
           search_options: { typo_tolerance: true },
         },
@@ -728,29 +728,18 @@ describe("Medusa search utilities", () => {
       expect(query.query.rank_by).toEqual([
         "Sum",
         [
-          ["Product", 3, ["title", "BM25", "red shoo"]],
+          ["Product", 3, ["title", "BM25", "red sneakerz"]],
           [
             "Product",
             0.01,
             [
               "And",
               [
+                ["title", "ContainsAllTokens", "red"],
                 [
                   "title",
                   "Fuzzy",
-                  "red",
-                  {
-                    max_edit_distance: [
-                      { min_query_chars: 8, distance: 1 },
-                      { min_query_chars: 12, distance: 2 },
-                    ],
-                    case_sensitive: false,
-                  },
-                ],
-                [
-                  "title",
-                  "Fuzzy",
-                  "shoo",
+                  "sneakerz",
                   {
                     max_edit_distance: [
                       { min_query_chars: 8, distance: 1 },
@@ -780,7 +769,7 @@ describe("Medusa search utilities", () => {
       const query = buildQueryPlan(
         {
           index: definition,
-          q: "shoo",
+          q: "sneakerz",
           attributes_to_retrieve: ["title"],
           search_options: { typo_tolerance: true },
         },
@@ -798,7 +787,7 @@ describe("Medusa search utilities", () => {
       const query = buildQueryPlan(
         {
           index: definition,
-          q: "red shoo",
+          q: "running sneakr",
           attributes_to_retrieve: ["title"],
           search_options: { typo_tolerance: true, match_strategy: "any" },
         },
@@ -807,6 +796,70 @@ describe("Medusa search utilities", () => {
 
       const fuzzyClause = (query.query.rank_by as any)[1][1][2]
       expect(fuzzyClause[0]).toBe("Or")
+    })
+
+    it("leaves out words under the threshold when match_strategy is any", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red sneakr",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true, match_strategy: "any" },
+        },
+        plan
+      )
+
+      const fuzzyClause = (query.query.rank_by as any)[1][1][2]
+      expect(fuzzyClause.slice(0, 3)).toEqual(["title", "Fuzzy", "sneakr"])
+    })
+
+    it("matches a short last word as a prefix when match_strategy is last", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "running sne",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true, match_strategy: "last" },
+        },
+        plan
+      )
+
+      const fuzzyClause = (query.query.rank_by as any)[1][1][2]
+      expect(fuzzyClause[0]).toBe("And")
+      expect(fuzzyClause[1][0].slice(0, 3)).toEqual([
+        "title",
+        "Fuzzy",
+        "running",
+      ])
+      expect(fuzzyClause[1][1]).toEqual([
+        "title",
+        "ContainsAllTokens",
+        "sne",
+        { last_as_prefix: true },
+      ])
+    })
+
+    it("skips typo tolerance when every word is under the threshold", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red oak table",
+          attributes_to_retrieve: ["title"],
+          search_options: { typo_tolerance: true },
+        },
+        plan
+      )
+
+      expect(query.query.rank_by).toEqual([
+        "Product",
+        3,
+        ["title", "BM25", "red oak table"],
+      ])
+      expect(query.query.filters).toEqual([
+        "title",
+        "ContainsAllTokens",
+        "red oak table",
+      ])
     })
 
     it("ignores typo tolerance when no searched field has a fuzzy index", () => {
