@@ -207,6 +207,18 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["POST"],
+    matcher: "/admin/products/imports/:transaction_id/confirm",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.product,
+          operation: [PolicyOperation.create, PolicyOperation.update],
+        },
+      ]),
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/products/:id",
     middlewares: [
