@@ -119,9 +119,12 @@ export const PackageCell = ({
 
 /**
  * Renders the order's first shipping method's name and formatted amount.
- * A $0 (free shipping) amount still renders a value - `getStylizedAmount`
- * only treats `null`/`undefined` as absent, not `0` - so it stays visibly
- * distinct from the "no shipping method at all" case, which renders empty.
+ * A $0 (free shipping) amount still renders a value: the guard below only
+ * short-circuits on a missing `shippingMethod`, so `getStylizedAmount` -
+ * which takes a required `number` and has no null/undefined handling of
+ * its own - is only ever called with a real amount, never with the "no
+ * shipping method at all" case. That's what keeps the two visibly
+ * distinct, not any null-safety in `getStylizedAmount` itself.
  */
 export const ShippingRateCell = ({
   shippingMethod,
