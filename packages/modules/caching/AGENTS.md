@@ -55,6 +55,7 @@ await caching.clear({ tags: [`Brand:${brand.id}`] })
 - Loaders: `src/loaders/hash.ts` registers `hasher` (xxhash-wasm `h64ToString`); `src/loaders/providers.ts` registers the strategy, optional in-memory provider, and configured providers as aliases `lp_<id>`, then picks `default_provider`.
 - `src/utils/strategy.ts` (`DefaultCacheStrategy`): `computeKey` = xxhash of `fast-json-stable-stringify(input)`. `computeTags` uses `CacheInvalidationParser` (`src/utils/parser.ts`) over the merged GraphQL schema of all loaded modules to find entities in the data.
 - On `onApplicationStart`, the strategy subscribes to `"*"` on the Event Bus (and `addInterceptor` when available). Each event `<...>.<entity>.<operation>` is turned into tags and cleared with `autoInvalidate: true`.
+- `onApplicationShutdown` calls the optional `shutdown()` of every registered provider (the in-memory provider closes its node-cache client and check timer).
 - Concurrent identical `get`/`set`/`clear` calls are de-duplicated via `ongoingRequests`.
 - Static `traceGet` / `traceSet` / `traceClear` hooks are used for instrumentation.
 - Module definition dependencies: `Modules.EVENT_BUS`, `logger`.
