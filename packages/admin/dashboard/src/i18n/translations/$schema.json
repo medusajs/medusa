@@ -4817,9 +4817,25 @@
           "properties": {
             "noRecordsMessage": {
               "type": "string"
+            },
+            "tabs": {
+              "type": "object",
+              "properties": {
+                "all": {
+                  "type": "string"
+                },
+                "readyToShip": {
+                  "type": "string"
+                },
+                "shipped": {
+                  "type": "string"
+                }
+              },
+              "required": ["all", "readyToShip", "shipped"],
+              "additionalProperties": false
             }
           },
-          "required": ["noRecordsMessage"],
+          "required": ["noRecordsMessage", "tabs"],
           "additionalProperties": false
         },
         "readyToShip": {

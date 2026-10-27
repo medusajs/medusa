@@ -1231,7 +1231,12 @@
       "bulkRemoveSuccess": "Tag removed from the selected orders."
     },
     "list": {
-      "noRecordsMessage": "Your orders will show up here."
+      "noRecordsMessage": "Your orders will show up here.",
+      "tabs": {
+        "all": "All",
+        "readyToShip": "Ready to Ship",
+        "shipped": "Shipped"
+      }
     },
     "readyToShip": {
       "shipFrom": "Ship From",
