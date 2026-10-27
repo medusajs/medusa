@@ -3154,7 +3154,7 @@ __metadata:
     "@babel/traverse": 7.25.6
     "@babel/types": 7.25.6
     "@medusajs/admin-shared": 2.22.1
-    fdir: 6.1.1
+    fdir: 6.5.0
     magic-string: 0.30.5
     outdent: ^0.8.0
     picocolors: ^1.1.0
@@ -13664,19 +13664,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fdir@npm:6.1.1":
-  version: 6.1.1
-  resolution: "fdir@npm:6.1.1"
-  peerDependencies:
-    picomatch: 3.x
-  peerDependenciesMeta:
-    picomatch:
-      optional: true
-  checksum: 547db0a2624a3ca6d11e4d2950cba6d0e71a53af58785c43ad678c3cba3ae1e7c38c522718e977d9387570cc7504181aa2a08f3e7df9a0920ae9a59552c2b8af
-  languageName: node
-  linkType: hard
-
-"fdir@npm:^6.5.0":
+"fdir@npm:6.5.0, fdir@npm:^6.5.0":
   version: 6.5.0
   resolution: "fdir@npm:6.5.0"
   peerDependencies:
