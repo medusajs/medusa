@@ -4866,6 +4866,30 @@
           ],
           "additionalProperties": false
         },
+        "shipped": {
+          "type": "object",
+          "properties": {
+            "trackingStatus": {
+              "type": "string"
+            },
+            "carrier": {
+              "type": "string"
+            },
+            "shipDate": {
+              "type": "string"
+            },
+            "noRecordsMessage": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "trackingStatus",
+            "carrier",
+            "shipDate",
+            "noRecordsMessage"
+          ],
+          "additionalProperties": false
+        },
         "export": {
           "type": "object",
           "properties": {
@@ -6723,6 +6747,7 @@
         "tags",
         "list",
         "readyToShip",
+        "shipped",
         "export",
         "status",
         "summary",

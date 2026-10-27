@@ -46,3 +46,16 @@ export const READY_TO_SHIP_RELATIONS = [
 export const READY_TO_SHIP_FIELDS = `${DEFAULT_PROPERTIES.join(
   ","
 )},${READY_TO_SHIP_RELATIONS.join(",")}`
+
+/**
+ * Additional relation the Shipped table needs on top of the default order
+ * list fields: the order's fulfillments, for the Carrier and Ship Date
+ * columns (resolved from the most recently shipped fulfillment's
+ * `provider_id`/`shipped_at`). The Tracking Status column reads
+ * `fulfillment_status`, which is already part of `DEFAULT_PROPERTIES`.
+ */
+export const SHIPPED_RELATIONS = [...DEFAULT_RELATIONS, "*fulfillments"]
+
+export const SHIPPED_FIELDS = `${DEFAULT_PROPERTIES.join(
+  ","
+)},${SHIPPED_RELATIONS.join(",")}`

@@ -1244,6 +1244,12 @@
       "noShippingMethod": "No shipping method",
       "noRecordsMessage": "Orders ready to ship will show up here."
     },
+    "shipped": {
+      "trackingStatus": "Tracking Status",
+      "carrier": "Carrier",
+      "shipDate": "Ship Date",
+      "noRecordsMessage": "Shipped orders will show up here."
+    },
     "export": {
       "header": "Export Order List",
       "description": "Export the order list to a CSV file.",
