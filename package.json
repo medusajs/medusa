@@ -155,7 +155,7 @@
     "version": "changeset version && yarn install --no-immutable"
   },
   "dependencies": {
-    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^2.31.1",
     "import-from": "^3.0.0"
   },
@@ -164,7 +164,6 @@
     "@redocly/cli/react-dom": "^17.0.1",
     "lodash": "^4.18.1",
     "pg": "8.23.1",
-    "@changesets/get-github-info@^0.5.2": "patch:@changesets/get-github-info@npm:^0.5.2#.yarn/patches/changesets-github-info.patch",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.2.25",
     "semver": "^7.5.2",
