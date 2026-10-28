@@ -37,7 +37,7 @@ function updateCalendarDateTime(
     return createCalendarDateTime(value)
   }
 
-  date.set({
+  const updated = date.set({
     day: value.getDate(),
     month: value.getMonth() + 1,
     year: value.getFullYear(),
@@ -47,7 +47,7 @@ function updateCalendarDateTime(
     millisecond: value.getMilliseconds(),
   })
 
-  return date
+  return date.compare(updated) === 0 ? date : updated
 }
 
 function getDefaultCalendarDate(
@@ -81,13 +81,13 @@ function updateCalendarDate(
     return createCalendarDate(value)
   }
 
-  date.set({
+  const updated = date.set({
     day: value.getDate(),
     month: value.getMonth() + 1,
     year: value.getFullYear(),
   })
 
-  return date
+  return date.compare(updated) === 0 ? date : updated
 }
 
 const USES_TIME = new Set<Granularity>(["hour", "minute", "second"])

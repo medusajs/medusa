@@ -80,4 +80,5 @@ yarn storybook         # port 6006, loads src/main.css
 - Peer deps are `react` / `react-dom` `^18.3.1`. Don't use React 19-only APIs.
 - `clx` uses `tailwind-merge`, so a consumer's `className` overrides conflicting variant classes. Pass user `className` last.
 - Test config sets `css: false`. Tests can't assert on computed styles, only on class names.
+- `CalendarDate` and `CalendarDateTime` are immutable. Keep the result of `.set()` when synchronizing controlled calendar values, but reuse the previous object when the fields are equal to avoid repeated `DatePicker` change notifications.
 - Changing a component's props or the exports in `src/index.ts` is a public API change for every admin extension. Regenerate the UI docs specs.

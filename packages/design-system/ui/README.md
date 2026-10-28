@@ -70,6 +70,10 @@ import { Button } from "@medusajs/ui"
 const App = () => <Button variant="primary">Hello World</Button>
 ```
 
+`Calendar` and `DatePicker` support a controlled `value`: when a parent supplies a
+different `Date`, the selected date and time update to match it. Use `onChange`
+to handle user selections.
+
 ## Resources
 
 - [Medusa UI documentation](https://docs.medusajs.com/ui)
