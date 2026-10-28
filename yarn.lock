@@ -1649,6 +1649,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@epic-web/invariant@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@epic-web/invariant@npm:1.0.0"
+  checksum: 72dbeb026e4e4eb3bc9c65739b91408ca77ab7d603a2494fa2eff3790ec22892c4caba751cffdf30f5ccf0e7ba79c1e9c96cf0a357404b9432bf1365baac23ca
+  languageName: node
+  linkType: hard
+
 "@esbuild/aix-ppc64@npm:0.27.7":
   version: 0.27.7
   resolution: "@esbuild/aix-ppc64@npm:0.27.7"
@@ -3492,6 +3499,7 @@ __metadata:
     "@medusajs/ui-preset": 2.22.1
     "@tanstack/react-query": 5.64.2
     "@uiw/react-json-view": ^2.0.0-alpha.17
+    cross-env: ^10.1.0
     date-fns: ^3.6.0
     lodash.debounce: ^4.0.8
     lodash.isequal: ^4.5.0
@@ -3743,6 +3751,7 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.22.1
     "@medusajs/test-utils": 2.22.1
+    cross-env: ^10.1.0
   peerDependencies:
     "@medusajs/framework": 2.22.1
   languageName: unknown
@@ -3796,7 +3805,7 @@ __metadata:
     "@medusajs/ui-preset": 2.22.1
     "@swc/core": ^1.16.20
     "@types/node": ^20.0.0
-    cross-env: ^7.0.3
+    cross-env: ^10.1.0
     ts-node: ^10.9.2
     typescript: ^5.7.3
   peerDependencies:
@@ -4197,6 +4206,7 @@ __metadata:
     boxen: ^5.0.1
     ci-info: ^3.2.0
     configstore: ^5.0.1
+    cross-env: ^10.1.0
     is-docker: ^2.2.1
     remove-trailing-slash: ^0.1.1
     uuid: ^11.1.1
@@ -11732,27 +11742,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-env@npm:^5.2.1":
-  version: 5.2.1
-  resolution: "cross-env@npm:5.2.1"
+"cross-env@npm:^10.1.0":
+  version: 10.1.0
+  resolution: "cross-env@npm:10.1.0"
   dependencies:
-    cross-spawn: ^6.0.5
+    "@epic-web/invariant": ^1.0.0
+    cross-spawn: ^7.0.6
   bin:
     cross-env: dist/bin/cross-env.js
     cross-env-shell: dist/bin/cross-env-shell.js
-  checksum: bf51bad729410ff7d3b36c1df15d4f4dd9df9236449562ab4016d1cfc2b82759626fc8cc0368c6d8bf956c78cac687a3fcb8bae9c56f90320c4fb5b99a6bdf1f
-  languageName: node
-  linkType: hard
-
-"cross-env@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "cross-env@npm:7.0.3"
-  dependencies:
-    cross-spawn: ^7.0.1
-  bin:
-    cross-env: src/bin/cross-env.js
-    cross-env-shell: src/bin/cross-env-shell.js
-  checksum: f3765c25746c69fcca369655c442c6c886e54ccf3ab8c16847d5ad0e91e2f337d36eedc6599c1227904bf2a228d721e690324446876115bc8e7b32a866735ecf
+  checksum: 834a862db456ba1fedf6c6da43436b123ae38f514fa286d6f0937c14fa83f13469f77f70f2812db041ae2d84f82bac627040b8686030aca27fbdf113dfa38b63
   languageName: node
   linkType: hard
 
@@ -11765,20 +11764,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^6.0.5":
-  version: 6.0.6
-  resolution: "cross-spawn@npm:6.0.6"
-  dependencies:
-    nice-try: ^1.0.4
-    path-key: ^2.0.1
-    semver: ^5.5.0
-    shebang-command: ^1.2.0
-    which: ^1.2.9
-  checksum: bf61fb890e8635102ea9bce050515cf915ff6a50ccaa0b37a17dc82fded0fb3ed7af5478b9367b86baee19127ad86af4be51d209f64fd6638c0862dca185fe1d
-  languageName: node
-  linkType: hard
-
-"cross-spawn@npm:^7.0.1, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.5, cross-spawn@npm:^7.0.6":
+"cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.5, cross-spawn@npm:^7.0.6":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
   dependencies:
@@ -17662,13 +17648,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nice-try@npm:^1.0.4":
-  version: 1.0.5
-  resolution: "nice-try@npm:1.0.5"
-  checksum: 95568c1b73e1d0d4069a3e3061a2102d854513d37bcfda73300015b7ba4868d3b27c198d1dbbd8ebdef4112fc2ed9e895d4a0f2e1cce0bd334f2a1346dc9205f
-  languageName: node
-  linkType: hard
-
 "no-case@npm:^3.0.4":
   version: 3.0.4
   resolution: "no-case@npm:3.0.4"
@@ -18667,13 +18646,6 @@ __metadata:
   version: 1.0.1
   resolution: "path-is-absolute@npm:1.0.1"
   checksum: 127da03c82172a2a50099cddbf02510c1791fc2cc5f7713ddb613a56838db1e8168b121a920079d052e0936c23005562059756d653b7c544c53185efe53be078
-  languageName: node
-  linkType: hard
-
-"path-key@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "path-key@npm:2.0.1"
-  checksum: dd2044f029a8e58ac31d2bf34c34b93c3095c1481942960e84dd2faa95bbb71b9b762a106aead0646695330936414b31ca0bd862bf488a937ad17c8c5d73b32b
   languageName: node
   linkType: hard
 
@@ -20575,7 +20547,7 @@ __metadata:
     awilix: ^8.0.1
     axios: ^1.20.0
     configstore: ^5.0.1
-    cross-env: ^5.2.1
+    cross-env: ^10.1.0
     esbuild: ^0.27.7
     eslint: ^8.40.0
     eslint-config-google: ^0.14.0
@@ -20939,28 +20911,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shebang-command@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "shebang-command@npm:1.2.0"
-  dependencies:
-    shebang-regex: ^1.0.0
-  checksum: 7b20dbf04112c456b7fc258622dafd566553184ac9b6938dd30b943b065b21dabd3776460df534cc02480db5e1b6aec44700d985153a3da46e7db7f9bd21326d
-  languageName: node
-  linkType: hard
-
 "shebang-command@npm:^2.0.0":
   version: 2.0.0
   resolution: "shebang-command@npm:2.0.0"
   dependencies:
     shebang-regex: ^3.0.0
   checksum: a41692e7d89a553ef21d324a5cceb5f686d1f3c040759c50aab69688634688c5c327f26f3ecf7001ebfd78c01f3c7c0a11a7c8bfd0a8bc9f6240d4f40b224e4e
-  languageName: node
-  linkType: hard
-
-"shebang-regex@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "shebang-regex@npm:1.0.0"
-  checksum: 9abc45dee35f554ae9453098a13fdc2f1730e525a5eb33c51f096cc31f6f10a4b38074c1ebf354ae7bffa7229506083844008dfc3bb7818228568c0b2dc1fff2
   languageName: node
   linkType: hard
 
@@ -23392,17 +23348,6 @@ __metadata:
     gopd: ^1.2.0
     has-tostringtag: ^1.0.2
   checksum: 702b5dc878addafe6c6300c3d0af5983b175c75fcb4f2a72dfc3dd38d93cf9e89581e4b29c854b16ea37e50a7d7fca5ae42ece5c273d8060dcd603b2404bbb3f
-  languageName: node
-  linkType: hard
-
-"which@npm:^1.2.9":
-  version: 1.3.1
-  resolution: "which@npm:1.3.1"
-  dependencies:
-    isexe: ^2.0.0
-  bin:
-    which: ./bin/which
-  checksum: e945a8b6bbf6821aaaef7f6e0c309d4b615ef35699576d5489b4261da9539f70393c6b2ce700ee4321c18f914ebe5644bc4631b15466ffbaad37d83151f6af59
   languageName: node
   linkType: hard
 
