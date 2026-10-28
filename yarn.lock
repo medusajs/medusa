@@ -13387,14 +13387,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expect-type@npm:^0.20.0":
-  version: 0.20.0
-  resolution: "expect-type@npm:0.20.0"
-  checksum: 66650a51072340ca66a427abe3c86b3cb8f0e2d4873dacf22a2cb0b1398e92c85d92ddef8d6e6ee93863f24fbd704c7c89949718621ee562954c4f20607c47db
-  languageName: node
-  linkType: hard
-
-"expect-type@npm:^1.3.0":
+"expect-type@npm:^1.3.0, expect-type@npm:^1.4.0":
   version: 1.4.0
   resolution: "expect-type@npm:1.4.0"
   checksum: d40d76b8570695d36587beb3cc28494da2ca3ec8f04e67f5622ed2d372d850e401a9adef19c6835e1a8173903f157c79540b34c7b3fbd7cd8ce726cc903c57b7
@@ -20580,7 +20573,7 @@ __metadata:
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-react-refresh: ^0.4.5
     eslint-plugin-unused-imports: ^2.0.0
-    expect-type: ^0.20.0
+    expect-type: ^1.4.0
     express: ^4.21.0
     faker: ^5.5.3
     get-port: ^5.1.1
