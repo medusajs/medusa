@@ -3691,7 +3691,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/http-types-generator@workspace:packages/cli/http-types-generator"
   dependencies:
-    "@types/node": ^20.12.11
+    "@types/node": ^22.20.5
     "@types/pluralize": ^0.0.33
     chalk: ^4.1.2
     commander: ^11.0.0
@@ -3812,7 +3812,7 @@ __metadata:
     "@medusajs/ui": 4.2.8
     "@medusajs/ui-preset": 2.22.1
     "@swc/core": ^1.16.20
-    "@types/node": ^20.0.0
+    "@types/node": ^22.20.5
     cross-env: ^10.1.0
     ts-node: ^10.9.2
     typescript: ^5.7.3
@@ -8868,7 +8868,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.0.0, @types/node@npm:^20.10.7, @types/node@npm:^20.12.11":
+"@types/node@npm:^20.10.7":
   version: 20.19.43
   resolution: "@types/node@npm:20.19.43"
   dependencies:
@@ -8877,7 +8877,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.5.5":
+"@types/node@npm:^22.20.5, @types/node@npm:^22.5.5":
   version: 22.20.5
   resolution: "@types/node@npm:22.20.5"
   dependencies:
@@ -20202,7 +20202,7 @@ __metadata:
     "@types/lodash.isequal": ^4.5.8
     "@types/lodash.mergewith": ^4.6.9
     "@types/multer": ^2.3.0
-    "@types/node": ^20.12.11
+    "@types/node": ^22.20.5
     "@types/node-emoji": ^1.8.2
     "@types/react": ^18.3.2
     "@types/react-dom": ^18.2.25
