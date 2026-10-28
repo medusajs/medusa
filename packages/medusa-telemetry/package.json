@@ -27,7 +27,6 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --watch plugins/ --watch src/ --exec node src/index.js",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "watch": "yarn run -T tsc --build --watch",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",

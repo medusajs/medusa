@@ -24,7 +24,6 @@ Anonymous usage telemetry for the Medusa CLI and server. Used internally by `@me
 ## Development
 
 - `yarn build`, `yarn watch`, `yarn test` (`jest --passWithNoTests src`; there are currently no tests).
-- The `start` script (nodemon on `plugins/`) is stale; don't rely on it.
 - To debug locally, point `MEDUSA_TELEMETRY_HOST` at a local server and set `MEDUSA_TELEMETRY_VERBOSE=true`.
 
 ## Gotchas
