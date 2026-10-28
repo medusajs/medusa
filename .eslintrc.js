@@ -102,6 +102,7 @@ module.exports = {
         curly: ["error", "all"],
         "new-cap": "off",
         "require-jsdoc": "off",
+        "valid-jsdoc": "off",
         "no-unused-expressions": "off",
         "no-unused-vars": "off",
         camelcase: "off",
@@ -204,12 +205,12 @@ module.exports = {
       ],
       extends: [
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
         "plugin:@typescript-eslint/recommended",
       ],
       plugins: ["@typescript-eslint"],
       rules: {
         "react/no-children-prop": "off",
+        "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "react/prop-types": "off",
         "@typescript-eslint/no-explicit-any": "off",
@@ -263,11 +264,7 @@ module.exports = {
         "./packages/admin/dashboard/**/*.tsx",
       ],
       plugins: ["unused-imports", "react-refresh"],
-      extends: [
-        "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
-        "plugin:react-hooks/recommended",
-      ],
+      extends: ["plugin:react/recommended", "plugin:react/jsx-runtime"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
         ecmaFeatures: {
@@ -288,6 +285,8 @@ module.exports = {
       rules: {
         "prettier/prettier": "error",
         "react/prop-types": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
         "new-cap": "off",
         "require-jsdoc": "off",
         "valid-jsdoc": "off",
