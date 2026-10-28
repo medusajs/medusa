@@ -4037,7 +4037,7 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.22.1
     "@medusajs/test-utils": 2.22.1
-    stripe: 19.1.0
+    stripe: 23.0.1
   peerDependencies:
     "@medusajs/framework": 2.22.1
   languageName: unknown
@@ -21733,17 +21733,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:19.1.0":
-  version: 19.1.0
-  resolution: "stripe@npm:19.1.0"
-  dependencies:
-    qs: ^6.11.0
+"stripe@npm:23.0.1":
+  version: 23.0.1
+  resolution: "stripe@npm:23.0.1"
   peerDependencies:
-    "@types/node": ">=16"
+    "@types/node": ">=20"
   peerDependenciesMeta:
     "@types/node":
       optional: true
-  checksum: d1f6412373962a585f877af6b5933a000573dad1b0c5fe3937633ccb7117764ad46c8fb565431d846ac08f32811c150ffdce3a273717905a983e416ea131091f
+  checksum: a29d5050b146dfc2f1141db30018a73427e54773bd9c412782b159883a54a65e28e48e18b477bf4bbf6135e39dfe236d8547aa6f8f75b0d9cbc200d69a599386
   languageName: node
   linkType: hard
 
