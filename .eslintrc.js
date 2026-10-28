@@ -173,8 +173,8 @@ module.exports = {
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/await-thenable": "off",
         "@typescript-eslint/promise-function-async": "off",
-        "@typescript-eslint/keyword-spacing": "error",
-        "@typescript-eslint/space-before-function-paren": [
+        "keyword-spacing": "error",
+        "space-before-function-paren": [
           "error",
           {
             anonymous: "always",
@@ -182,15 +182,18 @@ module.exports = {
             asyncArrow: "always",
           },
         ],
-        "@typescript-eslint/space-infix-ops": "error",
+        "space-infix-ops": "error",
 
         // --- Rules to be fixed
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/ban-types": "off",
-        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-empty-object-type": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-wrapper-object-types": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
       },
     },
 
@@ -301,6 +304,7 @@ module.exports = {
             varsIgnorePattern: "^_",
             args: "after-used",
             argsIgnorePattern: "^_",
+            caughtErrors: "none",
           },
         ],
       },
