@@ -175,7 +175,7 @@
     "postcss": "^8.5.10",
     "@opentelemetry/core": "^2.7.0",
     "@rushstack/node-core-library/ajv": "^8.18.0",
-    "@changesets/assemble-release-plan@^6.0.9": "patch:@changesets/assemble-release-plan@npm:^6.0.9#.yarn/patches/@changesets-assemble-release-plan-npm-6.0.9-e01af97ef4.patch",
+    "@changesets/assemble-release-plan@^6.0.10": "patch:@changesets/assemble-release-plan@npm:^6.0.10#.yarn/patches/@changesets-assemble-release-plan-npm-6.0.9-e01af97ef4.patch",
     "vite": "^7.3.6"
   },
   "packageManager": "yarn@3.2.1"
