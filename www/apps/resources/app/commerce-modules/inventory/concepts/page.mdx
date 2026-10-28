@@ -26,6 +26,12 @@ An inventory item has an optional `unit_of_measure` field that stores the unit i
 
 Because stock can be held in a unit that is sold in fractions of itself (for example, a pound of cheese sold as quarter-pounds), inventory quantities support fractional values. The `required_quantity` of an inventory kit item can also be a decimal number.
 
+<Note type="warning">
+
+Fractional quantities apply only to inventory levels, reservations, and inventory kit items. Cart line item quantities are whole numbers, so customers can't add a fractional amount, such as `0.25` pounds, to a cart or order. To deduct a fractional amount of stock per unit sold, create an [inventory kit](../inventory-kit/page.mdx) whose `required_quantity` is a decimal number. For example, set it to `0.25` on a variant that represents a quarter-pound of cheese.
+
+</Note>
+
 ### Inventory Shipping Requirement
 
 An inventory item has a `requires_shipping` field that indicates whether the item needs shipping. This field is enabled by default.
