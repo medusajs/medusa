@@ -216,15 +216,37 @@ jobs:
         with:
           node-version: 22
           check-latest: true
-          cache: "yarn"
+
+      - name: Restore yarn caches
+        id: yarn-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            .yarn/cache
+            www/.yarn/cache
+          key: ${{ runner.os }}-yarn-fix-docs-${{ hashFiles('yarn.lock', 'www/yarn.lock') }}
 
       - name: Install docs dependencies
         run: |
           set -euo pipefail
           yarn install --immutable
+          (cd www && yarn install)
+
+      # Saved before Claude runs so the cache can't pick up files the model changed.
+      - name: Save yarn caches
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            .yarn/cache
+            www/.yarn/cache
+          key: ${{ steps.yarn-cache.outputs.cache-primary-key }}
+
+      - name: Build docs packages
+        run: |
+          set -euo pipefail
           yarn workspace @medusajs/eslint-plugin build
           cd www
-          yarn install
           yarn turbo run build --filter=build-scripts --filter=tags
 
       - name: Lock down repo automation files
