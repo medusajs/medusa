@@ -3761,7 +3761,7 @@ __metadata:
   dependencies:
     "@types/node": ^22.20.5
     "@types/pluralize": ^0.0.33
-    commander: ^11.0.0
+    commander: ^15.0.0
     glob: 13.0.6
     pluralize: ^8.0.0
     prettier: ^3.9.10
@@ -3927,7 +3927,7 @@ __metadata:
     "@readme/json-schema-ref-parser": ^1.2.0
     "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": 1.25.3
-    commander: ^11.0.0
+    commander: ^15.0.0
     execa: ^5.1.1
     lodash.mergewith: ^4.6.2
     openapi3-ts: ^3.1.2
@@ -4320,7 +4320,7 @@ __metadata:
     "@svgr/plugin-svgo": 8.0.1
     axios: ^1.20.0
     axios-retry: ^4.5.0
-    commander: ^11.0.0
+    commander: ^15.0.0
     dotenv: ^16.4.5
     fs-extra: ^11.4.1
     picocolors: ^1.1.0
@@ -8582,24 +8582,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chalk@npm:^2.2.0":
-  version: 2.2.4
-  resolution: "@types/chalk@npm:2.2.4"
-  dependencies:
-    chalk: "*"
-  checksum: 77541a759f1038f28549dca6e63cbd4af19c765d7d2e2797b35469e88429960f59959074cd18bcc2cf7ba1f27028d077d9f6594e5bdd08ba7cf469a32b640884
-  languageName: node
-  linkType: hard
-
-"@types/commander@npm:^2.12.2":
-  version: 2.12.5
-  resolution: "@types/commander@npm:2.12.5"
-  dependencies:
-    commander: "*"
-  checksum: 2ac2607329b83a74df0c86bba035edd8e9a6191a520cca20f360cef6fa7d7d755de1c006b86a73933394abacd7622a339b508bb6b467dd06cdee7b6ef35ec66c
-  languageName: node
-  linkType: hard
-
 "@types/compression@npm:^1.7.5":
   version: 1.8.1
   resolution: "@types/compression@npm:1.8.1"
@@ -10947,13 +10929,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:*":
-  version: 5.6.2
-  resolution: "chalk@npm:5.6.2"
-  checksum: 99a4b0f0e7991796b1e7e3f52dceb9137cae2a9dfc8fc0784a550dc4c558e15ab32ed70b14b21b52beb2679b4892b41a0aa44249bcb996f01e125d58477c6976
-  languageName: node
-  linkType: hard
-
 "chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.1, chalk@npm:^4.1.2":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
@@ -11413,13 +11388,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:*, commander@npm:^14.0.0":
-  version: 14.0.2
-  resolution: "commander@npm:14.0.2"
-  checksum: 245abd1349dbad5414cb6517b7b5c584895c02c4f7836ff5395f301192b8566f9796c82d7bd6c92d07eba8775fe4df86602fca5d86d8d10bcc2aded1e21c2aeb
-  languageName: node
-  linkType: hard
-
 "commander@npm:^10.0.0":
   version: 10.0.1
   resolution: "commander@npm:10.0.1"
@@ -11427,10 +11395,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^11.0.0":
-  version: 11.1.0
-  resolution: "commander@npm:11.1.0"
-  checksum: 13cc6ac875e48780250f723fb81c1c1178d35c5decb1abb1b628b3177af08a8554e76b2c0f29de72d69eef7c864d12613272a71fabef8047922bc622ab75a179
+"commander@npm:^14.0.0":
+  version: 14.0.2
+  resolution: "commander@npm:14.0.2"
+  checksum: 245abd1349dbad5414cb6517b7b5c584895c02c4f7836ff5395f301192b8566f9796c82d7bd6c92d07eba8775fe4df86602fca5d86d8d10bcc2aded1e21c2aeb
+  languageName: node
+  linkType: hard
+
+"commander@npm:^15.0.0":
+  version: 15.0.0
+  resolution: "commander@npm:15.0.0"
+  checksum: 539229c171914ea1ccd45ee5f10d924289a12a684ea3a7a44147abe54003c35ed6de9ae4ad198d88c29fdf403dca0428451a388234e6dc01b6faa978fb207206
   languageName: node
   linkType: hard
 
@@ -11736,7 +11711,7 @@ __metadata:
     "@medusajs/telemetry": 2.22.1
     boxen: ^9.0.0
     chalk: ^6.0.1
-    commander: ^11.0.0
+    commander: ^15.0.0
     inquirer: ^8.0.0
     node-emoji: ^2.0.2
     open: ^9.1.0
@@ -20336,8 +20311,6 @@ __metadata:
     "@testing-library/react": ^16.3.3
     "@testing-library/user-event": ^14.4.3
     "@types/autocannon": ^7.12.5
-    "@types/chalk": ^2.2.0
-    "@types/commander": ^2.12.2
     "@types/compression": ^1.7.5
     "@types/configstore": ^6.0.0
     "@types/cors": ^2.8.17

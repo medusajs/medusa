@@ -36,8 +36,6 @@
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.4.3",
     "@types/autocannon": "^7.12.5",
-    "@types/chalk": "^2.2.0",
-    "@types/commander": "^2.12.2",
     "@types/compression": "^1.7.5",
     "@types/configstore": "^6.0.0",
     "@types/cors": "^2.8.17",

@@ -34,7 +34,7 @@
     "validate:http-types": "node dist/index.js validate --ci"
   },
   "dependencies": {
-    "commander": "^11.0.0",
+    "commander": "^15.0.0",
     "glob": "13.0.6",
     "pluralize": "^8.0.0",
     "prettier": "^3.9.10",

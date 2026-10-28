@@ -18,7 +18,7 @@
     "@medusajs/telemetry": "2.22.1",
     "boxen": "^9.0.0",
     "chalk": "^6.0.1",
-    "commander": "^11.0.0",
+    "commander": "^15.0.0",
     "inquirer": "^8.0.0",
     "node-emoji": "^2.0.2",
     "open": "^9.1.0",
