@@ -21,11 +21,7 @@ import { InternalCalendar } from "@/components/calendar"
 import { Popover } from "@/components/popover"
 import { TimeInput } from "@/components/time-input"
 import { Granularity } from "@/types"
-import {
-  createCalendarDateFromDate,
-  getDefaultCalendarDateFromDate,
-  updateCalendarDateFromDate,
-} from "@/utils/calendar"
+import { createCalendarDateFromDate } from "@/utils/calendar"
 import { clx } from "@/utils/clx"
 
 import { DatePickerButton } from "./date-picker-button"
@@ -94,22 +90,12 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
     },
     ref
   ) => {
-    const [value, setValue] = React.useState<
-      CalendarDateTime | CalendarDate | null | undefined
-    >(
-      getDefaultCalendarDateFromDate(
-        props.value,
-        props.defaultValue,
-        props.granularity
-      )
-    )
-
     const innerRef = React.useRef<HTMLDivElement>(null)
     React.useImperativeHandle(ref, () => innerRef.current as HTMLDivElement)
 
     const contentRef = React.useRef<HTMLDivElement>(null)
 
-    const _props = convertProps(props, setValue)
+    const _props = convertProps(props)
 
     const state = useDatePickerState({
       ..._props,
@@ -119,24 +105,10 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
     const { groupProps, fieldProps, buttonProps, dialogProps, calendarProps } =
       useDatePicker(_props, state, innerRef)
 
-    React.useEffect(() => {
-      setValue(
-        props.value
-          ? updateCalendarDateFromDate(value, props.value, props.granularity)
-          : null
-      )
-      state.setValue(
-        props.value
-          ? updateCalendarDateFromDate(value, props.value, props.granularity)
-          : null
-      )
-    }, [props.value])
-
     function clear(e: React.MouseEvent<HTMLButtonElement>) {
       e.preventDefault()
       e.stopPropagation()
 
-      props.onChange?.(null)
       state.setValue(null)
     }
 
@@ -201,23 +173,19 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
 DatePicker.displayName = "DatePicker"
 
 function convertProps(
-  props: DatePickerProps,
-  setValue: React.Dispatch<
-    React.SetStateAction<CalendarDateTime | CalendarDate | null | undefined>
-  >
+  props: DatePickerProps
 ): BaseDatePickerProps<CalendarDateTime | CalendarDate> {
   const {
     minValue,
     maxValue,
     isDateUnavailable: _isDateUnavailable,
     onChange: _onChange,
-    value: __value__,
-    defaultValue: __defaultValue__,
+    value,
+    defaultValue,
     ...rest
   } = props
 
-  const onChange = (value: CalendarDateTime | CalendarDateTime | null) => {
-    setValue(value)
+  const onChange = (value: CalendarDate | CalendarDateTime | null) => {
     _onChange?.(value ? value.toDate(getLocalTimeZone()) : null)
   }
 
@@ -229,6 +197,10 @@ function convertProps(
 
   return {
     ...rest,
+    value: value ? createCalendarDateFromDate(value, props.granularity) : value,
+    defaultValue: defaultValue
+      ? createCalendarDateFromDate(defaultValue, props.granularity)
+      : defaultValue,
     onChange: onChange as BaseDatePickerProps<
       CalendarDateTime | CalendarDate
     >["onChange"],

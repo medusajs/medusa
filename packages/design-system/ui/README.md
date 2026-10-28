@@ -70,6 +70,11 @@ import { Button } from "@medusajs/ui"
 const App = () => <Button variant="primary">Hello World</Button>
 ```
 
+`DatePicker` supports a controlled `value` or an uncontrolled `defaultValue`.
+Use `null` for an empty controlled value and update `value` in `onChange` when
+accepting a user edit. Initial values and external updates do not trigger
+`onChange`; choosing or clearing a date triggers it once.
+
 ## Resources
 
 - [Medusa UI documentation](https://docs.medusajs.com/ui)
