@@ -40,6 +40,7 @@ import {
   AbstractPaymentProvider,
   isDefined,
   isPresent,
+  MedusaError,
   PaymentActions,
   PaymentSessionStatus,
 } from "@medusajs/framework/utils"
@@ -143,7 +144,9 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
       description: extra?.payment_description ?? "",
       capture_method: extra?.capture_method as "automatic" | "manual",
       setup_future_usage: extra?.setup_future_usage,
-      payment_method_types: extra?.payment_method_types,
+      // Stores pass `payment_method_types` like they do to the Stripe provider.
+      allowed_payment_method_types:
+        extra?.allowed_payment_method_types ?? extra?.payment_method_types,
       payment_method_data: extra?.payment_method_data,
       payment_method_options: extra?.payment_method_options,
       automatic_payment_methods: extra?.automatic_payment_methods,
@@ -252,10 +255,9 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
       )
     }
 
-    const payment = await this.retrievePayment({ data: { id } })
-    const statusResponse = this.getStatus(
-      payment.data as unknown as MedusaPayment
-    )
+    // The status data is stored on the session, so it keeps the amount in the smallest unit like the other methods.
+    const payment = await this.fetchPayment(id)
+    const statusResponse = this.getStatus(payment)
 
     return statusResponse
   }
@@ -388,17 +390,22 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
   async retrievePayment({
     data,
   }: RetrievePaymentInput): Promise<RetrievePaymentOutput> {
-    const id = data?.id as string
+    const intent = await this.fetchPayment(data?.id as string)
 
-    const intent = (await this.executeWithRetry(() => {
+    return {
+      data: {
+        ...intent,
+        amount: getAmountFromSmallestUnit(intent.amount, intent.currency),
+      } as unknown as Record<string, unknown>,
+    }
+  }
+
+  private async fetchPayment(id: string) {
+    return (await this.executeWithRetry(() => {
       return this.request<{ payment: any }>(`/payments/${id}`, {
         method: "GET",
       }).then((data) => data.payment)
     })) as MedusaPayment
-
-    intent.amount = getAmountFromSmallestUnit(intent.amount, intent.currency)
-
-    return { data: intent as unknown as Record<string, unknown> }
   }
 
   async updatePayment({
@@ -442,7 +449,15 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
       return this.request<{ account_holder: any }>(`/account-holders/${id}`, {
         method: "GET",
       }).then((data) => data.account_holder)
-    })) as MedusaAccountHolder
+    })) as MedusaAccountHolder | null
+
+    // The proxy returns no account holder once its customer was deleted in Stripe.
+    if (!res) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Account holder ${id} was not found`
+      )
+    }
 
     return {
       id: res.id,
@@ -618,9 +633,10 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
     const paymentMethodSession = (await this.executeWithRetry(() => {
       return this.request<{ payment_method_session: any }>(`/payment-methods`, {
         method: "POST",
+        // The account holder comes last, so the data can't save the payment method for another customer.
         body: {
-          account_holder_id: accountHolderId,
           ...data,
+          account_holder_id: accountHolderId,
           idempotency_key: context?.idempotency_key,
         },
       }).then((data) => data.payment_method_session)
@@ -772,7 +788,7 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
    *    ensures integrity of the webhook event
    * @return {object} Medusa Payments Webhook event
    */
-  constructWebhookEvent(data: ProviderWebhookPayload["payload"]) {
+  constructWebhookEvent(data: ProviderWebhookPayload["payload"]): stripe.Event {
     const signature = data.headers["medusa-payments-signature"] as string
 
     const stripeEvent = this.stripeClient.webhooks.constructEvent(

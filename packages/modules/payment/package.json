@@ -50,6 +50,6 @@
     "@medusajs/framework": "2.22.1"
   },
   "dependencies": {
-    "stripe": "19.1.0"
+    "stripe": "23.0.1"
   }
 }
