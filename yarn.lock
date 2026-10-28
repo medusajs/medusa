@@ -1619,6 +1619,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dual-bundle/import-meta-resolve@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "@dual-bundle/import-meta-resolve@npm:4.2.1"
+  checksum: 8f1e572c14c4d20ea35734635085213abd13bd440c251309cf8ae5ed1082f6759cefa1c2c52a631f76859c57e26062f78a8cee4acc239c0edc87cd316a5d3b5b
+  languageName: node
+  linkType: hard
+
 "@emnapi/core@npm:1.11.0":
   version: 1.11.0
   resolution: "@emnapi/core@npm:1.11.0"
@@ -3759,7 +3766,7 @@ __metadata:
     commander: ^11.0.0
     glob: 13.0.6
     pluralize: ^8.0.0
-    prettier: ^2.8.8
+    prettier: ^3.9.10
     typescript: ^5.6.2
   bin:
     medusa-http-types: dist/index.js
@@ -5687,6 +5694,13 @@ __metadata:
   dependencies:
     "@noble/hashes": ^1.1.5
   checksum: 6576b73de49d826b0f33cbab88424dec1f6fa454a9e59a7b621f78c2cfdd2e59d7f48175826d698940a717f45eeb5e87a508583a7316e608f6a05a861a40c129
+  languageName: node
+  linkType: hard
+
+"@pkgr/core@npm:^0.3.6":
+  version: 0.3.6
+  resolution: "@pkgr/core@npm:0.3.6"
+  checksum: 153f0f4563f505faeba13c733efa0e05e467ce1c6b941055a5fd3b4560da60fbf1dff4b11da0075f034ddda11f2842b90395f60895dde5825875b616edccc11c
   languageName: node
   linkType: hard
 
@@ -12963,18 +12977,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^4.2.1":
-  version: 4.2.5
-  resolution: "eslint-plugin-prettier@npm:4.2.5"
+"eslint-plugin-prettier@npm:^5.5.7":
+  version: 5.5.7
+  resolution: "eslint-plugin-prettier@npm:5.5.7"
   dependencies:
-    prettier-linter-helpers: ^1.0.0
+    prettier-linter-helpers: ^1.0.1
+    synckit: ^0.12.3
   peerDependencies:
-    eslint: ">=7.28.0"
-    prettier: ">=2.0.0"
+    "@types/eslint": ">=8.0.0"
+    eslint: ">=8.0.0"
+    eslint-config-prettier: ">= 7.0.0 <10.0.0 || >=10.1.0"
+    prettier: ">=3.0.0"
   peerDependenciesMeta:
+    "@types/eslint":
+      optional: true
     eslint-config-prettier:
       optional: true
-  checksum: 75b3cdc90328aacf4cc7fabc522e651bd8208d40634c9b2772274332a696548136dac4608b141863bc462500c5a8012fbc2495623f684f631ddb62c2f5bca0a3
+  checksum: 76a1a99ace86471a320d99371cc34b0eee179f39bd383e46244b65b7b08b980b7a8e72f9d7eaaa74e92ede8032bf04ba0b05ba7c648c44a7c49d121df07eb58f
   languageName: node
   linkType: hard
 
@@ -18972,73 +18991,88 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-linter-helpers@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "prettier-linter-helpers@npm:1.0.0"
+"prettier-linter-helpers@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "prettier-linter-helpers@npm:1.0.1"
   dependencies:
     fast-diff: ^1.1.2
-  checksum: 81e0027d731b7b3697ccd2129470ed9913ecb111e4ec175a12f0fcfab0096516373bf0af2fef132af50cafb0a905b74ff57996d615f59512bb9ac7378fcc64ab
+  checksum: 91cea965681bc5f62c9d26bd3ca6358b81557261d4802e96ec1cf0acbd99d4b61632d53320cd2c3ec7d7f7805a81345644108a41ef46ddc9688e783a9ac792d1
   languageName: node
   linkType: hard
 
-"prettier-plugin-tailwindcss@npm:^0.2.3":
-  version: 0.2.8
-  resolution: "prettier-plugin-tailwindcss@npm:0.2.8"
+"prettier-plugin-tailwindcss@npm:^0.8.1":
+  version: 0.8.1
+  resolution: "prettier-plugin-tailwindcss@npm:0.8.1"
   peerDependencies:
     "@ianvs/prettier-plugin-sort-imports": "*"
+    "@prettier/plugin-hermes": "*"
+    "@prettier/plugin-oxc": "*"
     "@prettier/plugin-pug": "*"
     "@shopify/prettier-plugin-liquid": "*"
-    "@shufo/prettier-plugin-blade": "*"
     "@trivago/prettier-plugin-sort-imports": "*"
-    prettier: ">=2.2.0"
+    "@zackad/prettier-plugin-twig": "*"
+    prettier: ^3.0
     prettier-plugin-astro: "*"
     prettier-plugin-css-order: "*"
-    prettier-plugin-import-sort: "*"
     prettier-plugin-jsdoc: "*"
+    prettier-plugin-marko: "*"
+    prettier-plugin-multiline-arrays: "*"
     prettier-plugin-organize-attributes: "*"
     prettier-plugin-organize-imports: "*"
-    prettier-plugin-style-order: "*"
+    prettier-plugin-sort-imports: "*"
     prettier-plugin-svelte: "*"
-    prettier-plugin-twig-melody: "*"
   peerDependenciesMeta:
     "@ianvs/prettier-plugin-sort-imports":
+      optional: true
+    "@prettier/plugin-hermes":
+      optional: true
+    "@prettier/plugin-oxc":
       optional: true
     "@prettier/plugin-pug":
       optional: true
     "@shopify/prettier-plugin-liquid":
       optional: true
-    "@shufo/prettier-plugin-blade":
-      optional: true
     "@trivago/prettier-plugin-sort-imports":
+      optional: true
+    "@zackad/prettier-plugin-twig":
       optional: true
     prettier-plugin-astro:
       optional: true
     prettier-plugin-css-order:
       optional: true
-    prettier-plugin-import-sort:
-      optional: true
     prettier-plugin-jsdoc:
+      optional: true
+    prettier-plugin-marko:
+      optional: true
+    prettier-plugin-multiline-arrays:
       optional: true
     prettier-plugin-organize-attributes:
       optional: true
     prettier-plugin-organize-imports:
       optional: true
-    prettier-plugin-style-order:
+    prettier-plugin-sort-imports:
       optional: true
     prettier-plugin-svelte:
       optional: true
-    prettier-plugin-twig-melody:
-      optional: true
-  checksum: b025983a88ecfd53e8d7cf601b54feb2583c62e8f8b87533200f5c4291fee4a60801e1463caa639fd56e3c7a0cf28fea00feed4e93c1fe27a1136f1385907ba6
+  checksum: 45b8d8686e6b27f06f710063b24c4b5fba4d201aaee7ed85dfdd6cb8e68b6d8f9cea2d8497999c4f72e4c3a8b93b078fb3b6ab35567b3bfaef4bf9ec43482a6f
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.7.1, prettier@npm:^2.8.7, prettier@npm:^2.8.8":
+"prettier@npm:^2.7.1, prettier@npm:^2.8.7":
   version: 2.8.8
   resolution: "prettier@npm:2.8.8"
   bin:
     prettier: bin-prettier.js
   checksum: 463ea8f9a0946cd5b828d8cf27bd8b567345cf02f56562d5ecde198b91f47a76b7ac9eae0facd247ace70e927143af6135e8cf411986b8cb8478784a4d6d724a
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.9.10":
+  version: 3.9.10
+  resolution: "prettier@npm:3.9.10"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 0b3531593aa6fb36ac6baf629cb058bda472c59a6938774f931fe55283a07c62e6f56e621b043a82d8a3e21fc284c08c34f9e539fc70072635f79b7bae1a1067
   languageName: node
   linkType: hard
 
@@ -20346,7 +20380,7 @@ __metadata:
     eslint: ^9.39.5
     eslint-config-google: ^0.14.0
     eslint-config-prettier: ^10.1.8
-    eslint-plugin-prettier: ^4.2.1
+    eslint-plugin-prettier: ^5.5.7
     eslint-plugin-react: ^7.31.11
     eslint-plugin-react-hooks: ^7.1.1
     eslint-plugin-react-refresh: ^0.4.5
@@ -20364,8 +20398,8 @@ __metadata:
     pg-god: ^1.0.12
     postcss: ^8.5.10
     posthog-node: ^5.57.0
-    prettier: ^2.8.8
-    prettier-plugin-tailwindcss: ^0.2.3
+    prettier: ^3.9.10
+    prettier-plugin-tailwindcss: ^0.8.1
     prop-types: ^15.8.1
     react: ^18.3.1
     react-dom: ^18.3.1
@@ -21620,6 +21654,16 @@ __metadata:
   dependencies:
     tslib: ^2.0.3
   checksum: 6a47c1926e06395ead750905e103be388aeec8c9697f20b14bc3e1e86fcb4fc78e5033197afe6cc8bbed80f0a4ee1f184b0fa22eec7f4a767bdfd278683d52eb
+  languageName: node
+  linkType: hard
+
+"synckit@npm:^0.12.3":
+  version: 0.12.3
+  resolution: "synckit@npm:0.12.3"
+  dependencies:
+    "@dual-bundle/import-meta-resolve": ^4.2.1
+    "@pkgr/core": ^0.3.6
+  checksum: e7c3c5bd8272c55c0e108c296dbd0d326e9f22614227079b46ff7bd51c0970d810b222a3a14f5b0f1797d8af2c82058b9a927ac63a06219ead8535d271b382e1
   languageName: node
   linkType: hard
 
