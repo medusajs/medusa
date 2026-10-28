@@ -74,7 +74,7 @@
     "esbuild": "^0.28.2",
     "eslint": "^9.39.5",
     "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^7.1.1",
