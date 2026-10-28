@@ -79,7 +79,7 @@
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "eslint-plugin-unused-imports": "^2.0.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
     "expect-type": "^1.4.0",
     "express": "^4.21.0",
     "get-port": "^5.1.1",
