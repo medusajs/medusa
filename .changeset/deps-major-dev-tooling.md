@@ -14,6 +14,7 @@
 "@medusajs/utils": patch
 "@medusajs/framework": patch
 "@medusajs/auth-google": patch
+"@medusajs/js-sdk": patch
 ---
 
 chore(deps): update development and test tooling (cross-env 10.1.0, esbuild 0.28.2, tsup 9.0.0, expect-type 1.4.0, @faker-js/faker 10.6.0, jsdom 30.1.3, @types/jsonwebtoken 9.0.10, msw 3.0.3, rimraf 6.1.3) and remove unused development dependencies
