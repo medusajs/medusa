@@ -12,7 +12,7 @@ import {
   isDefined,
   mergePluginModules,
 } from "@medusajs/framework/utils"
-import chalk from "chalk"
+import { styleText } from "util"
 import { join } from "path"
 
 import { initializeContainer } from "../../loaders"
@@ -44,13 +44,15 @@ function groupByActionPlan(actionPlan: LinkMigrationsPlannerAction[]) {
  */
 function buildLinkDescription(action: LinkMigrationsPlannerAction) {
   const { linkDescriptor } = action
-  const from = chalk.yellow(
+  const from = styleText(
+    "yellow",
     `${linkDescriptor.fromModule}.${linkDescriptor.fromModel}`
   )
-  const to = chalk.yellow(
+  const to = styleText(
+    "yellow",
     `${linkDescriptor.toModule}.${linkDescriptor.toModel}`
   )
-  const table = chalk.dim(`(${action.tableName})`)
+  const table = styleText("dim", `(${action.tableName})`)
 
   return `${from} <> ${to} ${table}`
 }
@@ -86,7 +88,8 @@ async function askForLinkActionsToPerform(
 
   return await checkbox({
     message: "Select tables to act upon",
-    instructions: chalk.dim(
+    instructions: styleText(
+      "dim",
       " <space> select, <a> select all, <i> inverse, <enter> submit"
     ),
     choices: actions.map((action) => {
@@ -148,7 +151,8 @@ export async function syncLinks(
       groupActionPlan.delete = []
     } else if (!executeAll) {
       groupActionPlan.delete = await askForLinkActionsToPerform(
-        `Select the tables to ${chalk.red(
+        `Select the tables to ${styleText(
+          "red",
           "DELETE"
         )}. The following links have been removed`,
         groupActionPlan.delete,
@@ -169,7 +173,8 @@ export async function syncLinks(
       answer = []
     } else if (!executeAll) {
       answer = await askForLinkActionsToPerform(
-        `Select the tables to ${chalk.red(
+        `Select the tables to ${styleText(
+          "red",
           "UPDATE"
         )}. The following links have been updated`,
         groupActionPlan.notify,

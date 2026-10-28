@@ -14,7 +14,7 @@ import {
   mergePluginModules,
   Modules,
 } from "@medusajs/framework/utils"
-import chalk from "chalk"
+import { styleText } from "util"
 import { join } from "path"
 
 import { initializeContainer } from "../../loaders"
@@ -26,7 +26,7 @@ const TERMINAL_SIZE = process.stdout.columns
 function describeAction(
   action: SearchTypes.SearchIndexMigrationAction
 ): string {
-  const index = chalk.yellow(action.index)
+  const index = styleText("yellow", action.index)
 
   if (action.action === "drop") {
     // Every version goes, so all of them are named rather than just the one
@@ -35,11 +35,11 @@ function describeAction(
       ? action.physical_names.join(", ")
       : "no physical index"
 
-    return `${index} ${chalk.dim(`(${detail})`)}`
+    return `${index} ${styleText("dim", `(${detail})`)}`
   }
 
   if (action.action !== "migrate") {
-    return `${index} ${chalk.dim(`(${action.physical_name})`)}`
+    return `${index} ${styleText("dim", `(${action.physical_name})`)}`
   }
 
   const destination = `${action.active_physical_name} -> ${action.physical_name}`
@@ -48,7 +48,7 @@ function describeAction(
     ? `${action.previous_provider} -> ${action.provider}, ${destination}`
     : destination
 
-  return `${index} ${chalk.dim(`(${detail})`)}`
+  return `${index} ${styleText("dim", `(${detail})`)}`
 }
 
 async function logActions(
@@ -110,7 +110,8 @@ async function selectIndexesToDrop({
   const { default: boxen } = await import("boxen")
   logger.info(
     boxen(
-      `Select the search indexes to ${chalk.red(
+      `Select the search indexes to ${styleText(
+        "red",
         "DROP"
       )}. No definition declares them any more, and dropping one deletes every document it holds.`,
       { borderColor: "red", padding: 1 }
@@ -119,7 +120,8 @@ async function selectIndexesToDrop({
 
   return await checkbox({
     message: "Select search indexes to drop",
-    instructions: chalk.dim(
+    instructions: styleText(
+      "dim",
       " <space> select, <a> select all, <i> inverse, <enter> submit"
     ),
     choices: actions.map((action) => {

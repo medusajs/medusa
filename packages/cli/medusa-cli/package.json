@@ -43,7 +43,6 @@
     "@medusajs/telemetry": "2.22.1",
     "@medusajs/utils": "2.22.1",
     "@types/express": "^4.17.21",
-    "chalk": "^4.1.2",
     "configstore": "^5.0.1",
     "dotenv": "^16.4.5",
     "execa": "^5.1.1",

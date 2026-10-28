@@ -34,7 +34,6 @@
     "validate:http-types": "node dist/index.js validate --ci"
   },
   "dependencies": {
-    "chalk": "^4.1.2",
     "commander": "^11.0.0",
     "glob": "13.0.6",
     "pluralize": "^8.0.0",

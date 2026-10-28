@@ -115,7 +115,6 @@
     "@medusajs/workflow-engine-inmemory": "2.22.1",
     "@medusajs/workflow-engine-redis": "2.22.1",
     "boxen": "^9.0.0",
-    "chalk": "^4.1.2",
     "chokidar": "^4.0.3",
     "compression": "^1.8.2",
     "express": "^4.21.0",
