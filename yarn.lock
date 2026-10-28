@@ -3136,7 +3136,7 @@ __metadata:
   resolution: "@medusajs/admin-sdk@workspace:packages/admin/admin-sdk"
   dependencies:
     "@medusajs/admin-shared": 2.22.1
-    zod: 4.6.6
+    zod: 4.6.7
   languageName: unknown
   linkType: soft
 
@@ -3447,7 +3447,7 @@ __metadata:
     react-jwt: ^1.2.0
     react-router-dom: 7.18.4
     typescript: 5.9.3
-    zod: 4.6.6
+    zod: 4.6.7
   languageName: unknown
   linkType: soft
 
@@ -3467,7 +3467,7 @@ __metadata:
     "@opentelemetry/sdk-trace-node": ^2.7.0
     awilix: ^8.0.1
     pg: ^8.23.1
-    zod: 4.6.6
+    zod: 4.6.7
   languageName: unknown
   linkType: soft
 
@@ -3496,7 +3496,7 @@ __metadata:
     match-sorter: ^6.3.4
     radix-ui: 1.8.1
     react-hook-form: 7.91.0
-    zod: 4.6.6
+    zod: 4.6.7
   peerDependencies:
     "@medusajs/admin-sdk": 2.22.1
     "@medusajs/cli": 2.22.1
@@ -4238,7 +4238,7 @@ __metadata:
     dotenv: ^16.4.5
     fs-extra: ^11.4.1
     picocolors: ^1.1.0
-    ts-dedent: 2.2.0
+    ts-dedent: 2.3.0
   bin:
     toolbox: bin/toolbox.js
   languageName: unknown
@@ -20700,7 +20700,7 @@ __metadata:
     vite-plugin-inspect: ^11.4.1
     vitest: ^4.1.10
     yalc: ^1.0.0-pre.53
-    zod: 4.6.6
+    zod: 4.6.7
     zod-validation-error: 5.0.0
   languageName: unknown
   linkType: soft
@@ -22399,7 +22399,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-dedent@npm:2.2.0, ts-dedent@npm:^2.0.0":
+"ts-dedent@npm:2.3.0":
+  version: 2.3.0
+  resolution: "ts-dedent@npm:2.3.0"
+  checksum: bfc3331e0740191c0134fb526e7f01e16657e50955c9395de14703c6ef17119c91651fa044cf558dc9c1dbb0fe1b2a74e303aeebcbd5e3b31acd14f72f545a54
+  languageName: node
+  linkType: hard
+
+"ts-dedent@npm:^2.0.0":
   version: 2.2.0
   resolution: "ts-dedent@npm:2.2.0"
   checksum: 175adea838468cc2ff7d5e97f970dcb798bbcb623f29c6088cb21aa2880d207c5784be81ab1741f56b9ac37840cbaba0c0d79f7f8b67ffe61c02634cafa5c303
@@ -23941,9 +23948,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:4.6.6":
-  version: 4.6.6
-  resolution: "zod@npm:4.6.6"
-  checksum: 447a3113bb743c54ab839213ff95e9e8c197cc1206f65270c18aac35aa70c47a5c8cab753be911b574df9a8a9801ea74ed6be776575232cae0084e51dab3e970
+"zod@npm:4.6.7":
+  version: 4.6.7
+  resolution: "zod@npm:4.6.7"
+  checksum: 4ce2eb14034317b7254e347ca37b5ad591cf8333147030cf05b9b5d31692d45073f7f2747aa50cf8c6b29012194d2b22978cecc89969cf34a0d18e89d0ee7d7b
   languageName: node
   linkType: hard

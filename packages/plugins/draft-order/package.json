@@ -59,7 +59,7 @@
     "match-sorter": "^6.3.4",
     "radix-ui": "1.8.1",
     "react-hook-form": "7.91.0",
-    "zod": "4.6.6"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@medusajs/admin-sdk": "2.22.1",

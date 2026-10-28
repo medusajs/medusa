@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@medusajs/admin-shared": "2.22.1",
-    "zod": "4.6.6"
+    "zod": "4.6.7"
   },
   "packageManager": "yarn@3.2.1"
 }
