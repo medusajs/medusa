@@ -46,7 +46,7 @@
     "@types/inquirer": "^9.0.3",
     "@types/js-yaml": "^4.0.9",
     "@types/jsdom": "^30.0.0",
-    "@types/jsonwebtoken": "^8.5.9",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash": "^4.17.15",
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.isequal": "^4.5.8",

@@ -8733,16 +8733,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^8.5.9":
-  version: 8.5.9
-  resolution: "@types/jsonwebtoken@npm:8.5.9"
-  dependencies:
-    "@types/node": "*"
-  checksum: 4374b0f1b5641d1dd8847fa6f50bd34ec215f3244ea045556d2caa74ed559b2571502db73526bb8fbff038a60ff7e6bf56ffa79679c0b03539b55fda32617a23
-  languageName: node
-  linkType: hard
-
-"@types/jsonwebtoken@npm:^9.0.4":
+"@types/jsonwebtoken@npm:^9.0.10, @types/jsonwebtoken@npm:^9.0.4":
   version: 9.0.10
   resolution: "@types/jsonwebtoken@npm:9.0.10"
   dependencies:
@@ -20526,7 +20517,7 @@ __metadata:
     "@types/inquirer": ^9.0.3
     "@types/js-yaml": ^4.0.9
     "@types/jsdom": ^30.0.0
-    "@types/jsonwebtoken": ^8.5.9
+    "@types/jsonwebtoken": ^9.0.10
     "@types/lodash": ^4.17.15
     "@types/lodash.debounce": ^4.0.9
     "@types/lodash.isequal": ^4.5.8
