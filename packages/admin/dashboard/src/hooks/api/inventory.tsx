@@ -79,8 +79,8 @@ export const useExportInventoryItems = (
   return useMutation({
     mutationFn: ({ payload = {}, query }) =>
       sdk.admin.inventoryItem.export(payload, query),
-    onSuccess: (data, variables, context) => {
-      options?.onSuccess?.(data, variables, context)
+    onSuccess: (data, variables, onMutateResult, context) => {
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -96,11 +96,11 @@ export const useCreateInventoryItem = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminCreateInventoryItem) =>
       sdk.admin.inventoryItem.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -117,14 +117,14 @@ export const useUpdateInventoryItem = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminUpdateInventoryItem) =>
       sdk.admin.inventoryItem.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.detail(id),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -140,14 +140,14 @@ export const useDeleteInventoryItem = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.inventoryItem.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.detail(id),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -165,7 +165,7 @@ export const useDeleteInventoryItemLevel = (
   return useMutation({
     mutationFn: () =>
       sdk.admin.inventoryItem.deleteLevel(inventoryItemId, locationId),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),
       })
@@ -175,7 +175,7 @@ export const useDeleteInventoryItemLevel = (
       queryClient.invalidateQueries({
         queryKey: inventoryItemLevelsQueryKeys.detail(inventoryItemId),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -218,7 +218,7 @@ export const useUpdateInventoryLevel = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminUpdateInventoryLevel) =>
       sdk.admin.inventoryItem.updateLevel(inventoryItemId, locationId, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),
       })
@@ -231,7 +231,7 @@ export const useUpdateInventoryLevel = (
       queryClient.invalidateQueries({
         queryKey: variantsQueryKeys.details(),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -251,7 +251,7 @@ export const useBatchInventoryItemLocationLevels = (
         inventoryItemId,
         payload
       ),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),
       })
@@ -264,7 +264,7 @@ export const useBatchInventoryItemLocationLevels = (
       queryClient.invalidateQueries({
         queryKey: inventoryItemLevelsQueryKeys.list({ inventoryItemId }),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -280,14 +280,14 @@ export const useBatchInventoryItemsLocationLevels = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.inventoryItem.batchInventoryItemsLocationLevels(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.all,
       })
       queryClient.invalidateQueries({
         queryKey: variantsQueryKeys.lists(),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

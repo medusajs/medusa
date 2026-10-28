@@ -125,10 +125,10 @@ export const useCreateRbacRole = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.rbacRole.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -144,11 +144,11 @@ export const useUpdateRbacRole = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.rbacRole.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.detail(id) })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -164,11 +164,11 @@ export const useDeleteRbacRole = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.rbacRole.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.detail(id) })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -183,11 +183,11 @@ export const useDeleteRbacRoleLazy = (
 ) => {
   return useMutation({
     mutationFn: (id: string) => sdk.admin.rbacRole.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.details() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -203,7 +203,7 @@ export const useAddRbacRolePolicies = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.rbacRole.addPolicies(roleId, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacRolesQueryKeys.policies(roleId),
       })
@@ -211,7 +211,7 @@ export const useAddRbacRolePolicies = (
         queryKey: rbacRolesQueryKeys.detail(roleId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -227,7 +227,7 @@ export const useAddRbacRolePoliciesById = (
   return useMutation({
     mutationFn: ({ roleId, policies }) =>
       sdk.admin.rbacRole.addPolicies(roleId, { policies }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacRolesQueryKeys.policies(variables.roleId),
       })
@@ -236,7 +236,7 @@ export const useAddRbacRolePoliciesById = (
       })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -253,7 +253,7 @@ export const useRemoveRbacRolePolicy = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.rbacRole.removePolicy(roleId, policyId),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacRolesQueryKeys.policies(roleId),
       })
@@ -261,7 +261,7 @@ export const useRemoveRbacRolePolicy = (
         queryKey: rbacRolesQueryKeys.detail(roleId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -277,7 +277,7 @@ export const useAddRbacRoleUsers = (
 ) => {
   return useMutation({
     mutationFn: (users) => sdk.admin.rbacRole.addUsers(roleId, { users }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacRolesQueryKeys.users(roleId),
       })
@@ -286,7 +286,7 @@ export const useAddRbacRoleUsers = (
       })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -302,7 +302,7 @@ export const useRemoveRbacRoleUsers = (
 ) => {
   return useMutation({
     mutationFn: (users) => sdk.admin.rbacRole.removeUsers(roleId, { users }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacRolesQueryKeys.users(roleId),
       })
@@ -311,7 +311,7 @@ export const useRemoveRbacRoleUsers = (
       })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

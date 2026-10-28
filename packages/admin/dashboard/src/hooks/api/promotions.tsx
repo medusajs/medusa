@@ -173,13 +173,13 @@ export const useDeletePromotion = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.promotion.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: promotionsQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -194,10 +194,10 @@ export const useCreatePromotion = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.promotion.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -213,10 +213,10 @@ export const useUpdatePromotion = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.promotion.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.all })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -234,10 +234,10 @@ export const usePromotionAddRules = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.promotion.addRules(id, ruleType, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.all })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -255,10 +255,10 @@ export const usePromotionRemoveRules = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.promotion.removeRules(id, ruleType, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.all })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -276,10 +276,10 @@ export const usePromotionUpdateRules = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.promotion.updateRules(id, ruleType, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.all })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

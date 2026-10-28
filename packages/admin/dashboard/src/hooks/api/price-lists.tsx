@@ -74,12 +74,12 @@ export const useCreatePriceList = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.priceList.create(payload, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
 
       queryClient.invalidateQueries({ queryKey: customerGroupsQueryKeys.all })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -96,7 +96,7 @@ export const useUpdatePriceList = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.priceList.update(id, payload, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: priceListsQueryKeys.details(),
@@ -104,7 +104,7 @@ export const useUpdatePriceList = (
 
       queryClient.invalidateQueries({ queryKey: customerGroupsQueryKeys.all })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -120,10 +120,10 @@ export const useDeletePriceList = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.priceList.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -160,7 +160,7 @@ export const useBatchPriceListPrices = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.priceList.batchPrices(id, payload, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: priceListsQueryKeys.detail(id),
       })
@@ -169,7 +169,7 @@ export const useBatchPriceListPrices = (
         queryKey: priceListPricesQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -185,14 +185,14 @@ export const usePriceListLinkProducts = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.priceList.linkProducts(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: priceListsQueryKeys.detail(id),
       })
       queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

@@ -65,9 +65,9 @@ export const useCreateInvite = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.invite.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: invitesQueryKeys.lists() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -79,10 +79,10 @@ export const useResendInvite = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.invite.resend(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: invitesQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: invitesQueryKeys.detail(id) })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -98,10 +98,10 @@ export const useDeleteInvite = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.invite.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: invitesQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: invitesQueryKeys.detail(id) })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -127,8 +127,8 @@ export const useAcceptInvite = (
         }
       )
     },
-    onSuccess: (data, variables, context) => {
-      options?.onSuccess?.(data, variables, context)
+    onSuccess: (data, variables, onMutateResult, context) => {
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

@@ -68,12 +68,12 @@ export const useCreateShippingOptionType = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.shippingOptionType.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: shippingOptionTypesQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -89,7 +89,7 @@ export const useUpdateShippingOptionType = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.shippingOptionType.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: shippingOptionTypesQueryKeys.detail(id),
       })
@@ -97,7 +97,7 @@ export const useUpdateShippingOptionType = (
         queryKey: shippingOptionTypesQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -113,7 +113,7 @@ export const useDeleteShippingOptionType = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.shippingOptionType.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: shippingOptionTypesQueryKeys.detail(id),
       })
@@ -121,7 +121,7 @@ export const useDeleteShippingOptionType = (
         queryKey: shippingOptionTypesQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

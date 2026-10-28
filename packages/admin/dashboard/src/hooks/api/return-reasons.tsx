@@ -68,12 +68,12 @@ export const useCreateReturnReason = (
 ) => {
   return useMutation({
     mutationFn: async (data) => sdk.admin.returnReason.create(data, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: returnReasonsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -89,7 +89,7 @@ export const useUpdateReturnReason = (
 ) => {
   return useMutation({
     mutationFn: async (data) => sdk.admin.returnReason.update(id, data, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: returnReasonsQueryKeys.lists(),
       })
@@ -97,7 +97,7 @@ export const useUpdateReturnReason = (
         queryKey: returnReasonsQueryKeys.detail(data.return_reason.id, query),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -112,7 +112,7 @@ export const useDeleteReturnReason = (
 ) => {
   return useMutation({
     mutationFn: (id: string) => sdk.admin.returnReason.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: returnReasonsQueryKeys.lists(),
       })
@@ -124,7 +124,7 @@ export const useDeleteReturnReason = (
         queryKey: returnReasonsQueryKeys.details(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

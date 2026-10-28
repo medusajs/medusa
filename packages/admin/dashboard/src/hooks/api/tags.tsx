@@ -69,7 +69,6 @@ export const useInfiniteProductTags = (
       HttpTypes.AdminProductTagListResponse,
       FetchError,
       InfiniteData<HttpTypes.AdminProductTagListResponse, number>,
-      HttpTypes.AdminProductTagListResponse,
       QueryKey,
       number
     >,
@@ -99,12 +98,12 @@ export const useCreateProductTag = (
 ) => {
   return useMutation({
     mutationFn: async (data) => sdk.admin.productTag.create(data, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: productTagsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -121,7 +120,7 @@ export const useUpdateProductTag = (
 ) => {
   return useMutation({
     mutationFn: async (data) => sdk.admin.productTag.update(id, data, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: productTagsQueryKeys.lists(),
       })
@@ -129,7 +128,7 @@ export const useUpdateProductTag = (
         queryKey: productTagsQueryKeys.detail(data.product_tag.id, query),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -145,7 +144,7 @@ export const useDeleteProductTag = (
 ) => {
   return useMutation({
     mutationFn: async () => sdk.admin.productTag.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: productTagsQueryKeys.lists(),
       })
@@ -153,7 +152,7 @@ export const useDeleteProductTag = (
         queryKey: productTagsQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

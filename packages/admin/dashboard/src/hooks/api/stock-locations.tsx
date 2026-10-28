@@ -70,12 +70,12 @@ export const useCreateStockLocation = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.stockLocation.create(payload),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -91,7 +91,7 @@ export const useUpdateStockLocation = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.stockLocation.update(id, payload),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),
       })
@@ -99,7 +99,7 @@ export const useUpdateStockLocation = (
         queryKey: stockLocationsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -116,7 +116,7 @@ export const useUpdateStockLocationSalesChannels = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.stockLocation.updateSalesChannels(id, payload),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),
       })
@@ -124,7 +124,7 @@ export const useUpdateStockLocationSalesChannels = (
         queryKey: stockLocationsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -140,7 +140,7 @@ export const useDeleteStockLocation = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.stockLocation.delete(id),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.lists(),
       })
@@ -148,7 +148,7 @@ export const useDeleteStockLocation = (
         queryKey: stockLocationsQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -165,12 +165,12 @@ export const useCreateStockLocationFulfillmentSet = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.stockLocation.createFulfillmentSet(locationId, payload),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -187,7 +187,7 @@ export const useUpdateStockLocationFulfillmentProviders = (
   return useMutation({
     mutationFn: async (payload) =>
       await sdk.admin.stockLocation.updateFulfillmentProviders(id, payload),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.details(),
       })
@@ -195,7 +195,7 @@ export const useUpdateStockLocationFulfillmentProviders = (
         queryKey: fulfillmentProvidersQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
