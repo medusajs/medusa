@@ -14,7 +14,6 @@ import {
   mergePluginModules,
   Modules,
 } from "@medusajs/framework/utils"
-import boxen from "boxen"
 import chalk from "chalk"
 import { join } from "path"
 
@@ -52,11 +51,12 @@ function describeAction(
   return `${index} ${chalk.dim(`(${detail})`)}`
 }
 
-function logActions(
+async function logActions(
   title: string,
   actions: SearchTypes.SearchIndexMigrationAction[],
   logger: Logger
 ) {
+  const { default: boxen } = await import("boxen")
   const actionsList = actions
     .map((action) => `  - ${describeAction(action)}`)
     .join("\n")
@@ -84,8 +84,8 @@ async function selectIndexesToDrop({
     return []
   }
 
-  const skip = (reason: string) => {
-    logActions(
+  const skip = async (reason: string) => {
+    await logActions(
       `Left the following search indexes in place, which no definition declares any more (${reason})`,
       actions,
       logger
@@ -107,6 +107,7 @@ async function selectIndexesToDrop({
     )
   }
 
+  const { default: boxen } = await import("boxen")
   logger.info(
     boxen(
       `Select the search indexes to ${chalk.red(
@@ -221,13 +222,13 @@ export async function migrateSearchIndexes({
     ])
 
     if (toCreate.length) {
-      logActions("Created following search indexes", toCreate, logger)
+      await logActions("Created following search indexes", toCreate, logger)
     }
     if (toMigrate.length) {
-      logActions("Rebuilt following search indexes", toMigrate, logger)
+      await logActions("Rebuilt following search indexes", toMigrate, logger)
     }
     if (toDrop.length) {
-      logActions("Dropped following search indexes", toDrop, logger)
+      await logActions("Dropped following search indexes", toDrop, logger)
     }
 
     logger.info(

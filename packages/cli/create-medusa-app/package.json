@@ -16,7 +16,7 @@
   "dependencies": {
     "@medusajs/deps": "2.22.1",
     "@medusajs/telemetry": "2.22.1",
-    "boxen": "^5.0.1",
+    "boxen": "^9.0.0",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
     "inquirer": "^8.0.0",

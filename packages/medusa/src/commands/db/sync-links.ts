@@ -12,7 +12,6 @@ import {
   isDefined,
   mergePluginModules,
 } from "@medusajs/framework/utils"
-import boxen from "boxen"
 import chalk from "chalk"
 import { join } from "path"
 
@@ -60,11 +59,12 @@ function buildLinkDescription(action: LinkMigrationsPlannerAction) {
  * Logs the actions of a given action type with a nice border and
  * a title
  */
-function logActions(
+async function logActions(
   title: string,
   actionsOrContext: LinkMigrationsPlannerAction[],
   logger: Logger
 ) {
+  const { default: boxen } = await import("boxen")
   const actionsList = actionsOrContext
     .map((action) => `  - ${buildLinkDescription(action)}`)
     .join("\n")
@@ -81,6 +81,7 @@ async function askForLinkActionsToPerform(
   actions: LinkMigrationsPlannerAction[],
   logger: Logger
 ) {
+  const { default: boxen } = await import("boxen")
   logger.info(boxen(message, { borderColor: "red", padding: 1 }))
 
   return await checkbox({
@@ -195,13 +196,13 @@ export async function syncLinks(
   await planner.executePlan(actionsToExecute)
 
   if (toCreate.length) {
-    logActions("Created following links tables", toCreate, logger)
+    await logActions("Created following links tables", toCreate, logger)
   }
   if (toUpdate.length) {
-    logActions("Updated following links tables", toUpdate, logger)
+    await logActions("Updated following links tables", toUpdate, logger)
   }
   if (toDelete.length) {
-    logActions("Deleted following links tables", toDelete, logger)
+    await logActions("Deleted following links tables", toDelete, logger)
   }
 
   if (actionsToExecute.length) {

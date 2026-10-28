@@ -5,6 +5,10 @@ import { migrateSearchIndexes } from "../migrate-search"
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
 jest.mock("@inquirer/checkbox", () => jest.fn())
+jest.mock("boxen", () => ({
+  __esModule: true,
+  default: (text: string) => text,
+}))
 
 jest.mock("../../../loaders", () => ({
   initializeContainer: jest.fn(),

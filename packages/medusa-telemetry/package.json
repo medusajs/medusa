@@ -38,7 +38,7 @@
     "@babel/runtime": "^7.29.10",
     "axios": "^1.20.0",
     "axios-retry": "^4.5.0",
-    "boxen": "^5.0.1",
+    "boxen": "^9.0.0",
     "ci-info": "^3.2.0",
     "configstore": "^5.0.1",
     "is-docker": "^2.2.1",
