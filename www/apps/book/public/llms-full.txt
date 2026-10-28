@@ -46088,6 +46088,8 @@ If you remove a payment provider from the `providers` option, the Medusa applica
 
 Instead, the Medusa application will set the `is_enabled` property of the `PaymentProvider`'s record to `false`. This allows you to re-enable the payment provider later if needed by adding it back to the `providers` option.
 
+Starting from Medusa v2.22.2, the Payment Module disables removed payment providers when the Medusa application starts. This also applies to a provider whose `id` you change in `medusa-config.ts`, since its ID in the database changes. In earlier versions, the records of removed payment providers remained enabled.
+
 
 # Stripe Module Provider
 
