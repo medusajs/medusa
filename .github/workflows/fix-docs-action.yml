@@ -271,6 +271,7 @@ jobs:
             1. Identify the relevant doc file from the page path or URL mentioned in the issue, and read it.
             2. Validate that the issue is accurate. Read source code under `packages/` as needed to confirm the documentation is wrong or missing information.
             3. Apply the fix following the writing-docs skill. Only write under www/apps/book, www/apps/resources, www/apps/user-guide, www/apps/ui, or www/apps/cloud. Never touch www/apps/resources/references/, www/apps/api-reference/, or www/apps/ui/specs/components/.
+            4. Don't run the commands in the skill's "After Making Changes" section (`yarn prep`, `yarn lint:content`, `yarn lint`). They aren't available here, and the PR's CI runs the content lint. Instead, check your edit by hand against the skill's `reference/vale-rules.md`.
 
             ## Result
 
