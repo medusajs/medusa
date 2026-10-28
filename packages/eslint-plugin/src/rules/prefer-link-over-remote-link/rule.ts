@@ -4,9 +4,7 @@ import { TYPES_SOURCES } from "../../constants"
 import { isResolveCallee } from "../../util/container"
 
 type MessageIds =
-  | "remoteLinkString"
-  | "remoteLinkRegistrationKey"
-  | "remoteLinkTypeImport"
+  "remoteLinkString" | "remoteLinkRegistrationKey" | "remoteLinkTypeImport"
 
 const REMOTE_LINK_TYPE_RENAMES: Record<string, string> = {
   RemoteLink: "Link",

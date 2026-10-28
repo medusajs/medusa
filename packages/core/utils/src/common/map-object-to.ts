@@ -15,7 +15,7 @@ export type MapToConfig = {
  */
 export function mapObjectTo<
   TResult = any,
-  T extends RemapInputObject = RemapInputObject
+  T extends RemapInputObject = RemapInputObject,
 >(
   object: T,
   mapTo: MapToConfig,

@@ -1351,9 +1351,8 @@ medusaIntegrationTestRunner({
         // @ts-ignore
         orderWithPromotion = await orderModule.createOrders({
           email: "foo@bar.com",
-          region_id: (
-            await api.get("/admin/regions", adminHeaders)
-          ).data.regions[0].id,
+          region_id: (await api.get("/admin/regions", adminHeaders)).data
+            .regions[0].id,
           sales_channel_id: (
             await api.get("/admin/sales-channels", adminHeaders)
           ).data.sales_channels[0].id,

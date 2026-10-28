@@ -31,8 +31,8 @@ type Scalar =
 type ExcludeFunctions<T, K extends keyof T> = T[K] extends Function
   ? never
   : K extends symbol
-  ? never
-  : K
+    ? never
+    : K
 
 type ReadonlyPrimary<T> = T extends any[] ? Readonly<T> : T
 
@@ -42,18 +42,18 @@ type Primary<T> = T extends {
 }
   ? ReadonlyPrimary<PK>
   : T extends {
-      _id?: infer PK
-    }
-  ? ReadonlyPrimary<PK> | string
-  : T extends {
-      uuid?: infer PK
-    }
-  ? ReadonlyPrimary<PK>
-  : T extends {
-      id?: infer PK
-    }
-  ? ReadonlyPrimary<PK>
-  : never
+        _id?: infer PK
+      }
+    ? ReadonlyPrimary<PK> | string
+    : T extends {
+          uuid?: infer PK
+        }
+      ? ReadonlyPrimary<PK>
+      : T extends {
+            id?: infer PK
+          }
+        ? ReadonlyPrimary<PK>
+        : never
 
 export type OperatorMap<T> = {
   $and?: Query<T>[]
@@ -79,36 +79,28 @@ export type OperatorMap<T> = {
 
 type FilterValue2<T> = T | ExpandScalar<T> | Primary<T>
 type FilterValue<T> =
-  | OperatorMap<FilterValue2<T>>
-  | FilterValue2<T>
-  | FilterValue2<T>[]
-  | null
+  OperatorMap<FilterValue2<T>> | FilterValue2<T> | FilterValue2<T>[] | null
 
 type PrevLimit = [never, 0, 1, 2]
 
 export type FilterQueryProperties<T, Prev extends number = 3> = {
   [Key in keyof T]?: T[Key] extends
-    | boolean
-    | number
-    | string
-    | bigint
-    | symbol
-    | Date
+    boolean | number | string | bigint | symbol | Date
     ? T[Key] | OperatorMap<T[Key]>
     : T[Key] extends infer U
-    ? U extends { [x: number]: infer V }
-      ? V extends object
-        ? FilterQuery<Partial<V>, PrevLimit[Prev]>
+      ? U extends { [x: number]: infer V }
+        ? V extends object
+          ? FilterQuery<Partial<V>, PrevLimit[Prev]>
+          : never
         : never
       : never
-    : never
 }
 
 export type FilterQuery<T = any, Prev extends number = 3> = Prev extends never
   ? never
   : T extends Constructor<infer Prototype>
-  ? FilterQueryProperties<Prototype, Prev>
-  : FilterQueryProperties<T, Prev>
+    ? FilterQueryProperties<Prototype, Prev>
+    : FilterQueryProperties<T, Prev>
 
 declare type QueryOrder = "ASC" | "DESC" | "asc" | "desc"
 
@@ -122,7 +114,5 @@ type QueryOrderMap<T> = {
 
 export type Order<T> = {
   [key in keyof T]?:
-    | "ASC"
-    | "DESC"
-    | Order<T[key] extends Array<any> ? T[key][0] : T[key]>
+    "ASC" | "DESC" | Order<T[key] extends Array<any> ? T[key][0] : T[key]>
 }

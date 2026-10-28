@@ -24,11 +24,17 @@ import { ensureDbExists, isPgstreamEnabled } from "../utils"
  * @param actionPlan LinkMigrationsPlannerAction
  */
 function groupByActionPlan(actionPlan: LinkMigrationsPlannerAction[]) {
-  return actionPlan.reduce((acc, action) => {
-    acc[action.action] ??= []
-    acc[action.action].push(action)
-    return acc
-  }, {} as Record<"noop" | "notify" | "create" | "update" | "delete", LinkMigrationsPlannerAction[]>)
+  return actionPlan.reduce(
+    (acc, action) => {
+      acc[action.action] ??= []
+      acc[action.action].push(action)
+      return acc
+    },
+    {} as Record<
+      "noop" | "notify" | "create" | "update" | "delete",
+      LinkMigrationsPlannerAction[]
+    >
+  )
 }
 
 /**

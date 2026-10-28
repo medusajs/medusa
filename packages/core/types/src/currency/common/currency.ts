@@ -41,8 +41,7 @@ export interface CurrencyDTO {
  *
  * Filters to apply on a currency.
  */
-export interface FilterableCurrencyProps
-  extends BaseFilterable<FilterableCurrencyProps> {
+export interface FilterableCurrencyProps extends BaseFilterable<FilterableCurrencyProps> {
   /**
    * Search through currencies using this search term.
    */

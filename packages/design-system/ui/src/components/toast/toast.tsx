@@ -84,7 +84,7 @@ export const Toast = ({
         icon = <XCircleSolid className="text-ui-tag-red-icon" />
         break
       case "loading":
-        icon = <Spinner className="text-ui-tag-blue-icon animate-spin" />
+        icon = <Spinner className="animate-spin text-ui-tag-blue-icon" />
         break
       case "info":
         icon = <InformationCircleSolid className="text-ui-fg-base" />
@@ -95,7 +95,7 @@ export const Toast = ({
   }
 
   return (
-    <div className="shadow-elevation-flyout bg-ui-bg-component flex w-fit min-w-[360px] max-w-[440px] gap-x-3 overflow-hidden rounded-lg p-3">
+    <div className="flex w-fit min-w-[360px] max-w-[440px] gap-x-3 overflow-hidden rounded-lg bg-ui-bg-component p-3 shadow-elevation-flyout">
       <div
         className={clx("grid flex-1 items-center gap-x-2", {
           "grid-cols-[20px_1fr]": !!icon,
@@ -114,7 +114,7 @@ export const Toast = ({
               {title}
             </span>
             {description && (
-              <span className="txt-small text-ui-fg-subtle text-pretty">
+              <span className="txt-small text-pretty text-ui-fg-subtle">
                 {description}
               </span>
             )}
@@ -123,7 +123,7 @@ export const Toast = ({
             <button
               type="button"
               className={clx(
-                "txt-compact-small-plus text-ui-fg-base bg-ui-bg-base flex w-fit items-center rounded-[4px] transition-colors",
+                "txt-compact-small-plus flex w-fit items-center rounded-[4px] bg-ui-bg-base text-ui-fg-base transition-colors",
                 "focus-visible:shadow-borders-focus",
                 "hover:text-ui-fg-subtle",
                 "disabled:text-ui-fg-disabled",

@@ -35,8 +35,7 @@ export type ShardingConfig = {
 export type AttributeSchemaConfig = {
   type: AttributeType
   ann?:
-    | boolean
-    | { distance_metric?: DistanceMetric; late_interaction?: boolean }
+    boolean | { distance_metric?: DistanceMetric; late_interaction?: boolean }
   filterable?: boolean
   full_text_search?: FullTextSearch
   fuzzy?: boolean
@@ -78,7 +77,7 @@ export type Filter =
       string,
       "ContainsAllTokens" | "ContainsAnyToken",
       string,
-      TokenFilterOptions
+      TokenFilterOptions,
     ]
   | ["And" | "Or", Filter[]]
   | ["Not", Filter]
@@ -86,10 +85,7 @@ export type Filter =
 export type RankBy = unknown
 
 export type HighlightFragmentGranularity =
-  | "word"
-  | "sentence"
-  | "paragraph"
-  | "none"
+  "word" | "sentence" | "paragraph" | "none"
 
 export type HighlightExpression = [
   "Highlight",
@@ -99,7 +95,7 @@ export type HighlightExpression = [
     rank_fragments_by?: RankBy
     fragment_limit?: number
     include_offsets?: "utf-8" | "utf-16" | "codepoints"
-  }
+  },
 ]
 
 export type HighlightFragment = {

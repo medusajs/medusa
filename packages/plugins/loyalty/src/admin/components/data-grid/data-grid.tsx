@@ -11,8 +11,10 @@ import {
   type DataGridRootProps,
 } from "./components"
 
-interface DataGridProps<TData, TFieldValues extends FieldValues = FieldValues>
-  extends DataGridRootProps<TData, TFieldValues> {
+interface DataGridProps<
+  TData,
+  TFieldValues extends FieldValues = FieldValues,
+> extends DataGridRootProps<TData, TFieldValues> {
   isLoading?: boolean
 }
 

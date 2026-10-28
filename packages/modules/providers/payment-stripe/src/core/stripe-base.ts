@@ -58,8 +58,7 @@ type StripeIndeterminateState = {
 
 type StripeErrorData = Stripe.PaymentIntent | StripeIndeterminateState
 type HandledErrorType =
-  | { retry: true }
-  | { retry: false; data: StripeErrorData }
+  { retry: true } | { retry: false; data: StripeErrorData }
 
 abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   protected readonly options_: StripeOptions
@@ -283,8 +282,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     }
 
     intentRequest.customer = context?.account_holder?.data?.id as
-      | string
-      | undefined
+      string | undefined
 
     const sessionData = await this.executeWithRetry<Stripe.PaymentIntent>(() =>
       this.stripe_.paymentIntents.create(intentRequest, {
@@ -587,8 +585,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     context,
   }: ListPaymentMethodsInput): Promise<ListPaymentMethodsOutput> {
     const accountHolderId = context?.account_holder?.data?.id as
-      | string
-      | undefined
+      string | undefined
     if (!accountHolderId) {
       return []
     }
@@ -611,8 +608,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     data,
   }: SavePaymentMethodInput): Promise<SavePaymentMethodOutput> {
     const accountHolderId = context?.account_holder?.data?.id as
-      | string
-      | undefined
+      string | undefined
 
     if (!accountHolderId) {
       throw this.buildError(
@@ -719,8 +715,8 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
           typeof webhookPaymentMethod === "object"
             ? (intent.payment_method as Stripe.PaymentMethod)
             : typeof webhookPaymentMethod === "string"
-            ? await this.stripe_.paymentMethods.retrieve(webhookPaymentMethod)
-            : null
+              ? await this.stripe_.paymentMethods.retrieve(webhookPaymentMethod)
+              : null
 
         return {
           action:

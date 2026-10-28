@@ -136,7 +136,7 @@ export function OrderCreateFulfillmentItem({
   )
 
   return (
-    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl">
+    <div className="my-2 rounded-xl bg-ui-bg-subtle shadow-elevation-card-rest">
       <div className="flex flex-row items-center">
         {disabled && (
           <div className="ml-4 inline-flex items-center">
@@ -164,7 +164,7 @@ export function OrderCreateFulfillmentItem({
                 </Text>
                 {item.variant_sku && <span>({item.variant_sku})</span>}
               </div>
-              <Text as="div" className="text-ui-fg-subtle txt-small">
+              <Text as="div" className="txt-small text-ui-fg-subtle">
                 {item.variant_title}
               </Text>
             </div>
@@ -174,7 +174,7 @@ export function OrderCreateFulfillmentItem({
             <div className="mr-2 block h-[16px] w-[2px] bg-gray-200" />
 
             <div className="text-small flex flex-1 flex-col">
-              <span className="text-ui-fg-subtle font-medium">
+              <span className="font-medium text-ui-fg-subtle">
                 {t("orders.fulfillment.available")}
               </span>
               <span className="text-ui-fg-subtle">
@@ -186,7 +186,7 @@ export function OrderCreateFulfillmentItem({
               <div className="mr-2 block h-[16px] w-[2px] bg-gray-200" />
 
               <div className="flex flex-col">
-                <span className="text-ui-fg-subtle font-medium">
+                <span className="font-medium text-ui-fg-subtle">
                   {t("orders.fulfillment.inStock")}
                 </span>
                 <span className="text-ui-fg-subtle">
@@ -210,7 +210,7 @@ export function OrderCreateFulfillmentItem({
                     <Form.Item>
                       <Form.Control>
                         <Input
-                          className="bg-ui-bg-base txt-small w-[50px] rounded-lg text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                          className="txt-small w-[50px] rounded-lg bg-ui-bg-base text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                           type="number"
                           {...field}
                           onChange={(e) => {

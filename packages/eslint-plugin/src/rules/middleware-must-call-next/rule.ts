@@ -6,8 +6,7 @@ type MessageIds = "missingNextCall"
 const DEFINE_MIDDLEWARES = "defineMiddlewares"
 
 type MiddlewareFn =
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression
+  TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression
 
 function isMiddlewareFunctionNode(node: TSESTree.Node): node is MiddlewareFn {
   return (

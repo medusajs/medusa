@@ -7,7 +7,7 @@ export const DisplayIdCell = ({ displayId }: { displayId?: number | null }) => {
   }
 
   return (
-    <div className="text-ui-fg-subtle txt-compact-small flex h-full w-full items-center overflow-hidden">
+    <div className="txt-compact-small flex h-full w-full items-center overflow-hidden text-ui-fg-subtle">
       <span className="truncate">#{displayId}</span>
     </div>
   )

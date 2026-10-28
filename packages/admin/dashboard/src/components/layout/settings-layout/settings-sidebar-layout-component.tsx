@@ -19,7 +19,7 @@ const CollapsibleGroup = ({
   return (
     <RadixCollapsible.Root defaultOpen className="py-3">
       <div className="px-3">
-        <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
+        <div className="flex h-7 items-center justify-between px-2 text-ui-fg-muted">
           <Text size="small" leading="compact">
             {label}
           </Text>

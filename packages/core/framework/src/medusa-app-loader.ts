@@ -48,8 +48,7 @@ export class MedusaAppLoader {
    * @private
    */
   readonly #customLinksModules:
-    | RegisterModuleJoinerConfig
-    | RegisterModuleJoinerConfig[]
+    RegisterModuleJoinerConfig | RegisterModuleJoinerConfig[]
 
   readonly #medusaConfigPath?: string
   readonly #cwd?: string
@@ -65,8 +64,7 @@ export class MedusaAppLoader {
   }: {
     container?: MedusaContainer
     customLinksModules?:
-      | RegisterModuleJoinerConfig
-      | RegisterModuleJoinerConfig[]
+      RegisterModuleJoinerConfig | RegisterModuleJoinerConfig[]
     medusaConfigPath?: string
     cwd?: string
   } = {}) {

@@ -24,7 +24,7 @@ type UseDataGridMouseUpEventOptions<TData, TFieldValues extends FieldValues> = {
 
 export const useDataGridMouseUpEvent = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >({
   matrix,
   anchor,

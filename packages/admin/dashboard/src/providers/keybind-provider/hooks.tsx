@@ -116,14 +116,12 @@ export const useGlobalShortcuts = () => {
   const globalShortcuts: Shortcut[] = [
     // "Jump to" entries come from the search entity registry, so apps and
     // plugins customize them through their `search-entities.tsx` definitions.
-    ...getSearchEntityShortcuts().map(
-      ({ entity, shortcut }): Shortcut => ({
-        keys: shortcut.keys,
-        label: resolveSearchEntityShortcutLabel(entity, t),
-        type: shortcut.type ?? "pageShortcut",
-        to: shortcut.to,
-      })
-    ),
+    ...getSearchEntityShortcuts().map(({ entity, shortcut }): Shortcut => ({
+      keys: shortcut.keys,
+      label: resolveSearchEntityShortcutLabel(entity, t),
+      type: shortcut.type ?? "pageShortcut",
+      to: shortcut.to,
+    })),
     // The admin shell's own destinations, which belong to no entity.
     {
       keys: {

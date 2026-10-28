@@ -269,8 +269,7 @@ describe("command oas", () => {
 
     it("should overwrite existing schema", async () => {
       const schema = oas.components?.schemas?.StoreRegionsListRes as
-        | SchemaObject
-        | undefined
+        SchemaObject | undefined
       expect(schema?.properties?.foo).toBeDefined()
     })
   })
@@ -405,8 +404,7 @@ components:
 
     it("should overwrite existing schema", async () => {
       const schema = oas.components?.schemas?.StoreRegionsListRes as
-        | SchemaObject
-        | undefined
+        SchemaObject | undefined
       expect(schema?.properties?.foo).toBeDefined()
     })
 
@@ -617,8 +615,7 @@ components:
 
     it("should overwrite existing schema", async () => {
       const schema = oas.components?.schemas?.StoreRegionsListRes as
-        | SchemaObject
-        | undefined
+        SchemaObject | undefined
       expect(schema?.properties?.foo).toBeDefined()
     })
 

@@ -8,13 +8,11 @@ export interface AdminReturnReasonResponse {
   return_reason: AdminReturnReason
 }
 
-export interface AdminReturnReasonListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of return reasons.
-     */
-    return_reasons: AdminReturnReason[]
-  }> {}
+export interface AdminReturnReasonListResponse extends PaginatedResponse<{
+  /**
+   * The list of return reasons.
+   */
+  return_reasons: AdminReturnReason[]
+}> {}
 
-export interface AdminReturnReasonDeleteResponse
-  extends DeleteResponse<"return_reason"> {}
+export interface AdminReturnReasonDeleteResponse extends DeleteResponse<"return_reason"> {}

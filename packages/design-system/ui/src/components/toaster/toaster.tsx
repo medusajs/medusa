@@ -5,18 +5,17 @@ import { Toaster as Primitive } from "sonner"
 
 import { clx } from "@/utils/clx"
 
-interface ToasterProps
-  extends Omit<
-    React.ComponentPropsWithoutRef<typeof Primitive>,
-    | "richColors"
-    | "closeButton"
-    | "icons"
-    | "theme"
-    | "invert"
-    | "loadingIcon"
-    | "cn"
-    | "toastOptions"
-  > {}
+interface ToasterProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof Primitive>,
+  | "richColors"
+  | "closeButton"
+  | "icons"
+  | "theme"
+  | "invert"
+  | "loadingIcon"
+  | "cn"
+  | "toastOptions"
+> {}
 
 /**
  * This component is based on the [Toaster component of the Sonner library](https://sonner.emilkowal.ski/toaster).

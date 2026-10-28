@@ -147,7 +147,7 @@ export const DateFilter = ({
             sideOffset={8}
             collisionPadding={24}
             className={clx(
-              "bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout h-full max-h-[var(--radix-popper-available-height)] w-[300px] overflow-auto rounded-lg"
+              "h-full max-h-[var(--radix-popper-available-height)] w-[300px] overflow-auto rounded-lg bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout"
             )}
             onInteractOutside={(e) => {
               if (e.target instanceof HTMLElement) {
@@ -168,7 +168,7 @@ export const DateFilter = ({
                 return (
                   <li key={preset.label}>
                     <button
-                      className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none"
+                      className="txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-none transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed data-[disabled]:pointer-events-none data-[disabled]:text-ui-fg-disabled"
                       type="button"
                       onClick={() => {
                         handleSelectPreset(preset.value)
@@ -176,7 +176,7 @@ export const DateFilter = ({
                     >
                       <div
                         className={clx(
-                          "transition-fg flex h-5 w-5 items-center justify-center",
+                          "flex h-5 w-5 items-center justify-center transition-fg",
                           {
                             "[&_svg]:invisible": !isSelected,
                           }
@@ -191,13 +191,13 @@ export const DateFilter = ({
               })}
               <li>
                 <button
-                  className="bg-ui-bg-base hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed text-ui-fg-base data-[disabled]:text-ui-fg-disabled txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors data-[disabled]:pointer-events-none"
+                  className="txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-none transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed data-[disabled]:pointer-events-none data-[disabled]:text-ui-fg-disabled"
                   type="button"
                   onClick={handleSelectCustom}
                 >
                   <div
                     className={clx(
-                      "transition-fg flex h-5 w-5 items-center justify-center",
+                      "flex h-5 w-5 items-center justify-center transition-fg",
                       {
                         "[&_svg]:invisible": !showCustom,
                       }

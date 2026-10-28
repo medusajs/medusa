@@ -57,9 +57,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "default",
             }
 
-            const createdShippingProfile = await service.createShippingProfiles(
-              createData
-            )
+            const createdShippingProfile =
+              await service.createShippingProfiles(createData)
 
             expect(createdShippingProfile).toEqual(
               expect.objectContaining({
@@ -155,9 +154,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "default",
             }
 
-            const createdShippingProfile = await service.createShippingProfiles(
-              createData
-            )
+            const createdShippingProfile =
+              await service.createShippingProfiles(createData)
 
             await service.deleteShippingProfiles(createdShippingProfile.id)
 
@@ -174,9 +172,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "default",
             }
 
-            const createdShippingProfile = await service.createShippingProfiles(
-              createData
-            )
+            const createdShippingProfile =
+              await service.createShippingProfiles(createData)
 
             const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",

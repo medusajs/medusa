@@ -10,7 +10,7 @@ type UseDataGridCellSnapshotOptions<TData, TFieldValues extends FieldValues> = {
 
 export const useDataGridCellSnapshot = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >({
   matrix,
   form,

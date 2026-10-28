@@ -59,7 +59,7 @@ export const QuantityPriceModal = ({
 
     const isRegion = type === "region_prices"
     const currencyCode = isRegion
-      ? regions.find((r) => r.id === code)?.currency_code ?? code
+      ? (regions.find((r) => r.id === code)?.currency_code ?? code)
       : code
 
     setEditingCell({
@@ -96,8 +96,8 @@ export const QuantityPriceModal = ({
 
   const columnLabel = editingCell
     ? editingCell.regionId
-      ? regions.find((r) => r.id === editingCell.regionId)?.name ??
-        editingCell.regionId
+      ? (regions.find((r) => r.id === editingCell.regionId)?.name ??
+        editingCell.regionId)
       : editingCell.currencyCode.toUpperCase()
     : ""
 

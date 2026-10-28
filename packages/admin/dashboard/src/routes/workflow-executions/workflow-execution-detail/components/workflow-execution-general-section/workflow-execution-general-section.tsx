@@ -39,7 +39,7 @@ export const WorkflowExecutionGeneralSection = ({
         </div>
         <StatusBadge color={stateColor}>{translatedState}</StatusBadge>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("workflowExecutions.workflowIdLabel")}
         </Text>
@@ -47,7 +47,7 @@ export const WorkflowExecutionGeneralSection = ({
           {execution.workflow_id}
         </Badge>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("workflowExecutions.transactionIdLabel")}
         </Text>
@@ -55,7 +55,7 @@ export const WorkflowExecutionGeneralSection = ({
           {execution.transaction_id}
         </Badge>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("workflowExecutions.progressLabel")}
         </Text>
@@ -100,7 +100,7 @@ const Progress = ({
           <div
             key={step.id}
             className={clx(
-              "bg-ui-bg-switch-off shadow-details-switch-background h-3 w-1.5 rounded-full",
+              "h-3 w-1.5 rounded-full bg-ui-bg-switch-off shadow-details-switch-background",
               {
                 "bg-ui-fg-muted":
                   step.invoke.state === TransactionStepState.DONE,

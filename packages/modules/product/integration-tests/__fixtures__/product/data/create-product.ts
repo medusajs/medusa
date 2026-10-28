@@ -79,10 +79,13 @@ export const buildProductAndRelationsData = ({
         title: faker.commerce.productName(),
         sku: faker.commerce.productName(),
         options: options
-          ? options.reduce((acc, option) => {
-              acc[option.title] = option.values[0]
-              return acc
-            }, {} as Record<string, string>)
+          ? options.reduce(
+              (acc, option) => {
+                acc[option.title] = option.values[0]
+                return acc
+              },
+              {} as Record<string, string>
+            )
           : {
               [defaultOptionTitle]: defaultOptionValue,
             },

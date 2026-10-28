@@ -1,8 +1,7 @@
 /**
  * The data to update in an inventory item.
  */
-export interface UpdateInventoryItemInput
-  extends Partial<CreateInventoryItemInput> {
+export interface UpdateInventoryItemInput extends Partial<CreateInventoryItemInput> {
   /**
    * The ID of the inventory item to update.
    */

@@ -266,7 +266,7 @@ describe("graphSeed", () => {
 
     const seed = graphSeed<typeof fields>({
       fields: ["id", "title"],
-      transform: (rows) => rows.map((row) => ({ title: row.title } as any)),
+      transform: (rows) => rows.map((row) => ({ title: row.title }) as any),
     })
 
     await expect(collect(seed(createContext(graph)))).rejects.toThrow(

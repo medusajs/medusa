@@ -14,7 +14,7 @@ const Kbd = React.forwardRef<
       {...props}
       ref={ref}
       className={clx(
-        "bg-ui-tag-neutral-bg text-ui-tag-neutral-text border-ui-tag-neutral-border inline-flex h-5 w-fit min-w-[20px] items-center justify-center rounded-md border px-1",
+        "inline-flex h-5 w-fit min-w-[20px] items-center justify-center rounded-md border border-ui-tag-neutral-border bg-ui-tag-neutral-bg px-1 text-ui-tag-neutral-text",
         "txt-compact-xsmall-plus",
         className
       )}

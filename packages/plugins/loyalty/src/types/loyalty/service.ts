@@ -14,8 +14,7 @@ import {
 /**
  * The filters to apply when retrieving gift cards.
  */
-export interface ModuleGiftCardFilters
-  extends BaseFilterable<ModuleGiftCardFilters> {
+export interface ModuleGiftCardFilters extends BaseFilterable<ModuleGiftCardFilters> {
   /**
    * A search term to filter gift cards by.
    */

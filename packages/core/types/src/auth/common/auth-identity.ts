@@ -173,8 +173,7 @@ export type UpdateProviderIdentityDTO = {
 /**
  * The filters to apply on the retrieved auth identity.
  */
-export interface FilterableAuthIdentityProps
-  extends BaseFilterable<FilterableAuthIdentityProps> {
+export interface FilterableAuthIdentityProps extends BaseFilterable<FilterableAuthIdentityProps> {
   /**
    * The IDs to filter the auth identity by.
    */
@@ -198,8 +197,7 @@ export interface FilterableAuthIdentityProps
   app_metadata?: Record<string, unknown>
 }
 
-export interface FilterableProviderIdentityProps
-  extends BaseFilterable<FilterableProviderIdentityProps> {
+export interface FilterableProviderIdentityProps extends BaseFilterable<FilterableProviderIdentityProps> {
   /**
    * The IDs to filter the provider identity by.
    */

@@ -4,9 +4,7 @@ import { objectHasProperty, resolveObjectExpression } from "../../util/ast"
 import { isIndexFile } from "../../util/filename"
 
 type MessageIds =
-  | "missingConfigExport"
-  | "missingNameProperty"
-  | "missingScheduleProperty"
+  "missingConfigExport" | "missingNameProperty" | "missingScheduleProperty"
 
 export const rule = createRule<[], MessageIds>({
   name: "scheduled-job-config-required",

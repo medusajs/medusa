@@ -89,7 +89,7 @@ import { isObject } from "./is-object"
  */
 export function remoteQueryObjectFromString<
   const TEntry extends string,
-  const TConfig extends RemoteQueryObjectConfig<TEntry>
+  const TConfig extends RemoteQueryObjectConfig<TEntry>,
 >(
   config: TConfig | RemoteQueryObjectConfig<TEntry>
 ): RemoteQueryObjectFromStringResult<TConfig> {

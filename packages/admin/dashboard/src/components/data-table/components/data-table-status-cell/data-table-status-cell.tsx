@@ -25,7 +25,7 @@ export const DataTableStatusIndicator = ({
   return (
     <div
       className={clx(
-        "txt-compact-small text-ui-fg-subtle flex h-full items-center gap-x-2",
+        "txt-compact-small flex h-full items-center gap-x-2 text-ui-fg-subtle",
         className
       )}
     >

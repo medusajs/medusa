@@ -60,8 +60,7 @@ export class DefaultCacheStrategy implements ICachingStrategy {
         const entityType = eventName.split(".").slice(-2).shift()!
 
         const eventData = data.data as
-          | { id: string | string[] }
-          | { id: string | string[] }[]
+          { id: string | string[] } | { id: string | string[] }[]
 
         const normalizedEventData = Array.isArray(eventData)
           ? eventData

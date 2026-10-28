@@ -86,9 +86,10 @@ export default class NotificationModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<
-      NotificationTypes.NotificationDTO[]
-    >(createdNotifications)
+    const serialized =
+      await this.baseRepository_.serialize<NotificationTypes.NotificationDTO[]>(
+        createdNotifications
+      )
 
     return Array.isArray(data) ? serialized : serialized[0]
   }

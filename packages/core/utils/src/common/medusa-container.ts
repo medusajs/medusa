@@ -28,8 +28,7 @@ function registerAdd(
     this.register(storeKey, asValue([] as Resolver<unknown>[]))
   }
   const store = this.resolve(storeKey) as (
-    | ClassOrFunctionReturning<unknown>
-    | Resolver<unknown>
+    ClassOrFunctionReturning<unknown> | Resolver<unknown>
   )[]
 
   if (this.registrations[name] === undefined) {

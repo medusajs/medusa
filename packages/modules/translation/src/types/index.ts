@@ -9,12 +9,12 @@ type StringValuedKeys<T> = {
   [K in keyof T]: K extends `${string}_id`
     ? never
     : "__typename" extends K
-    ? never
-    : "id" extends K
-    ? never
-    : NonNullable<T[K]> extends string
-    ? K
-    : never
+      ? never
+      : "id" extends K
+        ? never
+        : NonNullable<T[K]> extends string
+          ? K
+          : never
 }[keyof T]
 
 /**

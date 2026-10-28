@@ -24,7 +24,7 @@ export type SearchGraphQueryContext =
 
 export interface SearchGraphSourceOptions<
   Fields extends SearchTypes.SearchIndexFieldsInput,
-  TRow extends GraphRow = GraphRow
+  TRow extends GraphRow = GraphRow,
 > {
   /**
    * The `query.graph` entrypoint to read from. Defaults to the index
@@ -66,7 +66,7 @@ export interface SearchGraphSourceOptions<
 
 export interface SearchGraphSeedOptions<
   Fields extends SearchTypes.SearchIndexFieldsInput,
-  TRow extends GraphRow = GraphRow
+  TRow extends GraphRow = GraphRow,
 > extends SearchGraphSourceOptions<Fields, TRow> {
   /**
    * The number of rows read from `query.graph` per page.
@@ -78,7 +78,7 @@ export interface SearchGraphSeedOptions<
 
 export interface SearchGraphConsumeOptions<
   Fields extends SearchTypes.SearchIndexFieldsInput,
-  TRow extends GraphRow = GraphRow
+  TRow extends GraphRow = GraphRow,
 > extends SearchGraphSourceOptions<Fields, TRow> {
   /**
    * The IDs of the documents the event affects, which are read back through
@@ -144,7 +144,7 @@ function withFields(fields: string[], ...extra: string[]): string[] {
  */
 async function toDocuments<
   Fields extends SearchTypes.SearchIndexFieldsInput,
-  TRow extends GraphRow
+  TRow extends GraphRow,
 >(
   rows: TRow[],
   options: SearchGraphSourceOptions<Fields, TRow>,
@@ -212,7 +212,7 @@ function queryContext(
  */
 export function graphSeed<
   Fields extends SearchTypes.SearchIndexFieldsInput,
-  TRow extends GraphRow = GraphRow
+  TRow extends GraphRow = GraphRow,
 >(
   options: SearchGraphSeedOptions<Fields, TRow>
 ): NonNullable<SearchTypes.SearchIndexDefinitionInput<Fields>["seed"]> {
@@ -305,7 +305,7 @@ export function graphSeed<
  */
 export function graphConsume<
   Fields extends SearchTypes.SearchIndexFieldsInput,
-  TRow extends GraphRow = GraphRow
+  TRow extends GraphRow = GraphRow,
 >(
   options: SearchGraphConsumeOptions<Fields, TRow>
 ): NonNullable<SearchTypes.SearchIndexDefinitionInput<Fields>["consume"]> {

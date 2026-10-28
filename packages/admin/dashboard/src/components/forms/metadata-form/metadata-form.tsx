@@ -148,14 +148,14 @@ const InnerForm = <TRes,>({
         className="flex flex-1 flex-col overflow-hidden"
       >
         <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-y-auto">
-          <div className="bg-ui-bg-base shadow-elevation-card-rest grid grid-cols-1 divide-y rounded-lg">
-            <div className="bg-ui-bg-subtle grid grid-cols-2 divide-x rounded-t-lg">
-              <div className="txt-compact-small-plus text-ui-fg-subtle px-2 py-1.5">
+          <div className="grid grid-cols-1 divide-y rounded-lg bg-ui-bg-base shadow-elevation-card-rest">
+            <div className="grid grid-cols-2 divide-x rounded-t-lg bg-ui-bg-subtle">
+              <div className="txt-compact-small-plus px-2 py-1.5 text-ui-fg-subtle">
                 <label id={METADATA_KEY_LABEL_ID}>
                   {t("metadata.edit.labels.key")}
                 </label>
               </div>
-              <div className="txt-compact-small-plus text-ui-fg-subtle px-2 py-1.5">
+              <div className="txt-compact-small-plus px-2 py-1.5 text-ui-fg-subtle">
                 <label id={METADATA_VALUE_LABEL_ID}>
                   {t("metadata.edit.labels.value")}
                 </label>
@@ -320,7 +320,7 @@ const GridInput = forwardRef<
       {...props}
       autoComplete="off"
       className={clx(
-        "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-muted disabled:text-ui-fg-disabled disabled:bg-ui-bg-base bg-transparent px-2 py-1.5 outline-none",
+        "txt-compact-small bg-transparent px-2 py-1.5 text-ui-fg-base outline-none placeholder:text-ui-fg-muted disabled:bg-ui-bg-base disabled:text-ui-fg-disabled",
         className
       )}
     />

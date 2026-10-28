@@ -13,7 +13,7 @@ export const SectionRow = ({ title, value, actions }: SectionRowProps) => {
   return (
     <div
       className={clx(
-        `text-ui-fg-subtle grid w-full grid-cols-2 items-center gap-4 px-6 py-4`,
+        `grid w-full grid-cols-2 items-center gap-4 px-6 py-4 text-ui-fg-subtle`,
         {
           "grid-cols-[1fr_1fr_28px]": !!actions,
         }

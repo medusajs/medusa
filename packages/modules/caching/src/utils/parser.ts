@@ -27,12 +27,7 @@ export interface InvalidationEvent {
  * delete.
  */
 export type InvalidationOperation =
-  | "created"
-  | "updated"
-  | "deleted"
-  | "restored"
-  | "attached"
-  | "detached"
+  "created" | "updated" | "deleted" | "restored" | "attached" | "detached"
 
 const LIST_AFFECTING_OPERATIONS: InvalidationOperation[] = [
   "created",
@@ -59,16 +54,19 @@ export class CacheInvalidationParser {
       }
     })
 
-    this.idPrefixToEntityName = joinerConfigs.reduce((acc, joinerConfig) => {
-      if (joinerConfig.idPrefixToEntityName) {
-        Object.entries(joinerConfig.idPrefixToEntityName).forEach(
-          ([idPrefix, entityName]) => {
-            acc[idPrefix] = entityName
-          }
-        )
-      }
-      return acc
-    }, {} as Record<string, string>)
+    this.idPrefixToEntityName = joinerConfigs.reduce(
+      (acc, joinerConfig) => {
+        if (joinerConfig.idPrefixToEntityName) {
+          Object.entries(joinerConfig.idPrefixToEntityName).forEach(
+            ([idPrefix, entityName]) => {
+              acc[idPrefix] = entityName
+            }
+          )
+        }
+        return acc
+      },
+      {} as Record<string, string>
+    )
   }
 
   /**

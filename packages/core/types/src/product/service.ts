@@ -1866,7 +1866,7 @@ export interface IProductModuleService extends IModuleService {
    * ])
    */
   softDeleteProductOptionValues<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     optionIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,

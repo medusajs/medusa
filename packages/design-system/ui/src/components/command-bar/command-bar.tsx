@@ -80,7 +80,7 @@ const Value = React.forwardRef<
     <div
       ref={ref}
       className={clx(
-        "txt-compact-small-plus text-ui-contrast-fg-secondary px-3 py-2.5",
+        "txt-compact-small-plus px-3 py-2.5 text-ui-contrast-fg-secondary",
         className
       )}
       {...props}
@@ -100,8 +100,8 @@ const Bar = React.forwardRef<
     <div
       ref={ref}
       className={clx(
-        "bg-ui-contrast-bg-base relative flex items-center overflow-hidden rounded-full px-1",
-        "after:shadow-elevation-flyout after:pointer-events-none after:absolute after:inset-0 after:rounded-full after:content-['']",
+        "relative flex items-center overflow-hidden rounded-full bg-ui-contrast-bg-base px-1",
+        "after:pointer-events-none after:absolute after:inset-0 after:rounded-full after:shadow-elevation-flyout after:content-['']",
         className
       )}
       {...props}
@@ -120,18 +120,17 @@ const Seperator = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={clx("bg-ui-contrast-border-base h-10 w-px", className)}
+      className={clx("h-10 w-px bg-ui-contrast-border-base", className)}
       {...props}
     />
   )
 })
 Seperator.displayName = "CommandBar.Seperator"
 
-interface CommandProps
-  extends Omit<
-    React.ComponentPropsWithoutRef<"button">,
-    "children" | "onClick"
-  > {
+interface CommandProps extends Omit<
+  React.ComponentPropsWithoutRef<"button">,
+  "children" | "onClick"
+> {
   action: () => void | Promise<void>
   label: string
   shortcut: string
@@ -191,8 +190,8 @@ const Command = React.forwardRef<HTMLButtonElement, CommandProps>(
       <button
         ref={ref}
         className={clx(
-          "bg-ui-contrast-bg-base txt-compact-small-plus transition-fg text-ui-contrast-fg-primary flex items-center gap-x-2 px-3 py-2.5 outline-none",
-          "focus-visible:bg-ui-contrast-bg-highlight focus-visible:hover:bg-ui-contrast-bg-base-hover hover:bg-ui-contrast-bg-base-hover active:bg-ui-contrast-bg-base-pressed focus-visible:active:bg-ui-contrast-bg-base-pressed disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
+          "txt-compact-small-plus flex items-center gap-x-2 bg-ui-contrast-bg-base px-3 py-2.5 text-ui-contrast-fg-primary outline-none transition-fg",
+          "focus-visible:bg-ui-contrast-bg-highlight hover:bg-ui-contrast-bg-base-hover focus-visible:hover:bg-ui-contrast-bg-base-hover active:bg-ui-contrast-bg-base-pressed focus-visible:active:bg-ui-contrast-bg-base-pressed disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
           "last-of-type:-mr-1 last-of-type:pr-4",
           className
         )}
@@ -201,7 +200,7 @@ const Command = React.forwardRef<HTMLButtonElement, CommandProps>(
         {...props}
       >
         <span>{label}</span>
-        <Kbd className="bg-ui-contrast-bg-subtle border-ui-contrast-border-base text-ui-contrast-fg-secondary">
+        <Kbd className="border-ui-contrast-border-base bg-ui-contrast-bg-subtle text-ui-contrast-fg-secondary">
           {shortcut.toUpperCase()}
         </Kbd>
       </button>

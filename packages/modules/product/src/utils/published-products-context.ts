@@ -8,7 +8,7 @@ import {
 const PRODUCTS_RELATION = "products"
 
 export const extractPublishedProductsContext = <
-  TFilters extends Record<string, any> | undefined
+  TFilters extends Record<string, any> | undefined,
 >(
   filters: TFilters
 ): { filters: TFilters; publishedOnly: boolean } => {
@@ -28,7 +28,7 @@ export const extractPublishedProductsContext = <
 }
 
 export const applyPublishedProductsPopulateWhere = <
-  TConfig extends FindConfig<any> | undefined
+  TConfig extends FindConfig<any> | undefined,
 >(
   config: TConfig,
   publishedOnly: boolean
@@ -80,7 +80,7 @@ export const applyPublishedProductsPopulateWhere = <
 
 export const applyPublishedProductsContext = <
   TFilters extends Record<string, any> | undefined,
-  TConfig extends FindConfig<any> | undefined
+  TConfig extends FindConfig<any> | undefined,
 >(
   filters: TFilters,
   config: TConfig

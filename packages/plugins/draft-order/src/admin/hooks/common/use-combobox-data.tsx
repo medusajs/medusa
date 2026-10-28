@@ -20,7 +20,7 @@ type ComboboxQueryParams = {
 
 export const useComboboxData = <
   TResponse extends ComboboxExternalData,
-  TParams extends ComboboxQueryParams
+  TParams extends ComboboxQueryParams,
 >({
   queryKey,
   queryFn,

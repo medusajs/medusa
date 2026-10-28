@@ -156,8 +156,7 @@ export interface StoreAddCartShippingMethodsBase {
  * @since 2.16.0
  */
 export type StoreAddCartShippingMethods =
-  | StoreAddCartShippingMethodsBase
-  | StoreAddCartShippingMethodsBase[]
+  StoreAddCartShippingMethodsBase | StoreAddCartShippingMethodsBase[]
 
 export interface StoreCompleteCart {
   idempotency_key?: string

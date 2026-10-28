@@ -28,13 +28,13 @@ export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
     const [primary, foreign] = joinerConfig.relationships!
 
     const serviceName = !joinerConfig.isReadOnlyLink
-      ? joinerConfig.serviceName ??
+      ? (joinerConfig.serviceName ??
         composeLinkName(
           primary.serviceName,
           primary.foreignKey,
           foreign.serviceName,
           foreign.foreignKey
-        )
+        ))
       : simpleHash(JSON.stringify(joinerConfig.extends))
 
     const entityName = toPascalCase(

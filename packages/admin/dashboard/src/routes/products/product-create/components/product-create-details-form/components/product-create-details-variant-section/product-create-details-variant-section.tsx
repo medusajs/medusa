@@ -629,7 +629,7 @@ export const ProductCreateVariantsSection = ({
               {variants.fields.length > 0 ? (
                 <div className="overflow-hidden rounded-xl border">
                   <div
-                    className="bg-ui-bg-component text-ui-fg-subtle grid items-center gap-3 border-b px-6 py-2.5"
+                    className="grid items-center gap-3 border-b bg-ui-bg-component px-6 py-2.5 text-ui-fg-subtle"
                     style={{
                       gridTemplateColumns: `20px 28px repeat(${watchedOptions.length}, 1fr)`,
                     }}
@@ -657,12 +657,12 @@ export const ProductCreateVariantsSection = ({
                       return (
                         <SortableList.Item
                           id={item.id}
-                          className={clx("bg-ui-bg-base border-b", {
+                          className={clx("border-b bg-ui-bg-base", {
                             "border-b-0": index === variants.fields.length - 1,
                           })}
                         >
                           <div
-                            className="text-ui-fg-subtle grid w-full items-center gap-3 px-6 py-2.5"
+                            className="grid w-full items-center gap-3 px-6 py-2.5 text-ui-fg-subtle"
                             style={{
                               gridTemplateColumns: `20px 28px repeat(${watchedOptions.length}, 1fr)`,
                             }}

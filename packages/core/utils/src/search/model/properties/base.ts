@@ -136,7 +136,7 @@ export abstract class StringSearchProperty extends ScalarSearchProperty<string> 
  * integer / float / date — orderable kinds, so range and stats facets apply.
  */
 export abstract class RangeFacetSearchProperty<
-  T
+  T,
 > extends ScalarSearchProperty<T> {
   facetable(value: boolean | { types?: SearchFacetKind[] } = true) {
     this.setFacetable(value)

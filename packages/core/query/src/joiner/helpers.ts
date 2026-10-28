@@ -26,8 +26,7 @@ export function resolveFieldAliasEntry(
 
     return (
       (alias.find((entry) => entry.entity == currentPathEntity) as
-        | ResolvedFieldAlias
-        | undefined) ?? (alias[0] as ResolvedFieldAlias)
+        ResolvedFieldAlias | undefined) ?? (alias[0] as ResolvedFieldAlias)
     )
   }
 

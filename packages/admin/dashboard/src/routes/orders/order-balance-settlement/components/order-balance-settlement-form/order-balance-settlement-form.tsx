@@ -198,8 +198,8 @@ export const OrderBalanceSettlementForm = ({
   const creditLineDescription = canSettleWithCreditLine
     ? "orders.balanceSettlement.settlementTypes.creditLineDescription"
     : isRegisteredCustomer
-    ? "orders.balanceSettlement.settlementTypes.creditLineNoOutstandingAmountDescription"
-    : "orders.balanceSettlement.settlementTypes.creditLineGuestDescription"
+      ? "orders.balanceSettlement.settlementTypes.creditLineNoOutstandingAmountDescription"
+      : "orders.balanceSettlement.settlementTypes.creditLineGuestDescription"
 
   return (
     <RouteDrawer.Form form={form}>

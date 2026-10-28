@@ -222,8 +222,8 @@ export default async function ({ types, directory, lint, fix }) {
           action === "add"
             ? "created"
             : action === "change"
-            ? "modified"
-            : "removed"
+              ? "modified"
+              : "removed"
 
         const now = performance.now()
         logger.info(

@@ -99,7 +99,7 @@ export function OrderAllocateItemsItem({
   )
 
   return (
-    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 min-w-[720px] divide-y divide-dashed rounded-xl">
+    <div className="my-2 min-w-[720px] divide-y divide-dashed rounded-xl bg-ui-bg-subtle shadow-elevation-card-rest">
       <div className="flex items-center gap-x-3 p-3 text-sm">
         <div className="flex flex-1 items-center">
           <div className="flex items-center gap-x-3">
@@ -119,10 +119,10 @@ export function OrderAllocateItemsItem({
                   </span>
                 )}
                 {hasInventoryKit && (
-                  <Component className="text-ui-fg-muted ml-2 overflow-visible pt-[2px]" />
+                  <Component className="ml-2 overflow-visible pt-[2px] text-ui-fg-muted" />
                 )}
               </div>
-              <Text as="div" className="text-ui-fg-subtle txt-small">
+              <Text as="div" className="txt-small text-ui-fg-subtle">
                 {item.title}
               </Text>
             </div>
@@ -138,10 +138,10 @@ export function OrderAllocateItemsItem({
           {!hasInventoryKit && (
             <>
               <div className="flex items-center gap-3">
-                <div className="bg-ui-border-strong block h-[12px] w-[1px]" />
+                <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
 
                 <div className="txt-small flex flex-col">
-                  <span className="text-ui-fg-subtle font-medium">
+                  <span className="font-medium text-ui-fg-subtle">
                     {t("labels.available")}
                   </span>
                   <span className="text-ui-fg-muted">
@@ -151,7 +151,7 @@ export function OrderAllocateItemsItem({
                       quantityField[
                         `${item.id}-${item.variant?.inventory?.[0].id}`
                       ] && (
-                        <span className="text-ui-fg-error txt-small ml-1">
+                        <span className="txt-small ml-1 text-ui-fg-error">
                           -
                           {
                             quantityField[
@@ -165,10 +165,10 @@ export function OrderAllocateItemsItem({
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="bg-ui-border-strong block h-[12px] w-[1px]" />
+                <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
 
                 <div className="txt-small flex flex-col">
-                  <span className="text-ui-fg-subtle font-medium">
+                  <span className="font-medium text-ui-fg-subtle">
                     {t("labels.inStock")}
                   </span>
                   <span className="text-ui-fg-muted">
@@ -180,9 +180,9 @@ export function OrderAllocateItemsItem({
           )}
 
           <div className="flex items-center gap-3">
-            <div className="bg-ui-border-strong block h-[12px] w-[1px]" />
+            <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
 
-            <div className="text-ui-fg-subtle txt-small mr-2 flex flex-row items-center gap-2">
+            <div className="txt-small mr-2 flex flex-row items-center gap-2 text-ui-fg-subtle">
               <Form.Field
                 control={form.control}
                 name={
@@ -200,7 +200,7 @@ export function OrderAllocateItemsItem({
                     <Form.Item>
                       <Form.Control>
                         <Input
-                          className="bg-ui-bg-base txt-small w-[46px] rounded-lg text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                          className="txt-small w-[46px] rounded-lg bg-ui-bg-base text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                           type="number"
                           {...field}
                           disabled={!locationId}
@@ -242,9 +242,9 @@ export function OrderAllocateItemsItem({
           >
             <TriangleDownMini
               style={{ transform: `rotate(${isOpen ? -90 : 0}deg)` }}
-              className="text-ui-fg-muted -mt-[1px]"
+              className="-mt-[1px] text-ui-fg-muted"
             />
-            <span className="txt-small text-ui-fg-muted cursor-pointer">
+            <span className="txt-small cursor-pointer text-ui-fg-muted">
               {t("orders.allocateItems.consistsOf", {
                 num: inventory.length,
               })}
@@ -282,17 +282,17 @@ export function OrderAllocateItemsItem({
 
               <div className="flex flex-1 flex-row justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="bg-ui-border-strong block h-[12px] w-[1px]" />
+                  <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
 
                   <div className="txt-small flex flex-col">
-                    <span className="text-ui-fg-subtle font-medium">
+                    <span className="font-medium text-ui-fg-subtle">
                       {t("labels.available")}
                     </span>
                     <span className="text-ui-fg-muted">
                       {location?.available_quantity || "-"}
                       {location?.available_quantity &&
                         quantityField[`${item.id}-${i.id}`] && (
-                          <span className="text-ui-fg-error txt-small ml-1">
+                          <span className="txt-small ml-1 text-ui-fg-error">
                             -{quantityField[`${item.id}-${i.id}`]}
                           </span>
                         )}
@@ -301,10 +301,10 @@ export function OrderAllocateItemsItem({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="bg-ui-border-strong block h-[12px] w-[1px]" />
+                  <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
 
                   <div className="txt-small flex flex-col">
-                    <span className="text-ui-fg-subtle font-medium">
+                    <span className="font-medium text-ui-fg-subtle">
                       {t("labels.inStock")}
                     </span>
                     <span className="text-ui-fg-muted">
@@ -314,9 +314,9 @@ export function OrderAllocateItemsItem({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="bg-ui-border-strong block h-[12px] w-[1px]" />
+                  <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
 
-                  <div className="text-ui-fg-subtle txt-small mr-1 flex flex-row items-center gap-2">
+                  <div className="txt-small mr-1 flex flex-row items-center gap-2 text-ui-fg-subtle">
                     <Form.Field
                       control={form.control}
                       name={`quantity.${item.id}-${i.id}`}
@@ -330,7 +330,7 @@ export function OrderAllocateItemsItem({
                           <Form.Item>
                             <Form.Control>
                               <Input
-                                className="bg-ui-bg-base txt-small w-[46px] rounded-lg text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                className="txt-small w-[46px] rounded-lg bg-ui-bg-base text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                 type="number"
                                 {...field}
                                 disabled={!locationId}

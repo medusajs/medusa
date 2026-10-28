@@ -87,7 +87,7 @@ describe("Medusa Modules", () => {
   it("should prevent the module being loaded multiple times under concurrent requests", async () => {
     const load: any = []
 
-    for (let i = 5; i--; ) {
+    for (let i = 5; i--;) {
       load.push(
         MedusaModule.bootstrap({
           moduleKey: "moduleKey",
