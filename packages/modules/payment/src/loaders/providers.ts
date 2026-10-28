@@ -107,7 +107,7 @@ const registerProvidersInDb = async ({
     "paymentProviderService"
   )
 
-  const existingProviders = await paymentProviderService.list({}, {})
+  const existingProviders = await paymentProviderService.list({})
 
   const upsertData: CreatePaymentProviderDTO[] = []
 
