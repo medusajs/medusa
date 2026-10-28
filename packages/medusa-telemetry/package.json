@@ -39,7 +39,7 @@
     "axios": "^1.20.0",
     "axios-retry": "^4.5.0",
     "boxen": "^9.0.0",
-    "ci-info": "^3.2.0",
+    "ci-info": "^4.4.0",
     "configstore": "^5.0.1",
     "is-docker": "^2.2.1",
     "remove-trailing-slash": "^0.1.1",

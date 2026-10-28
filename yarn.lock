@@ -4278,7 +4278,7 @@ __metadata:
     axios: ^1.20.0
     axios-retry: ^4.5.0
     boxen: ^9.0.0
-    ci-info: ^3.2.0
+    ci-info: ^4.4.0
     configstore: ^5.0.1
     cross-env: ^10.1.0
     is-docker: ^2.2.1
@@ -11088,7 +11088,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ci-info@npm:^4.2.0":
+"ci-info@npm:^4.2.0, ci-info@npm:^4.4.0":
   version: 4.4.0
   resolution: "ci-info@npm:4.4.0"
   checksum: 44156201545b8dde01aa8a09ee2fe9fc7a73b1bef9adbd4606c9f61c8caeeb73fb7a575c88b0443f7b4edb5ee45debaa59ed54ba5f99698339393ca01349eb3a
