@@ -14706,15 +14706,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"import-from@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "import-from@npm:3.0.0"
-  dependencies:
-    resolve-from: ^5.0.0
-  checksum: 83a40470190f2d9c6ca6a0a2d2de40e9d0b38eedeb2409320a44eaeed48751678e206c9ac7fefef18be19c95ad1cc0e98c844fdf631ab3d9a5597c3476e7525f
-  languageName: node
-  linkType: hard
-
 "import-in-the-middle@npm:^3.0.0":
   version: 3.0.1
   resolution: "import-in-the-middle@npm:3.0.1"
@@ -20569,7 +20560,6 @@ __metadata:
     express: ^4.21.0
     get-port: ^5.1.1
     glob: 13.0.6
-    import-from: ^3.0.0
     ioredis: ^5.11.1
     jest: ^29.7.0
     js-yaml: ^5.5.0

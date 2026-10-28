@@ -83,7 +83,6 @@
     "express": "^4.21.0",
     "get-port": "^5.1.1",
     "glob": "13.0.6",
-    "import-from": "^3.0.0",
     "ioredis": "^5.11.1",
     "jest": "^29.7.0",
     "js-yaml": "^5.5.0",
@@ -155,8 +154,7 @@
   },
   "dependencies": {
     "@changesets/changelog-github": "^1.0.1",
-    "@changesets/cli": "^2.31.1",
-    "import-from": "^3.0.0"
+    "@changesets/cli": "^2.31.1"
   },
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
