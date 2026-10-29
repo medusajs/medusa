@@ -15,9 +15,8 @@ medusaIntegrationTestRunner({
     describe("RBAC - Endpoint entities match policy resources", () => {
       it("should have all endpoint entities present in policy resources", async () => {
         const adminEndpointEntities = await collectAdminEndpointEntities()
-        const policyResourceEntities = await collectPolicyResourceEntities(
-          getContainer()
-        )
+        const policyResourceEntities =
+          await collectPolicyResourceEntities(getContainer())
 
         const missingInPolicies = [...adminEndpointEntities].filter(
           (entity) => !policyResourceEntities.has(entity)

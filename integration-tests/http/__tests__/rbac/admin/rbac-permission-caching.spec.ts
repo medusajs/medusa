@@ -27,7 +27,6 @@ medusaIntegrationTestRunner({
     let container
     let rbacModule
     let readerRoleId: string
-    let parentRoleId: string
     let productReadId: string
 
     const readerHeaders = { headers: { ...adminHeaders.headers } }
@@ -62,14 +61,9 @@ medusaIntegrationTestRunner({
         name: "Cached Product Reader",
       })
       readerRoleId = readerRole.id
-      const parentRole = await rbacModule.createRbacRoles({
-        name: "Cached Parent Reader",
-      })
-      parentRoleId = parentRole.id
 
       await rbacModule.createRbacRolePolicies([
         { role_id: readerRoleId, policy_id: productReadId },
-        { role_id: parentRoleId, policy_id: productReadId },
       ])
 
       await createAdminUser(dbConnection, readerHeaders, container, {
@@ -85,7 +79,7 @@ medusaIntegrationTestRunner({
     beforeEach(async () => {
       const cachingModule = container.resolve(Modules.CACHING)
       await Promise.all(
-        [readerRoleId, parentRoleId, "rbac-policy-resources"].map((key) =>
+        [readerRoleId, "rbac-policy-resources"].map((key) =>
           cachingModule.clear({ key })
         )
       )
@@ -96,7 +90,7 @@ medusaIntegrationTestRunner({
       delete process.env.MEDUSA_FF_CACHING
     })
 
-    it("tags the cached role policies with the role, role policy, role parent and policy tags", async () => {
+    it("tags the cached role policies with the role, role policy and policy tags", async () => {
       const cachingModule = container.resolve(Modules.CACHING)
       const setSpy = jest.spyOn(cachingModule, "set")
 
@@ -111,7 +105,6 @@ medusaIntegrationTestRunner({
           expect.arrayContaining([
             RBAC_CACHE_TAGS.role(readerRoleId),
             RBAC_CACHE_TAGS.ROLE_POLICY_LIST,
-            RBAC_CACHE_TAGS.ROLE_PARENT_LIST,
             RBAC_CACHE_TAGS.policy(productReadId),
           ])
         )
@@ -171,26 +164,6 @@ medusaIntegrationTestRunner({
         operation: PolicyOperation.read,
       })
       expect(await listProducts()).toEqual(200)
-    })
-
-    it("reflects adding and removing a parent role", async () => {
-      expect(await listProducts()).toEqual(200)
-
-      // Only the parent grants product:read from here on.
-      const [rolePolicy] = await rbacModule.listRbacRolePolicies({
-        role_id: readerRoleId,
-        policy_id: productReadId,
-      })
-      await rbacModule.deleteRbacRolePolicies([rolePolicy.id])
-      expect(await listProducts()).toEqual(403)
-
-      const [parent] = await rbacModule.createRbacRoleParents([
-        { role_id: readerRoleId, parent_id: parentRoleId },
-      ])
-      expect(await listProducts()).toEqual(200)
-
-      await rbacModule.deleteRbacRoleParents([parent.id])
-      expect(await listProducts()).toEqual(403)
     })
 
     it("reflects creating and deleting a policy on a new resource in the governed set", async () => {

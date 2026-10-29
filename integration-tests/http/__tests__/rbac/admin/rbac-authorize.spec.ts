@@ -230,16 +230,16 @@ medusaIntegrationTestRunner({
         const rbacModule = container.resolve(Modules.RBAC)
 
         expect(
-          await rbacModule.retrieveActorAutzContextConfig("api-key")
+          await rbacModule.retrieveActorAuthzContextConfig("api-key")
         ).toEqual({
           actor_entity: "api_key",
           grantees: [{ entity: "user", path: "created_by" }],
         })
-        expect(await rbacModule.retrieveActorAutzContextConfig("user")).toEqual(
-          {
-            grantees: [{ entity: "user", path: "id" }],
-          }
-        )
+        expect(
+          await rbacModule.retrieveActorAuthzContextConfig("user")
+        ).toEqual({
+          grantees: [{ entity: "user", path: "id" }],
+        })
       })
 
       it("acts with the roles of the user that created the key", async () => {
