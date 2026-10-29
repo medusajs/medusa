@@ -59,7 +59,7 @@
     "stack-trace": "^1.0.0",
     "ulid": "^2.3.0",
     "winston": "^3.9.0",
-    "yargs": "^17.7.2"
+    "yargs": "^18.2.0"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
 }

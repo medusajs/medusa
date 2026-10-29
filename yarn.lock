@@ -3538,7 +3538,7 @@ __metadata:
     stack-trace: ^1.0.0
     ulid: ^2.3.0
     winston: ^3.9.0
-    yargs: ^17.7.2
+    yargs: ^18.2.0
   bin:
     medusa: cli.js
   languageName: unknown
@@ -9147,16 +9147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:^15.0.15":
-  version: 15.0.20
-  resolution: "@types/yargs@npm:15.0.20"
-  dependencies:
-    "@types/yargs-parser": "*"
-  checksum: 7578e333b8e3e60e96950fc3d90f75afa5f6612cbaa309813848a5bf198fd39bd6bf8d25f8fde7106c614686e24fd409403cc22166f5571c9fc1148fe147c0f5
-  languageName: node
-  linkType: hard
-
-"@types/yargs@npm:^17.0.33, @types/yargs@npm:^17.0.8":
+"@types/yargs@npm:^17.0.33, @types/yargs@npm:^17.0.35, @types/yargs@npm:^17.0.8":
   version: 17.0.35
   resolution: "@types/yargs@npm:17.0.35"
   dependencies:
@@ -19634,7 +19625,7 @@ __metadata:
     "@types/react": ^18.3.2
     "@types/react-dom": ^18.2.25
     "@types/wait-on": ^5.3.1
-    "@types/yargs": ^15.0.15
+    "@types/yargs": ^17.0.35
     "@typescript-eslint/eslint-plugin": ^8.72.0
     "@typescript-eslint/parser": ^8.72.0
     "@typescript-eslint/rule-tester": ^8.72.0
