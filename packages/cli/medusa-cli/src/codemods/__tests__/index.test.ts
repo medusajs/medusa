@@ -1,9 +1,6 @@
 import { describe, expect, it } from "@jest/globals"
 import { getCodemod, listCodemods } from "../index"
 
-jest.mock("ora", () => jest.fn())
-jest.mock("stack-trace", () => ({ parse: jest.fn(() => []) }))
-
 describe("Codemod dispatcher", () => {
   describe("listCodemods", () => {
     it("should return array of available codemod names", () => {

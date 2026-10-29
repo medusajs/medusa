@@ -1,12 +1,28 @@
 import { track } from "@medusajs/telemetry"
-// @ts-ignore
-import ora from "ora"
-// @ts-ignore
-import { parse as parseStackTrace } from "stack-trace"
 import { ulid } from "ulid"
 import { inspect } from "util"
 import winston from "winston"
 import { panicHandler } from "./panic-handler"
+
+// ora and stack-trace are ESM-only. This logger is loaded by @medusajs/framework,
+// including in Jest (which can't load ESM from node_modules), so both are optional.
+function loadOra(): ActivityLogger | undefined {
+  try {
+    return require("ora").default
+  } catch {
+    return undefined
+  }
+}
+
+function parseStackTrace(error: Error): unknown[] {
+  try {
+    return require("stack-trace").parse(error)
+  } catch {
+    return []
+  }
+}
+
+type ActivityLogger = (text: string) => { start(): unknown }
 
 const LOG_LEVEL = process.env.LOG_LEVEL || "http"
 const LOG_FILE = process.env.LOG_FILE || ""
@@ -55,7 +71,7 @@ const loggerInstance = winston.createLogger({
 export class Reporter {
   protected activities_: Record<string, any>
   protected loggerInstance_: winston.Logger
-  protected ora_: typeof ora
+  protected ora_?: ActivityLogger
 
   constructor({ logger, activityLogger }) {
     this.activities_ = {}
@@ -116,7 +132,7 @@ export class Reporter {
    */
   activity(message: string, config: any = {}) {
     const id = ulid()
-    if (IS_DEV && this.shouldLog("info")) {
+    if (IS_DEV && this.ora_ && this.shouldLog("info")) {
       const activity = this.ora_(message).start()
 
       this.activities_[id] = {
@@ -389,7 +405,7 @@ export class Reporter {
 
 const logger = new Reporter({
   logger: loggerInstance,
-  activityLogger: ora,
+  activityLogger: loadOra(),
 })
 
 export default logger
