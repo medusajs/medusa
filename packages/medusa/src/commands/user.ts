@@ -1,5 +1,9 @@
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  RBAC_SUPER_ADMIN_ROLE_ID,
+} from "@medusajs/framework/utils"
 import { track } from "@medusajs/telemetry"
 import express from "express"
 import loaders from "../loaders"
@@ -36,7 +40,7 @@ export default async function ({
     if (rbacEnabled) {
       const rbacService = container.resolve(Modules.RBAC)
       const superAdminRoles = await rbacService.listRbacRoles({
-        id: "role_super_admin",
+        id: RBAC_SUPER_ADMIN_ROLE_ID,
       })
 
       if (superAdminRoles.length > 0) {

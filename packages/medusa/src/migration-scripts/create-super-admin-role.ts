@@ -16,6 +16,7 @@ import {
   ContainerRegistrationKeys,
   defineFileConfig,
   Modules,
+  RBAC_SUPER_ADMIN_ROLE_ID,
 } from "@medusajs/framework/utils"
 
 interface User {
@@ -52,7 +53,7 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
     let superAdminRole: any
     try {
       const existingRoles = await rbacModuleService.listRbacRoles({
-        id: "role_super_admin",
+        id: RBAC_SUPER_ADMIN_ROLE_ID,
       })
 
       if (existingRoles.length) {
