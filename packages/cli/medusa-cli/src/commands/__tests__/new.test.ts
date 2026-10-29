@@ -7,6 +7,7 @@ jest.mock("@medusajs/deps/pg", () => ({
 
 jest.mock("@medusajs/telemetry", () => ({ track: jest.fn() }))
 jest.mock("execa", () => ({ execa: jest.fn() }))
+jest.mock("inquirer", () => ({ prompt: jest.fn() }))
 jest.mock("../../util/package-manager", () => ({
   getPackageManager: jest.fn(() => "pnpm"),
 }))

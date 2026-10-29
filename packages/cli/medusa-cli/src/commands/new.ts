@@ -160,7 +160,7 @@ const interactiveDbCreds = async (dbName, dbCreds = {}) => {
     const result = await inquirer
       .prompt([
         {
-          type: "list",
+          type: "select",
           name: "continueWithDefault",
           message: `
 
