@@ -154,6 +154,18 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["DELETE"],
+    matcher: "/admin/inventory-items/:id",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.delete,
+        },
+      ]),
+    ],
+  },
+  {
     method: ["GET"],
     matcher: "/admin/inventory-items/:id/location-levels",
     middlewares: [

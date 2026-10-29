@@ -104,6 +104,18 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["DELETE"],
+    matcher: "/admin/price-lists/:id",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.price_list,
+          operation: PolicyOperation.delete,
+        },
+      ]),
+    ],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/price-lists/:id/products",
     middlewares: [

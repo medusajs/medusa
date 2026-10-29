@@ -32,7 +32,8 @@ export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/translations/settings/*",
+    // Match the settings route itself and everything below it.
+    matcher: /^\/admin\/translations\/settings(\/|$)/,
     middlewares: [
       authorize([
         {

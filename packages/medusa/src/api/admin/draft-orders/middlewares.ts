@@ -225,4 +225,88 @@ export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformBody(AdminUpdateDraftOrderActionShippingMethod),
     ],
   },
+  {
+    method: ["POST"],
+    matcher: "/admin/draft-orders/:id/edit",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.order,
+          operation: PolicyOperation.update,
+        },
+      ]),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/draft-orders/:id/edit",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.order,
+          operation: PolicyOperation.update,
+        },
+      ]),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/draft-orders/:id/edit/confirm",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.order,
+          operation: PolicyOperation.update,
+        },
+      ]),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/draft-orders/:id/edit/request",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.order,
+          operation: PolicyOperation.update,
+        },
+      ]),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/draft-orders/:id/edit/items/:action_id",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.order,
+          operation: PolicyOperation.update,
+        },
+      ]),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/draft-orders/:id/edit/shipping-methods/method/:method_id",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.order,
+          operation: PolicyOperation.update,
+        },
+      ]),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/draft-orders/:id/edit/shipping-methods/:action_id",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.order,
+          operation: PolicyOperation.update,
+        },
+      ]),
+    ],
+  },
 ]
