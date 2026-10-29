@@ -171,7 +171,7 @@ export const SelectFilter = ({
                   return (
                     <Command.Item
                       key={String(option.value)}
-                      className="txt-compact-small relative flex cursor-pointer select-none items-center gap-x-2 rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-none transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed aria-selected:bg-ui-bg-base-pressed data-[disabled]:pointer-events-none data-[disabled]:text-ui-fg-disabled"
+                      className="txt-compact-small relative flex cursor-pointer select-none items-center gap-x-2 rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-none transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed aria-selected:bg-ui-bg-base-pressed data-[disabled=true]:pointer-events-none data-[disabled=true]:text-ui-fg-disabled"
                       value={option.label}
                       onSelect={() => {
                         handleSelect(option.value)
