@@ -3626,7 +3626,7 @@ __metadata:
     react-helmet-async: ^3.0.0
     react-hook-form: 7.83.0
     react-i18next: 13.5.0
-    react-jwt: ^1.2.0
+    react-jwt: ^2.1.1
     react-router-dom: 7.18.2
     typescript: 5.9.3
     zod: 4.6.6
@@ -13615,7 +13615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@npm:^2.3.2, fsevents@npm:~2.3.2, fsevents@npm:~2.3.3":
+"fsevents@npm:^2.3.2, fsevents@npm:^2.3.3, fsevents@npm:~2.3.2, fsevents@npm:~2.3.3":
   version: 2.3.3
   resolution: "fsevents@npm:2.3.3"
   dependencies:
@@ -13625,7 +13625,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.3#~builtin<compat/fsevents>":
+"fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@^2.3.3#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.3#~builtin<compat/fsevents>":
   version: 2.3.3
   resolution: "fsevents@patch:fsevents@npm%3A2.3.3#~builtin<compat/fsevents>::version=2.3.3&hash=18f3a7"
   dependencies:
@@ -18963,17 +18963,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-jwt@npm:^1.2.0":
-  version: 1.3.0
-  resolution: "react-jwt@npm:1.3.0"
+"react-jwt@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "react-jwt@npm:2.1.1"
   dependencies:
-    fsevents: ^2.3.2
+    fsevents: ^2.3.3
   peerDependencies:
     react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   dependenciesMeta:
     fsevents:
       optional: true
-  checksum: 3ada297846c269dcf6d1936528d00a9b4dcc9698d650ce79ca648f850952acd229cb2f8cbe98b6ed5fcc6004f7ea90e76ca581b1d49e5e90a519aae5feac1d3f
+  checksum: 60d7c8c0ea33db58dcb871a75028e24a6a40ed19d0b6dce01ceb1b5d8995e2c7af5a9a2859956a118649fe72e26365637677ff441a714bfbb750c687b26d8f83
   languageName: node
   linkType: hard
 

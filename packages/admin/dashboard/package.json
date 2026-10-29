@@ -102,7 +102,7 @@
     "react-helmet-async": "^3.0.0",
     "react-hook-form": "7.83.0",
     "react-i18next": "13.5.0",
-    "react-jwt": "^1.2.0",
+    "react-jwt": "^2.1.1",
     "react-router-dom": "7.18.2",
     "zod": "4.6.6"
   },
