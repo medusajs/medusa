@@ -454,7 +454,7 @@ export class RbacRole {
     body: HttpTypes.AdminAddRolePolicies,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminRbacPolicyListResponse>(
+    return await this.client.fetch<HttpTypes.AdminRbacRolePoliciesResponse>(
       `/rbac/roles/${roleId}/policies`,
       {
         method: "POST",
@@ -484,7 +484,7 @@ export class RbacRole {
     policyId: string,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminRbacPolicyDeleteResponse>(
+    return await this.client.fetch<HttpTypes.AdminRbacRolePolicyDeleteResponse>(
       `/rbac/roles/${roleId}/policies/${policyId}`,
       {
         method: "DELETE",

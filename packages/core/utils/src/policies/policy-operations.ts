@@ -27,7 +27,6 @@ export const RBAC_CACHE_TAGS = {
   policy: (policyId: string) => `RbacPolicy:${policyId}`,
   POLICY_LIST: "RbacPolicy:list:*",
   ROLE_POLICY_LIST: "RbacRolePolicy:list:*",
-  ROLE_PARENT_LIST: "RbacRoleParent:list:*",
 } as const
 
 /**

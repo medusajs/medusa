@@ -12,7 +12,7 @@ import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 
 const USERS_QUERY_KEY = "users" as const
-const usersQueryKeys = {
+export const usersQueryKeys = {
   ...queryKeysFactory(USERS_QUERY_KEY),
   me: (query?: HttpTypes.AdminUserParams) =>
     [USERS_QUERY_KEY, "me", query ? { query } : undefined].filter((k) => !!k),

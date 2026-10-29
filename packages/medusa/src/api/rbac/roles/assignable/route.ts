@@ -23,7 +23,7 @@ export const GET = async (
     undefined,
     HttpTypes.AdminRbacRoleListParams & { scope?: string; scope_id?: string }
   >,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacAssignableRolesListResponse>
 ) => {
   const { scope, scope_id, ...filters } = req.filterableFields
 

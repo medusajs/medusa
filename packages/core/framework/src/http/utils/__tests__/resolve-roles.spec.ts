@@ -28,7 +28,7 @@ const createContainer = ({
     resolve: jest.fn((key: string) => {
       if (key === Modules.RBAC) {
         return {
-          retrieveActorAutzContextConfig: jest
+          retrieveActorAuthzContextConfig: jest
             .fn()
             .mockResolvedValue(authzConfig),
           listRbacRoleAssignments,

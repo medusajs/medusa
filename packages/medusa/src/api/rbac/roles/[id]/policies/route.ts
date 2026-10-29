@@ -3,6 +3,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
@@ -16,7 +17,7 @@ import { AdminAddRolePoliciesType } from "../../validators"
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacPolicyListResponse>
 ) => {
   const roleId = req.params.id
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
@@ -41,7 +42,7 @@ export const GET = async (
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminAddRolePoliciesType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRolePoliciesResponse>
 ) => {
   const roleId = req.params.id
   const { policies } = req.validatedBody

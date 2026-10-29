@@ -6,6 +6,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
@@ -21,7 +22,7 @@ import { AdminUpdateRbacRoleType } from "../validators"
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRoleResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const { data: roles } = await query.graph({
@@ -47,7 +48,7 @@ export const GET = async (
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateRbacRoleType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRoleResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const { data: existing } = await query.graph({
@@ -89,7 +90,7 @@ export const POST = async (
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRoleDeleteResponse>
 ) => {
   const id = req.params.id
 

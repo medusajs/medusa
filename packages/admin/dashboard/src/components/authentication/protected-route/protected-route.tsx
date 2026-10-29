@@ -1,7 +1,10 @@
 import { Spinner } from "@medusajs/icons"
 import { useMemo } from "react"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
-import { RBAC_MODULE_KEY, useIsModuleInstalled } from "../../../hooks/api/modules"
+import {
+  RBAC_MODULE_KEY,
+  useIsModuleInstalled,
+} from "../../../hooks/api/modules"
 import { useMePermissions } from "../../../hooks/api/rbac-roles"
 import { useMe } from "../../../hooks/api/users"
 import type { Permission, ActorPolicy } from "../../../lib/permissions"
@@ -15,11 +18,15 @@ export const ProtectedRoute = () => {
     useIsModuleInstalled(RBAC_MODULE_KEY)
 
   const { user, isLoading: isLoadingUser } = useMe()
-  const { data: permissionsResponse, isLoading: isLoadingPermissions } =
-    useMePermissions({
-      // Don't fetch permissions until we know the user is authenticated.
-      enabled: !!user && isRbacEnabled,
-    })
+  const {
+    data: permissionsResponse,
+    isLoading: isLoadingPermissions,
+    isError: isPermissionsError,
+    error: permissionsError,
+  } = useMePermissions({
+    // Don't fetch permissions until we know the user is authenticated.
+    enabled: !!user && isRbacEnabled,
+  })
 
   const policy: ActorPolicy | null = useMemo(() => {
     if (!permissionsResponse) {
@@ -43,6 +50,10 @@ export const ProtectedRoute = () => {
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />
+  }
+
+  if (isPermissionsError) {
+    throw permissionsError
   }
 
   return (

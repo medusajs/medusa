@@ -3,6 +3,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
@@ -16,7 +17,7 @@ import { AdminCreateRbacRoleType } from "./validators"
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRoleListResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
@@ -40,7 +41,7 @@ export const GET = async (
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateRbacRoleType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRoleResponse>
 ) => {
   const input = [req.validatedBody]
 

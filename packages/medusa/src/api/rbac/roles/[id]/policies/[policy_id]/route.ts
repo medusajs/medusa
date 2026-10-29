@@ -3,6 +3,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
@@ -19,7 +20,7 @@ import {
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRolePolicyDeleteResponse>
 ) => {
   const { policy_id, id: role_id } = req.params
 

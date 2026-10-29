@@ -27,7 +27,7 @@ export const GET = async (
     undefined,
     HttpTypes.AdminRbacRoleUserListParams
   >,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRoleUserListResponse>
 ) => {
   const roleId = req.params.id
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
@@ -72,7 +72,7 @@ export const GET = async (
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminAssignRoleUsersType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRoleUsersResponse>
 ) => {
   const roleId = req.params.id
   const { users } = req.validatedBody
@@ -138,7 +138,7 @@ export const POST = async (
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest<AdminRemoveRoleUsersType>,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminRbacRoleUsersDeleteResponse>
 ) => {
   const roleId = req.params.id
   const { users } = req.validatedBody

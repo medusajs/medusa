@@ -38,6 +38,15 @@ export interface AdminRbacPolicyListResponse extends PaginatedResponse<{
 
 export interface AdminRbacPolicyDeleteResponse extends DeleteResponse<"rbac_policy"> {}
 
+export interface AdminRbacRolePoliciesResponse {
+  /**
+   * The policies assigned to the role.
+   */
+  policies: AdminRbacPolicy[]
+}
+
+export interface AdminRbacRolePolicyDeleteResponse extends DeleteResponse<"rbac_role_policy"> {}
+
 export interface AdminRbacRoleUserListResponse extends PaginatedResponse<{
   /**
    * The list of users.

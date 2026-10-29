@@ -21,9 +21,8 @@ export const resolveRoles = async ({
 
   const { actor_type, actor_id } = authContext
 
-  const authzConfig = await rbacModule.retrieveActorAutzContextConfig(
-    actor_type
-  )
+  const authzConfig =
+    await rbacModule.retrieveActorAuthzContextConfig(actor_type)
 
   if (!authzConfig) {
     return []
