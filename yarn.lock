@@ -3608,7 +3608,7 @@ __metadata:
     bignumber.js: ^9.1.2
     cmdk: ^1.1.1
     copy-to-clipboard: ^4.0.2
-    date-fns: ^3.6.0
+    date-fns: ^4.4.0
     eslint: ^9.39.5
     i18next: 23.7.11
     i18next-browser-languagedetector: 7.2.0
@@ -3673,7 +3673,7 @@ __metadata:
     "@tanstack/react-query": 5.64.2
     "@uiw/react-json-view": ^2.0.0-alpha.17
     cross-env: ^10.1.0
-    date-fns: ^3.6.0
+    date-fns: ^4.4.0
     lodash.debounce: ^4.0.8
     lodash.isequal: ^4.5.0
     match-sorter: ^6.3.4
@@ -11842,10 +11842,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "date-fns@npm:3.6.0"
-  checksum: 0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
+"date-fns@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "date-fns@npm:4.4.0"
+  checksum: 988f0a13db183f5dfc85c36bbb6847a9c135a9225888bbea4005876ec15539a8613c21a07370a4e7ea543918d5a1cafb423c528b42cdbbde5fdfddb178126b21
   languageName: node
   linkType: hard
 

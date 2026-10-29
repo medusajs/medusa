@@ -85,7 +85,7 @@
     "bignumber.js": "^9.1.2",
     "cmdk": "^1.1.1",
     "copy-to-clipboard": "^4.0.2",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.4.0",
     "i18next": "23.7.11",
     "i18next-browser-languagedetector": "7.2.0",
     "lodash.debounce": "^4.0.8",
