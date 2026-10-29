@@ -2309,35 +2309,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:5.5.7":
-  version: 5.5.7
-  resolution: "@hookform/resolvers@npm:5.5.7"
+"@hookform/resolvers@npm:6.0.0":
+  version: 6.0.0
+  resolution: "@hookform/resolvers@npm:6.0.0"
   dependencies:
     "@standard-schema/utils": ^0.3.0
   peerDependencies:
     "@sinclair/typebox": ">=0.25.24"
     "@standard-schema/spec": ^1.0.0
     "@typeschema/main": ">=0.13.7"
-    "@vinejs/vine": ^2.0.0 || ^3.0.0
+    "@vinejs/vine": ^2.0.0 || ^3.0.0 || ^4.0.0
     ajv: ^8.12.0
     ajv-errors: ^3.0.0
     ajv-formats: ^2.1.1
     arktype: ^2.0.0
-    ata-validator: ^0.7.0
+    ata-validator: ^1.23.0
     class-transformer: ">=0.4.0"
     class-validator: ">=0.12.0"
     computed-types: ^1.0.0
-    effect: ^3.10.3
+    effect: ^4.0.0
     fluentvalidation-ts: ^3.0.0
     fp-ts: ^2.7.0
     io-ts: ^2.0.0
-    joi: ^17.0.0
+    joi: ^17.0.0 || ^18.0.0
     nope-validator: ">=0.12.0"
     react-hook-form: ^7.55.0
     superstruct: ">=0.12.0"
     typanion: ^3.3.2
     valibot: ">=0.31.0 || ^1.0.0-beta.4 || ^1.0.0-rc"
-    vest: ">=3.0.0"
+    vest: ">=6.0.0"
     yup: ^1.0.0
     zod: ^3.25.0 || ^4.0.0
   peerDependenciesMeta:
@@ -2389,7 +2389,7 @@ __metadata:
       optional: true
     zod:
       optional: true
-  checksum: 412663923df939084e6370dcc3107910b12294559799197bebbc57d560ec6f27bd24e14a4fb7a498ee6b01b60d5c5e1b20cafbfe4e9e7ee6879e1479d51f5da0
+  checksum: 97ca7f437ae6ab810f9fa5189de3291a1a9542e5be5d89731a95db0a26a98554857f892c450065cbc033ee0b9327da61a044343dad9f135c405dbbd6e50b6543
   languageName: node
   linkType: hard
 
@@ -3589,7 +3589,7 @@ __metadata:
     "@dnd-kit/sortable": ^10.0.0
     "@dnd-kit/utilities": ^3.2.2
     "@hookform/error-message": ^2.0.1
-    "@hookform/resolvers": 5.5.7
+    "@hookform/resolvers": 6.0.0
     "@medusajs/admin-shared": 2.22.1
     "@medusajs/admin-vite-plugin": 2.22.1
     "@medusajs/icons": 2.22.1
@@ -3659,7 +3659,7 @@ __metadata:
   dependencies:
     "@ariakit/react": ^0.4.15
     "@babel/runtime": ^7.29.10
-    "@hookform/resolvers": 5.5.7
+    "@hookform/resolvers": 6.0.0
     "@medusajs/admin-sdk": 2.22.1
     "@medusajs/cli": 2.22.1
     "@medusajs/dashboard": 2.22.1

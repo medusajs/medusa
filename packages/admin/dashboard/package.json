@@ -71,7 +71,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/error-message": "^2.0.1",
-    "@hookform/resolvers": "5.5.7",
+    "@hookform/resolvers": "6.0.0",
     "@medusajs/admin-shared": "2.22.1",
     "@medusajs/icons": "2.22.1",
     "@medusajs/js-sdk": "2.22.1",
