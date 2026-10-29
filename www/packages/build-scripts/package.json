@@ -28,7 +28,6 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@readme/openapi-parser": "^3.0.1",
     "docs-utils": "*",
     "fdir": "^6.4.3",
     "pluralize": "^8.0.0",

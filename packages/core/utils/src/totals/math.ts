@@ -20,6 +20,8 @@ export class MathBN {
       num_ = num
     } else if (isDefined((num as BigNumberRawValue)?.value)) {
       num_ = new BigNumberJS((num as BigNumberRawValue).value)
+    } else if (typeof num === "object") {
+      num_ = new BigNumberJS(num.toString())
     } else {
       num_ = new BigNumberJS(num as BigNumberJS | number)
     }

@@ -29,7 +29,7 @@
     "prettier": "^3.3.3",
     "tailwindcss": "3.3.3",
     "tsconfig": "*",
-    "turbo": "latest"
+    "turbo": "^2.11.10"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.9",
@@ -52,6 +52,11 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
   },
+  "resolutions": {
+    "@node-minify/core/glob": "^10.5.0",
+    "instantsearch.js/qs": "^6.14.2"
+  },
+  "packageManager": "yarn@3.2.1",
   "engines": {
     "node": ">=20.9.0"
   }
