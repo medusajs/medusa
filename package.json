@@ -147,8 +147,6 @@
     "@changesets/cli": "^2.31.1"
   },
   "resolutions": {
-    "@redocly/cli/react": "^17.0.1",
-    "@redocly/cli/react-dom": "^17.0.1",
     "lodash": "^4.18.1",
     "pg": "8.23.1",
     "@types/react": "^18.3.2",
