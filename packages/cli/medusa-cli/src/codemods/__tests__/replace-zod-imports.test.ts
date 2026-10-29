@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it } from "@jest/globals"
 import replaceZodImports from "../replace-zod-imports"
 
 jest.mock("ora", () => jest.fn())
+jest.mock("stack-trace", () => ({ parse: jest.fn(() => []) }))
 
 describe("replace-zod-imports codemod", () => {
   const tempDir = path.join(__dirname, "temp-test-codemod")

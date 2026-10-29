@@ -3,6 +3,7 @@ import Transport from "winston-transport"
 import { Reporter } from "../"
 
 jest.mock("ora", () => jest.fn())
+jest.mock("stack-trace", () => ({ parse: jest.fn(() => []) }))
 
 describe(`Reporter`, () => {
   const winstonMock = {

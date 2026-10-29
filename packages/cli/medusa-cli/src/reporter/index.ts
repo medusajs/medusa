@@ -1,7 +1,8 @@
 import { track } from "@medusajs/telemetry"
 // @ts-ignore
 import ora from "ora"
-import stackTrace from "stack-trace"
+// @ts-ignore
+import { parse as parseStackTrace } from "stack-trace"
 import { ulid } from "ulid"
 import { inspect } from "util"
 import winston from "winston"
@@ -196,7 +197,7 @@ export class Reporter {
       toLog["message"] = toLog.message
         ? `${toLog.message}: ${errorAsObject.message}`
         : errorAsObject.message
-      toLog["stack"] = stackTrace.parse(errorAsObject)
+      toLog["stack"] = parseStackTrace(errorAsObject)
       /**
        * Winston only logs the error properties when they are
        * string values. Hence we will have to self convert

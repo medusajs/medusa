@@ -3535,7 +3535,7 @@ __metadata:
     ora: ^9.4.1
     prompts: ^2.4.2
     resolve-cwd: ^3.0.0
-    stack-trace: ^0.0.10
+    stack-trace: ^1.0.0
     ulid: ^2.3.0
     winston: ^3.9.0
     yargs: ^17.7.2
@@ -20387,10 +20387,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stack-trace@npm:0.0.x, stack-trace@npm:^0.0.10":
+"stack-trace@npm:0.0.x":
   version: 0.0.10
   resolution: "stack-trace@npm:0.0.10"
   checksum: 9ff3dabfad4049b635a85456f927a075c9d0c210e3ea336412d18220b2a86cbb9b13ec46d6c37b70a302a4ea4d49e30e5d4944dd60ae784073f1cde778ac8f4b
+  languageName: node
+  linkType: hard
+
+"stack-trace@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "stack-trace@npm:1.0.0"
+  checksum: 630e0a95137eeed8051b5359e0978baf86ae6b12f9ad8d4056398afb39c3953e39d94e104c415f4116b930527946c03df572414f289d435bf5f778490593a9de
   languageName: node
   linkType: hard
 
