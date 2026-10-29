@@ -113,7 +113,8 @@ export class ApiLoader {
       routesFinder: new RoutesFinder<RouteDescriptor>(),
       middlewares: middlewareLoader.getMiddlewares(),
       errorHandler: middlewareLoader.getErrorHandler() as
-        ErrorRequestHandler | undefined,
+        | ErrorRequestHandler
+        | undefined,
       bodyParserConfigRoutes: middlewareLoader.getBodyParserConfigRoutes(),
       additionalDataValidatorRoutes:
         middlewareLoader.getAdditionalDataValidatorRoutes(),
@@ -273,7 +274,20 @@ export class ApiLoader {
    * Creates the options for the Cors middleware
    */
   #createCorsOptions(origin: string): CorsOptions {
+    const { maxAge, exposedHeaders, allowedHeaders, methods } =
+      configManager.config.projectConfig.http.corsOptions ?? {}
+
+    const additionalOptions = Object.fromEntries(
+      Object.entries({
+        maxAge,
+        exposedHeaders,
+        allowedHeaders,
+        methods,
+      }).filter(([, value]) => value !== undefined)
+    )
+
     return {
+      ...additionalOptions,
       origin: parseCorsOrigins(origin),
       credentials: true,
       preflightContinue: false,
