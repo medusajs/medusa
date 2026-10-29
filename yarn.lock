@@ -3623,7 +3623,7 @@ __metadata:
     react-country-flag: ^3.1.0
     react-currency-input-field: ^4.0.14
     react-dom: ^18.3.1
-    react-helmet-async: ^2.0.5
+    react-helmet-async: ^3.0.0
     react-hook-form: 7.83.0
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
@@ -18909,16 +18909,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-helmet-async@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "react-helmet-async@npm:2.0.5"
+"react-helmet-async@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "react-helmet-async@npm:3.0.0"
   dependencies:
     invariant: ^2.2.4
     react-fast-compare: ^3.2.2
     shallowequal: ^1.1.0
   peerDependencies:
-    react: ^16.6.0 || ^17.0.0 || ^18.0.0
-  checksum: f390ea8bf13c2681850e5f8eb5b73d8613f407c245a5fd23e9db9b2cc14a3700dd1ce992d3966632886d1d613083294c2aeee009193f49dfa7d145d9f13ea2b0
+    react: ^16.6.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: bdbb2c1823ae20895aa1b854943d863bb7c5dd1b7888f7da9dd2fa9d02e2ccb9ebf68c7dd17edb39ad85ca714c009ee19ea82b03a2f1b79f7995657cd4bba825
   languageName: node
   linkType: hard
 
