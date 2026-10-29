@@ -56,7 +56,7 @@
     "date-fns": "^4.4.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
-    "match-sorter": "^6.3.4",
+    "match-sorter": "^8.3.0",
     "radix-ui": "1.1.2",
     "react-hook-form": "7.83.0",
     "zod": "4.6.6"

@@ -90,7 +90,7 @@
     "i18next-browser-languagedetector": "7.2.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
-    "match-sorter": "^6.3.4",
+    "match-sorter": "^8.3.0",
     "motion": "^11.15.0",
     "qrcode": "^1.5.4",
     "qs": "^6.16.1",

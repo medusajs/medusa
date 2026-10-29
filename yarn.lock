@@ -3614,7 +3614,7 @@ __metadata:
     i18next-browser-languagedetector: 7.2.0
     lodash.debounce: ^4.0.8
     lodash.isequal: ^4.5.0
-    match-sorter: ^6.3.4
+    match-sorter: ^8.3.0
     motion: ^11.15.0
     qrcode: ^1.5.4
     qs: ^6.16.1
@@ -3676,7 +3676,7 @@ __metadata:
     date-fns: ^4.4.0
     lodash.debounce: ^4.0.8
     lodash.isequal: ^4.5.0
-    match-sorter: ^6.3.4
+    match-sorter: ^8.3.0
     radix-ui: 1.1.2
     react-hook-form: 7.83.0
     zod: 4.6.6
@@ -16496,13 +16496,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"match-sorter@npm:^6.3.4":
-  version: 6.3.4
-  resolution: "match-sorter@npm:6.3.4"
+"match-sorter@npm:^8.3.0":
+  version: 8.3.0
+  resolution: "match-sorter@npm:8.3.0"
   dependencies:
     "@babel/runtime": ^7.23.8
     remove-accents: 0.5.0
-  checksum: 35d2a6b6df003c677d9ec87ecd4683657638f5bce856f43f9cf90b03e357ed2f09813ebbac759defa7e7438706936dd34dc2bfe1a18771f7d2541f14d639b4ad
+  checksum: e71a7aa75e87d356867a12f61af7cf9236806d6c58550d7b057f567ff7baa177a7b0f1311cbce528797043cd75463274db43a8139002ba708401e4a84dce1083
   languageName: node
   linkType: hard
 
