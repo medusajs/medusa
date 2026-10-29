@@ -3493,13 +3493,13 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.22.1
     "@medusajs/test-utils": 2.22.1
-    awilix: ^8.0.1
+    awilix: ^13.0.5
     fast-json-stable-stringify: ^2.1.0
     node-cache: ^5.1.2
     xxhash-wasm: ^1.1.0
   peerDependencies:
     "@medusajs/framework": 2.22.1
-    awilix: ^8.0.1
+    awilix: ^13.0.5
   languageName: unknown
   linkType: soft
 
@@ -3647,7 +3647,7 @@ __metadata:
     "@opentelemetry/resources": ^2.7.0
     "@opentelemetry/sdk-node": ^0.220.0
     "@opentelemetry/sdk-trace-node": ^2.7.0
-    awilix: ^8.0.1
+    awilix: ^13.0.5
     pg: ^8.23.1
     zod: 4.6.6
   languageName: unknown
@@ -10275,13 +10275,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"awilix@npm:^8.0.1":
-  version: 8.0.1
-  resolution: "awilix@npm:8.0.1"
+"awilix@npm:^13.0.5":
+  version: 13.0.5
+  resolution: "awilix@npm:13.0.5"
   dependencies:
-    camel-case: ^4.1.2
-    fast-glob: ^3.2.12
-  checksum: 088da738d5cc380a1637e5757d63fc70a7954ca6c168bad15a65caab96922cad34f8a461f6071cd213f81109c281d83a70a4df04b8668f5230a19c5b903fca37
+    fast-glob: ^3.3.3
+  checksum: a4f7657cec0adfbcc7506a6ee69eb617857928bff1034e218aaa26d8526a002b990c42be9cd7c8e4b26a45f830cf37c84d07c5ff0eb4e9b4721be0c09b2711c0
   languageName: node
   linkType: hard
 
@@ -13208,7 +13207,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2, fast-glob@npm:^3.3.3":
   version: 3.3.3
   resolution: "fast-glob@npm:3.3.3"
   dependencies:
@@ -19664,7 +19663,7 @@ __metadata:
     ajv: ^8.18.0
     autocannon: ^8.0.0
     autoprefixer: ^10.6.1
-    awilix: ^8.0.1
+    awilix: ^13.0.5
     axios: ^1.20.0
     configstore: ^8.0.0
     cross-env: ^10.1.0
