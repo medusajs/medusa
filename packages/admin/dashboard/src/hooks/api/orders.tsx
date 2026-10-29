@@ -74,7 +74,12 @@ export const useUpdateOrder = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminUpdateOrder) =>
       sdk.admin.order.update(id, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (
+      data: any,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.detail(id),
       })
@@ -88,7 +93,7 @@ export const useUpdateOrder = (
       //   queryKey: ordersQueryKeys.lists(),
       // })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -214,7 +219,12 @@ export const useCreateOrderFulfillment = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminCreateOrderFulfillment) =>
       sdk.admin.order.createFulfillment(orderId, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (
+      data: any,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.all,
       })
@@ -231,7 +241,7 @@ export const useCreateOrderFulfillment = (
         queryKey: inventoryItemsQueryKeys.details(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -245,7 +255,12 @@ export const useCancelOrderFulfillment = (
   return useMutation({
     mutationFn: (payload: { no_notification?: boolean }) =>
       sdk.admin.order.cancelFulfillment(orderId, fulfillmentId, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (
+      data: any,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.all,
       })
@@ -262,7 +277,7 @@ export const useCancelOrderFulfillment = (
         queryKey: inventoryItemsQueryKeys.details(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -280,7 +295,12 @@ export const useCreateOrderShipment = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminCreateOrderShipment) =>
       sdk.admin.order.createShipment(orderId, fulfillmentId, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (
+      data: any,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.all,
       })
@@ -289,7 +309,7 @@ export const useCreateOrderShipment = (
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -307,7 +327,12 @@ export const useMarkOrderFulfillmentAsDelivered = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminMarkOrderFulfillmentAsDelivered) =>
       sdk.admin.order.markAsDelivered(orderId, fulfillmentId, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (
+      data: any,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.all,
       })
@@ -316,7 +341,7 @@ export const useMarkOrderFulfillmentAsDelivered = (
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -328,7 +353,12 @@ export const useCancelOrder = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.order.cancel(orderId),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (
+      data: any,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.detail(orderId),
       })
@@ -337,7 +367,7 @@ export const useCancelOrder = (
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -354,7 +384,12 @@ export const useRequestTransferOrder = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminRequestOrderTransfer) =>
       sdk.admin.order.requestTransfer(orderId, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (
+      data: any,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
@@ -363,7 +398,7 @@ export const useRequestTransferOrder = (
         queryKey: ordersQueryKeys.changes(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -380,7 +415,12 @@ export const useTransferOrderToGuest = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminTransferOrderToGuest) =>
       sdk.admin.order.transferToGuest(orderId, payload),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (
+      data: any,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
@@ -393,7 +433,7 @@ export const useTransferOrderToGuest = (
         queryKey: ordersQueryKeys.detail(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -405,7 +445,12 @@ export const useCancelOrderTransfer = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.order.cancelTransfer(orderId),
-    onSuccess: (data: any, variables: any, context: any) => {
+    onSuccess: (
+      data: any,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
@@ -414,7 +459,7 @@ export const useCancelOrderTransfer = (
         queryKey: ordersQueryKeys.changes(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -430,7 +475,7 @@ export const useCreateOrderCreditLine = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.order.createCreditLine(orderId, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
@@ -439,7 +484,7 @@ export const useCreateOrderCreditLine = (
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -457,7 +502,7 @@ export const useAuthorizePaymentSession = (
   return useMutation({
     mutationFn: () =>
       sdk.admin.order.authorizePaymentSession(orderId, sessionId),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.detail(orderId),
       })
@@ -466,7 +511,7 @@ export const useAuthorizePaymentSession = (
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -484,7 +529,7 @@ export const useUpdateOrderChange = (
     mutationFn: (
       payload: { carry_over_promotions?: boolean; internal_note?: string | null }
     ) => sdk.admin.order.updateOrderChange(orderChangeId, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       const orderId = data.order_change.order_id
 
       queryClient.invalidateQueries({
@@ -499,7 +544,7 @@ export const useUpdateOrderChange = (
         queryKey: ordersQueryKeys.changes(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -515,8 +560,8 @@ export const useExportOrders = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.order.export(query),
-    onSuccess: (data, variables, context) => {
-      options?.onSuccess?.(data, variables, context)
+    onSuccess: (data, variables, onMutateResult, context) => {
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

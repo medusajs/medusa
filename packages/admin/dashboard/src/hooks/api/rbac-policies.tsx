@@ -77,12 +77,12 @@ export const useCreateRbacPolicy = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.rbacPolicy.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacPoliciesQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -98,7 +98,7 @@ export const useUpdateRbacPolicy = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.rbacPolicy.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacPoliciesQueryKeys.lists(),
       })
@@ -106,7 +106,7 @@ export const useUpdateRbacPolicy = (
         queryKey: rbacPoliciesQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -122,7 +122,7 @@ export const useDeleteRbacPolicy = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.rbacPolicy.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacPoliciesQueryKeys.lists(),
       })
@@ -132,7 +132,7 @@ export const useDeleteRbacPolicy = (
       // Cross-invalidate roles since they may reference this policy
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.all })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

@@ -249,7 +249,6 @@ const DataTableFilter = ({ id, filter, isNew = false, onUpdate, onRemove }: Data
         align="start"
         sideOffset={8}
         collisionPadding={16}
-        hideWhenDetached
         className="bg-ui-bg-component p-0 outline-none"
         onOpenAutoFocus={(e) => {
           if (isNew) {

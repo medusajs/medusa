@@ -44,12 +44,12 @@ export const useReindexSearchIndex = (
   return useMutation({
     mutationFn: ({ id, body }) => sdk.admin.search.reindex(id, body),
     ...options,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: searchIndexesQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
@@ -64,12 +64,12 @@ export const useDeleteSearchIndex = (
   return useMutation({
     mutationFn: (id) => sdk.admin.search.deleteIndex(id),
     ...options,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: searchIndexesQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }

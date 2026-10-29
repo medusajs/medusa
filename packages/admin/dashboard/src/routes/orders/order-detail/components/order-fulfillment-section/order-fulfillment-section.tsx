@@ -311,14 +311,17 @@ const Fulfillment = ({
     })
 
     if (res) {
-      await mutateAsync(undefined, {
-        onSuccess: () => {
-          toast.success(t("orders.fulfillment.toast.canceled"))
-        },
-        onError: (e) => {
-          toast.error(e.message)
-        },
-      })
+      await mutateAsync(
+        {},
+        {
+          onSuccess: () => {
+            toast.success(t("orders.fulfillment.toast.canceled"))
+          },
+          onError: (e) => {
+            toast.error(e.message)
+          },
+        }
+      )
     }
   }
 

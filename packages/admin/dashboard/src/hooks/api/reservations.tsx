@@ -74,7 +74,7 @@ export const useUpdateReservationItem = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminUpdateReservation) =>
       sdk.admin.reservation.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: reservationItemsQueryKeys.detail(id),
       })
@@ -87,7 +87,7 @@ export const useUpdateReservationItem = (
       queryClient.invalidateQueries({
         queryKey: inventoryItemLevelsQueryKeys.details(),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -103,7 +103,7 @@ export const useCreateReservationItem = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminCreateReservation) =>
       sdk.admin.reservation.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: reservationItemsQueryKeys.lists(),
       })
@@ -113,7 +113,7 @@ export const useCreateReservationItem = (
       queryClient.invalidateQueries({
         queryKey: inventoryItemLevelsQueryKeys.details(),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -129,7 +129,7 @@ export const useDeleteReservationItem = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.reservation.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: reservationItemsQueryKeys.lists(),
       })
@@ -142,7 +142,7 @@ export const useDeleteReservationItem = (
       queryClient.invalidateQueries({
         queryKey: inventoryItemLevelsQueryKeys.details(),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

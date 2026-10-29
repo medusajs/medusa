@@ -70,9 +70,9 @@ export const useCreateCustomer = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.customer.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -88,11 +88,11 @@ export const useUpdateCustomer = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.customer.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.detail(id) })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -108,13 +108,13 @@ export const useDeleteCustomer = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.customer.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: customersQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -131,7 +131,7 @@ export const useBatchCustomerCustomerGroups = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.customer.batchCustomerGroups(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.details(),
       })
@@ -146,7 +146,7 @@ export const useBatchCustomerCustomerGroups = (
         queryKey: customersQueryKeys.details(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -162,14 +162,14 @@ export const useCreateCustomerAddress = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.customer.createAddress(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.detail(id) })
       queryClient.invalidateQueries({
         queryKey: customerAddressesQueryKeys.list(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -187,14 +187,14 @@ export const useUpdateCustomerAddress = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.customer.updateAddress(id, addressId, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.detail(id) })
       queryClient.invalidateQueries({
         queryKey: customerAddressesQueryKeys.list(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -211,14 +211,14 @@ export const useDeleteCustomerAddress = (
   return useMutation({
     mutationFn: (addressId: string) =>
       sdk.admin.customer.deleteAddress(id, addressId),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: customersQueryKeys.detail(id) })
       queryClient.invalidateQueries({
         queryKey: customerAddressesQueryKeys.list(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -274,8 +274,8 @@ export const useExportCustomers = (
   return useMutation({
     mutationFn: ({ payload = {}, query }) =>
       sdk.admin.customer.export(payload, query),
-    onSuccess: (data, variables, context) => {
-      options?.onSuccess?.(data, variables, context)
+    onSuccess: (data, variables, onMutateResult, context) => {
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
