@@ -17,6 +17,20 @@ export const RBAC_SUPER_ADMIN_ROLE_ID = "role_super_admin"
 export const RBAC_SUPER_ADMIN_POLICY_ID = "rpol_super_admin"
 
 /**
+ * Cache tags of the RBAC permission cache. They follow the
+ * `<EntityPascal>:<id>` / `<EntityPascal>:list:*` format the caching module
+ * computes from the RBAC module's `created` / `updated` / `deleted` /
+ * `restored` events, so those events invalidate the cached entries.
+ */
+export const RBAC_CACHE_TAGS = {
+  role: (roleId: string) => `RbacRole:${roleId}`,
+  policy: (policyId: string) => `RbacPolicy:${policyId}`,
+  POLICY_LIST: "RbacPolicy:list:*",
+  ROLE_POLICY_LIST: "RbacRolePolicy:list:*",
+  ROLE_PARENT_LIST: "RbacRoleParent:list:*",
+} as const
+
+/**
  * Medusa's own operations, as values.
  */
 export const PolicyOperation = {

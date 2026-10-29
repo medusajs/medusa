@@ -145,6 +145,17 @@ const modules = {
   },
 }
 
+// The Caching Module isn't a default module, so specs
+// enabling the caching feature flag get it with the built-in memory provider.
+if (process.env.MEDUSA_FF_CACHING === "true") {
+  modules[Modules.CACHING] = {
+    resolve: "@medusajs/caching",
+    options: {
+      in_memory: { enable: true },
+    },
+  }
+}
+
 if (process.env.MEDUSA_FF_TRANSLATION === "true") {
   modules[Modules.TRANSLATION] = {
     resolve: "@medusajs/translation",

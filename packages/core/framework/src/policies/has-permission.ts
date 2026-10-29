@@ -2,7 +2,9 @@ import { MedusaContainer } from "@medusajs/types"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   ContainerRegistrationKeys,
+  deduplicate,
   Modules,
+  RBAC_CACHE_TAGS,
   useCache,
   WILDCARD,
 } from "@medusajs/utils"
@@ -217,13 +219,14 @@ async function fetchSingleRolePolicies(
 ): Promise<Map<string, Set<string>>> {
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
+  // Cleared by the caching module on the RBAC module's mutation events.
   const tags: string[] = [
-    `RbacRole:${roleId}`,
-    "RbacRoleParent:list:*",
-    "RbacRolePolicy:list:*",
+    RBAC_CACHE_TAGS.role(roleId),
+    RBAC_CACHE_TAGS.ROLE_PARENT_LIST,
+    RBAC_CACHE_TAGS.ROLE_POLICY_LIST,
   ]
 
-  return await useCache<Map<string, Set<string>>>(
+  const operationsByResource = await useCache<Record<string, string[]>>(
     async () => {
       const { data: roles } = await query.graph({
         entity: "rbac_role",
@@ -232,20 +235,18 @@ async function fetchSingleRolePolicies(
       })
 
       const role = roles[0]
-      const resourceMap = new Map<string, Set<string>>()
+      const operationsByResource: Record<string, string[]> = {}
 
       if (role?.policies && Array.isArray(role.policies)) {
         for (const policy of role.policies) {
-          if (!resourceMap.has(policy.resource)) {
-            resourceMap.set(policy.resource, new Set())
-          }
-          resourceMap.get(policy.resource)!.add(policy.operation)
+          operationsByResource[policy.resource] ??= []
+          operationsByResource[policy.resource].push(policy.operation)
 
-          tags.push(`RbacPolicy:${policy.id}`)
+          tags.push(RBAC_CACHE_TAGS.policy(policy.id))
         }
       }
 
-      return resourceMap
+      return operationsByResource
     },
     {
       container,
@@ -254,6 +255,13 @@ async function fetchSingleRolePolicies(
       enable: true,
       ttl: RBAC_CACHE_TTL,
     }
+  )
+
+  return new Map(
+    Object.entries(operationsByResource).map(([resource, operations]) => [
+      resource,
+      new Set(operations),
+    ])
   )
 }
 
@@ -270,25 +278,27 @@ export async function fetchPolicyResources(
 
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-  return await useCache<Set<string>>(
+  const resources = await useCache<string[]>(
     async () => {
       const { data: policies } = await query.graph({
         entity: "rbac_policy",
         fields: ["resource"],
       })
 
-      return new Set(
+      return deduplicate(
         (policies ?? []).map((policy) => policy.resource as string)
       )
     },
     {
       container,
       key: "rbac-policy-resources",
-      tags: ["RbacPolicy:list:*"],
+      tags: [RBAC_CACHE_TAGS.POLICY_LIST],
       enable: true,
       ttl: RBAC_CACHE_TTL,
     }
   )
+
+  return new Set(resources)
 }
 
 /**
