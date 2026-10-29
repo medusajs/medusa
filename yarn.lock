@@ -1569,7 +1569,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnd-kit/core@npm:^6.1.0":
+"@dnd-kit/core@npm:^6.3.0":
   version: 6.3.1
   resolution: "@dnd-kit/core@npm:6.3.1"
   dependencies:
@@ -1583,16 +1583,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnd-kit/sortable@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "@dnd-kit/sortable@npm:8.0.0"
+"@dnd-kit/sortable@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@dnd-kit/sortable@npm:10.0.0"
   dependencies:
     "@dnd-kit/utilities": ^3.2.2
     tslib: ^2.0.0
   peerDependencies:
-    "@dnd-kit/core": ^6.1.0
+    "@dnd-kit/core": ^6.3.0
     react: ">=16.8.0"
-  checksum: a6066c652b892c6a11320c7d8f5c18fdf723e721e8eea37f4ab657dee1ac5e7ca710ac32ce0712a57fe968bc07c13bcea5d5599d90dfdd95619e162befd4d2fb
+  checksum: 37ee48bc6789fb512dc0e4c374a96d19abe5b2b76dc34856a5883aaa96c3297891b94cc77bbc409e074dcce70967ebcb9feb40cd9abadb8716fc280b4c7f99af
   languageName: node
   linkType: hard
 
@@ -3585,8 +3585,8 @@ __metadata:
   dependencies:
     "@ariakit/react": ^0.4.15
     "@babel/runtime": ^7.29.10
-    "@dnd-kit/core": ^6.1.0
-    "@dnd-kit/sortable": ^8.0.0
+    "@dnd-kit/core": ^6.3.0
+    "@dnd-kit/sortable": ^10.0.0
     "@dnd-kit/utilities": ^3.2.2
     "@hookform/error-message": ^2.0.1
     "@hookform/resolvers": 5.5.7
@@ -4468,8 +4468,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/ui@workspace:packages/design-system/ui"
   dependencies:
-    "@dnd-kit/core": ^6.1.0
-    "@dnd-kit/sortable": ^8.0.0
+    "@dnd-kit/core": ^6.3.0
+    "@dnd-kit/sortable": ^10.0.0
     "@dnd-kit/utilities": ^3.2.2
     "@internationalized/date": ^3.12.4
     "@medusajs/icons": 2.22.1
