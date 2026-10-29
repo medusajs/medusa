@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import path from "path"
-import OpenAPIParser from "@readme/openapi-parser"
+import $RefParser from "@apidevtools/json-schema-ref-parser"
 import getPathsOfTag from "@/utils/get-paths-of-tag"
 import type { OpenAPI } from "types"
 import { withRouteErrorHandling, workerCompatibleFetch } from "docs-utils"
@@ -40,9 +40,7 @@ export const GET = withRouteErrorHandling(async (request: Request) => {
         },
         fallbackAction: async () => {
           // In local development, we can read the spec directly from the filesystem
-          return (await OpenAPIParser.parse(
-            specPath
-          )) as OpenAPI.ExpandedDocument
+          return (await $RefParser.parse(specPath)) as OpenAPI.ExpandedDocument
         },
       })
 
