@@ -7,7 +7,7 @@ import {
   when,
 } from "@medusajs/framework/workflows-sdk"
 import { UpdateRbacRoleDTO } from "@medusajs/framework/types"
-import { createRbacRolePoliciesStep, setRoleParentStep } from "../steps"
+import { createRbacRolePoliciesStep } from "../steps"
 import { updateRbacRolesStep } from "../steps/update-rbac-roles"
 import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
 
@@ -19,7 +19,6 @@ export type UpdateRbacRolesWorkflowInput = {
   actor?: string
   selector: Record<string, any>
   update: Omit<UpdateRbacRoleDTO, "id"> & {
-    parent_ids?: string[]
     policy_ids?: string[]
   }
 }
@@ -60,22 +59,6 @@ export const updateRbacRolesWorkflow = createWorkflow(
     }))
 
     const updatedRoles = updateRbacRolesStep(roleUpdateData)
-
-    const parentUpdateData = transform(
-      { input, updatedRoles },
-      ({ input, updatedRoles }) => {
-        if (!isDefined(input.update.parent_ids)) {
-          return []
-        }
-
-        return updatedRoles.map((role) => ({
-          role_id: role.id,
-          parent_ids: input.update.parent_ids || [],
-        }))
-      }
-    )
-
-    setRoleParentStep(parentUpdateData)
 
     const policiesUpdateData = transform(
       { input, updatedRoles },

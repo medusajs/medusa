@@ -5,11 +5,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import {
-  createRbacRoleParentsStep,
-  createRbacRolePoliciesStep,
-  createRbacRolesStep,
-} from "../steps"
+import { createRbacRolePoliciesStep, createRbacRolesStep } from "../steps"
 import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
 
 /**
@@ -22,7 +18,6 @@ export type CreateRbacRolesWorkflowInput = {
     name: string
     description?: string | null
     metadata?: Record<string, unknown> | null
-    parent_ids?: string[]
     policy_ids?: string[]
   }[]
 }
@@ -66,25 +61,6 @@ export const createRbacRolesWorkflow = createWorkflow(
 
     const createdRoles = createRbacRolesStep(roleData)
 
-    const parentData = transform(
-      { input, createdRoles },
-      ({ input, createdRoles }) => {
-        const parents: any[] = []
-
-        createdRoles.forEach((role, index) => {
-          const inheritedRoleIds = input.roles[index].parent_ids || []
-          inheritedRoleIds.forEach((inheritedRoleId) => {
-            parents.push({
-              role_id: role.id,
-              parent_id: inheritedRoleId,
-            })
-          })
-        })
-
-        return { role_parents: parents }
-      }
-    )
-
     const policiesData = transform(
       { input, createdRoles },
       ({ input, createdRoles }) => {
@@ -101,8 +77,6 @@ export const createRbacRolesWorkflow = createWorkflow(
         return { policies: allPolicies }
       }
     )
-
-    createRbacRoleParentsStep(parentData)
 
     createRbacRolePoliciesStep(policiesData)
 

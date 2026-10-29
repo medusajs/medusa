@@ -3,7 +3,10 @@ import {
   FilterableRbacRoleProps,
   FindConfig,
   InternalModuleDeclaration,
+  RbacPolicyDTO,
+  RbacRoleAssignmentDTO,
   RbacRoleDTO,
+  RbacRolePolicyDTO,
 } from "@medusajs/framework/types"
 import {
   deduplicate,
@@ -13,19 +16,15 @@ import {
 } from "@medusajs/framework/utils"
 import {
   AuthzContextConfig,
-  CreateRbacRoleParentDTO,
   InferEntityType,
   IRbacModuleService,
   IRbacModuleServiceOptions,
   ModulesSdkTypes,
-  RbacRoleParentDTO,
-  UpdateRbacRoleParentDTO,
 } from "@medusajs/types"
 import {
   RbacPolicy,
   RbacRole,
   RbacRoleAssignment,
-  RbacRoleParent,
   RbacRolePolicy,
 } from "@models"
 import { RbacRepository } from "../repositories"
@@ -44,10 +43,14 @@ type InjectedDependencies = {
 }
 
 export default class RbacModuleService
-  extends MedusaService({
+  extends MedusaService<{
+    RbacRole: { dto: RbacRoleDTO }
+    RbacPolicy: { dto: RbacPolicyDTO }
+    RbacRolePolicy: { dto: RbacRolePolicyDTO }
+    RbacRoleAssignment: { dto: RbacRoleAssignmentDTO }
+  }>({
     RbacRole,
     RbacPolicy,
-    RbacRoleParent,
     RbacRolePolicy,
     RbacRoleAssignment,
   })
@@ -172,71 +175,7 @@ export default class RbacModuleService
     return [roles as unknown as RbacRoleDTO[], count]
   }
 
-  @InjectManager()
-  // @ts-expect-error
-  async createRbacRoleParents(
-    data: CreateRbacRoleParentDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<RbacRoleParentDTO[]> {
-    for (const parent of data) {
-      const { role_id, parent_id } = parent
-
-      if (role_id === parent_id) {
-        throw new Error(
-          `Cannot create role parent relationship: a role cannot be its own parent (role_id: ${role_id})`
-        )
-      }
-
-      const wouldCreateCycle = await this.rbacRepository_.checkForCycle(
-        role_id,
-        parent_id,
-        sharedContext
-      )
-
-      if (wouldCreateCycle) {
-        throw new Error(
-          `Cannot create role parent relationship: this would create a circular dependency (role_id: ${role_id}, parent_id: ${parent_id})`
-        )
-      }
-    }
-
-    return await super.createRbacRoleParents(data, sharedContext)
-  }
-
-  @InjectManager()
-  // @ts-expect-error
-  async updateRbacRoleParents(
-    data: UpdateRbacRoleParentDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<RbacRoleParentDTO[]> {
-    for (const parent of data) {
-      const { role_id, parent_id } = parent
-
-      if (parent_id) {
-        if (role_id === parent_id) {
-          throw new Error(
-            `Cannot update role parent relationship: a role cannot be its own parent (role_id: ${role_id})`
-          )
-        }
-
-        const wouldCreateCycle = await this.rbacRepository_.checkForCycle(
-          role_id!,
-          parent_id,
-          sharedContext
-        )
-
-        if (wouldCreateCycle) {
-          throw new Error(
-            `Cannot update role parent relationship: this would create a circular dependency (role_id: ${role_id}, parent_id: ${parent_id})`
-          )
-        }
-      }
-    }
-
-    return await super.updateRbacRoleParents(data, sharedContext)
-  }
-
-  async retrieveActorAutzContextConfig(
+  async retrieveActorAuthzContextConfig(
     actorType: string
   ): Promise<AuthzContextConfig | undefined> {
     return this.options_.actors?.[actorType]

@@ -48,19 +48,6 @@ export type FilterableRbacRolePolicyProps = {
   policy_id?: string | string[]
 }
 
-export type RbacRoleParentDTO = {
-  id: string
-  role_id: string
-  parent_id: string
-  metadata?: Record<string, unknown> | null
-}
-
-export type FilterableRbacRoleParentProps = {
-  id?: string | string[]
-  role_id?: string | string[]
-  parent_id?: string | string[]
-}
-
 export type RbacRoleAssignmentDTO = {
   id: string
   role_id: string

@@ -6,25 +6,21 @@ import {
   AuthzContextConfig,
   FilterableRbacPolicyProps,
   FilterableRbacRoleAssignmentProps,
-  FilterableRbacRoleParentProps,
   FilterableRbacRolePolicyProps,
   FilterableRbacRoleProps,
   RbacPolicyDTO,
   RbacRoleAssignmentDTO,
   RbacRoleDTO,
-  RbacRoleParentDTO,
   RbacRolePolicyDTO,
 } from "./common"
 import {
   CreateRbacPolicyDTO,
   CreateRbacRoleAssignmentDTO,
   CreateRbacRoleDTO,
-  CreateRbacRoleParentDTO,
   CreateRbacRolePolicyDTO,
   UpdateRbacPolicyDTO,
   UpdateRbacRoleAssignmentDTO,
   UpdateRbacRoleDTO,
-  UpdateRbacRoleParentDTO,
   UpdateRbacRolePolicyDTO,
 } from "./mutations"
 
@@ -152,47 +148,6 @@ export interface IRbacModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<[RbacRolePolicyDTO[], number]>
 
-  createRbacRoleParents(
-    data: CreateRbacRoleParentDTO,
-    sharedContext?: Context
-  ): Promise<RbacRoleParentDTO>
-  createRbacRoleParents(
-    data: CreateRbacRoleParentDTO[],
-    sharedContext?: Context
-  ): Promise<RbacRoleParentDTO[]>
-
-  updateRbacRoleParents(
-    data: UpdateRbacRoleParentDTO,
-    sharedContext?: Context
-  ): Promise<RbacRoleParentDTO>
-  updateRbacRoleParents(
-    data: UpdateRbacRoleParentDTO[],
-    sharedContext?: Context
-  ): Promise<RbacRoleParentDTO[]>
-
-  deleteRbacRoleParents(
-    ids: string | string[],
-    sharedContext?: Context
-  ): Promise<void>
-
-  retrieveRbacRoleParent(
-    id: string,
-    config?: FindConfig<RbacRoleParentDTO>,
-    sharedContext?: Context
-  ): Promise<RbacRoleParentDTO>
-
-  listRbacRoleParents(
-    filters?: FilterableRbacRoleParentProps,
-    config?: FindConfig<RbacRoleParentDTO>,
-    sharedContext?: Context
-  ): Promise<RbacRoleParentDTO[]>
-
-  listAndCountRbacRoleParents(
-    filters?: FilterableRbacRoleParentProps,
-    config?: FindConfig<RbacRoleParentDTO>,
-    sharedContext?: Context
-  ): Promise<[RbacRoleParentDTO[], number]>
-
   createRbacRoleAssignments(
     data: CreateRbacRoleAssignmentDTO,
     sharedContext?: Context
@@ -269,18 +224,8 @@ export interface IRbacModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
-  softDeleteRbacRoleParents<TReturnableLinkableKeys extends string = string>(
-    roleParentIds: string | string[],
-    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void>
-  restoreRbacRoleParents<TReturnableLinkableKeys extends string = string>(
-    roleParentIds: string | string[],
-    config?: RestoreReturn<TReturnableLinkableKeys>,
-    sharedContext?: Context
-  ): Promise<Record<string, string[]> | void>
   softDeleteRbacRoleAssignments<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     roleAssignmentIds: string | string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -291,7 +236,7 @@ export interface IRbacModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
-  retrieveActorAutzContextConfig(
+  retrieveActorAuthzContextConfig(
     actorType: string
   ): Promise<AuthzContextConfig | undefined>
 }

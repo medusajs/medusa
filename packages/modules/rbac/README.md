@@ -34,7 +34,7 @@
   </a>
 </p>
 
-RBAC (role-based access control) Module for Medusa: manages roles, policies, role-policy assignments, and role inheritance. Use it to control which admin users can perform which operations on which resources. It ships with `@medusajs/medusa` and is registered by adding it to the `modules` of your `medusa-config.ts`.
+RBAC (role-based access control) Module for Medusa: manages roles, policies, role-policy assignments, and role assignments. Use it to control which admin users can perform which operations on which resources. It ships with `@medusajs/medusa` and is registered by adding it to the `modules` of your `medusa-config.ts`.
 
 ## At a glance
 
@@ -49,7 +49,7 @@ RBAC (role-based access control) Module for Medusa: manages roles, policies, rol
 ## Features
 
 - Define policies as a resource and operation pair, such as `product:read`.
-- Group policies into roles, and let roles inherit from other roles.
+- Group policies into roles, and assign roles to users and other references.
 - Seeds a Super Admin role with a wildcard policy that grants full access.
 - Powers the `/rbac/*` Admin API routes and the `authorize` route middleware, which are active only while the module is installed.
 
