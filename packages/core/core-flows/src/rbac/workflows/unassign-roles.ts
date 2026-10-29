@@ -7,6 +7,7 @@ import {
   when,
 } from "@medusajs/framework/workflows-sdk"
 import { deleteRoleAssignmentsStep } from "../steps/delete-role-assignments"
+import { ensureSuperAdminRemainsStep } from "../steps/ensure-super-admin-remains"
 import { validateActorRolePermissionsStep } from "../steps/validate-actor-role-permissions"
 import { useQueryGraphStep } from "../../common"
 
@@ -53,7 +54,7 @@ export const unassignRolesWorkflowId = "unassign-roles"
  * different references, each optionally constrained to its own scope.
  *
  * It validates that the granting actor holds all the policies of the roles
- * being removed.
+ * being removed, and that at least one user keeps the super admin role.
  * @ignore
  */
 export const unassignRolesWorkflow = createWorkflow(
@@ -104,14 +105,17 @@ export const unassignRolesWorkflow = createWorkflow(
         })),
       }).config({ name: "query-role-assignments-to-delete" })
 
-      deleteRoleAssignmentsStep(
-        transform(
-          { roleAssignmentsToDelete },
-          ({ roleAssignmentsToDelete }) => ({
-            id: roleAssignmentsToDelete.map((assignment) => assignment.id),
-          })
-        )
+      const roleAssignmentIdsToDelete = transform(
+        { roleAssignmentsToDelete },
+        ({ roleAssignmentsToDelete }) =>
+          roleAssignmentsToDelete.map((assignment) => assignment.id)
       )
+
+      ensureSuperAdminRemainsStep({
+        excluded_assignment_ids: roleAssignmentIdsToDelete,
+      })
+
+      deleteRoleAssignmentsStep({ id: roleAssignmentIdsToDelete })
     })
 
     return new WorkflowResponse(void 0)

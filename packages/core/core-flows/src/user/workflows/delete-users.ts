@@ -9,6 +9,7 @@ import {
 import { emitEventStep, removeRemoteLinkStep } from "../../common"
 import {
   deleteRoleAssignmentsStep,
+  ensureSuperAdminRemainsStep,
   getRoleAssignmentIdsStep,
 } from "../../rbac/steps"
 import { deleteUsersStep } from "../steps"
@@ -41,18 +42,21 @@ export const deleteUsersWorkflow = createWorkflow(
   (
     input: WorkflowData<UserWorkflow.DeleteUserWorkflowInput>
   ): WorkflowData<void> => {
+    const roleAssignmentIdsToDelete = getRoleAssignmentIdsStep({
+      reference: "user",
+      reference_id: input.ids,
+    })
+
+    ensureSuperAdminRemainsStep({
+      excluded_assignment_ids: roleAssignmentIdsToDelete,
+    })
+
     deleteUsersStep(input.ids)
 
     const userIdEvents = transform({ input }, ({ input }) => {
       return input.ids?.map((id) => {
         return { id }
       })
-    })
-
-    // Clean up any RBAC role assignments for the deleted users.
-    const roleAssignmentIdsToDelete = getRoleAssignmentIdsStep({
-      reference: "user",
-      reference_id: input.ids,
     })
 
     parallelize(
