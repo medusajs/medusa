@@ -3605,7 +3605,7 @@ __metadata:
     "@types/qrcode": ^1.5.5
     "@typescript/native-preview": ^7.0.0-dev.20260423.1
     "@uiw/react-json-view": ^2.0.0-alpha.17
-    bignumber.js: ^9.1.2
+    bignumber.js: ^11.1.5
     cmdk: ^1.1.1
     copy-to-clipboard: ^4.0.2
     date-fns: ^4.4.0
@@ -4440,7 +4440,7 @@ __metadata:
   resolution: "@medusajs/types@workspace:packages/core/types"
   dependencies:
     "@medusajs/deps": 2.22.1
-    bignumber.js: ^9.1.2
+    bignumber.js: ^11.1.5
   peerDependencies:
     ioredis: ^5.11.1
     vite: ">=5"
@@ -4520,7 +4520,7 @@ __metadata:
     "@medusajs/deps": 2.22.1
     "@medusajs/types": 2.22.1
     "@types/pluralize": ^0.0.33
-    bignumber.js: ^9.1.2
+    bignumber.js: ^11.1.5
     dotenv: ^18.0.9
     dotenv-expand: ^11.0.6
     express: ^4.21.0
@@ -10444,10 +10444,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bignumber.js@npm:^9.1.2":
-  version: 9.3.1
-  resolution: "bignumber.js@npm:9.3.1"
-  checksum: 61342ba5fe1c10887f0ecf5be02ff6709271481aff48631f86b4d37d55a99b87ce441cfd54df3d16d10ee07ceab7e272fc0be430c657ffafbbbf7b7d631efb75
+"bignumber.js@npm:^11.1.5":
+  version: 11.1.5
+  resolution: "bignumber.js@npm:11.1.5"
+  checksum: 8e829402c6c190d92becb2495d62581c66f170deae99f43ae859e54cdc586d4375c752131d07f60fcc709b84c9ca4c362623c97f3703629e69792c7bb1def00c
   languageName: node
   linkType: hard
 
