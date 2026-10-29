@@ -100,12 +100,13 @@ export type RouteDescriptor = {
   handler: RouteHandler
   optedOutOfAuth: boolean
   isRoute: true
-  routeType?: "admin" | "store" | "auth"
+  routeType?: "admin" | "store" | "auth" | "rbac"
   absolutePath?: string
   relativePath?: string
   shouldAppendAdminCors: boolean
   shouldAppendStoreCors: boolean
   shouldAppendAuthCors: boolean
+  shouldAppendRbacCors: boolean
 }
 
 /**

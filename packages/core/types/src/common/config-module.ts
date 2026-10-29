@@ -818,6 +818,29 @@ export type ProjectConfigOptions = {
      */
     authCors: string
     /**
+     * The allowed origins for the `/rbac` API Routes. Defaults to `adminCors`, since the Medusa Admin dashboard consumes these routes.
+     *
+     * Set it when another client, such as a custom dashboard for a non-`user` actor type, calls the `/rbac` routes from a different origin.
+     * Accepts the same format as `adminCors`.
+     *
+     * When set, it replaces `adminCors` for the `/rbac` routes rather than extending it. If the Medusa Admin dashboard
+     * also uses the `/rbac` routes, include its origin as well.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       rbacCors: process.env.RBAC_CORS
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    rbacCors?: string
+    /**
      *
      * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
      * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.

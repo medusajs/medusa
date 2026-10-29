@@ -286,7 +286,8 @@ export class ApiLoader {
     toggleKey:
       | "shouldAppendAdminCors"
       | "shouldAppendAuthCors"
-      | "shouldAppendStoreCors",
+      | "shouldAppendStoreCors"
+      | "shouldAppendRbacCors",
     corsOptions: CorsOptions
   ) {
     const logger = this.#logger
@@ -522,18 +523,22 @@ export class ApiLoader {
 
     /**
      * CORS and Auth setup for the RBAC routes. They are not admin routes, but
-     * they are consumed by the admin dashboard and therefore reuse its CORS
-     * configuration.
+     * they are consumed by the admin dashboard and therefore fall back to its
+     * CORS origins. "http.rbacCors" replaces them for other clients.
      *
-     * Unlike the admin routes, they are not restricted to the "user" actor.
-     * The allowed actor types are configured via "http.rbacActorTypes", and
-     * secret API keys are not supported (they only authenticate as "user").
+     * Unlike the admin routes, the allowed actor types are configurable via
+     * "http.rbacActorTypes" (defaults to ["user"]). Secret API keys are not
+     * accepted: "authenticate" only supports them when the actor types are
+     * exactly ["user"]
      */
     this.#applyCorsMiddleware(
       routesFinder,
       "/rbac",
-      "shouldAppendAdminCors",
-      this.#createCorsOptions(configManager.config.projectConfig.http.adminCors)
+      "shouldAppendRbacCors",
+      this.#createCorsOptions(
+        configManager.config.projectConfig.http.rbacCors ??
+          configManager.config.projectConfig.http.adminCors
+      )
     )
     this.#applyAuthMiddleware(
       routesFinder,

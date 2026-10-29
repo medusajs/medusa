@@ -107,14 +107,15 @@ export class RoutesLoader {
      * Find the route type based upon its prefix.
      */
     const routeType =
-      // TODO: [rbac] define if we want to have a separate cors config for rbac
-      ADMIN_ROUTE_MATCH.test(routePath) || RBAC_ROUTE_MATCH.test(routePath)
+      ADMIN_ROUTE_MATCH.test(routePath)
         ? "admin"
-        : STORE_ROUTE_MATCH.test(routePath)
-          ? "store"
-          : AUTH_ROUTE_MATCH.test(routePath)
-            ? "auth"
-            : undefined
+        : RBAC_ROUTE_MATCH.test(routePath)
+          ? "rbac"
+          : STORE_ROUTE_MATCH.test(routePath)
+            ? "store"
+            : AUTH_ROUTE_MATCH.test(routePath)
+              ? "auth"
+              : undefined
 
     /**
      * Check if the route file has decided to opt-out of authentication
@@ -159,6 +160,7 @@ export class RoutesLoader {
           shouldAppendAdminCors: shouldApplyCors && routeType === "admin",
           shouldAppendAuthCors: shouldApplyCors && routeType === "auth",
           shouldAppendStoreCors: shouldApplyCors && routeType === "store",
+          shouldAppendRbacCors: shouldApplyCors && routeType === "rbac",
         } satisfies RouteDescriptor
       })
   }
