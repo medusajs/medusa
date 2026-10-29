@@ -1,3 +1,4 @@
+import { resolvePermissions } from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -10,9 +11,14 @@ import {
 import {
   ContainerRegistrationKeys,
   Modules,
+  PolicyOperation,
   promiseAll,
 } from "@medusajs/framework/utils"
 import { searchWithGraphFallback } from "./fallback-search"
+import {
+  ADMIN_SEARCH_ENTITY_MAP,
+  DEFAULT_ADMIN_SEARCH_ENTITY_NAMES,
+} from "./search-entities"
 import { AdminGetSearchParamsType } from "./validators"
 
 /**
@@ -38,19 +44,40 @@ export const GET = async (
   const skip = req.queryConfig.pagination.skip ?? 0
   const take = req.queryConfig.pagination.take ?? 20
 
-  const indexes = new Set(
-    ((await searchModule?.listIndexes()) ?? []).map((index) => index.name)
+  const indexes = new Map(
+    ((await searchModule?.listIndexes()) ?? []).map((index) => [
+      index.name,
+      index.entity,
+    ])
   )
 
   // Caller narrows the set; otherwise search every index. If the module is on
-  // but nothing is indexed yet, leave `entities` empty so we fall through to
+  // but nothing is indexed yet, leave `requested` unset so we fall through to
   // the graph defaults
-  const entities = entity?.length ? entity : indexes.size ? [...indexes] : []
+  const requested = entity?.length
+    ? entity
+    : indexes.size
+    ? [...indexes.keys()]
+    : undefined
 
-  if (!searchModule || !entities.length) {
+  const entities = await filterReadableEntities(
+    req,
+    requested ?? DEFAULT_ADMIN_SEARCH_ENTITY_NAMES,
+    (name) =>
+      indexes.get(name) ??
+      ADMIN_SEARCH_ENTITY_MAP.get(name)?.graphEntity ??
+      name
+  )
+
+  if (!entities.length) {
+    res.json({ results: [] })
+    return
+  }
+
+  if (!searchModule || !requested) {
     const results = await searchWithGraphFallback(req.scope, {
       q,
-      entity: entity?.length ? entity : undefined,
+      entity: entities,
       skip,
       take,
     })
@@ -90,6 +117,29 @@ export const GET = async (
   res.json({
     results: entities.map((name) => resultsByEntity.get(name)!),
   })
+}
+
+/**
+ * Returns the subset of `names` the caller holds a read policy for, checking
+ * each against the same resource its admin list route requires.
+ */
+async function filterReadableEntities(
+  req: AuthenticatedMedusaRequest<void, AdminGetSearchParamsType>,
+  names: string[],
+  resourceFor: (name: string) => string
+): Promise<string[]> {
+  const granted = await resolvePermissions({
+    roles: (req.auth_context?.app_metadata?.roles as string[]) ?? [],
+    universe: names.map((name) => ({
+      resource: resourceFor(name),
+      operation: PolicyOperation.read,
+    })),
+    container: req.scope,
+  })
+
+  return names.filter((name) =>
+    granted.has(`${resourceFor(name)}:${PolicyOperation.read}`)
+  )
 }
 
 async function searchIndexedEntities(
