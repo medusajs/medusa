@@ -39,7 +39,7 @@
     "test": "exit 0"
   },
   "dependencies": {
-    "bignumber.js": "^9.1.2"
+    "bignumber.js": "^11.1.5"
   },
   "devDependencies": {
     "@medusajs/deps": "2.22.1"
