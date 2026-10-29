@@ -3425,7 +3425,7 @@ __metadata:
     "@medusajs/utils": 2.22.1
     "@types/express": ^4.17.21
     configstore: ^8.0.0
-    dotenv: ^16.4.5
+    dotenv: ^18.0.9
     execa: ^5.1.1
     express: ^4.21.0
     fs-exists-cached: ^1.0.0
@@ -4321,7 +4321,7 @@ __metadata:
     axios: ^1.20.0
     axios-retry: ^4.5.0
     commander: ^15.0.0
-    dotenv: ^16.4.5
+    dotenv: ^18.0.9
     fs-extra: ^11.4.1
     picocolors: ^1.1.0
     ts-dedent: 2.2.0
@@ -4427,7 +4427,7 @@ __metadata:
     "@medusajs/types": 2.22.1
     "@types/pluralize": ^0.0.33
     bignumber.js: ^9.1.2
-    dotenv: ^16.4.5
+    dotenv: ^18.0.9
     dotenv-expand: ^11.0.6
     express: ^4.21.0
     graphql: ^16.14.2
@@ -12402,6 +12402,15 @@ __metadata:
   version: 16.6.1
   resolution: "dotenv@npm:16.6.1"
   checksum: 15ce56608326ea0d1d9414a5c8ee6dcf0fffc79d2c16422b4ac2268e7e2d76ff5a572d37ffe747c377de12005f14b3cc22361e79fc7f1061cce81f77d2c973dc
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^18.0.9":
+  version: 18.0.9
+  resolution: "dotenv@npm:18.0.9"
+  bin:
+    dotenv: dist/index.cjs
+  checksum: 62a70960e611f1d26bf5ade0e0baa7850513f65d56789ba282c8ae7f690411d364457d33d4302b2611cc18157d03dea589ac7e33f1aa85b8f69737b8c05cf726
   languageName: node
   linkType: hard
 
