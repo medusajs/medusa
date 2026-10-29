@@ -3431,7 +3431,6 @@ __metadata:
     fs-exists-cached: ^1.0.0
     fs-extra: ^11.4.1
     glob: 13.0.6
-    hosted-git-info: ^4.0.2
     inquirer: ^8.0.0
     is-valid-path: ^0.1.1
     meant: ^1.0.3
@@ -14443,15 +14442,6 @@ __metadata:
   version: 2.2.0
   resolution: "hookified@npm:2.2.0"
   checksum: 7017d2b66945490293a5aba239e7b39f39071dd940fa019348c7ffea92b91b8c267853c4c51680ed0f3687b33352582fa4d2cff6dd4c5a1c5c44b037276f07aa
-  languageName: node
-  linkType: hard
-
-"hosted-git-info@npm:^4.0.2":
-  version: 4.1.0
-  resolution: "hosted-git-info@npm:4.1.0"
-  dependencies:
-    lru-cache: ^6.0.0
-  checksum: 150fbcb001600336d17fdbae803264abed013548eea7946c2264c49ebe2ebd8c4441ba71dd23dd8e18c65de79d637f98b22d4760ba5fb2e0b15d62543d0fff07
   languageName: node
   linkType: hard
 

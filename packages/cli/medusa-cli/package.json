@@ -50,7 +50,6 @@
     "fs-exists-cached": "^1.0.0",
     "fs-extra": "^11.4.1",
     "glob": "13.0.6",
-    "hosted-git-info": "^4.0.2",
     "inquirer": "^8.0.0",
     "is-valid-path": "^0.1.1",
     "meant": "^1.0.3",
