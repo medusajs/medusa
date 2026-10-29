@@ -70,7 +70,7 @@
     "prismjs": "^1.30.0",
     "radix-ui": "1.1.2",
     "react-aria": "^3.53.1",
-    "react-currency-input-field": "^3.6.11",
+    "react-currency-input-field": "^4.0.14",
     "react-stately": "^3.51.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.2.1"

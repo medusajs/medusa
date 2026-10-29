@@ -3621,7 +3621,7 @@ __metadata:
     radix-ui: 1.1.2
     react: ^18.3.1
     react-country-flag: ^3.1.0
-    react-currency-input-field: ^3.6.11
+    react-currency-input-field: ^4.0.14
     react-dom: ^18.3.1
     react-helmet-async: ^2.0.5
     react-hook-form: 7.83.0
@@ -4486,7 +4486,7 @@ __metadata:
     radix-ui: 1.1.2
     react: ^18.3.1
     react-aria: ^3.53.1
-    react-currency-input-field: ^3.6.11
+    react-currency-input-field: ^4.0.14
     react-dom: ^18.3.1
     react-stately: ^3.51.0
     sonner: ^1.5.0
@@ -18854,12 +18854,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-currency-input-field@npm:^3.6.11":
-  version: 3.10.0
-  resolution: "react-currency-input-field@npm:3.10.0"
+"react-currency-input-field@npm:^4.0.14":
+  version: 4.0.14
+  resolution: "react-currency-input-field@npm:4.0.14"
   peerDependencies:
     react: ^16.9.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 251ccbacb18202e4236bab1b58b414fa12983601498ffc7c9dda8dfb92e0729d6eca73e7f00e3270165a2922ba2ac769446418d86e90f744c39caec5899751f5
+  checksum: 5798b7bdd19ea014abd30121eedcd0232111db7a132492e76166115f6ac81e3d47bb7c046f489a36fceecb02bb8389284b49468b4178cf228ffb2feb7412889f
   languageName: node
   linkType: hard
 
