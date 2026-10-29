@@ -4420,7 +4420,7 @@ __metadata:
     ci-info: ^4.4.0
     configstore: ^8.0.0
     cross-env: ^10.1.0
-    is-docker: ^2.2.1
+    is-docker: ^4.0.0
     remove-trailing-slash: ^0.1.1
     uuid: ^11.1.1
   languageName: unknown
@@ -15121,7 +15121,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-docker@npm:^2.0.0, is-docker@npm:^2.2.1":
+"is-docker@npm:^2.0.0":
   version: 2.2.1
   resolution: "is-docker@npm:2.2.1"
   bin:
@@ -15136,6 +15136,15 @@ __metadata:
   bin:
     is-docker: cli.js
   checksum: d2c4f8e6d3e34df75a5defd44991b6068afad4835bb783b902fa12d13ebdb8f41b2a199dcb0b5ed2cb78bfee9e4c0bbdb69c2d9646f4106464674d3e697a5856
+  languageName: node
+  linkType: hard
+
+"is-docker@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "is-docker@npm:4.0.0"
+  bin:
+    is-docker: cli.js
+  checksum: 4ee05c305b545422b172cab17f42900b940a5fa77820380d3244784fde69279d6881305f249b3b7fa2e261c2294804100548f5638880842e5b43df72cec29087
   languageName: node
   linkType: hard
 

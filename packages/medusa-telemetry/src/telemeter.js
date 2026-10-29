@@ -1,5 +1,4 @@
 import fs from "fs"
-import isDocker from "is-docker"
 import os from "os"
 import { join, sep } from "path"
 import { v4 as uuidv4 } from "uuid"
@@ -73,11 +72,20 @@ class Telemeter {
       is_ci: isCI(),
       ci_name: getCIName(),
       arch: os.arch(),
-      docker: isDocker(),
+      docker: this.isDocker(),
       term_program: getTermProgram(),
     }
     this.osInfo = osInfo
     return osInfo
+  }
+
+  isDocker() {
+    // is-docker is ESM-only, so Jest (which can't load it) reports false.
+    try {
+      return require("is-docker").default()
+    } catch {
+      return false
+    }
   }
 
   getMedusaVersion() {
