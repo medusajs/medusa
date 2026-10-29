@@ -35,7 +35,7 @@
     "autoprefixer": "^10.6.1",
     "compression": "^1.8.2",
     "express": "^4.21.0",
-    "get-port": "^5.1.1",
+    "get-port": "^7.2.0",
     "glob": "13.0.6",
     "outdent": "^0.8.0",
     "postcss": "^8.5.10",

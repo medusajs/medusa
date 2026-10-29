@@ -3208,7 +3208,7 @@ __metadata:
     autoprefixer: ^10.6.1
     compression: ^1.8.2
     express: ^4.21.0
-    get-port: ^5.1.1
+    get-port: ^7.2.0
     glob: 13.0.6
     outdent: ^0.8.0
     postcss: ^8.5.10
@@ -4296,7 +4296,6 @@ __metadata:
     "@types/express": ^4.17.21
     axios: ^1.20.0
     express: ^4.21.0
-    get-port: ^5.1.1
     ulid: ^2.3.0
   peerDependencies:
     "@medusajs/core-flows": 2.22.1
@@ -14056,10 +14055,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-port@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "get-port@npm:5.1.1"
-  checksum: 2873877a469b24e6d5e0be490724a17edb39fafc795d1d662e7bea951ca649713b4a50117a473f9d162312cb0e946597bd0e049ed2f866e79e576e8e213d3d1c
+"get-port@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "get-port@npm:7.2.0"
+  checksum: 4ed741d9008ad15a24e2098c8971918025cc8241624245e704ecc62bb65160db5c79de5d7112acdaabccbe0714cd0704008c74d43a1f7a24a5875e58b84621be
   languageName: node
   linkType: hard
 
@@ -20449,7 +20448,6 @@ __metadata:
     eslint-plugin-unused-imports: ^4.4.1
     expect-type: ^1.4.0
     express: ^4.21.0
-    get-port: ^5.1.1
     glob: 13.0.6
     ioredis: ^5.11.1
     jest: ^29.7.0
