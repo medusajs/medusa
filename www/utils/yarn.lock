@@ -4670,10 +4670,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-gradient-parser@npm:^0.0.16":
-  version: 0.0.16
-  resolution: "css-gradient-parser@npm:0.0.16"
-  checksum: 7f05794ad99927ed4dcb9b96571117eea5d4426366f6dc38932035f0e73729ed0edc2a4144576851b2987cdfe8acf9e8d9f2f08c9daf69d085ae2679779bbc5a
+"css-gradient-parser@npm:^0.0.17":
+  version: 0.0.17
+  resolution: "css-gradient-parser@npm:0.0.17"
+  checksum: 24e2694562aa54bee238391d3bd2fdfe3b865bb2c4e7f71f68a4a78733387ccfc6bc11fd8017f67e2813b67c051b5ab322dab95754a92c333ba8308771538bc8
   languageName: node
   linkType: hard
 
@@ -5336,7 +5336,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"emoji-regex@npm:^10.2.1, emoji-regex@npm:^10.3.0":
+"emoji-regex-xs@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "emoji-regex-xs@npm:2.0.1"
+  checksum: f34c96377840d4ffff128042509bc5550c9ebc3d67fc3c0d8754772a7c1a13b2fddf797326e174f8ad4114a487c9740a7dbb4d9a670814570b3b628aa64cdfb4
+  languageName: node
+  linkType: hard
+
+"emoji-regex@npm:^10.3.0":
   version: 10.6.0
   resolution: "emoji-regex@npm:10.6.0"
   checksum: 1e4aa097bb007301c3b4b1913879ae27327fdc48e93eeefefe3b87e495eb33c5af155300be951b4349ff6ac084f4403dc9eff970acba7c1c572d89396a9a32d7
@@ -5947,6 +5954,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fflate@npm:0.7.3":
+  version: 0.7.3
+  resolution: "fflate@npm:0.7.3"
+  checksum: d116debcc828ca8860f78753e9472c3e0f14bc52cd2aab8bbcb01fd86577147993127317b8271d5f6eaaa821680e21adfa1e163211863300abfed6e006fc1d95
+  languageName: node
+  linkType: hard
+
 "fflate@npm:^0.7.3":
   version: 0.7.5
   resolution: "fflate@npm:0.7.5"
@@ -6287,6 +6301,13 @@ __metadata:
   bin:
     handlebars: bin/handlebars
   checksum: 9b5573584ae5836172ae3f1502d9819568ba1b92ee83b81b18223beeb4c07486595e7b0fa633102beabc66ed06fe6e7da1dd9a9ea8c7072b9550b9a88809165c
+  languageName: node
+  linkType: hard
+
+"harfbuzzjs@npm:0.10.0":
+  version: 0.10.0
+  resolution: "harfbuzzjs@npm:0.10.0"
+  checksum: acc0cdcadb76de6ebe127468a30e7b9926edd9582fc1f0e966b0bbf955d9c5bb756de0d801344105da9d78357a86789ea3467d0ae2c37a075aef41c445a847a3
   languageName: node
   linkType: hard
 
@@ -8191,7 +8212,7 @@ __metadata:
     commander: ^11.1.0
     dotenv: ^16.3.1
     rimraf: ^5.0.5
-    satori: ^0.12.1
+    satori: ^0.63.2
     typescript: ^5.6.2
   languageName: unknown
   linkType: soft
@@ -8435,22 +8456,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"satori@npm:^0.12.1":
-  version: 0.12.2
-  resolution: "satori@npm:0.12.2"
+"satori@npm:^0.63.2":
+  version: 0.63.2
+  resolution: "satori@npm:0.63.2"
   dependencies:
     "@shuding/opentype.js": 1.4.0-beta.0
     css-background-parser: ^0.1.0
     css-box-shadow: 1.0.0-3
-    css-gradient-parser: ^0.0.16
+    css-gradient-parser: ^0.0.17
     css-to-react-native: ^3.0.0
-    emoji-regex: ^10.2.1
+    emoji-regex-xs: ^2.0.1
     escape-html: ^1.0.3
+    fflate: 0.7.3
+    harfbuzzjs: 0.10.0
     linebreak: ^1.1.0
     parse-css-color: ^0.2.1
     postcss-value-parser: ^4.2.0
-    yoga-wasm-web: ^0.3.3
-  checksum: 33d394e52e93a5fc2d30012b839d64c434511598e911cab194a55764cf53c4d00f4fb204890dad4c392bb2a5d6171813da943c7a980d8bc6d01cc91339a71f4a
+  checksum: be39b8c70a341703e4712069606efc6517a772dccf8d6cfd9e770cc9d8b79e1f3546952a811d1bbc6b11bf2869e918ca17a9bb71bc3f488e5be4095de8d965ce
   languageName: node
   linkType: hard
 
@@ -9833,13 +9855,6 @@ __metadata:
   version: 1.2.2
   resolution: "yocto-queue@npm:1.2.2"
   checksum: 36d4793e9cf7060f9da543baf67c55e354f4862c8d3d34de1a1b1d7c382d44171315cc54abf84d8900b8113d742b830108a1434f4898fb244f9b7e8426d4b8f5
-  languageName: node
-  linkType: hard
-
-"yoga-wasm-web@npm:^0.3.3":
-  version: 0.3.3
-  resolution: "yoga-wasm-web@npm:0.3.3"
-  checksum: d46ae3a436409e89eb0ea3b8c7624dafaf2c846d9038fdf8aa0cc839f73a2577b679bdc22997596177de74c580a6cdc3206c98fd2acd91b66f85462d9d9d260a
   languageName: node
   linkType: hard
 
