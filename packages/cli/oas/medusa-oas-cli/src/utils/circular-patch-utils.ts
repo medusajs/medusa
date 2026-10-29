@@ -1,4 +1,4 @@
-import { OpenAPIObject, SchemaObject } from "openapi3-ts"
+import { OpenAPIObject, SchemaObject } from "openapi3-ts/oas30"
 import OpenAPIParser from "@readme/openapi-parser"
 import { $Refs } from "@readme/json-schema-ref-parser"
 import { jsonObjectToYamlString } from "./yaml-utils"

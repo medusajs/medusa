@@ -1,7 +1,7 @@
 import OpenAPIParser from "@readme/openapi-parser"
 import { Command, Option, OptionValues } from "commander"
 import { lstat, mkdir, writeFile } from "fs/promises"
-import { OpenAPIObject } from "openapi3-ts"
+import { OpenAPIObject } from "openapi3-ts/oas30"
 import * as path from "path"
 import swaggerInline from "swagger-inline"
 import { combineOAS } from "./utils/combine-oas"

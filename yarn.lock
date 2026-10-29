@@ -4069,7 +4069,7 @@ __metadata:
     commander: ^15.0.0
     execa: ^10.2.1
     lodash.mergewith: ^4.6.2
-    openapi3-ts: ^3.1.2
+    openapi3-ts: ^4.6.2
     swagger-inline: ^6.1.0
     yargs: ^17.7.2
   bin:
@@ -18063,12 +18063,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openapi3-ts@npm:^3.1.2":
-  version: 3.2.0
-  resolution: "openapi3-ts@npm:3.2.0"
+"openapi3-ts@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "openapi3-ts@npm:4.6.2"
   dependencies:
-    yaml: ^2.2.1
-  checksum: 3b9a663bf71f9292880c970a80f6f1a8db0ee475451c03b4fd336da957a24372349594d7868ce0a60b3a0875844a1f0e906e8fec8ef4220c06aa70670bfa3148
+    yaml: ^2.9.1
+  checksum: 9e6b58e1f6cef98d4252ee903755f1efe8e39fff23b79358a38e2f192f23579bd1949b93fd2080900940fc947ecd7693b7b1da377008226dffca3f9d856d3a3b
   languageName: node
   linkType: hard
 
@@ -23417,7 +23417,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.2.1, yaml@npm:^2.8.3, yaml@npm:^2.8.4":
+"yaml@npm:^2.8.3, yaml@npm:^2.8.4, yaml@npm:^2.9.1":
   version: 2.9.1
   resolution: "yaml@npm:2.9.1"
   bin:

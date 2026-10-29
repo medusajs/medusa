@@ -1,6 +1,6 @@
 import { exists, getTmpDirectory } from "../utils/fs-utils"
 import { writeJson } from "../utils/json-utils"
-import { OpenAPIObject } from "openapi3-ts"
+import { OpenAPIObject } from "openapi3-ts/oas30"
 import path from "path"
 import { v4 as uid } from "uuid"
 import { readYaml, writeYaml } from "../utils/yaml-utils"
