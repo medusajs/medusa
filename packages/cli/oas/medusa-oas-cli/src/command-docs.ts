@@ -4,7 +4,7 @@ import {
 } from "@redocly/cli/lib/commands/preview-docs"
 import { commandWrapper } from "@redocly/cli/lib/wrapper"
 import { Command, Option, OptionValues } from "commander"
-import execa from "execa"
+import { execa } from "execa"
 import fs, { mkdir } from "fs/promises"
 import mergeWith from "lodash.mergewith"
 

@@ -6,7 +6,7 @@ import { v4 as uid } from "uuid"
 import { getTmpDirectory } from "../utils/fs-utils"
 import { readYaml } from "../utils/yaml-utils"
 import { readJson } from "../utils/json-utils"
-import execa from "execa"
+import { execa } from "execa"
 
 /**
  * OAS output directory

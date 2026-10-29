@@ -2,7 +2,8 @@
  * Adapted from https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-cli/src/init-starter.ts
  */
 
-import execa from "execa"
+// @ts-ignore
+import { execa } from "execa"
 import { sync as existsSync } from "fs-exists-cached"
 import fs from "fs-extra"
 import hostedGitInfo from "hosted-git-info"

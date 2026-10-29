@@ -10,7 +10,7 @@ import {
   getCircularPatchRecommendation,
   getCircularReferences,
 } from "../utils/circular-patch-utils"
-import execa from "execa"
+import { execa } from "execa"
 
 const basePath = path.resolve(__dirname, `../../../`)
 
