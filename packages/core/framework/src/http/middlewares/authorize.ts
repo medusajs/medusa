@@ -113,6 +113,7 @@ export function authorize(
 
     req.rbac_context = {
       ...req.rbac_context,
+      role_ids: roleIds,
       permissions: await listRolePermissions({
         roles: roleIds,
         container: req.scope,

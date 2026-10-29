@@ -2126,6 +2126,25 @@ medusaIntegrationTestRunner({
           )
           expect(after.data.count).toEqual(0)
         })
+
+        it("rejects an empty assignments list on the user roles routes", async () => {
+          const assignError = await api
+            .post(
+              `/admin/users/${targetUser.id}/roles`,
+              { assignments: [] },
+              assignerHeaders
+            )
+            .catch((e) => e)
+          expect(assignError.response.status).toEqual(400)
+
+          const unassignError = await api
+            .delete(`/admin/users/${targetUser.id}/roles`, {
+              ...assignerHeaders,
+              data: { assignments: [] },
+            })
+            .catch((e) => e)
+          expect(unassignError.response.status).toEqual(400)
+        })
       })
 
       describe("GET /rbac/roles/:id/users", () => {

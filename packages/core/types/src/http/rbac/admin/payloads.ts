@@ -6,10 +6,6 @@ export interface AdminCreateRbacRole {
    */
   name: string
   /**
-   * The ID of the parent role, if any.
-   */
-  parent_id?: string | null
-  /**
    * The role's description.
    */
   description?: string | null
@@ -30,10 +26,6 @@ export interface AdminUpdateRbacRole {
    * The role's name.
    */
   name?: string
-  /**
-   * The ID of the parent role, if any.
-   */
-  parent_id?: string | null
   /**
    * The role's description.
    */

@@ -55,12 +55,12 @@ const UserRoleAssignment = z
 
 export type AdminAssignUserRoleType = z.infer<typeof AdminAssignUserRole>
 export const AdminAssignUserRole = z.object({
-  assignments: z.array(UserRoleAssignment),
+  assignments: z.array(UserRoleAssignment).min(1),
 })
 
 export type AdminUnassignUserRolesType = z.infer<typeof AdminUnassignUserRoles>
 export const AdminUnassignUserRoles = z.object({
-  assignments: z.array(UserRoleAssignment),
+  assignments: z.array(UserRoleAssignment).min(1),
 })
 
 export const AdminGetUserRolesParamsFields = z.object({

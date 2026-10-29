@@ -17,7 +17,6 @@ export const AdminGetRbacRolesParamsFields = z.object({
   q: z.string().optional(),
   id: z.union([z.string(), z.array(z.string())]).optional(),
   name: z.union([z.string(), z.array(z.string())]).optional(),
-  parent_id: z.union([z.string(), z.array(z.string())]).optional(),
   created_at: createOperatorMap().optional(),
   updated_at: createOperatorMap().optional(),
   deleted_at: createOperatorMap().optional(),
@@ -55,7 +54,6 @@ export type AdminCreateRbacRoleType = z.infer<typeof AdminCreateRbacRole>
 export const AdminCreateRbacRole = z
   .object({
     name: z.string(),
-    parent_id: z.string().nullish(),
     description: z.string().nullish(),
     metadata: z.record(z.string(), z.unknown()).nullish(),
     policy_ids: z.array(z.string().min(1)).optional(),
@@ -66,7 +64,6 @@ export type AdminUpdateRbacRoleType = z.infer<typeof AdminUpdateRbacRole>
 export const AdminUpdateRbacRole = z
   .object({
     name: z.string().optional(),
-    parent_id: z.string().nullish(),
     description: z.string().nullish(),
     metadata: z.record(z.string(), z.unknown()).nullish(),
   })

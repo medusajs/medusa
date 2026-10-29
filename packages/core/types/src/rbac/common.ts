@@ -72,8 +72,7 @@ export type RbacRoleAssignmentDTO = {
   deleted_at?: Date | string | null
 }
 
-export interface FilterableRbacRoleAssignmentProps
-  extends BaseFilterable<FilterableRbacRoleAssignmentProps> {
+export interface FilterableRbacRoleAssignmentProps extends BaseFilterable<FilterableRbacRoleAssignmentProps> {
   id?: string | string[]
   role_id?: string | string[]
   reference?: string | string[]
@@ -132,6 +131,12 @@ export type RbacContext = {
    */
   policies?: PolicyAction[]
   /**
+   * The IDs of the roles resolved for the request by `authorize`, so that the
+   * middlewares downstream (e.g. the query config field filtering) reuse them
+   * instead of resolving the actor's roles again.
+   */
+  role_ids?: string[]
+  /**
    * The `resource:operation` permissions granted by the roles resolved for the
    * request. Wildcards are listed as they are stored (e.g. `product:*`).
    */
@@ -176,8 +181,7 @@ export interface PolicyOperationRegistry {
  * {@link PolicyOperationRegistry}, plus the wildcard.
  */
 export type PolicyOperationValue =
-  | PolicyOperationRegistry[keyof PolicyOperationRegistry]
-  | "*"
+  PolicyOperationRegistry[keyof PolicyOperationRegistry] | "*"
 
 /**
  * The resources Medusa core governs with RBAC policies. Each resource is
@@ -314,8 +318,7 @@ export interface PolicyResourceRegistry extends CorePolicyResourceMap {}
  * {@link PolicyResourceRegistry}, plus the wildcard.
  */
 export type PolicyResourceValue =
-  | PolicyResourceRegistry[keyof PolicyResourceRegistry]
-  | "*"
+  PolicyResourceRegistry[keyof PolicyResourceRegistry] | "*"
 
 /**
  * A `(resource, operation)` pair a route may be guarded by.

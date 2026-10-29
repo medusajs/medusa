@@ -137,6 +137,7 @@ describe("authorize", () => {
     expect(req.rbac_context).toEqual({
       scope,
       policies: [readPolicy],
+      role_ids: ["role_1"],
       permissions: ["product:read", "product:update"],
     })
     expect(next).toHaveBeenCalledWith()

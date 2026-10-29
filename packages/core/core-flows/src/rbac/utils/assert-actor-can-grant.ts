@@ -45,10 +45,6 @@ export const assertActorCanGrant = async ({
     scope,
   })
 
-  if (!roleIds.length) {
-    throw new MedusaError(MedusaError.Types.FORBIDDEN, errorMessage)
-  }
-
   const allowed = await hasPermission({
     roles: roleIds,
     actions,

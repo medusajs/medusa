@@ -420,7 +420,7 @@ medusaIntegrationTestRunner({
         expect(error.message).toContain("product:delete")
       })
 
-      it("exposes the guarding policies and the resolved permissions on the rbac context", async () => {
+      it("exposes the guarding policies, the resolved roles and permissions on the rbac context", async () => {
         const { req } = await runAuthorize({
           actorId: scopedReaderId,
           scope: SCOPE,
@@ -429,6 +429,7 @@ medusaIntegrationTestRunner({
         expect(req.rbac_context).toEqual({
           scope: SCOPE,
           policies: [productRead],
+          role_ids: [expect.stringMatching(/^role_/)],
           permissions: ["product:read"],
         })
       })

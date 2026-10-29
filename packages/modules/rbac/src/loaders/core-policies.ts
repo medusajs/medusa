@@ -33,9 +33,13 @@ export default async ({
     { withDeleted: true }
   )
 
-  const existingPoliciesByKey = new Map(
-    existingPolicies.map((policy) => [policy.key, policy])
-  )
+  const existingPoliciesByKey = existingPolicies.reduce((byKey, policy) => {
+    const current = byKey.get(policy.key)
+    if (!current || (current.deleted_at && !policy.deleted_at)) {
+      byKey.set(policy.key, policy)
+    }
+    return byKey
+  }, new Map<string, InferEntityType<typeof RbacPolicy>>())
 
   const policiesToCreate: typeof CORE_POLICY_DEFINITIONS = []
   const policiesToUpdate: {
@@ -75,7 +79,21 @@ export default async ({
   }
 
   if (policiesToCreate.length > 0) {
-    await rbacPolicyService.create(policiesToCreate)
+    try {
+        await rbacPolicyService.create(policiesToCreate)
+      } catch (error) {
+        const livePolicies = await rbacPolicyService.list({
+          key: policiesToCreate.map((definition) => definition.key),
+        })
+        const liveKeys = new Set(livePolicies.map((policy) => policy.key))
+        const stillMissing = policiesToCreate.some(
+          (definition) => !liveKeys.has(definition.key)
+        )
+    
+        if (stillMissing) {
+          throw error
+        }
+      }
   }
 
   if (policiesToUpdate.length > 0) {

@@ -26,10 +26,6 @@ export interface AdminRbacRoleListParams extends FindParams {
    */
   name?: string | string[]
   /**
-   * Filter by parent role ID(s).
-   */
-  parent_id?: string | string[]
-  /**
    * Filter by the date the role was created.
    */
   created_at?: OperatorMap<string>

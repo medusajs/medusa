@@ -81,6 +81,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
     filters.push(
       new RBACFieldFilter({
         getActorRoles: async () =>
+          req.rbac_context?.role_ids ??
           resolveRoles({
             authContext: req.auth_context!,
             container: req.scope,

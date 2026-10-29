@@ -7,7 +7,6 @@ export enum Entities {
 export const defaultAdminRbacRoleFields = [
   "id",
   "name",
-  "parent_id",
   "description",
   "metadata",
   "created_at",

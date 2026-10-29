@@ -15,10 +15,6 @@ export interface AdminRbacRole {
    */
   description: string | null
   /**
-   * The ID of the parent role, if any.
-   */
-  parent_id: string | null
-  /**
    * Custom key-value pairs that can be added to the role.
    */
   metadata: Record<string, unknown> | null

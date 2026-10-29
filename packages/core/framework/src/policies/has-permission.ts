@@ -99,8 +99,12 @@ export async function hasPermission(
   const roleIds = Array.isArray(roles) ? roles : [roles]
   const actionList = Array.isArray(actions) ? actions : [actions]
   const isDisabled = !MedusaModule.isInstalled(Modules.RBAC)
-  if (isDisabled || !roleIds?.length || !actionList?.length) {
+  if (isDisabled || !actionList?.length) {
     return true
+  }
+
+  if (!roleIds?.length) {
+    return false
   }
 
   const rolePoliciesMap = await fetchRolePolicies(roleIds, container)

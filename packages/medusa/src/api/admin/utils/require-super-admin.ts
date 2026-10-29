@@ -41,13 +41,11 @@ export const requireSuperAdmin = (
       scope: req.rbac_context?.scope,
     })
 
-    const isSuperAdmin =
-      roles.length > 0 &&
-      (await hasPermission({
-        roles,
-        actions: { resource: WILDCARD, operation: WILDCARD },
-        container: req.scope,
-      }))
+    const isSuperAdmin = await hasPermission({
+      roles,
+      actions: { resource: WILDCARD, operation: WILDCARD },
+      container: req.scope,
+    })
 
     if (!isSuperAdmin) {
       throw new MedusaError(MedusaError.Types.FORBIDDEN, message)
