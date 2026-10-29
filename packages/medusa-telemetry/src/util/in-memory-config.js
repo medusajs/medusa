@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid"
+import { randomUUID } from "crypto"
 import os from "os"
 import { join } from "path"
 
@@ -13,7 +13,7 @@ export class InMemoryConfigStore {
   createBaseConfig() {
     return {
       "telemetry.enabled": true,
-      "telemetry.machine_id": `not-a-machine-id-${uuidv4()}`,
+      "telemetry.machine_id": `not-a-machine-id-${randomUUID()}`,
     }
   }
 

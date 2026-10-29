@@ -42,8 +42,7 @@
     "ci-info": "^4.4.0",
     "configstore": "^8.0.0",
     "is-docker": "^4.0.0",
-    "remove-trailing-slash": "^0.1.1",
-    "uuid": "^11.1.1"
+    "remove-trailing-slash": "^0.1.1"
   },
   "devDependencies": {
     "cross-env": "^10.1.0"

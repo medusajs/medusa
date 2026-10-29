@@ -4109,7 +4109,6 @@ __metadata:
     qs: ^6.16.1
     request-ip: ^3.3.0
     slugify: ^1.6.6
-    uuid: ^11.1.1
   peerDependencies:
     "@medusajs/framework": 2.22.1
     "@swc/core": ^1.7.28
@@ -4380,7 +4379,6 @@ __metadata:
     cross-env: ^10.1.0
     is-docker: ^4.0.0
     remove-trailing-slash: ^0.1.1
-    uuid: ^11.1.1
   languageName: unknown
   linkType: soft
 
@@ -11572,7 +11570,6 @@ __metadata:
     ora: ^9.4.1
     slugify: ^1.6.6
     terminal-link: ^5.0.0
-    uuid: ^11.1.1
     wait-on: ^9.5.1
     winston: ^3.9.0
     yaml: ^2.8.4
@@ -19693,7 +19690,6 @@ __metadata:
     tsup: ^9.0.0
     turbo: ^2.11.10
     typescript: ^5.6.2
-    uuid: ^9.0.0
     vite: ^7.3.6
     vite-plugin-inspect: ^11.4.1
     vitest: ^4.1.10
@@ -21780,15 +21776,6 @@ __metadata:
   version: 1.1.0
   resolution: "uuid-parse@npm:1.1.0"
   checksum: 513d5b0407b8929c54d452e8e286a1f6f00d40a2ebf6607fc7297b9caa40eee35230dcc4ce3f178f84d89704e8147e24d1a33d680a8afb7e12a5700714db7f51
-  languageName: node
-  linkType: hard
-
-"uuid@npm:^11.1.1":
-  version: 11.1.1
-  resolution: "uuid@npm:11.1.1"
-  bin:
-    uuid: dist/esm/bin/uuid
-  checksum: 9e3af58eba872ece5a5e76f4773a94fc78a0ef2c2444c38dbe6b42f41dadf76c01850fd783604f27986f6195e6286aef064d45987d401b2a33127b98ddf7c0c5
   languageName: node
   linkType: hard
 
