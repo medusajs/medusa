@@ -1,4 +1,4 @@
-import { CodeTab, CodeTabs } from "docs-ui"
+import { CodeTab, CodeTabs, Note } from "docs-ui"
 
 export const metadata = {
   title: `Storefront Deployment on Cloud`,
@@ -62,7 +62,7 @@ Exceeding these limits may incur [Flex Usage](../usage/page.mdx#what-is-flex-usa
 Cloud currently supports deploying storefronts built with the following frameworks:
 
 1. [Next.js](https://nextjs.org/) v15. v16 is also supported if you're not using a [proxy](https://nextjs.org/docs/app/getting-started/proxy).
-  - Cloud also supports Incremental Static Regeneration (ISR) for Next.js storefronts with revalidation.
+  - Cloud also supports Incremental Static Regeneration (ISR) for Next.js storefronts with revalidation. Learn more in the [Next.js ISR Caching](#nextjs-isr-caching) section.
 2. [SvelteKit](https://kit.svelte.dev/) v2.40.0+
 3. [Tanstack Start](https://tanstack.com/start) v1.132.0+ (React and Solid)
 
@@ -93,6 +93,27 @@ So, if you perform any custom commands or manipulation during the build process,
 When deploying your storefront to Cloud, you don't need to add any specific configurations for deployment. For example, you don't need to specify the hosting provider with a Vite plugin in Tanstack Start.
 
 Medusa automatically injects the necessary configurations during the deployment process to ensure your storefront is correctly set up on Cloud.
+
+For Next.js storefronts, this includes the `open-next.config.ts` file. If your repository has its own `open-next.config.ts`, Medusa replaces it during the build.
+
+### Next.js ISR Caching
+
+Next.js storefronts on Cloud support [Incremental Static Regeneration (ISR)](https://nextjs.org/docs/app/guides/incremental-static-regeneration), which caches rendered pages and refreshes them periodically or on demand.
+
+Medusa stores ISR pages and cached `fetch` responses in a persistent cache shared by all instances of your storefront. So, a page that you revalidate every five minutes, such as with `export const revalidate = 300`, is regenerated once when it becomes stale, not once for every instance that serves it.
+
+The cache works as follows:
+
+- When a request arrives for a stale page, your storefront serves the cached page and regenerates it in the background. Medusa deduplicates concurrent regenerations of the same page.
+- On-demand revalidation with `revalidatePath` and `revalidateTag` clears the cached page for all instances.
+- The cache is scoped to a deployment. After a new deployment, your storefront renders each page again on its first request.
+- Cached pages expire one day after they're generated. Your storefront renders an expired page again on its next request.
+
+<Note title="Tip">
+
+If your backend receives more storefront requests than expected, check that your pages are cacheable. Next.js renders a page on every request, without caching it, if the page reads `cookies()`, `headers()`, or `searchParams`, or if it calls `fetch` with `cache: "no-store"`.
+
+</Note>
 
 ### Next.js Image Optimization
 

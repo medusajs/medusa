@@ -53,7 +53,7 @@ export const ConfigurableExportFilters = () => {
       {activeFilters.map((filter) => (
         <div
           key={filter.id}
-          className="bg-ui-bg-field shadow-borders-base text-ui-fg-subtle flex items-stretch overflow-hidden rounded-md"
+          className="flex items-stretch overflow-hidden rounded-md bg-ui-bg-field text-ui-fg-subtle shadow-borders-base"
         >
           <Text
             size="small"

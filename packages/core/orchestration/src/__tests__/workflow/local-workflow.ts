@@ -100,7 +100,7 @@ describe("WorkflowManager", () => {
         handlers
       )
 
-    expect(exec).toThrowError(
+    expect(exec).toThrow(
       `Workflow with id "create-product" and step definition already exists.`
     )
   })

@@ -4,7 +4,6 @@ import {
   FeatureFlag,
 } from "@medusajs/framework/utils"
 import { Store } from "@medusajs/telemetry"
-import boxen from "boxen"
 import { ChildProcess, execSync, fork } from "child_process"
 import chokidar, { FSWatcher } from "chokidar"
 import { EOL } from "os"
@@ -17,8 +16,8 @@ import { runLintStep } from "./utils/lint-project"
 const defaultConfig = {
   padding: 5,
   borderColor: `blue`,
-  borderStyle: `double`,
-} as boxen.Options
+  borderStyle: "double" as const,
+}
 
 export default async function ({ types, directory, lint, fix }) {
   const container = await initializeContainer(directory, {
@@ -222,8 +221,8 @@ export default async function ({ types, directory, lint, fix }) {
           action === "add"
             ? "created"
             : action === "change"
-            ? "modified"
-            : "removed"
+              ? "modified"
+              : "removed"
 
         const now = performance.now()
         logger.info(
@@ -268,6 +267,7 @@ export default async function ({ types, directory, lint, fix }) {
         `${EOL}` +
         `Note: you will not see this message again.`
 
+      const { default: boxen } = await import("boxen")
       console.log()
       console.log(boxen(defaultMessage, defaultConfig))
 

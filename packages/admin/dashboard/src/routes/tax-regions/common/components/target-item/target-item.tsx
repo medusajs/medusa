@@ -26,7 +26,7 @@ export const TargetItem = ({
   )
 
   return (
-    <div className="bg-ui-bg-field-component shadow-borders-base flex items-center justify-between gap-2 rounded-md px-2 py-0.5">
+    <div className="flex items-center justify-between gap-2 rounded-md bg-ui-bg-field-component px-2 py-0.5 shadow-borders-base">
       <Text size="small" leading="compact">
         {label || product?.title}
       </Text>

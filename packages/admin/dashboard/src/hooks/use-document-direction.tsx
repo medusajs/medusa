@@ -31,8 +31,7 @@ export const useDocumentDirection = (): "ltr" | "rtl" | undefined => {
           mutation.target === document.documentElement
         ) {
           const newDirection = document.documentElement.getAttribute("dir") as
-            | "ltr"
-            | "rtl"
+            "ltr" | "rtl"
           setDirection(newDirection || undefined)
         }
       })

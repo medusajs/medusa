@@ -185,36 +185,39 @@ function getDefaultValue(
   locations: HttpTypes.AdminStockLocation[]
 ): DefaultValues<ProductStockSchema> {
   return {
-    variants: variants.reduce((variantAcc, variant) => {
-      const inventoryItems = variant.inventory_items?.reduce(
-        (itemAcc, item) => {
-          const locationsMap = locations.reduce((locationAcc, location) => {
-            const level = item.inventory?.location_levels?.find(
-              (level) => level.location_id === location.id
-            )
+    variants: variants.reduce(
+      (variantAcc, variant) => {
+        const inventoryItems = variant.inventory_items?.reduce(
+          (itemAcc, item) => {
+            const locationsMap = locations.reduce((locationAcc, location) => {
+              const level = item.inventory?.location_levels?.find(
+                (level) => level.location_id === location.id
+              )
 
-            locationAcc[location.id] = {
-              id: level?.id,
-              quantity:
-                level?.stocked_quantity !== undefined
-                  ? level?.stocked_quantity
-                  : "",
-              checked: !!level,
-              disabledToggle:
-                (level?.incoming_quantity || 0) > 0 ||
-                (level?.reserved_quantity || 0) > 0,
-            }
-            return locationAcc
-          }, {} as ProductStockLocationSchema)
+              locationAcc[location.id] = {
+                id: level?.id,
+                quantity:
+                  level?.stocked_quantity !== undefined
+                    ? level?.stocked_quantity
+                    : "",
+                checked: !!level,
+                disabledToggle:
+                  (level?.incoming_quantity || 0) > 0 ||
+                  (level?.reserved_quantity || 0) > 0,
+              }
+              return locationAcc
+            }, {} as ProductStockLocationSchema)
 
-          itemAcc[item.inventory_item_id] = { locations: locationsMap }
-          return itemAcc
-        },
-        {} as Record<string, ProductStockInventoryItemSchema>
-      )
+            itemAcc[item.inventory_item_id] = { locations: locationsMap }
+            return itemAcc
+          },
+          {} as Record<string, ProductStockInventoryItemSchema>
+        )
 
-      variantAcc[variant.id] = { inventory_items: inventoryItems || {} }
-      return variantAcc
-    }, {} as Record<string, ProductStockVariantSchema>),
+        variantAcc[variant.id] = { inventory_items: inventoryItems || {} }
+        return variantAcc
+      },
+      {} as Record<string, ProductStockVariantSchema>
+    ),
   }
 }

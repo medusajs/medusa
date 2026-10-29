@@ -34,6 +34,6 @@ export const seo = (match: UIMatch<HttpTypes.AdminInventoryItemResponse>) => {
   const item = match.loaderData?.inventory_item
 
   return {
-    title: item ? item.title ?? item.sku ?? match.params.id : undefined,
+    title: item ? (item.title ?? item.sku ?? match.params.id) : undefined,
   }
 }

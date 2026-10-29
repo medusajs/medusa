@@ -99,8 +99,7 @@ export type LinkModuleBootstrapOptions = {
 }
 
 export type RegisterModuleJoinerConfig =
-  | ModuleJoinerConfig
-  | ((modules: ModuleJoinerConfig[]) => ModuleJoinerConfig)
+  ModuleJoinerConfig | ((modules: ModuleJoinerConfig[]) => ModuleJoinerConfig)
 
 class MedusaModule {
   private static instances_: Map<string, { [key: string]: IModuleService }> =

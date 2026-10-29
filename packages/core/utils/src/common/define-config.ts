@@ -161,8 +161,8 @@ export function transformModules(
 
       const joinerConfig =
         typeof defaultExport.service.prototype.__joinerConfig === "function"
-          ? defaultExport.service.prototype.__joinerConfig() ?? {}
-          : defaultExport.service.prototype.__joinerConfig ?? {}
+          ? (defaultExport.service.prototype.__joinerConfig() ?? {})
+          : (defaultExport.service.prototype.__joinerConfig ?? {})
 
       serviceName = joinerConfig.serviceName
 

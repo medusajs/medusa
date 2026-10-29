@@ -13,16 +13,14 @@ export interface AdminRbacRoleResponse {
   role: AdminRbacRole
 }
 
-export interface AdminRbacRoleListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of roles.
-     */
-    roles: AdminRbacRole[]
-  }> {}
+export interface AdminRbacRoleListResponse extends PaginatedResponse<{
+  /**
+   * The list of roles.
+   */
+  roles: AdminRbacRole[]
+}> {}
 
-export interface AdminRbacRoleDeleteResponse
-  extends DeleteResponse<"rbac_role"> {}
+export interface AdminRbacRoleDeleteResponse extends DeleteResponse<"rbac_role"> {}
 
 export interface AdminRbacPolicyResponse {
   /**
@@ -31,24 +29,21 @@ export interface AdminRbacPolicyResponse {
   policy: AdminRbacPolicy
 }
 
-export interface AdminRbacPolicyListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of policies.
-     */
-    policies: AdminRbacPolicy[]
-  }> {}
+export interface AdminRbacPolicyListResponse extends PaginatedResponse<{
+  /**
+   * The list of policies.
+   */
+  policies: AdminRbacPolicy[]
+}> {}
 
-export interface AdminRbacPolicyDeleteResponse
-  extends DeleteResponse<"rbac_policy"> {}
+export interface AdminRbacPolicyDeleteResponse extends DeleteResponse<"rbac_policy"> {}
 
-export interface AdminRbacRoleUserListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of users.
-     */
-    users: AdminUser[]
-  }> {}
+export interface AdminRbacRoleUserListResponse extends PaginatedResponse<{
+  /**
+   * The list of users.
+   */
+  users: AdminUser[]
+}> {}
 
 export interface AdminRbacRoleUsersResponse {
   /**
@@ -72,13 +67,12 @@ export interface AdminRbacRoleUsersDeleteResponse {
   deleted: boolean
 }
 
-export interface AdminRbacRoleAssignmentListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of role assignments.
-     */
-    assignments: AdminRbacRoleAssignment[]
-  }> {}
+export interface AdminRbacRoleAssignmentListResponse extends PaginatedResponse<{
+  /**
+   * The list of role assignments.
+   */
+  assignments: AdminRbacRoleAssignment[]
+}> {}
 
 export interface AdminRbacRoleAssignmentsResponse {
   /**
@@ -102,13 +96,12 @@ export interface AdminRbacRoleAssignmentsDeleteResponse {
   deleted: boolean
 }
 
-export interface AdminRbacPolicyRolesListResponse
-  extends PaginatedResponse<{
-    /**
-     * The roles that include this policy.
-     */
-    roles: AdminRbacRole[]
-  }> {}
+export interface AdminRbacPolicyRolesListResponse extends PaginatedResponse<{
+  /**
+   * The roles that include this policy.
+   */
+  roles: AdminRbacRole[]
+}> {}
 
 export interface AdminRbacAssignableRolesListResponse {
   /**

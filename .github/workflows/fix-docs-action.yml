@@ -167,14 +167,14 @@ jobs:
     needs: fetch
     if: needs.fetch.outputs.status == 'ok'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     permissions:
       contents: read
     outputs:
       base_sha: ${{ steps.base.outputs.sha }}
       status: ${{ steps.result.outputs.status }}
     steps:
-      # harden-runner always allows the Actions cache/artifact hosts, so they aren't listed.
+      # harden-runner allows the Actions cache/artifact storage hosts by default, so they aren't listed.
       - name: Harden runner
         uses: step-security/harden-runner@351661ca32ac09a36dc5ee2d536e3128f2a3c8ed # v2.22.0
         with:
@@ -188,7 +188,10 @@ jobs:
             api.github.com:443
             objects.githubusercontent.com:443
             release-assets.githubusercontent.com:443
+            results-receiver.actions.githubusercontent.com:443
+            registry.yarnpkg.com:443
             registry.npmjs.org:443
+            repo.yarnpkg.com:443
             nodejs.org:443
 
       - name: Checkout repository
@@ -207,6 +210,44 @@ jobs:
         with:
           name: fix-docs-input-${{ inputs.issue }}
           path: /tmp/fix-docs
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          check-latest: true
+
+      - name: Restore yarn caches
+        id: yarn-cache
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            .yarn/cache
+            www/.yarn/cache
+          key: ${{ runner.os }}-yarn-fix-docs-${{ hashFiles('yarn.lock', 'www/yarn.lock') }}
+
+      - name: Install docs dependencies
+        run: |
+          set -euo pipefail
+          yarn install --immutable
+          (cd www && yarn install)
+
+      # Saved before Claude runs so the cache can't pick up files the model changed.
+      - name: Save yarn caches
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            .yarn/cache
+            www/.yarn/cache
+          key: ${{ steps.yarn-cache.outputs.cache-primary-key }}
+
+      - name: Build docs packages
+        run: |
+          set -euo pipefail
+          yarn workspace @medusajs/eslint-plugin build
+          cd www
+          yarn turbo run build --filter=build-scripts --filter=tags
 
       - name: Lock down repo automation files
         run: |
@@ -245,6 +286,8 @@ jobs:
             Edit(www/apps/ui/**),
             Edit(www/apps/cloud/**),
             Edit(//tmp/fix-docs/out/**),
+            Bash(cd:*),
+            Bash(yarn lint:*),Bash(yarn lint:content:*),
             Bash(git diff:*),Bash(git status:*),Bash(ls:*)"
           prompt: |
             You are fixing one documentation issue in the medusajs/medusa repository.
@@ -270,6 +313,7 @@ jobs:
             1. Identify the relevant doc file from the page path or URL mentioned in the issue, and read it.
             2. Validate that the issue is accurate. Read source code under `packages/` as needed to confirm the documentation is wrong or missing information.
             3. Apply the fix following the writing-docs skill. Only write under www/apps/book, www/apps/resources, www/apps/user-guide, www/apps/ui, or www/apps/cloud. Never touch www/apps/resources/references/, www/apps/api-reference/, or www/apps/ui/specs/components/.
+            4. From each project you changed, run `yarn lint:content`, and `yarn lint` if you changed non-MDX files, for example `cd www/apps/resources && yarn lint:content`. Dependencies are already installed. Run each command on its own, without pipes, `timeout`, or other wrappers, or it will be denied. Don't run `yarn prep`: the workflow runs it after you finish.
 
             ## Result
 
@@ -304,6 +348,21 @@ jobs:
               | "- `\(.tool_name)`: `\((.tool_input.command // .tool_input.file_path // (.tool_input | tostring)) | .[0:200] | gsub("`"; "'"'"'"))`"' "$FILE"
           } >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Prep changed docs projects
+        run: |
+          set -euo pipefail
+          [[ "$(jq -r '.status // ""' /tmp/fix-docs/out/docs-result.json 2>/dev/null)" == "fixed" ]] || exit 0
+          PROJECTS=$(git ls-files -m -d -o --exclude-standard -- www/apps \
+            | cut -d/ -f3 | grep -xE 'book|resources|user-guide|ui|cloud' | sort -u || true)
+          for PROJECT in $PROJECTS; do
+            echo "Running prep for $PROJECT..."
+            if [[ "$PROJECT" == "resources" ]]; then
+              (cd "www/apps/$PROJECT" && yarn prep:turbo --force)
+            else
+              (cd "www/apps/$PROJECT" && yarn prep)
+            fi
+          done
+
       - name: Package result
         id: result
         run: |
@@ -327,7 +386,8 @@ jobs:
           echo "status=$STATUS" >> "$GITHUB_OUTPUT"
 
           if [[ "$STATUS" == "fixed" ]]; then
-            git add -A
+            # Builds can regenerate tracked files elsewhere (e.g. www/packages/tags), which open-pr would reject.
+            git add -A -- www/apps
             git diff --cached --binary > /tmp/fix-docs/out/fix.patch
           fi
 

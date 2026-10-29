@@ -95,7 +95,7 @@ export const CollectionGeneralSection = ({
         <Heading>{collection.title}</Heading>
         {groups.length > 0 && <ActionMenu groups={groups} />}
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.handle")}
         </Text>

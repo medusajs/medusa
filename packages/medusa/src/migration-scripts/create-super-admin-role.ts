@@ -17,9 +17,6 @@ import {
   defineFileConfig,
   Modules,
 } from "@medusajs/framework/utils"
-import dotenv from "dotenv"
-
-dotenv.config()
 
 interface User {
   id: string

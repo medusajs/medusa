@@ -283,8 +283,8 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
           enabled_in_store: !isDefined(input.enabled_in_store)
             ? "true"
             : input.enabled_in_store
-            ? "true"
-            : "false",
+              ? "true"
+              : "false",
         }),
 
         filters: {
@@ -408,7 +408,7 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
               },
               data: optionDataMap.get(so.id),
               provider_id: so.provider_id,
-            } as CalculateShippingOptionPriceDTO)
+            }) as CalculateShippingOptionPriceDTO
         )
       }
     )

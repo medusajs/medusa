@@ -1,4 +1,3 @@
-import checkbox from "@inquirer/checkbox"
 import { MedusaAppLoader } from "@medusajs/framework"
 import { LinkLoader } from "@medusajs/framework/links"
 import {
@@ -12,8 +11,7 @@ import {
   isDefined,
   mergePluginModules,
 } from "@medusajs/framework/utils"
-import boxen from "boxen"
-import chalk from "chalk"
+import { styleText } from "util"
 import { join } from "path"
 
 import { initializeContainer } from "../../loaders"
@@ -24,11 +22,17 @@ import { ensureDbExists, isPgstreamEnabled } from "../utils"
  * @param actionPlan LinkMigrationsPlannerAction
  */
 function groupByActionPlan(actionPlan: LinkMigrationsPlannerAction[]) {
-  return actionPlan.reduce((acc, action) => {
-    acc[action.action] ??= []
-    acc[action.action].push(action)
-    return acc
-  }, {} as Record<"noop" | "notify" | "create" | "update" | "delete", LinkMigrationsPlannerAction[]>)
+  return actionPlan.reduce(
+    (acc, action) => {
+      acc[action.action] ??= []
+      acc[action.action].push(action)
+      return acc
+    },
+    {} as Record<
+      "noop" | "notify" | "create" | "update" | "delete",
+      LinkMigrationsPlannerAction[]
+    >
+  )
 }
 
 /**
@@ -39,13 +43,15 @@ function groupByActionPlan(actionPlan: LinkMigrationsPlannerAction[]) {
  */
 function buildLinkDescription(action: LinkMigrationsPlannerAction) {
   const { linkDescriptor } = action
-  const from = chalk.yellow(
+  const from = styleText(
+    "yellow",
     `${linkDescriptor.fromModule}.${linkDescriptor.fromModel}`
   )
-  const to = chalk.yellow(
+  const to = styleText(
+    "yellow",
     `${linkDescriptor.toModule}.${linkDescriptor.toModel}`
   )
-  const table = chalk.dim(`(${action.tableName})`)
+  const table = styleText("dim", `(${action.tableName})`)
 
   return `${from} <> ${to} ${table}`
 }
@@ -54,11 +60,12 @@ function buildLinkDescription(action: LinkMigrationsPlannerAction) {
  * Logs the actions of a given action type with a nice border and
  * a title
  */
-function logActions(
+async function logActions(
   title: string,
   actionsOrContext: LinkMigrationsPlannerAction[],
   logger: Logger
 ) {
+  const { default: boxen } = await import("boxen")
   const actionsList = actionsOrContext
     .map((action) => `  - ${buildLinkDescription(action)}`)
     .join("\n")
@@ -75,13 +82,12 @@ async function askForLinkActionsToPerform(
   actions: LinkMigrationsPlannerAction[],
   logger: Logger
 ) {
+  const { default: boxen } = await import("boxen")
   logger.info(boxen(message, { borderColor: "red", padding: 1 }))
 
+  const { default: checkbox } = await import("@inquirer/checkbox")
   return await checkbox({
     message: "Select tables to act upon",
-    instructions: chalk.dim(
-      " <space> select, <a> select all, <i> inverse, <enter> submit"
-    ),
     choices: actions.map((action) => {
       return {
         name: buildLinkDescription(action),
@@ -141,7 +147,8 @@ export async function syncLinks(
       groupActionPlan.delete = []
     } else if (!executeAll) {
       groupActionPlan.delete = await askForLinkActionsToPerform(
-        `Select the tables to ${chalk.red(
+        `Select the tables to ${styleText(
+          "red",
           "DELETE"
         )}. The following links have been removed`,
         groupActionPlan.delete,
@@ -162,7 +169,8 @@ export async function syncLinks(
       answer = []
     } else if (!executeAll) {
       answer = await askForLinkActionsToPerform(
-        `Select the tables to ${chalk.red(
+        `Select the tables to ${styleText(
+          "red",
           "UPDATE"
         )}. The following links have been updated`,
         groupActionPlan.notify,
@@ -189,13 +197,13 @@ export async function syncLinks(
   await planner.executePlan(actionsToExecute)
 
   if (toCreate.length) {
-    logActions("Created following links tables", toCreate, logger)
+    await logActions("Created following links tables", toCreate, logger)
   }
   if (toUpdate.length) {
-    logActions("Updated following links tables", toUpdate, logger)
+    await logActions("Updated following links tables", toUpdate, logger)
   }
   if (toDelete.length) {
-    logActions("Deleted following links tables", toDelete, logger)
+    await logActions("Deleted following links tables", toDelete, logger)
   }
 
   if (actionsToExecute.length) {

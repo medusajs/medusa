@@ -22,7 +22,7 @@ type UseDataGridCellHandlersOptions<TData, TFieldValues extends FieldValues> = {
 
 export const useDataGridCellHandlers = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >({
   matrix,
   anchor,

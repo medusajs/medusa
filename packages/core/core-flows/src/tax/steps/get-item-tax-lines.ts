@@ -123,7 +123,7 @@ function normalizeLineItemsForTax(
         quantity: item.quantity,
         unit_price: item.unit_price,
         currency_code: orderOrCart.currency_code,
-      } as TaxableItemDTO)
+      }) as TaxableItemDTO
   )
 }
 
@@ -138,7 +138,7 @@ function normalizeLineItemsForShipping(
         shipping_option_id: shippingMethod.shipping_option_id!,
         unit_price: shippingMethod.amount,
         currency_code: orderOrCart.currency_code,
-      } as TaxableShippingDTO)
+      }) as TaxableShippingDTO
   )
 }
 

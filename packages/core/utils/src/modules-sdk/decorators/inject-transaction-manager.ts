@@ -28,9 +28,8 @@ export function InjectTransactionManager(
         return await originalMethod.apply(this, args)
       }
 
-      return await (!managerProperty
-        ? this
-        : this[managerProperty]
+      return await (
+        !managerProperty ? this : this[managerProperty]
       ).transaction(
         async (transactionManager) => {
           const copiedContext = {} as Context

@@ -6,7 +6,7 @@ import {
 
 export type StoreRequestWithContext<
   Body,
-  QueryFields = Record<string, unknown>
+  QueryFields = Record<string, unknown>,
 > = MedusaStoreRequest<Body, QueryFields> & {
   pricingContext?: MedusaPricingContext
   taxContext?: {

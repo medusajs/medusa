@@ -117,10 +117,10 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
           const isFullyRefunded = row.original.payment_status === "refunded"
           const total = !isFullyRefunded
             ? getValue()
-            : row.original.payment_collections?.reduce(
+            : (row.original.payment_collections?.reduce(
                 (acc, payCol) => acc + (payCol.refunded_amount ?? 0),
                 0
-              ) ?? 0
+              ) ?? 0)
           const currencyCode = row.original.currency_code
 
           return (

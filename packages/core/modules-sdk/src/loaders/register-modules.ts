@@ -178,6 +178,6 @@ function getInternalModuleResolution(
       ...moduleDeclaration,
     },
     moduleExports,
-    options: isObj ? moduleConfig.options ?? {} : {},
+    options: isObj ? (moduleConfig.options ?? {}) : {},
   }
 }

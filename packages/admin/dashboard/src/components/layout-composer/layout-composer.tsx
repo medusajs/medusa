@@ -529,7 +529,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
           {layoutNode}
           <DragOverlay>
             {activeEntry ? (
-              <div className="bg-ui-bg-base shadow-elevation-flyout ring-ui-border-base min-w-0 rounded-lg ring-1">
+              <div className="min-w-0 rounded-lg bg-ui-bg-base shadow-elevation-flyout ring-1 ring-ui-border-base">
                 <EntryContent>{activeEntry.render(data)}</EntryContent>
               </div>
             ) : null}

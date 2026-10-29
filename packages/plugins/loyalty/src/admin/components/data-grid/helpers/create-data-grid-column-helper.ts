@@ -46,7 +46,7 @@ type DataGridHelperColumnsProps<TData, TFieldValues extends FieldValues> = {
 
 export function createDataGridHelper<
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >() {
   const columnHelper = createColumnHelper<TData>()
 

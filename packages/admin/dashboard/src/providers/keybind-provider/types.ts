@@ -9,9 +9,7 @@ export type Keys = {
 }
 
 export type ShortcutType =
-  | "pageShortcut"
-  | "settingShortcut"
-  | "commandShortcut"
+  "pageShortcut" | "settingShortcut" | "commandShortcut"
 
 export type Shortcut = {
   keys: Keys

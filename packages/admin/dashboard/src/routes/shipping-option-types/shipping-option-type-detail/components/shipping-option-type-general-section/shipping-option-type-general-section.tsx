@@ -51,11 +51,11 @@ export const ShippingOptionTypeGeneralSection = ({
 
   return (
     <Container className="divide-y p-0">
-      <div className="flex items-center justify-between  px-6 py-4">
+      <div className="flex items-center justify-between px-6 py-4">
         <Heading>{shippingOptionType.label}</Heading>
         {groups.length > 0 && <ActionMenu groups={groups} />}
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.code")}
         </Text>
@@ -63,7 +63,7 @@ export const ShippingOptionTypeGeneralSection = ({
           {shippingOptionType.code}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.description")}
         </Text>

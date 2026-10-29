@@ -40,12 +40,10 @@ export interface JobResourceData extends BaseResourceData {
 }
 
 export type ResourceRegistrationData =
-  | WorkflowResourceData
-  | StepResourceData
-  | SubscriberResourceData
+  WorkflowResourceData | StepResourceData | SubscriberResourceData
 
 export interface ResourceTypeHandler<
-  T extends BaseResourceData = BaseResourceData
+  T extends BaseResourceData = BaseResourceData,
 > {
   readonly type: string
 

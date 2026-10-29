@@ -38,7 +38,6 @@
     "@medusajs/user": "workspace:^",
     "@medusajs/utils": "workspace:^",
     "@medusajs/workflow-engine-inmemory": "workspace:*",
-    "faker": "^5.5.3",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.23.1",
     "scrypt-kdf": "^2.0.1"

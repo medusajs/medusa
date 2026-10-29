@@ -1,5 +1,5 @@
 import { upperCaseFirst } from "@medusajs/utils"
-import { OpenAPIObject } from "openapi3-ts"
+import { OpenAPIObject } from "openapi3-ts/oas30"
 
 export async function combineOAS(
   adminOAS: OpenAPIObject,

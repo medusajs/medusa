@@ -7,8 +7,9 @@ import * as React from "react"
 
 import { clx } from "@/utils/clx"
 
-interface SelectProps
-  extends React.ComponentPropsWithoutRef<typeof RadixSelect.Root> {
+interface SelectProps extends React.ComponentPropsWithoutRef<
+  typeof RadixSelect.Root
+> {
   size?: "base" | "small"
 }
 
@@ -105,8 +106,9 @@ const Trigger = React.forwardRef<
 })
 Trigger.displayName = "Select.Trigger"
 
-interface SelectContentProps
-  extends React.ComponentPropsWithoutRef<typeof RadixSelect.Content> {}
+interface SelectContentProps extends React.ComponentPropsWithoutRef<
+  typeof RadixSelect.Content
+> {}
 
 /**
  * The content that appears when the select is open.
@@ -141,7 +143,7 @@ const Content = React.forwardRef<
       <RadixSelect.Content
         ref={ref}
         className={clx(
-          "bg-ui-bg-component text-ui-fg-base shadow-elevation-flyout relative max-h-[200px] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg",
+          "relative max-h-[200px] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg bg-ui-bg-component text-ui-fg-base shadow-elevation-flyout",
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
@@ -183,7 +185,7 @@ const Label = React.forwardRef<
   <RadixSelect.Label
     ref={ref}
     className={clx(
-      "txt-compact-xsmall-plus text-ui-fg-muted px-2 py-1.5",
+      "txt-compact-xsmall-plus px-2 py-1.5 text-ui-fg-muted",
       className
     )}
     {...props}
@@ -203,7 +205,7 @@ const Item = React.forwardRef<
     <RadixSelect.Item
       ref={ref}
       className={clx(
-        "bg-ui-bg-component txt-compact-small grid cursor-pointer grid-cols-[15px_1fr] items-center gap-x-2 rounded-[4px] px-2 py-1.5 outline-none transition-colors",
+        "txt-compact-small grid cursor-pointer grid-cols-[15px_1fr] items-center gap-x-2 rounded-[4px] bg-ui-bg-component px-2 py-1.5 outline-none transition-colors",
         "focus-visible:bg-ui-bg-component-hover",
         "active:bg-ui-bg-component-pressed",
         "data-[state=checked]:txt-compact-small-plus",
@@ -232,7 +234,7 @@ const Separator = React.forwardRef<
   <RadixSelect.Separator
     ref={ref}
     className={clx(
-      "bg-ui-border-component border-t-ui-border-menu-top border-b-ui-border-menu-bot -mx-1 my-1 h-0.5 border-b border-t",
+      "bg-ui-border-component -mx-1 my-1 h-0.5 border-b border-t border-b-ui-border-menu-bot border-t-ui-border-menu-top",
       className
     )}
     {...props}

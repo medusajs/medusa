@@ -40,7 +40,7 @@ export const TaxRegionTable = ({
           return (
             <div
               key={index}
-              className="bg-ui-bg-field-component h-[52px] w-full animate-pulse"
+              className="h-[52px] w-full animate-pulse bg-ui-bg-field-component"
             />
           )
         })}
@@ -101,7 +101,7 @@ export const TaxRegionTable = ({
               return (
                 <div
                   key={index}
-                  className="bg-ui-bg-field-component h-[60px] w-full animate-pulse"
+                  className="h-[60px] w-full animate-pulse bg-ui-bg-field-component"
                 />
               )
             })

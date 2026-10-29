@@ -197,7 +197,7 @@ export const Search = () => {
                   hidden={true}
                   value={`${group.title}:show:more`} // Prevent the "Show more" buttons across groups from sharing the same value/state
                 >
-                  <div className="text-ui-fg-muted flex items-center gap-x-3">
+                  <div className="flex items-center gap-x-3 text-ui-fg-muted">
                     <Plus />
                     <Text size="small" leading="compact" weight="plus">
                       {t("app.search.showMore")}
@@ -211,7 +211,7 @@ export const Search = () => {
                   hidden={true}
                   value={`${group.title}:load:more`}
                 >
-                  <div className="text-ui-fg-muted flex items-center gap-x-3">
+                  <div className="flex items-center gap-x-3 text-ui-fg-muted">
                     <Plus />
                     <Text size="small" leading="compact" weight="plus">
                       {t("app.search.loadMore", {
@@ -292,8 +292,8 @@ const CommandDialog = ({ children, ...props }: RadixDialog.DialogProps) => {
   return (
     <RadixDialog.Root {...props}>
       <RadixDialog.Portal>
-        <RadixDialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <RadixDialog.Content className="bg-ui-bg-base shadow-elevation-modal fixed left-[50%] top-[50%] flex max-h-[calc(100%-16px)] w-[calc(100%-16px)] min-w-0 max-w-2xl translate-x-[-50%] translate-y-[-50%] flex-col overflow-hidden rounded-xl p-0">
+        <RadixDialog.Overlay className="fixed inset-0 bg-ui-bg-overlay" />
+        <RadixDialog.Content className="fixed left-[50%] top-[50%] flex max-h-[calc(100%-16px)] w-[calc(100%-16px)] min-w-0 max-w-2xl translate-x-[-50%] translate-y-[-50%] flex-col overflow-hidden rounded-xl bg-ui-bg-base p-0 shadow-elevation-modal">
           <RadixDialog.Title className="sr-only">
             {t("app.search.title")}
           </RadixDialog.Title>
@@ -303,7 +303,7 @@ const CommandDialog = ({ children, ...props }: RadixDialog.DialogProps) => {
           <CommandPalette className="[&_[cmdk-group-heading]]:text-muted-foreground flex h-full flex-col overflow-hidden [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0">
             {children}
           </CommandPalette>
-          <div className="bg-ui-bg-field text-ui-fg-subtle flex items-center justify-end border-t px-4 py-3">
+          <div className="flex items-center justify-end border-t bg-ui-bg-field px-4 py-3 text-ui-fg-subtle">
             <div className="flex items-center gap-x-3">
               <div className="flex items-center gap-x-2">
                 <Text size="xsmall" leading="compact">
@@ -314,7 +314,7 @@ const CommandDialog = ({ children, ...props }: RadixDialog.DialogProps) => {
                   <Kbd className="bg-ui-bg-field-component">↑</Kbd>
                 </div>
               </div>
-              <div className="bg-ui-border-strong h-3 w-px" />
+              <div className="h-3 w-px bg-ui-border-strong" />
               <div className="flex items-center gap-x-2">
                 <Text size="xsmall" leading="compact">
                   {t("app.search.openResult")}
@@ -366,7 +366,7 @@ const CommandInput = forwardRef<
             <DropdownMenu.Trigger asChild>
               <Badge
                 size="2xsmall"
-                className="hover:bg-ui-bg-base-pressed transition-fg cursor-pointer"
+                className="cursor-pointer transition-fg hover:bg-ui-bg-base-pressed"
               >
                 {resolveSearchEntityGroupLabel(area, t)}
                 <TriangleDownMini className="text-ui-fg-muted" />
@@ -413,14 +413,14 @@ const CommandInput = forwardRef<
             value={value}
             onValueChange={onValueChange}
             className={clx(
-              "placeholder:text-ui-fg-muted flex !h-6 w-full rounded-md bg-transparent text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50",
+              "flex !h-6 w-full rounded-md bg-transparent text-sm outline-none placeholder:text-ui-fg-muted disabled:cursor-not-allowed disabled:opacity-50",
               className
             )}
             {...props}
           />
           <div className="absolute end-4 top-1/2 flex -translate-y-1/2 items-center justify-end gap-x-2">
             {isFetching && (
-              <Spinner className="text-ui-fg-muted animate-spin" />
+              <Spinner className="animate-spin text-ui-fg-muted" />
             )}
             {value && (
               <Button
@@ -471,7 +471,7 @@ const CommandEmpty = forwardRef<
 
   return (
     <Command.Empty ref={ref} className="py-6 text-center text-sm" {...props}>
-      <div className="text-ui-fg-subtle flex min-h-[236px] flex-col items-center justify-center gap-y-3">
+      <div className="flex min-h-[236px] flex-col items-center justify-center gap-y-3 text-ui-fg-subtle">
         <MagnifyingGlass className="text-ui-fg-subtle" />
         <div className="flex flex-col items-center justify-center gap-y-1">
           <Text size="small" weight="plus" leading="compact">
@@ -500,7 +500,7 @@ const CommandLoading = forwardRef<
     <Command.Loading
       ref={ref}
       {...props}
-      className="bg-ui-bg-base flex flex-col"
+      className="flex flex-col bg-ui-bg-base"
     >
       <div className="w-full px-2 pb-1 pt-3">
         <Skeleton className="h-5 w-10" />
@@ -522,7 +522,7 @@ const CommandGroup = forwardRef<
   <Command.Group
     ref={ref}
     className={clx(
-      "text-ui-fg-base [&_[cmdk-group-heading]]:text-ui-fg-muted [&_[cmdk-group-heading]]:txt-compact-xsmall-plus overflow-hidden [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-3 [&_[cmdk-item]]:py-2",
+      "overflow-hidden text-ui-fg-base [&_[cmdk-group-heading]]:txt-compact-xsmall-plus [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-3 [&_[cmdk-group-heading]]:text-ui-fg-muted [&_[cmdk-item]]:py-2",
       className
     )}
     {...props}
@@ -550,7 +550,7 @@ const CommandItem = forwardRef<
   <Command.Item
     ref={ref}
     className={clx(
-      "aria-selected:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-hover txt-compact-small [&>svg]:text-ui-fg-subtle relative flex cursor-pointer select-none items-center gap-x-3 rounded-md p-2 outline-none data-[disabled]:pointer-events-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
+      "txt-compact-small relative flex cursor-pointer select-none items-center gap-x-3 rounded-md p-2 outline-none focus-visible:bg-ui-bg-base-hover aria-selected:bg-ui-bg-base-hover data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50 [&>svg]:text-ui-fg-subtle",
       className
     )}
     {...props}

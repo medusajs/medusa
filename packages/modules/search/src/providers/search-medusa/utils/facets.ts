@@ -89,8 +89,8 @@ export function buildFacetQueries(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
 ): FacetQuery[] {
-  const requests = (input.search_options?.facets ?? []) as
-    | SearchTypes.SearchFacetRequest[]
+  const requests = (input.search_options?.facets ??
+    []) as SearchTypes.SearchFacetRequest[]
   const base = buildQueryFilters(input, plan)
   const result: FacetQuery[] = []
 

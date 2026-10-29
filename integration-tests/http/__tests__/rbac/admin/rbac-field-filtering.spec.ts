@@ -190,9 +190,8 @@ medusaIntegrationTestRunner({
         password: "somepassword",
       })
 
-      adminHeaders.headers[
-        "authorization"
-      ] = `Bearer ${loginResponse.data.token}`
+      adminHeaders.headers["authorization"] =
+        `Bearer ${loginResponse.data.token}`
 
       const productFixture = getProductFixture({
         title: "Test Product for RBAC Field Filtering",
@@ -259,9 +258,8 @@ medusaIntegrationTestRunner({
         })
 
         const copyAdminHeaders = { ...adminHeaders }
-        copyAdminHeaders.headers[
-          "authorization"
-        ] = `Bearer ${loginResponse.data.token}`
+        copyAdminHeaders.headers["authorization"] =
+          `Bearer ${loginResponse.data.token}`
 
         // This should fail due to lack of permissions
         const response = await api
@@ -307,9 +305,8 @@ medusaIntegrationTestRunner({
         })
 
         const copyAdminHeaders = { ...adminHeaders }
-        copyAdminHeaders.headers[
-          "authorization"
-        ] = `Bearer ${loginResponse.data.token}`
+        copyAdminHeaders.headers["authorization"] =
+          `Bearer ${loginResponse.data.token}`
 
         const response = await api.get(
           `/admin/products/${baseProduct.id}`,
@@ -383,9 +380,8 @@ medusaIntegrationTestRunner({
         })
 
         const copyAdminHeaders = { ...adminHeaders }
-        copyAdminHeaders.headers[
-          "authorization"
-        ] = `Bearer ${loginResponse.data.token}`
+        copyAdminHeaders.headers["authorization"] =
+          `Bearer ${loginResponse.data.token}`
 
         const response = await api.get(
           `/admin/products/${baseProduct.id}`,
@@ -430,9 +426,8 @@ medusaIntegrationTestRunner({
           password: "somepassword",
         })
 
-        superAdminHeaders.headers[
-          "authorization"
-        ] = `Bearer ${loginResponse.data.token}`
+        superAdminHeaders.headers["authorization"] =
+          `Bearer ${loginResponse.data.token}`
 
         // Test READ operation - should succeed
         const readResponse = await api.get(

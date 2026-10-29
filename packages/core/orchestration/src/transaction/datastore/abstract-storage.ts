@@ -58,9 +58,7 @@ export interface IDistributedTransactionStorage {
   clearExpiredExecutions(): Promise<void>
 }
 
-export abstract class DistributedSchedulerStorage
-  implements IDistributedSchedulerStorage
-{
+export abstract class DistributedSchedulerStorage implements IDistributedSchedulerStorage {
   constructor() {
     /* noop */
   }
@@ -81,9 +79,7 @@ export abstract class DistributedSchedulerStorage
   }
 }
 
-export abstract class DistributedTransactionStorage
-  implements IDistributedTransactionStorage
-{
+export abstract class DistributedTransactionStorage implements IDistributedTransactionStorage {
   constructor() {
     /* noop */
   }

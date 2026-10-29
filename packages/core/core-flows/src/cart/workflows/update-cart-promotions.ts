@@ -46,9 +46,7 @@ export type UpdateCartPromotionsWorkflowInput = {
    * The action to perform with the specified promotion codes.
    */
   action?:
-    | PromotionActions.ADD
-    | PromotionActions.REMOVE
-    | PromotionActions.REPLACE
+    PromotionActions.ADD | PromotionActions.REMOVE | PromotionActions.REPLACE
   /**
    * Wether to force the refresh of the cart payment collection. If the caller doesn't refresh it explicitly,
    * you should probably set this property to true.

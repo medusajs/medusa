@@ -28,7 +28,7 @@ function EditItem({
   quantity: number
 }) {
   return (
-    <div key={item.id} className="text-ui-fg-subtle items-center gap-x-2">
+    <div key={item.id} className="items-center gap-x-2 text-ui-fg-subtle">
       <div className="flex items-center gap-x-2">
         <div className="w-fit min-w-[27px]">
           <span className="txt-small tabular-nums">{quantity}</span>x
@@ -36,7 +36,7 @@ function EditItem({
 
         <Thumbnail src={item.thumbnail} />
 
-        <span className="txt-small text-ui-fg-subtle font-medium">
+        <span className="txt-small font-medium text-ui-fg-subtle">
           {item.title}
         </span>
 
@@ -158,7 +158,7 @@ export const OrderActiveEditSection = ({
 
           {/* ADDED ITEMS*/}
           {!!addedItems.length && (
-            <div className="txt-small text-ui-fg-subtle flex flex-row px-6 py-4">
+            <div className="txt-small flex flex-row px-6 py-4 text-ui-fg-subtle">
               <span className="flex-1 font-medium">{t("labels.added")}</span>
 
               <div className="flex flex-1 flex-col gap-y-2">
@@ -171,7 +171,7 @@ export const OrderActiveEditSection = ({
 
           {/* REMOVED ITEMS*/}
           {!!removedItems.length && (
-            <div className="txt-small text-ui-fg-subtle flex flex-row px-6 py-4">
+            <div className="txt-small flex flex-row px-6 py-4 text-ui-fg-subtle">
               <span className="flex-1 font-medium">{t("labels.removed")}</span>
 
               <div className="flex flex-1 flex-col gap-y-2">
@@ -183,7 +183,7 @@ export const OrderActiveEditSection = ({
           )}
 
           {(canContinue || canForceConfirm || canCancel) && (
-            <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+            <div className="flex items-center justify-end gap-x-2 rounded-b-xl bg-ui-bg-subtle px-4 py-4">
               {isPending
                 ? canContinue && (
                     <Button

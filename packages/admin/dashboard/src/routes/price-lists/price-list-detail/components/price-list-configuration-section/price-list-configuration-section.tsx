@@ -63,8 +63,7 @@ const CustomerGroupDisplay = ({
   const { t } = useTranslation()
 
   const customerGroupIds = priceList.rules["customer.groups.id"] as
-    | string[]
-    | undefined
+    string[] | undefined
 
   const { customer_groups, isPending, isError, error } = useCustomerGroups(
     {
@@ -88,7 +87,7 @@ const CustomerGroupDisplay = ({
   }
 
   return (
-    <div className="txt-small-plus text-ui-fg-muted flex items-center gap-x-1.5">
+    <div className="txt-small-plus flex items-center gap-x-1.5 text-ui-fg-muted">
       <span className="text-ui-fg-subtle">
         {t("priceLists.fields.customerAvailability.attribute")}
       </span>

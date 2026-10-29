@@ -157,7 +157,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
           {menuGroups.length > 0 && <ActionMenu groups={menuGroups} />}
         </div>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.key")}
         </Text>
@@ -173,7 +173,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
           </Copy>
         )}
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.type")}
         </Text>
@@ -181,7 +181,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
           {apiKeyType.label}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("apiKeyManagement.fields.lastUsedAtLabel")}
         </Text>
@@ -191,7 +191,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
             : "-"}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("apiKeyManagement.fields.createdByLabel")}
         </Text>
@@ -199,7 +199,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
       </div>
       {apiKey.revoked_at && (
         <>
-          <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+          <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
             <Text size="small" leading="compact" weight="plus">
               {t("apiKeyManagement.fields.revokedAtLabel")}
             </Text>
@@ -207,7 +207,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
               {getFullDate({ date: apiKey.revoked_at, includeTime: true })}
             </Text>
           </div>
-          <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+          <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
             <Text size="small" leading="compact" weight="plus">
               {t("apiKeyManagement.fields.revokedByLabel")}
             </Text>

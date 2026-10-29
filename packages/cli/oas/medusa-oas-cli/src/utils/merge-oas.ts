@@ -1,8 +1,12 @@
-import { OpenAPIObject, TagObject } from "openapi3-ts"
+import { OpenAPIObject, TagObject } from "openapi3-ts/oas30"
+import { OpenAPIObject as OpenAPIObject31 } from "openapi3-ts/oas31"
+
+type OpenAPIObjectWithWebhooks = OpenAPIObject &
+  Pick<OpenAPIObject31, "webhooks">
 
 export function mergeBaseIntoOAS(
-  targetOAS: OpenAPIObject,
-  sourceOAS: OpenAPIObject
+  targetOAS: OpenAPIObjectWithWebhooks,
+  sourceOAS: OpenAPIObjectWithWebhooks
 ): void {
   /**
    * replace strategy for OpenAPIObject properties

@@ -69,7 +69,7 @@ export const CustomerAddressSection = ({
         <PermissionGuard
           permissions={["customer:update", "customer_address:create"]}
         >
-          <Link to={`create-address`} className="text-ui-fg-muted text-xs">
+          <Link to={`create-address`} className="text-xs text-ui-fg-muted">
             Add
           </Link>
         </PermissionGuard>

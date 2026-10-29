@@ -154,7 +154,7 @@ export const AccessDenied = ({ requirement }: AccessDeniedProps) => {
     <div className="flex min-h-[60vh] w-full items-center justify-center p-4">
       <Container className="max-w-md">
         <div className="flex flex-col items-center gap-y-4 py-8 text-center">
-          <div className="bg-ui-bg-subtle flex h-12 w-12 items-center justify-center rounded-full">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-ui-bg-subtle">
             <ExclamationCircle className="text-ui-fg-muted" />
           </div>
           <div className="flex flex-col gap-y-1">

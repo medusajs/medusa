@@ -8,10 +8,9 @@ export interface AdminNotificationResponse {
   notification: AdminNotification
 }
 
-export interface AdminNotificationListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of notifications.
-     */
-    notifications: AdminNotification[]
-  }> {}
+export interface AdminNotificationListResponse extends PaginatedResponse<{
+  /**
+   * The list of notifications.
+   */
+  notifications: AdminNotification[]
+}> {}

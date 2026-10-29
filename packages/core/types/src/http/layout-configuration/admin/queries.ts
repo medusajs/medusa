@@ -7,8 +7,7 @@ import { FindParams } from "../../common"
  * @since 2.17.2
  */
 export interface AdminGetLayoutConfigurationsParams
-  extends FindParams,
-    BaseFilterable<AdminGetLayoutConfigurationsParams> {
+  extends FindParams, BaseFilterable<AdminGetLayoutConfigurationsParams> {
   /**
    * IDs to filter layout configurations by.
    */

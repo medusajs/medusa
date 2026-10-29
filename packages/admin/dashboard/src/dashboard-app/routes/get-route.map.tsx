@@ -79,9 +79,8 @@ export function getRouteMap({
                   path: ":id",
                   errorElement: <ErrorBoundary />,
                   lazy: async () => {
-                    const { Breadcrumb, loader, seo } = await import(
-                      "../../routes/products/product-detail"
-                    )
+                    const { Breadcrumb, loader, seo } =
+                      await import("../../routes/products/product-detail")
 
                     return {
                       Component: Outlet,
@@ -109,9 +108,7 @@ export function getRouteMap({
                         {
                           path: "edit-variant",
                           lazy: () =>
-                            import(
-                              "../../routes/product-variants/product-variant-edit"
-                            ),
+                            import("../../routes/product-variants/product-variant-edit"),
                           handle: {
                             permissions: [
                               "product:update",
@@ -122,9 +119,7 @@ export function getRouteMap({
                         {
                           path: "sales-channels",
                           lazy: () =>
-                            import(
-                              "../../routes/products/product-sales-channels"
-                            ),
+                            import("../../routes/products/product-sales-channels"),
                           handle: { permissions: "product:update" },
                         },
                         {
@@ -136,17 +131,13 @@ export function getRouteMap({
                         {
                           path: "organization",
                           lazy: () =>
-                            import(
-                              "../../routes/products/product-organization"
-                            ),
+                            import("../../routes/products/product-organization"),
                           handle: { permissions: "product:update" },
                         },
                         {
                           path: "shipping-profile",
                           lazy: () =>
-                            import(
-                              "../../routes/products/product-shipping-profile"
-                            ),
+                            import("../../routes/products/product-shipping-profile"),
                           handle: { permissions: "product:update" },
                         },
                         {
@@ -158,9 +149,7 @@ export function getRouteMap({
                         {
                           path: "images/:image_id/variants",
                           lazy: () =>
-                            import(
-                              "../../routes/products/product-image-variants-edit"
-                            ),
+                            import("../../routes/products/product-image-variants-edit"),
                           handle: {
                             permissions: [
                               "product:update",
@@ -183,9 +172,7 @@ export function getRouteMap({
                         {
                           path: "variants/create",
                           lazy: () =>
-                            import(
-                              "../../routes/products/product-create-variant"
-                            ),
+                            import("../../routes/products/product-create-variant"),
                           handle: {
                             permissions: [
                               "product:update",
@@ -214,9 +201,7 @@ export function getRouteMap({
                         {
                           path: "options/manage",
                           lazy: () =>
-                            import(
-                              "../../routes/products/product-options-manage"
-                            ),
+                            import("../../routes/products/product-options-manage"),
                         },
                       ],
                     },
@@ -224,9 +209,7 @@ export function getRouteMap({
                       path: "variants/:variant_id",
                       lazy: async () => {
                         const { Component, Breadcrumb, loader, seo } =
-                          await import(
-                            "../../routes/product-variants/product-variant-detail"
-                          )
+                          await import("../../routes/product-variants/product-variant-detail")
 
                         return {
                           Component,
@@ -248,9 +231,7 @@ export function getRouteMap({
                         {
                           path: "edit",
                           lazy: () =>
-                            import(
-                              "../../routes/product-variants/product-variant-edit"
-                            ),
+                            import("../../routes/product-variants/product-variant-edit"),
                           handle: {
                             permissions: [
                               "product:update",
@@ -273,9 +254,7 @@ export function getRouteMap({
                         {
                           path: "manage-items",
                           lazy: () =>
-                            import(
-                              "../../routes/product-variants/product-variant-manage-inventory-items"
-                            ),
+                            import("../../routes/product-variants/product-variant-manage-inventory-items"),
                           handle: {
                             permissions: [
                               "product:update",
@@ -287,9 +266,7 @@ export function getRouteMap({
                         {
                           path: "media",
                           lazy: () =>
-                            import(
-                              "../../routes/product-variants/product-variant-media"
-                            ),
+                            import("../../routes/product-variants/product-variant-media"),
                           handle: {
                             permissions: [
                               "product:update",
@@ -300,9 +277,7 @@ export function getRouteMap({
                         {
                           path: "metadata/edit",
                           lazy: () =>
-                            import(
-                              "../../routes/product-variants/product-variant-metadata"
-                            ),
+                            import("../../routes/product-variants/product-variant-metadata"),
                           handle: {
                             permissions: [
                               "product:update",
@@ -331,9 +306,7 @@ export function getRouteMap({
                     {
                       path: "create",
                       lazy: () =>
-                        import(
-                          "../../routes/product-options/product-option-create"
-                        ),
+                        import("../../routes/product-options/product-option-create"),
                     },
                   ],
                 },
@@ -341,9 +314,8 @@ export function getRouteMap({
                   path: ":id",
                   errorElement: <ErrorBoundary />,
                   lazy: async () => {
-                    const { Breadcrumb, loader } = await import(
-                      "../../routes/product-options/product-option-detail"
-                    )
+                    const { Breadcrumb, loader } =
+                      await import("../../routes/product-options/product-option-detail")
 
                     return {
                       Component: Outlet,
@@ -359,32 +331,25 @@ export function getRouteMap({
                     {
                       path: "",
                       lazy: () =>
-                        import(
-                          "../../routes/product-options/product-option-detail"
-                        ),
+                        import("../../routes/product-options/product-option-detail"),
                       children: [
                         {
                           path: "edit",
                           lazy: () =>
-                            import(
-                              "../../routes/product-options/product-option-edit"
-                            ),
+                            import("../../routes/product-options/product-option-edit"),
                         },
                         {
                           path: "metadata/edit",
                           lazy: () =>
-                            import(
-                              "../../routes/product-options/product-option-metadata"
-                            ),
+                            import("../../routes/product-options/product-option-metadata"),
                         },
                       ],
                     },
                     {
                       path: "values/:value_id",
                       lazy: async () => {
-                        const { Component, Breadcrumb, loader } = await import(
-                          "../../routes/product-options/product-option-value-detail"
-                        )
+                        const { Component, Breadcrumb, loader } =
+                          await import("../../routes/product-options/product-option-value-detail")
 
                         return {
                           Component,
@@ -401,9 +366,7 @@ export function getRouteMap({
                         {
                           path: "metadata/edit",
                           lazy: () =>
-                            import(
-                              "../../routes/product-options/product-option-value-metadata"
-                            ),
+                            import("../../routes/product-options/product-option-value-metadata"),
                         },
                       ],
                     },
@@ -445,9 +408,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/categories/category-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/categories/category-detail")
 
                     return {
                       Component,
@@ -521,9 +483,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/orders/order-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/orders/order-detail")
 
                     return {
                       Component,
@@ -637,9 +598,7 @@ export function getRouteMap({
                     {
                       path: "shipping-address",
                       lazy: () =>
-                        import(
-                          "../../routes/orders/order-edit-shipping-address"
-                        ),
+                        import("../../routes/orders/order-edit-shipping-address"),
                       handle: {
                         permissions: ["order_address:update", "order:update"],
                       },
@@ -647,9 +606,7 @@ export function getRouteMap({
                     {
                       path: "billing-address",
                       lazy: () =>
-                        import(
-                          "../../routes/orders/order-edit-billing-address"
-                        ),
+                        import("../../routes/orders/order-edit-billing-address"),
                       handle: {
                         permissions: ["order_address:update", "order:update"],
                       },
@@ -689,9 +646,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/promotions/promotion-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/promotions/promotion-detail")
 
                     return {
                       Component,
@@ -708,17 +664,13 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () =>
-                        import(
-                          "../../routes/promotions/promotion-edit-details"
-                        ),
+                        import("../../routes/promotions/promotion-edit-details"),
                       handle: { permissions: "promotion:update" },
                     },
                     {
                       path: "add-to-campaign",
                       lazy: () =>
-                        import(
-                          "../../routes/promotions/promotion-add-campaign"
-                        ),
+                        import("../../routes/promotions/promotion-add-campaign"),
                       handle: {
                         permissions: [
                           "promotion:update",
@@ -768,9 +720,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/campaigns/campaign-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/campaigns/campaign-detail")
 
                     return {
                       Component,
@@ -805,9 +756,7 @@ export function getRouteMap({
                     {
                       path: "add-promotions",
                       lazy: () =>
-                        import(
-                          "../../routes/campaigns/add-campaign-promotions"
-                        ),
+                        import("../../routes/campaigns/add-campaign-promotions"),
                       handle: {
                         permissions: [
                           "campaign:update",
@@ -849,9 +798,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/collections/collection-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/collections/collection-detail")
 
                     return {
                       Component,
@@ -874,9 +822,7 @@ export function getRouteMap({
                     {
                       path: "products",
                       lazy: () =>
-                        import(
-                          "../../routes/collections/collection-add-products"
-                        ),
+                        import("../../routes/collections/collection-add-products"),
                       handle: {
                         permissions: [
                           "product:read",
@@ -926,9 +872,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/price-lists/price-list-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/price-lists/price-list-detail")
 
                     return {
                       Component,
@@ -951,17 +896,13 @@ export function getRouteMap({
                     {
                       path: "configuration",
                       lazy: () =>
-                        import(
-                          "../../routes/price-lists/price-list-configuration"
-                        ),
+                        import("../../routes/price-lists/price-list-configuration"),
                       handle: { permissions: "price_list:update" },
                     },
                     {
                       path: "products/add",
                       lazy: () =>
-                        import(
-                          "../../routes/price-lists/price-list-prices-add"
-                        ),
+                        import("../../routes/price-lists/price-list-prices-add"),
                       handle: {
                         permissions: ["price_list:update", "product:read"],
                       },
@@ -969,9 +910,7 @@ export function getRouteMap({
                     {
                       path: "products/edit",
                       lazy: () =>
-                        import(
-                          "../../routes/price-lists/price-list-prices-edit"
-                        ),
+                        import("../../routes/price-lists/price-list-prices-edit"),
                       handle: {
                         permissions: ["price_list:update", "product:read"],
                       },
@@ -1019,9 +958,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/customers/customer-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/customers/customer-detail")
 
                     return {
                       Component,
@@ -1044,9 +982,7 @@ export function getRouteMap({
                     {
                       path: "create-address",
                       lazy: () =>
-                        import(
-                          "../../routes/customers/customer-create-address"
-                        ),
+                        import("../../routes/customers/customer-create-address"),
                       handle: {
                         permissions: [
                           "customer:update",
@@ -1057,9 +993,7 @@ export function getRouteMap({
                     {
                       path: "add-customer-groups",
                       lazy: () =>
-                        import(
-                          "../../routes/customers/customers-add-customer-group"
-                        ),
+                        import("../../routes/customers/customers-add-customer-group"),
                       handle: {
                         permissions: [
                           "customer:update",
@@ -1106,9 +1040,7 @@ export function getRouteMap({
                     {
                       path: "create",
                       lazy: () =>
-                        import(
-                          "../../routes/customer-groups/customer-group-create"
-                        ),
+                        import("../../routes/customer-groups/customer-group-create"),
                       handle: { permissions: "customer_group:create" },
                     },
                   ],
@@ -1116,9 +1048,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/customer-groups/customer-group-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/customer-groups/customer-group-detail")
 
                     return {
                       Component,
@@ -1135,17 +1066,13 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () =>
-                        import(
-                          "../../routes/customer-groups/customer-group-edit"
-                        ),
+                        import("../../routes/customer-groups/customer-group-edit"),
                       handle: { permissions: "customer_group:update" },
                     },
                     {
                       path: "add-customers",
                       lazy: () =>
-                        import(
-                          "../../routes/customer-groups/customer-group-add-customers"
-                        ),
+                        import("../../routes/customer-groups/customer-group-add-customers"),
                       handle: {
                         permissions: [
                           "customer:read",
@@ -1157,9 +1084,7 @@ export function getRouteMap({
                     {
                       path: "metadata/edit",
                       lazy: () =>
-                        import(
-                          "../../routes/customer-groups/customer-group-metadata"
-                        ),
+                        import("../../routes/customer-groups/customer-group-metadata"),
                       handle: { permissions: "customer_group:update" },
                     },
                   ],
@@ -1200,9 +1125,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/reservations/reservation-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/reservations/reservation-detail")
 
                     return {
                       Component,
@@ -1225,9 +1149,7 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () =>
-                        import(
-                          "../../routes/reservations/reservation-detail/components/edit-reservation"
-                        ),
+                        import("../../routes/reservations/reservation-detail/components/edit-reservation"),
                       handle: {
                         permissions: [
                           "reservation_item:read",
@@ -1241,9 +1163,7 @@ export function getRouteMap({
                     {
                       path: "metadata/edit",
                       lazy: () =>
-                        import(
-                          "../../routes/reservations/reservation-metadata"
-                        ),
+                        import("../../routes/reservations/reservation-metadata"),
                       handle: { permissions: "reservation_item:update" },
                     },
                   ],
@@ -1301,9 +1221,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/inventory/inventory-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/inventory/inventory-detail")
 
                     return {
                       Component,
@@ -1320,17 +1239,13 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () =>
-                        import(
-                          "../../routes/inventory/inventory-detail/components/edit-inventory-item"
-                        ),
+                        import("../../routes/inventory/inventory-detail/components/edit-inventory-item"),
                       handle: { permissions: "inventory_item:update" },
                     },
                     {
                       path: "attributes",
                       lazy: () =>
-                        import(
-                          "../../routes/inventory/inventory-detail/components/edit-inventory-item-attributes"
-                        ),
+                        import("../../routes/inventory/inventory-detail/components/edit-inventory-item-attributes"),
                       handle: { permissions: "inventory_item:update" },
                     },
                     {
@@ -1342,9 +1257,7 @@ export function getRouteMap({
                     {
                       path: "locations",
                       lazy: () =>
-                        import(
-                          "../../routes/inventory/inventory-detail/components/manage-locations"
-                        ),
+                        import("../../routes/inventory/inventory-detail/components/manage-locations"),
                       handle: {
                         permissions: [
                           "inventory_level:create",
@@ -1356,9 +1269,7 @@ export function getRouteMap({
                     {
                       path: "locations/:location_id",
                       lazy: () =>
-                        import(
-                          "../../routes/inventory/inventory-detail/components/adjust-inventory"
-                        ),
+                        import("../../routes/inventory/inventory-detail/components/adjust-inventory"),
                       handle: { permissions: "inventory_level:update" },
                     },
                   ],
@@ -1430,9 +1341,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/regions/region-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/regions/region-detail")
 
                     return {
                       Component,
@@ -1487,9 +1397,7 @@ export function getRouteMap({
                     {
                       path: ":entity/edit",
                       lazy: () =>
-                        import(
-                          "../../routes/property-labels/property-labels-edit"
-                        ),
+                        import("../../routes/property-labels/property-labels-edit"),
                       handle: { permissions: "property_label:update" },
                     },
                   ],
@@ -1578,9 +1486,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/users/user-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/users/user-detail")
 
                     return {
                       Component,
@@ -1639,9 +1546,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
-                      "../../routes/roles/role-detail"
-                    )
+                    const { Component, Breadcrumb, loader } =
+                      await import("../../routes/roles/role-detail")
 
                     return {
                       Component,
@@ -1734,9 +1640,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader } = await import(
-                      "../../routes/policies/policy-detail"
-                    )
+                    const { Component, Breadcrumb, loader } =
+                      await import("../../routes/policies/policy-detail")
 
                     return {
                       Component,
@@ -1787,9 +1692,7 @@ export function getRouteMap({
                     {
                       path: "create",
                       lazy: () =>
-                        import(
-                          "../../routes/sales-channels/sales-channel-create"
-                        ),
+                        import("../../routes/sales-channels/sales-channel-create"),
                       handle: { permissions: "sales_channel:create" },
                     },
                   ],
@@ -1797,9 +1700,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/sales-channels/sales-channel-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/sales-channels/sales-channel-detail")
 
                     return {
                       Component,
@@ -1816,17 +1718,13 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () =>
-                        import(
-                          "../../routes/sales-channels/sales-channel-edit"
-                        ),
+                        import("../../routes/sales-channels/sales-channel-edit"),
                       handle: { permissions: "sales_channel:update" },
                     },
                     {
                       path: "add-products",
                       lazy: () =>
-                        import(
-                          "../../routes/sales-channels/sales-channel-add-products"
-                        ),
+                        import("../../routes/sales-channels/sales-channel-add-products"),
                       handle: {
                         permissions: [
                           "sales_channel:update",
@@ -1838,9 +1736,7 @@ export function getRouteMap({
                     {
                       path: "metadata/edit",
                       lazy: () =>
-                        import(
-                          "../../routes/sales-channels/sales-channel-metadata"
-                        ),
+                        import("../../routes/sales-channels/sales-channel-metadata"),
                       handle: { permissions: "sales_channel:update" },
                     },
                   ],
@@ -1885,16 +1781,12 @@ export function getRouteMap({
                     {
                       path: "",
                       lazy: () =>
-                        import(
-                          "../../routes/shipping-profiles/shipping-profiles-list"
-                        ),
+                        import("../../routes/shipping-profiles/shipping-profiles-list"),
                       children: [
                         {
                           path: "create",
                           lazy: () =>
-                            import(
-                              "../../routes/shipping-profiles/shipping-profile-create"
-                            ),
+                            import("../../routes/shipping-profiles/shipping-profile-create"),
                           handle: { permissions: "shipping_profile:create" },
                         },
                       ],
@@ -1903,9 +1795,7 @@ export function getRouteMap({
                       path: ":shipping_profile_id",
                       lazy: async () => {
                         const { Component, Breadcrumb, loader, seo } =
-                          await import(
-                            "../../routes/shipping-profiles/shipping-profile-detail"
-                          )
+                          await import("../../routes/shipping-profiles/shipping-profile-detail")
 
                         return {
                           Component,
@@ -1923,9 +1813,7 @@ export function getRouteMap({
                         {
                           path: "metadata/edit",
                           lazy: () =>
-                            import(
-                              "../../routes/shipping-profiles/shipping-profile-metadata"
-                            ),
+                            import("../../routes/shipping-profiles/shipping-profile-metadata"),
                           handle: { permissions: "shipping_profile:update" },
                         },
                       ],
@@ -1948,16 +1836,12 @@ export function getRouteMap({
                     {
                       path: "",
                       lazy: () =>
-                        import(
-                          "../../routes/shipping-option-types/shipping-option-type-list"
-                        ),
+                        import("../../routes/shipping-option-types/shipping-option-type-list"),
                       children: [
                         {
                           path: "create",
                           lazy: () =>
-                            import(
-                              "../../routes/shipping-option-types/shipping-option-type-create"
-                            ),
+                            import("../../routes/shipping-option-types/shipping-option-type-create"),
                           handle: {
                             permissions: "shipping_option_type:create",
                           },
@@ -1968,9 +1852,7 @@ export function getRouteMap({
                       path: ":id",
                       lazy: async () => {
                         const { Component, Breadcrumb, loader, seo } =
-                          await import(
-                            "../../routes/shipping-option-types/shipping-option-type-detail"
-                          )
+                          await import("../../routes/shipping-option-types/shipping-option-type-detail")
 
                         return {
                           Component,
@@ -1988,9 +1870,7 @@ export function getRouteMap({
                         {
                           path: "edit",
                           lazy: () =>
-                            import(
-                              "../../routes/shipping-option-types/shipping-option-type-edit"
-                            ),
+                            import("../../routes/shipping-option-types/shipping-option-type-edit"),
                           handle: {
                             permissions: "shipping_option_type:update",
                           },
@@ -2002,9 +1882,8 @@ export function getRouteMap({
                 {
                   path: ":location_id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/locations/location-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/locations/location-detail")
 
                     return {
                       Component,
@@ -2027,9 +1906,7 @@ export function getRouteMap({
                     {
                       path: "sales-channels",
                       lazy: () =>
-                        import(
-                          "../../routes/locations/location-sales-channels"
-                        ),
+                        import("../../routes/locations/location-sales-channels"),
                       handle: {
                         permissions: [
                           "stock_location:update",
@@ -2040,9 +1917,7 @@ export function getRouteMap({
                     {
                       path: "fulfillment-providers",
                       lazy: () =>
-                        import(
-                          "../../routes/locations/location-fulfillment-providers"
-                        ),
+                        import("../../routes/locations/location-fulfillment-providers"),
                       handle: { permissions: "stock_location:update" },
                     },
                     {
@@ -2057,9 +1932,7 @@ export function getRouteMap({
                         {
                           path: "service-zones/create",
                           lazy: () =>
-                            import(
-                              "../../routes/locations/location-service-zone-create"
-                            ),
+                            import("../../routes/locations/location-service-zone-create"),
                           handle: {
                             permissions: [
                               "stock_location:update",
@@ -2074,9 +1947,7 @@ export function getRouteMap({
                             {
                               path: "edit",
                               lazy: () =>
-                                import(
-                                  "../../routes/locations/location-service-zone-edit"
-                                ),
+                                import("../../routes/locations/location-service-zone-edit"),
                               handle: {
                                 permissions: [
                                   "stock_location:update",
@@ -2088,9 +1959,7 @@ export function getRouteMap({
                             {
                               path: "areas",
                               lazy: () =>
-                                import(
-                                  "../../routes/locations/location-service-zone-manage-areas"
-                                ),
+                                import("../../routes/locations/location-service-zone-manage-areas"),
                               handle: {
                                 permissions: [
                                   "stock_location:update",
@@ -2105,9 +1974,7 @@ export function getRouteMap({
                                 {
                                   path: "create",
                                   lazy: () =>
-                                    import(
-                                      "../../routes/locations/location-service-zone-shipping-option-create"
-                                    ),
+                                    import("../../routes/locations/location-service-zone-shipping-option-create"),
                                   handle: {
                                     permissions: [
                                       "stock_location:update",
@@ -2121,9 +1988,7 @@ export function getRouteMap({
                                     {
                                       path: "edit",
                                       lazy: () =>
-                                        import(
-                                          "../../routes/locations/location-service-zone-shipping-option-edit"
-                                        ),
+                                        import("../../routes/locations/location-service-zone-shipping-option-edit"),
                                       handle: {
                                         permissions: [
                                           "stock_location:update",
@@ -2134,9 +1999,7 @@ export function getRouteMap({
                                     {
                                       path: "pricing",
                                       lazy: () =>
-                                        import(
-                                          "../../routes/locations/location-service-zone-shipping-option-pricing"
-                                        ),
+                                        import("../../routes/locations/location-service-zone-shipping-option-pricing"),
                                       handle: {
                                         permissions: [
                                           "stock_location:update",
@@ -2185,9 +2048,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/product-tags/product-tag-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/product-tags/product-tag-detail")
 
                     return {
                       Component,
@@ -2210,9 +2072,7 @@ export function getRouteMap({
                     {
                       path: "metadata/edit",
                       lazy: () =>
-                        import(
-                          "../../routes/product-tags/product-tag-metadata"
-                        ),
+                        import("../../routes/product-tags/product-tag-metadata"),
                       handle: { permissions: "product_tag:update" },
                     },
                   ],
@@ -2235,16 +2095,13 @@ export function getRouteMap({
                 {
                   path: "",
                   lazy: () =>
-                    import(
-                      "../../routes/workflow-executions/workflow-execution-list"
-                    ),
+                    import("../../routes/workflow-executions/workflow-execution-list"),
                 },
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/workflow-executions/workflow-execution-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/workflow-executions/workflow-execution-detail")
 
                     return {
                       Component,
@@ -2291,9 +2148,7 @@ export function getRouteMap({
                     {
                       path: "create",
                       lazy: () =>
-                        import(
-                          "../../routes/product-types/product-type-create"
-                        ),
+                        import("../../routes/product-types/product-type-create"),
                       handle: { permissions: "product_type:create" },
                     },
                   ],
@@ -2301,9 +2156,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/product-types/product-type-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/product-types/product-type-detail")
 
                     return {
                       Component,
@@ -2326,9 +2180,7 @@ export function getRouteMap({
                     {
                       path: "metadata/edit",
                       lazy: () =>
-                        import(
-                          "../../routes/product-types/product-type-metadata"
-                        ),
+                        import("../../routes/product-types/product-type-metadata"),
                       handle: { permissions: "product_type:update" },
                     },
                   ],
@@ -2354,16 +2206,12 @@ export function getRouteMap({
                     {
                       path: "",
                       lazy: () =>
-                        import(
-                          "../../routes/api-key-management/api-key-management-list"
-                        ),
+                        import("../../routes/api-key-management/api-key-management-list"),
                       children: [
                         {
                           path: "create",
                           lazy: () =>
-                            import(
-                              "../../routes/api-key-management/api-key-management-create"
-                            ),
+                            import("../../routes/api-key-management/api-key-management-create"),
                           handle: { permissions: "api_key:create" },
                         },
                       ],
@@ -2373,9 +2221,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/api-key-management/api-key-management-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/api-key-management/api-key-management-detail")
 
                     return {
                       Component,
@@ -2392,17 +2239,13 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () =>
-                        import(
-                          "../../routes/api-key-management/api-key-management-edit"
-                        ),
+                        import("../../routes/api-key-management/api-key-management-edit"),
                       handle: { permissions: "api_key:update" },
                     },
                     {
                       path: "sales-channels",
                       lazy: () =>
-                        import(
-                          "../../routes/api-key-management/api-key-management-sales-channels"
-                        ),
+                        import("../../routes/api-key-management/api-key-management-sales-channels"),
                       handle: {
                         permissions: ["api_key:update", "sales_channel:read"],
                       },
@@ -2430,16 +2273,12 @@ export function getRouteMap({
                     {
                       path: "",
                       lazy: () =>
-                        import(
-                          "../../routes/api-key-management/api-key-management-list"
-                        ),
+                        import("../../routes/api-key-management/api-key-management-list"),
                       children: [
                         {
                           path: "create",
                           lazy: () =>
-                            import(
-                              "../../routes/api-key-management/api-key-management-create"
-                            ),
+                            import("../../routes/api-key-management/api-key-management-create"),
                           handle: { permissions: "api_key:create" },
                         },
                       ],
@@ -2449,9 +2288,8 @@ export function getRouteMap({
                 {
                   path: ":id",
                   lazy: async () => {
-                    const { Component, Breadcrumb, loader, seo } = await import(
-                      "../../routes/api-key-management/api-key-management-detail"
-                    )
+                    const { Component, Breadcrumb, loader, seo } =
+                      await import("../../routes/api-key-management/api-key-management-detail")
 
                     return {
                       Component,
@@ -2468,9 +2306,7 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () =>
-                        import(
-                          "../../routes/api-key-management/api-key-management-edit"
-                        ),
+                        import("../../routes/api-key-management/api-key-management-edit"),
                       handle: { permissions: "api_key:update" },
                     },
                   ],
@@ -2506,9 +2342,8 @@ export function getRouteMap({
                   path: ":id",
                   errorElement: <ErrorBoundary />,
                   lazy: async () => {
-                    const { Breadcrumb, loader, seo } = await import(
-                      "../../routes/tax-regions/tax-region-detail"
-                    )
+                    const { Breadcrumb, loader, seo } =
+                      await import("../../routes/tax-regions/tax-region-detail")
 
                     return {
                       Component: Outlet,
@@ -2525,9 +2360,8 @@ export function getRouteMap({
                     {
                       path: "",
                       lazy: async () => {
-                        const { Component } = await import(
-                          "../../routes/tax-regions/tax-region-detail"
-                        )
+                        const { Component } =
+                          await import("../../routes/tax-regions/tax-region-detail")
 
                         return {
                           Component,
@@ -2543,17 +2377,13 @@ export function getRouteMap({
                         {
                           path: "provinces/create",
                           lazy: () =>
-                            import(
-                              "../../routes/tax-regions/tax-region-province-create"
-                            ),
+                            import("../../routes/tax-regions/tax-region-province-create"),
                           handle: { permissions: "tax_region:create" },
                         },
                         {
                           path: "overrides/create",
                           lazy: () =>
-                            import(
-                              "../../routes/tax-regions/tax-region-tax-override-create"
-                            ),
+                            import("../../routes/tax-regions/tax-region-tax-override-create"),
                           handle: {
                             permissions: [
                               "tax_region:update",
@@ -2564,9 +2394,7 @@ export function getRouteMap({
                         {
                           path: "overrides/:tax_rate_id/edit",
                           lazy: () =>
-                            import(
-                              "../../routes/tax-regions/tax-region-tax-override-edit"
-                            ),
+                            import("../../routes/tax-regions/tax-region-tax-override-edit"),
                           handle: {
                             permissions: [
                               "tax_region:update",
@@ -2577,9 +2405,7 @@ export function getRouteMap({
                         {
                           path: "tax-rates/create",
                           lazy: () =>
-                            import(
-                              "../../routes/tax-regions/tax-region-tax-rate-create"
-                            ),
+                            import("../../routes/tax-regions/tax-region-tax-rate-create"),
                           handle: {
                             permissions: [
                               "tax_region:update",
@@ -2590,9 +2416,7 @@ export function getRouteMap({
                         {
                           path: "tax-rates/:tax_rate_id/edit",
                           lazy: () =>
-                            import(
-                              "../../routes/tax-regions/tax-region-tax-rate-edit"
-                            ),
+                            import("../../routes/tax-regions/tax-region-tax-rate-edit"),
                           handle: {
                             permissions: [
                               "tax_region:update",
@@ -2606,9 +2430,7 @@ export function getRouteMap({
                       path: "provinces/:province_id",
                       lazy: async () => {
                         const { Component, Breadcrumb, loader, seo } =
-                          await import(
-                            "../../routes/tax-regions/tax-region-province-detail"
-                          )
+                          await import("../../routes/tax-regions/tax-region-province-detail")
 
                         return {
                           Component,
@@ -2625,9 +2447,7 @@ export function getRouteMap({
                         {
                           path: "tax-rates/create",
                           lazy: () =>
-                            import(
-                              "../../routes/tax-regions/tax-region-tax-rate-create"
-                            ),
+                            import("../../routes/tax-regions/tax-region-tax-rate-create"),
                           handle: {
                             permissions: [
                               "tax_region:update",
@@ -2638,9 +2458,7 @@ export function getRouteMap({
                         {
                           path: "tax-rates/:tax_rate_id/edit",
                           lazy: () =>
-                            import(
-                              "../../routes/tax-regions/tax-region-tax-rate-edit"
-                            ),
+                            import("../../routes/tax-regions/tax-region-tax-rate-edit"),
                           handle: {
                             permissions: [
                               "tax_region:update",
@@ -2651,9 +2469,7 @@ export function getRouteMap({
                         {
                           path: "overrides/create",
                           lazy: () =>
-                            import(
-                              "../../routes/tax-regions/tax-region-tax-override-create"
-                            ),
+                            import("../../routes/tax-regions/tax-region-tax-override-create"),
                           handle: {
                             permissions: [
                               "tax_region:update",
@@ -2664,9 +2480,7 @@ export function getRouteMap({
                         {
                           path: "overrides/:tax_rate_id/edit",
                           lazy: () =>
-                            import(
-                              "../../routes/tax-regions/tax-region-tax-override-edit"
-                            ),
+                            import("../../routes/tax-regions/tax-region-tax-override-edit"),
                           handle: {
                             permissions: [
                               "tax_region:update",
@@ -2700,9 +2514,7 @@ export function getRouteMap({
                     {
                       path: "create",
                       lazy: () =>
-                        import(
-                          "../../routes/return-reasons/return-reason-create"
-                        ),
+                        import("../../routes/return-reasons/return-reason-create"),
                       handle: { permissions: "return_reason:create" },
                     },
 
@@ -2712,9 +2524,7 @@ export function getRouteMap({
                         {
                           path: "edit",
                           lazy: () =>
-                            import(
-                              "../../routes/return-reasons/return-reason-edit"
-                            ),
+                            import("../../routes/return-reasons/return-reason-edit"),
                           handle: { permissions: "return_reason:update" },
                         },
                       ],
@@ -2743,9 +2553,7 @@ export function getRouteMap({
                     {
                       path: "create",
                       lazy: () =>
-                        import(
-                          "../../routes/refund-reasons/refund-reason-create"
-                        ),
+                        import("../../routes/refund-reasons/refund-reason-create"),
                       handle: { permissions: "refund_reason:create" },
                     },
 
@@ -2755,9 +2563,7 @@ export function getRouteMap({
                         {
                           path: "edit",
                           lazy: () =>
-                            import(
-                              "../../routes/refund-reasons/refund-reason-edit"
-                            ),
+                            import("../../routes/refund-reasons/refund-reason-edit"),
                           handle: { permissions: "refund_reason:update" },
                         },
                       ],

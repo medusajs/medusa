@@ -8,10 +8,9 @@ export interface StoreProductTypeResponse {
   product_type: StoreProductType
 }
 
-export interface StoreProductTypeListResponse
-  extends PaginatedResponse<{
-    /**
-     * The paginated list of types.
-     */
-    product_types: StoreProductType[]
-  }> {}
+export interface StoreProductTypeListResponse extends PaginatedResponse<{
+  /**
+   * The paginated list of types.
+   */
+  product_types: StoreProductType[]
+}> {}

@@ -41,8 +41,7 @@ export class MessageAggregator implements IMessageAggregator {
 
   saveRawMessageData<T>(
     messageData:
-      | EventBusTypes.RawMessageFormat<T>
-      | EventBusTypes.RawMessageFormat<T>[],
+      EventBusTypes.RawMessageFormat<T> | EventBusTypes.RawMessageFormat<T>[],
     {
       options,
       sharedContext,

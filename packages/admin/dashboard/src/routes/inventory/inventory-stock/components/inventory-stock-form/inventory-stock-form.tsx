@@ -136,28 +136,31 @@ function getDefaultValues(
   locations: HttpTypes.AdminStockLocation[]
 ): DefaultValues<InventoryStockSchema> {
   return {
-    inventory_items: items.reduce((acc, item) => {
-      const locationsMap = locations.reduce((locationAcc, location) => {
-        const level = item.location_levels?.find(
-          (level) => level.location_id === location.id
-        )
+    inventory_items: items.reduce(
+      (acc, item) => {
+        const locationsMap = locations.reduce((locationAcc, location) => {
+          const level = item.location_levels?.find(
+            (level) => level.location_id === location.id
+          )
 
-        locationAcc[location.id] = {
-          id: level?.id,
-          quantity:
-            typeof level?.stocked_quantity === "number"
-              ? level?.stocked_quantity
-              : "",
-          checked: !!level,
-          disabledToggle:
-            (level?.incoming_quantity || 0) > 0 ||
-            (level?.reserved_quantity || 0) > 0,
-        }
-        return locationAcc
-      }, {} as InventoryLocationsSchema)
+          locationAcc[location.id] = {
+            id: level?.id,
+            quantity:
+              typeof level?.stocked_quantity === "number"
+                ? level?.stocked_quantity
+                : "",
+            checked: !!level,
+            disabledToggle:
+              (level?.incoming_quantity || 0) > 0 ||
+              (level?.reserved_quantity || 0) > 0,
+          }
+          return locationAcc
+        }, {} as InventoryLocationsSchema)
 
-      acc[item.id] = { locations: locationsMap }
-      return acc
-    }, {} as Record<string, InventoryItemSchema>),
+        acc[item.id] = { locations: locationsMap }
+        return acc
+      },
+      {} as Record<string, InventoryItemSchema>
+    ),
   }
 }

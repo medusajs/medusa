@@ -30,13 +30,13 @@ export const DataGridCellContainer = ({
     <div className={clx("group/container relative h-full w-full")}>
       <div
         className={clx(
-          "bg-ui-bg-base group/cell relative flex h-full w-full gap-x-2 px-4 py-2.5 outline-none",
+          "group/cell relative flex h-full w-full gap-x-2 bg-ui-bg-base px-4 py-2.5 outline-none",
           {
             "items-center": !isMultiLine,
             "items-start": isMultiLine,
             "bg-ui-tag-red-bg text-ui-tag-red-text":
               hasError && !isAnchor && !isSelected && !isDragSelected,
-            "ring-ui-bg-interactive ring-2 ring-inset": isAnchor,
+            "ring-2 ring-inset ring-ui-bg-interactive": isAnchor,
             "bg-ui-bg-highlight [&:has([data-field]:focus)]:bg-ui-bg-base":
               isSelected || isAnchor,
             "bg-ui-bg-subtle": isDragSelected && !isAnchor,
@@ -52,7 +52,7 @@ export const DataGridCellContainer = ({
             return (
               <div className="flex items-center justify-center">
                 <Tooltip content={message} delayDuration={0}>
-                  <ExclamationCircle className="text-ui-tag-red-icon z-[3]" />
+                  <ExclamationCircle className="z-[3] text-ui-tag-red-icon" />
                 </Tooltip>
               </div>
             )

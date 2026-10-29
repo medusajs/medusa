@@ -14,8 +14,7 @@ export interface AdminPaymentCollectionResponse {
   payment_collection: AdminPaymentCollection
 }
 
-export interface AdminDeletePaymentCollectionResponse
-  extends DeleteResponse<"payment-collection"> {}
+export interface AdminDeletePaymentCollectionResponse extends DeleteResponse<"payment-collection"> {}
 
 export interface AdminPaymentCollectionsResponse {
   payment_collections: AdminPaymentCollection[]

@@ -385,7 +385,7 @@ export const ExchangeCreateForm = ({
                   {t("orders.returns.inboundShipping")}
                 </span>
 
-                <span className="txt-small text-ui-fg-subtle flex items-center">
+                <span className="txt-small flex items-center text-ui-fg-subtle">
                   {!isInboundShippingPriceEdit && (
                     <IconButton
                       onClick={() => setIsInboundShippingPriceEdit(true)}
@@ -460,7 +460,7 @@ export const ExchangeCreateForm = ({
                   {t("orders.exchanges.outboundShipping")}
                 </span>
 
-                <span className="txt-small text-ui-fg-subtle flex items-center">
+                <span className="txt-small flex items-center text-ui-fg-subtle">
                   {!isOutboundShippingPriceEdit && (
                     <IconButton
                       onClick={() => setIsOutboundShippingPriceEdit(true)}
@@ -543,7 +543,7 @@ export const ExchangeCreateForm = ({
 
             {/* CARRY OVER PROMOTION */}
             {hasPromotions && (
-              <div className="bg-ui-bg-field mt-4 rounded-lg border py-2 pl-2 pr-4">
+              <div className="mt-4 rounded-lg border bg-ui-bg-field py-2 pl-2 pr-4">
                 <Form.Field
                   control={form.control}
                   name="carry_over_promotions"
@@ -594,7 +594,7 @@ export const ExchangeCreateForm = ({
             )}
 
             {/* SEND NOTIFICATION*/}
-            <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
+            <div className="mt-8 rounded-lg border bg-ui-bg-field py-2 pl-2 pr-4">
               <Form.Field
                 control={form.control}
                 name="send_notification"

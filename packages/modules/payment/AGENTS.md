@@ -41,7 +41,7 @@ Docs: https://docs.medusajs.com/resources/commerce-modules/payment.md, https://d
 
 ## Architecture
 
-- `src/loaders/providers.ts`: registers the system provider (`id: "default"`), one Medusa Payments provider (`src/providers/payment-medusa`) per `cloud.payment_accounts` entry when all cloud options are set, then configured providers as `pp_<identifier>_<id>`; upserts all registered IDs into `payment_provider` with `is_enabled: true`.
+- `src/loaders/providers.ts`: registers the system provider (`id: "default"`), one Medusa Payments provider (`src/providers/payment-medusa`) per `cloud.payment_accounts` entry when all cloud options are set, then configured providers as `pp_<identifier>_<id>`; upserts all registered IDs into `payment_provider` with `is_enabled: true` and sets `is_enabled: false` on rows no longer registered (never deleted).
 - `src/services/payment-provider.ts` resolves `pp_*` from the container and calls the `AbstractPaymentProvider` methods.
 
 ## Development
@@ -63,7 +63,7 @@ yarn migration:create          # after any change in src/models
 - `authorizePaymentSession` is idempotent (returns the existing payment if `authorized_at` is set); returns `null` for `pending` authorization; throws `NOT_ALLOWED` for other non-authorized statuses; a provider `captured` status creates the payment and captures it immediately.
 - `capturePayment` / `refundPayment` lock the payment row (`FOR UPDATE`) and throw `UNEXPECTED_STATE` if not run inside a transaction. Amounts must be > 0; refunds cannot exceed captured minus refunded (within currency epsilon); capture of a canceled payment throws.
 - Refund `idempotency_key`: same key + same amount replays a succeeded refund or retries a failed one, different amount throws, a recent `pending` one throws `CONFLICT` (a stale pending one is retried). Failed provider refunds are marked `failed` and soft-deleted.
-- Providers removed from config are not disabled: the loader only lists rows whose IDs are currently registered, so stale `payment_provider` rows keep their `is_enabled` value.
+- Providers removed from config (or whose `id` option is renamed) keep their `payment_provider` row with `is_enabled: false`, so `listPaymentProviders({ is_enabled: true })` no longer returns them.
 - `getWebhookActionAndData` prefixes `pp_` to `provider` if missing.
 - `updatePaymentSession` passes the caller's `data` to the provider's `updatePayment` and deep-merges the returned data into the stored `data`, so providers can only clear keys by setting them to `null`.
 - `POST /store/payment-collections/:id/payment-sessions/:session_id` merges storefront input into `data.client` only. Providers must treat `data.client` as untrusted and keep amounts and references outside it.

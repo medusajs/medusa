@@ -83,7 +83,7 @@ export const PriceListGeneralSection = ({
           })()}
         </div>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text leading="compact" size="small" weight="plus">
           {t("fields.type")}
         </Text>
@@ -91,7 +91,7 @@ export const PriceListGeneralSection = ({
           {type}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text leading="compact" size="small" weight="plus">
           {t("fields.description")}
         </Text>
@@ -99,7 +99,7 @@ export const PriceListGeneralSection = ({
           {priceList.description}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text leading="compact" size="small" weight="plus">
           {t("priceLists.fields.priceOverrides.label")}
         </Text>

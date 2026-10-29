@@ -110,7 +110,7 @@ export const CampaignGeneralSection = ({
         </div>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("campaigns.fields.identifier")}
         </Text>
@@ -120,7 +120,7 @@ export const CampaignGeneralSection = ({
         </Text>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.description")}
         </Text>
@@ -131,7 +131,7 @@ export const CampaignGeneralSection = ({
       </div>
 
       {campaign?.budget && campaign.budget.type === "spend" && (
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
           <Text size="small" leading="compact" weight="plus">
             {t("fields.currency")}
           </Text>

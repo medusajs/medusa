@@ -16,22 +16,21 @@
   "dependencies": {
     "@medusajs/deps": "2.22.1",
     "@medusajs/telemetry": "2.22.1",
-    "boxen": "^5.0.1",
-    "chalk": "^4.1.2",
-    "commander": "^11.0.0",
-    "inquirer": "^8.0.0",
+    "boxen": "^9.0.0",
+    "chalk": "^6.0.1",
+    "commander": "^15.0.0",
+    "inquirer": "^14.2.4",
     "node-emoji": "^2.0.2",
-    "open": "^9.1.0",
-    "ora": "^5.4.1",
+    "open": "^11.0.4",
+    "ora": "^9.4.1",
     "slugify": "^1.6.6",
     "terminal-link": "^5.0.0",
-    "uuid": "^11.1.1",
     "wait-on": "^9.5.1",
     "winston": "^3.9.0",
     "yaml": "^2.8.4"
   },
   "engines": {
-    "node": ">=14.16"
+    "node": ">=22.22.0"
   },
   "repository": {
     "type": "git",

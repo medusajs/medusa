@@ -58,7 +58,7 @@ describe("MedusaSearchClient authentication", () => {
 
     const [url, init] = fetchImpl.mock.calls[0] as unknown as [
       string,
-      RequestInit
+      RequestInit,
     ]
     expect(url).toBe("https://search.medusa.example/indexes/product/metadata")
     expect((init.headers as Record<string, string>).Authorization).toBe(

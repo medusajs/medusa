@@ -41,10 +41,10 @@ const DateSegment = ({ segment, state }: DateSegmentProps) => {
       <div
         ref={ref}
         className={clx(
-          "transition-fg outline-none",
+          "outline-none transition-fg",
           "focus-visible:bg-ui-bg-interactive focus-visible:text-ui-fg-on-color",
           {
-            "text-ui-fg-muted uppercase": segment.isPlaceholder,
+            "uppercase text-ui-fg-muted": segment.isPlaceholder,
             "text-ui-fg-muted": !segment.isEditable && !state.value,
           }
         )}

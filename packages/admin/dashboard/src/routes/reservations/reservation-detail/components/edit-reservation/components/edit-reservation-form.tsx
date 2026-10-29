@@ -129,7 +129,7 @@ export const EditReservationForm = ({
               )
             }}
           />
-          <div className="text-ui-fg-subtle shadow-elevation-card-rest grid grid-rows-4 divide-y rounded-lg border">
+          <div className="grid grid-rows-4 divide-y rounded-lg border text-ui-fg-subtle shadow-elevation-card-rest">
             <AttributeGridRow
               title={t("fields.title")}
               value={item.title ?? item.sku!}

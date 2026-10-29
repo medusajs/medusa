@@ -56,8 +56,7 @@ export type AsyncRouteHandler = (
 export type RouteHandler = SyncRouteHandler | AsyncRouteHandler
 
 export type MiddlewareFunction =
-  | MedusaRequestHandler
-  | ((...args: any[]) => any)
+  MedusaRequestHandler | ((...args: any[]) => any)
 
 export type MedusaErrorHandlerFunction = (
   error: any,

@@ -12,5 +12,5 @@ try {
     console.warn(e)
   }
 }
-require("dotenv").config()
+require("dotenv").config({ quiet: true })
 require("./dist/index.js")

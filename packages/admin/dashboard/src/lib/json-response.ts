@@ -15,7 +15,7 @@ export const jsonResponse = (
   init?: number | ResponseInit
 ): Response => {
   const responseInit: ResponseInit =
-    typeof init === "number" ? { status: init } : init ?? {}
+    typeof init === "number" ? { status: init } : (init ?? {})
 
   return new Response(JSON.stringify(body), {
     ...responseInit,

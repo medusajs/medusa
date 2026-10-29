@@ -962,8 +962,8 @@ const ShippingOptionField = ({
     !locationId && !shippingProfileId
       ? "Choose a location and shipping profile first."
       : !locationId
-      ? "Choose a location first."
-      : "Choose a shipping profile first."
+        ? "Choose a location first."
+        : "Choose a shipping profile first."
 
   return (
     <Form.Field

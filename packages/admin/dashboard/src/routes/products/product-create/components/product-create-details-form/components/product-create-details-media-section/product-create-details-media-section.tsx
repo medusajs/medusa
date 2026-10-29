@@ -197,7 +197,7 @@ const MediaItem = ({ field, onDelete, onMakeThumbnail }: MediaItemProps) => {
 
   return (
     <li
-      className="bg-ui-bg-component shadow-elevation-card-rest flex items-center justify-between rounded-lg px-3 py-2"
+      className="flex items-center justify-between rounded-lg bg-ui-bg-component px-3 py-2 shadow-elevation-card-rest"
       ref={setNodeRef}
       style={style}
     >
@@ -214,7 +214,7 @@ const MediaItem = ({ field, onDelete, onMakeThumbnail }: MediaItemProps) => {
           <DotsSix className="text-ui-fg-muted" />
         </IconButton>
         <div className="flex items-center gap-x-3">
-          <div className="bg-ui-bg-base h-10 w-[30px] overflow-hidden rounded-md">
+          <div className="h-10 w-[30px] overflow-hidden rounded-md bg-ui-bg-base">
             <ThumbnailPreview url={field.url} />
           </div>
           <div className="flex flex-col">
@@ -272,7 +272,7 @@ const MediaItem = ({ field, onDelete, onMakeThumbnail }: MediaItemProps) => {
 
 const MediaGridItemOverlay = ({ field }: { field: MediaField }) => {
   return (
-    <li className="bg-ui-bg-component shadow-elevation-card-rest flex items-center justify-between rounded-lg px-3 py-2">
+    <li className="flex items-center justify-between rounded-lg bg-ui-bg-component px-3 py-2 shadow-elevation-card-rest">
       <div className="flex items-center gap-x-2">
         <IconButton
           variant="transparent"
@@ -282,7 +282,7 @@ const MediaGridItemOverlay = ({ field }: { field: MediaField }) => {
           <DotsSix className="text-ui-fg-muted" />
         </IconButton>
         <div className="flex items-center gap-x-3">
-          <div className="bg-ui-bg-base h-10 w-[30px] overflow-hidden rounded-md">
+          <div className="h-10 w-[30px] overflow-hidden rounded-md bg-ui-bg-base">
             <ThumbnailPreview url={field.url} />
           </div>
           <div className="flex flex-col">

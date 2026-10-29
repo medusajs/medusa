@@ -111,10 +111,10 @@ export class RoutesLoader {
       ADMIN_ROUTE_MATCH.test(routePath) || RBAC_ROUTE_MATCH.test(routePath)
         ? "admin"
         : STORE_ROUTE_MATCH.test(routePath)
-        ? "store"
-        : AUTH_ROUTE_MATCH.test(routePath)
-        ? "auth"
-        : undefined
+          ? "store"
+          : AUTH_ROUTE_MATCH.test(routePath)
+            ? "auth"
+            : undefined
 
     /**
      * Check if the route file has decided to opt-out of authentication

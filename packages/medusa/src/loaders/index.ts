@@ -24,9 +24,9 @@ import {
 } from "@medusajs/framework/utils"
 import { WorkflowLoader } from "@medusajs/framework/workflows"
 import { Express, NextFunction, Request, Response } from "express"
+import { randomUUID } from "crypto"
 import { join } from "path"
 import requestIp from "request-ip"
-import { v4 } from "uuid"
 import adminLoader from "./admin"
 import apiLoader from "./api"
 import { loadSearchIndexes } from "./search"
@@ -102,7 +102,7 @@ async function loadEntrypoints(
    */
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
     req.scope = container.createScope() as MedusaContainer
-    req.requestId = (req.headers["x-request-id"] as string) ?? v4()
+    req.requestId = (req.headers["x-request-id"] as string) ?? randomUUID()
     next()
   })
 

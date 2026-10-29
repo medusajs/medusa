@@ -1,7 +1,7 @@
-import OpenAPIParser from "@readme/openapi-parser"
+import { compileErrors, parse, validate } from "@readme/openapi-parser"
 import { Command, Option, OptionValues } from "commander"
 import { lstat, mkdir, writeFile } from "fs/promises"
-import { OpenAPIObject } from "openapi3-ts"
+import { OpenAPIObject } from "openapi3-ts/oas30"
 import * as path from "path"
 import swaggerInline from "swagger-inline"
 import { combineOAS } from "./utils/combine-oas"
@@ -168,12 +168,12 @@ async function getOASFromCodebase(apiType: ApiType): Promise<OpenAPIObject> {
       format: ".json",
     }
   )
-  return (await OpenAPIParser.parse(JSON.parse(gen))) as OpenAPIObject
+  return (await parse(JSON.parse(gen))) as OpenAPIObject
 }
 
 async function getPublicOas(apiType: ApiType) {
   const url = `https://docs.medusajs.com/api/download/${apiType}`
-  return (await OpenAPIParser.parse(url)) as OpenAPIObject
+  return (await parse(url)) as OpenAPIObject
 }
 
 async function getOASFromPaths(
@@ -195,7 +195,7 @@ async function getOASFromPaths(
       },
     }
   )
-  return (await OpenAPIParser.parse(JSON.parse(gen))) as OpenAPIObject
+  return (await parse(JSON.parse(gen))) as OpenAPIObject
 }
 
 /**
@@ -230,7 +230,10 @@ async function validateOAS(
   force = false
 ): Promise<void> {
   try {
-    await OpenAPIParser.validate(JSON.parse(JSON.stringify(oas)))
+    const result = await validate(JSON.parse(JSON.stringify(oas)))
+    if (!result.valid) {
+      throw new Error(compileErrors(result))
+    }
     console.log(`🟢 Valid OAS - ${apiType}`)
   } catch (err) {
     console.error(`🔴 Invalid OAS - ${apiType}`, err)

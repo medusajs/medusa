@@ -10,10 +10,9 @@ export interface TieredPriceFieldConfig {
   maxLabel: string
 }
 
-export interface TieredPriceSchema
-  extends z.ZodType<{
-    prices: any[]
-  }> {}
+export interface TieredPriceSchema extends z.ZodType<{
+  prices: any[]
+}> {}
 
 export interface TieredPriceFormProps<T extends TieredPriceSchema> {
   schema: T

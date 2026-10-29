@@ -1,7 +1,8 @@
+// @ts-ignore
 import { Command } from "commander"
 import { glob } from "glob"
 import path from "path"
-import chalk from "chalk"
+import { styleText } from "util"
 import { ProgramFactory } from "../core/program-factory"
 import { SchemaExtractor } from "../core/schema-extractor"
 import { TypeResolver } from "../core/type-resolver"
@@ -75,7 +76,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
   const { area, domain, dryRun, force, verbose } = options
 
   console.log(
-    chalk.bold(`\nGenerating HTTP types (area: ${area}${domain ? `, domain: ${domain}` : ""})\n`)
+    styleText("bold", `\nGenerating HTTP types (area: ${area}${domain ? `, domain: ${domain}` : ""})\n`)
   )
 
   // Discover validator files
@@ -92,17 +93,17 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
   }
 
   if (validatorFiles.length === 0) {
-    console.log(chalk.yellow("No validator files found."))
+    console.log(styleText("yellow", "No validator files found."))
     if (domain) {
       console.log(
-        chalk.yellow(`  Hint: make sure "${domain}" matches a route directory name in your configured validator paths.`)
+        styleText("yellow", `  Hint: make sure "${domain}" matches a route directory name in your configured validator paths.`)
       )
     }
     return
   }
 
   if (verbose) {
-    console.log(chalk.gray(`Found ${validatorFiles.length} validator file(s)`))
+    console.log(styleText("gray", `Found ${validatorFiles.length} validator file(s)`))
   }
 
   // Create TypeScript program with all validator files
@@ -125,7 +126,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
     if (!mapping) {
       if (verbose) {
         console.log(
-          chalk.gray(`  Skipping unmapped validator: ${path.basename(path.dirname(validatorFile))}`)
+          styleText("gray", `  Skipping unmapped validator: ${path.basename(path.dirname(validatorFile))}`)
         )
       }
       continue
@@ -133,7 +134,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
 
     const sourceFile = program.getSourceFile(validatorFile)
     if (!sourceFile) {
-      console.log(chalk.yellow(`  Warning: could not load source file: ${validatorFile}. Skipping.`))
+      console.log(styleText("yellow", `  Warning: could not load source file: ${validatorFile}. Skipping.`))
       continue
     }
 
@@ -153,7 +154,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
       if (httpTypeName === "skip") {
         skippedSchemas++
         if (verbose) {
-          console.log(chalk.gray(`  Skip  ${schema.exportName}`))
+          console.log(styleText("gray", `  Skip  ${schema.exportName}`))
         }
         continue
       }
@@ -162,7 +163,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
       if (targetFile === "skip") {
         skippedSchemas++
         if (verbose) {
-          console.log(chalk.gray(`  Skip  ${schema.exportName}`))
+          console.log(styleText("gray", `  Skip  ${schema.exportName}`))
         }
         continue
       }
@@ -174,7 +175,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
 
       if (!resolved) {
         console.log(
-          chalk.yellow(`  Warning: could not resolve type for ${schema.exportName}. Skipping.`)
+          styleText("yellow", `  Warning: could not resolve type for ${schema.exportName}. Skipping.`)
         )
         skippedSchemas++
         continue
@@ -211,8 +212,8 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
 
       if (verbose) {
         console.log(
-          chalk.green(`  Generate  ${httpTypeName}`) +
-            chalk.gray(` → ${targetFile}.ts`)
+          styleText("green", `  Generate  ${httpTypeName}`) +
+            styleText("gray", ` → ${targetFile}.ts`)
         )
       }
     }
@@ -256,7 +257,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
 
       if (dryRun) {
         if (result.status === "skipped") {
-          console.log(chalk.gray(`  Skip  ${relPath}  (all types already present)`))
+          console.log(styleText("gray", `  Skip  ${relPath}  (all types already present)`))
         } else {
           const tag =
             result.status === "created"
@@ -264,7 +265,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
               : result.status === "overwritten"
                 ? "[dry-run] Overwrite"
                 : `[dry-run] Update (+${result.added} interface(s))`
-          console.log(chalk.cyan(`\n--- ${tag}: ${relPath} ---`))
+          console.log(styleText("cyan", `\n--- ${tag}: ${relPath} ---`))
           console.log(result.content)
           await indexManager.updateIndexFiles(group.mapping, label, true)
         }
@@ -272,7 +273,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
       }
 
       if (result.status === "skipped") {
-        console.log(chalk.gray(`  Skip  ${relPath}  (all types already present)`))
+        console.log(styleText("gray", `  Skip  ${relPath}  (all types already present)`))
         skippedFiles++
         continue
       }
@@ -282,14 +283,14 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
       if (result.status === "created" || result.status === "overwritten") {
         written++
         console.log(
-          chalk.green(`  Write  ${relPath}`) +
-            chalk.gray(` (${interfaces.length} interface(s))`)
+          styleText("green", `  Write  ${relPath}`) +
+            styleText("gray", ` (${interfaces.length} interface(s))`)
         )
       } else {
         updated++
         console.log(
-          chalk.green(`  Update  ${relPath}`) +
-            chalk.gray(` (+${result.added} interface(s))`)
+          styleText("green", `  Update  ${relPath}`) +
+            styleText("gray", ` (+${result.added} interface(s))`)
         )
       }
 
@@ -299,7 +300,7 @@ async function runGenerate(options: GenerateOptions): Promise<void> {
 
   console.log()
   console.log(
-    chalk.bold(
+    styleText("bold",
       `Done. ${totalSchemas - skippedSchemas} schema(s) processed, ` +
         `${written} file(s) written, ${updated} file(s) updated, ${skippedFiles} file(s) skipped.`
     )

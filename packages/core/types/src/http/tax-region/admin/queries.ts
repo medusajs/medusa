@@ -2,8 +2,7 @@ import { BaseFilterable, OperatorMap } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
 export interface AdminTaxRegionListParams
-  extends FindParams,
-    BaseFilterable<AdminTaxRegionListParams> {
+  extends FindParams, BaseFilterable<AdminTaxRegionListParams> {
   /**
    * Filter by tax region ID(s).
    */
