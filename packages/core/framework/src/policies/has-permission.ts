@@ -43,6 +43,8 @@ export type ListRolePermissionsInput = {
 
 type RolePoliciesCache = Map<string, Map<string, Set<string>>>
 
+const RBAC_CACHE_TTL = 60 * 60 * 24
+
 /**
  * Applies wildcard-aware matching to decide whether any of the
  * supplied roles grants `(resource, operation)`. This is the single source of
@@ -250,8 +252,7 @@ async function fetchSingleRolePolicies(
       key: roleId,
       tags,
       enable: true,
-      ttl: 60 * 60 * 24 * 7,
-      providers: ["cache-memory"],
+      ttl: RBAC_CACHE_TTL,
     }
   )
 }
@@ -285,8 +286,7 @@ export async function fetchPolicyResources(
       key: "rbac-policy-resources",
       tags: ["RbacPolicy:list:*"],
       enable: true,
-      ttl: 60 * 60 * 24 * 7,
-      providers: ["cache-memory"],
+      ttl: RBAC_CACHE_TTL,
     }
   )
 }

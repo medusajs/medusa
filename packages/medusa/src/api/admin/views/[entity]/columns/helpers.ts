@@ -1,4 +1,3 @@
-import { fetchPolicyResources, resolvePermissions } from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
   RBACFieldFilter,
@@ -7,6 +6,7 @@ import {
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { HttpTypes } from "@medusajs/framework/types"
 import { Modules, toSnakeCase } from "@medusajs/framework/utils"
+import { filterReadableEntities } from "../../../utils/filter-readable-entities"
 
 /**
  * Removes what the actor can't read from an entity's columns, so the client
@@ -51,24 +51,21 @@ export const filterReadableColumns = async (
 
   // A relationship filter loads its options from the related entity's list
   // route, so it needs read access to that entity when it's governed.
-  const governed = await fetchPolicyResources(req.scope)
   const filterResource = (column: HttpTypes.AdminColumn) => {
     const relatedEntity = column.filter?.relationship?.entity
-    const resource = relatedEntity && toSnakeCase(relatedEntity)
-    return resource && governed.has(resource) ? resource : undefined
+    return relatedEntity ? toSnakeCase(relatedEntity) : undefined
   }
 
-  const filterResources = new Set(
-    columns.map(filterResource).filter((resource) => !!resource)
+  const filterResources = [
+    ...new Set(
+      columns
+        .map(filterResource)
+        .filter((resource): resource is string => !!resource)
+    ),
+  ]
+  const readableResources = new Set(
+    await filterReadableEntities(req, filterResources, roles)
   )
-  const granted = await resolvePermissions({
-    roles,
-    universe: [...filterResources].map((resource) => ({
-      resource: resource as string,
-      operation: "read",
-    })),
-    container: req.scope,
-  })
 
   return columns.flatMap((column) => {
     if (columnFields(column).some((field) => unreadableFields.has(field))) {
@@ -76,7 +73,7 @@ export const filterReadableColumns = async (
     }
 
     const resource = filterResource(column)
-    if (!resource || granted.has(`${resource}:read`)) {
+    if (!resource || readableResources.has(resource)) {
       return [column]
     }
 

@@ -12,7 +12,12 @@ import {
   Modules,
   promiseAll,
 } from "@medusajs/framework/utils"
+import { filterReadableEntities } from "../utils/filter-readable-entities"
 import { searchWithGraphFallback } from "./fallback-search"
+import {
+  ADMIN_SEARCH_ENTITY_MAP,
+  DEFAULT_ADMIN_SEARCH_ENTITY_NAMES,
+} from "./search-entities"
 import { AdminGetSearchParamsType } from "./validators"
 
 /**
@@ -45,19 +50,33 @@ export const GET = async (
   // Caller narrows the set; otherwise search every index. If the module is on
   // but nothing is indexed yet, leave `entities` empty so we fall through to
   // the graph defaults
-  const entities = entity?.length ? entity : indexes.size ? [...indexes] : []
+  const requestedEntities = entity?.length
+    ? entity
+    : indexes.size
+      ? [...indexes]
+      : []
 
-  if (!searchModule || !entities.length) {
-    const results = await searchWithGraphFallback(req.scope, {
-      q,
-      entity: entity?.length ? entity : undefined,
-      skip,
-      take,
-    })
+  if (!searchModule || !requestedEntities.length) {
+    const graphEntities = await filterReadableSearchEntities(
+      req,
+      entity?.length ? entity : DEFAULT_ADMIN_SEARCH_ENTITY_NAMES
+    )
+
+    const results = graphEntities.length
+      ? await searchWithGraphFallback(req.scope, {
+          q,
+          entity: graphEntities,
+          skip,
+          take,
+        })
+      : []
 
     res.json({ results })
     return
   }
+
+  // Entities the actor can't read are silently dropped from the results.
+  const entities = await filterReadableSearchEntities(req, requestedEntities)
 
   const indexedEntities = entities.filter((name) => indexes.has(name))
   const graphEntities = entities.filter((name) => !indexes.has(name))
@@ -90,6 +109,27 @@ export const GET = async (
   res.json({
     results: entities.map((name) => resultsByEntity.get(name)!),
   })
+}
+
+/**
+ * Keeps the search entities the actor can read. An entity is checked against
+ * the RBAC resource of the graph entity it searches, e.g. `api_key` for
+ * `publishable_api_key`.
+ */
+async function filterReadableSearchEntities(
+  req: AuthenticatedMedusaRequest<void, AdminGetSearchParamsType>,
+  names: string[]
+): Promise<string[]> {
+  const resourceOf = (name: string) => {
+    const config = ADMIN_SEARCH_ENTITY_MAP.get(name)
+    return config?.graphEntity ?? config?.name ?? name
+  }
+
+  const readable = new Set(
+    await filterReadableEntities(req, [...new Set(names.map(resourceOf))])
+  )
+
+  return names.filter((name) => readable.has(resourceOf(name)))
 }
 
 async function searchIndexedEntities(
