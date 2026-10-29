@@ -69,6 +69,22 @@ This will increase the concurrent previews limit across projects in your organiz
 
 ---
 
+## Pending Preview Environments
+
+A preview environment is pending when Medusa hasn't provisioned it yet. You can provision a pending preview environment by clicking the **Provision** button, either in its row in the project dashboard's "Previews" table or on the environment's dashboard:
+
+- If your organization has reached its concurrent previews limit, the button takes you to a page where you can [increase the limit](#increase-preview-environment-limits).
+- Otherwise, Medusa provisions the preview environment immediately.
+
+To open a pending preview environment's dashboard, click its row in the "Previews" table. Until you provision the environment, its dashboard:
+
+- Shows a placeholder card with a clock icon, the environment's status, and the **Provision** button instead of the environment's details.
+- Doesn't show the environment's domain links below its name.
+- Disables the **Trigger Build** button.
+- Doesn't show the Deployments section.
+
+---
+
 ## Open Preview Environment Dashboard
 
 Similar to long-lived environments, you can open a preview environment's dashboard to view its details, logs, and edit its settings.

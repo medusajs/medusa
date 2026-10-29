@@ -1,6 +1,6 @@
 export const generatedEditDates = {
   "app/page.mdx": "2026-10-02T15:50:10.882Z",
-  "app/projects/page.mdx": "2026-10-07T16:01:34.304Z",
+  "app/projects/page.mdx": "2026-10-29T09:05:59.203Z",
   "app/environments/page.mdx": "2026-05-27T17:17:14.724Z",
   "app/deployments/page.mdx": "2026-09-10T12:21:00.639Z",
   "app/organizations/page.mdx": "2026-10-07T16:01:20.015Z",
@@ -13,7 +13,7 @@ export const generatedEditDates = {
   "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",
   "app/environments/environment-variables/page.mdx": "2026-08-24T08:30:03.756Z",
   "app/environments/long-lived/page.mdx": "2026-09-25T14:24:43.853Z",
-  "app/environments/preview/page.mdx": "2026-08-20T14:19:55.598Z",
+  "app/environments/preview/page.mdx": "2026-10-29T09:05:57.764Z",
   "app/faq/page.mdx": "2026-10-02T15:50:09.737Z",
   "app/billing/page.mdx": "2026-07-24T15:42:16.652Z",
   "app/usage/page.mdx": "2026-10-19T11:09:30.592Z",
