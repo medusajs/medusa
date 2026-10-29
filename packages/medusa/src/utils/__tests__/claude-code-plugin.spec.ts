@@ -1,7 +1,6 @@
 import { promptClaudeCodePlugin } from "../claude-code-plugin"
 import { spawnSync } from "child_process"
 import fs from "fs"
-import confirm from "@inquirer/confirm"
 import { Store, track } from "@medusajs/telemetry"
 
 jest.mock("child_process")
@@ -21,7 +20,7 @@ jest.mock("@medusajs/telemetry", () => ({
 const mockSpawnSync = spawnSync as jest.MockedFunction<typeof spawnSync>
 const mockExistsSync = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>
 const mockReadFileSync = fs.readFileSync as jest.Mock
-const mockConfirm = confirm as jest.MockedFunction<typeof confirm>
+const mockConfirm = jest.requireMock("@inquirer/confirm").default as jest.Mock
 const MockStore = Store as jest.MockedClass<typeof Store>
 const mockTrack = track as jest.MockedFunction<typeof track>
 

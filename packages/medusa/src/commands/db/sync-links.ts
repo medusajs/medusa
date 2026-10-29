@@ -1,4 +1,3 @@
-import checkbox from "@inquirer/checkbox"
 import { MedusaAppLoader } from "@medusajs/framework"
 import { LinkLoader } from "@medusajs/framework/links"
 import {
@@ -86,12 +85,9 @@ async function askForLinkActionsToPerform(
   const { default: boxen } = await import("boxen")
   logger.info(boxen(message, { borderColor: "red", padding: 1 }))
 
+  const { default: checkbox } = await import("@inquirer/checkbox")
   return await checkbox({
     message: "Select tables to act upon",
-    instructions: styleText(
-      "dim",
-      " <space> select, <a> select all, <i> inverse, <enter> submit"
-    ),
     choices: actions.map((action) => {
       return {
         name: buildLinkDescription(action),

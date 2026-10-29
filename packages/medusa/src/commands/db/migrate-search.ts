@@ -1,4 +1,3 @@
-import checkbox from "@inquirer/checkbox"
 import { MedusaAppLoader } from "@medusajs/framework"
 import { LinkLoader } from "@medusajs/framework/links"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
@@ -118,12 +117,9 @@ async function selectIndexesToDrop({
     )
   )
 
+  const { default: checkbox } = await import("@inquirer/checkbox")
   return await checkbox({
     message: "Select search indexes to drop",
-    instructions: styleText(
-      "dim",
-      " <space> select, <a> select all, <i> inverse, <enter> submit"
-    ),
     choices: actions.map((action) => {
       return {
         name: describeAction(action),
