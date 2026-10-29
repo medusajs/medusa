@@ -6,6 +6,9 @@ jest.mock("@medusajs/deps/pg", () => ({
 }))
 
 jest.mock("@medusajs/telemetry", () => ({ track: jest.fn() }))
+jest.mock("../../util/package-manager", () => ({
+  getPackageManager: jest.fn(() => "pnpm"),
+}))
 
 jest.mock("@medusajs/utils", () => ({
   isNodeVersionSupported: jest.fn(() => true),

@@ -12,7 +12,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=22.22.0"
   },
   "publishConfig": {
     "access": "public"
@@ -40,7 +40,7 @@
     "axios-retry": "^4.5.0",
     "boxen": "^9.0.0",
     "ci-info": "^4.4.0",
-    "configstore": "^5.0.1",
+    "configstore": "^8.0.0",
     "is-docker": "^2.2.1",
     "remove-trailing-slash": "^0.1.1",
     "uuid": "^11.1.1"

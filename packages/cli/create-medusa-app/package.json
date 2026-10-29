@@ -31,7 +31,7 @@
     "yaml": "^2.8.4"
   },
   "engines": {
-    "node": ">=14.16"
+    "node": ">=22.22.0"
   },
   "repository": {
     "type": "git",
