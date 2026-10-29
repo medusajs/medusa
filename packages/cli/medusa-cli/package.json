@@ -52,7 +52,7 @@
     "glob": "13.0.6",
     "inquirer": "^14.2.4",
     "is-valid-path": "^0.1.1",
-    "meant": "^1.0.3",
+    "meant": "^2.0.1",
     "ora": "^5.4.1",
     "prompts": "^2.4.2",
     "resolve-cwd": "^3.0.0",

@@ -3573,7 +3573,7 @@ __metadata:
     glob: 13.0.6
     inquirer: ^14.2.4
     is-valid-path: ^0.1.1
-    meant: ^1.0.3
+    meant: ^2.0.1
     ora: ^5.4.1
     prompts: ^2.4.2
     resolve-cwd: ^3.0.0
@@ -17041,10 +17041,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"meant@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "meant@npm:1.0.3"
-  checksum: ca35218688a84c3d98f49bfe32058cd84a9d078fa91ad347f03e5a0d1fccad2e78ccfc54487617baa1ebb8a560986e5abc60873576e4b8e246f75e5d626e4283
+"meant@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "meant@npm:2.0.1"
+  checksum: 8709dcfdc0250d9657b25d102aeddf785c26fffb48dc7064960870158994dfeb93e34cbf303bf802a3f717eb2a8f47fa3f802d310350284c9cc1b9e76b981a6e
   languageName: node
   linkType: hard
 
