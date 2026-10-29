@@ -16,11 +16,10 @@ export type IndexQueryInput<TEntry extends string> = {
     IndexServiceEntryPoints[TEntry & keyof IndexServiceEntryPoints]
   > extends never
     ? string[]
-    :
-        | ObjectToIndexFields<
-            IndexServiceEntryPoints[TEntry & keyof IndexServiceEntryPoints]
-          >[]
-        | string[]
+    : | ObjectToIndexFields<
+          IndexServiceEntryPoints[TEntry & keyof IndexServiceEntryPoints]
+        >[]
+      | string[]
   /**
    * Pagination configurations for the returned list of items.
    */

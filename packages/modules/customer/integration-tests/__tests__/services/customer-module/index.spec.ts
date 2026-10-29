@@ -733,9 +733,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
           const [group] = await service.createCustomerGroups([{ name: "VIP" }])
           await service.deleteCustomerGroups(group.id)
 
-          await expect(
-            service.retrieveCustomerGroup(group.id)
-          ).rejects.toThrowError(
+          await expect(service.retrieveCustomerGroup(group.id)).rejects.toThrow(
             `CustomerGroup with id: ${group.id} was not found`
           )
         })
@@ -752,7 +750,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
           for (const group of groups) {
             await expect(
               service.retrieveCustomerGroup(group.id)
-            ).rejects.toThrowError(
+            ).rejects.toThrow(
               `CustomerGroup with id: ${group.id} was not found`
             )
           }

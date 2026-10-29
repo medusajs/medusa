@@ -631,7 +631,7 @@ export const ClaimCreateForm = ({
 
               <StackedFocusModal id="inbound-items">
                 <StackedFocusModal.Trigger asChild>
-                  <a className="focus-visible:shadow-borders-focus transition-fg txt-compact-small-plus cursor-pointer text-blue-500 outline-none hover:text-blue-400">
+                  <a className="txt-compact-small-plus cursor-pointer text-blue-500 outline-none transition-fg hover:text-blue-400 focus-visible:shadow-borders-focus">
                     {t("actions.addItems")}
                   </a>
                 </StackedFocusModal.Trigger>
@@ -784,7 +784,7 @@ export const ClaimCreateForm = ({
                       <Text
                         size="small"
                         leading="compact"
-                        className="text-ui-fg-muted ml-1 inline"
+                        className="ml-1 inline text-ui-fg-muted"
                       >
                         ({t("fields.optional")})
                       </Text>
@@ -829,10 +829,10 @@ export const ClaimCreateForm = ({
             )}
             {showLevelsWarning && (
               <Alert variant="warning" dismissible className="mt-4 p-5">
-                <div className="text-ui-fg-subtle txt-small pb-2 font-medium leading-[20px]">
+                <div className="txt-small pb-2 font-medium leading-[20px] text-ui-fg-subtle">
                   {t("orders.returns.noInventoryLevel")}
                 </div>
-                <Text className="text-ui-fg-subtle txt-small leading-normal">
+                <Text className="txt-small leading-normal text-ui-fg-subtle">
                   {t("orders.returns.noInventoryLevelDesc")}
                 </Text>
               </Alert>
@@ -895,7 +895,7 @@ export const ClaimCreateForm = ({
                   {t("orders.returns.inboundShipping")}
                 </span>
 
-                <span className="txt-small text-ui-fg-subtle flex items-center">
+                <span className="txt-small flex items-center text-ui-fg-subtle">
                   {!isShippingInboundPriceEdit && (
                     <IconButton
                       onClick={() => setIsShippingInboundPriceEdit(true)}
@@ -970,7 +970,7 @@ export const ClaimCreateForm = ({
                   {t("orders.claims.outboundShipping")}
                 </span>
 
-                <span className="txt-small text-ui-fg-subtle flex items-center">
+                <span className="txt-small flex items-center text-ui-fg-subtle">
                   {!isShippingOutboundPriceEdit && (
                     <IconButton
                       onClick={() => setIsShippingOutboundPriceEdit(true)}
@@ -1053,7 +1053,7 @@ export const ClaimCreateForm = ({
 
             {/* CARRY OVER PROMOTION */}
             {hasPromotions && (
-              <div className="bg-ui-bg-field mt-4 rounded-lg border py-2 pl-2 pr-4">
+              <div className="mt-4 rounded-lg border bg-ui-bg-field py-2 pl-2 pr-4">
                 <Form.Field
                   control={form.control}
                   name="carry_over_promotions"
@@ -1104,7 +1104,7 @@ export const ClaimCreateForm = ({
             )}
 
             {/* SEND NOTIFICATION*/}
-            <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
+            <div className="mt-8 rounded-lg border bg-ui-bg-field py-2 pl-2 pr-4">
               <Form.Field
                 control={form.control}
                 name="send_notification"

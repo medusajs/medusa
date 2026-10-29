@@ -1,9 +1,5 @@
 export type TransactionStepStatus =
-  | "idle"
-  | "ok"
-  | "waiting_response"
-  | "temp_failure"
-  | "permanent_failure"
+  "idle" | "ok" | "waiting_response" | "temp_failure" | "permanent_failure"
 
 export type TransactionState =
   | "not_started"

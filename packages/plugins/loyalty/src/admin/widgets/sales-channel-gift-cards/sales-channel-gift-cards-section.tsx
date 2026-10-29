@@ -1,5 +1,4 @@
-/* eslint-disable @medusajs/widget-must-have-default-export */
-/* eslint-disable @medusajs/widget-must-export-config */
+/* eslint-disable @medusajs/widget-must-have-default-export, @medusajs/widget-must-export-config */
 import { PencilSquare, Trash } from "@medusajs/icons";
 import { AdminSalesChannel, HttpTypes } from "@medusajs/types";
 import { Checkbox, Container, toast, usePrompt } from "@medusajs/ui";

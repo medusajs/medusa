@@ -11,9 +11,9 @@ const IsSearchFieldsSchema = Symbol.for("isSearchFieldsSchema")
  * A fields schema produced by `search.define(...)`. Compiles to plain
  * SearchFieldDefinition records for the Search Module.
  */
-export class SearchFieldsSchema<Schema extends SearchSchema>
-  implements SearchFieldsSchemaLike
-{
+export class SearchFieldsSchema<
+  Schema extends SearchSchema,
+> implements SearchFieldsSchemaLike {
   [IsSearchFieldsSchema] = true
 
   /**

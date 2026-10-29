@@ -54,7 +54,7 @@ const Inner = ({
   return (
     <input
       className={clx(
-        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer bg-transparent outline-none",
+        "txt-compact-small flex size-full cursor-pointer bg-transparent text-ui-fg-subtle outline-none",
         "focus:cursor-text",
         "items-center justify-center"
       )}

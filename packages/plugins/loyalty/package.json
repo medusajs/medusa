@@ -70,8 +70,8 @@
     "@medusajs/ui": "4.2.8",
     "@medusajs/ui-preset": "2.22.1",
     "@swc/core": "^1.16.20",
-    "@types/node": "^20.0.0",
-    "cross-env": "^7.0.3",
+    "@types/node": "^22.20.5",
+    "cross-env": "^10.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   },

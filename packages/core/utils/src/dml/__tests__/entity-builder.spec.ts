@@ -85,7 +85,7 @@ describe("Entity builder", () => {
       expect(user.parse().tableName).toEqual("user")
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -230,7 +230,7 @@ describe("Entity builder", () => {
 
       const User = toMikroORMEntity(user)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -365,7 +365,7 @@ describe("Entity builder", () => {
 
       const User = toMikroORMEntity(user)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -493,7 +493,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -640,7 +640,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -768,7 +768,7 @@ describe("Entity builder", () => {
 
       const User = toMikroORMEntity(user)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string | null
         email: string
@@ -914,7 +914,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -1154,7 +1154,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -1304,7 +1304,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -1411,7 +1411,7 @@ describe("Entity builder", () => {
       expect(user.parse().tableName).toEqual("user")
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         email: string
         phones: Record<string, unknown>
@@ -1516,7 +1516,7 @@ describe("Entity builder", () => {
       })
 
       const Job = toMikroORMEntity(job)
-      expectTypeOf(new Job()).toMatchTypeOf<{
+      expectTypeOf(new Job()).toExtend<{
         id: number
         warnings: Warning[] | null
       }>()
@@ -1564,7 +1564,7 @@ describe("Entity builder", () => {
       expect(tax.parse().tableName).toEqual("tax")
 
       const Tax = toMikroORMEntity(tax)
-      expectTypeOf(new Tax()).toMatchTypeOf<{
+      expectTypeOf(new Tax()).toExtend<{
         id: number
         rate: number
       }>()
@@ -1662,7 +1662,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         emails: { id: number; email: string }[]
@@ -1764,7 +1764,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: string
         username: string
         email: string
@@ -1875,7 +1875,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: string
         username: string
         email: string
@@ -1990,7 +1990,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: string
         username: string
         email: string
@@ -2141,7 +2141,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -2260,7 +2260,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: string
@@ -2380,7 +2380,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         myEmail: string
@@ -2604,7 +2604,7 @@ describe("Entity builder", () => {
 
       const User = toMikroORMEntity(user)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         deleted_at: Date | null
@@ -2697,7 +2697,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: { email: string; isVerified: boolean }
@@ -2784,7 +2784,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: { email: string; isVerified: boolean }
@@ -2875,7 +2875,7 @@ describe("Entity builder", () => {
         })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: { email: string; isVerified: boolean }
@@ -3031,7 +3031,7 @@ describe("Entity builder", () => {
         })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: {
@@ -3333,7 +3333,7 @@ describe("Entity builder", () => {
       const User = toMikroORMEntity(user)
 
       expectTypeOf(new User().emails_id).toEqualTypeOf<string | null>()
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         deleted_at: Date | null
@@ -3443,7 +3443,7 @@ describe("Entity builder", () => {
 
       const User = toMikroORMEntity(user)
       expectTypeOf(new User().email_id).toEqualTypeOf<string>()
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: { email: string; isVerified: boolean }
@@ -3550,7 +3550,7 @@ describe("Entity builder", () => {
 
       const User = toMikroORMEntity(user)
       expectTypeOf(new User().email_id).toEqualTypeOf<string>()
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: { email: string; isVerified: boolean }
@@ -3721,7 +3721,7 @@ describe("Entity builder", () => {
 
       const User = toMikroORMEntity(user)
       expectTypeOf(new User().email_id).toEqualTypeOf<string>()
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         email: {
@@ -4211,7 +4211,7 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         emails: { email: string; isVerified: boolean }[]
@@ -4302,7 +4302,7 @@ describe("Entity builder", () => {
 
       const User = toMikroORMEntity(user)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         emails: { email: string; isVerified: boolean }[]
@@ -4394,7 +4394,7 @@ describe("Entity builder", () => {
         })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         emails: { email: string; isVerified: boolean }[]
@@ -4489,7 +4489,7 @@ describe("Entity builder", () => {
 
       const User = toMikroORMEntity(user)
       const Email = toMikroORMEntity(email)
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         emails: { email: string; isVerified: boolean }[]
@@ -4661,7 +4661,7 @@ describe("Entity builder", () => {
 
       const [User, Email] = toMikroOrmEntities([user, email])
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         deleted_at: Date | null
@@ -4682,7 +4682,7 @@ describe("Entity builder", () => {
         (typeof userInstance)["email"]["user_id"]
       >().toEqualTypeOf<string>()
 
-      expectTypeOf(new Email()).toMatchTypeOf<{
+      expectTypeOf(new Email()).toExtend<{
         email: string
         isVerified: boolean
         deleted_at: Date | null
@@ -4895,7 +4895,7 @@ describe("Entity builder", () => {
         string | null
       >()
 
-      expectTypeOf(new Email()).toMatchTypeOf<{
+      expectTypeOf(new Email()).toExtend<{
         email: string
         isVerified: boolean
         user: {
@@ -5081,7 +5081,7 @@ describe("Entity builder", () => {
       const User = toMikroORMEntity(user)
       const Email = toMikroORMEntity(email)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         emails: {
@@ -5094,7 +5094,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Email()).toMatchTypeOf<{
+      expectTypeOf(new Email()).toExtend<{
         email: string
         isVerified: boolean
         user: {
@@ -5270,7 +5270,7 @@ describe("Entity builder", () => {
       const User = toMikroORMEntity(user)
       const Email = toMikroORMEntity(email)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         emails: {
@@ -5283,7 +5283,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Email()).toMatchTypeOf<{
+      expectTypeOf(new Email()).toExtend<{
         email: string
         isVerified: boolean
         user: {
@@ -5500,7 +5500,7 @@ describe("Entity builder", () => {
       const User = toMikroORMEntity(user)
       const Email = toMikroORMEntity(email)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         deleted_at: Date | null
@@ -5516,7 +5516,7 @@ describe("Entity builder", () => {
         }
       }>()
 
-      expectTypeOf(new Email()).toMatchTypeOf<{
+      expectTypeOf(new Email()).toExtend<{
         email: string
         isVerified: boolean
         deleted_at: Date | null
@@ -5701,7 +5701,7 @@ describe("Entity builder", () => {
       const User = toMikroORMEntity(user)
       const Email = toMikroORMEntity(email)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         deleted_at: Date | null
@@ -5717,7 +5717,7 @@ describe("Entity builder", () => {
         }
       }>()
 
-      expectTypeOf(new Email()).toMatchTypeOf<{
+      expectTypeOf(new Email()).toExtend<{
         email: string
         isVerified: boolean
         deleted_at: Date | null
@@ -5896,7 +5896,7 @@ describe("Entity builder", () => {
 
       const [User] = toMikroOrmEntities([user])
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         deleted_at: Date | null
@@ -6010,7 +6010,7 @@ describe("Entity builder", () => {
 
       const [User] = toMikroOrmEntities([user])
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         deleted_at: Date | null
@@ -6137,7 +6137,7 @@ describe("Entity builder", () => {
       const User = toMikroORMEntity(user)
       const Team = toMikroORMEntity(team)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         teams: {
@@ -6150,7 +6150,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Team()).toMatchTypeOf<{
+      expectTypeOf(new Team()).toExtend<{
         id: number
         name: string
         users: {
@@ -6318,7 +6318,7 @@ describe("Entity builder", () => {
       const User = toMikroORMEntity(user)
       const Team = toMikroORMEntity(team)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         teams: {
@@ -6331,7 +6331,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Team()).toMatchTypeOf<{
+      expectTypeOf(new Team()).toExtend<{
         id: number
         name: string
         users: {
@@ -6613,7 +6613,7 @@ describe("Entity builder", () => {
 
       const [User, Team] = toMikroOrmEntities([user, team, {}])
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         teams: {
@@ -6626,7 +6626,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Team()).toMatchTypeOf<{
+      expectTypeOf(new Team()).toExtend<{
         id: number
         name: string
         users: {
@@ -6794,7 +6794,7 @@ describe("Entity builder", () => {
       const Team = toMikroORMEntity(team)
       const User = toMikroORMEntity(user)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         teams: {
@@ -6807,7 +6807,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Team()).toMatchTypeOf<{
+      expectTypeOf(new Team()).toExtend<{
         id: number
         name: string
         users: {
@@ -6981,7 +6981,7 @@ describe("Entity builder", () => {
       const Team = toMikroORMEntity(team)
       const User = toMikroORMEntity(user)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         teams: {
@@ -7002,7 +7002,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Team()).toMatchTypeOf<{
+      expectTypeOf(new Team()).toExtend<{
         id: number
         name: string
         users: {
@@ -7192,7 +7192,7 @@ describe("Entity builder", () => {
       const User = toMikroORMEntity(user)
       const Team = toMikroORMEntity(team)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         teams: {
@@ -7205,7 +7205,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Team()).toMatchTypeOf<{
+      expectTypeOf(new Team()).toExtend<{
         id: number
         name: string
         users: {
@@ -7535,7 +7535,7 @@ describe("Entity builder", () => {
       const User = toMikroORMEntity(user)
       const Team = toMikroORMEntity(team)
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         teams: {
@@ -7548,7 +7548,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Team()).toMatchTypeOf<{
+      expectTypeOf(new Team()).toExtend<{
         id: number
         name: string
         users: {
@@ -7726,7 +7726,7 @@ describe("Entity builder", () => {
 
       const [User, Team, Squad] = toMikroOrmEntities([user, team, squad])
 
-      expectTypeOf(new User()).toMatchTypeOf<{
+      expectTypeOf(new User()).toExtend<{
         id: number
         username: string
         teams: {
@@ -7739,7 +7739,7 @@ describe("Entity builder", () => {
         }[]
       }>()
 
-      expectTypeOf(new Team()).toMatchTypeOf<{
+      expectTypeOf(new Team()).toExtend<{
         id: number
         name: string
         users: {

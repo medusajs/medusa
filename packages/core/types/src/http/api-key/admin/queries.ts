@@ -3,8 +3,7 @@ import { BaseFilterable, OperatorMap } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
 export interface AdminGetApiKeysParams
-  extends FindParams,
-    BaseFilterable<AdminGetApiKeysParams> {
+  extends FindParams, BaseFilterable<AdminGetApiKeysParams> {
   /**
    * Query or keywords to search the API key's searchable fields.
    */

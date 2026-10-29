@@ -44,8 +44,7 @@ export interface UpdatePromotionRuleValueDTO {
 /**
  * The filters to apply on the retrieved promotion rule values.
  */
-export interface FilterablePromotionRuleValueProps
-  extends BaseFilterable<FilterablePromotionRuleValueProps> {
+export interface FilterablePromotionRuleValueProps extends BaseFilterable<FilterablePromotionRuleValueProps> {
   /**
    * The IDs to filter the promotion rule values by.
    */

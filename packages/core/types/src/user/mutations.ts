@@ -75,8 +75,9 @@ export interface CreateInviteDTO {
 /**
  * The attributes to update in the invite.
  */
-export interface UpdateInviteDTO
-  extends Partial<Omit<CreateInviteDTO, "email">> {
+export interface UpdateInviteDTO extends Partial<
+  Omit<CreateInviteDTO, "email">
+> {
   /**
    * The ID of the invite.
    */

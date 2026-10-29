@@ -63,10 +63,9 @@ function buildLocalCommands(cli, isLocalProject) {
   const useYarn = existsSync(path.join(directory, `yarn.lock`))
 
   if (isLocalProject) {
-    projectInfo["sitePackageJson"] = require(path.join(
-      directory,
-      `package.json`
-    ))
+    projectInfo["sitePackageJson"] = require(
+      path.join(directory, `package.json`)
+    )
   }
 
   function resolveLocalCommand(command) {
@@ -730,9 +729,9 @@ function isLocalMedusaProject() {
   let inMedusaProject = false
 
   try {
-    const { dependencies, devDependencies } = require(path.resolve(
-      `./package.json`
-    ))
+    const { dependencies, devDependencies } = require(
+      path.resolve(`./package.json`)
+    )
     // Draft order plugin can't have @medusajs/medusa as dependency,
     // so we also check for @medusajs/cli
     inMedusaProject = !!(
@@ -755,12 +754,14 @@ function getVersionInfo() {
   if (isMedusaProject) {
     let medusaVersion = ""
     try {
-      medusaVersion = require(path.join(
-        process.cwd(),
-        `node_modules`,
-        `@medusajs/medusa`,
-        `package.json`
-      )).version
+      medusaVersion = require(
+        path.join(
+          process.cwd(),
+          `node_modules`,
+          `@medusajs/medusa`,
+          `package.json`
+        )
+      ).version
     } catch (e) {
       /* noop */
     }

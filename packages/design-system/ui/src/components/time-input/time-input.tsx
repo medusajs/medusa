@@ -28,7 +28,7 @@ const TimeInput = (props: AriaTimeFieldProps<TimeValue>) => {
       {...fieldProps}
       aria-label="Time input"
       className={clx(
-        "bg-ui-bg-field shadow-borders-base txt-compact-small flex items-center rounded-md px-2 py-1",
+        "txt-compact-small flex items-center rounded-md bg-ui-bg-field px-2 py-1 shadow-borders-base",
         {
           "": props.isDisabled,
         }

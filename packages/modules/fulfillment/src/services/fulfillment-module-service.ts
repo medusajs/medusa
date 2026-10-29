@@ -518,8 +518,7 @@ export default class FulfillmentModuleService
   // @ts-expect-error
   async createGeoZones(
     data:
-      | FulfillmentTypes.CreateGeoZoneDTO
-      | FulfillmentTypes.CreateGeoZoneDTO[],
+      FulfillmentTypes.CreateGeoZoneDTO | FulfillmentTypes.CreateGeoZoneDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.GeoZoneDTO | FulfillmentTypes.GeoZoneDTO[]> {
     const data_ = Array.isArray(data) ? data : [data]
@@ -1568,9 +1567,10 @@ export default class FulfillmentModuleService
       sharedContext
     )
 
-    const updatedTypes = await this.baseRepository_.serialize<
-      FulfillmentTypes.ShippingOptionTypeDTO[]
-    >(types)
+    const updatedTypes =
+      await this.baseRepository_.serialize<
+        FulfillmentTypes.ShippingOptionTypeDTO[]
+      >(types)
 
     return isString(idOrSelector) ? updatedTypes[0] : updatedTypes
   }
@@ -1604,9 +1604,10 @@ export default class FulfillmentModuleService
       sharedContext
     )
 
-    const updatedProfiles = await this.baseRepository_.serialize<
-      FulfillmentTypes.ShippingProfileDTO[]
-    >(profiles)
+    const updatedProfiles =
+      await this.baseRepository_.serialize<
+        FulfillmentTypes.ShippingProfileDTO[]
+      >(profiles)
 
     return isString(idOrSelector) ? updatedProfiles[0] : updatedProfiles
   }
@@ -1726,8 +1727,7 @@ export default class FulfillmentModuleService
   // @ts-expect-error
   async updateGeoZones(
     data:
-      | FulfillmentTypes.UpdateGeoZoneDTO
-      | FulfillmentTypes.UpdateGeoZoneDTO[],
+      FulfillmentTypes.UpdateGeoZoneDTO | FulfillmentTypes.UpdateGeoZoneDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentTypes.GeoZoneDTO | FulfillmentTypes.GeoZoneDTO[]> {
     const data_ = Array.isArray(data) ? data : [data]
@@ -1743,9 +1743,10 @@ export default class FulfillmentModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<
-      FulfillmentTypes.GeoZoneDTO[]
-    >(updatedGeoZones)
+    const serialized =
+      await this.baseRepository_.serialize<FulfillmentTypes.GeoZoneDTO[]>(
+        updatedGeoZones
+      )
 
     return Array.isArray(data) ? serialized : serialized[0]
   }
@@ -1919,9 +1920,8 @@ export default class FulfillmentModuleService
       )
     }
 
-    const result = await this.baseRepository_.serialize<FulfillmentDTO>(
-      fulfillment
-    )
+    const result =
+      await this.baseRepository_.serialize<FulfillmentDTO>(fulfillment)
 
     return result
   }
@@ -2036,7 +2036,7 @@ export default class FulfillmentModuleService
   @EmitEvents()
   // @ts-expect-error
   async softDeleteShippingProfiles<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -2330,12 +2330,15 @@ export default class FulfillmentModuleService
         if (address![prop]) {
           return {
             type,
-            ...props.reduce((geoZoneConstraint, prop) => {
-              if (isPresent(address![prop])) {
-                geoZoneConstraint[prop] = address![prop]
-              }
-              return geoZoneConstraint
-            }, {} as Record<string, string | undefined>),
+            ...props.reduce(
+              (geoZoneConstraint, prop) => {
+                if (isPresent(address![prop])) {
+                  geoZoneConstraint[prop] = address![prop]
+                }
+                return geoZoneConstraint
+              },
+              {} as Record<string, string | undefined>
+            ),
           }
         }
         return null

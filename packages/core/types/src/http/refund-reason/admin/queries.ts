@@ -3,7 +3,8 @@ import { SelectParams } from "../../common"
 import { BaseRefundReasonListParams } from "../common"
 
 export interface AdminRefundReasonListParams
-  extends BaseRefundReasonListParams,
+  extends
+    BaseRefundReasonListParams,
     BaseFilterable<AdminRefundReasonListParams> {}
 
 export interface AdminRefundReasonParams extends SelectParams {}

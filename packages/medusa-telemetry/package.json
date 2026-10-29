@@ -12,7 +12,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=22.22.0"
   },
   "publishConfig": {
     "access": "public"
@@ -27,7 +27,6 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --watch plugins/ --watch src/ --exec node src/index.js",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "watch": "yarn run -T tsc --build --watch",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
@@ -38,13 +37,15 @@
   "dependencies": {
     "@babel/runtime": "^7.29.10",
     "axios": "^1.20.0",
-    "axios-retry": "^3.1.9",
-    "boxen": "^5.0.1",
-    "ci-info": "^3.2.0",
-    "configstore": "^5.0.1",
-    "is-docker": "^2.2.1",
-    "remove-trailing-slash": "^0.1.1",
-    "uuid": "^11.1.1"
+    "axios-retry": "^4.5.0",
+    "boxen": "^9.0.0",
+    "ci-info": "^4.4.0",
+    "configstore": "^8.0.0",
+    "is-docker": "^4.0.0",
+    "remove-trailing-slash": "^0.1.1"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
   },
   "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }

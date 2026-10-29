@@ -108,12 +108,12 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
 
             return (
               <div
-                className="shadow-elevation-card-rest hover:shadow-elevation-card-hover transition-fg group relative aspect-square size-full cursor-pointer overflow-hidden rounded-[8px]"
+                className="group relative aspect-square size-full cursor-pointer overflow-hidden rounded-[8px] shadow-elevation-card-rest transition-fg hover:shadow-elevation-card-hover"
                 key={i.id}
               >
                 <div
                   className={clx(
-                    "transition-fg invisible absolute right-2 top-2 opacity-0 group-hover:visible group-hover:opacity-100",
+                    "invisible absolute right-2 top-2 opacity-0 transition-fg group-hover:visible group-hover:opacity-100",
                     {
                       "visible opacity-100": isSelected,
                     }

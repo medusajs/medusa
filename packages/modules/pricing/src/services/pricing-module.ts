@@ -302,9 +302,8 @@ export default class PricingModuleService
       sharedContext
     )
     if (!pricingContext || !priceSets.length) {
-      const serializedPriceSets = await this.baseRepository_.serialize<
-        PriceSetDTO[]
-      >(priceSets)
+      const serializedPriceSets =
+        await this.baseRepository_.serialize<PriceSetDTO[]>(priceSets)
       return [serializedPriceSets, count]
     }
 
@@ -324,9 +323,8 @@ export default class PricingModuleService
       priceSet.calculated_price = calculatedPrice ?? null
     }
 
-    const serializedPriceSets = await this.baseRepository_.serialize<
-      PriceSetDTO[]
-    >(priceSets)
+    const serializedPriceSets =
+      await this.baseRepository_.serialize<PriceSetDTO[]>(priceSets)
 
     return [serializedPriceSets, count]
   }
@@ -1172,9 +1170,8 @@ export default class PricingModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<
-      PricePreferenceDTO[]
-    >(preferences)
+    const serialized =
+      await this.baseRepository_.serialize<PricePreferenceDTO[]>(preferences)
     return Array.isArray(data) ? serialized : serialized[0]
   }
 

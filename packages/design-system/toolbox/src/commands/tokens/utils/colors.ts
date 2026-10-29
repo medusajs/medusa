@@ -108,8 +108,7 @@ interface CreateGradientComponentProps {
   type: PaintType
 }
 
-interface CreateLinearGradientComponentProps
-  extends CreateGradientComponentProps {
+interface CreateLinearGradientComponentProps extends CreateGradientComponentProps {
   type: PaintType.GRADIENT_LINEAR
   degree: number
   from: string

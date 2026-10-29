@@ -6,7 +6,7 @@ import { WorkflowData, WorkflowDataProperties } from "../type"
  */
 export class WorkflowResponse<
   TResult,
-  const THooks extends readonly unknown[] = []
+  const THooks extends readonly unknown[] = [],
 > {
   __type: typeof OrchestrationUtils.SymbolMedusaWorkflowResponse =
     OrchestrationUtils.SymbolMedusaWorkflowResponse

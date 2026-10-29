@@ -21,9 +21,7 @@ export interface UpdateCartPromotionStepInput {
    * Whether to add, remove, or replace promotion codes.
    */
   action?:
-    | PromotionActions.ADD
-    | PromotionActions.REMOVE
-    | PromotionActions.REPLACE
+    PromotionActions.ADD | PromotionActions.REMOVE | PromotionActions.REPLACE
 }
 
 export const updateCartPromotionsStepId = "update-cart-promotions"

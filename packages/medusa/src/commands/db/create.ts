@@ -1,4 +1,3 @@
-import input from "@inquirer/input"
 import type { Logger } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
@@ -69,6 +68,7 @@ export async function dbCreate({
     const defaultValue =
       envEditor.get("DB_NAME") ?? `medusa-${slugify(basename(directory))}`
     if (interactive) {
+      const { default: input } = await import("@inquirer/input")
       dbName = await input({
         message: "Enter the database name",
         default: defaultValue,

@@ -4,9 +4,7 @@ import {
   WorkflowResourceData,
 } from "../types"
 
-export class WorkflowHandler
-  implements ResourceTypeHandler<WorkflowResourceData>
-{
+export class WorkflowHandler implements ResourceTypeHandler<WorkflowResourceData> {
   readonly type = "workflow"
 
   validate(data: WorkflowResourceData): void {

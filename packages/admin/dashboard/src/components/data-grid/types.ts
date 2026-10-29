@@ -15,11 +15,7 @@ import {
 } from "react-hook-form"
 
 export type DataGridColumnType =
-  | "text"
-  | "multiline-text"
-  | "number"
-  | "boolean"
-  | "togglable-number"
+  "text" | "multiline-text" | "number" | "boolean" | "togglable-number"
 
 export type DataGridCoordinates = {
   row: number
@@ -30,8 +26,10 @@ export interface DataGridCellProps<TData = unknown, TValue = any> {
   context: CellContext<TData, TValue>
 }
 
-export interface DataGridCellContext<TData = unknown, TValue = any>
-  extends CellContext<TData, TValue> {
+export interface DataGridCellContext<
+  TData = unknown,
+  TValue = any,
+> extends CellContext<TData, TValue> {
   /**
    * The index of the column in the grid.
    */
@@ -105,7 +103,7 @@ export interface DataGridCellContainerProps extends PropsWithChildren<{}> {
 }
 
 export type DataGridCellSnapshot<
-  TFieldValues extends FieldValues = FieldValues
+  TFieldValues extends FieldValues = FieldValues,
 > = {
   field: string
   value: PathValue<TFieldValues, Path<TFieldValues>>

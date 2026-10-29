@@ -54,7 +54,8 @@ const buttonVariants = cva({
 })
 
 interface ButtonProps
-  extends React.ComponentPropsWithoutRef<"button">,
+  extends
+    React.ComponentPropsWithoutRef<"button">,
     VariantProps<typeof buttonVariants> {
   isLoading?: boolean
   asChild?: boolean
@@ -103,7 +104,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           <span className="pointer-events-none">
             <div
               className={clx(
-                "bg-ui-bg-disabled absolute inset-0 flex items-center justify-center rounded-md"
+                "absolute inset-0 flex items-center justify-center rounded-md bg-ui-bg-disabled"
               )}
             >
               <Spinner className="animate-spin" />

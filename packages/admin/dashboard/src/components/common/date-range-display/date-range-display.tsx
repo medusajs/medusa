@@ -21,7 +21,7 @@ export const DateRangeDisplay = ({
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      <div className="shadow-elevation-card-rest bg-ui-bg-component text-ui-fg-subtle flex items-center gap-x-3 rounded-md px-3 py-1.5">
+      <div className="flex items-center gap-x-3 rounded-md bg-ui-bg-component px-3 py-1.5 text-ui-fg-subtle shadow-elevation-card-rest">
         <Bar date={startDate} />
         <div>
           <Text weight="plus" size="small">
@@ -38,7 +38,7 @@ export const DateRangeDisplay = ({
         </div>
       </div>
 
-      <div className="shadow-elevation-card-rest bg-ui-bg-component text-ui-fg-subtle flex items-center gap-x-3 rounded-md px-3 py-1.5">
+      <div className="flex items-center gap-x-3 rounded-md bg-ui-bg-component px-3 py-1.5 text-ui-fg-subtle shadow-elevation-card-rest">
         <Bar date={endDate} />
         <div>
           <Text size="small" weight="plus">
@@ -65,7 +65,7 @@ const Bar = ({ date }: { date: Date | null }) => {
 
   return (
     <div
-      className={clx("bg-ui-tag-neutral-icon h-8 w-1 rounded-full", {
+      className={clx("h-8 w-1 rounded-full bg-ui-tag-neutral-icon", {
         "bg-ui-tag-orange-icon": isDateInFuture,
       })}
     />

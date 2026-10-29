@@ -8,13 +8,11 @@ export interface AdminProductCategoryResponse {
   product_category: AdminProductCategory
 }
 
-export interface AdminProductCategoryListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of product categories.
-     */
-    product_categories: AdminProductCategory[]
-  }> {}
+export interface AdminProductCategoryListResponse extends PaginatedResponse<{
+  /**
+   * The list of product categories.
+   */
+  product_categories: AdminProductCategory[]
+}> {}
 
-export interface AdminProductCategoryDeleteResponse
-  extends DeleteResponse<"product_category"> {}
+export interface AdminProductCategoryDeleteResponse extends DeleteResponse<"product_category"> {}

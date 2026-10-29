@@ -134,7 +134,7 @@ function DismissedQuantity({
       </Popover.Trigger>
       <Popover.Content align="center">
         <div className="flex flex-col p-2">
-          <span className="txt-small text-ui-fg-subtle mb-2 font-medium">
+          <span className="txt-small mb-2 font-medium text-ui-fg-subtle">
             {t("orders.returns.receive.writeOffInputLabel")}
           </span>
           <Form.Field

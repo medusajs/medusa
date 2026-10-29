@@ -41,7 +41,8 @@
   },
   "devDependencies": {
     "@medusajs/framework": "2.22.1",
-    "@medusajs/test-utils": "2.22.1"
+    "@medusajs/test-utils": "2.22.1",
+    "cross-env": "^10.1.0"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.1"

@@ -6,7 +6,8 @@ import { DataTableQuery, DataTableQueryProps } from "./data-table-query"
 import { DataTableRoot, DataTableRootProps } from "./data-table-root"
 
 interface DataTableProps<TData>
-  extends Omit<DataTableRootProps<TData>, "noResults">,
+  extends
+    Omit<DataTableRootProps<TData>, "noResults">,
     DataTableQueryProps<TData> {
   isLoading?: boolean
   pageSize: number

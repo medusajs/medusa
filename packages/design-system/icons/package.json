@@ -27,7 +27,7 @@
   "mcpServer": "https://docs.medusajs.com/mcp",
   "scripts": {
     "build": "yarn build:bundles && yarn build:types",
-    "build:bundles": "rollup -c ./rollup.config.mjs",
+    "build:bundles": "yarn run -T rollup -c ./rollup.config.mjs",
     "build:types": "yarn run -T tsc --emitDeclarationOnly",
     "test": "../../../node_modules/.bin/vitest --run",
     "test:watch": "../../../node_modules/.bin/vitest",

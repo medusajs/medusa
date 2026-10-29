@@ -6,15 +6,13 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
  * The transaction(s) to add to the order.
  */
 export type AddOrderTransactionStepInput =
-  | CreateOrderTransactionDTO
-  | CreateOrderTransactionDTO[]
+  CreateOrderTransactionDTO | CreateOrderTransactionDTO[]
 
 /**
  * The added order transaction(s).
  */
 export type AddOrderTransactionStepOutput =
-  | CreateOrderTransactionDTO
-  | CreateOrderTransactionDTO[]
+  CreateOrderTransactionDTO | CreateOrderTransactionDTO[]
 
 export const addOrderTransactionStepId = "add-order-transaction"
 /**

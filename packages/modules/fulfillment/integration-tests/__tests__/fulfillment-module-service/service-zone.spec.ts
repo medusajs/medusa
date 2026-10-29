@@ -304,9 +304,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            const createdServiceZone = await service.createServiceZones(
-              createData
-            )
+            const createdServiceZone =
+              await service.createServiceZones(createData)
 
             const usGeoZone = createdServiceZone.geo_zones.find(
               (geoZone) => geoZone.country_code === "us"
@@ -432,9 +431,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdServiceZones = await service.createServiceZones(
-              createData
-            )
+            const createdServiceZones =
+              await service.createServiceZones(createData)
 
             const updateData: UpdateServiceZoneDTO = {
               name: "service-zone-test",
@@ -485,9 +483,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdServiceZones = await service.createServiceZones(
-              createData
-            )
+            const createdServiceZones =
+              await service.createServiceZones(createData)
 
             const updateData: UpdateServiceZoneDTO[] = createdServiceZones.map(
               (serviceZone, index) => ({
@@ -504,9 +501,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             jest.clearAllMocks()
 
-            const updatedServiceZones = await service.upsertServiceZones(
-              updateData
-            )
+            const updatedServiceZones =
+              await service.upsertServiceZones(updateData)
 
             expect(updatedServiceZones).toHaveLength(2)
 

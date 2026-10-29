@@ -38,13 +38,13 @@
     "@medusajs/medusa": "2.22.1",
     "@medusajs/utils": "2.22.1",
     "@readme/json-schema-ref-parser": "^1.2.0",
-    "@readme/openapi-parser": "^2.4.0",
-    "@redocly/cli": "1.25.3",
-    "commander": "^11.0.0",
-    "execa": "^5.1.1",
+    "@readme/openapi-parser": "^10.0.0",
+    "@redocly/cli": "2.71.0",
+    "commander": "^15.0.0",
+    "execa": "^10.2.1",
     "lodash.mergewith": "^4.6.2",
-    "openapi3-ts": "^3.1.2",
-    "swagger-inline": "^6.1.0",
-    "yargs": "^17.7.2"
+    "openapi-types": "^12.1.3",
+    "openapi3-ts": "^4.6.2",
+    "swagger-inline": "^8.1.0"
   }
 }

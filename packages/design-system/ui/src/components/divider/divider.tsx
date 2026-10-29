@@ -1,8 +1,10 @@
 import { clx } from "@/utils/clx"
 import * as React from "react"
 
-interface DividerProps
-  extends Omit<React.ComponentPropsWithoutRef<"div">, "children"> {
+interface DividerProps extends Omit<
+  React.ComponentPropsWithoutRef<"div">,
+  "children"
+> {
   orientation?: "horizontal" | "vertical"
   variant?: "dashed" | "solid"
 }

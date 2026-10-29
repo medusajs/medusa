@@ -233,13 +233,13 @@ export function OrderReceiveReturnForm({
               {stock_location && (
                 <div className="flex items-center gap-2">
                   <ArrowRight className="text-ui-fg-subtle" />{" "}
-                  <span className="text-ui-fg-base txt-small font-medium">
+                  <span className="txt-small font-medium text-ui-fg-base">
                     {stock_location.name}
                   </span>
                 </div>
               )}
             </div>
-            <span className="text-ui-fg-muted txt-small text-right">
+            <span className="txt-small text-right text-ui-fg-muted">
               {t("orders.returns.receive.itemsLabel")}
             </span>
           </div>
@@ -249,7 +249,7 @@ export function OrderReceiveReturnForm({
             return (
               <div
                 key={item.id}
-                className="bg-ui-bg-subtle shadow-elevation-card-rest mt-2 rounded-xl"
+                className="mt-2 rounded-xl bg-ui-bg-subtle shadow-elevation-card-rest"
               >
                 <div className="flex flex-col items-center gap-x-2 gap-y-2 p-3 text-sm md:flex-row">
                   <div className="flex flex-1 items-center gap-x-3">
@@ -267,7 +267,7 @@ export function OrderReceiveReturnForm({
                           <span>({originalItem.variant_sku})</span>
                         )}
                       </div>
-                      <Text as="div" className="text-ui-fg-subtle txt-small">
+                      <Text as="div" className="txt-small text-ui-fg-subtle">
                         {originalItem.product_title}
                       </Text>
                     </div>
@@ -352,7 +352,7 @@ export function OrderReceiveReturnForm({
             {t("orders.returns.receive.inventoryWarning")}
           </Alert>
 
-          <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl p-3">
+          <div className="my-2 rounded-xl bg-ui-bg-subtle p-3 shadow-elevation-card-rest">
             <Form.Field
               control={form.control}
               name="send_notification"

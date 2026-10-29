@@ -44,8 +44,10 @@ type Value = string[] | string
 const TABLUAR_NUM_WIDTH = 8
 const TAG_BASE_WIDTH = 28
 
-interface ComboboxProps<T extends Value = Value>
-  extends Omit<ComponentPropsWithoutRef<"input">, "onChange" | "value"> {
+interface ComboboxProps<T extends Value = Value> extends Omit<
+  ComponentPropsWithoutRef<"input">,
+  "onChange" | "value"
+> {
   value?: T
   onChange?: (value?: T) => void
   searchValue?: string

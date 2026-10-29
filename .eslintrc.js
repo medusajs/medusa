@@ -102,6 +102,7 @@ module.exports = {
         curly: ["error", "all"],
         "new-cap": "off",
         "require-jsdoc": "off",
+        "valid-jsdoc": "off",
         "no-unused-expressions": "off",
         "no-unused-vars": "off",
         camelcase: "off",
@@ -173,8 +174,8 @@ module.exports = {
         "@typescript-eslint/no-floating-promises": "off",
         "@typescript-eslint/await-thenable": "off",
         "@typescript-eslint/promise-function-async": "off",
-        "@typescript-eslint/keyword-spacing": "error",
-        "@typescript-eslint/space-before-function-paren": [
+        "keyword-spacing": "error",
+        "space-before-function-paren": [
           "error",
           {
             anonymous: "always",
@@ -182,15 +183,18 @@ module.exports = {
             asyncArrow: "always",
           },
         ],
-        "@typescript-eslint/space-infix-ops": "error",
+        "space-infix-ops": "error",
 
         // --- Rules to be fixed
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/ban-types": "off",
-        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-empty-object-type": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-wrapper-object-types": "off",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
       },
     },
 
@@ -201,12 +205,12 @@ module.exports = {
       ],
       extends: [
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
         "plugin:@typescript-eslint/recommended",
       ],
       plugins: ["@typescript-eslint"],
       rules: {
         "react/no-children-prop": "off",
+        "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "react/prop-types": "off",
         "@typescript-eslint/no-explicit-any": "off",
@@ -260,11 +264,7 @@ module.exports = {
         "./packages/admin/dashboard/**/*.tsx",
       ],
       plugins: ["unused-imports", "react-refresh"],
-      extends: [
-        "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
-        "plugin:react-hooks/recommended",
-      ],
+      extends: ["plugin:react/recommended", "plugin:react/jsx-runtime"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
         ecmaFeatures: {
@@ -285,6 +285,8 @@ module.exports = {
       rules: {
         "prettier/prettier": "error",
         "react/prop-types": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
         "new-cap": "off",
         "require-jsdoc": "off",
         "valid-jsdoc": "off",
@@ -301,6 +303,7 @@ module.exports = {
             varsIgnorePattern: "^_",
             args: "after-used",
             argsIgnorePattern: "^_",
+            caughtErrors: "none",
           },
         ],
       },

@@ -3,8 +3,7 @@ import { SelectParams } from "../../common"
 import { BaseClaimListParams } from "../common"
 
 export interface AdminClaimListParams
-  extends BaseClaimListParams,
-    BaseFilterable<AdminClaimListParams> {}
+  extends BaseClaimListParams, BaseFilterable<AdminClaimListParams> {}
 
 export interface AdminClaimActionsParams extends SelectParams {
   /**

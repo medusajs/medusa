@@ -279,8 +279,7 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
         session_id: data?.session_id as string,
       },
       account_holder_id: context?.account_holder?.data?.id as
-        | string
-        | undefined,
+        string | undefined,
       idempotency_key: context?.idempotency_key,
       ...additionalParameters,
     } as CreatePaymentRequest
@@ -597,8 +596,7 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
     context,
   }: ListPaymentMethodsInput): Promise<ListPaymentMethodsOutput> {
     const accountHolderId = context?.account_holder?.data?.id as
-      | string
-      | undefined
+      string | undefined
     if (!accountHolderId) {
       return []
     }
@@ -623,8 +621,7 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
     data,
   }: SavePaymentMethodInput): Promise<SavePaymentMethodOutput> {
     const accountHolderId = context?.account_holder?.data?.id as
-      | string
-      | undefined
+      string | undefined
 
     if (!accountHolderId) {
       throw new Error("Account holder not set while saving a payment method")

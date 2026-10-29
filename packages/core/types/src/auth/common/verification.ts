@@ -37,8 +37,7 @@ export type ConfirmAuthVerificationDTO = {
 
 export type ConfirmAuthVerificationResponse = AuthVerificationDTO
 
-export interface FilterableAuthVerificationProps
-  extends BaseFilterable<FilterableAuthVerificationProps> {
+export interface FilterableAuthVerificationProps extends BaseFilterable<FilterableAuthVerificationProps> {
   id?: string[]
   auth_identity_id?: string
   entity_id?: string

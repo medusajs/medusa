@@ -4,9 +4,10 @@ const IsComputedProperty = Symbol.for("isComputedProperty")
 /**
  * Computed property marks a schema node as computed
  */
-export class ComputedProperty<T, Schema extends PropertyType<T>>
-  implements PropertyType<T | null>
-{
+export class ComputedProperty<
+  T,
+  Schema extends PropertyType<T>,
+> implements PropertyType<T | null> {
   [IsComputedProperty]: true = true
 
   static isComputedProperty(obj: any): obj is ComputedProperty<any, any> {

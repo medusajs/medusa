@@ -5,9 +5,10 @@ const IsNullableModifier = Symbol.for("isNullableModifier")
 /**
  * Nullable modifier marks a schema node as nullable
  */
-export class NullableModifier<T, Schema extends PropertyType<T>>
-  implements PropertyType<T | null>
-{
+export class NullableModifier<
+  T,
+  Schema extends PropertyType<T>,
+> implements PropertyType<T | null> {
   [IsNullableModifier]: true = true
 
   static isNullableModifier(obj: any): obj is NullableModifier<any, any> {

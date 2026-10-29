@@ -62,7 +62,7 @@ moduleIntegrationTestRunner<ILockingModule>({
         })
 
         expect(userReleased).toBe(false)
-        await expect(anotherUserLock).rejects.toThrowError(
+        await expect(anotherUserLock).rejects.toThrow(
           `Failed to acquire lock for key "key_name"`
         )
 
@@ -90,11 +90,11 @@ moduleIntegrationTestRunner<ILockingModule>({
           service.acquire(keyToLock, user_1)
         ).resolves.toBeUndefined()
 
-        await expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrow(
           `Failed to acquire lock for key "${keyToLock}"`
         )
 
-        await expect(service.acquire(keyToLock, user_2)).rejects.toThrowError(
+        await expect(service.acquire(keyToLock, user_2)).rejects.toThrow(
           `Failed to acquire lock for key "${keyToLock}"`
         )
 
@@ -153,8 +153,8 @@ moduleIntegrationTestRunner<ILockingModule>({
       await service.execute("lock_key", fn_1).catch(() => {})
       await service.execute("lock_key", fn_2).catch(() => {})
 
-      expect(fn_1).toBeCalledTimes(1)
-      expect(fn_2).toBeCalledTimes(1)
+      expect(fn_1).toHaveBeenCalledTimes(1)
+      expect(fn_2).toHaveBeenCalledTimes(1)
     })
 
     it("should release lock in case of timeout failure", async () => {

@@ -281,13 +281,11 @@ export default class CartModuleService
 
     const carts = await this.createCarts_(input, sharedContext)
 
-    const result = await this.baseRepository_.serialize<CartTypes.CartDTO[]>(
-      carts
-    )
+    const result =
+      await this.baseRepository_.serialize<CartTypes.CartDTO[]>(carts)
 
     return (Array.isArray(data) ? result : result[0]) as
-      | CartTypes.CartDTO
-      | CartTypes.CartDTO[]
+      CartTypes.CartDTO | CartTypes.CartDTO[]
   }
 
   @InjectTransactionManager()
@@ -368,9 +366,7 @@ export default class CartModuleService
   // @ts-expect-error
   async updateCarts(
     dataOrIdOrSelector:
-      | CartTypes.UpdateCartDTO[]
-      | string
-      | Partial<CartTypes.CartDTO>,
+      CartTypes.UpdateCartDTO[] | string | Partial<CartTypes.CartDTO>,
     data?: CartTypes.UpdateCartDataDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.CartDTO[] | CartTypes.CartDTO> {
@@ -380,9 +376,8 @@ export default class CartModuleService
       sharedContext
     )
 
-    const serializedResult = await this.baseRepository_.serialize<
-      CartTypes.CartDTO[]
-    >(result)
+    const serializedResult =
+      await this.baseRepository_.serialize<CartTypes.CartDTO[]>(result)
 
     return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
   }
@@ -390,9 +385,7 @@ export default class CartModuleService
   @InjectTransactionManager()
   protected async updateCarts_(
     dataOrIdOrSelector:
-      | CartTypes.UpdateCartDTO[]
-      | string
-      | Partial<CartTypes.CartDTO>,
+      CartTypes.UpdateCartDTO[] | string | Partial<CartTypes.CartDTO>,
     data?: CartTypes.UpdateCartDataDTO,
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -660,8 +653,7 @@ export default class CartModuleService
     )
 
     return (Array.isArray(data) ? result : result[0]) as
-      | CartTypes.CartAddressDTO
-      | CartTypes.CartAddressDTO[]
+      CartTypes.CartAddressDTO | CartTypes.CartAddressDTO[]
   }
 
   @InjectTransactionManager()
@@ -700,8 +692,7 @@ export default class CartModuleService
     )
 
     return (Array.isArray(data) ? result : result[0]) as
-      | CartTypes.CartAddressDTO
-      | CartTypes.CartAddressDTO[]
+      CartTypes.CartAddressDTO | CartTypes.CartAddressDTO[]
   }
 
   @InjectTransactionManager()
@@ -872,8 +863,7 @@ export default class CartModuleService
   @EmitEvents()
   async upsertLineItemTaxLines(
     taxLines: (
-      | CartTypes.CreateLineItemTaxLineDTO
-      | CartTypes.UpdateLineItemTaxLineDTO
+      CartTypes.CreateLineItemTaxLineDTO | CartTypes.UpdateLineItemTaxLineDTO
     )[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.LineItemTaxLineDTO[]> {
@@ -890,8 +880,7 @@ export default class CartModuleService
   @InjectTransactionManager()
   protected async upsertLineItemTaxLines_(
     taxLines: (
-      | CartTypes.CreateLineItemTaxLineDTO
-      | CartTypes.UpdateLineItemTaxLineDTO
+      CartTypes.CreateLineItemTaxLineDTO | CartTypes.UpdateLineItemTaxLineDTO
     )[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof LineItemTaxLine>[]> {
@@ -1268,8 +1257,7 @@ export default class CartModuleService
       | CartTypes.CreateLineItemTaxLineDTO[]
       | CartTypes.CreateLineItemTaxLineDTO,
     taxLines?:
-      | CartTypes.CreateLineItemTaxLineDTO[]
-      | CartTypes.CreateLineItemTaxLineDTO,
+      CartTypes.CreateLineItemTaxLineDTO[] | CartTypes.CreateLineItemTaxLineDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.LineItemTaxLineDTO[] | CartTypes.LineItemTaxLineDTO> {
     const result = await this.addLineItemTaxLines_(
@@ -1290,8 +1278,7 @@ export default class CartModuleService
       | CartTypes.CreateLineItemTaxLineDTO[]
       | CartTypes.CreateLineItemTaxLineDTO,
     taxLines?:
-      | CartTypes.CreateLineItemTaxLineDTO[]
-      | CartTypes.CreateLineItemTaxLineDTO,
+      CartTypes.CreateLineItemTaxLineDTO[] | CartTypes.CreateLineItemTaxLineDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     | InferEntityType<typeof LineItemTaxLine>[]
@@ -1340,8 +1327,7 @@ export default class CartModuleService
   async setLineItemTaxLines(
     cartId: string,
     taxLines: (
-      | CartTypes.CreateLineItemTaxLineDTO
-      | CartTypes.UpdateLineItemTaxLineDTO
+      CartTypes.CreateLineItemTaxLineDTO | CartTypes.UpdateLineItemTaxLineDTO
     )[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CartTypes.LineItemTaxLineDTO[]> {
@@ -1360,8 +1346,7 @@ export default class CartModuleService
   protected async setLineItemTaxLines_(
     cartId: string,
     taxLines: (
-      | CartTypes.CreateLineItemTaxLineDTO
-      | CartTypes.UpdateLineItemTaxLineDTO
+      CartTypes.CreateLineItemTaxLineDTO | CartTypes.UpdateLineItemTaxLineDTO
     )[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof LineItemTaxLine>[]> {

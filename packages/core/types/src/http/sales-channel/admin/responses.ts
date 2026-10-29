@@ -15,5 +15,4 @@ export type AdminSalesChannelListResponse = PaginatedResponse<{
   sales_channels: AdminSalesChannel[]
 }>
 
-export interface AdminSalesChannelDeleteResponse
-  extends DeleteResponse<"sales-channel"> {}
+export interface AdminSalesChannelDeleteResponse extends DeleteResponse<"sales-channel"> {}

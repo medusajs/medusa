@@ -120,16 +120,16 @@ export const FileUpload = ({
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         className={clx(
-          "bg-ui-bg-component border-ui-border-strong transition-fg group flex w-full flex-col items-center gap-y-2 rounded-lg border border-dashed p-8",
+          "group flex w-full flex-col items-center gap-y-2 rounded-lg border border-dashed border-ui-border-strong bg-ui-bg-component p-8 transition-fg",
           "hover:border-ui-border-interactive focus:border-ui-border-interactive",
-          "focus:shadow-borders-focus outline-none focus:border-solid",
+          "outline-none focus:border-solid focus:shadow-borders-focus",
           {
             "!border-ui-border-error": hasError,
             "!border-ui-border-interactive": isDragOver,
           }
         )}
       >
-        <div className="text-ui-fg-subtle group-disabled:text-ui-fg-disabled flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 text-ui-fg-subtle group-disabled:text-ui-fg-disabled">
           <ArrowDownTray />
           <Text>{label}</Text>
         </div>

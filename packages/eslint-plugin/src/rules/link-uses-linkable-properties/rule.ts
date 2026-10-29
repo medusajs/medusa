@@ -40,8 +40,8 @@ function hasOwnPropertyNamed(
       prop.key.type === "Identifier"
         ? prop.key.name
         : prop.key.type === "Literal" && typeof prop.key.value === "string"
-        ? prop.key.value
-        : null
+          ? prop.key.value
+          : null
     if (keyName === name) {
       return true
     }
@@ -69,8 +69,8 @@ function isValidLinkParticipant(node: TSESTree.Node): boolean {
         prop.key.type === "Identifier"
           ? prop.key.name
           : prop.key.type === "Literal" && typeof prop.key.value === "string"
-          ? prop.key.value
-          : null
+            ? prop.key.value
+            : null
       if (keyName !== "linkable") {
         continue
       }

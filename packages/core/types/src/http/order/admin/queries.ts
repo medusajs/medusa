@@ -49,8 +49,7 @@ export interface AdminOrderItemsFilters extends SelectParams {
 }
 
 export interface AdminOrderChangesFilters
-  extends BaseOrderChangesFilters,
-    SelectParams {
+  extends BaseOrderChangesFilters, SelectParams {
   /**
    * Apply filters on the change's creation date.
    */

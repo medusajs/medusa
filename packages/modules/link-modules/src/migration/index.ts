@@ -160,8 +160,8 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       .execute(
         `
                   INSERT INTO "${this.#schema}"."${
-          this.tableName
-        }" (table_name, link_descriptor) VALUES ${positionalArgs} ON CONFLICT DO NOTHING;
+                    this.tableName
+                  }" (table_name, link_descriptor) VALUES ${positionalArgs} ON CONFLICT DO NOTHING;
         `,
         existingTables.flatMap((tableName, index) => [
           tableName,
@@ -214,8 +214,8 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     await orm.em.getDriver().getConnection().execute(`
       DROP TABLE IF EXISTS "${this.#schema}"."${tableName}";
       DELETE FROM "${this.#schema}"."${
-      this.tableName
-    }" WHERE table_name = '${tableName}';
+        this.tableName
+      }" WHERE table_name = '${tableName}';
     `)
   }
 
@@ -241,8 +241,8 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       }[]
     >(`
       SELECT table_name, link_descriptor from "${this.#schema}"."${
-      this.tableName
-    }"
+        this.tableName
+      }"
     `)
 
     return results.map((tuple) => ({
@@ -427,10 +427,10 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     await orm.em.getDriver().getConnection().execute(`
       ALTER TABLE "${this.#schema}"."${oldName}" RENAME TO "${newName}";
       UPDATE "${this.#schema}"."${
-      this.tableName
-    }" SET table_name = '${newName}', link_descriptor = '${JSON.stringify(
-      descriptor
-    )}' WHERE table_name = '${oldName}';
+        this.tableName
+      }" SET table_name = '${newName}', link_descriptor = '${JSON.stringify(
+        descriptor
+      )}' WHERE table_name = '${oldName}';
     `)
   }
 

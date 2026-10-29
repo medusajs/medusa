@@ -86,7 +86,9 @@ export class ConfigManager {
     http.storeRelationsLimit = http.storeRelationsLimit ?? 3
 
     http.jwtOptions ??= {}
-    http.jwtOptions.expiresIn = http.jwtExpiresIn
+    http.jwtOptions.expiresIn = http.jwtExpiresIn as NonNullable<
+      ConfigModule["projectConfig"]["http"]["jwtOptions"]
+    >["expiresIn"]
 
     http.jwtSecret = http?.jwtSecret ?? process.env.JWT_SECRET
     http.jwtPublicKey = http?.jwtPublicKey ?? process.env.JWT_PUBLIC_KEY

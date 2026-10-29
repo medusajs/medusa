@@ -73,17 +73,13 @@ export type AuthLoginResponse =
  * Response returned from an authentication callback.
  */
 export type AuthCallbackResponse =
-  | string
-  | AuthMfaRequiredResponse
-  | AuthVerificationRequiredResponse
+  string | AuthMfaRequiredResponse | AuthVerificationRequiredResponse
 
 /**
  * Response returned from a token refresh attempt.
  */
 export type AuthRefreshResponse =
-  | { token: string }
-  | AuthMfaRequiredResponse
-  | AuthVerificationRequiredResponse
+  { token: string } | AuthMfaRequiredResponse | AuthVerificationRequiredResponse
 
 /**
  * Response containing the authenticated identity's MFA factors.

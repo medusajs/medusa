@@ -10,8 +10,7 @@ export interface AdminGetShippingOptionTypeParams extends SelectParams {}
  * The filters to apply on the retrieved shipping option types.
  */
 export interface AdminShippingOptionTypeListParams
-  extends FindParams,
-    BaseFilterable<AdminShippingOptionTypeListParams> {
+  extends FindParams, BaseFilterable<AdminShippingOptionTypeListParams> {
   /**
    * Search term to filter shipping option types by.
    */

@@ -88,13 +88,13 @@ export const initialize = async (
       }
 
       const serviceKey = !definition.isReadOnlyLink
-        ? definition.serviceName ??
+        ? (definition.serviceName ??
           composeLinkName(
             primary.serviceName,
             primary.foreignKey,
             foreign.serviceName,
             foreign.foreignKey
-          )
+          ))
         : simpleHash(JSON.stringify(definition.extends))
 
       if (modulesLoadedKeys.includes(serviceKey)) {

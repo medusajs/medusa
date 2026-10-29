@@ -42,8 +42,8 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           {t("campaigns.details")}
         </Heading>
 
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-1">
-          <Text className="txt-small-plus font-">
+        <div className="grid grid-cols-2 items-center py-1 text-ui-fg-subtle">
+          <Text className="font- txt-small-plus">
             {t("campaigns.fields.identifier")}
           </Text>
 
@@ -54,7 +54,7 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-1">
+        <div className="grid grid-cols-2 items-center py-1 text-ui-fg-subtle">
           <Text className="txt-small-plus">{t("fields.description")}</Text>
 
           <div className="flex items-center gap-1">
@@ -62,7 +62,7 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-1">
+        <div className="grid grid-cols-2 items-center py-1 text-ui-fg-subtle">
           <Text className="txt-small-plus">
             {t("campaigns.fields.start_date")}
           </Text>
@@ -74,7 +74,7 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-1">
+        <div className="grid grid-cols-2 items-center py-1 text-ui-fg-subtle">
           <Text className="txt-small-plus">
             {t("campaigns.fields.end_date")}
           </Text>
@@ -92,8 +92,8 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           {t("campaigns.budget.details")}
         </Heading>
 
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-1">
-          <Text className="txt-small-plus font-">
+        <div className="grid grid-cols-2 items-center py-1 text-ui-fg-subtle">
+          <Text className="font- txt-small-plus">
             {t("campaigns.budget.fields.type")}
           </Text>
 
@@ -106,7 +106,7 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-1">
+        <div className="grid grid-cols-2 items-center py-1 text-ui-fg-subtle">
           <Text className="txt-small-plus">
             {t("campaigns.budget.fields.currency")}
           </Text>
@@ -118,7 +118,7 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-1">
+        <div className="grid grid-cols-2 items-center py-1 text-ui-fg-subtle">
           <Text className="txt-small-plus">
             {t("campaigns.budget.fields.limit")}
           </Text>
@@ -128,7 +128,7 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-1">
+        <div className="grid grid-cols-2 items-center py-1 text-ui-fg-subtle">
           <Text className="txt-small-plus">
             {campaign.budget?.type === "use_by_attribute"
               ? t("campaigns.fields.totalUsedByAttribute")

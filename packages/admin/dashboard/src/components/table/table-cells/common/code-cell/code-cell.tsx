@@ -20,7 +20,7 @@ export const CodeCell = ({ code }: CellProps) => {
 
 export const CodeHeader = ({ text }: HeaderProps) => {
   return (
-    <div className=" flex h-full w-full items-center ">
+    <div className="flex h-full w-full items-center">
       <span>{text}</span>
     </div>
   )
