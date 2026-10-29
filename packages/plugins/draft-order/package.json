@@ -70,7 +70,8 @@
     "@medusajs/test-utils": "2.22.1",
     "@medusajs/types": "2.22.1",
     "@medusajs/ui": "4.2.8",
-    "@medusajs/ui-preset": "2.22.1"
+    "@medusajs/ui-preset": "2.22.1",
+    "cross-env": "^10.1.0"
   },
   "peerDependencies": {
     "@medusajs/admin-sdk": "2.22.1",

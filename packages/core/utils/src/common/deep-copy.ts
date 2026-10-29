@@ -10,7 +10,7 @@ import * as util from "node:util"
  */
 export function deepCopy<
   T extends Record<any, any> | Record<any, any>[] = Record<any, any>,
-  TOutput = T extends [] ? T[] : T
+  TOutput = T extends [] ? T[] : T,
 >(obj: T, cache = new WeakMap()): TOutput {
   if (obj === null || typeof obj !== "object") {
     return obj as TOutput

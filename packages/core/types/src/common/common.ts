@@ -379,45 +379,46 @@ export type Pluralize<Singular extends string> =
   Lowercase<Singular> extends keyof PluralizationSpecialRules
     ? PluralizationSpecialRules[Lowercase<Singular>]
     : Lowercase<Singular> extends UncountableRules
-    ? Singular
-    : Singular extends `${string}ss`
-    ? `${Singular}es`
-    : Singular extends `${infer R}sis`
-    ? `${R}ses`
-    : Singular extends `${infer R}is`
-    ? `${R}ises`
-    : Singular extends `${string}s`
-    ? `${Singular}`
-    : Singular extends `${infer R}ay`
-    ? `${R}ays`
-    : Singular extends `${infer R}ey`
-    ? `${R}eys`
-    : Singular extends `${infer R}iy`
-    ? `${R}iys`
-    : Singular extends `${infer R}oy`
-    ? `${R}oys`
-    : Singular extends `${infer R}uy`
-    ? `${R}uys`
-    : Singular extends `${infer R}y`
-    ? `${R}ies`
-    : Singular extends `${string}es`
-    ? `${Singular}`
-    : Singular extends
-        | `${string}sh`
-        | `${string}ch`
-        | `${string}x`
-        | `${string}z`
-        | `${string}o`
-    ? `${Singular}es`
-    : Singular extends `${infer R}fe`
-    ? `${R}ves`
-    : Singular extends `${infer R}ex` | `${infer R}ix`
-    ? `${R}ices`
-    : Singular extends `${infer R}eau`
-    ? `${R}eaux`
-    : Singular extends `${infer R}ieu`
-    ? `${R}ieux`
-    : `${Singular}s`
+      ? Singular
+      : Singular extends `${string}ss`
+        ? `${Singular}es`
+        : Singular extends `${infer R}sis`
+          ? `${R}ses`
+          : Singular extends `${infer R}is`
+            ? `${R}ises`
+            : Singular extends `${string}s`
+              ? `${Singular}`
+              : Singular extends `${infer R}ay`
+                ? `${R}ays`
+                : Singular extends `${infer R}ey`
+                  ? `${R}eys`
+                  : Singular extends `${infer R}iy`
+                    ? `${R}iys`
+                    : Singular extends `${infer R}oy`
+                      ? `${R}oys`
+                      : Singular extends `${infer R}uy`
+                        ? `${R}uys`
+                        : Singular extends `${infer R}y`
+                          ? `${R}ies`
+                          : Singular extends `${string}es`
+                            ? `${Singular}`
+                            : Singular extends
+                                  | `${string}sh`
+                                  | `${string}ch`
+                                  | `${string}x`
+                                  | `${string}z`
+                                  | `${string}o`
+                              ? `${Singular}es`
+                              : Singular extends `${infer R}fe`
+                                ? `${R}ves`
+                                : Singular extends
+                                      `${infer R}ex` | `${infer R}ix`
+                                  ? `${R}ices`
+                                  : Singular extends `${infer R}eau`
+                                    ? `${R}eaux`
+                                    : Singular extends `${infer R}ieu`
+                                      ? `${R}ieux`
+                                      : `${Singular}s`
 
 export type SnakeCase<S extends string> =
   S extends `${infer T}${infer U}${infer V}`
@@ -495,8 +496,8 @@ export type TransformObjectMethodToAsync<T extends object> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer R
     ? (...args: A) => Promise<Awaited<R>>
     : T[K] extends object
-    ? TransformObjectMethodToAsync<T[K]>
-    : T[K]
+      ? TransformObjectMethodToAsync<T[K]>
+      : T[K]
 }
 
 export type QueryContextType = Record<string, any> & {

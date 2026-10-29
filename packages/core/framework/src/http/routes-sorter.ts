@@ -101,7 +101,7 @@ export class RoutesSorter<T extends Route> {
     keyof RoutesBranch<T>,
     keyof RoutesBranch<T>,
     keyof RoutesBranch<T>,
-    keyof RoutesBranch<T>
+    keyof RoutesBranch<T>,
   ] = ["global", "wildcard", "regex", "static", "params"]
 
   /**
@@ -236,7 +236,7 @@ export class RoutesSorter<T extends Route> {
       keyof RoutesBranch<T>,
       keyof RoutesBranch<T>,
       keyof RoutesBranch<T>,
-      keyof RoutesBranch<T>
+      keyof RoutesBranch<T>,
     ]
   ) {
     const branchRoutes = Object.keys(routeBranch).reduce<{
@@ -313,7 +313,7 @@ export class RoutesSorter<T extends Route> {
       keyof RoutesBranch<T>,
       keyof RoutesBranch<T>,
       keyof RoutesBranch<T>,
-      keyof RoutesBranch<T>
+      keyof RoutesBranch<T>,
     ]
   ) {
     this.#routesToProcess.map((route) => this.#processRoute(route))

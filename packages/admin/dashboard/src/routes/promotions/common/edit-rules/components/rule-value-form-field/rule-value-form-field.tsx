@@ -18,9 +18,7 @@ type RuleValueFormFieldType = {
   form: any
   identifier: string
   scope:
-    | "application_method.buy_rules"
-    | "rules"
-    | "application_method.target_rules"
+    "application_method.buy_rules" | "rules" | "application_method.target_rules"
   name: string
   operator: string
   fieldRule: any

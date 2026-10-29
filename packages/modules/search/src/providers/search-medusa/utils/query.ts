@@ -154,14 +154,12 @@ function fuzzyMatchFilter(
   const maxEditDistance = fuzzyMaxEditDistance(plan)
   const wordClauses = words.flatMap((word, index): Filter[] => {
     if (tolerant(word)) {
-      const fieldClauses = fields.map(
-        (path): Filter => [
-          path,
-          "Fuzzy",
-          word,
-          { max_edit_distance: maxEditDistance, case_sensitive: false },
-        ]
-      )
+      const fieldClauses = fields.map((path): Filter => [
+        path,
+        "Fuzzy",
+        word,
+        { max_edit_distance: maxEditDistance, case_sensitive: false },
+      ])
       return [mergeFilters(fieldClauses, "Or")!]
     }
 

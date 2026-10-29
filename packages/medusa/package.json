@@ -56,9 +56,9 @@
     "@medusajs/framework": "2.22.1"
   },
   "dependencies": {
-    "@inquirer/checkbox": "^2.3.11",
-    "@inquirer/confirm": "^2.0.17",
-    "@inquirer/input": "^2.2.9",
+    "@inquirer/checkbox": "^5.2.7",
+    "@inquirer/confirm": "^6.3.4",
+    "@inquirer/input": "^5.1.8",
     "@medusajs/admin-bundler": "2.22.1",
     "@medusajs/analytics": "2.22.1",
     "@medusajs/analytics-local": "2.22.1",
@@ -114,8 +114,7 @@
     "@medusajs/user": "2.22.1",
     "@medusajs/workflow-engine-inmemory": "2.22.1",
     "@medusajs/workflow-engine-redis": "2.22.1",
-    "boxen": "^5.0.1",
-    "chalk": "^4.1.2",
+    "boxen": "^9.0.0",
     "chokidar": "^4.0.3",
     "compression": "^1.8.2",
     "express": "^4.21.0",
@@ -125,8 +124,7 @@
     "node-schedule": "^2.1.1",
     "qs": "^6.16.1",
     "request-ip": "^3.3.0",
-    "slugify": "^1.6.6",
-    "uuid": "^11.1.1"
+    "slugify": "^1.6.6"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.1",

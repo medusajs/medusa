@@ -15,7 +15,7 @@ const CampaignDetailSection = ({
 }) => {
   return (
     <div className="flex flex-col gap-y-3">
-      <div className="text-ui-fg-muted flex items-center gap-x-1.5">
+      <div className="flex items-center gap-x-1.5 text-ui-fg-muted">
         <Text size="small" weight="plus" className="text-ui-fg-base">
           {campaign.name}
         </Text>

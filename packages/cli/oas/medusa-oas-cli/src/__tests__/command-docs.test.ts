@@ -1,8 +1,8 @@
 import { exists, getTmpDirectory } from "../utils/fs-utils"
 import { writeJson } from "../utils/json-utils"
-import { OpenAPIObject } from "openapi3-ts"
+import { OpenAPIObject } from "openapi3-ts/oas30"
 import path from "path"
-import { v4 as uid } from "uuid"
+import { randomUUID as uid } from "crypto"
 import { readYaml, writeYaml } from "../utils/yaml-utils"
 import { mkdir, readdir } from "fs/promises"
 import {
@@ -10,7 +10,7 @@ import {
   getCircularPatchRecommendation,
   getCircularReferences,
 } from "../utils/circular-patch-utils"
-import execa from "execa"
+import { execa } from "execa"
 
 const basePath = path.resolve(__dirname, `../../../`)
 

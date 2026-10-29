@@ -112,7 +112,7 @@ export const PromotionGeneralSection = ({
         </div>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("promotions.fields.campaign")}
         </Text>
@@ -124,7 +124,7 @@ export const PromotionGeneralSection = ({
         </Text>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("fields.code")}
         </Text>
@@ -144,7 +144,7 @@ export const PromotionGeneralSection = ({
         </Copy>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("promotions.fields.type")}
         </Text>
@@ -154,7 +154,7 @@ export const PromotionGeneralSection = ({
         </Text>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("promotions.fields.value")}
         </Text>
@@ -171,7 +171,7 @@ export const PromotionGeneralSection = ({
         </div>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("promotions.fields.allocation")}
         </Text>
@@ -182,7 +182,7 @@ export const PromotionGeneralSection = ({
       </div>
 
       {promotion.application_method?.type === "fixed" && (
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+        <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
           <Text size="small" weight="plus" leading="compact">
             {t("promotions.fields.taxInclusive")}
           </Text>
@@ -198,7 +198,7 @@ export const PromotionGeneralSection = ({
       )}
 
       {typeof promotion.limit === "number" && (
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+        <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
           <Text size="small" weight="plus" leading="compact">
             Usage Limit
           </Text>

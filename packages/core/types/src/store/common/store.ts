@@ -116,8 +116,7 @@ export interface StoreDTO {
 /**
  * The filters to apply on the retrieved stores.
  */
-export interface FilterableStoreProps
-  extends BaseFilterable<FilterableStoreProps> {
+export interface FilterableStoreProps extends BaseFilterable<FilterableStoreProps> {
   /**
    * Find stores by name through this search term.
    */

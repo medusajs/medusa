@@ -17,7 +17,7 @@ export default defineConfig([...medusa.configs.recommended])
   - `strict`: `recommended` + type-aware rules (sets `parserOptions.project: true`, so a tsconfig must include the linted files) + the cross-file `scheduled-job-name-unique`.
   - `modules`: for a standalone module/provider package (services anywhere, `module-name-snake-case` on `src/index.{ts,js}`, model rules on `**/models/**`).
 - Rule ids are `@medusajs/<rule-name>`; override after the preset spread.
-- Peer deps: `eslint` `^8.57.0 || ^9.0.0` (v8 needs `ESLINT_USE_FLAT_CONFIG=true` outside the Medusa CLI), `typescript >=4.8.0`. `jiti` is needed to load `eslint.config.ts`.
+- Peer deps: `eslint` `^8.57.0 || ^9.0.0 || ^10.0.0` (v8 needs `ESLINT_USE_FLAT_CONFIG=true` outside the Medusa CLI), `typescript >=4.8.0`. `jiti` is needed to load `eslint.config.ts`.
 - Docs: https://docs.medusajs.com/resources/lint.md and per-rule pages at https://docs.medusajs.com/resources/lint/rules.md/<rule-name> (this URL is also emitted as `meta.docs.url` by `src/create-rule.ts`).
 
 ## Architecture

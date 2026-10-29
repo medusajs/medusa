@@ -100,12 +100,12 @@ const Refund = ({
 
   const RefundNoteIndicator = refund.note && (
     <Tooltip content={refund.note}>
-      <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+      <DocumentText className="ml-1 inline text-ui-tag-neutral-icon" />
     </Tooltip>
   )
 
   return (
-    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
+    <div className="grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 bg-ui-bg-subtle px-6 py-4 text-ui-fg-subtle">
       <div className="flex flex-row">
         <div className="self-center pr-3">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -188,7 +188,7 @@ const Payment = ({
 
   const [status, color] = getPaymentStatusAttributes(payment) as [
     string,
-    "green" | "orange" | "red"
+    "green" | "orange" | "red",
   ]
 
   const showCapture =
@@ -201,7 +201,7 @@ const Payment = ({
 
   return (
     <div className="divide-y divide-dashed">
-      <div className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4 sm:grid-cols-[1fr_1fr_1fr_1fr_20px]">
+      <div className="grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4 text-ui-fg-subtle sm:grid-cols-[1fr_1fr_1fr_1fr_20px]">
         <div className="w-full min-w-[60px] overflow-hidden">
           <Text
             size="small"
@@ -252,9 +252,9 @@ const Payment = ({
         />
       </div>
       {showCapture && (
-        <div className="bg-ui-bg-subtle flex items-center justify-between px-6 py-4">
+        <div className="flex items-center justify-between bg-ui-bg-subtle px-6 py-4">
           <div className="flex items-center gap-x-2">
-            <ArrowDownRightMini className="text-ui-fg-muted shrink-0" />
+            <ArrowDownRightMini className="shrink-0 text-ui-fg-muted" />
             <Text size="small" leading="compact">
               <Trans
                 i18nKey="orders.payment.isReadyToBeCaptured"
@@ -313,7 +313,7 @@ const CreditLine = ({
 
   return (
     <div className="divide-y divide-dashed">
-      <div className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_20px] items-center gap-x-4 px-6 py-4 sm:grid-cols-[1fr_1fr_1fr_20px]">
+      <div className="grid grid-cols-[1fr_1fr_20px] items-center gap-x-4 px-6 py-4 text-ui-fg-subtle sm:grid-cols-[1fr_1fr_1fr_20px]">
         <div className="w-full min-w-[60px] overflow-hidden">
           <Text
             size="small"
@@ -380,9 +380,9 @@ const PendingAuthorizationBanner = ({
   }
 
   return (
-    <div className="bg-ui-bg-subtle flex items-center justify-between px-6 py-4">
+    <div className="flex items-center justify-between bg-ui-bg-subtle px-6 py-4">
       <div className="flex items-center gap-x-2">
-        <ArrowDownRightMini className="text-ui-fg-muted shrink-0" />
+        <ArrowDownRightMini className="shrink-0 text-ui-fg-muted" />
         <Text size="small" leading="compact">
           {t("orders.payment.pendingAuthorization")}
         </Text>

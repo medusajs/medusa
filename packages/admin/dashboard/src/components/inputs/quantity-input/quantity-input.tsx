@@ -43,7 +43,7 @@ export const QuantityInput = forwardRef<
   return (
     <div
       className={clx(
-        "bg-ui-bg-field shadow-borders-base transition-fg flex w-full items-center overflow-hidden rounded-md",
+        "flex w-full items-center overflow-hidden rounded-md bg-ui-bg-field shadow-borders-base transition-fg",
         "hover:bg-ui-bg-field-hover",
         "focus-within:shadow-borders-interactive-with-active",
         size === "small" ? "h-7" : "h-8",
@@ -57,14 +57,14 @@ export const QuantityInput = forwardRef<
         className={clx(
           "txt-compact-small text-ui-fg-base placeholder-ui-fg-muted",
           "size-full min-w-0 flex-1 appearance-none bg-transparent px-2 outline-none",
-          "disabled:text-ui-fg-disabled disabled:cursor-not-allowed",
+          "disabled:cursor-not-allowed disabled:text-ui-fg-disabled",
           size === "small" ? "py-1" : "py-1.5"
         )}
         {...props}
       />
       <div className="flex h-full max-w-16 shrink-0 items-center border-l px-2">
         <Text
-          className="text-ui-fg-muted truncate"
+          className="truncate text-ui-fg-muted"
           size="small"
           leading="compact"
           weight="plus"

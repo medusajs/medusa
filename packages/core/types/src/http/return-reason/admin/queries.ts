@@ -3,7 +3,8 @@ import { SelectParams } from "../../common"
 import { BaseReturnReasonListParams } from "../common"
 
 export interface AdminReturnReasonListParams
-  extends BaseReturnReasonListParams,
+  extends
+    BaseReturnReasonListParams,
     BaseFilterable<AdminReturnReasonListParams> {
   /**
    * Apply filters on the return reason's deletion date.

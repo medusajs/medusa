@@ -130,9 +130,9 @@ export const rule = createRule<[], MessageIds>({
             key.type === AST_NODE_TYPES.Identifier
               ? key.name
               : key.type === AST_NODE_TYPES.Literal &&
-                typeof key.value === "string"
-              ? key.value
-              : null
+                  typeof key.value === "string"
+                ? key.value
+                : null
           if (keyName !== "zone") {
             continue
           }

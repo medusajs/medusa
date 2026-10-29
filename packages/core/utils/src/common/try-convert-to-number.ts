@@ -13,6 +13,6 @@ export function tryConvertToNumber<T>(
 ): number | undefined | T {
   const transformedValue = Number(value)
   return Number.isNaN(transformedValue)
-    ? defaultValue ?? undefined
+    ? (defaultValue ?? undefined)
     : transformedValue
 }

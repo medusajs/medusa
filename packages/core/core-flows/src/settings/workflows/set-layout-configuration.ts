@@ -76,8 +76,7 @@ export const setLayoutConfigurationWorkflow = createWorkflow(
       zone: input.zone,
       user_id: input.user_id,
       scope: (input.is_default ? "default" : "personal") as
-        | "personal"
-        | "default",
+        "personal" | "default",
     }))
     setActiveLayoutScopeStep(scopeInput)
 

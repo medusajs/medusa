@@ -38,7 +38,7 @@ describe("shouldCompressResponse", () => {
       scope: {
         resolve: () => ({ projectConfig: { http: { compression } } }),
       },
-    } as any)
+    }) as any
 
   it("does not compress when compression is disabled", () => {
     const req = makeReq({ enabled: false })

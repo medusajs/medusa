@@ -14,10 +14,7 @@ export type SearchDocument = Record<string, unknown> & { id: string }
  * - `failed`: the write didn't go through.
  */
 export type SearchTaskStatus =
-  | "enqueued"
-  | "processing"
-  | "succeeded"
-  | "failed"
+  "enqueued" | "processing" | "succeeded" | "failed"
 
 /**
  * A write to a search index, along with its status.

@@ -97,7 +97,8 @@ const badgeSizeVariants = cva({
 })
 
 interface BadgeProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "color">,
+  extends
+    Omit<React.HTMLAttributes<HTMLSpanElement>, "color">,
     VariantProps<typeof badgeSizeVariants>,
     VariantProps<typeof badgeColorVariants> {
   asChild?: boolean

@@ -85,9 +85,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
         })
 
         it("should retrieve the fulfillment options", async () => {
-          const fulfillmentOptions = await service.retrieveFulfillmentOptions(
-            providerId
-          )
+          const fulfillmentOptions =
+            await service.retrieveFulfillmentOptions(providerId)
 
           expect(fulfillmentOptions).toEqual({})
         })

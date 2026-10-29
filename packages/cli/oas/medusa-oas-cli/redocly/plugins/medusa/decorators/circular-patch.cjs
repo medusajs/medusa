@@ -47,34 +47,37 @@ function CircularPatch({ schemas = {}, verbose = false }) {
   const refPathPrefixLength = refPathPrefix.length
   const refPathPrefixRegex = /#\/components\/schemas\/\w+/
   return {
-    ref(ref, ctx, resolved) {
-      if (
-        ctx.type.name.toLowerCase() !== "schema" ||
-        !resolved?.location?.pointer
-      ) {
-        return
-      }
-      for (const patch of patches) {
-        if (resolved.location.pointer.replaceAll("\n", "") !== patch.schemaPointer) {
-          continue
+    ref: {
+      // Patching on enter breaks Redocly v2, which still reads `$ref` afterwards.
+      leave(ref, ctx, resolved) {
+        if (
+          ctx.type.name.toLowerCase() !== "schema" ||
+          !resolved?.location?.pointer
+        ) {
+          return
         }
-        const pointerMatch = ctx.location.pointer.match(refPathPrefixRegex) || 
-          resolved.location.pointer.match(refPathPrefixRegex)
-        if (!pointerMatch.length) {
-          continue
+        for (const patch of patches) {
+          if (resolved.location.pointer.replaceAll("\n", "") !== patch.schemaPointer) {
+            continue
+          }
+          const pointerMatch = ctx.location.pointer.match(refPathPrefixRegex) || 
+            resolved.location.pointer.match(refPathPrefixRegex)
+          if (!pointerMatch.length) {
+            continue
+          }
+          if (!patch.schemaToPatchPointers.includes(pointerMatch[0])) {
+            continue
+          }
+          applyPatch(ref)
+          if (verbose) {
+            logs.push(
+              `${pointerMatch[0].substring(refPathPrefixLength)} patch $ref to ${
+                patch.schemaName
+              }`
+            )
+          }
         }
-        if (!patch.schemaToPatchPointers.includes(pointerMatch[0])) {
-          continue
-        }
-        applyPatch(ref)
-        if (verbose) {
-          logs.push(
-            `${pointerMatch[0].substring(refPathPrefixLength)} patch $ref to ${
-              patch.schemaName
-            }`
-          )
-        }
-      }
+      },
     },
     Root: {
       leave() {

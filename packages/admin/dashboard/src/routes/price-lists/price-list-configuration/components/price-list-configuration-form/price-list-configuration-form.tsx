@@ -201,19 +201,19 @@ export const PriceListConfigurationForm = ({
                   <Form.Control>
                     <div
                       className={clx(
-                        "bg-ui-bg-component shadow-elevation-card-rest transition-fg grid gap-1.5 rounded-xl py-1.5",
+                        "grid gap-1.5 rounded-xl bg-ui-bg-component py-1.5 shadow-elevation-card-rest transition-fg",
                         "aria-[invalid='true']:shadow-borders-error"
                       )}
                       role="application"
                       ref={field.ref}
                     >
-                      <div className="text-ui-fg-subtle grid gap-1.5 px-1.5 md:grid-cols-2">
-                        <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
+                      <div className="grid gap-1.5 px-1.5 text-ui-fg-subtle md:grid-cols-2">
+                        <div className="txt-compact-small rounded-md bg-ui-bg-field px-2 py-1.5 shadow-borders-base">
                           {t(
                             "priceLists.fields.customerAvailability.attribute"
                           )}
                         </div>
-                        <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
+                        <div className="txt-compact-small rounded-md bg-ui-bg-field px-2 py-1.5 shadow-borders-base">
                           {t("operators.in")}
                         </div>
                       </div>
@@ -222,7 +222,7 @@ export const PriceListConfigurationForm = ({
                           <StackedDrawer.Trigger asChild>
                             <button
                               type="button"
-                              className="bg-ui-bg-field shadow-borders-base txt-compact-small text-ui-fg-muted flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5"
+                              className="txt-compact-small flex flex-1 items-center gap-x-2 rounded-md bg-ui-bg-field px-2 py-1.5 text-ui-fg-muted shadow-borders-base"
                             >
                               <MagnifyingGlass />
                               {t(
@@ -266,7 +266,7 @@ export const PriceListConfigurationForm = ({
                               return (
                                 <div
                                   key={field.cg_id}
-                                  className="bg-ui-bg-field-component shadow-borders-base flex items-center justify-between gap-2 rounded-md px-2 py-0.5"
+                                  className="flex items-center justify-between gap-2 rounded-md bg-ui-bg-field-component px-2 py-0.5 shadow-borders-base"
                                 >
                                   <Text size="small" leading="compact">
                                     {field.name}

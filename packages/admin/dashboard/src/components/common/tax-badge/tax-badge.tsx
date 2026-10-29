@@ -21,9 +21,9 @@ export const IncludesTaxTooltip = ({
       }
     >
       {includesTax ? (
-        <TaxInclusive className="text-ui-fg-muted shrink-0" />
+        <TaxInclusive className="shrink-0 text-ui-fg-muted" />
       ) : (
-        <TaxExclusive className="text-ui-fg-muted shrink-0" />
+        <TaxExclusive className="shrink-0 text-ui-fg-muted" />
       )}
     </Tooltip>
   )

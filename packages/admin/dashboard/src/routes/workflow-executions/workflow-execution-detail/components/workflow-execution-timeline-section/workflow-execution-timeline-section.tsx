@@ -177,7 +177,7 @@ const Canvas = ({
                 scale,
               }}
               className={clx(
-                "bg-ui-bg-subtle relative size-[500rem] origin-top-left items-start justify-start overflow-hidden",
+                "relative size-[500rem] origin-top-left items-start justify-start overflow-hidden bg-ui-bg-subtle",
                 "bg-[radial-gradient(var(--border-base)_1.5px,transparent_0)] bg-[length:20px_20px] bg-repeat",
                 {
                   "cursor-grab": !isDragging,
@@ -206,20 +206,20 @@ const Canvas = ({
             </motion.div>
           </div>
         </div>
-        <div className="bg-ui-bg-base shadow-borders-base text-ui-fg-subtle absolute bottom-4 left-6 flex h-7 items-center overflow-hidden rounded-md">
+        <div className="absolute bottom-4 left-6 flex h-7 items-center overflow-hidden rounded-md bg-ui-bg-base text-ui-fg-subtle shadow-borders-base">
           <div className="flex items-center">
             <button
               onClick={zoomIn}
               type="button"
               disabled={!canZoomIn}
               aria-label="Zoom in"
-              className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
+              className="border-r p-1 outline-none transition-fg hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed active:bg-ui-bg-base-pressed disabled:text-ui-fg-disabled"
             >
               <PlusMini />
             </button>
             <div>
               <DropdownMenu dir={direction}>
-                <DropdownMenu.Trigger className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed flex w-[50px] items-center justify-center border-r p-1 outline-none">
+                <DropdownMenu.Trigger className="flex w-[50px] items-center justify-center border-r p-1 outline-none transition-fg hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed active:bg-ui-bg-base-pressed disabled:text-ui-fg-disabled">
                   <Text
                     as="span"
                     size="xsmall"
@@ -246,7 +246,7 @@ const Canvas = ({
               type="button"
               disabled={!canZoomOut}
               aria-label="Zoom out"
-              className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed border-r p-1 outline-none"
+              className="border-r p-1 outline-none transition-fg hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed active:bg-ui-bg-base-pressed disabled:text-ui-fg-disabled"
             >
               <MinusMini />
             </button>
@@ -255,7 +255,7 @@ const Canvas = ({
             onClick={resetCanvas}
             type="button"
             aria-label="Reset canvas"
-            className="disabled:text-ui-fg-disabled transition-fg hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed focus-visible:bg-ui-bg-base-pressed p-1 outline-none"
+            className="p-1 outline-none transition-fg hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed active:bg-ui-bg-base-pressed disabled:text-ui-fg-disabled"
           >
             <ArrowPathMini />
           </button>
@@ -354,7 +354,7 @@ const Line = ({ next }: { next?: HttpTypes.AdminWorkflowExecutionStep[] }) => {
     <div className="-ml-[5px] -mr-[7px] w-[60px] pr-[7px]">
       <div className="flex min-h-[24px] w-full items-start">
         <div className="flex h-6 w-2.5 items-center justify-center">
-          <div className="bg-ui-button-neutral shadow-borders-base size-2.5 shrink-0 rounded-full" />
+          <div className="size-2.5 shrink-0 rounded-full bg-ui-button-neutral shadow-borders-base" />
         </div>
         <div className="pt-1.5">
           <Arrow depth={next.length} />
@@ -402,10 +402,10 @@ const Node = ({ step }: { step: HttpTypes.AdminWorkflowExecutionStep }) => {
     <Link
       to={`#${stepId}`}
       onClick={handleScrollTo}
-      className="focus-visible:shadow-borders-focus transition-fg rounded-md outline-none"
+      className="rounded-md outline-none transition-fg focus-visible:shadow-borders-focus"
     >
       <div
-        className="bg-ui-bg-base shadow-borders-base flex min-w-[120px] items-center gap-x-0.5 rounded-md p-0.5"
+        className="flex min-w-[120px] items-center gap-x-0.5 rounded-md bg-ui-bg-base p-0.5 shadow-borders-base"
         data-step-id={step.id}
       >
         <div className="flex size-5 items-center justify-center">

@@ -1,7 +1,8 @@
 import { HttpTypes } from "@medusajs/types"
 
-export interface StaticCountry
-  extends Required<Omit<HttpTypes.AdminRegionCountry, "id">> {}
+export interface StaticCountry extends Required<
+  Omit<HttpTypes.AdminRegionCountry, "id">
+> {}
 
 export function getCountryByIso2(
   iso2: string | null

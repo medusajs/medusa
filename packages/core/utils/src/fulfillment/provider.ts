@@ -62,9 +62,7 @@ import {
  * export default MyFulfillmentProviderService
  * ```
  */
-export class AbstractFulfillmentProviderService
-  implements IFulfillmentProvider
-{
+export class AbstractFulfillmentProviderService implements IFulfillmentProvider {
   /**
    * Each fulfillment provider has a unique identifier defined in its class. The provider's ID
    * will be stored as `fp_{identifier}_{id}`, where `{id}` is the provider's `id`

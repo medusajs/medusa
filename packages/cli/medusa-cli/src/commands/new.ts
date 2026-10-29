@@ -2,10 +2,10 @@
  * Adapted from https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-cli/src/init-starter.ts
  */
 
-import execa from "execa"
+// @ts-ignore
+import { execa } from "execa"
 import { sync as existsSync } from "fs-exists-cached"
 import fs from "fs-extra"
-import hostedGitInfo from "hosted-git-info"
 import isValid from "is-valid-path"
 import sysPath from "path"
 import prompts from "prompts"
@@ -24,6 +24,7 @@ import { PanicId } from "../reporter/panic-handler"
 import { getPackageManager } from "../util/package-manager"
 
 const STARTER_PATH = `medusajs/dtc-starter`
+const STARTER_URL = `https://github.com/${STARTER_PATH}.git`
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
@@ -59,24 +60,16 @@ const install = async (rootPath: string) => {
 
 // Clones starter from URI.
 const clone = async (rootPath: string, inputBranch?: string) => {
-  const hostedInfo = hostedGitInfo.fromUrl(STARTER_PATH)
-  let url
-  // Let people use private repos accessed over SSH.
-  if (hostedInfo.getDefaultRepresentation() === `sshurl`) {
-    url = hostedInfo.ssh({ noCommittish: true })
-    // Otherwise default to normal git syntax.
-  } else {
-    url = hostedInfo.https({ noCommittish: true, noGitPlus: true })
-  }
-
   const branch = [`-b`, inputBranch || "main"]
 
-  const createAct = reporter.activity(`Creating new project from git: ${url}`)
+  const createAct = reporter.activity(
+    `Creating new project from git: ${STARTER_URL}`
+  )
 
   const args = [
     `clone`,
     ...branch,
-    url,
+    STARTER_URL,
     rootPath,
     `--recursive`,
     `--depth=1`,
@@ -167,7 +160,7 @@ const interactiveDbCreds = async (dbName, dbCreds = {}) => {
     const result = await inquirer
       .prompt([
         {
-          type: "list",
+          type: "select",
           name: "continueWithDefault",
           message: `
 

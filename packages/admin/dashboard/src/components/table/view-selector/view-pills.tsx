@@ -229,7 +229,7 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
                       handleDeleteView(view)
                       setContextMenuOpen(null)
                     }}
-                    className="text-ui-fg-error flex items-center gap-x-2"
+                    className="flex items-center gap-x-2 text-ui-fg-error"
                   >
                     <Trash />
                     <span>Delete</span>

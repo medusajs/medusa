@@ -23,11 +23,10 @@ import { deleteInventoryLevelsWorkflow } from "./delete-inventory-levels"
  * @property update - The inventory levels to update.
  * @property delete - The IDs of inventory levels to delete.
  */
-export interface BatchInventoryItemLevelsWorkflowInput
-  extends BatchWorkflowInput<
-    InventoryTypes.CreateInventoryLevelInput,
-    InventoryTypes.UpdateInventoryLevelInput
-  > {
+export interface BatchInventoryItemLevelsWorkflowInput extends BatchWorkflowInput<
+  InventoryTypes.CreateInventoryLevelInput,
+  InventoryTypes.UpdateInventoryLevelInput
+> {
   /**
    * If true, the workflow will force the deletion of the inventory levels, even
    * if they have a non-zero stocked quantity. If false, the workflow will
@@ -48,8 +47,7 @@ export interface BatchInventoryItemLevelsWorkflowInput
  * @property updated - The inventory levels that were updated.
  * @property deleted - The IDs of the inventory levels that were deleted.
  */
-export interface BatchInventoryItemLevelsWorkflowOutput
-  extends BatchWorkflowOutput<InventoryLevelDTO> {}
+export interface BatchInventoryItemLevelsWorkflowOutput extends BatchWorkflowOutput<InventoryLevelDTO> {}
 
 export const batchInventoryItemLevelsWorkflowId =
   "batch-inventory-item-levels-workflow"

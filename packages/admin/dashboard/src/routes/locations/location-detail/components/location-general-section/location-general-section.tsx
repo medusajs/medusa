@@ -65,11 +65,10 @@ export const LocationGeneralSection = ({
         <div className="flex items-center justify-between px-6 py-4">
           <div>
             <Heading>{location.name}</Heading>
-            <Text className="text-ui-fg-subtle txt-small">
+            <Text className="txt-small text-ui-fg-subtle">
               {getFormattedAddress({
                 address: location.address as
-                  | HttpTypes.AdminOrderAddress
-                  | undefined,
+                  HttpTypes.AdminOrderAddress | undefined,
               }).join(", ")}
             </Text>
           </div>
@@ -221,7 +220,7 @@ function ServiceZoneOptions({
       <Divider variant="dashed" />
       <div className="flex flex-col gap-y-4 px-6 py-4">
         <div className="item-center flex justify-between">
-          <span className="text-ui-fg-subtle txt-small self-center font-medium">
+          <span className="txt-small self-center font-medium text-ui-fg-subtle">
             {t(`stockLocations.shippingOptions.create.${type}.label`)}
           </span>
           <LinkButton
@@ -232,7 +231,7 @@ function ServiceZoneOptions({
         </div>
 
         {!!shippingOptions.length && (
-          <div className="shadow-elevation-card-rest bg-ui-bg-subtle grid divide-y rounded-md">
+          <div className="grid divide-y rounded-md bg-ui-bg-subtle shadow-elevation-card-rest">
             {shippingOptions.map((o) => (
               <ShippingOption
                 key={o.id}
@@ -249,7 +248,7 @@ function ServiceZoneOptions({
 
       <div className="flex flex-col gap-y-4 px-6 py-4">
         <div className="item-center flex justify-between">
-          <span className="text-ui-fg-subtle txt-small self-center font-medium">
+          <span className="txt-small self-center font-medium text-ui-fg-subtle">
             {t("stockLocations.shippingOptions.create.returns.label")}
           </span>
           <LinkButton
@@ -260,7 +259,7 @@ function ServiceZoneOptions({
         </div>
 
         {!!returnOptions.length && (
-          <div className="shadow-elevation-card-rest bg-ui-bg-subtle grid divide-y rounded-md">
+          <div className="grid divide-y rounded-md bg-ui-bg-subtle shadow-elevation-card-rest">
             {returnOptions.map((o) => (
               <ShippingOption
                 key={o.id}
@@ -379,13 +378,13 @@ function ServiceZone({
               n={1}
             />
             <span>·</span>
-            <Text className="text-ui-fg-subtle txt-small">
+            <Text className="txt-small text-ui-fg-subtle">
               {t(`stockLocations.shippingOptions.fields.count.${type}`, {
                 count: shippingOptionsCount,
               })}
             </Text>
             <span>·</span>
-            <Text className="text-ui-fg-subtle txt-small">
+            <Text className="txt-small text-ui-fg-subtle">
               {t("stockLocations.shippingOptions.fields.count.returns", {
                 count: returnOptionsCount,
               })}

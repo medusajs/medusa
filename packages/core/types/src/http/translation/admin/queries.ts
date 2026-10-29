@@ -2,8 +2,7 @@ import { BaseFilterable } from "../../.."
 import { FindParams } from "../../common/request"
 
 export interface AdminTranslationsListParams
-  extends FindParams,
-    BaseFilterable<AdminTranslationsListParams> {
+  extends FindParams, BaseFilterable<AdminTranslationsListParams> {
   /**
    * Query or keywords to search the translations searchable fields.
    */

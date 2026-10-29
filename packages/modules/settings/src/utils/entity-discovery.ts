@@ -307,8 +307,7 @@ export class EntityDiscoveryService {
   getEntityInfo(entity: DiscoveredEntity, hasOverrides: boolean): EntityInfo {
     const schemaTypeMap = this.getSchemaTypeMap()
     const entityType = schemaTypeMap[entity.graphqlType] as
-      | GraphQLObjectType
-      | undefined
+      GraphQLObjectType | undefined
     const fieldCount = entityType?.getFields
       ? Object.keys(entityType.getFields()).length
       : 0

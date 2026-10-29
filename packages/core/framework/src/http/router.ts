@@ -113,8 +113,7 @@ export class ApiLoader {
       routesFinder: new RoutesFinder<RouteDescriptor>(),
       middlewares: middlewareLoader.getMiddlewares(),
       errorHandler: middlewareLoader.getErrorHandler() as
-        | ErrorRequestHandler
-        | undefined,
+        ErrorRequestHandler | undefined,
       bodyParserConfigRoutes: middlewareLoader.getBodyParserConfigRoutes(),
       additionalDataValidatorRoutes:
         middlewareLoader.getAdditionalDataValidatorRoutes(),

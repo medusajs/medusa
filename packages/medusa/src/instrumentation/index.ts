@@ -277,10 +277,10 @@ export function instrumentRemoteQuery() {
       "entryPoint" in queryOptions
         ? queryOptions.entryPoint
         : "service" in queryOptions
-        ? queryOptions.service
-        : "__value" in queryOptions
-        ? Object.keys(queryOptions.__value)[0]
-        : "unknown source"
+          ? queryOptions.service
+          : "__value" in queryOptions
+            ? Object.keys(queryOptions.__value)[0]
+            : "unknown source"
 
     return await QueryTracer.trace(
       `remoteQuery: ${traceIdentifier}`,
@@ -304,34 +304,31 @@ export function instrumentRemoteQuery() {
     )
   })
 
-  Query.instrument.remoteDataFetch(async function (
-    fetchFn,
-    serviceName,
-    method,
-    options
-  ) {
-    return await QueryTracer.trace(
-      `${camelToSnakeCase(serviceName)}.${camelToSnakeCase(method)}`,
-      async (span) => {
-        span.setAttributes({
-          "fetch.select": options.select,
-          "fetch.relations": options.relations,
-        })
-
-        try {
-          return await fetchFn()
-        } catch (error) {
-          span.setStatus({
-            code: SpanStatusCode.ERROR,
-            message: error.message,
+  Query.instrument.remoteDataFetch(
+    async function (fetchFn, serviceName, method, options) {
+      return await QueryTracer.trace(
+        `${camelToSnakeCase(serviceName)}.${camelToSnakeCase(method)}`,
+        async (span) => {
+          span.setAttributes({
+            "fetch.select": options.select,
+            "fetch.relations": options.relations,
           })
-          throw error
-        } finally {
-          span.end()
+
+          try {
+            return await fetchFn()
+          } catch (error) {
+            span.setStatus({
+              code: SpanStatusCode.ERROR,
+              message: error.message,
+            })
+            throw error
+          } finally {
+            span.end()
+          }
         }
-      }
-    )
-  })
+      )
+    }
+  )
 }
 
 /**

@@ -37,9 +37,8 @@ export const updatePromotionRulesStep = createStep(
       { relations: ["values"] }
     )
 
-    const updatedPromotionRules = await promotionModule.updatePromotionRules(
-      data
-    )
+    const updatedPromotionRules =
+      await promotionModule.updatePromotionRules(data)
 
     return new StepResponse(updatedPromotionRules, promotionRulesBeforeUpdate)
   },

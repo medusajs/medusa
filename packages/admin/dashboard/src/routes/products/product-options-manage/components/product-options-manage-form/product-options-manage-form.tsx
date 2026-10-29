@@ -178,7 +178,8 @@ export const ProductOptionsManageForm = ({
     )
 
     const normalizedOptionIds = Array.from(
-      new Set( // deduplicate if needed
+      new Set(
+        // deduplicate if needed
         optionIds.flatMap((optionId) => {
           /**
            * map label from the combobox input to the option id
@@ -618,7 +619,7 @@ export const ProductOptionsManageForm = ({
                                 "productOptions.manage.exclusiveOption"
                               )}
                             >
-                              <InformationCircle className="text-ui-fg-subtle pt-[1px]" />
+                              <InformationCircle className="pt-[1px] text-ui-fg-subtle" />
                             </Tooltip>
                           )}
                         </Label>

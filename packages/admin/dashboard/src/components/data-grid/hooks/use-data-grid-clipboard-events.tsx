@@ -6,7 +6,7 @@ import { DataGridCoordinates } from "../types"
 
 type UseDataGridClipboardEventsOptions<
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 > = {
   containerRef: RefObject<HTMLDivElement>
   matrix: DataGridMatrix<TData, TFieldValues>
@@ -25,7 +25,7 @@ type UseDataGridClipboardEventsOptions<
 
 export const useDataGridClipboardEvents = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >({
   containerRef,
   matrix,

@@ -3,7 +3,7 @@ import { RelationNullableModifier } from "./nullable"
 
 export class BelongsTo<
   T,
-  const OptionalForeignKeyName extends string | undefined = undefined
+  const OptionalForeignKeyName extends string | undefined = undefined,
 > extends BaseRelationship<T> {
   type = "belongsTo" as const
   declare $foreignKey: true

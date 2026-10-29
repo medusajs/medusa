@@ -67,8 +67,8 @@ function buildEntryPointsTypeMap(
       const aliases = Array.isArray(config.alias)
         ? config.alias
         : config.alias
-        ? [config.alias]
-        : []
+          ? [config.alias]
+          : []
 
       return aliases.flatMap((alias) => {
         const names = Array.isArray(alias.name) ? alias.name : [alias.name]

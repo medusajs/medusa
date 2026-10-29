@@ -28,7 +28,7 @@ const Demo = () => {
               Tab 3
             </ProgressTabs.Trigger>
           </ProgressTabs.List>
-          <div className="txt-compact-medium text-ui-fg-base border-ui-border-base h-full border-t p-3">
+          <div className="txt-compact-medium h-full border-t border-ui-border-base p-3 text-ui-fg-base">
             <ProgressTabs.Content value="tab1">
               Tab 1 content
             </ProgressTabs.Content>

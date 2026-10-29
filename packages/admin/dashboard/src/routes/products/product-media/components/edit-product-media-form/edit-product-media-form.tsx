@@ -225,7 +225,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
               onDragStart={handleDragStart}
               onDragCancel={handleDragCancel}
             >
-              <div className="bg-ui-bg-subtle size-full overflow-auto">
+              <div className="size-full overflow-auto bg-ui-bg-subtle">
                 <div className="grid h-fit auto-rows-auto grid-cols-4 gap-6 p-6">
                   <SortableContext
                     items={fields.map((m) => m.field_id)}
@@ -257,7 +257,7 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
                 </div>
               </div>
             </DndContext>
-            <div className="bg-ui-bg-base overflow-auto border-b px-6 py-4 lg:border-b-0 lg:border-l">
+            <div className="overflow-auto border-b bg-ui-bg-base px-6 py-4 lg:border-b-0 lg:border-l">
               <UploadMediaFormItem form={form} append={append} />
             </div>
           </div>
@@ -386,7 +386,7 @@ const MediaGridItem = ({
   return (
     <div
       className={clx(
-        "shadow-elevation-card-rest hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus bg-ui-bg-subtle-hover group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg outline-none"
+        "group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
       )}
       style={style}
       ref={setNodeRef}
@@ -407,7 +407,7 @@ const MediaGridItem = ({
         {...listeners}
       />
       <div
-        className={clx("transition-fg absolute right-2 top-2 opacity-0", {
+        className={clx("absolute right-2 top-2 opacity-0 transition-fg", {
           "group-focus-within:opacity-100 group-hover:opacity-100 group-focus:opacity-100":
             !isDragging && !checked,
           "opacity-100": checked,
@@ -438,14 +438,14 @@ export const MediaGridItemOverlay = ({
   checked: boolean
 }) => {
   return (
-    <div className="shadow-elevation-card-rest hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus bg-ui-bg-subtle-hover group relative aspect-square h-auto max-w-full cursor-grabbing overflow-hidden rounded-lg outline-none">
+    <div className="group relative aspect-square h-auto max-w-full cursor-grabbing overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus">
       {media.isThumbnail && (
         <div className="absolute left-2 top-2">
           <ThumbnailBadge />
         </div>
       )}
       <div
-        className={clx("transition-fg absolute right-2 top-2 opacity-0", {
+        className={clx("absolute right-2 top-2 opacity-0 transition-fg", {
           "opacity-100": checked,
         })}
       >

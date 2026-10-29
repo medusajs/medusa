@@ -107,8 +107,7 @@ export interface PaymentCollectionDTO {
 /**
  * The filters to apply on the retrieved payment collection.
  */
-export interface FilterablePaymentCollectionProps
-  extends BaseFilterable<PaymentCollectionDTO> {
+export interface FilterablePaymentCollectionProps extends BaseFilterable<PaymentCollectionDTO> {
   /**
    * The IDs to filter the payment collection by.
    */
@@ -128,8 +127,7 @@ export interface FilterablePaymentCollectionProps
 /**
  * The filters to apply on the retrieved payment sessions.
  */
-export interface FilterablePaymentSessionProps
-  extends BaseFilterable<PaymentSessionDTO> {
+export interface FilterablePaymentSessionProps extends BaseFilterable<PaymentSessionDTO> {
   /**
    * The IDs to filter the payment sessions by.
    */
@@ -385,8 +383,7 @@ export interface PaymentDTO {
 /**
  * The filters to apply on the retrieved payments.
  */
-export interface FilterablePaymentProps
-  extends BaseFilterable<FilterablePaymentProps> {
+export interface FilterablePaymentProps extends BaseFilterable<FilterablePaymentProps> {
   /**
    * Find payments based on different fields.
    */
@@ -613,8 +610,7 @@ export interface PaymentProviderDTO {
 /**
  * The filters to apply on the retrieved payment providers.
  */
-export interface FilterablePaymentProviderProps
-  extends BaseFilterable<PaymentProviderDTO> {
+export interface FilterablePaymentProviderProps extends BaseFilterable<PaymentProviderDTO> {
   /**
    * The IDs to filter the payment provider by.
    */
@@ -626,8 +622,7 @@ export interface FilterablePaymentProviderProps
   is_enabled?: boolean
 }
 
-export interface FilterableRefundReasonProps
-  extends BaseFilterable<FilterableRefundReasonProps> {
+export interface FilterableRefundReasonProps extends BaseFilterable<FilterableRefundReasonProps> {
   /**
    * The IDs to filter the refund reasons by.
    */

@@ -54,7 +54,7 @@ export const Invite = () => {
   const isValidInvite = invite && validateDecodedInvite(invite)
 
   return (
-    <div className="bg-ui-bg-subtle relative flex min-h-dvh w-dvw items-center justify-center p-4">
+    <div className="relative flex min-h-dvh w-dvw items-center justify-center bg-ui-bg-subtle p-4">
       <div className="flex w-full max-w-[360px] flex-col items-center">
         <AvatarBox checked={success} />
         <div className="max-h-[557px] w-full will-change-contents">
@@ -143,7 +143,7 @@ const LoginLink = () => {
       <Link
         key="login-link"
         to="/login"
-        className="txt-small text-ui-fg-base transition-fg hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover font-medium outline-none"
+        className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover txt-small font-medium text-ui-fg-base outline-none transition-fg"
       >
         {t("invite.backToLogin")}
       </Link>
@@ -158,7 +158,7 @@ const InvalidView = () => {
     <div className="flex flex-col items-center">
       <div className="flex flex-col items-center gap-y-1">
         <Heading>{t("invite.invalidTokenTitle")}</Heading>
-        <Text size="small" className="text-ui-fg-subtle text-center">
+        <Text size="small" className="text-center text-ui-fg-subtle">
           {t("invite.invalidTokenHint")}
         </Text>
       </div>
@@ -290,7 +290,7 @@ const CreateView = ({
     <div className="flex w-full flex-col items-center">
       <div className="mb-4 flex flex-col items-center">
         <Heading>{t("invite.title")}</Heading>
-        <Text size="small" className="text-ui-fg-subtle text-center">
+        <Text size="small" className="text-center text-ui-fg-subtle">
           {t("invite.hint")}
         </Text>
       </div>
@@ -398,7 +398,7 @@ const CreateView = ({
             )}
             {serverError && (
               <Alert
-                className="bg-ui-bg-base items-center p-2"
+                className="items-center bg-ui-bg-base p-2"
                 dismissible
                 variant="error"
               >
@@ -428,7 +428,7 @@ const SuccessView = () => {
     <div className="flex w-full flex-col items-center gap-y-6">
       <div className="flex flex-col items-center gap-y-1">
         <Heading className="text-center">{t("invite.successTitle")}</Heading>
-        <Text size="small" className="text-ui-fg-subtle text-center">
+        <Text size="small" className="text-center text-ui-fg-subtle">
           {t("invite.successHint")}
         </Text>
       </div>
@@ -441,7 +441,7 @@ const SuccessView = () => {
       <Link
         key="login-link"
         to="/login"
-        className="txt-small text-ui-fg-base transition-fg hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover font-medium outline-none"
+        className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover txt-small font-medium text-ui-fg-base outline-none transition-fg"
       >
         {t("invite.backToLogin")}
       </Link>

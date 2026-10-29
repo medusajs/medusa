@@ -158,8 +158,7 @@ export class Query {
     const normalizedQuery = toRemoteQuery(queryOptions, this.#joinerConfigs)
 
     let response:
-      | any[]
-      | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
+      any[] | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
 
     if (Query.traceGraphQuery) {
       response = await Query.traceGraphQuery(
@@ -213,8 +212,7 @@ export class Query {
   ): Promise<SearchResultSet<TEntry>>
   async search<const TEntry extends string>(
     queryOptions:
-      | SearchTypes.SearchQuery<TEntry>
-      | SearchTypes.SearchQuery<TEntry>[],
+      SearchTypes.SearchQuery<TEntry> | SearchTypes.SearchQuery<TEntry>[],
     options?: RemoteJoinerOptions
   ): Promise<SearchResultSet<TEntry> | SearchResultSet<TEntry>[]> {
     if (!this.#searchModule) {

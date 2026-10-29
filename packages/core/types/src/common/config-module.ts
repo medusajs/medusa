@@ -1325,9 +1325,7 @@ type GenericModuleConfig = ModuleConfigForResolve<string & {}>
  * Automatically infers options type for known modules registered in ModuleOptions.
  */
 export type InputConfigModules = (
-  | KnownModuleConfigs
-  | GenericModuleConfig
-  | ExternalModuleDeclarationOverride
+  KnownModuleConfigs | GenericModuleConfig | ExternalModuleDeclarationOverride
 )[]
 
 /**
@@ -1358,8 +1356,7 @@ export type InputConfigWithObjectModules = InputConfigBase & {
  * The configuration accepted by the "defineConfig" helper
  */
 export type InputConfig =
-  | InputConfigWithArrayModules
-  | InputConfigWithObjectModules
+  InputConfigWithArrayModules | InputConfigWithObjectModules
 
 type PluginAdminDetails = {
   type: "local" | "package"

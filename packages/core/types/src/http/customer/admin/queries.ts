@@ -16,8 +16,7 @@ export interface AdminCustomerFilters extends BaseCustomerFilters {
   has_account?: boolean
 }
 export interface AdminCustomerAddressFilters
-  extends BaseCustomerAddressFilters,
-    FindParams {}
+  extends BaseCustomerAddressFilters, FindParams {}
 
 export interface AdminCustomerParams extends SelectParams {}
 

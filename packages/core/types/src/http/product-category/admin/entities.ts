@@ -2,11 +2,10 @@ import { AdminProduct } from "../../product"
 import { AdminTranslation } from "../../translation"
 import { BaseProductCategory } from "../common"
 
-export interface AdminProductCategory
-  extends Omit<
-    BaseProductCategory,
-    "products" | "category_children" | "parent_category"
-  > {
+export interface AdminProductCategory extends Omit<
+  BaseProductCategory,
+  "products" | "category_children" | "parent_category"
+> {
   /**
    * The category's children.
    */

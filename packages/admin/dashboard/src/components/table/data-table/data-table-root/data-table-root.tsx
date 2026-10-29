@@ -176,7 +176,7 @@ export const DataTableRoot = <TData,>({
                                 : undefined,
                             }}
                             className={clx({
-                              "bg-ui-bg-subtle sticky start-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                              "sticky start-0 bg-ui-bg-subtle after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                 isStickyHeader,
                               "start-[68px]":
                                 isStickyHeader && hasSelect && !isSelectHeader,
@@ -212,14 +212,14 @@ export const DataTableRoot = <TData,>({
                     key={row.id}
                     data-selected={row.getIsSelected()}
                     className={clx(
-                      "transition-fg group/row group relative [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
+                      "group/row group relative transition-fg [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
                       "has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover",
                       {
                         "bg-ui-bg-subtle hover:bg-ui-bg-subtle-hover": isOdd,
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
-                        "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
+                        "!hover:bg-ui-bg-disabled !bg-ui-bg-disabled":
                           isRowDisabled,
                       }
                     )}
@@ -263,14 +263,14 @@ export const DataTableRoot = <TData,>({
                           key={cell.id}
                           className={clx({
                             "!pe-0 !ps-0": shouldRenderAsLink,
-                            "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover sticky start-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                            "sticky start-0 bg-ui-bg-base transition-fg after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-[''] group-hover/row:bg-ui-bg-base-hover group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover":
                               isStickyCell,
                             "bg-ui-bg-subtle group-hover/row:bg-ui-bg-subtle-hover":
                               isOdd && isStickyCell,
                             "start-[68px]": hasLeftOffset,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
-                            "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
+                            "!hover:bg-ui-bg-disabled !bg-ui-bg-disabled":
                               isRowDisabled,
                           })}
                           style={{

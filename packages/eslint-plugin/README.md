@@ -51,7 +51,7 @@
 - `recommended` preset: the default for Medusa applications. Its rules don't need type information.
 - `strict` preset: extends `recommended` with type-aware and cross-file rules. Requires a `tsconfig.json` that includes the linted files.
 - `modules` preset: service, module definition, and data model rules for packages that only provide a module or module provider.
-- Flat config only. Supports ESLint `^8.57.0 || ^9.0.0` and TypeScript `>=4.8.0`.
+- Flat config only. Supports ESLint `^8.57.0 || ^9.0.0 || ^10.0.0` and TypeScript `>=4.8.0`.
 
 ## Installation
 

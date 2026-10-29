@@ -22,7 +22,7 @@ module.exports = function defineJestConfig(config) {
     },
     modulePathIgnorePatterns: [`dist/`],
     testPathIgnorePatterns: [`dist/`, `node_modules/`, `__fixtures__/`, `__mocks__/`],
-    transformIgnorePatterns: ["node_modules/(?!(until-async|msw|rettime|@open-draft/deferred-promise)/)"],
+    transformIgnorePatterns: ["node_modules/(?!(until-async|msw|rettime|@open-draft/deferred-promise|@faker-js/faker|@mswjs/interceptors|@msw/url|cookie|@open-draft/until|chalk|commander)/)"],
     testEnvironment: `node`,
     moduleFileExtensions: [`js`, `ts`],
     ...config,

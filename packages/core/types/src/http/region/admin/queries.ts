@@ -3,8 +3,7 @@ import { FindParams, SelectParams } from "../../common"
 import { BaseRegionCountryFilters } from "../common"
 
 export interface AdminRegionFilters
-  extends FindParams,
-    BaseFilterable<AdminRegionFilters> {
+  extends FindParams, BaseFilterable<AdminRegionFilters> {
   /**
    * Query or keywords to search the region's searchable fields.
    */

@@ -23,6 +23,6 @@ export function loadEnv(environment: string, envDir: string) {
     ? [`.env.${environment}`, ".env"].map((file) => join(envDir, file))
     : [join(envDir, ".env")]
   try {
-    expand(dotenv.config({ path: filesToLoad }))
+    expand(dotenv.config({ path: filesToLoad, quiet: true }))
   } catch {}
 }
