@@ -19,10 +19,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apidevtools/swagger-methods@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@apidevtools/swagger-methods@npm:3.0.2"
-  checksum: 8c390e8e50c0be7787ba0ba4c3758488bde7c66c2d995209b4b48c1f8bc988faf393cbb24a4bd1cd2d42ce5167c26538e8adea5c85eb922761b927e4dab9fa1c
+"@apidevtools/json-schema-ref-parser@npm:^15.5.1":
+  version: 15.5.2
+  resolution: "@apidevtools/json-schema-ref-parser@npm:15.5.2"
+  dependencies:
+    js-yaml: ^5.2.2
+    undici: ^6.28.0
+  peerDependencies:
+    "@types/json-schema": ^7.0.15
+  checksum: bf37d0c4f922a099232475c2b45cb18e1450751e1cea17744d6f36007796e527e79dc69a2ff4d2de377a7503a22457b7afd0fdcea6ae7d0b0bc771753c00a1c1
   languageName: node
   linkType: hard
 
@@ -4064,11 +4069,12 @@ __metadata:
     "@medusajs/types": 2.22.1
     "@medusajs/utils": 2.22.1
     "@readme/json-schema-ref-parser": ^1.2.0
-    "@readme/openapi-parser": ^2.4.0
+    "@readme/openapi-parser": ^10.0.0
     "@redocly/cli": 1.25.3
     commander: ^15.0.0
     execa: ^10.2.1
     lodash.mergewith: ^4.6.2
+    openapi-types: ^12.1.3
     openapi3-ts: ^4.6.2
     swagger-inline: ^6.1.0
     yargs: ^17.7.2
@@ -7408,7 +7414,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@readme/better-ajv-errors@npm:^2.0.0":
+"@readme/better-ajv-errors@npm:^2.3.2":
   version: 2.4.0
   resolution: "@readme/better-ajv-errors@npm:2.4.0"
   dependencies:
@@ -7436,28 +7442,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@readme/openapi-parser@npm:^2.4.0":
-  version: 2.7.0
-  resolution: "@readme/openapi-parser@npm:2.7.0"
+"@readme/openapi-parser@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@readme/openapi-parser@npm:10.0.0"
   dependencies:
-    "@apidevtools/swagger-methods": ^3.0.2
-    "@jsdevtools/ono": ^7.1.3
-    "@readme/better-ajv-errors": ^2.0.0
-    "@readme/json-schema-ref-parser": ^1.2.0
-    "@readme/openapi-schemas": ^3.1.0
-    ajv: ^8.12.0
+    "@apidevtools/json-schema-ref-parser": ^15.5.1
+    "@readme/better-ajv-errors": ^2.3.2
+    "@readme/openapi-schemas": ^4.0.0
+    "@types/json-schema": ^7.0.15
+    ajv: ^8.20.0
     ajv-draft-04: ^1.0.0
-    call-me-maybe: ^1.0.1
   peerDependencies:
     openapi-types: ">=7"
-  checksum: d665cf71c0f30f53db85005bf0bd2075e7d592525e3a1e2ff54630b07ca52648f7c17fd6ceae9cecac2c8885c9f1adeff297669705ed4d06f2fbfe8b1b85e893
+  checksum: 64266a09c890588800490cfe095c5ef83ffbbf606c2c91b39779c93b82feddbd291526e9eab188a5cee41f143bec3bd61199f48368e57d9bbc41b4cf97bf3d63
   languageName: node
   linkType: hard
 
-"@readme/openapi-schemas@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "@readme/openapi-schemas@npm:3.1.0"
-  checksum: 88d28d181b463b296c98bc288f2fc8975c302ec488edd1018ce8843c3eedbf3bb423ced934c6fd09bce4a0203fe9ea050bf2b3fa39a1bf665e41f87224dd71c5
+"@readme/openapi-schemas@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@readme/openapi-schemas@npm:4.0.0"
+  dependencies:
+    "@types/json-schema": ^7.0.15
+  checksum: 74e27fa5c63c31b3475647aa2368391a134b8e87438111a5b619e4e34ff6cd73aa0d96701e38c19c6666e5ca5b00d5fbd2be9f1848aff3ce9e4da5fe956b03c8
   languageName: node
   linkType: hard
 
@@ -9961,7 +9967,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^8.0.0, ajv@npm:^8.12.0, ajv@npm:^8.18.0":
+"ajv@npm:^8.0.0, ajv@npm:^8.18.0, ajv@npm:^8.20.0":
   version: 8.20.0
   resolution: "ajv@npm:8.20.0"
   dependencies:
@@ -16167,7 +16173,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^5.5.0":
+"js-yaml@npm:^5.2.2, js-yaml@npm:^5.5.0":
   version: 5.5.0
   resolution: "js-yaml@npm:5.5.0"
   dependencies:
@@ -18049,6 +18055,13 @@ __metadata:
     fast-xml-parser: ^5.5.1
     json-pointer: 0.6.2
   checksum: 43e27226e5e53e504a98a68ef7cb6d9f15c4e4ad8a28f7078a3adb6b67f4f13c53440f443bf5cf1af0277494fd74704101c2b5455d36e280be05bc008fec7224
+  languageName: node
+  linkType: hard
+
+"openapi-types@npm:^12.1.3":
+  version: 12.1.3
+  resolution: "openapi-types@npm:12.1.3"
+  checksum: 4ad4eb91ea834c237edfa6ab31394e87e00c888fc2918009763389c00d02342345195d6f302d61c3fd807f17723cd48df29b47b538b68375b3827b3758cd520f
   languageName: node
   linkType: hard
 
@@ -22488,6 +22501,13 @@ __metadata:
   version: 8.9.0
   resolution: "undici-types@npm:8.9.0"
   checksum: 51c712c20c087368f62c6fc0f2bc49fa76bfe5dec28ff01584bb677ff29b0622569783c02d43e151143808c48c0503f804093bd2c491b10f2a830138034cb451
+  languageName: node
+  linkType: hard
+
+"undici@npm:^6.28.0":
+  version: 6.29.1
+  resolution: "undici@npm:6.29.1"
+  checksum: 2d6970289fcbaca69a484e968fbb5e6fdadf7d9bff30bb5476f71b619d143ec76df1c75a309ac3cb3b3d78238793c613dcaad47dc9d92b63f9e8e73b86ffec23
   languageName: node
   linkType: hard
 
