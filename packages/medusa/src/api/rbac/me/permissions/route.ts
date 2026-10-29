@@ -1,4 +1,8 @@
-import { resolvePermissions } from "@medusajs/framework"
+import {
+  expandGrants,
+  resolvePermissions,
+  toPolicyMap,
+} from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -120,29 +124,24 @@ export const GET = async (
   const { data: allRoles } = await query.graph(
     {
       entity: "rbac_role",
-      fields: ["id", "name"],
+      fields: ["id", "name", "policies.*"],
     },
     { cache: { enable: true } }
   )
 
-  const coverage = await Promise.all(
-    (allRoles ?? []).map(async (role) => {
-      const roleGrants = await resolvePermissions({
-        roles: [role.id],
-        universe,
-        container: req.scope,
-      })
+  const coveredRoles = (allRoles ?? [])
+    .filter((role) => {
+      const roleGrants = expandGrants(
+        toPolicyMap((role.policies ?? []).filter(Boolean)),
+        universe
+      )
 
-      const isCovered =
+      return (
         roleGrants.size > 0 &&
         Array.from(roleGrants).every((permission) => granted.has(permission))
-
-      return isCovered ? (role.name as string) : null
+      )
     })
-  )
-
-  const coveredRoles = coverage
-    .filter((name): name is string => name !== null)
+    .map((role) => role.name as string)
     .sort()
 
   res.status(200).json({
