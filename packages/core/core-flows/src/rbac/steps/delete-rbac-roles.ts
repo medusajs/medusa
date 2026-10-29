@@ -1,4 +1,8 @@
-import { Modules } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  Modules,
+  RBAC_SUPER_ADMIN_ROLE_ID,
+} from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
@@ -13,7 +17,8 @@ export type DeleteRbacRolesStepInput = string[]
 export const deleteRbacRolesStepId = "delete-rbac-roles"
 
 /**
- * This step soft-deletes one or more RBAC roles.
+ * This step soft-deletes one or more RBAC roles. The built-in super admin role
+ * can't be deleted.
  * @param ids - The IDs of the roles to delete
  * @param container - The workflow container
  * @returns A step response with the deleted role IDs
@@ -22,11 +27,18 @@ export const deleteRbacRolesStepId = "delete-rbac-roles"
 export const deleteRbacRolesStep = createStep(
   deleteRbacRolesStepId,
   async (ids: DeleteRbacRolesStepInput, { container }) => {
-    const service = container.resolve<IRbacModuleService>(Modules.RBAC)
-
     if (!ids?.length) {
       return new StepResponse([], [])
     }
+
+    if (ids.includes(RBAC_SUPER_ADMIN_ROLE_ID)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The super admin role can't be deleted"
+      )
+    }
+
+    const service = container.resolve<IRbacModuleService>(Modules.RBAC)
 
     await service.softDeleteRbacRoles(ids)
 

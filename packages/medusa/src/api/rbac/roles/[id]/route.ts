@@ -94,7 +94,11 @@ export const DELETE = async (
   const id = req.params.id
 
   await deleteRbacRolesWorkflow(req.scope).run({
-    input: { ids: [id] },
+    input: {
+      ids: [id],
+      actor_id: req.auth_context.actor_id,
+      actor: req.auth_context.actor_type,
+    },
   })
 
   res.status(200).json({
