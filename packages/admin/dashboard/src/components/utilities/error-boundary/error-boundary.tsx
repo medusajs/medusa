@@ -80,11 +80,11 @@ export const ErrorBoundary = () => {
       break
   }
 
-  const handleCopyError = () => {
+  const handleCopyError = async () => {
     const errorText = `Error: ${errorMessage}\n\n${
       errorStack || "No stack trace available"
     }`
-    const success = copy(errorText)
+    const success = await copy(errorText)
 
     if (success) {
       toast.success("Error details copied to clipboard")
