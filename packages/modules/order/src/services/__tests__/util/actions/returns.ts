@@ -98,6 +98,22 @@ describe("Order Return - Actions", function () {
     )
 
     expect(() => {
+      actions[0].details!.quantity = -1
+      calculateOrderChange({
+        order: originalOrder,
+        actions,
+      })
+    }).toThrow("Quantity to return of item 1 must be greater than 0.")
+
+    expect(() => {
+      actions[0].details!.quantity = 0
+      calculateOrderChange({
+        order: originalOrder,
+        actions,
+      })
+    }).toThrow("Quantity to return of item 1 is required.")
+
+    expect(() => {
       actions[0].details!.reference_id = undefined
       calculateOrderChange({
         order: originalOrder,

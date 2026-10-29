@@ -125,7 +125,7 @@ export const AdminPostReturnsRequestItemsReqSchema = z.object({
   items: z.array(
     z.object({
       id: z.string(),
-      quantity: z.number(),
+      quantity: z.number().min(1),
       description: z.string().optional(),
       internal_note: z.string().optional(),
       reason_id: z.string().optional(),
@@ -142,7 +142,7 @@ export const AdminPostReturnsReceiveItemsReqSchema = z.object({
   items: z.array(
     z.object({
       id: z.string(),
-      quantity: z.number(),
+      quantity: z.number().min(1),
       description: z.string().optional(),
       internal_note: z.string().optional(),
     })
@@ -154,7 +154,7 @@ export type AdminPostReturnsReceiveItemsReqSchemaType = z.infer<
 >
 
 export const AdminPostReturnsRequestItemsActionReqSchema = z.object({
-  quantity: z.number().optional(),
+  quantity: z.number().min(1).optional(),
   internal_note: z.string().nullish().optional(),
   reason_id: z.string().nullish().optional(),
   metadata: z.record(z.string(), z.unknown()).nullish().optional(),
@@ -165,7 +165,7 @@ export type AdminPostReturnsRequestItemsActionReqSchemaType = z.infer<
 >
 
 export const AdminPostReturnsReceiveItemsActionReqSchema = z.object({
-  quantity: z.number().optional(),
+  quantity: z.number().min(1).optional(),
   internal_note: z.string().nullish().optional(),
 })
 
@@ -174,7 +174,7 @@ export type AdminPostReturnsReceiveItemsActionReqSchemaType = z.infer<
 >
 
 export const AdminPostReturnsDismissItemsActionReqSchema = z.object({
-  quantity: z.number().optional(),
+  quantity: z.number().min(1).optional(),
   internal_note: z.string().nullish().optional(),
 })
 

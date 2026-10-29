@@ -116,7 +116,7 @@ export const AdminPostExchangesAddItemsReqSchema = z.object({
   items: z.array(
     z.object({
       variant_id: z.string(),
-      quantity: z.number(),
+      quantity: z.number().min(1),
       unit_price: z.number().optional(),
       internal_note: z.string().optional(),
       allow_backorder: z.boolean().optional(),
@@ -134,7 +134,7 @@ export const AdminPostExchangesReturnRequestItemsReqSchema = z.object({
   items: z.array(
     z.object({
       id: z.string(),
-      quantity: z.number(),
+      quantity: z.number().min(1),
       description: z.string().optional(),
       internal_note: z.string().optional(),
       reason_id: z.string().optional(),
@@ -148,7 +148,7 @@ export type AdminPostExchangesReturnRequestItemsReqSchemaType = z.infer<
 >
 
 export const AdminPostExchangesDismissItemsActionReqSchema = z.object({
-  quantity: z.number().optional(),
+  quantity: z.number().min(1).optional(),
   internal_note: z.string().nullish().optional(),
 })
 

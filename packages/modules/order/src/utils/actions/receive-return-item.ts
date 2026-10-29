@@ -56,6 +56,13 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RECEIVE_RETURN_ITEM, {
       )
     }
 
+    if (MathBN.lte(action.details.quantity, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Quantity to receive return of item ${refId} must be greater than 0.`
+      )
+    }
+
     const quantityRequested = existing?.detail?.return_requested_quantity || 0
 
     const greater = MathBN.gt(action.details?.quantity, quantityRequested)

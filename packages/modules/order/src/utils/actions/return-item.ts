@@ -48,6 +48,13 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
       )
     }
 
+    if (MathBN.lte(action.details.quantity, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Quantity to return of item ${refId} must be greater than 0.`
+      )
+    }
+
     // Units already received or dismissed on an earlier return are no longer with the customer.
     const quantityAvailable = MathBN.sub(
       existing!.detail?.fulfilled_quantity ?? 0,

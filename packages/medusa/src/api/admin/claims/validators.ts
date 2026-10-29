@@ -112,7 +112,7 @@ export const AdminPostClaimsAddItemsReqSchema = z.object({
   items: z.array(
     z.object({
       variant_id: z.string(),
-      quantity: z.number(),
+      quantity: z.number().min(1),
       unit_price: z.number().optional(),
       internal_note: z.string().optional(),
       metadata: z.record(z.string(), z.unknown()).optional(),
@@ -129,7 +129,7 @@ export const AdminPostClaimsRequestReturnItemsReqSchema = z.object({
   items: z.array(
     z.object({
       id: z.string(),
-      quantity: z.number(),
+      quantity: z.number().min(1),
       description: z.string().optional(),
       internal_note: z.string().optional(),
       reason_id: z.string().optional(),
@@ -143,7 +143,7 @@ export type AdminPostClaimsRequestReturnItemsReqSchemaType = z.infer<
 >
 
 export const AdminPostClaimsRequestItemsReturnActionReqSchema = z.object({
-  quantity: z.number().optional(),
+  quantity: z.number().min(1).optional(),
   internal_note: z.string().nullish().optional(),
   reason_id: z.string().nullish().optional(),
   metadata: z.record(z.string(), z.unknown()).nullish().optional(),
@@ -157,7 +157,7 @@ export const AdminPostClaimItemsReqSchema = z.object({
   items: z.array(
     z.object({
       id: z.string(),
-      quantity: z.number(),
+      quantity: z.number().min(1),
       reason: z.nativeEnum(ClaimReason).optional(),
       description: z.string().optional(),
       internal_note: z.string().optional(),
@@ -171,7 +171,7 @@ export type AdminPostClaimItemsReqSchemaType = z.infer<
 >
 
 export const AdminPostClaimsRequestItemsActionReqSchema = z.object({
-  quantity: z.number().optional(),
+  quantity: z.number().min(1).optional(),
   internal_note: z.string().nullish().optional(),
   reason_id: z.string().nullish(),
   metadata: z.record(z.string(), z.unknown()).nullish().optional(),
@@ -182,7 +182,7 @@ export type AdminPostClaimsRequestItemsActionReqSchemaType = z.infer<
 >
 
 export const AdminPostClaimsItemsActionReqSchema = z.object({
-  quantity: z.number().optional(),
+  quantity: z.number().min(1).optional(),
   reason_id: z.string().nullish(),
   internal_note: z.string().nullish().optional(),
 })
@@ -192,7 +192,7 @@ export type AdminPostClaimsItemsActionReqSchemaType = z.infer<
 >
 
 export const AdminPostClaimsDismissItemsActionReqSchema = z.object({
-  quantity: z.number().optional(),
+  quantity: z.number().min(1).optional(),
   internal_note: z.string().nullish().optional(),
 })
 

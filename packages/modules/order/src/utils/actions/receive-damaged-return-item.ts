@@ -64,6 +64,13 @@ OrderChangeProcessing.registerActionType(
         )
       }
 
+      if (MathBN.lte(action.details.quantity, 0)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Quantity to return of item ${refId} must be greater than 0.`
+        )
+      }
+
       const quantityRequested = existing?.detail.return_requested_quantity || 0
       if (action.details?.quantity > quantityRequested) {
         throw new MedusaError(

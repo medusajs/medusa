@@ -48,6 +48,13 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN_ITEM, {
       )
     }
 
+    if (MathBN.lte(action.details.quantity, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Quantity to cancel return of item ${refId} must be greater than 0.`
+      )
+    }
+
     const greater = MathBN.gt(
       action.details?.quantity,
       existing.detail?.return_requested_quantity
