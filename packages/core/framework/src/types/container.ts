@@ -90,7 +90,7 @@ declare module "@medusajs/types" {
 }
 
 export type MedusaContainer<Cradle extends object = ModuleImplementations> =
-  Omit<AwilixContainer, "resolve"> & {
+  Omit<AwilixContainer<any>, "resolve" | "createScope"> & {
     resolve<K extends keyof Cradle>(
       key: K,
       resolveOptions?: ResolveOptions
