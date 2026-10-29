@@ -22,7 +22,7 @@
     "cloudinary": "^2.10.0",
     "commander": "^11.1.0",
     "dotenv": "^16.3.1",
-    "satori": "^0.12.1"
+    "satori": "^0.63.2"
   },
   "devDependencies": {
     "@types/node": "^20.12.10",
