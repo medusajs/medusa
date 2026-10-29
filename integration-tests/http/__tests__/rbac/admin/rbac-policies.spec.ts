@@ -1,5 +1,5 @@
 import { getAssignablePoliciesWorkflow } from "@medusajs/core-flows"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules, RBAC_SUPER_ADMIN_POLICY_ID } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -366,6 +366,24 @@ medusaIntegrationTestRunner({
           expect(
             listResponse.data.policies.find((p) => p.id === policyId)
           ).toBeUndefined()
+        })
+
+        it("refuses to delete the super admin policy, even for a super admin", async () => {
+          const error = await api
+            .delete(
+              `/rbac/policies/${RBAC_SUPER_ADMIN_POLICY_ID}`,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.type).toEqual("not_allowed")
+
+          const rbacModule = container.resolve(Modules.RBAC)
+          const policies = await rbacModule.listRbacPolicies({
+            id: RBAC_SUPER_ADMIN_POLICY_ID,
+          })
+          expect(policies).toHaveLength(1)
         })
       })
 

@@ -6,7 +6,7 @@ import {
   unassignRolesWorkflow,
   updateRbacRolesWorkflow,
 } from "@medusajs/core-flows"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules, RBAC_SUPER_ADMIN_ROLE_ID } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -364,6 +364,84 @@ medusaIntegrationTestRunner({
           expect(
             listResponse.data.roles.find((r) => r.id === roleId)
           ).toBeUndefined()
+        })
+
+        // A role holding `product:update`, which the role deleter below lacks.
+        const createProductEditorRole = async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const productUpdate = await ensureRbacPolicy(rbacModule, {
+            key: "product:update",
+            resource: "product",
+            operation: "update",
+            name: "Update Products",
+          })
+          const role = await rbacModule.createRbacRoles({
+            name: "Product Editor",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: role.id, policy_id: productUpdate.id },
+          ])
+          return role
+        }
+
+        it("refuses to delete the super admin role, even for a super admin", async () => {
+          const error = await api
+            .delete(`/rbac/roles/${RBAC_SUPER_ADMIN_ROLE_ID}`, adminHeaders)
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.type).toEqual("not_allowed")
+
+          const rbacModule = container.resolve(Modules.RBAC)
+          const roles = await rbacModule.listRbacRoles({
+            id: RBAC_SUPER_ADMIN_ROLE_ID,
+          })
+          expect(roles).toHaveLength(1)
+        })
+
+        it("forbids deleting a role holding policies the actor doesn't have", async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const productEditorRole = await createProductEditorRole()
+
+          const roleDelete = await ensureRbacPolicy(rbacModule, {
+            key: "rbac_role:delete",
+            resource: "rbac_role",
+            operation: "delete",
+            name: "Delete Roles",
+          })
+          const roleDeleterRole = await rbacModule.createRbacRoles({
+            name: "Role Deleter",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: roleDeleterRole.id, policy_id: roleDelete.id },
+          ])
+          const roleDeleterHeaders = { headers: { ...adminHeaders.headers } }
+          await createAdminUser(dbConnection, roleDeleterHeaders, container, {
+            email: "role-deleter@medusa.js",
+            roles: [roleDeleterRole.id],
+          })
+
+          const error = await api
+            .delete(`/rbac/roles/${productEditorRole.id}`, roleDeleterHeaders)
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(403)
+
+          const roles = await rbacModule.listRbacRoles({
+            id: productEditorRole.id,
+          })
+          expect(roles).toHaveLength(1)
+        })
+
+        it("lets a super admin delete that role", async () => {
+          const productEditorRole = await createProductEditorRole()
+
+          const response = await api.delete(
+            `/rbac/roles/${productEditorRole.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
         })
       })
 
@@ -2337,6 +2415,135 @@ medusaIntegrationTestRunner({
             .catch((e) => e)
 
           expect(error.response.status).toEqual(404)
+        })
+      })
+
+      describe("super admin protection", () => {
+        let superAdminId: string
+
+        const createSecondSuperAdmin = async () => {
+          const headers = { headers: { ...adminHeaders.headers } }
+          const { user } = await createAdminUser(
+            dbConnection,
+            headers,
+            container,
+            {
+              email: "second-super-admin@medusa.js",
+              roles: [RBAC_SUPER_ADMIN_ROLE_ID],
+            }
+          )
+          return user
+        }
+
+        beforeEach(async () => {
+          const userModule = container.resolve(Modules.USER)
+          const [superAdmin] = await userModule.listUsers({
+            email: "admin@medusa.js",
+          })
+          superAdminId = superAdmin.id
+        })
+
+        describe("DELETE /admin/users/:id/roles", () => {
+          const unassignSuperAdmin = (userId: string) =>
+            api.delete(`/admin/users/${userId}/roles`, {
+              ...adminHeaders,
+              data: { assignments: [{ role_id: RBAC_SUPER_ADMIN_ROLE_ID }] },
+            })
+
+          it("refuses to unassign the super admin role from the last super admin", async () => {
+            const error = await unassignSuperAdmin(superAdminId).catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data.message).toContain(
+              "Cannot remove the last super admin"
+            )
+
+            const rbacModule = container.resolve(Modules.RBAC)
+            const assignments = await rbacModule.listRbacRoleAssignments({
+              role_id: RBAC_SUPER_ADMIN_ROLE_ID,
+              reference_id: superAdminId,
+            })
+            expect(assignments).toHaveLength(1)
+          })
+
+          it("unassigns it once another super admin exists", async () => {
+            await createSecondSuperAdmin()
+
+            const response = await unassignSuperAdmin(superAdminId)
+
+            expect(response.status).toEqual(200)
+          })
+        })
+
+        describe("DELETE /admin/users/:id", () => {
+          const userManagerHeaders = { headers: { ...adminHeaders.headers } }
+          let userManagerId: string
+
+          beforeEach(async () => {
+            const rbacModule = container.resolve(Modules.RBAC)
+            const policies = await Promise.all(
+              ["read", "delete"].map((operation) =>
+                ensureRbacPolicy(rbacModule, {
+                  key: `user:${operation}`,
+                  resource: "user",
+                  operation,
+                  name: `user:${operation}`,
+                })
+              )
+            )
+            const role = await rbacModule.createRbacRoles({
+              name: "User Manager",
+            })
+            await rbacModule.createRbacRolePolicies(
+              policies.map((policy) => ({
+                role_id: role.id,
+                policy_id: policy.id,
+              }))
+            )
+
+            const { user } = await createAdminUser(
+              dbConnection,
+              userManagerHeaders,
+              container,
+              { email: "user-manager@medusa.js", roles: [role.id] }
+            )
+            userManagerId = user.id
+          })
+
+          it("refuses to delete the last super admin", async () => {
+            const error = await api
+              .delete(`/admin/users/${superAdminId}`, userManagerHeaders)
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data.message).toContain(
+              "Cannot remove the last super admin"
+            )
+
+            const userModule = container.resolve(Modules.USER)
+            const users = await userModule.listUsers({ id: superAdminId })
+            expect(users).toHaveLength(1)
+          })
+
+          it("deletes a super admin once another super admin exists", async () => {
+            await createSecondSuperAdmin()
+
+            const response = await api.delete(
+              `/admin/users/${superAdminId}`,
+              userManagerHeaders
+            )
+
+            expect(response.status).toEqual(200)
+          })
+
+          it("deletes a user that isn't a super admin", async () => {
+            const response = await api.delete(
+              `/admin/users/${userManagerId}`,
+              adminHeaders
+            )
+
+            expect(response.status).toEqual(200)
+          })
         })
       })
     })

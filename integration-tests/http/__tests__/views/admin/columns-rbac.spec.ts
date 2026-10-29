@@ -75,5 +75,15 @@ medusaIntegrationTestRunner({
         expect(relatedFields(data.columns)).toEqual([])
       })
     })
+
+    describe("GET /admin/views/orders/columns", () => {
+      it("forbids an entity the user can't read", async () => {
+        const error = await api
+          .get("/admin/views/orders/columns", productReaderHeaders)
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(403)
+      })
+    })
   },
 })
