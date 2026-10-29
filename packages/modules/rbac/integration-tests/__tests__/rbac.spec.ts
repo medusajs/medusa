@@ -32,7 +32,6 @@ moduleIntegrationTestRunner<IRbacModuleService>({
       expect(Object.keys(linkable)).toEqual([
         "rbacRole",
         "rbacPolicy",
-        "rbacRoleParent",
         "rbacRolePolicy",
       ])
 
@@ -57,15 +56,6 @@ moduleIntegrationTestRunner<IRbacModuleService>({
             primaryKey: "id",
             serviceName: "rbac",
             field: "rbacPolicy",
-          },
-        },
-        rbacRoleParent: {
-          id: {
-            linkable: "rbac_role_parent_id",
-            entity: "RbacRoleParent",
-            primaryKey: "id",
-            serviceName: "rbac",
-            field: "rbacRoleParent",
           },
         },
         rbacRolePolicy: {

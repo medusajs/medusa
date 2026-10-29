@@ -38,6 +38,7 @@ describe("createSuperAdminRole", () => {
           .fn()
           .mockResolvedValue([{ id: "role_super_admin", name: "Super Admin" }]),
         listRbacRolePolicies: jest.fn().mockResolvedValue([{ id: "policy" }]),
+        listRbacRoleAssignments: jest.fn().mockResolvedValue([]),
       },
     }
 
@@ -51,20 +52,16 @@ describe("createSuperAdminRole", () => {
   it("should identify users by id only and never log their emails", async () => {
     await createSuperAdminRole({ container } as any)
 
-    expect(run).toHaveBeenCalledTimes(users.length)
-    for (const user of users) {
-      expect(run).toHaveBeenCalledWith({
-        input: {
-          assignments: [
-            {
-              role_id: "role_super_admin",
-              reference: Modules.USER,
-              reference_id: user.id,
-            },
-          ],
-        },
-      })
-    }
+    expect(run).toHaveBeenCalledTimes(1)
+    expect(run).toHaveBeenCalledWith({
+      input: {
+        assignments: users.map((user) => ({
+          role_id: "role_super_admin",
+          reference: Modules.USER,
+          reference_id: user.id,
+        })),
+      },
+    })
 
     const logged = Object.values(logger)
       .flatMap((fn) => fn.mock.calls)

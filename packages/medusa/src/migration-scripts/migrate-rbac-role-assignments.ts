@@ -18,8 +18,51 @@ const LEGACY_LINK_SOURCES = [
   },
 ]
 
+const PAGE_SIZE = 500
+
 function pairKey(roleId: string, referenceId: string): string {
   return `${roleId}::${referenceId}`
+}
+
+/**
+ * Creates the assignments of one page of legacy rows that don't exist yet.
+ * Returns the number of created assignments.
+ */
+async function migrateChunk(
+  rbacModuleService: IRbacModuleService,
+  source: (typeof LEGACY_LINK_SOURCES)[number],
+  rows: Record<string, any>[]
+): Promise<number> {
+  const referenceIds = Array.from(
+    new Set(rows.map((row) => row[source.referenceColumn] as string))
+  )
+
+  const existingAssignments = await rbacModuleService.listRbacRoleAssignments({
+    reference: source.reference,
+    reference_id: referenceIds,
+  })
+  const existingPairs = new Set(
+    existingAssignments.map((assignment) =>
+      pairKey(assignment.role_id, assignment.reference_id)
+    )
+  )
+
+  const toCreate = rows.filter(
+    (row) =>
+      !existingPairs.has(pairKey(row.rbac_role_id, row[source.referenceColumn]))
+  )
+
+  if (toCreate.length) {
+    await rbacModuleService.createRbacRoleAssignments(
+      toCreate.map((row) => ({
+        role_id: row.rbac_role_id,
+        reference: source.reference,
+        reference_id: row[source.referenceColumn],
+      }))
+    )
+  }
+
+  return toCreate.length
 }
 
 export default async function migrateRbacRoleAssignments({
@@ -38,51 +81,28 @@ export default async function migrateRbacRoleAssignments({
   const rbacModuleService = container.resolve<IRbacModuleService>(Modules.RBAC)
 
   for (const source of LEGACY_LINK_SOURCES) {
-    const { data } = await query.graph({
-      entity: source.table,
-      fields: ["rbac_role_id", source.referenceColumn],
-    })
+    let migrated = 0
+    let skip = 0
 
-    if (!data.length) {
-      continue
-    }
+    while (true) {
+      const { data } = await query.graph({
+        entity: source.table,
+        fields: ["rbac_role_id", source.referenceColumn],
+        pagination: { take: PAGE_SIZE, skip, order: { id: "ASC" } },
+      })
 
-    const referenceIds = Array.from(
-      new Set(data.map((row) => row[source.referenceColumn]))
-    )
-
-    const existingAssignments = await rbacModuleService.listRbacRoleAssignments(
-      {
-        reference: source.reference,
-        reference_id: referenceIds,
+      if (data.length) {
+        migrated += await migrateChunk(rbacModuleService, source, data)
       }
-    )
-    const existingPairs = new Set(
-      existingAssignments.map((assignment) =>
-        pairKey(assignment.role_id, assignment.reference_id)
-      )
-    )
 
-    const toCreate = data.filter((row) => {
-      const lgeacyPair = pairKey(row.rbac_role_id, row[source.referenceColumn])
-      if (existingPairs.has(lgeacyPair)) {
-        return false
+      if (data.length < PAGE_SIZE) {
+        break
       }
-      return true
-    })
-
-    if (toCreate.length) {
-      await rbacModuleService.createRbacRoleAssignments(
-        toCreate.map((row) => ({
-          role_id: row.rbac_role_id,
-          reference: source.reference,
-          reference_id: row[source.referenceColumn],
-        }))
-      )
+      skip += PAGE_SIZE
     }
 
     logger.info(
-      `Migrated ${toCreate.length} legacy "${source.table}" links to rbac_role_assignment.`
+      `Migrated ${migrated} legacy "${source.table}" links to rbac_role_assignment.`
     )
   }
 }

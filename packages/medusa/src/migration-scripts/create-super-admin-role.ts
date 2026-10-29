@@ -25,6 +25,35 @@ interface User {
   [key: string]: any
 }
 
+const PAGE_SIZE = 100
+
+/**
+ * Ids of the users that already hold the super admin role.
+ */
+async function listAssignedUserIds(
+  rbacModuleService: any
+): Promise<Set<string>> {
+  const assigned = new Set<string>()
+  let skip = 0
+
+  while (true) {
+    const page: { reference_id: string }[] =
+      await rbacModuleService.listRbacRoleAssignments(
+        { role_id: RBAC_SUPER_ADMIN_ROLE_ID, reference: "user" },
+        { take: PAGE_SIZE, skip }
+      )
+
+    for (const assignment of page) {
+      assigned.add(assignment.reference_id)
+    }
+
+    if (page.length < PAGE_SIZE) {
+      return assigned
+    }
+    skip += PAGE_SIZE
+  }
+}
+
 async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
   try {
     const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
@@ -33,21 +62,7 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
     const userModuleService = container.resolve(Modules.USER)
     const rbacModuleService = container.resolve(Modules.RBAC)
 
-    const users: User[] = await userModuleService.listUsers({})
-
-    if (!users.length) {
-      logger.info("No users found. Exiting.")
-      return
-    }
-
-    logger.info(`Found ${users.length} users`)
-
-    logger.info("\nUsers found:")
-    users.forEach((user: User, index: number) => {
-      logger.info(`  ${index + 1}. ${user.id}`)
-    })
-
-    logger.info("\nLooking for super admin role...")
+    logger.info("Looking for super admin role...")
 
     // Get the pre-created super admin role
     let superAdminRole: any
@@ -95,51 +110,59 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
 
     logger.info("Assigning super admin role to all users...")
 
-    let successCount = 0
-    let errorCount = 0
+    const alreadyAssigned = await listAssignedUserIds(rbacModuleService)
 
-    for (const user of users) {
-      try {
-        logger.info(`  Processing user: ${user.id}`)
+    let assignedCount = 0
+    let skippedCount = 0
+    let totalUsers = 0
+    let skip = 0
 
-        // Link the user to the super admin role
-        await assignRolesWorkflow(container).run({
-          input: {
-            assignments: [
-              {
-                role_id: superAdminRole.id,
-                reference: Modules.USER,
-                reference_id: user.id,
-              },
-            ],
-          },
-        })
-
-        logger.info(`    Assigned super admin role to user`)
-        successCount++
-      } catch (error: any) {
-        console.error(
-          `    Failed to assign role to user ${user.id}:`,
-          error.message
-        )
-        errorCount++
-      }
-    }
-
-    logger.info(`  Successfully assigned role: ${successCount} users`)
-
-    if (errorCount > 0) {
-      logger.info(`  Failed to assign role: ${errorCount} users`)
-    }
-
-    if (successCount > 0) {
-      logger.log("\nSuper admin role assignment completed successfully!")
-
-      const totalAssigned = successCount
-      logger.info(
-        `Super admin role is now assigned to ${totalAssigned} out of ${users.length} users`
+    while (true) {
+      const users: User[] = await userModuleService.listUsers(
+        {},
+        { take: PAGE_SIZE, skip }
       )
+      totalUsers += users.length
+
+      const assignments = users
+        .filter((user) => !alreadyAssigned.has(user.id))
+        .map((user) => ({
+          role_id: superAdminRole.id,
+          reference: Modules.USER,
+          reference_id: user.id,
+        }))
+
+      const skippedInPage = users.length - assignments.length
+      skippedCount += skippedInPage
+
+      if (assignments.length) {
+        await assignRolesWorkflow(container).run({ input: { assignments } })
+        assignedCount += assignments.length
+        logger.info(
+          `  Assigned super admin role to users: ${assignments
+            .map((assignment) => assignment.reference_id)
+            .join(", ")}`
+        )
+      }
+
+      logger.info(
+        `Processed ${users.length} users (offset ${skip}): ${assignments.length} to assign, ${skippedInPage} already assigned`
+      )
+
+      if (users.length < PAGE_SIZE) {
+        break
+      }
+      skip += PAGE_SIZE
     }
+
+    if (!totalUsers) {
+      logger.info("No users found. Exiting.")
+      return
+    }
+
+    logger.info(
+      `Super admin role: ${assignedCount} assigned, ${skippedCount} already assigned (${totalUsers} users total)`
+    )
   } catch (error: any) {
     console.error("\nFatal error:", error.message)
     console.error("Stack trace:", error.stack)
