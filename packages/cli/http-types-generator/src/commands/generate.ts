@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Command } from "commander"
 import { glob } from "glob"
 import path from "path"
