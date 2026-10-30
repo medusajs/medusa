@@ -25,8 +25,7 @@ get:
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_workflows-executions_{workflow_id}_subscribe/get.sh
+        $ref: ../code_samples/Shell/admin_workflows-executions_{workflow_id}_subscribe/get.sh
   tags:
     - Workflows Executions
   responses:

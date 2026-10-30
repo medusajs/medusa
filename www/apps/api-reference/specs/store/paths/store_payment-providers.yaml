@@ -6,8 +6,7 @@ get:
     parameter to retrieve the payment providers enabled in that region.
   x-authenticated: false
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/storefront-development/checkout/payment
+    url: https://docs.medusajs.com/resources/storefront-development/checkout/payment
     description: 'Storefront guide: How to implement payment during checkout.'
   parameters:
     - name: x-publishable-api-key
@@ -26,8 +25,7 @@ get:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
@@ -106,8 +104,7 @@ get:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
   x-codeSamples:
     - lang: JavaScript

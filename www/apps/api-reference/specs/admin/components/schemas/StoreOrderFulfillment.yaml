@@ -52,8 +52,7 @@ properties:
       Data useful for the fulfillment provider handling it. This is taken from
       the associated shipping option.
     externalDocs:
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property
+      url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#data-property
   provider_id:
     type: string
     title: provider_id

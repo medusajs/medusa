@@ -20,13 +20,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_products_import_{transaction_id}_confirm/post.js
+        $ref: ../code_samples/JavaScript/admin_products_import_{transaction_id}_confirm/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_products_import_{transaction_id}_confirm/post.sh
+        $ref: ../code_samples/Shell/admin_products_import_{transaction_id}_confirm/post.sh
   tags:
     - Products
   responses:

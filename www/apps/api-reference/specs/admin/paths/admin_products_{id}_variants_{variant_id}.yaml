@@ -43,8 +43,7 @@ get:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/get.js
+        $ref: ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/get.js
     - lang: Shell
       label: cURL
       source:
@@ -131,13 +130,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/post.js
+        $ref: ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_products_{id}_variants_{variant_id}/post.sh
+        $ref: ../code_samples/Shell/admin_products_{id}_variants_{variant_id}/post.sh
   tags:
     - Products
   responses:
@@ -215,13 +212,11 @@ delete:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/delete.js
+        $ref: ../code_samples/JavaScript/admin_products_{id}_variants_{variant_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_products_{id}_variants_{variant_id}/delete.sh
+        $ref: ../code_samples/Shell/admin_products_{id}_variants_{variant_id}/delete.sh
   tags:
     - Products
   responses:

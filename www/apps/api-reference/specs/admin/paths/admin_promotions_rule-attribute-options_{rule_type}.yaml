@@ -70,13 +70,11 @@ get:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_promotions_rule-attribute-options_{rule_type}/get.js
+        $ref: ../code_samples/JavaScript/admin_promotions_rule-attribute-options_{rule_type}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_promotions_rule-attribute-options_{rule_type}/get.sh
+        $ref: ../code_samples/Shell/admin_promotions_rule-attribute-options_{rule_type}/get.sh
   tags:
     - Promotions
   responses:

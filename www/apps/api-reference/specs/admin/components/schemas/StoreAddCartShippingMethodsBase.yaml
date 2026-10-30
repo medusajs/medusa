@@ -14,6 +14,5 @@ properties:
       Any additional data relevant for the third-party fulfillment provider to
       process the shipment.
     externalDocs:
-      url: >-
-        https://docs.medusajs.com/resources/storefront-development/checkout/shipping#data-request-body-parameter
+      url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping#data-request-body-parameter
       description: Learn more about the data parameter.

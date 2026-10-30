@@ -11,8 +11,7 @@ post:
     products in the sales channels of the request's publishable API key.
   externalDocs:
     description: Learn about the Store Search API route
-    url: >-
-      https://docs.medusajs.com/resources/infrastructure-modules/search/store-search
+    url: https://docs.medusajs.com/resources/infrastructure-modules/search/store-search
   x-authenticated: false
   parameters:
     - name: x-publishable-api-key
@@ -31,8 +30,7 @@ post:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: locale
       in: query
@@ -42,8 +40,7 @@ post:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
   requestBody:
     content:
