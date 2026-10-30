@@ -885,7 +885,7 @@ export class RedisDistributedTransactionStorage
     // `getJobSchedulers` throws on repeatable jobs created by older BullMQ
     // versions, so their keys are read from the sorted set directly.
     const keys = (
-      await this.redisClient.zrange(queue.keys.repeat, 0, -1)
+      await this.redisClient.zrange(queue.keys.repeat, 0, "-1")
     ).filter((key) => key !== keepJobSchedulerId)
     if (!keys.length) {
       return
@@ -898,7 +898,7 @@ export class RedisDistributedTransactionStorage
     const delayedJobIds = await this.redisClient.zrange(
       queue.keys.delayed,
       0,
-      -1
+      "-1"
     )
     await promiseAll(
       delayedJobIds

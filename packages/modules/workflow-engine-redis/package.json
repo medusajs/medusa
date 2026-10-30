@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "bullmq": "6.4.1",
-    "ioredis": "^5.11.1",
+    "ioredis": "^6.0.0",
     "ulid": "^2.3.0"
   },
   "peerDependencies": {

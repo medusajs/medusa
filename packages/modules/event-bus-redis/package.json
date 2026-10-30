@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "bullmq": "6.4.1",
-    "ioredis": "^5.11.1"
+    "ioredis": "^6.0.0"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.1"

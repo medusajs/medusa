@@ -33,7 +33,7 @@
     "@medusajs/framework": "2.22.1"
   },
   "dependencies": {
-    "ioredis": "^5.11.1"
+    "ioredis": "^6.0.0"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
