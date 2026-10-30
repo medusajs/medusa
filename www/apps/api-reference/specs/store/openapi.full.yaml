@@ -11037,6 +11037,144 @@ paths:
         - payment_sessions.provider_id
         - payment_sessions.data
         - payment_sessions.status
+  /store/payment-collections/{id}/payment-sessions/{session_id}:
+    post:
+      operationId: PostPaymentCollectionsIdPaymentSessionsSession_id
+      summary: Update Payment Session
+      description: Update a payment session's client data, such as payment details collected by the payment provider's checkout component. The data is merged into the session's `data.client`.
+      x-authenticated: false
+      parameters:
+        - name: id
+          in: path
+          description: The payment collection's ID.
+          required: true
+          schema:
+            type: string
+        - name: session_id
+          in: path
+          description: The payment session's ID.
+          required: true
+          schema:
+            type: string
+        - name: x-publishable-api-key
+          in: header
+          description: Publishable API Key created in the Medusa Admin.
+          required: true
+          schema:
+            type: string
+            externalDocs:
+              url: https://docs.medusajs.com/api/store/publishable-api-key
+        - name: x-medusa-locale
+          in: header
+          description: The locale in BCP 47 format to retrieve localized content.
+          required: false
+          schema:
+            type: string
+            example: en-US
+            externalDocs:
+              url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+              description: Learn more in the Serve Translations in Storefront guide.
+        - name: locale
+          in: query
+          description: The locale in BCP 47 format to retrieve localized content.
+          required: false
+          schema:
+            type: string
+            example: en-US
+            externalDocs:
+              url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+              description: Learn more in the Serve Translations in Storefront guide.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreUpdatePaymentSession'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            let MEDUSA_BACKEND_URL = "http://localhost:9000"
+
+            if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
+              MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+            }
+
+            export const sdk = new Medusa({
+              baseUrl: MEDUSA_BACKEND_URL,
+              debug: process.env.NODE_ENV === "development",
+              publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+            })
+
+            sdk.store.payment.updatePaymentSession(
+              "paycol_123",
+              "payses_123",
+              {
+                client_data: {
+                  // any data relevant for the provider.
+                }
+              }
+            )
+            .then(({ payment_collection }) => {
+              console.log(payment_collection)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/store/payment-collections/{id}/payment-sessions/{session_id}' \
+            -H 'x-publishable-api-key: {your_publishable_api_key}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "client_data": {}
+            }'
+      tags:
+        - Payment Collections
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePaymentCollectionResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: updatePaymentSessionClientDataWorkflow
+      x-events: []
+      x-allowed:
+        - id
+        - currency_code
+        - amount
+        - payment_sessions
+        - status
+        - payment_providers
+        - payment_providers.id
+        - payment_sessions.id
+        - payment_sessions.amount
+        - payment_sessions.currency_code
+        - payment_sessions.provider_id
+        - payment_sessions.data
+        - payment_sessions.status
   /store/payment-providers:
     get:
       operationId: GetPaymentProviders
@@ -23692,1105 +23830,6 @@ components:
       properties:
         address:
           $ref: '#/components/schemas/AdminCustomerAddress'
-    AdminCustomerFilters:
-      type: object
-      description: The filters to apply on the retrieved customers.
-      x-schemaName: AdminCustomerFilters
-      properties:
-        groups:
-          oneOf:
-            - type: string
-              title: groups
-              description: Filter by a customer group's ID to retrieve customers that belong to it.
-            - $ref: '#/components/schemas/CustomerGroupInCustomerFilters'
-            - type: array
-              description: Filter by customer group IDs to retrieve customers that belong to them.
-              items:
-                type: string
-                title: groups
-                description: The customer group's ID.
-        has_account:
-          type: boolean
-          title: has_account
-          description: Filter by whether the customer is registered.
-        q:
-          type: string
-          title: q
-          description: Search term to filter the customer's searchable properties by.
-        id:
-          oneOf:
-            - type: string
-              title: id
-              description: Filter by a customer's ID.
-            - type: array
-              description: Filter by customer IDs.
-              items:
-                type: string
-                title: id
-                description: A customer's ID.
-            - type: object
-              properties:
-                $and:
-                  type: array
-                  description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $or:
-                  type: array
-                  description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $eq:
-                  oneOf:
-                    - type: string
-                      title: $eq
-                      description: Filter by exact value.
-                    - type: array
-                      title: $eq
-                      description: Filter by exact value.
-                      items:
-                        type: string
-                $ne:
-                  type: string
-                  title: $ne
-                  description: Filter by not equal to the given value.
-                $in:
-                  type: array
-                  title: $in
-                  description: Filter by values included in the given array.
-                  items:
-                    type: string
-                $nin:
-                  type: array
-                  title: $nin
-                  description: Filter by values not included in the given array.
-                  items:
-                    type: string
-                $not:
-                  oneOf:
-                    - type: string
-                      title: $not
-                      description: Filter by not equal to the given value.
-                    - type: object
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                    - type: array
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                      items:
-                        type: string
-                $gt:
-                  type: string
-                  title: $gt
-                  description: Filter by values greater than the given value.
-                $gte:
-                  type: string
-                  title: $gte
-                  description: Filter by values greater than or equal to the given value.
-                $lt:
-                  type: string
-                  title: $lt
-                  description: Filter by values less than the given value.
-                $lte:
-                  type: string
-                  title: $lte
-                  description: Filter by values less than or equal to the given value.
-                $like:
-                  type: string
-                  title: $like
-                  description: Apply a `like` filter. Useful for strings only.
-                $re:
-                  type: string
-                  title: $re
-                  description: Apply a regex filter. Useful for strings only.
-                $ilike:
-                  type: string
-                  title: $ilike
-                  description: Apply a case-insensitive `like` filter. Useful for strings only.
-                $fulltext:
-                  type: string
-                  title: $fulltext
-                  description: Filter to apply on full-text properties.
-                $overlap:
-                  type: array
-                  title: $overlap
-                  description: Filter to apply on array properties to find overlapping values.
-                  items:
-                    type: string
-                $contains:
-                  type: array
-                  title: $contains
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $contained:
-                  type: array
-                  title: $contained
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $exists:
-                  type: boolean
-                  title: $exists
-                  description: Filter by whether a value exists or not.
-              title: id
-              description: Filter by conditions on the customer's ID.
-        email:
-          oneOf:
-            - type: string
-              title: email
-              description: Filter by a customer email.
-              format: email
-            - type: array
-              description: Filter by customer emails.
-              items:
-                type: string
-                title: email
-                description: A customer's email.
-                format: email
-            - type: object
-              properties:
-                $and:
-                  type: array
-                  description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $or:
-                  type: array
-                  description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $eq:
-                  oneOf:
-                    - type: string
-                      title: $eq
-                      description: Filter by exact value.
-                    - type: array
-                      title: $eq
-                      description: Filter by exact value.
-                      items:
-                        type: string
-                $ne:
-                  type: string
-                  title: $ne
-                  description: Filter by not equal to the given value.
-                $in:
-                  type: array
-                  title: $in
-                  description: Filter by values included in the given array.
-                  items:
-                    type: string
-                $nin:
-                  type: array
-                  title: $nin
-                  description: Filter by values not included in the given array.
-                  items:
-                    type: string
-                $not:
-                  oneOf:
-                    - type: string
-                      title: $not
-                      description: Filter by not equal to the given value.
-                    - type: object
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                    - type: array
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                      items:
-                        type: string
-                $gt:
-                  type: string
-                  title: $gt
-                  description: Filter by values greater than the given value.
-                $gte:
-                  type: string
-                  title: $gte
-                  description: Filter by values greater than or equal to the given value.
-                $lt:
-                  type: string
-                  title: $lt
-                  description: Filter by values less than the given value.
-                $lte:
-                  type: string
-                  title: $lte
-                  description: Filter by values less than or equal to the given value.
-                $like:
-                  type: string
-                  title: $like
-                  description: Apply a `like` filter. Useful for strings only.
-                $re:
-                  type: string
-                  title: $re
-                  description: Apply a regex filter. Useful for strings only.
-                $ilike:
-                  type: string
-                  title: $ilike
-                  description: Apply a case-insensitive `like` filter. Useful for strings only.
-                $fulltext:
-                  type: string
-                  title: $fulltext
-                  description: Filter to apply on full-text properties.
-                $overlap:
-                  type: array
-                  title: $overlap
-                  description: Filter to apply on array properties to find overlapping values.
-                  items:
-                    type: string
-                $contains:
-                  type: array
-                  title: $contains
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $contained:
-                  type: array
-                  title: $contained
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $exists:
-                  type: boolean
-                  title: $exists
-                  description: Filter by whether a value exists or not.
-              title: email
-              description: Filter by conditions on the customer's email.
-        company_name:
-          oneOf:
-            - type: string
-              title: company_name
-              description: Filter by a customer's company name.
-            - type: array
-              description: Filter by customer company names.
-              items:
-                type: string
-                title: company_name
-                description: A customer's company name.
-            - type: object
-              properties:
-                $and:
-                  type: array
-                  description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $or:
-                  type: array
-                  description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $eq:
-                  oneOf:
-                    - type: string
-                      title: $eq
-                      description: Filter by exact value.
-                    - type: array
-                      title: $eq
-                      description: Filter by exact value.
-                      items:
-                        type: string
-                $ne:
-                  type: string
-                  title: $ne
-                  description: Filter by not equal to the given value.
-                $in:
-                  type: array
-                  title: $in
-                  description: Filter by values included in the given array.
-                  items:
-                    type: string
-                $nin:
-                  type: array
-                  title: $nin
-                  description: Filter by values not included in the given array.
-                  items:
-                    type: string
-                $not:
-                  oneOf:
-                    - type: string
-                      title: $not
-                      description: Filter by not equal to the given value.
-                    - type: object
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                    - type: array
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                      items:
-                        type: string
-                $gt:
-                  type: string
-                  title: $gt
-                  description: Filter by values greater than the given value.
-                $gte:
-                  type: string
-                  title: $gte
-                  description: Filter by values greater than or equal to the given value.
-                $lt:
-                  type: string
-                  title: $lt
-                  description: Filter by values less than the given value.
-                $lte:
-                  type: string
-                  title: $lte
-                  description: Filter by values less than or equal to the given value.
-                $like:
-                  type: string
-                  title: $like
-                  description: Apply a `like` filter. Useful for strings only.
-                $re:
-                  type: string
-                  title: $re
-                  description: Apply a regex filter. Useful for strings only.
-                $ilike:
-                  type: string
-                  title: $ilike
-                  description: Apply a case-insensitive `like` filter. Useful for strings only.
-                $fulltext:
-                  type: string
-                  title: $fulltext
-                  description: Filter to apply on full-text properties.
-                $overlap:
-                  type: array
-                  title: $overlap
-                  description: Filter to apply on array properties to find overlapping values.
-                  items:
-                    type: string
-                $contains:
-                  type: array
-                  title: $contains
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $contained:
-                  type: array
-                  title: $contained
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $exists:
-                  type: boolean
-                  title: $exists
-                  description: Filter by whether a value exists or not.
-              title: company_name
-              description: Filter by conditions on the customer's company name.
-        first_name:
-          oneOf:
-            - type: string
-              title: first_name
-              description: Filter by a customer's first name.
-            - type: array
-              description: Filter by customer first names.
-              items:
-                type: string
-                title: first_name
-                description: A customer's first name.
-            - type: object
-              properties:
-                $and:
-                  type: array
-                  description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $or:
-                  type: array
-                  description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $eq:
-                  oneOf:
-                    - type: string
-                      title: $eq
-                      description: Filter by exact value.
-                    - type: array
-                      title: $eq
-                      description: Filter by exact value.
-                      items:
-                        type: string
-                $ne:
-                  type: string
-                  title: $ne
-                  description: Filter by not equal to the given value.
-                $in:
-                  type: array
-                  title: $in
-                  description: Filter by values included in the given array.
-                  items:
-                    type: string
-                $nin:
-                  type: array
-                  title: $nin
-                  description: Filter by values not included in the given array.
-                  items:
-                    type: string
-                $not:
-                  oneOf:
-                    - type: string
-                      title: $not
-                      description: Filter by not equal to the given value.
-                    - type: object
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                    - type: array
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                      items:
-                        type: string
-                $gt:
-                  type: string
-                  title: $gt
-                  description: Filter by values greater than the given value.
-                $gte:
-                  type: string
-                  title: $gte
-                  description: Filter by values greater than or equal to the given value.
-                $lt:
-                  type: string
-                  title: $lt
-                  description: Filter by values less than the given value.
-                $lte:
-                  type: string
-                  title: $lte
-                  description: Filter by values less than or equal to the given value.
-                $like:
-                  type: string
-                  title: $like
-                  description: Apply a `like` filter. Useful for strings only.
-                $re:
-                  type: string
-                  title: $re
-                  description: Apply a regex filter. Useful for strings only.
-                $ilike:
-                  type: string
-                  title: $ilike
-                  description: Apply a case-insensitive `like` filter. Useful for strings only.
-                $fulltext:
-                  type: string
-                  title: $fulltext
-                  description: Filter to apply on full-text properties.
-                $overlap:
-                  type: array
-                  title: $overlap
-                  description: Filter to apply on array properties to find overlapping values.
-                  items:
-                    type: string
-                $contains:
-                  type: array
-                  title: $contains
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $contained:
-                  type: array
-                  title: $contained
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $exists:
-                  type: boolean
-                  title: $exists
-                  description: Filter by whether a value exists or not.
-              title: first_name
-              description: Filter by conditions on the customer's first name.
-        last_name:
-          oneOf:
-            - type: string
-              title: last_name
-              description: Filter by a customer's last name.
-            - type: array
-              description: Filter by customer last names.
-              items:
-                type: string
-                title: last_name
-                description: A customer's last name.
-            - type: object
-              properties:
-                $and:
-                  type: array
-                  description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $or:
-                  type: array
-                  description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $eq:
-                  oneOf:
-                    - type: string
-                      title: $eq
-                      description: Filter by exact value.
-                    - type: array
-                      title: $eq
-                      description: Filter by exact value.
-                      items:
-                        type: string
-                $ne:
-                  type: string
-                  title: $ne
-                  description: Filter by not equal to the given value.
-                $in:
-                  type: array
-                  title: $in
-                  description: Filter by values included in the given array.
-                  items:
-                    type: string
-                $nin:
-                  type: array
-                  title: $nin
-                  description: Filter by values not included in the given array.
-                  items:
-                    type: string
-                $not:
-                  oneOf:
-                    - type: string
-                      title: $not
-                      description: Filter by not equal to the given value.
-                    - type: object
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                    - type: array
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                      items:
-                        type: string
-                $gt:
-                  type: string
-                  title: $gt
-                  description: Filter by values greater than the given value.
-                $gte:
-                  type: string
-                  title: $gte
-                  description: Filter by values greater than or equal to the given value.
-                $lt:
-                  type: string
-                  title: $lt
-                  description: Filter by values less than the given value.
-                $lte:
-                  type: string
-                  title: $lte
-                  description: Filter by values less than or equal to the given value.
-                $like:
-                  type: string
-                  title: $like
-                  description: Apply a `like` filter. Useful for strings only.
-                $re:
-                  type: string
-                  title: $re
-                  description: Apply a regex filter. Useful for strings only.
-                $ilike:
-                  type: string
-                  title: $ilike
-                  description: Apply a case-insensitive `like` filter. Useful for strings only.
-                $fulltext:
-                  type: string
-                  title: $fulltext
-                  description: Filter to apply on full-text properties.
-                $overlap:
-                  type: array
-                  title: $overlap
-                  description: Filter to apply on array properties to find overlapping values.
-                  items:
-                    type: string
-                $contains:
-                  type: array
-                  title: $contains
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $contained:
-                  type: array
-                  title: $contained
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $exists:
-                  type: boolean
-                  title: $exists
-                  description: Filter by whether a value exists or not.
-              title: last_name
-              description: Filter by conditions on the customer's last name.
-        created_by:
-          oneOf:
-            - type: string
-              title: created_by
-              description: Filter by a user ID to retrieve the customers they created.
-            - type: array
-              description: Filter by user IDs to retrieve customers they created.
-              items:
-                type: string
-                title: created_by
-                description: A user's ID.
-            - type: object
-              properties:
-                $and:
-                  type: array
-                  description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $or:
-                  type: array
-                  description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                  items:
-                    type: object
-                $eq:
-                  oneOf:
-                    - type: string
-                      title: $eq
-                      description: Filter by exact value.
-                    - type: array
-                      title: $eq
-                      description: Filter by exact value.
-                      items:
-                        type: string
-                $ne:
-                  type: string
-                  title: $ne
-                  description: Filter by not equal to the given value.
-                $in:
-                  type: array
-                  title: $in
-                  description: Filter by values included in the given array.
-                  items:
-                    type: string
-                $nin:
-                  type: array
-                  title: $nin
-                  description: Filter by values not included in the given array.
-                  items:
-                    type: string
-                $not:
-                  oneOf:
-                    - type: string
-                      title: $not
-                      description: Filter by not equal to the given value.
-                    - type: object
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                    - type: array
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-                      items:
-                        type: string
-                $gt:
-                  type: string
-                  title: $gt
-                  description: Filter by values greater than the given value.
-                $gte:
-                  type: string
-                  title: $gte
-                  description: Filter by values greater than or equal to the given value.
-                $lt:
-                  type: string
-                  title: $lt
-                  description: Filter by values less than the given value.
-                $lte:
-                  type: string
-                  title: $lte
-                  description: Filter by values less than or equal to the given value.
-                $like:
-                  type: string
-                  title: $like
-                  description: Apply a `like` filter. Useful for strings only.
-                $re:
-                  type: string
-                  title: $re
-                  description: Apply a regex filter. Useful for strings only.
-                $ilike:
-                  type: string
-                  title: $ilike
-                  description: Apply a case-insensitive `like` filter. Useful for strings only.
-                $fulltext:
-                  type: string
-                  title: $fulltext
-                  description: Filter to apply on full-text properties.
-                $overlap:
-                  type: array
-                  title: $overlap
-                  description: Filter to apply on array properties to find overlapping values.
-                  items:
-                    type: string
-                $contains:
-                  type: array
-                  title: $contains
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $contained:
-                  type: array
-                  title: $contained
-                  description: Filter to apply on array properties to find contained values.
-                  items:
-                    type: string
-                $exists:
-                  type: boolean
-                  title: $exists
-                  description: Filter by whether a value exists or not.
-              title: created_by
-              description: Filter by conditions on the user ID that created the customer.
-        created_at:
-          type: object
-          properties:
-            $and:
-              type: array
-              description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-              items:
-                type: object
-            $or:
-              type: array
-              description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-              items:
-                type: object
-            $eq:
-              oneOf:
-                - type: string
-                  title: $eq
-                  description: Filter by exact value.
-                - type: array
-                  title: $eq
-                  description: Filter by exact value.
-                  items:
-                    type: string
-            $ne:
-              type: string
-              title: $ne
-              description: Filter by not equal to the given value.
-            $in:
-              type: array
-              title: $in
-              description: Filter by values included in the given array.
-              items:
-                type: string
-            $nin:
-              type: array
-              title: $nin
-              description: Filter by values not included in the given array.
-              items:
-                type: string
-            $not:
-              oneOf:
-                - type: string
-                  title: $not
-                  description: Filter by not equal to the given value.
-                - type: object
-                  title: $not
-                  description: Filter by values not matching the conditions in this parameter.
-                - type: array
-                  title: $not
-                  description: Filter by values not matching the conditions in this parameter.
-                  items:
-                    type: string
-            $gt:
-              type: string
-              title: $gt
-              description: Filter by values greater than the given value.
-            $gte:
-              type: string
-              title: $gte
-              description: Filter by values greater than or equal to the given value.
-            $lt:
-              type: string
-              title: $lt
-              description: Filter by values less than the given value.
-            $lte:
-              type: string
-              title: $lte
-              description: Filter by values less than or equal to the given value.
-            $like:
-              type: string
-              title: $like
-              description: Apply a `like` filter. Useful for strings only.
-            $re:
-              type: string
-              title: $re
-              description: Apply a regex filter. Useful for strings only.
-            $ilike:
-              type: string
-              title: $ilike
-              description: Apply a case-insensitive `like` filter. Useful for strings only.
-            $fulltext:
-              type: string
-              title: $fulltext
-              description: Filter to apply on full-text properties.
-            $overlap:
-              type: array
-              title: $overlap
-              description: Filter to apply on array properties to find overlapping values.
-              items:
-                type: string
-            $contains:
-              type: array
-              title: $contains
-              description: Filter to apply on array properties to find contained values.
-              items:
-                type: string
-            $contained:
-              type: array
-              title: $contained
-              description: Filter to apply on array properties to find contained values.
-              items:
-                type: string
-            $exists:
-              type: boolean
-              title: $exists
-              description: Filter by whether a value exists or not.
-          title: created_at
-          description: Filter by the customer's creation date.
-        updated_at:
-          type: object
-          properties:
-            $and:
-              type: array
-              description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-              items:
-                type: object
-            $or:
-              type: array
-              description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-              items:
-                type: object
-            $eq:
-              oneOf:
-                - type: string
-                  title: $eq
-                  description: Filter by exact value.
-                - type: array
-                  title: $eq
-                  description: Filter by exact value.
-                  items:
-                    type: string
-            $ne:
-              type: string
-              title: $ne
-              description: Filter by not equal to the given value.
-            $in:
-              type: array
-              title: $in
-              description: Filter by values included in the given array.
-              items:
-                type: string
-            $nin:
-              type: array
-              title: $nin
-              description: Filter by values not included in the given array.
-              items:
-                type: string
-            $not:
-              oneOf:
-                - type: string
-                  title: $not
-                  description: Filter by not equal to the given value.
-                - type: object
-                  title: $not
-                  description: Filter by values not matching the conditions in this parameter.
-                - type: array
-                  title: $not
-                  description: Filter by values not matching the conditions in this parameter.
-                  items:
-                    type: string
-            $gt:
-              type: string
-              title: $gt
-              description: Filter by values greater than the given value.
-            $gte:
-              type: string
-              title: $gte
-              description: Filter by values greater than or equal to the given value.
-            $lt:
-              type: string
-              title: $lt
-              description: Filter by values less than the given value.
-            $lte:
-              type: string
-              title: $lte
-              description: Filter by values less than or equal to the given value.
-            $like:
-              type: string
-              title: $like
-              description: Apply a `like` filter. Useful for strings only.
-            $re:
-              type: string
-              title: $re
-              description: Apply a regex filter. Useful for strings only.
-            $ilike:
-              type: string
-              title: $ilike
-              description: Apply a case-insensitive `like` filter. Useful for strings only.
-            $fulltext:
-              type: string
-              title: $fulltext
-              description: Filter to apply on full-text properties.
-            $overlap:
-              type: array
-              title: $overlap
-              description: Filter to apply on array properties to find overlapping values.
-              items:
-                type: string
-            $contains:
-              type: array
-              title: $contains
-              description: Filter to apply on array properties to find contained values.
-              items:
-                type: string
-            $contained:
-              type: array
-              title: $contained
-              description: Filter to apply on array properties to find contained values.
-              items:
-                type: string
-            $exists:
-              type: boolean
-              title: $exists
-              description: Filter by whether a value exists or not.
-          title: updated_at
-          description: Filter by the customer's update date.
-        deleted_at:
-          type: object
-          properties:
-            $and:
-              type: array
-              description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-              items:
-                type: object
-            $or:
-              type: array
-              description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-              items:
-                type: object
-            $eq:
-              oneOf:
-                - type: string
-                  title: $eq
-                  description: Filter by exact value.
-                - type: array
-                  title: $eq
-                  description: Filter by exact value.
-                  items:
-                    type: string
-            $ne:
-              type: string
-              title: $ne
-              description: Filter by not equal to the given value.
-            $in:
-              type: array
-              title: $in
-              description: Filter by values included in the given array.
-              items:
-                type: string
-            $nin:
-              type: array
-              title: $nin
-              description: Filter by values not included in the given array.
-              items:
-                type: string
-            $not:
-              oneOf:
-                - type: string
-                  title: $not
-                  description: Filter by not equal to the given value.
-                - type: object
-                  title: $not
-                  description: Filter by values not matching the conditions in this parameter.
-                - type: array
-                  title: $not
-                  description: Filter by values not matching the conditions in this parameter.
-                  items:
-                    type: string
-            $gt:
-              type: string
-              title: $gt
-              description: Filter by values greater than the given value.
-            $gte:
-              type: string
-              title: $gte
-              description: Filter by values greater than or equal to the given value.
-            $lt:
-              type: string
-              title: $lt
-              description: Filter by values less than the given value.
-            $lte:
-              type: string
-              title: $lte
-              description: Filter by values less than or equal to the given value.
-            $like:
-              type: string
-              title: $like
-              description: Apply a `like` filter. Useful for strings only.
-            $re:
-              type: string
-              title: $re
-              description: Apply a regex filter. Useful for strings only.
-            $ilike:
-              type: string
-              title: $ilike
-              description: Apply a case-insensitive `like` filter. Useful for strings only.
-            $fulltext:
-              type: string
-              title: $fulltext
-              description: Filter to apply on full-text properties.
-            $overlap:
-              type: array
-              title: $overlap
-              description: Filter to apply on array properties to find overlapping values.
-              items:
-                type: string
-            $contains:
-              type: array
-              title: $contains
-              description: Filter to apply on array properties to find contained values.
-              items:
-                type: string
-            $contained:
-              type: array
-              title: $contained
-              description: Filter to apply on array properties to find contained values.
-              items:
-                type: string
-            $exists:
-              type: boolean
-              title: $exists
-              description: Filter by whether a value exists or not.
-          title: deleted_at
-          description: Filter by the customer's deletion date.
-        limit:
-          type: number
-          title: limit
-          description: Limit the number of items returned in the list.
-          externalDocs:
-            url: '#pagination'
-        offset:
-          type: number
-          title: offset
-          description: The number of items to skip when retrieving a list.
-          externalDocs:
-            url: '#pagination'
-        order:
-          type: string
-          title: order
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          externalDocs:
-            url: '#pagination'
-        with_deleted:
-          type: boolean
-          title: with_deleted
-          description: Whether to include deleted records in the result.
-        fields:
-          type: string
-          title: fields
-          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
-          externalDocs:
-            url: '#select-fields-and-relations'
-        $and:
-          type: array
-          description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-          items:
-            type: object
-          title: $and
-        $or:
-          type: array
-          description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-          items:
-            type: object
-          title: $or
     AdminCustomerGroup:
       type: object
       description: The customer group's details.
@@ -32231,6 +31270,10 @@ components:
           $ref: '#/components/schemas/BasePayment'
         refund_reason:
           $ref: '#/components/schemas/BaseRefundReason'
+        idempotency_key:
+          type: string
+          title: idempotency_key
+          description: The refund's idempotency key.
     AdminRefundPayment:
       type: object
       description: The refund's details.
@@ -32247,6 +31290,10 @@ components:
           type: string
           title: note
           description: A note to attach to the refund.
+        idempotency_key:
+          type: string
+          title: idempotency_key
+          description: The payment's idempotency key.
       x-schemaName: AdminRefundPayment
     AdminRefundReason:
       type: object
@@ -40253,6 +39300,10 @@ components:
           type: object
         refund_reason:
           $ref: '#/components/schemas/BaseRefundReason'
+        idempotency_key:
+          type: string
+          title: idempotency_key
+          description: The refund's idempotency key.
     BaseRefundReason:
       type: object
       description: The refund reason's details.
@@ -47716,6 +46767,18 @@ components:
           type: object
           description: Holds custom key-value pairs.
       x-schemaName: StoreUpdateCustomerAddress
+    StoreUpdatePaymentSession:
+      type: object
+      description: The client data to merge into the payment session.
+      x-schemaName: StoreUpdatePaymentSession
+      required:
+        - client_data
+      properties:
+        client_data:
+          type: object
+          description: |-
+            Data to merge into the session's `data.client`, such as payment details
+            collected by the provider's checkout component. Set a property to `null` to remove it.
     UpdateAddress:
       type: object
       description: The details to update in the address.

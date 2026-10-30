@@ -116,6 +116,9 @@
   "GET /admin/customers": {
     "js-sdk": "sdk.admin.customer.list()\n.then(({ customers, count, limit, offset }) => {\n  console.log(customers)\n})"
   },
+  "POST /admin/customers/export": {
+    "js-sdk": "sdk.admin.customer.export({\n  format: \"json\"\n}, {\n  fields: \"id,email,*addresses,*orders\",\n  id: \"cus_123\"\n})\n.then(({ transaction_id }) => {\n  console.log(transaction_id)\n})"
+  },
   "GET /admin/customers/{id}": {
     "js-sdk": "sdk.admin.customer.retrieve(\"cus_123\")\n.then(({ customer }) => {\n  console.log(customer)\n})"
   },
@@ -1249,6 +1252,9 @@
   },
   "POST /store/payment-collections": {
     "js-sdk": "sdk.store.payment.initiatePaymentSession(\n  cart, // assuming you already have the cart object.\n  {\n    provider_id: \"pp_stripe_stripe\",\n    data: {\n      // any data relevant for the provider.\n    }\n  }\n)\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
+  },
+  "POST /store/payment-collections/{paymentcollectionid}/payment-sessions/{paymentsessionid}": {
+    "js-sdk": "sdk.store.payment.updatePaymentSession(\n  \"paycol_123\",\n  \"payses_123\",\n  {\n    client_data: {\n      // any data relevant for the provider.\n    }\n  }\n)\n.then(({ payment_collection }) => {\n  console.log(payment_collection)\n})"
   },
   "GET /store/orders": {
     "js-sdk": "// TODO must be authenticated as the customer to list their orders\nsdk.store.order.list()\n.then(({ orders, count, offset, limit }) => {\n  console.log(orders)\n})"

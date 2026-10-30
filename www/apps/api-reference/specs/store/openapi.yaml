@@ -359,6 +359,8 @@ paths:
     $ref: paths/store_payment-collections.yaml
   /store/payment-collections/{id}/payment-sessions:
     $ref: paths/store_payment-collections_{id}_payment-sessions.yaml
+  /store/payment-collections/{id}/payment-sessions/{session_id}:
+    $ref: paths/store_payment-collections_{id}_payment-sessions_{session_id}.yaml
   /store/payment-providers:
     $ref: paths/store_payment-providers.yaml
   /store/product-categories:

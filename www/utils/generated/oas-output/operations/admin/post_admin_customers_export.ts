@@ -1239,7 +1239,6 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: exportCustomersWorkflow
  * x-events: []
- * x-since: 2.22.0
  * 
 */
 
