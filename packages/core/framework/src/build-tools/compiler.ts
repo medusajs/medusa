@@ -1,6 +1,5 @@
 import type { AdminOptions, ConfigModule, Logger } from "@medusajs/types"
 import { FileSystem, getConfigFile, getResolvedPlugins } from "@medusajs/utils"
-import chokidar from "chokidar"
 import { access, constants, copyFile, mkdir, rm } from "fs/promises"
 import path from "path"
 import type tsStatic from "typescript"
@@ -488,7 +487,8 @@ export class Compiler {
       srcDir: path.join(this.#projectRoot, "src"),
     })
 
-    const watcher = chokidar.watch(["."], {
+    const { watch } = await import("chokidar")
+    const watcher = watch(["."], {
       ignoreInitial: true,
       cwd: this.#projectRoot,
       ignored: [
