@@ -47,7 +47,7 @@
     "@medusajs/test-utils": "2.22.1"
   },
   "dependencies": {
-    "bullmq": "5.13.0",
+    "bullmq": "6.4.1",
     "ioredis": "^5.11.1",
     "ulid": "^2.3.0"
   },

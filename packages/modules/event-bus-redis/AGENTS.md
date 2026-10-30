@@ -42,7 +42,7 @@ module.exports = defineConfig({
 ```bash
 yarn build
 yarn test                  # src/services/__tests__/event-bus.ts (mocked BullMQ)
-yarn test:integration      # integration-tests/__tests__/index.spec.ts
+yarn test:integration      # integration-tests/__tests__/index.spec.ts, needs Redis at REDIS_URL (default localhost:6379); loads the built `dist`, so run `yarn build` first
 ```
 
 ## Gotchas
@@ -51,5 +51,6 @@ yarn test:integration      # integration-tests/__tests__/index.spec.ts
 - With the default `attempts: 1`, failed subscribers are logged and never retried. Set `attempts` (and backoff) in `jobOptions` or per emit.
 - Missing `redisUrl` throws at load time; a failed connection is only logged.
 - Grouped events that are never released expire after `groupedEventsTTL` (600s default). Long-running workflows need a higher TTL.
-- Priorities outside `1..EventPriority.LOWEST` are replaced with the default, with a warning.
+- Priorities outside `1..EventPriority.LOWEST` are replaced with the default, with a warning. `EventPriority.LOWEST` (2,097,151) is BullMQ's maximum priority; BullMQ throws above it.
+- BullMQ v6 rejects custom job ids containing `:`, so `jobId` colons are replaced with `|` before jobs are added (including released grouped events). Look jobs up in BullMQ by the replaced id. The deprecated `debounce` option (removed in v6) is passed as `deduplication`.
 - Event payloads are JSON-serialized into Redis; metadata dates are restored with `parseEventMetadataDates`, but `data` is not.
