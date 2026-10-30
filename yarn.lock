@@ -3818,7 +3818,7 @@ __metadata:
     "@medusajs/utils": 2.22.2
     "@medusajs/workflows-sdk": 2.22.2
     "@types/express": ^4.17.21
-    chokidar: ^4.0.3
+    chokidar: ^6.0.0
     compression: ^1.8.2
     connect-dynamodb: ^3.0.5
     connect-redis: 5.2.0
@@ -4114,7 +4114,7 @@ __metadata:
     "@medusajs/workflow-engine-inmemory": 2.22.2
     "@medusajs/workflow-engine-redis": 2.22.2
     boxen: ^9.0.0
-    chokidar: ^4.0.3
+    chokidar: ^6.0.0
     compression: ^1.8.2
     express: ^4.21.0
     fs-exists-cached: ^1.0.0
@@ -11006,21 +11006,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "chokidar@npm:4.0.3"
-  dependencies:
-    readdirp: ^4.0.1
-  checksum: a58b9df05bb452f7d105d9e7229ac82fa873741c0c40ddcc7bb82f8a909fbe3f7814c9ebe9bc9a2bef9b737c0ec6e2d699d179048ef06ad3ec46315df0ebe6ad
-  languageName: node
-  linkType: hard
-
 "chokidar@npm:^5.0.0":
   version: 5.0.0
   resolution: "chokidar@npm:5.0.0"
   dependencies:
     readdirp: ^5.0.0
   checksum: 42fc907cb2a7ff5c9e220f84dae75380a77997f851c2a5e7865a2cf9ae45dd407a23557208cdcdbf3ac8c93341135a1748e4c48c31855f3bfa095e5159b6bdec
+  languageName: node
+  linkType: hard
+
+"chokidar@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "chokidar@npm:6.0.0"
+  dependencies:
+    readdirp: ^5.1.1
+  checksum: 75651391e81b0cf7efa8ec373b68afaf1ad13283e8cae01737976bd0ff72fcb5afac75942ac3c07393d414269737229eb7648d74d32a1373764ecd0711b626b9
   languageName: node
   linkType: hard
 
@@ -19155,14 +19155,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readdirp@npm:^4.0.1":
-  version: 4.1.2
-  resolution: "readdirp@npm:4.1.2"
-  checksum: 60a14f7619dec48c9c850255cd523e2717001b0e179dc7037cfa0895da7b9e9ab07532d324bfb118d73a710887d1e35f79c495fa91582784493e085d18c72c62
-  languageName: node
-  linkType: hard
-
-"readdirp@npm:^5.0.0":
+"readdirp@npm:^5.0.0, readdirp@npm:^5.1.1":
   version: 5.1.1
   resolution: "readdirp@npm:5.1.1"
   checksum: 5e99755684b9104761e48801828f4d2614efa33b1698629929c5985184dc63a7f8233c827832c40dc7be16b00cc871d303cf9de396d2fb74b9465ee2aa2424a1

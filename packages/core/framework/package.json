@@ -92,7 +92,7 @@
     "@medusajs/utils": "2.22.2",
     "@medusajs/workflows-sdk": "2.22.2",
     "@types/express": "^4.17.21",
-    "chokidar": "^4.0.3",
+    "chokidar": "^6.0.0",
     "compression": "^1.8.2",
     "connect-dynamodb": "^3.0.5",
     "connect-redis": "5.2.0",
