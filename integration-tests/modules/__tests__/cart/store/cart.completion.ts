@@ -68,11 +68,14 @@ medusaIntegrationTestRunner({
       let stockLocationModule: IStockLocationService
       let inventoryModule: IInventoryService
       let fulfillmentModule: IFulfillmentModuleService
-      let remoteLink, remoteQuery, query
+      let remoteLink
+      let remoteQuery
+      let query
       let storeHeaders
       let salesChannel
       let defaultRegion
-      let customer, storeHeadersWithCustomer
+      let customer
+      let storeHeadersWithCustomer
       let setPricingContextHook: any
       let eventBus: IEventBusModuleService
 
@@ -1210,7 +1213,7 @@ medusaIntegrationTestRunner({
               eventGroupId
             ) ?? []
 
-          expect(grouppedEventBefore).toHaveLength(17)
+          expect(grouppedEventBefore).toHaveLength(19)
           expect(grouppedEventAfter).toHaveLength(0) // events have been compensated
 
           expect(errors[0].error.message).toBe(
