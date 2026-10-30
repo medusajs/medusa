@@ -1,6 +1,6 @@
 import i18next from "i18next";
 import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
-import { z } from "zod";
+import { z } from "@medusajs/framework/zod";
 
 /**
  * Helper function to cast a z.union([z.number(), z.string()]) to a number
