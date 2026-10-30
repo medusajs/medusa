@@ -84,17 +84,16 @@ export default async (
     ...(cleanerWorkerOptions ?? {}),
   }
 
-  let connection
-  let redisPublisher
-  let redisSubscriber
-  let workerConnection
+  const connection = getConnection(resolvedUrl, redisOptions)
+  const workerConnection = getConnection(resolvedUrl, {
+    ...(redisOptions ?? {}),
+    maxRetriesPerRequest: null,
+  })
+  const redisPublisher = getConnection(cnnPubSub.url, cnnPubSub.options)
+  const redisSubscriber = getConnection(cnnPubSub.url, cnnPubSub.options)
 
   try {
-    connection = await getConnection(resolvedUrl, redisOptions)
-    workerConnection = await getConnection(resolvedUrl, {
-      ...(redisOptions ?? {}),
-      maxRetriesPerRequest: null,
-    })
+    await Promise.all([connection.connect(), workerConnection.connect()])
     logger?.info(
       `[Workflow-engine-redis] Connection to Redis in module 'workflow-engine-redis' established`
     )
@@ -105,8 +104,7 @@ export default async (
   }
 
   try {
-    redisPublisher = await getConnection(cnnPubSub.url, cnnPubSub.options)
-    redisSubscriber = await getConnection(cnnPubSub.url, cnnPubSub.options)
+    await Promise.all([redisPublisher.connect(), redisSubscriber.connect()])
     logger?.info(
       `[Workflow-engine-redis] Connection to Redis PubSub in module 'workflow-engine-redis' established`
     )
@@ -141,15 +139,9 @@ export default async (
   })
 }
 
-async function getConnection(url, redisOptions) {
-  const connection = new Redis(url, {
+function getConnection(url, redisOptions) {
+  return new Redis(url, {
     lazyConnect: true,
     ...(redisOptions ?? {}),
   })
-
-  await new Promise(async (resolve) => {
-    await connection.connect(resolve)
-  })
-
-  return connection
 }
