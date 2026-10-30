@@ -61,6 +61,11 @@ export interface AdyenSessionData {
   shopper_reference?: string | null
   payment_methods?: Types.checkout.PaymentMethodsResponse | null
   psp_reference: string | null
+  capture_psp_reference: string | null
+  /**
+   * Incremented for every payment method the storefront submits, to key `/payments` requests.
+   */
+  attempt: number
   result_code: string | null
   action: Types.checkout.PaymentResponseAction | null
   client?: AdyenClientData
