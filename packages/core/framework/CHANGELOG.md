@@ -1,5 +1,21 @@
 # @medusajs/framework
 
+## 2.22.3
+
+### Patch Changes
+
+- [#17584](https://github.com/medusajs/medusa/pull/17584) [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework,medusa): update chokidar to v6
+
+- Updated dependencies [[`12a5580`](https://github.com/medusajs/medusa/commit/12a55804efc97a0d685fc9e69ca005b9f44d3761)]:
+  - @medusajs/utils@2.22.3
+  - @medusajs/cli@2.22.3
+  - @medusajs/modules-sdk@2.22.3
+  - @medusajs/orchestration@2.22.3
+  - @medusajs/workflows-sdk@2.22.3
+  - @medusajs/types@2.22.3
+  - @medusajs/deps@2.22.3
+  - @medusajs/telemetry@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

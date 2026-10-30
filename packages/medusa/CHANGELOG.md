@@ -1,5 +1,70 @@
 # Change Log
 
+## 2.22.3
+
+### Patch Changes
+
+- [#17584](https://github.com/medusajs/medusa/pull/17584) [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework,medusa): update chokidar to v6
+
+- Updated dependencies [[`0ae4aed`](https://github.com/medusajs/medusa/commit/0ae4aede6684605cc1d91aa8b40b60f3b60b92aa), [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d), [`73874df`](https://github.com/medusajs/medusa/commit/73874df1e40b02e96f5235e8d2a9874b90e4fb38), [`503c646`](https://github.com/medusajs/medusa/commit/503c646c6148d0a472be812d9b57efc800c671be)]:
+  - @medusajs/payment-adyen@2.22.3
+  - @medusajs/framework@2.22.3
+  - @medusajs/workflow-engine-inmemory@2.22.3
+  - @medusajs/auth@2.22.3
+  - @medusajs/auth-google@2.22.3
+  - @medusajs/core-flows@2.22.3
+  - @medusajs/analytics@2.22.3
+  - @medusajs/api-key@2.22.3
+  - @medusajs/cache-inmemory@2.22.3
+  - @medusajs/cache-redis@2.22.3
+  - @medusajs/caching@2.22.3
+  - @medusajs/cart@2.22.3
+  - @medusajs/currency@2.22.3
+  - @medusajs/customer@2.22.3
+  - @medusajs/event-bus-local@2.22.3
+  - @medusajs/event-bus-redis@2.22.3
+  - @medusajs/file@2.22.3
+  - @medusajs/fulfillment@2.22.3
+  - @medusajs/index@2.22.3
+  - @medusajs/inventory@2.22.3
+  - @medusajs/link-modules@2.22.3
+  - @medusajs/locking@2.22.3
+  - @medusajs/notification@2.22.3
+  - @medusajs/order@2.22.3
+  - @medusajs/payment@2.22.3
+  - @medusajs/pricing@2.22.3
+  - @medusajs/product@2.22.3
+  - @medusajs/promotion@2.22.3
+  - @medusajs/analytics-local@2.22.3
+  - @medusajs/analytics-posthog@2.22.3
+  - @medusajs/auth-emailpass@2.22.3
+  - @medusajs/auth-github@2.22.3
+  - @medusajs/auth-oidc@2.22.3
+  - @medusajs/caching-redis@2.22.3
+  - @medusajs/file-local@2.22.3
+  - @medusajs/file-s3@2.22.3
+  - @medusajs/fulfillment-manual@2.22.3
+  - @medusajs/locking-postgres@2.22.3
+  - @medusajs/locking-redis@2.22.3
+  - @medusajs/notification-local@2.22.3
+  - @medusajs/notification-sendgrid@2.22.3
+  - @medusajs/payment-stripe@2.22.3
+  - @medusajs/search-postgres@2.22.3
+  - @medusajs/rbac@2.22.3
+  - @medusajs/region@2.22.3
+  - @medusajs/sales-channel@2.22.3
+  - @medusajs/search@2.22.3
+  - @medusajs/settings@2.22.3
+  - @medusajs/stock-location@2.22.3
+  - @medusajs/store@2.22.3
+  - @medusajs/tax@2.22.3
+  - @medusajs/translation@2.22.3
+  - @medusajs/user@2.22.3
+  - @medusajs/workflow-engine-redis@2.22.3
+  - @medusajs/draft-order@2.22.3
+  - @medusajs/admin-bundler@2.22.3
+  - @medusajs/telemetry@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

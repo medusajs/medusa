@@ -1,5 +1,14 @@
 # @medusajs/auth-google
 
+## 2.22.3
+
+### Patch Changes
+
+- [#17593](https://github.com/medusajs/medusa/pull/17593) [`503c646`](https://github.com/medusajs/medusa/commit/503c646c6148d0a472be812d9b57efc800c671be) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(auth,auth-google): update jwks-rsa to v4
+
+- Updated dependencies [[`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d)]:
+  - @medusajs/framework@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/query",
-  "version": "2.22.2",
+  "version": "2.22.3",
   "description": "Medusa remote query and joiner",
   "main": "dist/index.js",
   "exports": {
@@ -38,10 +38,10 @@
     "watch": "yarn run -T tsc --build --watch"
   },
   "devDependencies": {
-    "@medusajs/types": "2.22.2"
+    "@medusajs/types": "2.22.3"
   },
   "dependencies": {
-    "@medusajs/deps": "2.22.2",
-    "@medusajs/utils": "2.22.2"
+    "@medusajs/deps": "2.22.3",
+    "@medusajs/utils": "2.22.3"
   }
 }
