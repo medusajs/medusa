@@ -46030,6 +46030,7 @@ The Adyen Module Provider integrates [Adyen](https://www.adyen.com/) into your M
 - Manual or automatic capture of payments.
 - Refunds and cancellations.
 - Saved cards for customers with an account.
+- [Off-session payments](#off-session-payments) with saved cards, such as for subscription renewals.
 
 - The provider only supports cards (`scheme`), Apple Pay (`applepay`), and Google Pay (`googlepay`). It only retrieves these payment methods from Adyen, so Drop-in doesn't show other methods, and it throws an error if the storefront submits a different payment method type.
 - Payment methods that complete through a redirect or that Adyen confirms asynchronously through the `AUTHORISATION` webhook, such as iDEAL or bank transfers, aren't supported yet.
@@ -46195,6 +46196,54 @@ For logged-in customers, the Adyen Module Provider uses the customer's [account 
 To save a card during payment, pass `store_payment_method: true` in the payment session's client data. Guest customers don't have an account holder, so the provider ignores this property for them.
 
 Saving a card during a payment requires the "Merchant Recurring" role for your Adyen API credential. Saving a card without a payment requires the "API tokenise payment details" role.
+
+### Off-Session Payments
+
+Off-session payments are available since Medusa [v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3).
+
+The Adyen Module Provider can charge a customer's saved card without the customer being present, such as for subscription renewals or follow-up payments.
+
+When you save a card without making a payment, for example, with the Payment Module's `createPaymentMethods` method, pass `usage: "off_session"` in the payment method's `data` to save the card for off-session payments:
+
+```ts
+await paymentModuleService.createPaymentMethods({
+  provider_id: "pp_adyen_adyen",
+  data: {
+    // the paymentMethod object from Drop-in's state data
+    payment_method: dropInPaymentMethod,
+    usage: "off_session",
+  },
+  context: {
+    account_holder: accountHolder,
+    customer,
+  },
+})
+```
+
+Then, to charge the saved card, create a payment session for a customer that has an [account holder](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/account-holder), and pass the following properties in the payment session's `data`:
+
+- `payment_method`: The ID of the saved card in Adyen. You can retrieve the customer's saved cards with the Payment Module's `listPaymentMethods` method.
+- `off_session`: `true` to charge the card without the customer present.
+
+For example, in a workflow:
+
+```ts
+const paymentSession = createPaymentSessionsWorkflow.runAsStep({
+  input: {
+    payment_collection_id: paymentCollection.id,
+    provider_id: "pp_adyen_adyen",
+    customer_id: customerId,
+    data: {
+      payment_method: savedCardId,
+      off_session: true,
+    },
+  },
+})
+```
+
+When the payment session is authorized, for example, when you complete the cart, the provider charges the saved card as an unscheduled card-on-file payment, without requiring any client data from the storefront.
+
+The provider ignores the `off_session` property for guest customers, since they don't have an account holder. Adyen also only charges cards saved for the same customer.
 
 ***
 
@@ -156225,10 +156274,12 @@ import { DatePicker } from "@medusajs/ui"
 ### DatePicker Props
 
 - aria-describedby: (string) Identifies the element (or elements) that describes the object.
-- aria-details: (string) Identifies the element (or elements) that provide a detailed, extended description for the object.
+- aria-details: (string) Identifies the element (or elements) that provide a detailed, extended description for the
+  object.
 - aria-label: (string) Defines a string value that labels the current element.
 - aria-labelledby: (string) Identifies the element (or elements) that labels the current element.
-- autoComplete: (string) Describes the type of autocomplete functionality the input should provide if any. See \[MDN]\(https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).
+- autoComplete: (string) Describes the type of autocomplete functionality the input should provide if any. See
+  \[MDN]\(https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).
 - autoFocus: (boolean) Whether the element should receive focus on render.
 - defaultOpen: (boolean) Whether the overlay is open by default (uncontrolled).
 - description: (ReactNode) A description for the field. Provides a hint such as specific requirements for what to choose.
@@ -156238,23 +156289,28 @@ import { DatePicker } from "@medusajs/ui"
   The value of this attribute must be the id of a \`\<form>\` in the same document.
   See \[MDN]\(https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input#form).
 - hideTimeZone: (boolean) Whether to hide the time zone abbreviation.
-- hourCycle: (union) Whether to display the time in 12 or 24 hour format. By default, this is determined by the user's locale.
-- id: (string) The element's unique identifier. See \[MDN]\(https://developer.mozilla.org/en-US/docs/Web/HTML/Global\_attributes/id).
+- hourCycle: (union) Whether to display the time in 12 or 24 hour format. By default, this is determined by the
+  user's locale.
+- id: (string) The element's unique identifier. See
+  \[MDN]\(https://developer.mozilla.org/en-US/docs/Web/HTML/Global\_attributes/id).
 - isDisabled: (boolean) Whether the input is disabled.
 - isInvalid: (boolean) Whether the input value is invalid.
 - isOpen: (boolean) Whether the overlay is open by default (controlled).
 - isReadOnly: (boolean) Whether the input can be selected but not changed by the user.
 - isRequired: (boolean) Whether user input is required on the input before form submission.
 - label: (ReactNode) The content to display as the label.
-- name: (string) The name of the input element, used when submitting an HTML form. See \[MDN]\(https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
+- name: (string) The name of the input element, used when submitting an HTML form. See
+  \[MDN]\(https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).
 - onBlur: (signature) Handler that is called when the element loses focus.
 - onFocus: (signature) Handler that is called when the element receives focus.
 - onFocusChange: (signature) Handler that is called when the element's focus status changes.
 - onKeyDown: (signature) Handler that is called when a key is pressed.
 - onKeyUp: (signature) Handler that is called when a key is released.
 - onOpenChange: (signature) Handler that is called when the overlay's open state changes.
-- pageBehavior: (PageBehavior) Controls the behavior of paging. Pagination either works by advancing the visible page by visibleDuration (default) or one unit of visibleDuration.
-- placeholderValue: (union) A placeholder date that influences the format of the placeholder shown when no value is selected. Defaults to today's date at midnight.
+- pageBehavior: (PageBehavior) Controls the behavior of paging. Pagination either works by advancing the visible page by
+  visibleDuration (default) or one unit of visibleDuration.
+- placeholderValue: (union) A placeholder date that influences the format of the placeholder shown when no value is
+  selected. Defaults to today's date at midnight.
 - shouldForceLeadingZeros: (boolean) Whether to always show leading zeros in the month, day, and hour fields.
   By default, this is determined by the user's locale.
 - validate: (signature) A function that returns an error message if a given value is invalid.
