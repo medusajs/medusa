@@ -3821,7 +3821,7 @@ __metadata:
     chokidar: ^6.0.0
     compression: ^1.8.2
     connect-dynamodb: ^3.0.5
-    connect-redis: 5.2.0
+    connect-redis: 10.0.0
     cookie-parser: ^1.4.6
     cors: ^2.8.5
     express: ^4.21.0
@@ -3832,14 +3832,11 @@ __metadata:
     lodash.memoize: ^4.1.2
     morgan: ^1.12.0
     path-to-regexp: ^8.4.0
+    redis: ^6.3.0
     tsconfig-paths: ^4.2.0
     zod-validation-error: 5.0.0
   peerDependencies:
     "@medusajs/cli": 2.22.2
-    ioredis: ^5.11.1
-  peerDependenciesMeta:
-    ioredis:
-      optional: true
   bin:
     medusa-mikro-orm: dist/mikro-orm-cli/bin.js
   languageName: unknown
@@ -4468,10 +4465,10 @@ __metadata:
     "@medusajs/deps": 2.22.2
     bignumber.js: ^11.1.5
   peerDependencies:
-    ioredis: ^5.11.1
+    redis: ^6.3.0
     vite: ">=5"
   peerDependenciesMeta:
-    ioredis:
+    redis:
       optional: true
     vite:
       optional: true
@@ -7494,6 +7491,57 @@ __metadata:
   dependencies:
     "@types/json-schema": ^7.0.15
   checksum: 74e27fa5c63c31b3475647aa2368391a134b8e87438111a5b619e4e34ff6cd73aa0d96701e38c19c6666e5ca5b00d5fbd2be9f1848aff3ce9e4da5fe956b03c8
+  languageName: node
+  linkType: hard
+
+"@redis/bloom@npm:6.3.1":
+  version: 6.3.1
+  resolution: "@redis/bloom@npm:6.3.1"
+  peerDependencies:
+    "@redis/client": ^6.3.1
+  checksum: 5aca0feb05fe054f3dcd3435f06c3876fd7c16cc364e68396da7d90b45dfb745f868623ff39fc2b6bd63ffb6dea294f5185ca461a34a66c0ef3b3d05af85fc0c
+  languageName: node
+  linkType: hard
+
+"@redis/client@npm:6.3.1":
+  version: 6.3.1
+  resolution: "@redis/client@npm:6.3.1"
+  peerDependencies:
+    "@node-rs/xxhash": ^1.1.0
+    "@opentelemetry/api": ">=1 <2"
+  peerDependenciesMeta:
+    "@node-rs/xxhash":
+      optional: true
+    "@opentelemetry/api":
+      optional: true
+  checksum: 7955b42a5c55174f262e3b6b65d87fb72219ed0300734f7ce0fc155d1052285d5513fc81bf510461efc00a04f7471885d2cd7e568fa874d968b3a52ba9fe0c50
+  languageName: node
+  linkType: hard
+
+"@redis/json@npm:6.3.1":
+  version: 6.3.1
+  resolution: "@redis/json@npm:6.3.1"
+  peerDependencies:
+    "@redis/client": ^6.3.1
+  checksum: dca78d82a99960dd8c5a7346ede96c39e969798d1ad410b0feba60c9d6083d746da2044fd9eb89bae9b4e6e053482a692b2e03a1d618dc94038736e6c1478e42
+  languageName: node
+  linkType: hard
+
+"@redis/search@npm:6.3.1":
+  version: 6.3.1
+  resolution: "@redis/search@npm:6.3.1"
+  peerDependencies:
+    "@redis/client": ^6.3.1
+  checksum: 9fe60ede0dd3df293647b54d99271d57f0a892b62e06b55f41d446115cec465d336b6b9e98708f63d6e0ad032ccd8297e216c6e099b6e4ece05681c862571bb6
+  languageName: node
+  linkType: hard
+
+"@redis/time-series@npm:6.3.1":
+  version: 6.3.1
+  resolution: "@redis/time-series@npm:6.3.1"
+  peerDependencies:
+    "@redis/client": ^6.3.1
+  checksum: 7960a21985364ef65f0fe0043ca9dd8b8e2f5fbdd92fc2e9cb713f27d7c23b3a038acabbe2910cf9ff6d7cb93cd29c2a7dac2c1e9752623af28cc1b8ac23d1f1
   languageName: node
   linkType: hard
 
@@ -11478,10 +11526,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:5.2.0":
-  version: 5.2.0
-  resolution: "connect-redis@npm:5.2.0"
-  checksum: 89352028531d0c7ed86ebbb3af923e0cf41dc098aa556925d7372ec9b9fafb228bfc1085a77888a1c7c2373844c8ac336b2ebb8771cb9b89785770e932ae5888
+"connect-redis@npm:10.0.0":
+  version: 10.0.0
+  resolution: "connect-redis@npm:10.0.0"
+  peerDependencies:
+    express-session: ">=1"
+    redis: ">=5"
+  checksum: effe2806fb6a2f0a1b8902728203dd2214fa1510e42cad7652927524582be162a95d4353adde8c7dbe4a015cc88766cd94fa2b43548b8fdca4e1e7b01baf48c5
   languageName: node
   linkType: hard
 
@@ -19225,6 +19276,19 @@ __metadata:
   dependencies:
     redis-errors: ^1.0.0
   checksum: ee16ac4c7b2a60b1f42a2cdaee22b005bd4453eb2d0588b8a4939718997ae269da717434da5d570fe0b05030466eeb3f902a58cf2e8e1ca058bf6c9c596f632f
+  languageName: node
+  linkType: hard
+
+"redis@npm:^6.3.0":
+  version: 6.3.1
+  resolution: "redis@npm:6.3.1"
+  dependencies:
+    "@redis/bloom": 6.3.1
+    "@redis/client": 6.3.1
+    "@redis/json": 6.3.1
+    "@redis/search": 6.3.1
+    "@redis/time-series": 6.3.1
+  checksum: db78bc84fac4fa5ce8d72ba22178c65f1e5b8b2284077564990531504ec42398f925501205c0bc19227aeaca7424743b249e754d37421c122fe9ab1f17278212
   languageName: node
   linkType: hard
 
