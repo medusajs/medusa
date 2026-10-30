@@ -34,10 +34,10 @@ export const generatedEditDates = {
   "app/commerce-modules/payment/payment-collection/page.mdx": "2025-09-01T15:10:39.107Z",
   "app/commerce-modules/payment/payment-flow/page.mdx": "2026-10-27T11:48:49.642Z",
   "app/commerce-modules/payment/payment-provider/stripe/page.mdx": "2026-09-11T07:40:12.259Z",
-  "app/commerce-modules/payment/payment-provider/page.mdx": "2026-10-28T08:49:39.612Z",
+  "app/commerce-modules/payment/payment-provider/page.mdx": "2026-10-30T08:35:15.935Z",
   "app/commerce-modules/payment/payment-session/page.mdx": "2026-10-22T11:43:58.323Z",
   "app/commerce-modules/payment/webhook-events/page.mdx": "2026-10-27T21:56:24.114Z",
-  "app/commerce-modules/payment/page.mdx": "2025-04-17T08:48:11.702Z",
+  "app/commerce-modules/payment/page.mdx": "2026-10-30T08:35:17.208Z",
   "app/commerce-modules/pricing/concepts/page.mdx": "2026-04-30T16:49:10.611Z",
   "app/commerce-modules/pricing/price-calculation/page.mdx": "2025-09-05T07:54:21.322Z",
   "app/commerce-modules/pricing/price-rules/page.mdx": "2026-07-15T07:55:03.646Z",
@@ -69,7 +69,7 @@ export const generatedEditDates = {
   "app/create-medusa-app/page.mdx": "2026-10-05T08:39:16.103Z",
   "app/deployment/storefront/vercel/page.mdx": "2026-01-08T09:19:27.493Z",
   "app/deployment/page.mdx": "2026-01-08T09:19:58.734Z",
-  "app/integrations/page.mdx": "2026-08-28T13:26:29.330Z",
+  "app/integrations/page.mdx": "2026-10-30T08:35:13.265Z",
   "app/medusa-cli/page.mdx": "2026-10-05T08:39:17.952Z",
   "app/medusa-container-resources/page.mdx": "2026-08-21T06:05:37.097Z",
   "app/medusa-workflows-reference/page.mdx": "2025-01-20T08:21:29.962Z",
@@ -503,5 +503,6 @@ export const generatedEditDates = {
   "app/instantsearch/page.mdx": "2026-09-28T09:21:08.926Z",
   "app/infrastructure-modules/search/store-search/page.mdx": "2026-09-22T14:46:48.291Z",
   "app/infrastructure-modules/search/product-index-examples/page.mdx": "2026-09-22T14:47:38.498Z",
-  "app/troubleshooting/query/not-assignable-type/page.mdx": "2026-10-09T07:56:42.960Z"
+  "app/troubleshooting/query/not-assignable-type/page.mdx": "2026-10-09T07:56:42.960Z",
+  "app/commerce-modules/payment/payment-provider/adyen/page.mdx": "2026-10-30T08:35:08.766Z"
 }

@@ -9338,6 +9338,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/payment/payment-provider/adyen",
+              "title": "Adyen",
+              "children": []
+            },
+            {
+              "loaded": true,
               "type": "ref",
               "path": "/integrations/guides/paypal",
               "title": "PayPal",
