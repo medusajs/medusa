@@ -7,6 +7,7 @@ import { CategoryProductSection } from "./components/category-product-section"
 import { ConfigurableCategoryProductSection } from "./components/category-product-section/configurable-category-product-section"
 import { categoryLoader } from "./loader"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import {
   LayoutComposer,
@@ -57,13 +58,15 @@ export const CategoryDetail = () => {
               <CategoryGeneralSection category={product_category} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="CategoryProductSection">
-              {isViewConfigEnabled ? (
-                <ConfigurableCategoryProductSection
-                  category={product_category}
-                />
-              ) : (
-                <CategoryProductSection category={product_category} />
-              )}
+              <PermissionGuard permission="product:read">
+                {isViewConfigEnabled ? (
+                  <ConfigurableCategoryProductSection
+                    category={product_category}
+                  />
+                ) : (
+                  <CategoryProductSection category={product_category} />
+                )}
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(product_category)}
           </>
@@ -71,7 +74,9 @@ export const CategoryDetail = () => {
         side: (
           <>
             <LayoutComposer.Entry id="CategoryOrganizeSection">
-              <CategoryOrganizeSection category={product_category} />
+              <PermissionGuard permission="product_category:update">
+                <CategoryOrganizeSection category={product_category} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
           </>
         ),

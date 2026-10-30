@@ -51,6 +51,13 @@ const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
 const DEFAULT_ADMIN_CORS =
   "http://localhost:7000,http://localhost:7001,http://localhost:5173"
 
+/**
+ * The actor types allowed on the "/rbac" API routes. Defaults to "user" only,
+ * so that existing applications keep the behaviour of the previously
+ * admin-only RBAC routes. Applications opt other actors in explicitly.
+ */
+export const DEFAULT_RBAC_ACTOR_TYPES = ["user"]
+
 export const DEFAULT_STORE_RESTRICTED_FIELDS = [
   "order",
   "orders",
@@ -300,10 +307,6 @@ function resolveModules(
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION],
       disable: !FeatureFlag.isFeatureEnabled("translation"),
-    },
-    {
-      resolve: MODULE_PACKAGE_NAMES[Modules.RBAC],
-      disable: !FeatureFlag.isFeatureEnabled("rbac"),
     },
 
     {
@@ -567,6 +570,7 @@ function normalizeProjectConfig(
       restrictedFields: {
         store: DEFAULT_STORE_RESTRICTED_FIELDS,
       },
+      rbacActorTypes: DEFAULT_RBAC_ACTOR_TYPES,
       ...http,
     },
     redisOptions: {

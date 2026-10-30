@@ -20,14 +20,23 @@ import {
 } from "../../../../../hooks/api/rbac-roles"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
-import type { Permission } from "../../../../../lib/permissions"
-import { usePermissions } from "../../../../../providers/permissions-provider"
+import {
+  useRbacPolicyPermissions,
+  useRbacRolePermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const RoleListTable = () => {
   const { t } = useTranslation()
-  const { hasPermission } = usePermissions()
+  const {
+    canCreate: canCreateRole,
+    canUpdate,
+    canDelete,
+  } = useRbacRolePermissions()
+  const { canRead: canReadPolicies } = useRbacPolicyPermissions()
+
+  const canCreate = canCreateRole && canReadPolicies
 
   const { q, order, offset, created_at } = useQueryParams([
     "q",
@@ -51,14 +60,12 @@ export const RoleListTable = () => {
     }
   )
 
-  const columns = useColumns({ hasPermission })
+  const columns = useColumns({ canUpdate, canDelete })
   const filters = useFilters()
 
   if (isError) {
     throw error
   }
-
-  const canCreate = hasPermission("rbac_role:create")
 
   return (
     <Container className="divide-y p-0">
@@ -96,16 +103,14 @@ export const RoleListTable = () => {
   )
 }
 
-type RoleWithUsers = HttpTypes.AdminRbacRole & {
-  users_link?: { user?: HttpTypes.AdminUser | null }[]
-}
-
-const columnHelper = createDataTableColumnHelper<RoleWithUsers>()
+const columnHelper = createDataTableColumnHelper<HttpTypes.AdminRbacRole>()
 
 const useColumns = ({
-  hasPermission,
+  canUpdate,
+  canDelete,
 }: {
-  hasPermission: (permission: Permission) => boolean
+  canUpdate: boolean
+  canDelete: boolean
 }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -144,9 +149,6 @@ const useColumns = ({
     [prompt, deleteRole, t]
   )
 
-  const canUpdate = hasPermission("rbac_role:update")
-  const canDelete = hasPermission("rbac_role:delete")
-
   return useMemo(() => {
     const baseColumns = [
       columnHelper.accessor("name", {
@@ -166,9 +168,9 @@ const useColumns = ({
         header: t("users.domain"),
         cell: ({ row }) => {
           const users =
-            row.original.users_link
-              ?.map((link) => link.user)
-              .filter((user): user is HttpTypes.AdminUser => !!user) ?? []
+            row.original.users?.filter(
+              (user): user is HttpTypes.AdminUser => !!user
+            ) ?? []
 
           if (!users.length) {
             return "-"

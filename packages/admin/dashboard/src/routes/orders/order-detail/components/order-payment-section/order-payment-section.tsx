@@ -20,6 +20,11 @@ import {
   useCapturePayment,
   useAuthorizePaymentSession,
 } from "../../../../../hooks/api"
+import {
+  useCapturePermissions,
+  useOrderPermissions,
+  useRefundPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { formatCurrency } from "../../../../../lib/format-currency"
 import { formatProvider } from "../../../../../lib/format-provider"
 import {
@@ -142,6 +147,12 @@ const Payment = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canCreate: canCapture } = useCapturePermissions()
+  const { canCreate: canRefund } = useRefundPermissions()
+
+  const canCapturePayment = canCapture && canUpdateOrder
+  const canRefundPayment = canRefund && canUpdateOrder
   const { mutateAsync } = useCapturePayment(order.id, payment.id)
 
   const handleCapture = async () => {
@@ -192,7 +203,9 @@ const Payment = ({
   ]
 
   const showCapture =
-    payment.captured_at === null && payment.canceled_at === null
+    canCapturePayment &&
+    payment.captured_at === null &&
+    payment.canceled_at === null
 
   const totalRefunded = (payment.refunds ?? []).reduce(
     (acc, next) => next.amount + acc,
@@ -233,23 +246,25 @@ const Payment = ({
             {getLocaleAmount(payment.amount as number, payment.currency_code)}
           </Text>
         </div>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("orders.payment.refund"),
-                  icon: <XCircle />,
-                  to: `/orders/${order.id}/refund?paymentId=${payment.id}`,
-                  disabled:
-                    !payment.captured_at ||
-                    !!payment.canceled_at ||
-                    totalRefunded >= payment.amount,
-                },
-              ],
-            },
-          ]}
-        />
+        {canRefundPayment && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("orders.payment.refund"),
+                    icon: <XCircle />,
+                    to: `/orders/${order.id}/refund?paymentId=${payment.id}`,
+                    disabled:
+                      !payment.captured_at ||
+                      !!payment.canceled_at ||
+                      totalRefunded >= payment.amount,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       {showCapture && (
         <div className="flex items-center justify-between bg-ui-bg-subtle px-6 py-4">

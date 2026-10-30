@@ -7,12 +7,14 @@ import { DataTable } from "../../../../../components/data-table"
 import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 import { useReturnReasonTableColumns } from "../../../../../hooks/table/columns"
 import { useReturnReasonTableQuery } from "../../../../../hooks/table/query"
+import { useReturnReasonPermissions } from "../../../../../hooks/use-resource-permissions"
 import { ReturnReasonListTableActions } from "./return-reason-list-table-actions"
 
 const PAGE_SIZE = 20
 
 export const ReturnReasonListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useReturnReasonPermissions()
   const { searchParams } = useReturnReasonTableQuery({
     pageSize: PAGE_SIZE,
   })
@@ -49,12 +51,16 @@ export const ReturnReasonListTable = () => {
             description: t("general.noRecordsMessageFiltered"),
           },
         }}
-        actions={[
-          {
-            label: t("actions.create"),
-            to: "create",
-          },
-        ]}
+        actions={
+          canCreate
+            ? [
+                {
+                  label: t("actions.create"),
+                  to: "create",
+                },
+              ]
+            : []
+        }
         isLoading={isLoading}
         enableSearch={true}
       />

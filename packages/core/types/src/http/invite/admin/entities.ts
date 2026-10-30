@@ -27,8 +27,6 @@ export interface AdminInvite {
   metadata?: Record<string, unknown>
   /**
    * The RBAC roles assigned to the invite.
-   *
-   * @featureFlag rbac
    */
   rbac_roles?: AdminRbacRole[]
   /**

@@ -7,6 +7,11 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, removeRemoteLinkStep } from "../../common"
+import {
+  deleteRoleAssignmentsStep,
+  ensureSuperAdminRemainsStep,
+  getRoleAssignmentIdsStep,
+} from "../../rbac/steps"
 import { deleteUsersStep } from "../steps"
 
 export const deleteUsersWorkflowId = "delete-user"
@@ -37,6 +42,15 @@ export const deleteUsersWorkflow = createWorkflow(
   (
     input: WorkflowData<UserWorkflow.DeleteUserWorkflowInput>
   ): WorkflowData<void> => {
+    const roleAssignmentIdsToDelete = getRoleAssignmentIdsStep({
+      reference: "user",
+      reference_id: input.ids,
+    })
+
+    ensureSuperAdminRemainsStep({
+      excluded_assignment_ids: roleAssignmentIdsToDelete,
+    })
+
     deleteUsersStep(input.ids)
 
     const userIdEvents = transform({ input }, ({ input }) => {
@@ -51,6 +65,7 @@ export const deleteUsersWorkflow = createWorkflow(
           user_id: input.ids,
         },
       }),
+      deleteRoleAssignmentsStep({ id: roleAssignmentIdsToDelete }),
       emitEventStep({
         eventName: UserWorkflowEvents.DELETED,
         data: userIdEvents,

@@ -201,6 +201,15 @@ class MedusaModule {
     return MedusaModule.modules_.has(moduleKey)
   }
 
+  /**
+   * The keys of the loaded modules, excluding link modules.
+   */
+  public static getModuleKeys(): string[] {
+    return [...MedusaModule.modules_.entries()]
+      .filter(([, aliases]) => !aliases.some((alias) => alias.isLink))
+      .map(([key]) => key)
+  }
+
   public static getJoinerConfig(moduleKey: string): ModuleJoinerConfig {
     return MedusaModule.joinerConfig_.get(moduleKey)!
   }

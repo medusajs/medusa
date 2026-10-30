@@ -1,6 +1,7 @@
 import { validateAndTransformBody } from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
+  authorize,
   MedusaNextFunction,
   MedusaResponse,
   MiddlewareRoute,
@@ -56,6 +57,7 @@ export const adminIndexRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/index/sync",
     middlewares: [
       authenticate("user", ["session", "bearer", "api-key"]),
+      authorize({ resource: "*", operation: "*" }),
       isIndexEnabledMiddleware,
       validateAndTransformBody(AdminIndexSyncPayload),
     ],

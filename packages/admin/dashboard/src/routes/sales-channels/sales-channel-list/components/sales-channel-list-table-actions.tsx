@@ -1,15 +1,15 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { HttpTypes } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../components/common/action-menu"
 import { useDeleteSalesChannelLazy } from "../../../../hooks/api/sales-channels"
-
-type SalesChannelWithIsDefault = HttpTypes.AdminSalesChannel & {
-  is_default?: boolean
-}
+import { useSalesChannelPermissions } from "../../../../hooks/use-resource-permissions"
+import { SalesChannelWithIsDefault } from "./sales-channel-list-table"
 
 export const SalesChannelListTableActions = ({
   salesChannel,
@@ -19,6 +19,7 @@ export const SalesChannelListTableActions = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canUpdate, canDelete } = useSalesChannelPermissions()
 
   const { mutateAsync } = useDeleteSalesChannelLazy()
 
@@ -48,33 +49,42 @@ export const SalesChannelListTableActions = ({
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  const disabledTooltip = salesChannel.is_default
+    ? t("salesChannels.tooltip.cannotDeleteDefault")
+    : undefined
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              onClick: () =>
-                navigate(`/settings/sales-channels/${salesChannel.id}/edit`),
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          onClick: () =>
+            navigate(`/settings/sales-channels/${salesChannel.id}/edit`),
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-              disabled: salesChannel.is_default,
-              disabledTooltip: salesChannel.is_default
-                ? t("salesChannels.tooltip.cannotDeleteDefault")
-                : undefined,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: () => handleDelete(),
+          disabled: salesChannel.is_default,
+          disabledTooltip,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

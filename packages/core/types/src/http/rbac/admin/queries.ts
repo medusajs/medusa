@@ -1,6 +1,17 @@
 import { OperatorMap } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
+export interface AdminRbacScopeParams {
+  /**
+   * Filter by the type of scope.
+   */
+  scope?: string | string[]
+  /**
+   * Filter by the ID of the scope.
+   */
+  scope_id?: string | string[]
+}
+
 export interface AdminRbacRoleListParams extends FindParams {
   /**
    * Query or keywords to search the role's searchable fields.
@@ -14,10 +25,6 @@ export interface AdminRbacRoleListParams extends FindParams {
    * Filter by role name(s).
    */
   name?: string | string[]
-  /**
-   * Filter by parent role ID(s).
-   */
-  parent_id?: string | string[]
   /**
    * Filter by the date the role was created.
    */
@@ -39,7 +46,9 @@ export interface AdminRbacRoleParams extends SelectParams {
   policies?: string | string[]
 }
 
-export interface AdminRbacPolicyListParams extends FindParams {
+export interface AdminRbacPolicyListParams
+  extends FindParams,
+    AdminRbacScopeParams {
   /**
    * Query or keywords to search the policy's searchable fields.
    */
@@ -76,6 +85,21 @@ export interface AdminRbacPolicyListParams extends FindParams {
 
 export interface AdminRbacPolicyParams extends SelectParams {}
 
+export interface AdminRbacAssignablePolicyListParams
+  extends Omit<AdminRbacPolicyListParams, "scope" | "scope_id"> {
+  /**
+   * The type of the scope context assignability is evaluated within. Only
+   * takes effect together with `scope_id`; otherwise the request's ambient
+   * scope applies.
+   */
+  scope?: string
+  /**
+   * The ID of the scope context assignability is evaluated within. Only takes
+   * effect together with `scope`.
+   */
+  scope_id?: string
+}
+
 export interface AdminRbacRoleUserListParams extends FindParams {
   /**
    * Filter by user ID(s).
@@ -84,3 +108,16 @@ export interface AdminRbacRoleUserListParams extends FindParams {
 }
 
 export interface AdminRbacPolicyRoleListParams extends FindParams {}
+
+export interface AdminRbacRoleAssignmentListParams
+  extends FindParams,
+    AdminRbacScopeParams {
+  /**
+   * Filter by the type of entity the role is assigned to (e.g. `user`, `invite`).
+   */
+  reference?: string | string[]
+  /**
+   * Filter by the ID of the entity the role is assigned to.
+   */
+  reference_id?: string | string[]
+}

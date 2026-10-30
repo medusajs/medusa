@@ -1,5 +1,6 @@
 export enum Entities {
   api_key = "api_key",
+  sales_channel = "sales_channel",
 }
 
 export const defaultAdminApiKeyFields = [

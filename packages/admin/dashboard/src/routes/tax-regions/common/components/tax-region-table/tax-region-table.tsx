@@ -18,7 +18,7 @@ type TaxRegionTableProps = {
   queryObject: Record<string, any>
   count?: number
   table: Table<HttpTypes.AdminTaxRegion>
-  action: { label: string; to: string }
+  action?: { label: string; to: string }
   prefix?: string
   children?: ReactNode
 }
@@ -73,11 +73,13 @@ export const TaxRegionTable = ({
               />
             </div>
           )}
-          <Link to={action.to}>
-            <Button size="small" variant="secondary">
-              {action.label}
-            </Button>
-          </Link>
+          {action && (
+            <Link to={action.to}>
+              <Button size="small" variant="secondary">
+                {action.label}
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
       {noResults && <NoResults />}

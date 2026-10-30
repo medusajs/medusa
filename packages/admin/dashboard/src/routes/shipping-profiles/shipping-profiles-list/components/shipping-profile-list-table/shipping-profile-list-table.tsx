@@ -9,11 +9,13 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useShippingProfileTableColumns } from "./use-shipping-profile-table-columns"
 import { useShippingProfileTableFilters } from "./use-shipping-profile-table-filters"
 import { useShippingProfileTableQuery } from "./use-shipping-profile-table-query"
+import { useShippingProfilePermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const ShippingProfileListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useShippingProfilePermissions()
 
   const { raw, searchParams } = useShippingProfileTableQuery({
     pageSize: PAGE_SIZE,
@@ -49,11 +51,13 @@ export const ShippingProfileListTable = () => {
             {t("shippingProfile.subtitle")}
           </Text>
         </div>
-        <div>
-          <Button size="small" variant="secondary" asChild>
-            <Link to="create">{t("actions.create")}</Link>
-          </Button>
-        </div>
+        {canCreate && (
+          <div>
+            <Button size="small" variant="secondary" asChild>
+              <Link to="create">{t("actions.create")}</Link>
+            </Button>
+          </div>
+        )}
       </div>
       <_DataTable
         table={table}

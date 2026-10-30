@@ -1,12 +1,12 @@
 import {
-  assignUserRolesWorkflow,
+  assignRolesWorkflow,
   createRbacRolesWorkflow,
   createUsersWorkflow,
   getAssignableRolesWorkflow,
-  removeUserRolesWorkflow,
+  unassignRolesWorkflow,
   updateRbacRolesWorkflow,
 } from "@medusajs/core-flows"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { Modules, RBAC_SUPER_ADMIN_ROLE_ID } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -15,7 +15,7 @@ import {
 
 jest.setTimeout(60000)
 
-process.env.MEDUSA_FF_RBAC = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 const ensureRbacPolicy = async (
   rbacModule,
@@ -51,14 +51,14 @@ medusaIntegrationTestRunner({
     })
 
     afterAll(async () => {
-      delete process.env.MEDUSA_FF_RBAC
+      delete process.env.ENABLE_RBAC_MODULE
     })
 
     describe("RBAC Roles - Admin API", () => {
-      describe("POST /admin/rbac/roles", () => {
+      describe("POST /rbac/roles", () => {
         it("should create a role", async () => {
           const response = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Viewer",
               description: "Can view resources",
@@ -78,7 +78,7 @@ medusaIntegrationTestRunner({
 
         it("should create a role with metadata", async () => {
           const response = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Editor",
               description: "Can edit resources",
@@ -113,7 +113,7 @@ medusaIntegrationTestRunner({
           })
 
           const response = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Product Editor",
               description: "Read and create products",
@@ -157,12 +157,19 @@ medusaIntegrationTestRunner({
             operation: "create",
             name: "Create Customers",
           })
+          const rbacRoleCreate = await ensureRbacPolicy(rbacModule, {
+            key: "rbac_role:create",
+            resource: "rbac_role",
+            operation: "create",
+            name: "Create RBAC Roles",
+          })
 
           const scopedRole = await rbacModule.createRbacRoles({
             name: "Product Reader Only",
           })
           await rbacModule.createRbacRolePolicies([
             { role_id: scopedRole.id, policy_id: productRead.id },
+            { role_id: scopedRole.id, policy_id: rbacRoleCreate.id },
           ])
 
           const scopedActorHeaders = { headers: { ...adminHeaders.headers } }
@@ -173,7 +180,7 @@ medusaIntegrationTestRunner({
 
           const error = await api
             .post(
-              "/admin/rbac/roles",
+              "/rbac/roles",
               {
                 name: "Cannot Create",
                 policy_ids: [productRead.id, customerCreate.id],
@@ -195,10 +202,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /admin/rbac/roles", () => {
+      describe("GET /rbac/roles", () => {
         beforeEach(async () => {
           await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Viewer",
               description: "Can view resources",
@@ -207,7 +214,7 @@ medusaIntegrationTestRunner({
           )
 
           await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Editor",
               description: "Can edit resources",
@@ -216,7 +223,7 @@ medusaIntegrationTestRunner({
           )
 
           await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Admin",
               description: "Full access",
@@ -226,7 +233,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should list all roles", async () => {
-          const response = await api.get("/admin/rbac/roles", adminHeaders)
+          const response = await api.get("/rbac/roles", adminHeaders)
 
           expect(response.status).toEqual(200)
           // 4 roles: Super Admin  + 3 created in beforeEach
@@ -255,7 +262,7 @@ medusaIntegrationTestRunner({
 
         it("should filter roles by name", async () => {
           const response = await api.get(
-            "/admin/rbac/roles?name=Viewer",
+            "/rbac/roles?name=Viewer",
             adminHeaders
           )
 
@@ -269,10 +276,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /admin/rbac/roles/:id", () => {
+      describe("GET /rbac/roles/:id", () => {
         it("should retrieve a role by id", async () => {
           const createResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Manager",
               description: "Can manage resources",
@@ -282,10 +289,7 @@ medusaIntegrationTestRunner({
 
           const roleId = createResponse.data.role.id
 
-          const response = await api.get(
-            `/admin/rbac/roles/${roleId}`,
-            adminHeaders
-          )
+          const response = await api.get(`/rbac/roles/${roleId}`, adminHeaders)
 
           expect(response.status).toEqual(200)
           expect(response.data.role).toEqual(
@@ -298,10 +302,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/rbac/roles/:id", () => {
+      describe("POST /rbac/roles/:id", () => {
         it("should update a role", async () => {
           const createResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Support",
               description: "Support team",
@@ -312,7 +316,7 @@ medusaIntegrationTestRunner({
           const roleId = createResponse.data.role.id
 
           const response = await api.post(
-            `/admin/rbac/roles/${roleId}`,
+            `/rbac/roles/${roleId}`,
             {
               name: "Customer Support",
               description: "Customer support team with limited access",
@@ -331,10 +335,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("DELETE /admin/rbac/roles/:id", () => {
+      describe("DELETE /rbac/roles/:id", () => {
         it("should delete a role", async () => {
           const createResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Temporary",
               description: "Temporary role",
@@ -345,7 +349,7 @@ medusaIntegrationTestRunner({
           const roleId = createResponse.data.role.id
 
           const deleteResponse = await api.delete(
-            `/admin/rbac/roles/${roleId}`,
+            `/rbac/roles/${roleId}`,
             adminHeaders
           )
 
@@ -356,10 +360,88 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const listResponse = await api.get("/admin/rbac/roles", adminHeaders)
+          const listResponse = await api.get("/rbac/roles", adminHeaders)
           expect(
             listResponse.data.roles.find((r) => r.id === roleId)
           ).toBeUndefined()
+        })
+
+        // A role holding `product:update`, which the role deleter below lacks.
+        const createProductEditorRole = async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const productUpdate = await ensureRbacPolicy(rbacModule, {
+            key: "product:update",
+            resource: "product",
+            operation: "update",
+            name: "Update Products",
+          })
+          const role = await rbacModule.createRbacRoles({
+            name: "Product Editor",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: role.id, policy_id: productUpdate.id },
+          ])
+          return role
+        }
+
+        it("refuses to delete the super admin role, even for a super admin", async () => {
+          const error = await api
+            .delete(`/rbac/roles/${RBAC_SUPER_ADMIN_ROLE_ID}`, adminHeaders)
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.type).toEqual("not_allowed")
+
+          const rbacModule = container.resolve(Modules.RBAC)
+          const roles = await rbacModule.listRbacRoles({
+            id: RBAC_SUPER_ADMIN_ROLE_ID,
+          })
+          expect(roles).toHaveLength(1)
+        })
+
+        it("forbids deleting a role holding policies the actor doesn't have", async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const productEditorRole = await createProductEditorRole()
+
+          const roleDelete = await ensureRbacPolicy(rbacModule, {
+            key: "rbac_role:delete",
+            resource: "rbac_role",
+            operation: "delete",
+            name: "Delete Roles",
+          })
+          const roleDeleterRole = await rbacModule.createRbacRoles({
+            name: "Role Deleter",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: roleDeleterRole.id, policy_id: roleDelete.id },
+          ])
+          const roleDeleterHeaders = { headers: { ...adminHeaders.headers } }
+          await createAdminUser(dbConnection, roleDeleterHeaders, container, {
+            email: "role-deleter@medusa.js",
+            roles: [roleDeleterRole.id],
+          })
+
+          const error = await api
+            .delete(`/rbac/roles/${productEditorRole.id}`, roleDeleterHeaders)
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(403)
+
+          const roles = await rbacModule.listRbacRoles({
+            id: productEditorRole.id,
+          })
+          expect(roles).toHaveLength(1)
+        })
+
+        it("lets a super admin delete that role", async () => {
+          const productEditorRole = await createProductEditorRole()
+
+          const response = await api.delete(
+            `/rbac/roles/${productEditorRole.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
         })
       })
 
@@ -371,11 +453,10 @@ medusaIntegrationTestRunner({
 
         beforeEach(async () => {
           const userModule = container.resolve(Modules.USER)
-          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
 
           // Create policies
           const policy1 = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "read:products",
               resource: "product",
@@ -386,7 +467,7 @@ medusaIntegrationTestRunner({
           )
 
           const policy2 = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "write:products",
               resource: "product",
@@ -397,7 +478,7 @@ medusaIntegrationTestRunner({
           )
 
           const policy3 = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "delete:products",
               resource: "product",
@@ -415,7 +496,7 @@ medusaIntegrationTestRunner({
 
           // Create an admin role with all policies
           const adminRoleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Admin Role",
               description: "Has all permissions",
@@ -436,19 +517,18 @@ medusaIntegrationTestRunner({
           const users = await userModule.listUsers({ email: "admin@medusa.js" })
           adminUser = users[0]
 
-          // Link the admin user to the admin role
-          await remoteLink.create({
-            [Modules.USER]: {
-              user_id: adminUser.id,
+          // Assign the admin role to the admin user
+          await rbacModule.createRbacRoleAssignments([
+            {
+              role_id: adminRole.id,
+              reference: "user",
+              reference_id: adminUser.id,
             },
-            [Modules.RBAC]: {
-              rbac_role_id: adminRole.id,
-            },
-          })
+          ])
 
           // Create viewer and editor roles for the tests
           const viewer = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Product Viewer",
               description: "Can view products",
@@ -458,7 +538,7 @@ medusaIntegrationTestRunner({
           viewerRole = viewer.data.role
 
           const editor = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Product Editor",
               description: "Can edit products",
@@ -477,7 +557,10 @@ medusaIntegrationTestRunner({
                   email: "test-user@example.com",
                   first_name: "Test",
                   last_name: "User",
-                  roles: [viewerRole.id, editorRole.id],
+                  roles: [
+                    { role_id: viewerRole.id },
+                    { role_id: editorRole.id },
+                  ],
                 },
               ],
             },
@@ -489,20 +572,14 @@ medusaIntegrationTestRunner({
           expect(createdUser.first_name).toEqual("Test")
           expect(createdUser.last_name).toEqual("User")
 
-          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
-          const linkService = remoteLink.getLinkModule(
-            Modules.USER,
-            "user_id",
-            Modules.RBAC,
-            "rbac_role_id"
-          )
-
-          const userRoles = await linkService.list({
-            user_id: createdUser.id,
+          const rbacModule = container.resolve(Modules.RBAC)
+          const userRoles = await rbacModule.listRbacRoleAssignments({
+            reference: "user",
+            reference_id: createdUser.id,
           })
 
           expect(userRoles).toHaveLength(2)
-          expect(userRoles.map((link) => link.rbac_role_id)).toEqual(
+          expect(userRoles.map((assignment) => assignment.role_id)).toEqual(
             expect.arrayContaining([viewerRole.id, editorRole.id])
           )
 
@@ -513,7 +590,7 @@ medusaIntegrationTestRunner({
 
         it("should add policies to a role", async () => {
           const response = await api.post(
-            `/admin/rbac/roles/${viewerRole.id}/policies`,
+            `/rbac/roles/${viewerRole.id}/policies`,
             {
               policies: [policies[0].id],
             },
@@ -532,7 +609,7 @@ medusaIntegrationTestRunner({
         it("should list role-policies for a specific role", async () => {
           // Add multiple policies to the role
           await api.post(
-            `/admin/rbac/roles/${viewerRole.id}/policies`,
+            `/rbac/roles/${viewerRole.id}/policies`,
             {
               policies: [policies[0].id, policies[1].id],
             },
@@ -541,7 +618,7 @@ medusaIntegrationTestRunner({
 
           // List the role to get its policies
           const response = await api.get(
-            `/admin/rbac/roles/${viewerRole.id}/?fields=policies`,
+            `/rbac/roles/${viewerRole.id}/?fields=policies`,
             adminHeaders
           )
 
@@ -563,7 +640,7 @@ medusaIntegrationTestRunner({
         it("should remove a policy from a role", async () => {
           // First add a policy to the role
           await api.post(
-            `/admin/rbac/roles/${editorRole.id}/policies`,
+            `/rbac/roles/${editorRole.id}/policies`,
             {
               policies: [policies[2].id],
             },
@@ -572,14 +649,14 @@ medusaIntegrationTestRunner({
 
           // Verify the policy was added
           const initialResponse = await api.get(
-            `/admin/rbac/roles/${editorRole.id}?fields=policies`,
+            `/rbac/roles/${editorRole.id}?fields=policies`,
             adminHeaders
           )
           expect(initialResponse.data.role.policies).toHaveLength(1)
 
           // Remove the policy from the role
           const deleteResponse = await api.delete(
-            `/admin/rbac/roles/${editorRole.id}/policies/${policies[2].id}`,
+            `/rbac/roles/${editorRole.id}/policies/${policies[2].id}`,
             adminHeaders
           )
 
@@ -592,7 +669,7 @@ medusaIntegrationTestRunner({
 
           // Verify the policy was removed
           const finalResponse = await api.get(
-            `/admin/rbac/roles/${editorRole.id}?fields=policies`,
+            `/rbac/roles/${editorRole.id}?fields=policies`,
             adminHeaders
           )
           expect(finalResponse.data.role.policies).toHaveLength(0)
@@ -736,10 +813,10 @@ medusaIntegrationTestRunner({
           emptyTargetRoleId = emptyTargetRole.id
         })
 
-        describe("POST /admin/rbac/roles/:id/policies", () => {
+        describe("POST /rbac/roles/:id/policies", () => {
           it("allows super-admin (`*:*`) to grant any policy", async () => {
             const response = await api.post(
-              `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
               {
                 policies: [
                   productReadPolicyId,
@@ -756,7 +833,7 @@ medusaIntegrationTestRunner({
 
           it("allows `resource:*` holder to grant any operation on that resource", async () => {
             const response = await api.post(
-              `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
               {
                 policies: [
                   productReadPolicyId,
@@ -774,7 +851,7 @@ medusaIntegrationTestRunner({
           it("denies `resource:*` holder when granting a different resource", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 { policies: [customerReadPolicyId] },
                 productManagerHeaders
               )
@@ -790,7 +867,7 @@ medusaIntegrationTestRunner({
 
           it("allows `*:op` holder to grant that operation on any resource", async () => {
             const response = await api.post(
-              `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
               {
                 policies: [productReadPolicyId, customerReadPolicyId],
               },
@@ -804,7 +881,7 @@ medusaIntegrationTestRunner({
           it("denies `*:op` holder when granting a different operation", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 { policies: [customerCreatePolicyId] },
                 universalReaderHeaders
               )
@@ -815,7 +892,7 @@ medusaIntegrationTestRunner({
 
           it("allows exact `resource:op` holder to grant that policy", async () => {
             const response = await api.post(
-              `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
               { policies: [productReadPolicyId] },
               productReaderHeaders
             )
@@ -827,7 +904,7 @@ medusaIntegrationTestRunner({
           it("denies exact-match holder when granting any other policy", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 {
                   policies: [productReadPolicyId, productCreatePolicyId],
                 },
@@ -841,7 +918,7 @@ medusaIntegrationTestRunner({
           it("denies a user whose only policy does not cover the grant target", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 { policies: [productReadPolicyId] },
                 noPolicyHeaders
               )
@@ -853,7 +930,7 @@ medusaIntegrationTestRunner({
           it("returns 404 when granting a non-existent policy id", async () => {
             const error = await api
               .post(
-                `/admin/rbac/roles/${emptyTargetRoleId}/policies`,
+                `/rbac/roles/${emptyTargetRoleId}/policies`,
                 { policies: ["rpol_does_not_exist"] },
                 adminHeaders
               )
@@ -863,6 +940,85 @@ medusaIntegrationTestRunner({
             expect(error.response.data.message).toContain(
               "do not exist: rpol_does_not_exist"
             )
+          })
+        })
+
+        describe("DELETE /rbac/roles/:id/policies/:policy_id", () => {
+          beforeEach(async () => {
+            await api.post(
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
+              { policies: [productReadPolicyId, customerReadPolicyId] },
+              adminHeaders
+            )
+          })
+
+          it("allows super-admin (`*:*`) to detach any policy", async () => {
+            const response = await api.delete(
+              `/rbac/roles/${emptyTargetRoleId}/policies/${customerReadPolicyId}`,
+              adminHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data).toEqual({
+              id: expect.stringContaining("rlpl_"),
+              object: "rbac_role_policy",
+              deleted: true,
+            })
+          })
+
+          it("allows an exact `resource:op` holder to detach that policy", async () => {
+            const response = await api.delete(
+              `/rbac/roles/${emptyTargetRoleId}/policies/${productReadPolicyId}`,
+              productReaderHeaders
+            )
+
+            expect(response.status).toEqual(200)
+          })
+
+          it("denies detaching a policy the actor does not hold", async () => {
+            const error = await api
+              .delete(
+                `/rbac/roles/${emptyTargetRoleId}/policies/${customerReadPolicyId}`,
+                productReaderHeaders
+              )
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(403)
+
+            const rolePolicies = await container
+              .resolve(Modules.RBAC)
+              .listRbacRolePolicies({ role_id: emptyTargetRoleId })
+            expect(rolePolicies.map((rp) => rp.policy_id)).toEqual(
+              expect.arrayContaining([
+                productReadPolicyId,
+                customerReadPolicyId,
+              ])
+            )
+          })
+
+          it("denies stripping `*:*` from the super admin role without holding it", async () => {
+            const error = await api
+              .delete(
+                `/rbac/roles/role_super_admin/policies/rpol_super_admin`,
+                noPolicyHeaders
+              )
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(403)
+
+            const response = await api.get("/admin/customers", adminHeaders)
+            expect(response.status).toEqual(200)
+          })
+
+          it("returns 404 when the policy is not attached to the role", async () => {
+            const error = await api
+              .delete(
+                `/rbac/roles/${emptyTargetRoleId}/policies/${productUpdatePolicyId}`,
+                adminHeaders
+              )
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(404)
           })
         })
 
@@ -976,7 +1132,7 @@ medusaIntegrationTestRunner({
           })
         })
 
-        describe("assignUserRolesWorkflow / removeUserRolesWorkflow", () => {
+        describe("assignRolesWorkflow / unassignRolesWorkflow", () => {
           // A role-with-policies fixture used as the target of assign/remove
           // operations. Built once per test from the shared policy IDs.
           let productReadRoleId: string
@@ -1020,12 +1176,17 @@ medusaIntegrationTestRunner({
               email: "admin@medusa.js",
             })
 
-            const { result } = await assignUserRolesWorkflow(container).run({
+            const { result } = await assignRolesWorkflow(container).run({
               input: {
-                actor_id: superAdminUser.id,
-                actor: "user",
-                user_id: assigneeUserId,
-                role_ids: [mixedRoleId],
+                granting_actor_id: superAdminUser.id,
+                granting_actor: "user",
+                assignments: [
+                  {
+                    role_id: mixedRoleId,
+                    reference: "user",
+                    reference_id: assigneeUserId,
+                  },
+                ],
               },
             })
 
@@ -1040,12 +1201,17 @@ medusaIntegrationTestRunner({
               email: "product-manager@medusa.js",
             })
 
-            const { result } = await assignUserRolesWorkflow(container).run({
+            const { result } = await assignRolesWorkflow(container).run({
               input: {
-                actor_id: productManager.id,
-                actor: "user",
-                user_id: assigneeUserId,
-                role_ids: [productReadRoleId],
+                granting_actor_id: productManager.id,
+                granting_actor: "user",
+                assignments: [
+                  {
+                    role_id: productReadRoleId,
+                    reference: "user",
+                    reference_id: assigneeUserId,
+                  },
+                ],
               },
             })
 
@@ -1060,13 +1226,18 @@ medusaIntegrationTestRunner({
               email: "product-manager@medusa.js",
             })
 
-            const error = await assignUserRolesWorkflow(container)
+            const error = await assignRolesWorkflow(container)
               .run({
                 input: {
-                  actor_id: productManager.id,
-                  actor: "user",
-                  user_id: assigneeUserId,
-                  role_ids: [mixedRoleId],
+                  granting_actor_id: productManager.id,
+                  granting_actor: "user",
+                  assignments: [
+                    {
+                      role_id: mixedRoleId,
+                      reference: "user",
+                      reference_id: assigneeUserId,
+                    },
+                  ],
                 },
               })
               .catch((e) => e)
@@ -1084,13 +1255,18 @@ medusaIntegrationTestRunner({
               last_name: "User",
             })
 
-            const error = await assignUserRolesWorkflow(container)
+            const error = await assignRolesWorkflow(container)
               .run({
                 input: {
-                  actor_id: stray.id,
-                  actor: "user",
-                  user_id: assigneeUserId,
-                  role_ids: [productReadRoleId],
+                  granting_actor_id: stray.id,
+                  granting_actor: "user",
+                  assignments: [
+                    {
+                      role_id: productReadRoleId,
+                      reference: "user",
+                      reference_id: assigneeUserId,
+                    },
+                  ],
                 },
               })
               .catch((e) => e)
@@ -1100,33 +1276,326 @@ medusaIntegrationTestRunner({
             )
           })
 
-          it("removeUserRolesWorkflow: super-admin can remove a role with policies", async () => {
+          it("unassignRolesWorkflow: super-admin can remove a role with policies", async () => {
             const userModule = container.resolve(Modules.USER)
-            const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+            const rbacModule = container.resolve(Modules.RBAC)
             const [superAdminUser] = await userModule.listUsers({
               email: "admin@medusa.js",
             })
 
-            await remoteLink.create({
-              [Modules.USER]: { user_id: assigneeUserId },
-              [Modules.RBAC]: { rbac_role_id: mixedRoleId },
-            })
+            await rbacModule.createRbacRoleAssignments([
+              {
+                role_id: mixedRoleId,
+                reference: "user",
+                reference_id: assigneeUserId,
+              },
+            ])
 
-            const { result } = await removeUserRolesWorkflow(container).run({
+            const { result } = await unassignRolesWorkflow(container).run({
               input: {
-                actor_id: superAdminUser.id,
-                actor: "user",
-                user_id: assigneeUserId,
-                role_ids: [mixedRoleId],
+                granting_actor_id: superAdminUser.id,
+                granting_actor: "user",
+                assignments: [
+                  {
+                    role_id: mixedRoleId,
+                    reference: "user",
+                    reference_id: assigneeUserId,
+                  },
+                ],
               },
             })
 
             expect(result).toBeUndefined()
+
+            const remaining = await rbacModule.listRbacRoleAssignments({
+              role_id: mixedRoleId,
+              reference: "user",
+              reference_id: assigneeUserId,
+            })
+            expect(remaining).toHaveLength(0)
+          })
+
+          describe("granting scope", () => {
+            const orgA = { type: "organization", id: "org_A" }
+            const orgB = { type: "organization", id: "org_B" }
+            let scopedGranterId: string
+            let globalGranterId: string
+
+            beforeEach(async () => {
+              const rbacModule = container.resolve(Modules.RBAC)
+              const userModule = container.resolve(Modules.USER)
+
+              const productWildcard = await ensureRbacPolicy(rbacModule, {
+                key: "product:*",
+                resource: "product",
+                operation: "*",
+                name: "Manage Products",
+              })
+              const granterRole = await rbacModule.createRbacRoles({
+                name: "Scoped Granter",
+              })
+              await rbacModule.createRbacRolePolicies([
+                { role_id: granterRole.id, policy_id: productWildcard.id },
+              ])
+
+              const [scopedGranter, globalGranter] =
+                await userModule.createUsers([
+                  {
+                    email: "scoped-granter@medusa.js",
+                    first_name: "Scoped",
+                    last_name: "Granter",
+                  },
+                  {
+                    email: "global-granter@medusa.js",
+                    first_name: "Global",
+                    last_name: "Granter",
+                  },
+                ])
+              scopedGranterId = scopedGranter.id
+              globalGranterId = globalGranter.id
+
+              await rbacModule.createRbacRoleAssignments([
+                // product:* only within org_A
+                {
+                  role_id: granterRole.id,
+                  reference: "user",
+                  reference_id: scopedGranterId,
+                  scope: orgA.type,
+                  scope_id: orgA.id,
+                },
+                // product:* across all scopes
+                {
+                  role_id: granterRole.id,
+                  reference: "user",
+                  reference_id: globalGranterId,
+                },
+              ])
+            })
+
+            const assign = (
+              granterId: string,
+              granting_scope: { type: string; id: string } | undefined,
+              scope: { type: string; id: string } | undefined
+            ) =>
+              assignRolesWorkflow(container).run({
+                input: {
+                  granting_actor_id: granterId,
+                  granting_actor: "user",
+                  granting_scope,
+                  assignments: [
+                    {
+                      role_id: productReadRoleId,
+                      reference: "user",
+                      reference_id: assigneeUserId,
+                      scope,
+                    },
+                  ],
+                },
+              })
+
+            it("allows a scoped granter to assign a role within the scope they act in", async () => {
+              const { result } = await assign(scopedGranterId, orgA, orgA)
+              expect(result).toBeUndefined()
+            })
+
+            it("denies a scoped granter assigning a role to another scope", async () => {
+              const error = await assign(scopedGranterId, orgA, orgB).catch(
+                (e) => e
+              )
+              expect(error.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+            })
+
+            it("denies a scoped granter assigning a role across all scopes", async () => {
+              const error = await assign(
+                scopedGranterId,
+                orgA,
+                undefined
+              ).catch((e) => e)
+              expect(error.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+            })
+
+            it("denies a scoped granter assigning within their scope while not acting in it", async () => {
+              const withoutGrantingScope = await assign(
+                scopedGranterId,
+                undefined,
+                orgA
+              ).catch((e) => e)
+              expect(withoutGrantingScope.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+
+              const fromOtherScope = await assign(
+                scopedGranterId,
+                orgB,
+                orgA
+              ).catch((e) => e)
+              expect(fromOtherScope.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+            })
+
+            it("allows an unscoped granter to assign a role to any scope", async () => {
+              await assign(globalGranterId, orgA, orgB)
+              await assign(globalGranterId, orgA, undefined)
+              await assign(globalGranterId, undefined, orgA)
+            })
+
+            it("unassignRolesWorkflow: scoped granter can only remove assignments within the scope they act in", async () => {
+              const rbacModule = container.resolve(Modules.RBAC)
+              await rbacModule.createRbacRoleAssignments([
+                {
+                  role_id: productReadRoleId,
+                  reference: "user",
+                  reference_id: assigneeUserId,
+                  scope: orgA.type,
+                  scope_id: orgA.id,
+                },
+                {
+                  role_id: productReadRoleId,
+                  reference: "user",
+                  reference_id: assigneeUserId,
+                  scope: orgB.type,
+                  scope_id: orgB.id,
+                },
+              ])
+
+              const unassign = (scope?: { type: string; id: string }) =>
+                unassignRolesWorkflow(container).run({
+                  input: {
+                    granting_actor_id: scopedGranterId,
+                    granting_actor: "user",
+                    granting_scope: orgA,
+                    assignments: [
+                      {
+                        role_id: productReadRoleId,
+                        reference: "user",
+                        reference_id: assigneeUserId,
+                        scope,
+                      },
+                    ],
+                  },
+                })
+
+              // Removing regardless of scope would also remove the org_B one.
+              const unscopedError = await unassign(undefined).catch((e) => e)
+              expect(unscopedError.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+
+              const otherScopeError = await unassign(orgB).catch((e) => e)
+              expect(otherScopeError.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+
+              await unassign(orgA)
+
+              const remaining = await rbacModule.listRbacRoleAssignments({
+                role_id: productReadRoleId,
+                reference: "user",
+                reference_id: assigneeUserId,
+              })
+              expect(remaining).toEqual([
+                expect.objectContaining({
+                  scope: orgB.type,
+                  scope_id: orgB.id,
+                }),
+              ])
+            })
+
+            it("unassignRolesWorkflow: unscoped granter acting in a scope can remove assignments of any scope", async () => {
+              const rbacModule = container.resolve(Modules.RBAC)
+              await rbacModule.createRbacRoleAssignments([
+                {
+                  role_id: productReadRoleId,
+                  reference: "user",
+                  reference_id: assigneeUserId,
+                  scope: orgB.type,
+                  scope_id: orgB.id,
+                },
+                {
+                  role_id: productReadRoleId,
+                  reference: "user",
+                  reference_id: assigneeUserId,
+                },
+              ])
+
+              const unassign = (scope?: { type: string; id: string }) =>
+                unassignRolesWorkflow(container).run({
+                  input: {
+                    granting_actor_id: globalGranterId,
+                    granting_actor: "user",
+                    granting_scope: orgA,
+                    assignments: [
+                      {
+                        role_id: productReadRoleId,
+                        reference: "user",
+                        reference_id: assigneeUserId,
+                        scope,
+                      },
+                    ],
+                  },
+                })
+
+              await unassign(orgB)
+
+              const afterScoped = await rbacModule.listRbacRoleAssignments({
+                role_id: productReadRoleId,
+                reference: "user",
+                reference_id: assigneeUserId,
+              })
+              expect(afterScoped).toEqual([
+                expect.objectContaining({ scope: null, scope_id: null }),
+              ])
+
+              // Removing regardless of scope.
+              await unassign(undefined)
+
+              const afterUnscoped = await rbacModule.listRbacRoleAssignments({
+                role_id: productReadRoleId,
+                reference: "user",
+                reference_id: assigneeUserId,
+              })
+              expect(afterUnscoped).toHaveLength(0)
+            })
+
+            it("only uses the granter's roles scoped to the scope they act in", async () => {
+              // The granter holds product:* in both org_A and org_B, but only
+              // its org_B privileges are usable while acting in org_B.
+              const rbacModule = container.resolve(Modules.RBAC)
+              const [{ role_id: granterRoleId }] =
+                await rbacModule.listRbacRoleAssignments({
+                  reference: "user",
+                  reference_id: scopedGranterId,
+                })
+              await rbacModule.createRbacRoleAssignments([
+                {
+                  role_id: granterRoleId,
+                  reference: "user",
+                  reference_id: scopedGranterId,
+                  scope: orgB.type,
+                  scope_id: orgB.id,
+                },
+              ])
+
+              await assign(scopedGranterId, orgB, orgB)
+              await assign(scopedGranterId, orgA, orgA)
+
+              const error = await assign(scopedGranterId, orgB, orgA).catch(
+                (e) => e
+              )
+              expect(error.message).toContain(
+                "You do not have permission to assign these roles"
+              )
+            })
           })
         })
       })
 
-      describe("GET /admin/rbac/roles/assignable", () => {
+      describe("GET /rbac/roles/assignable", () => {
         // Headers for actors with varying levels of permission coverage.
         // `adminHeaders` is the super-admin baseline (holds `*:*`).
         const productManagerHeaders = { headers: { ...adminHeaders.headers } }
@@ -1320,10 +1789,7 @@ medusaIntegrationTestRunner({
         })
 
         it("returns response shape `{ roles, count }` with count matching roles.length", async () => {
-          const response = await api.get(
-            "/admin/rbac/roles/assignable",
-            adminHeaders
-          )
+          const response = await api.get("/rbac/roles/assignable", adminHeaders)
 
           expect(response.status).toEqual(200)
           expect(response.data).toMatchObject({
@@ -1334,10 +1800,7 @@ medusaIntegrationTestRunner({
         })
 
         it("returns every target role for a super-admin (`*:*`)", async () => {
-          const response = await api.get(
-            "/admin/rbac/roles/assignable",
-            adminHeaders
-          )
+          const response = await api.get("/rbac/roles/assignable", adminHeaders)
 
           const ids = response.data.roles.map((r: { id: string }) => r.id)
           // Super-admin covers every action, so every target role is assignable.
@@ -1353,10 +1816,7 @@ medusaIntegrationTestRunner({
         })
 
         it("returns role projection of `{ id, name, description }` without policies leakage", async () => {
-          const response = await api.get(
-            "/admin/rbac/roles/assignable",
-            adminHeaders
-          )
+          const response = await api.get("/rbac/roles/assignable", adminHeaders)
 
           for (const role of response.data.roles) {
             expect(typeof role.id).toEqual("string")
@@ -1370,7 +1830,7 @@ medusaIntegrationTestRunner({
 
         it("expands `resource:*` — product:* actor sees product-only roles, not cross-resource", async () => {
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             productManagerHeaders
           )
 
@@ -1384,7 +1844,7 @@ medusaIntegrationTestRunner({
 
         it("expands `*:op` — *:read actor sees read-only roles across resources", async () => {
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             universalReaderHeaders
           )
 
@@ -1399,7 +1859,7 @@ medusaIntegrationTestRunner({
 
         it("requires literal coverage — actor with product:read alone only covers empty targets", async () => {
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             productReaderHeaders
           )
 
@@ -1437,9 +1897,9 @@ medusaIntegrationTestRunner({
           // hasPermission on an empty actions list returns true, so an empty
           // target role passes for every actor that holds at least one role.
           const responses = await Promise.all([
-            api.get("/admin/rbac/roles/assignable", productManagerHeaders),
-            api.get("/admin/rbac/roles/assignable", universalReaderHeaders),
-            api.get("/admin/rbac/roles/assignable", productReaderHeaders),
+            api.get("/rbac/roles/assignable", productManagerHeaders),
+            api.get("/rbac/roles/assignable", universalReaderHeaders),
+            api.get("/rbac/roles/assignable", productReaderHeaders),
           ])
 
           for (const response of responses) {
@@ -1451,7 +1911,7 @@ medusaIntegrationTestRunner({
         it("only a `*:*` holder can assign a role whose policies include `*:*`", async () => {
           // Super-admin holds *:* → can assign superAdminLikeRoleId.
           const superAdminResponse = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             adminHeaders
           )
           const superAdminIds = superAdminResponse.data.roles.map(
@@ -1461,9 +1921,9 @@ medusaIntegrationTestRunner({
 
           // Every other actor (product:*, *:read, product:read) cannot.
           const otherResponses = await Promise.all([
-            api.get("/admin/rbac/roles/assignable", productManagerHeaders),
-            api.get("/admin/rbac/roles/assignable", universalReaderHeaders),
-            api.get("/admin/rbac/roles/assignable", productReaderHeaders),
+            api.get("/rbac/roles/assignable", productManagerHeaders),
+            api.get("/rbac/roles/assignable", universalReaderHeaders),
+            api.get("/rbac/roles/assignable", productReaderHeaders),
           ])
           for (const response of otherResponses) {
             const ids = response.data.roles.map((r: { id: string }) => r.id)
@@ -1506,7 +1966,7 @@ medusaIntegrationTestRunner({
           })
 
           const response = await api.get(
-            "/admin/rbac/roles/assignable",
+            "/rbac/roles/assignable",
             multiRoleHeaders
           )
 
@@ -1518,7 +1978,7 @@ medusaIntegrationTestRunner({
           // Verifies the route forwards `req.filterableFields` into the
           // workflow so candidate narrowing happens before per-role coverage.
           const response = await api.get(
-            `/admin/rbac/roles/assignable?id=${emptyRoleId}`,
+            `/rbac/roles/assignable?id=${emptyRoleId}`,
             adminHeaders
           )
 
@@ -1528,17 +1988,176 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /admin/rbac/roles/:id/users", () => {
+      describe("assignment route guards", () => {
+        let targetRole
+        let targetUser
+        const assignerHeaders = { headers: {} }
+        const roleEditorHeaders = { headers: {} }
+
+        const attachPolicies = async (roleId: string, keys: string[]) => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const policies = await rbacModule.listRbacPolicies({ key: keys })
+          await rbacModule.createRbacRolePolicies(
+            policies.map((policy) => ({
+              role_id: roleId,
+              policy_id: policy.id,
+            }))
+          )
+        }
+
+        beforeEach(async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const [target, assigner, roleEditor] =
+            await rbacModule.createRbacRoles([
+              { name: "Assignment Target" },
+              { name: "Assigner" },
+              { name: "Role Editor" },
+            ])
+          targetRole = target
+
+          await attachPolicies(target.id, ["product:read"])
+          // Holds the target's policies plus the assignment policies.
+          await attachPolicies(assigner.id, [
+            "product:read",
+            "user:read",
+            "user:update",
+            "rbac_role_assignment:read",
+            "rbac_role_assignment:create",
+            "rbac_role_assignment:delete",
+          ])
+          // Holds the target's policies and can edit roles and users, but
+          // has no say over assignments.
+          await attachPolicies(roleEditor.id, [
+            "product:read",
+            "user:read",
+            "user:update",
+            "rbac_role:read",
+            "rbac_role:update",
+          ])
+
+          await createAdminUser(dbConnection, assignerHeaders, container, {
+            email: "assigner@medusa.js",
+            roles: [assigner.id],
+          })
+          await createAdminUser(dbConnection, roleEditorHeaders, container, {
+            email: "role-editor@medusa.js",
+            roles: [roleEditor.id],
+          })
+
+          const { result: users } = await createUsersWorkflow(container).run({
+            input: { users: [{ email: "target@example.com" }] },
+          })
+          targetUser = users[0]
+        })
+
+        it("denies the assignment routes to an actor without rbac_role_assignment policies", async () => {
+          const attempts = [
+            () =>
+              api.post(
+                `/rbac/roles/${targetRole.id}/users`,
+                { users: [targetUser.id] },
+                roleEditorHeaders
+              ),
+            () =>
+              api.post(
+                `/rbac/roles/${targetRole.id}/assignments`,
+                { reference: "user", reference_ids: [targetUser.id] },
+                roleEditorHeaders
+              ),
+            () =>
+              api.post(
+                `/admin/users/${targetUser.id}/roles`,
+                { assignments: [{ role_id: targetRole.id }] },
+                roleEditorHeaders
+              ),
+            () =>
+              api.get(
+                `/rbac/roles/${targetRole.id}/assignments`,
+                roleEditorHeaders
+              ),
+            () =>
+              api.get(`/admin/users/${targetUser.id}/roles`, roleEditorHeaders),
+          ]
+
+          for (const attempt of attempts) {
+            const error = await attempt().catch((e) => e)
+            expect(error.response.status).toEqual(403)
+          }
+
+          const assignments = await container
+            .resolve(Modules.RBAC)
+            .listRbacRoleAssignments({ role_id: targetRole.id })
+          expect(assignments).toHaveLength(0)
+        })
+
+        it("lets an actor holding rbac_role_assignment policies assign, list and unassign", async () => {
+          const assign = await api.post(
+            `/rbac/roles/${targetRole.id}/users`,
+            { users: [targetUser.id] },
+            assignerHeaders
+          )
+          expect(assign.status).toEqual(200)
+
+          const list = await api.get(
+            `/rbac/roles/${targetRole.id}/assignments`,
+            assignerHeaders
+          )
+          expect(list.status).toEqual(200)
+          expect(list.data.count).toEqual(1)
+
+          const userRoles = await api.get(
+            `/admin/users/${targetUser.id}/roles`,
+            assignerHeaders
+          )
+          expect(userRoles.data.count).toEqual(1)
+
+          const remove = await api.delete(
+            `/rbac/roles/${targetRole.id}/assignments`,
+            {
+              ...assignerHeaders,
+              data: { reference: "user", reference_ids: [targetUser.id] },
+            }
+          )
+          expect(remove.status).toEqual(200)
+
+          const after = await api.get(
+            `/admin/users/${targetUser.id}/roles`,
+            assignerHeaders
+          )
+          expect(after.data.count).toEqual(0)
+        })
+
+        it("rejects an empty assignments list on the user roles routes", async () => {
+          const assignError = await api
+            .post(
+              `/admin/users/${targetUser.id}/roles`,
+              { assignments: [] },
+              assignerHeaders
+            )
+            .catch((e) => e)
+          expect(assignError.response.status).toEqual(400)
+
+          const unassignError = await api
+            .delete(`/admin/users/${targetUser.id}/roles`, {
+              ...assignerHeaders,
+              data: { assignments: [] },
+            })
+            .catch((e) => e)
+          expect(unassignError.response.status).toEqual(400)
+        })
+      })
+
+      describe("GET /rbac/roles/:id/users", () => {
         let testRole
         let testUser1
         let testUser2
 
         beforeEach(async () => {
-          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+          const rbacModule = container.resolve(Modules.RBAC)
 
           // Create a role for testing
           const roleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Test Role",
               description: "Role for testing users endpoint",
@@ -1568,22 +2187,24 @@ medusaIntegrationTestRunner({
           testUser1 = users[0]
           testUser2 = users[1]
 
-          // Link users to the role
-          await remoteLink.create([
+          // Assign the role to the users
+          await rbacModule.createRbacRoleAssignments([
             {
-              [Modules.USER]: { user_id: testUser1.id },
-              [Modules.RBAC]: { rbac_role_id: testRole.id },
+              role_id: testRole.id,
+              reference: "user",
+              reference_id: testUser1.id,
             },
             {
-              [Modules.USER]: { user_id: testUser2.id },
-              [Modules.RBAC]: { rbac_role_id: testRole.id },
+              role_id: testRole.id,
+              reference: "user",
+              reference_id: testUser2.id,
             },
           ])
         })
 
         it("should list users for a role", async () => {
           const response = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             adminHeaders
           )
 
@@ -1606,7 +2227,7 @@ medusaIntegrationTestRunner({
 
         it("should filter users by user_id", async () => {
           const response = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users?user_id=${testUser1.id}`,
+            `/rbac/roles/${testRole.id}/users?user_id=${testUser1.id}`,
             adminHeaders
           )
 
@@ -1623,7 +2244,7 @@ medusaIntegrationTestRunner({
 
         it("should filter users by multiple user_ids", async () => {
           const response = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users?user_id[]=${testUser1.id}&user_id[]=${testUser2.id}`,
+            `/rbac/roles/${testRole.id}/users?user_id[]=${testUser1.id}&user_id[]=${testUser2.id}`,
             adminHeaders
           )
 
@@ -1634,7 +2255,7 @@ medusaIntegrationTestRunner({
 
         it("should paginate users", async () => {
           const response = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users?limit=1&offset=0`,
+            `/rbac/roles/${testRole.id}/users?limit=1&offset=0`,
             adminHeaders
           )
 
@@ -1647,7 +2268,7 @@ medusaIntegrationTestRunner({
 
         it("should return empty array for role with no users", async () => {
           const emptyRoleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Empty Role",
               description: "Role with no users",
@@ -1657,7 +2278,7 @@ medusaIntegrationTestRunner({
           const emptyRole = emptyRoleResponse.data.role
 
           const response = await api.get(
-            `/admin/rbac/roles/${emptyRole.id}/users`,
+            `/rbac/roles/${emptyRole.id}/users`,
             adminHeaders
           )
 
@@ -1667,7 +2288,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/rbac/roles/:id/users", () => {
+      describe("POST /rbac/roles/:id/users", () => {
         it("should assign multiple users to a role", async () => {
           const userModule = container.resolve(Modules.USER)
 
@@ -1685,7 +2306,7 @@ medusaIntegrationTestRunner({
 
           // Create a role
           const roleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Batch Test Role",
               description: "Role for batch user assignment",
@@ -1696,7 +2317,7 @@ medusaIntegrationTestRunner({
 
           // Assign multiple users to the role
           const response = await api.post(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             { users: [testUser1.id, testUser2.id] },
             adminHeaders
           )
@@ -1712,7 +2333,7 @@ medusaIntegrationTestRunner({
 
           // Verify users were assigned
           const verifyResponse = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             adminHeaders
           )
           expect(verifyResponse.data.count).toEqual(2)
@@ -1721,7 +2342,7 @@ medusaIntegrationTestRunner({
         it("should return 404 for non-existent role", async () => {
           const error = await api
             .post(
-              `/admin/rbac/roles/non_existent_id/users`,
+              `/rbac/roles/non_existent_id/users`,
               { users: ["user_123"] },
               adminHeaders
             )
@@ -1731,10 +2352,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("DELETE /admin/rbac/roles/:id/users", () => {
+      describe("DELETE /rbac/roles/:id/users", () => {
         it("should remove multiple users from a role", async () => {
           const userModule = container.resolve(Modules.USER)
-          const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
+          const rbacModule = container.resolve(Modules.RBAC)
 
           // Create test users
           const testUser1 = await userModule.createUsers({
@@ -1750,7 +2371,7 @@ medusaIntegrationTestRunner({
 
           // Create a role
           const roleResponse = await api.post(
-            "/admin/rbac/roles",
+            "/rbac/roles",
             {
               name: "Batch Remove Test Role",
               description: "Role for batch user removal",
@@ -1760,27 +2381,29 @@ medusaIntegrationTestRunner({
           const testRole = roleResponse.data.role
 
           // Assign users to the role
-          await remoteLink.create([
+          await rbacModule.createRbacRoleAssignments([
             {
-              [Modules.USER]: { user_id: testUser1.id },
-              [Modules.RBAC]: { rbac_role_id: testRole.id },
+              role_id: testRole.id,
+              reference: "user",
+              reference_id: testUser1.id,
             },
             {
-              [Modules.USER]: { user_id: testUser2.id },
-              [Modules.RBAC]: { rbac_role_id: testRole.id },
+              role_id: testRole.id,
+              reference: "user",
+              reference_id: testUser2.id,
             },
           ])
 
           // Verify users were assigned
           const beforeResponse = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             adminHeaders
           )
           expect(beforeResponse.data.count).toEqual(2)
 
           // Remove multiple users from the role
           const deleteResponse = await api.delete(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             {
               ...adminHeaders,
               data: { users: [testUser1.id, testUser2.id] },
@@ -1796,7 +2419,7 @@ medusaIntegrationTestRunner({
 
           // Verify users were removed
           const afterResponse = await api.get(
-            `/admin/rbac/roles/${testRole.id}/users`,
+            `/rbac/roles/${testRole.id}/users`,
             adminHeaders
           )
           expect(afterResponse.data.count).toEqual(0)
@@ -1804,13 +2427,142 @@ medusaIntegrationTestRunner({
 
         it("should return 404 for non-existent role", async () => {
           const error = await api
-            .delete(`/admin/rbac/roles/non_existent_id/users`, {
+            .delete(`/rbac/roles/non_existent_id/users`, {
               ...adminHeaders,
               data: { users: ["user_123"] },
             })
             .catch((e) => e)
 
           expect(error.response.status).toEqual(404)
+        })
+      })
+
+      describe("super admin protection", () => {
+        let superAdminId: string
+
+        const createSecondSuperAdmin = async () => {
+          const headers = { headers: { ...adminHeaders.headers } }
+          const { user } = await createAdminUser(
+            dbConnection,
+            headers,
+            container,
+            {
+              email: "second-super-admin@medusa.js",
+              roles: [RBAC_SUPER_ADMIN_ROLE_ID],
+            }
+          )
+          return user
+        }
+
+        beforeEach(async () => {
+          const userModule = container.resolve(Modules.USER)
+          const [superAdmin] = await userModule.listUsers({
+            email: "admin@medusa.js",
+          })
+          superAdminId = superAdmin.id
+        })
+
+        describe("DELETE /admin/users/:id/roles", () => {
+          const unassignSuperAdmin = (userId: string) =>
+            api.delete(`/admin/users/${userId}/roles`, {
+              ...adminHeaders,
+              data: { assignments: [{ role_id: RBAC_SUPER_ADMIN_ROLE_ID }] },
+            })
+
+          it("refuses to unassign the super admin role from the last super admin", async () => {
+            const error = await unassignSuperAdmin(superAdminId).catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data.message).toContain(
+              "Cannot remove the last super admin"
+            )
+
+            const rbacModule = container.resolve(Modules.RBAC)
+            const assignments = await rbacModule.listRbacRoleAssignments({
+              role_id: RBAC_SUPER_ADMIN_ROLE_ID,
+              reference_id: superAdminId,
+            })
+            expect(assignments).toHaveLength(1)
+          })
+
+          it("unassigns it once another super admin exists", async () => {
+            await createSecondSuperAdmin()
+
+            const response = await unassignSuperAdmin(superAdminId)
+
+            expect(response.status).toEqual(200)
+          })
+        })
+
+        describe("DELETE /admin/users/:id", () => {
+          const userManagerHeaders = { headers: { ...adminHeaders.headers } }
+          let userManagerId: string
+
+          beforeEach(async () => {
+            const rbacModule = container.resolve(Modules.RBAC)
+            const policies = await Promise.all(
+              ["read", "delete"].map((operation) =>
+                ensureRbacPolicy(rbacModule, {
+                  key: `user:${operation}`,
+                  resource: "user",
+                  operation,
+                  name: `user:${operation}`,
+                })
+              )
+            )
+            const role = await rbacModule.createRbacRoles({
+              name: "User Manager",
+            })
+            await rbacModule.createRbacRolePolicies(
+              policies.map((policy) => ({
+                role_id: role.id,
+                policy_id: policy.id,
+              }))
+            )
+
+            const { user } = await createAdminUser(
+              dbConnection,
+              userManagerHeaders,
+              container,
+              { email: "user-manager@medusa.js", roles: [role.id] }
+            )
+            userManagerId = user.id
+          })
+
+          it("refuses to delete the last super admin", async () => {
+            const error = await api
+              .delete(`/admin/users/${superAdminId}`, userManagerHeaders)
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data.message).toContain(
+              "Cannot remove the last super admin"
+            )
+
+            const userModule = container.resolve(Modules.USER)
+            const users = await userModule.listUsers({ id: superAdminId })
+            expect(users).toHaveLength(1)
+          })
+
+          it("deletes a super admin once another super admin exists", async () => {
+            await createSecondSuperAdmin()
+
+            const response = await api.delete(
+              `/admin/users/${superAdminId}`,
+              userManagerHeaders
+            )
+
+            expect(response.status).toEqual(200)
+          })
+
+          it("deletes a user that isn't a super admin", async () => {
+            const response = await api.delete(
+              `/admin/users/${userManagerId}`,
+              adminHeaders
+            )
+
+            expect(response.status).toEqual(200)
+          })
         })
       })
     })

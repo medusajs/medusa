@@ -1,12 +1,30 @@
 # @medusajs/rbac
 
-Role-based access control module: stores roles, policies (`resource:operation` permissions), role-to-policy assignments, and role inheritance. Registered as `Modules.RBAC` (`"rbac"`).
+Role-based access control module: stores roles, policies (`resource:operation` permissions), role-to-policy assignments, and role assignments. Registered as `Modules.RBAC` (`"rbac"`).
 
 ## Using this package
 
-- Included in `defineConfig` (`@medusajs/medusa/rbac`) but disabled unless the `rbac` feature flag is on (`MEDUSA_FF_RBAC=true`, default `false`).
+- Not registered by default: applications add `{ resolve: "@medusajs/medusa/rbac" }` to `modules` in `medusa-config.ts`. Everything RBAC (the `authorize` middleware, the `/rbac/*` routes, role assignment on users and invites, response field filtering) switches on when the module is installed and is a no-op otherwise.
 - It is a licensed module: the loader (`packages/core/modules-sdk/src/loaders/utils/load-internal.ts`, `LICENSED_MODULES`) only loads it when the license covers `LicenseFeature.RBAC`.
-- No module options and no providers.
+- One module option, `actors`, says how each authenticated actor type reaches the entities that can hold role assignments for it (its grantees), and no providers. `user` always keeps `{ entity: "user", path: "id" }` as a grantee; configured grantees are added to it. Secret API keys authenticate as `api-key` and by default act with the roles of the user that created them. Set `actor_entity` when the actor type is not the name of a `query.graph` entity.
+
+```ts
+// medusa-config.ts
+{
+  resolve: "@medusajs/medusa/rbac",
+  options: {
+    actors: {
+      user: { grantees: [{ entity: "team", path: "teams.id" }] },
+      // Give each secret key its own role assignments (reference: "api_key")
+      // instead of inheriting its creator's roles:
+      "api-key": {
+        actor_entity: "api_key",
+        grantees: [{ entity: "api_key", path: "id" }],
+      },
+    },
+  },
+}
+```
 
 ```ts
 import { Modules } from "@medusajs/framework/utils"
@@ -16,34 +34,34 @@ const rbacModuleService: IRbacModuleService = container.resolve(Modules.RBAC)
 const policies = await rbacModuleService.listPoliciesForRole("role_123")
 ```
 
-- Custom policies are declared with `definePolicies` from `@medusajs/framework/utils` (`{ name, resource, operation, description? }`); they land in the global `Policy` registry and this module syncs them to the DB on startup.
+- Custom policies are created at runtime, for example with `createRbacPoliciesWorkflow` from `@medusajs/core-flows` and payloads from `buildPolicies({ resource, operation? })` (`@medusajs/framework/utils`), which expands each resource into one policy per operation (`read`, `create`, `update`, `delete` by default).
 
 ### Data models (`src/models`, all exported from `src/models/index.ts`)
 
-- `RbacRole` (`role_`): `name` (unique among non-deleted), `description`, `policies`, `parents`.
+- `RbacRole` (`role_`): `name` (unique among non-deleted), `description`, `policies`, `assignments`. Deleting a role cascades to both.
 - `RbacPolicy` (`rpol_`): `key` (unique, `<resource>:<operation>`), `resource`, `operation`, `name`, `description`.
-- `RbacRolePolicy` (`rlpl_`): role-to-policy join.
-- `RbacRoleParent` (`rlin_`): `role` inherits from `parent`.
-- `src/models/rbac-role-inheritance.ts` is not exported from the models index and is not part of the service; do not build on it.
+- `RbacRolePolicy` (`rlpl_`): role-to-policy join, unique per `(role_id, policy_id)`.
+- `RbacRoleAssignment` (`rasgn_`): grants `role_id` to a grantee identified by `reference` (e.g. `"user"`) and `reference_id`, optionally narrowed by `scope` / `scope_id`. Unique partial indexes allow one assignment per `(role_id, scope, scope_id, reference, reference_id)` and one unscoped assignment per `(role_id, reference, reference_id)`, among non-deleted rows.
 
 ### Service methods (`src/services/rbac-module-service.ts`)
 
-Generated CRUD for `RbacRole`, `RbacPolicy`, `RbacRoleParent`, `RbacRolePolicy`, plus:
+Generated CRUD for `RbacRole`, `RbacPolicy`, `RbacRolePolicy`, `RbacRoleAssignment`, plus:
 
-- `listPoliciesForRole(roleId)`: all policies of the role, including inherited ones (recursive CTE in `src/repositories/rbac.ts`); inherited rows carry `inherited_from_role_id`.
-- `listRbacRoles` / `listAndCountRbacRoles` (overridden): when `relations` or `select` include `"policies"`, `role.policies` is replaced with the resolved (inherited) policies, not the raw `RbacRolePolicy` rows.
-- `createRbacRoleParents` / `updateRbacRoleParents` (overridden): reject self-parenting and cycles (`checkForCycle`).
+- `listPoliciesForRole(roleId)`: the policies assigned directly to the role (raw SQL join in `src/repositories/rbac.ts`), as `RbacPolicy` rows.
+- `listRbacRoles` / `listAndCountRbacRoles` (overridden): when `relations` or `select` include `"policies"`, `role.policies` is replaced with the role's `RbacPolicy` rows, not the raw `RbacRolePolicy` join rows.
+- `retrieveActorAuthzContextConfig(actorType)`: the resolved `actors` option entry for an actor type (`user` and `api-key` always have one).
 
 ### Events and links
 
 - Emits internal CRUD events (`rbac.<model>.created|updated|deleted|restored`) through `MedusaService`.
-- Module links: `user-rbac-role` (`user_rbac_role`, User -> RbacRole) and `invite-rbac-role` (`invite_rbac_role`, Invite -> RbacRole) in `packages/modules/link-modules/src/definitions`.
+- Read-only links in `packages/modules/link-modules/src/definitions` expose assignments on users (`user-rbac-role-assignment.ts`, `user_role_assignments`) and invites (`invite-rbac-role-assignment.ts`, `invite_role_assignments`), matching `reference_id` to the user or invite `id`. The legacy `user-rbac-role` / `invite-rbac-role` table links are kept only until a migration script copies their rows into `rbac_role_assignment`.
 
 ## Architecture
 
-- `src/loaders/initial-data.ts`: upserts the super admin role `role_super_admin`, policy `rpol_super_admin` (key `*:*`), and their join `rlpl_super_admin` on every load.
-- `__hooks.onApplicationStart` runs `syncRegisteredPolicies()`: creates policies newly registered via `definePolicies`, restores soft-deleted ones that are registered again, updates changed `name` / `description`, and soft-deletes DB policies no longer registered. The `*:*` super admin policy is always skipped.
-- `src/repositories/rbac.ts` (`RbacRepository`) uses raw SQL against `rbac_role`, `rbac_role_parent`, `rbac_role_policy`, `rbac_policy`; renaming those tables or columns requires updating these queries.
+- Two loaders run on every module load, in this order (`src/index.ts`):
+  - `src/loaders/initial-data.ts` upserts the super admin role (`RBAC_SUPER_ADMIN_ROLE_ID`, `role_super_admin`), its `*:*` policy (`RBAC_SUPER_ADMIN_POLICY_ID`, `rpol_super_admin`), and their join `rlpl_super_admin`. Both constants come from `@medusajs/framework/utils`.
+  - `src/loaders/core-policies.ts` syncs `CORE_POLICY_DEFINITIONS` (`src/loaders/core-policy-definitions.ts`: `buildPolicies` over `CORE_POLICY_RESOURCES`, one policy per core resource and operation). Rows are matched by `key`: missing ones are created, soft-deleted ones restored, and drifted `name` / `description` updated. Policies it doesn't define are never touched, and it never deletes.
+- `src/repositories/rbac.ts` (`RbacRepository`) uses raw SQL against `rbac_role`, `rbac_role_policy`, `rbac_policy`; renaming those tables or columns requires updating these queries.
 
 ## Development
 
@@ -59,6 +77,7 @@ yarn migration:create           # after any change in src/models
 
 ## Gotchas
 
-- Policies created by hand that are not registered via `definePolicies` are soft-deleted on the next application start.
-- Role parent validation throws plain `Error`, not `MedusaError`.
-- Inheritance traversal skips soft-deleted roles and parent rows, and guards against cycles with a path array.
+- A policy's `key`, `resource` and `operation` cannot be changed through `POST /rbac/policies/:id` (only `name`, `description` and `metadata` can). Every role holding the policy would silently gain the new permission, so an actor with `rbac_policy:update` could widen a policy they hold into `*:*`. Create a new policy, or change them from a migration script you control.
+- The super admin role and policy can't be deleted (`deleteRbacRolesStep` / `deleteRbacPoliciesStep` in `@medusajs/core-flows` throw `NOT_ALLOWED`), and the last user holding the unscoped super admin role can't be unassigned from it or deleted (`ensureSuperAdminRemainsStep`). Calling the module service directly bypasses these checks.
+- Deleting a core policy only lasts until the next boot: `core-policies.ts` restores it.
+- The framework caches each role's resolved permissions (`packages/core/framework/src/policies/has-permission.ts`) through the caching module, tagged with `RBAC_CACHE_TAGS` from `@medusajs/framework/utils`. The caching module invalidates those tags from this module's CRUD events, so writes that skip `MedusaService` (raw SQL, events not emitted) leave stale permissions until the entries expire.

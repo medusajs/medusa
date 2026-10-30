@@ -8,12 +8,10 @@ import {
 } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
-  FeatureFlag,
   generateJwtToken,
   Modules,
 } from "@medusajs/framework/utils"
 import { type Secret } from "jsonwebtoken"
-import RbacFeatureFlag from "../../../feature-flags/rbac"
 import { validateVerification } from "./validate-verification"
 
 export async function generateJwtTokenWithChecks(
@@ -153,29 +151,6 @@ export async function generateJwtTokenForAuthIdentity(
     mfaEnabled_ = enabledFactors.length > 0
   }
 
-  let roles: string[] | undefined
-
-  if (FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key)) {
-    if (container && entityId) {
-      try {
-        const query = container.resolve(ContainerRegistrationKeys.QUERY)
-        const { data: userRoles } = await query.graph({
-          entity: actorType,
-          fields: ["rbac_roles.id"],
-          filters: {
-            id: entityId,
-          },
-        })
-
-        if (userRoles?.[0]?.rbac_roles) {
-          roles = userRoles[0].rbac_roles.map((role) => role.id)
-        }
-      } catch {
-        // ignore
-      }
-    }
-  }
-
   return generateJwtToken(
     {
       actor_id: entityId ?? "",
@@ -189,7 +164,6 @@ export async function generateJwtTokenForAuthIdentity(
       app_metadata: {
         ...(authIdentity.app_metadata ?? {}),
         [entityIdKey]: entityId,
-        roles,
       },
       user_metadata: providerIdentity?.user_metadata ?? {},
     },

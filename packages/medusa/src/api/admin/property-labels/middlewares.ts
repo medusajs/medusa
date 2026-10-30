@@ -1,10 +1,13 @@
 import {
+  authorize,
   MiddlewareRoute,
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import { ensureViewConfigurationsEnabled } from "../views/[entity]/configurations/middleware"
 import * as QueryConfig from "./query-config"
+import { Entities } from "./query-config"
 import {
   AdminBatchPropertyLabels,
   AdminCreatePropertyLabel,
@@ -19,6 +22,12 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/property-labels",
     method: "GET",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.read,
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformQuery(
         AdminPropertyLabelListParams,
@@ -31,6 +40,12 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/property-labels",
     method: "POST",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.create,
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformBody(AdminCreatePropertyLabel),
       validateAndTransformQuery(
@@ -44,6 +59,12 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/property-labels/:id",
     method: "GET",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.read,
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformQuery(
         AdminPropertyLabelParams,
@@ -56,6 +77,12 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/property-labels/:id",
     method: "POST",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.update,
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformBody(AdminUpdatePropertyLabel),
       validateAndTransformQuery(
@@ -68,13 +95,31 @@ export const adminPropertyLabelsMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/property-labels/:id",
     method: "DELETE",
-    middlewares: [ensureViewConfigurationsEnabled],
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: PolicyOperation.delete,
+        },
+      ]),
+      ensureViewConfigurationsEnabled,
+    ],
   },
   // Batch operations
   {
     matcher: "/admin/property-labels/batch",
     method: "POST",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.property_label,
+          operation: [
+            PolicyOperation.create,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ],
+        },
+      ]),
       ensureViewConfigurationsEnabled,
       validateAndTransformBody(AdminBatchPropertyLabels),
       validateAndTransformQuery(

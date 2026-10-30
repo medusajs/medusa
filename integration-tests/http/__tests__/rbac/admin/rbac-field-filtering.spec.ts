@@ -1,4 +1,8 @@
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  PolicyOperation,
+} from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -8,8 +12,7 @@ import { getProductFixture } from "../../../../helpers/fixtures"
 
 jest.setTimeout(60000)
 
-process.env.MEDUSA_FF_RBAC = "true"
-process.env.MEDUSA_FF_RBAC_FILTER_FIELDS = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
@@ -177,15 +180,13 @@ medusaIntegrationTestRunner({
         { role_id: testRole[0].id, policy_id: salesChannelUpdatePolicy[0].id },
       ])
 
-      const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
-      await remoteLink.create({
-        [Modules.USER]: {
-          user_id: testUser.id,
+      await rbacModule.createRbacRoleAssignments([
+        {
+          role_id: testRole[0].id,
+          reference: "user",
+          reference_id: testUser.id,
         },
-        [Modules.RBAC]: {
-          rbac_role_id: testRole[0].id,
-        },
-      })
+      ])
 
       // Login the user to get a proper JWT token with roles
       const loginResponse = await api.post("/auth/user/emailpass", {
@@ -210,7 +211,7 @@ medusaIntegrationTestRunner({
     })
 
     afterAll(async () => {
-      delete process.env.MEDUSA_FF_RBAC
+      delete process.env.ENABLE_RBAC_MODULE
     })
 
     describe("RBAC Middleware Integration", () => {
@@ -410,6 +411,93 @@ medusaIntegrationTestRunner({
         expect(
           response.data.product.variants[0].prices[0].currency_code
         ).toBeDefined()
+      })
+
+      it("should filter out link module relations the actor cannot read", async () => {
+        const rbacModule = container.resolve(Modules.RBAC)
+        const salesChannelModule = container.resolve(Modules.SALES_CHANNEL)
+        const link = container.resolve(ContainerRegistrationKeys.LINK)
+
+        const [salesChannel] = await salesChannelModule.createSalesChannels([
+          { name: "RBAC Link Channel" },
+        ])
+        await link.create({
+          [Modules.PRODUCT]: { product_id: baseProduct.id },
+          [Modules.SALES_CHANNEL]: { sales_channel_id: salesChannel.id },
+        })
+
+        const salesChannelReadPolicy = await rbacModule.createRbacPolicies([
+          {
+            key: "read:sales_channel",
+            resource: "sales_channel",
+            operation: PolicyOperation.read,
+            name: "Read Sales Channels",
+            description: "Permission to read sales channels",
+          },
+        ])
+
+        const [productOnlyRole, productAndChannelRole] =
+          await rbacModule.createRbacRoles([
+            { name: "Product Only Reader" },
+            { name: "Product And Sales Channel Reader" },
+          ])
+
+        await rbacModule.createRbacRolePolicies([
+          { role_id: productOnlyRole.id, policy_id: productReadPolicy[0].id },
+          {
+            role_id: productAndChannelRole.id,
+            policy_id: productReadPolicy[0].id,
+          },
+          {
+            role_id: productAndChannelRole.id,
+            policy_id: salesChannelReadPolicy[0].id,
+          },
+        ])
+
+        const loginAs = async (email: string, roleId: string) => {
+          await createAdminUser(
+            dbConnection,
+            { headers: { "x-medusa-access-token": "test_token" } },
+            container,
+            { email, roles: [roleId] }
+          )
+          const loginResponse = await api.post("/auth/user/emailpass", {
+            email,
+            password: "somepassword",
+          })
+          return {
+            headers: { authorization: `Bearer ${loginResponse.data.token}` },
+          }
+        }
+
+        const productOnlyHeaders = await loginAs(
+          "product-only@medusa.js",
+          productOnlyRole.id
+        )
+        const productAndChannelHeaders = await loginAs(
+          "product-and-channel@medusa.js",
+          productAndChannelRole.id
+        )
+
+        const restricted = await api.get(
+          `/admin/products?id=${baseProduct.id}&fields=id,*sales_channels`,
+          productOnlyHeaders
+        )
+
+        expect(restricted.status).toEqual(200)
+        expect(restricted.data.products).toHaveLength(1)
+        expect(restricted.data.products[0].id).toEqual(baseProduct.id)
+        expect(restricted.data.products[0]).not.toHaveProperty("sales_channels")
+
+        const allowed = await api.get(
+          `/admin/products?id=${baseProduct.id}&fields=id,*sales_channels`,
+          productAndChannelHeaders
+        )
+
+        expect(allowed.status).toEqual(200)
+        expect(allowed.data.products[0].sales_channels).toEqual([
+          expect.objectContaining({ id: salesChannel.id }),
+        ])
       })
 
       it("should allow super admin with wildcard permissions to perform all product operations", async () => {

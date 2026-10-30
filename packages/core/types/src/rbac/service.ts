@@ -3,23 +3,24 @@ import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  AuthzContextConfig,
   FilterableRbacPolicyProps,
-  FilterableRbacRoleParentProps,
+  FilterableRbacRoleAssignmentProps,
   FilterableRbacRolePolicyProps,
   FilterableRbacRoleProps,
   RbacPolicyDTO,
+  RbacRoleAssignmentDTO,
   RbacRoleDTO,
-  RbacRoleParentDTO,
   RbacRolePolicyDTO,
 } from "./common"
 import {
   CreateRbacPolicyDTO,
+  CreateRbacRoleAssignmentDTO,
   CreateRbacRoleDTO,
-  CreateRbacRoleParentDTO,
   CreateRbacRolePolicyDTO,
   UpdateRbacPolicyDTO,
+  UpdateRbacRoleAssignmentDTO,
   UpdateRbacRoleDTO,
-  UpdateRbacRoleParentDTO,
   UpdateRbacRolePolicyDTO,
 } from "./mutations"
 
@@ -147,46 +148,46 @@ export interface IRbacModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<[RbacRolePolicyDTO[], number]>
 
-  createRbacRoleParents(
-    data: CreateRbacRoleParentDTO,
+  createRbacRoleAssignments(
+    data: CreateRbacRoleAssignmentDTO,
     sharedContext?: Context
-  ): Promise<RbacRoleParentDTO>
-  createRbacRoleParents(
-    data: CreateRbacRoleParentDTO[],
+  ): Promise<RbacRoleAssignmentDTO>
+  createRbacRoleAssignments(
+    data: CreateRbacRoleAssignmentDTO[],
     sharedContext?: Context
-  ): Promise<RbacRoleParentDTO[]>
+  ): Promise<RbacRoleAssignmentDTO[]>
 
-  updateRbacRoleParents(
-    data: UpdateRbacRoleParentDTO,
+  updateRbacRoleAssignments(
+    data: UpdateRbacRoleAssignmentDTO,
     sharedContext?: Context
-  ): Promise<RbacRoleParentDTO>
-  updateRbacRoleParents(
-    data: UpdateRbacRoleParentDTO[],
+  ): Promise<RbacRoleAssignmentDTO>
+  updateRbacRoleAssignments(
+    data: UpdateRbacRoleAssignmentDTO[],
     sharedContext?: Context
-  ): Promise<RbacRoleParentDTO[]>
+  ): Promise<RbacRoleAssignmentDTO[]>
 
-  deleteRbacRoleParents(
+  deleteRbacRoleAssignments(
     ids: string | string[],
     sharedContext?: Context
   ): Promise<void>
 
-  retrieveRbacRoleParent(
+  retrieveRbacRoleAssignment(
     id: string,
-    config?: FindConfig<RbacRoleParentDTO>,
+    config?: FindConfig<RbacRoleAssignmentDTO>,
     sharedContext?: Context
-  ): Promise<RbacRoleParentDTO>
+  ): Promise<RbacRoleAssignmentDTO>
 
-  listRbacRoleParents(
-    filters?: FilterableRbacRoleParentProps,
-    config?: FindConfig<RbacRoleParentDTO>,
+  listRbacRoleAssignments(
+    filters?: FilterableRbacRoleAssignmentProps,
+    config?: FindConfig<RbacRoleAssignmentDTO>,
     sharedContext?: Context
-  ): Promise<RbacRoleParentDTO[]>
+  ): Promise<RbacRoleAssignmentDTO[]>
 
-  listAndCountRbacRoleParents(
-    filters?: FilterableRbacRoleParentProps,
-    config?: FindConfig<RbacRoleParentDTO>,
+  listAndCountRbacRoleAssignments(
+    filters?: FilterableRbacRoleAssignmentProps,
+    config?: FindConfig<RbacRoleAssignmentDTO>,
     sharedContext?: Context
-  ): Promise<[RbacRoleParentDTO[], number]>
+  ): Promise<[RbacRoleAssignmentDTO[], number]>
 
   listPoliciesForRole(
     roleId: string,
@@ -223,14 +224,29 @@ export interface IRbacModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
-  softDeleteRbacRoleParents<TReturnableLinkableKeys extends string = string>(
-    roleParentIds: string | string[],
+  softDeleteRbacRoleAssignments<
+    TReturnableLinkableKeys extends string = string,
+  >(
+    roleAssignmentIds: string | string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
-  restoreRbacRoleParents<TReturnableLinkableKeys extends string = string>(
-    roleParentIds: string | string[],
+  restoreRbacRoleAssignments<TReturnableLinkableKeys extends string = string>(
+    roleAssignmentIds: string | string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+  retrieveActorAuthzContextConfig(
+    actorType: string
+  ): Promise<AuthzContextConfig | undefined>
+}
+
+export interface IRbacModuleServiceOptions {
+  /**
+   * Keyed by actor type, holds the configuration needed to build the Authz Context
+   * necessary to resolve the actor's roles.
+   */
+  actors: {
+    [actor_type: string]: AuthzContextConfig | undefined
+  }
 }

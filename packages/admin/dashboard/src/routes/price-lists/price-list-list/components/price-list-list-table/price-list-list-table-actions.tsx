@@ -2,7 +2,11 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 
 import { useTranslation } from "react-i18next"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
+import { usePriceListPermissions } from "../../../../../hooks/use-resource-permissions"
 import { useDeletePriceListAction } from "../../../common/hooks/use-delete-price-list-action"
 
 type PriceListListTableActionsProps = {
@@ -13,30 +17,38 @@ export const PriceListListTableActions = ({
   priceList,
 }: PriceListListTableActionsProps) => {
   const { t } = useTranslation()
+  const { canUpdate, canDelete } = usePriceListPermissions()
   const handleDelete = useDeletePriceListAction({ priceList })
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.edit"),
-              to: `${priceList.id}/edit`,
-              icon: <PencilSquare />,
-            },
-          ],
+          label: t("actions.edit"),
+          to: `${priceList.id}/edit`,
+          icon: <PencilSquare />,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.delete"),
-              onClick: handleDelete,
-              icon: <Trash />,
-            },
-          ],
+          label: t("actions.delete"),
+          onClick: handleDelete,
+          icon: <Trash />,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

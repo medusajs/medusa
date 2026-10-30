@@ -5,6 +5,7 @@ import { PencilSquare } from "@medusajs/icons"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DateRangeDisplay } from "../../../../../components/common/date-range-display"
+import { useCampaignPermissions } from "../../../../../hooks/use-resource-permissions"
 
 type CampaignConfigurationSectionProps = {
   campaign: HttpTypes.AdminCampaign
@@ -14,24 +15,27 @@ export const CampaignConfigurationSection = ({
   campaign,
 }: CampaignConfigurationSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate } = useCampaignPermissions()
 
   return (
     <Container className="flex flex-col gap-y-4">
       <div className="flex items-center justify-between">
         <Heading level="h2">{t("campaigns.configuration.header")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  icon: <PencilSquare />,
-                  to: "configuration",
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    icon: <PencilSquare />,
+                    to: "configuration",
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <DateRangeDisplay
         startsAt={campaign.starts_at}

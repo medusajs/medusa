@@ -14,6 +14,11 @@ import { ActiveLocalesSection } from "./components/active-locales-section/active
 import { TranslationListSection } from "./components/translation-list-section/translation-list-section"
 import { TranslationsCompletionSection } from "./components/translations-completion-section/translations-completion-section"
 import { ListCheckbox } from "@medusajs/icons"
+import {
+  useStorePermissions,
+  useTranslationSettingPermissions,
+} from "../../../hooks/use-resource-permissions"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export type TranslatableEntity = {
   label: string
@@ -26,16 +31,33 @@ export type TranslatableEntity = {
 export const TranslationList = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { canUpdate: canManageLocales } = useStorePermissions()
+  const {
+    canCreate: canCreateSettings,
+    canUpdate: canUpdateSettings,
+    canDelete: canDeleteSettings,
+    canRead: canReadTranslationSettings,
+  } = useTranslationSettingPermissions()
+  const canManageEntities =
+    canCreateSettings && canUpdateSettings && canDeleteSettings
+  const { canRead: canReadStore } = useStorePermissions()
 
-  const { store, isPending, isError, error } = useStore()
+  const { store, isPending, isError, error } = useStore(undefined, {
+    enabled: canReadStore,
+  })
   const {
     translation_settings,
     isPending: isTranslationSettingsPending,
     isError: isTranslationSettingsError,
     error: translationSettingsError,
-  } = useTranslationSettings({
-    is_active: true,
-  })
+  } = useTranslationSettings(
+    {
+      is_active: true,
+    },
+    {
+      enabled: canReadTranslationSettings,
+    }
+  )
   const {
     statistics,
     isPending: isTranslationStatisticsPending,
@@ -126,16 +148,18 @@ export const TranslationList = () => {
                     {t("translations.subtitle")}
                   </Text>
                 </div>
-                <Button
-                  size="small"
-                  variant="secondary"
-                  onClick={handleManageEntities}
-                >
-                  <ListCheckbox className="text-ui-fg-subtle" />
-                  <Text className="txt-compact-small-plus text-ui-fg-base">
-                    {t("translations.actions.manageEntities")}
-                  </Text>
-                </Button>
+                {canManageEntities && (
+                  <Button
+                    size="small"
+                    variant="secondary"
+                    onClick={handleManageEntities}
+                  >
+                    <ListCheckbox className="text-ui-fg-subtle" />
+                    <Text className="txt-compact-small-plus text-ui-fg-base">
+                      {t("translations.actions.manageEntities")}
+                    </Text>
+                  </Button>
+                )}
               </Container>
             </LayoutComposer.Entry>
 
@@ -147,15 +171,17 @@ export const TranslationList = () => {
                 >
                   <div className="flex items-center justify-between gap-x-2">
                     <p>{t("translations.activeLocales.noLocalesTip")}.</p>
-                    <Button
-                      onClick={handleManageLocales}
-                      size="small"
-                      variant="secondary"
-                    >
-                      {t(
-                        "translations.activeLocales.noLocalesTipConfigureAction"
-                      )}
-                    </Button>
+                    {canManageLocales && (
+                      <Button
+                        onClick={handleManageLocales}
+                        size="small"
+                        variant="secondary"
+                      >
+                        {t(
+                          "translations.activeLocales.noLocalesTipConfigureAction"
+                        )}
+                      </Button>
+                    )}
                   </div>
                 </Alert>
               </LayoutComposer.Entry>
@@ -172,23 +198,27 @@ export const TranslationList = () => {
         side: (
           <>
             <LayoutComposer.Entry id="ActiveLocalesSection">
-              <ActiveLocalesSection
-                locales={
-                  store?.supported_locales?.map(
-                    (suportedLocale) => suportedLocale.locale
-                  ) ?? []
-                }
-              ></ActiveLocalesSection>
+              <PermissionGuard permission="store:read">
+                <ActiveLocalesSection
+                  locales={
+                    store?.supported_locales?.map(
+                      (suportedLocale) => suportedLocale.locale
+                    ) ?? []
+                  }
+                ></ActiveLocalesSection>
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="TranslationsCompletionSection">
-              <TranslationsCompletionSection
-                statistics={statistics ?? {}}
-                locales={
-                  store?.supported_locales?.map(
-                    (supportedLocale) => supportedLocale.locale
-                  ) ?? []
-                }
-              />
+              <PermissionGuard permission="store:read">
+                <TranslationsCompletionSection
+                  statistics={statistics ?? {}}
+                  locales={
+                    store?.supported_locales?.map(
+                      (supportedLocale) => supportedLocale.locale
+                    ) ?? []
+                  }
+                />
+              </PermissionGuard>
             </LayoutComposer.Entry>
           </>
         ),

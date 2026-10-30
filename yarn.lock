@@ -4468,9 +4468,12 @@ __metadata:
     "@medusajs/deps": 2.22.2
     bignumber.js: ^11.1.5
   peerDependencies:
+    express: ^4.21.0
     ioredis: ^5.11.1
     vite: ">=5"
   peerDependenciesMeta:
+    express:
+      optional: true
     ioredis:
       optional: true
     vite:

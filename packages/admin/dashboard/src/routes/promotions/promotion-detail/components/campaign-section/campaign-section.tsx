@@ -4,9 +4,16 @@ import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { DateRangeDisplay } from "../../../../../components/common/date-range-display"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
+import {
+  useCampaignPermissions,
+  usePromotionPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const CampaignDetailSection = ({
   campaign,
@@ -42,14 +49,20 @@ export const CampaignSection = ({
 }) => {
   const { t } = useTranslation()
   const { id } = useParams()
+  const { canUpdate: canUpdatePromotion } = usePromotionPermissions()
+  const { canUpdate: canUpdateCampaign } = useCampaignPermissions()
 
-  const actions = [
-    {
+  const canManagePromotionCampaign = canUpdatePromotion && canUpdateCampaign
+
+  const actions: Action[] = []
+
+  if (canManagePromotionCampaign) {
+    actions.push({
       label: t("actions.edit"),
       to: "add-to-campaign",
       icon: <PencilSquare />,
-    },
-  ]
+    })
+  }
 
   if (campaign) {
     actions.unshift({
@@ -64,13 +77,7 @@ export const CampaignSection = ({
       <div className="flex items-center justify-between">
         <Heading level="h2">{t("promotions.fields.campaign")}</Heading>
 
-        <ActionMenu
-          groups={[
-            {
-              actions,
-            },
-          ]}
-        />
+        {actions.length > 0 && <ActionMenu groups={[{ actions }]} />}
       </div>
 
       {campaign ? (
@@ -80,10 +87,14 @@ export const CampaignSection = ({
           className="h-[180px] pt-4 text-center"
           title="Not part of a campaign"
           message="Add this promotion to an existing campaign"
-          action={{
-            to: `/promotions/${id}/add-to-campaign`,
-            label: "Add to Campaign",
-          }}
+          action={
+            canManagePromotionCampaign
+              ? {
+                  to: `/promotions/${id}/add-to-campaign`,
+                  label: "Add to Campaign",
+                }
+              : undefined
+          }
           buttonVariant="transparentIconLeft"
         />
       )}

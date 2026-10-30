@@ -4,7 +4,6 @@ import { CreateRbacRolePolicyDTO, IRbacModuleService } from "@medusajs/types"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type CreateRbacRolePoliciesStepInput = {
   policies: CreateRbacRolePolicyDTO[]
@@ -12,13 +11,11 @@ export type CreateRbacRolePoliciesStepInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRolePoliciesStepId = "create-rbac-role-policies"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRolePoliciesStep = createStep(
   createRbacRolePoliciesStepId,

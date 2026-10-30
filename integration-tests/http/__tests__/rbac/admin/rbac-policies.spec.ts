@@ -1,5 +1,5 @@
 import { getAssignablePoliciesWorkflow } from "@medusajs/core-flows"
-import { Modules } from "@medusajs/framework/utils"
+import { Modules, RBAC_SUPER_ADMIN_POLICY_ID } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -8,7 +8,7 @@ import {
 
 jest.setTimeout(60000)
 
-process.env.MEDUSA_FF_RBAC = "true"
+process.env.ENABLE_RBAC_MODULE = "true"
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
@@ -22,14 +22,14 @@ medusaIntegrationTestRunner({
     })
 
     afterAll(async () => {
-      delete process.env.MEDUSA_FF_RBAC
+      delete process.env.ENABLE_RBAC_MODULE
     })
 
     describe("RBAC Policies - Admin API", () => {
-      describe("POST /admin/rbac/policies", () => {
+      describe("POST /rbac/policies", () => {
         it("should create a policy", async () => {
           const response = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "read:products",
               resource: "product",
@@ -55,7 +55,7 @@ medusaIntegrationTestRunner({
 
         it("should create a policy with metadata", async () => {
           const response = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "write:orders",
               resource: "order",
@@ -78,10 +78,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /admin/rbac/policies", () => {
+      describe("GET /rbac/policies", () => {
         beforeEach(async () => {
           await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "read:products",
               resource: "product",
@@ -92,7 +92,7 @@ medusaIntegrationTestRunner({
           )
 
           await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "write:products",
               resource: "product",
@@ -103,7 +103,7 @@ medusaIntegrationTestRunner({
           )
 
           await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "read:orders",
               resource: "order",
@@ -116,7 +116,7 @@ medusaIntegrationTestRunner({
 
         it("should list all policies", async () => {
           const response = await api.get(
-            "/admin/rbac/policies?limit=1000",
+            "/rbac/policies?limit=1000",
             adminHeaders
           )
 
@@ -145,7 +145,7 @@ medusaIntegrationTestRunner({
 
         it("should filter policies by resource", async () => {
           const response = await api.get(
-            "/admin/rbac/policies?resource=product",
+            "/rbac/policies?resource=product",
             adminHeaders
           )
 
@@ -167,7 +167,7 @@ medusaIntegrationTestRunner({
 
         it("should filter policies by operation", async () => {
           const response = await api.get(
-            "/admin/rbac/policies?operation=read&limit=1000",
+            "/rbac/policies?operation=read&limit=1000",
             adminHeaders
           )
 
@@ -188,10 +188,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("GET /admin/rbac/policies/:id", () => {
+      describe("GET /rbac/policies/:id", () => {
         it("should retrieve a policy by id", async () => {
           const createResponse = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "delete:users",
               resource: "user",
@@ -204,7 +204,7 @@ medusaIntegrationTestRunner({
           const policyId = createResponse.data.policy.id
 
           const response = await api.get(
-            `/admin/rbac/policies/${policyId}`,
+            `/rbac/policies/${policyId}`,
             adminHeaders
           )
 
@@ -221,10 +221,10 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/rbac/policies/:id", () => {
+      describe("POST /rbac/policies/:id", () => {
         it("should update a policy", async () => {
           const createResponse = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "admin:system",
               resource: "system",
@@ -237,7 +237,7 @@ medusaIntegrationTestRunner({
           const policyId = createResponse.data.policy.id
 
           const response = await api.post(
-            `/admin/rbac/policies/${policyId}`,
+            `/rbac/policies/${policyId}`,
             {
               name: "System Administrator",
               description: "Full system access",
@@ -255,12 +255,90 @@ medusaIntegrationTestRunner({
             })
           )
         })
+
+        it("rejects changing the key, resource or operation", async () => {
+          const { data } = await api.post(
+            "/rbac/policies",
+            {
+              key: "report:export",
+              resource: "report",
+              operation: "export",
+              name: "Export Reports",
+            },
+            adminHeaders
+          )
+          const policyId = data.policy.id
+
+          for (const update of [
+            { key: "report:*" },
+            { resource: "*" },
+            { operation: "*" },
+          ]) {
+            const error = await api
+              .post(`/rbac/policies/${policyId}`, update, adminHeaders)
+              .catch((e) => e)
+            expect(error.response.status).toEqual(400)
+          }
+
+          const { data: after } = await api.get(
+            `/rbac/policies/${policyId}`,
+            adminHeaders
+          )
+          expect(after.policy).toEqual(
+            expect.objectContaining({
+              key: "report:export",
+              resource: "report",
+              operation: "export",
+            })
+          )
+        })
+
+        it("does not let an actor widen a policy they hold into a wildcard", async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const [productRead] = await rbacModule.listRbacPolicies({
+            key: "product:read",
+          })
+          const [policyUpdate] = await rbacModule.listRbacPolicies({
+            key: "rbac_policy:update",
+          })
+          const role = await rbacModule.createRbacRoles({
+            name: "Policy Editor",
+          })
+          await rbacModule.createRbacRolePolicies([
+            { role_id: role.id, policy_id: productRead.id },
+            { role_id: role.id, policy_id: policyUpdate.id },
+          ])
+          const editorHeaders = { headers: { ...adminHeaders.headers } }
+          await createAdminUser(dbConnection, editorHeaders, container, {
+            email: "policy-editor@medusa.js",
+            roles: [role.id],
+          })
+
+          const before = await api
+            .get("/admin/customers", editorHeaders)
+            .catch((e) => e.response)
+          expect(before.status).toEqual(403)
+
+          const error = await api
+            .post(
+              `/rbac/policies/${productRead.id}`,
+              { resource: "*", operation: "*" },
+              editorHeaders
+            )
+            .catch((e) => e)
+          expect(error.response.status).toEqual(400)
+
+          const after = await api
+            .get("/admin/customers", editorHeaders)
+            .catch((e) => e.response)
+          expect(after.status).toEqual(403)
+        })
       })
 
-      describe("DELETE /admin/rbac/policies/:id", () => {
+      describe("DELETE /rbac/policies/:id", () => {
         it("should delete a policy", async () => {
           const createResponse = await api.post(
-            "/admin/rbac/policies",
+            "/rbac/policies",
             {
               key: "test:delete",
               resource: "test",
@@ -273,7 +351,7 @@ medusaIntegrationTestRunner({
           const policyId = createResponse.data.policy.id
 
           const deleteResponse = await api.delete(
-            `/admin/rbac/policies/${policyId}`,
+            `/rbac/policies/${policyId}`,
             adminHeaders
           )
 
@@ -284,17 +362,32 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const listResponse = await api.get(
-            "/admin/rbac/policies",
-            adminHeaders
-          )
+          const listResponse = await api.get("/rbac/policies", adminHeaders)
           expect(
             listResponse.data.policies.find((p) => p.id === policyId)
           ).toBeUndefined()
         })
+
+        it("refuses to delete the super admin policy, even for a super admin", async () => {
+          const error = await api
+            .delete(
+              `/rbac/policies/${RBAC_SUPER_ADMIN_POLICY_ID}`,
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.type).toEqual("not_allowed")
+
+          const rbacModule = container.resolve(Modules.RBAC)
+          const policies = await rbacModule.listRbacPolicies({
+            id: RBAC_SUPER_ADMIN_POLICY_ID,
+          })
+          expect(policies).toHaveLength(1)
+        })
       })
 
-      describe("GET /admin/rbac/policies/assignable", () => {
+      describe("GET /rbac/policies/assignable", () => {
         // Headers for actors with varying levels of permission coverage.
         // `adminHeaders` is the super-admin baseline (holds `*:*`).
         const productManagerHeaders = { headers: { ...adminHeaders.headers } }
@@ -476,7 +569,7 @@ medusaIntegrationTestRunner({
 
         it("returns every candidate policy for a super-admin (`*:*`)", async () => {
           const response = await api.get(
-            "/admin/rbac/policies/assignable?limit=1000",
+            "/rbac/policies/assignable?limit=1000",
             adminHeaders
           )
 
@@ -496,7 +589,7 @@ medusaIntegrationTestRunner({
 
         it("expands `resource:*` — product:* actor sees all product policies including the wildcard itself", async () => {
           const response = await api.get(
-            "/admin/rbac/policies/assignable",
+            "/rbac/policies/assignable",
             productManagerHeaders
           )
 
@@ -516,7 +609,7 @@ medusaIntegrationTestRunner({
 
         it("expands `*:op` — *:read actor sees all read policies including the wildcard itself", async () => {
           const response = await api.get(
-            "/admin/rbac/policies/assignable?limit=1000",
+            "/rbac/policies/assignable?limit=1000",
             universalReaderHeaders
           )
 
@@ -533,7 +626,7 @@ medusaIntegrationTestRunner({
 
         it("literal grant — product:read actor sees product:read and any policy covered by that grant", async () => {
           const response = await api.get(
-            "/admin/rbac/policies/assignable",
+            "/rbac/policies/assignable",
             productReaderHeaders
           )
 
@@ -548,7 +641,7 @@ medusaIntegrationTestRunner({
           // Super-admin holds *:* → can assign the wildcard policy row.
           const superAdminIds = (
             await api.get(
-              `/admin/rbac/policies/assignable?id=${wildcardPolicyId}`,
+              `/rbac/policies/assignable?id=${wildcardPolicyId}`,
               adminHeaders
             )
           ).data.policies.map((p: { id: string }) => p.id)
@@ -557,15 +650,15 @@ medusaIntegrationTestRunner({
           // Every scoped actor cannot.
           const others = await Promise.all([
             api.get(
-              `/admin/rbac/policies/assignable?id=${wildcardPolicyId}`,
+              `/rbac/policies/assignable?id=${wildcardPolicyId}`,
               productManagerHeaders
             ),
             api.get(
-              `/admin/rbac/policies/assignable?id=${wildcardPolicyId}`,
+              `/rbac/policies/assignable?id=${wildcardPolicyId}`,
               universalReaderHeaders
             ),
             api.get(
-              `/admin/rbac/policies/assignable?id=${wildcardPolicyId}`,
+              `/rbac/policies/assignable?id=${wildcardPolicyId}`,
               productReaderHeaders
             ),
           ])
@@ -599,7 +692,7 @@ medusaIntegrationTestRunner({
 
         it("applies the `id` filter when forwarded", async () => {
           const response = await api.get(
-            `/admin/rbac/policies/assignable?id=${productReadId}`,
+            `/rbac/policies/assignable?id=${productReadId}`,
             adminHeaders
           )
 
@@ -617,7 +710,7 @@ medusaIntegrationTestRunner({
           // filtering happens before pagination. count must reflect the total
           // assignable, not the page size.
           const firstPage = await api.get(
-            "/admin/rbac/policies/assignable?limit=2&offset=0&order=id",
+            "/rbac/policies/assignable?limit=2&offset=0&order=id",
             productManagerHeaders
           )
 
@@ -625,7 +718,7 @@ medusaIntegrationTestRunner({
           expect(firstPage.data.count).toEqual(6)
 
           const secondPage = await api.get(
-            "/admin/rbac/policies/assignable?limit=2&offset=2&order=id",
+            "/rbac/policies/assignable?limit=2&offset=2&order=id",
             productManagerHeaders
           )
 
@@ -633,7 +726,7 @@ medusaIntegrationTestRunner({
           expect(secondPage.data.count).toEqual(6)
 
           const thirdPage = await api.get(
-            "/admin/rbac/policies/assignable?limit=2&offset=4&order=id",
+            "/rbac/policies/assignable?limit=2&offset=4&order=id",
             productManagerHeaders
           )
 

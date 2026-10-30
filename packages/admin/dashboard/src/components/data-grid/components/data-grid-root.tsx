@@ -679,6 +679,7 @@ export const DataGridRoot = <
           isHighlighted={isHighlighted}
           onHeaderInteractionChange={handleHeaderInteractionChange}
           headerContent={headerContent}
+          showShortcuts={!disableInteractions}
         />
         <div className="size-full overflow-hidden">
           <div
@@ -836,6 +837,7 @@ type DataGridHeaderProps = {
   onToggleErrorHighlighting: () => void
   onHeaderInteractionChange: (isActive: boolean) => void
   headerContent?: ReactNode
+  showShortcuts?: boolean
 }
 
 const DataGridHeader = ({
@@ -849,6 +851,7 @@ const DataGridHeader = ({
   onHeaderInteractionChange,
   showColumnsDropdown,
   headerContent,
+  showShortcuts = true,
 }: DataGridHeaderProps) => {
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [columnsOpen, setColumnsOpen] = useState(false)
@@ -942,10 +945,12 @@ const DataGridHeader = ({
             </span>
           </Button>
         )}
-        <DataGridKeyboardShortcutModal
-          open={shortcutsOpen}
-          onOpenChange={handleShortcutsOpenChange}
-        />
+        {showShortcuts && (
+          <DataGridKeyboardShortcutModal
+            open={shortcutsOpen}
+            onOpenChange={handleShortcutsOpenChange}
+          />
+        )}
       </div>
     </div>
   )

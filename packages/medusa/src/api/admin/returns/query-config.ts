@@ -1,5 +1,6 @@
 export enum Entities {
   return = "return",
+  order = "order",
 }
 
 export const defaultAdminReturnFields = [

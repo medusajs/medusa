@@ -1,0 +1,75 @@
+import { createRbacRolePoliciesWorkflow } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import {
+  ContainerRegistrationKeys,
+  defineFileConfig,
+  Modules,
+} from "@medusajs/framework/utils"
+import { AdminAddRolePoliciesType } from "../../validators"
+
+/**
+ * @ignore
+ */
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse<HttpTypes.AdminRbacPolicyListResponse>
+) => {
+  const roleId = req.params.id
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const { data: policies, metadata } = await query.graph({
+    entity: "rbac_role_policy",
+    fields: req.queryConfig?.fields,
+    filters: { ...req.filterableFields, role_id: roleId },
+    pagination: req.queryConfig?.pagination || {},
+  })
+
+  res.status(200).json({
+    policies,
+    count: metadata?.count ?? 0,
+    offset: metadata?.skip ?? 0,
+    limit: metadata?.take ?? 0,
+  })
+}
+
+/**
+ * @ignore
+ */
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminAddRolePoliciesType>,
+  res: MedusaResponse<HttpTypes.AdminRbacRolePoliciesResponse>
+) => {
+  const roleId = req.params.id
+  const { policies } = req.validatedBody
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const rolePolicies = policies.map((policyId) => ({
+    role_id: roleId,
+    policy_id: policyId,
+  }))
+
+  const { result } = await createRbacRolePoliciesWorkflow(req.scope).run({
+    input: {
+      actor_id: req.auth_context.actor_id,
+      actor: req.auth_context.actor_type,
+      policies: rolePolicies,
+    },
+  })
+
+  const { data } = await query.graph({
+    entity: "rbac_role_policy",
+    fields: req.queryConfig?.fields,
+    filters: { id: result.map((r) => r.id) },
+  })
+
+  res.status(200).json({ policies: data })
+}
+
+defineFileConfig({
+  isDisabled: () => !MedusaModule.isInstalled(Modules.RBAC),
+})

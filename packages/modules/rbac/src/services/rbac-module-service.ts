@@ -2,26 +2,31 @@ import {
   Context,
   FilterableRbacRoleProps,
   FindConfig,
+  InternalModuleDeclaration,
+  RbacPolicyDTO,
+  RbacRoleAssignmentDTO,
   RbacRoleDTO,
+  RbacRolePolicyDTO,
 } from "@medusajs/framework/types"
 import {
+  deduplicate,
   InjectManager,
-  InjectTransactionManager,
   MedusaContext,
   MedusaService,
-  Policy,
-  promiseAll,
-  WILDCARD,
 } from "@medusajs/framework/utils"
 import {
-  CreateRbacRoleParentDTO,
+  AuthzContextConfig,
   InferEntityType,
   IRbacModuleService,
+  IRbacModuleServiceOptions,
   ModulesSdkTypes,
-  RbacRoleParentDTO,
-  UpdateRbacRoleParentDTO,
 } from "@medusajs/types"
-import { RbacPolicy, RbacRole, RbacRoleParent, RbacRolePolicy } from "@models"
+import {
+  RbacPolicy,
+  RbacRole,
+  RbacRoleAssignment,
+  RbacRolePolicy,
+} from "@models"
 import { RbacRepository } from "../repositories"
 
 type InjectedDependencies = {
@@ -37,14 +42,17 @@ type InjectedDependencies = {
   >
 }
 
-const SUPER_ADMIN_KEY = `${WILDCARD}:${WILDCARD}`
-
 export default class RbacModuleService
-  extends MedusaService({
+  extends MedusaService<{
+    RbacRole: { dto: RbacRoleDTO }
+    RbacPolicy: { dto: RbacPolicyDTO }
+    RbacRolePolicy: { dto: RbacRolePolicyDTO }
+    RbacRoleAssignment: { dto: RbacRoleAssignmentDTO }
+  }>({
     RbacRole,
     RbacPolicy,
-    RbacRoleParent,
     RbacRolePolicy,
+    RbacRoleAssignment,
   })
   implements IRbacModuleService
 {
@@ -58,111 +66,41 @@ export default class RbacModuleService
   protected readonly rbacPolicyService: ModulesSdkTypes.IMedusaInternalService<
     InferEntityType<typeof RbacPolicy>
   >
+  protected readonly options_: IRbacModuleServiceOptions
 
-  constructor({
-    rbacRepository,
-    rbacRoleService,
-    rbacPolicyService,
-    rbacRolePolicyService,
-  }: InjectedDependencies) {
-    // @ts-ignore
+  constructor(
+    {
+      rbacRepository,
+      rbacRoleService,
+      rbacPolicyService,
+      rbacRolePolicyService,
+    }: InjectedDependencies,
+    options: IRbacModuleServiceOptions = {
+      actors: {},
+    },
+    protected readonly moduleDeclaration: InternalModuleDeclaration
+  ) {
     super(...arguments)
     this.rbacRepository_ = rbacRepository
     this.rbacRolePolicyService = rbacRolePolicyService
     this.rbacRoleService = rbacRoleService
     this.rbacPolicyService = rbacPolicyService
-  }
 
-  __hooks = {
-    onApplicationStart: async () => {
-      await this.syncRegisteredPolicies()
-    },
-  }
-
-  @InjectTransactionManager()
-  private async syncRegisteredPolicies(
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    const registeredPolicies = Object.entries(Policy).map(
-      ([name, { resource, operation, description }]) => ({
-        key: `${resource}:${operation}`,
-        name,
-        resource,
-        operation,
-        description,
-      })
-    )
-
-    const registeredKeys = registeredPolicies.map((p) => p.key)
-
-    // Fetch all existing policies (including soft-deleted ones)
-    const existingPolicies = await this.listRbacPolicies(
-      {},
-      { withDeleted: true },
-      sharedContext
-    )
-
-    const existingPoliciesMap = new Map(existingPolicies.map((p) => [p.key, p]))
-
-    const policiesToCreate: any[] = []
-    const policiesToUpdate: any[] = []
-    const policiesToRestore: string[] = []
-
-    // Process registered policies
-    for (const registeredPolicy of registeredPolicies) {
-      if (registeredPolicy.key === SUPER_ADMIN_KEY) {
-        continue
-      }
-
-      const existing = existingPoliciesMap.get(registeredPolicy.key)
-
-      const hasChanges =
-        existing &&
-        (existing.name !== registeredPolicy.name ||
-          existing.description !== registeredPolicy.description)
-
-      if (!existing) {
-        policiesToCreate.push(registeredPolicy)
-      } else if (existing.deleted_at) {
-        policiesToRestore.push(existing.id)
-        if (hasChanges) {
-          policiesToUpdate.push({
-            id: existing.id,
-            name: registeredPolicy.name,
-            description: registeredPolicy.description,
-          })
-        }
-      } else if (hasChanges) {
-        policiesToUpdate.push({
-          id: existing.id,
-          name: registeredPolicy.name,
-          description: registeredPolicy.description,
-        })
-      }
+    this.options_ = {
+      actors: {
+        ...options.actors,
+        user: {
+          grantees: deduplicate([
+            ...(options.actors?.user?.grantees ?? []),
+            { entity: "user", path: "id" },
+          ]),
+        },
+        "api-key": options.actors?.["api-key"] ?? {
+          actor_entity: "api_key",
+          grantees: [{ entity: "user", path: "created_by" }],
+        },
+      },
     }
-
-    const policiesToSoftDelete = existingPolicies
-      .filter(
-        (p) =>
-          !p.deleted_at &&
-          !registeredKeys.includes(p.key) &&
-          p.key !== SUPER_ADMIN_KEY
-      )
-      .map((p) => p.id)
-
-    // First restore any soft-deleted policies
-    if (policiesToRestore.length > 0) {
-      await this.restoreRbacPolicies(policiesToRestore, {}, sharedContext)
-    }
-
-    await promiseAll([
-      policiesToCreate.length > 0 &&
-        this.rbacPolicyService.create(policiesToCreate, sharedContext),
-      policiesToUpdate.length > 0 &&
-        this.rbacPolicyService.upsert(policiesToUpdate, sharedContext),
-      policiesToSoftDelete.length > 0 &&
-        this.rbacPolicyService.softDelete(policiesToSoftDelete, sharedContext),
-    ])
   }
 
   @InjectManager()
@@ -237,67 +175,9 @@ export default class RbacModuleService
     return [roles as unknown as RbacRoleDTO[], count]
   }
 
-  @InjectManager()
-  // @ts-expect-error
-  async createRbacRoleParents(
-    data: CreateRbacRoleParentDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<RbacRoleParentDTO[]> {
-    for (const parent of data) {
-      const { role_id, parent_id } = parent
-
-      if (role_id === parent_id) {
-        throw new Error(
-          `Cannot create role parent relationship: a role cannot be its own parent (role_id: ${role_id})`
-        )
-      }
-
-      const wouldCreateCycle = await this.rbacRepository_.checkForCycle(
-        role_id,
-        parent_id,
-        sharedContext
-      )
-
-      if (wouldCreateCycle) {
-        throw new Error(
-          `Cannot create role parent relationship: this would create a circular dependency (role_id: ${role_id}, parent_id: ${parent_id})`
-        )
-      }
-    }
-
-    return await super.createRbacRoleParents(data, sharedContext)
-  }
-
-  @InjectManager()
-  // @ts-expect-error
-  async updateRbacRoleParents(
-    data: UpdateRbacRoleParentDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<RbacRoleParentDTO[]> {
-    for (const parent of data) {
-      const { role_id, parent_id } = parent
-
-      if (parent_id) {
-        if (role_id === parent_id) {
-          throw new Error(
-            `Cannot update role parent relationship: a role cannot be its own parent (role_id: ${role_id})`
-          )
-        }
-
-        const wouldCreateCycle = await this.rbacRepository_.checkForCycle(
-          role_id!,
-          parent_id,
-          sharedContext
-        )
-
-        if (wouldCreateCycle) {
-          throw new Error(
-            `Cannot update role parent relationship: this would create a circular dependency (role_id: ${role_id}, parent_id: ${parent_id})`
-          )
-        }
-      }
-    }
-
-    return await super.updateRbacRoleParents(data, sharedContext)
+  async retrieveActorAuthzContextConfig(
+    actorType: string
+  ): Promise<AuthzContextConfig | undefined> {
+    return this.options_.actors?.[actorType]
   }
 }

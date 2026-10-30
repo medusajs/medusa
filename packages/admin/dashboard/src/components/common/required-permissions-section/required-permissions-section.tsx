@@ -1,7 +1,7 @@
 import { Badge, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useRequiredPermissions } from "../../../providers/permissions-provider"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { RBAC_MODULE_KEY, useIsModuleInstalled } from "../../../hooks/api/modules"
 
 /**
  * Reads the permission requirements that descendant components (typically
@@ -13,8 +13,11 @@ import { useFeatureFlag } from "../../../providers/feature-flag-provider"
  */
 export const RequiredPermissionsSection = () => {
   const { t } = useTranslation()
-  const isRbacEnabled = useFeatureFlag("rbac")
+  const { isInstalled: isRbacEnabled } = useIsModuleInstalled(RBAC_MODULE_KEY)
   const requirements = useRequiredPermissions()
+
+  // TODO: Remove once we rework this component
+  return null
 
   if (!isRbacEnabled) {
     return null
