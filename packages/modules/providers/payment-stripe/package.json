@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/payment-stripe",
-  "version": "2.22.1",
+  "version": "2.22.2",
   "description": "Stripe payment provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -32,10 +32,10 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.22.1"
+    "@medusajs/framework": "2.22.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.22.1"
+    "@medusajs/framework": "2.22.2"
   },
   "dependencies": {
     "stripe": "^15.5.0"
