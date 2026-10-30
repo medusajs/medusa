@@ -73,6 +73,9 @@ const ResultCode = Types.checkout.PaymentResponse.ResultCodeEnum
 const SUPPORTED_PAYMENT_METHODS = ["scheme", "applepay", "googlepay"]
 const CARD_ON_FILE =
   Types.checkout.PaymentRequest.RecurringProcessingModelEnum.CardOnFile
+const UNSCHEDULED_CARD_ON_FILE =
+  Types.checkout.PaymentRequest.RecurringProcessingModelEnum
+    .UnscheduledCardOnFile
 const EventCode = Types.notification.NotificationRequestItem.EventCodeEnum
 
 // Identifies payments processed through Medusa to Adyen, for partner revenue
@@ -153,6 +156,10 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
       context?.customer?.billing_address?.country_code ??
       undefined
     const shopperReference = this.getShopperReference(context)
+    const offSessionPaymentMethod = this.getOffSessionPaymentMethod(
+      data,
+      shopperReference
+    )
 
     // With a shopper reference, the response includes the shopper's saved
     // cards in `storedPaymentMethods`, which Drop-in renders.
@@ -180,6 +187,7 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
       psp_reference: null,
       capture_psp_reference: null,
       attempt: 0,
+      off_session_payment_method: offSessionPaymentMethod ?? null,
       result_code: null,
       action: null,
     }
@@ -259,6 +267,16 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
 
       // Keyed on the submission, so retrying it is safe while a new submission
       // (for example, after a refusal) is a new payment, even with the same card.
+      response = await this.request("authorizePayment", () =>
+        this.checkout_.PaymentsApi.payments(request, {
+          idempotencyKey: toIdempotencyKey(
+            `${session.session_id}-${session.attempt ?? 0}`
+          ),
+        })
+      )
+    } else if (session.off_session_payment_method) {
+      const request = this.buildOffSessionPaymentRequest(session)
+
       response = await this.request("authorizePayment", () =>
         this.checkout_.PaymentsApi.payments(request, {
           idempotencyKey: toIdempotencyKey(
@@ -513,7 +531,8 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
   }
 
   // Stores the card that Drop-in collected, passed as `data.payment_method`,
-  // without making a payment.
+  // without making a payment. With `data.usage` set to `off_session`, the card
+  // can also be charged without the shopper present.
   async savePaymentMethod({
     data,
     context,
@@ -528,8 +547,11 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
           paymentMethod:
             data?.payment_method as Types.checkout.PaymentMethodToStore,
           recurringProcessingModel:
-            Types.checkout.StoredPaymentMethodRequest
-              .RecurringProcessingModelEnum.CardOnFile,
+            data?.usage === "off_session"
+              ? Types.checkout.StoredPaymentMethodRequest
+                  .RecurringProcessingModelEnum.UnscheduledCardOnFile
+              : Types.checkout.StoredPaymentMethodRequest
+                  .RecurringProcessingModelEnum.CardOnFile,
           shopperEmail: context?.customer?.email,
         },
         { idempotencyKey: toIdempotencyKey(context?.idempotency_key) }
@@ -747,6 +769,48 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
         : { additionalData: { manualCapture: "true" } }),
       applicationInfo: APPLICATION_INFO,
     }
+  }
+
+  // Only allowed with a shopper reference, which Adyen checks the card was saved with.
+  protected getOffSessionPaymentMethod(
+    data: Record<string, unknown> | undefined,
+    shopperReference: string | undefined
+  ): string | undefined {
+    if (
+      data?.off_session !== true ||
+      !shopperReference ||
+      typeof data.payment_method !== "string"
+    ) {
+      return undefined
+    }
+
+    return data.payment_method
+  }
+
+  protected buildOffSessionPaymentRequest(
+    session: AdyenSessionData
+  ): Types.checkout.PaymentRequest {
+    // A return URL isn't needed, as the shopper isn't redirected.
+    const request: Omit<Types.checkout.PaymentRequest, "returnUrl"> = {
+      merchantAccount: this.options_.merchantAccount,
+      amount: { currency: session.currency, value: session.amount },
+      reference: session.session_id,
+      shopperReference: session.shopper_reference ?? undefined,
+      paymentMethod: {
+        type: Types.checkout.CardDetails.TypeEnum.Scheme,
+        storedPaymentMethodId: session.off_session_payment_method!,
+      },
+      shopperEmail: session.shopper_email ?? undefined,
+      shopperInteraction:
+        Types.checkout.PaymentRequest.ShopperInteractionEnum.ContAuth,
+      recurringProcessingModel: UNSCHEDULED_CARD_ON_FILE,
+      ...(session.capture
+        ? { captureDelayHours: 0 }
+        : { additionalData: { manualCapture: "true" } }),
+      applicationInfo: APPLICATION_INFO,
+    }
+
+    return request as Types.checkout.PaymentRequest
   }
 
   protected getStatus(session: AdyenSessionData): PaymentSessionStatus {

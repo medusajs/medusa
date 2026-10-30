@@ -103,6 +103,12 @@ For logged-in customers, the customer's account holder ID is sent to Adyen as th
 - The Payment Module's `listPaymentMethods`, `createPaymentMethods`, and `deletePaymentMethods` methods list, save, and delete the customer's saved cards. Saving a card without a payment takes Drop-in's `state.data.paymentMethod`, including a `holderName`, as `data.payment_method`, and requires the "API tokenise payment details" role on your API credential.
 - Deleting the account holder deletes the customer's saved cards.
 
+### Off-session payments
+
+Your backend can charge a saved card without the shopper present, for example to pay for an order once it's approved. Create the payment session with the customer's account holder in its context and `data: { payment_method: <saved card ID>, off_session: true }`, then authorize it. To save a card for this, pass `usage: "off_session"` in `createPaymentMethods`' `data`.
+
+Off-session payments skip the shopper's authentication, such as 3D Secure. As with the Stripe provider, storefronts can also pass these fields in a payment session's `data`, which lets logged-in customers charge their own saved cards this way. Adyen rejects cards saved for another shopper.
+
 ### Limitations
 
 - Only cards (including 3D Secure), Apple Pay, and Google Pay are supported, so Drop-in only shows these even if other payment methods are enabled on your merchant account. Payment methods that redirect the shopper or are confirmed asynchronously by webhook, such as iDEAL, PayPal, or bank transfers, aren't supported yet.
