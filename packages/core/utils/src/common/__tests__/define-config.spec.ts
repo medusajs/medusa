@@ -228,7 +228,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {},
         },
@@ -583,7 +588,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {},
         },
@@ -792,7 +802,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {},
         },
@@ -1002,7 +1017,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {},
         },
@@ -1202,7 +1222,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {},
         },
@@ -1405,7 +1430,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {},
         },
@@ -1660,7 +1690,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "redisUrl": "redis://localhost:6379",
           "sessionOptions": {},
@@ -1875,7 +1910,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "redisUrl": undefined,
           "sessionOptions": {},
@@ -2132,7 +2172,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "redisUrl": "redis://localhost:6379",
           "sessionOptions": {
@@ -2405,7 +2450,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "redisUrl": "redis://localhost:6379",
           "sessionOptions": {
@@ -2708,7 +2758,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {
             "dynamodbOptions": {
@@ -2978,7 +3033,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {},
         },
@@ -3232,12 +3292,62 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {},
         },
       }
     `)
+  })
+
+  it("should merge custom redisOptions.socket with the default reconnectStrategy", function () {
+    const config = defineConfig({
+      projectConfig: {
+        http: {} as any,
+        redisOptions: { name: "medusa", socket: { connectTimeout: 10000 } },
+      },
+    })
+
+    expect(config.projectConfig.redisOptions).toEqual({
+      name: "medusa",
+      commandOptions: { timeout: 60000 },
+      socket: {
+        connectTimeout: 10000,
+        reconnectStrategy: expect.any(Function),
+      },
+    })
+  })
+
+  it("should allow overriding the default redisOptions reconnectStrategy", function () {
+    const reconnectStrategy = () => false as const
+    const config = defineConfig({
+      projectConfig: {
+        http: {} as any,
+        redisOptions: { socket: { reconnectStrategy } },
+      },
+    })
+
+    expect(config.projectConfig.redisOptions?.socket?.reconnectStrategy).toBe(
+      reconnectStrategy
+    )
+  })
+
+  it("should allow overriding the default redisOptions command timeout", function () {
+    const config = defineConfig({
+      projectConfig: {
+        http: {} as any,
+        redisOptions: { commandOptions: { timeout: 5000 } },
+      },
+    })
+
+    expect(config.projectConfig.redisOptions?.commandOptions).toEqual({
+      timeout: 5000,
+    })
   })
 
   it("should merge custom projectConfig.cloud", function () {
@@ -3495,7 +3605,12 @@ describe("defineConfig", function () {
             "storeCors": "http://localhost:8000",
           },
           "redisOptions": {
-            "retryStrategy": [Function],
+            "commandOptions": {
+              "timeout": 60000,
+            },
+            "socket": {
+              "reconnectStrategy": [Function],
+            },
           },
           "sessionOptions": {},
         },

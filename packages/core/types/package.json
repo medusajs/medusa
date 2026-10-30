@@ -45,11 +45,11 @@
     "@medusajs/deps": "2.22.2"
   },
   "peerDependencies": {
-    "ioredis": "^5.11.1",
+    "redis": "^6.3.0",
     "vite": ">=5"
   },
   "peerDependenciesMeta": {
-    "ioredis": {
+    "redis": {
       "optional": true
     },
     "vite": {

@@ -56,6 +56,6 @@ yarn watch
 ## Gotchas
 
 - Runtime dependency is only `bignumber.js`; `@medusajs/deps` is a dev dependency used with `import type`. Do not import from `@medusajs/utils`, `@medusajs/framework`, or any module package here (they depend on this package). The `@medusajs/framework/*` imports you see are inside TSDoc examples only.
-- `vite` and `ioredis` are peer dependencies used for type imports only. `config-module.ts` has a `@ts-ignore` on the `vite` import because this CommonJS build can't resolve Vite's ESM-only types; `InlineConfig` degrades to `any`. Leave it.
+- `vite` and `redis` (node-redis, for `redisOptions`) are peer dependencies used for type imports only. `config-module.ts` has a `@ts-ignore` on the `vite` import because this CommonJS build can't resolve Vite's ESM-only types; `InlineConfig` degrades to `any`. Leave it.
 - Interfaces meant to be augmented (`ModuleOptions`, `ModuleImplementations`, `RemoteQueryEntryPoints`) must stay `interface` (not `type`) and stay exported from the package root, or declaration merging silently stops working. `@medusajs/framework/types` re-declares `ModuleOptions` so augmentation also works through the framework path.
 - Changing an `I<Name>ModuleService` signature is a public API change: the module's service in `packages/modules/<name>` must still satisfy it, and `HttpTypes` changes ripple into `@medusajs/js-sdk` and the admin dashboard.
