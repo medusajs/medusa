@@ -8,8 +8,7 @@ post:
     route](https://docs.medusajs.com/api/admin#auth_postactor_typeauth_providerresetpassword).
     You pass the token as a bearer token in the request's Authorization header.
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#reset-password-route
+    url: https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route#reset-password-route
     description: Learn more about this API route.
   x-authenticated: true
   parameters:

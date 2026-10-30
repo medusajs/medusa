@@ -30,13 +30,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}/post.js
+        $ref: ../code_samples/JavaScript/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}/post.sh
+        $ref: ../code_samples/Shell/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}/post.sh
   tags:
     - Draft Orders
   responses:
@@ -83,13 +81,11 @@ delete:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}/delete.js
+        $ref: ../code_samples/JavaScript/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}/delete.sh
+        $ref: ../code_samples/Shell/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}/delete.sh
   tags:
     - Draft Orders
   responses:

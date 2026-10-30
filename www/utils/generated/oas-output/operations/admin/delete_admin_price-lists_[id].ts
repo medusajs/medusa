@@ -60,7 +60,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deletePriceListsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: price-list.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the price list
+ *       }
+ *       ```
+ *     description: Emitted when price lists are deleted.
+ *     deprecated: false
+ *     since: 2.21.3
  * 
 */
 

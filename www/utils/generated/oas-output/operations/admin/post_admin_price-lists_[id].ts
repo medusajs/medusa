@@ -85,7 +85,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updatePriceListsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: price-list.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the price list
+ *       }
+ *       ```
+ *     description: Emitted when price lists are updated.
+ *     deprecated: false
+ *     since: 2.21.3
  * 
 */
 

@@ -4,8 +4,7 @@ post:
   x-sidebar-summary: Update Line Item
   description: Update a line item's details in the cart.
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/storefront-development/cart/manage-items#update-line-item-in-cart
+    url: https://docs.medusajs.com/resources/storefront-development/cart/manage-items#update-line-item-in-cart
     description: 'Storefront guide: How to update a cart''s line item.'
   x-authenticated: false
   parameters:
@@ -37,8 +36,7 @@ post:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
@@ -66,8 +64,7 @@ post:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
   requestBody:
     content:
@@ -100,8 +97,7 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/post.js
+        $ref: ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/post.js
     - lang: Shell
       label: cURL
       source:
@@ -365,8 +361,7 @@ delete:
   x-sidebar-summary: Remove Line Item
   description: Remove a line item from a cart.
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/storefront-development/cart/manage-items#remove-line-item-from-cart
+    url: https://docs.medusajs.com/resources/storefront-development/cart/manage-items#remove-line-item-from-cart
     description: 'Storefront guide: How to remove line item from cart.'
   x-authenticated: false
   parameters:
@@ -398,8 +393,7 @@ delete:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
@@ -427,15 +421,13 @@ delete:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/delete.js
+        $ref: ../code_samples/JavaScript/store_carts_{id}_line-items_{line_id}/delete.js
     - lang: Shell
       label: cURL
       source:

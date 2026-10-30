@@ -19,8 +19,7 @@ properties:
       only a subset of the index's documents. The accepted shape is defined by
       the index, such as `{ ids: ["prod_123"] }` if the index supports it.
     externalDocs:
-      url: >-
-        https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions
+      url: https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions
       description: Learn about search index definitions and their seed function
   strategy:
     type: string

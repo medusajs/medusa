@@ -20,8 +20,7 @@ get:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_fulfillment-providers_{id}_options/get.js
+        $ref: ../code_samples/JavaScript/admin_fulfillment-providers_{id}_options/get.js
     - lang: Shell
       label: cURL
       source:
@@ -34,8 +33,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: >-
-              ../components/schemas/AdminFulfillmentProviderOptionsListResponse.yaml
+            $ref: ../components/schemas/AdminFulfillmentProviderOptionsListResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -56,8 +56,7 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_customers_{id}_customer-groups/post.js
+        $ref: ../code_samples/JavaScript/admin_customers_{id}_customer-groups/post.js
     - lang: Shell
       label: cURL
       source:
