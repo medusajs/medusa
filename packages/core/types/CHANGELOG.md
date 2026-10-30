@@ -1,5 +1,15 @@
 # @medusajs/types
 
+## 2.22.2
+
+### Patch Changes
+
+- [#17533](https://github.com/medusajs/medusa/pull/17533) [`26e5807`](https://github.com/medusajs/medusa/commit/26e58070c1661c14aedc02ee6cfb0b2bb28d497b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update ioredis to ^5.11.1
+
+- [#17503](https://github.com/medusajs/medusa/pull/17503) [`c78a95a`](https://github.com/medusajs/medusa/commit/c78a95a6e1fdf3967efbcddca9fa195d0e8c5817) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(caching): close the in-memory cache provider's client on application shutdown
+
+- [#17575](https://github.com/medusajs/medusa/pull/17575) [`2f0b2e9`](https://github.com/medusajs/medusa/commit/2f0b2e94d6fa7193386d83b1e72bb0fc65caeddf) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(types,utils,dashboard): update bignumber.js to 11.1.5
+
 ## 2.22.1
 
 ### Patch Changes
