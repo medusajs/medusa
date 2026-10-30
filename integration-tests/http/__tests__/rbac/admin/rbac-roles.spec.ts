@@ -6,7 +6,11 @@ import {
   unassignRolesWorkflow,
   updateRbacRolesWorkflow,
 } from "@medusajs/core-flows"
-import { Modules, RBAC_SUPER_ADMIN_ROLE_ID } from "@medusajs/framework/utils"
+import {
+  Modules,
+  RBAC_SUPER_ADMIN_POLICY_ID,
+  RBAC_SUPER_ADMIN_ROLE_ID,
+} from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -1005,6 +1009,21 @@ medusaIntegrationTestRunner({
               .catch((e) => e)
 
             expect(error.response.status).toEqual(403)
+
+            const response = await api.get("/admin/customers", adminHeaders)
+            expect(response.status).toEqual(200)
+          })
+
+          it("refuses to detach `*:*` from the super admin role, even for a super admin", async () => {
+            const error = await api
+              .delete(
+                `/rbac/roles/role_super_admin/policies/rpol_super_admin`,
+                adminHeaders
+              )
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data.type).toEqual("not_allowed")
 
             const response = await api.get("/admin/customers", adminHeaders)
             expect(response.status).toEqual(200)
@@ -2451,7 +2470,7 @@ medusaIntegrationTestRunner({
               roles: [RBAC_SUPER_ADMIN_ROLE_ID],
             }
           )
-          return user
+          return { user, headers }
         }
 
         beforeEach(async () => {
@@ -2529,9 +2548,22 @@ medusaIntegrationTestRunner({
             userManagerId = user.id
           })
 
-          it("refuses to delete the last super admin", async () => {
+          it("refuses to delete the last super admin, even for an actor holding `*:*`", async () => {
+            // Holds every permission through a custom role, so it can grant the
+            // super admin role, without holding the super admin role itself.
+            const ownerHeaders = { headers: { ...adminHeaders.headers } }
+            const rbacModule = container.resolve(Modules.RBAC)
+            const role = await rbacModule.createRbacRoles({ name: "Owner" })
+            await rbacModule.createRbacRolePolicies([
+              { role_id: role.id, policy_id: RBAC_SUPER_ADMIN_POLICY_ID },
+            ])
+            await createAdminUser(dbConnection, ownerHeaders, container, {
+              email: "owner@medusa.js",
+              roles: [role.id],
+            })
+
             const error = await api
-              .delete(`/admin/users/${superAdminId}`, userManagerHeaders)
+              .delete(`/admin/users/${superAdminId}`, ownerHeaders)
               .catch((e) => e)
 
             expect(error.response.status).toEqual(400)
@@ -2544,12 +2576,27 @@ medusaIntegrationTestRunner({
             expect(users).toHaveLength(1)
           })
 
-          it("deletes a super admin once another super admin exists", async () => {
+          it("refuses to let an actor who can't grant the super admin role delete a super admin", async () => {
             await createSecondSuperAdmin()
+
+            const error = await api
+              .delete(`/admin/users/${superAdminId}`, userManagerHeaders)
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(403)
+
+            const userModule = container.resolve(Modules.USER)
+            const users = await userModule.listUsers({ id: superAdminId })
+            expect(users).toHaveLength(1)
+          })
+
+          it("deletes a super admin once another super admin exists", async () => {
+            const { headers: secondSuperAdminHeaders } =
+              await createSecondSuperAdmin()
 
             const response = await api.delete(
               `/admin/users/${superAdminId}`,
-              userManagerHeaders
+              secondSuperAdminHeaders
             )
 
             expect(response.status).toEqual(200)

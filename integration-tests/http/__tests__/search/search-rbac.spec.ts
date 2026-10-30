@@ -14,12 +14,14 @@ process.env.ENABLE_RBAC_MODULE = "true"
  * guarded by a static `authorize`: the entities the actor can't read are
  * dropped from the results instead.
  *
- * The Search Module is registered in this app with `customer` and `product`
- * indexes, so other entities go through the graph fallback.
+ * The Search Module is registered in this app with the `product`, `customer`
+ * and `customer_directory` (entity `customer`) indexes, so other entities go
+ * through the graph fallback.
  */
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     const productReaderHeaders = { headers: { ...adminHeaders.headers } }
+    const customerReaderHeaders = { headers: { ...adminHeaders.headers } }
     const priceListReaderHeaders = { headers: { ...adminHeaders.headers } }
     const apiKeyReaderHeaders = { headers: { ...adminHeaders.headers } }
     const noRolesHeaders = { headers: { ...adminHeaders.headers } }
@@ -58,6 +60,7 @@ medusaIntegrationTestRunner({
 
       const readers: [string, typeof adminHeaders, string][] = [
         ["search-product-reader", productReaderHeaders, "product"],
+        ["search-customer-reader", customerReaderHeaders, "customer"],
         ["search-price-list-reader", priceListReaderHeaders, "price_list"],
         ["search-api-key-reader", apiKeyReaderHeaders, "api_key"],
       ]
@@ -91,6 +94,15 @@ medusaIntegrationTestRunner({
         expect(
           await searchEntities("/admin/search?q=anything", productReaderHeaders)
         ).toEqual(["product"])
+      })
+
+      it("checks an index against its entity rather than its name", async () => {
+        const query = "/admin/search?q=anything&entity[]=customer_directory"
+
+        expect(await searchEntities(query, customerReaderHeaders)).toEqual([
+          "customer_directory",
+        ])
+        expect(await searchEntities(query, productReaderHeaders)).toEqual([])
       })
 
       it("drops requested entities the actor can't read, indexed or not", async () => {

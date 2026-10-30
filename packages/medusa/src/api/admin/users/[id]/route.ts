@@ -88,7 +88,12 @@ export const DELETE = async (
   const workflow = removeUserAccountWorkflow(req.scope)
 
   await workflow.run({
-    input: { userId: id },
+    input: {
+      userId: id,
+      granting_actor_id: req.auth_context.actor_id,
+      granting_actor: req.auth_context.actor_type,
+      granting_scope: req.rbac_context?.scope,
+    },
   })
 
   res.status(200).json({

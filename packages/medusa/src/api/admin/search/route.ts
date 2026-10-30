@@ -15,8 +15,8 @@ import {
 import { filterReadableEntities } from "../utils/filter-readable-entities"
 import { searchWithGraphFallback } from "./fallback-search"
 import {
-  ADMIN_SEARCH_ENTITY_MAP,
   DEFAULT_ADMIN_SEARCH_ENTITY_NAMES,
+  resolveSearchEntity,
 } from "./search-entities"
 import { AdminGetSearchParamsType } from "./validators"
 
@@ -43,8 +43,11 @@ export const GET = async (
   const skip = req.queryConfig.pagination.skip ?? 0
   const take = req.queryConfig.pagination.take ?? 20
 
-  const indexes = new Set(
-    ((await searchModule?.listIndexes()) ?? []).map((index) => index.name)
+  const indexEntities = new Map(
+    ((await searchModule?.listIndexes()) ?? []).map((index) => [
+      index.name,
+      index.entity,
+    ])
   )
 
   // Caller narrows the set; otherwise search every index. If the module is on
@@ -52,14 +55,15 @@ export const GET = async (
   // the graph defaults
   const requestedEntities = entity?.length
     ? entity
-    : indexes.size
-      ? [...indexes]
+    : indexEntities.size
+      ? [...indexEntities.keys()]
       : []
 
   if (!searchModule || !requestedEntities.length) {
     const graphEntities = await filterReadableSearchEntities(
       req,
-      entity?.length ? entity : DEFAULT_ADMIN_SEARCH_ENTITY_NAMES
+      entity?.length ? entity : DEFAULT_ADMIN_SEARCH_ENTITY_NAMES,
+      indexEntities
     )
 
     const results = graphEntities.length
@@ -76,10 +80,14 @@ export const GET = async (
   }
 
   // Entities the actor can't read are silently dropped from the results.
-  const entities = await filterReadableSearchEntities(req, requestedEntities)
+  const entities = await filterReadableSearchEntities(
+    req,
+    requestedEntities,
+    indexEntities
+  )
 
-  const indexedEntities = entities.filter((name) => indexes.has(name))
-  const graphEntities = entities.filter((name) => !indexes.has(name))
+  const indexedEntities = entities.filter((name) => indexEntities.has(name))
+  const graphEntities = entities.filter((name) => !indexEntities.has(name))
 
   const [indexResults, graphResults] = await promiseAll([
     indexedEntities.length
@@ -113,17 +121,15 @@ export const GET = async (
 
 /**
  * Keeps the search entities the actor can read. An entity is checked against
- * the RBAC resource of the graph entity it searches, e.g. `api_key` for
- * `publishable_api_key`.
+ * the RBAC resource of the graph entity it searches: an index's `entity`, or
+ * the fallback entity's `graphEntity`, e.g. `api_key` for `publishable_api_key`.
  */
 async function filterReadableSearchEntities(
   req: AuthenticatedMedusaRequest<void, AdminGetSearchParamsType>,
-  names: string[]
+  names: string[],
+  indexEntities: Map<string, string>
 ): Promise<string[]> {
-  const resourceOf = (name: string) => {
-    const config = ADMIN_SEARCH_ENTITY_MAP.get(name)
-    return config?.graphEntity ?? config?.name ?? name
-  }
+  const resourceOf = (name: string) => resolveSearchEntity(name, indexEntities)
 
   const readable = new Set(
     await filterReadableEntities(req, [...new Set(names.map(resourceOf))])

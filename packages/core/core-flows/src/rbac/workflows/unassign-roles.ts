@@ -7,7 +7,11 @@ import {
   when,
 } from "@medusajs/framework/workflows-sdk"
 import { deleteRoleAssignmentsStep } from "../steps/delete-role-assignments"
-import { ensureSuperAdminRemainsStep } from "../steps/ensure-super-admin-remains"
+import {
+  ensureSuperAdminRemainsStep,
+  SUPER_ADMIN_GUARD_LOCK_KEY,
+} from "../steps/ensure-super-admin-remains"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 import { validateActorRolePermissionsStep } from "../steps/validate-actor-role-permissions"
 import { useQueryGraphStep } from "../../common"
 
@@ -54,7 +58,9 @@ export const unassignRolesWorkflowId = "unassign-roles"
  * different references, each optionally constrained to its own scope.
  *
  * It validates that the granting actor holds all the policies of the roles
- * being removed, and that at least one user keeps the super admin role.
+ * being removed, and that at least one user keeps the super admin role. That
+ * check and the removal run under a lock, so concurrent removals can't both
+ * pass it.
  * @ignore
  */
 export const unassignRolesWorkflow = createWorkflow(
@@ -111,11 +117,24 @@ export const unassignRolesWorkflow = createWorkflow(
           roleAssignmentsToDelete.map((assignment) => assignment.id)
       )
 
+      acquireLockStep({
+        key: SUPER_ADMIN_GUARD_LOCK_KEY,
+        timeout: 2,
+        ttl: 10,
+        // Also lock when run from another workflow.
+        executeOnSubWorkflow: true,
+      })
+
       ensureSuperAdminRemainsStep({
         excluded_assignment_ids: roleAssignmentIdsToDelete,
       })
 
       deleteRoleAssignmentsStep({ id: roleAssignmentIdsToDelete })
+
+      releaseLockStep({
+        key: SUPER_ADMIN_GUARD_LOCK_KEY,
+        executeOnSubWorkflow: true,
+      })
     })
 
     return new WorkflowResponse(void 0)

@@ -225,6 +225,48 @@ medusaIntegrationTestRunner({
         expect(providerIdentities).toHaveLength(1)
       })
 
+      it("refuses to delete a user whose roles the actor can't grant", async () => {
+        const rbacModule = container.resolve(Modules.RBAC)
+        const [userDelete] = await rbacModule.listRbacPolicies({
+          resource: "user",
+          operation: "delete",
+        })
+        const role = await rbacModule.createRbacRoles({ name: "User Deleter" })
+        await rbacModule.createRbacRolePolicies([
+          { role_id: role.id, policy_id: userDelete.id },
+        ])
+
+        const deleterHeaders = { headers: { ...adminHeaders.headers } }
+        await createAdminUser(dbConnection, deleterHeaders, container, {
+          email: "user-deleter@medusa.js",
+          roles: [role.id],
+        })
+
+        const { user: superAdmin } = await createAdminUser(
+          dbConnection,
+          { headers: { ...adminHeaders.headers } },
+          container,
+          { email: "super-admin-target@medusa.js" }
+        )
+        const { user: withoutRoles } = await createAdminUser(
+          dbConnection,
+          { headers: { ...adminHeaders.headers } },
+          container,
+          { email: "no-roles-target@medusa.js", roles: [] }
+        )
+
+        const error = await api
+          .delete(`/admin/users/${superAdmin.id}`, deleterHeaders)
+          .catch((e) => e)
+        expect(error.response.status).toEqual(403)
+
+        const response = await api.delete(
+          `/admin/users/${withoutRoles.id}`,
+          deleterHeaders
+        )
+        expect(response.status).toEqual(200)
+      })
+
       it("throws if you attempt to delete your own user", async () => {
         const error = await api
           .delete(`/admin/users/${user.id}`, adminHeaders)

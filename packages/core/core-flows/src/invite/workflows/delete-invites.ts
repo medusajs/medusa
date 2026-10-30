@@ -9,7 +9,7 @@ import {
 import { emitEventStep } from "../../common/steps/emit-event"
 import {
   deleteRoleAssignmentsStep,
-  getRoleAssignmentIdsStep,
+  getRoleAssignmentsStep,
 } from "../../rbac/steps"
 import { deleteInvitesStep } from "../steps"
 
@@ -47,10 +47,15 @@ export const deleteInvitesWorkflow = createWorkflow(
     })
 
     // Clean up any RBAC role assignments for the deleted invites.
-    const roleAssignmentIdsToDelete = getRoleAssignmentIdsStep({
+    const roleAssignments = getRoleAssignmentsStep({
       reference: "invite",
       reference_id: input.ids,
     })
+    const roleAssignmentIdsToDelete = transform(
+      { roleAssignments },
+      ({ roleAssignments }) =>
+        roleAssignments.map((assignment) => assignment.id)
+    )
 
     parallelize(
       deleteRoleAssignmentsStep({ id: roleAssignmentIdsToDelete }),

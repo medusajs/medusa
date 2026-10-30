@@ -23,6 +23,12 @@ export type EnsureSuperAdminRemainsStepInput = {
 export const ensureSuperAdminRemainsStepId = "ensure-super-admin-remains"
 
 /**
+ * The lock key serializing the last-super-admin check with the removal it
+ * guards, so that concurrent removals can't both pass the check.
+ */
+export const SUPER_ADMIN_GUARD_LOCK_KEY = "rbac-super-admin-guard"
+
+/**
  * This step ensures that at least one user keeps the unscoped super admin role
  * once the given role assignments are removed, so that no operation can lock
  * every user out of the RBAC administration.

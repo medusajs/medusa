@@ -11,7 +11,7 @@ import { setAuthAppMetadataStep } from "../../auth"
 import { emitEventStep } from "../../common/steps/emit-event"
 import {
   deleteRoleAssignmentsStep,
-  getRoleAssignmentIdsStep,
+  getRoleAssignmentsStep,
 } from "../../rbac/steps"
 import { createUsersWorkflow } from "../../user"
 import { deleteInvitesStep, getInviteRolesStep } from "../steps"
@@ -89,10 +89,15 @@ export const acceptInviteWorkflow = createWorkflow(
     // The created user's role assignments are created by createUsersWorkflow
     // from the invite's roles. Transfer completes by removing the invite's own
     // assignments once the user has been created.
-    const roleAssignmentIdsToDelete = getRoleAssignmentIdsStep({
+    const roleAssignments = getRoleAssignmentsStep({
       reference: "invite",
       reference_id: [invite.id],
     })
+    const roleAssignmentIdsToDelete = transform(
+      { roleAssignments },
+      ({ roleAssignments }) =>
+        roleAssignments.map((assignment) => assignment.id)
+    )
 
     parallelize(
       setAuthAppMetadataStep(authUserInput),

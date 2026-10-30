@@ -50,7 +50,7 @@ type Policy = { resource: string; operation: string }
  */
 export type PolicyMap = Map<string, Set<string>>
 
-const RBAC_CACHE_TTL = 60 * 60 * 24
+const RBAC_CACHE_TTL = 60
 
 /**
  * Groups policies by resource.
