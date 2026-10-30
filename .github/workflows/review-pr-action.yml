@@ -216,7 +216,7 @@ jobs:
         # `@v1` tag let an upstream release silently roll into CI (a change
         # that enabled the bwrap Bash sandbox broke every allowlisted script
         # call), so we pin to a SHA and bump deliberately.
-        uses: anthropics/claude-code-action@b76a0776ae74036e77cd11018083743453d7ad35 # v1
+        uses: anthropics/claude-code-action@f27be6b65a4652f08a2ba3cff79114829b588967 # v1.0.252 (Claude Code 2.1.302)
         env:
           # Read-only default token. The agent has no App token in this job.
           GH_TOKEN: ${{ github.token }}
@@ -234,8 +234,7 @@ jobs:
           # token in this job, and the `chmod -R a-w scripts` step above.
           #
           # The deny rules cover the two things the generic `Read`/`Write`
-          # tools could otherwise reach (`Read` rules also apply to Grep and
-          # Glob). Neither tool goes through the sandbox
+          # tools could otherwise reach. Neither tool goes through the sandbox
           # even when it is on, so these rules — not the sandbox — are what
           # blocks them:
           #   - `/proc/**`: reading the tokens straight out of the agent's own
@@ -245,16 +244,38 @@ jobs:
           #     so this keeps a prompt-injected model from trying to widen its
           #     own allowlist or register an MCP server mid-run.
           # `review-decision.json` at the repo root stays writable.
+          #
+          # Grep and Glob only check `Read` deny rules against the directory
+          # they search, so `Grep(path: "/")` or `Glob("/proc/*/environ")`
+          # would still reach `/proc`, and `Grep(...)`/`Glob(...)` path rules
+          # never match (https://code.claude.com/docs/en/permissions#read-and-edit).
+          # `blockReadsOutsideWorkingDirectories` (Claude Code 2.1.257+) refuses
+          # Read, Grep, and Glob outside the checkout; the PreToolUse hook
+          # enforces the same for Grep and Glob if the action pin ever rolls back.
           settings: |
             {
               "sandbox": { "enabled": false },
               "permissions": {
+                "blockReadsOutsideWorkingDirectories": true,
                 "deny": [
                   "Read(//proc/**)",
                   "Write(//**/.claude/**)",
                   "Edit(//**/.claude/**)",
                   "Write(//**/.mcp.json)",
                   "Edit(//**/.mcp.json)"
+                ]
+              },
+              "hooks": {
+                "PreToolUse": [
+                  {
+                    "matcher": "Grep|Glob",
+                    "hooks": [
+                      {
+                        "type": "command",
+                        "command": "python3 -I \"$CLAUDE_PROJECT_DIR/scripts/confine_search_paths.py\""
+                      }
+                    ]
+                  }
                 ]
               }
             }
