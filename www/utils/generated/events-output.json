@@ -451,8 +451,14 @@
     "payload": "```ts\n{\n  id, // The ID of the product variant\n}\n```",
     "description": "Emitted when product variants are updated.",
     "workflows": [
+      "upsertVariantPricesWorkflow",
       "updateProductVariantsWorkflow",
-      "batchProductVariantsWorkflow"
+      "batchVariantImagesWorkflow",
+      "batchImageVariantsWorkflow",
+      "updateProductsWorkflow",
+      "batchProductVariantsWorkflow",
+      "batchProductsWorkflow",
+      "importProductsWorkflow"
     ],
     "deprecated": false
   },
@@ -490,8 +496,11 @@
     "payload": "```ts\n{\n  id, // The ID of the product\n}\n```",
     "description": "Emitted when products are updated.",
     "workflows": [
+      "linkProductsToSalesChannelWorkflow",
       "updateProductsWorkflow",
       "createAndLinkProductOptionsToProductWorkflow",
+      "batchLinkProductsToCategoryWorkflow",
+      "batchLinkProductsToCollectionWorkflow",
       "batchProductsWorkflow",
       "importProductsWorkflow"
     ],
@@ -647,6 +656,81 @@
       "deleteProductOptionValuesWorkflow"
     ],
     "since": "2.20.0",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.created",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n}\n```",
+    "description": "Emitted when price lists are created.",
+    "workflows": [
+      "createPriceListsWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.updated",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n}\n```",
+    "description": "Emitted when price lists are updated.",
+    "workflows": [
+      "updatePriceListsWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.deleted",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n}\n```",
+    "description": "Emitted when price lists are deleted.",
+    "workflows": [
+      "deletePriceListsWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.prices_added",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "PRICES_ADDED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n  price_set_ids, // The IDs of the price sets whose prices were added\n}\n```",
+    "description": "Emitted when prices are added to a price list.",
+    "workflows": [
+      "createPriceListPricesWorkflow",
+      "batchPriceListPricesWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.prices_updated",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "PRICES_UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n  price_set_ids, // The IDs of the price sets whose prices were updated\n}\n```",
+    "description": "Emitted when prices in a price list are updated.",
+    "workflows": [
+      "updatePriceListPricesWorkflow",
+      "batchPriceListPricesWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.prices_removed",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "PRICES_REMOVED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n  price_set_ids, // The IDs of the price sets whose prices were removed\n}\n```",
+    "description": "Emitted when prices are removed from a price list.",
+    "workflows": [
+      "removePriceListPricesWorkflow",
+      "batchPriceListPricesWorkflow"
+    ],
+    "since": "2.21.3",
     "deprecated": false
   },
   {
@@ -991,8 +1075,8 @@
       "convertDraftOrderWorkflow",
       "completeCartWorkflow",
       "confirmOrderEditRequestWorkflow",
-      "confirmExchangeRequestWorkflow",
-      "confirmClaimRequestWorkflow"
+      "confirmClaimRequestWorkflow",
+      "confirmExchangeRequestWorkflow"
     ],
     "since": "2.18.0",
     "deprecated": false
@@ -1023,8 +1107,8 @@
       "createOrderFulfillmentWorkflow",
       "cancelOrderWorkflow",
       "confirmOrderEditRequestWorkflow",
-      "cancelOrderExchangeWorkflow",
-      "cancelOrderClaimWorkflow"
+      "cancelOrderClaimWorkflow",
+      "cancelOrderExchangeWorkflow"
     ],
     "since": "2.18.0",
     "deprecated": false

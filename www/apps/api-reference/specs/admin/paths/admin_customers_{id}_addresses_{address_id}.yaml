@@ -52,13 +52,11 @@ get:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_customers_{id}_addresses_{address_id}/get.js
+        $ref: ../code_samples/JavaScript/admin_customers_{id}_addresses_{address_id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_customers_{id}_addresses_{address_id}/get.sh
+        $ref: ../code_samples/Shell/admin_customers_{id}_addresses_{address_id}/get.sh
   tags:
     - Customers
   responses:
@@ -227,13 +225,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_customers_{id}_addresses_{address_id}/post.js
+        $ref: ../code_samples/JavaScript/admin_customers_{id}_addresses_{address_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_customers_{id}_addresses_{address_id}/post.sh
+        $ref: ../code_samples/Shell/admin_customers_{id}_addresses_{address_id}/post.sh
   tags:
     - Customers
   responses:
@@ -309,13 +305,11 @@ delete:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_customers_{id}_addresses_{address_id}/delete.js
+        $ref: ../code_samples/JavaScript/admin_customers_{id}_addresses_{address_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_customers_{id}_addresses_{address_id}/delete.sh
+        $ref: ../code_samples/Shell/admin_customers_{id}_addresses_{address_id}/delete.sh
   tags:
     - Customers
   responses:

@@ -44,8 +44,7 @@ get:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
@@ -78,8 +77,7 @@ get:
           The ID of the region the product is being viewed from. This is
           required if you're retrieving product variant prices with taxes.
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/storefront-development/products/price/examples/tax-price
+          url: https://docs.medusajs.com/resources/storefront-development/products/price/examples/tax-price
           description: 'Storefront guide: How to show product variants'' prices with taxes.'
     - name: country_code
       in: query
@@ -133,8 +131,7 @@ get:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
   x-codeSamples:
     - lang: JavaScript

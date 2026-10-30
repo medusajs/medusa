@@ -16,13 +16,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_location-levels_batch/post.js
+        $ref: ../code_samples/JavaScript/admin_inventory-items_location-levels_batch/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_inventory-items_location-levels_batch/post.sh
+        $ref: ../code_samples/Shell/admin_inventory-items_location-levels_batch/post.sh
   tags:
     - Inventory Items
   responses:
@@ -31,8 +29,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: >-
-              ../components/schemas/AdminBatchInventoryItemsLocationLevelsResponse.yaml
+            $ref: ../components/schemas/AdminBatchInventoryItemsLocationLevelsResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

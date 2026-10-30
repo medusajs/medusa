@@ -90,8 +90,7 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_product-categories_{id}_products/post.js
+        $ref: ../code_samples/JavaScript/admin_product-categories_{id}_products/post.js
     - lang: Shell
       label: cURL
       source:
@@ -118,4 +117,13 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: batchLinkProductsToCategoryWorkflow
-  x-events: []
+  x-events:
+    - name: product.updated
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the product
+        }
+        ```
+      description: Emitted when products are updated.
+      deprecated: false

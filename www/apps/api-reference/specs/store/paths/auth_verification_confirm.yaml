@@ -8,8 +8,7 @@ post:
     custom flows, such as phone number verification. Once successfully verified,
     a customer can complete their registration and log into their account.
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/storefront-development/customers/verify-account
+    url: https://docs.medusajs.com/resources/storefront-development/customers/verify-account
     description: 'Storefront guide: Register Customer with Email Verification.'
   x-authenticated: false
   requestBody:

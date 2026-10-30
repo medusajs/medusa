@@ -11,8 +11,7 @@ post:
     computed by the associated fulfillment provider when it's added to the cart.
     If the provider fails to calculate the price, this route returns an error.
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/storefront-development/checkout/shipping
+    url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping
     description: 'Storefront guide: How to implement shipping during checkout.'
   x-authenticated: false
   parameters:
@@ -38,8 +37,7 @@ post:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: locale
       in: query
@@ -49,8 +47,7 @@ post:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query

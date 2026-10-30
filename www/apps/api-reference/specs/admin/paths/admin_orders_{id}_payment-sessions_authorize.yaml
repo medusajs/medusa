@@ -25,13 +25,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_orders_{id}_payment-sessions_authorize/post.js
+        $ref: ../code_samples/JavaScript/admin_orders_{id}_payment-sessions_authorize/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_orders_{id}_payment-sessions_authorize/post.sh
+        $ref: ../code_samples/Shell/admin_orders_{id}_payment-sessions_authorize/post.sh
   tags:
     - Orders
   responses:
@@ -40,8 +38,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: >-
-              ../components/schemas/AdminAuthorizeOrderPaymentSessionResponse.yaml
+            $ref: ../components/schemas/AdminAuthorizeOrderPaymentSessionResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

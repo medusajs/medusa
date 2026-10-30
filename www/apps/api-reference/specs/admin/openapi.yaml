@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.21.2
+  version: 2.22.2
   title: Medusa Admin API
   license:
     name: MIT
@@ -147,8 +147,7 @@ tags:
       Fulfillment providers are installed as module providers.
     externalDocs:
       description: Learn more about the fulfillment providers and how to create them.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/fulfillment/fulfillment-provider
+      url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/fulfillment-provider
     x-associatedSchema:
       $ref: ./components/schemas/AdminFulfillmentProvider.yaml
   - name: Fulfillment Sets
@@ -164,8 +163,7 @@ tags:
       These API routes allow admin users to manage fulfillment sets.
     externalDocs:
       description: Learn more about fulfillment sets.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/fulfillment/concepts
+      url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/concepts
     x-associatedSchema:
       $ref: ./components/schemas/AdminFulfillmentSet.yaml
   - name: Fulfillments
@@ -177,8 +175,7 @@ tags:
       These API routes allow admin users to manage fulfillments.
     externalDocs:
       description: Learn more about fulfillments.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/fulfillment/item-fulfillment
+      url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/item-fulfillment
     x-associatedSchema:
       $ref: ./components/schemas/AdminFulfillment.yaml
   - name: Gift Cards
@@ -246,8 +243,7 @@ tags:
       retrieve and view locales.
     externalDocs:
       description: Learn more about locales and translations.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/translation/concepts
+      url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: ./components/schemas/AdminLocale.yaml
   - name: Multi-Factor Authentication
@@ -328,8 +324,7 @@ tags:
       These API routes allow admin users to manage payment collections.
     externalDocs:
       description: Learn more about payment collections.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/payment/payment-collection
+      url: https://docs.medusajs.com/resources/commerce-modules/payment/payment-collection
     x-associatedSchema:
       $ref: ./components/schemas/AdminPaymentCollection.yaml
   - name: Payments
@@ -376,8 +371,7 @@ tags:
       These API routes allow admin users to manage price lists.
     externalDocs:
       description: Learn more about price lists.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/pricing/concepts#price-list
+      url: https://docs.medusajs.com/resources/commerce-modules/pricing/concepts#price-list
     x-associatedSchema:
       $ref: ./components/schemas/AdminPriceList.yaml
   - name: Price Preferences
@@ -390,8 +384,7 @@ tags:
       is tax inclusive.
     externalDocs:
       description: Learn more about tax-inclusiveness and the role of a price preference.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/pricing/tax-inclusive-pricing
+      url: https://docs.medusajs.com/resources/commerce-modules/pricing/tax-inclusive-pricing
     x-associatedSchema:
       $ref: ./components/schemas/AdminPricePreference.yaml
   - name: Product Categories
@@ -611,8 +604,7 @@ tags:
       These API routes allow admins to manage shipping option types.
     externalDocs:
       description: Learn more about shipping option types.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types
+      url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#shipping-profiles-and-types
   - name: Shipping Options
     description: >
       A shipping option is a way of shipping an item to or from the customer.
@@ -629,8 +621,7 @@ tags:
       These API routes allow admins to manage shipping options.
     externalDocs:
       description: Learn more about shipping options.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option
+      url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option
     x-associatedSchema:
       $ref: ./components/schemas/AdminShippingOption.yaml
   - name: Shipping Profiles
@@ -643,8 +634,7 @@ tags:
       These API routes allow admin users to manage shipping profiles.
     externalDocs:
       description: Learn more about shipping profiles and other fulfillment concepts.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/fulfillment/concepts#shipping-profile
+      url: https://docs.medusajs.com/resources/commerce-modules/fulfillment/concepts#shipping-profile
     x-associatedSchema:
       $ref: ./components/schemas/AdminShippingProfile.yaml
   - name: Stock Locations
@@ -664,8 +654,7 @@ tags:
       linked data.
     externalDocs:
       description: Learn more about stock locations.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/stock-location/concepts
+      url: https://docs.medusajs.com/resources/commerce-modules/stock-location/concepts
     x-associatedSchema:
       $ref: ./components/schemas/AdminStockLocation.yaml
   - name: Store Credit Accounts
@@ -732,8 +721,7 @@ tags:
       These API routes allow admin users to manage tax rates and their rules.
     externalDocs:
       description: Learn more about tax rates and rules.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/tax/tax-rates-and-rules
+      url: https://docs.medusajs.com/resources/commerce-modules/tax/tax-rates-and-rules
     x-associatedSchema:
       $ref: ./components/schemas/AdminTaxRate.yaml
   - name: Tax Regions
@@ -800,8 +788,7 @@ tags:
       personal views.
     externalDocs:
       description: Learn more about views configurations.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
+      url: https://docs.medusajs.com/resources/commerce-modules/settings/view-configurations
     x-associatedSchema:
       $ref: ./components/schemas/AdminViewConfiguration.yaml
   - name: Workflows Executions
@@ -814,8 +801,7 @@ tags:
       for a short while, or only until the Medusa application is restarted.
     externalDocs:
       description: Check out available Workflow Engine Modules
-      url: >-
-        https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine
+      url: https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine
 paths:
   /admin/api-keys:
     $ref: paths/admin_api-keys.yaml
@@ -877,6 +863,8 @@ paths:
     $ref: paths/admin_customer-groups_{id}_customers.yaml
   /admin/customers:
     $ref: paths/admin_customers.yaml
+  /admin/customers/export:
+    $ref: paths/admin_customers_export.yaml
   /admin/customers/{id}:
     $ref: paths/admin_customers_{id}.yaml
   /admin/customers/{id}/addresses:
@@ -908,8 +896,7 @@ paths:
   /admin/draft-orders/{id}/edit/shipping-methods:
     $ref: paths/admin_draft-orders_{id}_edit_shipping-methods.yaml
   /admin/draft-orders/{id}/edit/shipping-methods/method/{method_id}:
-    $ref: >-
-      paths/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}.yaml
+    $ref: paths/admin_draft-orders_{id}_edit_shipping-methods_method_{method_id}.yaml
   /admin/draft-orders/{id}/edit/shipping-methods/{action_id}:
     $ref: paths/admin_draft-orders_{id}_edit_shipping-methods_{action_id}.yaml
   /admin/exchanges:
@@ -1039,8 +1026,7 @@ paths:
   /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_cancel.yaml
   /admin/orders/{id}/fulfillments/{fulfillment_id}/mark-as-delivered:
-    $ref: >-
-      paths/admin_orders_{id}_fulfillments_{fulfillment_id}_mark-as-delivered.yaml
+    $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_mark-as-delivered.yaml
   /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_shipments.yaml
   /admin/orders/{id}/line-items:
@@ -1150,15 +1136,13 @@ paths:
   /admin/products/{id}/variants/{variant_id}/inventory-items:
     $ref: paths/admin_products_{id}_variants_{variant_id}_inventory-items.yaml
   /admin/products/{id}/variants/{variant_id}/inventory-items/{inventory_item_id}:
-    $ref: >-
-      paths/admin_products_{id}_variants_{variant_id}_inventory-items_{inventory_item_id}.yaml
+    $ref: paths/admin_products_{id}_variants_{variant_id}_inventory-items_{inventory_item_id}.yaml
   /admin/promotions:
     $ref: paths/admin_promotions.yaml
   /admin/promotions/rule-attribute-options/{rule_type}:
     $ref: paths/admin_promotions_rule-attribute-options_{rule_type}.yaml
   /admin/promotions/rule-value-options/{rule_type}/{rule_attribute_id}:
-    $ref: >-
-      paths/admin_promotions_rule-value-options_{rule_type}_{rule_attribute_id}.yaml
+    $ref: paths/admin_promotions_rule-value-options_{rule_type}_{rule_attribute_id}.yaml
   /admin/promotions/{id}:
     $ref: paths/admin_promotions_{id}.yaml
   /admin/promotions/{id}/buy-rules/batch:
@@ -1338,8 +1322,7 @@ paths:
   /admin/workflows-executions/{workflow_id}/{transaction_id}:
     $ref: paths/admin_workflows-executions_{workflow_id}_{transaction_id}.yaml
   /admin/workflows-executions/{workflow_id}/{transaction_id}/subscribe:
-    $ref: >-
-      paths/admin_workflows-executions_{workflow_id}_{transaction_id}_subscribe.yaml
+    $ref: paths/admin_workflows-executions_{workflow_id}_{transaction_id}_subscribe.yaml
   /auth/mfa/challenges/{id}/verify:
     $ref: paths/auth_mfa_challenges_{id}_verify.yaml
   /auth/mfa/factors:

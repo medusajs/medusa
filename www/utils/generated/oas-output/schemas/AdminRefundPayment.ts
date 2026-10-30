@@ -15,6 +15,10 @@
  *     type: string
  *     title: note
  *     description: A note to attach to the refund.
+ *   idempotency_key:
+ *     type: string
+ *     title: idempotency_key
+ *     description: The payment's idempotency key.
  * x-schemaName: AdminRefundPayment
  * 
 */
