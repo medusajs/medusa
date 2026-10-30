@@ -229,12 +229,13 @@ jobs:
           # settings default cannot switch it on underneath us.
           #
           # Isolation for this job is enforced by: the tight --allowedTools
-          # allowlist (only specific `bash scripts/*.sh` + Read + Write, no
-          # arbitrary Bash), the read-only default token with NO App token in
-          # this job, and the `chmod -R a-w scripts` step above.
+          # allowlist (only specific `bash scripts/*.sh` + Read + Grep + Glob +
+          # Write, no arbitrary Bash), the read-only default token with NO App
+          # token in this job, and the `chmod -R a-w scripts` step above.
           #
           # The deny rules cover the two things the generic `Read`/`Write`
-          # tools could otherwise reach. Neither tool goes through the sandbox
+          # tools could otherwise reach (`Read` rules also apply to Grep and
+          # Glob). Neither tool goes through the sandbox
           # even when it is on, so these rules — not the sandbox — are what
           # blocks them:
           #   - `/proc/**`: reading the tokens straight out of the agent's own
@@ -284,6 +285,11 @@ jobs:
             scripts (listed in --allowedTools). You do not have any tool that
             can post comments, change labels, approve, request changes, or
             otherwise modify the repository. Do not try to invoke such tools.
+
+            The working directory is the BASE branch, not the PR. `Read`,
+            `Grep`, and `Glob` see the code before the PR. Read the PR's
+            version of a file with `bash scripts/get_pr_file.sh`, and its
+            changes with `bash scripts/get_pr_diff.sh`.
 
             STEPS:
             1. Run `bash scripts/get_pr.sh ${{ inputs.pr_number }}` to retrieve the PR title and author.
@@ -355,12 +361,13 @@ jobs:
             Do not print the JSON to stdout. Only write the file.
 
           claude_args: >-
-            --model claude-sonnet-4-6
-            --max-turns 80
+            --model claude-opus-5-5
+            --max-turns 200
             --allowedTools
             "Bash(bash scripts/get_pr.sh:*),
             Bash(bash scripts/get_pr_files.sh:*),
             Bash(bash scripts/get_pr_diff.sh:*),
+            Bash(bash scripts/get_pr_file.sh:*),
             Bash(bash scripts/get_linked_issues.sh:*),
             Bash(bash scripts/search_prs.sh:*),
             Bash(bash scripts/get_comments.sh:*),
@@ -368,6 +375,8 @@ jobs:
             Bash(bash scripts/get_issue.sh:*),
             Bash(bash scripts/get_dependency_releases.sh:*),
             Read,
+            Grep,
+            Glob,
             Write"
 
       - name: Detect broken Bash tooling

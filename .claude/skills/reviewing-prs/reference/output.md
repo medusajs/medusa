@@ -170,11 +170,17 @@ Adds a store route that lists a customer's saved addresses with pagination.
 - **What it does:** one sentence, paraphrased. Never quote the PR body.
 - **Checked:** the areas you reviewed, plus at most one short clause when
   something there is worth knowing (e.g. "no query or input changes").
+- **Previous review:** only on a re-review (Step 3). One line per earlier
+  blocking point under a `**Previous review**` line, e.g.
+  `- Last super admin guard: **Partial**, \`delete-users\` still skips it`.
+  Collapse to one line when every point has the same status.
+- **Not reviewed:** only when files were left unreviewed (Step 9c). One line
+  naming them, or their directories when there are many.
 - **Suggestions (non-blocking):** optional, at most 3 one-line bullets
   under a `**Suggestions (non-blocking)**` line.
 - Don't repeat the blocking points, praise, narrate your steps, or
-  explain the review process (earlier reviews, policy changes, what the
-  guardrails enforce). No `##` headings, no emojis, no checkboxes.
+  explain the review process (policy changes, what the guardrails
+  enforce). No `##` headings, no emojis, no checkboxes.
 
 ### `blocking_points`
 
