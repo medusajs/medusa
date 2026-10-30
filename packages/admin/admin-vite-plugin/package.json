@@ -45,7 +45,7 @@
     "@babel/types": "7.25.6",
     "@medusajs/admin-shared": "2.22.2",
     "fdir": "6.1.1",
-    "magic-string": "0.30.5",
+    "magic-string": "1.4.3",
     "outdent": "^0.8.0",
     "picocolors": "^1.1.0"
   },
