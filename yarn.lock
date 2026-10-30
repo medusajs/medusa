@@ -3523,13 +3523,13 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.22.2
     "@medusajs/test-utils": 2.22.2
-    awilix: ^8.0.1
+    awilix: ^13.0.5
     fast-json-stable-stringify: ^2.1.0
     node-cache: ^5.1.2
     xxhash-wasm: ^1.1.0
   peerDependencies:
     "@medusajs/framework": 2.22.2
-    awilix: ^8.0.1
+    awilix: ^13.0.5
   languageName: unknown
   linkType: soft
 
@@ -3677,7 +3677,7 @@ __metadata:
     "@opentelemetry/resources": ^2.7.0
     "@opentelemetry/sdk-node": ^0.220.0
     "@opentelemetry/sdk-trace-node": ^2.7.0
-    awilix: ^8.0.1
+    awilix: ^13.0.5
     pg: ^8.23.1
     zod: 4.6.6
   languageName: unknown
@@ -10317,13 +10317,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"awilix@npm:^8.0.1":
-  version: 8.0.1
-  resolution: "awilix@npm:8.0.1"
+"awilix@npm:^13.0.5":
+  version: 13.0.5
+  resolution: "awilix@npm:13.0.5"
   dependencies:
-    camel-case: ^4.1.2
-    fast-glob: ^3.2.12
-  checksum: 088da738d5cc380a1637e5757d63fc70a7954ca6c168bad15a65caab96922cad34f8a461f6071cd213f81109c281d83a70a4df04b8668f5230a19c5b903fca37
+    fast-glob: ^3.3.3
+  checksum: a4f7657cec0adfbcc7506a6ee69eb617857928bff1034e218aaa26d8526a002b990c42be9cd7c8e4b26a45f830cf37c84d07c5ff0eb4e9b4721be0c09b2711c0
   languageName: node
   linkType: hard
 
@@ -10820,16 +10819,6 @@ __metadata:
   version: 3.1.0
   resolution: "callsites@npm:3.1.0"
   checksum: fff92277400eb06c3079f9e74f3af120db9f8ea03bad0e84d9aede54bbe2d44a56cccb5f6cf12211f93f52306df87077ecec5b712794c5a9b5dac6d615a3f301
-  languageName: node
-  linkType: hard
-
-"camel-case@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "camel-case@npm:4.1.2"
-  dependencies:
-    pascal-case: ^3.1.2
-    tslib: ^2.0.3
-  checksum: bf9eefaee1f20edbed2e9a442a226793bc72336e2b99e5e48c6b7252b6f70b080fc46d8246ab91939e2af91c36cdd422e0af35161e58dd089590f302f8f64c8a
   languageName: node
   linkType: hard
 
@@ -13218,7 +13207,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2":
+"fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.2, fast-glob@npm:^3.3.3":
   version: 3.3.3
   resolution: "fast-glob@npm:3.3.3"
   dependencies:
@@ -17832,16 +17821,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pascal-case@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "pascal-case@npm:3.1.2"
-  dependencies:
-    no-case: ^3.0.4
-    tslib: ^2.0.3
-  checksum: 05ff7c344809fd272fc5030ae0ee3da8e4e63f36d47a1e0a4855ca59736254192c5a27b5822ed4bae96e54048eec5f6907713cfcfff7cdf7a464eaf7490786d8
-  languageName: node
-  linkType: hard
-
 "password-prompt@npm:^1.1.2":
   version: 1.1.3
   resolution: "password-prompt@npm:1.1.3"
@@ -19610,7 +19589,7 @@ __metadata:
     ajv: ^8.18.0
     autocannon: ^8.0.0
     autoprefixer: ^10.6.1
-    awilix: ^8.0.1
+    awilix: ^13.0.5
     axios: ^1.20.0
     configstore: ^8.0.0
     cross-env: ^10.1.0

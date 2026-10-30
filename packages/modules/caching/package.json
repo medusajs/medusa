@@ -37,11 +37,11 @@
   "devDependencies": {
     "@medusajs/framework": "2.22.2",
     "@medusajs/test-utils": "2.22.2",
-    "awilix": "^8.0.1"
+    "awilix": "^13.0.5"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.2",
-    "awilix": "^8.0.1"
+    "awilix": "^13.0.5"
   },
   "dependencies": {
     "fast-json-stable-stringify": "^2.1.0",
