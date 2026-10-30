@@ -66,6 +66,11 @@ type AdyenPaymentResponse =
   Types.checkout.PaymentResponse | Types.checkout.PaymentDetailsResponse
 
 const ResultCode = Types.checkout.PaymentResponse.ResultCodeEnum
+// Cards and wallets return their result to the storefront's request. Methods
+// that complete through a redirect or are confirmed asynchronously need the
+// webhook to authorize the session.
+// TODO: support them once webhook results can be stored on the session.
+const SUPPORTED_PAYMENT_METHODS = ["scheme", "applepay", "googlepay"]
 const CARD_ON_FILE =
   Types.checkout.PaymentRequest.RecurringProcessingModelEnum.CardOnFile
 const EventCode = Types.notification.NotificationRequestItem.EventCodeEnum
@@ -158,6 +163,7 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
         countryCode: countryCode?.toUpperCase(),
         channel: Types.checkout.PaymentMethodsRequest.ChannelEnum.Web,
         shopperReference,
+        allowedPaymentMethods: SUPPORTED_PAYMENT_METHODS,
       })
     )
 
@@ -172,6 +178,8 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
       shopper_reference: shopperReference ?? null,
       payment_methods: paymentMethods,
       psp_reference: null,
+      capture_psp_reference: null,
+      attempt: 0,
       result_code: null,
       action: null,
     }
@@ -206,6 +214,7 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
         status: PaymentSessionStatus.PENDING,
         data: {
           ...updated,
+          attempt: (session.attempt ?? 0) + 1,
           psp_reference: null,
           result_code: null,
           action: null,
@@ -248,19 +257,17 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
     } else if (client.payment_method) {
       const request = this.buildPaymentRequest(session, client)
 
-      // Keyed on the submitted payment method, so retrying the same submission
-      // is safe while a new one (for example, after a refusal) is a new payment.
+      // Keyed on the submission, so retrying it is safe while a new submission
+      // (for example, after a refusal) is a new payment, even with the same card.
       response = await this.request("authorizePayment", () =>
         this.checkout_.PaymentsApi.payments(request, {
           idempotencyKey: toIdempotencyKey(
-            `${session.session_id}-${hash(client.payment_method).slice(0, 16)}`
+            `${session.session_id}-${session.attempt ?? 0}`
           ),
         })
       )
     } else {
-      // TODO: async payment methods (for example, iDEAL or bank transfers) are only
-      // confirmed by the AUTHORISATION webhook. Supporting them needs the webhook
-      // result to be persisted on the session before it's authorized.
+      // Nothing was submitted, for example when a webhook authorizes the session.
       return { status: this.getStatus(session), data }
     }
 
@@ -275,11 +282,15 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
     const action =
       "action" in response && response.action ? response.action : null
 
+    const isAuthorised = response.resultCode === ResultCode.Authorised
     const updated: AdyenSessionData = {
       ...session,
       psp_reference: response.pspReference ?? session.psp_reference,
       result_code: response.resultCode ?? null,
       action,
+      // Kept until authorization so the storefront can render Drop-in again,
+      // but not copied into the payment's data.
+      payment_methods: isAuthorised ? null : session.payment_methods,
       // Don't retain the shopper's payment details once they're submitted.
       client: {
         ...client,
@@ -315,9 +326,7 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
     data,
     context,
   }: CapturePaymentInput): Promise<CapturePaymentOutput> {
-    const session = data as unknown as AdyenSessionData & {
-      capture_psp_reference?: string
-    }
+    const session = data as unknown as AdyenSessionData
 
     // Medusa doesn't pass the capture amount to providers, so the first capture
     // is always for the full amount and later partial captures only record it.
@@ -468,9 +477,20 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
       return {}
     }
 
+    // The account holder is already deleted in Medusa, so every card is
+    // attempted rather than stopping at the first failure.
     const paymentMethods = await this.listStoredPaymentMethods(shopperReference)
-    for (const paymentMethod of paymentMethods) {
-      await this.deleteStoredPaymentMethod(paymentMethod.id!, shopperReference)
+    const results = await Promise.allSettled(
+      paymentMethods.map((paymentMethod) =>
+        this.deleteStoredPaymentMethod(paymentMethod.id!, shopperReference)
+      )
+    )
+
+    const failed = results.filter((result) => result.status === "rejected")
+    if (failed.length) {
+      this.logger_.error(
+        `Adyen failed to delete ${failed.length} of ${paymentMethods.length} saved cards of shopper ${shopperReference}`
+      )
     }
 
     return {}
@@ -669,6 +689,17 @@ class AdyenProviderService extends AbstractPaymentProvider<AdyenOptions> {
     session: AdyenSessionData,
     client: AdyenClientData
   ): Types.checkout.PaymentRequest {
+    const paymentMethodType = (client.payment_method as { type?: string })?.type
+    if (
+      paymentMethodType &&
+      !SUPPORTED_PAYMENT_METHODS.includes(paymentMethodType)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Adyen payment method ${paymentMethodType} isn't supported`
+      )
+    }
+
     const returnUrl = client.return_url ?? this.options_.returnUrl
     if (!returnUrl) {
       throw new MedusaError(

@@ -72,6 +72,8 @@ const sessionData = (overrides = {}) => ({
   currency: "EUR",
   capture: false,
   psp_reference: null,
+  capture_psp_reference: null,
+  attempt: 0,
   result_code: null,
   action: null,
   ...overrides,
@@ -148,6 +150,8 @@ describe("AdyenProviderService", () => {
           session_id: SESSION_ID,
           country_code: "nl",
           psp_reference: "INJECTED",
+          capture_psp_reference: "INJECTED",
+          attempt: 5,
           result_code: "Authorised",
         },
       })
@@ -157,6 +161,7 @@ describe("AdyenProviderService", () => {
           merchantAccount: MERCHANT_ACCOUNT,
           amount: { currency: "EUR", value: 1000 },
           countryCode: "NL",
+          allowedPaymentMethods: ["scheme", "applepay", "googlepay"],
         })
       )
       expect(result).toEqual({
@@ -188,6 +193,7 @@ describe("AdyenProviderService", () => {
         status: PaymentSessionStatus.PENDING,
         data: expect.objectContaining({
           amount: 1000,
+          attempt: 1,
           psp_reference: null,
           result_code: null,
           action: null,
@@ -246,7 +252,7 @@ describe("AdyenProviderService", () => {
           additionalData: { manualCapture: "true" },
           applicationInfo: APPLICATION_INFO,
         }),
-        { idempotencyKey: expect.stringMatching(/^payses_123-[a-f0-9]{16}$/) }
+        { idempotencyKey: "payses_123-0" }
       )
       expect(result).toEqual({
         status: PaymentSessionStatus.AUTHORIZED,
@@ -262,26 +268,120 @@ describe("AdyenProviderService", () => {
       })
     })
 
-    it("uses the same idempotency key when the same payment method is retried", async () => {
+    it("keys payments on the submission, so resubmitting the same card is a new payment", async () => {
       const { provider, checkout } = createProvider()
       checkout.PaymentsApi.payments.mockResolvedValue({ resultCode: "Refused" })
+      const storedCard = { type: "scheme", storedPaymentMethodId: "TOKEN_1" }
 
-      const data = sessionData({ client: { payment_method: paymentMethod } })
-      await provider.authorizePayment({ data })
-      await provider.authorizePayment({ data })
-      await provider.authorizePayment({
-        data: sessionData({
-          client: {
-            payment_method: { ...paymentMethod, encryptedCardNumber: "new" },
-          },
-        }),
+      const first = sessionData({ client: { payment_method: storedCard } })
+      await provider.authorizePayment({ data: first })
+      await provider.authorizePayment({ data: first })
+
+      const resubmitted = await provider.updatePayment({
+        amount: 10,
+        currency_code: "eur",
+        data: {
+          ...first,
+          result_code: "Refused",
+          client: { payment_method: storedCard },
+        },
       })
+      await provider.authorizePayment({ data: resubmitted.data })
 
       const keys = checkout.PaymentsApi.payments.mock.calls.map(
         ([, options]) => options.idempotencyKey
       )
-      expect(keys[0]).toEqual(keys[1])
-      expect(keys[2]).not.toEqual(keys[0])
+      expect(keys).toEqual(["payses_123-0", "payses_123-0", "payses_123-1"])
+    })
+
+    it.each([
+      ["applepay", { applePayToken: "token" }],
+      ["googlepay", { googlePayToken: "token" }],
+    ])("submits %s payments", async (type, token) => {
+      const { provider, checkout } = createProvider()
+      checkout.PaymentsApi.payments.mockResolvedValue({
+        resultCode: "Authorised",
+        pspReference: "PSP_123",
+      })
+
+      const result = await provider.authorizePayment({
+        data: sessionData({ client: { payment_method: { type, ...token } } }),
+      })
+
+      expect(checkout.PaymentsApi.payments).toHaveBeenCalledWith(
+        expect.objectContaining({
+          paymentMethod: { type, ...token },
+          additionalData: { manualCapture: "true" },
+        }),
+        expect.any(Object)
+      )
+      expect(result.status).toEqual(PaymentSessionStatus.AUTHORIZED)
+    })
+
+    it("returns the 3DS action for Google Pay cards that need authentication", async () => {
+      const { provider, checkout } = createProvider()
+      const action = { type: "threeDS2", token: "t" }
+      checkout.PaymentsApi.payments.mockResolvedValue({
+        resultCode: "ChallengeShopper",
+        pspReference: "PSP_123",
+        action,
+      })
+
+      const result = await provider.authorizePayment({
+        data: sessionData({
+          client: {
+            payment_method: { type: "googlepay", googlePayToken: "token" },
+          },
+        }),
+      })
+
+      expect(result).toEqual({
+        status: PaymentSessionStatus.REQUIRES_MORE,
+        data: expect.objectContaining({ action }),
+      })
+    })
+
+    it("rejects payment methods that aren't supported", async () => {
+      const { provider, checkout } = createProvider()
+
+      const error = await provider
+        .authorizePayment({
+          data: sessionData({ client: { payment_method: { type: "ideal" } } }),
+        })
+        .catch((e) => e)
+
+      expect(error.type).toEqual(MedusaError.Types.INVALID_DATA)
+      expect(error.message).toEqual(
+        "Adyen payment method ideal isn't supported"
+      )
+      expect(checkout.PaymentsApi.payments).not.toHaveBeenCalled()
+    })
+
+    it("clears the payment methods response once authorized", async () => {
+      const { provider, checkout } = createProvider()
+      checkout.PaymentsApi.payments
+        .mockResolvedValueOnce({ resultCode: "Refused" })
+        .mockResolvedValueOnce({
+          resultCode: "Authorised",
+          pspReference: "PSP_123",
+        })
+      const payment_methods = { paymentMethods: [{ type: "scheme" }] }
+
+      const refused = await provider.authorizePayment({
+        data: sessionData({
+          payment_methods,
+          client: { payment_method: paymentMethod },
+        }),
+      })
+      const authorized = await provider.authorizePayment({
+        data: sessionData({
+          payment_methods,
+          client: { payment_method: paymentMethod },
+        }),
+      })
+
+      expect(refused.data!.payment_methods).toEqual(payment_methods)
+      expect(authorized.data!.payment_methods).toBeNull()
     })
 
     it("returns captured when auto-capture is enabled", async () => {
@@ -799,6 +899,26 @@ describe("AdyenProviderService", () => {
       expect(
         checkout.RecurringApi.deleteTokenForStoredPaymentDetails
       ).toHaveBeenCalledWith("TOKEN_1", "cus_123", MERCHANT_ACCOUNT)
+    })
+
+    it("attempts every saved card when deleting the account holder", async () => {
+      const { provider, checkout } = createProvider()
+      checkout.RecurringApi.deleteTokenForStoredPaymentDetails
+        .mockRejectedValueOnce(
+          Object.assign(new Error("boom"), { statusCode: 500 })
+        )
+        .mockResolvedValueOnce(undefined)
+
+      await provider.deleteAccountHolder({
+        context: { account_holder: accountHolder },
+      })
+
+      expect(
+        checkout.RecurringApi.deleteTokenForStoredPaymentDetails
+      ).toHaveBeenCalledTimes(2)
+      expect(logger.error).toHaveBeenCalledWith(
+        "Adyen failed to delete 1 of 2 saved cards of shopper cus_123"
+      )
     })
 
     it("deletes the saved cards with the account holder", async () => {

@@ -57,7 +57,9 @@ module.exports = defineConfig({
 - `CAPTURE` and `REFUND` webhooks return `NOT_SUPPORTED`, so captures and refunds made in the Customer Area aren't synced to Medusa.
 - With `capture: true`, an authorized payment returns `captured`, and `cancelPayment` reverses (refunds) it instead of canceling. Each `/payments` request sets `captureDelayHours: 0` or `manualCapture`, as the merchant account's capture delay can't be relied on.
 - Medusa doesn't pass the capture amount to providers, so the first capture captures the full amount at Adyen. Later partial captures in Medusa only record the amount and don't call Adyen.
-- `/payments` idempotency keys are derived from the session ID and the submitted payment method, so retries are safe and a new submission after a refusal is a new payment.
+- `/payments` idempotency keys are `{session_id}-{attempt}`, and `updatePayment` increments `attempt` whenever the storefront submits a payment method. Retrying the same submission is safe, and resubmitting the same card (for example, a saved card without a CVC) after a refusal is a new payment.
+- Only cards (`scheme`), Apple Pay (`applepay`), and Google Pay (`googlepay`) are offered by `/paymentMethods` and accepted by `/payments`. Redirect and asynchronous methods could authorize without the storefront's details call, which the provider can't reconcile yet.
+- `data.payment_methods` (the `/paymentMethods` response) is cleared once the payment is authorized, so it isn't copied into the payment's data.
 - Async payment methods that are only confirmed by the `AUTHORISATION` webhook aren't supported yet.
 - Saved cards are only used and stored with the provider-set `data.shopper_reference`, never one from `data.client`, so shoppers can't reach each other's cards (Adyen rejects another shopper's token with `Contract not found`). Guests get no `shopperReference`, so `store_payment_method` is ignored for them.
 - `savePaymentMethod` (`POST /storedPaymentMethods`) needs the "API tokenise payment details" credential role and a `holderName` in the payment method. Storing a card during a payment only needs the "Merchant Recurring" role.
