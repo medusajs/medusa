@@ -47,7 +47,7 @@
     "@medusajs/test-utils": "2.22.2"
   },
   "dependencies": {
-    "cron-parser": "^4.9.0",
+    "cron-parser": "^5.10.2",
     "ulid": "^2.3.0"
   },
   "peerDependencies": {
