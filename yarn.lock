@@ -3735,7 +3735,7 @@ __metadata:
     "@typescript-eslint/parser": ^8.72.0
     "@typescript-eslint/rule-tester": ^8.72.0
     "@typescript-eslint/utils": ^8.72.0
-    cron-parser: ^4.9.0
+    cron-parser: ^5.10.2
     eslint: ^10.13.0
     typescript: ^5.4.0
   peerDependencies:
@@ -4566,7 +4566,7 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.22.2
     "@medusajs/test-utils": 2.22.2
-    cron-parser: ^4.9.0
+    cron-parser: ^5.10.2
     ulid: ^2.3.0
   peerDependencies:
     "@medusajs/framework": 2.22.2
@@ -11666,12 +11666,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cron-parser@npm:^4.2.0, cron-parser@npm:^4.6.0, cron-parser@npm:^4.9.0":
+"cron-parser@npm:^4.2.0, cron-parser@npm:^4.6.0":
   version: 4.9.0
   resolution: "cron-parser@npm:4.9.0"
   dependencies:
     luxon: ^3.2.1
   checksum: 348622bdcd1a15695b61fc33af8a60133e5913a85cf99f6344367579e7002896514ba3b0a9d6bb569b02667d6b06836722bf2295fcd101b3de378f71d37bed0b
+  languageName: node
+  linkType: hard
+
+"cron-parser@npm:^5.10.2":
+  version: 5.10.2
+  resolution: "cron-parser@npm:5.10.2"
+  dependencies:
+    luxon: ^3.7.2
+  checksum: b1aefe64a0fcea39f36e1bcf06b8f4c97780fc982524a67389e4a6268163e863bebaca096e6c7b0536a5f14d1b977d820523170ddfa8c322455b786b5e5fe5cc
   languageName: node
   linkType: hard
 
@@ -16416,7 +16425,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"luxon@npm:^3.2.1":
+"luxon@npm:^3.2.1, luxon@npm:^3.7.2":
   version: 3.7.2
   resolution: "luxon@npm:3.7.2"
   checksum: ed8f0f637826c08c343a29dd478b00628be93bba6f068417b1d8896b61cb61c6deacbe1df1e057dbd9298334044afa150f9aaabbeb3181418ac8520acfdc2ae2
