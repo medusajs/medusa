@@ -83,6 +83,9 @@ medusaIntegrationTestRunner({
           cachingModule.clear({ key })
         )
       )
+      // The actor's role assignments are cached by the query layer under an
+      // automatic key, so they are dropped through their list tag.
+      await cachingModule.clear({ tags: ["RbacRoleAssignment:list:*"] })
     })
 
     afterAll(async () => {
@@ -123,6 +126,28 @@ medusaIntegrationTestRunner({
       await rbacModule.deleteRbacRolePolicies([rolePolicy.id])
 
       expect(await listProducts()).toEqual(403)
+    })
+
+    it("reflects unassigning and re-assigning the role", async () => {
+      expect(await listProducts()).toEqual(200)
+
+      const [reader] = await container
+        .resolve(Modules.USER)
+        .listUsers({ email: "cached-reader@medusa.js" })
+      const [assignment] = await rbacModule.listRbacRoleAssignments({
+        role_id: readerRoleId,
+        reference: "user",
+        reference_id: reader.id,
+      })
+      await rbacModule.deleteRbacRoleAssignments([assignment.id])
+
+      expect(await listProducts()).toEqual(403)
+
+      await rbacModule.createRbacRoleAssignments([
+        { role_id: readerRoleId, reference: "user", reference_id: reader.id },
+      ])
+
+      expect(await listProducts()).toEqual(200)
     })
 
     it("reflects detaching and re-attaching a policy", async () => {

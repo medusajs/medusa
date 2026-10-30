@@ -17,8 +17,7 @@ export type CreateRoleAssignmentsStepInput = CreateRbacRoleAssignmentDTO[]
 export const createRoleAssignmentsStepId = "create-role-assignments"
 
 /**
- * This step creates one or more RBAC role assignments and invalidates the
- * cached resolved-roles entries of the affected reference entities.
+ * This step creates one or more RBAC role assignments.
  *
  * @ignore
  */

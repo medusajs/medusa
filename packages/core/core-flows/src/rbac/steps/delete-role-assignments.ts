@@ -16,9 +16,7 @@ export type DeleteRoleAssignmentsStepInput = {
 export const deleteRoleAssignmentsStepId = "delete-role-assignments"
 
 /**
- * This step hard-deletes the RBAC role assignments matching the given filters
- * and invalidates the cached resolved-roles entries of the affected reference
- * entities.
+ * This step hard-deletes the RBAC role assignments with the given IDs.
  *
  * @ignore
  */

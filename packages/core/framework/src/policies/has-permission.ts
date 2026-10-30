@@ -4,6 +4,7 @@ import {
   ContainerRegistrationKeys,
   deduplicate,
   Modules,
+  permissionKey,
   RBAC_CACHE_TAGS,
   useCache,
   WILDCARD,
@@ -46,58 +47,57 @@ export type ListRolePermissionsInput = {
 type Policy = { resource: string; operation: string }
 
 /**
- * The operations granted on each resource. Either side may be `*`.
+ * The permissions a set of policies grants, as `resource:operation` keys.
+ * Wildcards are kept as stored (e.g. `product:*`, `*:read`, `*:*`).
  */
-export type PolicyMap = Map<string, Set<string>>
+export type PermissionSet = Set<string>
 
-const RBAC_CACHE_TTL = 60
+export const RBAC_CACHE_TTL = 60
 
 /**
- * Groups policies by resource.
+ * Keys the policies by `resource:operation`.
  */
-export function toPolicyMap(policies: Iterable<Policy>): PolicyMap {
-  const policyMap: PolicyMap = new Map()
+export function toPermissionSet(policies: Iterable<Policy>): PermissionSet {
+  const permissions: PermissionSet = new Set()
 
   for (const { resource, operation } of policies) {
-    const operations = policyMap.get(resource) ?? new Set<string>()
-    operations.add(operation)
-    policyMap.set(resource, operations)
+    permissions.add(permissionKey(resource, operation))
   }
 
-  return policyMap
+  return permissions
 }
 
 /**
- * Whether `policies` grant `(resource, operation)`. This is the single source
- * of truth for wildcard semantics: `*` matches as the resource, the operation,
- * or both.
+ * Whether `permissions` grant `(resource, operation)`. This is the single
+ * source of truth for wildcard semantics: `*` matches as the resource, the
+ * operation, or both.
  */
 export function isGranted(
-  policies: PolicyMap,
+  permissions: PermissionSet,
   resource: string,
   operation: string
 ): boolean {
-  const operations = new Set([
-    ...(policies.get(resource) ?? []),
-    ...(policies.get(WILDCARD) ?? []),
-  ])
-
-  return operations.has(operation) || operations.has(WILDCARD)
+  return (
+    permissions.has(permissionKey(resource, operation)) ||
+    permissions.has(permissionKey(resource, WILDCARD)) ||
+    permissions.has(permissionKey(WILDCARD, operation)) ||
+    permissions.has(permissionKey(WILDCARD, WILDCARD))
+  )
 }
 
 /**
- * The entries of `universe` that `policies` grant, as `resource:operation`
- * strings: the policies' wildcards expanded against concrete entries.
+ * The keys of the `candidates` that `permissions` grant, with the permissions'
+ * wildcards matched against each concrete candidate.
  */
-export function expandGrants(
-  policies: PolicyMap,
-  universe: Policy[]
+export function grantedKeys(
+  permissions: PermissionSet,
+  candidates: Policy[]
 ): Set<string> {
   const granted = new Set<string>()
 
-  for (const { resource, operation } of universe) {
-    if (isGranted(policies, resource, operation)) {
-      granted.add(`${resource}:${operation}`)
+  for (const { resource, operation } of candidates) {
+    if (isGranted(permissions, resource, operation)) {
+      granted.add(permissionKey(resource, operation))
     }
   }
 
@@ -141,7 +141,7 @@ export async function hasPermission(
     return false
   }
 
-  const policies = await fetchRolePolicies(roleIds, container)
+  const permissions = await fetchRolePermissions(roleIds, container)
 
   for (const action of actionList) {
     const operations = Array.isArray(action.operation)
@@ -149,7 +149,7 @@ export async function hasPermission(
       : [action.operation]
 
     for (const op of operations) {
-      if (!isGranted(policies, action.resource, op)) {
+      if (!isGranted(permissions, action.resource, op)) {
         return false
       }
     }
@@ -186,18 +186,16 @@ export async function resolvePermissions(
 
   const roleIds = Array.isArray(roles) ? roles : [roles]
   if (!MedusaModule.isInstalled(Modules.RBAC)) {
-    return new Set(
-      universe.map(({ resource, operation }) => `${resource}:${operation}`)
-    )
+    return toPermissionSet(universe)
   }
 
   if (!roleIds.length) {
     return new Set()
   }
 
-  const policies = await fetchRolePolicies(roleIds, container)
+  const permissions = await fetchRolePermissions(roleIds, container)
 
-  return expandGrants(policies, universe)
+  return grantedKeys(permissions, universe)
 }
 
 /**
@@ -227,16 +225,9 @@ export async function listRolePermissions(
     return []
   }
 
-  const policies = await fetchRolePolicies(roleIds, container)
-  const permissions: string[] = []
+  const permissions = await fetchRolePermissions(roleIds, container)
 
-  for (const [resource, operations] of policies) {
-    for (const operation of operations) {
-      permissions.push(`${resource}:${operation}`)
-    }
-  }
-
-  return permissions.sort()
+  return [...permissions].sort()
 }
 
 /**
@@ -321,16 +312,16 @@ export async function fetchPolicyResources(
 }
 
 /**
- * The policies of all the given roles, merged, from individually cached role
- * queries.
+ * The permissions of all the given roles, merged, from individually cached
+ * role queries.
  */
-async function fetchRolePolicies(
+async function fetchRolePermissions(
   roleIds: string[],
   container: MedusaContainer
-): Promise<PolicyMap> {
+): Promise<PermissionSet> {
   const rolePolicies = await Promise.all(
     roleIds.map((roleId) => fetchSingleRolePolicies(roleId, container))
   )
 
-  return toPolicyMap(rolePolicies.flat())
+  return toPermissionSet(rolePolicies.flat())
 }

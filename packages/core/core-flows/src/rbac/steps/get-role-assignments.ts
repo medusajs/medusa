@@ -46,7 +46,7 @@ export const getRoleAssignmentsStep = createStep(
         reference: input.reference,
         reference_id: input.reference_id,
         ...(input.scope
-          ? { scope: input.scope.typ˝e, scope_id: input.scope.id }
+          ? { scope: input.scope.type, scope_id: input.scope.id }
           : {}),
       },
       {

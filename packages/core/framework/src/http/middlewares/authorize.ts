@@ -1,10 +1,7 @@
 import type { PolicyAction } from "@medusajs/types"
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { MedusaError, Modules } from "@medusajs/utils"
-import {
-  hasPermission,
-  listRolePermissions,
-} from "../../policies/has-permission"
+import { MedusaError, Modules, permissionKey } from "@medusajs/utils"
+import { isGranted, listRolePermissions } from "../../policies/has-permission"
 import type {
   AuthenticatedMedusaRequest,
   MedusaNextFunction,
@@ -32,9 +29,9 @@ export type AuthorizeMiddleware = ((
  * specific matcher. Without a scope, only unscoped role assignments are
  * considered.
  *
- * On success, the resolved permissions are exposed on
- * `req.rbac_context.permissions` for the route handler and the middlewares
- * downstream. It is a no-op when RBAC is disabled.
+ * The roles' permissions are fetched once per request. On success, they are
+ * exposed on `req.rbac_context.permissions` for the route handler and the
+ * middlewares downstream. It is a no-op when RBAC is disabled.
  *
  * @param policies - Single policy or array of policies guarding the route
  *
@@ -94,15 +91,25 @@ export function authorize(
       throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
     }
 
-    const hasAccess = await hasPermission({
+    const permissions = await listRolePermissions({
       roles: roleIds,
-      actions: policyList,
       container: req.scope,
     })
+    const permissionSet = new Set(permissions)
+
+    const hasAccess = policyList.every((policy) =>
+      [policy.operation]
+        .flat()
+        .every((operation) =>
+          isGranted(permissionSet, policy.resource, operation)
+        )
+    )
 
     if (!hasAccess) {
       const policyKeys = policyList
-        .map((p) => `${p.resource}:${p.operation}`)
+        .map((policy) =>
+          permissionKey(policy.resource, [policy.operation].flat().join(","))
+        )
         .join(", ")
 
       throw new MedusaError(
@@ -114,10 +121,7 @@ export function authorize(
     req.rbac_context = {
       ...req.rbac_context,
       role_ids: roleIds,
-      permissions: await listRolePermissions({
-        roles: roleIds,
-        container: req.scope,
-      }),
+      permissions,
     }
 
     return next()

@@ -4,6 +4,7 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
 import {
+  permissionKey,
   RBAC_SUPER_ADMIN_POLICY_ID,
   RBAC_SUPER_ADMIN_ROLE_ID,
   WILDCARD,
@@ -43,7 +44,7 @@ export default async ({
 
   const policy = await rbacPolicyService.upsert({
     id: RBAC_SUPER_ADMIN_POLICY_ID,
-    key: `${WILDCARD}:${WILDCARD}`,
+    key: permissionKey(WILDCARD, WILDCARD),
     resource: WILDCARD,
     operation: WILDCARD,
     name: "Super Admin",

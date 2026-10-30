@@ -1,7 +1,7 @@
 import {
-  expandGrants,
+  grantedKeys,
   resolvePermissions,
-  toPolicyMap,
+  toPermissionSet,
 } from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
@@ -14,6 +14,7 @@ import {
   ContainerRegistrationKeys,
   defineFileConfig,
   Modules,
+  permissionKey,
   WILDCARD,
 } from "@medusajs/framework/utils"
 
@@ -73,7 +74,7 @@ export const GET = async (
     ) {
       return
     }
-    const key = `${resource}:${operation}`
+    const key = permissionKey(resource, operation)
     if (seen.has(key)) {
       return
     }
@@ -131,8 +132,8 @@ export const GET = async (
 
   const coveredRoles = (allRoles ?? [])
     .filter((role) => {
-      const roleGrants = expandGrants(
-        toPolicyMap((role.policies ?? []).filter(Boolean)),
+      const roleGrants = grantedKeys(
+        toPermissionSet((role.policies ?? []).filter(Boolean)),
         universe
       )
 

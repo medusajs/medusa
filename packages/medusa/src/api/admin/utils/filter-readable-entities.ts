@@ -4,7 +4,11 @@ import {
   resolveRoles,
 } from "@medusajs/framework/http"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
-import { Modules, PolicyOperation } from "@medusajs/framework/utils"
+import {
+  Modules,
+  permissionKey,
+  PolicyOperation,
+} from "@medusajs/framework/utils"
 
 /**
  * Returns the subset of the given RBAC resources the actor can read, for
@@ -55,6 +59,7 @@ export const filterReadableEntities = async (
 
   return entities.filter(
     (entity) =>
-      !governed.has(entity) || granted.has(`${entity}:${PolicyOperation.read}`)
+      !governed.has(entity) ||
+      granted.has(permissionKey(entity, PolicyOperation.read))
   )
 }

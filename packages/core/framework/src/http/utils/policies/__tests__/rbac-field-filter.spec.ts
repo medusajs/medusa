@@ -1,13 +1,15 @@
 import { MedusaContainer } from "@medusajs/types"
 import { RBACFieldFilter } from "../rbac-field-filter"
 
-const hasPermissionMock = jest.fn()
 const fetchPolicyResourcesMock = jest.fn()
+const isGrantedMock = jest.fn()
 
 jest.mock("../../../../policies/has-permission", () => ({
-  hasPermission: (...args: any[]) => hasPermissionMock(...args),
   fetchPolicyResources: (...args: any[]) => fetchPolicyResourcesMock(...args),
+  isGranted: (...args: any[]) => isGrantedMock(...args),
 }))
+
+const { isGranted } = jest.requireActual("../../../../policies/has-permission")
 
 jest.mock("@medusajs/modules-sdk", () => ({
   MedusaModule: {
@@ -31,14 +33,20 @@ jest.mock("@medusajs/modules-sdk", () => ({
   },
 }))
 
-const makeFilter = (policyResources: string[]) => {
+const getPermissionsMock = jest.fn()
+
+const makeFilter = (policyResources: string[], permissions: string[]) => {
   fetchPolicyResourcesMock.mockResolvedValue(new Set(policyResources))
+  getPermissionsMock.mockResolvedValue(permissions)
 
   return new RBACFieldFilter({
-    getActorRoles: async () => ["role_1"],
+    getPermissions: getPermissionsMock,
     container: {} as MedusaContainer,
   })
 }
+
+const checkedResources = () =>
+  isGrantedMock.mock.calls.map(([, resource]) => resource)
 
 const context = {
   entity: "product",
@@ -50,45 +58,58 @@ const context = {
 
 describe("RBACFieldFilter", () => {
   beforeEach(() => {
-    hasPermissionMock.mockReset()
     fetchPolicyResourcesMock.mockReset()
+    getPermissionsMock.mockReset()
+    isGrantedMock.mockReset().mockImplementation(isGranted)
   })
 
   it("should exclude fields of a governed entity when the read permission is denied", async () => {
-    hasPermissionMock.mockImplementation(async ({ actions }) => {
-      return actions.resource !== "product_variant"
-    })
-
-    const notAllowedFields = await makeFilter([
-      "product",
-      "product_variant",
-    ]).getNotAllowedFields(context)
+    const notAllowedFields = await makeFilter(
+      ["product", "product_variant"],
+      ["product:read"]
+    ).getNotAllowedFields(context)
 
     expect(notAllowedFields).toEqual(["variants.sku"])
-    expect(
-      hasPermissionMock.mock.calls.map(([input]) => input.actions.resource)
-    ).toEqual(expect.arrayContaining(["product", "product_variant"]))
+    expect(checkedResources()).toEqual(
+      expect.arrayContaining(["product", "product_variant"])
+    )
+  })
+
+  it("should fetch the permissions once for every checked path", async () => {
+    await makeFilter(
+      ["product", "product_variant"],
+      ["product:read", "product_variant:read"]
+    ).getNotAllowedFields(context)
+
+    expect(getPermissionsMock).toHaveBeenCalledTimes(1)
+    expect(isGrantedMock.mock.calls.length).toBeGreaterThan(1)
+  })
+
+  it("should allow fields of a governed entity granted through a wildcard", async () => {
+    const notAllowedFields = await makeFilter(
+      ["product", "product_variant"],
+      ["product:read", "product_variant:*"]
+    ).getNotAllowedFields(context)
+
+    expect(notAllowedFields).toEqual([])
   })
 
   it("should skip entities that are not governed resources without checking permissions", async () => {
-    hasPermissionMock.mockResolvedValue(true)
+    const notAllowedFields = await makeFilter(
+      ["product"],
+      ["product:read"]
+    ).getNotAllowedFields(context)
 
-    const notAllowedFields = await makeFilter(["product"]).getNotAllowedFields(
+    expect(notAllowedFields).toEqual([])
+    expect(checkedResources()).toEqual(["product"])
+  })
+
+  it("should not check any permission when no resource is governed", async () => {
+    const notAllowedFields = await makeFilter([], []).getNotAllowedFields(
       context
     )
 
     expect(notAllowedFields).toEqual([])
-    expect(
-      hasPermissionMock.mock.calls.map(([input]) => input.actions.resource)
-    ).toEqual(["product"])
-  })
-
-  it("should not check any permission when no resource is governed", async () => {
-    hasPermissionMock.mockResolvedValue(false)
-
-    const notAllowedFields = await makeFilter([]).getNotAllowedFields(context)
-
-    expect(notAllowedFields).toEqual([])
-    expect(hasPermissionMock).not.toHaveBeenCalled()
+    expect(isGrantedMock).not.toHaveBeenCalled()
   })
 })

@@ -1,13 +1,9 @@
-import {
-  GraphQLUtils,
-  promiseAll,
-  toSnakeCase,
-} from "@medusajs/framework/utils"
+import { GraphQLUtils, toSnakeCase } from "@medusajs/framework/utils"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import type { MedusaContainer } from "@medusajs/types"
 import {
   fetchPolicyResources,
-  hasPermission,
+  isGranted,
 } from "../../../policies/has-permission"
 import { FieldFilterContext, IFieldFilter } from "../field-filtering/index"
 
@@ -399,21 +395,24 @@ function collectUniqueEntityPaths(
 }
 
 /**
- * RBAC Field Filter using the Strategy pattern
- * Optimized for parallel permission checks
+ * RBAC Field Filter using the Strategy pattern. The actor's permissions are
+ * fetched once, then every governed relation path is checked against them.
  */
 export class RBACFieldFilter implements IFieldFilter {
-  private getActorRoles: () => Promise<string[]>
+  private getPermissions: () => Promise<string[]>
   private container: MedusaContainer
 
   constructor({
-    getActorRoles,
+    getPermissions,
     container,
   }: {
-    getActorRoles: () => Promise<string[]>
+    /**
+     * The actor's `resource:operation` permissions, wildcards as stored.
+     */
+    getPermissions: () => Promise<string[]>
     container: MedusaContainer
   }) {
-    this.getActorRoles = getActorRoles
+    this.getPermissions = getPermissions
     this.container = container
   }
 
@@ -426,32 +425,16 @@ export class RBACFieldFilter implements IFieldFilter {
       return []
     }
 
-    const actorRoles = await this.getActorRoles()
+    const permissions = new Set(await this.getPermissions())
     const policyResources = await fetchPolicyResources(this.container)
 
     const uniquePaths = collectUniqueEntityPaths(entity, fieldsToCheck)
 
-    const pathsNeedingCheck: { path: string; entityName: string }[] = []
+    const accessMap = new Map<string, boolean>()
     for (const [path, info] of uniquePaths) {
       if (info.entityName && policyResources.has(info.entityName)) {
-        pathsNeedingCheck.push({ path, entityName: info.entityName })
+        accessMap.set(path, isGranted(permissions, info.entityName, "read"))
       }
-    }
-
-    const permissionResults = await promiseAll(
-      pathsNeedingCheck.map(async ({ path, entityName }) => {
-        const hasAccess = await hasPermission({
-          roles: actorRoles,
-          actions: { resource: entityName, operation: "read" },
-          container: this.container,
-        })
-        return { path, hasAccess }
-      })
-    )
-
-    const accessMap = new Map<string, boolean>()
-    for (const result of permissionResults) {
-      accessMap.set(result.path, result.hasAccess)
     }
 
     const notAllowedFields: string[] = []

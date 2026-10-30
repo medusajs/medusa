@@ -1,6 +1,9 @@
 import { resolvePermissions, resolveRoles } from "@medusajs/framework"
 import { RbacScope } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  permissionKey,
+} from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -101,7 +104,7 @@ export const getAssignablePoliciesStep = createStep(
 
     const assignable: AssignablePolicy[] = []
     for (const policy of candidates ?? []) {
-      if (granted.has(`${policy.resource}:${policy.operation}`)) {
+      if (granted.has(permissionKey(policy.resource, policy.operation))) {
         assignable.push({
           id: policy.id,
           key: policy.key,

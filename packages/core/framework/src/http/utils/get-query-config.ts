@@ -15,6 +15,7 @@ import {
   promiseAll,
   stringToSelectRelationObject,
 } from "@medusajs/utils"
+import { listRolePermissions } from "../../policies/has-permission"
 import { AuthContext, MedusaRequest } from "../types"
 import {
   AllowedFieldFilter,
@@ -80,12 +81,17 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   ) {
     filters.push(
       new RBACFieldFilter({
-        getActorRoles: async () =>
-          req.rbac_context?.role_ids ??
-          resolveRoles({
-            authContext: req.auth_context!,
+        getPermissions: async () =>
+          req.rbac_context?.permissions ??
+          listRolePermissions({
+            roles:
+              req.rbac_context?.role_ids ??
+              (await resolveRoles({
+                authContext: req.auth_context!,
+                container: req.scope,
+                scope: req.rbac_context?.scope,
+              })),
             container: req.scope,
-            scope: req.rbac_context?.scope,
           }),
         container: req.scope,
       })

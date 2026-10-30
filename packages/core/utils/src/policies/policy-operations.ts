@@ -27,6 +27,7 @@ export const RBAC_CACHE_TAGS = {
   policy: (policyId: string) => `RbacPolicy:${policyId}`,
   POLICY_LIST: "RbacPolicy:list:*",
   ROLE_POLICY_LIST: "RbacRolePolicy:list:*",
+  ROLE_ASSIGNMENT_LIST: "RbacRoleAssignment:list:*",
 } as const
 
 /**
@@ -50,3 +51,6 @@ export const CORE_POLICY_OPERATIONS = [
   PolicyOperation.update,
   PolicyOperation.delete,
 ] as const
+
+export const permissionKey = (resource: string, operation: string) =>
+  `${resource}:${operation}`

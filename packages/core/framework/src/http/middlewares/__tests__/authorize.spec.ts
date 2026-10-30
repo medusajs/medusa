@@ -6,7 +6,6 @@ import { AuthenticatedMedusaRequest, MedusaResponse } from "../../types"
 
 const mockRbac = { installed: true }
 const resolveRolesMock = jest.fn()
-const hasPermissionMock = jest.fn()
 const listRolePermissionsMock = jest.fn()
 
 jest.mock("@medusajs/modules-sdk", () => ({
@@ -18,7 +17,7 @@ jest.mock("../../utils/resolve-roles", () => ({
 }))
 
 jest.mock("../../../policies/has-permission", () => ({
-  hasPermission: (...args: unknown[]) => hasPermissionMock(...args),
+  isGranted: jest.requireActual("../../../policies/has-permission").isGranted,
   listRolePermissions: (...args: unknown[]) => listRolePermissionsMock(...args),
 }))
 
@@ -71,7 +70,6 @@ describe("authorize", () => {
   beforeEach(() => {
     jest.clearAllMocks()
     resolveRolesMock.mockResolvedValue(["role_1"])
-    hasPermissionMock.mockResolvedValue(true)
     listRolePermissionsMock.mockResolvedValue(["product:read"])
   })
 
@@ -143,6 +141,44 @@ describe("authorize", () => {
     expect(next).toHaveBeenCalledWith()
   })
 
+  it("fetches the roles' permissions once per request", async () => {
+    listRolePermissionsMock.mockResolvedValue([
+      "product:read",
+      "product:update",
+    ])
+    const req = createRequest()
+
+    await run(
+      authorize([
+        readPolicy,
+        { resource: "product", operation: ["read", "update"] } as PolicyAction,
+      ]),
+      req
+    )
+
+    expect(listRolePermissionsMock).toHaveBeenCalledTimes(1)
+    expect(listRolePermissionsMock).toHaveBeenCalledWith({
+      roles: ["role_1"],
+      container: req.scope,
+    })
+  })
+
+  it("grants the policies through wildcard permissions", async () => {
+    listRolePermissionsMock.mockResolvedValue(["*:read", "product:*"])
+    const req = createRequest()
+
+    const next = await run(
+      authorize([
+        readPolicy,
+        { resource: "product", operation: "delete" } as PolicyAction,
+        { resource: "order", operation: "read" } as PolicyAction,
+      ]),
+      req
+    )
+
+    expect(next).toHaveBeenCalledWith()
+  })
+
   it("forbids the request when the actor has no roles", async () => {
     resolveRolesMock.mockResolvedValue([])
     const req = createRequest()
@@ -154,7 +190,7 @@ describe("authorize", () => {
       message: "Forbidden",
     })
     expect(next).not.toHaveBeenCalled()
-    expect(hasPermissionMock).not.toHaveBeenCalled()
+    expect(listRolePermissionsMock).not.toHaveBeenCalled()
   })
 
   it("forbids the request when there is no authenticated actor", async () => {
@@ -168,7 +204,7 @@ describe("authorize", () => {
   })
 
   it("forbids the request when the roles do not grant the policies", async () => {
-    hasPermissionMock.mockResolvedValue(false)
+    listRolePermissionsMock.mockResolvedValue(["product:read"])
     const req = createRequest()
 
     const { error, next } = await runExpectingThrow(
@@ -186,6 +222,26 @@ describe("authorize", () => {
     })
     expect(next).not.toHaveBeenCalled()
     expect(req.rbac_context?.permissions).toBeUndefined()
+  })
+
+  it("forbids the request when one of a policy's operations is not granted", async () => {
+    listRolePermissionsMock.mockResolvedValue(["product:read"])
+    const req = createRequest()
+
+    const { error, next } = await runExpectingThrow(
+      authorize({
+        resource: "product",
+        operation: ["read", "update"],
+      } as PolicyAction),
+      req
+    )
+
+    expect(error).toMatchObject({
+      type: MedusaError.Types.FORBIDDEN,
+      message:
+        "Insufficient permissions. Required policies: product:read,update",
+    })
+    expect(next).not.toHaveBeenCalled()
   })
 
   it("lets an unexpected failure propagate without continuing the request", async () => {

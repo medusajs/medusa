@@ -4,7 +4,7 @@ import {
   PolicyResourceValue,
 } from "@medusajs/types"
 import { MedusaError, toPascalCase } from "../common"
-import { CORE_POLICY_OPERATIONS } from "./policy-operations"
+import { CORE_POLICY_OPERATIONS, permissionKey } from "./policy-operations"
 
 /**
  * Builds policies for a list of resources. Every policy is derived, so `key`,
@@ -57,8 +57,7 @@ export type BuildPoliciesForResourceInput = {
 }
 
 export type BuildPoliciesInput =
-  | BuildPoliciesForResourcesInput
-  | BuildPoliciesForResourceInput
+  BuildPoliciesForResourcesInput | BuildPoliciesForResourceInput
 
 export type BuiltPolicy = CreateRbacPolicyDTO & {
   name: string
@@ -122,7 +121,7 @@ export function buildPolicies({
       const normalizedOperation = toPascalCase(operation)
 
       return {
-        key: key ?? `${resource}:${operation}`,
+        key: key ?? permissionKey(resource, operation),
         resource,
         operation,
         name: name ?? `${normalizedOperation}${normalizedResource}`,

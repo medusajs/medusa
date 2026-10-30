@@ -1,3 +1,4 @@
+import { listRolePermissions } from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
   RBACFieldFilter,
@@ -38,7 +39,8 @@ export const filterReadableColumns = async (
 
   const unreadableFields = new Set(
     await new RBACFieldFilter({
-      getActorRoles: async () => roles,
+      getPermissions: () =>
+        listRolePermissions({ roles, container: req.scope }),
       container: req.scope,
     }).getNotAllowedFields({
       entity,
