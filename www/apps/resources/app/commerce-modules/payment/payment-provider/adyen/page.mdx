@@ -29,13 +29,15 @@ Your technical team must register the Adyen Module Provider in your Medusa appli
 The Adyen Module Provider integrates [Adyen](https://www.adyen.com/) into your Medusa application to process payments. It uses Adyen's [Checkout API Advanced flow](https://docs.adyen.com/online-payments/build-your-integration/advanced-flow/), and it supports:
 
 - Card payments, including 3D Secure authentication.
+- Apple Pay and Google Pay wallet payments.
 - Manual or automatic capture of payments.
 - Refunds and cancellations.
 - Saved cards for customers with an account.
 
 <Note title="Limitations">
 
-- Asynchronous payment methods that Adyen only confirms through the `AUTHORISATION` webhook, such as iDEAL or bank transfers, aren't supported yet.
+- The provider only supports cards (`scheme`), Apple Pay (`applepay`), and Google Pay (`googlepay`). It only retrieves these payment methods from Adyen, so Drop-in doesn't show other methods, and it throws an error if the storefront submits a different payment method type.
+- Payment methods that complete through a redirect or that Adyen confirms asynchronously through the `AUTHORISATION` webhook, such as iDEAL or bank transfers, aren't supported yet.
 - The first capture of a payment always captures the full authorized amount in Adyen. Later partial captures in Medusa only record the captured amount.
 
 </Note>
@@ -334,7 +336,7 @@ For example, if you set the ID of the Adyen Module Provider to `adyen` in `medus
 
 The Adyen Module Provider is built to work with Adyen's [Drop-in](https://docs.adyen.com/online-payments/build-your-integration/advanced-flow/?platform=Web&integration=Drop-in) component in the storefront. The checkout flow is as follows:
 
-1. [Initialize a payment session](../../../../storefront-development/checkout/payment/page.mdx) with the Adyen payment provider. The provider retrieves the available payment methods from Adyen and stores them in the payment session's `data.payment_methods` property. Pass this property to Drop-in to render the payment methods.
+1. [Initialize a payment session](../../../../storefront-development/checkout/payment/page.mdx) with the Adyen payment provider. The provider retrieves the available payment methods from Adyen, limited to the [supported payment methods](#what-is-the-adyen-module-provider), and stores them in the payment session's `data.payment_methods` property. Pass this property to Drop-in to render the payment methods.
 2. When the customer submits their payment details in Drop-in, [update the payment session's client data](../../payment-session/page.mdx#update-client-data-from-the-storefront) with the details that Drop-in returns, then complete the cart.
 3. If Adyen requires an additional action, such as a 3D Secure challenge or a redirect, the cart completion fails and the payment session's status becomes `requires_more`. The payment session's `data.action` property holds the action, which you pass to Drop-in to handle it.
 4. After the customer completes the action, update the payment session's client data with the details that Drop-in returns, then complete the cart again.
@@ -365,7 +367,7 @@ sdk.store.payment.updatePaymentSession(
 )
 ```
 
-If the customer's payment is refused, they can submit new payment details. The provider then resets the payment session to the `pending` status and processes the new details as a new payment attempt.
+If the customer's payment is refused, they can submit new payment details. The provider then resets the payment session to the `pending` status and processes the submission as a new payment attempt, even if the customer uses the same card. The payment session keeps `data.payment_methods` until the payment is authorized, so you can render Drop-in again for the new attempt. After authorization, the provider sets `data.payment_methods` to `null`.
 
 ### Saved Cards
 
