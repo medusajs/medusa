@@ -43,6 +43,11 @@ enum JobType {
 const THIRTY_MINUTES_IN_MS = 1000 * 60 * 30
 const REPEATABLE_CLEARER_JOB_ID = "clear-expired-executions"
 
+// BullMQ job schedulers run `every` jobs immediately on creation, unlike the
+// repeatable jobs they replace, which waited for the next interval boundary.
+const getNextIntervalStart = (interval: number) =>
+  (Math.floor(Date.now() / interval) + 1) * interval
+
 const doneStates = new Set([
   TransactionStepState.DONE,
   TransactionStepState.REVERTED,
@@ -221,7 +226,9 @@ export class RedisDistributedTransactionStorage
 
           if (job.name === JobType.SCHEDULE) {
             // Remove repeatable job from the old queue since now we have a queue dedicated to scheduled jobs
-            await this.remove(job.data.jobId)
+            if (job.repeatJobKey) {
+              await this.queue.removeJobScheduler(job.repeatJobKey)
+            }
           }
         },
         mainWorkerOptions
@@ -255,16 +262,23 @@ export class RedisDistributedTransactionStorage
         cleanerWorkerOptions
       )
 
-      await this.cleanerQueue_?.add(
-        "cleaner",
-        {},
+      await this.removeAllRepeatableJobs(
+        this.cleanerQueue_!,
+        REPEATABLE_CLEARER_JOB_ID
+      )
+      await this.cleanerQueue_?.upsertJobScheduler(
+        REPEATABLE_CLEARER_JOB_ID,
         {
-          repeat: {
-            every: THIRTY_MINUTES_IN_MS,
+          every: THIRTY_MINUTES_IN_MS,
+          startDate: getNextIntervalStart(THIRTY_MINUTES_IN_MS),
+        },
+        {
+          name: "cleaner",
+          data: {},
+          opts: {
+            removeOnComplete: true,
+            removeOnFail: true,
           },
-          jobId: REPEATABLE_CLEARER_JOB_ID,
-          removeOnComplete: true,
-          removeOnFail: true,
         }
       )
     }
@@ -743,6 +757,21 @@ export class RedisDistributedTransactionStorage
     step?: TransactionStep,
     interval?: number
   ) {
+    // BullMQ rejects custom job ids that contain ":"
+    return this.getLegacyJobId(type, transaction, step, interval).replaceAll(
+      ":",
+      "|"
+    )
+  }
+
+  // TODO: Remove in a later release. Jobs enqueued before the BullMQ v6
+  // upgrade still use ":" ids.
+  private getLegacyJobId(
+    type: JobType,
+    transaction: DistributedTransactionType,
+    step?: TransactionStep,
+    interval?: number
+  ) {
     const key = [type, transaction.modelId, transaction.transactionId]
 
     if (step) {
@@ -772,19 +801,19 @@ export class RedisDistributedTransactionStorage
     step?: TransactionStep,
     interval?: number
   ) {
-    const jobId = this.getJobId(type, transaction, step, interval)
+    const queue = type === JobType.SCHEDULE ? this.jobQueue : this.queue
+    const [job, legacyJob] = await promiseAll([
+      queue?.getJob(this.getJobId(type, transaction, step, interval)),
+      queue?.getJob(this.getLegacyJobId(type, transaction, step, interval)),
+    ])
+    const existingJob = job ?? legacyJob
 
-    if (type === JobType.SCHEDULE) {
-      const job = await this.jobQueue?.getJob(jobId)
-      if (job) {
-        await job.remove()
-      }
-    } else {
-      const job = await this.queue.getJob(jobId)
+    if (!existingJob) {
+      return
+    }
 
-      if (job && job.attemptsStarted === 0) {
-        await job.remove()
-      }
+    if (type === JobType.SCHEDULE || existingJob.attemptsStarted === 0) {
+      await existingJob.remove()
     }
   }
 
@@ -802,50 +831,82 @@ export class RedisDistributedTransactionStorage
       )
     }
 
+    if (!this.jobQueue) {
+      return
+    }
+
     const repeatOptions: RepeatOptions = {
       limit: schedulerOptions.numberOfExecutions,
-      key: `${JobType.SCHEDULE}_${jobId}`,
     }
 
     if ("cron" in schedulerOptions) {
       repeatOptions.pattern = schedulerOptions.cron
     } else {
       repeatOptions.every = schedulerOptions.interval
+      repeatOptions.startDate = getNextIntervalStart(schedulerOptions.interval)
     }
 
     // If it is the same key (eg. the same workflow name), the old one will get overridden.
-    await this.jobQueue?.add(
-      JobType.SCHEDULE,
+    await this.jobQueue.upsertJobScheduler(
+      `${JobType.SCHEDULE}_${jobId}`,
+      repeatOptions,
       {
-        jobId,
-        schedulerOptions,
-      },
-      {
-        repeat: repeatOptions,
-        removeOnComplete: {
-          age: 86400,
-          count: 1000,
+        name: JobType.SCHEDULE,
+        data: {
+          jobId,
+          schedulerOptions,
         },
-        removeOnFail: {
-          age: 604800,
-          count: 5000,
+        opts: {
+          removeOnComplete: {
+            age: 86400,
+            count: 1000,
+          },
+          removeOnFail: {
+            age: 604800,
+            count: 5000,
+          },
         },
       }
     )
   }
 
   async remove(jobId: string): Promise<void> {
-    await this.jobQueue?.removeRepeatableByKey(`${JobType.SCHEDULE}_${jobId}`)
+    await this.jobQueue?.removeJobScheduler(`${JobType.SCHEDULE}_${jobId}`)
   }
 
   async removeAll(): Promise<void> {
     return await this.removeAllRepeatableJobs(this.jobQueue!)
   }
 
-  private async removeAllRepeatableJobs(queue: Queue): Promise<void> {
-    const repeatableJobs = (await queue.getRepeatableJobs()) ?? []
+  private async removeAllRepeatableJobs(
+    queue: Queue,
+    keepJobSchedulerId?: string
+  ): Promise<void> {
+    // `getJobSchedulers` throws on repeatable jobs created by older BullMQ
+    // versions, so their keys are read from the sorted set directly.
+    const keys = (
+      await this.redisClient.zrange(queue.keys.repeat, 0, -1)
+    ).filter((key) => key !== keepJobSchedulerId)
+    if (!keys.length) {
+      return
+    }
+
+    await promiseAll(keys.map((key) => queue.removeJobScheduler(key)))
+
+    // Removing a legacy repeatable job leaves its next run in the delayed set
+    const keptJobIdPrefix = `repeat:${keepJobSchedulerId}:`
+    const delayedJobIds = await this.redisClient.zrange(
+      queue.keys.delayed,
+      0,
+      -1
+    )
     await promiseAll(
-      repeatableJobs.map((job) => queue.removeRepeatableByKey(job.key))
+      delayedJobIds
+        .filter(
+          (jobId) =>
+            jobId.startsWith("repeat:") && !jobId.startsWith(keptJobIdPrefix)
+        )
+        .map((jobId) => queue.remove(jobId))
     )
   }
 

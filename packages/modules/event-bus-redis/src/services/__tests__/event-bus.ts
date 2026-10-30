@@ -121,6 +121,56 @@ describe("RedisEventBusService", () => {
         ])
       })
 
+      it("should replace colons in custom job ids", async () => {
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        await eventBus.emit([{ name: "eventName", data: { hi: "1234" } }], {
+          jobId: "order:123:placed:now",
+        })
+
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          expect.objectContaining({
+            opts: expect.objectContaining({ jobId: "order|123|placed|now" }),
+          }),
+        ])
+      })
+
+      it("should pass the deprecated debounce option as deduplication", async () => {
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        await eventBus.emit([{ name: "eventName", data: { hi: "1234" } }], {
+          debounce: { id: "order-123", ttl: 1000 },
+        })
+
+        const [[jobs]] = queue.addBulk.mock.calls
+        expect(jobs[0].opts.deduplication).toEqual({
+          id: "order-123",
+          ttl: 1000,
+        })
+        expect(jobs[0].opts).not.toHaveProperty("debounce")
+      })
+
+      it("should replace colons in custom job ids of released grouped events", async () => {
+        eventBus.subscribe("eventName", () => Promise.resolve())
+
+        redis.lrange = jest.fn().mockResolvedValue([
+          JSON.stringify({
+            name: "eventName",
+            data: { data: { hi: "1234" }, metadata: { eventGroupId: "group" } },
+            opts: { jobId: "order:123" },
+          }),
+        ])
+        redis.unlink = jest.fn()
+
+        await eventBus.releaseGroupedEvents("group")
+
+        expect(queue.addBulk).toHaveBeenCalledWith([
+          expect.objectContaining({
+            opts: { jobId: "order|123" },
+          }),
+        ])
+      })
+
       it("should add job to queue with custom options passed directly upon emitting", async () => {
         eventBus.subscribe("eventName", () => Promise.resolve())
 
@@ -429,7 +479,7 @@ describe("RedisEventBusService", () => {
         ])
       })
 
-      it("should add job to queue with lowest priority (2097152) for internal events", async () => {
+      it("should add job to queue with lowest priority (2097151) for internal events", async () => {
         eventBus.subscribe("eventName", () => Promise.resolve())
 
         await eventBus.emit(
@@ -450,7 +500,7 @@ describe("RedisEventBusService", () => {
             opts: {
               attempts: 1,
               removeOnComplete: true,
-              priority: 2097152,
+              priority: 2097151,
               internal: true,
             },
           },
@@ -806,7 +856,7 @@ describe("RedisEventBusService", () => {
           expect(stagedEvent.opts.priority).toBe(100)
         })
 
-        it("should stage grouped events with lowest priority (2097152) for internal events", async () => {
+        it("should stage grouped events with lowest priority (2097151) for internal events", async () => {
           const event = {
             name: "grouped-event",
             data: { hi: "1234" },
@@ -819,7 +869,7 @@ describe("RedisEventBusService", () => {
           const calledWith = pipelineMock.rpush.mock.calls[0]
           const stagedEvent = JSON.parse(calledWith[1])
 
-          expect(stagedEvent.opts.priority).toBe(2097152)
+          expect(stagedEvent.opts.priority).toBe(2097151)
           expect(stagedEvent.opts.internal).toBe(true)
         })
 

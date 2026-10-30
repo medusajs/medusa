@@ -106,8 +106,8 @@ export const EventPriority = {
   DEFAULT: 100,
   LOW: 500,
   /**
-   * Lowest priority value supported by BullMQ (2^21)
+   * Lowest priority value supported by BullMQ (2^21 - 1)
    * Internal events use this priority to ensure they don't block critical business events
    */
-  LOWEST: 2_097_152,
+  LOWEST: 2_097_151,
 } as const

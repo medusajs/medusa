@@ -41,7 +41,7 @@
     "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\""
   },
   "dependencies": {
-    "bullmq": "5.13.0",
+    "bullmq": "6.4.1",
     "ioredis": "^5.11.1"
   },
   "peerDependencies": {
