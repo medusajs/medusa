@@ -628,6 +628,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/payment/payment-flow"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/payment/payment-provider/adyen/page.mdx",
+    "pathname": "/commerce-modules/payment/payment-provider/adyen"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/payment/payment-provider/page.mdx",
     "pathname": "/commerce-modules/payment/payment-provider"
   },

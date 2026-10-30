@@ -156,6 +156,7 @@ export const sitemapUrls = [
   "/commerce-modules/payment/payment-checkout-flow",
   "/commerce-modules/payment/payment-collection",
   "/commerce-modules/payment/payment-flow",
+  "/commerce-modules/payment/payment-provider/adyen",
   "/commerce-modules/payment/payment-provider",
   "/commerce-modules/payment/payment-provider/stripe",
   "/commerce-modules/payment/payment-session",

@@ -123,6 +123,17 @@ When creating a payment session through `createPaymentSessionsWorkflow`, Medusa 
 
 </Note>
 
+<Note title="Replacing existing payment sessions">
+
+Medusa doesn't support split payments, so `createPaymentSessionsWorkflow` deletes the payment collection's existing payment sessions before it creates the new one. The workflow throws a `not_allowed` error instead of replacing them if an existing payment session:
+
+- Has the `pending_authorization` status, meaning its authorization is in progress.
+- Has an authorized or captured payment that isn't canceled or fully refunded.
+
+This prevents the workflow from detaching an active payment from its payment collection. To change the payment provider in this case, cancel or fully refund the existing payment first.
+
+</Note>
+
 For example:
 
 <CodeTabs group="workflow-service">
