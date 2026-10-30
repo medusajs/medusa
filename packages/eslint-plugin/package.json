@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/eslint-plugin",
-  "version": "2.22.1",
+  "version": "2.22.2",
   "description": "Official ESLint plugin for Medusa projects. Enforces Medusa's framework conventions across API routes, modules, workflows, subscribers, jobs, admin extensions, and module links.",
   "repository": {
     "type": "git",
@@ -54,7 +54,7 @@
   "dependencies": {
     "@typescript-eslint/parser": "^8.72.0",
     "@typescript-eslint/utils": "^8.72.0",
-    "cron-parser": "^4.9.0"
+    "cron-parser": "^5.10.2"
   },
   "devDependencies": {
     "@types/eslint": "^9.6.1",

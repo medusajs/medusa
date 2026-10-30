@@ -47,10 +47,12 @@ issue, skip this step.
 
 ## Step 3 — Review Prior Comments
 
-Read the existing comments fetched in Step 1. Identify any previous bot review comments and assess what is still outstanding:
+Read the existing comments fetched in Step 1. Identify any previous bot review comments and assess what is still outstanding.
 
-- If **all prior issues are resolved** — acknowledge briefly in `summary` and only list any new findings in `blocking_points`.
-- If **some prior issues remain unresolved** — carry them forward into `blocking_points`. Don't re-explain them in detail; reference them briefly.
+Check **each** blocking point of the latest bot review against the PR's current code (`get_pr_file.sh`), not against the author's reply. Give each one a status: **Fixed**, **Partial** (what's still missing), **Not fixed**, or **Dropped** (out of scope, or wrong on a second look). Report them as the **Previous review** lines of `summary` (see **Report Format** in `output.md`).
+
+- If **all prior issues are resolved** — say so in the **Previous review** line and only list new findings in `blocking_points`.
+- If **some prior issues remain unresolved** — carry each **Partial** or **Not fixed** one forward into `blocking_points`. Don't re-explain them in detail; reference them briefly.
 - If a **prior blocker is no longer in scope** for this review (e.g. a missing linked issue, which `pr-guardrails.yml` now enforces), drop it silently. Dropping it counts as a change, so this is not a no-op re-review.
 - If **this is the first review** (no prior bot comments) — skip this step.
 - If **there is a prior review and nothing has changed** — no new issues, no resolved or dropped issues, no new concerns — emit a no-op decision (`review_template: null`, empty label arrays). Stop here. Exception: a PR labeled `requires-rewrite` never gets a no-op; continue to Step 5b.
@@ -60,6 +62,7 @@ Read the existing comments fetched in Step 1. Identify any previous bot review c
 ## Common Mistakes
 
 - [ ] Skipping the previous-PR check (Step 2)
+- [ ] Marking a prior blocking point fixed because the author said so, without reading the current code
 - [ ] Blocking a PR solely because a previous PR resolves the same issue
 - [ ] Repeating the previous-PR heads-up on every re-review — flag it only once, at the first review
 - [ ] Flagging a *later* PR (higher number) as the one that may close this PR — the heads-up applies only when an *earlier* open PR resolves the same issue

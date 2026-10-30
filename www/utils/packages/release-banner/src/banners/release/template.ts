@@ -32,6 +32,8 @@ export function buildRelease(
     lineHeight: 1,
     fontWeight: spec.content.fontWeight,
     letterSpacing: px(spec.content.letterSpacing),
+    // The reference banner is unkerned; with kerning the digits pack ~35px tighter.
+    fontKerning: "none",
     // Gradient text: paint the gradient, clip it to the glyphs, hide the fill.
     backgroundImage: linearGradient(spec.content.textGradient),
     backgroundClip: "text",

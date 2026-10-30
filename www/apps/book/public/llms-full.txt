@@ -2449,7 +2449,7 @@ The `projectConfig.http.authMethodsPerActor` configuration specifies the support
 
 For example, you can allow Google login for `customers`, and allow email/password logins for `users` in the admin.
 
-`authMethodsPerActor` is a an object whose key is the actor type (for example, `user`), and the value is an array of supported auth provider IDs (for example, `emailpass`).
+`authMethodsPerActor` is an object whose key is the actor type (for example, `user`), and the value is an array of supported auth provider IDs (for example, `emailpass`).
 
 Learn more about actor types in the [Auth Identity and Actor Type documentation](undefined/resources/commerce-modules/auth/auth-identity-and-actor-types).
 
@@ -2472,7 +2472,7 @@ module.exports = defineConfig({
 })
 ```
 
-The above configurations allow admin users to login using email/password, and customers to login using email/password and Google.
+This configuration allows admin users to log in with an email and password, and customers to log in with an email and password or with Google.
 
 #### http.requireActorAssociation
 
@@ -2667,7 +2667,7 @@ The `projectConfig.workerMode` configuration specifies the worker mode of the Me
 The value for this configuration can be one of the following:
 
 - `shared`: run the application in a single process, meaning the worker and server run in the same process.
-- `worker`: run the a worker process only.
+- `worker`: run a worker process only.
 - `server`: run the application server only.
 
 #### Example
@@ -4197,7 +4197,7 @@ This sends a request to the [Get Brands API route](#1-get-brands-api-route), pas
 
 ### Display Brands Table
 
-Finally, you'll display the brands in a  data table. Replace the `// TODO configure data table` in the component with the following:
+Finally, you'll display the brands in a data table. Replace the `// TODO configure data table` in the component with the following:
 
 ```tsx title="src/admin/routes/brands/page.tsx"
 const table = useDataTable({
@@ -4625,7 +4625,7 @@ Now that you've consumed the `productsCreated` hook, you want to configure the `
 
 You configure the properties accepted in `additional_data` in the `src/api/middlewares.ts` that exports middleware configurations. So, create the file (or, if already existing, add to the file) `src/api/middlewares.ts` the following content:
 
-![Directory structure after adding the middelwares file](https://res.cloudinary.com/dza7lstvk/image/upload/v1733386868/Medusa%20Book/brands-middleware-dir-overview_uczos1.jpg)
+![Directory structure after adding the middlewares file](https://res.cloudinary.com/dza7lstvk/image/upload/v1733386868/Medusa%20Book/brands-middleware-dir-overview_uczos1.jpg)
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/framework/http"
@@ -4863,7 +4863,7 @@ For an alternative approach, refer to the [Query documentation](undefined/learn/
 
 By following the examples of the previous chapters, you:
 
-- Defined a link between the Brand and Product modules's data models, allowing you to associate a product with a brand.
+- Defined a link between the Brand and Product modules' data models, allowing you to associate a product with a brand.
 - Extended the create-product workflow and route to allow setting the product's brand while creating the product.
 - Queried a product's brand, and vice versa.
 
@@ -8420,7 +8420,7 @@ The `redisUrl` configuration specifies the connection URL to Redis to store the 
 
 Learn more in the [Medusa Configuration documentation](undefined/learn/configurations/medusa-config#redisurl).
 
-So, add the following configuration in `medusa-config.ts` :
+So, add the following configuration in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -12179,7 +12179,7 @@ And the route middlewares are sorted into the following order before they're reg
 
 ![Diagram showcasing the order in which middlewares are sorted before being registered.](https://res.cloudinary.com/dza7lstvk/image/upload/v1746777297/Medusa%20Book/middleware-registration-sorting_oyfqhw.jpg)
 
-Then, the middlwares are registered in the order mentioned earlier, with global middlewares first, then the route middlewares.
+Then, the middlewares are registered in the order mentioned earlier, with global middlewares first, then the route middlewares.
 
 ***
 
@@ -16289,7 +16289,7 @@ In this chapter, you'll learn about event types and how to emit an event in a se
 
 ## Event Types
 
-In your customization, you can emit an event, then listen to it in a subscriber and perform an asynchronus action, such as send a notification or data to a third-party system.
+In your customization, you can emit an event, then listen to it in a subscriber and perform an asynchronous action, such as sending a notification or sending data to a third-party system.
 
 There are two types of events in Medusa:
 
@@ -16600,7 +16600,7 @@ In this chapter, you’ll learn about Medusa's event system, and how to handle e
 
 When building commerce digital applications, you'll often need to perform an action after a commerce operation is performed. For example, sending an order confirmation email when the customer places an order, or syncing data that's updated in Medusa to a third-party system.
 
-Medusa emits events when core commerce features are performed, and you can listen to and handle these events in asynchronous functions. You can think of Medusa's events like you'd think about webhooks in other commerce platforms, but instead of having to setup separate applications to handle webhooks, your efforts only go into writing the logic right in your Medusa codebase.
+Medusa emits events when core commerce features are performed, and you can listen to and handle these events in asynchronous functions. You can think of Medusa's events like you'd think about webhooks in other commerce platforms, but instead of having to set up separate applications to handle webhooks, your efforts only go into writing the logic right in your Medusa codebase.
 
 You listen to an event in a subscriber, which is an asynchronous function that's executed when its associated event is emitted.
 
@@ -18085,7 +18085,7 @@ export async function POST(
 }
 ```
 
-You can use its methods to manage links, such as create or delete links.
+You can use its methods to manage links, such as creating or deleting links.
 
 ### Link Usage in Workflows
 
@@ -24676,7 +24676,7 @@ class BlogModuleService extends MedusaService({
 export default BlogModuleService
 ```
 
-In the above example, you override the generated `listPosts` method. This method receives the filters passed to `query.graph` as its first parameter. The first parameter includes a `context` property that holds the Query context alsopassed to `query.graph`.
+In the previous example, you override the generated `listPosts` method. Its first parameter, `filters`, receives the filters passed to `query.graph`, along with a `context` property that holds the Query context you created with `QueryContext`.
 
 You extract the context from `filters`, then retrieve the posts using the parent's `listPosts` method. If the language is set in the context, you transform the post titles.
 
@@ -25710,7 +25710,7 @@ In this chapter, you’ll learn about scheduled jobs and how to use them.
 
 When building your commerce application, you may need to automate tasks and run them repeatedly at a specific schedule. For example, you need to automatically sync products to a third-party service once a day.
 
-In other commerce platforms, this feature isn't natively supported. Instead, you have to setup a separate application to execute cron jobs, which adds complexity as to how you expose this task to be executed in a cron job, or how you debug it when it's not running within the platform's tooling.
+In other commerce platforms, this feature isn't natively supported. Instead, you have to set up a separate application to execute cron jobs, which adds complexity as to how you expose this task to be executed in a cron job, or how you debug it when it's not running within the platform's tooling.
 
 Medusa removes this overhead by supporting this feature natively with scheduled jobs. A scheduled job is an asynchronous function that the Medusa application runs at the interval you specify during the Medusa application's runtime. Your efforts are only spent on implementing the functionality performed by the job, such as syncing products to an ERP.
 
@@ -27821,7 +27821,7 @@ In the above example, you execute the long-running workflow `hello-world` and re
 The main service's `subscribe` method allows you to listen to changes in the workflow execution’s status. It accepts an object having three properties:
 
 - workflowId: (\`string\`) The name of the workflow.
-- transactionId: (\`string\`) The ID of the workflow exection's transaction. The transaction's details are returned in the response of the workflow execution.
+- transactionId: (\`string\`) The ID of the workflow execution's transaction. The transaction's details are returned in the response of the workflow execution.
 - subscriberId: (\`string\`) The ID of the subscriber.
 - subscriber: (\`(data: \{ eventType: string, result?: any }) => Promise\<void>\`) The function executed when the workflow execution's status changes. The function receives a data object. It has an \`eventType\` property, which you use to check the status of the workflow execution.
 
@@ -28462,9 +28462,15 @@ To fail the step after a period of time instead, set the step's `timeout` proper
 
 The workflow engine executes a waiting step again even if a previous execution is still running, for example, when an external job takes longer than `retryIntervalAwaiting`. So, make sure that executing the step multiple times doesn't cause side effects, such as creating duplicate records or charging a customer twice.
 
-Don't set both `retryInterval` and `retryIntervalAwaiting` on the same step. If such a step throws an error, the workflow engine doesn't retry it, and the workflow stays stuck. Use `retryInterval` to retry a step that fails, and `retryIntervalAwaiting` to execute a waiting step again.
-
 The [In-Memory Workflow Engine Module](undefined/resources/infrastructure-modules/workflow-engine/in-memory) keeps scheduled retries in memory, so the Medusa application loses them when it restarts. To recover async steps after a process dies or restarts, use the [Redis Workflow Engine Module](undefined/resources/infrastructure-modules/workflow-engine/redis) in production.
+
+### Combine Retry Intervals for Failed and Waiting Steps
+
+You can set both `retryInterval` and `retryIntervalAwaiting` on the same step. The workflow engine uses `retryIntervalAwaiting` to execute the step again while it's waiting, and `retryInterval` with `maxRetries` to retry the step if it throws an error.
+
+When the step throws an error, the workflow engine cancels the scheduled awaiting retry and schedules a retry after `retryInterval` seconds instead.
+
+Before [Medusa v2.22.2](https://github.com/medusajs/medusa/releases/tag/v2.22.2), if a step with both `retryInterval` and `retryIntervalAwaiting` threw an error, the workflow engine didn't retry it, and the workflow stayed stuck. If you use an older version, don't set both properties on the same step.
 
 ***
 
@@ -29197,7 +29203,7 @@ A step’s timeout error is returned in the `errors` property of the workflow’
 
 In this chapter, you'll learn how to install and run a Medusa application using Docker.
 
-The main supported installation method is using [create-medusa-app](undefined/learn/installation). However, since it requires prerequisites like PostgreSQL, Docker may be a preferred and easier option for some users. You can follow this guide to set up a Medusa application with Docker in this case.
+The main supported installation method is [create-medusa-app](undefined/learn/installation). However, it requires you to install prerequisites like PostgreSQL on your machine. If you'd rather not install them, use this guide to set up a Medusa application with Docker instead.
 
 You can follow this guide on any operating system that supports Docker, including Windows, macOS, and Linux.
 
@@ -29222,7 +29228,7 @@ The rest of the steps are performed inside this directory.
 
 ### Change Package Manager
 
-The project uses pnpm as the package manager in a monorepo workspace setup, as declared in `package.json`. This demonstrates a working pnpm monorepo configuration for Medusa.
+The project uses pnpm as the package manager in a monorepo workspace setup, as declared in `package.json`.
 
 To use a different package manager:
 
@@ -29237,7 +29243,7 @@ To use a different package manager:
 }
 ```
 
-3. Remove the `node_modules` directory and `pnpm-lock.yaml` and `pnpm-workspace.yaml` files.
+3. Remove the `node_modules` directory and the `pnpm-lock.yaml` and `pnpm-workspace.yaml` files.
 4. If you're using `yarn`, add a `.yarnrc.yml` file with the following content:
 
 ```yaml title=".yarnrc.yml"
@@ -29398,8 +29404,6 @@ Create a script file that [runs database migrations](undefined/learn/fundamental
 
 Create the file `start.sh` with the following content:
 
-Ensure that the `start.sh` file uses LF line endings instead of CRLF. Git on Windows can sometimes automatically convert line endings, which causes errors when running the script inside the Linux-based Docker container. Learn how to configure your environment to maintain LF line endings in [this guide from GitHub](https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings).
-
 ### pnpm
 
 ```shell title="start.sh"
@@ -29448,13 +29452,13 @@ echo "Starting Medusa development server..."
 npm run dev
 ```
 
+Ensure that the `start.sh` file uses LF line endings instead of CRLF. Git on Windows can sometimes automatically convert line endings, which causes errors when running the script inside the Linux-based Docker container. Learn how to configure your environment to maintain LF line endings in [this guide from GitHub](https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings).
+
 ***
 
 ## 4. Create `start-storefront.sh`
 
 Create a separate script for the storefront service:
-
-Apply the same LF line endings requirement mentioned in the previous step to this file as well.
 
 ### pnpm
 
@@ -29486,13 +29490,15 @@ echo "Starting Next.js Starter Storefront development server..."
 npm run dev
 ```
 
-Make sure to give both scripts executable permissions:
+Make sure this file also uses LF line endings, as described in the previous step.
 
-Setting permissions isn't necessary on Windows, but it's recommended to run this command on Unix-based systems like macOS and Linux.
+On Unix-based systems like macOS and Linux, give both scripts executable permissions:
 
 ```bash
 chmod +x start.sh start-storefront.sh
 ```
+
+This command isn't needed on Windows.
 
 ***
 
@@ -29569,7 +29575,7 @@ In the `Dockerfile`, you use the `node:22-alpine` image as the base since Medusa
 
 The workspace configuration files and all apps' `package.json` files are copied before installing dependencies so that the workspace dependency graph is resolved correctly. After installing dependencies, the rest of the source code is copied.
 
-While it's more common to use `/app` as the working directory, it's highly recommended to use `/server` for the Medusa service to avoid conflicts with Medusa Admin customizations. Learn more in [this troubleshooting guide](undefined/resources/troubleshooting/medusa-admin/no-widget-route#errors-in-docker).
+While `/app` is a more common working directory, use `/server` for the Medusa service to avoid conflicts with Medusa Admin customizations. Learn more in [this troubleshooting guide](undefined/resources/troubleshooting/medusa-admin/no-widget-route#errors-in-docker).
 
 ***
 
@@ -29780,7 +29786,7 @@ You can now log in to the Medusa Admin dashboard at `http://localhost:9000/app`.
 The storefront requires a publishable API key to connect to the Medusa backend:
 
 1. Log in to the admin dashboard at `http://localhost:9000/app`.
-2. Go to **Settings** > **API Key Management** and create a new Publishable API Key.
+2. Go to **Settings** > **Publishable API Keys** and create a new publishable API key.
 3. Add the key to `apps/storefront/.env`:
 
 ```bash
@@ -29880,13 +29886,13 @@ This is expected behavior. The Medusa backend API endpoints are available at pat
 
 1. Access the Medusa Admin dashboard at `http://localhost:9000/app`
 2. Check the backend health at `http://localhost:9000/health`
-3. Access the storefront at `http://localhost:8000` (if you deployed it)
+3. Access the storefront at `http://localhost:8000` (if you kept the storefront service)
 
-The "Cannot GET /" message doesn't indicate an error - it just means there's no content at the root URL.
+The "Cannot GET /" message doesn't indicate a problem. It means there's no content at the root URL.
 
 ***
 
-## Learn More about your Medusa Application
+## Learn More About Your Medusa Application
 
 You can learn more about your Medusa application and its setup in the [Installation chapter](undefined/learn/installation).
 
@@ -29897,7 +29903,7 @@ In this chapter, you'll learn how to install and run a Medusa application.
 
 ## Get Started with AI Agents
 
-If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
+If you're an AI agent, or a human who wants to get started quickly with an AI agent, run the following prompt in your agent:
 
 ```bash title="Prompt"
 Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
@@ -29918,13 +29924,13 @@ The AI agent will set up Medusa locally, deploy it to [Cloud](undefined/cloud), 
 
 And [more features](undefined/cloud#features).
 
-[Sign up with Cloud](http://cloud.medusajs.com/signup?utm_source=docs\&utm_medium=website\&utm_campaign=cloud_signup_guide) to start a free trial and create your first Medusa project in minutes. You don't need to enter payment details to start the trial.
+[Sign up for Cloud](http://cloud.medusajs.com/signup?utm_source=docs\&utm_medium=website\&utm_campaign=cloud_signup_guide) to start a free trial and create your first Medusa project in minutes. You don't need to enter payment details to start the trial.
 
 ***
 
 ## Create Medusa Application Locally
 
-Medusa is open-source, so you can also install and run it locally on your machine. This is a great option if you want to have more control over your development environment.
+Medusa is open-source, so you can also install and run it locally on your machine. This is a great option if you want more control over your development environment.
 
 A Medusa application is made up of a Node.js server and a Vite admin dashboard. You can optionally install the [Next.js Starter Storefront](undefined/resources/nextjs-starter) either while installing the Medusa application or at a later point.
 
@@ -29935,8 +29941,6 @@ A Medusa application is made up of a Node.js server and a Vite admin dashboard. 
 - [PostgreSQL installed and running](https://www.postgresql.org/download/)
 
 To create a Medusa application, use the `create-medusa-app` command:
-
-Consider using `yarn` or `pnpm` as your package manager for quicker installations and better performance. `npm` installations are generally slower.
 
 ### yarn
 
@@ -29958,9 +29962,11 @@ pnpm dlx create-medusa-app@latest my-medusa-store
 npx create-medusa-app@latest my-medusa-store
 ```
 
-Where `my-medusa-store` is the name of the project's directory, and the PostgreSQL database created for the project will be of the name `medusa-my-medusa-store`. When you run the command, you'll be asked whether you want to install the Next.js Starter Storefront.
+`my-medusa-store` is the name of the project's directory. The command also creates a PostgreSQL database for the project named `medusa-my-medusa-store`. While the command runs, it asks whether you want to install the Next.js Starter Storefront.
 
-To customize the default installation behavior, such as specify a database URL, refer to the [create-medusa-app reference](undefined/resources/create-medusa-app).
+Consider using `yarn` or `pnpm` instead of `npm` for faster installations.
+
+To customize the default installation behavior, such as specifying a database URL, refer to the [create-medusa-app reference](undefined/resources/create-medusa-app).
 
 After answering the prompts, the command installs the Medusa application in a monorepository. The backend (with the admin dashboard) is installed in the `apps/backend` directory of the monorepository.
 
@@ -29970,9 +29976,9 @@ If you chose to install the storefront with the Medusa application, the storefro
 
 ### Successful Installation Result
 
-Once the installation finishes successfully, the Medusa application will run at `http://localhost:9000`.
+Once the installation finishes successfully, the Medusa application runs at `http://localhost:9000`.
 
-The Medusa Admin dashboard also runs at `http://localhost:9000/app`. The installation process opens the Medusa Admin dashboard in your default browser to create a user. You can later log in with that user.
+The Medusa Admin dashboard also runs at `http://localhost:9000/app`. The installation process opens the Medusa Admin dashboard in your default browser so you can create an admin user. Use that user to log in later.
 
 If you also installed the Next.js Starter Storefront, it'll be running at `http://localhost:8000`.
 
@@ -29982,7 +29988,7 @@ You can stop the servers for the Medusa application and Next.js Starter Storefro
 
 ### Troubleshooting Installation Errors
 
-If you ran into an error during your installation, refer to the following troubleshooting guides for help:
+If you run into an error during installation, refer to the following troubleshooting guides for help:
 
 1. [create-medusa-app troubleshooting guides](undefined/resources/troubleshooting/create-medusa-app-errors).
 2. [CORS errors](undefined/resources/troubleshooting/cors-errors).
@@ -29995,19 +30001,19 @@ If you can't find your error reported anywhere, please open a [GitHub issue](htt
 
 ## Run Medusa Application in Development
 
-To run the Medusa application in development, change to the `backend` application's directory and run the following command:
+To run the Medusa application in development, change to the backend application's directory (`apps/backend`) and run the following command:
 
 ```bash
 npm run dev
 ```
 
-This runs your Medusa server at `http://localhost:9000`, and the Medusa Admin dashboard `http://localhost:9000/app`.
+This runs your Medusa server at `http://localhost:9000`, and the Medusa Admin dashboard at `http://localhost:9000/app`.
 
 ![Diagram showcasing the server and application running when you start the Medusa application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755500/Medusa%20Book/start-overview_hqjexd.jpg)
 
 For details on starting and configuring the Next.js Starter Storefront, refer to [the Next.js Starter Storefront documentation](undefined/resources/nextjs-starter).
 
-The application will restart if you make any changes to code under the `src` directory, except for admin customizations which are hot reloaded, providing you with a seamless developer experience without having to refresh your browser to see the changes.
+The application restarts when you change code under the `src` directory. Admin customizations are hot-reloaded instead, so you see your changes without refreshing the browser.
 
 ***
 
@@ -30019,7 +30025,7 @@ Medusa provides [agentic skills](https://github.com/medusajs/medusa-agent-skills
 
 Medusa provides a set of skills to help you build features with AI agents. You can build features like product reviews, wishlists, quote requests, and more with AI agents.
 
-This skill is ideal for all developers and non-technical users who want to build features with the help of AI agents.
+These skills are ideal for developers and non-technical users who want to build features with the help of AI agents.
 
 ### Claude Code
 
@@ -30052,7 +30058,7 @@ By following this flow, you can quickly bring your business ideas to life with t
 
 ### Learn Medusa Development with AI Agents
 
-If you're a Medusa beginner and you want to learn Medusa development with the help of an AI agent, install and use the `learn-medusa` skills:
+If you're a Medusa beginner and you want to learn Medusa development with the help of an AI agent, install the `learn-medusa` plugin in Claude Code or the `learning-medusa` skill in other AI agents:
 
 ### Claude Code
 
@@ -30076,7 +30082,7 @@ npx skills add medusajs/medusa-agent-skills
 I want to learn Medusa.
 ```
 
-This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the [Brands tutorial](undefined/learn/customization/custom-features). You will:
+This starts the interactive learning experience where you'll learn Medusa concepts step by step by building a brands feature, similar to the [Brands tutorial](undefined/learn/customization/custom-features). You will:
 
 1. Create a Brand Module with API routes to manage brands.
 2. Link brands to products to associate products with brands.
@@ -30088,7 +30094,7 @@ By the end, you'll have a solid understanding of Medusa's architecture and how t
 
 ## Create Medusa Admin User
 
-Aside from creating an admin user in the admin dashboard, you can create a user with Medusa's CLI tool.
+Besides creating an admin user in the admin dashboard, you can also create one with Medusa's CLI tool.
 
 Run the following command in your Medusa application's directory (`apps/backend`) to create a new admin user:
 
@@ -30098,7 +30104,7 @@ npx medusa user -e admin@medusajs.com -p supersecret
 
 Replace `admin@medusajs.com` and `supersecret` with the user's email and password respectively.
 
-You can then use the user's credentials to log into the Medusa Admin application.
+You can then use the user's credentials to log in to the Medusa Admin dashboard.
 
 ***
 
@@ -30106,11 +30112,11 @@ You can then use the user's credentials to log into the Medusa Admin application
 
 Your Medusa application's project (`apps/backend`) will have the following files and directories:
 
-![A diagram of the directories overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1732803813/Medusa%20Book/medusa-dir-overview_v7ks0j.jpg)
+![Diagram of the files and directories in a Medusa application project](https://res.cloudinary.com/dza7lstvk/image/upload/v1732803813/Medusa%20Book/medusa-dir-overview_v7ks0j.jpg)
 
 ### src
 
-This directory is the central place for your custom development. It includes the following sub-directories:
+This directory is the central place for your custom development. It includes the following subdirectories:
 
 - `admin`: Holds your admin dashboard's custom [widgets](undefined/learn/fundamentals/admin/widgets) and [UI routes](undefined/learn/fundamentals/admin/ui-routes).
 - `api`: Holds your custom [API routes](undefined/learn/fundamentals/api-routes) that are added as endpoints in your Medusa application.
@@ -30119,7 +30125,7 @@ This directory is the central place for your custom development. It includes the
 - `modules`: Holds your custom [modules](undefined/learn/fundamentals/modules) that implement custom business logic.
 - `scripts`: Holds your custom [scripts](undefined/learn/fundamentals/custom-cli-scripts) to be executed using Medusa's CLI tool.
 - `subscribers`: Holds your [event listeners](undefined/learn/fundamentals/events-and-subscribers) that are executed asynchronously whenever an event is emitted.
-- `workflows`: Holds your custom [flows](undefined/learn/fundamentals/workflows) that can be executed from anywhere in your application.
+- `workflows`: Holds your custom [workflows](undefined/learn/fundamentals/workflows) that can be executed from anywhere in your application.
 
 ### medusa-config.ts
 
@@ -30164,12 +30170,12 @@ Medusa is a headless commerce platform. So, storefronts, admin dashboards, and o
 
 In a common Medusa application, requests go through four layers in the stack. In order of entry, those are:
 
-1. API Routes (HTTP): Our API Routes are the typical entry point. The Medusa server is based on Express.js, which handles incoming requests. It can also connect to a Redis database that stores the server session data.
+1. API Routes (HTTP): API routes are the typical entry point. The Medusa server is based on Express.js, which handles incoming requests. It can also connect to a Redis database that stores the server session data.
 2. Workflows: API Routes consume workflows that hold the opinionated business logic of your application.
 3. Modules: Workflows use domain-specific modules for resource management.
-4. Data store: Modules query the underlying datastore, which is a PostgreSQL database in common cases.
+4. Data store: Modules query the underlying data store, which is a PostgreSQL database in common cases.
 
-These layers of stack can be implemented within [plugins](undefined/learn/fundamentals/plugins).
+These layers of the stack can be implemented within [plugins](undefined/learn/fundamentals/plugins).
 
 ![Medusa application architecture diagram illustrating the HTTP layer flow: External clients (storefront and admin) send requests to API routes, which execute workflows containing business logic, which then interact with modules to perform data operations on PostgreSQL databases](https://res.cloudinary.com/dza7lstvk/image/upload/v1759761784/Medusa%20Book/http-layer-new_hu0r3h.jpg)
 
@@ -30189,17 +30195,17 @@ Modules can be implemented within [plugins](undefined/learn/fundamentals/plugins
 
 ## Third-Party Integrations Layer
 
-Third-party services and systems are integrated through Medusa's Commerce and Infrastructure Modules. You also create custom third-party integrations through a [custom module](undefined/learn/fundamentals/modules).
+Third-party services and systems are integrated through Medusa's Commerce and Infrastructure Modules. For other third-party services, create a custom integration in a [custom module](undefined/learn/fundamentals/modules).
 
 Modules can be implemented within [plugins](undefined/learn/fundamentals/plugins).
 
 ### Commerce Modules
 
-[Commerce Modules](undefined/resources/commerce-modules) integrate third-party services relevant for commerce or user-facing features. For example, you can integrate [Stripe](undefined/resources/commerce-modules/payment/payment-provider/stripe) through a Payment Module Provider, or [ShipStation](undefined/resources/integrations/guides/shipstation) through a Fulfillment Module Provider.
+[Commerce Modules](undefined/resources/commerce-modules) integrate third-party services relevant to commerce or user-facing features. For example, you can integrate [Stripe](undefined/resources/commerce-modules/payment/payment-provider/stripe) through a Payment Module Provider, or [ShipStation](undefined/resources/integrations/guides/shipstation) through a Fulfillment Module Provider.
 
 You can also integrate third-party services for custom functionalities. For example, you can integrate [Sanity](undefined/resources/integrations/guides/sanity) for rich CMS capabilities, or [Odoo](undefined/resources/recipes/erp/odoo) to sync your Medusa application with your ERP system.
 
-You can replace any of the third-party services mentioned above to build your preferred commerce ecosystem.
+You can replace any of these third-party services to build your preferred commerce ecosystem.
 
 ![Diagram illustrating the Commerce Modules integration to third-party services](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175357/Medusa%20Book/service-commerce_qcbdsl.jpg)
 
@@ -30211,11 +30217,11 @@ You can replace any of the third-party services mentioned above to build your pr
 - [Caching Module](undefined/resources/infrastructure-modules/caching): Caches data that require heavy computation. You can integrate a custom module to handle the caching with services like Memcached, or use the existing [Redis Caching Module Provider](undefined/resources/infrastructure-modules/caching/providers/redis).
 - [Event Module](undefined/resources/infrastructure-modules/event): A pub/sub system that allows you to subscribe to events and trigger them. You can integrate [Redis](undefined/resources/infrastructure-modules/event/redis) as the pub/sub system.
 - [File Module](undefined/resources/infrastructure-modules/file): Manages file uploads and storage, such as upload of product images. You can integrate [AWS S3](undefined/resources/infrastructure-modules/file/s3) for file storage.
-- [Locking Module](undefined/resources/infrastructure-modules/locking): Manages access to shared resources by multiple processes or threads, preventing conflict between processes and ensuring data consistency. You can integrate [Redis](undefined/resources/infrastructure-modules/locking/redis) for locking.
+- [Locking Module](undefined/resources/infrastructure-modules/locking): Manages access to shared resources by multiple processes or threads, preventing conflicts between processes and ensuring data consistency. You can integrate [Redis](undefined/resources/infrastructure-modules/locking/redis) for locking.
 - [Notification Module](undefined/resources/infrastructure-modules/notification): Sends notifications to customers and users, such as for order updates or newsletters. You can integrate [SendGrid](undefined/resources/infrastructure-modules/notification/sendgrid) for sending emails.
 - [Workflow Engine Module](undefined/resources/infrastructure-modules/workflow-engine): Orchestrates workflows that hold the business logic of your application. You can integrate [Redis](undefined/resources/infrastructure-modules/workflow-engine/redis) to orchestrate workflows.
 
-All of the third-party services mentioned above can be replaced to help you build your preferred architecture and ecosystem.
+All these third-party services can be replaced to help you build your preferred architecture and ecosystem.
 
 The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0) to replace the deprecated Cache Module.
 
@@ -31488,7 +31494,7 @@ On the other hand, Medusa's architecture, Framework, and AI tools support develo
 
 ## What Can You Build with Medusa and AI Assistants?
 
-By levaging AI assistants in your Medusa development workflow, you can:
+By leveraging AI assistants in your Medusa development workflow, you can:
 
 1. Build unique features in your store that are tailored to your business needs efficiently, without worrying about the complexities of the platform's architecture.
 2. Get assistance in your development, such as debugging issues, optimizing performance, deployment, and more.
@@ -31859,7 +31865,7 @@ The following table highlights the alternatives for the Medusa v1 plugins:
 |---|---|
 |Algolia|[Guide](undefined/resources/integrations/guides/algolia)|
 |Brightpearl|Not available, but you can follow the [ERP recipe](undefined/resources/recipes/erp).|
-|Contenful|[Guide](undefined/resources/integrations/guides/contentful)|
+|Contentful|[Guide](undefined/resources/integrations/guides/contentful)|
 |Discount Generator|Not available, but you can build it [as a module](undefined/learn/fundamentals/modules).|
 |IP Lookup|Not available, but you can build it [as a module](undefined/learn/fundamentals/modules).|
 |Klarna|Not available, but you can integrate it as a [Payment Module Provider](undefined/resources/references/payment/provider).|
@@ -32871,11 +32877,11 @@ Refer to the [Deployment](undefined/resources/deployment) documentation to learn
 
 # Introduction
 
-Get started with Medusa, an AI-native commerce platform with a Framework to build custom commerce features.
+Learn what Medusa is, who it's for, and how this documentation is organized.
 
 ## Get Started with AI Agents
 
-If you're an AI agent, or a human that wants to get started quickly with an AI agent, run the following prompt in your agent:
+If you're an AI agent, or a human who wants to get started quickly with an AI agent, run the following prompt in your agent:
 
 ```bash title="Prompt"
 Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
@@ -32895,26 +32901,26 @@ Medusa ships with three main tools:
 2. A [Framework](undefined/learn/fundamentals/framework) for building agentic flows and custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
 3. A customizable admin dashboard for merchants to configure and operate their store.
 
-When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. However, unlike other platforms, you don't need to build hacky workarounds that are difficult to maintain and scale.
+When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. And unlike other platforms, Medusa doesn't require hacky workarounds that are difficult to maintain and scale.
 
-Medusa is built with customization in mind. Build features that bring your business's vision to life, with native support of AI agents to automate your operations and customer interactions.
+Medusa is built with customization in mind. Build features that bring your business's vision to life, with native support for AI agents to automate your operations and customer interactions.
 
 ***
 
 ## Who should use Medusa
 
-Medusa is for businesses and teams looking for a cutting-edge commerce platform that supports their unique requirements, visions, and automated workflows that other platforms aren't built to support.
+Medusa is for businesses and teams looking for a cutting-edge commerce platform for their unique requirements, visions, and automated workflows, which other platforms aren't built to support.
 
-Businesses of all sizes can use Medusa, from small start ups building with agentic flows to large enterprises building complex commerce features. Medusa is also for developers that want to build with the latest technologies and tools, and have the freedom to implement unique features without being limited by the platform's architecture.
+Businesses of all sizes can use Medusa, from small startups building with agentic flows to large enterprises building complex commerce features. Medusa is also for developers who want to build with the latest technologies and tools, and have the freedom to implement unique features without being limited by the platform's architecture.
 
-Below are some stories from companies that use Medusa:
+Here are some stories from companies that use Medusa:
 
-- [Use Case: Advanced Fulfillment](https://medusajs.com/blog/eight-sleep/): How Eight Sleeps built their fulfillment setup with Medusa
+- [Use Case: Advanced Fulfillment](https://medusajs.com/blog/eight-sleep/): How Eight Sleep built their fulfillment setup with Medusa
 - [Use Case: D2C](https://medusajs.com/blog/matt-sleeps/): How Matt Sleeps built a unique D2C experience with Medusa
 - [Use Case: Marketplace](https://medusajs.com/blog/foraged/): How Foraged built a custom marketplace with Medusa
 - [Use Case: Distributor Platform](https://medusajs.com/blog/redington): How Redington built a B2B distributor platform with Medusa
-- [Use Case: Quick to market](https://medusajs.com/blog/partbase): How Partbase built their distributor platform with Medusa
-- [Use Case: Complex products & pricing](https://medusajs.com/blog/eki/): How EKI built a B2B platform with complex products and pricing
+- [Use Case: Quick to Market](https://medusajs.com/blog/partbase): How Partbase built their distributor platform with Medusa
+- [Use Case: Complex Products & Pricing](https://medusajs.com/blog/eki/): How EKI built a B2B platform with complex products and pricing
 
 ***
 
@@ -32930,14 +32936,14 @@ This documentation is split into the following sections:
 
 |Section|Description|
 |---|---|
-|[Main Documentation](undefined/learn)|The documentation you're currently reading. It's recommended to follow the chapters in this documentation to understand the core concepts of Medusa and how to use them before jumping into the other sections.|
+|[Main Documentation](undefined/learn)|The documentation you're currently reading. Follow the chapters in this documentation to understand Medusa's core concepts and how to use them before you jump into the other sections.|
 |[Cloud](undefined/cloud)|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
 |Product|Documentation for the [Framework](undefined/learn/fundamentals/framework), [Commerce Modules](undefined/resources/commerce-modules), and [Infrastructure Modules](undefined/resources/infrastructure-modules). These sections include concepts, guides, and references for each of those products.|
 |Build|[Recipes](undefined/resources/recipes), [How-To & Tutorials](undefined/resources/how-to-tutorials), [Integrations](undefined/resources/integrations), and [Storefront Development](undefined/resources/storefront-development) guides. You can follow these guides after you've learned Medusa's core concepts.|
-|[Tools](undefined/resources/tools)|Guides on how to setup and use Medusa's CLI tools, [JS SDK](undefined/resources/js-sdk), [Next.js Starter](undefined/resources/nextjs-starter), and [Medusa UI](undefined/ui)|
+|[Tools](undefined/resources/tools)|Guides on how to set up and use Medusa's CLI tools, [JS SDK](undefined/resources/js-sdk), [Next.js Starter](undefined/resources/nextjs-starter), and [Medusa UI](undefined/ui)|
 |API Routes References|References of the [Store](undefined/api/store) and [Admin](undefined/api/admin) API routes in Medusa. They also include instructions related to authentication, parameter types in requests, and more.|
-|[References](undefined/resources/references-overview)|Useful during your development with Medusa to learn about different APIs and how to use them. Its references include the [Events Reference](undefined/resources/references/events), [Core Workflows Reference](undefined/resources/medusa-workflows-reference), and more.|
-|[User Guide](undefined/user-guide)|Guides that introduce merchants and store managers to the Medusa Admin dashboard and helps them understand how to use the dashboard to manage their store.|
+|[References](undefined/resources/references-overview)|Useful during your development with Medusa to learn about different APIs and how to use them. These include the [Events Reference](undefined/resources/references/events), [Core Workflows Reference](undefined/resources/medusa-workflows-reference), and more.|
+|[User Guide](undefined/user-guide)|Guides that introduce merchants and store managers to the Medusa Admin dashboard and help them understand how to use the dashboard to manage their store.|
 
 To get started, check out the [Installation chapter](undefined/learn/installation).
 
@@ -33487,7 +33493,7 @@ cd www/vale
 
 ## Linting with ESLint
 
-Medusa uses ESlint to lint code blocks both in the content and the code base of the documentation apps.
+Medusa uses ESLint to lint code blocks both in the content and the code base of the documentation apps.
 
 ### Linting Content with ESLint
 
@@ -33652,7 +33658,7 @@ Learn more about using the publishable API key in the [Storefront Development gu
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.22. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
+Medusa's current version is v2.22.1. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.1).
 
 ## Medusa Versioning
 
@@ -33714,7 +33720,7 @@ This will run all pending migrations, sync links, and run data migration scripts
 
 ### Reverting an Update
 
-Before reverting an update, if you already ran the migrations, you have to first identify the modules who had migrations. Then, before reverting, run the `db:rollback` command for each of those modules.
+Before reverting an update, if you already ran the migrations, you have to first identify the modules that had migrations. Then, before reverting, run the `db:rollback` command for each of those modules.
 
 For example, if the version you updated to had migrations for the Cart and Product Modules, run the following command:
 
@@ -33770,13 +33776,13 @@ The AI agent will set up Medusa locally, deploy it to [Cloud](undefined/cloud), 
 
 ### What does the prompt do?
 
-The prompt instructs the AI agent to fetch the content of this page, which results in a prompt with step-by-step instructions to set up Medusa.
+The prompt instructs the AI agent to fetch this page. When the agent fetches it, it receives step-by-step instructions to set up Medusa.
 
 The AI agent will then execute the instructions, which include installing Medusa, deploying it to [Cloud](undefined/cloud), and providing next steps to build custom commerce features.
 
 ### Do I need a Cloud account?
 
-No, the AI agent will set up Medusa locally on your machine. However, to deploy the store, the AI agent will guide you to create a [Cloud](undefined/cloud) account if you don't have one, and help you with the deployment process.
+Not to get started. The AI agent first sets up Medusa locally on your machine. To deploy the store, you need a [Cloud](undefined/cloud) account. The AI agent helps you create one if needed, then guides you through the deployment.
 
 ### Is Cloud free to try?
 
@@ -34942,7 +34948,7 @@ A custom auth provider can't change the shape of this route's response body. The
 
 If you need to return a custom response body, create a [custom API route](undefined/docs/learn/fundamentals/api-routes) that calls the [Auth Module's authenticate method](undefined/references/auth/authenticate), then shape the response as you need.
 
-[How to login Customers using the authentication route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development/customers/login).
+[How to log in customers using the authentication route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development/customers/login).
 
 ***
 
@@ -40804,6 +40810,8 @@ An inventory item has an optional `unit_of_measure` field that stores the unit i
 
 Because stock can be held in a unit that is sold in fractions of itself (for example, a pound of cheese sold as quarter-pounds), inventory quantities support fractional values. The `required_quantity` of an inventory kit item can also be a decimal number.
 
+Fractional quantities only apply to inventory levels, reservations, and inventory kit items. Cart line item quantities must still be whole numbers, so customers can't add a fractional quantity of a variant to a cart. To sell part of a stocked unit, link the variant to its inventory item with a decimal `required_quantity` (for example, `0.25` for a quarter-pound), so that each unit sold reserves and deducts that fraction from inventory.
+
 ### Inventory Shipping Requirement
 
 An inventory item has a `requires_shipping` field that indicates whether the item needs shipping. This field is enabled by default.
@@ -40878,11 +40886,13 @@ This flow is implemented within the [completeCartWorkflow](undefined/references/
 
 ## Order Fulfillment
 
-When an item in an order is fulfilled and the associated variant has its `manage_inventory` property set to `true`, the Medusa application:
+When an item in an order is fulfilled and the associated variant has its `manage_inventory` property set to `true`, the Medusa application performs the following for each of the item's reservations:
 
-- Subtracts the `reserved_quantity` from the `stocked_quantity` in the inventory level associated with the variant's inventory item.
-- Resets the `reserved_quantity` to `0`.
-- Deletes the associated reservation item.
+- Subtracts the fulfilled quantity, multiplied by the inventory item's required quantity, from the `stocked_quantity` in the inventory level associated with the variant's inventory item.
+- Decreases the `reserved_quantity` of the inventory level by the same quantity.
+- Deletes the reservation item if its full quantity is fulfilled, or decreases the reservation item's quantity if only part of it is fulfilled.
+
+Learn more in the [Reservations Lifecycle](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/inventory/reservations-lifecycle) guide.
 
 This flow is implemented within the [createOrderFulfillmentWorkflow](undefined/references/medusa-workflows/createOrderFulfillmentWorkflow)
 
@@ -43439,8 +43449,8 @@ The following table lists the possible `action` values that Medusa uses and the 
 |`SHIP_ITEM`|Mark an item's quantity as shipped.|`details` is an object having the following properties:   `reference_id`: the ID of the item.  `quantity`: The quantity to mark as shipped.  `metadata`: The item's metadata.|
 |`FULFILL_ITEM`|Fulfill an item's quantity as part of a change.|`details` is an object having the following properties:   `reference_id`: the ID of the item.  `quantity`: The quantity to fulfill.  `metadata`: The item's metadata.|
 |`DELIVER_ITEM`|Mark an item's quantity as delivered.|`details` is an object having the following properties:   `reference_id`: the ID of the item.  `quantity`: The quantity to mark as delivered.  `metadata`: The item's metadata.|
-|`WRITE_OFF_ITEM`|Remove an item's quantity from an order change, without adding the quantity back to the item variant's inventory. The quantity isn't removed from the order until the change is confirmed.|`details` is an object having the following properties:   `reference_id`: the ID of the item.  `quantity`: The quantity to write off.  `metadata`: The item's metadata.|
-|`REINSTATE_ITEM`|Reinstate an item's quantity in an order change that was previously written off. The quantity is added back to the item variant's inventory when the change is confirmed.|`details` is an object having the following properties:   `reference_id`: the ID of the item.  `quantity`: The quantity to reinstate.|
+|`WRITE_OFF_ITEM`|Remove an item's quantity from an order change, without adding the quantity back to the item variant's inventory. The quantity isn't removed from the order until the change is confirmed.|`details` is an object having the following properties:   `reference_id`: the ID of the item.  `quantity`: The quantity to write off. It must be greater than `0` and can't exceed the item's quantity that isn't already written off.  `metadata`: The item's metadata.|
+|`REINSTATE_ITEM`|Reinstate an item's quantity in an order change that was previously written off. The quantity is added back to the item variant's inventory when the change is confirmed.|`details` is an object having the following properties:   `reference_id`: the ID of the item.  `quantity`: The quantity to reinstate. It must be greater than `0` and can't exceed the item's written-off quantity.|
 |`TRANSFER_CUSTOMER`|Transfer an order to another customer. The order is not removed from the original customer until the change is confirmed.|No details added. The ID to the new customer is added in the `reference_id` property of the action.|
 |`UPDATE_ORDER_PROPERTIES`|Update the properties of an order, such as customer information or shipping address. The properties are not updated on the original order until the change is confirmed.|`details` is an object that has the properties to update. The properties are the same as the ones in the [Order data model](undefined/references/order/models/Order).|
 |`PROMOTION_ADD`|Add a promotion to an order. The promotion is not added to the original order until the change is confirmed.|No details added. The ID to the promotion is added in the `reference_id` property of the action.|
@@ -45448,7 +45458,7 @@ Learn more about why modules are isolated in [this documentation](undefined/docs
 
 - [Authorize, Capture, and Refund Payments](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment): Authorize, capture, and refund payments for a single resource.
 - [Payment Collection Management](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-collection): Store and manage all payments of a single resources, such as a cart, in payment collections.
-- [Integrate Third-Party Payment Providers](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider): Use payment providers like [Stripe](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe) to handle and process payments, or integrate custom payment providers.
+- [Integrate Third-Party Payment Providers](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider): Use payment providers like [Stripe](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe) and [Adyen](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/adyen) to handle and process payments, or integrate custom payment providers.
 - [Saved Payment Methods](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/account-holder): Save payment methods for customers in third-party payment providers.
 - [Handle Webhook Events](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/webhook-events): Handle webhook events from third-party providers and process the associated payment.
 
@@ -45761,6 +45771,13 @@ This will also initialize the payment session in the third-party payment provide
 
 When creating a payment session through `createPaymentSessionsWorkflow`, Medusa validates that the chosen payment provider is enabled in the cart's region. If the provider is not enabled in the region, the workflow throws an error. This validation only applies to payment collections linked to an active (not yet completed) cart; payment collections on orders are not affected.
 
+Medusa doesn't support split payments, so `createPaymentSessionsWorkflow` deletes the payment collection's existing payment sessions before it creates the new one. The workflow throws a `not_allowed` error instead of replacing them if an existing payment session:
+
+- Has the `pending_authorization` status, meaning its authorization is in progress.
+- Has an authorized or captured payment that isn't canceled or fully refunded.
+
+This prevents the workflow from detaching an active payment from its payment collection. To change the payment provider in this case, cancel or fully refund the existing payment first.
+
 For example:
 
 ### Using Workflow
@@ -45996,6 +46013,215 @@ Since Medusa v2.22.0, a refund has a `status` property whose value is `pending` 
 The `refundPaymentWorkflow` returns the payment, which it retrieves before issuing the refund. So, the payment's `refunds` property doesn't include the new refund. To get the new refund, retrieve the payment again after the workflow finishes.
 
 
+# Adyen Module Provider
+
+In this document, you'll learn about the Adyen Module Provider and how to configure it in the Payment Module.
+
+The Adyen Module Provider is in beta mode. It has been available since Medusa [v2.22.2](https://github.com/medusajs/medusa/releases/tag/v2.22.2).
+
+Your technical team must register the Adyen Module Provider in your Medusa application first. Then, refer to [this user guide](undefined/user-guide/settings/regions#edit-region-details) to learn how to enable the Adyen payment provider in a region using the Medusa Admin dashboard.
+
+## What is the Adyen Module Provider?
+
+The Adyen Module Provider integrates [Adyen](https://www.adyen.com/) into your Medusa application to process payments. It uses Adyen's [Checkout API Advanced flow](https://docs.adyen.com/online-payments/build-your-integration/advanced-flow/), and it supports:
+
+- Card payments, including 3D Secure authentication.
+- Apple Pay and Google Pay wallet payments.
+- Manual or automatic capture of payments.
+- Refunds and cancellations.
+- Saved cards for customers with an account.
+
+- The provider only supports cards (`scheme`), Apple Pay (`applepay`), and Google Pay (`googlepay`). It only retrieves these payment methods from Adyen, so Drop-in doesn't show other methods, and it throws an error if the storefront submits a different payment method type.
+- Payment methods that complete through a redirect or that Adyen confirms asynchronously through the `AUTHORISATION` webhook, such as iDEAL or bank transfers, aren't supported yet.
+- The first capture of a payment always captures the full authorized amount in Adyen. Later partial captures in Medusa only record the captured amount.
+
+***
+
+## Register the Adyen Module Provider
+
+### Prerequisites
+
+- [Adyen account](https://www.adyen.com/)
+- [Adyen API key and merchant account](https://docs.adyen.com/development-resources/api-credentials/)
+- [To handle webhooks, the HMAC key of an Adyen standard webhook. Refer to the end of this guide for details on the URL.](https://docs.adyen.com/development-resources/webhooks/)
+
+The Adyen Module Provider is installed by default in your application. To use it, add it to the array of providers passed to the Payment Module in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/payment-adyen",
+            id: "adyen",
+            options: {
+              apiKey: process.env.ADYEN_API_KEY,
+              merchantAccount:
+                process.env.ADYEN_MERCHANT_ACCOUNT,
+              hmacKey: process.env.ADYEN_WEBHOOK_HMAC_KEY,
+              returnUrl: process.env.ADYEN_RETURN_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+ADYEN_API_KEY=<YOUR_ADYEN_API_KEY>
+ADYEN_MERCHANT_ACCOUNT=<YOUR_ADYEN_MERCHANT_ACCOUNT>
+ADYEN_WEBHOOK_HMAC_KEY=<YOUR_ADYEN_WEBHOOK_HMAC_KEY>
+ADYEN_RETURN_URL=<YOUR_STOREFRONT_RETURN_URL>
+```
+
+### Module Options
+
+|Option|Description|Required|Default|
+|---|---|---|---|
+|`apiKey`|A string indicating the Adyen API key.|Yes|-|
+|`merchantAccount`|A string indicating the Adyen merchant account to process payments with.|Yes|-|
+|`hmacKey`|A string indicating the HMAC key of the Adyen standard webhook. Medusa rejects all webhook notifications from Adyen if you don't set this option.|No|-|
+|`environment`|The Adyen environment to use. Its value is either `TEST` or `LIVE`.|No|`TEST`|
+|`liveEndpointUrlPrefix`|A string indicating the prefix of your live endpoint URLs. Find it in Adyen's Customer Area under Developers > API URLs.|Only if `environment` is `LIVE`|-|
+|`capture`|Whether to capture payments immediately after authorization. When enabled, canceling an authorized payment refunds it instead, since Adyen can't cancel captured payments.|No|`false`|
+|`returnUrl`|A string indicating the URL to return the customer to after a redirect, such as a 3D Secure challenge. Medusa uses it when the storefront doesn't pass `return_url` in the payment session's client data. Adyen requires a return URL, so you must set either this option or the client data.|No|-|
+
+### Multiple Merchant Accounts
+
+To process payments with multiple Adyen merchant accounts, register the Adyen Module Provider once per merchant account, each with a different `id`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/payment-adyen",
+            id: "eu",
+            options: {
+              apiKey: process.env.ADYEN_API_KEY,
+              merchantAccount: process.env.ADYEN_EU_ACCOUNT,
+              // ...
+            },
+          },
+          {
+            resolve: "@medusajs/medusa/payment-adyen",
+            id: "us",
+            options: {
+              apiKey: process.env.ADYEN_API_KEY,
+              merchantAccount: process.env.ADYEN_US_ACCOUNT,
+              // ...
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+***
+
+## Enable Adyen Provider in a Region
+
+Before customers can use Adyen to complete their purchases, you must enable the Adyen payment provider in the region where you want to offer this payment method.
+
+Refer to the [user guide](undefined/user-guide/settings/regions#edit-region-details) to learn how to edit a region and enable the Adyen payment provider.
+
+***
+
+## Adyen Payment Provider ID
+
+The Adyen payment provider is registered and referenced by a unique ID made up of the format `pp_adyen_{id}`, where `{id}` is the ID of the Adyen Module Provider as set in the `medusa-config.ts` file.
+
+For example, if you set the ID of the Adyen Module Provider to `adyen` in `medusa-config.ts`, the Medusa application registers the payment provider with the ID `pp_adyen_adyen`.
+
+***
+
+## Accept Adyen Payments in the Storefront
+
+The Adyen Module Provider is built to work with Adyen's [Drop-in](https://docs.adyen.com/online-payments/build-your-integration/advanced-flow/?platform=Web\&integration=Drop-in) component in the storefront. The checkout flow is as follows:
+
+1. [Initialize a payment session](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development/checkout/payment) with the Adyen payment provider. The provider retrieves the available payment methods from Adyen, limited to the [supported payment methods](#what-is-the-adyen-module-provider), and stores them in the payment session's `data.payment_methods` property. Pass this property to Drop-in to render the payment methods.
+2. When the customer submits their payment details in Drop-in, [update the payment session's client data](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-session#update-client-data-from-the-storefront) with the details that Drop-in returns, then complete the cart.
+3. If Adyen requires an additional action, such as a 3D Secure challenge or a redirect, the cart completion fails and the payment session's status becomes `requires_more`. The payment session's `data.action` property holds the action, which you pass to Drop-in to handle it.
+4. After the customer completes the action, update the payment session's client data with the details that Drop-in returns, then complete the cart again.
+
+The Adyen Module Provider accepts the following properties in the payment session's client data:
+
+- `payment_method`: The `paymentMethod` object from Drop-in's state data.
+- `browser_info`: The `browserInfo` object from Drop-in's state data, which Adyen uses for 3D Secure authentication.
+- `details`: The `details` object that Drop-in returns after the customer completes an additional action.
+- `origin`: (Optional) The origin URL of the storefront, used for native 3D Secure authentication.
+- `return_url`: (Optional) The URL to return the customer to after a redirect. If not passed, the provider uses the `returnUrl` module option.
+- `store_payment_method`: (Optional) Whether to save the customer's card for future payments, from Drop-in's `storePaymentMethod` state data. This only applies to customers with an account.
+
+For example:
+
+```ts
+sdk.store.payment.updatePaymentSession(
+  paymentCollectionId,
+  paymentSessionId,
+  {
+    client_data: {
+      payment_method: state.data.paymentMethod,
+      browser_info: state.data.browserInfo,
+      origin: window.location.origin,
+      store_payment_method: state.data.storePaymentMethod,
+    },
+  }
+)
+```
+
+If the customer's payment is refused, they can submit new payment details. The provider then resets the payment session to the `pending` status and processes the submission as a new payment attempt, even if the customer uses the same card. The payment session keeps `data.payment_methods` until the payment is authorized, so you can render Drop-in again for the new attempt. After authorization, the provider sets `data.payment_methods` to `null`.
+
+### Saved Cards
+
+For logged-in customers, the Adyen Module Provider uses the customer's [account holder](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/account-holder) ID as Adyen's shopper reference. When you initialize a payment session for these customers, Adyen returns their saved cards in the `storedPaymentMethods` property of `data.payment_methods`, which Drop-in renders.
+
+To save a card during payment, pass `store_payment_method: true` in the payment session's client data. Guest customers don't have an account holder, so the provider ignores this property for them.
+
+Saving a card during a payment requires the "Merchant Recurring" role for your Adyen API credential. Saving a card without a payment requires the "API tokenise payment details" role.
+
+***
+
+## Setup Adyen Webhooks
+
+Adyen sends webhook notifications to inform Medusa of payment updates, such as authorizations and cancellations. Refer to [Adyen's documentation](https://docs.adyen.com/development-resources/webhooks/) to learn how to set up a standard webhook.
+
+Then, set the webhook's HMAC key in the `hmacKey` option of the Adyen Module Provider. Medusa rejects webhook notifications with an invalid HMAC signature, or that belong to a different merchant account.
+
+### Webhook URL
+
+Medusa has a `{server_url}/hooks/payment/{provider_id}` API route that you can use to register webhooks in Adyen, where:
+
+- `{server_url}` is the URL to your deployed Medusa application in server mode.
+- `{provider_id}` is the ID of the provider as explained in the [Adyen Payment Provider ID](#adyen-payment-provider-id) section, without the `pp_` prefix.
+
+For example, if you set the ID of the Adyen Module Provider to `adyen`, the webhook URL is `{server_url}/hooks/payment/adyen_adyen`.
+
+***
+
+## Useful Guides
+
+- [Storefront guide: Payment checkout step](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/storefront-development/checkout/payment).
+- [Payment Session](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-session).
+- [Payment Webhook Events](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/webhook-events).
+
+
 # Payment Module Provider
 
 In this guide, you’ll learn about the Payment Module Provider and how it's used.
@@ -46006,7 +46232,7 @@ Refer to this [Medusa Admin User Guide](undefined/user-guide/settings/regions) t
 
 ## What is a Payment Module Provider?
 
-The Payment Module Provider handles payment processing in the Medusa application. It integrates third-party payment services, such as [Stripe](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe).
+The Payment Module Provider handles payment processing in the Medusa application. It integrates third-party payment services, such as [Stripe](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe) and [Adyen](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/adyen).
 
 To authorize a payment amount with a payment provider, a payment session is created and associated with that payment provider. The payment provider is then used to handle the authorization.
 
@@ -46017,6 +46243,7 @@ After the payment session is authorized, the payment provider is associated with
 ### List of Payment Module Providers
 
 - [Stripe](undefined/commerce-modules/payment/payment-provider/stripe)
+- [Adyen](undefined/commerce-modules/payment/payment-provider/adyen)
 
 ### Default Payment Provider
 
@@ -47993,7 +48220,7 @@ The `calculatePrices` method returns two properties related to tax-inclusivity:
 Learn more about the returned properties in [this guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/pricing/price-calculation#returned-price-object).
 
 - `is_calculated_price_tax_inclusive`: Whether the selected `calculated_price` is tax-inclusive.
-- `is_original_price_tax_inclusive` : Whether the selected `original_price` is tax-inclusive.
+- `is_original_price_tax_inclusive`: Whether the selected `original_price` is tax-inclusive.
 
 A price is considered tax-inclusive if:
 
@@ -58133,6 +58360,25 @@ In the method:
   - If `options` isn't set, you call the `clearByTags` method to invalidate all cached values associated with the tags.
   - If `options.autoInvalidate` is `true`, you call the `clearByTagsWithAutoInvalidate` method to invalidate only the keys whose options allow automatic invalidation.
 
+### Shutdown Method
+
+The `shutdown` method is available since Medusa [v2.22.2](https://github.com/medusajs/medusa/releases/tag/v2.22.2).
+
+The `ICachingProviderService` interface also accepts an optional `shutdown` method. The Caching Module calls it when the Medusa application shuts down, so you can release resources that the provider holds, such as open connections or timers.
+
+Add the `shutdown` method to the `MemcachedCachingProviderService` class to close the connection to Memcached:
+
+```ts title="src/modules/memcached/service.ts"
+class MemcachedCachingProviderService implements ICachingProviderService {
+  // ...
+  async shutdown(): Promise<void> {
+    this.client.close()
+  }
+}
+```
+
+In the method, you call the Memcached client's `close` method to close its connections to the Memcached servers.
+
 You've now implemented all methods of the `ICachingProviderService` interface in the `MemcachedCachingProviderService` class.
 
 ***
@@ -64301,7 +64547,7 @@ export const reindexProductsStep = createStep(
 - job\_id: (\`string\`) The ID of the job that performed the reindex.
 - indexes: (\`string\[]\`) The names of the indexes that the method rebuilt.
 
-The method rebuilds every index before it returns this objectg, so you don't poll the `job_id` to know when it finished.
+The method rebuilds every index before it returns this object, so you don't poll the `job_id` to know when it finished.
 
 ### Reindex Strategies
 
@@ -66170,7 +66416,7 @@ In this example, you set the `fetchCredentials` configuration to `same-origin`, 
 
 If you're using an API key for authentication, you don't need to log in the user.
 
-The JS SDK has an `auth.login` method that allows you to login admin users, customers, or any [actor type](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types) with any [auth provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers).
+The JS SDK has an `auth.login` method that allows you to log in admin users, customers, or any [actor type](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types) with any [auth provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers).
 
 Not only does this method log in the user, but it also stores the JWT token or session cookie for you and automatically includes it in the headers of all requests to the Medusa API. This means you don't have to manually set the authorization header for each request.
 
@@ -69718,7 +69964,7 @@ export const Total = ({
 )
 ```
 
-You first define the `Total` component, which breaksdown a total item, such as discount. You'll use this component to breakdown the different totals in the `TotalsBreakdown` component.
+You first define the `Total` component, which breaks down a total item, such as discount. You'll use this component to breakdown the different totals in the `TotalsBreakdown` component.
 
 Add the `TotalsBreakdown` component after the `Total` component:
 
@@ -74147,7 +74393,7 @@ await workflowEngineService.setStepSuccess({
 })
 ```
 
-3. In an API route, workflow, or other resource, change a step's status to failure using the [Worfklow Engine Module](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine):
+3. In an API route, workflow, or other resource, change a step's status to failure using the [Workflow Engine Module](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine):
 
 ```ts
 const workflowEngineService = container.resolve(
@@ -75721,7 +75967,7 @@ Refer to the [Protected Routes](undefined/docs/learn/fundamentals/api-routes/pro
 
 Finally, you should create a custom validation middleware that ensures only users authenticated through the custom Authentication Module Provider can access the API route. If you don't add this middleware, users authenticated through other methods, such as email and password, can also access the route and create accounts.
 
-To create the custom validation middleware, create thefile `src/api/middlewares/validate-custom-auth-provider.ts` with the following content:
+To create the custom validation middleware, create the file `src/api/middlewares/validate-custom-auth-provider.ts` with the following content:
 
 ```ts title="src/api/middlewares/validate-custom-auth-provider.ts"
 import { 
@@ -76238,7 +76484,7 @@ export const sendAbandonedCartsWorkflow = createWorkflow(
 
 You create a workflow using `createWorkflow` from the Workflows SDK. It accepts the workflow's unique name as a first parameter.
 
-It accepts as a second parameter a constructor function, which is the workflow's implementation. The function can accept input, which in this case is an arra of carts.
+It accepts as a second parameter a constructor function, which is the workflow's implementation. The function can accept input, which in this case is an array of carts.
 
 In the workflow's constructor function, you:
 
@@ -92275,7 +92521,7 @@ In the method, you throw an error if the `jwtSecret` option is not set.
 
 ### d. Implement register Method
 
-When a customer (or another actor type) registers in your application, they must also have an [auth identity](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types) that allows them to login.
+When a customer (or another actor type) registers in your application, they must also have an [auth identity](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types) that allows them to log in.
 
 The `register` method of an auth provider uses custom logic to create the auth identity for the actor type (such as customer). In the method, you can perform custom validation and specify the custom authentication details to store for the user's auth identity.
 
@@ -93397,7 +93643,7 @@ Then, after setting the registration token in the cookies, you create a customer
 - `last_name`: The last name of the customer.
 - `phone`: The phone number of the customer.
 
-Finally, you call the `authenticateWithPhone` function to authenticate the customer using their phone number. At this step, the customer would receive an OTP to login.
+Finally, you call the `authenticateWithPhone` function to authenticate the customer using their phone number. At this step, the customer would receive an OTP to log in.
 
 ### e. Add OTP Form
 
@@ -93994,7 +94240,7 @@ You can also switch to the registration form by clicking on the "Join" link belo
 
 ![Registration form with phone number input](https://res.cloudinary.com/dza7lstvk/image/upload/v1747739988/Medusa%20Resources/CleanShot_2025-05-20_at_14.19.35_2x_btlc2s.png)
 
-You can try to login with the account you created before, or register with a new one. Once successful, you'll see the OTP form to enter the OTP you received as SMS.
+You can try to log in with the account you created before, or register with a new one. Once successful, you'll see the OTP form to enter the OTP you received as SMS.
 
 ![OTP form](https://res.cloudinary.com/dza7lstvk/image/upload/v1747740102/Medusa%20Resources/CleanShot_2025-05-20_at_14.21.18_2x_yrkuyg.png)
 
@@ -109460,7 +109706,7 @@ To run queries on the database in a service's method, you need to:
 - Add the `InjectManager` decorator to the method.
 - Pass as the last parameter a context parameter that has the `MedusaContext` decorator.
 
-By doing the above, Medusa injects the method with a context parameter that has a `manger` property whose value is a [forked entity manager](https://mikro-orm.io/docs/identity-map#forking-entity-manager).
+By doing the above, Medusa injects the method with a context parameter that has a `manager` property whose value is a [forked entity manager](https://mikro-orm.io/docs/identity-map#forking-entity-manager).
 
 Then, you run a raw SQL query to calculate the average rating of the reviews for a product with the given ID. You also filter the reviews by the status `approved`.
 
@@ -110674,7 +110920,7 @@ The Stripe Module Provider supports different payment methods in Stripe, such as
 
 ![Stripe in the dropdown](https://res.cloudinary.com/dza7lstvk/image/upload/v1745245433/Medusa%20Resources/Screenshot_2025-04-21_at_5.23.07_PM_yd7xji.png)
 
-### Add Evnironement Variable to Storefront
+### Add Environment Variable to Storefront
 
 The [Next.js Starter Storefront](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/nextjs-starter) supports payment with Stripe during checkout if it's enabled in the region.
 
@@ -111541,7 +111787,7 @@ export default class AlgoliaModuleService {
 
 You define two methods:
 
-1. `getIndexName`: A method that receives an `AlgoliaIndexType` (defined in the previous snippt) and returns the index name for that type. In this case, you only have one type, `product`, so you return the product index name.
+1. `getIndexName`: A method that receives an `AlgoliaIndexType` (defined in the previous snippet) and returns the index name for that type. In this case, you only have one type, `product`, so you return the product index name.
    - If you want to index other types of data, you can add more cases to the switch statement.
 2. `indexData`: A method that receives an array of data and an `AlgoliaIndexType`. The method indexes the data in the Algolia index for the given type.
    - Notice that you set the `objectID` property of each object to the object's `id`. This ensures that you later update the object instead of creating a new one.
@@ -119335,7 +119581,7 @@ You define middlewares using the `defineMiddlewares` function from the Medusa Fr
 
 ### c. Create Subscriber
 
-Finally, you'll create a subscriber that listens to the `newsletter.signup` event emitted by the API route. The subscriber will create a notification with the `newsletter-signup` template. Under the hoode, the Mailchimp Notification Module Provider will handle the notification and subscribe the customer to the newsletter audience list.
+Finally, you'll create a subscriber that listens to the `newsletter.signup` event emitted by the API route. The subscriber will create a notification with the `newsletter-signup` template. Under the hood, the Mailchimp Notification Module Provider will handle the notification and subscribe the customer to the newsletter audience list.
 
 Create the file `src/subscribers/newsletter-signup.ts` with the following content:
 
@@ -128198,7 +128444,7 @@ You'll first be asked for the project's name. Then, when you're asked whether yo
 
 Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
 
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can login with the new user and explore the dashboard.
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
 
 The Next.js Starter Storefront is also running at `http://localhost:8000`.
 
@@ -129488,7 +129734,7 @@ Afterwards, the installation process will start, which will install the Medusa a
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form.
 
-Afterwards, you can login with the new user and explore the dashboard. The Next.js Starter Storefront is also running at `http://localhost:8000`.
+Afterwards, you can log in with the new user and explore the dashboard. The Next.js Starter Storefront is also running at `http://localhost:8000`.
 
 Check out the [troubleshooting guides](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/troubleshooting/create-medusa-app-errors) for help.
 
@@ -129880,7 +130126,7 @@ export default Module(SANITY_MODULE, {
 
 In the file, you export the `SANITY_MODULE` which is the Module's name. You'll use it later when you resolve the module from the Medusa container.
 
-You also export the module definition using `Module` from the Modueles SDK, which accepts as a first parameter the module's name, and as a second parameter an object having a `service` property, indicating the module's service.
+You also export the module definition using `Module` from the Modules SDK, which accepts as a first parameter the module's name, and as a second parameter an object having a `service` property, indicating the module's service.
 
 ### Add Module to Configurations
 
@@ -130878,7 +131124,7 @@ export const useSanityDocument = (
 }
 ```
 
-You define the hook `useSanityDocument` which retrieves the Sanity document of a product using Tankstack Query.
+You define the hook `useSanityDocument` which retrieves the Sanity document of a product using TanStack Query.
 
 You can now create the widget injected in a product's details page. Widgets are react components created in a file under the `src/admin/widgets` directory.
 
@@ -131014,7 +131260,7 @@ Medusa has a [workflow engine](undefined/home/runner/work/medusa/medusa/www/apps
 
 The workflow engine is an [Infrastructure Module](undefined/docs/learn/fundamentals/modules/infrastructure-modules), which can be replaced with a [Redis Workflow Engine](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine/redis), or a custom one of your choice, allowing you to take ownership of your application's tooling.
 
-In your customizations, you can resolve the workflow engine from the container and manage executions of a workflow, such as retrieve them and check their progress.
+In your customizations, you can resolve the workflow engine from the container and manage executions of a workflow, such as retrieving them and checking their progress.
 
 In this section, you'll create an API route to retrieve the stored executions of the `sanitySyncProductsWorkflow` workflow, so that you can display them later on the dashboard.
 
@@ -132339,7 +132585,7 @@ Afterwards, the installation process will start, which will install the Medusa a
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form.
 
-Afterwards, you can login with the new user and explore the dashboard. The Next.js Starter Storefront is also running at `http://localhost:8000`.
+Afterwards, you can log in with the new user and explore the dashboard. The Next.js Starter Storefront is also running at `http://localhost:8000`.
 
 Check out the [troubleshooting guides](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/troubleshooting/create-medusa-app-errors) for help.
 
@@ -138322,6 +138568,7 @@ Learn how to integrate a third-party notification provider in the [Create Notifi
 A Payment Module Provider processes payments made in your Medusa store using a third-party service.
 
 - [Stripe](undefined/commerce-modules/payment/payment-provider/stripe)
+- [Adyen](undefined/commerce-modules/payment/payment-provider/adyen)
 - [PayPal](undefined/integrations/guides/paypal)
 
 Learn how to integrate a third-party payment provider in the [Create Payment Module Provider](undefined/references/payment/provider) documentation.
@@ -163842,7 +164089,7 @@ To provide customer support, you can Integrate with third-party services, such a
 
 Medusa allows you to easily integrate with third-party services by creating a custom module, then build workflows for your business logic that perform actions with the third-party service.
 
-This approach allows you to interact with the third-party service within custom and existing flows, while maintaining data consistency across systems. You can then execute the wokflow when an event is triggered, such as when a customer places an order or requests a return.
+This approach allows you to interact with the third-party service within custom and existing flows, while maintaining data consistency across systems. You can then execute the workflow when an event is triggered, such as when a customer places an order or requests a return.
 
 - [Create Module](undefined/docs/learn/fundamentals/modules): Learn about how to create a custom module.
 - [Create Workflow](undefined/docs/learn/fundamentals/workflows): Learn how to create a workflow.
@@ -163978,7 +164225,7 @@ You'll first be asked for the project's name. You can also optionally choose to 
 
 the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
 
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can login with the new user and explore the dashboard.
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
 
 Check out the [troubleshooting guides](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/troubleshooting/create-medusa-app-errors) for help.
 
@@ -165228,7 +165475,7 @@ You'll first be asked for the project's name. Then, when asked whether you want 
 
 the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
 
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can login with the new user and explore the dashboard.
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
 
 Check out the [troubleshooting guides](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/troubleshooting/create-medusa-app-errors) for help.
 
@@ -168522,7 +168769,7 @@ You will first be asked for the project's name. You can also optionally choose t
 
 the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
 
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can login with the new user and explore the dashboard.
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
 
 Check out the [troubleshooting guides](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/troubleshooting/create-medusa-app-errors) for help.
 
@@ -170026,7 +170273,7 @@ Refer to the [main documentation](undefined/docs/learn) to learn more about Medu
 
 In this guide, you'll learn how to build a restaurant-delivery marketplace platform, similar to Uber Eats, with Medusa.
 
-When you install a Medusa application, you get a fully-fledged commerce platform with support for customizations. While Medusa doesn't provide marketeplace functionalities natively, it provides features that you can extend and a Framework to support all your customization needs to build a marketplace.
+When you install a Medusa application, you get a fully-fledged commerce platform with support for customizations. While Medusa doesn't provide marketplace functionalities natively, it provides features that you can extend and a Framework to support all your customization needs to build a marketplace.
 
 In this guide, you'll customize Medusa to build a restaurant-delivery platform with the following features:
 
@@ -170059,7 +170306,7 @@ You'll first be asked for the project's name. You can also optionally choose to 
 
 the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
 
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can login with the new user and explore the dashboard.
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
 
 Check out the [troubleshooting guides](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/troubleshooting/create-medusa-app-errors) for help.
 
@@ -170591,7 +170838,7 @@ To test the API route out, start the Medusa application:
 npm run dev
 ```
 
-Then, send a `POST` request to `/restaurants` :
+Then, send a `POST` request to `/restaurants`:
 
 ```bash
 curl -X POST 'http://localhost:9000/restaurants' \
@@ -173401,7 +173648,7 @@ You'll first be asked for the project's name. You can also optionally choose to 
 
 the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
 
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can login with the new user and explore the dashboard.
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
 
 Check out the [troubleshooting guides](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/troubleshooting/create-medusa-app-errors) for help.
 
@@ -175013,7 +175260,7 @@ To test it out, start the Medusa application:
 npm run dev
 ```
 
-Then, send a `GET` request to `/vendors/orders` :
+Then, send a `GET` request to `/vendors/orders`:
 
 ```bash
 curl 'http://localhost:9000/vendors/orders' \
@@ -177386,7 +177633,7 @@ This creates a `Subscription` data model that holds a subscription’s details, 
 - `period`: a number indicating how many months/years before a new order is created for the subscription. For example, if `period` is `3` and `interval` is `monthly`, then a new order is created every three months.
 - `subscription_date`: when the subscription was created.
 - `last_order_date`: when the last time a new order was created for the subscription.
-- `next_order_date` : when the subscription’s next order should be created. This property is nullable in case the subscription doesn’t have a next date or has expired.
+- `next_order_date`: when the subscription’s next order should be created. This property is nullable in case the subscription doesn’t have a next date or has expired.
 - `expiration_date`: when the subscription expires.
 - `metadata`: any additional data can be held in this JSON property.
 

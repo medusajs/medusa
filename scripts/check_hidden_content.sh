@@ -79,7 +79,10 @@ else
   REVIEW_COMMENTS=$(gh api "repos/$REPO/pulls/$NUMBER/comments" --paginate \
     --jq '.[] | {body, ref: .html_url}' | jq -s '.')
   check_items "PR review comment" "$REVIEW_COMMENTS"
-  DIFF=$(gh pr diff "$NUMBER" --repo "$REPO")
+  # GitHub refuses the diff of a PR with over 300 files; fall back to the
+  # per-file patches, which omit binary and very large files.
+  DIFF=$(gh pr diff "$NUMBER" --repo "$REPO") \
+    || DIFF=$(gh api "repos/$REPO/pulls/$NUMBER/files" --paginate --jq '.[] | .patch // empty')
   check_text "PR diff" <<< "$DIFF"
 fi
 

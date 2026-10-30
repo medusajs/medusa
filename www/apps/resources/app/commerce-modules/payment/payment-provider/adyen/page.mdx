@@ -1,0 +1,407 @@
+---
+sidebar_label: "Adyen"
+---
+
+import { Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Adyen Module Provider`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about the Adyen Module Provider and how to configure it in the Payment Module.
+
+<Note type="soon" title="Beta">
+
+The Adyen Module Provider is in beta mode. It has been available since Medusa [v2.22.2](https://github.com/medusajs/medusa/releases/tag/v2.22.2).
+
+</Note>
+
+<Note title="Looking for no-code docs?">
+
+Your technical team must register the Adyen Module Provider in your Medusa application first. Then, refer to [this user guide](!user-guide!/settings/regions#edit-region-details) to learn how to enable the Adyen payment provider in a region using the Medusa Admin dashboard.
+
+</Note>
+
+## What is the Adyen Module Provider?
+
+The Adyen Module Provider integrates [Adyen](https://www.adyen.com/) into your Medusa application to process payments. It uses Adyen's [Checkout API Advanced flow](https://docs.adyen.com/online-payments/build-your-integration/advanced-flow/), and it supports:
+
+- Card payments, including 3D Secure authentication.
+- Apple Pay and Google Pay wallet payments.
+- Manual or automatic capture of payments.
+- Refunds and cancellations.
+- Saved cards for customers with an account.
+
+<Note title="Limitations">
+
+- The provider only supports cards (`scheme`), Apple Pay (`applepay`), and Google Pay (`googlepay`). It only retrieves these payment methods from Adyen, so Drop-in doesn't show other methods, and it throws an error if the storefront submits a different payment method type.
+- Payment methods that complete through a redirect or that Adyen confirms asynchronously through the `AUTHORISATION` webhook, such as iDEAL or bank transfers, aren't supported yet.
+- The first capture of a payment always captures the full authorized amount in Adyen. Later partial captures in Medusa only record the captured amount.
+
+</Note>
+
+---
+
+## Register the Adyen Module Provider
+
+<Prerequisites items={[
+  {
+    text: "Adyen account",
+    link: "https://www.adyen.com/"
+  },
+  {
+    text: "Adyen API key and merchant account",
+    link: "https://docs.adyen.com/development-resources/api-credentials/"
+  },
+  {
+    text: "To handle webhooks, the HMAC key of an Adyen standard webhook. Refer to the end of this guide for details on the URL.",
+    link: "https://docs.adyen.com/development-resources/webhooks/"
+  }
+]} />
+
+The Adyen Module Provider is installed by default in your application. To use it, add it to the array of providers passed to the Payment Module in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/payment-adyen",
+            id: "adyen",
+            options: {
+              apiKey: process.env.ADYEN_API_KEY,
+              merchantAccount:
+                process.env.ADYEN_MERCHANT_ACCOUNT,
+              hmacKey: process.env.ADYEN_WEBHOOK_HMAC_KEY,
+              returnUrl: process.env.ADYEN_RETURN_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+ADYEN_API_KEY=<YOUR_ADYEN_API_KEY>
+ADYEN_MERCHANT_ACCOUNT=<YOUR_ADYEN_MERCHANT_ACCOUNT>
+ADYEN_WEBHOOK_HMAC_KEY=<YOUR_ADYEN_WEBHOOK_HMAC_KEY>
+ADYEN_RETURN_URL=<YOUR_STOREFRONT_RETURN_URL>
+```
+
+### Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Option
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Required
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Default
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `apiKey`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the Adyen API key.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `merchantAccount`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the Adyen merchant account to process payments with.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `hmacKey`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the HMAC key of the Adyen standard webhook. Medusa rejects all webhook notifications from Adyen if you don't set this option.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `environment`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The Adyen environment to use. Its value is either `TEST` or `LIVE`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `TEST`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `liveEndpointUrlPrefix`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the prefix of your live endpoint URLs. Find it in Adyen's Customer Area under Developers > API URLs.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Only if `environment` is `LIVE`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `capture`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Whether to capture payments immediately after authorization. When enabled, canceling an authorized payment refunds it instead, since Adyen can't cancel captured payments.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `returnUrl`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the URL to return the customer to after a redirect, such as a 3D Secure challenge. Medusa uses it when the storefront doesn't pass `return_url` in the payment session's client data. Adyen requires a return URL, so you must set either this option or the client data.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Multiple Merchant Accounts
+
+To process payments with multiple Adyen merchant accounts, register the Adyen Module Provider once per merchant account, each with a different `id`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/payment-adyen",
+            id: "eu",
+            options: {
+              apiKey: process.env.ADYEN_API_KEY,
+              merchantAccount: process.env.ADYEN_EU_ACCOUNT,
+              // ...
+            },
+          },
+          {
+            resolve: "@medusajs/medusa/payment-adyen",
+            id: "us",
+            options: {
+              apiKey: process.env.ADYEN_API_KEY,
+              merchantAccount: process.env.ADYEN_US_ACCOUNT,
+              // ...
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+---
+
+## Enable Adyen Provider in a Region
+
+Before customers can use Adyen to complete their purchases, you must enable the Adyen payment provider in the region where you want to offer this payment method.
+
+Refer to the [user guide](!user-guide!/settings/regions#edit-region-details) to learn how to edit a region and enable the Adyen payment provider.
+
+---
+
+## Adyen Payment Provider ID
+
+The Adyen payment provider is registered and referenced by a unique ID made up of the format `pp_adyen_{id}`, where `{id}` is the ID of the Adyen Module Provider as set in the `medusa-config.ts` file.
+
+For example, if you set the ID of the Adyen Module Provider to `adyen` in `medusa-config.ts`, the Medusa application registers the payment provider with the ID `pp_adyen_adyen`.
+
+---
+
+## Accept Adyen Payments in the Storefront
+
+The Adyen Module Provider is built to work with Adyen's [Drop-in](https://docs.adyen.com/online-payments/build-your-integration/advanced-flow/?platform=Web&integration=Drop-in) component in the storefront. The checkout flow is as follows:
+
+1. [Initialize a payment session](../../../../storefront-development/checkout/payment/page.mdx) with the Adyen payment provider. The provider retrieves the available payment methods from Adyen, limited to the [supported payment methods](#what-is-the-adyen-module-provider), and stores them in the payment session's `data.payment_methods` property. Pass this property to Drop-in to render the payment methods.
+2. When the customer submits their payment details in Drop-in, [update the payment session's client data](../../payment-session/page.mdx#update-client-data-from-the-storefront) with the details that Drop-in returns, then complete the cart.
+3. If Adyen requires an additional action, such as a 3D Secure challenge or a redirect, the cart completion fails and the payment session's status becomes `requires_more`. The payment session's `data.action` property holds the action, which you pass to Drop-in to handle it.
+4. After the customer completes the action, update the payment session's client data with the details that Drop-in returns, then complete the cart again.
+
+The Adyen Module Provider accepts the following properties in the payment session's client data:
+
+- `payment_method`: The `paymentMethod` object from Drop-in's state data.
+- `browser_info`: The `browserInfo` object from Drop-in's state data, which Adyen uses for 3D Secure authentication.
+- `details`: The `details` object that Drop-in returns after the customer completes an additional action.
+- `origin`: (Optional) The origin URL of the storefront, used for native 3D Secure authentication.
+- `return_url`: (Optional) The URL to return the customer to after a redirect. If not passed, the provider uses the `returnUrl` module option.
+- `store_payment_method`: (Optional) Whether to save the customer's card for future payments, from Drop-in's `storePaymentMethod` state data. This only applies to customers with an account.
+
+For example:
+
+```ts
+sdk.store.payment.updatePaymentSession(
+  paymentCollectionId,
+  paymentSessionId,
+  {
+    client_data: {
+      payment_method: state.data.paymentMethod,
+      browser_info: state.data.browserInfo,
+      origin: window.location.origin,
+      store_payment_method: state.data.storePaymentMethod,
+    },
+  }
+)
+```
+
+If the customer's payment is refused, they can submit new payment details. The provider then resets the payment session to the `pending` status and processes the submission as a new payment attempt, even if the customer uses the same card. The payment session keeps `data.payment_methods` until the payment is authorized, so you can render Drop-in again for the new attempt. After authorization, the provider sets `data.payment_methods` to `null`.
+
+### Saved Cards
+
+For logged-in customers, the Adyen Module Provider uses the customer's [account holder](../../account-holder/page.mdx) ID as Adyen's shopper reference. When you initialize a payment session for these customers, Adyen returns their saved cards in the `storedPaymentMethods` property of `data.payment_methods`, which Drop-in renders.
+
+To save a card during payment, pass `store_payment_method: true` in the payment session's client data. Guest customers don't have an account holder, so the provider ignores this property for them.
+
+<Note>
+
+Saving a card during a payment requires the "Merchant Recurring" role for your Adyen API credential. Saving a card without a payment requires the "API tokenise payment details" role.
+
+</Note>
+
+---
+
+## Setup Adyen Webhooks
+
+Adyen sends webhook notifications to inform Medusa of payment updates, such as authorizations and cancellations. Refer to [Adyen's documentation](https://docs.adyen.com/development-resources/webhooks/) to learn how to set up a standard webhook.
+
+Then, set the webhook's HMAC key in the `hmacKey` option of the Adyen Module Provider. Medusa rejects webhook notifications with an invalid HMAC signature, or that belong to a different merchant account.
+
+### Webhook URL
+
+Medusa has a `{server_url}/hooks/payment/{provider_id}` API route that you can use to register webhooks in Adyen, where:
+
+- `{server_url}` is the URL to your deployed Medusa application in server mode.
+- `{provider_id}` is the ID of the provider as explained in the [Adyen Payment Provider ID](#adyen-payment-provider-id) section, without the `pp_` prefix.
+
+For example, if you set the ID of the Adyen Module Provider to `adyen`, the webhook URL is `{server_url}/hooks/payment/adyen_adyen`.
+
+---
+
+## Useful Guides
+
+- [Storefront guide: Payment checkout step](../../../../storefront-development/checkout/payment/page.mdx).
+- [Payment Session](../../payment-session/page.mdx).
+- [Payment Webhook Events](../../webhook-events/page.mdx).

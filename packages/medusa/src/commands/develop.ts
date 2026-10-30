@@ -5,7 +5,7 @@ import {
 } from "@medusajs/framework/utils"
 import { Store } from "@medusajs/telemetry"
 import { ChildProcess, execSync, fork } from "child_process"
-import chokidar, { FSWatcher } from "chokidar"
+import type { FSWatcher } from "chokidar" with { "resolution-mode": "import" }
 import { EOL } from "os"
 import path from "path"
 import BackendHmrFeatureFlag from "../feature-flags/backend-hmr"
@@ -197,8 +197,9 @@ export default async function ({ types, directory, lint, fix }) {
      * - dist
      * - src/admin/**
      */
-    watch() {
-      this.watcher = chokidar.watch(".", {
+    async watch() {
+      const { watch } = await import("chokidar")
+      this.watcher = watch(".", {
         ignoreInitial: true,
         cwd: directory,
         ignored: [
@@ -278,5 +279,5 @@ export default async function ({ types, directory, lint, fix }) {
   })
 
   await devServer.start()
-  devServer.watch()
+  await devServer.watch()
 }
