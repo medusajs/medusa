@@ -1,5 +1,7 @@
 # @medusajs/ui-preset
 
+## 2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @medusajs/payment-adyen
 
+## 2.22.3
+
+### Patch Changes
+
+- [#17587](https://github.com/medusajs/medusa/pull/17587) [`0ae4aed`](https://github.com/medusajs/medusa/commit/0ae4aede6684605cc1d91aa8b40b60f3b60b92aa) Thanks [@sradevski](https://github.com/sradevski)! - feat(payment-adyen): support off-session payments with saved cards
+
+- Updated dependencies [[`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d)]:
+  - @medusajs/framework@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

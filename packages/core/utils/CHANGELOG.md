@@ -1,5 +1,14 @@
 # @medusajs/utils
 
+## 2.22.3
+
+### Patch Changes
+
+- [#17592](https://github.com/medusajs/medusa/pull/17592) [`12a5580`](https://github.com/medusajs/medusa/commit/12a55804efc97a0d685fc9e69ca005b9f44d3761) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(utils): update graphql to v17, graphql-tools and graphql-codegen to latest majors
+
+- Updated dependencies []:
+  - @medusajs/deps@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes
