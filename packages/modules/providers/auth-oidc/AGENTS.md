@@ -1,6 +1,6 @@
 # @medusajs/auth-oidc
 
-Generic OpenID Connect Auth Module provider (since 2.19.0). Works with any spec-compliant IdP (Okta, Entra ID, Auth0, Keycloak, Google Workspace, ...) via discovery, PKCE (S256), nonce, and full ID-token validation, built on `openid-client` v5.
+Generic OpenID Connect Auth Module provider (since 2.19.0). Works with any spec-compliant IdP (Okta, Entra ID, Auth0, Keycloak, Google Workspace, ...) via discovery, PKCE (S256), nonce, and full ID-token validation, built on `openid-client` v6.
 
 ## Using this package
 
