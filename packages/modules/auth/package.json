@@ -52,7 +52,7 @@
     "@otplib/totp": "^13.5.0",
     "@otplib/uri": "^13.5.0",
     "jsonwebtoken": "^9.0.2",
-    "jwks-rsa": "^3.1.0",
+    "jwks-rsa": "^4.1.0",
     "scrypt-kdf": "^2.0.1"
   },
   "peerDependencies": {
