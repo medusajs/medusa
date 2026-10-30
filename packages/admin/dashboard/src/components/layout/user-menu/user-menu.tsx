@@ -17,6 +17,7 @@ import {
   Kbd,
   Text,
   clx,
+  toast,
 } from "@medusajs/ui"
 import { Dialog as RadixDialog } from "radix-ui"
 import { useTranslation } from "react-i18next"
@@ -194,26 +195,43 @@ const ThemeToggle = () => {
   )
 }
 
-const Logout = () => {
+export const Logout = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const { mutateAsync: logoutMutation } = useLogout()
+  const { mutateAsync: logoutMutation, isPending } = useLogout()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const isPendingLogout = isPending || isLoggingOut
 
   const handleLogout = async () => {
-    await logoutMutation(undefined, {
-      onSuccess: () => {
-        /**
-         * When the user logs out, we want to clear the query cache
-         */
-        queryClient.clear()
-        navigate("/login")
-      },
-    })
+    if (isPendingLogout) {
+      return
+    }
+
+    setIsLoggingOut(true)
+
+    try {
+      await logoutMutation()
+    } catch (error: any) {
+      toast.error(error.message)
+    } finally {
+      const otherOpen = document.querySelectorAll(
+        "[role=dialog][data-state=open], [role=alertdialog][data-state=open]"
+      )
+      if (
+        otherOpen.length === 0 &&
+        document.body.style.pointerEvents === "none"
+      ) {
+        document.body.style.pointerEvents = ""
+      }
+      queryClient.clear()
+      navigate("/login")
+      setIsLoggingOut(false)
+    }
   }
 
   return (
-    <DropdownMenu.Item onClick={handleLogout}>
+    <DropdownMenu.Item disabled={isPendingLogout} onClick={handleLogout}>
       <div className="flex items-center gap-x-2">
         <OpenRectArrowOut className="text-ui-fg-subtle" />
         <span>{t("app.menus.actions.logout")}</span>

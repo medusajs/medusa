@@ -250,9 +250,22 @@ const DesktopSidebarContainer = ({ children }: PropsWithChildren) => {
   )
 }
 
-const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
+export const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation()
   const { mobile, toggle } = useSidebar()
+
+  const handleCloseAutoFocus = () => {
+    /* If document.body.style.pointerEvents was left as "none", restore it if no other dialog/overlay is active */
+    const otherOpen = document.querySelectorAll(
+      "[role=dialog][data-state=open], [role=alertdialog][data-state=open]"
+    )
+    if (
+      otherOpen.length === 0 &&
+      document.body.style.pointerEvents === "none"
+    ) {
+      document.body.style.pointerEvents = ""
+    }
+  }
 
   return (
     <RadixDialog.Root open={mobile} onOpenChange={() => toggle("mobile")}>
@@ -264,6 +277,7 @@ const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
           )}
         />
         <RadixDialog.Content
+          onCloseAutoFocus={handleCloseAutoFocus}
           className={clx(
             "fixed inset-y-2 start-2 flex w-full max-w-[304px] flex-col overflow-hidden rounded-lg border-r bg-ui-bg-subtle shadow-elevation-modal",
             "data-[state=closed]:slide-out-to-start-1/2 data-[state=open]:slide-in-from-start-1/2 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"

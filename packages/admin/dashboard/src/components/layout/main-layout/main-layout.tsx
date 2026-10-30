@@ -5,7 +5,6 @@ import {
   CurrencyDollar,
   EllipsisHorizontal,
   MagnifyingGlass,
-  OpenRectArrowOut,
   ReceiptPercent,
   ShoppingCart,
   SquaresPlus,
@@ -23,12 +22,10 @@ import { Skeleton } from "../../common/skeleton"
 import { INavItem, NavItem } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import { useLogout } from "../../../hooks/api"
-import { queryClient } from "../../../lib/query-client"
+import { Link, useLocation } from "react-router-dom"
 import { useExtension } from "../../../providers/extension-provider"
 import { useSearch } from "../../../providers/search-provider"
-import { UserMenu } from "../user-menu"
+import { Logout, UserMenu } from "../user-menu"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
 import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 
@@ -63,34 +60,6 @@ const MainSidebar = () => {
         </div>
       </div>
     </aside>
-  )
-}
-
-const Logout = () => {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-
-  const { mutateAsync: logoutMutation } = useLogout()
-
-  const handleLogout = async () => {
-    await logoutMutation(undefined, {
-      onSuccess: () => {
-        /**
-         * When the user logs out, we want to clear the query cache
-         */
-        queryClient.clear()
-        navigate("/login")
-      },
-    })
-  }
-
-  return (
-    <DropdownMenu.Item onClick={handleLogout}>
-      <div className="flex items-center gap-x-2">
-        <OpenRectArrowOut className="text-ui-fg-subtle" />
-        <span>{t("app.menus.actions.logout")}</span>
-      </div>
-    </DropdownMenu.Item>
   )
 }
 
