@@ -54,7 +54,7 @@
   "dependencies": {
     "@typescript-eslint/parser": "^8.72.0",
     "@typescript-eslint/utils": "^8.72.0",
-    "cron-parser": "^4.9.0"
+    "cron-parser": "^5.10.2"
   },
   "devDependencies": {
     "@types/eslint": "^9.6.1",
