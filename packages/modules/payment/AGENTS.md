@@ -1,6 +1,6 @@
 # @medusajs/payment
 
-Payment Module (`Modules.PAYMENT`): payment collections, sessions, payments, captures and refunds, with the provider-specific work delegated to payment providers (Stripe lives in `packages/modules/providers/payment-stripe`).
+Payment Module (`Modules.PAYMENT`): payment collections, sessions, payments, captures and refunds, with the provider-specific work delegated to payment providers (Stripe and Adyen live in `packages/modules/providers/payment-stripe` and `payment-adyen`).
 
 ## Using this package
 

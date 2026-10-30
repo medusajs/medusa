@@ -12,6 +12,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@adyen/api-library@npm:^32.2.0":
+  version: 32.2.0
+  resolution: "@adyen/api-library@npm:32.2.0"
+  dependencies:
+    "@types/node": 18.19.69
+    form-data: 4.0.6
+    https-proxy-agent: 5.0.1
+  dependenciesMeta:
+    "@types/node":
+      optional: true
+  checksum: ba40b714be041e6f4588781c2b4b67f4b370e3a7f1960d31f7e838d5d5b360c86acf8e300eb2ad8af74d3f48d33cb8c6d9ca8682e6beb31b62bab00eb940f964
+  languageName: node
+  linkType: hard
+
 "@alloc/quick-lru@npm:^5.2.0":
   version: 5.2.0
   resolution: "@alloc/quick-lru@npm:5.2.0"
@@ -4080,6 +4094,7 @@ __metadata:
     "@medusajs/notification-sendgrid": 2.22.1
     "@medusajs/order": 2.22.1
     "@medusajs/payment": 2.22.1
+    "@medusajs/payment-adyen": 2.22.1
     "@medusajs/payment-stripe": 2.22.1
     "@medusajs/pricing": 2.22.1
     "@medusajs/product": 2.22.1
@@ -4196,6 +4211,17 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.22.1
     "@medusajs/test-utils": 2.22.1
+  peerDependencies:
+    "@medusajs/framework": 2.22.1
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/payment-adyen@2.22.1, @medusajs/payment-adyen@workspace:packages/modules/providers/payment-adyen":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/payment-adyen@workspace:packages/modules/providers/payment-adyen"
+  dependencies:
+    "@adyen/api-library": ^32.2.0
+    "@medusajs/framework": 2.22.1
   peerDependencies:
     "@medusajs/framework": 2.22.1
   languageName: unknown
@@ -8970,6 +8996,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:18.19.69":
+  version: 18.19.69
+  resolution: "@types/node@npm:18.19.69"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: f10ae0d07bde6b80c02702ecd470c0f710cc2fde48d8cea4140cb7d7715c0b944ca5d9b730e4b56ba9d96f1eb459739da71c54e88586fc6b911600ea1e70af4e
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^12.7.1":
   version: 12.20.55
   resolution: "@types/node@npm:12.20.55"
@@ -13484,7 +13519,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:^4.0.0, form-data@npm:^4.0.4, form-data@npm:^4.0.5, form-data@npm:^4.0.6":
+"form-data@npm:4.0.6, form-data@npm:^4.0.0, form-data@npm:^4.0.4, form-data@npm:^4.0.5, form-data@npm:^4.0.6":
   version: 4.0.6
   resolution: "form-data@npm:4.0.6"
   dependencies:
@@ -14184,7 +14219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"https-proxy-agent@npm:^5.0.1":
+"https-proxy-agent@npm:5.0.1, https-proxy-agent@npm:^5.0.1":
   version: 5.0.1
   resolution: "https-proxy-agent@npm:5.0.1"
   dependencies:
@@ -21573,6 +21608,13 @@ __metadata:
   version: 8.12.3
   resolution: "undici-types@npm:8.12.3"
   checksum: e50cec68758ffd658286f4bbf75fb9c26b6855bee2b36b7335ac394231ddf42250500ecdafbff682b1e65f5112f8e32be1ee719862f89561724aee1da122df3a
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: bb673d7876c2d411b6eb6c560e0c571eef4a01c1c19925175d16e3a30c4c428181fb8d7ae802a261f283e4166a0ac435e2f505743aa9e45d893f9a3df017b501
   languageName: node
   linkType: hard
 

@@ -60,6 +60,7 @@ The module delegates payment processing to Payment Module Providers, registered 
 Official providers in this repository:
 
 - [`@medusajs/payment-stripe`](../providers/payment-stripe) (Stripe)
+- [`@medusajs/payment-adyen`](../providers/payment-adyen) (Adyen)
 
 ## Installation
 
