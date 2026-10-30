@@ -8,6 +8,7 @@ import {
 } from "@medusajs/framework/types"
 import { Modules, ProductStatus } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { trackOverlappingQueries } from "../../__fixtures__/track-overlapping-queries"
 
 jest.setTimeout(30000)
 
@@ -618,6 +619,33 @@ moduleIntegrationTestRunner<IProductModuleService>({
               ]),
             })
           )
+        })
+
+        it("should create variants without running overlapping queries on the transaction client", async () => {
+          const tracker = trackOverlappingQueries()
+          let variants: ProductVariantDTO[]
+          try {
+            variants = await service.createProductVariants([
+              {
+                title: "variant 3",
+                product_id: productOne.id,
+                options: { size: "small", color: "blue" },
+              },
+              {
+                title: "variant 4",
+                product_id: productOne.id,
+                options: { size: "large", color: "blue" },
+              },
+            ])
+          } finally {
+            tracker.restore()
+          }
+
+          expect(tracker.overlapping).toEqual([])
+          expect(variants).toEqual([
+            expect.objectContaining({ title: "variant 3" }),
+            expect.objectContaining({ title: "variant 4" }),
+          ])
         })
 
         it("should correctly associate variants with own product options", async () => {

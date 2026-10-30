@@ -625,15 +625,13 @@ export default class ProductModuleService
     }
 
     const productIds = [...new Set<string>(data.map((v) => v.product_id!))]
-    const [variants, { optionsByProductId, valueIdsByProductId }] =
-      await promiseAll([
-        this.productVariantService_.list(
-          { product_id: productIds },
-          { relations: ["options"] },
-          sharedContext
-        ),
-        this.loadOptionsAndValuesByProductId_(productIds, sharedContext),
-      ])
+    const variants = await this.productVariantService_.list(
+      { product_id: productIds },
+      { relations: ["options"] },
+      sharedContext
+    )
+    const { optionsByProductId, valueIdsByProductId } =
+      await this.loadOptionsAndValuesByProductId_(productIds, sharedContext)
 
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(
@@ -4242,22 +4240,21 @@ export default class ProductModuleService
     optionsByProductId: Map<string, InferEntityType<typeof ProductOption>[]>
     valueIdsByProductId: Map<string, Set<string>>
   }> {
-    const [productOptions, optionIdsByProductId, valueIdsByProductId] =
-      await promiseAll([
-        this.productOptionService_.list(
-          { products: { id: productIds } },
-          { relations: ["values"] },
-          sharedContext
-        ),
-        this.productRepository_.getOptionIdsByProductIds(
-          productIds,
-          sharedContext
-        ),
-        this.productRepository_.getOptionValueIdsByProductIds(
-          productIds,
-          sharedContext
-        ),
-      ])
+    const productOptions = await this.productOptionService_.list(
+      { products: { id: productIds } },
+      { relations: ["values"] },
+      sharedContext
+    )
+    const optionIdsByProductId =
+      await this.productRepository_.getOptionIdsByProductIds(
+        productIds,
+        sharedContext
+      )
+    const valueIdsByProductId =
+      await this.productRepository_.getOptionValueIdsByProductIds(
+        productIds,
+        sharedContext
+      )
 
     const optionsById = new Map(productOptions.map((o) => [o.id, o]))
     const optionsByProductId = new Map<
