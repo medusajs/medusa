@@ -11,7 +11,7 @@
       }
     },
     "aria-details": {
-      "description": "Identifies the element (or elements) that provide a detailed, extended description for the object.",
+      "description": "Identifies the element (or elements) that provide a detailed, extended description for the\nobject.",
       "required": false,
       "tsType": {
         "name": "string"
@@ -32,7 +32,7 @@
       }
     },
     "autoComplete": {
-      "description": "Describes the type of autocomplete functionality the input should provide if any. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).",
+      "description": "Describes the type of autocomplete functionality the input should provide if any. See\n[MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete).",
       "required": false,
       "tsType": {
         "name": "string"
@@ -148,7 +148,7 @@
       }
     },
     "hourCycle": {
-      "description": "Whether to display the time in 12 or 24 hour format. By default, this is determined by the user's locale.",
+      "description": "Whether to display the time in 12 or 24 hour format. By default, this is determined by the\nuser's locale.",
       "required": false,
       "tsType": {
         "name": "union",
@@ -166,7 +166,7 @@
       }
     },
     "id": {
-      "description": "The element's unique identifier. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id).",
+      "description": "The element's unique identifier. See\n[MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id).",
       "required": false,
       "tsType": {
         "name": "string"
@@ -217,7 +217,7 @@
       }
     },
     "name": {
-      "description": "The name of the input element, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).",
+      "description": "The name of the input element, used when submitting an HTML form. See\n[MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).",
       "required": false,
       "tsType": {
         "name": "string"
@@ -382,7 +382,7 @@
       }
     },
     "pageBehavior": {
-      "description": "Controls the behavior of paging. Pagination either works by advancing the visible page by visibleDuration (default) or one unit of visibleDuration.",
+      "description": "Controls the behavior of paging. Pagination either works by advancing the visible page by\nvisibleDuration (default) or one unit of visibleDuration.",
       "required": false,
       "tsType": {
         "name": "PageBehavior",
@@ -391,7 +391,7 @@
       }
     },
     "placeholderValue": {
-      "description": "A placeholder date that influences the format of the placeholder shown when no value is selected. Defaults to today's date at midnight.",
+      "description": "A placeholder date that influences the format of the placeholder shown when no value is\nselected. Defaults to today's date at midnight.",
       "required": false,
       "tsType": {
         "name": "union",
