@@ -1,13 +1,11 @@
 import { ICacheService } from "@medusajs/framework/types"
 import { isDefined, MedusaError } from "@medusajs/framework/utils"
-import {
-  Client,
-  custom,
-  generators,
-  Issuer,
-  IssuerMetadata,
-  TokenSet,
-} from "openid-client"
+import type {
+  Configuration,
+  ServerMetadata,
+  TokenEndpointResponse,
+  TokenEndpointResponseHelpers,
+} from "openid-client" with { "resolution-mode": "import" }
 import {
   OidcAuthorizationUrlResult,
   OidcBuildAuthorizationUrlInput,
@@ -33,9 +31,22 @@ const DEFAULT_CLAIM_MAPPINGS: OidcClaimMappings = {
 // Cache-module key prefix for cached discovery documents.
 const DISCOVERY_CACHE_KEY_PREFIX = "oidc:discovery:"
 
-// Apply a sane default timeout to all outgoing HTTP requests (discovery, JWKS,
-// token exchange) so an IdP outage degrades to a login failure rather than a hang.
-custom.setHttpOptionsDefaults({ timeout: DEFAULT_HTTP_TIMEOUT_MS })
+type OpenIdClient = typeof import("openid-client", {
+  with: { "resolution-mode": "import" },
+})
+
+let openIdClient: OpenIdClient | undefined
+
+// openid-client is ESM-only, so loading it eagerly breaks Jest suites that only load this provider
+function loadOpenIdClient(): OpenIdClient {
+  openIdClient ??= require("openid-client") as OpenIdClient
+  return openIdClient
+}
+
+// openid-client throws generic messages ("something went wrong") with the actual reason as the cause
+function getErrorReason(error: { message: string; cause?: unknown }): string {
+  return error.cause instanceof Error ? error.cause.message : error.message
+}
 
 /**
  * A reusable OIDC engine built on `openid-client`. It handles discovery,
@@ -50,14 +61,14 @@ export class OidcEngine {
   protected readonly cache_?: ICacheService
 
   /**
-   * The memoized OIDC client. `openid-client` v5 caches the JWKS keystore per
-   * `Issuer` instance, so building a fresh client on every call would refetch
+   * The memoized OIDC client configuration. `openid-client` caches the JWKS per
+   * `Configuration` instance, so building a fresh one on every call would refetch
    * the JWKS over HTTP on every login callback. The client is built lazily and
    * reused until the discovery cache entry expires; when all endpoints are
    * configured explicitly (no discovery), it's cached indefinitely, since the
    * engine's options are immutable per instance.
    */
-  protected clientPromise_?: Promise<Client>
+  protected clientPromise_?: Promise<Configuration>
   protected clientExpiresAt_ = 0
 
   constructor(options: OidcEngineOptions, cache?: ICacheService) {
@@ -114,15 +125,16 @@ export class OidcEngine {
       )
     }
 
-    const client = await this.getClient_()
+    const client = loadOpenIdClient()
+    const config = await this.getClient_()
 
-    const codeVerifier = generators.codeVerifier()
-    const codeChallenge = generators.codeChallenge(codeVerifier)
-    const nonce = generators.nonce()
+    const codeVerifier = client.randomPKCECodeVerifier()
+    const codeChallenge = await client.calculatePKCECodeChallenge(codeVerifier)
+    const nonce = client.randomNonce()
 
     const scopes = input.scopes ?? this.options_.scopes ?? DEFAULT_SCOPES
 
-    const url = client.authorizationUrl({
+    const url = client.buildAuthorizationUrl(config, {
       scope: scopes.join(" "),
       redirect_uri: input.callbackUrl ?? this.options_.callback_url,
       state: input.state,
@@ -131,7 +143,7 @@ export class OidcEngine {
       code_challenge_method: "S256",
     })
 
-    return { url, nonce, codeVerifier }
+    return { url: url.href, nonce, codeVerifier }
   }
 
   /**
@@ -152,46 +164,53 @@ export class OidcEngine {
       )
     }
 
-    const client = await this.getClient_()
-    const redirectUri = input.callbackUrl ?? this.options_.callback_url
+    const config = await this.getClient_()
 
-    let tokenSet: TokenSet
+    // openid-client derives the token request's redirect_uri from this URL, and
+    // validates every authorization-response parameter in its query.
+    const currentUrl = new URL(input.callbackUrl ?? this.options_.callback_url)
+    currentUrl.search = new URLSearchParams(params).toString()
+
+    let tokens: TokenEndpointResponse & TokenEndpointResponseHelpers
     try {
-      // Forward every authorization-response parameter so
-      // openid-client can enforce all applicable checks. The `checks` argument
-      // carries the values we stored ourselves (PKCE verifier, nonce, state).
-      tokenSet = await client.callback(redirectUri, params, {
-        code_verifier: input.codeVerifier,
-        nonce: input.nonce,
-        state: input.state,
-      })
+      tokens = await loadOpenIdClient().authorizationCodeGrant(
+        config,
+        currentUrl,
+        {
+          pkceCodeVerifier: input.codeVerifier,
+          expectedNonce: input.nonce,
+          expectedState: input.state,
+        }
+      )
     } catch (error) {
       throw new MedusaError(
         MedusaError.Types.UNAUTHORIZED,
-        `Could not validate the identity provider's response: ${error.message}`
+        `Could not validate the identity provider's response: ${getErrorReason(
+          error
+        )}`
       )
     }
 
-    // Without the `openid` scope, the token endpoint returns no ID token and
-    // `tokenSet.claims()` would throw an unhelpful TypeError.
-    if (!tokenSet.id_token) {
+    const claims = tokens.claims()
+    if (!tokens.id_token || !claims) {
       throw new MedusaError(
         MedusaError.Types.UNAUTHORIZED,
         "The identity provider did not return an ID token; ensure the 'openid' scope is requested"
       )
     }
 
-    const claims = tokenSet.claims()
-
     return {
       claims: { ...claims },
       tokens: {
-        id_token: tokenSet.id_token,
-        access_token: tokenSet.access_token,
-        refresh_token: tokenSet.refresh_token,
-        expires_at: tokenSet.expires_at,
-        token_type: tokenSet.token_type,
-        scope: tokenSet.scope,
+        id_token: tokens.id_token,
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token,
+        expires_at:
+          tokens.expires_in === undefined
+            ? undefined
+            : Math.floor(Date.now() / 1000) + tokens.expires_in,
+        token_type: tokens.token_type,
+        scope: tokens.scope,
       },
     }
   }
@@ -267,7 +286,7 @@ export class OidcEngine {
     }
   }
 
-  protected async getClient_(): Promise<Client> {
+  protected async getClient_(): Promise<Configuration> {
     const now = Date.now()
 
     if (
@@ -295,26 +314,41 @@ export class OidcEngine {
     }
   }
 
-  protected async buildClient_(): Promise<Client> {
-    const issuer = await this.resolveIssuer_()
+  protected async buildClient_(): Promise<Configuration> {
+    const client = loadOpenIdClient()
+    const serverMetadata = await this.resolveServerMetadata_()
 
-    const client = new issuer.Client({
-      client_id: this.options_.client_id,
-      ...(this.options_.client_secret
-        ? { client_secret: this.options_.client_secret }
-        : {}),
-      redirect_uris: [this.options_.callback_url],
-      response_types: ["code"],
-      token_endpoint_auth_method: this.options_.client_secret
-        ? "client_secret_post"
-        : "none",
-    })
+    const config = new client.Configuration(
+      serverMetadata,
+      this.options_.client_id,
+      {
+        redirect_uris: [this.options_.callback_url],
+        response_types: ["code"],
+        [client.clockTolerance]:
+          this.options_.clock_tolerance_seconds ??
+          DEFAULT_CLOCK_TOLERANCE_SECONDS,
+      },
+      this.options_.client_secret
+        ? client.ClientSecretPost(this.options_.client_secret)
+        : client.None()
+    )
 
-    client[custom.clock_tolerance] =
-      this.options_.clock_tolerance_seconds ?? DEFAULT_CLOCK_TOLERANCE_SECONDS
-    client[custom.http_options] = () => ({ timeout: this.httpTimeoutMs_ })
+    config.timeout = this.httpTimeoutMs_ / 1000
+    if (this.allowsInsecureRequests_(serverMetadata)) {
+      client.allowInsecureRequests(config)
+    }
 
-    return client
+    return config
+  }
+
+  // assertSecureUrl already limits http:// to localhost outside production
+  protected allowsInsecureRequests_(metadata: ServerMetadata): boolean {
+    return [
+      metadata.issuer,
+      metadata.authorization_endpoint,
+      metadata.token_endpoint,
+      metadata.jwks_uri,
+    ].some((url) => url?.startsWith("http:"))
   }
 
   protected hasAllEndpointOverrides_(): boolean {
@@ -325,15 +359,15 @@ export class OidcEngine {
     )
   }
 
-  protected async resolveIssuer_(): Promise<Issuer> {
-    let base: IssuerMetadata = { issuer: this.options_.issuer }
+  protected async resolveServerMetadata_(): Promise<ServerMetadata> {
+    let base: ServerMetadata = { issuer: this.options_.issuer }
     if (!this.hasAllEndpointOverrides_()) {
       base = await this.discoverMetadata_()
     }
 
     // Explicit endpoint overrides take precedence over discovered values; the
     // configured issuer always wins so it matches the validated `iss` claim.
-    return new Issuer({
+    return {
       ...base,
       issuer: this.options_.issuer,
       authorization_endpoint:
@@ -342,18 +376,42 @@ export class OidcEngine {
       jwks_uri: this.options_.jwks_uri ?? base.jwks_uri,
       end_session_endpoint:
         this.options_.end_session_endpoint ?? base.end_session_endpoint,
-    })
+    }
   }
 
-  protected async discoverMetadata_(): Promise<IssuerMetadata> {
+  protected async discoverMetadata_(): Promise<ServerMetadata> {
     const key = `${DISCOVERY_CACHE_KEY_PREFIX}${this.options_.issuer}`
 
-    const cached = await this.cache_?.get<IssuerMetadata>(key)
+    const cached = await this.cache_?.get<ServerMetadata>(key)
     if (cached) {
       return cached
     }
 
-    const metadata = (await Issuer.discover(this.options_.issuer)).metadata
+    const client = loadOpenIdClient()
+    let config: Configuration
+    try {
+      config = await client.discovery(
+        new URL(this.options_.issuer),
+        this.options_.client_id,
+        undefined,
+        undefined,
+        {
+          timeout: this.httpTimeoutMs_ / 1000,
+          execute: this.options_.issuer.startsWith("http:")
+            ? [client.allowInsecureRequests]
+            : [],
+        }
+      )
+    } catch (error) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        `Could not discover the identity provider's configuration: ${getErrorReason(
+          error
+        )}`
+      )
+    }
+    // The spread drops the non-enumerable helper methods so the result is cacheable.
+    const metadata = { ...config.serverMetadata() }
     await this.cache_?.set(
       key,
       metadata,

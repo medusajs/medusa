@@ -33,7 +33,7 @@
     "watch": "yarn run -T tsc --watch"
   },
   "dependencies": {
-    "openid-client": "^5.7.1"
+    "openid-client": "^6.8.8"
   },
   "devDependencies": {
     "@medusajs/framework": "2.22.2"
