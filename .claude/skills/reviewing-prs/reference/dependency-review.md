@@ -37,7 +37,8 @@ Get the version deltas from two sources and reconcile them:
   Grouped security PRs also list `dependency-type` (`direct:production`,
   `direct:development`, or `indirect`) — note it, direct-production bumps matter
   most.
-- **Diff** (`get_pr_diff.sh`): confirm which `package.json` files changed (direct
+- **Diff** (`get_pr_diff.sh`, or `get_pr_diff.sh <pr> <path>` per `package.json`
+  when the lockfile makes the full diff too large): confirm which `package.json` files changed (direct
   deps of published `@medusajs/*` packages) versus lockfile-only changes
   (transitive). A dep that changes only in `yarn.lock` is transitive; a dep that
   changes in a `packages/**/package.json` is a direct dependency of that package.
