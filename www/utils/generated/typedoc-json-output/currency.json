@@ -749,7 +749,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/currency/common/currency.ts",
-							"line": 49,
+							"line": 48,
 							"character": 2
 						}
 					],
@@ -777,7 +777,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/currency/common/currency.ts",
-							"line": 53,
+							"line": 52,
 							"character": 2
 						}
 					],
@@ -967,7 +967,7 @@
 							"fileName": "currency/service.ts",
 							"line": 23,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/currency/service.ts#L23"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/currency/service.ts#L23"
 						}
 					],
 					"signatures": [
@@ -1010,7 +1010,7 @@
 									"fileName": "currency/service.ts",
 									"line": 23,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/currency/service.ts#L23"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/currency/service.ts#L23"
 								}
 							],
 							"parameters": [
@@ -1135,7 +1135,7 @@
 							"fileName": "currency/service.ts",
 							"line": 63,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/currency/service.ts#L63"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/currency/service.ts#L63"
 						}
 					],
 					"signatures": [
@@ -1222,7 +1222,7 @@
 									"fileName": "currency/service.ts",
 									"line": 63,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/currency/service.ts#L63"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/currency/service.ts#L63"
 								}
 							],
 							"parameters": [
@@ -1354,7 +1354,7 @@
 							"fileName": "currency/service.ts",
 							"line": 105,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/currency/service.ts#L105"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/currency/service.ts#L105"
 						}
 					],
 					"signatures": [
@@ -1441,7 +1441,7 @@
 									"fileName": "currency/service.ts",
 									"line": 105,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/currency/service.ts#L105"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/currency/service.ts#L105"
 								}
 							],
 							"parameters": [
@@ -1587,7 +1587,7 @@
 					"fileName": "currency/service.ts",
 					"line": 9,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/currency/service.ts#L9"
+					"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/currency/service.ts#L9"
 				}
 			],
 			"extendedTypes": [
@@ -2946,7 +2946,7 @@
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 											"line": 45,
-											"character": 6
+											"character": 8
 										}
 									],
 									"type": {
@@ -3029,7 +3029,7 @@
 											{
 												"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 												"line": 49,
-												"character": 6
+												"character": 10
 											}
 										],
 										"type": {
@@ -3050,7 +3050,7 @@
 									{
 										"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 										"line": 48,
-										"character": 14
+										"character": 16
 									}
 								]
 							}
@@ -3103,7 +3103,7 @@
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 													"line": 53,
-													"character": 6
+													"character": 12
 												}
 											],
 											"type": {
@@ -3124,7 +3124,7 @@
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 											"line": 52,
-											"character": 14
+											"character": 18
 										}
 									]
 								}
@@ -3931,7 +3931,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-					"line": 87,
+					"line": 84,
 					"character": 5
 				}
 			],
@@ -3966,7 +3966,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-					"line": 89,
+					"line": 86,
 					"character": 12
 				}
 			],
@@ -4166,8 +4166,8 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-											"line": 99,
-											"character": 16
+											"line": 91,
+											"character": 18
 										}
 									],
 									"indexSignatures": [
@@ -4180,8 +4180,8 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-													"line": 99,
-													"character": 18
+													"line": 91,
+													"character": 20
 												}
 											],
 											"parameters": [
@@ -4300,7 +4300,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-					"line": 107,
+					"line": 99,
 					"character": 12
 				}
 			],
@@ -6447,7 +6447,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-					"line": 143,
+					"line": 136,
 					"character": 12
 				}
 			],
@@ -6480,7 +6480,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 146,
+											"line": 139,
 											"character": 4
 										}
 									],
@@ -6585,7 +6585,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 168,
+											"line": 161,
 											"character": 4
 										}
 									],
@@ -6605,7 +6605,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 169,
+											"line": 162,
 											"character": 4
 										}
 									],
@@ -6633,7 +6633,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 173,
+											"line": 166,
 											"character": 4
 										}
 									],
@@ -6672,7 +6672,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 145,
+									"line": 138,
 									"character": 2
 								}
 							]
@@ -6692,7 +6692,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-					"line": 191,
+					"line": 184,
 					"character": 12
 				}
 			],
@@ -6765,7 +6765,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 198,
+											"line": 191,
 											"character": 2
 										}
 									],
@@ -6785,7 +6785,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 199,
+											"line": 192,
 											"character": 2
 										}
 									],
@@ -6820,7 +6820,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 200,
+											"line": 193,
 											"character": 2
 										}
 									],
@@ -6845,7 +6845,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 201,
+											"line": 194,
 											"character": 2
 										}
 									],
@@ -6869,7 +6869,7 @@
 														"sources": [
 															{
 																"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																"line": 202,
+																"line": 195,
 																"character": 4
 															}
 														],
@@ -6889,7 +6889,7 @@
 														"sources": [
 															{
 																"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																"line": 203,
+																"line": 196,
 																"character": 4
 															}
 														],
@@ -6909,7 +6909,7 @@
 														"sources": [
 															{
 																"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																"line": 204,
+																"line": 197,
 																"character": 4
 															}
 														],
@@ -6949,7 +6949,7 @@
 																						"sources": [
 																							{
 																								"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																								"line": 208,
+																								"line": 201,
 																								"character": 10
 																							}
 																						],
@@ -6969,7 +6969,7 @@
 																						"sources": [
 																							{
 																								"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																								"line": 209,
+																								"line": 202,
 																								"character": 10
 																							}
 																						],
@@ -6992,7 +6992,7 @@
 																						"sources": [
 																							{
 																								"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																								"line": 210,
+																								"line": 203,
 																								"character": 10
 																							}
 																						],
@@ -7015,7 +7015,7 @@
 																				"sources": [
 																					{
 																						"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																						"line": 207,
+																						"line": 200,
 																						"character": 8
 																					}
 																				]
@@ -7037,7 +7037,7 @@
 														"sources": [
 															{
 																"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																"line": 213,
+																"line": 206,
 																"character": 4
 															}
 														],
@@ -7078,7 +7078,7 @@
 												"sources": [
 													{
 														"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-														"line": 201,
+														"line": 194,
 														"character": 12
 													}
 												]
@@ -7097,7 +7097,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 215,
+											"line": 208,
 											"character": 2
 										}
 									],
@@ -7117,7 +7117,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 216,
+											"line": 209,
 											"character": 2
 										}
 									],
@@ -7148,7 +7148,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 220,
+											"line": 213,
 											"character": 2
 										}
 									],
@@ -7176,7 +7176,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 224,
+											"line": 217,
 											"character": 2
 										}
 									],
@@ -7219,7 +7219,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 228,
+											"line": 221,
 											"character": 2
 										}
 									],
@@ -7247,7 +7247,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 233,
+											"line": 226,
 											"character": 2
 										}
 									],
@@ -7281,7 +7281,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 239,
+											"line": 232,
 											"character": 2
 										}
 									],
@@ -7301,7 +7301,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 240,
+											"line": 233,
 											"character": 2
 										}
 									],
@@ -7333,7 +7333,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 244,
+															"line": 237,
 															"character": 4
 														}
 													],
@@ -7361,7 +7361,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 248,
+															"line": 241,
 															"character": 4
 														}
 													],
@@ -7381,7 +7381,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 249,
+															"line": 242,
 															"character": 4
 														}
 													],
@@ -7406,7 +7406,7 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-													"line": 240,
+													"line": 233,
 													"character": 19
 												}
 											]
@@ -7436,7 +7436,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 194,
+									"line": 187,
 									"character": 4
 								}
 							]
@@ -7454,7 +7454,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-					"line": 253,
+					"line": 246,
 					"character": 20
 				}
 			],
@@ -7495,7 +7495,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 257,
+											"line": 250,
 											"character": 2
 										}
 									],
@@ -7523,7 +7523,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 262,
+											"line": 255,
 											"character": 2
 										}
 									],
@@ -7554,7 +7554,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 267,
+											"line": 260,
 											"character": 2
 										}
 									],
@@ -7577,7 +7577,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 253,
+									"line": 246,
 									"character": 68
 								}
 							]
@@ -7604,7 +7604,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-							"line": 336,
+							"line": 328,
 							"character": 2
 						}
 					],
@@ -7624,7 +7624,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 336,
+									"line": 328,
 									"character": 2
 								}
 							],
@@ -7654,7 +7654,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-							"line": 341,
+							"line": 333,
 							"character": 2
 						}
 					],
@@ -7678,7 +7678,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 342,
+											"line": 334,
 											"character": 4
 										}
 									],
@@ -7693,7 +7693,7 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-													"line": 342,
+													"line": 334,
 													"character": 25
 												}
 											],
@@ -7707,7 +7707,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 342,
+															"line": 334,
 															"character": 25
 														}
 													],
@@ -7742,7 +7742,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 343,
+											"line": 335,
 											"character": 4
 										}
 									],
@@ -7757,7 +7757,7 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-													"line": 343,
+													"line": 335,
 													"character": 28
 												}
 											],
@@ -7771,7 +7771,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 343,
+															"line": 335,
 															"character": 28
 														}
 													],
@@ -7806,7 +7806,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 344,
+											"line": 336,
 											"character": 4
 										}
 									],
@@ -7821,7 +7821,7 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-													"line": 344,
+													"line": 336,
 													"character": 35
 												}
 											],
@@ -7835,7 +7835,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 344,
+															"line": 336,
 															"character": 35
 														}
 													],
@@ -7873,7 +7873,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 341,
+									"line": 333,
 									"character": 12
 								}
 							]
@@ -7898,7 +7898,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-					"line": 332,
+					"line": 324,
 					"character": 17
 				}
 			],
@@ -8411,7 +8411,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 31,
+							"line": 30,
 							"character": 2
 						}
 					],
@@ -8455,7 +8455,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 35,
+							"line": 34,
 							"character": 2
 						}
 					],
@@ -8502,7 +8502,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 39,
+							"line": 38,
 							"character": 2
 						}
 					],
@@ -8565,7 +8565,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 43,
+							"line": 42,
 							"character": 2
 						}
 					],
@@ -8593,7 +8593,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 47,
+							"line": 46,
 							"character": 2
 						}
 					],
@@ -8621,7 +8621,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 51,
+							"line": 50,
 							"character": 2
 						}
 					],
@@ -8649,7 +8649,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 55,
+							"line": 54,
 							"character": 2
 						}
 					],
@@ -8677,7 +8677,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 60,
+							"line": 59,
 							"character": 2
 						}
 					],
@@ -8705,7 +8705,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 65,
+							"line": 64,
 							"character": 2
 						}
 					],
@@ -8735,7 +8735,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 70,
+							"line": 69,
 							"character": 2
 						}
 					],
@@ -8763,7 +8763,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 75,
+							"line": 74,
 							"character": 2
 						}
 					],
@@ -8791,7 +8791,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 80,
+							"line": 79,
 							"character": 2
 						}
 					],
@@ -8819,7 +8819,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 85,
+							"line": 84,
 							"character": 2
 						}
 					],
@@ -8847,7 +8847,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 90,
+							"line": 89,
 							"character": 2
 						}
 					],
@@ -8875,7 +8875,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 96,
+							"line": 95,
 							"character": 2
 						}
 					],
@@ -8910,7 +8910,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-					"line": 30,
+					"line": 29,
 					"character": 12
 				}
 			],
