@@ -80,20 +80,20 @@ export default async ({
 
   if (policiesToCreate.length > 0) {
     try {
-        await rbacPolicyService.create(policiesToCreate)
-      } catch (error) {
-        const livePolicies = await rbacPolicyService.list({
-          key: policiesToCreate.map((definition) => definition.key),
-        })
-        const liveKeys = new Set(livePolicies.map((policy) => policy.key))
-        const stillMissing = policiesToCreate.some(
-          (definition) => !liveKeys.has(definition.key)
-        )
-    
-        if (stillMissing) {
-          throw error
-        }
+      await rbacPolicyService.create(policiesToCreate)
+    } catch (error) {
+      const livePolicies = await rbacPolicyService.list({
+        key: policiesToCreate.map((definition) => definition.key),
+      })
+      const liveKeys = new Set(livePolicies.map((policy) => policy.key))
+      const stillMissing = policiesToCreate.some(
+        (definition) => !liveKeys.has(definition.key)
+      )
+
+      if (stillMissing) {
+        throw error
       }
+    }
   }
 
   if (policiesToUpdate.length > 0) {

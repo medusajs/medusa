@@ -536,7 +536,7 @@ export class ApiLoader {
       "/rbac",
       "shouldAppendRbacCors",
       this.#createCorsOptions(
-        configManager.config.projectConfig.http.rbacCors ??
+        configManager.config.projectConfig.http.rbacCors ||
           configManager.config.projectConfig.http.adminCors
       )
     )

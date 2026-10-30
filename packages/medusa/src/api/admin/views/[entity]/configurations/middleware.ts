@@ -110,7 +110,7 @@ export const isSystemDefaultViewConfiguration = async (
   } = await query.graph({
     entity: "view_configuration",
     fields: ["is_system_default"],
-    filters: { id: req.params.id },
+    filters: { id: req.params.id, entity: req.params.entity },
   })
 
   return !!existing?.is_system_default

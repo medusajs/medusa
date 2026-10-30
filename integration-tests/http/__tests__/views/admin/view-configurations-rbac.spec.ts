@@ -143,6 +143,23 @@ medusaIntegrationTestRunner({
           await statusOf(api.delete(`${base}/${view.id}`, productReaderHeaders))
         ).toEqual(200)
       })
+
+      it("does not expose another entity's view through the readable entity's path", async () => {
+        const ordersView = await createView("orders", adminHeaders, {
+          is_system_default: true,
+        })
+        const path = `/admin/views/products/configurations/${ordersView.id}`
+
+        expect(await statusOf(api.get(path, productReaderHeaders))).toEqual(404)
+        expect(
+          await statusOf(
+            api.post(path, { name: "Renamed" }, productReaderHeaders)
+          )
+        ).toEqual(404)
+        expect(await statusOf(api.delete(path, productReaderHeaders))).toEqual(
+          404
+        )
+      })
     })
 
     describe("system default configurations", () => {

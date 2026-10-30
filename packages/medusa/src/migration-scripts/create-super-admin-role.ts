@@ -28,7 +28,7 @@ interface User {
 const PAGE_SIZE = 100
 
 /**
- * Ids of the users that already hold the super admin role.
+ * Ids of the users that already hold the unscoped super admin role.
  */
 async function listAssignedUserIds(
   rbacModuleService: any
@@ -39,7 +39,12 @@ async function listAssignedUserIds(
   while (true) {
     const page: { reference_id: string }[] =
       await rbacModuleService.listRbacRoleAssignments(
-        { role_id: RBAC_SUPER_ADMIN_ROLE_ID, reference: "user" },
+        {
+          role_id: RBAC_SUPER_ADMIN_ROLE_ID,
+          reference: "user",
+          scope: null,
+          scope_id: null,
+        },
         { take: PAGE_SIZE, skip }
       )
 
