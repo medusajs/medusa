@@ -105,7 +105,7 @@ For logged-in customers, the customer's account holder ID is sent to Adyen as th
 
 ### Limitations
 
-- Only cards, including 3D Secure, are supported. Payment methods that are confirmed asynchronously by webhook, such as iDEAL or bank transfers, aren't supported yet.
+- Only cards (including 3D Secure), Apple Pay, and Google Pay are supported, so Drop-in only shows these even if other payment methods are enabled on your merchant account. Payment methods that redirect the shopper or are confirmed asynchronously by webhook, such as iDEAL, PayPal, or bank transfers, aren't supported yet.
 - Captures, refunds, and cancellations are recorded in Medusa when they're requested. Adyen confirms them asynchronously, and failures (for example, a refund rejected for insufficient funds) are only logged.
 - Medusa doesn't pass capture amounts to providers, so the first capture captures the full authorized amount.
 - Captures and refunds made in the Adyen Customer Area aren't synced to Medusa.
