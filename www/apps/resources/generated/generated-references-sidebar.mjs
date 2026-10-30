@@ -4450,6 +4450,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "title": "validatePaymentSessionUpdateStep",
                   "description": "",
                   "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validatePaymentSessionsDeletableStep",
+                  "title": "validatePaymentSessionsDeletableStep",
+                  "description": "",
+                  "children": []
                 }
               ]
             }
