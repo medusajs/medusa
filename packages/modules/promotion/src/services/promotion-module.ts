@@ -961,6 +961,7 @@ export default class PromotionModuleService
       string,
       ComputeActionUtils.EligibleItem[]
     >()
+    const budgetAllottedAmounts = new Map<string, BigNumberInput>()
 
     for (const promotionToApply of sortedPromotionsToApply) {
       const promotion = existingPromotionsMap.get(promotionToApply.code!)!
@@ -1059,7 +1060,8 @@ export default class PromotionModuleService
             methodIdPromoValueMap,
             eligibleBuyItemMap,
             eligibleTargetItemMap,
-            campaignBudgetUsagePerAttribute
+            campaignBudgetUsagePerAttribute,
+            budgetAllottedAmounts
           )
 
         computedActions.push(...computedActionsForItems)
@@ -1082,7 +1084,8 @@ export default class PromotionModuleService
               applicationContext[ApplicationMethodTargetType.ITEMS],
               methodIdPromoValueMap,
               allocationOverride,
-              campaignBudgetUsagePerAttribute
+              campaignBudgetUsagePerAttribute,
+              budgetAllottedAmounts
             )
 
           computedActions.push(...computedActionsForItems)
@@ -1094,7 +1097,8 @@ export default class PromotionModuleService
               promotion,
               applicationContext[ApplicationMethodTargetType.SHIPPING_METHODS],
               methodIdPromoValueMap,
-              campaignBudgetUsagePerAttribute
+              campaignBudgetUsagePerAttribute,
+              budgetAllottedAmounts
             )
 
           computedActions.push(...computedActionsForShippingMethods)
