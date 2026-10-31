@@ -226,6 +226,11 @@ moduleIntegrationTestRunner({
       })
 
       it("should prefilter promotions by applicable rules", async () => {
+        await service.updateCampaigns({
+          id: "campaign-id-1",
+          budget: { limit: 10000 },
+        })
+
         // 1. Promotion with NO rules (should always apply if automatic)
         await createDefaultPromotion(service, {
           code: "NO_RULES_PROMO",
@@ -6240,6 +6245,11 @@ moduleIntegrationTestRunner({
         })
 
         it("should compute adjustment when target and buy rules match", async () => {
+          await service.updateCampaigns({
+            id: "campaign-id-1",
+            budget: { limit: 10000 },
+          })
+
           const context = {
             currency_code: "usd",
             customer: {
@@ -7111,6 +7121,11 @@ moduleIntegrationTestRunner({
           })
 
           it("should handle multiple 2+1 free promotions correctly for same product", async () => {
+            await service.updateCampaigns({
+              id: "campaign-id-1",
+              budget: { limit: 10000 },
+            })
+
             // Apply 2+1 free promotion on the same product to a maximum of 2 items
             const firstTwoGetOneFreePromotion = await createDefaultPromotion(
               service,
@@ -7584,6 +7599,11 @@ moduleIntegrationTestRunner({
           })
 
           it("should apply buyget promotion multiple times until eligible quantity is exhausted", async () => {
+            await service.updateCampaigns({
+              id: "campaign-id-1",
+              budget: { limit: 10000 },
+            })
+
             const buyProductId = "item_cotton_tshirt"
             const getProductId = "item_cotton_tshirt2"
 
@@ -8523,6 +8543,219 @@ moduleIntegrationTestRunner({
               },
             ])
           })
+        })
+      })
+
+      describe("when a spend campaign budget is shared by several adjustments", () => {
+        const item = (id: string, subtotal: number) => ({
+          id,
+          quantity: 1,
+          subtotal,
+          original_total: subtotal,
+          is_discountable: true,
+          product: { id: `prod_${id}` },
+        })
+
+        const shippingMethod = (id: string, subtotal: number) => ({
+          id,
+          subtotal,
+          original_total: subtotal,
+          is_discountable: true,
+        })
+
+        it("should only compute item adjustments that fit in the budget for an across promotion", async () => {
+          await createDefaultPromotion(service, {
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "across",
+              value: 1500,
+            } as any,
+          })
+
+          const result = await service.computeActions(["PROMOTION_TEST"], {
+            currency_code: "usd",
+            items: [item("item_1", 1000), item("item_2", 1000)],
+          })
+
+          const actions = JSON.parse(JSON.stringify(result))
+
+          expect(actions).toHaveLength(2)
+          expect(actions).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                action: "addItemAdjustment",
+                amount: 750,
+                code: "PROMOTION_TEST",
+              }),
+              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+          )
+
+          await expect(
+            service.registerUsage(
+              result.filter(
+                (action) => action.action === "addItemAdjustment"
+              ) as any,
+              {
+                customer_id: null,
+                customer_email: null,
+              }
+            )
+          ).resolves.not.toThrow()
+        })
+
+        it("should only compute item adjustments that fit in the budget for an each promotion", async () => {
+          await createDefaultPromotion(service, {
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "each",
+              value: 600,
+              max_quantity: 1,
+            } as any,
+          })
+
+          const result = await service.computeActions(["PROMOTION_TEST"], {
+            currency_code: "usd",
+            items: [item("item_1", 1000), item("item_2", 1000)],
+          })
+
+          const actions = JSON.parse(JSON.stringify(result))
+
+          expect(actions).toHaveLength(2)
+          expect(actions).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                action: "addItemAdjustment",
+                amount: 600,
+                code: "PROMOTION_TEST",
+              }),
+              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+          )
+        })
+
+        it("should only compute shipping method adjustments that fit in the budget", async () => {
+          await createDefaultPromotion(service, {
+            application_method: {
+              type: "fixed",
+              target_type: "shipping_methods",
+              allocation: "each",
+              value: 600,
+              max_quantity: 1,
+            } as any,
+          })
+
+          const result = await service.computeActions(["PROMOTION_TEST"], {
+            currency_code: "usd",
+            shipping_methods: [
+              shippingMethod("shipping_method_1", 1000),
+              shippingMethod("shipping_method_2", 1000),
+            ],
+          })
+
+          const actions = JSON.parse(JSON.stringify(result))
+
+          expect(actions).toHaveLength(2)
+          expect(actions).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                action: "addShippingMethodAdjustment",
+                amount: 600,
+                code: "PROMOTION_TEST",
+              }),
+              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+          )
+        })
+
+        it("should account for adjustments of other promotions in the same campaign", async () => {
+          await createDefaultPromotion(service, {
+            code: "PROMOTION_TEST_1",
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "across",
+              value: 600,
+            } as any,
+          })
+
+          await createDefaultPromotion(service, {
+            code: "PROMOTION_TEST_2",
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "across",
+              value: 600,
+            } as any,
+          })
+
+          const result = await service.computeActions(
+            ["PROMOTION_TEST_1", "PROMOTION_TEST_2"],
+            {
+              currency_code: "usd",
+              items: [item("item_1", 2000)],
+            }
+          )
+
+          const actions = JSON.parse(JSON.stringify(result))
+
+          expect(actions).toHaveLength(2)
+          expect(actions).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                action: "addItemAdjustment",
+                amount: 600,
+              }),
+              expect.objectContaining({ action: "campaignBudgetExceeded" }),
+            ])
+          )
+        })
+
+        it("should only compute adjustments that fit in the per attribute limit for type spend_by_attribute", async () => {
+          const testCampaign = await service.createCampaigns({
+            name: "test",
+            campaign_identifier: "test",
+            budget: {
+              type: CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+              attribute: "customer_email",
+              currency_code: "usd",
+              limit: 100,
+            },
+          })
+
+          await createDefaultPromotion(service, {
+            campaign_id: testCampaign.id,
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "each",
+              value: 60,
+              max_quantity: 1,
+            } as any,
+          })
+
+          const result = await service.computeActions(["PROMOTION_TEST"], {
+            currency_code: "usd",
+            email: "test@test.com",
+            customer: { email: "test@test.com" },
+            items: [item("item_1", 1000), item("item_2", 1000)],
+          })
+
+          const actions = JSON.parse(JSON.stringify(result))
+
+          expect(actions).toHaveLength(2)
+          expect(actions).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                action: "addItemAdjustment",
+                amount: 60,
+                code: "PROMOTION_TEST",
+              }),
+              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+          )
         })
       })
     })
