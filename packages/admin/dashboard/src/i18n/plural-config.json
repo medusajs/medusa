@@ -27,6 +27,7 @@
   "ptPT": ["one", "other"],
   "ro": ["one", "few", "other"],
   "ru": ["one", "few", "many", "other"],
+  "sl": ["one", "two", "few", "other"],
   "th": ["other"],
   "tr": ["one", "other"],
   "uk": ["one", "few", "many", "other"],

@@ -34,10 +34,17 @@ import {
   zhCN,
   zhTW,
   sv,
+  sl,
 } from "date-fns/locale"
 import { Language } from "./types"
 
 export const languages: Language[] = [
+  {
+    code: "sl",
+    display_name: "Slovenščina",
+    ltr: true,
+    date_locale: sl,
+  },
   {
     code: "bs",
     display_name: "Bosanski",

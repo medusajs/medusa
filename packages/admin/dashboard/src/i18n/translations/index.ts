@@ -33,8 +33,12 @@ import bs from "./bs.json"
 import id from "./id.json"
 import zhTW from "./zhTW.json"
 import sv from "./sv.json"
+import sl from "./sl.json"
 
 export default {
+  sl: {
+    translation: sl,
+  },
   bs: {
     translation: bs,
   },
