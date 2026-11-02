@@ -49,7 +49,7 @@
     "express": "^4.21.0",
     "fs-exists-cached": "^1.0.0",
     "fs-extra": "^11.4.1",
-    "glob": "13.0.6",
+    "glob": "14.0.2",
     "inquirer": "^14.2.4",
     "is-valid-path": "^0.1.1",
     "meant": "^2.0.1",
