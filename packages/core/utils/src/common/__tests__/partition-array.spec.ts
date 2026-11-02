@@ -9,4 +9,9 @@ describe("partitionArray", function () {
       [1, 3, 5],
     ])
   })
+
+  it("should return two empty arrays for nullish input", function () {
+    expect(partitionArray(null, () => true)).toEqual([[], []])
+    expect(partitionArray(undefined, () => true)).toEqual([[], []])
+  })
 })

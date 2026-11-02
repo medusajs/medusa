@@ -12,9 +12,13 @@
  * @param {(T) => boolean} predicate function to use when split array elements
  */
 export const partitionArray = <T>(
-  input: T[],
+  input: T[] | null | undefined,
   predicate: (T) => boolean
 ): [T[], T[]] => {
+  if (!input) {
+    return [[], []]
+  }
+
   return input.reduce(
     ([pos, neg], currentElement) => {
       if (predicate(currentElement)) {
