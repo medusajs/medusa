@@ -4248,7 +4248,7 @@ __metadata:
   resolution: "@medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe"
   dependencies:
     "@medusajs/framework": 2.22.2
-    stripe: ^15.5.0
+    stripe: ^23.1.0
   peerDependencies:
     "@medusajs/framework": 2.22.2
   languageName: unknown
@@ -4260,7 +4260,7 @@ __metadata:
   dependencies:
     "@medusajs/framework": 2.22.2
     "@medusajs/test-utils": 2.22.2
-    stripe: 23.0.1
+    stripe: 23.1.0
   peerDependencies:
     "@medusajs/framework": 2.22.2
   languageName: unknown
@@ -9003,7 +9003,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=13.7.0, @types/node@npm:>=8.1.0":
+"@types/node@npm:*, @types/node@npm:>=13.7.0":
   version: 26.6.5
   resolution: "@types/node@npm:26.6.5"
   dependencies:
@@ -18633,7 +18633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.11.0, qs@npm:^6.14.1, qs@npm:^6.16.1, qs@npm:~6.16.0":
+"qs@npm:^6.14.1, qs@npm:^6.16.1, qs@npm:~6.16.0":
   version: 6.16.1
   resolution: "qs@npm:6.16.1"
   dependencies:
@@ -20557,25 +20557,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:23.0.1":
-  version: 23.0.1
-  resolution: "stripe@npm:23.0.1"
+"stripe@npm:23.1.0, stripe@npm:^23.1.0":
+  version: 23.1.0
+  resolution: "stripe@npm:23.1.0"
   peerDependencies:
     "@types/node": ">=20"
   peerDependenciesMeta:
     "@types/node":
       optional: true
-  checksum: a29d5050b146dfc2f1141db30018a73427e54773bd9c412782b159883a54a65e28e48e18b477bf4bbf6135e39dfe236d8547aa6f8f75b0d9cbc200d69a599386
-  languageName: node
-  linkType: hard
-
-"stripe@npm:^15.5.0":
-  version: 15.12.0
-  resolution: "stripe@npm:15.12.0"
-  dependencies:
-    "@types/node": ">=8.1.0"
-    qs: ^6.11.0
-  checksum: 95de07b108b98388d2ead2dedc3fc371df55287c9e926385f95890c680d655234ba2832a23e11e283e946d44dac01868eec823ccf878628eb75f5baa67f08175
+  checksum: 9f17a0317824e499297efcf89e37cecdab456b019005efb54f62e3a932f59dc44663e8eac01cd04034c68d73d8748cc04d169308536c8098a273a3066b7caf4b
   languageName: node
   linkType: hard
 
