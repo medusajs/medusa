@@ -8563,7 +8563,7 @@ moduleIntegrationTestRunner({
           is_discountable: true,
         })
 
-        it("should only compute item adjustments that fit in the budget for an across promotion", async () => {
+        it("should not compute any item adjustment for an across promotion that does not fit in the budget", async () => {
           await createDefaultPromotion(service, {
             application_method: {
               type: "fixed",
@@ -8578,34 +8578,12 @@ moduleIntegrationTestRunner({
             items: [item("item_1", 1000), item("item_2", 1000)],
           })
 
-          const actions = JSON.parse(JSON.stringify(result))
-
-          expect(actions).toHaveLength(2)
-          expect(actions).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                action: "addItemAdjustment",
-                amount: 750,
-                code: "PROMOTION_TEST",
-              }),
-              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
-            ])
-          )
-
-          await expect(
-            service.registerUsage(
-              result.filter(
-                (action) => action.action === "addItemAdjustment"
-              ) as any,
-              {
-                customer_id: null,
-                customer_email: null,
-              }
-            )
-          ).resolves.not.toThrow()
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+          ])
         })
 
-        it("should only compute item adjustments that fit in the budget for an each promotion", async () => {
+        it("should not compute any item adjustment for an each promotion that does not fit in the budget", async () => {
           await createDefaultPromotion(service, {
             application_method: {
               type: "fixed",
@@ -8621,22 +8599,12 @@ moduleIntegrationTestRunner({
             items: [item("item_1", 1000), item("item_2", 1000)],
           })
 
-          const actions = JSON.parse(JSON.stringify(result))
-
-          expect(actions).toHaveLength(2)
-          expect(actions).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                action: "addItemAdjustment",
-                amount: 600,
-                code: "PROMOTION_TEST",
-              }),
-              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
-            ])
-          )
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+          ])
         })
 
-        it("should only compute shipping method adjustments that fit in the budget", async () => {
+        it("should not compute any shipping method adjustment for a promotion that does not fit in the budget", async () => {
           await createDefaultPromotion(service, {
             application_method: {
               type: "fixed",
@@ -8655,19 +8623,9 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          const actions = JSON.parse(JSON.stringify(result))
-
-          expect(actions).toHaveLength(2)
-          expect(actions).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                action: "addShippingMethodAdjustment",
-                amount: 600,
-                code: "PROMOTION_TEST",
-              }),
-              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
-            ])
-          )
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+          ])
         })
 
         it("should account for adjustments of other promotions in the same campaign", async () => {
@@ -8713,7 +8671,71 @@ moduleIntegrationTestRunner({
           )
         })
 
-        it("should only compute adjustments that fit in the per attribute limit for type spend_by_attribute", async () => {
+        it("should leave the budget and item amounts of a skipped promotion to the other promotions", async () => {
+          await createDefaultPromotion(service, {
+            code: "PROMOTION_EACH",
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "each",
+              value: 600,
+              max_quantity: 1,
+            } as any,
+          })
+
+          await createDefaultPromotion(service, {
+            code: "PROMOTION_ACROSS",
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "across",
+              value: 1000,
+            } as any,
+          })
+
+          const result = await service.computeActions(
+            ["PROMOTION_EACH", "PROMOTION_ACROSS"],
+            {
+              currency_code: "usd",
+              items: [item("item_1", 1000), item("item_2", 1000)],
+            }
+          )
+
+          const actions = JSON.parse(JSON.stringify(result))
+
+          expect(actions).toHaveLength(3)
+          expect(actions).toEqual(
+            expect.arrayContaining([
+              { action: "campaignBudgetExceeded", code: "PROMOTION_EACH" },
+              expect.objectContaining({
+                action: "addItemAdjustment",
+                item_id: "item_1",
+                amount: 500,
+                code: "PROMOTION_ACROSS",
+              }),
+              expect.objectContaining({
+                action: "addItemAdjustment",
+                item_id: "item_2",
+                amount: 500,
+                code: "PROMOTION_ACROSS",
+              }),
+            ])
+          )
+
+          await expect(
+            service.registerUsage(
+              result.filter(
+                (action) => action.action === "addItemAdjustment"
+              ) as any,
+              {
+                customer_id: null,
+                customer_email: null,
+              }
+            )
+          ).resolves.not.toThrow()
+        })
+
+        it("should not compute any adjustment that exceeds the per attribute limit for type spend_by_attribute", async () => {
           const testCampaign = await service.createCampaigns({
             name: "test",
             campaign_identifier: "test",
@@ -8743,19 +8765,9 @@ moduleIntegrationTestRunner({
             items: [item("item_1", 1000), item("item_2", 1000)],
           })
 
-          const actions = JSON.parse(JSON.stringify(result))
-
-          expect(actions).toHaveLength(2)
-          expect(actions).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                action: "addItemAdjustment",
-                amount: 60,
-                code: "PROMOTION_TEST",
-              }),
-              { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
-            ])
-          )
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+          ])
         })
       })
     })
