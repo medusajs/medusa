@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import type { PermissionResource } from "../lib/permissions"
+import type { Permission, PermissionResource } from "../lib/permissions"
 import { usePermissions } from "../providers/permissions-provider"
 
 /**
@@ -290,3 +290,20 @@ export const useTranslationPermissions = () =>
  */
 export const useTranslationSettingPermissions = () =>
   useResourcePermissions("translation_setting")
+
+/**
+ * Permissions the translations editor needs to open (translations, the
+ * entity's translatable fields, and the store's supported locales).
+ */
+const TRANSLATION_EDITOR_READ_PERMISSIONS: Permission[] = [
+  "translation:read",
+  "translation_setting:read",
+  "store:read",
+  "store_locale:read",
+]
+
+export const useCanOpenTranslations = (): boolean => {
+  const { hasAllPermissions } = usePermissions()
+
+  return hasAllPermissions(TRANSLATION_EDITOR_READ_PERMISSIONS)
+}

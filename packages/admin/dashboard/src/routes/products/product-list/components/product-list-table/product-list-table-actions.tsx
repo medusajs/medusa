@@ -11,7 +11,7 @@ import { useDeleteProduct } from "../../../../../hooks/api/products"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import {
   useProductPermissions,
-  useTranslationPermissions,
+  useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
 
 export const ProductActions = ({
@@ -24,8 +24,8 @@ export const ProductActions = ({
   const { mutateAsync } = useDeleteProduct(product.id)
   const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductPermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
-  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
+  const canOpenTranslations = useCanOpenTranslations()
+  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
 
   const handleDelete = async () => {
     const res = await prompt({

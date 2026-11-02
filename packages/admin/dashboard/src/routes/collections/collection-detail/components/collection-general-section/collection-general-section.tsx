@@ -10,7 +10,7 @@ import { useDeleteCollection } from "../../../../../hooks/api/collections"
 import { useNavigate } from "react-router-dom"
 import {
   useProductCollectionPermissions,
-  useTranslationPermissions,
+  useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
@@ -26,9 +26,9 @@ export const CollectionGeneralSection = ({
   const navigate = useNavigate()
   const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductCollectionPermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+  const canOpenTranslations = useCanOpenTranslations()
 
-  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
+  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
 
   const { mutateAsync } = useDeleteCollection(collection.id!)
 

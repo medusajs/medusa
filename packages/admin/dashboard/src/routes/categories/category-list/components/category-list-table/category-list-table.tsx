@@ -19,7 +19,7 @@ import { useCategoryTableColumns } from "./use-category-table-columns"
 import { useCategoryTableQuery } from "./use-category-table-query"
 import {
   useProductCategoryPermissions,
-  useTranslationPermissions,
+  useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
@@ -118,10 +118,10 @@ const CategoryRowActions = ({
   const { t } = useTranslation()
   const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductCategoryPermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+  const canOpenTranslations = useCanOpenTranslations()
   const handleDelete = useDeleteProductCategoryAction(category)
 
-  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
+  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
 
   const groups: ActionGroup[] = []
 

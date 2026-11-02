@@ -10,7 +10,7 @@ import {
 import { useDeleteCollection } from "../../../../../hooks/api/collections"
 import {
   useProductCollectionPermissions,
-  useTranslationPermissions,
+  useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
@@ -23,9 +23,9 @@ export const CollectionRowActions = ({
   const prompt = usePrompt()
   const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductCollectionPermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+  const canOpenTranslations = useCanOpenTranslations()
 
-  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
+  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
 
   const { mutateAsync } = useDeleteCollection(collection.id!)
 

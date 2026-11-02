@@ -7,8 +7,12 @@ import { RegionGeneralSection } from "./components/region-general-section"
 import { regionLoader } from "./loader"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { usePricePreferences } from "../../../hooks/api/price-preferences"
+import { usePricePreferencePermissions } from "../../../hooks/use-resource-permissions"
 import { REGION_DETAIL_FIELDS } from "./constants"
 
 export const RegionDetail = () => {
@@ -30,6 +34,8 @@ export const RegionDetail = () => {
     }
   )
 
+  const { canRead: canReadPricePreferences } = usePricePreferencePermissions()
+
   const {
     price_preferences: pricePreferences,
     isPending: isLoadingPreferences,
@@ -40,10 +46,14 @@ export const RegionDetail = () => {
       attribute: "region_id",
       value: id,
     },
-    { enabled: !!region }
+    { enabled: !!region && canReadPricePreferences }
   )
 
-  if (isLoading || isLoadingPreferences || !region) {
+  if (
+    isLoading ||
+    (canReadPricePreferences && isLoadingPreferences) ||
+    !region
+  ) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 

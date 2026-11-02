@@ -10,7 +10,7 @@ import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import { useDeleteProductTagAction } from "../../../common/hooks/use-delete-product-tag-action"
 import {
   useProductTagPermissions,
-  useTranslationPermissions,
+  useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
 
 export const ProductTagListTableActions = ({
@@ -23,9 +23,9 @@ export const ProductTagListTableActions = ({
   const isTranslationsEnabled = useFeatureFlag("translation")
 
   const { canUpdate, canDelete } = useProductTagPermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+  const canOpenTranslations = useCanOpenTranslations()
 
-  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
+  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
 
   const groups: ActionGroup[] = []
 

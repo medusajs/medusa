@@ -10,7 +10,7 @@ import { useDeleteProductCategoryAction } from "../../../common/hooks/use-delete
 import { getIsActiveProps, getIsInternalProps } from "../../../common/utils"
 import {
   useProductCategoryPermissions,
-  useTranslationPermissions,
+  useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
@@ -24,9 +24,9 @@ export const CategoryGeneralSection = ({
   const { t } = useTranslation()
   const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductCategoryPermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+  const canOpenTranslations = useCanOpenTranslations()
 
-  const canManageTranslations = isTranslationsEnabled && canUpdateTranslations
+  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
 
   const activeProps = getIsActiveProps(category.is_active, t)
   const internalProps = getIsInternalProps(category.is_internal, t)

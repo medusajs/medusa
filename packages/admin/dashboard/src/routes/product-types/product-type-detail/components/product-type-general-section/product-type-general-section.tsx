@@ -10,7 +10,7 @@ import { useDeleteProductTypeAction } from "../../../common/hooks/use-delete-pro
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import {
   useProductTypePermissions,
-  useTranslationPermissions,
+  useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
 
 type ProductTypeGeneralSectionProps = {
@@ -27,10 +27,9 @@ export const ProductTypeGeneralSection = ({
   )
   const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductTypePermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+  const canOpenTranslations = useCanOpenTranslations()
 
-  const canManageTranslations =
-    isTranslationsEnabled && canUpdateTranslations
+  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
 
   const groups: ActionGroup[] = []
 

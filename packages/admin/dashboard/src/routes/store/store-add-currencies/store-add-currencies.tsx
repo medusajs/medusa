@@ -23,8 +23,13 @@ export const StoreAddCurrencies = () => {
     }
   )
 
+  // Without price_preference:read the query stays disabled (and pending), so
+  // the form renders without the tax-inclusive column instead of waiting.
   const ready =
-    !!store && !isPending && !!pricePreferences && !isPricePreferencesPending
+    !!store &&
+    !isPending &&
+    (!canReadPricePreferences ||
+      (!!pricePreferences && !isPricePreferencesPending))
 
   if (isError) {
     throw error
@@ -39,7 +44,7 @@ export const StoreAddCurrencies = () => {
       {ready && (
         <AddCurrenciesForm
           store={store}
-          pricePreferences={pricePreferences}
+          pricePreferences={pricePreferences ?? []}
           canReadPricePreferences={canReadPricePreferences}
         />
       )}

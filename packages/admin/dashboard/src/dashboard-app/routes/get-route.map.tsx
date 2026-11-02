@@ -164,8 +164,9 @@ export function getRouteMap({
                           handle: {
                             permissions: [
                               "product:update",
+                              "product_variant:create",
                               "product_variant:update",
-                              "price:update",
+                              "product_variant:delete",
                             ],
                           },
                         },
@@ -186,9 +187,12 @@ export function getRouteMap({
                             import("../../routes/products/product-stock"),
                           handle: {
                             permissions: [
-                              "product:update",
-                              "product_variant:update",
+                              "stock_location:read",
+                              "inventory_item:read",
+                              "inventory_level:read",
+                              "inventory_level:create",
                               "inventory_level:update",
+                              "inventory_level:delete",
                             ],
                           },
                         },
@@ -202,6 +206,15 @@ export function getRouteMap({
                           path: "options/manage",
                           lazy: () =>
                             import("../../routes/products/product-options-manage"),
+                          handle: {
+                            permissions: [
+                              "product:update",
+                              "product_option:read",
+                              "product_option:create",
+                              "product_option:update",
+                              "product_option:delete",
+                            ],
+                          },
                         },
                       ],
                     },
@@ -246,8 +259,9 @@ export function getRouteMap({
                           handle: {
                             permissions: [
                               "product:update",
+                              "product_variant:create",
                               "product_variant:update",
-                              "price:update",
+                              "product_variant:delete",
                             ],
                           },
                         },
@@ -257,9 +271,10 @@ export function getRouteMap({
                             import("../../routes/product-variants/product-variant-manage-inventory-items"),
                           handle: {
                             permissions: [
-                              "product:update",
                               "product_variant:update",
-                              "inventory_level:update",
+                              "inventory_item:create",
+                              "inventory_item:update",
+                              "inventory_item:delete",
                             ],
                           },
                         },
@@ -294,8 +309,14 @@ export function getRouteMap({
             {
               path: "/product-options",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("productOptions.domain"),
+                permissions: "product_option:read",
               },
               children: [
                 {
@@ -307,6 +328,7 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/product-options/product-option-create"),
+                      handle: { permissions: "product_option:create" },
                     },
                   ],
                 },
@@ -337,11 +359,13 @@ export function getRouteMap({
                           path: "edit",
                           lazy: () =>
                             import("../../routes/product-options/product-option-edit"),
+                          handle: { permissions: "product_option:update" },
                         },
                         {
                           path: "metadata/edit",
                           lazy: () =>
                             import("../../routes/product-options/product-option-metadata"),
+                          handle: { permissions: "product_option:update" },
                         },
                       ],
                     },
@@ -359,6 +383,10 @@ export function getRouteMap({
                               // eslint-disable-next-line max-len
                               match: UIMatch<HttpTypes.AdminProductOptionValueResponse>
                             ) => <Breadcrumb {...match} />,
+                            permissions: [
+                              "product_option:read",
+                              "product_option_value:read",
+                            ],
                           },
                         }
                       },
@@ -367,6 +395,12 @@ export function getRouteMap({
                           path: "metadata/edit",
                           lazy: () =>
                             import("../../routes/product-options/product-option-value-metadata"),
+                          handle: {
+                            permissions: [
+                              "product_option:update",
+                              "product_option_value:update",
+                            ],
+                          },
                         },
                       ],
                     },
@@ -1359,7 +1393,13 @@ export function getRouteMap({
                     {
                       path: "edit",
                       lazy: () => import("../../routes/regions/region-edit"),
-                      handle: { permissions: "region:update" },
+                      handle: {
+                        permissions: [
+                          "region:update",
+                          "store:read",
+                          "price_preference:read",
+                        ],
+                      },
                     },
                     {
                       path: "countries/add",
@@ -1398,7 +1438,13 @@ export function getRouteMap({
                       path: ":entity/edit",
                       lazy: () =>
                         import("../../routes/property-labels/property-labels-edit"),
-                      handle: { permissions: "property_label:update" },
+                      handle: {
+                        permissions: [
+                          "property_label:create",
+                          "property_label:update",
+                          "property_label:delete",
+                        ],
+                      },
                     },
                   ],
                 },
@@ -2609,8 +2655,16 @@ export function getRouteMap({
                     import("../../routes/translations/translations-edit"),
                   // Read-only users can open the editor in view mode; the form
                   // itself disables inputs + hides save actions without
-                  // translation:create + translation:update.
-                  handle: { permissions: "translation:read" },
+                  // translation:create/update/delete. The editor also
+                  // loads translation settings and the store's locales.
+                  handle: {
+                    permissions: [
+                      "translation:read",
+                      "translation_setting:read",
+                      "store:read",
+                      "store_locale:read",
+                    ],
+                  },
                 },
                 {
                   path: "add-locales",

@@ -23,8 +23,9 @@ export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
   const { hasAllPermissions } = usePermissions()
   const canUpdate = hasAllPermissions([
     "product:update",
+    "product_variant:create",
     "product_variant:update",
-    "price:update",
+    "product_variant:delete",
   ])
 
   const prices = variant.prices

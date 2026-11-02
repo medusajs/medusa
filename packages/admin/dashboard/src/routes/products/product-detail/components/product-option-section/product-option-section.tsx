@@ -47,7 +47,10 @@ export const ProductOptionSection = ({
 
   const canManage = hasAllPermissions([
     "product:update",
+    "product_option:read",
+    "product_option:create",
     "product_option:update",
+    "product_option:delete",
   ])
 
   return (
@@ -95,9 +98,9 @@ export const ProductOptionSection = ({
                     key={val.value}
                     size="2xsmall"
                     title={val.value}
-                    className="flex min-w-[20px] items-center justify-center max-w-full min-w-0 overflow-hidden"
+                    className="flex min-w-0 min-w-[20px] max-w-full items-center justify-center overflow-hidden"
                   >
-                    <span className="truncate min-w-0">{val.value}</span>
+                    <span className="min-w-0 truncate">{val.value}</span>
                   </Badge>
                 )
               })}

@@ -14,7 +14,7 @@ import { useExtension } from "../../../../../providers/extension-provider"
 import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import {
   useProductPermissions,
-  useTranslationPermissions,
+  useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
 
 const productStatusColor = (status: string) => {
@@ -45,7 +45,7 @@ export const ProductGeneralSection = ({
   const { getDisplays } = useExtension()
   const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductPermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+  const canOpenTranslations = useCanOpenTranslations()
 
   const displays = getDisplays("product", "general")
 
@@ -77,8 +77,7 @@ export const ProductGeneralSection = ({
     })
   }
 
-  const canManageTranslations =
-    isTranslationsEnabled && canUpdateTranslations
+  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
 
   const groups: ActionGroup[] = []
 

@@ -36,7 +36,7 @@ import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import { usePermissions } from "../../../../../providers/permissions-provider"
 import {
   useInventoryLevelPermissions,
-  useTranslationPermissions,
+  useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
 
 type ProductVariantSectionProps = {
@@ -53,7 +53,7 @@ export const ProductVariantSection = ({
   const isTranslationsEnabled = useFeatureFlag("translation")
   const { hasAllPermissions } = usePermissions()
   const { canRead: canReadInventory } = useInventoryLevelPermissions()
-  const { canUpdate: canUpdateTranslations } = useTranslationPermissions()
+  const canOpenTranslations = useCanOpenTranslations()
 
   const canUpdateVariant = hasAllPermissions([
     "product:update",
@@ -69,16 +69,19 @@ export const ProductVariantSection = ({
   ])
   const canUpdatePrices = hasAllPermissions([
     "product:update",
+    "product_variant:create",
     "product_variant:update",
-    "price:update",
+    "product_variant:delete",
   ])
   const canUpdateInventory = hasAllPermissions([
-    "product:update",
-    "product_variant:update",
+    "stock_location:read",
+    "inventory_item:read",
+    "inventory_level:read",
+    "inventory_level:create",
     "inventory_level:update",
+    "inventory_level:delete",
   ])
-  const canManageTranslations =
-    isTranslationsEnabled && canUpdateTranslations
+  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
 
   const { q, order, offset, allow_backorder, manage_inventory } =
     useQueryParams(
@@ -93,7 +96,7 @@ export const ProductVariantSection = ({
     canDelete,
   })
   const filters = useFilters()
-  const commands = useCommands({ canUpdate: canUpdateVariant })
+  const commands = useCommands({ canUpdate: canUpdateInventory })
 
   const { variants, count, isPending, isError, error } = useProductVariants(
     product.id,
@@ -429,7 +432,9 @@ const useColumns = (
             columnHelper.display({
               id: "inventory",
               header: t("fields.inventory"),
-              cell: ({ row }) => <VariantInventoryCell variant={row.original} />,
+              cell: ({ row }) => (
+                <VariantInventoryCell variant={row.original} />
+              ),
               maxSize: 250,
             }),
           ]
