@@ -10863,9 +10863,6 @@
             "alreadyAddedTooltip": {
               "type": "string"
             },
-            "unassignableRoleTooltip": {
-              "type": "string"
-            },
             "add": {
               "type": "object",
               "properties": {
@@ -10955,13 +10952,7 @@
               "additionalProperties": false
             }
           },
-          "required": [
-            "alreadyAddedTooltip",
-            "unassignableRoleTooltip",
-            "add",
-            "remove",
-            "list"
-          ],
+          "required": ["alreadyAddedTooltip", "add", "remove", "list"],
           "additionalProperties": false
         },
         "permissions": {

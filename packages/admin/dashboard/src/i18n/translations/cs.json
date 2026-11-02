@@ -2845,7 +2845,6 @@
     "editUser": "Upravit uživatele",
     "inviteUser": "Pozvat uživatele",
     "inviteUserHint": "Pozvěte nového uživatele do vašeho obchodu.",
-    "inviteRolesTooltip": "Pokud není vybrána žádná role, uživatel bude pozván s rolí superuživatele.",
     "sendInvite": "Odeslat pozvánku",
     "pendingInvites": "Čekající pozvánky",
     "deleteInviteWarning": "Chystáte se smazat pozvánku pro {{email}}. Tuto akci nelze vrátit zpět.",
@@ -2920,7 +2919,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Uživatel již má tuto roli.",
-      "unassignableRoleTooltip": "Nemáte přístup k přiřazení této role — vaše oprávnění nepokrývají všechny její zásady.",
       "add": {
         "successToast_one": "Uživatel byl úspěšně přidán do role.",
         "successToast_few": "Uživatelé byli úspěšně přidáni do role.",

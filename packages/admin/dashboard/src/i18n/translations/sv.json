@@ -2766,7 +2766,6 @@
     "editUser": "Redigera användare",
     "inviteUser": "Bjud in användare",
     "inviteUserHint": "Bjud in en ny användare till butiken.",
-    "inviteRolesTooltip": "Om ingen roll väljs bjuds användaren in med en superanvändarroll.",
     "sendInvite": "Skicka inbjudan",
     "pendingInvites": "Väntande inbjudningar",
     "deleteInviteWarning": "Du håller på att ta bort inbjudan för {{email}}. Den här åtgärden kan inte ångras.",
@@ -2841,7 +2840,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Användaren har redan den här rollen.",
-      "unassignableRoleTooltip": "Du har inte behörighet att tilldela den här rollen – dina behörigheter omfattar inte alla dess policyer.",
       "add": {
         "successToast_one": "Användaren har lagts till i rollen.",
         "successToast_other": "Användarna har lagts till i rollen.",

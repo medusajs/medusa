@@ -2785,7 +2785,6 @@
     "editUser": "Felhasználó Szerkesztése",
     "inviteUser": "Felhasználó Meghívása",
     "inviteUserHint": "Hívjon meg egy új felhasználót az áruházába.",
-    "inviteRolesTooltip": "Ha nincs kiválasztva szerepkör, a felhasználó szuperfelhasználói szerepkörrel kerül meghívásra.",
     "sendInvite": "Meghívó küldése",
     "pendingInvites": "Függőben lévő Meghívók",
     "deleteInviteWarning": "A(z) {{email}} meghívó törlésére készül. Ez a művelet nem vonható vissza.",
@@ -2860,7 +2859,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "A felhasználó már rendelkezik ezzel a szerepkörrel.",
-      "unassignableRoleTooltip": "Nincs hozzáférése ennek a szerepkörnek a hozzárendeléséhez — a jogosultságai nem fednek le minden kapcsolódó szabályzatot.",
       "add": {
         "successToast_one": "A felhasználó sikeresen hozzáadva a szerepkörhöz.",
         "successToast_other": "A felhasználók sikeresen hozzáadva a szerepkörhöz.",
