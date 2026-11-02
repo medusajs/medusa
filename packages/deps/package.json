@@ -56,7 +56,7 @@
     "@opentelemetry/resources": "^2.7.0",
     "@opentelemetry/sdk-node": "^0.220.0",
     "@opentelemetry/sdk-trace-node": "^2.7.0",
-    "awilix": "^8.0.1",
+    "awilix": "^13.0.5",
     "pg": "^8.23.1",
     "zod": "4.6.6"
   },

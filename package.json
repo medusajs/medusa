@@ -63,7 +63,7 @@
     "ajv": "^8.18.0",
     "autocannon": "^8.0.0",
     "autoprefixer": "^10.6.1",
-    "awilix": "^8.0.1",
+    "awilix": "^13.0.5",
     "axios": "^1.20.0",
     "configstore": "^8.0.0",
     "cross-env": "^10.1.0",
