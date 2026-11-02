@@ -239,6 +239,13 @@ export interface IRbacModuleService extends IModuleService {
   retrieveActorAuthzContextConfig(
     actorType: string
   ): Promise<AuthzContextConfig | undefined>
+  /**
+   * Lists the entities that can hold role assignments for any configured
+   * actor type, which are the valid `reference` values of a role assignment.
+   *
+   * @returns The grantee entity names, e.g. `["user"]`.
+   */
+  listGranteeEntities(): Promise<string[]>
 }
 
 export interface IRbacModuleServiceOptions {

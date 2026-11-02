@@ -180,4 +180,12 @@ export default class RbacModuleService
   ): Promise<AuthzContextConfig | undefined> {
     return this.options_.actors?.[actorType]
   }
+
+  async listGranteeEntities(): Promise<string[]> {
+    return deduplicate(
+      Object.values(this.options_.actors ?? {}).flatMap(
+        (config) => config?.grantees.map((grantee) => grantee.entity) ?? []
+      )
+    )
+  }
 }

@@ -2,7 +2,11 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  authorize,
+  authorizeIfNecessary,
+  MiddlewareRoute,
+} from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT } from "../../../utils/middlewares"
 import { createBatchBody } from "../../utils/validators"
@@ -11,6 +15,7 @@ import { Entities } from "./query-config"
 import {
   AdminCreatePromotion,
   AdminCreatePromotionRule,
+  AdminCreatePromotionType,
   AdminGetPromotionParams,
   AdminGetPromotionRuleParams,
   AdminGetPromotionRuleTypeParams,
@@ -59,6 +64,10 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
         },
       ]),
       validateAndTransformBody(AdminCreatePromotion),
+      authorizeIfNecessary<AdminCreatePromotionType>(
+        (req) => !!req.validatedBody?.campaign,
+        { resource: "campaign", operation: PolicyOperation.create }
+      ),
       validateAndTransformQuery(
         AdminGetPromotionParams,
         QueryConfig.retrieveTransformQueryConfig

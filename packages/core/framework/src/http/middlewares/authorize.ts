@@ -131,3 +131,53 @@ export function authorize(
 
   return authorizeMiddleware
 }
+
+/**
+ * Creates a middleware guarding a route with the given RBAC policies only when
+ * the predicate holds for the request, for example when the body includes a
+ * field that creates another resource. Otherwise, the request continues
+ * without being checked.
+ *
+ * @param predicate - Whether the request must be checked against the policies.
+ * @param policies - Single policy or array of policies guarding the route.
+ *
+ * @example
+ * ```ts
+ * export default defineMiddlewares({
+ *   routes: [
+ *     {
+ *       matcher: "/admin/promotions",
+ *       methods: ["POST"],
+ *       middlewares: [
+ *         authorize({ resource: "promotion", operation: "create" }),
+ *         validateAndTransformBody(AdminCreatePromotion),
+ *         authorizeIfNecessary(
+ *           (req) => !!req.validatedBody.campaign,
+ *           { resource: "campaign", operation: "create" }
+ *         ),
+ *       ],
+ *     },
+ *   ],
+ * })
+ * ```
+ */
+export function authorizeIfNecessary<TBody = unknown>(
+  predicate: (
+    req: AuthenticatedMedusaRequest<TBody>
+  ) => boolean | Promise<boolean>,
+  policies: PolicyAction | PolicyAction[]
+) {
+  const authorizeMiddleware = authorize(policies)
+
+  return async (
+    req: AuthenticatedMedusaRequest<TBody>,
+    res: MedusaResponse,
+    next: MedusaNextFunction
+  ): Promise<void> => {
+    if (!(await predicate(req))) {
+      return next()
+    }
+
+    return authorizeMiddleware(req, res, next)
+  }
+}

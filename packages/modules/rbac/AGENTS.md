@@ -50,6 +50,7 @@ Generated CRUD for `RbacRole`, `RbacPolicy`, `RbacRolePolicy`, `RbacRoleAssignme
 - `listPoliciesForRole(roleId)`: the policies assigned directly to the role (raw SQL join in `src/repositories/rbac.ts`), as `RbacPolicy` rows.
 - `listRbacRoles` / `listAndCountRbacRoles` (overridden): when `relations` or `select` include `"policies"`, `role.policies` is replaced with the role's `RbacPolicy` rows, not the raw `RbacRolePolicy` join rows.
 - `retrieveActorAuthzContextConfig(actorType)`: the resolved `actors` option entry for an actor type (`user` and `api-key` always have one).
+- `listGranteeEntities()`: the grantee entities across all actor types, i.e. the valid `reference` values for a role assignment. `assignRolesWorkflow` rejects any other reference.
 
 ### Events and links
 

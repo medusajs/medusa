@@ -9,7 +9,9 @@ import {
 import { createRoleAssignmentsStep } from "../steps/create-role-assignments"
 import { validateActorRolePermissionsStep } from "../steps/validate-actor-role-permissions"
 import { validateRolesExistStep } from "../steps/validate-roles-exist"
+import { validateAssignmentReferencesStep } from "../steps/validate-assignment-references"
 import { CreateRbacRoleAssignmentDTO } from "@medusajs/framework/types"
+import { deduplicate } from "@medusajs/framework/utils"
 
 /**
  * @ignore
@@ -51,7 +53,8 @@ export const assignRolesWorkflowId = "assign-roles"
  * row, so a single run can assign different roles to different references,
  * each optionally constrained to its own scope.
  *
- * It validates that the roles exist and that the granting actor holds all the
+ * It validates that the roles exist, that each reference is a grantee entity
+ * configured for some actor type, and that the granting actor holds all the
  * policies of the roles being assigned.
  * @ignore
  */
@@ -69,10 +72,13 @@ export const assignRolesWorkflow = createWorkflow(
         roleIds: Array.from(
           new Set(assignments.map((assignment) => assignment.role_id))
         ),
+        references: deduplicate(assignments.map((assignment) => assignment.reference)
+        ),
       }
     })
 
     validateRolesExistStep(normalizedInput.roleIds)
+    validateAssignmentReferencesStep(normalizedInput.references)
 
     when(
       { normalizedInput },

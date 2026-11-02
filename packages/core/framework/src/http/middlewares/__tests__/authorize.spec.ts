@@ -1,7 +1,7 @@
 import { PolicyAction } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { NextFunction } from "express"
-import { authorize } from "../authorize"
+import { authorize, authorizeIfNecessary } from "../authorize"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "../../types"
 
 const mockRbac = { installed: true }
@@ -44,7 +44,11 @@ const createRequest = ({
 }
 
 const run = async (
-  middleware: ReturnType<typeof authorize>,
+  middleware: (
+    req: AuthenticatedMedusaRequest,
+    res: MedusaResponse,
+    next: NextFunction
+  ) => Promise<void>,
   req: AuthenticatedMedusaRequest
 ) => {
   const next = jest.fn() as unknown as NextFunction
@@ -53,7 +57,11 @@ const run = async (
 }
 
 const runExpectingThrow = async (
-  middleware: ReturnType<typeof authorize>,
+  middleware: (
+    req: AuthenticatedMedusaRequest,
+    res: MedusaResponse,
+    next: NextFunction
+  ) => Promise<void>,
   req: AuthenticatedMedusaRequest
 ) => {
   const next = jest.fn() as unknown as NextFunction
@@ -253,5 +261,51 @@ describe("authorize", () => {
 
     expect(error).toBe(failure)
     expect(next).not.toHaveBeenCalled()
+  })
+})
+
+describe("authorizeIfNecessary", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    resolveRolesMock.mockResolvedValue(["role_1"])
+    listRolePermissionsMock.mockResolvedValue(["product:read"])
+  })
+
+  it("calls next without checking anything when the predicate is false", async () => {
+    const req = createRequest()
+    const next = await run(
+      authorizeIfNecessary(() => false, {
+        resource: "campaign",
+        operation: "create",
+      }),
+      req
+    )
+
+    expect(next).toHaveBeenCalledWith()
+    expect(resolveRolesMock).not.toHaveBeenCalled()
+    expect(req.rbac_context).toBeUndefined()
+  })
+
+  it("forbids the request when the predicate is true and the policies are not granted", async () => {
+    const { error, next } = await runExpectingThrow(
+      authorizeIfNecessary(async () => true, {
+        resource: "campaign",
+        operation: "create",
+      }),
+      createRequest()
+    )
+
+    expect(error).toBeInstanceOf(MedusaError)
+    expect(error.type).toEqual(MedusaError.Types.FORBIDDEN)
+    expect(next).not.toHaveBeenCalled()
+  })
+
+  it("calls next when the predicate is true and the policies are granted", async () => {
+    const next = await run(
+      authorizeIfNecessary(() => true, readPolicy),
+      createRequest()
+    )
+
+    expect(next).toHaveBeenCalledWith()
   })
 })

@@ -100,6 +100,20 @@ export interface AdminRbacAssignablePolicyListParams
   scope_id?: string
 }
 
+export interface AdminRbacMePermissionsParams {
+  /**
+   * The type of the scope to resolve the permissions within. Only takes
+   * effect together with `scope_id`; otherwise the request's ambient scope
+   * applies.
+   */
+  scope?: string
+  /**
+   * The ID of the scope to resolve the permissions within. Only takes effect
+   * together with `scope`.
+   */
+  scope_id?: string
+}
+
 export interface AdminRbacRoleUserListParams extends FindParams {
   /**
    * Filter by user ID(s).
