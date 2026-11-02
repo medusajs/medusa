@@ -62,6 +62,17 @@ export const rbacSidebar = [
       },
       {
         type: "category",
+        title: "Admin Customization Guides",
+        children: [
+          {
+            type: "link",
+            path: "/enterprise/rbac/admin-customizations",
+            title: "Check Permissions",
+          },
+        ],
+      },
+      {
+        type: "category",
         title: "Admin User Guides",
         autogenerate_tags: "userGuide+rbac",
         autogenerate_as_ref: true,

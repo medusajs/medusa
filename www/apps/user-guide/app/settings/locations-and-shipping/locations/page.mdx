@@ -90,7 +90,7 @@ So, to create a shipping option for either pick-up or shipping, you need to enab
 
 ### 1. Enable Shipping Mode
 
-<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:create"]} />
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:create", "fulfillment_set:read"]} />
 
 By default, pick-up and shipping are disabled in a location. To enable either:
 
@@ -102,7 +102,7 @@ You can also disable the shipping mode by following the same steps. Disabling a 
 
 ### 2. Create Service Zone
 
-<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:create", "service_zone:create"]} />
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:create", "service_zone:create", "fulfillment_set:read"]} />
 
 To ceate a service zone for pick-up or shipping:
 
@@ -123,7 +123,7 @@ Learn how you can further manage this service zone in the [Manage Service Zones 
 
 ### 3. Create Shipping Options
 
-<PermissionsBadge permissions={["stock_location:update", "shipping_option:create"]} />
+<PermissionsBadge permissions={["stock_location:update", "shipping_option:create", "fulfillment_set:read", "service_zone:read", "shipping_option:read", "shipping_profile:read", "fulfillment_provider:read", "shipping_option_type:read"]} />
 
 You can now add shipping options to the service zone you created. You can either add a standard shipping option that's used during checkout, or a return shipping option, which is only used to return items from the customer.
 
@@ -195,7 +195,7 @@ You can manage service zones in pick-up or shipping mode by [creating](#2-create
 
 ### Edit Service Zone Details
 
-<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:update", "service_zone:update"]} />
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:update", "service_zone:update", "fulfillment_set:read", "service_zone:read"]} />
 
 To edit a service zone in a location:
 
@@ -209,7 +209,7 @@ To edit a service zone in a location:
 
 ### Manage Service Zone Areas
 
-<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:update", "service_zone:update"]} />
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:update", "service_zone:update", "fulfillment_set:read", "service_zone:read"]} />
 
 To manage the areas in a service zone:
 
@@ -226,7 +226,7 @@ To manage the areas in a service zone:
 
 ### Delete Service Zone
 
-<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:update", "service_zone:delete"]} />
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_set:update", "service_zone:delete", "fulfillment_set:read", "service_zone:read"]} />
 
 <Note type="warning">
 
@@ -249,7 +249,7 @@ You can manage shipping options in pick-up and shipping modes by [creating](#cre
 
 ### Edit Shipping Option Details
 
-<PermissionsBadge permissions={["stock_location:update", "shipping_option:update"]} />
+<PermissionsBadge permissions={["stock_location:update", "shipping_option:update", "fulfillment_set:read", "service_zone:read", "shipping_option:read"]} />
 
 To edit a shipping option's details:
 
@@ -269,7 +269,7 @@ You can't edit a shipping option's fulfillment provider or fulfillment option af
 
 ### Edit Shipping Option Prices
 
-<PermissionsBadge permissions={["stock_location:update", "shipping_option:update"]} />
+<PermissionsBadge permissions={["stock_location:update", "shipping_option:update", "fulfillment_set:read", "service_zone:read", "shipping_option:read"]} />
 
 To edit the prices of shipping options whose price type is Fixed:
 
@@ -293,7 +293,7 @@ Tax-inclusive pricing is configured in the [currency's](../../store/page.mdx#edi
 
 ### Delete Shipping Option
 
-<PermissionsBadge permissions={["stock_location:update", "shipping_option:delete"]} />
+<PermissionsBadge permissions={["stock_location:update", "shipping_option:delete", "fulfillment_set:read", "service_zone:read", "shipping_option:read"]} />
 
 <Note type="warning">
 
@@ -328,7 +328,7 @@ To change the sales channels associated with a location:
 
 ## Manage Fulfillment Providers
 
-<PermissionsBadge permissions={["stock_location:update"]} />
+<PermissionsBadge permissions={["stock_location:update", "fulfillment_provider:read"]} />
 
 To manage the fulfillment providers available in a location:
 

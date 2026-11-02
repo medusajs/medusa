@@ -6,19 +6,21 @@ export const metadata = {
 
 # {metadata.title}
 
-<EnterpriseNotice beta featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+<EnterpriseNotice beta />
 
 In this guide, you'll learn about the RBAC API routes, how to authenticate against them, and how to use them for actor types of your own, such as a `vendor_admin` on a marketplace.
 
 <Note>
 
-These routes are added by Medusa's HTTP layer, not the RBAC Module. They only exist when the `rbac` feature flag is enabled.
+These routes are added by Medusa's HTTP layer, not the RBAC Module. They only exist when the RBAC Module is installed, as explained in the [RBAC Module](../page.mdx#how-to-use-the-rbac-module) overview.
 
 </Note>
 
 ## The /rbac Prefix
 
-The RBAC routes live under the `/rbac` prefix, and they aren't admin routes. The Medusa Admin dashboard consumes them, so they reuse the admin CORS configuration, but they don't restrict authentication to the `user` actor type the way the `/admin` routes do.
+The RBAC routes live under the `/rbac` prefix, and they aren't admin routes. They don't restrict authentication to the `user` actor type the way the `/admin` routes do.
+
+The Medusa Admin dashboard consumes them, so they use the admin CORS configuration by default. To allow other origins, such as a vendor dashboard, set the `http.rbacCors` configuration. It replaces the admin CORS configuration for the `/rbac` routes, so include the admin dashboard's origin in it. Learn more in the [Module Options](../module-options/page.mdx#rbaccors-configuration) guide.
 
 This is what makes them reusable: the same routes that manage the roles of admin users also manage the roles of a `vendor_admin`, a `supplier`, or any other actor type of your own. You don't build a second set of role management routes for each actor type.
 
@@ -29,6 +31,8 @@ The routes fall into five groups:
 - [Role assignment routes](#role-assignment-routes) that grant roles to entities of any type.
 - [Role user routes](#role-user-routes) that grant roles to admin users.
 - [Introspection routes](#introspection-routes) that tell a client what the authenticated actor can do.
+
+The RBAC Module also adds [admin routes](#admin-user-role-routes) that manage the roles of a single admin user, and a `roles` parameter to the [Create Invite route](#assign-roles-to-invites). These routes are under the `/admin` prefix, so only admin users can send requests to them.
 
 <Note>
 
@@ -81,7 +85,7 @@ Authentication alone isn't enough. Most RBAC routes are guarded by the [authoriz
     <Table.Row>
       <Table.Cell>
 
-Read roles, their policies, and their assignments.
+Read roles and their policies, including the [List Assignable Roles route](#list-assignable-roles-route).
 
       </Table.Cell>
       <Table.Cell>
@@ -105,7 +109,7 @@ Create, update, or delete a role.
     <Table.Row>
       <Table.Cell>
 
-Change a role's policies or assignments.
+Change a role's policies.
 
       </Table.Cell>
       <Table.Cell>
@@ -117,12 +121,36 @@ Change a role's policies or assignments.
     <Table.Row>
       <Table.Cell>
 
-Read policies.
+List, create, or remove a role's [assignments](#role-assignment-routes).
+
+      </Table.Cell>
+      <Table.Cell>
+
+`rbac_role_assignment:read`, `rbac_role_assignment:create`, or `rbac_role_assignment:delete`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Read policies, including the [List Assignable Policies route](#list-assignable-policies-route).
 
       </Table.Cell>
       <Table.Cell>
 
 `rbac_policy:read`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+List the roles granting a policy.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`rbac_policy:read` and `rbac_role:read`
 
       </Table.Cell>
     </Table.Row>
@@ -141,31 +169,55 @@ Create, update, or delete a policy.
     <Table.Row>
       <Table.Cell>
 
-Manage the admin users of a role.
+List the admin users of a role, or the roles of an admin user.
 
       </Table.Cell>
       <Table.Cell>
 
-`user:update` and `rbac_role:update`
+`user:read` and `rbac_role_assignment:read`
 
       </Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>
 
-The [introspection routes](#introspection-routes).
+Grant a role to admin users.
 
       </Table.Cell>
       <Table.Cell>
 
-None. They only require authentication.
+`user:update` and `rbac_role_assignment:create`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Remove a role from admin users.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`user:update` and `rbac_role_assignment:delete`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+The [Authenticated Actor's Permissions route](#authenticated-actors-permissions-route).
+
+      </Table.Cell>
+      <Table.Cell>
+
+None. It only requires authentication.
 
       </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
 
-A `vendor_admin` that manages its own team therefore needs a role granting at least `rbac_role:read` and `rbac_role:update`.
+A `vendor_admin` that manages its own team therefore needs a role granting at least `rbac_role:read`, `rbac_role_assignment:read`, `rbac_role_assignment:create`, and `rbac_role_assignment:delete`. It must also hold every policy of the roles it grants, as explained in the [Create Role Assignments route](#create-role-assignments-route).
 
 You create that role once with the [Create Role route](#create-role-route), then grant it to each vendor's owner as you onboard them with the [role assignment routes](#role-assignment-routes). To do either in your own customizations instead, use the [RBAC workflows](../workflows/page.mdx), such as the `assignRolesWorkflow` explained in the [RBAC Concepts](../concepts/page.mdx#assign-a-role) guide.
 
@@ -211,12 +263,6 @@ Along with the [pagination and field selection parameters common to list routes]
       description: "The name, or names, of the roles to retrieve."
     },
     {
-      name: "parent_id",
-      type: "`string` \\| `string[]`",
-      optional: true,
-      description: "The ID, or IDs, of the parent roles whose children to retrieve."
-    },
-    {
       name: "created_at",
       type: "`object`",
       optional: true,
@@ -248,7 +294,6 @@ The response body has a `roles` array, along with the `count`, `offset`, and `li
       "id": "role_123",
       "name": "Vendor Owner",
       "description": "Manages the vendor's team",
-      "parent_id": null,
       "metadata": null,
       "created_at": "2025-01-01T00:00:00.000Z",
       "updated_at": "2025-01-01T00:00:00.000Z"
@@ -271,13 +316,15 @@ curl -X POST http://localhost:9000/rbac/roles \
 --data-raw '{
   "name": "Vendor Owner",
   "description": "Manages the vendor'\''s team",
-  "policy_ids": ["pol_123", "pol_456"]
+  "policy_ids": ["rpol_123", "rpol_456"]
 }'
 ```
 
 In the JS SDK, use the [rbacRole.create](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.create) method.
 
 #### Request Body Parameters
+
+The route only accepts the following parameters, and rejects any other parameter with a `400` error:
 
 <TypeList
   types={[
@@ -292,12 +339,6 @@ In the JS SDK, use the [rbacRole.create](/references/js_sdk/admin/RbacRole/metho
       type: "`string`",
       optional: true,
       description: "A description of the role's purpose."
-    },
-    {
-      name: "parent_id",
-      type: "`string`",
-      optional: true,
-      description: "The ID of a parent role to inherit policies from, as explained in the [RBAC Concepts](../concepts/page.mdx#role-hierarchy) guide."
     },
     {
       name: "policy_ids",
@@ -324,7 +365,6 @@ The response body has a `role` field holding the created role:
     "id": "role_123",
     "name": "Vendor Owner",
     "description": "Manages the vendor's team",
-    "parent_id": null,
     "metadata": null,
     "created_at": "2025-01-01T00:00:00.000Z",
     "updated_at": "2025-01-01T00:00:00.000Z"
@@ -334,7 +374,7 @@ The response body has a `role` field holding the created role:
 
 <Note>
 
-Medusa rejects the request with a `403` error if the authenticated actor doesn't hold every policy in the `policy_ids` query parameter. This prevents an actor from creating a role that grants more access than they have.
+Medusa rejects the request with a `403` error if the authenticated actor doesn't hold every policy in the `policy_ids` body parameter. This prevents an actor from creating a role that grants more access than they have.
 
 </Note>
 
@@ -372,7 +412,6 @@ The response body has a `role` field holding the retrieved role:
     "id": "role_123",
     "name": "Vendor Owner",
     "description": "Manages the vendor's team",
-    "parent_id": null,
     "metadata": null,
     "created_at": "2025-01-01T00:00:00.000Z",
     "updated_at": "2025-01-01T00:00:00.000Z"
@@ -412,7 +451,7 @@ In the JS SDK, use the [rbacRole.update](/references/js_sdk/admin/RbacRole/metho
 
 #### Request Body Parameters
 
-All the properties are optional, so you only pass the ones you change.
+All the properties are optional, so you only pass the ones you change. The route rejects any other parameter with a `400` error.
 
 <TypeList
   types={[
@@ -427,12 +466,6 @@ All the properties are optional, so you only pass the ones you change.
       type: "`string`",
       optional: true,
       description: "A description of the role's purpose."
-    },
-    {
-      name: "parent_id",
-      type: "`string`",
-      optional: true,
-      description: "The ID of a parent role to inherit policies from, as explained in the [RBAC Concepts](../concepts/page.mdx#role-hierarchy) guide."
     },
     {
       name: "metadata",
@@ -455,7 +488,6 @@ The response body has a `role` field holding the updated role:
     "id": "role_123",
     "name": "Vendor Owner",
     "description": "Manages the vendor's team",
-    "parent_id": null,
     "metadata": null,
     "created_at": "2025-01-01T00:00:00.000Z",
     "updated_at": "2025-01-01T00:00:00.000Z"
@@ -466,6 +498,8 @@ The response body has a `role` field holding the updated role:
 ### Delete Role Route
 
 The Medusa application defines an API route at `/rbac/roles/{id}` that deletes a role. Deleting a role removes it from every entity it was assigned to.
+
+The authenticated actor must hold every policy of the role, otherwise the request fails with a `403` error. You also can't delete the [Super Admin role](../concepts/page.mdx#super-admin-role).
 
 ```bash
 curl -X DELETE http://localhost:9000/rbac/roles/{id} \
@@ -501,7 +535,7 @@ The response returns the deletion details:
 
 ### List Role Policies Route
 
-The Medusa application defines an API route at `/rbac/roles/{id}/policies` that lists the policies a role grants directly. Policies inherited from a parent role aren't included.
+The Medusa application defines an API route at `/rbac/roles/{id}/policies` that lists the policies a role grants.
 
 ```bash
 curl http://localhost:9000/rbac/roles/{id}/policies \
@@ -525,17 +559,17 @@ In the JS SDK, use the [rbacRole.listPolicies](/references/js_sdk/admin/RbacRole
 
 #### Response Fields
 
-The response body has a `policies` array holding the policies directly granted to the role, along with pagination fields: `count`, `offset`, and `limit`:
+The response body has a `policies` array holding the policies granted to the role, along with pagination fields: `count`, `offset`, and `limit`:
 
 ```json
 {
   "policies": [
     {
-      "id": "rolpol_123",
+      "id": "rlpl_123",
       "role_id": "role_123",
-      "policy_id": "pol_123",
+      "policy_id": "rpol_123",
       "policy": {
-        "id": "pol_123",
+        "id": "rpol_123",
         "key": "vendor:read",
         "resource": "vendor",
         "operation": "read"
@@ -558,7 +592,7 @@ http://localhost:9000/rbac/roles/{id}/policies \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Bearer {token}' \
 --data-raw '{
-  "policies": ["pol_123", "pol_456"]
+  "policies": ["rpol_123", "rpol_456"]
 }'
 ```
 
@@ -600,9 +634,9 @@ The response body has a `policies` array holding the created links between the r
 {
   "policies": [
     {
-      "id": "rolpol_123",
+      "id": "rlpl_123",
       "role_id": "role_123",
-      "policy_id": "pol_123"
+      "policy_id": "rpol_123"
     }
   ]
 }
@@ -611,6 +645,8 @@ The response body has a `policies` array holding the created links between the r
 ### Remove Role Policy Route
 
 The Medusa application defines an API route at `/rbac/roles/{id}/policies/{policy_id}` that removes a single policy from a role. The policy itself isn't deleted.
+
+The authenticated actor must hold the policy it removes, the same as when granting it. Otherwise, the request fails with a `403` error.
 
 ```bash
 curl -X DELETE \
@@ -645,7 +681,7 @@ The response body contains the details of the deleted role-policy link:
 
 ```json
 {
-  "id": "rolpol_123",
+  "id": "rlpl_123",
   "object": "rbac_role_policy",
   "deleted": true
 }
@@ -733,7 +769,7 @@ The response body has a `policies` array, along with the `count`, `offset`, and 
 {
   "policies": [
     {
-      "id": "pol_123",
+      "id": "rpol_123",
       "key": "product:read",
       "resource": "product",
       "operation": "read",
@@ -772,6 +808,8 @@ Prefer creating the policies of your custom resources with the `createRbacPolici
 </Note>
 
 #### Request Body Parameters
+
+The route only accepts the following parameters, and rejects any other parameter with a `400` error:
 
 <TypeList
   types={[
@@ -821,7 +859,7 @@ The response contains the created policy object.
 ```json
 {
   "policy": {
-    "id": "pol_123",
+    "id": "rpol_123",
     "key": "vendor:read",
     "resource": "vendor",
     "operation": "read",
@@ -865,7 +903,7 @@ The response contains the retrieved policy object.
 ```json
 {
   "policy": {
-    "id": "pol_123",
+    "id": "rpol_123",
     "key": "vendor:read",
     "resource": "vendor",
     "operation": "read",
@@ -910,28 +948,10 @@ In the JS SDK, use the [rbacPolicy.update](/references/js_sdk/admin/RbacPolicy/m
 
 #### Request Body Parameters
 
-All the properties are optional, so you only pass the ones you change.
+All the properties are optional, so you only pass the ones you change. The route rejects any other parameter with a `400` error.
 
 <TypeList
   types={[
-    {
-      name: "key",
-      type: "`string`",
-      optional: true,
-      description: "The policy's unique key, in the `resource:operation` format."
-    },
-    {
-      name: "resource",
-      type: "`string`",
-      optional: true,
-      description: "The resource the policy applies to, or the wildcard `*`."
-    },
-    {
-      name: "operation",
-      type: "`string`",
-      optional: true,
-      description: "The operation allowed on that resource, or the wildcard `*`."
-    },
     {
       name: "name",
       type: "`string`",
@@ -953,7 +973,7 @@ All the properties are optional, so you only pass the ones you change.
   ]}
 />
 
-Changing a policy's `resource` or `operation` changes what every role granting it allows, so prefer creating a new policy instead.
+You can't change a policy's `key`, `resource`, or `operation`, since that would change what every role granting it allows. Create a new policy instead.
 
 #### Response Fields
 
@@ -962,7 +982,7 @@ The response contains the updated policy object.
 ```json
 {
   "policy": {
-    "id": "pol_123",
+    "id": "rpol_123",
     "key": "vendor:read",
     "resource": "vendor",
     "operation": "read",
@@ -978,6 +998,8 @@ The response contains the updated policy object.
 ### Delete Policy Route
 
 The Medusa application defines an API route at `/rbac/policies/{id}` that deletes a policy. Deleting a policy removes it from every role granting it.
+
+The authenticated actor must hold the policy it deletes, otherwise the request fails with a `403` error. You also can't delete the Super Admin policy, `rpol_super_admin`.
 
 ```bash
 curl -X DELETE http://localhost:9000/rbac/policies/{id} \
@@ -1005,7 +1027,7 @@ The response contains the deletion details of the policy.
 
 ```json
 {
-  "id": "pol_123",
+  "id": "rpol_123",
   "object": "rbac_policy",
   "deleted": true
 }
@@ -1131,7 +1153,7 @@ The response body has an `assignments` array, along with the `count`, `offset`, 
 {
   "assignments": [
     {
-      "id": "rolasgn_123",
+      "id": "rasgn_123",
       "role_id": "role_123",
       "reference": "vendor_admin",
       "reference_id": "vadm_123",
@@ -1189,7 +1211,7 @@ In the JS SDK, use the `rbacRole.addAssignments` method.
       name: "reference",
       type: "`string`",
       optional: false,
-      description: "The type of entity receiving the role. It must match the `entity` of a grantee you declared in the RBAC Module's [actors option](../module-options/page.mdx#actors), such as `vendor_admin`."
+      description: "The type of entity receiving the role. It should match the `entity` of a grantee you declared in the RBAC Module's [actors option](../module-options/page.mdx#actors), such as `vendor_admin`. Otherwise, the assignment never applies to a request."
     },
     {
       name: "reference_ids",
@@ -1220,7 +1242,7 @@ The response body has an `assignments` array holding the role's assignments for 
 {
   "assignments": [
     {
-      "id": "rolasgn_123",
+      "id": "rasgn_123",
       "role_id": "role_123",
       "reference": "vendor_admin",
       "reference_id": "vadm_123",
@@ -1273,7 +1295,9 @@ In the JS SDK, use the `rbacRole.removeAssignments` method.
 
 This route accepts the same `reference`, `reference_ids`, `scope`, and `scope_id` parameters as the [Create Role Assignments route](#create-role-assignments-route).
 
-Pass the `scope` and `scope_id` of the assignment you're removing. Omitting them removes the unscoped assignment instead, leaving a scoped one in place.
+Pass the `scope` and `scope_id` to remove only the assignment stored with that scope. Omitting them removes all the role's assignments of each entity, both scoped and unscoped.
+
+You can't remove the role assignment of the last admin user holding the unscoped [Super Admin role](../concepts/page.mdx#super-admin-role). The request fails with a `400` error instead.
 
 #### Response Fields
 
@@ -1454,6 +1478,10 @@ In the JS SDK, use the [rbacRole.removeUsers](/references/js_sdk/admin/RbacRole/
   ]}
 />
 
+The route removes the assignments within the scope of the request, if your application sets one in a middleware. Otherwise, it removes all the role's assignments of each admin user.
+
+You can't remove the Super Admin role from the last admin user holding it without a scope. The request fails with a `400` error instead.
+
 #### Response Fields
 
 The response contains the IDs of the admin users from whom the role was removed, along with a deletion status.
@@ -1470,11 +1498,13 @@ The response contains the IDs of the admin users from whom the role was removed,
 
 ## Introspection Routes
 
-These routes tell a client what the authenticated actor can do. They only require authentication, so any allowed actor type reaches them without holding an RBAC policy. Use them to build a dashboard that hides the actions an actor can't perform.
+These routes tell a client what the authenticated actor can do. Use them to build a dashboard that hides the actions an actor can't perform.
+
+The [Authenticated Actor's Permissions route](#authenticated-actors-permissions-route) only requires authentication, so any allowed actor type reaches it without holding an RBAC policy. The [List Assignable Roles](#list-assignable-roles-route) and [List Assignable Policies](#list-assignable-policies-route) routes require `rbac_role:read` and `rbac_policy:read`, respectively.
 
 ### Introspect Within a Scope
 
-The [Authenticated Actor's Permissions](#authenticated-actors-permissions-route), [List Assignable Roles](#list-assignable-roles-route), and [List Assignable Policies](#list-assignable-policies-route) routes accept the optional `scope` and `scope_id` query parameters. Pass both to evaluate the actor's privileges within that scope instead of across all of their assignments.
+The [Authenticated Actor's Permissions](#authenticated-actors-permissions-route), [List Assignable Roles](#list-assignable-roles-route), and [List Assignable Policies](#list-assignable-policies-route) routes accept the optional `scope` and `scope_id` query parameters. Pass both to evaluate the actor's privileges within that scope. The result then includes the actor's assignments in that scope along with their unscoped assignments. Without a scope, Medusa only considers the actor's unscoped assignments.
 
 For example, a vendor owner switching between two vendors in your dashboard requests the permissions of the vendor they're viewing:
 
@@ -1496,7 +1526,7 @@ curl http://localhost:9000/rbac/me/permissions \
 -H 'Authorization: Bearer {token}'
 ```
 
-In the JS SDK, use the [rbacRole.mePermissions](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions) method.
+In the JS SDK, use the [rbacRole.mePermissions](/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions) method. The method doesn't accept query parameters, so send a request to the route directly to pass a scope.
 
 #### Query Parameters
 
@@ -1610,7 +1640,7 @@ The response body has a `policies` array and a `count` field. Unlike the [List P
 {
   "policies": [
     {
-      "id": "pol_123",
+      "id": "rpol_123",
       "key": "vendor:read",
       "resource": "vendor",
       "operation": "read",
@@ -1621,111 +1651,320 @@ The response body has a `policies` array and a `count` field. Unlike the [List P
 }
 ```
 
-### List Scope Types Route
+---
 
-The Medusa application defines an API route at `/rbac/roles/scopes` that lists the [scope](../scopes/page.mdx) types a grantee supports. Use it, along with the next route, to build a scope picker in a custom dashboard.
+## Admin User Role Routes
 
-```bash
-curl -G http://localhost:9000/rbac/roles/scopes \
--H 'Authorization: Bearer {token}' \
--d actor_type=vendor_admin \
--d grantee_type=vendor_admin
-```
+These routes manage the roles of a single admin user. They're under the `/admin` prefix, so they only accept requests authenticated as the `user` actor type. Like the other routes, they only exist when the RBAC Module is installed.
 
-#### Query Parameters
+### List User Roles Route
 
-<TypeList
-  types={[
-    {
-      name: "actor_type",
-      type: "`string`",
-      optional: false,
-      description: "The actor type whose configuration to read, such as `vendor_admin`."
-    },
-    {
-      name: "grantee_type",
-      type: "`string`",
-      optional: false,
-      description: "The `entity` of the grantee declared for that actor type."
-    }
-  ]}
-/>
-
-#### Response Fields
-
-The response contains the list of scope types supported by the grantee for the specified actor type.
-
-```json
-{
-  "scopes": [
-    { "type": "vendor" }
-  ]
-}
-```
-
-The array is empty when the grantee has no `scope_configs`, so its roles can only be unscoped.
-
-### List Scope Options Route
-
-The Medusa application defines an API route at `/rbac/roles/scopes/{type}/options` that lists the values of one scope type that an actor can reach, such as the vendors a vendor admin belongs to.
+The Medusa application defines an API route at `/admin/users/{id}/roles` that lists the roles assigned to an admin user.
 
 ```bash
-curl -G \
-http://localhost:9000/rbac/roles/scopes/vendor/options \
--H 'Authorization: Bearer {token}' \
--d actor_type=vendor_admin \
--d grantee_type=vendor_admin \
--d actor_id=vadm_123
+curl http://localhost:9000/admin/users/{id}/roles \
+-H 'Authorization: Bearer {token}'
 ```
+
+In the JS SDK, use the [user.listRoles](/references/js_sdk/admin/User/methods/js_sdk.admin.User.listRoles) method.
 
 #### Path Parameters
 
 <TypeList
   types={[
     {
-      name: "type",
+      name: "id",
       type: "`string`",
       optional: false,
-      description: "The scope's type, matching the `type` of a scope configuration you declared."
+      description: "The admin user's ID."
     }
   ]}
 />
 
 #### Query Parameters
 
+Along with the pagination parameters common to list routes, this route accepts the following filters:
+
 <TypeList
   types={[
     {
-      name: "actor_type",
-      type: "`string`",
-      optional: false,
-      description: "The actor type whose configuration to read."
+      name: "role_id",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The ID, or IDs, of the roles to retrieve."
     },
     {
-      name: "grantee_type",
-      type: "`string`",
-      optional: false,
-      description: "The `entity` of the grantee declared for that actor type."
+      name: "scope",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The type, or types, of the scope whose assignments to retrieve, such as `vendor`."
     },
     {
-      name: "actor_id",
-      type: "`string`",
-      optional: false,
-      description: "The ID of the actor whose scope values to list."
+      name: "scope_id",
+      type: "`string` \\| `string[]`",
+      optional: true,
+      description: "The ID, or IDs, of the scope's records."
     }
   ]}
 />
 
 #### Response Fields
 
-The response contains the list of options for the specified scope type that the actor can reach:
+The response body has a `roles` array, along with the `count`, `offset`, and `limit` pagination fields. The route returns one item per role assignment, and each item holds the `scope` type of its assignment, or `null` if the assignment is unscoped:
 
 ```json
 {
-  "options": [
-    { "id": "ven_123", "label": "Acme" }
+  "roles": [
+    {
+      "id": "role_123",
+      "name": "Vendor Owner",
+      "description": "Manages the vendor's team",
+      "scope": null
+    }
+  ],
+  "count": 1,
+  "offset": 0,
+  "limit": 50
+}
+```
+
+### Add User Roles Route
+
+The Medusa application defines an API route at `/admin/users/{id}/roles` that grants one or more roles to an admin user.
+
+```bash
+curl -X POST http://localhost:9000/admin/users/{id}/roles \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "assignments": [
+    { "role_id": "role_123" },
+    {
+      "role_id": "role_456",
+      "scope": "vendor",
+      "scope_id": "ven_123"
+    }
+  ]
+}'
+```
+
+In the JS SDK, use the [user.addRoles](/references/js_sdk/admin/User/methods/js_sdk.admin.User.addRoles) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The admin user's ID."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+<TypeList
+  types={[
+    {
+      name: "assignments",
+      type: "`object[]`",
+      optional: false,
+      description: "The roles to grant. It must have at least one item.",
+      children: [
+        {
+          name: "role_id",
+          type: "`string`",
+          optional: false,
+          description: "The ID of the role to grant."
+        },
+        {
+          name: "scope",
+          type: "`string`",
+          optional: true,
+          description: "The type of the [scope](../scopes/page.mdx) restricting the role, such as `vendor`. Pass it with `scope_id`, otherwise the request fails with a validation error."
+        },
+        {
+          name: "scope_id",
+          type: "`string`",
+          optional: true,
+          description: "The ID of the scope's record. Pass it with `scope`, otherwise the request fails with a validation error."
+        }
+      ]
+    }
+  ]}
+/>
+
+The authenticated user must hold every policy of the roles it grants, the same as the [Create Role Assignments route](#create-role-assignments-route).
+
+#### Response Fields
+
+The response body has a `roles` array holding every role assigned to the admin user, not only the ones you added:
+
+```json
+{
+  "roles": [
+    {
+      "id": "role_123",
+      "name": "Vendor Owner",
+      "description": "Manages the vendor's team"
+    }
   ]
 }
 ```
 
-Medusa labels each option with the scope configuration's `display_field`, falling back to the entity's `name`, then its `title`, then its ID. If the scope type isn't declared for the given grantee, the request fails with a `404` error.
+### Remove User Roles Route
+
+The Medusa application defines an API route at `/admin/users/{id}/roles` that removes one or more roles from an admin user.
+
+```bash
+curl -X DELETE http://localhost:9000/admin/users/{id}/roles \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "assignments": [
+    { "role_id": "role_123" }
+  ]
+}'
+```
+
+In the JS SDK, use the [user.removeRoles](/references/js_sdk/admin/User/methods/js_sdk.admin.User.removeRoles) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The admin user's ID."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+This route accepts the same `assignments` parameter as the [Add User Roles route](#add-user-roles-route). For each item, pass the `scope` and `scope_id` to remove only the assignment stored with that scope. Omitting them removes all the user's assignments of that role, both scoped and unscoped.
+
+You can't remove the Super Admin role from the last admin user holding it without a scope. The request fails with a `400` error instead.
+
+#### Response Fields
+
+The response contains the IDs of the removed roles, along with a deletion status:
+
+```json
+{
+  "ids": ["role_123"],
+  "object": "user_role",
+  "deleted": true
+}
+```
+
+### Remove User Role Route
+
+The Medusa application defines an API route at `/admin/users/{id}/roles/{role_id}` that removes a single role from an admin user.
+
+```bash
+curl -X DELETE \
+http://localhost:9000/admin/users/{id}/roles/{role_id} \
+-H 'Authorization: Bearer {token}'
+```
+
+In the JS SDK, use the [user.removeRole](/references/js_sdk/admin/User/methods/js_sdk.admin.User.removeRole) method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The admin user's ID."
+    },
+    {
+      name: "role_id",
+      type: "`string`",
+      optional: false,
+      description: "The ID of the role to remove."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+The request body is optional. Pass the `scope` and `scope_id` parameters together to remove only the assignment stored with that scope. Otherwise, the route removes all the user's assignments of that role.
+
+#### Response Fields
+
+The response contains the ID of the removed role, along with a deletion status:
+
+```json
+{
+  "id": "role_123",
+  "object": "user_role",
+  "deleted": true
+}
+```
+
+### Assign Roles to Invites
+
+The [Create Invite](!api!/admin#invites_postinvites) route accepts a `roles` body parameter when the RBAC Module is installed. Medusa grants these roles to the admin user created when someone accepts the invite.
+
+```bash
+curl -X POST http://localhost:9000/admin/invites \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "email": "staff@example.com",
+  "roles": [
+    {
+      "role_id": "role_123",
+      "scopes": [{ "type": "vendor", "id": "ven_123" }]
+    }
+  ]
+}'
+```
+
+<TypeList
+  types={[
+    {
+      name: "roles",
+      type: "`object[]`",
+      optional: true,
+      description: "The roles to grant to the invited user.",
+      children: [
+        {
+          name: "role_id",
+          type: "`string`",
+          optional: false,
+          description: "The ID of the role to grant."
+        },
+        {
+          name: "scopes",
+          type: "`object[]`",
+          optional: true,
+          description: "The scopes to restrict the role to. Medusa creates one assignment per scope. If you omit it, the role is unscoped.",
+          children: [
+            {
+              name: "type",
+              type: "`string`",
+              optional: false,
+              description: "The scope's type, such as `vendor`."
+            },
+            {
+              name: "id",
+              type: "`string`",
+              optional: false,
+              description: "The ID of the scope's record."
+            }
+          ]
+        }
+      ]
+    }
+  ]}
+/>
+
+The authenticated user must hold every policy of the roles it grants to the invite. Otherwise, the request fails with a `403` error.

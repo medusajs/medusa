@@ -1088,6 +1088,10 @@ export const filesMap = [
     "pathname": "/enterprise"
   },
   {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/admin-customizations/page.mdx",
+    "pathname": "/enterprise/rbac/admin-customizations"
+  },
+  {
     "filePath": "/www/apps/resources/app/enterprise/rbac/api-routes/page.mdx",
     "pathname": "/enterprise/rbac/api-routes"
   },

@@ -14,14 +14,14 @@ export const metadata = {
 
 # {metadata.title}
 
-<EnterpriseNotice beta featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+<EnterpriseNotice beta />
 
 In this guide, you'll learn how to define policies for your custom resources so they can be protected by role-based access control (RBAC).
 
 <Prerequisites
   items={[
     {
-      text: "RBAC feature flag enabled",
+      text: "RBAC Module installed",
       link: "../page.mdx#how-to-use-the-rbac-module"
     }
   ]}
@@ -99,7 +99,7 @@ import {
 
 export default async function ({ container }: ExecArgs) {
   const logger = container.resolve(
-    ContainerRegistrationKeys.Logger
+    ContainerRegistrationKeys.LOGGER
   )
 
   const policies = buildPolicies({
@@ -125,6 +125,12 @@ export default async function ({ container }: ExecArgs) {
 
 The RBAC Module also has the `updateRbacPoliciesWorkflow` and `deleteRbacPoliciesWorkflow` workflows to change or remove policies later.
 
+<Note>
+
+The RBAC API routes only allow updating a policy's `name`, `description`, and `metadata`. A policy's `key`, `resource`, and `operation` identify it, so changing them would silently change the access of every role that holds it. To change them, create a new policy instead, or update the policy from a migration script.
+
+</Note>
+
 ### Customize the Built Policies
 
 `buildPolicies` accepts the following properties:
@@ -135,7 +141,7 @@ The RBAC Module also has the `updateRbacPoliciesWorkflow` and `deleteRbacPolicie
       name: "resource",
       type: "`string` \\| `string[]`",
       optional: false,
-      description: "The resource, or resources, the policies apply to. Accepts the resources you registered in `PolicyResourceRegistry`, Medusa's core resources such as `product` and `order`, or the wildcard `*`."
+      description: "The resource, or resources, the policies apply to. Accepts the resources you registered in `PolicyResourceRegistry`, Medusa's core resources such as `product` and `order`, or the wildcard `*`. When you pass an array, even with a single resource, you can't pass `key`, `name`, or `description`."
     },
     {
       name: "operation",
@@ -179,7 +185,11 @@ const policies = buildPolicies({
 })
 ```
 
-You can only pass `key`, `name`, or `description` when you build a single policy, since a key must be unique. Passing them alongside multiple resources or operations throws an error.
+To pass `name` or `description`, set `resource` to a single string rather than an array. Passing them with an array of resources is a TypeScript error. When you also pass multiple operations, every built policy shares the same name and description.
+
+You can only pass `key` when you build a single policy, since a key must be unique. Passing it with multiple operations throws an error.
+
+Medusa's own operations are also available as values in the `PolicyOperation` constant exported from `@medusajs/framework/utils`, such as `PolicyOperation.read` or `PolicyOperation.ALL` for the wildcard `*`.
 
 To build a single policy that allows all operations on a resource, pass the wildcard `*` as the operation:
 
@@ -242,7 +252,7 @@ export default defineMiddlewares({
 })
 ```
 
-Requests from admin users that don't have the `vendor:create` policy now receive a `403` error. When the RBAC feature flag is disabled, the middleware allows every request.
+Requests from admin users that don't have the `vendor:create` policy now receive a `403` error. When the RBAC Module isn't installed, the middleware allows every request.
 
 ---
 
@@ -272,7 +282,7 @@ import {
 export default async function ({ container }: ExecArgs) {
   const rbacModuleService = container.resolve(Modules.RBAC)
   const logger = container.resolve(
-    ContainerRegistrationKeys.Logger
+    ContainerRegistrationKeys.LOGGER
   )
 
   const policies = await rbacModuleService.listRbacPolicies({

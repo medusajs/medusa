@@ -47,13 +47,9 @@ To create any of these roles, follow the steps in the [Manage Roles](../page.mdx
 
 A super admin has full access to the store, including managing roles and policies.
 
-To create this role, select all available policies so the role can perform every operation on every resource.
+Medusa provides a built-in **Super Admin** role with the `*:*` policy, which grants every operation on every resource. Assign this role to users who need full access.
 
-<Note title="Tip">
-
-Medusa already provides a built-in Super Admin role with full access. You only need to create a custom role like this if you want to manage it yourself.
-
-</Note>
+You can also create a custom role and select all available policies. However, the role creation form only lists the policies that you hold yourself, so a custom role can't grant more access than you have.
 
 ---
 
@@ -75,10 +71,10 @@ A product manager creates and maintains products, categories, inventory, and rel
   <Table.Body>
     <Table.Row>
       <Table.Cell>
-        `product:read`, `product:create`, `product:update`, `product:delete`, `product_variant:read`, `product_variant:create`, `product_variant:update`, `product_variant:delete`, `product_option:read`, `product_option:create`, `product_option:update`, `product_option:delete`
+        `product:read`, `product:create`, `product:update`, `product:delete`, `product_variant:read`, `product_variant:create`, `product_variant:update`, `product_variant:delete`, `product_option:read`, `product_option:create`, `product_option:update`, `product_option:delete`, `product_option_value:read`, `product_option_value:update`, `product_option_value:delete`
       </Table.Cell>
       <Table.Cell>
-        Manage products, their variants, and options.
+        Manage products, their variants, and options, including option values.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -107,10 +103,10 @@ A product manager creates and maintains products, categories, inventory, and rel
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-        `sales_channel:read`, `shipping_profile:read`, `stock_location:read`, `region:read`, `file:create`
+        `sales_channel:read`, `shipping_profile:read`, `stock_location:read`, `region:read`, `price:update`, `file:create`
       </Table.Cell>
       <Table.Cell>
-        Related access: assign products to sales channels and shipping profiles, view stock locations, set prices per region, and upload product media.
+        Related access: assign products to sales channels and shipping profiles, view stock locations, edit variant prices per region, and upload product media.
       </Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -160,10 +156,18 @@ An order manager processes orders, returns, and exchanges.
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-        `payment:read`
+        `payment:read`, `refund:read`, `capture:create`, `refund:create`
       </Table.Cell>
       <Table.Cell>
-        View an order's payments.
+        View an order's payments and refunds, capture payments, and refund payments. Capturing and refunding also require `order:update`.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        `payment_collection:read`, `payment_collection:update`, `order_credit_line:create`
+      </Table.Cell>
+      <Table.Cell>
+        Mark an order's outstanding payment as paid, and settle an order's balance with a credit line.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -176,14 +180,6 @@ An order manager processes orders, returns, and exchanges.
     </Table.Row>
   </Table.Body>
 </Table>
-
-{/* TODO confirm this information */}
-
-<Note>
-
-Capturing payments and issuing refunds may require additional permissions that aren't yet available as separate policies. For those actions, use the built-in Super Admin role.
-
-</Note>
 
 ---
 
@@ -205,7 +201,7 @@ A customer support agent manages customers and views orders to help shoppers.
   <Table.Body>
     <Table.Row>
       <Table.Cell>
-        `customer:read`, `customer:create`, `customer:update`, `customer_address:read`, `customer_address:create`, `customer_address:delete`
+        `customer:read`, `customer:create`, `customer:update`, `customer_address:read`, `customer_address:create`, `customer_address:update`, `customer_address:delete`
       </Table.Cell>
       <Table.Cell>
         Manage customers and their addresses.
@@ -274,10 +270,10 @@ A marketing manager runs promotions and campaigns.
     </Table.Row>
     <Table.Row>
       <Table.Cell>
-        `product:read`, `customer_group:read`, `region:read`, `store:read`
+        `product:read`, `customer_group:read`, `region:read`, `store:read`, `price:read`
       </Table.Cell>
       <Table.Cell>
-        Related read access: select products and customer groups for rules, set prices per region, and read store currencies for campaigns.
+        Related read access: select products and customer groups for rules, set prices per region, view a price list's prices, and read store currencies for campaigns.
       </Table.Cell>
     </Table.Row>
   </Table.Body>

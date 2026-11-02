@@ -94,6 +94,20 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
+          "title": "Admin Customization Guides",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/rbac/admin-customizations",
+              "title": "Check Permissions",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
           "title": "Admin User Guides",
           "autogenerate_tags": "userGuide+rbac",
           "autogenerate_as_ref": true,
@@ -119,6 +133,24 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
               "type": "ref",
               "title": "View Policies",
               "path": "https://docs.medusajs.com/user-guide/settings/policies",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Admin Guides",
+          "autogenerate_tags": "admin+rbac,-jsSdk",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to utilize administrative features of the RBAC Module.",
+          "children": [
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Check Permissions in Admin Customizations",
+              "path": "https://docs.medusajs.com/resources/enterprise/rbac/admin-customizations",
               "children": []
             }
           ]

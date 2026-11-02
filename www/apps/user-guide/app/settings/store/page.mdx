@@ -55,7 +55,7 @@ Your store can support multiple currencies, allowing customers to view prices in
 
 ### Add Currencies
 
-<PermissionsBadge permissions={["store:update", "currency:read"]} />
+<PermissionsBadge permissions={["store:update", "currency:read", "price_preference:read"]} />
 
 To add currencies to your store:
 
@@ -70,7 +70,7 @@ To add currencies to your store:
 
 ### Edit Tax-Inclusive Setting for Currency
 
-<PermissionsBadge permissions={["store:update"]} />
+<PermissionsBadge permissions={["store:update", "currency:read", "price_preference:read"]} />
 
 In the store's settings, you can also manage a currency's tax-inclusive price setting. During checkout, after Medusa calculates the tax of a product or shipping, it will either:
 
@@ -85,7 +85,7 @@ You can manage whether a currency uses tax-inclusive pricing when adding or edit
 
 ### Remove Currencies
 
-<PermissionsBadge permissions={["store:update"]} />
+<PermissionsBadge permissions={["store:update", "currency:read"]} />
 
 You can remove any currency from your store that isn't the default currency. You can add the currency again later if needed.
 
@@ -126,7 +126,7 @@ You can now add translations for resources in the added locales on the [Translat
 
 ### Remove Locales from Store
 
-<PermissionsBadge permissions={["store:update"]} />
+<PermissionsBadge permissions={["store:update", "store_locale:read"]} />
 
 To remove a locale from your store:
 

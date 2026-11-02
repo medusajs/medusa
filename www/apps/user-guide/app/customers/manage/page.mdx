@@ -100,13 +100,13 @@ To edit a customer’s details:
 
 ## View Customer Orders
 
-<PermissionsBadge permissions={["customer:read"]} />
+<PermissionsBadge permissions={["customer:read", "order:read"]} />
 
 You can view a customer’s orders from their details page in the Orders section. By clicking on an order, you can view its details.
 
 ### Transfer Order to Another Customer
 
-<PermissionsBadge permissions={["customer:update", "order:update"]} />
+<PermissionsBadge permissions={["customer:update", "order:read", "order:update"]} />
 
 You can transfer an order to another customer. For example, a guest customer registered, or a customer created an order offline.
 

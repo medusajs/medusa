@@ -26,7 +26,7 @@ This guide covers how to manage inventory items in the Inventory domain of the M
 
 ## Create Inventory Item
 
-<PermissionsBadge permissions={["inventory_item:create", "inventory_level:read"]} />
+<PermissionsBadge permissions={["inventory_item:create", "inventory_level:read", "stock_location:read"]} />
 
 To create an inventory item:
 
@@ -121,7 +121,7 @@ You can manage which locations the inventory item is available in, the quantity 
 
 ### Manage Locations Availability
 
-<PermissionsBadge permissions={["inventory_level:create", "inventory_level:update", "inventory_level:delete"]} />
+<PermissionsBadge permissions={["inventory_level:create", "inventory_level:update", "inventory_level:delete", "stock_location:read"]} />
 
 To manage the locations that an inventory item is available in:
 
@@ -134,7 +134,7 @@ To manage the locations that an inventory item is available in:
 
 ### Manage Quantity Availability
 
-<PermissionsBadge permissions={["inventory_level:update"]} />
+<PermissionsBadge permissions={["inventory_level:update", "stock_location:read"]} />
 
 To manage the in-stock quantity of an inventory item in a location:
 
@@ -171,7 +171,7 @@ To create a reservation for an inventory item:
 
 ### Edit Reservation for Item
 
-<PermissionsBadge permissions={["reservation_item:update"]} />
+<PermissionsBadge permissions={["reservation_item:read", "inventory_item:read", "inventory_level:read", "stock_location:read", "reservation_item:update"]} />
 
 To edit a reservation for an inventory item:
 

@@ -105,7 +105,7 @@ To allocate these items manually:
 
 ## Edit the Shipping Address
 
-<PermissionsBadge permissions={["order_address:update", "order:update"]} />
+<PermissionsBadge permissions={["order_address:update", "order:update", "customer_address:update", "customer:update"]} />
 
 To edit the shipping address used for an order:
 
@@ -121,7 +121,7 @@ To edit the shipping address used for an order:
 
 ## Edit the Billing Address
 
-<PermissionsBadge permissions={["order_address:update", "order:update"]} />
+<PermissionsBadge permissions={["order_address:update", "order:update", "customer_address:update", "customer:update"]} />
 
 To edit the billing address used for an order:
 
@@ -137,7 +137,7 @@ To edit the billing address used for an order:
 
 ## Edit Email Address
 
-<PermissionsBadge permissions={["order:update"]} />
+<PermissionsBadge permissions={["order:update", "customer:update"]} />
 
 You can edit the email address of an order to send order-update notifications to a new email address. This doesn't update the associated customer's email address or transfer the order to a new customer. To transfer the order to a new customer, see the [Transfer Customer Ownership](#transfer-customer-ownership) section.
 

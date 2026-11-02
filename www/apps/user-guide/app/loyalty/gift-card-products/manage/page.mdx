@@ -105,7 +105,7 @@ To edit a gift card product's general information:
 
 ## Edit Denominations
 
-<PermissionsBadge permissions={["product:update"]} />
+<PermissionsBadge permissions={["product:update", "product_option:read", "product_option:create", "product_option:update", "product_option:delete"]} />
 
 To edit the available denominations for a gift card product:
 
@@ -121,7 +121,7 @@ To edit the available denominations for a gift card product:
 
 ## Edit Denomination Pricing
 
-<PermissionsBadge permissions={["product:update", "product_variant:update"]} />
+<PermissionsBadge permissions={["product:update", "product_variant:read", "product_variant:create", "product_variant:update", "product_variant:delete"]} />
 
 To edit the pricing for a gift card product's denominations:
 
@@ -136,7 +136,7 @@ Once you're done, click the **Save** button to save your changes.
 
 ## Manage Product Media
 
-<PermissionsBadge permissions={["product:update"]} />
+<PermissionsBadge permissions={["product:update", "file:create"]} />
 
 To manage the images for a gift card product:
 
@@ -165,7 +165,7 @@ You can also delete an image directly from the media section by:
 
 ## Manage Sales Channels
 
-<PermissionsBadge permissions={["product:update"]} />
+<PermissionsBadge permissions={["product:update", "sales_channel:read"]} />
 
 To control which sales channels a gift card product is available in:
 

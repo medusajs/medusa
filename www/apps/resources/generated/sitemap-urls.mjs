@@ -271,6 +271,7 @@ export const sitemapUrls = [
   "/deployment",
   "/deployment/storefront/vercel",
   "/enterprise",
+  "/enterprise/rbac/admin-customizations",
   "/enterprise/rbac/api-routes",
   "/enterprise/rbac/concepts",
   "/enterprise/rbac/define-policies",

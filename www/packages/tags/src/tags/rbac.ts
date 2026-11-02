@@ -12,6 +12,10 @@ export const rbac = [
     "path": "https://docs.medusajs.com/user-guide/settings/roles"
   },
   {
+    "title": "Check Permissions in Admin Customizations",
+    "path": "https://docs.medusajs.com/resources/enterprise/rbac/admin-customizations"
+  },
+  {
     "title": "Define Custom Policies",
     "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies"
   },

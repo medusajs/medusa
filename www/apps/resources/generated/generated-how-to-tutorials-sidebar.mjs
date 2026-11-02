@@ -300,6 +300,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Check Permissions in Admin Customizations",
+              "path": "https://docs.medusajs.com/resources/enterprise/rbac/admin-customizations",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Configure View Configurations",
               "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
               "children": []

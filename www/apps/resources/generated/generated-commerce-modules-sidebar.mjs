@@ -596,8 +596,8 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
-              "title": "Authentication Types",
-              "path": "https://docs.medusajs.com/user-guide/tips/authentication-types",
+              "title": "Login Options",
+              "path": "https://docs.medusajs.com/user-guide/tips/login-options",
               "children": []
             },
             {
@@ -18092,15 +18092,15 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
-              "title": "Authentication Types",
-              "path": "https://docs.medusajs.com/user-guide/tips/authentication-types",
+              "title": "Common Roles",
+              "path": "https://docs.medusajs.com/user-guide/settings/roles/common-roles",
               "children": []
             },
             {
               "loaded": true,
               "type": "ref",
-              "title": "Common Roles",
-              "path": "https://docs.medusajs.com/user-guide/settings/roles/common-roles",
+              "title": "Login Options",
+              "path": "https://docs.medusajs.com/user-guide/tips/login-options",
               "children": []
             },
             {

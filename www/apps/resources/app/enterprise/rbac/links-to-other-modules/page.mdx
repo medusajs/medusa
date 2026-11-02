@@ -11,7 +11,7 @@ export const metadata = {
 
 # {metadata.title}
 
-<EnterpriseNotice beta featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+<EnterpriseNotice beta />
 
 This document showcases the module links defined between the role-based access control (RBAC) Module and other Commerce Modules.
 
@@ -76,7 +76,7 @@ You assign roles to admin users to control their access. Medusa stores each of t
 
 Since the assignment stores the granted entity's type and ID, it isn't a stored link between two data models. Instead, Medusa defines read-only links that expose the roles of a `User` or an `Invite` from the [User Module](../../../commerce-modules/user/page.mdx).
 
-An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their assigned roles.
+An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their unscoped role assignments. A [scoped assignment](../concepts/page.mdx#scoped-assignments) only adds its role's policies to requests within that scope.
 
 ### Retrieve with Query
 
@@ -117,7 +117,22 @@ const { data: users } = useQueryGraphStep({
   </CodeTab>
 </CodeTabs>
 
-Pass the same field when querying the `invite` entity to retrieve the roles that an invite grants once the user accepts it.
+The `rbac_roles` field returns the roles of all the user's assignments, including scoped ones, without their scope. To retrieve each assignment's scope, pass `user_role_assignments.*` in `fields` instead:
+
+```ts
+const { data: users } = await query.graph({
+  entity: "user",
+  fields: [
+    "user_role_assignments.*",
+    "user_role_assignments.role.*",
+  ],
+})
+
+// users[0].user_role_assignments[0].scope
+// users[0].user_role_assignments[0].scope_id
+```
+
+Pass the `rbac_roles.*` field when querying the `invite` entity to retrieve the roles that an invite grants once the user accepts it. Use `invite_role_assignments.*` to retrieve the invite's assignments with their scope.
 
 To find the entities that a role is assigned to, query the `rbac_role_assignment` entity instead:
 
@@ -160,6 +175,8 @@ await assignRolesWorkflow(container).run({
 })
 ```
 
+Pass a `scope` object with the `type` and `id` properties in an assignment to restrict the role to that scope.
+
 To remove a role from an admin user, use the `unassignRolesWorkflow` with the same input shape:
 
 ```ts
@@ -181,4 +198,6 @@ await unassignRolesWorkflow(container).run({
 })
 ```
 
-Both workflows check that the actor in `granting_actor_id` already has all the policies of the roles being changed.
+Both workflows check that the actor in `granting_actor_id` already has all the policies of the roles being changed. If the actor is acting within a scope, pass it in the `granting_scope` property, and pass the actor's type in `granting_actor` if it isn't `user`.
+
+When you omit the `scope` of an assignment, the `unassignRolesWorkflow` removes all the matching assignments, both scoped and unscoped. It also fails if the removal leaves no admin user with the unscoped [Super Admin role](../concepts/page.mdx#super-admin-role). The `deleteUsersWorkflow` runs the same check before deleting users.

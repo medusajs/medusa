@@ -19,7 +19,9 @@ npx medusa user --email <email> [--password <password>]
 
 <Note title="Using RBAC?">
 
-If the [role-based access control (RBAC)](../../../enterprise/rbac/page.mdx) feature is enabled, the created user is assigned the Super Admin role by default, giving them full access to all resources and operations.
+If the [role-based access control (RBAC) Module](../../../enterprise/rbac/page.mdx) is installed, the created user is assigned the Super Admin role by default, giving them full access to all resources and operations.
+
+When you pass the `--invite` option, the invite carries the Super Admin role, and the user receives it when they accept the invite.
 
 </Note>
 

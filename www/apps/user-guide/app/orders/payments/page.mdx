@@ -74,7 +74,7 @@ At the top of the order details page, you can see the payment status of the orde
 
 ## Capture Payment
 
-<PermissionsBadge permissions={["capture:create", "order:update"]} />
+<PermissionsBadge permissions={["capture:create", "order:update", "payment:read"]} />
 
 Unless the payment provider that the customer chose is configured to automatically capture an order's payment, you need to manually capture the payment.
 
@@ -99,7 +99,7 @@ To capture an order’s payment:
 
 ## Refund Payment
 
-<PermissionsBadge permissions={["refund:create", "order:update"]} />
+<PermissionsBadge permissions={["refund:create", "order:update", "payment:read"]} />
 
 You can refund a payment either partially or in full. This can be done for various reasons, such as when a customer returns an item or if there was an error in the order.
 

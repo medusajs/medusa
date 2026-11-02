@@ -47,6 +47,14 @@ This opens the user's details page where you can also manage the user.
 
 ![User details page](https://res.cloudinary.com/dza7lstvk/image/upload/v1739964575/User%20Guide/Screenshot_2025-02-19_at_1.29.20_PM_lffysp.png)
 
+### View a User's Roles
+
+<PermissionsBadge permissions={["user:read", "rbac_role:read", "rbac_role_assignment:read"]} />
+
+If your store uses the role-based access control (RBAC) feature, the user's details page also has a **Roles** section that lists the roles assigned to the user. Click a role to view its details.
+
+You assign roles to a user from the role's details page, or when you [invite the user](./invites/page.mdx#invite-a-user). Learn more in the [Manage Roles](../roles/page.mdx#assign-users-to-a-role) guide.
+
 ---
 
 ## Edit a User’s Details
@@ -88,6 +96,8 @@ To edit the user's metadata:
 
 ## Copy Reset Password Link
 
+<PermissionsBadge permissions={["user:update"]} />
+
 If a user authenticates with an email and password, you can generate and copy a reset password link for them. This is useful when you want to share the link directly without sending an email.
 
 <Note>
@@ -119,6 +129,12 @@ This feature is available since [Medusa v2.12.0](https://github.com/medusajs/med
 <Note type="warning">
 
 Deleting a user is irreversible.
+
+</Note>
+
+<Note>
+
+If your store uses the role-based access control (RBAC) feature, you can't delete the last user that has the **Super Admin** role. Assign the **Super Admin** role to another user first.
 
 </Note>
 

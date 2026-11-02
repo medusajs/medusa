@@ -10,7 +10,7 @@ export const metadata = {
 
 # {metadata.title}
 
-<EnterpriseNotice beta featureFlag="rbac" featureFlagHref="#how-to-use-the-rbac-module" />
+<EnterpriseNotice beta />
 
 In this section of the documentation, you will find resources to learn more about the role-based access control (RBAC) Module and how to use it in your application.
 
@@ -27,9 +27,9 @@ The RBAC Module restricts what admin users can do based on the roles assigned to
 ## RBAC Features
 
 - [Roles and Policies](./concepts/page.mdx#role): Group policies into roles, then assign roles to admin users to control their access.
-- [Role Hierarchy](./concepts/page.mdx#role-hierarchy): Build roles that inherit policies from parent roles.
 - [Custom Policies](./define-policies/page.mdx): Define policies for your custom resources so they can be protected by RBAC.
 - [Scopes](./scopes/page.mdx): Restrict a role to a single entity instance, such as one vendor on a marketplace.
+- [Admin Customization Checks](./admin-customizations/page.mdx): Show or hide content in your admin customizations based on the admin user's permissions and roles.
 
 ---
 
@@ -50,37 +50,32 @@ The RBAC Module is an [enterprise feature](../page.mdx), so it only loads when y
 
 ```shell
 MEDUSA_LICENSE_KEY=your_license_key
-MEDUSA_LICENSE_PUBLIC_KEY=your_license_public_key
 ```
 
 If the key is missing or doesn't cover the `rbac` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](../page.mdx) documentation.
 
-### 2. Enable the RBAC Feature Flag
+### 2. Register the RBAC Module
 
-The RBAC Module is only registered when its feature flag is enabled. You can enable it in `medusa-config.ts`:
+Medusa doesn't register the RBAC Module by default. To use it, add it to the `modules` array in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
   // ...
-  featureFlags: {
-    rbac: true,
-  },
+  modules: [
+    {
+      resolve: "@medusajs/medusa/rbac",
+    },
+  ],
 })
 ```
 
-Or set the following environment variable:
-
-```shell
-MEDUSA_FF_RBAC=true
-```
-
-Learn more about feature flags in the [feature flags documentation](!docs!/learn/debugging-and-testing/feature-flags).
+Once you register the module, Medusa checks an admin user's roles before allowing an operation on its API routes.
 
 You can also configure the RBAC Module and the actor types allowed on its API routes. Learn more in the [Module Options](./module-options/page.mdx) guide.
 
 ### 3. Run Migrations
 
-After enabling the feature flag, run the migrations to create the RBAC tables in the database:
+After registering the module, run the migrations to create the RBAC tables in the database:
 
 ```bash
 npx medusa db:migrate

@@ -94,7 +94,7 @@ To edit a product variant's general details:
 
 ## Manage Product Variant's Translations
 
-<PermissionsBadge permissions={["translation:update"]} />
+<PermissionsBadge permissions={["translation:read", "translation:create", "translation:update", "translation:delete", "translation_setting:read", "store:read", "store_locale:read"]} />
 
 <Note>
 
@@ -118,7 +118,7 @@ To manage translations for the product:
 
 ## Edit Product Variant Prices
 
-<PermissionsBadge permissions={["product:update", "product_variant:update", "price:update"]} />
+<PermissionsBadge permissions={["product:update", "product_variant:read", "product_variant:create", "product_variant:update", "product_variant:delete", "price:update"]} />
 
 To edit the prices of product variants:
 
@@ -141,7 +141,7 @@ Tax-inclusive pricing is configured in the [currency's](../../settings/store/pag
 
 ## Manage Product Variant Inventory
 
-<PermissionsBadge permissions={["product:update", "product_variant:update", "inventory_level:update"]} />
+<PermissionsBadge permissions={["product:update", "product_variant:update", "inventory_item:read", "inventory_level:read", "inventory_level:create", "inventory_level:update", "inventory_level:delete", "stock_location:read"]} />
 
 There are many ways to manage the inventory of a product variant. From the product's details page, you can manage the inventory of its variants using the [bulk editor](../../tips/bulk-editor/page.mdx), providing you with an intuitive interface.
 

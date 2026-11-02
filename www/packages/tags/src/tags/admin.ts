@@ -4,6 +4,10 @@ export const admin = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
   },
   {
+    "title": "Check Permissions in Admin Customizations",
+    "path": "https://docs.medusajs.com/resources/enterprise/rbac/admin-customizations"
+  },
+  {
     "title": "apiKey",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/apiKey"
   },

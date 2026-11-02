@@ -60,6 +60,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/user/invite-user-subscriber"
   },
   {
+    "title": "Check Permissions in Admin Customizations",
+    "path": "https://docs.medusajs.com/resources/enterprise/rbac/admin-customizations"
+  },
+  {
     "title": "Define Custom Policies",
     "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies"
   },

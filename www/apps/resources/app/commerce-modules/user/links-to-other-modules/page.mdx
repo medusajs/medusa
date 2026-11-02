@@ -49,6 +49,20 @@ The User Module has the following links to other modules:
         [Learn more](#rbac-module)
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        [Invite](/references/user/models/Invite)
+      </Table.Cell>
+      <Table.Cell>
+        `RbacRoleAssignment` in [RBAC Module](../../../enterprise/rbac/page.mdx)
+      </Table.Cell>
+      <Table.Cell>
+        Read-only - has many
+      </Table.Cell>
+      <Table.Cell>
+        [Learn more](#invite-roles)
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -56,11 +70,11 @@ The User Module has the following links to other modules:
 
 ## RBAC Module
 
-<EnterpriseNotice featureFlag="rbac" featureFlagHref="../../../enterprise/rbac/page.mdx#how-to-use-the-rbac-module" />
+<EnterpriseNotice />
 
-You assign roles to admin users to control their access. Medusa stores each of these grants as an `RbacRoleAssignment` record in the [RBAC Module](../../../enterprise/rbac/page.mdx), then exposes an admin user's roles through a read-only link.
+You assign roles to admin users to control their access. Medusa stores each of these grants as an `RbacRoleAssignment` record in the [RBAC Module](../../../enterprise/rbac/page.mdx), then exposes the roles of an admin user or an invite through read-only links.
 
-An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their assigned roles.
+An admin user can have multiple roles, and a role can be assigned to multiple users. The user's effective policies are the union of the policies from all their unscoped role assignments. A scoped assignment only adds its role's policies to requests within that scope.
 
 ### Retrieve with Query
 
@@ -101,7 +115,9 @@ const { data: users } = useQueryGraphStep({
   </CodeTab>
 </CodeTabs>
 
-To find the users a role is assigned to, query the `rbac_role_assignment` entity and filter by the role's ID.
+The `rbac_roles` field doesn't include the scope of each assignment. To retrieve it, pass `user_role_assignments.*` in `fields` instead.
+
+To find the users a role is assigned to, query the `rbac_role_assignment` entity and filter by the role's ID and by `reference: "user"`.
 
 ### Manage Role Assignments
 
@@ -127,5 +143,24 @@ await assignRolesWorkflow(container).run({
 ```
 
 To remove a role from an admin user, use the `unassignRolesWorkflow` with the same input shape.
+
+### Invite Roles
+
+An invite can grant roles to the admin user created when someone accepts the invite. Medusa stores these grants as `RbacRoleAssignment` records whose `reference` is `invite`.
+
+To retrieve the roles of an invite with [Query](!docs!/learn/fundamentals/module-links/query), pass `rbac_roles.*` in `fields`:
+
+```ts
+const { data: invites } = await query.graph({
+  entity: "invite",
+  fields: [
+    "rbac_roles.*",
+  ],
+})
+
+// invites[0].rbac_roles
+```
+
+To set an invite's roles when you create it, pass the `roles` parameter to the [Create Invite](!api!/admin#invites_postinvites) API route, as explained in the [RBAC API Routes](../../../enterprise/rbac/api-routes/page.mdx#assign-roles-to-invites) guide.
 
 Learn more in the [RBAC Module's links documentation](../../../enterprise/rbac/links-to-other-modules/page.mdx#user-module).

@@ -4,9 +4,9 @@ export const metadata = {
 
 # {metadata.title}
 
-<EnterpriseNotice beta featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+<EnterpriseNotice beta />
 
-In this guide, you'll learn about the main concepts of the role-based access control (RBAC) Module: policies, roles, role hierarchy, and role assignments.
+In this guide, you'll learn about the main concepts of the role-based access control (RBAC) Module: policies, roles, and role assignments.
 
 ## Policy
 
@@ -67,30 +67,28 @@ An admin user assigned a role gains all the policies of that role.
 
 ### Super Admin Role
 
-When you enable the RBAC feature flag, the Medusa application does the following:
+When you install the RBAC Module, the Medusa application does the following:
 
-1. Creates a Super Admin role with the `*:*` wildcard policy. This role has full access to all resources and operations. It's created by the RBAC Module when the application starts or when you run database migrations.
-2. Grants the Super Admin role to all existing admin users. This ensures your current users keep their full access after enabling RBAC. This happens the first time you run database migrations after enabling the RBAC feature flag.
+1. Creates a Super Admin role with the `*:*` wildcard policy. This role has full access to all resources and operations. The RBAC Module creates it every time the application starts or you run database migrations, if it doesn't exist.
+2. Grants the Super Admin role, without a scope, to all existing admin users. This ensures your current users keep their full access after installing the RBAC Module. This happens when you run database migrations after installing the module.
 
-New users created with the [user CLI command](../../../medusa-cli/commands/user/page.mdx) are also assigned the Super Admin role by default while RBAC is enabled.
+New users created with the [user CLI command](../../../medusa-cli/commands/user/page.mdx) are also assigned the Super Admin role by default while the RBAC Module is installed.
 
----
+Medusa's workflows and API routes also protect the Super Admin role:
 
-## Role Hierarchy
+- You can't delete the Super Admin role or its `*:*` policy.
+- You can't remove the Super Admin role from the last user that holds it without a scope, or delete that user.
 
-A role can have one or more parent roles. When a role has a parent, it inherits all the parent's policies in addition to its own.
+Calling the RBAC Module's service directly skips these checks.
 
-This hierarchy is represented by the `RbacRoleParent` data model. Each record links a role to one of its parents, so a role can have multiple parent records. The `RbacRole` data model exposes these records through its `parents` relation.
+Some operations affect the whole application, so they require the `*:*` wildcard policy that the Super Admin role has:
 
-For example, if a "Senior Product Manager" role has the "Product Manager" role as a parent, it inherits all of the Product Manager's policies. The following diagram shows how an `RbacRoleParent` record links these two roles:
+- Running a workflow with the [Execute Workflow API route](!api!/admin#workflows-executions_postworkflowsexecutionsworkflow_idrun) (`POST /admin/workflows-executions/:workflow_id/run`).
+- Creating, updating, or deleting a system default view configuration, and setting the default layout configuration, in the Medusa Admin.
 
-```mermaid
-graph TD
-    A["RbacRole<br/>Senior Product Manager"] -->|role| B["RbacRoleParent"]
-    B -->|parent| C["RbacRole<br/>Product Manager"]
-```
+### Delete a Role
 
-Role inheritance is resolved recursively, so a role inherits the policies of its parents, their parents, and so on. Medusa prevents circular inheritance: a role can't be a parent of itself, directly or indirectly.
+When you delete a role, Medusa also deletes its links to policies and its role assignments. So, the entities assigned the role lose its policies.
 
 ---
 
@@ -105,7 +103,9 @@ A role assignment, represented by the `RbacRoleAssignment` data model, grants a 
 
 Since the assignment stores the entity's type and ID rather than pointing to a specific data model, you can grant roles to admin users, pending invites, or your own custom entities.
 
-An entity can have multiple roles. Its effective policies are the union of the policies from all its assignments, including any policies inherited through role hierarchy.
+An entity can have multiple roles. Its effective policies are the union of the policies from all its assignments that apply to the request.
+
+An entity can only have one assignment of a role without a scope, and one assignment of a role per scope. Creating a duplicate assignment fails.
 
 ### Assign a Role
 
@@ -138,13 +138,17 @@ await assignRolesWorkflow(container).run({
 
 When you pass a `granting_actor_id`, the workflow checks that the granting actor already has all the policies of the roles being assigned. This prevents an admin user from granting access that they don't have themselves.
 
+The granting actor is an admin user by default. If the granting actor is of another actor type, pass its type in the `granting_actor` input, such as `vendor_admin`.
+
+When you remove a role with the `unassignRolesWorkflow` without passing a `scope` in an assignment, the workflow removes the entity's assignments of that role in all scopes, as well as its unscoped assignment. Pass a `scope` to only remove the assignment in that scope.
+
 Learn how to retrieve an entity's roles in the [Links to Other Modules](../links-to-other-modules/page.mdx) guide.
 
 ### Scoped Assignments
 
 An assignment's `scope` and `scope_id` restrict the role to a single entity instance. For example, an assignment whose `scope` is `vendor` and whose `scope_id` is `ven_123` grants its policies on requests acting within that vendor.
 
-A request only acts within a scope if your application sets one, as explained in the [Permission Resolution](#permission-resolution) section. Requests without a scope consider every assignment, scoped or not.
+A request only acts within a scope if your application sets one, as explained in the [Permission Resolution](#permission-resolution) section. Requests without a scope only consider unscoped assignments.
 
 When you assign a role with the `assignRolesWorkflow`, you pass the two values as one `scope` object instead:
 
@@ -182,7 +186,7 @@ When you assign a role, you can pass a `granting_scope` to restrict the granting
 
 In the above example, the user assigning the role can only grant it for the `ven_123` vendor, since their effective policies are resolved in that scope. They can't assign the role for another vendor, since they don't have access there.
 
-If you omit `granting_scope`, the workflow resolves the granting actor's effective policies across all their assignments, whatever scope each one has. A user with a role for one vendor can then grant that role for another, so pass `granting_scope` whenever the grant happens within a scope.
+If you omit `granting_scope`, the workflow only considers the granting actor's unscoped assignments. A user whose roles are all scoped to a vendor can't assign roles, even within that vendor, so pass `granting_scope` whenever the grant happens within a scope.
 
 An unscoped assignment always counts, in both cases. For example, a Super Admin can assign roles in any scope, since they have the `*:*` wildcard policy without a scope.
 
@@ -192,10 +196,26 @@ Medusa's own resources don't use scopes. An assignment without a scope applies t
 
 ## Permission Resolution
 
-When the RBAC feature flag is enabled, Medusa checks an admin user's effective policies before allowing an operation on a resource. A request succeeds if the user has a matching policy, including a wildcard policy that covers the resource or operation. Otherwise, the request fails with a `403` error.
+When the RBAC Module is installed, Medusa checks an admin user's effective policies before allowing an operation on a resource. A request succeeds if the user has a matching policy, including a wildcard policy that covers the resource or operation. Otherwise, the request fails with a `403` error.
 
-Medusa resolves the roles of the request's actor for the scope the request acts within, considering the assignments that are unscoped or scoped to it. Your application sets that scope in a middleware that runs before the route's access check. Medusa's own routes don't set a scope, and requests without one consider every assignment of the actor.
+Medusa resolves the roles of the request's actor for the scope the request acts within, considering the assignments that are unscoped or scoped to it. Your application sets that scope in a middleware that runs before the route's access check. Medusa's own routes don't set a scope, and requests without one only consider the actor's unscoped assignments.
 
-Medusa also applies the policies to the fields a request asks for. If the actor can't read a related resource, Medusa removes the fields of that resource from the response instead of rejecting the request. This requires the separate `rbac_filter_fields` feature flag, as explained in the [Protect API Routes](../protect-routes/page.mdx#field-level-filtering) guide.
+Medusa also applies the policies to the fields a request asks for. If the actor can't read a related resource, Medusa removes the fields of that resource from the response instead of rejecting the request. This applies to routes that check permissions and whose query configuration specifies an entity. Learn more in the [Protect API Routes](../protect-routes/page.mdx#field-level-filtering) guide.
 
-When the RBAC feature flag is disabled, Medusa enforces no access control, and admin users have access to all resources and operations.
+When the RBAC Module isn't installed, Medusa enforces no access control, and admin users have access to all resources and operations.
+
+### Permission Caching
+
+When you use the [Caching Module](../../../infrastructure-modules/caching/page.mdx), Medusa caches the policies of each role for 24 hours to avoid retrieving them from the database on every request.
+
+Medusa clears the cached policies when the RBAC Module creates, updates, deletes, or restores roles, policies, or the links between them. So, changes you make with Medusa's API routes, workflows, or the RBAC Module's service apply immediately.
+
+<Note type="warning">
+
+If you change RBAC data without the RBAC Module's service, such as with raw SQL queries, Medusa doesn't clear the cache. Users keep their old permissions until the cached entries expire.
+
+</Note>
+
+### API Key Actor Type
+
+Requests authenticated with a secret API key have the `api-key` actor type. By default, a secret API key acts with the roles of the admin user who created it. Learn how to change this behavior in the [Module Options](../module-options/page.mdx#api-key-actor-type) guide.

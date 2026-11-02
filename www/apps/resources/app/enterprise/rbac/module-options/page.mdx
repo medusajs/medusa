@@ -8,15 +8,15 @@ export const metadata = {
 
 # {metadata.title}
 
-<EnterpriseNotice beta featureFlag="rbac" featureFlagHref="../page.mdx#how-to-use-the-rbac-module" />
+<EnterpriseNotice beta />
 
 In this guide, you'll learn about the options of the RBAC Module, and the configuration of the Medusa application that affects it.
 
 ## actors
 
-The `actors` option tells Medusa which of your actor types can hold roles, which entities hold those roles, and which scopes the roles can be restricted to.
+The `actors` option tells Medusa which of your actor types can hold roles, and which entities hold those roles.
 
-You only need this option when you add roles to actor types of your own, such as a `vendor_admin` on a marketplace. The RBAC Module always sets the entry of the `user` actor type, which is the admin user, so admin roles work without any configuration.
+You only need this option when you add roles to actor types of your own, such as a `vendor_admin` on a marketplace, or when you change how existing actor types resolve their roles. The RBAC Module always sets entries for the `user` actor type, which is the admin user, and the `api-key` actor type, so admin roles work without any configuration.
 
 For example:
 
@@ -33,14 +33,6 @@ module.exports = defineConfig({
               {
                 entity: "vendor_admin",
                 path: "id",
-                scope_configs: [
-                  {
-                    type: "vendor",
-                    path: "vendors",
-                    id_field: "id",
-                    display_field: "name",
-                  },
-                ],
               },
             ],
           },
@@ -51,22 +43,116 @@ module.exports = defineConfig({
 })
 ```
 
-The `actors` option is an object whose keys are actor types. Each actor type accepts the following property:
+The `actors` option is an object whose keys are actor types. Each actor type accepts the following properties:
 
 - `grantees`: An array of objects, each specifying an entity that can hold role assignments for that actor type. Each object accepts the following properties:
   - `entity`: A string indicating the name of the entity that holds the assignments. Medusa matches it against the `reference` property of a role assignment.
   - `path`: A string indicating the path from the actor to the entity's ID, such as `id` or `vendors.id`.
-  - `scope_configs`: An optional array of objects, each declaring a scope that the entity's assignments can be restricted to.
+- `actor_entity`: An optional string indicating the name of the entity Medusa retrieves the actor from with [Query](!docs!/learn/fundamentals/module-links/query) to resolve the `path` of each grantee. It defaults to the actor type, so you only need it when the actor type and the entity have different names, such as the `api-key` actor type and the `api_key` entity.
 
 An actor type without an entry resolves to no roles at all.
 
-Refer to the [RBAC Scopes](../scopes/page.mdx#1-declare-the-scope) guide for the properties of a scope configuration, and for how a request enters a scope.
+Refer to the [RBAC Scopes](../scopes/page.mdx#1-configure-the-actor-type) guide to learn how to configure a custom actor type for scoped roles, and how a request enters a scope.
+
+### user Actor Type
+
+The RBAC Module merges the `user` entry of the `actors` option you pass with its default entry. It keeps the grantees you configure, and it always adds the admin user itself as a grantee with `{ entity: "user", path: "id" }`.
+
+So, you can add grantees to admin users without losing their own role assignments. For example, if admin users belong to teams that hold role assignments:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/rbac",
+      options: {
+        actors: {
+          user: {
+            grantees: [
+              {
+                entity: "team",
+                path: "teams.id",
+              },
+            ],
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+In this example, an admin user's effective policies include the policies of their own role assignments and the role assignments of their teams.
+
+### api-key Actor Type
+
+Requests authenticated with a secret API key have the `api-key` actor type. By default, a secret API key acts with the roles of the admin user who created it. You don't need to configure anything for this behavior.
+
+Under the hood, the RBAC Module applies a default `api-key` entry equivalent to the following configuration:
+
+```ts title="Default configuration"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/rbac",
+      options: {
+        actors: {
+          "api-key": {
+            actor_entity: "api_key",
+            grantees: [
+              {
+                entity: "user",
+                path: "created_by",
+              },
+            ],
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+In this entry:
+
+- `actor_entity` tells Medusa to retrieve the actor from the `api_key` entity, since the actor type's name, `api-key`, differs from the entity's name.
+- The grantee follows the API key's `created_by` property to the admin user who created the key. So, Medusa resolves the key's roles from that user's role assignments.
+
+To give each secret API key its own role assignments instead, override the entry so that the API key itself is the grantee:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/rbac",
+      options: {
+        actors: {
+          "api-key": {
+            actor_entity: "api_key",
+            grantees: [
+              {
+                entity: "api_key",
+                path: "id",
+              },
+            ],
+          },
+        },
+      },
+    },
+  ],
+})
+```
+
+Then, assign roles to an API key with a role assignment whose `reference` is `api_key` and whose `reference_id` is the API key's ID. Unlike the `user` entry, the RBAC Module doesn't merge this entry with its default, so the API key no longer acts with its creator's roles.
 
 ---
 
 ## rbacActorTypes Configuration
 
-The RBAC API routes live under the `/rbac` prefix, and they aren't admin routes. They reuse the admin CORS configuration, since the Medusa Admin dashboard consumes them, but they don't restrict authentication to the `user` actor type the way the `/admin` routes do.
+The RBAC API routes live under the `/rbac` prefix, and they aren't admin routes. They reuse the admin CORS configuration by default, since the Medusa Admin dashboard consumes them, but they don't restrict authentication to the `user` actor type the way the `/admin` routes do.
 
 Use the `http.rbacActorTypes` configuration in `medusa-config.ts` to set the actor types allowed to authenticate against these routes. It defaults to `["user"]`, so only admin users reach them out of the box. Medusa rejects a request authenticated as any other actor type with a `401` error.
 
@@ -96,6 +182,26 @@ module.exports = defineConfig({
 })
 ```
 
-The `/rbac` routes accept bearer tokens and sessions. They don't accept secret API keys, since those authenticate as the `user` actor type only.
+The `/rbac` routes only accept bearer tokens and sessions, so you can't authenticate requests to them with a secret API key.
 
 Learn more about these routes, and how to use them with a custom actor type, in the [RBAC API Routes](../api-routes/page.mdx) guide.
+
+---
+
+## rbacCors Configuration
+
+The `/rbac` routes use the `http.adminCors` configuration by default. If another client, such as a custom dashboard for a non-`user` actor type, calls these routes from a different origin, set the `http.rbacCors` configuration in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      rbacCors: process.env.RBAC_CORS,
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+It accepts the same format as `adminCors`. When you set it, it replaces `adminCors` for the `/rbac` routes rather than extending it. So, if the Medusa Admin dashboard also uses the `/rbac` routes, include its origin as well.
