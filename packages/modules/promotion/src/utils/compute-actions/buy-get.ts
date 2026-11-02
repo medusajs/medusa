@@ -335,25 +335,43 @@ function applyPromotionToTargetItems(
     const item = itemsMap.get(targetItem.item_id)!
     const appliedPromoValue =
       methodIdPromoValueMap.get(item.id) ?? MathBN.convert(0)
+
+    const itemBase = promotion.is_tax_inclusive
+      ? item.original_total
+      : item.subtotal
+
+    const appliedInBase = promotion.is_tax_inclusive
+      ? MathBN.mult(
+          appliedPromoValue,
+          MathBN.div(item.original_total, item.subtotal)
+        )
+      : appliedPromoValue
+
+    const remainingItemAmount = MathBN.sub(itemBase, appliedInBase)
+    if (MathBN.lte(remainingItemAmount, 0)) {
+      continue
+    }
+
     const multiplier = MathBN.min(targetItem.quantity, remainingQtyToApply)
-    const pricePerUnit = MathBN.div(
-      promotion.is_tax_inclusive ? item.original_total : item.subtotal,
-      item.quantity
-    )
-    const applicableAmount = MathBN.mult(pricePerUnit, multiplier)
+    const pricePerUnit = MathBN.div(itemBase, item.quantity)
+    const targetUnitsAmount = MathBN.mult(pricePerUnit, multiplier)
+    const applicableAmount = MathBN.min(targetUnitsAmount, remainingItemAmount)
 
     let amount
     if (promotion.application_method?.type === ApplicationMethodType.FIXED) {
-      // Fixed: apply value per unit, capped at item price
+      // Fixed: apply value per unit, capped at item price and remaining amount
       amount = MathBN.min(
         MathBN.mult(applicationConfig.promotionValue, multiplier),
         applicableAmount
       )
     } else {
-      amount = MathBN.mult(
-        applicableAmount,
-        applicationConfig.promotionValue
-      ).div(100)
+      amount = MathBN.min(
+        MathBN.mult(
+          targetUnitsAmount,
+          applicationConfig.promotionValue
+        ).div(100),
+        applicableAmount
+      )
     }
 
     if (MathBN.lte(amount, 0)) {

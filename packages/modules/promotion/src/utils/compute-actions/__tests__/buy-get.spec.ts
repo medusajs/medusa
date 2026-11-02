@@ -78,4 +78,48 @@ describe("getComputedActionsForBuyGet", () => {
       ])
     }
   )
+
+  it("should cap BuyGet discount at remaining eligible amount when item has prior promotion discounts", () => {
+    const methodIdPromoValueMap = new Map<string, any>([
+      ["item_cheap", 500],
+    ])
+
+    const result = getComputedActionsForBuyGet(
+      promotion,
+      [cheapItem, expensiveItem],
+      methodIdPromoValueMap,
+      new Map(),
+      new Map()
+    )
+
+    expect(
+      result.map((action: any) => ({
+        ...action,
+        amount: MathBN.convert(action.amount).toNumber(),
+      }))
+    ).toEqual([
+      {
+        action: ComputedActions.ADD_ITEM_ADJUSTMENT,
+        item_id: "item_cheap",
+        amount: 97,
+        code: "BUY3GET1",
+      },
+    ])
+  })
+
+  it("should not apply BuyGet discount when item is already fully discounted", () => {
+    const methodIdPromoValueMap = new Map<string, any>([
+      ["item_cheap", 597],
+    ])
+
+    const result = getComputedActionsForBuyGet(
+      promotion,
+      [cheapItem],
+      methodIdPromoValueMap,
+      new Map(),
+      new Map()
+    )
+
+    expect(result).toEqual([])
+  })
 })
