@@ -11,6 +11,10 @@ export const getDuplicates = (
   const duplicates = new Set<string>()
 
   collection.forEach((item) => {
+    if (item === undefined) {
+      return
+    }
+
     if (uniqueElements.has(item)) {
       duplicates.add(item)
     } else {
