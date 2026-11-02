@@ -52636,11 +52636,13 @@ In this example, the `country` field of the `Brand` data model is rendered as a 
 
 In your admin dashboard customization, you can define a custom render mode to render a column's value in a specific way. You can then use that render mode in the entity's override configuration to render a column's value with your custom logic.
 
-Cell renderers are defined in the `src/admin/lib/cell-renderers.tsx` file of your Medusa project. You can define multiple cell renderers in this file, each defined with the `defineCellRenderer` utility.
+You define cell renderers in the `src/admin/cell-renderers.tsx` file of your Medusa project. You can define multiple cell renderers in this file, each defined with the `defineCellRenderer` utility.
 
-For example, create the file `src/admin/lib/cell-renderers.tsx` with the following content:
+The file must be located directly under `src/admin`. Medusa ignores a `cell-renderers.tsx` file in any subdirectory, such as `src/admin/lib`, without showing a warning, and columns using its render modes fall back to the default rendering.
 
-```tsx title="src/admin/lib/cell-renderers.tsx"
+For example, create the file `src/admin/cell-renderers.tsx` with the following content:
+
+```tsx title="src/admin/cell-renderers.tsx"
 import { defineCellRenderer } from "@medusajs/dashboard/lib"
 
 defineCellRenderer("capitalized", {
@@ -52699,7 +52701,7 @@ A custom render mode can accept configuration through the column's `metadata`, w
 
 For example, add a `truncated` render mode that shortens a value to a maximum length:
 
-```tsx title="src/admin/lib/cell-renderers.tsx"
+```tsx title="src/admin/cell-renderers.tsx"
 import { defineCellRenderer } from "@medusajs/dashboard/lib"
 
 defineCellRenderer("truncated", {
@@ -152404,6 +152406,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /admin/customer-groups//customers](undefined/api/admin#customer-groups_postcustomergroupsidcustomers)
 - [GET /admin/customers](undefined/api/admin#customers_getcustomers)
 - [POST /admin/customers](undefined/api/admin#customers_postcustomers)
+- [POST /admin/customers/export](undefined/api/admin#customers_postcustomersexport)
 - [GET /admin/customers/](undefined/api/admin#customers_getcustomersid)
 - [POST /admin/customers/](undefined/api/admin#customers_postcustomersid)
 - [DELETE /admin/customers/](undefined/api/admin#customers_deletecustomersid)
@@ -152826,6 +152829,7 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [POST /store/orders//transfer/request](undefined/api/store#orders_postordersidtransferrequest)
 - [POST /store/payment-collections](undefined/api/store#payment-collections_postpaymentcollections)
 - [POST /store/payment-collections//payment-sessions](undefined/api/store#payment-collections_postpaymentcollectionsidpaymentsessions)
+- [POST /store/payment-collections//payment-sessions/](undefined/api/store#payment-collections_postpaymentcollectionsidpaymentsessionssession_id)
 - [GET /store/payment-providers](undefined/api/store#payment-providers_getpaymentproviders)
 - [GET /store/product-categories](undefined/api/store#product-categories_getproductcategories)
 - [GET /store/product-categories/](undefined/api/store#product-categories_getproductcategoriesid)
