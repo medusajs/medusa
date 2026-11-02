@@ -1,7 +1,11 @@
 export function groupBy(
-  array: Record<any, any>[],
+  array: Record<any, any>[] | null | undefined,
   attribute: string | number
 ): Map<any, any> {
+  if (!array?.length) {
+    return new Map()
+  }
+
   return array.reduce<Map<any, any>>((map, obj) => {
     const key = obj[attribute]
 
