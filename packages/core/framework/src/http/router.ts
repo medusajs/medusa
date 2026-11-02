@@ -72,6 +72,10 @@ export class ApiLoader {
 
   readonly #logger: Logger
 
+  readonly #baseRestrictedFields: string[]
+
+  readonly #storeRelationsLimit?: number
+
   constructor({
     app,
     sourceDir,
@@ -87,10 +91,8 @@ export class ApiLoader {
   }) {
     this.#app = app
     this.#sourceDirs = Array.isArray(sourceDir) ? sourceDir : [sourceDir]
-    this.#assignRestrictedFields(
-      baseRestrictedFields ?? [],
-      storeRelationsLimit
-    )
+    this.#baseRestrictedFields = baseRestrictedFields ?? []
+    this.#storeRelationsLimit = storeRelationsLimit
     this.#logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   }
 
@@ -462,6 +464,11 @@ export class ApiLoader {
     if (FeatureFlag.isFeatureEnabled("backend_hmr")) {
       ;(global as any).__MEDUSA_HMR_API_LOADER__ = this
     }
+
+    this.#assignRestrictedFields(
+      this.#baseRestrictedFields,
+      this.#storeRelationsLimit
+    )
 
     const {
       errorHandler: sourceErrorHandler,
