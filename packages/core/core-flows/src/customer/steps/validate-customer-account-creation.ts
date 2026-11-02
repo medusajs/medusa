@@ -1,5 +1,6 @@
 import type { IAuthModuleService } from "@medusajs/framework/types"
 import {
+  isEmail,
   isString,
   MedusaError,
   Modules,
@@ -16,8 +17,9 @@ export const validateCustomerAccountCreationStepId =
  * The step throws an error if:
  *
  * - The email is missing
- * - An auth identity is provided, and the email doesn't match the auth identity's
- *   `entity_id` or the `user_metadata.email` of any of its provider identities.
+ * - An auth identity is provided, and the email doesn't match the `entity_id` or the
+ *   `user_metadata.email` of any of its provider identities. The check is skipped
+ *   when none of the provider identities has an email in either field.
  * - A customer with the email already exists and has an account
  * - A guest customer with the email already exists
  *
@@ -53,19 +55,20 @@ export const validateCustomerAccountCreation = createStep(
       )
 
       const identityEmails = (authIdentity.provider_identities ?? [])
-        .flatMap((providerIdentity) => {
-          const userMetadataEmail = providerIdentity.user_metadata?.email
+        .flatMap((providerIdentity) => [
+          providerIdentity.entity_id,
+          providerIdentity.user_metadata?.email,
+        ])
+        .filter(
+          (identityEmail): identityEmail is string =>
+            isString(identityEmail) && isEmail(identityEmail)
+        )
+        .map(normalizeString)
 
-          return [
-            normalizeString(providerIdentity.entity_id),
-            isString(userMetadataEmail)
-              ? normalizeString(userMetadataEmail)
-              : undefined,
-          ]
-        })
-        .filter(Boolean)
-
-      if (!identityEmails.includes(normalizeString(email))) {
+      if (
+        identityEmails.length &&
+        !identityEmails.includes(normalizeString(email))
+      ) {
         throw new MedusaError(
           MedusaError.Types.UNAUTHORIZED,
           "The customer's email must match the email of the authenticated identity"

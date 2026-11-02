@@ -1,5 +1,6 @@
 import type { CreateCustomerDTO, CustomerDTO } from "@medusajs/framework/types"
 import {
+  createHook,
   createWorkflow,
   transform,
   WorkflowData,
@@ -50,13 +51,17 @@ export const createCustomerAccountWorkflowId = "create-customer-account"
  * @summary
  *
  * Create or register a customer account.
+ *
+ * @property hooks.validate - This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
  */
 export const createCustomerAccountWorkflow = createWorkflow(
   createCustomerAccountWorkflowId,
-  (
-    input: WorkflowData<CreateCustomerAccountWorkflowInput>
-  ): WorkflowResponse<CustomerDTO> => {
+  (input: WorkflowData<CreateCustomerAccountWorkflowInput>) => {
     validateCustomerAccountCreation(input)
+
+    const validate = createHook("validate", {
+      input,
+    })
 
     const customerData = transform({ input }, (data) => {
       return {
@@ -82,6 +87,8 @@ export const createCustomerAccountWorkflow = createWorkflow(
       value: customer.id,
     })
 
-    return new WorkflowResponse(customer)
+    return new WorkflowResponse(customer, {
+      hooks: [validate],
+    })
   }
 )
