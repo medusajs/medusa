@@ -2146,6 +2146,77 @@ medusaIntegrationTestRunner({
           expect(after.data.count).toEqual(0)
         })
 
+        it("requires campaign:create to create a campaign inline with a promotion", async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const promotionCreator = await rbacModule.createRbacRoles({
+            name: "Promotion Creator",
+          })
+          await attachPolicies(promotionCreator.id, [
+            "promotion:read",
+            "promotion:create",
+          ])
+          const promotionCreatorHeaders = { headers: {} }
+          await createAdminUser(
+            dbConnection,
+            promotionCreatorHeaders,
+            container,
+            {
+              email: "promotion-creator@medusa.js",
+              roles: [promotionCreator.id],
+            }
+          )
+
+          const payload = (code: string) => ({
+            code,
+            type: "standard",
+            application_method: {
+              target_type: "order",
+              type: "fixed",
+              allocation: "across",
+              currency_code: "usd",
+              value: 10,
+            },
+          })
+
+          const error = await api
+            .post(
+              `/admin/promotions`,
+              {
+                ...payload("WITH_CAMPAIGN"),
+                campaign: { name: "Inline", campaign_identifier: "inline-1" },
+              },
+              promotionCreatorHeaders
+            )
+            .catch((e) => e)
+          expect(error.response.status).toEqual(403)
+          expect(error.response.data.message).toContain("campaign:create")
+
+          const created = await api.post(
+            `/admin/promotions`,
+            payload("WITHOUT_CAMPAIGN"),
+            promotionCreatorHeaders
+          )
+          expect(created.status).toEqual(200)
+        })
+
+        it("rejects an assignment to a reference that is not a configured grantee", async () => {
+          const error = await api
+            .post(
+              `/rbac/roles/${targetRole.id}/assignments`,
+              { reference: "customer", reference_ids: [targetUser.id] },
+              assignerHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toContain("customer")
+
+          const assignments = await container
+            .resolve(Modules.RBAC)
+            .listRbacRoleAssignments({ role_id: targetRole.id })
+          expect(assignments).toHaveLength(0)
+        })
+
         it("rejects an empty assignments list on the user roles routes", async () => {
           const assignError = await api
             .post(

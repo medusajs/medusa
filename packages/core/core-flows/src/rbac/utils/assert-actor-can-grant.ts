@@ -13,10 +13,9 @@ export type AssertActorCanGrantInput = {
   actions: { resource: string; operation: string }[]
   errorMessage: string
   /**
-   * The scope context the grant happens within. When provided (including an
-   * empty set), the granting actor's privileges are evaluated strictly within
-   * it. When omitted, privileges are evaluated across the actor's full
-   * scope-union policies.
+   * The scope context the grant happens within. When provided, the granting
+   * actor's unscoped assignments and those scoped to it are considered. When
+   * omitted, only the granting actor's unscoped assignments are considered.
    */
   scope?: RbacScope
 }
