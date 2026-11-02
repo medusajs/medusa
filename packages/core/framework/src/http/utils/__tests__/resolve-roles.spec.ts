@@ -1,5 +1,10 @@
-import { Modules } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  RBAC_CACHE_TAGS,
+} from "@medusajs/utils"
 import { MedusaContainer } from "@medusajs/types"
+import { RBAC_CACHE_TTL } from "../../../policies/has-permission"
 import { resolveRoles } from "../resolve-roles"
 
 const buildAuthzContextMock = jest.fn()
@@ -22,7 +27,7 @@ const createContainer = ({
   authzConfig?: unknown | null
   assignments?: { role_id: string }[]
 } = {}) => {
-  const listRbacRoleAssignments = jest.fn().mockResolvedValue(assignments)
+  const graph = jest.fn().mockResolvedValue({ data: assignments })
 
   const container = {
     resolve: jest.fn((key: string) => {
@@ -31,19 +36,22 @@ const createContainer = ({
           retrieveActorAuthzContextConfig: jest
             .fn()
             .mockResolvedValue(authzConfig),
-          listRbacRoleAssignments,
         }
+      }
+
+      if (key === ContainerRegistrationKeys.QUERY) {
+        return { graph }
       }
 
       return undefined
     }),
   } as unknown as MedusaContainer
 
-  return { container, listRbacRoleAssignments }
+  return { container, graph }
 }
 
-const scopeFilterOf = (listRbacRoleAssignments: jest.Mock) =>
-  listRbacRoleAssignments.mock.calls[0][0].$and[1]
+const scopeFilterOf = (graph: jest.Mock) =>
+  graph.mock.calls[0][0].filters.$and[1]
 
 describe("resolveRoles", () => {
   beforeEach(() => {
@@ -54,34 +62,32 @@ describe("resolveRoles", () => {
   })
 
   it("returns no roles when the actor type has no authz config", async () => {
-    const { container, listRbacRoleAssignments } = createContainer({
-      authzConfig: null,
-    })
+    const { container, graph } = createContainer({ authzConfig: null })
 
     await expect(resolveRoles({ authContext, container })).resolves.toEqual([])
-    expect(listRbacRoleAssignments).not.toHaveBeenCalled()
+    expect(graph).not.toHaveBeenCalled()
   })
 
   it("returns no roles when the actor has no grantees", async () => {
     buildAuthzContextMock.mockResolvedValue({ grantees: [] })
-    const { container, listRbacRoleAssignments } = createContainer()
+    const { container, graph } = createContainer()
 
     await expect(resolveRoles({ authContext, container })).resolves.toEqual([])
-    expect(listRbacRoleAssignments).not.toHaveBeenCalled()
+    expect(graph).not.toHaveBeenCalled()
   })
 
   it("matches only unscoped assignments when no scope is resolved", async () => {
-    const { container, listRbacRoleAssignments } = createContainer()
+    const { container, graph } = createContainer()
 
     await resolveRoles({ authContext, container })
 
-    expect(scopeFilterOf(listRbacRoleAssignments)).toEqual({
+    expect(scopeFilterOf(graph)).toEqual({
       $or: [{ scope: null, scope_id: null }],
     })
   })
 
   it("matches the resolved scope and unscoped assignments when a scope is resolved", async () => {
-    const { container, listRbacRoleAssignments } = createContainer()
+    const { container, graph } = createContainer()
 
     await resolveRoles({
       authContext,
@@ -89,11 +95,25 @@ describe("resolveRoles", () => {
       scope: { type: "organization", id: "org_1" },
     })
 
-    expect(scopeFilterOf(listRbacRoleAssignments)).toEqual({
+    expect(scopeFilterOf(graph)).toEqual({
       $or: [
         { scope: null, scope_id: null },
         { scope: "organization", scope_id: "org_1" },
       ],
+    })
+  })
+
+  it("caches the assignments under the assignment list tag", async () => {
+    const { container, graph } = createContainer()
+
+    await resolveRoles({ authContext, container })
+
+    expect(graph.mock.calls[0][1]).toEqual({
+      cache: {
+        enable: true,
+        ttl: RBAC_CACHE_TTL,
+        tags: [RBAC_CACHE_TAGS.ROLE_ASSIGNMENT_LIST],
+      },
     })
   })
 

@@ -73,6 +73,7 @@ export const resolveRoles = async ({
       cache: {
         enable: true,
         ttl: RBAC_CACHE_TTL,
+        tags: [RBAC_CACHE_TAGS.ROLE_ASSIGNMENT_LIST],
       },
     }
   )

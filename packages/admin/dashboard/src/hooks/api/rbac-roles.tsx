@@ -30,6 +30,17 @@ _rbacRolesQueryKeys.users = function (roleId: string, query?: any) {
 
 export const rbacRolesQueryKeys = _rbacRolesQueryKeys
 
+const ME_PERMISSIONS_QUERY_KEY = ["me-permissions"] as const
+
+export const mePermissionsQueryKey = ME_PERMISSIONS_QUERY_KEY
+
+/**
+ * Refreshes the actor's own permission set after an RBAC mutation, since the
+ * change may affect a role or policy the actor holds.
+ */
+export const invalidateMePermissions = () =>
+  queryClient.invalidateQueries({ queryKey: mePermissionsQueryKey })
+
 export const useRbacRole = (
   id: string,
   query?: HttpTypes.AdminRbacRoleParams,
@@ -128,6 +139,7 @@ export const useCreateRbacRole = (
     mutationFn: (payload) => sdk.admin.rbacRole.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
+      invalidateMePermissions()
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -148,6 +160,7 @@ export const useUpdateRbacRole = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.detail(id) })
+      invalidateMePermissions()
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -168,6 +181,7 @@ export const useDeleteRbacRole = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.detail(id) })
+      invalidateMePermissions()
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -187,6 +201,7 @@ export const useDeleteRbacRoleLazy = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.details() })
+      invalidateMePermissions()
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -211,6 +226,7 @@ export const useAddRbacRolePolicies = (
       queryClient.invalidateQueries({
         queryKey: rbacRolesQueryKeys.detail(roleId),
       })
+      invalidateMePermissions()
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -236,6 +252,7 @@ export const useAddRbacRolePoliciesById = (
         queryKey: rbacRolesQueryKeys.detail(variables.roleId),
       })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
+      invalidateMePermissions()
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -261,6 +278,7 @@ export const useRemoveRbacRolePolicy = (
       queryClient.invalidateQueries({
         queryKey: rbacRolesQueryKeys.detail(roleId),
       })
+      invalidateMePermissions()
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -295,6 +313,7 @@ export const useAddRbacRoleUsers = (
       })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
       invalidateUserRoles(variables)
+      invalidateMePermissions()
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -321,16 +340,13 @@ export const useRemoveRbacRoleUsers = (
       })
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
       invalidateUserRoles(variables)
+      invalidateMePermissions()
 
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
   })
 }
-
-const ME_PERMISSIONS_QUERY_KEY = ["me-permissions"] as const
-
-export const mePermissionsQueryKey = ME_PERMISSIONS_QUERY_KEY
 
 export const mePermissionsQueryOptions = {
   queryKey: mePermissionsQueryKey,
