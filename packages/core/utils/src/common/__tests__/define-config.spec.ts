@@ -24,6 +24,7 @@ describe("defineConfig", function () {
     "MEDUSA_CLOUD_OAUTH_DISABLED",
     "MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_AUDIENCE",
+    "MEDUSA_CLOUD_OAUTH_CLIENT_SECRET",
   ]
   const savedCloudEnv: Record<string, string | undefined> = {}
 
@@ -2738,6 +2739,7 @@ describe("defineConfig", function () {
       "test-oauth-authorize-endpoint"
     process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT = "test-oauth-token-endpoint"
     process.env.MEDUSA_CLOUD_OAUTH_DISABLED = "true"
+    process.env.MEDUSA_CLOUD_OAUTH_CLIENT_SECRET = "test-oauth-client-secret"
     const config = defineConfig()
     process.env = { ...originalEnv }
 
@@ -2763,6 +2765,7 @@ describe("defineConfig", function () {
                 "environment_handle": "test-environment",
                 "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
+                "oauth_client_secret": "test-oauth-client-secret",
                 "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": undefined,
@@ -2945,6 +2948,7 @@ describe("defineConfig", function () {
             "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
+            "oauthClientSecret": "test-oauth-client-secret",
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
@@ -3023,6 +3027,7 @@ describe("defineConfig", function () {
                 "environment_handle": undefined,
                 "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
+                "oauth_client_secret": undefined,
                 "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
                 "sandbox_handle": "test-sandbox",
@@ -3202,6 +3207,7 @@ describe("defineConfig", function () {
             "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
+            "oauthClientSecret": undefined,
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
@@ -3286,6 +3292,7 @@ describe("defineConfig", function () {
                 "environment_handle": "overriden-environment",
                 "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "overriden-oauth-authorize-endpoint",
+                "oauth_client_secret": undefined,
                 "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "overriden-oauth-token-endpoint",
                 "sandbox_handle": undefined,
@@ -3465,6 +3472,7 @@ describe("defineConfig", function () {
             "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "overriden-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
+            "oauthClientSecret": undefined,
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "overriden-oauth-token-endpoint",

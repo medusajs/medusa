@@ -344,6 +344,10 @@ export type MedusaCloudOptions = {
    * @since 2.16.0
    */
   oauthAudience?: string
+  /**
+   * The client secret sent to the Medusa Cloud OAuth token endpoint. If not provided, `apiKey` is used.
+   */
+  oauthClientSecret?: string
 }
 
 /**
