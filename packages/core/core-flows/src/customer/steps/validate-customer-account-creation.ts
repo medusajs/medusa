@@ -12,14 +12,17 @@ import { CreateCustomerAccountWorkflowInput } from "../workflows"
 export const validateCustomerAccountCreationStepId =
   "validate-customer-account-creation"
 
+const EMAILPASS_PROVIDER = "emailpass"
+
 /**
  * This step validates the input data for creating a customer account.
  * The step throws an error if:
  *
  * - The email is missing
- * - An auth identity is provided, and the email doesn't match the `entity_id` or the
- *   `user_metadata.email` of any of its provider identities. The check is skipped
- *   when none of the provider identities has an email in either field.
+ * - An auth identity is provided, and the email doesn't match the `user_metadata.email`
+ *   of any of its provider identities, or the `entity_id` of an `emailpass` provider
+ *   identity or of one whose `entity_id` is an email. The check is skipped when none
+ *   of the provider identities has an email this way.
  * - A customer with the email already exists and has an account
  * - A guest customer with the email already exists
  *
@@ -55,15 +58,21 @@ export const validateCustomerAccountCreation = createStep(
       )
 
       const identityEmails = (authIdentity.provider_identities ?? [])
-        .flatMap((providerIdentity) => [
-          providerIdentity.entity_id,
-          providerIdentity.user_metadata?.email,
-        ])
-        .filter(
-          (identityEmail): identityEmail is string =>
-            isString(identityEmail) && isEmail(identityEmail)
-        )
-        .map(normalizeString)
+        .flatMap((providerIdentity) => {
+          const entityId = normalizeString(providerIdentity.entity_id)
+          const userMetadataEmail = providerIdentity.user_metadata?.email
+
+          return [
+            providerIdentity.provider === EMAILPASS_PROVIDER ||
+            isEmail(entityId)
+              ? entityId
+              : undefined,
+            isString(userMetadataEmail)
+              ? normalizeString(userMetadataEmail)
+              : undefined,
+          ]
+        })
+        .filter((identityEmail): identityEmail is string => !!identityEmail)
 
       if (
         identityEmails.length &&

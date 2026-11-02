@@ -52,7 +52,7 @@ export const createCustomerAccountWorkflowId = "create-customer-account"
  *
  * Create or register a customer account.
  *
- * @property hooks.validate - This hook is executed before all operations. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
+ * @property hooks.validate - This hook is executed after the built-in validation and before the customer is created. You can consume this hook to perform any custom validation. If validation fails, you can throw an error to stop the workflow execution.
  */
 export const createCustomerAccountWorkflow = createWorkflow(
   createCustomerAccountWorkflowId,

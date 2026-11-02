@@ -407,6 +407,41 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it.each(["attacker", " attacker@medusa.js"])(
+          "should fail to create a customer when an emailpass identity's entity_id %p doesn't match",
+          async (entityId) => {
+            const signup = await api.post("/auth/customer/emailpass/register", {
+              email: entityId,
+              password: "secret_password",
+            })
+
+            const response = await api
+              .post(
+                "/store/customers",
+                {
+                  email: "victim@medusa.js",
+                  first_name: "John",
+                  last_name: "Doe",
+                },
+                {
+                  headers: {
+                    authorization: `Bearer ${signup.data.token}`,
+                    ...storeHeaders.headers,
+                  },
+                }
+              )
+              .catch((e) => e)
+
+            expect(response.response?.status).toEqual(401)
+
+            const customers = await api.get(
+              "/admin/customers?email=victim@medusa.js",
+              adminHeaders
+            )
+            expect(customers.data.customers).toHaveLength(0)
+          }
+        )
+
         it("should fail to create a customer when only the identity's entity_id is an email and it doesn't match", async () => {
           const token = await generateCustomerRegistrationToken({
             provider: "custom",
