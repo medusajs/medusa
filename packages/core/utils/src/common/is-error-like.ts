@@ -1,3 +1,4 @@
+/** Checks whether the given value is an object with `name`, `message`, and `stack` properties. */
 export function isErrorLike(value) {
   return (
     !!value &&
