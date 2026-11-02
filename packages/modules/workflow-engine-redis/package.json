@@ -49,7 +49,7 @@
   "dependencies": {
     "bullmq": "5.13.0",
     "ioredis": "^5.11.1",
-    "ulid": "^2.3.0"
+    "ulid": "^3.0.2"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.2"

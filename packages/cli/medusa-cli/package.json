@@ -57,7 +57,7 @@
     "prompts": "^2.4.2",
     "resolve-cwd": "^3.0.0",
     "stack-trace": "^1.0.0",
-    "ulid": "^2.3.0",
+    "ulid": "^3.0.2",
     "winston": "^3.9.0",
     "yargs": "^18.2.0"
   },
