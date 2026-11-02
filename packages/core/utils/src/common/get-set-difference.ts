@@ -10,6 +10,10 @@ export function getSetDifference<T>(
   const difference = new Set<T>()
 
   orignalSet.forEach((element) => {
+    if (element === undefined) {
+      return
+    }
+
     if (!compareSet.has(element)) {
       difference.add(element)
     }
