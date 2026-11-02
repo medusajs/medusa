@@ -44,7 +44,7 @@ export const VariantMediaSection = ({ variant }: VariantMediaSectionProps) => {
           {media.map((i) => {
             return (
               <div
-                className="shadow-elevation-card-rest hover:shadow-elevation-card-hover transition-fg group relative aspect-square size-full overflow-hidden rounded-[8px]"
+                className="group relative aspect-square size-full overflow-hidden rounded-[8px] shadow-elevation-card-rest transition-fg hover:shadow-elevation-card-hover"
                 key={i.id}
               >
                 {i.url === variant.thumbnail && (

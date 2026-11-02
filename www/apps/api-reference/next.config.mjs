@@ -8,7 +8,7 @@ import {
   validateHighlightsPlugin,
 } from "remark-rehype-plugins"
 import path from "path"
-import { catchBadRedirects } from "build-scripts"
+import { catchBadRedirects, withMdxWebpackLayers } from "build-scripts"
 import { crossProjectLinksOptions } from "./utils/cross-project-links-options.mjs"
 
 /** @type {import('next').NextConfig} */
@@ -137,4 +137,4 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE_BUNDLE === "true",
 })
 
-export default withMDX(withBundleAnalyzer(nextConfig))
+export default withMdxWebpackLayers(withMDX(withBundleAnalyzer(nextConfig)))

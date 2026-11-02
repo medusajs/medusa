@@ -41,7 +41,7 @@
       "r2_buckets": [
         {
           "binding": "NEXT_INC_CACHE_R2_BUCKET",
-          "bucket_name": "docs-references",
+          "bucket_name": "docs-incremental-cache",
         },
         {
           "binding": "SPECS_R2_BUCKET",
@@ -50,13 +50,14 @@
       ],
       "vars": {
         "NEXT_INC_CACHE_R2_PREFIX": "incremental-cache/api-reference",
+        "SPECS_R2_BASE_URL": "https://assets.docs.medusajs.com/api-reference"
       },
     },
   },
   "r2_buckets": [
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "docs-references",
+      "bucket_name": "docs-incremental-cache",
     },
     {
       "binding": "SPECS_R2_BUCKET",
@@ -65,5 +66,6 @@
   ],
   "vars": {
     "NEXT_INC_CACHE_R2_PREFIX": "incremental-cache/api-reference",
+    "SPECS_R2_BASE_URL": "https://assets.docs.medusajs.com/api-reference"
   },
 }

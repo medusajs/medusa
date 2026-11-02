@@ -25,7 +25,7 @@ export const useLocationListTableColumns = () => {
           }
 
           return (
-            <span className="text-ui-fg-subtle text-small truncate">
+            <span className="text-small truncate text-ui-fg-subtle">
               {name}
             </span>
           )
@@ -43,7 +43,7 @@ export const useLocationListTableColumns = () => {
 
           return (
             <div className="flex flex-col">
-              <span className="text-ui-fg-subtle text-small truncate">
+              <span className="text-small truncate text-ui-fg-subtle">
                 {getFormattedAddress({
                   address: location.address as HttpTypes.AdminOrderAddress,
                 }).join(", ")}

@@ -29,7 +29,7 @@ export interface BaseCurrency {
    */
   decimal_digits: number
   /**
-   * The rounding percision applied on prices in this currency.
+   * The rounding precision applied on prices in this currency.
    */
   rounding: number
   /**

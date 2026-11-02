@@ -2732,6 +2732,7 @@ describe("defineConfig", function () {
     process.env.MEDUSA_CLOUD_API_KEY = "test-api-key"
     process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT = "test-emails-endpoint"
     process.env.MEDUSA_CLOUD_PAYMENTS_ENDPOINT = "test-payments-endpoint"
+    process.env.MEDUSA_CLOUD_PAYMENT_ACCOUNTS = "default, eu"
     process.env.MEDUSA_CLOUD_WEBHOOK_SECRET = "test-webhook-secret"
     process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT =
       "test-oauth-authorize-endpoint"
@@ -2853,6 +2854,10 @@ describe("defineConfig", function () {
                 "api_key": "test-api-key",
                 "endpoint": "test-payments-endpoint",
                 "environment_handle": "test-environment",
+                "payment_accounts": [
+                  "default",
+                  "eu",
+                ],
                 "sandbox_handle": undefined,
                 "webhook_secret": "test-webhook-secret",
               },
@@ -2943,6 +2948,10 @@ describe("defineConfig", function () {
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
+            "paymentAccounts": [
+              "default",
+              "eu",
+            ],
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": undefined,
             "searchEndpoint": undefined,
@@ -3105,6 +3114,7 @@ describe("defineConfig", function () {
                 "api_key": "test-api-key",
                 "endpoint": "test-payments-endpoint",
                 "environment_handle": undefined,
+                "payment_accounts": undefined,
                 "sandbox_handle": "test-sandbox",
                 "webhook_secret": "test-webhook-secret",
               },
@@ -3195,6 +3205,7 @@ describe("defineConfig", function () {
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
+            "paymentAccounts": undefined,
             "paymentsEndpoint": "test-payments-endpoint",
             "sandboxHandle": "test-sandbox",
             "searchEndpoint": undefined,
@@ -3366,6 +3377,7 @@ describe("defineConfig", function () {
                 "api_key": "overriden-api-key",
                 "endpoint": "overriden-payments-endpoint",
                 "environment_handle": "overriden-environment",
+                "payment_accounts": undefined,
                 "sandbox_handle": undefined,
                 "webhook_secret": "overriden-webhook-secret",
               },
@@ -3456,6 +3468,7 @@ describe("defineConfig", function () {
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "overriden-oauth-token-endpoint",
+            "paymentAccounts": undefined,
             "paymentsEndpoint": "overriden-payments-endpoint",
             "sandboxHandle": undefined,
             "searchEndpoint": undefined,

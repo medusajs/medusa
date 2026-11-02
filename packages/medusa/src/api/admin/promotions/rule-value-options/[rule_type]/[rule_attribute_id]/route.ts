@@ -51,8 +51,7 @@ export const GET = async (
     applicationMethodType: undefined,
     applicationMethodTargetType:
       filterableFields.application_method_target_type as
-        | ApplicationMethodTargetTypeValues
-        | undefined,
+        ApplicationMethodTargetTypeValues | undefined,
   })
 
   if (filterableFields.value) {

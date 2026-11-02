@@ -19,4 +19,8 @@ export interface MedusaPaymentsOptions {
    * The handle of the cloud sandbox
    */
   sandbox_handle: string
+  /**
+   * The handle of the Medusa Payments account the provider processes payments with
+   */
+  payment_account: string
 }

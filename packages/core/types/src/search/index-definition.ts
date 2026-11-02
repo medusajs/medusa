@@ -1,4 +1,5 @@
 import { Event } from "../event-bus"
+import { Logger } from "../logger"
 import { RemoteQueryFunction } from "../modules-sdk"
 import { SearchDocument } from "./common"
 import { SearchFieldDefinition } from "./field"
@@ -87,6 +88,8 @@ export interface SearchContainer {
    * Query, used to retrieve the data the documents are built from.
    */
   query: RemoteQueryFunction
+
+  logger: Logger
 }
 
 /**

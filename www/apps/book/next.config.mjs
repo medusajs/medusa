@@ -14,7 +14,7 @@ import {
 import path from "path"
 import redirects from "./utils/redirects.mjs"
 import { generatedSidebars } from "./generated/sidebar.mjs"
-import { catchBadRedirects } from "build-scripts"
+import { catchBadRedirects, withMdxWebpackLayers } from "build-scripts"
 import remarkFrontmatter from "remark-frontmatter"
 import withExtractedTableOfContents from "@stefanprobst/rehype-extract-toc"
 
@@ -120,6 +120,10 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
+          source: "/:file(llms\\.txt|llms-full\\.txt)",
+          destination: "/llms-content/:file",
+        },
+        {
           source: "/index.html.md",
           destination: "/md-content",
         },
@@ -167,7 +171,7 @@ const nextConfig = {
         },
         {
           source:
-            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content|robots\\.txt|\\.well-known)[^/]+)/:rest*",
           has: [
             {
               type: "header",
@@ -340,11 +344,32 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/:path((?!_next/).*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, must-revalidate",
+          },
+        ],
+      },
+      {
         source: "/",
         headers: [
           {
             key: "Cache-Control",
             value: "public, max-age=3600, must-revalidate",
+          },
+          {
+            key: "Link",
+            value: [
+              `</.well-known/api-catalog>; rel="api-catalog"`,
+              `</api/store>; rel="service-doc"`,
+              `</api/admin>; rel="service-doc"`,
+              `</api/download/store>; rel="service-desc"; type="application/yaml"`,
+              `</api/download/admin>; rel="service-desc"; type="application/yaml"`,
+              `</index.html.md>; rel="alternate"; type="text/markdown"`,
+              `</llms.txt>; rel="describedby"; type="text/plain"`,
+            ].join(", "),
           },
         ],
       },
@@ -371,4 +396,4 @@ const nextConfig = {
   },
 }
 
-export default withMDX(nextConfig)
+export default withMdxWebpackLayers(withMDX(nextConfig))

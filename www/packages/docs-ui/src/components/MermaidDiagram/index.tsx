@@ -13,12 +13,14 @@ import type { RenderResult } from "mermaid"
 import { Controlled as ControlledZoom } from "react-medium-image-zoom"
 import "react-medium-image-zoom/dist/styles.css"
 import clsx from "clsx"
+import icons from "./icons.json"
 
 type MermaidDiagramProps = {
   diagramContent: string
 }
 
-const VIEWBOX_REGEX = /viewBox="([0-9.-]+\s*){4}"/
+const VIEWBOX_REGEX =
+  /viewBox="([0-9.-]+)\s+([0-9.-]+)\s+([0-9.-]+)\s+([0-9.-]+)"/
 
 export const MermaidDiagram = ({ diagramContent }: MermaidDiagramProps) => {
   const [result, setResult] = useState<RenderResult | null>(null)
@@ -31,7 +33,14 @@ export const MermaidDiagram = ({ diagramContent }: MermaidDiagramProps) => {
     const renderDiagram = async () => {
       const { default: mermaid } = await import("mermaid")
 
-      mermaid.mermaidAPI.initialize({
+      mermaid.registerIconPacks([
+        {
+          name: icons.prefix,
+          loader: async () => icons,
+        },
+      ])
+
+      mermaid.initialize({
         theme: "base",
         themeVariables: {
           primaryColor: "#FFF",
@@ -69,8 +78,16 @@ export const MermaidDiagram = ({ diagramContent }: MermaidDiagramProps) => {
     void renderDiagram()
   }, [mermaidId, diagramContent])
 
-  const matchedRegex = useMemo(() => {
-    return result ? VIEWBOX_REGEX.exec(result.svg) : undefined
+  const viewBox = useMemo(() => {
+    const matchedRegex = result ? VIEWBOX_REGEX.exec(result.svg) : undefined
+
+    if (!matchedRegex) {
+      return undefined
+    }
+
+    const [, x, y, width, height] = matchedRegex
+
+    return { value: `${x} ${y} ${width} ${height}`, width, height }
   }, [result])
 
   const handleZoomChange = useCallback((shouldZoom: boolean) => {
@@ -87,18 +104,23 @@ export const MermaidDiagram = ({ diagramContent }: MermaidDiagramProps) => {
           ["[&_data-rmiz-modal-img]:!transform-y-0 [&_data-rmiz-modal-img]:"]
         )}
       >
-        <svg
-          dangerouslySetInnerHTML={result ? { __html: result.svg } : undefined}
-          width={isZoomed ? "100vw" : "100%"}
-          height={
-            isZoomed
-              ? `100vh`
-              : matchedRegex && matchedRegex.length >= 1
-                ? `${matchedRegex[1]}px`
-                : "100%"
-          }
-          className="bg-medusa-bg-subtle rounded-docs_DEFAULT my-docs_1"
-        />
+        <div
+          className={clsx(
+            "bg-medusa-bg-subtle rounded-docs_DEFAULT my-docs_1",
+            "flex items-center justify-center overflow-hidden",
+            isZoomed ? "h-screen w-screen" : "aspect-video w-full"
+          )}
+        >
+          <svg
+            dangerouslySetInnerHTML={
+              result ? { __html: result.svg } : undefined
+            }
+            viewBox={viewBox?.value}
+            preserveAspectRatio="xMidYMid meet"
+            style={{ width: viewBox ? `${viewBox.width}px` : "100%" }}
+            className="h-auto max-h-full max-w-full"
+          />
+        </div>
       </ControlledZoom>
     </Suspense>
   )

@@ -248,8 +248,7 @@ export type StockLocationExpandedDTO = StockLocationDTO & {
  *
  * The filters to apply on the retrieved stock locations.
  */
-export interface FilterableStockLocationProps
-  extends BaseFilterable<FilterableStockLocationProps> {
+export interface FilterableStockLocationProps extends BaseFilterable<FilterableStockLocationProps> {
   /**
    * Search parameter for stock location names
    */
@@ -468,8 +467,7 @@ export type UpsertStockLocationAddressInput = StockLocationAddressInput & {
   id?: string
 }
 
-export interface FilterableStockLocationAddressProps
-  extends BaseFilterable<FilterableStockLocationAddressProps> {
+export interface FilterableStockLocationAddressProps extends BaseFilterable<FilterableStockLocationAddressProps> {
   /**
    * The IDs to filter stock location's address by.
    */

@@ -134,7 +134,7 @@ export const EmailPassLogin = ({ onMfaChallenge }: EmailPassLoginProps) => {
         )}
         {serverError && (
           <Alert
-            className="bg-ui-bg-base items-center p-2"
+            className="items-center bg-ui-bg-base p-2"
             dismissible
             variant="error"
           >

@@ -2,7 +2,7 @@ import { MathBN, MedusaError } from "@medusajs/framework/utils";
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows";
 import { createStep, createWorkflow, transform } from "@medusajs/framework/workflows-sdk";
 
-import { ModuleCreditStoreCreditAccount } from "../../../../src/types/store-credit";
+import { ModuleCreditStoreCreditAccount } from "../../../types/store-credit";
 import { creditAccountStep } from "../steps/credit-account";
 
 /**
@@ -57,33 +57,19 @@ export const creditStoreCreditAccountWorkflow = createWorkflow(
       options: { throwIfKeyNotFound: true },
     });
 
-    const storeCreditAccount = transform(
-      { storeCreditAccountData },
-      ({ storeCreditAccountData }) => {
-        return storeCreditAccountData.data[0];
+    const creditData = transform(
+      { storeCreditAccountData, input },
+      ({ storeCreditAccountData, input }) => {
+        return {
+          account_id: storeCreditAccountData.data[0].id,
+          amount: MathBN.convert(input.amount),
+          note: input.note || "",
+          reference: input.reference || "",
+          reference_id: input.reference_id || "",
+        };
       }
     );
 
-    const amount = transform({ input }, ({ input }) => {
-      return MathBN.convert(input.amount);
-    });
-
-    const transactionInfo = transform({ input }, ({ input }) => {
-      return {
-        note: input.note || "",
-        reference: input.reference || "",
-        reference_id: input.reference_id || "",
-      };
-    });
-
-    creditAccountStep([
-      {
-        account_id: storeCreditAccount.id,
-        amount: amount,
-        note: transactionInfo.note,
-        reference: transactionInfo.reference,
-        reference_id: transactionInfo.reference_id,
-      },
-    ]);
+    creditAccountStep([creditData]);
   }
 );

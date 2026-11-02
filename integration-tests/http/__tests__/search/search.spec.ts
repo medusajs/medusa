@@ -33,6 +33,38 @@ medusaIntegrationTestRunner({
       throw new Error(`Index "${name}" did not become ready in time`)
     }
 
+    const indexNamed = async (name: string) => {
+      const listed = await api.get("/admin/search-indexes", adminHeaders)
+      return listed.data.search_indexes.find((i: any) => i.name === name)
+    }
+
+    const planFor = async (name: string) => {
+      const plan = await searchModule.createIndexMigrationPlan()
+      return plan.find((action) => action.index === name)
+    }
+
+    // Soft deleted rows included — what a delete must leave behind is nothing.
+    const rowCounts = async (name: string) => {
+      const { rows } = await dbConnection.raw(
+        `select
+           (select count(*) from search_index where name = ?) as indexes,
+           (select count(*) from search_index_version v
+              join search_index i on i.id = v.search_index_id
+             where i.name = ?) as versions,
+           (select count(*) from search_index_sync s
+              join search_index_version v on v.id = s.search_index_version_id
+              join search_index i on i.id = v.search_index_id
+             where i.name = ?) as syncs`,
+        [name, name, name]
+      )
+
+      return {
+        indexes: Number(rows[0].indexes),
+        versions: Number(rows[0].versions),
+        syncs: Number(rows[0].syncs),
+      }
+    }
+
     beforeAll(async () => {
       const container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
@@ -393,6 +425,105 @@ medusaIntegrationTestRunner({
 
         expect(error.response.status).toEqual(404)
         expect(error.response.data.message).toContain("nope")
+      })
+    })
+
+    // Destructive, but each test restores the snapshot taken after `beforeAll`,
+    // so every one does its own deleting.
+    describe("DELETE /admin/search-indexes/:id", () => {
+      it("fails when the index is not registered", async () => {
+        const error = await api
+          .delete("/admin/search-indexes/nope", adminHeaders)
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data.message).toContain("nope")
+      })
+
+      it("requires authentication", async () => {
+        const error = await api
+          .delete("/admin/search-indexes/customer")
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(401)
+      })
+
+      it("drops every version and the rows behind them", async () => {
+        const before = await rowCounts("customer")
+
+        // The boot seed built one version and `beforeAll`'s reindex another, so
+        // this covers more than the one serving reads.
+        expect(before.versions).toBeGreaterThan(1)
+
+        const response = await api.delete(
+          "/admin/search-indexes/customer",
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          id: "customer",
+          object: "search_index",
+          deleted: true,
+          deleted_versions: before.versions,
+        })
+
+        expect(await rowCounts("customer")).toEqual({
+          indexes: 0,
+          versions: 0,
+          syncs: 0,
+        })
+
+        // Still listed, since the definition comes from code.
+        expect(await indexNamed("customer")).toMatchObject({
+          name: "customer",
+          status: "pending",
+        })
+
+        // The point of deleting: numbering restarts rather than carrying on.
+        expect(await planFor("customer")).toMatchObject({
+          action: "create",
+          version: 1,
+        })
+
+        expect(await planFor("product")).toMatchObject({ action: "noop" })
+        expect((await rowCounts("product")).versions).toBeGreaterThan(0)
+      })
+
+      it("is a no-op when the index has nothing built", async () => {
+        await api.delete("/admin/search-indexes/customer", adminHeaders)
+
+        const response = await api.delete(
+          "/admin/search-indexes/customer",
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          id: "customer",
+          object: "search_index",
+          deleted: true,
+          deleted_versions: 0,
+        })
+      })
+
+      it("rebuilds into a working index after a migration", async () => {
+        await api.delete("/admin/search-indexes/customer", adminHeaders)
+
+        const plan = await searchModule.createIndexMigrationPlan()
+        await searchModule.executeIndexMigrationPlan(plan)
+
+        await searchModule.reindex({ index: "customer" })
+        await waitForIndexReady("customer")
+
+        const search = await api.get(
+          "/admin/search?q=zephyr&entity=customer",
+          adminHeaders
+        )
+
+        expect(groupFor(search.data, "customer").data).toEqual([
+          expect.objectContaining({ email: "zephyr.tester@example.com" }),
+        ])
       })
     })
   },

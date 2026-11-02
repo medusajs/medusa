@@ -44,7 +44,7 @@ export const ProductOptionGeneralSection = ({
         </div>
       </div>
       <div className="px-6 py-4">
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center">
+        <div className="grid grid-cols-2 items-center text-ui-fg-subtle">
           <Text size="small" leading="compact" weight="plus">
             {t("fields.type")}
           </Text>

@@ -47,7 +47,8 @@ type DatePickerValueProps = {
 }
 
 interface DatePickerProps
-  extends Omit<
+  extends
+    Omit<
       BaseDatePickerProps<CalendarDateTime | CalendarDate>,
       keyof DatePickerValueProps
     >,

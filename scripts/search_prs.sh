@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 #
 # Finds OPEN pull requests that reference a given issue in their body,
-# e.g. "closes #123", "related to #123", or a bare "#123" mention. This
+# e.g. "closes #123", "related to #123", or a bare "#123" mention, or a
+# Linear ticket ID such as "DX-1234". This
 # catches PRs that mention an issue without formally linking it via a
 # closing keyword. Read-only.
 #
-# Usage: ./scripts/search_prs.sh <issue_number>
+# Usage: ./scripts/search_prs.sh <issue_number | LINEAR-ID>
 #
 # GitHub's search index tokenizes numbers, so a text search for "#123"
 # also matches PRs that merely contain the number 123 in an unrelated
@@ -19,20 +20,26 @@
 
 set -euo pipefail
 
-if [[ -z "${1:-}" ]] || ! [[ "$1" =~ ^[0-9]+$ ]]; then
-  echo "Usage: $0 <issue_number>" >&2
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if [[ "${1:-}" =~ ^[0-9]+$ ]]; then
+  export TERM_TEXT="#$1"
+elif [[ "${1:-}" =~ ^[A-Z]{2,10}-[0-9]{1,7}$ ]]; then
+  export TERM_TEXT="$1"
+else
+  echo "Usage: $0 <issue_number | LINEAR-ID>" >&2
   exit 1
 fi
 
-export ISSUE="$1"
-REPO="${GITHUB_REPOSITORY:?GITHUB_REPOSITORY not set}"
+REPO="${GITHUB_REPOSITORY:-medusajs/medusa}"
 
-# `#<issue>` followed by a non-digit or end-of-string, so searching #123
+# The reference followed by a non-digit or end-of-string, so searching #123
 # does not match #1234. `.body` may be null on some PRs — coalesce first.
-gh search prs "#${ISSUE}" \
+gh search prs "$TERM_TEXT" \
   --repo "$REPO" \
   --state open \
   --match body \
   --limit 30 \
   --json number,title,state,url,createdAt,body \
-  --jq '[ .[] | select((.body // "") | test("#" + env.ISSUE + "(\\D|$)")) | {number, title, state, url, createdAt} ]'
+  --jq '[ .[] | select((.body // "") | test(env.TERM_TEXT + "(\\D|$)")) | {number, title, state, url, createdAt} ]' \
+  | python3 "$SCRIPT_DIR/sanitize_untrusted.py" --json

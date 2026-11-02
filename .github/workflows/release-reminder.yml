@@ -1,0 +1,127 @@
+name: Release Reminder
+
+on:
+  schedule:
+    - cron: "0 8 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  evaluate:
+    name: Evaluate release PR
+    runs-on: ubuntu-latest
+    outputs:
+      notify: ${{ steps.evaluate.outputs.notify }}
+      version: ${{ steps.evaluate.outputs.version }}
+      text: ${{ steps.evaluate.outputs.text }}
+      url: ${{ steps.evaluate.outputs.url }}
+      docs_url: ${{ steps.evaluate.outputs.docs_url }}
+    steps:
+      - name: Evaluate release PR
+        id: evaluate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          PR=$(gh pr list --repo "$REPO" --base develop --head changeset-release/develop --state open \
+            --json url,headRefOid --jq '.[0] // empty')
+          if [ -z "$PR" ]; then
+            echo "No open release PR; skipping the reminder."
+            exit 0
+          fi
+
+          URL=$(jq -r '.url' <<< "$PR")
+          HEAD_SHA=$(jq -r '.headRefOid' <<< "$PR")
+
+          medusa_version() {
+            gh api "repos/$REPO/contents/packages/medusa/package.json?ref=$1" --jq '.content' \
+              | base64 -d | jq -r '.version'
+          }
+          CURRENT=$(medusa_version develop)
+          NEXT=$(medusa_version "$HEAD_SHA")
+
+          IFS=. read -r CUR_MAJOR CUR_MINOR _ <<< "$CURRENT"
+          IFS=. read -r NEXT_MAJOR NEXT_MINOR _ <<< "$NEXT"
+          if [ "$NEXT_MAJOR" != "$CUR_MAJOR" ]; then
+            BUMP=major
+          elif [ "$NEXT_MINOR" != "$CUR_MINOR" ]; then
+            BUMP=minor
+          else
+            BUMP=patch
+          fi
+          echo "Release PR: $CURRENT -> $NEXT ($BUMP)"
+
+          DOCS_URL=$(gh pr list --repo "$REPO" --base develop --head docs/release-docs-staging --state open \
+            --json url --jq '.[0].url // empty')
+
+          {
+            echo "version=$NEXT"
+            echo "text=Time to put out a new release! The next release is a *$BUMP* update: v$CURRENT → *v$NEXT*."
+            echo "url=$URL"
+            echo "docs_url=$DOCS_URL"
+            echo "notify=true"
+          } >> "$GITHUB_OUTPUT"
+
+  release-notes:
+    name: Generate draft release notes
+    needs: evaluate
+    if: needs.evaluate.outputs.notify == 'true'
+    permissions:
+      contents: write
+      id-token: write
+    uses: ./.github/workflows/draft-release.yml
+    with:
+      version: ${{ needs.evaluate.outputs.version }}
+      draft: true
+    secrets: inherit
+
+  notify:
+    name: Post release reminder to Slack
+    needs: [evaluate, release-notes]
+    if: always() && needs.evaluate.outputs.notify == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Slack message
+        env:
+          TEXT: ${{ needs.evaluate.outputs.text }}
+          URL: ${{ needs.evaluate.outputs.url }}
+          DOCS_URL: ${{ needs.evaluate.outputs.docs_url }}
+          NOTES_URL: ${{ needs.release-notes.outputs.release_url }}
+        run: |
+          set -euo pipefail
+          if [ -z "$NOTES_URL" ]; then
+            TEXT="$TEXT
+          _Generating the draft release notes failed._"
+          fi
+
+          jq -n --arg text "$TEXT" \
+            --arg url "$URL" \
+            --arg docs_url "$DOCS_URL" \
+            --arg notes_url "$NOTES_URL" \
+            '{
+              blocks: [
+                {type: "section", text: {type: "mrkdwn", text: $text}},
+                {type: "actions", elements: (
+                  [{type: "button", style: "primary", url: $url, text: {type: "plain_text", text: "View release PR"}}]
+                  + (if $docs_url == "" then [] else
+                    [{type: "button", url: $docs_url, text: {type: "plain_text", text: "View release docs PR"}}]
+                  end)
+                  + (if $notes_url == "" then [] else
+                    [{type: "button", url: $notes_url, text: {type: "plain_text", text: "View draft release notes"}}]
+                  end)
+                )}
+              ]
+            }' > slack-payload.json
+
+      - name: Post to Slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload-file-path: ./slack-payload.json
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_RELEASE }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

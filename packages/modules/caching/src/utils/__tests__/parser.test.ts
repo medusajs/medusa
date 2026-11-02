@@ -277,6 +277,39 @@ describe("CacheInvalidationParser", () => {
         isInArray: false,
       })
     })
+
+    it("should handle nested entities with numeric ids", () => {
+      const product = {
+        id: "prod_123",
+        title: "Test Product",
+        cms: {
+          id: 123,
+          meta_title: "External title",
+          meta_description: "External description",
+        },
+        variants: [
+          {
+            id: 456,
+            title: "Variant 1",
+            sku: "SKU-001",
+          },
+        ],
+      }
+
+      const entities = parser.parseObjectForEntities(product)
+
+      expect(entities).toHaveLength(2)
+      expect(entities).toContainEqual({
+        type: "Product",
+        id: "prod_123",
+        isInArray: false,
+      })
+      expect(entities).toContainEqual({
+        type: "ProductVariant",
+        id: 456,
+        isInArray: true,
+      })
+    })
   })
 
   describe("buildInvalidationEvents", () => {

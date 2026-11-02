@@ -49,7 +49,7 @@ export const TaxRegionListView = () => {
         count={count}
       >
         <Heading>{t("taxes.domain")}</Heading>
-        <Text size="small" className="text-ui-fg-subtle text-pretty">
+        <Text size="small" className="text-pretty text-ui-fg-subtle">
           {t("taxRegions.list.hint")}
         </Text>
       </TaxRegionTable>

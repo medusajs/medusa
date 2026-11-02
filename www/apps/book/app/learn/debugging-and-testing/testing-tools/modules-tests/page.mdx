@@ -208,6 +208,32 @@ Refer to [the Test Tooling Reference](!resources!/test-tools-reference/moduleInt
 
 ## Database Used in Tests
 
-The `moduleIntegrationTestRunner` function creates a database with a random name before running the tests. Then, it drops that database after all the tests end.
+<Prerequisites
+  items={[
+    {
+      text: "A PostgreSQL server is running."
+    },
+    {
+      text: "The PostgreSQL user that the tests connect with can create databases."
+    },
+    {
+      text: "The moduleModels property has at least one data model."
+    }
+  ]}
+/>
+
+The `moduleIntegrationTestRunner` function creates a database named `medusa-{module-name}-integration-{worker-id}`, where `{module-name}` is the value of the `moduleName` property, and `{worker-id}` is the ID of the Jest worker running the test file. You can set a different name with the `dbName` property.
+
+The database is created from the module's data models before each test, and its tables are dropped after each test. Unlike `medusaIntegrationTestRunner`, the database itself isn't dropped when the tests end, so the next test run reuses it.
+
+The tests connect to the PostgreSQL server using the `DB_HOST`, `DB_PORT`, `DB_USERNAME`, and `DB_PASSWORD` environment variables, which default to `localhost`, `5432`, `postgres`, and an empty password respectively.
+
+<Note type="warning">
+
+The test runner only creates the database if the module has data models. If `moduleModels` is empty and the runner can't find data models in the module's directory, the database isn't created, and your tests either fail with an error like `database "medusa-blog-integration-1" does not exist` or time out while connecting to the database.
+
+If your module doesn't have data models, pass a dummy model as explained in the [Write Tests for Modules without Data Models](#write-tests-for-modules-without-data-models) section.
+
+</Note>
 
 To manage that database, such as changing its name or perform operations on it in your tests, refer to [the Test Tooling Reference](!resources!/test-tools-reference/moduleIntegrationTestRunner).

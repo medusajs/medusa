@@ -23,7 +23,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.3.0",
+    "@faker-js/faker": "^10.6.0",
     "octokit": "^3.1.2",
     "prettier": "^3.4.2",
     "rimraf": "^5.0.5"

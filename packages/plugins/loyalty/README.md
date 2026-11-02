@@ -8,7 +8,7 @@
   </a>
 </p>
 <h1 align="center">
-  Medusa
+  @medusajs/loyalty-plugin
 </h1>
 
 <h4 align="center">
@@ -20,10 +20,12 @@
   Building blocks for digital commerce
 </p>
 <p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
+  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
+  </a>
+  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
   </a>
-    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
   <a href="https://discord.gg/xpCwq3Kfn8">
     <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
   </a>
@@ -32,31 +34,69 @@
   </a>
 </p>
 
-## Compatibility
+Loyalty Plugin for Medusa: adds gift cards and store credit to a Medusa application, including gift card products, redeeming gift cards and store credit at checkout, and store credit accounts for customers. It provides the Loyalty Module and Store Credit Module, Admin and Store API routes, workflows, and Medusa Admin pages. It isn't registered by default: install it and add it to `plugins` in `medusa-config.ts` (Medusa v2.14.0+).
 
-This starter is compatible with versions >= 2.0.0 of `@medusajs/medusa`. 
+## At a glance
 
-## Getting Started
+| | |
+| --- | --- |
+| Package | `@medusajs/loyalty-plugin` |
+| Type | Plugin |
+| Modules | Loyalty Module (`"loyalty"`), Store Credit Module (`"store_credit"`) |
+| Registered by default | No |
+| Import from | `@medusajs/loyalty-plugin/workflows`, `@medusajs/loyalty-plugin/types` |
 
-Visit the [Quickstart Guide](https://docs.medusajs.com/learn) to set up a server.
+## Features
 
-Visit the [Docs](https://docs.medusajs.com/learn#get-started) to learn more about our system requirements.
+- **Gift card products**: sell physical or digital gift cards; a gift card with a generated code is created for each one purchased when the order is placed.
+- **Checkout**: apply gift cards and store credit to a cart as payment (`POST /store/carts/:id/gift-cards`, `POST /store/carts/:id/store-credits`).
+- **Store credit accounts**: credit, debit, and view transactions (`/admin/store-credit-accounts`), and let customers view and claim accounts (`/store/store-credit-accounts`).
+- **Admin API routes**: manage gift cards under `/admin/gift-cards`. **Store API routes**: look up a gift card with `GET /store/gift-cards/:idOrCode`.
+- **Workflows** such as `createGiftCardsWorkflow`, `addGiftCardToCartWorkflow`, and `creditStoreCreditAccountWorkflow`, plus hooks into Medusa's cart completion, payment refresh, and order credit line flows.
+- **Medusa Admin**: Gift Cards, Gift Card Products, and Store Credits pages, and widgets on the customer, order, and sales channel details pages.
 
-## What is Medusa
+## Installation
 
-Medusa is a set of commerce modules and tools that allow you to build rich, reliable, and performant commerce applications without reinventing core commerce logic. The modules can be customized and used to build advanced ecommerce stores, marketplaces, or any product that needs foundational commerce primitives. All modules are open-source and freely available on npm.
+```bash
+npm install @medusajs/loyalty-plugin
+```
 
-Learn more about [Medusa’s architecture](https://docs.medusajs.com/learn/advanced-development/architecture/overview) and [commerce modules](https://docs.medusajs.com/learn/basics/commerce-modules) in the Docs.
+## Usage
 
-## Community & Contributions
+Register the plugin in `medusa-config.ts`:
 
-The community and core team are available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can ask for support, discuss roadmap, and share ideas.
+```ts
+import { defineConfig } from "@medusajs/framework/utils"
 
-Join our [Discord server](https://discord.com/invite/medusajs) to meet other community members.
+module.exports = defineConfig({
+  // ...
+  plugins: [
+    {
+      resolve: "@medusajs/loyalty-plugin",
+      options: {},
+    },
+  ],
+})
+```
 
-## Other channels
+Then run the migrations:
 
-- [GitHub Issues](https://github.com/medusajs/medusa/issues)
-- [Twitter](https://twitter.com/medusajs)
-- [LinkedIn](https://www.linkedin.com/company/medusajs)
-- [Medusa Blog](https://medusajs.com/blog/)
+```bash
+npx medusa db:migrate
+```
+
+## Configuration
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| `prefix` | `string` | Prefix of generated gift card codes. For example, `"GC"` generates `GC-XXXX-XXXX-XXXX-XXXX`. | `"GIFT"` |
+| `sections` | `number` | Number of 4-character sections in generated gift card codes. For example, `3` generates `GIFT-XXXX-XXXX-XXXX`. | `4` |
+
+## Resources
+
+- [Loyalty Module](https://docs.medusajs.com/resources/commerce-modules/loyalty)
+- [Store Credit Module](https://docs.medusajs.com/resources/commerce-modules/store-credit)
+- [Loyalty Plugin options](https://docs.medusajs.com/resources/commerce-modules/loyalty/module-options)
+- [Gift cards](https://docs.medusajs.com/resources/commerce-modules/loyalty/gift-cards)
+- [Loyalty workflows](https://docs.medusajs.com/resources/commerce-modules/loyalty/workflows)
+- [Loyalty user guide](https://docs.medusajs.com/user-guide/loyalty)

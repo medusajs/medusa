@@ -77,7 +77,7 @@ You'll first be asked for the project's name. You can also optionally choose to 
 
 the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
 
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can login with the new user and explore the dashboard.
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
 
 <Note title="Ran into Errors?">
 
@@ -674,7 +674,7 @@ In the workflow function, you run the following steps:
 2. `createVendorAdminStep` to create the vendor admin.
     - Notice that you use `transform` from the Workflows SDK to prepare the data you pass into the step. Medusa doesn't allow direct manipulation of variables within the workflow's constructor function. Learn more in the [Data Manipulation in Workflows documentation](!docs!/learn/fundamentals/workflows/variable-manipulation).
 3. `setAuthAppMetadataStep` to associate the vendor admin with its auth identity of actor type `vendor`. This will allow the vendor admin to send authenticated requests afterwards.
-4. `useQueryGraphStep` to retrieve the created vendor with its admins using [Query](!docs!/learn/fundamentals/module-links/query). Query allows you to retrieve data across modules.
+4. `useQueryGraphStep` to retrieve the created vendor with its admins using [Query](!docs!/learn/fundamentals/query). Query allows you to retrieve data across modules.
 
 A workflow must return a `WorkflowResponse` instance. It accepts as a parameter the data to return, which is the vendor in this case.
 
@@ -1206,7 +1206,7 @@ This will return the created product. In the next step, you'll add API routes to
 
 ### Further Reads
 
-- [How to use Query](!docs!/learn/fundamentals/module-links/query)
+- [How to use Query](!docs!/learn/fundamentals/query)
 - [How to use Link](!docs!/learn/fundamentals/module-links/link)
 
 ---
@@ -1267,7 +1267,7 @@ Make sure to replace `{token}` with the authenticated token of the vendor admin 
 
 ### Further Reads
 
-- [How to use Query](!docs!/learn/fundamentals/module-links/query)
+- [How to use Query](!docs!/learn/fundamentals/query)
 - [How to use Link](!docs!/learn/fundamentals/module-links/link)
 
 ---
@@ -1324,7 +1324,7 @@ In this step, you’ll create a workflow that’s executed when the customer pla
             name: "groupVendorItemsStep",
             description: "Group the items by their vendor.",
             depth: 4,
-            link: "#groupvendoritemssstep"
+            link: "#groupvendoritemsstep"
           },
           {
             type: "step",
@@ -1968,7 +1968,7 @@ To test it out, start the Medusa application:
 npm run dev
 ```
 
-Then, send a `GET` request to `/vendors/orders` :
+Then, send a `GET` request to `/vendors/orders`:
 
 ```bash
 curl 'http://localhost:9000/vendors/orders' \

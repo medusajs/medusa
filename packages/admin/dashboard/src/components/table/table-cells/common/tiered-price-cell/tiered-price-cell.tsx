@@ -22,8 +22,10 @@ import {
 } from "../../../../../components/data-grid/types"
 import { useCombinedRefs } from "../../../../../hooks/use-combined-refs"
 
-export interface TieredPriceCellProps<TData, TValue = any>
-  extends DataGridCellProps<TData, TValue> {
+export interface TieredPriceCellProps<
+  TData,
+  TValue = any,
+> extends DataGridCellProps<TData, TValue> {
   code: string
   onOpenModal: (field: string, currency: CurrencyInfo) => void
   getTieredFieldName: (field: string) => string
@@ -182,7 +184,7 @@ const Inner = ({
   return (
     <div className="relative flex size-full items-center">
       <span
-        className="txt-compact-small text-ui-fg-muted pointer-events-none absolute left-0 w-fit min-w-4"
+        className="txt-compact-small pointer-events-none absolute left-0 w-fit min-w-4 text-ui-fg-muted"
         aria-hidden
         ref={onMeasureSymbol}
       >

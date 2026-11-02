@@ -35,6 +35,14 @@ describe("rendering", () => {
     expect(layout).toHaveTextContent("Content")
   })
 
+  test("excludes title from markdown parity", () => {
+    const { container } = render(
+      <NoteLayout title="Test Title">Content</NoteLayout>
+    )
+    const title = container.querySelector("[data-testid='note-layout-title']")
+    expect(title).toHaveAttribute("data-markdown-ignore")
+  })
+
   test("adds colon after title when title does not end with punctuation", () => {
     const { container } = render(
       <NoteLayout title="Test Title">Content</NoteLayout>

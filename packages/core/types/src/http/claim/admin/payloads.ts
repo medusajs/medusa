@@ -134,8 +134,10 @@ export interface AdminAddClaimItems extends AdminClaimAddItems {}
 /**
  * The details to update a claim item.
  */
-export interface AdminUpdateClaimItem
-  extends Omit<AdminClaimUpdateItem, "description"> {}
+export interface AdminUpdateClaimItem extends Omit<
+  AdminClaimUpdateItem,
+  "description"
+> {}
 
 /**
  * The details to add inbound items to a claim.
@@ -181,32 +183,30 @@ export interface AdminAddClaimOutboundItems {
 /**
  * The details to update a claim outbound item.
  */
-export interface AdminUpdateClaimOutboundItem
-  extends Omit<AdminClaimUpdateItem, "description"> {}
+export interface AdminUpdateClaimOutboundItem extends Omit<
+  AdminClaimUpdateItem,
+  "description"
+> {}
 
 /**
  * The details to add inbound shipping to a claim.
  */
-export interface AdminClaimAddInboundShipping
-  extends AdminClaimAddShippingMethod {}
+export interface AdminClaimAddInboundShipping extends AdminClaimAddShippingMethod {}
 
 /**
  * The details to update claim inbound shipping.
  */
-export interface AdminClaimUpdateInboundShipping
-  extends AdminClaimUpdateShippingMethod {}
+export interface AdminClaimUpdateInboundShipping extends AdminClaimUpdateShippingMethod {}
 
 /**
  * The details to add outbound shipping to a claim.
  */
-export interface AdminClaimAddOutboundShipping
-  extends AdminClaimAddShippingMethod {}
+export interface AdminClaimAddOutboundShipping extends AdminClaimAddShippingMethod {}
 
 /**
  * The details to update claim outbound shipping.
  */
-export interface AdminClaimUpdateOutboundShipping
-  extends AdminClaimUpdateShippingMethod {}
+export interface AdminClaimUpdateOutboundShipping extends AdminClaimUpdateShippingMethod {}
 
 /**
  * The details to request a claim.

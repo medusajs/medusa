@@ -143,7 +143,7 @@ export const TranslationList = () => {
               <LayoutComposer.Entry id="no-locales-alert">
                 <Alert
                   variant="info"
-                  className="bg-ui-bg-base flex items-center px-6 py-4"
+                  className="flex items-center bg-ui-bg-base px-6 py-4"
                 >
                   <div className="flex items-center justify-between gap-x-2">
                     <p>{t("translations.activeLocales.noLocalesTip")}.</p>

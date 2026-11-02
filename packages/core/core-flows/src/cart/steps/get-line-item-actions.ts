@@ -35,8 +35,7 @@ export interface GetLineItemActionsStepOutput {
    * The line items to update.
    */
   itemsToUpdate:
-    | UpdateLineItemWithSelectorDTO[]
-    | UpdateLineItemWithoutSelectorDTO[]
+    UpdateLineItemWithSelectorDTO[] | UpdateLineItemWithoutSelectorDTO[]
 }
 
 export const getLineItemActionsStepId = "get-line-item-actions-step"

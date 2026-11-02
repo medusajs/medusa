@@ -108,7 +108,7 @@ export const CustomerGeneralSection = ({
           {groups.length > 0 && <ActionMenu groups={groups} />}
         </div>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.name")}
         </Text>
@@ -116,7 +116,7 @@ export const CustomerGeneralSection = ({
           {name || "-"}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.company")}
         </Text>
@@ -124,7 +124,7 @@ export const CustomerGeneralSection = ({
           {customer.company_name || "-"}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.phone")}
         </Text>

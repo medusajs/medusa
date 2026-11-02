@@ -63,8 +63,7 @@ export interface GeoZoneDTO {
 /**
  * The filters to apply on the retrieved geo zones.
  */
-export interface FilterableGeoZoneProps
-  extends BaseFilterable<FilterableGeoZoneProps> {
+export interface FilterableGeoZoneProps extends BaseFilterable<FilterableGeoZoneProps> {
   /**
    * The IDs to filter the geo zones by.
    */

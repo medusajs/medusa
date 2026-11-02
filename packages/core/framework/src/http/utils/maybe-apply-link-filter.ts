@@ -31,9 +31,7 @@ export function maybeApplyLinkFilter({
     delete filterableFields[filterableField]
 
     let existingFilters = filterableFields[filterByField] as
-      | string[]
-      | string
-      | undefined
+      string[] | string | undefined
 
     const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 

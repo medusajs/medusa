@@ -45,7 +45,7 @@ export const Login = () => {
 
   if (mfaChallenge) {
     return (
-      <div className="bg-ui-bg-subtle flex min-h-dvh w-dvw items-center justify-center">
+      <div className="flex min-h-dvh w-dvw items-center justify-center bg-ui-bg-subtle">
         <MfaChallengeCard
           challenge={mfaChallenge}
           onSuccess={(token) => {
@@ -65,12 +65,12 @@ export const Login = () => {
   }
 
   return (
-    <div className="bg-ui-bg-subtle flex min-h-dvh w-dvw items-center justify-center">
+    <div className="flex min-h-dvh w-dvw items-center justify-center bg-ui-bg-subtle">
       <div className="m-4 flex w-full max-w-[280px] flex-col items-center">
         <AvatarBox />
         <div className="mb-4 flex flex-col items-center">
           <Heading>{t("login.title")}</Heading>
-          <Text size="small" className="text-ui-fg-subtle text-center">
+          <Text size="small" className="text-center text-ui-fg-subtle">
             {t("login.hint")}
           </Text>
         </div>
@@ -80,7 +80,7 @@ export const Login = () => {
           })}
           {isProvidersLoading ? (
             <div className="flex w-full items-center justify-center py-6">
-              <Spinner className="text-ui-fg-subtle animate-spin" />
+              <Spinner className="animate-spin text-ui-fg-subtle" />
             </div>
           ) : !providerList.length ? (
             <div>
@@ -103,14 +103,14 @@ export const Login = () => {
           />
         </div>
         {isEmailPassInstalled && (
-          <span className="text-ui-fg-muted txt-small my-6">
+          <span className="txt-small my-6 text-ui-fg-muted">
             <Trans
               i18nKey="login.forgotPassword"
               components={[
                 <Link
                   key="reset-password-link"
                   to="/reset-password"
-                  className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover font-medium outline-none"
+                  className="font-medium text-ui-fg-interactive outline-none transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover"
                 />,
               ]}
             />

@@ -141,7 +141,7 @@ After you enable the Caching Module, Medusa automatically caches data for severa
 
 ## How to Use the Caching Module
 
-You can cache data with the Caching Module in two ways: by caching data retrieved with [Query](!docs!/learn/fundamentals/module-links/query) or the [Index Module](!docs!/learn/fundamentals/module-links/index-module), or by directly using the [Caching Module's service](/references/caching-service).
+You can cache data with the Caching Module in two ways: by caching data retrieved with [Query](!docs!/learn/fundamentals/query) or the [Index Module](!docs!/learn/fundamentals/query/index-module), or by directly using the [Caching Module's service](/references/caching-service).
 
 ### 1. Caching with Query or Index Module
 
@@ -178,7 +178,7 @@ The `useQueryGraphStep` accepts an `options.cache` property that enables and con
 
 When caching is enabled, the Caching Module stores the results in the underlying caching service (for example, Redis). Subsequent calls to the same query retrieve the results from the cache, improving performance.
 
-Query and the Index Module accept other caching options. Learn more in the [Query](!docs!/learn/fundamentals/module-links/query#cache-query-results) and [Index Module](!docs!/learn/fundamentals/module-links/index-module#cache-index-module-results) guides.
+Query and the Index Module accept other caching options. Learn more in the [Query](!docs!/learn/fundamentals/query#cache-query-results) and [Index Module](!docs!/learn/fundamentals/query/index-module#cache-index-module-results) guides.
 
 ### 2. Caching with the Caching Module's Service
 
@@ -301,6 +301,7 @@ You can pass the following options to the Caching Module when registering it in 
       <Table.Cell>
         A number indicating the default time-to-live (TTL) in seconds for cached items. After this period, cached items will be removed from the cache.
         This number is passed to the underlying caching provider if no TTL is specified when caching data.
+        Set it to `0` to cache items without expiry. The Redis Caching Module Provider and the in-memory cache keep such items until they're invalidated automatically or [cleared manually](./guides/clear-cache/page.mdx).
       </Table.Cell>
       <Table.Cell>
         `3600` (1 hour)

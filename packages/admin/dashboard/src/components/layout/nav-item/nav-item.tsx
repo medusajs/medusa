@@ -93,7 +93,7 @@ const NavItemTooltip = ({
               <div className="flex items-center gap-x-1" key={index}>
                 <Kbd key={key}>{key}</Kbd>
                 {index < (shortcut.keys.Mac?.length || 0) - 1 && (
-                  <span className="text-ui-fg-muted txt-compact-xsmall">
+                  <span className="txt-compact-xsmall text-ui-fg-muted">
                     {t("app.keyboardShortcuts.then")}
                   </span>
                 )}
@@ -199,7 +199,7 @@ const SortableSubItem = ({
     >
       <button
         type="button"
-        className="text-ui-fg-muted cursor-grab touch-none rounded p-0.5 focus:outline-none [&>svg]:h-3.5 [&>svg]:w-3.5"
+        className="cursor-grab touch-none rounded p-0.5 text-ui-fg-muted focus:outline-none [&>svg]:h-3.5 [&>svg]:w-3.5"
         {...attributes}
         {...listeners}
         aria-label={t("layout.dragToReorder")}
@@ -397,7 +397,7 @@ export const NavItem = ({
         <RadixCollapsible.Root open={editMode || open} onOpenChange={setOpen}>
           <RadixCollapsible.Trigger
             className={clx(
-              "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex w-full items-center gap-x-2 rounded-md py-0.5 pl-0.5 pr-2 outline-none lg:hidden",
+              "flex w-full items-center gap-x-2 rounded-md py-0.5 pl-0.5 pr-2 text-ui-fg-subtle outline-none transition-fg hover:bg-ui-bg-subtle-hover hover:text-ui-fg-base lg:hidden",
               { "pl-2": isSetting }
             )}
           >
@@ -455,7 +455,7 @@ const Icon = ({ icon, type }: { icon?: ReactNode; type: ItemType }) => {
   }
 
   return type === "extension" ? (
-    <div className="shadow-borders-base bg-ui-bg-base flex h-5 w-5 items-center justify-center rounded-[4px]">
+    <div className="flex h-5 w-5 items-center justify-center rounded-[4px] bg-ui-bg-base shadow-borders-base">
       <div className="h-[15px] w-[15px] overflow-hidden rounded-sm">{icon}</div>
     </div>
   ) : (

@@ -55,7 +55,7 @@ import { isCellMatch, isSpecialFocusKey } from "../utils"
 import { DataGridKeyboardShortcutModal } from "./data-grid-keyboard-shortcut-modal"
 export interface DataGridRootProps<
   TData,
-  TFieldValues extends FieldValues = FieldValues
+  TFieldValues extends FieldValues = FieldValues,
 > {
   data?: TData[]
   columns: ColumnDef<TData>[]
@@ -120,7 +120,7 @@ const getCommonPinningStyles = <TData,>(
 
 export const DataGridRoot = <
   TData,
-  TFieldValues extends FieldValues = FieldValues
+  TFieldValues extends FieldValues = FieldValues,
 >({
   data = [],
   columns,
@@ -667,7 +667,7 @@ export const DataGridRoot = <
 
   return (
     <DataGridContext.Provider value={values as DataGridContextType<any>}>
-      <div className="bg-ui-bg-subtle flex size-full flex-col">
+      <div className="flex size-full flex-col bg-ui-bg-subtle">
         <DataGridHeader
           showColumnsDropdown={showColumnsDropdown}
           columnOptions={columnOptions}
@@ -691,10 +691,10 @@ export const DataGridRoot = <
             data-container={true}
             role="application"
           >
-            <div role="grid" className="text-ui-fg-subtle grid">
+            <div role="grid" className="grid text-ui-fg-subtle">
               <div
                 role="rowgroup"
-                className="txt-compact-small-plus bg-ui-bg-subtle sticky top-0 z-[1] grid"
+                className="txt-compact-small-plus sticky top-0 z-[1] grid bg-ui-bg-subtle"
               >
                 {grid.getHeaderGroups().map((headerGroup) => (
                   <div
@@ -735,7 +735,7 @@ export const DataGridRoot = <
                             width: header.getSize(),
                             ...getCommonPinningStyles(header.column),
                           }}
-                          className="bg-ui-bg-base txt-compact-small-plus flex items-center border-b border-r px-4 py-2.5"
+                          className="txt-compact-small-plus flex items-center border-b border-r bg-ui-bg-base px-4 py-2.5"
                         >
                           {header.isPlaceholder
                             ? null
@@ -749,7 +749,7 @@ export const DataGridRoot = <
                               onTouchStart={header.getResizeHandler()}
                               onClick={(e) => e.stopPropagation()}
                               className={clx(
-                                "hover:bg-ui-fg-interactive absolute right-0 top-0 z-[2] h-full w-1 cursor-col-resize touch-none select-none",
+                                "absolute right-0 top-0 z-[2] h-full w-1 cursor-col-resize touch-none select-none hover:bg-ui-fg-interactive",
                                 {
                                   "bg-ui-fg-interactive":
                                     header.column.getIsResizing(),
@@ -868,7 +868,7 @@ const DataGridHeader = ({
     setColumnsOpen(value)
   }
   return (
-    <div className="bg-ui-bg-base flex items-center justify-between border-b p-4">
+    <div className="flex items-center justify-between border-b bg-ui-bg-base p-4">
       {showColumnsDropdown && (
         <div className="flex items-center gap-x-2">
           <DropdownMenu
@@ -1001,7 +1001,7 @@ const DataGridCell = <TData,>({
           <div
             onMouseDown={onDragToFillStart}
             className={clx(
-              "bg-ui-fg-interactive absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize",
+              "absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize bg-ui-fg-interactive",
               {
                 "cursor-nwse-resize": multiColumnSelection,
               }
@@ -1051,7 +1051,7 @@ const DataGridRow = <TData,>({
       style={{
         transform: `translateY(${virtualRow.start}px)`,
       }}
-      className="bg-ui-bg-subtle txt-compact-small absolute flex min-h-10 w-full"
+      className="txt-compact-small absolute flex min-h-10 w-full bg-ui-bg-subtle"
     >
       {virtualPaddingLeft ? (
         <div
@@ -1127,7 +1127,7 @@ const DataGridRowSkeleton = ({
       style={{
         transform: `translateY(${virtualRow.start}px)`,
       }}
-      className="bg-ui-bg-subtle txt-compact-small absolute flex h-10 w-full"
+      className="txt-compact-small absolute flex h-10 w-full bg-ui-bg-subtle"
     >
       {virtualPaddingLeft ? (
         <div
@@ -1160,7 +1160,7 @@ const DataGridRowSkeleton = ({
             className="relative flex items-center border-b border-r p-0 outline-none"
           >
             <div className="flex h-full w-full items-center px-4">
-              <div className="bg-ui-bg-component h-4 w-3/4 animate-pulse rounded" />
+              <div className="h-4 w-3/4 animate-pulse rounded bg-ui-bg-component" />
             </div>
           </div>
         )

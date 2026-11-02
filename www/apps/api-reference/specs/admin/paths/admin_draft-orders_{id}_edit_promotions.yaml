@@ -24,8 +24,7 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_draft-orders_{id}_edit_promotions/post.js
+        $ref: ../code_samples/JavaScript/admin_draft-orders_{id}_edit_promotions/post.js
     - lang: Shell
       label: cURL
       source:
@@ -74,13 +73,11 @@ delete:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_draft-orders_{id}_edit_promotions/delete.js
+        $ref: ../code_samples/JavaScript/admin_draft-orders_{id}_edit_promotions/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_draft-orders_{id}_edit_promotions/delete.sh
+        $ref: ../code_samples/Shell/admin_draft-orders_{id}_edit_promotions/delete.sh
   tags:
     - Draft Orders
   responses:

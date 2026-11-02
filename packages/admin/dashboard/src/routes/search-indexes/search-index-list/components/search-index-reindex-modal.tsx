@@ -52,7 +52,7 @@ export const SearchIndexReindexModal = ({
       body.since = data.since.toISOString()
     }
     if (ids?.length) {
-      body.filters = { ids }
+      body.filters = { id: ids }
     }
 
     await mutateAsync(

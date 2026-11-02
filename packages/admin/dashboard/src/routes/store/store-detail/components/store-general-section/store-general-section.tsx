@@ -58,7 +58,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           ]}
         />
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.name")}
         </Text>
@@ -66,7 +66,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           {store.name}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("store.defaultCurrency")}
         </Text>
@@ -85,7 +85,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           </Text>
         )}
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("store.defaultRegion")}
         </Text>
@@ -101,7 +101,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           )}
         </div>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("store.defaultSalesChannel")}
         </Text>
@@ -119,7 +119,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
           )}
         </div>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
+      <div className="grid grid-cols-2 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("store.defaultLocation")}
         </Text>

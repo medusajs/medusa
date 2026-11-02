@@ -117,10 +117,12 @@ export async function buildPromotionRuleQueryFilterFromContext(
     // This requires checking that ALL rule values for a given rule are not in context
     if (stringValues.length) {
       sqlConditions.push(
-        `(pr.attribute = ${escapedAttribute} AND pr.operator IN ('in', 'eq') AND pr.id NOT IN (
-        SELECT DISTINCT prv_inner.promotion_rule_id
+        `(pr.attribute = ${escapedAttribute} AND pr.operator IN ('in', 'eq') AND NOT EXISTS (
+        SELECT 1
         FROM promotion_rule_value prv_inner
-        WHERE prv_inner.value IN (${stringValues})
+        WHERE prv_inner.promotion_rule_id = pr.id
+          AND prv_inner.deleted_at IS NULL
+          AND prv_inner.value IN (${stringValues})
       ))`
       )
     }
@@ -155,24 +157,8 @@ export async function buildPromotionRuleQueryFilterFromContext(
   // that any promotion that have a rule cant be satisfied by the context
   if (attributeValueMap.size === 0) {
     // If context has no attributes, exclude all promotions that have any rules (promotion rules, target rules, or buy rules)
-    const noRulesSubquery = (alias: string) =>
-      `
-      ${alias}.id NOT IN (
-        SELECT DISTINCT ppr.promotion_id
-        FROM promotion_promotion_rule ppr
-        UNION
-        SELECT DISTINCT am.promotion_id
-        FROM promotion_application_method am
-        JOIN application_method_target_rules amtr ON am.id = amtr.application_method_id
-        UNION
-        SELECT DISTINCT am2.promotion_id
-        FROM promotion_application_method am2
-        JOIN application_method_buy_rules ambr ON am2.id = ambr.application_method_id
-      )
-    `.trim()
-
     return {
-      [raw((alias) => noRulesSubquery(alias))]: true,
+      [raw((alias) => excludePromotionsWithRuleMatching(alias, "TRUE"))]: true,
     }
   }
 
@@ -189,65 +175,67 @@ export async function buildPromotionRuleQueryFilterFromContext(
     .map((attr) => `'${attr.replace(/'/g, "''")}'`)
     .join(",")
 
-  // Use anti-join approach for better performance than NOT IN
-  const antiJoinSubquery = (alias: string) =>
-    `
-    NOT EXISTS (
-      SELECT 1 FROM (
-        -- Promotions with rules for attributes not in context
-        SELECT ppr.promotion_id
-        FROM promotion_promotion_rule ppr
-        JOIN promotion_rule pr ON ppr.promotion_rule_id = pr.id
-        WHERE pr.attribute NOT IN (${attributeKeys})
-
-        UNION
-
-        SELECT am.promotion_id
-        FROM promotion_application_method am
-        JOIN application_method_target_rules amtr ON am.id = amtr.application_method_id
-        JOIN promotion_rule pr ON amtr.promotion_rule_id = pr.id
-        WHERE pr.attribute NOT IN (${attributeKeys})
-
-        UNION
-
-        SELECT am2.promotion_id
-        FROM promotion_application_method am2
-        JOIN application_method_buy_rules ambr ON am2.id = ambr.application_method_id
-        JOIN promotion_rule pr ON ambr.promotion_rule_id = pr.id
-        WHERE pr.attribute NOT IN (${attributeKeys})
-
-        UNION
-
-        -- Promotions with unsatisfiable rules for context attributes
-        SELECT ppr.promotion_id
-        FROM promotion_promotion_rule ppr
-        JOIN promotion_rule pr ON ppr.promotion_rule_id = pr.id
-        LEFT JOIN promotion_rule_value prv ON prv.promotion_rule_id = pr.id
-        WHERE pr.attribute IN (${attributeKeys}) AND (${joinedConditions})
-
-        UNION
-
-        SELECT am.promotion_id
-        FROM promotion_application_method am
-        JOIN application_method_target_rules amtr ON am.id = amtr.application_method_id
-        JOIN promotion_rule pr ON amtr.promotion_rule_id = pr.id
-        LEFT JOIN promotion_rule_value prv ON prv.promotion_rule_id = pr.id
-        WHERE pr.attribute IN (${attributeKeys}) AND (${joinedConditions})
-
-        UNION
-
-        SELECT am2.promotion_id
-        FROM promotion_application_method am2
-        JOIN application_method_buy_rules ambr ON am2.id = ambr.application_method_id
-        JOIN promotion_rule pr ON ambr.promotion_rule_id = pr.id
-        LEFT JOIN promotion_rule_value prv ON prv.promotion_rule_id = pr.id
-        WHERE pr.attribute IN (${attributeKeys}) AND (${joinedConditions})
-      ) excluded_promotions
-      WHERE excluded_promotions.promotion_id = ${alias}.id
-    )
-  `.trim()
+  // A promotion is excluded if any of its rules targets an attribute missing
+  // from the context, or targets a context attribute with an unsatisfiable value
+  const unsatisfiableRule = `(
+    pr.attribute NOT IN (${attributeKeys})
+    OR (pr.attribute IN (${attributeKeys}) AND (${joinedConditions}))
+  )`
 
   return {
-    [raw((alias) => antiJoinSubquery(alias))]: true,
+    [raw((alias) =>
+      excludePromotionsWithRuleMatching(alias, unsatisfiableRule)
+    )]: true,
   }
+}
+
+/**
+ * Promotion rules can be attached to a promotion in three ways: directly, as
+ * target rules of its application method, or as buy rules of its application
+ * method.
+ */
+const RULE_SOURCES = [
+  {
+    from: `promotion_promotion_rule ppr
+      JOIN promotion_rule pr ON ppr.promotion_rule_id = pr.id`,
+    promotionId: "ppr.promotion_id",
+  },
+  {
+    from: `promotion_application_method am
+      JOIN application_method_target_rules amtr ON am.id = amtr.application_method_id
+      JOIN promotion_rule pr ON amtr.promotion_rule_id = pr.id`,
+    promotionId: "am.promotion_id",
+  },
+  {
+    from: `promotion_application_method am
+      JOIN application_method_buy_rules ambr ON am.id = ambr.application_method_id
+      JOIN promotion_rule pr ON ambr.promotion_rule_id = pr.id`,
+    promotionId: "am.promotion_id",
+  },
+]
+
+/**
+ * Excludes the promotions having at least one rule, from any source, matching
+ * the given condition.
+ *
+ * Each source gets its own subquery correlated with the outer promotion, so
+ * that Postgres can probe the rules of the candidate promotions through the
+ * join tables primary keys. An uncorrelated UNION of all sources would instead
+ * be materialized with the rules of every promotion on each call, making the
+ * cost grow with the total number of promotions rather than with the number of
+ * candidates (e.g. only the automatic ones in computeActions).
+ */
+function excludePromotionsWithRuleMatching(
+  alias: string,
+  condition: string
+): string {
+  return RULE_SOURCES.map(
+    ({ from, promotionId }) => `NOT EXISTS (
+      SELECT 1
+      FROM ${from}
+      LEFT JOIN promotion_rule_value prv
+        ON prv.promotion_rule_id = pr.id AND prv.deleted_at IS NULL
+      WHERE ${promotionId} = ${alias}.id AND ${condition}
+    )`
+  ).join(" AND ")
 }

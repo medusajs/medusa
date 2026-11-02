@@ -6,10 +6,15 @@ jest.mock("@medusajs/deps/pg", () => ({
 }))
 
 jest.mock("@medusajs/telemetry", () => ({ track: jest.fn() }))
+jest.mock("execa", () => ({ execa: jest.fn() }))
+jest.mock("inquirer", () => ({ prompt: jest.fn() }))
+jest.mock("../../util/package-manager", () => ({
+  getPackageManager: jest.fn(() => "pnpm"),
+}))
 
 jest.mock("@medusajs/utils", () => ({
-  getNodeVersion: jest.fn(() => 20),
-  MIN_SUPPORTED_NODE_VERSION: 20,
+  isNodeVersionSupported: jest.fn(() => true),
+  MIN_SUPPORTED_NODE_VERSION: "22.22.0",
 }))
 
 jest.mock("../../reporter", () => ({

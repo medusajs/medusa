@@ -11,7 +11,7 @@ import {
 import { MedusaCloudAuthProviderOptions } from "@types"
 import crypto from "crypto"
 import jwt, { type JwtHeader, type JwtPayload } from "jsonwebtoken"
-import jwksClient, { JwksClient } from "jwks-rsa"
+import type { JwksClient } from "jwks-rsa"
 import { promisify } from "util"
 
 const verifyJwt = promisify<
@@ -55,19 +55,27 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
         "Medusa Cloud auth provider requires 'oauth_audience' option to be set"
       )
     }
+  }
 
-    this.jwks_ = jwksClient({
-      jwksUri: options.oauth_jwks_uri,
-      cache: true,
-      rateLimit: true,
-    })
+  // jwks-rsa loads the ESM-only jose, which breaks Jest suites that only load this module
+  protected getJwksClient_(): JwksClient {
+    if (!this.jwks_) {
+      const jwksClient = require("jwks-rsa") as typeof import("jwks-rsa")
+      this.jwks_ = jwksClient({
+        jwksUri: this.config_.oauth_jwks_uri,
+        cache: true,
+        rateLimit: true,
+      })
+    }
+
+    return this.jwks_
   }
 
   protected getSigningKey_ = (
     header: JwtHeader,
     callback: (err: Error | null, key?: string) => void
   ) => {
-    if (!this.jwks_) {
+    if (!this.config_.oauth_jwks_uri) {
       callback(
         new Error(
           "Medusa Cloud auth provider is missing required 'oauth_jwks_uri' option; cannot verify id_token signature"
@@ -79,7 +87,7 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
       callback(new Error("ID token is missing 'kid' header"))
       return
     }
-    this.jwks_.getSigningKey(header.kid, (err, key) => {
+    this.getJwksClient_().getSigningKey(header.kid, (err, key) => {
       if (err || !key) {
         callback(err ?? new Error("Unable to resolve signing key"))
         return

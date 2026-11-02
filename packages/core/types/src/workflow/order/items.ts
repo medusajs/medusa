@@ -211,8 +211,7 @@ export interface UpdateOrderEditAddNewItemWorkflowInput {
 /**
  * The details to update an existing order item that was added previously to an order edit.
  */
-export interface UpdateOrderEditItemQuantityWorkflowInput
-  extends UpdateOrderEditAddNewItemWorkflowInput {}
+export interface UpdateOrderEditItemQuantityWorkflowInput extends UpdateOrderEditAddNewItemWorkflowInput {}
 
 /**
  * The details to update a claim's outbound item.

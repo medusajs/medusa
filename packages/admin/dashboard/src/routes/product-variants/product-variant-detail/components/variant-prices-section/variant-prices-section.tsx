@@ -54,7 +54,7 @@ export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
         return (
           <div
             key={price.id}
-            className="txt-small text-ui-fg-subtle flex justify-between px-6 py-4"
+            className="txt-small flex justify-between px-6 py-4 text-ui-fg-subtle"
           >
             <span className="font-medium">
               {price.currency_code.toUpperCase()}
@@ -64,7 +64,7 @@ export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
         )
       })}
       {hasPrices && (
-        <div className="txt-small text-ui-fg-subtle flex items-center justify-between px-6 py-4">
+        <div className="txt-small flex items-center justify-between px-6 py-4 text-ui-fg-subtle">
           <span className="font-medium">
             {t("products.variant.pricesPagination", {
               total: prices.length,

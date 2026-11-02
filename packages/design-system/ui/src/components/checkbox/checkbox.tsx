@@ -22,13 +22,13 @@ const Checkbox = React.forwardRef<
       ref={ref}
       checked={checked}
       className={clx(
-        "group inline-flex h-5 w-5 items-center justify-center outline-none ",
+        "group inline-flex h-5 w-5 items-center justify-center outline-none",
         className
       )}
     >
       <div
         className={clx(
-          "text-ui-fg-on-inverted bg-ui-bg-base shadow-borders-base [&_path]:shadow-details-contrast-on-bg-interactive transition-fg h-[15px] w-[15px] rounded-[3px]",
+          "h-[15px] w-[15px] rounded-[3px] bg-ui-bg-base text-ui-fg-on-inverted shadow-borders-base transition-fg [&_path]:shadow-details-contrast-on-bg-interactive",
           "group-disabled:cursor-not-allowed group-disabled:opacity-50",
           "group-focus-visible:!shadow-borders-interactive-with-focus",
           "group-hover:group-enabled:group-data-[state=unchecked]:bg-ui-bg-base-hover",

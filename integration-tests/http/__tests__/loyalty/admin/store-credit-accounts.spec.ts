@@ -350,5 +350,96 @@ medusaIntegrationTestRunner({
         })
       })
     })
+
+    describe("POST /admin/store-credit-accounts/:id/debit", () => {
+      let account
+
+      beforeEach(async () => {
+        account = (
+          await api.post(
+            `/admin/store-credit-accounts`,
+            { currency_code: "usd" },
+            adminHeaders
+          )
+        ).data.store_credit_account
+
+        await api.post(
+          `/admin/store-credit-accounts/${account.id}/credit`,
+          { amount: 100, note: "Initial credit" },
+          adminHeaders
+        )
+      })
+
+      it("successfully debits a store credit account", async () => {
+        const {
+          data: { store_credit_account },
+        } = await api.post(
+          `/admin/store-credit-accounts/${account.id}/debit?fields=*transactions`,
+          { amount: 40, note: "Credit issued by mistake" },
+          adminHeaders
+        )
+
+        expect(store_credit_account).toEqual(
+          expect.objectContaining({
+            currency_code: "usd",
+            balance: 60,
+            credits: 100,
+            debits: 40,
+            transactions: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.stringMatching(/^sc_trx_/),
+                amount: 40,
+                type: "debit",
+                note: "Credit issued by mistake",
+                reference: "user",
+                reference_id: adminUser.id,
+              }),
+            ]),
+          })
+        )
+      })
+
+      it("should throw an error if the amount is greater than the balance", async () => {
+        const { response } = await api
+          .post(
+            `/admin/store-credit-accounts/${account.id}/debit`,
+            { amount: 120 },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(response.data).toEqual({
+          message: "Insufficient balance",
+          type: "invalid_data",
+        })
+      })
+
+      it("should throw an error if the amount is negative", async () => {
+        const { response } = await api
+          .post(
+            `/admin/store-credit-accounts/${account.id}/debit`,
+            { amount: -20 },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(response.data).toEqual({
+          message: "Amount must be greater than 0",
+          type: "invalid_data",
+        })
+      })
+
+      it("should throw an error if the store credit account does not exist", async () => {
+        const { response } = await api
+          .post(
+            `/admin/store-credit-accounts/sca_does_not_exist/debit`,
+            { amount: 10 },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(response.status).toEqual(404)
+      })
+    })
   },
 })

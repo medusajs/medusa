@@ -42,7 +42,14 @@ const mergeStep = (
     "startedAt",
   ]
 
+  // A new failure clears the retry scheduled before it, keep the cleared value
+  const hasNewFailure = (currentStep.failures ?? 0) > (storedStep.failures ?? 0)
+
   for (const prop of mergeProperties) {
+    if (prop === "retryRescheduledAt" && hasNewFailure) {
+      continue
+    }
+
     if (prop === "hasScheduledRetry" || prop === "stepFailed") {
       currentStep[prop] = storedStep[prop] ?? currentStep[prop]
       continue

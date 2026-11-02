@@ -68,7 +68,7 @@ By following this tutorial, you will learn how to:
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -778,7 +778,7 @@ It accepts as a second parameter a constructor function that holds the workflow'
 
 In the workflow, you:
 
-1. Try to retrieve the variant's details to confirm it exists. The [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) uses [Query](!docs!/learn/fundamentals/module-links/query) which allows you to retrieve data across modules.
+1. Try to retrieve the variant's details to confirm it exists. The [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) uses [Query](!docs!/learn/fundamentals/query) which allows you to retrieve data across modules.
     - If it doesn't exist, an error is thrown and the workflow will stop executing.
 2. Try to retrieve the variant's existing preorder configurations, if any.
 3. Use [when-then](!docs!/learn/fundamentals/workflows/conditions) to check if there are existing pre-order configurations.
@@ -1758,7 +1758,7 @@ export const completeCartPreorderWorkflowHighlights = [
   ["46", "useQueryGraphStep", "Retrieve all line items in the cart."],
   ["57", "retrievePreorderItemIdsStep", "Retrieve the IDs of pre-order variants in the cart."],
   ["61", "when", "Check that there are no existing preorders and that there are pre-order items in the cart."],
-  ["66", "createPreordersStep", "Create pre-ordersz for the pre-order items in the cart."],
+  ["66", "createPreordersStep", "Create pre-orders for the pre-order items in the cart."],
   ["72", "useQueryGraphStep", "Retrieve the created order."],
   ["89", "releaseLockStep", "Release the lock on the cart."],
   ["94", "order", "Return the created Medusa order."],

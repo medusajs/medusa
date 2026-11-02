@@ -38,9 +38,7 @@ type RulesFormFieldType = {
   setRulesToRemove?: any
   rulesToRemove?: any
   scope?:
-    | "application_method.buy_rules"
-    | "rules"
-    | "application_method.target_rules"
+    "application_method.buy_rules" | "rules" | "application_method.target_rules"
   formType?: "create" | "edit"
 }
 
@@ -181,7 +179,7 @@ export const RulesFormField = ({
         )}
       </Heading>
 
-      <Text className="text-ui-fg-subtle txt-small mb-6">
+      <Text className="txt-small mb-6 text-ui-fg-subtle">
         {t(
           ruleType === "target-rules"
             ? (`promotions.fields.conditions.${ruleType}.${applicationMethodTargetType}.description` as any)
@@ -194,7 +192,7 @@ export const RulesFormField = ({
 
         return (
           <Fragment key={`${fieldRule.id}.${index}.${fieldRule.attribute}`}>
-            <div className="bg-ui-bg-subtle border-ui-border-base flex flex-row gap-2 rounded-xl border px-2 py-2">
+            <div className="flex flex-row gap-2 rounded-xl border border-ui-border-base bg-ui-bg-subtle px-2 py-2">
               <div className="grow">
                 <Form.Field
                   name={`${scope}.${index}.attribute`}
@@ -242,7 +240,7 @@ export const RulesFormField = ({
                       <Form.Item className="mb-2">
                         {fieldRule.required && (
                           <div className="flex items-center px-2">
-                            <p className="text text-ui-fg-muted txt-small">
+                            <p className="text txt-small text-ui-fg-muted">
                               {t("promotions.form.required")}
                             </p>
                           </div>
@@ -399,9 +397,9 @@ export const RulesFormField = ({
 
             {index < fields.length - 1 && (
               <div className="relative px-6 py-3">
-                <div className="border-ui-border-strong absolute bottom-0 left-[40px] top-0 z-[-1] w-px bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-repeat-y"></div>
+                <div className="absolute bottom-0 left-[40px] top-0 z-[-1] w-px border-ui-border-strong bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-repeat-y"></div>
 
-                <Badge size="2xsmall" className=" text-xs">
+                <Badge size="2xsmall" className="text-xs">
                   {t("promotions.form.and")}
                 </Badge>
               </div>
@@ -431,7 +429,7 @@ export const RulesFormField = ({
           <Button
             type="button"
             variant="transparent"
-            className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block"
+            className="ml-2 inline-block text-ui-fg-muted hover:text-ui-fg-subtle"
             onClick={() => {
               const indicesToRemove = fields
                 .map((field: any, index) => {
@@ -465,7 +463,7 @@ const DisabledField = forwardRef<HTMLInputElement, DisabledAttributeProps>(
   ({ label, field }, ref) => {
     return (
       <div>
-        <div className="txt-compact-small bg-ui-bg-component shadow-borders-base text-ui-fg-base h-8 rounded-md px-2 py-1.5">
+        <div className="txt-compact-small h-8 rounded-md bg-ui-bg-component px-2 py-1.5 text-ui-fg-base shadow-borders-base">
           {label}
         </div>
         <input {...field} ref={ref} disabled hidden />

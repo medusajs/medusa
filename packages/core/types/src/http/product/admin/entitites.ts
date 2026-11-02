@@ -91,8 +91,10 @@ export interface AdminProductOptionValue extends BaseProductOptionValue {
    */
   option?: AdminProductOption | null
 }
-export interface AdminProduct
-  extends Omit<BaseProduct, "categories" | "variants"> {
+export interface AdminProduct extends Omit<
+  BaseProduct,
+  "categories" | "variants"
+> {
   /**
    * The product's collection.
    */

@@ -1018,16 +1018,6 @@ const generatedgeneratedStoreSidebarSidebar = {
             "variant": "green",
             "text": "Get"
           }
-        },
-        {
-          "type": "link",
-          "path": "/store/products/list-products-2",
-          "title": "List Products",
-          "loaded": true,
-          "badge": {
-            "variant": "green",
-            "text": "Get"
-          }
         }
       ]
     },
@@ -1127,6 +1117,24 @@ const generatedgeneratedStoreSidebarSidebar = {
           "type": "link",
           "path": "/store/returns/create-return",
           "title": "Create Return",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "title": "Search",
+      "path": "/store/search",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/store/search/search-indexes",
+          "title": "Search Indexes",
           "loaded": true,
           "badge": {
             "variant": "blue",

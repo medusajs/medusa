@@ -74,7 +74,7 @@ export interface RouteConfig {
 
 export type CustomFormField<
   TData = unknown,
-  TValidation extends ZodFirstPartySchemaTypes = ZodFirstPartySchemaTypes
+  TValidation extends ZodFirstPartySchemaTypes = ZodFirstPartySchemaTypes,
 > = {
   /**
    * The rules that the field should be validated against.
@@ -145,8 +145,10 @@ export interface CustomFieldConfig<TModel extends CustomFieldModel> {
   link: string | string[]
   forms: Array<
     {
-      [K in CustomFieldFormKeys<TModel> &
-        keyof CustomFieldModelFormTabsMap[TModel]]: {
+      [
+        K in CustomFieldFormKeys<TModel> &
+          keyof CustomFieldModelFormTabsMap[TModel]
+      ]: {
         /**
          * The form to extend.
          *

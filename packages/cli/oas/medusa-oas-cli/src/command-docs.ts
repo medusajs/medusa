@@ -1,15 +1,10 @@
-import {
-  previewDocs,
-  PreviewDocsOptions,
-} from "@redocly/cli/lib/commands/preview-docs"
-import { commandWrapper } from "@redocly/cli/lib/wrapper"
 import { Command, Option, OptionValues } from "commander"
-import execa from "execa"
+import { execa } from "execa"
 import fs, { mkdir } from "fs/promises"
+import { createServer } from "http"
 import mergeWith from "lodash.mergewith"
 
 import * as path from "path"
-import yargs from "yargs"
 import {
   formatHintRecommendation,
   getCircularPatchRecommendation,
@@ -29,10 +24,10 @@ import {
  */
 const basePath = path.resolve(__dirname, "../")
 
-const medusaPluginRelativePath = "./plugins/medusa/index.js"
+const medusaPluginRelativePath = "./plugins/medusa/index.cjs"
 const medusaPluginAbsolutePath = path.resolve(
   basePath,
-  "redocly/plugins/medusa/index.js"
+  "redocly/plugins/medusa/index.cjs"
 )
 const configFileDefault = path.resolve(basePath, "redocly/redocly-config.yaml")
 
@@ -74,10 +69,6 @@ export const commandOptions: Option[] = [
     "--main-file-name <mainFileName>",
     "The name of the main YAML file."
   ).default("openapi.yaml"),
-  new Option(
-    "--archive-out-file <archiveOutFile>",
-    "Path to copy the full bundled YAML to (e.g. for versioned storage). Creates intermediate directories as needed."
-  ),
 ]
 
 export function getCommand(): Command {
@@ -105,10 +96,6 @@ export async function execute(cliParams: OptionValues): Promise<void> {
   const dryRun = !!cliParams.dryRun
   const srcFile = path.resolve(cliParams.srcFile)
   const outDir = path.resolve(cliParams.outDir)
-  const archiveOutFile = cliParams.archiveOutFile
-    ? path.resolve(cliParams.archiveOutFile)
-    : undefined
-
   const configFileCustom = cliParams.config
     ? path.resolve(cliParams.config)
     : undefined
@@ -153,12 +140,6 @@ export async function execute(cliParams: OptionValues): Promise<void> {
   await sanitizeOAS(srcFile, srcFileSanitized, configTmpFile)
   await fixCirclularReferences(srcFileSanitized)
 
-  if (archiveOutFile && !dryRun) {
-    await mkdir(path.dirname(archiveOutFile), { recursive: true })
-    await fs.copyFile(srcFileSanitized, archiveOutFile)
-    console.log(`⚫️ Archived OAS to - ${archiveOutFile}`)
-  }
-
   if (dryRun) {
     console.log(`⚫️ Dry run - no files generated`)
     // check out possible changes in redocly config
@@ -169,7 +150,7 @@ export async function execute(cliParams: OptionValues): Promise<void> {
     return
   }
   if (shouldPreview) {
-    await preview(srcFileSanitized, configTmpFile)
+    await preview(srcFileSanitized, tmpDir, configTmpFile)
     return
   }
   if (shouldSplit) {
@@ -182,7 +163,7 @@ export async function execute(cliParams: OptionValues): Promise<void> {
   }
   if (shouldBuildHTML) {
     const outHTMLFile = path.resolve(outDir, "index.html")
-    await buildHTML(finalOASFile, outHTMLFile, configTmpFile)
+    await buildHTML(path.join(outDir, finalOASFile), outHTMLFile, configTmpFile)
   }
   console.log(`⚫️ API documentation generated - ${outDir}`)
 }
@@ -199,8 +180,8 @@ type RedoclyConfig = {
   preprocessors?: Record<string, unknown>
   region?: string
   resolve?: Record<string, unknown>
+  openapi?: Record<string, unknown>
   rules?: Record<string, unknown>
-  theme?: Record<string, unknown>
 }
 
 const mergeConfig = async (
@@ -306,13 +287,22 @@ const generateReference = async (
   console.log(logs)
 }
 
-const preview = async (oasFile: string, configFile: string): Promise<void> => {
-  await commandWrapper(previewDocs)({
-    port: 8080,
-    host: "127.0.0.1",
-    api: oasFile,
-    config: configFile,
-  } as yargs.Arguments<PreviewDocsOptions>)
+const preview = async (
+  oasFile: string,
+  tmpDir: string,
+  configFile: string
+): Promise<void> => {
+  const htmlFile = path.resolve(tmpDir, "index.html")
+  await buildHTML(oasFile, htmlFile, configFile)
+  const html = await fs.readFile(htmlFile)
+  const host = "127.0.0.1"
+  const port = 8080
+  createServer((_, res) => {
+    res.writeHead(200, { "Content-Type": "text/html" })
+    res.end(html)
+  }).listen(port, host, () => {
+    console.log(`🔵 Previewing documentation at http://${host}:${port}`)
+  })
 }
 
 const buildHTML = async (
@@ -328,7 +318,6 @@ const buildHTML = async (
       srcFile,
       `--output=${outFile}`,
       `--config=${configFile}`,
-      `--cdn=true`,
     ],
     { cwd: basePath, all: true }
   )

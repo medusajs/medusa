@@ -18,7 +18,7 @@ export const TaxRateLine = ({
   const { t } = useTranslation()
 
   return (
-    <div className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_auto] items-center gap-4 px-6 py-4">
+    <div className="grid grid-cols-[1fr_1fr_auto] items-center gap-4 px-6 py-4 text-ui-fg-subtle">
       <div className="flex items-center gap-x-1.5">
         <Text size="small" weight="plus" leading="compact">
           {taxRate.name}

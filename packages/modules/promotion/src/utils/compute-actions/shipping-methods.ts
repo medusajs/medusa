@@ -1,5 +1,6 @@
 import {
   BigNumberInput,
+  CampaignBudgetUsageDTO,
   InferEntityType,
   PromotionTypes,
 } from "@medusajs/framework/types"
@@ -19,7 +20,8 @@ import { computeActionForBudgetExceeded } from "./usage"
 export function getComputedActionsForShippingMethods(
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   shippingMethodApplicationContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
-  methodIdPromoValueMap: Map<string, number>
+  methodIdPromoValueMap: Map<string, number>,
+  attributeUsage?: CampaignBudgetUsageDTO
 ): PromotionTypes.ComputeActions[] {
   let applicableShippingItems: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS] =
     []
@@ -55,14 +57,16 @@ export function getComputedActionsForShippingMethods(
   return applyPromotionToShippingMethods(
     promotion,
     applicableShippingItems,
-    methodIdPromoValueMap
+    methodIdPromoValueMap,
+    attributeUsage
   )
 }
 
 export function applyPromotionToShippingMethods(
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   shippingMethods: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
-  methodIdPromoValueMap: Map<string, BigNumberInput>
+  methodIdPromoValueMap: Map<string, BigNumberInput>,
+  attributeUsage?: CampaignBudgetUsageDTO
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
   const allocation = applicationMethod?.allocation!
@@ -104,7 +108,8 @@ export function applyPromotionToShippingMethods(
 
       const budgetExceededAction = computeActionForBudgetExceeded(
         promotion,
-        amount
+        amount,
+        attributeUsage
       )
 
       if (budgetExceededAction) {
@@ -174,7 +179,8 @@ export function applyPromotionToShippingMethods(
 
       const budgetExceededAction = computeActionForBudgetExceeded(
         promotion,
-        amount
+        amount,
+        attributeUsage
       )
 
       if (budgetExceededAction) {

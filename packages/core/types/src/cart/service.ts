@@ -329,7 +329,7 @@ export interface ICartModuleService extends IModuleService {
   /**
    * This method retrieves a paginated list of addresses based on optional filters and configuration.
    *
-   * @param {FilterableAddressProps} filters - The filters to apply on the retrieved addresss.
+   * @param {FilterableAddressProps} filters - The filters to apply on the retrieved address.
    * @param {FindConfig<CartAddressDTO>} config - The configurations determining how the address is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a address.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.

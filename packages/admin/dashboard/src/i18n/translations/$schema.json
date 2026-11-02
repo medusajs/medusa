@@ -4183,6 +4183,64 @@
           "required": ["header", "hint", "successToast"],
           "additionalProperties": false
         },
+        "export": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "success": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "format": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "json": {
+                  "type": "string"
+                },
+                "csv": {
+                  "type": "string"
+                }
+              },
+              "required": ["label", "description", "json", "csv"],
+              "additionalProperties": false
+            },
+            "filters": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["header", "description", "success", "format", "filters"],
+          "additionalProperties": false
+        },
         "groups": {
           "type": "object",
           "properties": {
@@ -4400,6 +4458,7 @@
         "domain",
         "list",
         "create",
+        "export",
         "groups",
         "edit",
         "delete",
@@ -4693,13 +4752,21 @@
                 },
                 "creditLineDescription": {
                   "type": "string"
+                },
+                "creditLineNoOutstandingAmountDescription": {
+                  "type": "string"
+                },
+                "creditLineGuestDescription": {
+                  "type": "string"
                 }
               },
               "required": [
                 "paymentMethod",
                 "paymentMethodDescription",
                 "creditLine",
-                "creditLineDescription"
+                "creditLineDescription",
+                "creditLineNoOutstandingAmountDescription",
+                "creditLineGuestDescription"
               ],
               "additionalProperties": false
             }
@@ -4953,6 +5020,12 @@
             "totalPaidByCustomer": {
               "type": "string"
             },
+            "totalPending": {
+              "type": "string"
+            },
+            "storeCreditRefund": {
+              "type": "string"
+            },
             "totalStoreCreditRefunds": {
               "type": "string"
             },
@@ -4989,6 +5062,9 @@
                 "awaiting": {
                   "type": "string"
                 },
+                "pending": {
+                  "type": "string"
+                },
                 "captured": {
                   "type": "string"
                 },
@@ -5013,6 +5089,7 @@
                 "authorized",
                 "partiallyAuthorized",
                 "awaiting",
+                "pending",
                 "captured",
                 "partiallyRefunded",
                 "partiallyCaptured",
@@ -5069,6 +5146,8 @@
             "title",
             "isReadyToBeCaptured",
             "totalPaidByCustomer",
+            "totalPending",
+            "storeCreditRefund",
             "totalStoreCreditRefunds",
             "capture",
             "capture_short",
@@ -13119,6 +13198,15 @@
         "reindexEntityIdsHint": {
           "type": "string"
         },
+        "delete": {
+          "type": "string"
+        },
+        "deleteWarning": {
+          "type": "string"
+        },
+        "deleteSuccess": {
+          "type": "string"
+        },
         "noFields": {
           "type": "string"
         },
@@ -13165,6 +13253,9 @@
         "reindexSinceHint",
         "reindexEntityIdsLabel",
         "reindexEntityIdsHint",
+        "delete",
+        "deleteWarning",
+        "deleteSuccess",
         "noFields",
         "list",
         "status"

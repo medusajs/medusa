@@ -63,7 +63,7 @@ export const CustomerAddressSection = ({
         <Heading level="h2">{t("addresses.title")}</Heading>
         {/* Only show add link if user has update permission */}
         <PermissionGuard resource="customer" operation="update">
-          <Link to={`create-address`} className="text-ui-fg-muted text-xs">
+          <Link to={`create-address`} className="text-xs text-ui-fg-muted">
             Add
           </Link>
         </PermissionGuard>

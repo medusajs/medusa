@@ -48,8 +48,8 @@ export const ProductSalesChannelSection = ({
         />
       </div>
       <div className="grid grid-cols-[28px_1fr] items-center gap-x-3">
-        <div className="bg-ui-bg-base shadow-borders-base flex size-7 items-center justify-center rounded-md">
-          <div className="bg-ui-bg-component flex size-6 items-center justify-center rounded-[4px]">
+        <div className="flex size-7 items-center justify-center rounded-md bg-ui-bg-base shadow-borders-base">
+          <div className="flex size-6 items-center justify-center rounded-[4px] bg-ui-bg-component">
             <Channels className="text-ui-fg-subtle" />
           </div>
         </div>
@@ -95,11 +95,11 @@ export const ProductSalesChannelSection = ({
             components={[
               <span
                 key="x"
-                className="text-ui-fg-base txt-compact-medium-plus"
+                className="txt-compact-medium-plus text-ui-fg-base"
               />,
               <span
                 key="y"
-                className="text-ui-fg-base txt-compact-medium-plus"
+                className="txt-compact-medium-plus text-ui-fg-base"
               />,
             ]}
           />

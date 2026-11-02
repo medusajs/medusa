@@ -5415,6 +5415,20 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "updateProductsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateProductVariantsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductVariantsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "updateReservationsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateReservationsWorkflow",
                       "children": []
@@ -5455,6 +5469,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "createInventoryLevelsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createInventoryLevelsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createProductVariantsDefaultInventoryStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep",
                       "children": []
                     },
                     {
@@ -9324,6 +9345,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/payment/payment-provider/adyen",
+              "title": "Adyen",
+              "children": []
+            },
+            {
+              "loaded": true,
               "type": "ref",
               "path": "/integrations/guides/paypal",
               "title": "PayPal",
@@ -9607,6 +9635,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "updatePaymentSessionClientDataWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePaymentSessionClientDataWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "updateRefundReasonsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRefundReasonsWorkflow",
                       "children": []
@@ -9717,6 +9752,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updatePaymentCollectionStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePaymentCollectionStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updatePaymentSessionStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePaymentSessionStep",
                       "children": []
                     },
                     {
@@ -11553,6 +11595,24 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
+          "title": "Admin Guides",
+          "autogenerate_tags": "admin+product,-jsSdk",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to utilize administative features of the Product Module.",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/product/guides/manage-with-admin-api",
+              "title": "Manage Products with Admin API",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
           "title": "Admin User Guides",
           "autogenerate_tags": "userGuide+product",
           "autogenerate_as_ref": true,
@@ -11982,6 +12042,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "createProductTypesStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductTypesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createProductVariantsDefaultInventoryStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep",
                       "children": []
                     },
                     {
@@ -16450,6 +16517,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "debitAccountsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitAccountsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "debitStoreCreditAccountWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitStoreCreditAccountWorkflow",
                       "children": []
                     },
                     {

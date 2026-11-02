@@ -12,7 +12,7 @@ interface ProgressBarProps {
 export const ProgressBar = ({ duration = 2 }: ProgressBarProps) => {
   return (
     <motion.div
-      className="bg-ui-fg-subtle size-full"
+      className="size-full bg-ui-fg-subtle"
       initial={{
         width: "0%",
       }}

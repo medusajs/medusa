@@ -89,7 +89,20 @@ Refer to [the Test Tooling Reference](!resources!/test-tools-reference/medusaInt
 
 ## Database Used in Tests
 
-The `medusaIntegrationTestRunner` function creates a database with a random name before running the tests. Then, it drops that database after all the tests end.
+<Prerequisites
+  items={[
+    {
+      text: "A PostgreSQL server is running."
+    },
+    {
+      text: "The PostgreSQL user that the tests connect with can create databases."
+    }
+  ]}
+/>
+
+The `medusaIntegrationTestRunner` function creates a database named `medusa-{random-id}-integration-{worker-id}`, where `{worker-id}` is the ID of the Jest worker running the test file. You can set a different name with the `dbName` property. Then, it drops that database after all the tests end.
+
+The tests connect to the PostgreSQL server using the `DB_HOST`, `DB_PORT`, `DB_USERNAME`, and `DB_PASSWORD` environment variables, which default to `localhost`, `5432`, `postgres`, and an empty password respectively.
 
 To manage that database, such as changing its name or perform operations on it in your tests, refer to [the Test Tooling Reference](!resources!/test-tools-reference/medusaIntegrationTestRunner).
 

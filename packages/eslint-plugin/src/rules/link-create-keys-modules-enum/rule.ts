@@ -6,6 +6,7 @@ import {
   MODULES_BY_VALUE,
   MODULES_ENUM as MODULES,
 } from "../../constants"
+import { isLinkReceiver, trackLinkBinding } from "../../util/link"
 
 type MessageIds = "preferEnumKey"
 
@@ -55,15 +56,20 @@ export const rule = createRule<[], MessageIds>({
   create(context) {
     const modulesLocalNames = new Set<string>()
     const stepLocalNames = new Set<string>()
+    const linkLocalNames = new Set<string>()
     let frameworkUtilsImportNode: TSESTree.ImportDeclaration | null = null
 
     function isLinkMethodCall(callee: TSESTree.Expression): boolean {
-      return (
-        callee.type === AST_NODE_TYPES.MemberExpression &&
-        !callee.computed &&
-        callee.property.type === AST_NODE_TYPES.Identifier &&
-        LINK_METHODS.has(callee.property.name)
-      )
+      if (
+        callee.type !== AST_NODE_TYPES.MemberExpression ||
+        callee.computed ||
+        callee.property.type !== AST_NODE_TYPES.Identifier ||
+        !LINK_METHODS.has(callee.property.name)
+      ) {
+        return false
+      }
+
+      return isLinkReceiver(callee.object, linkLocalNames)
     }
 
     function isStepCall(callee: TSESTree.Expression): boolean {
@@ -186,6 +192,14 @@ export const rule = createRule<[], MessageIds>({
             }
           }
         }
+      },
+
+      VariableDeclarator(node) {
+        trackLinkBinding(node, linkLocalNames)
+      },
+
+      PropertyDefinition(node) {
+        trackLinkBinding(node, linkLocalNames)
       },
 
       CallExpression(node) {

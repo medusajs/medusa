@@ -20,7 +20,7 @@ export const ProductTagGeneralSection = ({
   return (
     <Container className="flex items-center justify-between">
       <div className="flex items-center gap-x-1.5">
-        <span className="text-ui-fg-muted h1-core">#</span>
+        <span className="h1-core text-ui-fg-muted">#</span>
         <Heading>{productTag.value}</Heading>
       </div>
       <ActionMenu

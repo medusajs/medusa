@@ -61,6 +61,10 @@ export class MemoryCachingProvider implements ICachingProviderService {
     })
   }
 
+  async shutdown(): Promise<void> {
+    this.cacheClient.close()
+  }
+
   private calculateEntrySize(
     key: string,
     data: object,

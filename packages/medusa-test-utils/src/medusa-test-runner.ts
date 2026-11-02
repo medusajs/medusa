@@ -53,7 +53,6 @@ interface TestRunnerConfig {
   medusaConfigFile?: string
   schema?: string
   debug?: boolean
-  inApp?: boolean
   hooks?: {
     beforeServerStart?: (container: MedusaContainer) => Promise<void>
   }
@@ -68,8 +67,6 @@ class MedusaTestRunner {
   private cwd: string
   private env: Record<string, any>
   private debug: boolean
-  // @ts-ignore
-  private inApp: boolean
 
   private dbUtils: ReturnType<typeof dbTestUtilFactory>
   private dbConfig: {
@@ -100,7 +97,6 @@ class MedusaTestRunner {
     this.modulesConfigPath = config.medusaConfigFile ?? this.cwd
     this.env = config.env ?? {}
     this.debug = config.debug ?? false
-    this.inApp = config.inApp ?? false
 
     this.dbUtils = dbTestUtilFactory()
     this.dbConfig = {
@@ -154,7 +150,7 @@ class MedusaTestRunner {
       await this.dbUtils.create(this.dbName)
       this.dbUtils.pgConnection_ = await initDb()
     } catch (error) {
-      logger.error(`Error initializing database: ${error?.message}`)
+      logger.error(`Error initializing database:\n${formatError(error)}`)
       await this.cleanup()
       throw error
     }
@@ -243,7 +239,7 @@ class MedusaTestRunner {
 
       await waitWorkflowExecutions(this.globalContainer as MedusaContainer)
     } catch (error) {
-      logger.error(`Error starting the app: ${error?.message}`)
+      logger.error(`Error starting the app:\n${formatError(error)}`)
       await this.cleanup()
       throw error
     }
@@ -282,7 +278,7 @@ class MedusaTestRunner {
         global.gc()
       }
     } catch (error) {
-      logger.error("Error during cleanup:", error?.message)
+      logger.error(`Error during cleanup:\n${formatError(error)}`)
     } finally {
       this.restoreEnvVars()
       this.restoreEnvVars = () => void 0
@@ -328,7 +324,7 @@ class MedusaTestRunner {
         templateName: this.dbTemplateName,
       })
     } catch (error) {
-      logger.error("Error restoring database:", error?.message)
+      logger.error(`Error restoring database:\n${formatError(error)}`)
       throw error
     }
   }
@@ -392,7 +388,6 @@ export function medusaIntegrationTestRunner({
   schema = "public",
   env = {},
   debug = false,
-  inApp = false,
   testSuite,
   hooks,
   cwd,
@@ -403,7 +398,6 @@ export function medusaIntegrationTestRunner({
   medusaConfigFile?: string
   schema?: string
   debug?: boolean
-  inApp?: boolean
   testSuite: (options: MedusaSuiteOptions) => void
   hooks?: TestRunnerConfig["hooks"]
   cwd?: string
@@ -415,7 +409,6 @@ export function medusaIntegrationTestRunner({
     schema,
     env,
     debug,
-    inApp,
     hooks,
     cwd,
   })

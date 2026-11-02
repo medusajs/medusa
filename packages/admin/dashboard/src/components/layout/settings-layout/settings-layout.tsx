@@ -192,7 +192,7 @@ const SettingsSidebar = () => {
 
   return (
     <aside className="relative flex flex-1 flex-col justify-between overflow-y-auto">
-      <div className="bg-ui-bg-subtle sticky top-0">
+      <div className="sticky top-0 bg-ui-bg-subtle">
         <Header />
         <div className="flex items-center justify-center px-3">
           <Divider variant="dashed" />
@@ -215,7 +215,7 @@ const SettingsSidebar = () => {
             }}
           />
         </div>
-        <div className="bg-ui-bg-subtle sticky bottom-0">
+        <div className="sticky bottom-0 bg-ui-bg-subtle">
           <UserSection />
         </div>
       </div>
@@ -241,7 +241,7 @@ const Header = () => {
         to={from}
         replace
         className={clx(
-          "bg-ui-bg-subtle transition-fg flex items-center rounded-md outline-none",
+          "flex items-center rounded-md bg-ui-bg-subtle outline-none transition-fg",
           "hover:bg-ui-bg-subtle-hover",
           "focus-visible:shadow-borders-focus"
         )}

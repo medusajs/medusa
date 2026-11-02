@@ -171,7 +171,7 @@ const DataTableFilterBar = ({
             variant="transparent"
             size="small"
             type="button"
-            className="text-ui-fg-muted hover:text-ui-fg-subtle flex-shrink-0 whitespace-nowrap"
+            className="flex-shrink-0 whitespace-nowrap text-ui-fg-muted hover:text-ui-fg-subtle"
             onClick={clearFilters}
           >
             {clearAllFiltersLabel}

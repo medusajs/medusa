@@ -20,8 +20,10 @@ const ProgressTabsRoot = (props: RadixTabs.TabsProps) => {
 }
 ProgressTabsRoot.displayName = "ProgressTabs"
 
-interface IndicatorProps
-  extends Omit<React.ComponentPropsWithoutRef<"span">, "children"> {
+interface IndicatorProps extends Omit<
+  React.ComponentPropsWithoutRef<"span">,
+  "children"
+> {
   /**
    * The current status.
    */
@@ -56,11 +58,10 @@ const ProgressIndicator = ({ status, className, ...props }: IndicatorProps) => {
 }
 ProgressIndicator.displayName = "ProgressTabs.ProgressIndicator"
 
-interface ProgressTabsTriggerProps
-  extends Omit<
-    React.ComponentPropsWithoutRef<typeof RadixTabs.Trigger>,
-    "asChild"
-  > {
+interface ProgressTabsTriggerProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof RadixTabs.Trigger>,
+  "asChild"
+> {
   status?: ProgressStatus
 }
 
@@ -80,12 +81,12 @@ const ProgressTabsTrigger = React.forwardRef<
     <RadixTabs.Trigger
       ref={ref}
       className={clx(
-        "txt-compact-small-plus transition-fg text-ui-fg-muted bg-ui-bg-subtle border-r-ui-border-base inline-flex h-[52px] w-full max-w-[200px] flex-1 items-center gap-x-2 border-r px-4 text-left outline-none",
+        "txt-compact-small-plus inline-flex h-[52px] w-full max-w-[200px] flex-1 items-center gap-x-2 border-r border-r-ui-border-base bg-ui-bg-subtle px-4 text-left text-ui-fg-muted outline-none transition-fg",
         "group/trigger overflow-hidden text-ellipsis whitespace-nowrap",
         "disabled:bg-ui-bg-disabled disabled:text-ui-fg-muted",
         "hover:bg-ui-bg-subtle-hover",
-        "focus-visible:bg-ui-bg-base focus:z-[1]",
-        "data-[state=active]:text-ui-fg-base data-[state=active]:bg-ui-bg-base",
+        "focus:z-[1] focus-visible:bg-ui-bg-base",
+        "data-[state=active]:bg-ui-bg-base data-[state=active]:text-ui-fg-base",
         className
       )}
       {...props}

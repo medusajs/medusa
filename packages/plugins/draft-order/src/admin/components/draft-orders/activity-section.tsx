@@ -274,34 +274,34 @@ function getEditActivityItems(
       type === "items"
         ? "item"
         : type === "shipping"
-        ? "shipping method"
-        : "promotion",
+          ? "shipping method"
+          : "promotion",
       type === "items"
         ? "items"
         : type === "shipping"
-        ? "shipping methods"
-        : "promotions"
+          ? "shipping methods"
+          : "promotions"
     )
     const removedText = getText(
       Math.abs(removed),
       type === "items"
         ? "item"
         : type === "shipping"
-        ? "shipping method"
-        : "promotion",
+          ? "shipping method"
+          : "promotion",
       type === "items"
         ? "items"
         : type === "shipping"
-        ? "shipping methods"
-        : "promotions"
+          ? "shipping methods"
+          : "promotions"
     )
 
     const content =
       added && removed
         ? `Added ${addedText}, removed ${removedText}`
         : added
-        ? `Added ${addedText}`
-        : `Removed ${removedText}`
+          ? `Added ${addedText}`
+          : `Removed ${removedText}`
 
     const label =
       added && removed
@@ -309,24 +309,24 @@ function getEditActivityItems(
             type === "items"
               ? "Items"
               : type === "shipping"
-              ? "Shipping methods"
-              : "Promotions"
+                ? "Shipping methods"
+                : "Promotions"
           } updated`
         : added
-        ? `${
-            type === "items"
-              ? "Items"
-              : type === "shipping"
-              ? "Shipping methods"
-              : "Promotions"
-          } added`
-        : `${
-            type === "items"
-              ? "Items"
-              : type === "shipping"
-              ? "Shipping methods"
-              : "Promotions"
-          } removed`
+          ? `${
+              type === "items"
+                ? "Items"
+                : type === "shipping"
+                  ? "Shipping methods"
+                  : "Promotions"
+            } added`
+          : `${
+              type === "items"
+                ? "Items"
+                : type === "shipping"
+                  ? "Shipping methods"
+                  : "Promotions"
+            } removed`
 
     activityItems.push({
       label,

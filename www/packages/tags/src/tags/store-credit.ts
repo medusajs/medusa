@@ -54,5 +54,9 @@ export const storeCredit = [
   {
     "title": "debitAccountsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitAccountsWorkflow"
+  },
+  {
+    "title": "debitStoreCreditAccountWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitStoreCreditAccountWorkflow"
   }
 ]

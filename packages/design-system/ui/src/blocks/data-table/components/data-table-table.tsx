@@ -198,7 +198,7 @@ const DataTableTable = (props: DataTableTableProps) => {
             >
               <Table className="relative isolate w-full table-fixed">
                 <Table.Header
-                  className="shadow-ui-border-base sticky inset-x-0 top-0 z-[1] w-full border-b-0 border-t-0 shadow-[0_1px_1px_0]"
+                  className="sticky inset-x-0 top-0 z-[1] w-full border-b-0 border-t-0 shadow-[0_1px_1px_0] shadow-ui-border-base"
                   style={{ transform: "translate3d(0,0,0)" }}
                 >
                   {instance.getHeaderGroups().map((headerGroup) => (
@@ -261,7 +261,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                   isFirstColumn,
                                 "after:bg-ui-border-base":
                                   showStickyBorder && isFirstColumn,
-                                "bg-ui-bg-subtle sticky":
+                                "sticky bg-ui-bg-subtle":
                                   isFirstColumn || isSelectHeader,
                                 "left-0":
                                   isSelectHeader ||
@@ -276,8 +276,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                                         header.column.columnDef.size != null
                                           ? header.column.columnDef.size
                                           : colWidth !== undefined
-                                          ? `${colWidth}%`
-                                          : undefined,
+                                            ? `${colWidth}%`
+                                            : undefined,
                                       maxWidth: header.column.columnDef.maxSize,
                                       minWidth: header.column.columnDef.minSize,
                                     }
@@ -359,7 +359,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                     isSelectCell,
                                   "w-[calc(28px+24px+4px)] min-w-[calc(28px+24px+4px)] max-w-[calc(28px+24px+4px)]":
                                     isActionCell,
-                                  "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky":
+                                  "sticky bg-ui-bg-base transition-fg group-hover/row:bg-ui-bg-base-hover":
                                     isFirstColumn || isSelectCell,
                                   "after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                     isFirstColumn,
@@ -379,8 +379,8 @@ const DataTableTable = (props: DataTableTableProps) => {
                                         cell.column.columnDef.size != null
                                           ? cell.column.columnDef.size
                                           : colWidth !== undefined
-                                          ? `${colWidth}%`
-                                          : undefined,
+                                            ? `${colWidth}%`
+                                            : undefined,
                                       maxWidth: cell.column.columnDef.maxSize,
                                       minWidth: cell.column.columnDef.minSize,
                                     }
@@ -406,7 +406,7 @@ const DataTableTable = (props: DataTableTableProps) => {
           >
             <Table className="relative isolate w-full">
               <Table.Header
-                className="shadow-ui-border-base sticky inset-x-0 top-0 z-[1] w-full border-b-0 border-t-0 shadow-[0_1px_1px_0]"
+                className="sticky inset-x-0 top-0 z-[1] w-full border-b-0 border-t-0 shadow-[0_1px_1px_0] shadow-ui-border-base"
                 style={{ transform: "translate3d(0,0,0)" }}
               >
                 {instance.getHeaderGroups().map((headerGroup) => (
@@ -455,7 +455,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                               isFirstColumn,
                             "after:bg-ui-border-base":
                               showStickyBorder && isFirstColumn,
-                            "bg-ui-bg-subtle sticky":
+                            "sticky bg-ui-bg-subtle":
                               isFirstColumn || isSelectHeader,
                             "left-0":
                               isSelectHeader || (isFirstColumn && !hasSelect),
@@ -539,7 +539,7 @@ const DataTableTable = (props: DataTableTableProps) => {
                                 isSelectCell,
                               "w-[calc(28px+24px+4px)] min-w-[calc(28px+24px+4px)] max-w-[calc(28px+24px+4px)]":
                                 isActionCell,
-                              "bg-ui-bg-base group-hover/row:bg-ui-bg-base-hover transition-fg sticky":
+                              "sticky bg-ui-bg-base transition-fg group-hover/row:bg-ui-bg-base-hover":
                                 isFirstColumn || isSelectCell,
                               "after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                 isFirstColumn,

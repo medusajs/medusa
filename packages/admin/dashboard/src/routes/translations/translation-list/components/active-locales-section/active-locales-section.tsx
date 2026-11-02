@@ -36,7 +36,7 @@ export const ActiveLocalesSection = ({
         <Heading level="h2">{t("translations.activeLocales.heading")}</Heading>
         <LinkButton
           variant="interactive"
-          className="text-ui-fg-subtle hover:text-ui-fg-subtle-hover"
+          className="hover:text-ui-fg-subtle-hover text-ui-fg-subtle"
           to="/settings/translations/add-locales"
         >
           {t("translations.activeLocales.noLocalesTipConfigureAction")}
@@ -61,11 +61,11 @@ export const ActiveLocalesSection = ({
             }
           >
             <Container
-              className="bg-ui-bg-component border-r-1 flex items-center gap-x-4 px-[19px] py-2"
+              className="border-r-1 flex items-center gap-x-4 bg-ui-bg-component px-[19px] py-2"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              <IconAvatar className="border-ui-border-base border">
+              <IconAvatar className="border border-ui-border-base">
                 <Language />
               </IconAvatar>
               <div className="flex flex-col">

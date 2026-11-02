@@ -226,6 +226,13 @@ tags:
       These API routes allows customers to create a return.
     x-associatedSchema:
       $ref: "#/components/schemas/StoreReturn"
+  - name: Search
+    description: >
+      Search the indexes that your application exposes to the storefront.
+
+
+      An index is only searchable through these API routes once it's allowed
+      with the `configureStoreSearch` middleware.
   - name: Shipping Options
     description: >
       A shipping option is a way of shipping an item to or from the customer.

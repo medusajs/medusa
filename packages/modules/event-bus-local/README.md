@@ -1,6 +1,10 @@
 <p align="center">
   <a href="https://www.medusajs.com">
-    <img alt="Medusa" src="https://user-images.githubusercontent.com/7554214/153162406-bf8fd16f-aa98-4604-b87b-e13ab4baf604.png" width="100" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
   </a>
 </p>
 <h1 align="center">
@@ -13,19 +17,15 @@
 </h4>
 
 <p align="center">
-An open source composable commerce engine built for developers.
+  Building blocks for digital commerce
 </p>
 <p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
+  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
   </a>
-  <a href="https://circleci.com/gh/medusajs/medusa">
-    <img src="https://circleci.com/gh/medusajs/medusa.svg?style=shield" alt="Current CircleCI build status." />
-  </a>
-  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
+  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
   </a>
-    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
   <a href="https://discord.gg/xpCwq3Kfn8">
     <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
   </a>
@@ -34,30 +34,27 @@ An open source composable commerce engine built for developers.
   </a>
 </p>
 
-## Overview
+Local Event Bus Module for Medusa: an in-process event bus built on Node's `EventEmitter` that emits events and runs subscribers within a single process. It's the default Event Module in Medusa applications and is meant for development and testing. For production, use [`@medusajs/event-bus-redis`](../event-bus-redis) instead.
 
-Local Event Bus module for Medusa. When installed, the events system of Medusa is powered by the Node EventEmitter. This module installed by default in new (> v1.8.0) Medusa projects.
+## At a glance
 
-The Node EventEmitter is limited to a single process environment. We generally recommend using the `@medusajs/event-bus-redis` module in a production environment.
+| | |
+| --- | --- |
+| Package | `@medusajs/event-bus-local` |
+| Type | Infrastructure Module |
+| Module key | `Modules.EVENT_BUS` (`"event_bus"`) |
+| Registered by default | Yes |
 
-## Getting started
+## Installation
 
-Install the module:
-
-```bash
-yarn add @medusajs/event-bus-local
-```
-
-You don't need to add the module to your project configuration as it is the default one. Medusa will try to use it, if no other event buses are installed.
-
-```js
-module.exports = {
-  // ...
-  modules: [ ... ],
-  // ...
-}
-```
+No installation needed. The module ships with `@medusajs/medusa` and is registered by default through `defineConfig`.
 
 ## Configuration
 
-The module comes with no configuration options.
+The module has no options. It logs a warning on startup because it isn't recommended for production.
+
+## Resources
+
+- [Event Module](https://docs.medusajs.com/resources/infrastructure-modules/event)
+- [Local Event Module](https://docs.medusajs.com/resources/infrastructure-modules/event/local)
+- [Events and Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers)

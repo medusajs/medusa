@@ -29,6 +29,8 @@ export async function migrate({
   skipSearch,
   executeAllLinks,
   executeSafeLinks,
+  executeAllSearch,
+  executeSafeSearch,
   allOrNothing,
   concurrency,
   logger,
@@ -40,6 +42,8 @@ export async function migrate({
   skipSearch: boolean
   executeAllLinks: boolean
   executeSafeLinks: boolean
+  executeAllSearch: boolean
+  executeSafeSearch: boolean
   allOrNothing?: boolean
   concurrency?: number
   logger: Logger
@@ -111,7 +115,15 @@ export async function migrate({
    * scripts, whose boot is the first thing that can seed what this creates.
    */
   if (!skipSearch && isSearchModuleEnabled(configModule)) {
-    const exitCode = await runCliCommand("db:migrate:search", directory)
+    const searchArgs = [
+      ...(executeAllSearch ? ["--execute-all-search"] : []),
+      ...(executeSafeSearch ? ["--execute-safe-search"] : []),
+    ]
+    const exitCode = await runCliCommand(
+      "db:migrate:search",
+      directory,
+      searchArgs
+    )
 
     // Reported rather than swallowed: the seed at application start cannot tell a
     // half-migrated index from a fresh one, so this has to be seen now.
@@ -125,7 +137,14 @@ export async function migrate({
      * Run migration scripts
      */
     logger.log(new Array(TERMINAL_SIZE).join("-"))
-    await runCliCommand("db:migrate:scripts", directory)
+    const exitCode = await runCliCommand("db:migrate:scripts", directory)
+
+    // Same reasoning as the search command above: a failed script can leave the
+    // database partway through, and the caller needs to see that instead of a
+    // clean exit that says everything migrated fine.
+    if (exitCode !== 0) {
+      return false
+    }
   }
 
   return true
@@ -133,9 +152,10 @@ export async function migrate({
 
 async function runCliCommand(
   command: string,
-  directory: string
+  directory: string,
+  args: string[] = []
 ): Promise<number> {
-  const childProcess = fork(cliPath, [command], {
+  const childProcess = fork(cliPath, [command, ...args], {
     cwd: directory,
     env: process.env,
   })
@@ -158,6 +178,8 @@ const main = async function ({
   skipSearch,
   executeAllLinks,
   executeSafeLinks,
+  executeAllSearch,
+  executeSafeSearch,
   concurrency,
   allOrNothing,
 }) {
@@ -175,6 +197,8 @@ const main = async function ({
       skipSearch,
       executeAllLinks,
       executeSafeLinks,
+      executeAllSearch,
+      executeSafeSearch,
       concurrency,
       allOrNothing,
       logger,

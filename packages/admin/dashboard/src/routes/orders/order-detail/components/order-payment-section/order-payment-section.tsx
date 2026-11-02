@@ -21,6 +21,7 @@ import {
   useAuthorizePaymentSession,
 } from "../../../../../hooks/api"
 import { formatCurrency } from "../../../../../lib/format-currency"
+import { formatProvider } from "../../../../../lib/format-provider"
 import {
   getLocaleAmount,
   getStylizedAmount,
@@ -99,12 +100,12 @@ const Refund = ({
 
   const RefundNoteIndicator = refund.note && (
     <Tooltip content={refund.note}>
-      <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+      <DocumentText className="ml-1 inline text-ui-tag-neutral-icon" />
     </Tooltip>
   )
 
   return (
-    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
+    <div className="grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 bg-ui-bg-subtle px-6 py-4 text-ui-fg-subtle">
       <div className="flex flex-row">
         <div className="self-center pr-3">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -177,17 +178,17 @@ const Payment = ({
 
   const getPaymentStatusAttributes = (payment: AdminPayment) => {
     if (payment.canceled_at) {
-      return ["Canceled", "red"]
+      return [t("orders.payment.status.canceled"), "red"]
     } else if (payment.captured_at) {
-      return ["Captured", "green"]
+      return [t("orders.payment.status.captured"), "green"]
     } else {
-      return ["Pending", "orange"]
+      return [t("orders.payment.status.pending"), "orange"]
     }
   }
 
   const [status, color] = getPaymentStatusAttributes(payment) as [
     string,
-    "green" | "orange" | "red"
+    "green" | "orange" | "red",
   ]
 
   const showCapture =
@@ -200,7 +201,7 @@ const Payment = ({
 
   return (
     <div className="divide-y divide-dashed">
-      <div className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4 sm:grid-cols-[1fr_1fr_1fr_1fr_20px]">
+      <div className="grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4 text-ui-fg-subtle sm:grid-cols-[1fr_1fr_1fr_1fr_20px]">
         <div className="w-full min-w-[60px] overflow-hidden">
           <Text
             size="small"
@@ -218,8 +219,8 @@ const Payment = ({
           </Text>
         </div>
         <div className="hidden items-center justify-end sm:flex">
-          <Text size="small" leading="compact" className="capitalize">
-            {payment.provider_id}
+          <Text size="small" leading="compact">
+            {formatProvider(payment.provider_id)}
           </Text>
         </div>
         <div className="flex items-center justify-end">
@@ -251,9 +252,9 @@ const Payment = ({
         />
       </div>
       {showCapture && (
-        <div className="bg-ui-bg-subtle flex items-center justify-between px-6 py-4">
+        <div className="flex items-center justify-between bg-ui-bg-subtle px-6 py-4">
           <div className="flex items-center gap-x-2">
-            <ArrowDownRightMini className="text-ui-fg-muted shrink-0" />
+            <ArrowDownRightMini className="shrink-0 text-ui-fg-muted" />
             <Text size="small" leading="compact">
               <Trans
                 i18nKey="orders.payment.isReadyToBeCaptured"
@@ -293,6 +294,7 @@ const CreditLine = ({
   currencyCode: string
   plugins: HttpTypes.AdminPlugin[]
 }) => {
+  const { t } = useTranslation()
   const loyaltyPlugin = getLoyaltyPlugin(plugins)
 
   if (!loyaltyPlugin) {
@@ -311,7 +313,7 @@ const CreditLine = ({
 
   return (
     <div className="divide-y divide-dashed">
-      <div className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_20px] items-center gap-x-4 px-6 py-4 sm:grid-cols-[1fr_1fr_1fr_20px]">
+      <div className="grid grid-cols-[1fr_1fr_20px] items-center gap-x-4 px-6 py-4 text-ui-fg-subtle sm:grid-cols-[1fr_1fr_1fr_20px]">
         <div className="w-full min-w-[60px] overflow-hidden">
           <Text
             size="small"
@@ -321,7 +323,7 @@ const CreditLine = ({
           >
             {loyaltyPlugin ? (
               <Text size="small" leading="compact" weight="plus">
-                Store credit refund
+                {t("orders.payment.storeCreditRefund")}
               </Text>
             ) : (
               <DisplayId id={creditLine.id} />
@@ -378,9 +380,9 @@ const PendingAuthorizationBanner = ({
   }
 
   return (
-    <div className="bg-ui-bg-subtle flex items-center justify-between px-6 py-4">
+    <div className="flex items-center justify-between bg-ui-bg-subtle px-6 py-4">
       <div className="flex items-center gap-x-2">
-        <ArrowDownRightMini className="text-ui-fg-muted shrink-0" />
+        <ArrowDownRightMini className="shrink-0 text-ui-fg-muted" />
         <Text size="small" leading="compact">
           {t("orders.payment.pendingAuthorization")}
         </Text>
@@ -519,7 +521,7 @@ const Total = ({ order }: { order: AdminOrder }) => {
       {order.status !== "canceled" && totalPending > 0 && (
         <div className="flex items-center justify-between">
           <Text size="small" weight="plus" leading="compact">
-            Total pending
+            {t("orders.payment.totalPending")}
           </Text>
 
           <Text size="small" weight="plus" leading="compact">

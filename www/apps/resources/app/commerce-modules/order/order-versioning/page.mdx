@@ -37,3 +37,47 @@ When the order is changed, such as when an item is exchanged, Medusa updates the
 2. Related order data that have a `version` property, such as `OrderItem`, are duplicated. The duplicated item has the new version, while the original item retains the previous version.
 
 When the order is retrieved, only the related data with the same version is returned.
+
+---
+
+## Retrieve Versioned Item Details
+
+An order's item is stored across two data models:
+
+- The [OrderLineItem data model](/references/order/models/OrderLineItem) holds the item's original details, such as its title and the price at the time of purchase. This record is not versioned.
+- The [OrderItem data model](/references/order/models/OrderItem) links the line item to an order version. It holds the versioned `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` of the item in that version.
+
+When an [order edit](../edit/page.mdx), claim, exchange, or return changes an item's quantity, price, or metadata, the Order Module writes the new values to the `OrderItem` record of the new version. The `OrderLineItem` record keeps its original values.
+
+### Retrieved Item Shape
+
+When you retrieve an order, the Order Module merges both records into each item of the `items` property. The item's `quantity`, `unit_price`, `compare_at_unit_price`, and `metadata` hold the values of the order's current version, and the remaining properties come from the line item.
+
+The merged item also has the following properties:
+
+- `detail`: the `OrderItem` record of the current version. Use properties like `detail.unit_price` and `detail.metadata` to read the versioned values directly.
+- `line_item_metadata`: the `metadata` of the `OrderLineItem` record, which is the metadata set when the item was first added to the order.
+
+For example, retrieve an order's versioned item details using [Query](!docs!/learn/fundamentals/query):
+
+```ts
+const { data: orders } = await query.graph({
+  entity: "order",
+  fields: [
+    "items.unit_price",
+    "items.metadata",
+    "items.detail.unit_price",
+    "items.detail.metadata",
+    "items.line_item_metadata",
+  ],
+  filters: {
+    id: orderId,
+  },
+})
+```
+
+<Note>
+
+The `items.unit_price` and `items.metadata` fields already reflect the order's current version. Select `items.detail.*` when you want the versioned values without the merge, or `items.line_item_metadata` when you want the metadata set at purchase time.
+
+</Note>

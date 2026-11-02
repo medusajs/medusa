@@ -11,9 +11,7 @@ export type ApplicationMethodTypeValues = "fixed" | "percentage"
  * The application method's possible target types.
  */
 export type ApplicationMethodTargetTypeValues =
-  | "order"
-  | "shipping_methods"
-  | "items"
+  "order" | "shipping_methods" | "items"
 
 /**
  * The application method's possible allocation values.
@@ -227,8 +225,7 @@ export interface UpdateApplicationMethodDTO {
 /**
  * The filters to apply on the retrieved application methods.
  */
-export interface FilterableApplicationMethodProps
-  extends BaseFilterable<FilterableApplicationMethodProps> {
+export interface FilterableApplicationMethodProps extends BaseFilterable<FilterableApplicationMethodProps> {
   /**
    * The IDs to filter the application methods by.
    */

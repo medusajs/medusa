@@ -8,13 +8,11 @@ export interface AdminCollectionResponse {
   collection: AdminCollection
 }
 
-export interface AdminCollectionListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of collections.
-     */
-    collections: AdminCollection[]
-  }> {}
+export interface AdminCollectionListResponse extends PaginatedResponse<{
+  /**
+   * The list of collections.
+   */
+  collections: AdminCollection[]
+}> {}
 
-export interface AdminCollectionDeleteResponse
-  extends DeleteResponse<"collection"> {}
+export interface AdminCollectionDeleteResponse extends DeleteResponse<"collection"> {}

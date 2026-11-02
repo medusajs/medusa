@@ -76,7 +76,7 @@ export const TaxRegionCard = ({
   const Component = (
     <div
       className={clx(
-        "group-data-[link=true]:hover:bg-ui-bg-base-hover transition-fg flex flex-col justify-between gap-y-4 px-6 md:flex-row md:items-center md:gap-y-0",
+        "flex flex-col justify-between gap-y-4 px-6 transition-fg group-data-[link=true]:hover:bg-ui-bg-base-hover md:flex-row md:items-center md:gap-y-0",
         {
           "py-4": type === "header",
           "py-3": type === "list",

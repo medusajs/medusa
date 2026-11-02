@@ -24,9 +24,7 @@ const API_KEY_AUTH = "api-key"
 const ADMIN_ACTOR_TYPE = "user"
 
 export type AuthType =
-  | typeof SESSION_AUTH
-  | typeof BEARER_AUTH
-  | typeof API_KEY_AUTH
+  typeof SESSION_AUTH | typeof BEARER_AUTH | typeof API_KEY_AUTH
 
 type MedusaSession = {
   auth_context: AuthContext

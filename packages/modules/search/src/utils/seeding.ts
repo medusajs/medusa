@@ -19,7 +19,12 @@ import {
   SearchIndexState,
   SearchSyncStatus,
 } from "./index"
-import { versionPhysicalName } from "./migrations"
+import {
+  cleanupAbandonedVersions,
+  cleanupAfterSwap,
+  cleanupStaleVersions,
+  versionPhysicalName,
+} from "./versions"
 import { retryOnRateLimit } from "./rate-limit"
 
 type LockContext = Pick<SearchIndexContext, "locking" | "logger">
@@ -221,7 +226,11 @@ async function runSeed(
       data: { status: SearchIndexState.READY },
     })
 
+    let previousVersion: number | null | undefined
+
     if (action.swap) {
+      previousVersion = (await retrieveIndexRecord(context, definition.name))
+        .active_version
       context.logger.info(
         `[Search] Making "${definition.name}" version ${target.version} active`
       )
@@ -229,7 +238,7 @@ async function runSeed(
         selector: { name: definition.name },
         data: { active_version: target.version },
       })
-      context.activeVersionCache?.set(definition.name, {
+      await context.activeVersionCache?.set(definition.name, {
         physical_name: target.physical_name,
         provider: target.provider,
         version: target.version,
@@ -237,6 +246,14 @@ async function runSeed(
     }
 
     await completeSync(context, { sync_id: sync.id, documents_synced })
+
+    if (action.swap && !signal?.aborted) {
+      await cleanupAfterSwap(context, {
+        record_id: target.search_index_id,
+        active_version: target.version,
+        previous_version: previousVersion ?? null,
+      })
+    }
 
     context.logger.info(
       `[Search] Seeded "${definition.name}": ${formatCount(
@@ -354,9 +371,11 @@ async function reindexOne(
 ): Promise<void> {
   const provider = context.providers.retrieve(definition.provider)
   const record = await retrieveIndexRecord(context, definition.name)
+  const previousVersion = record.active_version
 
-  // Either input narrows the run to a slice of the index: `filters` selects
-  // source records, `since` only what changed at or after a cursor.
+  // We want to clean up stale versions before we start the reindex.
+  await cleanupStaleVersions(context, record)
+
   const scoped = !!input.filters || !!input.since
 
   // A partial rebuild must never swap: the replacement would only hold that
@@ -367,14 +386,17 @@ async function reindexOne(
     ? await createPendingVersion(context, { definition, record, provider })
     : await retrieveActiveVersion(context, { definition, record })
 
+  // Only once the new version exists, so version numbers are never reused.
+  if (useSwap) {
+    await cleanupAbandonedVersions(context, record)
+  }
+
   const sync = await startSync(context, {
     versionId: target.id,
     jobId,
     filters: input.filters,
     // A scoped run covers a different set of documents than the full run whose
-    // cursor it would otherwise inherit: resuming from that cursor would skip
-    // documents it was asked to rebuild, and cancelling that run would throw
-    // away its progress. It starts clean and leaves the other one alone.
+    // cursor it would otherwise inherit
     resume: !scoped,
     resumable: !scoped,
   })
@@ -459,7 +481,7 @@ async function reindexOne(
         selector: { id: record.id },
         data: { active_version: target.version },
       })
-      context.activeVersionCache?.set(definition.name, {
+      await context.activeVersionCache?.set(definition.name, {
         physical_name: target.physical_name,
         provider: target.provider,
         version: target.version,
@@ -467,6 +489,14 @@ async function reindexOne(
     }
 
     await completeSync(context, { sync_id: sync.id, documents_synced })
+
+    if (useSwap && !signal?.aborted) {
+      await cleanupAfterSwap(context, {
+        record_id: record.id,
+        active_version: target.version,
+        previous_version: previousVersion,
+      })
+    }
 
     context.logger.info(
       `[Search] Reindexed "${definition.name}": ${formatCount(
@@ -744,7 +774,10 @@ async function settle(
  * from where this one stopped.
  */
 export class SearchSeedProgressLost extends MedusaError {
-  constructor(message: string, readonly cause?: unknown) {
+  constructor(
+    message: string,
+    readonly cause?: unknown
+  ) {
     super(MedusaError.Types.UNEXPECTED_STATE, message)
     this.name = "SearchSeedProgressLost"
   }

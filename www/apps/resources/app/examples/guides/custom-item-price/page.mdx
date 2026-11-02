@@ -593,7 +593,7 @@ You create a workflow with `createWorkflow` from the Workflows SDK. It accepts t
 1. The workflow's unique name, which is `add-custom-to-cart`.
 2. A function that receives an input object with the cart's ID and the item to add to the cart. The item has the variant's ID, quantity, and optional metadata.
 
-In the function, you first retrieve the cart's details using the `useQueryGraphStep` helper step. This step uses [Query](!docs!/learn/fundamentals/module-links/query) which is a Modules SDK tool that retrieves data across modules. You use it to retrieve the cart's ID and currency code.
+In the function, you first retrieve the cart's details using the `useQueryGraphStep` helper step. This step uses [Query](!docs!/learn/fundamentals/query) which is a Modules SDK tool that retrieves data across modules. You use it to retrieve the cart's ID and currency code.
 
 You also retrieve the variant's details using the `useQueryGraphStep` helper step. You pass the variant's ID to the step's filters and specify the fields to retrieve. To retrieve the variant's price based on the cart's context, you pass the cart's currency code to the `calculated_price` context.
 

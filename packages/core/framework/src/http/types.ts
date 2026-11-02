@@ -41,8 +41,7 @@ export type AsyncRouteHandler = (
 export type RouteHandler = SyncRouteHandler | AsyncRouteHandler
 
 export type MiddlewareFunction =
-  | MedusaRequestHandler
-  | ((...args: any[]) => any)
+  MedusaRequestHandler | ((...args: any[]) => any)
 
 export type MedusaErrorHandlerFunction = (
   error: any,
@@ -129,7 +128,7 @@ export type GlobalMiddlewareDescriptor = {
 
 export interface MedusaRequest<
   Body = unknown,
-  QueryFields = Record<string, unknown>
+  QueryFields = Record<string, unknown>,
 > extends Request<{ [key: string]: string }, any, Body> {
   validatedBody: Body
   validatedQuery: RequestQueryFields & QueryFields
@@ -263,7 +262,7 @@ export interface SecretKeyContext {
 
 export interface AuthenticatedMedusaRequest<
   Body = unknown,
-  QueryFields = Record<string, unknown>
+  QueryFields = Record<string, unknown>,
 > extends MedusaRequest<Body, QueryFields> {
   auth_context: AuthContext
   publishable_key_context?: PublishableKeyContext
@@ -273,7 +272,7 @@ export interface AuthenticatedMedusaRequest<
 
 export interface MedusaStoreRequest<
   Body = unknown,
-  QueryFields = Record<string, unknown>
+  QueryFields = Record<string, unknown>,
 > extends MedusaRequest<Body, QueryFields> {
   auth_context?: AuthContext
   publishable_key_context: PublishableKeyContext

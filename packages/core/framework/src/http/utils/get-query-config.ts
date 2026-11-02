@@ -169,7 +169,7 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
 
 export async function prepareRetrieveQuery<
   T extends RequestQueryFields,
-  TEntity
+  TEntity,
 >(
   validated: T,
   queryConfig?: QueryConfig<TEntity> & { restricted?: string[] },

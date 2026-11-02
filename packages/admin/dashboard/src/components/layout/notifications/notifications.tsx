@@ -139,7 +139,7 @@ const Notification = ({
   return (
     <>
       <div className="relative flex items-start justify-center gap-3 border-b p-6">
-        <div className="text-ui-fg-muted flex size-5 items-center justify-center">
+        <div className="flex size-5 items-center justify-center text-ui-fg-muted">
           <InformationCircleSolid />
         </div>
         <div className="flex w-full flex-col gap-y-3">
@@ -164,7 +164,7 @@ const Notification = ({
                 </Text>
                 {unread && (
                   <div
-                    className="bg-ui-bg-interactive h-2 w-2 rounded"
+                    className="h-2 w-2 rounded bg-ui-bg-interactive"
                     role="status"
                   />
                 )}
@@ -172,7 +172,7 @@ const Notification = ({
             </div>
             {!!data.description && (
               <Text
-                className="text-ui-fg-subtle whitespace-pre-line"
+                className="whitespace-pre-line text-ui-fg-subtle"
                 size="small"
               >
                 {data.description}
@@ -201,7 +201,7 @@ const NotificationsEmptyState = ({ t }: { t: TFunction }) => {
       </Text>
       <Text
         size="small"
-        className="text-ui-fg-muted mt-1 max-w-[294px] text-center"
+        className="mt-1 max-w-[294px] text-center text-ui-fg-muted"
       >
         {t("notifications.emptyState.description")}
       </Text>

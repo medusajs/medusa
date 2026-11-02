@@ -17,9 +17,6 @@ import {
   FeatureFlag,
   Modules,
 } from "@medusajs/framework/utils"
-import dotenv from "dotenv"
-
-dotenv.config()
 
 interface User {
   id: string
@@ -46,7 +43,7 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
 
     logger.info("\nUsers found:")
     users.forEach((user: User, index: number) => {
-      logger.info(`  ${index + 1}. ${user.email || user.id} (${user.id})`)
+      logger.info(`  ${index + 1}. ${user.id}`)
     })
 
     logger.info("\nLooking for super admin role...")
@@ -104,7 +101,7 @@ async function assignSuperAdminRoleToUsers(container: any): Promise<void> {
 
     for (const user of users) {
       try {
-        logger.info(`  Processing user: ${user.email || user.id}`)
+        logger.info(`  Processing user: ${user.id}`)
 
         // Link the user to the super admin role
         await link.create({

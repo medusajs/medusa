@@ -51,12 +51,12 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
           <div className="flex items-center gap-2">
             <Heading>{variant.title}</Heading>
             {hasInventoryKit && (
-              <span className="text-ui-fg-muted font-normal">
+              <span className="font-normal text-ui-fg-muted">
                 <Component />
               </span>
             )}
           </div>
-          <span className="text-ui-fg-subtle txt-small mt-2">
+          <span className="txt-small mt-2 text-ui-fg-subtle">
             {t("labels.productVariant")}
           </span>
         </div>

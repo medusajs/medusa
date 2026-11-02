@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/cache-redis",
-  "version": "2.21.0",
+  "version": "2.22.2",
   "description": "Redis Cache Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -15,18 +15,22 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.0"
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.21.0"
+    "@medusajs/framework": "2.22.2"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
@@ -34,9 +38,9 @@
     "test": "../../../node_modules/.bin/jest --passWithNoTests"
   },
   "dependencies": {
-    "ioredis": "^5.4.1"
+    "ioredis": "^5.11.1"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.21.0"
+    "@medusajs/framework": "2.22.2"
   }
 }

@@ -649,7 +649,7 @@ describe("Workflow composer", () => {
           }
         )
 
-        expectTypeOf(mutateInputHook.getResult).returns.toMatchTypeOf<
+        expectTypeOf(mutateInputHook.getResult).returns.toExtend<
           { id: number } | undefined
         >()
 
@@ -705,7 +705,7 @@ describe("Workflow composer", () => {
           }
         )
 
-        expectTypeOf(mutateInputHook.getResult).returns.toMatchTypeOf<
+        expectTypeOf(mutateInputHook.getResult).returns.toExtend<
           { id: number } | undefined
         >()
 
@@ -766,7 +766,7 @@ describe("Workflow composer", () => {
           }
         )
 
-        expectTypeOf(mutateInputHook.getResult).returns.toMatchTypeOf<
+        expectTypeOf(mutateInputHook.getResult).returns.toExtend<
           { id: number } | undefined
         >()
 
@@ -814,7 +814,7 @@ describe("Workflow composer", () => {
           }
         )
 
-        expectTypeOf(mutateInputHook.getResult).returns.toMatchTypeOf<
+        expectTypeOf(mutateInputHook.getResult).returns.toExtend<
           { id: number } | undefined
         >()
 

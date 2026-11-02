@@ -63,10 +63,9 @@ function buildLocalCommands(cli, isLocalProject) {
   const useYarn = existsSync(path.join(directory, `yarn.lock`))
 
   if (isLocalProject) {
-    projectInfo["sitePackageJson"] = require(path.join(
-      directory,
-      `package.json`
-    ))
+    projectInfo["sitePackageJson"] = require(
+      path.join(directory, `package.json`)
+    )
   }
 
   function resolveLocalCommand(command) {
@@ -189,6 +188,16 @@ function buildLocalCommands(cli, isLocalProject) {
           describe:
             "Skip prompts and execute only safe actions from sync links",
         })
+        builder.option("execute-all-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions on search indexes",
+        })
+        builder.option("execute-safe-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions on search indexes",
+        })
       },
       handler: handlerP(
         getCommandHandler("db/setup", (args, cmd) => {
@@ -245,6 +254,16 @@ function buildLocalCommands(cli, isLocalProject) {
           describe:
             "Skip prompts and execute only safe actions from sync links",
         })
+        builder.option("execute-all-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions on search indexes",
+        })
+        builder.option("execute-safe-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions on search indexes",
+        })
         builder.option("concurrency", {
           type: "number",
           describe: "Number of concurrent migrations to run",
@@ -276,6 +295,18 @@ function buildLocalCommands(cli, isLocalProject) {
     .command({
       command: "db:migrate:search",
       desc: "Create and alter the search indexes declared under search/",
+      builder: (builder) => {
+        builder.option("execute-all-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute all (including unsafe) actions on search indexes",
+        })
+        builder.option("execute-safe-search", {
+          type: "boolean",
+          describe:
+            "Skip prompts and execute only safe actions on search indexes",
+        })
+      },
       handler: handlerP(
         getCommandHandler("db/migrate-search", (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
@@ -698,9 +729,9 @@ function isLocalMedusaProject() {
   let inMedusaProject = false
 
   try {
-    const { dependencies, devDependencies } = require(path.resolve(
-      `./package.json`
-    ))
+    const { dependencies, devDependencies } = require(
+      path.resolve(`./package.json`)
+    )
     // Draft order plugin can't have @medusajs/medusa as dependency,
     // so we also check for @medusajs/cli
     inMedusaProject = !!(
@@ -723,12 +754,14 @@ function getVersionInfo() {
   if (isMedusaProject) {
     let medusaVersion = ""
     try {
-      medusaVersion = require(path.join(
-        process.cwd(),
-        `node_modules`,
-        `@medusajs/medusa`,
-        `package.json`
-      )).version
+      medusaVersion = require(
+        path.join(
+          process.cwd(),
+          `node_modules`,
+          `@medusajs/medusa`,
+          `package.json`
+        )
+      ).version
     } catch (e) {
       /* noop */
     }

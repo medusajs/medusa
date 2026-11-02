@@ -6,13 +6,13 @@
 # cannot redirect the close to a different issue/PR.
 #
 # `--workflow` selects which gh subcommand is used: `gh issue close` for
-# triage (issues), `gh pr close` for review (PRs). `gh issue close` does
-# not work on PRs, so this distinction matters.
+# triage and fix (issues), `gh pr close` for review and guardrails (PRs).
+# `gh issue close` does not work on PRs, so this distinction matters.
 #
 # Issues are closed with reason "not planned".
 #
 # Usage:
-#   GITHUB_EVENT_NUMBER=N ./scripts/close_issue.sh --workflow <triage|review>
+#   GITHUB_EVENT_NUMBER=N ./scripts/close_issue.sh --workflow <triage|review|fix|guardrails>
 #
 
 set -euo pipefail
@@ -40,7 +40,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$WORKFLOW" ]]; then
-  echo "Usage: $0 --workflow <triage|review>" >&2
+  echo "Usage: $0 --workflow <triage|review|fix|guardrails>" >&2
   exit 1
 fi
 
@@ -51,16 +51,16 @@ if ! [[ "$ISSUE" =~ ^[0-9]+$ ]]; then
 fi
 
 case "$WORKFLOW" in
-  triage)
+  triage|fix)
     gh issue close "$ISSUE" --reason "not planned"
     echo "Closed issue #$ISSUE"
     ;;
-  review)
+  review|guardrails)
     gh pr close "$ISSUE"
     echo "Closed PR #$ISSUE"
     ;;
   *)
-    echo "Error: --workflow must be 'triage' or 'review'" >&2
+    echo "Error: --workflow must be one of: triage, review, fix, guardrails" >&2
     exit 1
     ;;
 esac

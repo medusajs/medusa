@@ -9,12 +9,17 @@
 import { IWorkflowEngineService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { setTimeout } from "timers/promises"
 import { ulid } from "ulid"
 import {
   retryIntervalStep1InvokeMock,
   retryIntervalStep2InvokeMock,
   workflowRetryIntervalId,
 } from "../__fixtures__/workflow_retry_interval"
+import {
+  retryIntervalAwaitingStepInvokeMock,
+  workflowRetryIntervalAwaitingId,
+} from "../__fixtures__/workflow_retry_interval_awaiting"
 import {
   retryIntervalStep0InvokeMock as retryIntervalStep0InvokeMockSync,
   retryIntervalStep1InvokeMock as retryIntervalStep1InvokeMockSync,
@@ -193,6 +198,40 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           expect(secondRetryInterval).toBeGreaterThan(800)
           expect(secondRetryInterval).toBeLessThan(2000)
         }
+      })
+      it("should retry a background step with retry interval and awaiting retry interval after it fails while awaiting", async () => {
+        const workflowCompletion = new Promise<{ result: any; errors: any }>(
+          (resolve) => {
+            workflowOrcModule.subscribe({
+              workflowId: workflowRetryIntervalAwaitingId,
+              subscriber: async (data) => {
+                if (data.eventType === "onFinish") {
+                  resolve({
+                    result: data.result,
+                    errors: data.errors,
+                  })
+                }
+              },
+            })
+          }
+        )
+
+        await workflowOrcModule.run(workflowRetryIntervalAwaitingId, {
+          throwOnError: false,
+        })
+
+        const outcome = await Promise.race([
+          workflowCompletion,
+          setTimeout(10000, "stalled" as const),
+        ])
+
+        expect(outcome).not.toBe("stalled")
+
+        const { result, errors } = outcome as { result: any; errors: any }
+
+        expect(retryIntervalAwaitingStepInvokeMock).toHaveBeenCalledTimes(2)
+        expect(errors === undefined || errors.length === 0).toBe(true)
+        expect(result).toEqual({ success: true, attempts: 2 })
       })
     })
   },

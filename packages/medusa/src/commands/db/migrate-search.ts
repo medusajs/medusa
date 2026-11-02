@@ -13,8 +13,7 @@ import {
   mergePluginModules,
   Modules,
 } from "@medusajs/framework/utils"
-import boxen from "boxen"
-import chalk from "chalk"
+import { styleText } from "util"
 import { join } from "path"
 
 import { initializeContainer } from "../../loaders"
@@ -26,10 +25,20 @@ const TERMINAL_SIZE = process.stdout.columns
 function describeAction(
   action: SearchTypes.SearchIndexMigrationAction
 ): string {
-  const index = chalk.yellow(action.index)
+  const index = styleText("yellow", action.index)
+
+  if (action.action === "drop") {
+    // Every version goes, so all of them are named rather than just the one
+    // serving reads — this is the last chance to see what is about to be lost.
+    const detail = action.physical_names.length
+      ? action.physical_names.join(", ")
+      : "no physical index"
+
+    return `${index} ${styleText("dim", `(${detail})`)}`
+  }
 
   if (action.action !== "migrate") {
-    return `${index} ${chalk.dim(`(${action.physical_name})`)}`
+    return `${index} ${styleText("dim", `(${action.physical_name})`)}`
   }
 
   const destination = `${action.active_physical_name} -> ${action.physical_name}`
@@ -38,14 +47,15 @@ function describeAction(
     ? `${action.previous_provider} -> ${action.provider}, ${destination}`
     : destination
 
-  return `${index} ${chalk.dim(`(${detail})`)}`
+  return `${index} ${styleText("dim", `(${detail})`)}`
 }
 
-function logActions(
+async function logActions(
   title: string,
   actions: SearchTypes.SearchIndexMigrationAction[],
   logger: Logger
 ) {
+  const { default: boxen } = await import("boxen")
   const actionsList = actions
     .map((action) => `  - ${describeAction(action)}`)
     .join("\n")
@@ -53,19 +63,91 @@ function logActions(
   logger.info(boxen(`${title}\n${actionsList}`, { padding: 1 }))
 }
 
+type DropAction = Extract<
+  SearchTypes.SearchIndexMigrationAction,
+  { action: "drop" }
+>
+
+async function selectIndexesToDrop({
+  actions,
+  executeAll,
+  executeSafe,
+  logger,
+}: {
+  actions: DropAction[]
+  executeAll: boolean
+  executeSafe: boolean
+  logger: Logger
+}): Promise<DropAction[]> {
+  if (!actions.length) {
+    return []
+  }
+
+  const skip = async (reason: string) => {
+    await logActions(
+      `Left the following search indexes in place, which no definition declares any more (${reason})`,
+      actions,
+      logger
+    )
+    return []
+  }
+
+  if (executeSafe) {
+    return skip("--execute-safe-search")
+  }
+
+  if (executeAll) {
+    return actions
+  }
+
+  if (!process.stdin.isTTY) {
+    return skip(
+      "no prompt to answer; re-run with --execute-all-search to drop them"
+    )
+  }
+
+  const { default: boxen } = await import("boxen")
+  logger.info(
+    boxen(
+      `Select the search indexes to ${styleText(
+        "red",
+        "DROP"
+      )}. No definition declares them any more, and dropping one deletes every document it holds.`,
+      { borderColor: "red", padding: 1 }
+    )
+  )
+
+  const { default: checkbox } = await import("@inquirer/checkbox")
+  return await checkbox({
+    message: "Select search indexes to drop",
+    choices: actions.map((action) => {
+      return {
+        name: describeAction(action),
+        value: action,
+        checked: false,
+      }
+    }),
+  })
+}
+
 /**
  * Low-level utility to bring the physical search indexes in line with the loaded
  * definitions. Creates and alters them only — filling them is the seed that runs
- * at application start.
+ * at application start. Indexes no definition declares any more are dropped,
+ * which is the one destructive thing here and so is gated on `executeAll`.
  */
 export async function migrateSearchIndexes({
   directory,
   container,
   logger,
+  executeAll = false,
+  executeSafe = false,
 }: {
   directory: string
   container: MedusaContainer
   logger: Logger
+  executeAll?: boolean
+  executeSafe?: boolean
 }): Promise<boolean> {
   let onApplicationPrepareShutdown: () => Promise<void> = async () =>
     Promise.resolve()
@@ -114,19 +196,37 @@ export async function migrateSearchIndexes({
     const plan = await searchModule.createIndexMigrationPlan()
     const toCreate = plan.filter((action) => action.action === "create")
     const toMigrate = plan.filter((action) => action.action === "migrate")
+    const toDrop = await selectIndexesToDrop({
+      actions: plan.filter(
+        (action): action is DropAction => action.action === "drop"
+      ),
+      executeAll,
+      executeSafe,
+      logger,
+    })
 
-    if (!toCreate.length && !toMigrate.length) {
+    if (!toCreate.length && !toMigrate.length && !toDrop.length) {
       logger.info("Search indexes already up-to-date")
       return true
     }
 
-    await searchModule.executeIndexMigrationPlan(plan)
+    // The noops go along too: they carry no schema change, but versions an
+    // earlier swap left behind are cleaned up as they are executed.
+    await searchModule.executeIndexMigrationPlan([
+      ...plan.filter((action) => action.action === "noop"),
+      ...toCreate,
+      ...toMigrate,
+      ...toDrop,
+    ])
 
     if (toCreate.length) {
-      logActions("Created following search indexes", toCreate, logger)
+      await logActions("Created following search indexes", toCreate, logger)
     }
     if (toMigrate.length) {
-      logActions("Rebuilt following search indexes", toMigrate, logger)
+      await logActions("Rebuilt following search indexes", toMigrate, logger)
+    }
+    if (toDrop.length) {
+      await logActions("Dropped following search indexes", toDrop, logger)
     }
 
     logger.info(
@@ -140,7 +240,15 @@ export async function migrateSearchIndexes({
   }
 }
 
-const main = async function ({ directory }: { directory: string }) {
+const main = async function ({
+  directory,
+  executeAllSearch,
+  executeSafeSearch,
+}: {
+  directory: string
+  executeAllSearch?: boolean
+  executeSafeSearch?: boolean
+}) {
   process.env.MEDUSA_WORKER_MODE = "server"
   let logger: Logger | undefined
 
@@ -154,9 +262,15 @@ const main = async function ({ directory }: { directory: string }) {
       directory,
       container,
       logger,
+      executeAll: executeAllSearch,
+      executeSafe: executeSafeSearch,
     })
     process.exit(migrated ? 0 : 1)
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.name === "ExitPromptError") {
+      process.exit()
+    }
+
     if (logger) {
       logger.error(error as string | Error)
     } else {

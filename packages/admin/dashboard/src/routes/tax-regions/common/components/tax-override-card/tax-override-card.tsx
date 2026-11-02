@@ -39,15 +39,18 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
     return null
   }
 
-  const groupedRules = taxRate.rules.reduce((acc, rule) => {
-    if (!acc[rule.reference]) {
-      acc[rule.reference] = []
-    }
+  const groupedRules = taxRate.rules.reduce(
+    (acc, rule) => {
+      if (!acc[rule.reference]) {
+        acc[rule.reference] = []
+      }
 
-    acc[rule.reference].push(rule.reference_id)
+      acc[rule.reference].push(rule.reference_id)
 
-    return acc
-  }, {} as Record<string, string[]>)
+      return acc
+    },
+    {} as Record<string, string[]>
+  )
 
   const validKeys = Object.values(TaxRateRuleReferenceType)
   const numberOfTargets = Object.keys(groupedRules).map((key) =>
@@ -68,7 +71,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
               {taxRate.name}
             </Text>
             {taxRate.code && (
-              <div className="text-ui-fg-subtle flex items-center gap-x-1.5">
+              <div className="flex items-center gap-x-1.5 text-ui-fg-subtle">
                 <Text size="small" leading="compact">
                   ·
                 </Text>
@@ -85,7 +88,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
               count: numberOfTargets,
             })}
           </Text>
-          <div className="bg-ui-border-base h-3 w-px" />
+          <div className="h-3 w-px bg-ui-border-base" />
           <StatusBadge color={taxRate.is_combinable ? "green" : "grey"}>
             {taxRate.is_combinable
               ? t("taxRegions.fields.isCombinable.true")
@@ -120,7 +123,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
           <Divider variant="dashed" />
           <div className="px-6 py-3">
             <div className="flex items-center gap-x-3">
-              <div className="text-ui-fg-muted flex size-5 items-center justify-center">
+              <div className="flex size-5 items-center justify-center text-ui-fg-muted">
                 <ArrowDownRightMini />
               </div>
               <div className="flex flex-wrap items-center gap-x-1.5 gap-y-2">
@@ -235,7 +238,7 @@ const ReferenceValues = ({
 
   if (isPending) {
     return (
-      <div className="bg-ui-tag-neutral-bg border-ui-tag-neutral-border h-5 w-14 animate-pulse rounded-md" />
+      <div className="h-5 w-14 animate-pulse rounded-md border-ui-tag-neutral-border bg-ui-tag-neutral-bg" />
     )
   }
 

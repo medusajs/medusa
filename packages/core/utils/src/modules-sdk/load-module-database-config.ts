@@ -41,8 +41,8 @@ function getDefaultDriverOptions(clientUrl: string) {
   return process.env.NODE_ENV?.match(/prod/i)
     ? remoteOptions
     : process.env.NODE_ENV?.match(/dev/i)
-    ? localOptions
-    : {}
+      ? localOptions
+      : {}
 }
 
 function getDatabaseUrl(

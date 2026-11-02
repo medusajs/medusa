@@ -42,8 +42,7 @@ export default class FileProviderService {
 
   delete(
     fileData:
-      | FileTypes.ProviderDeleteFileDTO
-      | FileTypes.ProviderDeleteFileDTO[]
+      FileTypes.ProviderDeleteFileDTO | FileTypes.ProviderDeleteFileDTO[]
   ): Promise<void> {
     return this.fileProvider_.delete(fileData)
   }

@@ -651,10 +651,10 @@ const DataTableFilterSelectContent = ({
                 "hover:bg-ui-bg-base-hover"
               )}
             >
-              <div className="flex size-[15px] items-center justify-center">
+              <div className="flex size-[15px] shrink-0 items-center justify-center">
                 {isSelected && <CheckMini />}
               </div>
-              <span>{option.label}</span>
+              <span className="min-w-0 truncate">{option.label}</span>
             </button>
           )
         })}
@@ -800,10 +800,10 @@ const OptionButton = React.memo(
       onMouseLeave={() => onMouseEvent(-1)}
       tabIndex={-1}
     >
-      <div className="flex size-[15px] items-center justify-center">
+      <div className="flex size-[15px] shrink-0 items-center justify-center">
         {isSelected && <Icon />}
       </div>
-      <span>{option.label}</span>
+      <span className="min-w-0 truncate">{option.label}</span>
     </button>
   )
 )
@@ -928,9 +928,9 @@ const DataTableFilterMultiselectContent = ({
               >
                 <Checkbox
                   checked={isSelected}
-                  className="pointer-events-none"
+                  className="pointer-events-none shrink-0"
                 />
-                <span>{option.label}</span>
+                <span className="min-w-0 truncate">{option.label}</span>
               </button>
             )
           })}
@@ -981,9 +981,9 @@ const DataTableFilterMultiselectContent = ({
             >
               <Checkbox
                 checked={isSelected}
-                className="pointer-events-none"
+                className="pointer-events-none shrink-0"
               />
-              <span>{option.label}</span>
+              <span className="min-w-0 truncate">{option.label}</span>
             </button>
           )
         })}

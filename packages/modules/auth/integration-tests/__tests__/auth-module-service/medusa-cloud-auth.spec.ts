@@ -78,7 +78,7 @@ const server = setupServer(
   })
 )
 
-beforeAll(() => server.listen({ onUnhandledRequest: "warn" }))
+beforeAll(() => server.listen({ onUnhandledFrame: "warn" }))
 afterAll(() => server.close())
 
 const mockCache = new Map()

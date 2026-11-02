@@ -34,10 +34,8 @@ const thumbVariants = cva({
 })
 
 interface SwitchProps
-  extends Omit<
-      React.ComponentPropsWithoutRef<typeof RadixSwitch.Root>,
-      "asChild"
-    >,
+  extends
+    Omit<React.ComponentPropsWithoutRef<typeof RadixSwitch.Root>, "asChild">,
     VariantProps<typeof switchVariants> {}
 
 /**

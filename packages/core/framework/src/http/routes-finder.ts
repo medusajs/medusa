@@ -5,7 +5,7 @@ import { isString } from "@medusajs/utils"
 export class RoutesFinder<
   T extends
     | { matcher: string | RegExp; methods: MiddlewareVerb | MiddlewareVerb[] }
-    | { matcher: string | RegExp; method: RouteVerb }
+    | { matcher: string | RegExp; method: RouteVerb },
 > {
   /**
    * Cache of existing matches to avoid regex tests on every

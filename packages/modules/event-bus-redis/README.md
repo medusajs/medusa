@@ -1,6 +1,10 @@
 <p align="center">
   <a href="https://www.medusajs.com">
-    <img alt="Medusa" src="https://user-images.githubusercontent.com/7554214/153162406-bf8fd16f-aa98-4604-b87b-e13ab4baf604.png" width="100" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
   </a>
 </p>
 <h1 align="center">
@@ -13,19 +17,15 @@
 </h4>
 
 <p align="center">
-An open source composable commerce engine built for developers.
+  Building blocks for digital commerce
 </p>
 <p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/master/LICENSE">
+  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
   </a>
-  <a href="https://circleci.com/gh/medusajs/medusa">
-    <img src="https://circleci.com/gh/medusajs/medusa.svg?style=shield" alt="Current CircleCI build status." />
-  </a>
-  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
+  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
   </a>
-    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
   <a href="https://discord.gg/xpCwq3Kfn8">
     <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
   </a>
@@ -34,46 +34,54 @@ An open source composable commerce engine built for developers.
   </a>
 </p>
 
-## Overview
+Redis Event Bus Module for Medusa: a production-ready event bus that queues events and runs subscribers with [BullMQ](https://bullmq.io/) on top of Redis. Use it in production instead of the default local event bus, especially when running multiple Medusa instances or separate server and worker processes. It ships with `@medusajs/medusa` and is registered as `@medusajs/medusa/event-bus-redis`.
 
-Redis Event Bus module for Medusa. When installed, the events system of Medusa is powered by BullMQ and `io-redis`. BullMQ is responsible for the message queue and worker. `io-redis` is the underlying Redis client, that BullMQ connects to for events storage.
+## At a glance
 
-## Getting started
+| | |
+| --- | --- |
+| Package | `@medusajs/event-bus-redis` |
+| Type | Infrastructure Module |
+| Module key | `Modules.EVENT_BUS` (`"event_bus"`) |
+| Registered by default | No (registered automatically on Medusa Cloud when `REDIS_URL` is set) |
 
-Install the module:
+## Installation
 
-```bash
-yarn add @medusajs/event-bus-redis
-```
+No installation needed. The module ships with `@medusajs/medusa`. You need a running Redis server.
 
-Add the module to your `medusa-config.js`:
+## Usage
 
-```js
-module.exports = {
+Register the module in `medusa-config.ts`:
+
+```ts
+import { defineConfig } from "@medusajs/framework/utils"
+
+module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/event-bus-redis",
+      resolve: "@medusajs/medusa/event-bus-redis",
       options: {
-        redisUrl: "redis:..",
+        redisUrl: process.env.EVENTS_REDIS_URL,
       },
     },
   ],
-  // ...
-}
+})
 ```
 
 ## Configuration
 
-The module can be configured with the following options:
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| `redisUrl` | `string` | Redis connection URL. Required: the module throws on startup without it. | - |
+| `redisOptions` | `RedisOptions` | [ioredis client options](https://redis.github.io/ioredis/interfaces/CommonRedisOptions.html), merged into the connection options. | `{}` |
+| `queueName` | `string` | Name of the BullMQ queue. | `"events-queue"` |
+| `queueOptions` | `Omit<QueueOptions, "connection">` | [BullMQ queue options](https://api.docs.bullmq.io/interfaces/v5.QueueOptions.html). | `{}` |
+| `workerOptions` | `Omit<WorkerOptions, "connection">` | [BullMQ worker options](https://api.docs.bullmq.io/interfaces/v5.WorkerOptions.html), such as `concurrency`. | `{}` |
+| `jobOptions` | `JobsOptions` | Default [BullMQ job options](https://api.docs.bullmq.io/interfaces/v5.BaseJobOptions.html) applied to every emitted event, such as `removeOnComplete` and `removeOnFail`. Options passed to `emit` override them. | `{}` |
 
-| Option         | Type      | Description                                                                                                              | Default         |
-| -------------- | --------- | ------------------------------------------------------------------------------------------------------------------------ | --------------- |
-| `redisUrl`     | `string`  | URL of the Redis instance to connect to.                                                                                 | `events-worker` |
-| `queueName`    | `string?` | Name of the BullMQ queue.                                                                                                | `events-queue`  |
-| `queueOptions` | `object?` | Options for the BullMQ queue. See BullMQ's [documentation](https://api.docs.bullmq.io/interfaces/QueueOptions.html).     | `{}`            |
-| `redisOptions` | `object?` | Options for the Redis instance. See `io-redis`'s [documentation](https://redis.github.io/ioredis/types/RedisOptions.html) | `{}`            |
+## Resources
 
-**Info**: See how the options are applied in the [RedisEventBusService](https://github.com/medusajs/medusa/blob/0c1d1d590463fa30b083c4312293348bdf6596be/packages/event-bus-redis/src/services/event-bus-redis.ts#L52) and [loader](https://github.com/medusajs/medusa/blob/0c1d1d590463fa30b083c4312293348bdf6596be/packages/event-bus-redis/src/loaders/index.ts).
-
-If you do not provide a `redisUrl` in the module options, the server will fail to start.
+- [Redis Event Module](https://docs.medusajs.com/resources/infrastructure-modules/event/redis)
+- [Event Module](https://docs.medusajs.com/resources/infrastructure-modules/event)
+- [Events and Subscribers](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers)

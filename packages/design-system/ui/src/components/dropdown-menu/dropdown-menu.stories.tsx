@@ -255,7 +255,7 @@ const ComplexMenuDemo = () => {
                   </Select>
                   <DatePicker />
                 </div>
-                <div className="border-ui-border-base flex items-center gap-x-2 border-t p-2">
+                <div className="flex items-center gap-x-2 border-t border-ui-border-base p-2">
                   <Button variant="secondary">Clear</Button>
                   <Button>Apply</Button>
                 </div>

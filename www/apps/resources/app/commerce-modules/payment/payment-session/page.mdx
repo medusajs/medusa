@@ -36,6 +36,43 @@ This `data` property is accessible in the storefront as well. So, only store in 
 
 For example, you can also store the client token used to initialize the payment session in the storefront with the third-party provider.
 
+### Update Client Data from the Storefront
+
+<Note>
+
+Updating a payment session's client data is available since Medusa [v2.22.1](https://github.com/medusajs/medusa/releases/tag/v2.22.1).
+
+</Note>
+
+Some payment providers collect details in the storefront after you initialize the payment session. For example, a provider's checkout component may return a payment method ID that the provider needs to authorize the payment.
+
+To pass these details to the payment session, use the [Update Payment Session API route](!api!/store/payment-collections/update-payment-session) or the JS SDK's `sdk.store.payment.updatePaymentSession` method. Medusa sets the `client_data` you pass as the payment session's `data.client` property, then passes the updated `data` to the payment provider's `updatePayment` method. The rest of the `data` property is owned by the payment provider, and you can't change it from the storefront.
+
+```ts
+sdk.store.payment.updatePaymentSession(
+  "paycol_123",
+  "payses_123",
+  {
+    client_data: {
+      payment_method: "pm_123",
+    },
+  }
+)
+.then(({ payment_collection }) => {
+  console.log(payment_collection)
+})
+```
+
+You can only update a payment session whose status is `pending`, `requires_more`, or `error`. Medusa throws an error for other statuses, since they indicate that the authorization is in progress or done.
+
+Under the hood, the API route uses the [updatePaymentSessionClientDataWorkflow](/references/medusa-workflows/updatePaymentSessionClientDataWorkflow). You can also execute this workflow in your custom flows.
+
+<Note title="Tip">
+
+If you're building a custom payment provider, read the client data from `data.client` in the provider's `updatePayment` method.
+
+</Note>
+
 ---
 
 ## Payment Session Status
