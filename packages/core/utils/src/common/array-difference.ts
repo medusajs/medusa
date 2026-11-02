@@ -1,5 +1,6 @@
 type ArrayDifferenceElement = string | number
 
+/** Returns the unique elements of `mainArray` that are not in `differingArray`. */
 export function arrayDifference<TElement = ArrayDifferenceElement>(
   mainArray: TElement[] | null | undefined,
   differingArray: TElement[]
