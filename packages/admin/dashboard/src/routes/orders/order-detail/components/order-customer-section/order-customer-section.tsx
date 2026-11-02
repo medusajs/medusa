@@ -9,8 +9,8 @@ import { CustomerInfo } from "../../../../../components/common/customer-info"
 import { HttpTypes } from "@medusajs/types"
 import { PermissionGuard } from "../../../../../components/common/permission-guard"
 import {
-  useCustomerAddressPermissions,
   useCustomerPermissions,
+  useOrderAddressPermissions,
   useOrderPermissions,
 } from "../../../../../hooks/use-resource-permissions"
 
@@ -36,16 +36,15 @@ const Header = () => {
   const { t } = useTranslation()
 
   const { canUpdate: canUpdateCustomers } = useCustomerPermissions()
-  const { canUpdate: canUpdateAdresses } = useCustomerAddressPermissions()
+  const { canUpdate: canUpdateOrderAddresses } = useOrderAddressPermissions()
   const { canUpdate: canUpdateOrders } = useOrderPermissions()
 
-  const canUpdateCustomer = canUpdateCustomers && canUpdateOrders
-  const canUpdateCustomerAddresses =
-    canUpdateAdresses && canUpdateCustomers && canUpdateOrders
+  const canTransfer = canUpdateCustomers && canUpdateOrders
+  const canUpdateAddresses = canUpdateOrderAddresses && canUpdateOrders
 
   const groups: ActionGroup[] = []
 
-  if (canUpdateCustomer) {
+  if (canTransfer) {
     groups.push({
       actions: [
         {
@@ -57,7 +56,7 @@ const Header = () => {
     })
   }
 
-  if (canUpdateCustomerAddresses) {
+  if (canUpdateAddresses) {
     groups.push({
       actions: [
         {
@@ -74,7 +73,7 @@ const Header = () => {
     })
   }
 
-  if (canUpdateCustomer) {
+  if (canUpdateOrders) {
     groups.push({
       actions: [
         {

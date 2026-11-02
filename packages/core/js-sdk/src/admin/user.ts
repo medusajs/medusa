@@ -251,7 +251,7 @@ export class User {
    *
    * @example
    * sdk.admin.user.addRoles("user_123", {
-   *   roles: ["role_123"]
+   *   assignments: [{ role_id: "role_123" }]
    * })
    * .then(({ roles }) => {
    *   console.log(roles)
@@ -308,7 +308,7 @@ export class User {
    *
    * @example
    * sdk.admin.user.removeRoles("user_123", {
-   *   roles: ["role_123"]
+   *   assignments: [{ role_id: "role_123" }]
    * })
    * .then(({ deleted }) => {
    *   console.log(deleted)

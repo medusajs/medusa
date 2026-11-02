@@ -499,6 +499,7 @@ export class RbacRole {
    * with the actor's assigned roles and the names of the roles the actor's
    * permissions fully cover.
    *
+   * @param query - The scope to resolve the permissions within.
    * @param headers - Headers to pass in the request.
    * @returns The flat permission list, assigned roles, and covered role names.
    *
@@ -510,11 +511,15 @@ export class RbacRole {
    *   console.log(covered_roles) // ["Product Manager", "Product Reader"]
    * })
    */
-  async mePermissions(headers?: ClientHeaders) {
+  async mePermissions(
+    query?: HttpTypes.AdminRbacMePermissionsParams,
+    headers?: ClientHeaders
+  ) {
     return await this.client.fetch<HttpTypes.AdminRbacMePermissionsResponse>(
       `/rbac/me/permissions`,
       {
         method: "GET",
+        query,
         headers,
       }
     )
