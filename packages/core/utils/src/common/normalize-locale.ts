@@ -22,7 +22,7 @@ import { upperCaseFirst } from "./upper-case-first"
  * output: "zh-Hans"
  */
 export function normalizeLocale(locale: string) {
-  const segments = locale.split("-")
+  const segments = locale.trim().split("-")
 
   if (segments.length === 1) {
     return segments[0].toLowerCase()
@@ -46,5 +46,5 @@ export function normalizeLocale(locale: string) {
     )}-${segments[2].toUpperCase()}`
   }
 
-  return locale
+  return locale.trim()
 }
