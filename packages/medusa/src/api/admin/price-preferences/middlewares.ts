@@ -15,7 +15,7 @@ import {
 
 export const adminPricePreferencesRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/price-preferences/*",
+    matcher: "/admin/price-preferences/{*splat}",
     policies: [
       {
         resource: Entities.price_preference,

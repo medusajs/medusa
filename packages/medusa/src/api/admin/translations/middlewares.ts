@@ -18,7 +18,7 @@ import {
 
 export const adminTranslationsRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/translations/*",
+    matcher: "/admin/translations/{*splat}",
     policies: [
       {
         resource: Entities.translation,

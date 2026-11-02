@@ -22,7 +22,7 @@ import {
 
 export const adminClaimRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/claims/*",
+    matcher: "/admin/claims/{*splat}",
     policies: [
       {
         resource: Entities.order_claim,

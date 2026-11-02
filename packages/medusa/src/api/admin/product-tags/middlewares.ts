@@ -15,7 +15,7 @@ import {
 
 export const adminProductTagRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/product-tags/*",
+    matcher: "/admin/product-tags/{*splat}",
     policies: [
       {
         resource: Entities.product_tag,

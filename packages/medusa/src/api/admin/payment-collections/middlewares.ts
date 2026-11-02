@@ -15,7 +15,7 @@ import {
 
 export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/payment-collections/*",
+    matcher: "/admin/payment-collections/{*splat}",
     policies: [
       {
         resource: Entities.payment_collection,

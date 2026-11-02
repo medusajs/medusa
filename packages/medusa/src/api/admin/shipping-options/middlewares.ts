@@ -24,7 +24,7 @@ import {
 
 export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/shipping-options/*",
+    matcher: "/admin/shipping-options/{*splat}",
     policies: [
       {
         resource: Entities.shipping_option,

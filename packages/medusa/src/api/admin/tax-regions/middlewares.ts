@@ -17,7 +17,7 @@ import { PolicyOperation } from "@medusajs/framework/utils"
 
 export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/tax-regions/*",
+    matcher: "/admin/tax-regions/{*splat}",
     policies: [
       {
         resource: Entities.tax_region,

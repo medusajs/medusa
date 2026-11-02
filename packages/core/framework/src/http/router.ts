@@ -37,6 +37,7 @@ import { RoutesFinder } from "./routes-finder"
 import { RoutesLoader } from "./routes-loader"
 import { RoutesSorter } from "./routes-sorter"
 import { RestrictedFields } from "./utils/restricted-fields"
+import { toExpressPath } from "./utils/to-express-path"
 import { wrapHandler } from "./utils/wrap-handler"
 
 export class ApiLoader {
@@ -175,7 +176,10 @@ export class ApiLoader {
           })
         : route.handler
 
-      this.#app[route.method.toLowerCase()](route.matcher, wrapHandler(handler))
+      this.#app[route.method.toLowerCase()](
+        toExpressPath(route.matcher),
+        wrapHandler(handler)
+      )
 
       return
     }
@@ -196,7 +200,7 @@ export class ApiLoader {
           }) as RequestHandler)
         : (handlerToUse as RequestHandler)
 
-      this.#app.use(route.matcher, wrapHandler(handler))
+      this.#app.use(toExpressPath(route.matcher), wrapHandler(handler))
       return
     }
 
@@ -228,7 +232,7 @@ export class ApiLoader {
           }) as RequestHandler)
         : wrapHandler(handlerToUse)
 
-      this.#app[method.toLowerCase()](route.matcher, handler)
+      this.#app[method.toLowerCase()](toExpressPath(route.matcher), handler)
     })
   }
 
@@ -580,7 +584,7 @@ export class ApiLoader {
    * Used by HMR to reset the API state before reloading
    */
   clearAllResources() {
-    const router = this.#app._router as IRouter
+    const router = this.#app.router as IRouter
     const initialStackLength =
       (global as any).__MEDUSA_HMR_INITIAL_STACK_LENGTH__ ?? 0
 

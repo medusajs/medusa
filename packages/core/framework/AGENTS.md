@@ -94,4 +94,5 @@ yarn test src/http/__tests__/validate-query.spec.ts
 - In production, a missing `http.jwtSecret` / `http.cookieSecret` throws (`ConfigManager.rejectErrors`); in development it only warns and falls back to `"supersecret"`. Setting `jwtPublicKey` without an `algorithm` in `jwtOptions`/`jwtVerifyOptions` is also rejected.
 - Build validators with `z` from `@medusajs/framework/zod`: the HTTP validators are typed against and run with the Zod v4 copy in `@medusajs/deps/zod`, not whatever zod version a project installs.
 - `@medusajs/framework/caching` is listed in `exports` but has no `src/caching` source and no build output; do not import it.
+- The HTTP layer runs on Express 5. Write wildcard matchers as `/admin/products/{*splat}`. For backwards compatibility, `ApiLoader` still converts a bare `*` (`/admin/products/*`) with `toExpressPath`. Other Express 4 string syntax (`(a|b)`, `?`, `+`) throws at boot; use a `RegExp` matcher instead.
 - `validateAndTransformQuery` consumes and resets `req.allowed`, so custom allowed fields must be set by a middleware that runs before it on the same route.

@@ -7,7 +7,7 @@ import { AdminGetProductVariantsParams } from "./validators"
 
 export const adminProductVariantRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/product-variants/*",
+    matcher: "/admin/product-variants/{*splat}",
     policies: [
       {
         resource: Entities.product_variant,

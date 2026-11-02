@@ -77,15 +77,18 @@ export function createBodyParserMiddlewaresStack(
         )
         const parserMiddleware = parsers[parser]
 
-        if (!matchingRoute) {
-          return parserMiddleware()(req, res, next)
-        }
-
-        if (matchingRoute.config === false) {
+        if (matchingRoute?.config === false) {
           logger.debug(
             `skipping ${parser} bodyparser middleware ${req.method} ${req.path}`
           )
           return next()
+        }
+
+        // body-parser 2 leaves req.body undefined for requests without a body
+        req.body ??= {}
+
+        if (!matchingRoute) {
+          return parserMiddleware()(req, res, next)
         }
 
         logger.debug(

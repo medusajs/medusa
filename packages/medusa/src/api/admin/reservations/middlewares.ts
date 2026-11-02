@@ -16,7 +16,7 @@ import {
 
 export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/reservations/*",
+    matcher: "/admin/reservations/{*splat}",
     policies: [
       {
         resource: Entities.reservation_item,

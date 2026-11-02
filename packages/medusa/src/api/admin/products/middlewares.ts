@@ -40,7 +40,7 @@ const upload = multer({ storage: multer.memoryStorage() })
 
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/products/*",
+    matcher: "/admin/products/{*splat}",
     policies: [
       {
         resource: Entities.product,
@@ -49,7 +49,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/products/*/variants/*",
+    matcher: "/admin/products/{*splat}/variants/{*splat}",
     policies: [
       {
         resource: Entities.product_variant,
@@ -58,7 +58,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/products/*/options/*",
+    matcher: "/admin/products/{*splat}/options/{*splat}",
     policies: [
       {
         resource: Entities.product_option,
@@ -67,7 +67,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/products/*/variants/*/inventory-items/*",
+    matcher:
+      "/admin/products/{*splat}/variants/{*splat}/inventory-items/{*splat}",
     policies: [
       {
         resource: Entities.inventory_item,

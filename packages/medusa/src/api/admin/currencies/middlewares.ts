@@ -7,7 +7,7 @@ import { AdminGetCurrenciesParams, AdminGetCurrencyParams } from "./validators"
 
 export const adminCurrencyRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/currencies/*",
+    matcher: "/admin/currencies/{*splat}",
     policies: [
       {
         resource: Entities.currency,

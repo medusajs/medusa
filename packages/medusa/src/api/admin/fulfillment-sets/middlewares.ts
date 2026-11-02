@@ -15,7 +15,7 @@ import {
 
 export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/fulfillment-sets/*",
+    matcher: "/admin/fulfillment-sets/{*splat}",
     policies: [
       {
         resource: Entities.fulfillment_set,
@@ -24,7 +24,7 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/fulfillment-sets/*/service-zones/*",
+    matcher: "/admin/fulfillment-sets/{*splat}/service-zones/{*splat}",
     policies: [
       {
         resource: Entities.service_zone,

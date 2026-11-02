@@ -23,7 +23,7 @@ import {
 
 export const adminDraftOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/draft-orders/*",
+    matcher: "/admin/draft-orders/{*splat}",
     policies: [
       {
         resource: Entities.order,

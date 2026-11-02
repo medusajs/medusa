@@ -18,7 +18,7 @@ import {
 
 export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/shipping-profiles/*",
+    matcher: "/admin/shipping-profiles/{*splat}",
     policies: [
       {
         resource: Entities.shipping_profile,

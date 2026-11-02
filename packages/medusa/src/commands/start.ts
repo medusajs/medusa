@@ -134,7 +134,7 @@ function displayAdminUrl({
 type ExpressStack = {
   name: string
   match: (url: string) => boolean
-  route: { path: string }
+  route?: { path: string }
   handle: { stack: ExpressStack[] }
 }
 
@@ -156,7 +156,7 @@ function findExpressRoutePath({
   while (stackToProcess.length > 0) {
     const layer = stackToProcess.pop()!
 
-    if (layer.name === "bound dispatch" && layer.match(url)) {
+    if (layer.route && layer.match(url)) {
       return layer.route.path
     }
 
@@ -247,7 +247,7 @@ async function start(args: {
     const app = express()
 
     const http_ = http.createServer(async (req, res) => {
-      const stack = app._router.stack
+      const stack = app.router.stack as unknown as ExpressStack[]
       await new Promise((resolve) => {
         res.on("finish", resolve)
         if (traceRequestHandler) {

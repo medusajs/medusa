@@ -16,7 +16,7 @@ import {
 
 export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/collections/*",
+    matcher: "/admin/collections/{*splat}",
     policies: [
       {
         resource: Entities.product_collection,

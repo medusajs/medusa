@@ -2,22 +2,22 @@ import {
   authenticate,
   validateAndTransformBody,
   validateAndTransformQuery,
-} from "@medusajs/framework";
-import { MiddlewareRoute } from "@medusajs/medusa";
+} from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/medusa"
 import {
   listStoreCreditAccountsTransformQueryConfig,
   retrieveStoreCreditAccountTransformQueryConfig,
-} from "./query-config";
+} from "./query-config"
 import {
   StoreClaimStoreCreditAccountParams,
   StoreGetStoreCreditAccountParams,
   StoreGetStoreCreditAccountsParams,
-} from "./validators";
+} from "./validators"
 
 export const storeStoreCreditAccountMiddlewares: MiddlewareRoute[] = [
   {
     method: "ALL",
-    matcher: "/store/store-credit-accounts*",
+    matcher: "/store/store-credit-accounts{*splat}",
     middlewares: [authenticate("customer", ["session", "bearer"])],
   },
   {
@@ -51,4 +51,4 @@ export const storeStoreCreditAccountMiddlewares: MiddlewareRoute[] = [
       ),
     ],
   },
-];
+]

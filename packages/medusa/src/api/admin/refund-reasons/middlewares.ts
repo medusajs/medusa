@@ -15,7 +15,7 @@ import {
 
 export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/refund-reasons/*",
+    matcher: "/admin/refund-reasons/{*splat}",
     policies: [
       {
         resource: Entities.refund_reason,

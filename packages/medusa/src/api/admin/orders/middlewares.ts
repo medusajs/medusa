@@ -26,7 +26,7 @@ import {
 
 export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/orders/*",
+    matcher: "/admin/orders/{*splat}",
     policies: [
       {
         resource: Entities.order,

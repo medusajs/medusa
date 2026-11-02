@@ -50,7 +50,7 @@ export async function serve(options: ServeOptions): Promise<IRouter> {
       setHeaders: setStaticHeaders,
     })
   )
-  router.get(`/*`, sendHtml)
+  router.get("/{*splat}", sendHtml)
 
   return router
 }

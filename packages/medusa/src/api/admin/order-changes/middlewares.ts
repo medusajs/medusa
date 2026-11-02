@@ -13,7 +13,7 @@ import {
 
 export const adminOrderChangesRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/order-changes/*",
+    matcher: "/admin/order-changes/{*splat}",
     policies: [
       {
         resource: Entities.order_change,

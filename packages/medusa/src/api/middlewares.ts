@@ -82,7 +82,7 @@ import { adminTranslationsRoutesMiddlewares } from "./admin/translations/middlew
 export default defineMiddlewares([
   ...storeRoutesMiddlewares,
   {
-    matcher: "/admin*",
+    matcher: "/admin{*splat}",
     middlewares: [setSecretApiKeyContext],
   },
   ...adminCustomerGroupRoutesMiddlewares,
