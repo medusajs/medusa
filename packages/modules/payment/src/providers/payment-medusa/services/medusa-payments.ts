@@ -110,9 +110,6 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
     if (this.options_.environment_handle) {
       headers["x-medusa-environment-handle"] = this.options_.environment_handle
     }
-    if (this.options_.sandbox_handle) {
-      headers["x-medusa-sandbox-handle"] = this.options_.sandbox_handle
-    }
 
     return fetch(`${this.options_.endpoint}${url}`, {
       ...options,
@@ -820,12 +817,9 @@ const validateOptions = (options: MedusaPaymentsOptions): void => {
     )
   }
 
-  if (
-    !isDefined(options.environment_handle) &&
-    !isDefined(options.sandbox_handle)
-  ) {
+  if (!isDefined(options.environment_handle)) {
     throw new Error(
-      "Required option `environment_handle` or `sandbox_handle` is missing in Medusa payments plugin"
+      "Required option `environment_handle` is missing in Medusa payments plugin"
     )
   }
 }

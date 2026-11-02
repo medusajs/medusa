@@ -281,6 +281,6 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
   }
 
   private getClientId() {
-    return this.config_.environment_handle || this.config_.sandbox_handle
+    return this.config_.environment_handle
   }
 }

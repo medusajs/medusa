@@ -286,10 +286,6 @@ export type MedusaCloudOptions = {
    */
   environmentHandle?: string
   /**
-   * The sandbox handle of the Medusa Cloud sandbox.
-   */
-  sandboxHandle?: string
-  /**
    * The API key used to access Medusa Cloud services.
    */
   apiKey?: string
