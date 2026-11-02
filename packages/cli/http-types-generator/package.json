@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "commander": "^15.0.0",
-    "glob": "13.0.6",
+    "glob": "14.0.2",
     "pluralize": "^8.0.0",
     "prettier": "^3.9.10",
     "typescript": "^5.6.2"
