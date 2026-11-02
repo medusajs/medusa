@@ -46409,6 +46409,7 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
 |`payment_description`|A string used as the default description of a payment if none is available in cart.context.payment\_description.|No|-|
 |`oxxoExpiresDays`|The number of days before an OXXO payment expires. Only applicable if you plan to use OXXO as a payment method.|No|`3`|
 |`paymentMethodConfiguration` (v2.18.0+)|A string indicating the ID of a Stripe [Payment Method Configuration](https://docs.stripe.com/payments/payment-method-configurations) (PMC) to apply a Dashboard-managed set of payment methods to the intent. This option is only used when `payment_method_types` is not set.|No|-|
+|`apiVersion` (v2.22.3+)|A string indicating the [Stripe API version](https://docs.stripe.com/upgrades) to send requests with. For example, `2026-09-30.endive`. For API versions before `2026-07-29`, the provider passes payment method types to Stripe as `payment_method_types`. For `2026-07-29` and later, it passes them as `allowed_payment_method_types`.|No|`2024-04-10`|
 
 ***
 
