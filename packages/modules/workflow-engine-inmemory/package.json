@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "cron-parser": "^5.10.2",
-    "ulid": "^2.3.0"
+    "ulid": "^3.0.2"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.2"

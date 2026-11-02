@@ -3566,7 +3566,7 @@ __metadata:
     prompts: ^2.4.2
     resolve-cwd: ^3.0.0
     stack-trace: ^1.0.0
-    ulid: ^2.3.0
+    ulid: ^3.0.2
     winston: ^3.9.0
     yargs: ^18.2.0
   bin:
@@ -3802,7 +3802,7 @@ __metadata:
     "@aws-sdk/lib-storage": ^3.1156.0
     "@aws-sdk/s3-request-presigner": ^3.1156.0
     "@medusajs/framework": 2.22.2
-    ulid: ^2.3.0
+    ulid: ^3.0.2
   peerDependencies:
     "@medusajs/framework": 2.22.2
   languageName: unknown
@@ -4217,7 +4217,7 @@ __metadata:
     "@medusajs/deps": 2.22.2
     "@medusajs/types": 2.22.2
     "@medusajs/utils": 2.22.2
-    ulid: ^2.3.0
+    ulid: ^3.0.2
   languageName: unknown
   linkType: soft
 
@@ -4433,7 +4433,7 @@ __metadata:
     "@types/express": ^4.17.21
     axios: ^1.20.0
     express: ^4.21.0
-    ulid: ^2.3.0
+    ulid: ^3.0.2
   peerDependencies:
     "@medusajs/core-flows": 2.22.2
     "@medusajs/framework": 2.22.2
@@ -4570,7 +4570,7 @@ __metadata:
     jsonwebtoken: ^9.0.2
     pg-connection-string: ^2.14.1
     pluralize: ^8.0.0
-    ulid: ^2.3.0
+    ulid: ^3.0.2
   peerDependencies:
     express: ^4.21.0
   languageName: unknown
@@ -4583,7 +4583,7 @@ __metadata:
     "@medusajs/framework": 2.22.2
     "@medusajs/test-utils": 2.22.2
     cron-parser: ^5.10.2
-    ulid: ^2.3.0
+    ulid: ^3.0.2
   peerDependencies:
     "@medusajs/framework": 2.22.2
   languageName: unknown
@@ -4597,7 +4597,7 @@ __metadata:
     "@medusajs/test-utils": 2.22.2
     bullmq: 5.13.0
     ioredis: ^5.11.1
-    ulid: ^2.3.0
+    ulid: ^3.0.2
   peerDependencies:
     "@medusajs/framework": 2.22.2
   languageName: unknown
@@ -4612,7 +4612,7 @@ __metadata:
     "@medusajs/orchestration": 2.22.2
     "@medusajs/types": 2.22.2
     "@medusajs/utils": 2.22.2
-    ulid: ^2.3.0
+    ulid: ^3.0.2
   languageName: unknown
   linkType: soft
 
@@ -21429,12 +21429,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ulid@npm:^2.3.0":
-  version: 2.4.0
-  resolution: "ulid@npm:2.4.0"
+"ulid@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "ulid@npm:3.0.2"
   bin:
-    ulid: bin/cli.js
-  checksum: 96f7597a2f09dadd380707a0755753d85717059deae54a9e28b6cbc34c02ef211dd1d1dcbfa8bd557d12309f174b87f3ba5f45d6b67573d1a2da202b5a0c9319
+    ulid: dist/cli.js
+  checksum: 3993499f0cb3f322e46a8da7144b184d9b12d2cc1976dd7eeb35fc2b4e153c547e8963db4d5a320995c481b0e0294289ba8260e0f69dce99ded3c647c33ac574
   languageName: node
   linkType: hard
 

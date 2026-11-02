@@ -41,7 +41,7 @@
     "@medusajs/modules-sdk": "2.22.2",
     "@medusajs/orchestration": "2.22.2",
     "@medusajs/utils": "2.22.2",
-    "ulid": "^2.3.0"
+    "ulid": "^3.0.2"
   },
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",

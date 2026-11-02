@@ -50,7 +50,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg-connection-string": "^2.14.1",
     "pluralize": "^8.0.0",
-    "ulid": "^2.3.0"
+    "ulid": "^3.0.2"
   },
   "peerDependencies": {
     "express": "^4.21.0"
