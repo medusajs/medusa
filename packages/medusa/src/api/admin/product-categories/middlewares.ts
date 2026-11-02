@@ -16,7 +16,7 @@ import {
 
 export const adminProductCategoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/product-categories/*",
+    matcher: "/admin/product-categories/{*splat}",
     policies: [
       {
         resource: Entities.product_category,

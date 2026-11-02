@@ -22,7 +22,7 @@ import {
 
 export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/price-lists/*",
+    matcher: "/admin/price-lists/{*splat}",
     policies: [
       {
         resource: Entities.price_list,
@@ -31,7 +31,7 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/price-lists/*/prices/*",
+    matcher: "/admin/price-lists/{*splat}/prices/{*splat}",
     policies: [
       {
         resource: Entities.price,

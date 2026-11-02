@@ -10,7 +10,7 @@ import {
 
 export const adminNotificationRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/notifications/*",
+    matcher: "/admin/notifications/{*splat}",
     policies: [
       {
         resource: Entities.notification,

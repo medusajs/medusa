@@ -18,7 +18,7 @@ import {
 
 export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/api-keys/*",
+    matcher: "/admin/api-keys/{*splat}",
     policies: [
       {
         resource: Entities.api_key,

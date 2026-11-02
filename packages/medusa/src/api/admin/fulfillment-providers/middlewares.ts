@@ -7,7 +7,7 @@ import { AdminFulfillmentProvidersParams } from "./validators"
 
 export const adminFulfillmentProvidersRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/fulfillment-providers/*",
+    matcher: "/admin/fulfillment-providers/{*splat}",
     policies: [
       {
         resource: Entities.fulfillment_provider,

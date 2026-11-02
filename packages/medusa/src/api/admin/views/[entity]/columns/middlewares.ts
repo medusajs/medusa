@@ -7,7 +7,7 @@ export const columnRoutesMiddlewares: MiddlewareRoute[] = [
   // Apply feature flag check to all column routes
   {
     method: ["GET", "POST"],
-    matcher: "/admin/views/*/columns",
+    matcher: "/admin/views/{*splat}/columns",
     middlewares: [ensureViewConfigurationsEnabled],
   },
   {

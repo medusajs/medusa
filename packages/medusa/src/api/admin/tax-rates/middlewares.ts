@@ -18,7 +18,7 @@ import { MiddlewareRoute } from "@medusajs/framework/http"
 
 export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/tax-rates/*",
+    matcher: "/admin/tax-rates/{*splat}",
     policies: [
       {
         resource: Entities.tax_rate,

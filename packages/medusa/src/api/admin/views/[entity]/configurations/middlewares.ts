@@ -18,7 +18,7 @@ export const viewConfigurationRoutesMiddlewares: MiddlewareRoute[] = [
   // Apply feature flag check to all view configuration routes
   {
     method: ["GET", "POST", "DELETE"],
-    matcher: "/admin/views/*/configurations*",
+    matcher: "/admin/views/{*splat}/configurations{*splat}",
     middlewares: [ensureViewConfigurationsEnabled],
   },
   {

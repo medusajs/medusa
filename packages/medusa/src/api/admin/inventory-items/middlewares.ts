@@ -22,7 +22,7 @@ import {
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/inventory-items/*",
+    matcher: "/admin/inventory-items/{*splat}",
     policies: [
       {
         resource: Entities.inventory_item,
@@ -31,7 +31,7 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/inventory-items/*/location-levels/*",
+    matcher: "/admin/inventory-items/{*splat}/location-levels/{*splat}",
     policies: [
       {
         resource: Entities.inventory_level,

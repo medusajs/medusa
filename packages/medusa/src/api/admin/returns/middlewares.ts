@@ -24,7 +24,7 @@ import {
 
 export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/returns/*",
+    matcher: "/admin/returns/{*splat}",
     policies: [
       {
         resource: Entities.return,

@@ -17,7 +17,7 @@ import {
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/stock-locations/*",
+    matcher: "/admin/stock-locations/{*splat}",
     policies: [
       {
         resource: Entities.stock_location,

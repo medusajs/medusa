@@ -22,7 +22,7 @@ import {
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/promotions/*",
+    matcher: "/admin/promotions/{*splat}",
     policies: [
       {
         resource: Entities.promotion,

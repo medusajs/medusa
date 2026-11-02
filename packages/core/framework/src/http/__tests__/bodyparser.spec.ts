@@ -143,4 +143,22 @@ describe("bodyparser preserveRawBody", () => {
       })
     })
   })
+
+  describe("without a request body", () => {
+    it("sets the body to an empty object", async () => {
+      const res = await createTestApp(createMockRoutesFinder({}))
+        .post("/webhook")
+        .expect(200)
+
+      expect(res.body.body).toEqual({})
+    })
+
+    it("leaves the body unset when the bodyparser is disabled", async () => {
+      const res = await createTestApp(createMockRoutesFinder(false))
+        .post("/webhook")
+        .expect(200)
+
+      expect(res.body.body).toBeUndefined()
+    })
+  })
 })

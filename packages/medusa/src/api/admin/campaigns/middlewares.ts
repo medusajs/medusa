@@ -16,7 +16,7 @@ import {
 
 export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/campaigns/*",
+    matcher: "/admin/campaigns/{*splat}",
     policies: [
       {
         resource: Entities.campaign,
