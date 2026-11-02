@@ -5,6 +5,10 @@ export function pickValueFromObject(
   path: string,
   object: Record<any, any>
 ): any {
+  if (!path) {
+    return
+  }
+
   const segments = path.split(".")
   let result: any = object
 
