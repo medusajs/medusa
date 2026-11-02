@@ -20,7 +20,7 @@ import { useStore } from "../../../hooks/api/store"
 import { LayoutComposer } from "../../layout-composer"
 import { PermissionGuard } from "../../common/permission-guard"
 import { Skeleton } from "../../common/skeleton"
-import { INavItem, NavItem } from "../../layout/nav-item"
+import { INavItem, NavItem, usePermittedNavItems } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -361,7 +361,7 @@ const SidebarRoutes = () => {
 
   const { getMenu } = useExtension()
 
-  const menuItems = getMenu("coreExtensions")
+  const menuItems = usePermittedNavItems(getMenu("coreExtensions"))
 
   menuItems.forEach((item) => {
     if (item.nested) {

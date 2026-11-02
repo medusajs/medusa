@@ -5,13 +5,16 @@ import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
-import { RBAC_MODULE_KEY, useIsModuleInstalled } from "../../../hooks/api/modules"
+import {
+  RBAC_MODULE_KEY,
+  useIsModuleInstalled,
+} from "../../../hooks/api/modules"
 import { useSearchIndexes } from "../../../hooks/api/search-indexes"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { useExtension } from "../../../providers/extension-provider"
 import { LayoutComposer } from "../../layout-composer"
 import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
-import { INavItem, NavItem } from "../nav-item"
+import { INavItem, NavItem, usePermittedNavItems } from "../nav-item"
 import { Shell } from "../shell"
 import { UserMenu } from "../user-menu"
 import {
@@ -284,7 +287,7 @@ const SettingsSidebar = () => {
   const routes = useSettingRoutes()
   const developerRoutes = useDeveloperRoutes()
   const myAccountRoutes = useMyAccountRoutes()
-  const extensionRoutes = getMenu("settingsExtensions")
+  const extensionRoutes = usePermittedNavItems(getMenu("settingsExtensions"))
 
   return (
     <aside className="relative flex flex-1 flex-col justify-between overflow-y-auto">

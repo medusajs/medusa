@@ -1310,7 +1310,17 @@ export function getRouteMap({
                 },
               ],
             },
-            ...coreRoutes,
+            // Extension routes declare their permissions on their handle
+            // (or route config); routes declaring none render through.
+            {
+              errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
+              children: coreRoutes,
+            },
           ],
         },
       ],
@@ -2675,7 +2685,15 @@ export function getRouteMap({
                 },
               ],
             },
-            ...settingsRoutes.flatMap((r) => r?.children || []),
+            {
+              errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
+              children: settingsRoutes.flatMap((r) => r?.children || []),
+            },
           ],
         },
       ],

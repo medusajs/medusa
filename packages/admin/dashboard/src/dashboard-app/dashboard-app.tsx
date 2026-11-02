@@ -18,6 +18,7 @@ import {
   RouterProvider,
 } from "react-router-dom"
 import { INavItem } from "../components/layout/nav-item"
+import type { Permission } from "../lib/permissions"
 import { Providers } from "../providers"
 import coreTranslations from "../i18n/translations"
 import { getRouteMap } from "./routes/get-route.map"
@@ -215,6 +216,9 @@ export class DashboardApp {
         nested: item.nested,
         rank: item.rank,
         translationNs: item.translationNs,
+        permissions: item.permissions
+          ? ([item.permissions].flat() as Permission[])
+          : undefined,
       }
 
       if (parentPath !== "/" && tempRegistry[parentPath]) {

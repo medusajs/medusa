@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { useMemo } from "react"
@@ -38,7 +39,11 @@ export const PricingEdit = ({
   const { handleSuccess } = useRouteModal()
   const { mutateAsync, isPending } = useUpdateProductVariantsBatch(product.id)
 
-  const { regions } = useRegions({ limit: 9999 })
+  const { hasPermission } = usePermissions()
+  const { regions } = useRegions(
+    { limit: 9999 },
+    { enabled: hasPermission("region:read") }
+  )
   const regionsCurrencyMap = useMemo(() => {
     if (!regions?.length) {
       return {}

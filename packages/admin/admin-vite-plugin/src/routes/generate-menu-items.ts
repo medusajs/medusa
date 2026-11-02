@@ -28,6 +28,7 @@ import { getRoute } from "./helpers"
 type RouteConfig = {
   label: boolean
   icon: boolean
+  permissions?: boolean
   nested?: NestedRoutePosition
   rank?: number
   translationNs?: string
@@ -35,6 +36,7 @@ type RouteConfig = {
 
 type MenuItem = {
   icon?: string
+  permissions?: string
   label: string
   path: string
   nested?: NestedRoutePosition
@@ -69,14 +71,15 @@ function generateCode(results: MenuItemResult[]): string {
 }
 
 function formatMenuItem(route: MenuItem): string {
-  const { label, icon, path, nested, rank, translationNs } = route
+  const { label, icon, path, nested, rank, translationNs, permissions } = route
   return `{
     label: ${label},
     icon: ${icon || "undefined"},
     path: "${path}",
     nested: ${nested ? `"${nested}"` : "undefined"},
     rank: ${rank !== undefined ? rank : "undefined"},
-    translationNs: ${translationNs ? `${translationNs}` : "undefined"}
+    translationNs: ${translationNs ? `${translationNs}` : "undefined"},
+    permissions: ${permissions ? `${permissions}` : "undefined"}
   }`
 }
 
@@ -141,6 +144,7 @@ function generateMenuItem(
     translationNs: config.translationNs
       ? `${configName}.translationNs`
       : undefined,
+    permissions: config.permissions ? `${configName}.permissions` : undefined,
   }
 }
 
@@ -276,6 +280,7 @@ function processConfigProperties(
   return {
     label: hasLabel,
     icon: hasProperty("icon"),
+    permissions: hasProperty("permissions"),
     nested: nestedValue as NestedRoutePosition | undefined,
     rank: rankValue,
     translationNs: translationNsValue,

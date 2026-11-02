@@ -266,6 +266,49 @@ describe("generateMenuItems", () => {
     )
   })
 
+  it("should surface the permissions field when it is declared", async () => {
+    const mockFileWithPermissions = `
+      import { defineRouteConfig } from "@medusajs/admin-sdk"
+
+      const Page = () => {
+          return <div>Gift Cards</div>
+      }
+
+      export const config = defineRouteConfig({
+          label: "Gift Cards",
+          permissions: ["gift_card:read"],
+      })
+
+      export default Page
+    `
+
+    const mockFiles = ["Users/user/medusa/src/admin/routes/gift-cards/page.tsx"]
+    vi.mocked(utils.crawl).mockResolvedValue(mockFiles)
+    vi.mocked(fs.readFile).mockResolvedValue(mockFileWithPermissions)
+
+    const result = await generateMenuItems(
+      new Set(["Users/user/medusa/src/admin"])
+    )
+
+    const expectedOutput = `
+      menuItems: [
+        {
+          label: RouteConfig0.label,
+          icon: undefined,
+          path: "/gift-cards",
+          nested: undefined,
+          rank: undefined,
+          translationNs: undefined,
+          permissions: RouteConfig0.permissions
+        }
+      ]
+    `
+
+    expect(utils.normalizeString(result.code)).toEqual(
+      utils.normalizeString(expectedOutput)
+    )
+  })
+
   it("should handle mixed ranked and unranked routes", async () => {
     const mockMixedFiles = [
       "Users/user/medusa/src/admin/routes/first/page.tsx",
