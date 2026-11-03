@@ -1,0 +1,55 @@
+---
+"@medusajs/analytics": patch
+"@medusajs/api-key": patch
+"@medusajs/auth": patch
+"@medusajs/auth-emailpass": patch
+"@medusajs/auth-github": patch
+"@medusajs/auth-google": patch
+"@medusajs/auth-oidc": patch
+"@medusajs/caching": patch
+"@medusajs/cart": patch
+"@medusajs/currency": patch
+"@medusajs/customer": patch
+"@medusajs/eslint-plugin": patch
+"@medusajs/event-bus-local": patch
+"@medusajs/event-bus-redis": patch
+"@medusajs/file": patch
+"@medusajs/file-local": patch
+"@medusajs/file-s3": patch
+"@medusajs/framework": patch
+"@medusajs/fulfillment": patch
+"@medusajs/http-types-generator": patch
+"@medusajs/index": patch
+"@medusajs/inventory": patch
+"@medusajs/link-modules": patch
+"@medusajs/locking": patch
+"@medusajs/locking-postgres": patch
+"@medusajs/locking-redis": patch
+"@medusajs/loyalty-plugin": patch
+"@medusajs/medusa": patch
+"@medusajs/notification": patch
+"@medusajs/notification-local": patch
+"@medusajs/notification-sendgrid": patch
+"@medusajs/order": patch
+"@medusajs/payment": patch
+"@medusajs/pricing": patch
+"@medusajs/product": patch
+"@medusajs/promotion": patch
+"@medusajs/rbac": patch
+"@medusajs/region": patch
+"@medusajs/sales-channel": patch
+"@medusajs/search": patch
+"@medusajs/search-postgres": patch
+"@medusajs/settings": patch
+"@medusajs/stock-location": patch
+"@medusajs/store": patch
+"@medusajs/tax": patch
+"@medusajs/translation": patch
+"@medusajs/user": patch
+"@medusajs/utils": patch
+"@medusajs/workflow-engine-inmemory": patch
+"@medusajs/workflow-engine-redis": patch
+"@medusajs/workflows-sdk": patch
+---
+
+chore: update jest to v30.5.2 and use the `--testPathPatterns` flag in test scripts

@@ -20,7 +20,7 @@
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --build --watch",
-    "test": "../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathPattern=src"
+    "test": "../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathPatterns=src"
   },
   "engines": {
     "node": ">=22.22.0"

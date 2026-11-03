@@ -35,8 +35,8 @@
     "watch:test": "yarn run -T tsc --build tsconfig.spec.json --watch",
     "resolve:aliases": "yarn run -T tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && yarn run -T tsc-alias -p tsconfig.resolved.json && yarn run -T rimraf tsconfig.resolved.json",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build && npm run resolve:aliases",
-    "test": "../../../node_modules/.bin/jest --passWithNoTests --bail --forceExit --testPathPattern=src",
-    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.ts\""
+    "test": "../../../node_modules/.bin/jest --passWithNoTests --bail --forceExit --testPathPatterns=src",
+    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/.*\\.ts\""
   },
   "devDependencies": {
     "@medusajs/framework": "2.22.2",

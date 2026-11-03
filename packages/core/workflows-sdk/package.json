@@ -46,7 +46,7 @@
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --build --watch",
-    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src",
+    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPatterns=src",
     "test:run": "node ./dist/utils/_playground.js"
   }
 }
