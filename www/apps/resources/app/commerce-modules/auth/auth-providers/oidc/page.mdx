@@ -1,0 +1,416 @@
+import { Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `OpenID Connect (OIDC) Auth Module Provider`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the OpenID Connect (OIDC) Auth Module Provider and how to install and use it in the Auth Module.
+
+<Note>
+
+The OIDC Auth Module Provider is available since Medusa [v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+</Note>
+
+The OIDC Auth Module Provider allows you to authenticate users with any identity provider (IdP) that complies with the OpenID Connect specification, such as Okta, Microsoft Entra ID, Auth0, Keycloak, or Google Workspace.
+
+The provider resolves the identity provider's configuration from its discovery document, and it secures the authentication flow with PKCE (S256), a nonce, and full ID token validation.
+
+## Register the OIDC Auth Module Provider
+
+<Prerequisites
+  items={[
+    {
+      text: "Create an OIDC application (client) in your identity provider. Set its redirect URI to a URL in your frontend (for example, the storefront or the Medusa Admin) that later uses Medusa's callback route to validate the authentication.",
+    }
+  ]}
+/>
+
+To use the OIDC Auth Module Provider, add the module to the array of providers passed to the Auth Module in your `medusa-config.ts`. You can register the provider multiple times, once per identity provider, with a different `id` for each registration:
+
+export const highlights = [
+  ["17", `"okta"`, "The ID of the provider used in the authentication routes."],
+]
+
+```ts title="medusa-config.ts" highlights={highlights}
+module.exports = defineConfig({
+  // ...
+  modules: [
+    // ...
+    {
+      resolve: "@medusajs/medusa/auth",
+      options: {
+        providers: [
+          // other providers...
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+          },
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              issuer: process.env.OKTA_ISSUER,
+              client_id: process.env.OKTA_CLIENT_ID,
+              client_secret: process.env.OKTA_CLIENT_SECRET,
+              callback_url: process.env.OKTA_CALLBACK_URL,
+              display_name: "Okta",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+The `id` of each registration becomes part of the authentication routes. For example, with the above configuration, customers authenticate through the `/auth/customer/okta` route.
+
+<Note title="Tip">
+
+When you override the `providers` option of the Auth Module, the default `emailpass` provider is no longer registered. Make sure to add it again if you still need it.
+
+</Note>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```plain
+OKTA_ISSUER=<YOUR_OKTA_ISSUER_URL>
+OKTA_CLIENT_ID=<YOUR_OKTA_CLIENT_ID>
+OKTA_CLIENT_SECRET=<YOUR_OKTA_CLIENT_SECRET>
+OKTA_CALLBACK_URL=<YOUR_OKTA_CALLBACK_URL>
+```
+
+### Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Configuration
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+      <Table.HeaderCell className="w-1/5">
+        Required
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `issuer`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the identity provider's issuer URL. The provider uses it to resolve the discovery document at `{issuer}/.well-known/openid-configuration` and to validate the `iss` claim of returned ID tokens.
+
+      The URL must use `https`. Outside of production, you can use an `http` URL for `localhost`, `127.0.0.1`, or `::1`, which is useful when testing with a local identity provider.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `client_id`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the OAuth 2 client ID registered with the identity provider.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `client_secret`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the OAuth 2 client secret registered with the identity provider. If you don't set it, the provider authenticates as a public client using PKCE only.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `callback_url`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the URL to redirect to in your frontend after the user completes their authentication in the identity provider.
+
+      At this URL, the frontend receives query parameters such as `code` and `state`. It then sends all of these query parameters to the Medusa application's `/auth/{actor_type}/{id}/callback` route, where `{id}` is the provider's ID.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `allowed_callback_urls`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An array of strings indicating the callback URLs that an authentication request can use to override `callback_url`. The provider rejects any override that doesn't exactly match a URL in this list.
+
+      If you don't set this option, the provider accepts any callback URL override and leaves the validation to the identity provider.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `scopes`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An array of strings indicating the scopes to request. The identity provider only returns an ID token if you request the `openid` scope, so always include it when you set this option.
+
+      Default: `["openid", "email", "profile"]`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `authorization_endpoint`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the identity provider's authorization endpoint. If set, it overrides the value from the discovery document.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `token_endpoint`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the identity provider's token endpoint. If set, it overrides the value from the discovery document.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `jwks_uri`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the JWKS URI used to verify the ID token's signature. If set, it overrides the value from the discovery document.
+
+      If you set `authorization_endpoint`, `token_endpoint`, and `jwks_uri`, the provider doesn't fetch the discovery document.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `claim_mappings`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An object that maps the auth identity's fields to the ID token's claims. The key is the field, and the value is the name of the claim to read it from:
+
+      - `entity_id`: The claim to use as the auth identity's `entity_id`.
+      - `email`: The claim to read the user's email from.
+      - `name`: The claim to read the user's name from.
+
+      You can also add custom keys. The provider copies the value of each mapped claim into the auth identity's `user_metadata` under the key's name.
+
+      Default: `{ entity_id: "sub", email: "email", name: "name" }`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `require_verified_email`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A boolean indicating whether the identity provider must confirm that the user's email is verified with the `email_verified` claim. If the identity provider doesn't return the `email_verified` claim, every login fails unless you set this option to `false`.
+
+      Default: `true`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `allowed_email_domains`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An array of strings indicating the email domains allowed to authenticate through this provider. For example, `["example.com"]`. If set, the provider rejects users whose email domain isn't in the list.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `clock_tolerance_seconds`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A number indicating the allowed clock skew, in seconds, when validating the ID token's time-based claims, such as `exp`.
+
+      Default: `5`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `state_ttl_seconds`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A number indicating how long, in seconds, the `state` value stored during authentication remains valid. The user must complete the authentication in the identity provider within this time.
+
+      Default: `600`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `display_name`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      A string indicating the provider's display name. This is useful when you register the provider multiple times for different identity providers.
+
+      Default: `OpenID Connect`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Authentication Flow
+
+The OIDC Auth Module Provider supports authentication only. It doesn't support the registration route, since users are registered in the identity provider.
+
+The authentication flow is:
+
+1. The frontend sends a request to the [Authenticate or Login API Route](../../authentication-route/page.mdx#login-route) at `/auth/{actor_type}/{id}`. The route returns a `location` URL in the identity provider.
+2. The frontend redirects the user to the `location` URL to log in with the identity provider.
+3. After the user logs in, the identity provider redirects them to the callback URL.
+4. The frontend sends all query parameters it received to the [Validate Callback API Route](../../authentication-route/page.mdx#validate-callback-route) at `/auth/{actor_type}/{id}/callback`. On success, the route returns a JWT token.
+
+On the first login, the provider creates an auth identity whose `entity_id` is the value of the `sub` claim by default. On every following login, the provider updates the auth identity's `user_metadata` with the latest claims from the ID token.
+
+### Troubleshooting Authentication Errors
+
+To avoid leaking sensitive details, the provider always returns a generic `Authentication failed` error to the client when authentication fails. The Medusa application logs the actual cause with the `[auth-oidc]` prefix, so check the logs when debugging a failed login.
+
+For example, if the identity provider can't be reached or rejects the token request, the logs contain the reason and, when available, the identity provider's error code and description.
+
+---
+
+## Override Callback URL During Authentication
+
+In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
+
+The [Authenticate or Login API Route](../../authentication-route/page.mdx#login-route) can accept a `callback_url` body parameter to override the provider's `callback_url` option. To restrict which URLs are accepted, set the `allowed_callback_urls` option.
