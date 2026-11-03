@@ -7,7 +7,7 @@ import { Spinner } from "@medusajs/icons"
 
 const buttonVariants = cva({
   base: clx(
-    "transition-fg relative inline-flex w-fit items-center justify-center overflow-hidden rounded-md outline-none",
+    "transition-fg relative inline-flex w-fit items-center justify-center overflow-hidden rounded-md outline-hidden",
     "disabled:bg-ui-bg-disabled disabled:border-ui-border-base disabled:text-ui-fg-disabled disabled:shadow-buttons-neutral disabled:after:hidden",
     "after:transition-fg after:absolute after:inset-0 after:content-['']"
   ),
