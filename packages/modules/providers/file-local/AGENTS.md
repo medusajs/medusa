@@ -36,7 +36,7 @@ module.exports = defineConfig({
 ## Architecture
 
 - `src/services/local-file.ts`: `LocalFileService extends AbstractFileProviderService` (from `@medusajs/framework/utils`), `static identifier = "localfs"`. Also exported as a named export.
-- Implements `upload`, `getUploadStream`, `delete`, `getDownloadStream`, `getAsBuffer`, `getPresignedDownloadUrl`, `getPresignedUploadUrl`. Smallest complete reference for a custom file provider.
+- Implements `upload`, `getUploadStream`, `delete`, `deleteByUrl`, `getDownloadStream`, `getAsBuffer`, `getPresignedDownloadUrl`, `getPresignedUploadUrl`. Smallest complete reference for a custom file provider.
 - Keys are `{dir}/{Date.now()}-{basename}`; private files get a `private-` prefix on the basename.
 - `getUploadFilePath` rejects keys that resolve outside the base dir (path traversal guard).
 - String `content` is decoded as base64 if it round-trips, else UTF-8 for text MIME types, else binary (latin1).

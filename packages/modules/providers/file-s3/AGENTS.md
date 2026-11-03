@@ -38,7 +38,7 @@ module.exports = defineConfig({
 ## Architecture
 
 - `src/services/s3-file.ts`: `S3FileService extends AbstractFileProviderService`, `static identifier = "s3"`.
-- Implements `upload`, `getUploadStream` (multipart via `@aws-sdk/lib-storage` `Upload`), `delete`, `getPresignedDownloadUrl`, `getPresignedUploadUrl`, `getDownloadStream`, `getAsBuffer`.
+- Implements `upload`, `getUploadStream` (multipart via `@aws-sdk/lib-storage` `Upload`), `delete`, `deleteByUrl`, `getPresignedDownloadUrl`, `getPresignedUploadUrl`, `getDownloadStream`, `getAsBuffer`.
 - Keys: `{prefix}{dir/}{name}-{ulid}{ext}`; filenames are sanitized (backslashes normalized, leading `/` and `..`/`.` segments stripped). The original filename is stored in `original-filename` object metadata.
 - Returned URL is `${file_url}/${key}` with each path segment URI-encoded.
 

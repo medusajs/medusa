@@ -154,6 +154,32 @@ export interface IFileProvider {
   ): Promise<void>
 
   /**
+   * This method is used to delete a file by its URL. It's useful when the
+   * stored record only keeps the file's URL, such as a product image, and not
+   * the file's key.
+   *
+   * The provider is responsible for validating that the URL belongs to it.
+   * Implementations should ignore URLs that weren't produced by their own
+   * `upload` method, as they may point to an external file.
+   *
+   * Providers that don't implement this method won't have their files deleted
+   * when a product image is removed.
+   *
+   * @param {string} url - The URL of the file to delete.
+   * @returns {Promise<void>} Resolves when the file is deleted successfully.
+   *
+   * @example
+   * class MyFileProviderService extends AbstractFileProviderService {
+   *   // ...
+   *   async deleteByUrl(url: string): Promise<void> {
+   *     const fileKey = url.replace("https://my-provider.com/", "")
+   *     await this.delete({ fileKey })
+   *   }
+   * }
+   */
+  deleteByUrl?(url: string): Promise<void>
+
+  /**
    * This method is used to retrieve a download URL of the file. For some file services, such as S3, a presigned URL indicates a temporary URL to get access to a file.
    *
    * If your file service doesn’t perform or offer a similar functionality, you can just return the URL to download the file.

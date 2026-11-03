@@ -35,6 +35,13 @@ function decodeFileContent(content: string, mimeType?: string): Buffer {
     : Buffer.from(content, "binary")
 }
 
+function parseUrl(value: string): URL | null {
+  try {
+    return new URL(value)
+  } catch {
+    return null
+  }
+}
 
 export class LocalFileService extends AbstractFileProviderService {
   static identifier = "localfs"
@@ -173,6 +180,41 @@ export class LocalFileService extends AbstractFileProviderService {
     )
 
     return
+  }
+
+  /**
+   * Deletes a file using the URL returned by `upload`. URLs that don't point
+   * to a file of this provider are ignored.
+   */
+  async deleteByUrl(url: string): Promise<void> {
+    const backendUrl = parseUrl(this.backendUrl_)
+    const fileUrl = parseUrl(url)
+
+    if (!backendUrl || !fileUrl) {
+      return
+    }
+
+    if (fileUrl.origin !== backendUrl.origin) {
+      return
+    }
+
+    const basePath = backendUrl.pathname.replace(/\/+$/, "")
+    if (!fileUrl.pathname.startsWith(`${basePath}/`)) {
+      return
+    }
+
+    const fileKey = fileUrl.pathname
+      .slice(basePath.length)
+      .replace(/^\/+/, "")
+      .split("/")
+      .map((segment) => decodeURIComponent(segment))
+      .join("/")
+
+    if (!fileKey) {
+      return
+    }
+
+    await this.delete({ fileKey })
   }
 
   async getDownloadStream(

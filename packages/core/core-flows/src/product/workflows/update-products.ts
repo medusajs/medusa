@@ -19,6 +19,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import {
   createRemoteLinkStep,
@@ -28,6 +29,7 @@ import {
 } from "../../common"
 import { upsertVariantPricesWorkflow } from "./upsert-variant-prices"
 import { createProductVariantsDefaultInventoryStep } from "../steps/create-product-variants-default-inventory"
+import { deleteProductImageFilesStep } from "../steps/delete-product-image-files"
 import { dismissProductVariantsInventoryStep } from "../steps/dismiss-product-variants-inventory"
 
 /**
@@ -442,8 +444,69 @@ export const updateProductsWorkflow = createWorkflow(
       }
     )
 
+    const imageUrlsSelector = transform({ input }, (data) => {
+      if ("products" in data.input) {
+        return {
+          filters: {
+            id: data.input.products.filter((p) => !!p.images).map((p) => p.id),
+          },
+        }
+      }
+
+      return {
+        filters: data.input.update?.images ? data.input.selector : { id: [] },
+      }
+    })
+    const previousProductsWithImages = useRemoteQueryStep({
+      entry_point: "product",
+      fields: ["images.url"],
+      variables: imageUrlsSelector,
+    }).config({ name: "get-previous-products-images-step" })
+
+    const previousImageUrls = transform(
+      { previousProductsWithImages },
+      (data) => {
+        return [
+          ...new Set(
+            data.previousProductsWithImages.flatMap((p) =>
+              (p.images ?? []).map((image) => image.url)
+            )
+          ),
+        ]
+      }
+    )
+
     const toUpdateInput = transform({ input }, prepareUpdateProductInput)
     const updatedProducts = updateProductsStep(toUpdateInput)
+
+    // The update may remove images. Check which of the previous URLs are still
+    // referenced after the update so files shared with other products are kept.
+    const remainingImages = when(
+      "should-check-remaining-product-images",
+      { previousImageUrls, updatedProducts },
+      (data) => data.previousImageUrls.length > 0
+    ).then(() => {
+      return useRemoteQueryStep({
+        entry_point: "product_image",
+        fields: ["url"],
+        variables: { filters: { url: previousImageUrls } },
+      }).config({ name: "get-remaining-product-images-step" })
+    })
+
+    const orphanedImageUrls = transform(
+      { previousImageUrls, remainingImages },
+      (data): string[] => {
+        const remainingUrls = new Set(
+          ((data.remainingImages ?? []) as { url: string }[]).map(
+            (image) => image.url
+          )
+        )
+
+        return (data.previousImageUrls as string[]).filter(
+          (url) => !remainingUrls.has(url)
+        )
+      }
+    )
 
     const { variantsToDismissInventory, variantsToCreateInventory } = transform(
       { input, updatedProducts },
@@ -559,7 +622,7 @@ export const updateProductsWorkflow = createWorkflow(
       }
     )
 
-    parallelize(
+    const completedSteps = parallelize(
       createRemoteLinkStep(salesChannelLinks).config({
         name: "create-sales-channel-links-step",
       }),
@@ -571,6 +634,14 @@ export const updateProductsWorkflow = createWorkflow(
         data: productIdEvents,
       })
     )
+
+    // Deleting a file can't be compensated, so it has to run after every
+    // other step that could still roll the update back.
+    const imageUrlsToDelete = transform(
+      { orphanedImageUrls, completedSteps },
+      (data) => data.orphanedImageUrls
+    )
+    deleteProductImageFilesStep(imageUrlsToDelete)
 
     const productsUpdated = createHook("productsUpdated", {
       products: updatedProducts,

@@ -87,6 +87,14 @@ interface S3FileServiceConfig {
 
 const DEFAULT_UPLOAD_EXPIRATION_DURATION_SECONDS = 60 * 60
 
+function parseUrl(value: string): URL | null {
+  try {
+    return new URL(value)
+  } catch {
+    return null
+  }
+}
+
 export class S3FileService extends AbstractFileProviderService {
   static identifier = "s3"
   protected config_: S3FileServiceConfig
@@ -322,6 +330,41 @@ export class S3FileService extends AbstractFileProviderService {
       // TODO: Rethrow depending on the error (eg. a file not found error is fine, but a failed request should be rethrown)
       this.logger_.error(e)
     }
+  }
+
+  /**
+   * Deletes a file using the URL returned by `upload`. URLs that don't point
+   * to a file of this provider are ignored.
+   */
+  async deleteByUrl(url: string): Promise<void> {
+    const baseUrl = parseUrl(this.config_.fileUrl)
+    const fileUrl = parseUrl(url)
+
+    if (!baseUrl || !fileUrl) {
+      return
+    }
+
+    if (fileUrl.origin !== baseUrl.origin) {
+      return
+    }
+
+    const basePath = baseUrl.pathname.replace(/\/+$/, "")
+    if (!fileUrl.pathname.startsWith(`${basePath}/`)) {
+      return
+    }
+
+    const fileKey = fileUrl.pathname
+      .slice(basePath.length)
+      .replace(/^\/+/, "")
+      .split("/")
+      .map((segment) => decodeURIComponent(segment))
+      .join("/")
+
+    if (!fileKey) {
+      return
+    }
+
+    await this.delete({ fileKey })
   }
 
   async getPresignedDownloadUrl(

@@ -56,6 +56,7 @@ const buffer = await fileModule.getAsBuffer(id)
 - `getUploadFileUrls({ filename, mimeType?, access? })`: presigned upload URLs (provider must implement `getPresignedUploadUrl`)
 - Streams and buffers: `getDownloadStream(id)`, `getAsBuffer(id)`, `getUploadStream({ filename, mimeType, ... })` -> `{ writeStream, promise, url, fileKey }`
 - `getProvider()`: the internal `FileProviderService`
+- `getProvider().deleteByUrl(url)`: deletes a file by the URL returned from upload when the provider supports it (used when product images are removed)
 
 - No data models, no emitted events. The joiner config declares a `File` entity, but nothing links to it in `link-modules`.
 - Custom providers extend `AbstractFileProviderService` from `@medusajs/framework/utils`.
