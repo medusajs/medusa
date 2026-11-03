@@ -113,7 +113,7 @@ export const OrderEditCreateForm = ({
         <RouteFocusModal.Header />
 
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
-          <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
+          <div className="mt-16 w-[720px] max-w-full px-4 md:p-0">
             <Heading level="h1">{t("orders.edits.create")}</Heading>
 
             <OrderEditItemsSection preview={preview} order={order} />
@@ -163,11 +163,11 @@ export const OrderEditCreateForm = ({
                     <div className="mt-8 flex">
                       <div className="block flex-1">
                         <Form.Label>{t("fields.note")}</Form.Label>
-                        <Form.Hint className="!mt-1">
+                        <Form.Hint className="mt-1!">
                           {t("orders.edits.noteHint")}
                         </Form.Hint>
                       </div>
-                      <div className="w-full flex-1 flex-grow">
+                      <div className="w-full flex-1 grow">
                         <Form.Control>
                           <Input {...field} placeholder={t("fields.note")} />
                         </Form.Control>
@@ -200,7 +200,7 @@ export const OrderEditCreateForm = ({
                           <Form.Label>
                             {t("orders.edits.sendNotification")}
                           </Form.Label>
-                          <Form.Hint className="!mt-1">
+                          <Form.Hint className="mt-1!">
                             {t("orders.edits.sendNotificationHint")}
                           </Form.Hint>
                         </div>

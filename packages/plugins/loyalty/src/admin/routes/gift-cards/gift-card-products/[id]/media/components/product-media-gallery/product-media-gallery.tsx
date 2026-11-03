@@ -270,7 +270,7 @@ const Preview = ({
               type="button"
               onClick={() => goTo(originalIndex)}
               className={clx(
-                "transition-fg size-7 overflow-hidden rounded-[4px] outline-none",
+                "transition-fg size-7 overflow-hidden rounded-[4px] outline-hidden",
                 {
                   "shadow-borders-focus": isCurrentImage,
                 }

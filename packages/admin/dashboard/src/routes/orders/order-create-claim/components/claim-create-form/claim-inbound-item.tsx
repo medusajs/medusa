@@ -66,7 +66,7 @@ function ClaimInboundItem({
         </div>
 
         <div className="flex flex-1 justify-between">
-          <div className="flex flex-grow items-center gap-2">
+          <div className="flex grow items-center gap-2">
             <Form.Field
               control={form.control}
               name={`inbound_items.${index}.quantity`}
@@ -102,7 +102,7 @@ function ClaimInboundItem({
             </Text>
           </div>
 
-          <div className="txt-small mr-2 flex flex-shrink-0 text-ui-fg-subtle">
+          <div className="txt-small mr-2 flex shrink-0 text-ui-fg-subtle">
             <MoneyAmountCell
               currencyCode={currencyCode}
               amount={previewItem.return_requested_total}
@@ -142,13 +142,13 @@ function ClaimInboundItem({
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.returns.reason")}</Form.Label>
-              <Form.Hint className="!mt-1">
+              <Form.Hint className="mt-1!">
                 {t("orders.returns.reasonHint")}
               </Form.Hint>
             </div>
 
             <div className="flex items-center gap-1">
-              <div className="flex-grow">
+              <div className="grow">
                 <Form.Field
                   control={form.control}
                   name={`inbound_items.${index}.reason_id`}
@@ -178,7 +178,7 @@ function ClaimInboundItem({
               </div>
               <IconButton
                 type="button"
-                className="flex-shrink"
+                className="shrink"
                 variant="transparent"
                 onClick={() => {
                   form.setValue(`inbound_items.${index}.reason_id`, null)
@@ -197,13 +197,13 @@ function ClaimInboundItem({
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.returns.note")}</Form.Label>
-              <Form.Hint className="!mt-1">
+              <Form.Hint className="mt-1!">
                 {t("orders.returns.noteHint")}
               </Form.Hint>
             </div>
 
             <div className="flex items-center gap-1">
-              <div className="flex-grow">
+              <div className="grow">
                 <Form.Field
                   control={form.control}
                   name={`inbound_items.${index}.note`}
@@ -229,7 +229,7 @@ function ClaimInboundItem({
 
               <IconButton
                 type="button"
-                className="flex-shrink"
+                className="shrink"
                 variant="transparent"
                 onClick={() => {
                   form.setValue(`inbound_items.${index}.note`, null)

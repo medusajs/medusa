@@ -320,7 +320,7 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
         maxSize: 72,
         cell: ({ row }) => {
           return (
-            <div className="flex items-center pl-[1px]">
+            <div className="flex items-center pl-px">
               <Thumbnail src={row.original.thumbnail} />
             </div>
           )

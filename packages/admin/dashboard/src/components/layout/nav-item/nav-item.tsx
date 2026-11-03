@@ -49,7 +49,7 @@ export type INavItem = {
 }
 
 const BASE_NAV_LINK_CLASSES =
-  "text-ui-fg-subtle transition-fg hover:bg-ui-bg-subtle-hover flex items-center gap-x-2 rounded-md py-0.5 pl-0.5 pr-2 outline-none [&>svg]:text-ui-fg-subtle focus-visible:shadow-borders-focus"
+  "text-ui-fg-subtle transition-fg hover:bg-ui-bg-subtle-hover flex items-center gap-x-2 rounded-md py-0.5 pl-0.5 pr-2 outline-hidden [&>svg]:text-ui-fg-subtle focus-visible:shadow-borders-focus"
 const ACTIVE_NAV_LINK_CLASSES =
   "bg-ui-bg-base shadow-elevation-card-rest text-ui-fg-base hover:bg-ui-bg-base"
 const NESTED_NAV_LINK_CLASSES = "pl-[34px] pr-2 py-1 w-full text-ui-fg-muted"
@@ -199,7 +199,7 @@ const SortableSubItem = ({
     >
       <button
         type="button"
-        className="cursor-grab touch-none rounded p-0.5 text-ui-fg-muted focus:outline-none [&>svg]:h-3.5 [&>svg]:w-3.5"
+        className="cursor-grab touch-none rounded-sm p-0.5 text-ui-fg-muted focus:outline-hidden [&>svg]:h-3.5 [&>svg]:w-3.5"
         {...attributes}
         {...listeners}
         aria-label={t("layout.dragToReorder")}
@@ -397,7 +397,7 @@ export const NavItem = ({
         <RadixCollapsible.Root open={editMode || open} onOpenChange={setOpen}>
           <RadixCollapsible.Trigger
             className={clx(
-              "flex w-full items-center gap-x-2 rounded-md py-0.5 pl-0.5 pr-2 text-ui-fg-subtle outline-none transition-fg hover:bg-ui-bg-subtle-hover hover:text-ui-fg-base lg:hidden",
+              "flex w-full items-center gap-x-2 rounded-md py-0.5 pl-0.5 pr-2 text-ui-fg-subtle outline-hidden transition-fg hover:bg-ui-bg-subtle-hover hover:text-ui-fg-base lg:hidden",
               { "pl-2": isSetting }
             )}
           >
@@ -456,7 +456,7 @@ const Icon = ({ icon, type }: { icon?: ReactNode; type: ItemType }) => {
 
   return type === "extension" ? (
     <div className="flex h-5 w-5 items-center justify-center rounded-[4px] bg-ui-bg-base shadow-borders-base">
-      <div className="h-[15px] w-[15px] overflow-hidden rounded-sm">{icon}</div>
+      <div className="h-[15px] w-[15px] overflow-hidden rounded-xs">{icon}</div>
     </div>
   ) : (
     icon

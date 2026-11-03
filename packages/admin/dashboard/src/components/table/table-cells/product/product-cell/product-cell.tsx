@@ -11,7 +11,7 @@ type ProductCellProps = {
 export const ProductCell = ({ product }: ProductCellProps) => {
   return (
     <div className="flex h-full w-full max-w-[250px] items-center gap-x-3 overflow-hidden">
-      <div className="w-fit flex-shrink-0">
+      <div className="w-fit shrink-0">
         <Thumbnail src={product.thumbnail} />
       </div>
       <TruncatedText text={product.title} />

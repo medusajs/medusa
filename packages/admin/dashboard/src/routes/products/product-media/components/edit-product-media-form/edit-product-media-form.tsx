@@ -386,7 +386,7 @@ const MediaGridItem = ({
   return (
     <div
       className={clx(
-        "group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
+        "group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-hidden hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
       )}
       style={style}
       ref={setNodeRef}
@@ -399,7 +399,7 @@ const MediaGridItem = ({
         </div>
       )}
       <div
-        className={clx("absolute inset-0 cursor-grab touch-none outline-none", {
+        className={clx("absolute inset-0 cursor-grab touch-none outline-hidden", {
           "cursor-grabbing": isDragging,
         })}
         ref={setActivatorNodeRef}
@@ -438,7 +438,7 @@ export const MediaGridItemOverlay = ({
   checked: boolean
 }) => {
   return (
-    <div className="group relative aspect-square h-auto max-w-full cursor-grabbing overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus">
+    <div className="group relative aspect-square h-auto max-w-full cursor-grabbing overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-hidden hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus">
       {media.isThumbnail && (
         <div className="absolute left-2 top-2">
           <ThumbnailBadge />

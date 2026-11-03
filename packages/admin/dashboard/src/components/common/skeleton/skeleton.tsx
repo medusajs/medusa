@@ -94,7 +94,7 @@ export const TextSkeleton = ({
         "h-6": size === "small",
         "h-7": size === "base",
         "h-8": size === "xlarge",
-        "!h-5": leading === "compact",
+        "h-5!": leading === "compact",
       })}
       style={{
         width: `${charWidth * characters}px`,
@@ -299,7 +299,7 @@ export const TwoColumnPageSkeleton = ({
             </div>
           )}
         </div>
-        <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[440px]">
+        <div className="flex w-full max-w-full flex-col gap-y-3 xl:mt-0 xl:max-w-[440px]">
           {Array.from({ length: sidebarSections }, (_, i) => i).map(
             (section) => {
               return (

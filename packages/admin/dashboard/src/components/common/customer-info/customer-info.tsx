@@ -19,7 +19,7 @@ const ID = ({ data }: { data: HttpTypes.AdminOrder }) => {
       </Text>
       <Link
         to={`/customers/${id}`}
-        className="rounded-[4px] outline-none transition-shadow focus:shadow-borders-focus"
+        className="rounded-[4px] outline-hidden transition-shadow focus:shadow-borders-focus"
       >
         <div className="flex items-center gap-x-2 overflow-hidden">
           <Avatar size="2xsmall" fallback={fallback} />
@@ -125,7 +125,7 @@ const AddressPrint = ({
           <Text size="small" leading="compact">
             {getFormattedAddress({ address }).map((line, i) => {
               return (
-                <span key={i} className="break-words">
+                <span key={i} className="wrap-break-word">
                   {line}
                   <br />
                 </span>

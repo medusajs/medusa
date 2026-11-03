@@ -241,7 +241,7 @@ const Header = () => {
         to={from}
         replace
         className={clx(
-          "flex items-center rounded-md bg-ui-bg-subtle outline-none transition-fg",
+          "flex items-center rounded-md bg-ui-bg-subtle outline-hidden transition-fg",
           "hover:bg-ui-bg-subtle-hover",
           "focus-visible:shadow-borders-focus"
         )}

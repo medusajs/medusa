@@ -447,7 +447,7 @@ const Item = ({
                 </span>
               }
             >
-              <ReceiptPercent className="flex-shrink self-center text-ui-fg-subtle" />
+              <ReceiptPercent className="shrink self-center text-ui-fg-subtle" />
             </Tooltip>
           )}
         </div>
@@ -481,7 +481,7 @@ const Item = ({
           </div>
 
           <div className="flex items-center justify-end">
-            <Text size="small" className="pt-[1px]">
+            <Text size="small" className="pt-px">
               {getLocaleAmount(item.subtotal || 0, currencyCode)}
             </Text>
           </div>
@@ -674,7 +674,7 @@ const CostBreakdown = ({
                     </span>
                   </div>
                   <div className="relative flex-1">
-                    <div className="bottom-[calc(50% - 2px)] absolute h-[1px] w-full border-b border-dashed" />
+                    <div className="bottom-[calc(50% - 2px)] absolute h-px w-full border-b border-dashed" />
                   </div>
                   <span className="txt-small text-ui-fg-muted">
                     {getLocaleAmount(sm.subtotal, order.currency_code)}
@@ -726,7 +726,7 @@ const CostBreakdown = ({
                     </span>
                   </div>
                   <div className="relative flex-1">
-                    <div className="bottom-[calc(50% - 2px)] absolute h-[1px] w-full border-b border-dashed" />
+                    <div className="bottom-[calc(50% - 2px)] absolute h-px w-full border-b border-dashed" />
                   </div>
                   <span className="txt-small text-ui-fg-muted">
                     {getLocaleAmount(total, order.currency_code)}
@@ -840,7 +840,7 @@ const DiscountAndTotalBreakdown = ({
                   <span className="txt-small">({codes.join(", ")})</span>
                 </div>
                 <div className="relative flex-1">
-                  <div className="bottom-[calc(50% - 2px)] absolute h-[1px] w-full border-b border-dashed" />
+                  <div className="bottom-[calc(50% - 2px)] absolute h-px w-full border-b border-dashed" />
                 </div>
                 <span className="txt-small text-ui-fg-muted">
                   {getLocaleAmount(total, order.currency_code)}
@@ -911,7 +911,7 @@ const DiscountAndTotalBreakdown = ({
                       </Text>
                     </div>
                     <div className="relative flex-1">
-                      <div className="bottom-[calc(50% - 2px)] absolute h-[1px] w-full border-b border-dashed" />
+                      <div className="bottom-[calc(50% - 2px)] absolute h-px w-full border-b border-dashed" />
                     </div>
                     <span className="txt-small text-ui-fg-muted">
                       {getLocaleAmount(
@@ -986,7 +986,7 @@ const InventoryKitBreakdown = ({ item }: { item: AdminOrderLineItem }) => {
                   </span>
                 </div>
                 <div className="relative flex-1">
-                  <div className="bottom-[calc(50% - 2px)] absolute h-[1px] w-full border-b border-dashed" />
+                  <div className="bottom-[calc(50% - 2px)] absolute h-px w-full border-b border-dashed" />
                 </div>
                 <span className="txt-small text-ui-fg-muted">
                   {i.required_quantity}x

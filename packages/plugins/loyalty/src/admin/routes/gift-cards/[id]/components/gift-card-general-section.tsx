@@ -68,7 +68,7 @@ const GiftCardGeneralSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
               className="text-ui-fg-base text-sm"
             >
               <div className="flex h-full w-full max-w-[250px] items-center gap-x-3 overflow-hidden">
-                <div className="w-fit flex-shrink-0">
+                <div className="w-fit shrink-0">
                   <Thumbnail
                     size="small"
                     src={giftCard.line_item?.product?.thumbnail}

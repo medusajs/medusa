@@ -77,7 +77,7 @@ export const EditProductOptionOrganize = ({
           >
             <div className="flex flex-1 min-w-0 items-center gap-x-3 py-3">
               <SortableList.DragHandle />
-              <Text size="small" className="min-w-0 break-words">
+              <Text size="small" className="min-w-0 wrap-break-word">
                 {item.value}
               </Text>
             </div>

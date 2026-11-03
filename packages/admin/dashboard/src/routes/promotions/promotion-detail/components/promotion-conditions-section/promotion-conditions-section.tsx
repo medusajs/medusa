@@ -30,7 +30,7 @@ function RuleBlock({ rule }: RuleProps) {
 
         <BadgeListSummary
           inline
-          className="!txt-compact-small-plus"
+          className="txt-compact-small-plus!"
           list={
             (rule.field_type === "number"
               ? [rule.values]

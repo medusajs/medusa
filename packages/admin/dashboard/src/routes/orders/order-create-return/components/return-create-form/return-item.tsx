@@ -69,7 +69,7 @@ function ReturnItem({
         </div>
 
         <div className="flex flex-1 justify-between">
-          <div className="flex flex-grow items-center gap-2">
+          <div className="flex grow items-center gap-2">
             <Form.Field
               control={form.control}
               name={`items.${index}.quantity`}
@@ -106,7 +106,7 @@ function ReturnItem({
             </Text>
           </div>
 
-          <div className="txt-small mr-2 flex flex-shrink-0 text-ui-fg-subtle">
+          <div className="txt-small mr-2 flex shrink-0 text-ui-fg-subtle">
             <MoneyAmountCell
               currencyCode={currencyCode}
               amount={previewItem.return_requested_total}
@@ -145,13 +145,13 @@ function ReturnItem({
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.returns.reason")}</Form.Label>
-              <Form.Hint className="!mt-1">
+              <Form.Hint className="mt-1!">
                 {t("orders.returns.reasonHint")}
               </Form.Hint>
             </div>
 
             <div className="flex items-center gap-1">
-              <div className="flex-grow">
+              <div className="grow">
                 <Form.Field
                   control={form.control}
                   name={`items.${index}.reason_id`}
@@ -181,7 +181,7 @@ function ReturnItem({
               </div>
               <IconButton
                 type="button"
-                className="flex-shrink"
+                className="shrink"
                 variant="transparent"
                 onClick={() => {
                   onUpdate({ reason_id: null })
@@ -199,13 +199,13 @@ function ReturnItem({
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.returns.note")}</Form.Label>
-              <Form.Hint className="!mt-1">
+              <Form.Hint className="mt-1!">
                 {t("orders.returns.noteHint")}
               </Form.Hint>
             </div>
 
             <div className="flex items-center gap-1">
-              <div className="flex-grow">
+              <div className="grow">
                 <Form.Field
                   control={form.control}
                   name={`items.${index}.note`}
@@ -230,7 +230,7 @@ function ReturnItem({
               </div>
               <IconButton
                 type="button"
-                className="flex-shrink"
+                className="shrink"
                 variant="transparent"
                 onClick={() => {
                   form.setValue(`items.${index}.note`, {

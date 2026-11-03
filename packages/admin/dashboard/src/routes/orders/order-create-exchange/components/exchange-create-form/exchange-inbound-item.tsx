@@ -63,7 +63,7 @@ function ExchangeInboundItem({
         <div className="flex flex-1 items-center gap-x-3">
           <Thumbnail src={item.thumbnail} />
 
-          <div className="flex flex-grow flex-col">
+          <div className="flex grow flex-col">
             <div>
               <Text className="txt-small" as="span" weight="plus">
                 {item.title}{" "}
@@ -76,7 +76,7 @@ function ExchangeInboundItem({
             </Text>
           </div>
           {appliedPromoCodes.length > 0 && (
-            <div className="flex flex-shrink">
+            <div className="flex shrink">
               <Tooltip
                 content={
                   <span className="text-pretty">
@@ -93,7 +93,7 @@ function ExchangeInboundItem({
         </div>
 
         <div className="flex flex-1 justify-between">
-          <div className="flex flex-grow items-center gap-2">
+          <div className="flex grow items-center gap-2">
             <Form.Field
               control={form.control}
               name={`inbound_items.${index}.quantity`}
@@ -129,7 +129,7 @@ function ExchangeInboundItem({
             </Text>
           </div>
 
-          <div className="txt-small mr-2 flex flex-shrink-0 text-ui-fg-subtle">
+          <div className="txt-small mr-2 flex shrink-0 text-ui-fg-subtle">
             <MoneyAmountCell
               currencyCode={currencyCode}
               amount={previewItem.return_requested_total}
@@ -169,13 +169,13 @@ function ExchangeInboundItem({
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.returns.reason")}</Form.Label>
-              <Form.Hint className="!mt-1">
+              <Form.Hint className="mt-1!">
                 {t("orders.returns.reasonHint")}
               </Form.Hint>
             </div>
 
             <div className="flex items-center gap-1">
-              <div className="flex-grow">
+              <div className="grow">
                 <Form.Field
                   control={form.control}
                   name={`inbound_items.${index}.reason_id`}
@@ -205,7 +205,7 @@ function ExchangeInboundItem({
               </div>
               <IconButton
                 type="button"
-                className="flex-shrink"
+                className="shrink"
                 variant="transparent"
                 onClick={() => {
                   form.setValue(`inbound_items.${index}.reason_id`, null)
@@ -224,13 +224,13 @@ function ExchangeInboundItem({
           <div className="grid grid-cols-1 gap-2 p-3 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.returns.note")}</Form.Label>
-              <Form.Hint className="!mt-1">
+              <Form.Hint className="mt-1!">
                 {t("orders.returns.noteHint")}
               </Form.Hint>
             </div>
 
             <div className="flex items-center gap-1">
-              <div className="flex-grow">
+              <div className="grow">
                 <Form.Field
                   control={form.control}
                   name={`inbound_items.${index}.note`}
@@ -256,7 +256,7 @@ function ExchangeInboundItem({
 
               <IconButton
                 type="button"
-                className="flex-shrink"
+                className="shrink"
                 variant="transparent"
                 onClick={() => {
                   form.setValue(`inbound_items.${index}.note`, null)

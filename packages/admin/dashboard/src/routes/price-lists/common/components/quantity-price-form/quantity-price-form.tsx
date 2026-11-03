@@ -200,7 +200,7 @@ const QuantityConditionItem = ({
                   </Text>
                 </span>
                 <input
-                  className="h-full min-w-0 flex-1 appearance-none bg-transparent text-right text-sm outline-none disabled:cursor-not-allowed"
+                  className="h-full min-w-0 flex-1 appearance-none bg-transparent text-right text-sm outline-hidden disabled:cursor-not-allowed"
                   value={value}
                   onChange={(e) => {
                     const val = e.target.value.replace(/\D/g, "")
@@ -244,7 +244,7 @@ const QuantityConditionItem = ({
                   </Text>
                 </span>
                 <input
-                  className="h-full min-w-0 flex-1 appearance-none bg-transparent text-right text-sm outline-none disabled:cursor-not-allowed"
+                  className="h-full min-w-0 flex-1 appearance-none bg-transparent text-right text-sm outline-hidden disabled:cursor-not-allowed"
                   value={value}
                   onChange={(e) => {
                     const val = e.target.value.replace(/\D/g, "")

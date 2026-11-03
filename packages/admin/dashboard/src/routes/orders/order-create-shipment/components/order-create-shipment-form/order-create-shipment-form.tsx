@@ -233,7 +233,7 @@ export function OrderCreateShipmentForm({
                               </Form.Control>
                             </Form.Control>
                           </div>
-                          <Form.Hint className="!mt-1">
+                          <Form.Hint className="mt-1!">
                             {t("orders.shipment.sendNotificationHint")}
                           </Form.Hint>
                           <Form.ErrorMessage />

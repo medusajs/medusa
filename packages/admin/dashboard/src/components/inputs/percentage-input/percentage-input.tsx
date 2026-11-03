@@ -78,13 +78,13 @@ export const PercentageInput = forwardRef<
           value={value}
           {...props}
           className={clx(
-            "txt-compact-small flex w-full select-none appearance-none items-center justify-between rounded-md bg-ui-bg-field px-2 py-1.5 pl-10 text-left caret-ui-fg-base shadow-buttons-neutral outline-none transition-fg",
+            "txt-compact-small flex w-full select-none appearance-none items-center justify-between rounded-md bg-ui-bg-field px-2 py-1.5 pl-10 text-left caret-ui-fg-base shadow-buttons-neutral outline-hidden transition-fg",
             "text-ui-fg-base placeholder:text-ui-fg-muted",
             "hover:bg-ui-bg-field-hover",
-            "focus-visible:shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active",
-            "aria-[invalid=true]:border-ui-border-error aria-[invalid=true]:shadow-borders-error",
+            "focus-visible:shadow-borders-interactive-with-active data-[state=open]:shadow-borders-interactive-with-active!",
+            "aria-invalid:border-ui-border-error aria-invalid:shadow-borders-error",
             "invalid::border-ui-border-error invalid:shadow-borders-error",
-            "disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
+            "disabled:bg-ui-bg-disabled! disabled:text-ui-fg-disabled!",
             className
           )}
         />

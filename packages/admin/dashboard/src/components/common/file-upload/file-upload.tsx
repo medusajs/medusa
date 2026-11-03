@@ -122,10 +122,10 @@ export const FileUpload = ({
         className={clx(
           "group flex w-full flex-col items-center gap-y-2 rounded-lg border border-dashed border-ui-border-strong bg-ui-bg-component p-8 transition-fg",
           "hover:border-ui-border-interactive focus:border-ui-border-interactive",
-          "outline-none focus:border-solid focus:shadow-borders-focus",
+          "outline-hidden focus:border-solid focus:shadow-borders-focus",
           {
-            "!border-ui-border-error": hasError,
-            "!border-ui-border-interactive": isDragOver,
+            "border-ui-border-error!": hasError,
+            "border-ui-border-interactive!": isDragOver,
           }
         )}
       >

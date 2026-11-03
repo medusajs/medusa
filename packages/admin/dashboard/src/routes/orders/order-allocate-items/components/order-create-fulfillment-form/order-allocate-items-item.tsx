@@ -138,7 +138,7 @@ export function OrderAllocateItemsItem({
           {!hasInventoryKit && (
             <>
               <div className="flex items-center gap-3">
-                <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
+                <div className="block h-[12px] w-px bg-ui-border-strong" />
 
                 <div className="txt-small flex flex-col">
                   <span className="font-medium text-ui-fg-subtle">
@@ -165,7 +165,7 @@ export function OrderAllocateItemsItem({
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
+                <div className="block h-[12px] w-px bg-ui-border-strong" />
 
                 <div className="txt-small flex flex-col">
                   <span className="font-medium text-ui-fg-subtle">
@@ -180,7 +180,7 @@ export function OrderAllocateItemsItem({
           )}
 
           <div className="flex items-center gap-3">
-            <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
+            <div className="block h-[12px] w-px bg-ui-border-strong" />
 
             <div className="txt-small mr-2 flex flex-row items-center gap-2 text-ui-fg-subtle">
               <Form.Field
@@ -242,7 +242,7 @@ export function OrderAllocateItemsItem({
           >
             <TriangleDownMini
               style={{ transform: `rotate(${isOpen ? -90 : 0}deg)` }}
-              className="-mt-[1px] text-ui-fg-muted"
+              className="-mt-px text-ui-fg-muted"
             />
             <span className="txt-small cursor-pointer text-ui-fg-muted">
               {t("orders.allocateItems.consistsOf", {
@@ -282,7 +282,7 @@ export function OrderAllocateItemsItem({
 
               <div className="flex flex-1 flex-row justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
+                  <div className="block h-[12px] w-px bg-ui-border-strong" />
 
                   <div className="txt-small flex flex-col">
                     <span className="font-medium text-ui-fg-subtle">
@@ -301,7 +301,7 @@ export function OrderAllocateItemsItem({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
+                  <div className="block h-[12px] w-px bg-ui-border-strong" />
 
                   <div className="txt-small flex flex-col">
                     <span className="font-medium text-ui-fg-subtle">
@@ -314,7 +314,7 @@ export function OrderAllocateItemsItem({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="block h-[12px] w-[1px] bg-ui-border-strong" />
+                  <div className="block h-[12px] w-px bg-ui-border-strong" />
 
                   <div className="txt-small mr-1 flex flex-row items-center gap-2 text-ui-fg-subtle">
                     <Form.Field

@@ -562,7 +562,7 @@ export const DataGridRoot = <
             ref={containerRef}
             autoFocus
             tabIndex={0}
-            className="relative h-full select-none overflow-auto outline-none"
+            className="relative h-full select-none overflow-auto outline-hidden"
             onFocus={handleRestoreGridFocus}
             onClick={handleRestoreGridFocus}
             data-container={true}
@@ -808,7 +808,7 @@ const DataGridCell = <TData,>({
       data-row-index={rowIndex}
       data-column-index={columnIndex}
       className={clx(
-        "relative flex items-center border-b border-r p-0 outline-none"
+        "relative flex items-center border-b border-r p-0 outline-hidden"
       )}
       tabIndex={-1}
     >

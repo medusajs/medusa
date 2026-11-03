@@ -685,7 +685,7 @@ export const DataGridRoot = <
             ref={containerRef}
             autoFocus
             tabIndex={0}
-            className="relative h-full select-none overflow-auto outline-none"
+            className="relative h-full select-none overflow-auto outline-hidden"
             onFocus={handleRestoreGridFocus}
             onClick={handleRestoreGridFocus}
             data-container={true}
@@ -694,7 +694,7 @@ export const DataGridRoot = <
             <div role="grid" className="grid text-ui-fg-subtle">
               <div
                 role="rowgroup"
-                className="txt-compact-small-plus sticky top-0 z-[1] grid bg-ui-bg-subtle"
+                className="txt-compact-small-plus sticky top-0 z-1 grid bg-ui-bg-subtle"
               >
                 {grid.getHeaderGroups().map((headerGroup) => (
                   <div
@@ -749,7 +749,7 @@ export const DataGridRoot = <
                               onTouchStart={header.getResizeHandler()}
                               onClick={(e) => e.stopPropagation()}
                               className={clx(
-                                "absolute right-0 top-0 z-[2] h-full w-1 cursor-col-resize touch-none select-none hover:bg-ui-fg-interactive",
+                                "absolute right-0 top-0 z-2 h-full w-1 cursor-col-resize touch-none select-none hover:bg-ui-fg-interactive",
                                 {
                                   "bg-ui-fg-interactive":
                                     header.column.getIsResizing(),
@@ -987,7 +987,7 @@ const DataGridCell = <TData,>({
       data-row-index={rowIndex}
       data-column-index={columnIndex}
       className={clx(
-        "relative flex items-stretch border-b border-r p-0 outline-none"
+        "relative flex items-stretch border-b border-r p-0 outline-hidden"
       )}
       tabIndex={-1}
     >
@@ -1001,7 +1001,7 @@ const DataGridCell = <TData,>({
           <div
             onMouseDown={onDragToFillStart}
             className={clx(
-              "absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize bg-ui-fg-interactive",
+              "absolute bottom-0 right-0 z-3 size-1.5 cursor-ns-resize bg-ui-fg-interactive",
               {
                 "cursor-nwse-resize": multiColumnSelection,
               }
@@ -1157,10 +1157,10 @@ const DataGridRowSkeleton = ({
             key={`skeleton-cell-${vc.index}`}
             role="gridcell"
             style={{ width: vc.size }}
-            className="relative flex items-center border-b border-r p-0 outline-none"
+            className="relative flex items-center border-b border-r p-0 outline-hidden"
           >
             <div className="flex h-full w-full items-center px-4">
-              <div className="h-4 w-3/4 animate-pulse rounded bg-ui-bg-component" />
+              <div className="h-4 w-3/4 animate-pulse rounded-sm bg-ui-bg-component" />
             </div>
           </div>
         )

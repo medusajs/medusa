@@ -60,7 +60,7 @@ export const InventoryItemVariantsSection = ({
             <Link
               to={link}
               key={variant.id}
-              className="rounded-md outline-none focus-within:shadow-borders-interactive-with-focus [&:hover>div]:bg-ui-bg-component-hover"
+              className="rounded-md outline-hidden focus-within:shadow-borders-interactive-with-focus [&:hover>div]:bg-ui-bg-component-hover"
             >
               {Inner}
             </Link>

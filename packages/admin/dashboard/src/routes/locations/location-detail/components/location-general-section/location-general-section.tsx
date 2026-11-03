@@ -366,7 +366,7 @@ function ServiceZone({
           <Map />
         </IconAvatar>
 
-        <div className="grow-1 flex flex-1 flex-col">
+        <div className="grow flex flex-1 flex-col">
           <Text size="small" leading="compact" weight="plus">
             {zone.name}
           </Text>

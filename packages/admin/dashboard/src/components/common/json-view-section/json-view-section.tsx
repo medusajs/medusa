@@ -48,7 +48,7 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
         </Drawer.Trigger>
         <Drawer.Content
           dir="ltr"
-          className="text-ui-code-fg-subtle overflow-hidden border border-none bg-ui-contrast-bg-base !shadow-elevation-commandbar max-md:inset-x-2 max-md:max-w-[calc(100%-16px)]"
+          className="text-ui-code-fg-subtle overflow-hidden border border-none bg-ui-contrast-bg-base shadow-elevation-commandbar! max-md:inset-x-2 max-md:max-w-[calc(100%-16px)]"
         >
           <div className="bg-ui-code-bg-base flex items-center justify-between px-6 py-4">
             <div className="flex items-center gap-x-4">
@@ -139,7 +139,7 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
                     }}
                   />
                   <Primitive.Arrow>
-                    <TriangleDownMini className="-ml-[0.5px] text-ui-contrast-fg-secondary" />
+                    <TriangleDownMini className="ml-[-0.5px] text-ui-contrast-fg-secondary" />
                   </Primitive.Arrow>
                   <Primitive.Colon>
                     <span className="mr-1">:</span>

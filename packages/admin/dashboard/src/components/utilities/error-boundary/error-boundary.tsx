@@ -126,7 +126,7 @@ export const ErrorBoundary = () => {
               <div>
                 <Text
                   size="xsmall"
-                  className="break-words font-mono text-ui-fg-subtle"
+                  className="wrap-break-word font-mono text-ui-fg-subtle"
                 >
                   {errorMessage}
                 </Text>
@@ -140,7 +140,7 @@ export const ErrorBoundary = () => {
                   >
                     Stack Trace
                   </Text>
-                  <pre className="overflow-auto whitespace-pre-wrap break-words text-xs text-ui-fg-subtle">
+                  <pre className="overflow-auto whitespace-pre-wrap wrap-break-word text-xs text-ui-fg-subtle">
                     {errorStack}
                   </pre>
                 </div>

@@ -734,7 +734,7 @@ const OrderActivityCollapsible = ({
       {!open && (
         <div className="grid grid-cols-[20px_1fr] items-start gap-2">
           <div className="flex size-full flex-col items-center">
-            <div className="w-px flex-1 border-ui-border-strong bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-right bg-repeat-y" />
+            <div className="w-px flex-1 border-ui-border-strong bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-size-[1px_3px] bg-right bg-repeat-y" />
           </div>
           <div className="pb-4">
             <RadixCollapsible.Trigger className="text-left">

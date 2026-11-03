@@ -428,13 +428,13 @@ export const ReturnCreateForm = ({
       <KeyboundForm onSubmit={handleSubmit} className="flex h-full flex-col">
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
-          <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
+          <div className="mt-16 w-[720px] max-w-full px-4 md:p-0">
             <Heading level="h1">{t("orders.returns.create")}</Heading>
             <div className="mt-8 flex items-center justify-between">
               <Heading level="h2">{t("orders.returns.inbound")}</Heading>
               <StackedFocusModal id="items">
                 <StackedFocusModal.Trigger asChild>
-                  <a className="txt-compact-small-plus cursor-pointer text-blue-500 outline-none transition-fg hover:text-blue-400 focus-visible:shadow-borders-focus">
+                  <a className="txt-compact-small-plus cursor-pointer text-blue-500 outline-hidden transition-fg hover:text-blue-400 focus-visible:shadow-borders-focus">
                     {t("actions.addItems")}
                   </a>
                 </StackedFocusModal.Trigger>
@@ -543,7 +543,7 @@ export const ReturnCreateForm = ({
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <div>
                     <Form.Label>{t("orders.returns.location")}</Form.Label>
-                    <Form.Hint className="!mt-1">
+                    <Form.Hint className="mt-1!">
                       {t("orders.returns.locationHint")}
                     </Form.Hint>
                   </div>
@@ -590,7 +590,7 @@ export const ReturnCreateForm = ({
                       </Text>
                     </Form.Label>
 
-                    <Form.Hint className="!mt-1">
+                    <Form.Hint className="mt-1!">
                       {t("orders.returns.inboundShippingHint")}
                     </Form.Hint>
                   </div>
@@ -758,7 +758,7 @@ export const ReturnCreateForm = ({
                           <Form.Label>
                             {t("orders.returns.sendNotification")}
                           </Form.Label>
-                          <Form.Hint className="!mt-1">
+                          <Form.Hint className="mt-1!">
                             {t("orders.returns.sendNotificationHint")}
                           </Form.Hint>
                         </div>
