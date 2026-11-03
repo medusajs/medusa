@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom"
 
 import { DataTable } from "../../../../../components/data-table"
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
-import { ListSummary } from "../../../../../components/common/list-summary"
 import {
   useDeleteRbacRoleLazy,
   useRbacRoles,
@@ -52,8 +51,7 @@ export const RoleListTable = () => {
       offset: offset ? parseInt(offset) : undefined,
       limit: PAGE_SIZE,
       created_at: created_at ? JSON.parse(created_at) : undefined,
-      fields:
-        "id,name,description,created_at,users.id,users.first_name,users.last_name,users.email",
+      fields: "id,name,description,created_at",
     },
     {
       placeholderData: keepPreviousData,
@@ -161,33 +159,6 @@ const useColumns = ({
         header: t("fields.description"),
         cell: ({ row }) => {
           return row.original.description || "-"
-        },
-      }),
-      columnHelper.display({
-        id: "users",
-        header: t("users.domain"),
-        cell: ({ row }) => {
-          const users =
-            row.original.users?.filter(
-              (user): user is HttpTypes.AdminUser => !!user
-            ) ?? []
-
-          if (!users.length) {
-            return "-"
-          }
-
-          const labels = users.map((user) => {
-            const fullName = `${user.first_name || ""} ${
-              user.last_name || ""
-            }`.trim()
-            return fullName || user.email || user.id
-          })
-
-          return (
-            <div className="flex items-center">
-              <ListSummary inline n={1} list={labels} />
-            </div>
-          )
         },
       }),
       columnHelper.accessor("created_at", {

@@ -2,6 +2,8 @@ export enum Entities {
   user = "user",
   rbac_role = "rbac_role",
   rbac_role_assignment = "rbac_role_assignment",
+  rbac_role_policy = "rbac_role_policy",
+  rbac_policy = "rbac_policy",
 }
 
 export const defaultAdminRbacRoleFields = [
@@ -17,6 +19,7 @@ export const defaultAdminRbacRoleFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminRbacRoleFields,
   isList: false,
+  entity: Entities.rbac_role,
 }
 
 export const listTransformQueryConfig = {
@@ -39,6 +42,7 @@ export const defaultAdminRolePoliciesFields = [
 export const retrieveRolePoliciesTransformQueryConfig = {
   defaults: defaultAdminRolePoliciesFields,
   isList: false,
+  entity: Entities.rbac_role_policy,
 }
 
 export const listRolePoliciesTransformQueryConfig = {

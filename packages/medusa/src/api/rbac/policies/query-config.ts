@@ -1,3 +1,5 @@
+import { Entities } from "../roles/query-config"
+
 export const defaultAdminRbacPolicyFields = [
   "id",
   "key",
@@ -14,6 +16,7 @@ export const defaultAdminRbacPolicyFields = [
 export const retrieveTransformQueryConfig = {
   defaults: defaultAdminRbacPolicyFields,
   isList: false,
+  entity: Entities.rbac_policy,
 }
 
 export const listTransformQueryConfig = {
@@ -29,11 +32,11 @@ export const defaultAdminRbacPolicyRolesFields = [
   "role.description",
   "role.created_at",
   "role.updated_at",
-  "role.users.id",
 ]
 
 export const listRbacPolicyRolesTransformQueryConfig = {
   defaults: defaultAdminRbacPolicyRolesFields,
   defaultLimit: 10,
   isList: true,
+  entity: Entities.rbac_role_policy,
 }

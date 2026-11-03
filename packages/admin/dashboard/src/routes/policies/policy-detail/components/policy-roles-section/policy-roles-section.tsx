@@ -14,10 +14,6 @@ type PolicyRolesSectionProps = {
   policy: HttpTypes.AdminRbacPolicy
 }
 
-type RoleWithUsers = HttpTypes.AdminRbacRole & {
-  users?: { id: string }[] | null
-}
-
 const PAGE_SIZE = 10
 const PREFIX = "pr"
 
@@ -48,7 +44,7 @@ export const PolicyRolesSection = ({ policy }: PolicyRolesSectionProps) => {
     <PermissionGuard permission="rbac_role:read">
       <Container className="divide-y p-0">
         <DataTable
-          data={(roles as RoleWithUsers[]) ?? []}
+          data={roles ?? []}
           columns={columns}
           getRowId={(row) => row.id}
           rowHref={(row) => `/settings/roles/${row.id}`}
@@ -75,7 +71,7 @@ export const PolicyRolesSection = ({ policy }: PolicyRolesSectionProps) => {
   )
 }
 
-const columnHelper = createDataTableColumnHelper<RoleWithUsers>()
+const columnHelper = createDataTableColumnHelper<HttpTypes.AdminRbacRole>()
 
 const useColumns = () => {
   const { t } = useTranslation()
@@ -88,14 +84,6 @@ const useColumns = () => {
       columnHelper.accessor("description", {
         header: t("fields.description"),
         cell: ({ row }) => row.original.description || "-",
-      }),
-      columnHelper.display({
-        id: "user_count",
-        header: t("policies.fields.users"),
-        cell: ({ row }) => {
-          const users = row.original.users ?? []
-          return <span>{users.length}</span>
-        },
       }),
     ]
   }, [t])
