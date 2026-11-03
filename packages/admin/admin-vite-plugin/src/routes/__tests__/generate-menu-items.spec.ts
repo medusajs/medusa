@@ -71,7 +71,8 @@ const expectedMenuItems = `
             path: "/one",
             nested: undefined,
             rank: undefined,
-            translationNs: undefined
+            translationNs: undefined,
+            permissions: undefined
           },
           {
             label: RouteConfig1.label,
@@ -79,7 +80,8 @@ const expectedMenuItems = `
             path: "/two",
             nested: undefined,
             rank: undefined,
-            translationNs: undefined
+            translationNs: undefined,
+            permissions: undefined
           },
           {
             label: RouteConfig2.label,
@@ -87,7 +89,8 @@ const expectedMenuItems = `
             path: "/three",
             nested: "/products",
             rank: undefined,
-            translationNs: undefined
+            translationNs: undefined,
+            permissions: undefined
           }
         ]
       `
@@ -202,7 +205,8 @@ describe("generateMenuItems", () => {
           path: "/analytics",
           nested: undefined,
           rank: 1,
-          translationNs: undefined
+          translationNs: undefined,
+          permissions: undefined
         },
         {
           label: RouteConfig1.label,
@@ -210,7 +214,8 @@ describe("generateMenuItems", () => {
           path: "/reports",
           nested: undefined,
           rank: 2,
-          translationNs: undefined
+          translationNs: undefined,
+          permissions: undefined
         }
       ]
     `
@@ -256,7 +261,8 @@ describe("generateMenuItems", () => {
           path: "/custom",
           nested: undefined,
           rank: undefined,
-          translationNs: RouteConfig0.translationNs
+          translationNs: RouteConfig0.translationNs,
+          permissions: undefined
         }
       ]
     `
@@ -378,7 +384,8 @@ describe("generateMenuItems", () => {
           path: "/first",
           nested: undefined,
           rank: 1,
-          translationNs: undefined
+          translationNs: undefined,
+          permissions: undefined
         },
         {
           label: RouteConfig1.label,
@@ -386,7 +393,8 @@ describe("generateMenuItems", () => {
           path: "/second",
           nested: undefined,
           rank: undefined,
-          translationNs: undefined
+          translationNs: undefined,
+          permissions: undefined
         },
         {
           label: RouteConfig2.label,
@@ -394,7 +402,8 @@ describe("generateMenuItems", () => {
           path: "/third",
           nested: undefined,
           rank: 0,
-          translationNs: undefined
+          translationNs: undefined,
+          permissions: undefined
         }
       ]
     `
