@@ -39,7 +39,7 @@
     "@medusajs/framework": "link:../../../../packages/core/framework",
     "@medusajs/loyalty-plugin": "link:../../../../packages/plugins/loyalty",
     "eslint": "^8.53.0",
-    "glob": "13.0.6",
+    "glob": "14.0.2",
     "utils": "*",
     "yaml": "^2.3.3"
   }
