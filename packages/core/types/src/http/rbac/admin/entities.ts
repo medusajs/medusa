@@ -1,4 +1,3 @@
-import { AdminUser } from "../.."
 import { RbacScope } from "../../../rbac"
 
 export interface AdminRbacRole {
@@ -28,11 +27,6 @@ export interface AdminRbacRole {
    */
   scope?: RbacScope
 
-  // TODO: [rbac] this is only relevant for user actor type roles
-  /**
-   * The users associated with the role.
-   */
-  users?: AdminUser[]
   /**
    * The date the role was created.
    */
