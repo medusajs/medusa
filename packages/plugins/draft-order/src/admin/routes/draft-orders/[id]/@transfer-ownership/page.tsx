@@ -99,7 +99,7 @@ const TransferOwnershipForm = ({ order }: TransferOwnershipFormProps) => {
             <Illustration />
           </div>
           {currentCustomer && (
-            <div className="flex flex-col space-y-3">
+            <div className="flex flex-col gap-y-3">
               <div className="flex flex-col">
                 <Label size="small" weight="plus" htmlFor="current-customer">
                   Current owner
@@ -180,7 +180,7 @@ const CustomerField = ({ control, currentCustomerId }: CustomerFieldProps) => {
       name="customer_id"
       control={control}
       render={({ field }) => (
-        <Form.Item className="space-y-3">
+        <Form.Item className="gap-y-3">
           <div className="flex flex-col">
             <Form.Label>New customer</Form.Label>
             <Form.Hint>The customer to transfer this draft order to.</Form.Hint>

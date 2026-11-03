@@ -41,6 +41,6 @@ yarn dev                   # medusa plugin:develop (watch + publish to local reg
 
 - Don't add `@medusajs/medusa` as a dependency: it already depends on this package. `@medusajs/cli` detects plugin projects through the `@medusajs/cli` devDependency instead.
 - `tsconfig.json` excludes `src/admin`; admin code is type-checked with `src/admin/tsconfig.json` (bundler resolution, `noEmit`, strict) and bundled by `plugin:build`.
-- Tailwind scans only `./src/admin/**/*.{ts,tsx}` with the `@medusajs/ui-preset` preset.
+- There is no Tailwind config: the app's admin build compiles the plugin's classes with Tailwind 4, so use v4 class names.
 - The `exports` map lists `./workflows`, `./modules/*` and `./providers/*` from the plugin template, but none exist in `src/`. Only `./admin` resolves to real code.
 - A UI change that needs new backend behaviour usually means changing the core route, workflow, JS SDK method and `HttpTypes` together, and adding changesets for those packages too.
