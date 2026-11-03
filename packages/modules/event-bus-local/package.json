@@ -35,8 +35,8 @@
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
-    "test": "../../../node_modules/.bin/jest --passWithNoTests --testPathPattern=src",
-    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\""
+    "test": "../../../node_modules/.bin/jest --passWithNoTests --testPathPatterns=src",
+    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage --testPathPatterns=\"integration-tests/__tests__/.*\\.spec\\.ts\""
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.2"
