@@ -5,7 +5,7 @@ import {
   MedusaError,
 } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import { assertActorCanGrant } from "../utils/assert-actor-can-grant"
+import { canActorGrantPolicies } from "../utils/can-actor-grant-policies"
 
 /**
  * @ignore
@@ -77,14 +77,19 @@ export const validateActorPermissionsStep = createStep(
       actionsToCheck = actions
     }
 
-    await assertActorCanGrant({
+    const allowed = await canActorGrantPolicies({
       container,
       actor_id,
       actor,
       actions: actionsToCheck,
-      errorMessage:
-        "You do not have access to some of the policies you are trying to assign.",
       scope,
     })
+
+    if (!allowed) {
+      throw new MedusaError(
+        MedusaError.Types.FORBIDDEN,
+        "You do not have access to some of the policies you are trying to assign."
+      )
+    }
   }
 )
