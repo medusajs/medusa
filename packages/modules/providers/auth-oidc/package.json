@@ -33,6 +33,7 @@
     "watch": "yarn run -T tsc --watch"
   },
   "dependencies": {
+    "oauth4webapi": "^3.8.8",
     "openid-client": "^6.8.8"
   },
   "devDependencies": {

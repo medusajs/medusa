@@ -3460,6 +3460,7 @@ __metadata:
   resolution: "@medusajs/auth-oidc@workspace:packages/modules/providers/auth-oidc"
   dependencies:
     "@medusajs/framework": 2.22.2
+    oauth4webapi: ^3.8.8
     openid-client: ^6.8.8
   peerDependencies:
     "@medusajs/framework": 2.22.2

@@ -214,6 +214,52 @@ describe("OidcEngine", () => {
         /Could not validate the identity provider's response: .*"id_token"/
       )
     })
+
+    it("sends the callback URL's query string in the token request's redirect_uri", async () => {
+      const engine = new OidcEngine(baseOptions())
+      const callbackUrl = `${CALLBACK_URL}?auth_provider=oidc-google`
+
+      const fetchSpy = mockFetch().mockResolvedValue(
+        jsonResponse({ access_token: "access-token", token_type: "Bearer" })
+      )
+
+      await engine
+        .exchangeCode({
+          params: { code: "code-123" },
+          nonce: "nonce",
+          codeVerifier: "verifier",
+          callbackUrl,
+        })
+        .catch(() => undefined)
+
+      const [, init] = fetchSpy.mock.calls[0]
+      const body = new URLSearchParams(String(init?.body))
+      expect(body.get("redirect_uri")).toBe(callbackUrl)
+    })
+
+    it("includes the OAuth error and description when the token endpoint rejects the request", async () => {
+      const engine = new OidcEngine(baseOptions())
+
+      mockFetch().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            error: "redirect_uri_mismatch",
+            error_description: "Bad Request",
+          }),
+          { status: 400, headers: { "content-type": "application/json" } }
+        )
+      )
+
+      const error = await engine
+        .exchangeCode({
+          params: { code: "code-123" },
+          nonce: "nonce",
+          codeVerifier: "verifier",
+        })
+        .catch((e) => e)
+
+      expect(error.message).toMatch(/\(redirect_uri_mismatch: Bad Request\)/)
+    })
   })
 
   describe("client caching", () => {

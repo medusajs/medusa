@@ -1,6 +1,6 @@
 # @medusajs/auth-oidc
 
-Generic OpenID Connect Auth Module provider (since 2.19.0). Works with any spec-compliant IdP (Okta, Entra ID, Auth0, Keycloak, Google Workspace, ...) via discovery, PKCE (S256), nonce, and full ID-token validation, built on `openid-client` v6.
+Generic OpenID Connect Auth Module provider (since 2.19.0). Works with any spec-compliant IdP (Okta, Entra ID, Auth0, Keycloak, Google Workspace, ...) via discovery, PKCE (S256), nonce, and full ID-token validation, built on `openid-client` v6 (the code exchange calls `oauth4webapi` directly).
 
 ## Using this package
 
@@ -47,6 +47,7 @@ module.exports = defineConfig({
 
 - `src/services/oidc.ts`: `OidcAuthService extends AbstractAuthModuleProvider`, `static identifier = "oidc"`. Implements `validateOptions`, `authenticate`, `validateCallback`; `register` throws `NOT_ALLOWED`. Overrides the `displayName` getter so each registration shows its own `display_name`.
 - `src/engine/engine.ts`: `OidcEngine` (discovery, `buildAuthorizationUrl`, `exchangeCode`, `mapClaims`). Not exported from the package entry point.
+- `exchangeCode` uses `oauth4webapi` instead of `openid-client`'s `authorizationCodeGrant`, which strips the query string from the token request's `redirect_uri` and breaks callback URLs that have one (e.g. the admin's `?auth_provider=...`).
 - `src/utils/assert-secure-url.ts`: `issuer` and any endpoint override must be `https`; `http` is allowed only for `localhost`/`127.0.0.1`/`::1` outside production.
 - `nonce` and `code_verifier` are stored in the auth state (`setState`) and replayed on callback.
 - Injects an optional `cache` (`ICacheService`) to share discovery documents; without it, only the per-instance memoized client is used (discovery cache TTL 1 hour).

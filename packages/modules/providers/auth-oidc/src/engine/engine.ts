@@ -1,11 +1,11 @@
 import { ICacheService } from "@medusajs/framework/types"
 import { isDefined, MedusaError } from "@medusajs/framework/utils"
-import type {
-  Configuration,
-  ServerMetadata,
-  TokenEndpointResponse,
-  TokenEndpointResponseHelpers,
-} from "openid-client" with { "resolution-mode": "import" }
+import type { TokenEndpointResponse } from "oauth4webapi" with {
+  "resolution-mode": "import",
+}
+import type { Configuration, ServerMetadata } from "openid-client" with {
+  "resolution-mode": "import",
+}
 import {
   OidcAuthorizationUrlResult,
   OidcBuildAuthorizationUrlInput,
@@ -35,17 +35,39 @@ type OpenIdClient = typeof import("openid-client", {
   with: { "resolution-mode": "import" },
 })
 
-let openIdClient: OpenIdClient | undefined
+type OAuth = typeof import("oauth4webapi", {
+  with: { "resolution-mode": "import" },
+})
 
-// openid-client is ESM-only, so loading it eagerly breaks Jest suites that only load this provider
+let openIdClient: OpenIdClient | undefined
+let oauth: OAuth | undefined
+
+// openid-client and oauth4webapi are ESM-only, so loading them eagerly breaks Jest suites that only load this provider
 function loadOpenIdClient(): OpenIdClient {
   openIdClient ??= require("openid-client") as OpenIdClient
   return openIdClient
 }
 
-// openid-client throws generic messages ("something went wrong") with the actual reason as the cause
-function getErrorReason(error: { message: string; cause?: unknown }): string {
-  return error.cause instanceof Error ? error.cause.message : error.message
+function loadOAuth(): OAuth {
+  oauth ??= require("oauth4webapi") as OAuth
+  return oauth
+}
+
+// openid-client throws generic messages ("something went wrong") with the actual reason as the cause,
+// and OAuth error responses carry their details in `error` / `error_description`, not the message
+function getErrorReason(error: {
+  message: string
+  cause?: unknown
+  error?: unknown
+  error_description?: unknown
+}): string {
+  const reason =
+    error.cause instanceof Error ? error.cause.message : error.message
+  const details = [error.error, error.error_description]
+    .filter((value) => typeof value === "string" && value)
+    .join(": ")
+
+  return details ? `${reason} (${details})` : reason
 }
 
 /**
@@ -164,24 +186,51 @@ export class OidcEngine {
       )
     }
 
+    const oauth = loadOAuth()
     const config = await this.getClient_()
+    const authorizationServer = config.serverMetadata()
+    const client = {
+      client_id: this.options_.client_id,
+      [oauth.clockTolerance]:
+        this.options_.clock_tolerance_seconds ??
+        DEFAULT_CLOCK_TOLERANCE_SECONDS,
+    }
 
-    // openid-client derives the token request's redirect_uri from this URL, and
-    // validates every authorization-response parameter in its query.
-    const currentUrl = new URL(input.callbackUrl ?? this.options_.callback_url)
-    currentUrl.search = new URLSearchParams(params).toString()
+    // openid-client's authorizationCodeGrant strips the query string from the
+    // redirect_uri it sends, which breaks callback URLs that have one (e.g. the admin's).
+    const redirectUri = input.callbackUrl ?? this.options_.callback_url
 
-    let tokens: TokenEndpointResponse & TokenEndpointResponseHelpers
+    let tokens: TokenEndpointResponse
+    let claims: Record<string, unknown> | undefined
     try {
-      tokens = await loadOpenIdClient().authorizationCodeGrant(
-        config,
-        currentUrl,
+      const callbackParams = oauth.validateAuthResponse(
+        authorizationServer,
+        client,
+        new URLSearchParams(params),
+        input.state
+      )
+      const response = await oauth.authorizationCodeGrantRequest(
+        authorizationServer,
+        client,
+        this.options_.client_secret
+          ? oauth.ClientSecretPost(this.options_.client_secret)
+          : oauth.None(),
+        callbackParams,
+        redirectUri,
+        input.codeVerifier,
         {
-          pkceCodeVerifier: input.codeVerifier,
-          expectedNonce: input.nonce,
-          expectedState: input.state,
+          [oauth.allowInsecureRequests]:
+            this.allowsInsecureRequests_(authorizationServer),
+          signal: AbortSignal.timeout(this.httpTimeoutMs_),
         }
       )
+      tokens = await oauth.processAuthorizationCodeResponse(
+        authorizationServer,
+        client,
+        response,
+        { expectedNonce: input.nonce, requireIdToken: true }
+      )
+      claims = oauth.getValidatedIdTokenClaims(tokens)
     } catch (error) {
       throw new MedusaError(
         MedusaError.Types.UNAUTHORIZED,
@@ -191,7 +240,6 @@ export class OidcEngine {
       )
     }
 
-    const claims = tokens.claims()
     if (!tokens.id_token || !claims) {
       throw new MedusaError(
         MedusaError.Types.UNAUTHORIZED,
