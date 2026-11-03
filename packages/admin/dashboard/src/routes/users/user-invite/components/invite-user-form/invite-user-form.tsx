@@ -323,15 +323,18 @@ const InviteActions = ({ invite }: { invite: HttpTypes.AdminInvite }) => {
     })
   }
 
-  groups.push({
-    actions: [
-      {
-        icon: <Link />,
-        label: t("users.copyInviteLink"),
-        onClick: handleCopyInviteLink,
-      },
-    ],
-  })
+  // The token is omitted for invites whose roles the user can't assign.
+  if (invite.token) {
+    groups.push({
+      actions: [
+        {
+          icon: <Link />,
+          label: t("users.copyInviteLink"),
+          onClick: handleCopyInviteLink,
+        },
+      ],
+    })
+  }
 
   if (canDelete) {
     groups.push({

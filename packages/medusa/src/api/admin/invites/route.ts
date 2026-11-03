@@ -9,7 +9,7 @@ import {
 
 import { createInvitesWorkflow } from "@medusajs/core-flows"
 import { HttpTypes } from "@medusajs/framework/types"
-import { refetchInvite } from "./helpers"
+import { redactInviteTokens, refetchInvite } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetInvitesParams>,
@@ -25,7 +25,8 @@ export const GET = async (
     fields: req.queryConfig.fields,
   })
 
-  const { rows: invites, metadata } = await remoteQuery(queryObject)
+  const { rows, metadata } = await remoteQuery(queryObject)
+  const invites = await redactInviteTokens(req, rows)
 
   res.json({
     invites,
@@ -57,11 +58,7 @@ export const POST = async (
 
   const { result } = await workflow.run(input)
 
-  const invite = await refetchInvite(
-    result[0].id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const invite = await refetchInvite(req, result[0].id)
 
   res.status(200).json({ invite })
 }
