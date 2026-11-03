@@ -2,7 +2,11 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  authorize,
+  authorizeIfNecessary,
+  MiddlewareRoute,
+} from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT } from "../../../utils/middlewares"
 import * as QueryConfig from "./query-config"
@@ -11,6 +15,7 @@ import {
   AdminBatchInventoryItemLevels,
   AdminBatchInventoryItemLocationsLevel,
   AdminCreateInventoryItem,
+  AdminCreateInventoryItemType,
   AdminCreateInventoryLocationLevel,
   AdminGetInventoryItemParams,
   AdminGetInventoryItemsParams,
@@ -94,6 +99,13 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
         },
       ]),
       validateAndTransformBody(AdminCreateInventoryItem),
+      authorizeIfNecessary<AdminCreateInventoryItemType>(
+        (req) => !!req.validatedBody?.location_levels?.length,
+        {
+          resource: Entities.inventory_level,
+          operation: PolicyOperation.create,
+        }
+      ),
       validateAndTransformQuery(
         AdminGetInventoryItemParams,
         QueryConfig.retrieveTransformQueryConfig

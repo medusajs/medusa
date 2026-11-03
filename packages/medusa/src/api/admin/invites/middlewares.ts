@@ -3,6 +3,7 @@ import { Entities } from "./query-config"
 
 import {
   AdminCreateInvite,
+  AdminCreateInviteType,
   AdminGetInviteAcceptParams,
   AdminGetInviteParams,
   AdminGetInvitesParams,
@@ -13,7 +14,11 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  authorize,
+  authorizeIfNecessary,
+  MiddlewareRoute,
+} from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
 
@@ -45,6 +50,13 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
         },
       ]),
       validateAndTransformBody(AdminCreateInvite),
+      authorizeIfNecessary<AdminCreateInviteType>(
+        (req) => !!req.validatedBody?.roles?.length,
+        {
+          resource: "rbac_role_assignment",
+          operation: PolicyOperation.create,
+        }
+      ),
       validateAndTransformQuery(
         AdminGetInviteParams,
         QueryConfig.retrieveTransformQueryConfig

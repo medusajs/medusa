@@ -3,6 +3,7 @@ import { Entities } from "./query-config"
 
 import {
   AdminCreateTaxRegion,
+  AdminCreateTaxRegionType,
   AdminGetTaxRegionParams,
   AdminGetTaxRegionsParams,
   AdminUpdateTaxRegion,
@@ -12,7 +13,11 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  authorize,
+  authorizeIfNecessary,
+  MiddlewareRoute,
+} from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 
 export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
@@ -38,6 +43,10 @@ export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
         },
       ]),
       validateAndTransformBody(AdminCreateTaxRegion),
+      authorizeIfNecessary<AdminCreateTaxRegionType>(
+        (req) => !!req.validatedBody?.default_tax_rate,
+        { resource: "tax_rate", operation: PolicyOperation.create }
+      ),
       validateAndTransformQuery(
         AdminGetTaxRegionsParams,
         QueryConfig.retrieveTransformQueryConfig

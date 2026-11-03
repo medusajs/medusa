@@ -22,6 +22,7 @@ import {
   AdminGetPromotionsParams,
   AdminGetPromotionsRuleValueParams,
   AdminUpdatePromotion,
+  AdminUpdatePromotionType,
   AdminUpdatePromotionRule,
 } from "./validators"
 
@@ -68,6 +69,10 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
         (req) => !!req.validatedBody?.campaign,
         { resource: "campaign", operation: PolicyOperation.create }
       ),
+      authorizeIfNecessary<AdminCreatePromotionType>(
+        (req) => !!req.validatedBody?.campaign_id,
+        { resource: "campaign", operation: PolicyOperation.update }
+      ),
       validateAndTransformQuery(
         AdminGetPromotionParams,
         QueryConfig.retrieveTransformQueryConfig
@@ -95,6 +100,10 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
         },
       ]),
       validateAndTransformBody(AdminUpdatePromotion),
+      authorizeIfNecessary<AdminUpdatePromotionType>(
+        (req) => req.validatedBody?.campaign_id !== undefined,
+        { resource: "campaign", operation: PolicyOperation.update }
+      ),
       validateAndTransformQuery(
         AdminGetPromotionParams,
         QueryConfig.retrieveTransformQueryConfig

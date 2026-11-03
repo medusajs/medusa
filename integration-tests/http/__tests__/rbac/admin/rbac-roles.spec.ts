@@ -2199,6 +2199,151 @@ medusaIntegrationTestRunner({
           expect(created.status).toEqual(200)
         })
 
+        it("requires the nested resource's policy for nested writes", async () => {
+          const rbacModule = container.resolve(Modules.RBAC)
+          const parentWriter = await rbacModule.createRbacRoles({
+            name: "Parent Writer",
+          })
+          await attachPolicies(parentWriter.id, [
+            "product:read",
+            "product:create",
+            "product:update",
+            "product:delete",
+            "inventory_item:read",
+            "inventory_item:create",
+            "tax_region:read",
+            "tax_region:create",
+            "promotion:read",
+            "promotion:create",
+            "promotion:update",
+            "invite:read",
+            "invite:create",
+          ])
+          const headers = { headers: {} }
+          await createAdminUser(dbConnection, headers, container, {
+            email: "parent-writer@medusa.js",
+            roles: [parentWriter.id],
+          })
+
+          const promotion = {
+            code: "NESTED",
+            type: "standard",
+            application_method: {
+              target_type: "order",
+              type: "fixed",
+              allocation: "across",
+              currency_code: "usd",
+              value: 10,
+            },
+          }
+          const variant = { title: "Default", prices: [] }
+
+          const attempts: [string, Record<string, unknown>, string][] = [
+            [
+              "/admin/products",
+              { title: "P", variants: [variant] },
+              "product_variant:create",
+            ],
+            [
+              "/admin/products",
+              {
+                title: "P",
+                variants: [
+                  {
+                    ...variant,
+                    inventory_items: [
+                      { inventory_item_id: "iitem_1", required_quantity: 1 },
+                    ],
+                  },
+                ],
+              },
+              "product_variant:create",
+            ],
+            [
+              "/admin/products",
+              { title: "P", sales_channels: [{ id: "sc_1" }] },
+              "sales_channel:update",
+            ],
+            [
+              "/admin/products/prod_1",
+              { variants: [] },
+              "product_variant:create",
+            ],
+            [
+              "/admin/products/prod_1",
+              { sales_channels: [] },
+              "sales_channel:update",
+            ],
+            [
+              "/admin/products/batch",
+              { create: [{ title: "P", variants: [variant] }] },
+              "product_variant:create",
+            ],
+            [
+              "/admin/products/batch",
+              { update: [{ id: "prod_1", sales_channels: [] }] },
+              "sales_channel:update",
+            ],
+            [
+              "/admin/inventory-items",
+              { sku: "SKU", location_levels: [{ location_id: "sloc_1" }] },
+              "inventory_level:create",
+            ],
+            [
+              "/admin/tax-regions",
+              {
+                country_code: "us",
+                provider_id: "tp_system",
+                default_tax_rate: { code: "US", name: "US" },
+              },
+              "tax_rate:create",
+            ],
+            [
+              "/admin/promotions",
+              { ...promotion, campaign_id: "camp_1" },
+              "campaign:update",
+            ],
+            [
+              "/admin/promotions/promo_1",
+              { campaign_id: null },
+              "campaign:update",
+            ],
+            [
+              "/admin/invites",
+              { email: "nested@medusa.js", roles: [{ role_id: "role_1" }] },
+              "rbac_role_assignment:create",
+            ],
+          ]
+
+          for (const [url, body, policy] of attempts) {
+            const error = await api.post(url, body, headers).catch((e) => e)
+            expect({ url, status: error.response?.status }).toEqual({
+              url,
+              status: 403,
+            })
+            expect(error.response.data.message).toContain(policy)
+          }
+
+          // Granting the nested policy lets the inventory item through.
+          await attachPolicies(parentWriter.id, ["inventory_level:create"])
+          const location = await api.post(
+            `/admin/stock-locations`,
+            { name: "Nested" },
+            adminHeaders
+          )
+          const created = await api.post(
+            `/admin/inventory-items`,
+            {
+              sku: "SKU-OK",
+              location_levels: [
+                { location_id: location.data.stock_location.id },
+              ],
+            },
+            headers
+          )
+          expect(created.status).toEqual(200)
+        })
+
         it("rejects an assignment to a reference that is not a configured grantee", async () => {
           const error = await api
             .post(

@@ -4,6 +4,8 @@ import {
 } from "@medusajs/framework"
 import {
   authorize,
+  authorizeIfNecessary,
+  AuthenticatedMedusaRequest,
   maybeApplyLinkFilter,
   MiddlewareRoute,
 } from "@medusajs/framework/http"
@@ -21,10 +23,12 @@ import {
   AdminBatchDeleteVariantInventoryItem,
   AdminBatchImageVariant,
   AdminBatchUpdateProduct,
+  AdminBatchUpdateProductType,
   AdminBatchUpdateProductVariant,
   AdminBatchUpdateVariantInventoryItem,
   AdminBatchVariantImages,
   AdminCreateProduct,
+  AdminCreateProductType,
   AdminCreateProductVariant,
   AdminCreateVariantInventoryItem,
   AdminGetProductOptionsParams,
@@ -34,6 +38,7 @@ import {
   AdminImportProducts,
   AdminLinkProductOptions,
   AdminUpdateProduct,
+  AdminUpdateProductType,
   AdminUpdateProductVariant,
   AdminUpdateVariantInventoryItem,
   CreateProduct,
@@ -41,6 +46,64 @@ import {
 } from "./validators"
 
 const upload = multer({ storage: multer.memoryStorage() })
+
+type ProductWritesByOperation = {
+  create: {
+    variants?: { inventory_items?: unknown[] }[]
+    sales_channels?: unknown[]
+  }[]
+  update: { variants?: unknown[]; sales_channels?: unknown[] }[]
+}
+
+/**
+ * Guards the resources a product payload writes through nested fields with the
+ * policies of their dedicated routes. Updating `variants` or `sales_channels`
+ * replaces the whole set, so it may create, update, and delete variants.
+ */
+const authorizeNestedProductWrites = <TBody>(
+  getProducts: (body: TBody) => ProductWritesByOperation
+) => {
+  const products = (req: AuthenticatedMedusaRequest<TBody>) =>
+    getProducts(req.validatedBody)
+
+  return [
+    authorizeIfNecessary<TBody>(
+      (req) => products(req).create.some((p) => !!p.variants?.length),
+      {
+        resource: Entities.product_variant,
+        operation: PolicyOperation.create,
+      }
+    ),
+    authorizeIfNecessary<TBody>(
+      (req) => products(req).update.some((p) => p.variants !== undefined),
+      {
+        resource: Entities.product_variant,
+        operation: [
+          PolicyOperation.create,
+          PolicyOperation.update,
+          PolicyOperation.delete,
+        ],
+      }
+    ),
+    authorizeIfNecessary<TBody>(
+      (req) =>
+        products(req).create.some((p) =>
+          p.variants?.some((v) => !!v.inventory_items?.length)
+        ),
+      { resource: Entities.inventory_item, operation: PolicyOperation.create }
+    ),
+    authorizeIfNecessary<TBody>(
+      (req) => {
+        const { create, update } = products(req)
+        return (
+          create.some((p) => !!p.sales_channels?.length) ||
+          update.some((p) => p.sales_channels !== undefined)
+        )
+      },
+      { resource: "sales_channel", operation: PolicyOperation.update }
+    ),
+  ]
+}
 
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -126,6 +189,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         },
       ]),
       validateAndTransformBody(AdminCreateProduct),
+      ...authorizeNestedProductWrites<AdminCreateProductType>((body) => ({
+        create: [body],
+        update: [],
+      })),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
@@ -152,6 +219,13 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
       validateAndTransformBody(
         createBatchBody(CreateProduct, AdminBatchUpdateProduct)
       ),
+      ...authorizeNestedProductWrites<{
+        create?: AdminCreateProductType[]
+        update?: AdminBatchUpdateProductType[]
+      }>((body) => ({
+        create: body.create ?? [],
+        update: body.update ?? [],
+      })),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig
@@ -239,6 +313,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
         },
       ]),
       validateAndTransformBody(AdminUpdateProduct),
+      ...authorizeNestedProductWrites<AdminUpdateProductType>((body) => ({
+        create: [],
+        update: [body],
+      })),
       validateAndTransformQuery(
         AdminGetProductParams,
         QueryConfig.retrieveProductQueryConfig

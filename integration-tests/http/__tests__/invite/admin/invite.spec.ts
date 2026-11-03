@@ -564,6 +564,11 @@ medusaIntegrationTestRunner({
             "create"
           )
           const inviteRead = await ensurePolicy(rbacModule, "invite", "read")
+          const roleAssignmentCreate = await ensurePolicy(
+            rbacModule,
+            "rbac_role_assignment",
+            "create"
+          )
           const productRead = await ensurePolicy(rbacModule, "product", "read")
           const customerCreate = await ensurePolicy(
             rbacModule,
@@ -572,7 +577,8 @@ medusaIntegrationTestRunner({
           )
 
           // The inviter: can create and read invites (read is needed to see
-          // the created invite in the response) and holds product:read only.
+          // the created invite in the response), assign roles, and holds
+          // product:read only.
           const inviterRole = await rbacModule.createRbacRoles({
             name: "Inviter",
             description: "invite:create and product:read",
@@ -590,6 +596,7 @@ medusaIntegrationTestRunner({
           await rbacModule.createRbacRolePolicies([
             { role_id: inviterRole.id, policy_id: inviteCreate.id },
             { role_id: inviterRole.id, policy_id: inviteRead.id },
+            { role_id: inviterRole.id, policy_id: roleAssignmentCreate.id },
             { role_id: inviterRole.id, policy_id: productRead.id },
             { role_id: productReaderRole.id, policy_id: productRead.id },
             { role_id: mixedRole.id, policy_id: productRead.id },
