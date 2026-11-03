@@ -75,17 +75,18 @@ medusaIntegrationTestRunner({
     })
 
     // Restoring the database snapshot between tests emits no events, so drop
-    // the entries a previous test cached to keep the tests independent.
+    // the entries a previous test cached to keep the tests independent. Every
+    // RBAC entry carries at least one of the list tags.
     beforeEach(async () => {
       const cachingModule = container.resolve(Modules.CACHING)
-      await Promise.all(
-        [readerRoleId, "rbac-policy-resources"].map((key) =>
-          cachingModule.clear({ key })
-        )
-      )
-      // The actor's role assignments are cached by the query layer under an
-      // automatic key, so they are dropped through their list tag.
-      await cachingModule.clear({ tags: ["RbacRoleAssignment:list:*"] })
+      await cachingModule.clear({
+        tags: [
+          RBAC_CACHE_TAGS.ROLE_LIST,
+          RBAC_CACHE_TAGS.POLICY_LIST,
+          RBAC_CACHE_TAGS.ROLE_POLICY_LIST,
+          RBAC_CACHE_TAGS.ROLE_ASSIGNMENT_LIST,
+        ],
+      })
     })
 
     afterAll(async () => {
@@ -101,7 +102,8 @@ medusaIntegrationTestRunner({
         expect(await listProducts()).toEqual(200)
 
         const roleCall = setSpy.mock.calls.find(
-          ([input]: any[]) => input.key === readerRoleId
+          ([input]: any[]) =>
+            input.key === `rbac-role-permissions:${readerRoleId}`
         )
         expect(roleCall).toBeDefined()
         expect((roleCall![0] as any).tags).toEqual(
@@ -189,6 +191,31 @@ medusaIntegrationTestRunner({
         operation: PolicyOperation.read,
       })
       expect(await listProducts()).toEqual(200)
+    })
+
+    it("reflects a role's policies changing in the covered roles of the actor's permissions", async () => {
+      const coveredRoles = () =>
+        api
+          .get("/rbac/me/permissions", readerHeaders)
+          .then((response) => response.data.covered_roles as string[])
+
+      const coveredRole = await rbacModule.createRbacRoles({
+        name: "Cached Covered Role",
+      })
+      await rbacModule.createRbacRolePolicies([
+        { role_id: coveredRole.id, policy_id: productReadId },
+      ])
+
+      expect(await coveredRoles()).toContain(coveredRole.name)
+
+      const [productUpdate] = await rbacModule.listRbacPolicies({
+        key: `product:${PolicyOperation.update}`,
+      })
+      await rbacModule.createRbacRolePolicies([
+        { role_id: coveredRole.id, policy_id: productUpdate.id },
+      ])
+
+      expect(await coveredRoles()).not.toContain(coveredRole.name)
     })
 
     it("reflects creating and deleting a policy on a new resource in the governed set", async () => {

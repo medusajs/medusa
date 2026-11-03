@@ -81,20 +81,24 @@ export function authorize(
       throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
     }
 
-    const roleIds = await resolveRoles({
-      authContext: req.auth_context,
-      container: req.scope,
-      scope: req.rbac_context?.scope,
-    })
+    const roleIds =
+      req.rbac_context.role_ids ??
+      (await resolveRoles({
+        authContext: req.auth_context,
+        container: req.scope,
+        scope: req.rbac_context.scope,
+      }))
 
     if (!roleIds.length) {
       throw new MedusaError(MedusaError.Types.FORBIDDEN, "Forbidden")
     }
 
-    const permissions = await listRolePermissions({
-      roles: roleIds,
-      container: req.scope,
-    })
+    const permissions =
+      req.rbac_context.permissions ??
+      (await listRolePermissions({
+        roles: roleIds,
+        container: req.scope,
+      }))
     const permissionSet = new Set(permissions)
 
     const hasAccess = policyList.every((policy) =>

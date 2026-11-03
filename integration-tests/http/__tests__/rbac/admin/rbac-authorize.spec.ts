@@ -197,6 +197,31 @@ medusaIntegrationTestRunner({
         expect(error.response.data.message).toContain("product:read")
       })
 
+      it("lets an actor with no assignments read and update itself, but not other users", async () => {
+        const me = await api.get("/admin/users/me", noRolesHeaders)
+        expect(me.status).toEqual(200)
+        expect(me.data.user.id).toEqual(noRolesId)
+
+        const updated = await api.post(
+          "/admin/users/me",
+          { first_name: "Self" },
+          noRolesHeaders
+        )
+        expect(updated.status).toEqual(200)
+        expect(updated.data.user).toEqual(
+          expect.objectContaining({ id: noRolesId, first_name: "Self" })
+        )
+
+        const byId = await api
+          .post(
+            `/admin/users/${noRolesId}`,
+            { first_name: "X" },
+            noRolesHeaders
+          )
+          .catch((e) => e)
+        expect(byId.response.status).toEqual(403)
+      })
+
       it("forbids an unauthenticated request before reaching the policy check", async () => {
         const error = await api
           .get("/admin/products", { headers: {} })

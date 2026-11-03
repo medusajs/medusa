@@ -114,6 +114,31 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("POST /admin/users/me", () => {
+      it("should update the authenticated user", async () => {
+        const updateResponse = (
+          await api.post(
+            "/admin/users/me",
+            { first_name: "Jane", last_name: "Roe" },
+            adminHeaders
+          )
+        ).data.user
+
+        expect(updateResponse).toEqual(
+          expect.objectContaining({
+            id: user.id,
+            first_name: "Jane",
+            last_name: "Roe",
+          })
+        )
+
+        const me = (await api.get("/admin/users/me", adminHeaders)).data.user
+        expect(me).toEqual(
+          expect.objectContaining({ first_name: "Jane", last_name: "Roe" })
+        )
+      })
+    })
+
     describe("DELETE /admin/users", () => {
       it("Deletes a user and its auth identity when the user is the only associated actor", async () => {
         const userTwoAdminHeaders = {

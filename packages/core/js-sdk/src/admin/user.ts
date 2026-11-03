@@ -392,4 +392,38 @@ export class User {
       headers,
     })
   }
+
+  /**
+   * This method updates the currently authenticated user. It sends a request to the
+   * Update Logged-In User API route, which every user may call regardless of its
+   * RBAC permissions.
+   *
+   * @param body - The details of the user to update.
+   * @param query - Configure the fields and relations to retrieve in the user.
+   * @param headers - Headers to pass in the request.
+   * @returns The user's details.
+   *
+   * @example
+   * sdk.admin.user.updateMe({
+   *   first_name: "John",
+   *   last_name: "Doe",
+   * })
+   * .then(({ user }) => {
+   *   console.log(user)
+   * })
+   *
+   * @since 2.23.0
+   */
+  async updateMe(
+    body: HttpTypes.AdminUpdateUser,
+    query?: HttpTypes.AdminUserParams,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminUserResponse>(`/admin/users/me`, {
+      method: "POST",
+      headers,
+      body,
+      query,
+    })
+  }
 }

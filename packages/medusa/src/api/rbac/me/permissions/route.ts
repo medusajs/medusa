@@ -1,5 +1,6 @@
 import {
   grantedKeys,
+  RBAC_CACHE_TTL,
   resolvePermissions,
   toPermissionSet,
 } from "@medusajs/framework"
@@ -15,6 +16,7 @@ import {
   defineFileConfig,
   Modules,
   permissionKey,
+  RBAC_CACHE_TAGS,
   WILDCARD,
 } from "@medusajs/framework/utils"
 
@@ -82,10 +84,17 @@ export const GET = async (
     universe.push({ resource, operation })
   }
 
-  const { data: persistedPolicies } = await query.graph({
-    entity: "rbac_policy",
-    fields: ["resource", "operation"],
-  })
+  const { data: persistedPolicies } = await query.graph(
+    {
+      entity: "rbac_policy",
+      fields: ["resource", "operation", "id"],
+    },
+    {
+      cache: {
+        enable: true,
+      },
+    }
+  )
 
   for (const policy of persistedPolicies ?? []) {
     consider(policy?.resource, policy?.operation)
@@ -122,12 +131,25 @@ export const GET = async (
   // Covered roles: every role whose expanded grant set is a subset of the
   // actor's expanded grant set. Expanding both sides against the same
   // universe makes wildcards on either side comparable literally.
+  //
+  // The roles' policies are reached through `rbac_role_policy`, whose events
+  // only clear its own tags, so the entry is tagged with them explicitly.
   const { data: allRoles } = await query.graph(
     {
       entity: "rbac_role",
       fields: ["id", "name", "policies.*"],
     },
-    { cache: { enable: true } }
+    {
+      cache: {
+        enable: true,
+        ttl: RBAC_CACHE_TTL,
+        tags: [
+          RBAC_CACHE_TAGS.ROLE_LIST,
+          RBAC_CACHE_TAGS.ROLE_POLICY_LIST,
+          RBAC_CACHE_TAGS.POLICY_LIST,
+        ],
+      },
+    }
   )
 
   const coveredRoles = (allRoles ?? [])

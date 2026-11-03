@@ -1,4 +1,8 @@
-import { hasPermission, resolveRoles } from "@medusajs/framework"
+import {
+  isGranted,
+  listRolePermissions,
+  resolveRoles,
+} from "@medusajs/framework"
 import { RbacScope } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -26,7 +30,7 @@ export type GetAssignableRolesStepInput = {
    */
   filters?: Record<string, unknown>
   /**
-   * Optional pagination forwarded to the `rbac_role` query.
+   * Optional pagination applied to the assignable subset after permission resolution.
    */
   pagination?: { skip?: number; take?: number }
 }
@@ -78,41 +82,46 @@ export const getAssignableRolesStep = createStep(
       return new StepResponse({ roles: [], count: 0 })
     }
 
-    const { data: candidates } = await query.graph({
-      entity: "rbac_role",
-      fields: [
-        "id",
-        "name",
-        "description",
-        "policies.resource",
-        "policies.operation",
-      ],
-      filters: filters ?? {},
-      pagination: pagination ?? {},
-    })
+    // The actor's permissions are resolved once and every candidate role's
+    // policies are checked against them. A role is assignable when the actor
+    // holds all of its policies.
+    const [permissions, { data: candidates }] = await Promise.all([
+      listRolePermissions({ roles: roleIds, container }),
+      query.graph({
+        entity: "rbac_role",
+        fields: [
+          "id",
+          "name",
+          "description",
+          "policies.resource",
+          "policies.operation",
+        ],
+        filters: filters ?? {},
+      }),
+    ])
+    const permissionSet = new Set(permissions)
 
-    const assignable: AssignableRole[] = []
-
-    for (const role of candidates ?? []) {
-      const actions = (role.policies ?? []).filter(
-        (p: any) => p.resource != null && p.operation != null
+    const assignable: AssignableRole[] = (candidates ?? [])
+      .filter((role) =>
+        (role.policies ?? []).every(
+          (policy: any) =>
+            policy.resource == null ||
+            policy.operation == null ||
+            isGranted(permissionSet, policy.resource, policy.operation)
+        )
       )
+      .map((role) => ({
+        id: role.id,
+        name: role.name,
+        description: role.description ?? null,
+      }))
 
-      const allowed = await hasPermission({
-        roles: roleIds,
-        actions,
-        container,
-      })
+    const { skip = 0, take } = pagination ?? {}
+    const page =
+      typeof take === "number"
+        ? assignable.slice(skip, skip + take)
+        : assignable.slice(skip)
 
-      if (allowed) {
-        assignable.push({
-          id: role.id,
-          name: role.name,
-          description: role.description ?? null,
-        })
-      }
-    }
-
-    return new StepResponse({ roles: assignable, count: assignable.length })
+    return new StepResponse({ roles: page, count: assignable.length })
   }
 )

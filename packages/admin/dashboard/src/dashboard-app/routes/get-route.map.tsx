@@ -57,7 +57,17 @@ export function getRouteMap({
                       path: "create",
                       lazy: () =>
                         import("../../routes/products/product-create"),
-                      handle: { permissions: "product:create" },
+                      // The form loads the store, regions, sales channels and
+                      // price preferences
+                      handle: {
+                        permissions: [
+                          "product:create",
+                          "store:read",
+                          "region:read",
+                          "sales_channel:read",
+                          "price_preference:read",
+                        ],
+                      },
                     },
                     {
                       path: "import",
@@ -161,12 +171,17 @@ export function getRouteMap({
                           path: "prices",
                           lazy: () =>
                             import("../../routes/products/product-prices"),
+                          // The pricing grid is built from the store's
+                          // currencies, the regions and the price preferences.
                           handle: {
                             permissions: [
                               "product:update",
                               "product_variant:create",
                               "product_variant:update",
                               "product_variant:delete",
+                              "store:read",
+                              "region:read",
+                              "price_preference:read",
                             ],
                           },
                         },
@@ -178,6 +193,9 @@ export function getRouteMap({
                             permissions: [
                               "product:update",
                               "product_variant:create",
+                              "store:read",
+                              "region:read",
+                              "price_preference:read",
                             ],
                           },
                         },
@@ -256,12 +274,17 @@ export function getRouteMap({
                           path: "prices",
                           lazy: () =>
                             import("../../routes/products/product-prices"),
+                          // The pricing grid is built from the store's
+                          // currencies, the regions and the price preferences.
                           handle: {
                             permissions: [
                               "product:update",
                               "product_variant:create",
                               "product_variant:update",
                               "product_variant:delete",
+                              "store:read",
+                              "region:read",
+                              "price_preference:read",
                             ],
                           },
                         },
@@ -469,6 +492,7 @@ export function getRouteMap({
                         import("../../routes/categories/category-products"),
                       handle: {
                         permissions: [
+                          "product:read",
                           "product:update",
                           "product_category:update",
                         ],
@@ -723,6 +747,7 @@ export function getRouteMap({
                       path: "metadata/edit",
                       lazy: () =>
                         import("../../routes/promotions/promotion-metadata"),
+                      handle: { permissions: "promotion:update" },
                     },
                   ],
                 },
@@ -898,7 +923,13 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/price-lists/price-list-create"),
                       handle: {
-                        permissions: ["price_list:create", "product:read"],
+                        permissions: [
+                          "price_list:create",
+                          "product:read",
+                          "store:read",
+                          "region:read",
+                          "price_preference:read",
+                        ],
                       },
                     },
                   ],
@@ -938,7 +969,13 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/price-lists/price-list-prices-add"),
                       handle: {
-                        permissions: ["price_list:update", "product:read"],
+                        permissions: [
+                          "price_list:update",
+                          "product:read",
+                          "store:read",
+                          "region:read",
+                          "price_preference:read",
+                        ],
                       },
                     },
                     {
@@ -946,7 +983,13 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/price-lists/price-list-prices-edit"),
                       handle: {
-                        permissions: ["price_list:update", "product:read"],
+                        permissions: [
+                          "price_list:update",
+                          "product:read",
+                          "store:read",
+                          "region:read",
+                          "price_preference:read",
+                        ],
                       },
                     },
                     {
@@ -1031,6 +1074,7 @@ export function getRouteMap({
                       handle: {
                         permissions: [
                           "customer:update",
+                          "customer_group:read",
                           "customer_group:update",
                         ],
                       },
@@ -1229,6 +1273,7 @@ export function getRouteMap({
                         permissions: [
                           "inventory_item:create",
                           "inventory_level:read",
+                          "stock_location:read",
                         ],
                       },
                     },
@@ -1243,6 +1288,8 @@ export function getRouteMap({
                         import("../../routes/inventory/inventory-stock"),
                       handle: {
                         permissions: [
+                          "inventory_item:read",
+                          "stock_location:read",
                           "inventory_level:read",
                           "inventory_level:create",
                           "inventory_level:update",
@@ -1377,7 +1424,11 @@ export function getRouteMap({
                       path: "create",
                       lazy: () => import("../../routes/regions/region-create"),
                       handle: {
-                        permissions: ["region:create", "currency:read"],
+                        permissions: [
+                          "region:create",
+                          "currency:read",
+                          "store:read",
+                        ],
                       },
                     },
                   ],
@@ -1450,6 +1501,7 @@ export function getRouteMap({
                         import("../../routes/property-labels/property-labels-edit"),
                       handle: {
                         permissions: [
+                          "property_label:read",
                           "property_label:create",
                           "property_label:update",
                           "property_label:delete",
@@ -1487,7 +1539,11 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/store/store-add-currencies"),
                       handle: {
-                        permissions: ["store:update", "currency:read"],
+                        permissions: [
+                          "store:read",
+                          "store:update",
+                          "currency:read",
+                        ],
                       },
                     },
                     {
@@ -1495,7 +1551,11 @@ export function getRouteMap({
                       lazy: () =>
                         import("../../routes/store/store-add-locales"),
                       handle: {
-                        permissions: ["store:update", "store_locale:read"],
+                        permissions: [
+                          "store:read",
+                          "store:update",
+                          "store_locale:read",
+                        ],
                       },
                     },
                     {
@@ -1632,6 +1692,7 @@ export function getRouteMap({
                       element: <RoutePermissionGuard />,
                       handle: {
                         permissions: [
+                          "user:read",
                           "user:update",
                           "rbac_role_assignment:create",
                         ],
@@ -2031,10 +2092,19 @@ export function getRouteMap({
                                   path: "create",
                                   lazy: () =>
                                     import("../../routes/locations/location-service-zone-shipping-option-create"),
+                                  // The form picks a profile, a type and a
+                                  // provider, then prices the option per
+                                  // currency and region.
                                   handle: {
                                     permissions: [
                                       "stock_location:update",
                                       "shipping_option:create",
+                                      "shipping_profile:read",
+                                      "shipping_option_type:read",
+                                      "fulfillment_provider:read",
+                                      "store:read",
+                                      "region:read",
+                                      "price_preference:read",
                                     ],
                                   },
                                 },
@@ -2060,6 +2130,9 @@ export function getRouteMap({
                                         permissions: [
                                           "stock_location:update",
                                           "shipping_option:update",
+                                          "store:read",
+                                          "region:read",
+                                          "price_preference:read",
                                         ],
                                       },
                                     },
@@ -2651,6 +2724,7 @@ export function getRouteMap({
                       lazy: () => import("../../routes/translations/settings"),
                       handle: {
                         permissions: [
+                          "translation_setting:read",
                           "translation_setting:create",
                           "translation_setting:update",
                           "translation_setting:delete",
@@ -2680,7 +2754,11 @@ export function getRouteMap({
                   path: "add-locales",
                   lazy: () => import("../../routes/translations/add-locales"),
                   handle: {
-                    permissions: ["store:update", "store_locale:read"],
+                    permissions: [
+                      "store:read",
+                      "store:update",
+                      "store_locale:read",
+                    ],
                   },
                 },
               ],

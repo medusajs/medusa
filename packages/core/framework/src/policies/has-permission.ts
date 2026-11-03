@@ -231,17 +231,19 @@ export async function listRolePermissions(
 }
 
 /**
- * Fetches a single role's policies from cache or database.
+ * Fetches the policies of a set of roles from cache or database.
  */
-async function fetchSingleRolePolicies(
-  roleId: string,
+async function fetchRolesPolicies(
+  roleIds: string[],
   container: MedusaContainer
 ): Promise<Policy[]> {
   const query = container.resolve(ContainerRegistrationKeys.QUERY)
+  const sortedRoleIds = [...new Set(roleIds)].sort()
 
-  // Cleared by the caching module on the RBAC module's mutation events.
+  // Cleared by the caching module on the RBAC module's mutation events. The
+  // policy tags are added as the policies are read, before the entry is set.
   const tags: string[] = [
-    RBAC_CACHE_TAGS.role(roleId),
+    ...sortedRoleIds.map((roleId) => RBAC_CACHE_TAGS.role(roleId)),
     RBAC_CACHE_TAGS.ROLE_POLICY_LIST,
   ]
 
@@ -250,24 +252,26 @@ async function fetchSingleRolePolicies(
       const { data: roles } = await query.graph({
         entity: "rbac_role",
         fields: ["id", "policies.*"],
-        filters: { id: roleId },
+        filters: { id: sortedRoleIds },
       })
 
       const policies: Policy[] = []
 
-      for (const policy of roles[0]?.policies ?? []) {
-        policies.push({
-          resource: policy.resource,
-          operation: policy.operation,
-        })
-        tags.push(RBAC_CACHE_TAGS.policy(policy.id))
+      for (const role of roles ?? []) {
+        for (const policy of role.policies ?? []) {
+          policies.push({
+            resource: policy.resource,
+            operation: policy.operation,
+          })
+          tags.push(RBAC_CACHE_TAGS.policy(policy.id))
+        }
       }
 
       return policies
     },
     {
       container,
-      key: roleId,
+      key: `rbac-role-permissions:${sortedRoleIds.join(",")}`,
       tags,
       enable: true,
       ttl: RBAC_CACHE_TTL,
@@ -312,16 +316,11 @@ export async function fetchPolicyResources(
 }
 
 /**
- * The permissions of all the given roles, merged, from individually cached
- * role queries.
+ * The permissions of all the given roles, merged.
  */
 async function fetchRolePermissions(
   roleIds: string[],
   container: MedusaContainer
 ): Promise<PermissionSet> {
-  const rolePolicies = await Promise.all(
-    roleIds.map((roleId) => fetchSingleRolePolicies(roleId, container))
-  )
-
-  return toPermissionSet(rolePolicies.flat())
+  return toPermissionSet(await fetchRolesPolicies(roleIds, container))
 }

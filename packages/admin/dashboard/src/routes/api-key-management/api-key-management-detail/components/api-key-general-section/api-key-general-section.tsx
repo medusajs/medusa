@@ -23,7 +23,10 @@ import {
   useDeleteApiKey,
   useRevokeApiKey,
 } from "../../../../../hooks/api/api-keys"
-import { useApiKeyPermissions } from "../../../../../hooks/use-resource-permissions"
+import {
+  useApiKeyPermissions,
+  useUserPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useUser } from "../../../../../hooks/api/users"
 import { useDate } from "../../../../../hooks/use-date"
 import {
@@ -220,11 +223,12 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
 }
 
 const ActionBy = ({ userId }: { userId: string | null }) => {
+  const { canRead: canReadUsers } = useUserPermissions()
   const { user, isLoading, isError, error } = useUser(userId!, undefined, {
-    enabled: !!userId,
+    enabled: !!userId && canReadUsers,
   })
 
-  if (!userId) {
+  if (!userId || !canReadUsers) {
     return (
       <Text size="small" className="text-ui-fg-subtle">
         -

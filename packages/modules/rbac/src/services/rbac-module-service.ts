@@ -124,21 +124,7 @@ export default class RbacModuleService
       sharedContext
     )
 
-    const shouldIncludePolicies =
-      config.relations?.includes("policies") ||
-      config.select?.includes("policies")
-
-    if (shouldIncludePolicies && roles.length > 0) {
-      const roleIds = roles.map((role) => role.id)
-      const policiesByRole = await this.rbacRepository_.listPoliciesForRoles(
-        roleIds,
-        sharedContext
-      )
-
-      for (const role of roles) {
-        role.policies = policiesByRole.get(role.id) || []
-      }
-    }
+    await this.hydrateRolePolicies_(roles, config, sharedContext)
 
     return roles as unknown as RbacRoleDTO[]
   }
@@ -156,23 +142,36 @@ export default class RbacModuleService
       sharedContext
     )
 
+    await this.hydrateRolePolicies_(roles, config, sharedContext)
+
+    return [roles as unknown as RbacRoleDTO[], count]
+  }
+
+  /**
+   * Replaces the roles' `policies` relation (the `rbac_role_policy` rows) with
+   * the policies themselves when the relation was requested.
+   */
+  protected async hydrateRolePolicies_(
+    roles: { id: string; policies?: unknown }[],
+    config: FindConfig<RbacRoleDTO>,
+    sharedContext: Context
+  ): Promise<void> {
     const shouldIncludePolicies =
       config.relations?.includes("policies") ||
       config.select?.includes("policies")
 
-    if (shouldIncludePolicies && roles.length > 0) {
-      const roleIds = roles.map((role) => role.id)
-      const policiesByRole = await this.rbacRepository_.listPoliciesForRoles(
-        roleIds,
-        sharedContext
-      )
-
-      for (const role of roles) {
-        role.policies = policiesByRole.get(role.id) || []
-      }
+    if (!shouldIncludePolicies || !roles.length) {
+      return
     }
 
-    return [roles as unknown as RbacRoleDTO[], count]
+    const policiesByRole = await this.rbacRepository_.listPoliciesForRoles(
+      roles.map((role) => role.id),
+      sharedContext
+    )
+
+    for (const role of roles) {
+      role.policies = policiesByRole.get(role.id) || []
+    }
   }
 
   async retrieveActorAuthzContextConfig(

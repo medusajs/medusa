@@ -61,6 +61,17 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
+    matcher: "/admin/users/me",
+    middlewares: [
+      validateAndTransformBody(AdminUpdateUser),
+      validateAndTransformQuery(
+        AdminGetUserParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
     matcher: "/admin/users/:id",
     middlewares: [
       authorize([

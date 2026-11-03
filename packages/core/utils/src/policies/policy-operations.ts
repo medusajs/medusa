@@ -25,6 +25,7 @@ export const RBAC_SUPER_ADMIN_POLICY_ID = "rpol_super_admin"
 export const RBAC_CACHE_TAGS = {
   role: (roleId: string) => `RbacRole:${roleId}`,
   policy: (policyId: string) => `RbacPolicy:${policyId}`,
+  ROLE_LIST: "RbacRole:list:*",
   POLICY_LIST: "RbacPolicy:list:*",
   ROLE_POLICY_LIST: "RbacRolePolicy:list:*",
   ROLE_ASSIGNMENT_LIST: "RbacRoleAssignment:list:*",

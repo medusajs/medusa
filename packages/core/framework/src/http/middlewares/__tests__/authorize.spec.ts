@@ -171,6 +171,29 @@ describe("authorize", () => {
     })
   })
 
+  it("reuses the roles and permissions resolved by an upstream authorize", async () => {
+    const req = createRequest({
+      rbacContext: {
+        policies: [readPolicy],
+        role_ids: ["role_1"],
+        permissions: ["product:read", "product:update"],
+      },
+    })
+
+    const next = await run(
+      authorize({ resource: "product", operation: "update" }),
+      req
+    )
+
+    expect(next).toHaveBeenCalled()
+    expect(resolveRolesMock).not.toHaveBeenCalled()
+    expect(listRolePermissionsMock).not.toHaveBeenCalled()
+    expect(req.rbac_context?.policies).toEqual([
+      readPolicy,
+      { resource: "product", operation: "update" },
+    ])
+  })
+
   it("grants the policies through wildcard permissions", async () => {
     listRolePermissionsMock.mockResolvedValue(["*:read", "product:*"])
     const req = createRequest()
