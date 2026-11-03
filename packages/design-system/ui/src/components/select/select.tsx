@@ -64,7 +64,7 @@ Value.displayName = "Select.Value"
 
 const triggerVariants = cva({
   base: clx(
-    "bg-ui-bg-field shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-none",
+    "bg-ui-bg-field shadow-buttons-neutral transition-fg flex w-full select-none items-center justify-between rounded-md outline-hidden",
     "data-[placeholder]:text-ui-fg-muted text-ui-fg-base",
     "hover:bg-ui-bg-field-hover",
     "focus-visible:shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active",
@@ -205,7 +205,7 @@ const Item = React.forwardRef<
     <RadixSelect.Item
       ref={ref}
       className={clx(
-        "txt-compact-small grid cursor-pointer grid-cols-[15px_1fr] items-center gap-x-2 rounded-[4px] bg-ui-bg-component px-2 py-1.5 outline-none transition-colors",
+        "txt-compact-small grid cursor-pointer grid-cols-[15px_1fr] items-center gap-x-2 rounded-[4px] bg-ui-bg-component px-2 py-1.5 outline-hidden transition-colors",
         "focus-visible:bg-ui-bg-component-hover",
         "active:bg-ui-bg-component-pressed",
         "data-[state=checked]:txt-compact-small-plus",

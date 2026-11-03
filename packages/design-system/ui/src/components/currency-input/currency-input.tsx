@@ -132,7 +132,7 @@ const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
           </Text>
         </span>
         <Primitive
-          className="h-full min-w-0 flex-1 appearance-none bg-transparent text-right outline-none disabled:cursor-not-allowed"
+          className="h-full min-w-0 flex-1 appearance-none bg-transparent text-right outline-hidden disabled:cursor-not-allowed"
           disabled={disabled}
           onInvalid={onInnerInvalid}
           ref={innerRef}
