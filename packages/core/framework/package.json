@@ -95,7 +95,7 @@
     "chokidar": "^6.0.0",
     "compression": "^1.8.2",
     "connect-dynamodb": "^3.0.5",
-    "connect-redis": "5.2.0",
+    "connect-redis": "10.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.21.0",
@@ -106,16 +106,11 @@
     "lodash.memoize": "^4.1.2",
     "morgan": "^1.12.0",
     "path-to-regexp": "^8.4.0",
+    "redis": "^6.3.0",
     "tsconfig-paths": "^4.2.0",
     "zod-validation-error": "5.0.0"
   },
   "peerDependencies": {
-    "@medusajs/cli": "2.22.2",
-    "ioredis": "^5.11.1"
-  },
-  "peerDependenciesMeta": {
-    "ioredis": {
-      "optional": true
-    }
+    "@medusajs/cli": "2.22.2"
   }
 }

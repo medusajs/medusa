@@ -2,13 +2,13 @@ import { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { dynamicImport } from "@medusajs/utils"
 import compression from "compression"
-import createStore from "connect-redis"
+import { RedisStore } from "connect-redis"
 import cookieParser from "cookie-parser"
 import express, { Express, RequestHandler } from "express"
 import session from "express-session"
-import Redis from "ioredis"
 import morgan from "morgan"
 import path from "path"
+import { createClient } from "redis"
 import { configManager } from "../config"
 import { MedusaRequest, MedusaResponse } from "./types"
 import {
@@ -79,10 +79,10 @@ export async function expressLoader({
       maxAge: sessionOptions?.ttl ?? 10 * 60 * 60 * 1000,
       ...cookieOptions,
     },
-    store: null,
+    store: null as session.Store | null,
   }
 
-  let redisClient: Redis
+  let redisClient: ReturnType<typeof createClient> | undefined
 
   if (configModule?.projectConfig.sessionOptions?.dynamodbOptions) {
     const storeFactory = await dynamicImport("connect-dynamodb")
@@ -95,11 +95,18 @@ export async function expressLoader({
       ),
     })
   } else if (configModule?.projectConfig?.redisUrl) {
-    const RedisStore = createStore(session)
-    redisClient = new Redis(
-      configModule.projectConfig.redisUrl,
-      configModule.projectConfig.redisOptions ?? {}
-    )
+    redisClient = createClient({
+      ...configModule.projectConfig.redisOptions,
+      url: configModule.projectConfig.redisUrl,
+    })
+    redisClient.on("error", (error) => {
+      logger.error(`Redis session store error: ${error.message || error.code}`)
+    })
+    redisClient.connect().catch((error) => {
+      logger.error(
+        `Failed to connect to Redis session store: ${error.message || error.code}`
+      )
+    })
     sessionOpts.store = new RedisStore({
       client: redisClient,
       prefix: `${configModule?.projectConfig?.redisPrefix ?? ""}sess:`,
@@ -204,7 +211,7 @@ export async function expressLoader({
   app.use("/static", express.static(path.join(baseDir, "static")))
 
   const shutdown = async () => {
-    redisClient?.disconnect()
+    redisClient?.destroy()
   }
 
   return { app, shutdown }
