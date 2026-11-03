@@ -39,6 +39,11 @@ const DataTableFilterBar = ({
 
   // Local state for managing intermediate filters
   const [localFilters, setLocalFilters] = React.useState<LocalFilter[]>([])
+  // Filters edited locally whose new value the parent has not reflected yet,
+  // with the parent value at the time of the edit. The parent may commit its
+  // state asynchronously (e.g. a URL update inside a React transition), so
+  // until it moves off that value, it is stale and must not overwrite the edit.
+  const pendingRef = React.useRef<Record<string, { staleValue: unknown }>>({})
 
   const parentFilterState = instance.getFiltering()
 
@@ -54,6 +59,13 @@ const DataTableFilterBar = ({
         .map((f) => {
           if (parentIds.includes(f.id)) {
             const parentValue = parentFilterState[f.id]
+            const pending = pendingRef.current[f.id]
+            if (pending) {
+              if (isEqual(parentValue, pending.staleValue)) {
+                return f
+              }
+              delete pendingRef.current[f.id]
+            }
             // A "new" filter keeps its value picker open until it receives a
             // non-empty value; only settle it (isNew: false) once it has one.
             // getFiltering() returns a fresh object each render, so this sync
@@ -113,6 +125,8 @@ const DataTableFilterBar = ({
         prev.map((f) => (f.id === id ? { ...f, value, isNew: false } : f))
       )
 
+      pendingRef.current[id] = { staleValue: parentFilterState[id] }
+
       if (isEmptyFilterValue(value)) {
         if (parentFilterState[id] !== undefined) {
           instance.removeFilter(id)
@@ -129,6 +143,7 @@ const DataTableFilterBar = ({
   const removeLocalFilter = React.useCallback(
     (id: string) => {
       setLocalFilters((prev) => prev.filter((f) => f.id !== id))
+      delete pendingRef.current[id]
       // Also remove from parent if it exists there
       if (parentFilterState[id] !== undefined) {
         instance.removeFilter(id)
@@ -140,6 +155,7 @@ const DataTableFilterBar = ({
   // Clear every filter, including any new ones not yet committed to the parent
   const clearFilters = React.useCallback(() => {
     setLocalFilters([])
+    pendingRef.current = {}
     instance.clearFilters()
   }, [instance])
 
