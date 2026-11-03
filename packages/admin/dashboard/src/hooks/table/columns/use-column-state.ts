@@ -120,7 +120,9 @@ export function useColumnState(
   )
 
   // Track previous active view to detect changes
-  const prevActiveViewRef = useRef<ViewConfiguration | null | undefined>()
+  const prevActiveViewRef = useRef<ViewConfiguration | null | undefined>(
+    undefined
+  )
 
   // Sync local state when active view changes
   useEffect(() => {

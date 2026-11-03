@@ -9,7 +9,7 @@ export const KeyboundForm = React.forwardRef<
 >(({ onSubmit, onKeyDown, ...rest }, ref) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    onSubmit?.(event)
+    onSubmit?.(event as React.SubmitEvent<HTMLFormElement>)
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
