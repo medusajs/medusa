@@ -92,6 +92,9 @@ export const GET = async (
     {
       cache: {
         enable: true,
+        ttl: RBAC_CACHE_TTL,
+        tags: [RBAC_CACHE_TAGS.POLICY_LIST],
+        computeAutomaticTags: true,
       },
     }
   )

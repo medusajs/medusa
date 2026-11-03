@@ -1,4 +1,4 @@
-import { fetchPolicyResources } from "@medusajs/framework"
+import { fetchPolicyResources, RBAC_CACHE_TTL } from "@medusajs/framework"
 import {
   Modules,
   PolicyOperation,
@@ -216,6 +216,23 @@ medusaIntegrationTestRunner({
       ])
 
       expect(await coveredRoles()).not.toContain(coveredRole.name)
+    })
+
+    it("reflects a newly created policy in a super admin's permissions", async () => {
+      const permissions = () =>
+        api
+          .get("/rbac/me/permissions", adminHeaders)
+          .then((response) => response.data.permissions as string[])
+
+      expect(await permissions()).not.toContain("gadget:read")
+
+      await api.post(
+        "/rbac/policies",
+        { key: "gadget:read", resource: "gadget", operation: "read" },
+        adminHeaders
+      )
+
+      expect(await permissions()).toContain("gadget:read")
     })
 
     it("reflects creating and deleting a policy on a new resource in the governed set", async () => {

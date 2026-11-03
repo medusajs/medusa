@@ -368,6 +368,82 @@ medusaIntegrationTestRunner({
           ).toBeUndefined()
         })
 
+        it("refuses to delete a policy held by roles, naming the roles", async () => {
+          const {
+            data: { policy },
+          } = await api.post(
+            "/rbac/policies",
+            { key: "gadget:read", resource: "gadget", operation: "read" },
+            adminHeaders
+          )
+
+          for (const name of ["Gadget Viewer", "Gadget Auditor"]) {
+            await api.post(
+              "/rbac/roles",
+              { name, policy_ids: [policy.id] },
+              adminHeaders
+            )
+          }
+
+          const error = await api
+            .delete(`/rbac/policies/${policy.id}`, adminHeaders)
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data).toEqual({
+            type: "not_allowed",
+            message:
+              "Policy gadget:read can't be deleted while roles hold it. Remove it from these roles first: Gadget Auditor, Gadget Viewer",
+          })
+
+          const { data } = await api.get(
+            `/rbac/policies/${policy.id}`,
+            adminHeaders
+          )
+          expect(data.policy.id).toEqual(policy.id)
+        })
+
+        it("deletes a policy once it is no longer held by any role", async () => {
+          const {
+            data: { policy },
+          } = await api.post(
+            "/rbac/policies",
+            { key: "gizmo:read", resource: "gizmo", operation: "read" },
+            adminHeaders
+          )
+          const {
+            data: { role: detachedFrom },
+          } = await api.post(
+            "/rbac/roles",
+            { name: "Gizmo Viewer", policy_ids: [policy.id] },
+            adminHeaders
+          )
+          const {
+            data: { role: deletedRole },
+          } = await api.post(
+            "/rbac/roles",
+            { name: "Gizmo Auditor", policy_ids: [policy.id] },
+            adminHeaders
+          )
+
+          await api.delete(
+            `/rbac/roles/${detachedFrom.id}/policies/${policy.id}`,
+            adminHeaders
+          )
+          await api.delete(`/rbac/roles/${deletedRole.id}`, adminHeaders)
+
+          const response = await api.delete(
+            `/rbac/policies/${policy.id}`,
+            adminHeaders
+          )
+          expect(response.status).toEqual(200)
+
+          const error = await api
+            .get(`/rbac/policies/${policy.id}`, adminHeaders)
+            .catch((e) => e)
+          expect(error.response.status).toEqual(404)
+        })
+
         it("refuses to delete the super admin policy, even for a super admin", async () => {
           const error = await api
             .delete(
