@@ -1,0 +1,47 @@
+{
+  "name": "@medusajs/payment-adyen",
+  "version": "2.22.2",
+  "description": "Adyen payment provider for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medusajs/medusa.git",
+    "directory": "packages/modules/providers/payment-adyen"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
+  "files": [
+    "dist",
+    "AGENTS.md",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
+  ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
+    "build": "yarn run -T rimraf dist && yarn run -T tsc --build ./tsconfig.json",
+    "watch": "yarn run -T tsc --watch"
+  },
+  "devDependencies": {
+    "@medusajs/framework": "2.22.2"
+  },
+  "peerDependencies": {
+    "@medusajs/framework": "2.22.2"
+  },
+  "dependencies": {
+    "@adyen/api-library": "^32.2.0"
+  },
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-payment"
+  ]
+}

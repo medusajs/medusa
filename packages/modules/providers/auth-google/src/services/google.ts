@@ -11,7 +11,7 @@ import {
   MedusaError,
 } from "@medusajs/framework/utils"
 import jwt, { type JwtHeader, type JwtPayload } from "jsonwebtoken"
-import jwksClient, { JwksClient } from "jwks-rsa"
+import type { JwksClient } from "jwks-rsa"
 import { promisify } from "util"
 
 const verifyJwt = promisify<
@@ -38,7 +38,7 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
 
   protected config_: LocalServiceConfig
   protected logger_: Logger
-  protected jwks_: JwksClient
+  protected jwks_?: JwksClient
 
   static validateOptions(options: GoogleAuthProviderOptions) {
     if (!options.clientId) {
@@ -62,11 +62,20 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
     super(...arguments)
     this.config_ = options
     this.logger_ = logger
-    this.jwks_ = jwksClient({
-      jwksUri: GOOGLE_JWKS_URI,
-      cache: true,
-      rateLimit: true,
-    })
+  }
+
+  // jwks-rsa loads the ESM-only jose, which breaks Jest suites that only load this provider
+  protected getJwksClient_(): JwksClient {
+    if (!this.jwks_) {
+      const jwksClient = require("jwks-rsa") as typeof import("jwks-rsa")
+      this.jwks_ = jwksClient({
+        jwksUri: GOOGLE_JWKS_URI,
+        cache: true,
+        rateLimit: true,
+      })
+    }
+
+    return this.jwks_
   }
 
   protected getSigningKey_ = (
@@ -77,7 +86,7 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
       callback(new Error("ID token is missing 'kid' header"))
       return
     }
-    this.jwks_.getSigningKey(header.kid, (err, key) => {
+    this.getJwksClient_().getSigningKey(header.kid, (err, key) => {
       if (err || !key) {
         callback(err ?? new Error("Unable to resolve signing key"))
         return

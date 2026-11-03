@@ -9338,6 +9338,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             },
             {
               "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/payment/payment-provider/adyen",
+              "title": "Adyen",
+              "children": []
+            },
+            {
+              "loaded": true,
               "type": "ref",
               "path": "/integrations/guides/paypal",
               "title": "PayPal",
@@ -9621,6 +9628,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "updatePaymentSessionClientDataWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePaymentSessionClientDataWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "updateRefundReasonsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRefundReasonsWorkflow",
                       "children": []
@@ -9731,6 +9745,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updatePaymentCollectionStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePaymentCollectionStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updatePaymentSessionStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePaymentSessionStep",
                       "children": []
                     },
                     {

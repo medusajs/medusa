@@ -1,12 +1,12 @@
 {
-	"id": 66436,
+	"id": 66449,
 	"name": "search",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 66437,
+			"id": 66450,
 			"name": "SearchReindexStrategy",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -40,7 +40,7 @@
 					"fileName": "search/service.ts",
 					"line": 19,
 					"character": 12,
-					"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L19"
+					"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L19"
 				}
 			],
 			"type": {
@@ -58,7 +58,7 @@
 			}
 		},
 		{
-			"id": 66438,
+			"id": 66451,
 			"name": "SearchReindexInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -73,7 +73,7 @@
 			},
 			"children": [
 				{
-					"id": 66439,
+					"id": 66452,
 					"name": "index",
 					"variant": "declaration",
 					"kind": 1024,
@@ -93,7 +93,7 @@
 							"fileName": "search/service.ts",
 							"line": 29,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L29"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L29"
 						}
 					],
 					"type": {
@@ -114,7 +114,7 @@
 					}
 				},
 				{
-					"id": 66440,
+					"id": 66453,
 					"name": "strategy",
 					"variant": "declaration",
 					"kind": 1024,
@@ -145,18 +145,18 @@
 							"fileName": "search/service.ts",
 							"line": 36,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L36"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L36"
 						}
 					],
 					"type": {
 						"type": "reference",
-						"target": 66437,
+						"target": 66450,
 						"name": "SearchReindexStrategy",
 						"package": "@medusajs/types"
 					}
 				},
 				{
-					"id": 66441,
+					"id": 66454,
 					"name": "filters",
 					"variant": "declaration",
 					"kind": 1024,
@@ -184,7 +184,7 @@
 							"fileName": "search/service.ts",
 							"line": 42,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L42"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L42"
 						}
 					],
 					"type": {
@@ -208,7 +208,7 @@
 					}
 				},
 				{
-					"id": 66442,
+					"id": 66455,
 					"name": "since",
 					"variant": "declaration",
 					"kind": 1024,
@@ -244,7 +244,7 @@
 							"fileName": "search/service.ts",
 							"line": 50,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L50"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L50"
 						}
 					],
 					"type": {
@@ -262,10 +262,10 @@
 				{
 					"title": "Properties",
 					"children": [
-						66439,
-						66440,
-						66441,
-						66442
+						66452,
+						66453,
+						66454,
+						66455
 					]
 				}
 			],
@@ -274,12 +274,12 @@
 					"fileName": "search/service.ts",
 					"line": 24,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L24"
+					"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L24"
 				}
 			]
 		},
 		{
-			"id": 66443,
+			"id": 66456,
 			"name": "SearchReindexResult",
 			"variant": "declaration",
 			"kind": 256,
@@ -294,7 +294,7 @@
 			},
 			"children": [
 				{
-					"id": 66444,
+					"id": 66457,
 					"name": "job_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -312,7 +312,7 @@
 							"fileName": "search/service.ts",
 							"line": 60,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L60"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L60"
 						}
 					],
 					"type": {
@@ -321,7 +321,7 @@
 					}
 				},
 				{
-					"id": 66445,
+					"id": 66458,
 					"name": "indexes",
 					"variant": "declaration",
 					"kind": 1024,
@@ -339,7 +339,7 @@
 							"fileName": "search/service.ts",
 							"line": 65,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L65"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L65"
 						}
 					],
 					"type": {
@@ -355,8 +355,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						66444,
-						66445
+						66457,
+						66458
 					]
 				}
 			],
@@ -365,12 +365,12 @@
 					"fileName": "search/service.ts",
 					"line": 56,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L56"
+					"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L56"
 				}
 			]
 		},
 		{
-			"id": 66446,
+			"id": 66459,
 			"name": "SearchIndexDeleteResult",
 			"variant": "declaration",
 			"kind": 256,
@@ -385,7 +385,7 @@
 			},
 			"children": [
 				{
-					"id": 66447,
+					"id": 66460,
 					"name": "index",
 					"variant": "declaration",
 					"kind": 1024,
@@ -403,7 +403,7 @@
 							"fileName": "search/service.ts",
 							"line": 75,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L75"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L75"
 						}
 					],
 					"type": {
@@ -412,7 +412,7 @@
 					}
 				},
 				{
-					"id": 66448,
+					"id": 66461,
 					"name": "deleted_versions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -438,7 +438,7 @@
 							"fileName": "search/service.ts",
 							"line": 81,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L81"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L81"
 						}
 					],
 					"type": {
@@ -451,8 +451,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						66447,
-						66448
+						66460,
+						66461
 					]
 				}
 			],
@@ -461,19 +461,19 @@
 					"fileName": "search/service.ts",
 					"line": 71,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L71"
+					"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L71"
 				}
 			]
 		},
 		{
-			"id": 66449,
+			"id": 66462,
 			"name": "ISearchModuleService",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 66450,
+					"id": 66463,
 					"name": "search",
 					"variant": "declaration",
 					"kind": 2048,
@@ -483,12 +483,12 @@
 							"fileName": "search/service.ts",
 							"line": 129,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L129"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L129"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66451,
+							"id": 66464,
 							"name": "search",
 							"variant": "signature",
 							"kind": 4096,
@@ -554,12 +554,12 @@
 									"fileName": "search/service.ts",
 									"line": 129,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L129"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L129"
 								}
 							],
 							"typeParameters": [
 								{
-									"id": 66452,
+									"id": 66465,
 									"name": "T",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -587,7 +587,7 @@
 							],
 							"parameters": [
 								{
-									"id": 66453,
+									"id": 66466,
 									"name": "query",
 									"variant": "param",
 									"kind": 32768,
@@ -627,7 +627,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 66452,
+												"target": 66465,
 												"name": "T",
 												"package": "@medusajs/types",
 												"refersToTypeParameter": true
@@ -644,7 +644,7 @@
 					]
 				},
 				{
-					"id": 66454,
+					"id": 66467,
 					"name": "searchMany",
 					"variant": "declaration",
 					"kind": 2048,
@@ -654,12 +654,12 @@
 							"fileName": "search/service.ts",
 							"line": 159,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L159"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L159"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66455,
+							"id": 66468,
 							"name": "searchMany",
 							"variant": "signature",
 							"kind": 4096,
@@ -713,12 +713,12 @@
 									"fileName": "search/service.ts",
 									"line": 159,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L159"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L159"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66456,
+									"id": 66469,
 									"name": "queries",
 									"variant": "param",
 									"kind": 32768,
@@ -799,7 +799,7 @@
 					]
 				},
 				{
-					"id": 66457,
+					"id": 66470,
 					"name": "upsertDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -809,12 +809,12 @@
 							"fileName": "search/service.ts",
 							"line": 190,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L190"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L190"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66458,
+							"id": 66471,
 							"name": "upsertDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -876,12 +876,12 @@
 									"fileName": "search/service.ts",
 									"line": 190,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L190"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L190"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66459,
+									"id": 66472,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -897,14 +897,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 66460,
+											"id": 66473,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 66461,
+													"id": 66474,
 													"name": "index",
 													"variant": "declaration",
 													"kind": 1024,
@@ -922,7 +922,7 @@
 															"fileName": "search/service.ts",
 															"line": 191,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L191"
+															"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L191"
 														}
 													],
 													"type": {
@@ -931,7 +931,7 @@
 													}
 												},
 												{
-													"id": 66462,
+													"id": 66475,
 													"name": "documents",
 													"variant": "declaration",
 													"kind": 1024,
@@ -957,7 +957,7 @@
 															"fileName": "search/service.ts",
 															"line": 192,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L192"
+															"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L192"
 														}
 													],
 													"type": {
@@ -978,8 +978,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														66461,
-														66462
+														66474,
+														66475
 													]
 												}
 											],
@@ -988,7 +988,7 @@
 													"fileName": "search/service.ts",
 													"line": 190,
 													"character": 25,
-													"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L190"
+													"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L190"
 												}
 											]
 										}
@@ -1019,7 +1019,7 @@
 					]
 				},
 				{
-					"id": 66463,
+					"id": 66476,
 					"name": "deleteDocuments",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1029,12 +1029,12 @@
 							"fileName": "search/service.ts",
 							"line": 230,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L230"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L230"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66464,
+							"id": 66477,
 							"name": "deleteDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1092,12 +1092,12 @@
 									"fileName": "search/service.ts",
 									"line": 230,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L230"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L230"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66465,
+									"id": 66478,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -1113,14 +1113,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 66466,
+											"id": 66479,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 66467,
+													"id": 66480,
 													"name": "index",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1138,7 +1138,7 @@
 															"fileName": "search/service.ts",
 															"line": 231,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L231"
+															"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L231"
 														}
 													],
 													"type": {
@@ -1147,7 +1147,7 @@
 													}
 												},
 												{
-													"id": 66468,
+													"id": 66481,
 													"name": "filters",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1165,7 +1165,7 @@
 															"fileName": "search/service.ts",
 															"line": 232,
 															"character": 4,
-															"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L232"
+															"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L232"
 														}
 													],
 													"type": {
@@ -1183,8 +1183,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														66467,
-														66468
+														66480,
+														66481
 													]
 												}
 											],
@@ -1193,7 +1193,7 @@
 													"fileName": "search/service.ts",
 													"line": 230,
 													"character": 25,
-													"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L230"
+													"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L230"
 												}
 											]
 										}
@@ -1224,7 +1224,7 @@
 					]
 				},
 				{
-					"id": 66469,
+					"id": 66482,
 					"name": "ingest",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1234,12 +1234,12 @@
 							"fileName": "search/service.ts",
 							"line": 259,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L259"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L259"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66470,
+							"id": 66483,
 							"name": "ingest",
 							"variant": "signature",
 							"kind": 4096,
@@ -1293,12 +1293,12 @@
 									"fileName": "search/service.ts",
 									"line": 259,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L259"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L259"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66471,
+									"id": 66484,
 									"name": "event",
 									"variant": "param",
 									"kind": 32768,
@@ -1355,7 +1355,7 @@
 					]
 				},
 				{
-					"id": 66472,
+					"id": 66485,
 					"name": "listIndexes",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1365,12 +1365,12 @@
 							"fileName": "search/service.ts",
 							"line": 271,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L271"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L271"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66473,
+							"id": 66486,
 							"name": "listIndexes",
 							"variant": "signature",
 							"kind": 4096,
@@ -1416,7 +1416,7 @@
 									"fileName": "search/service.ts",
 									"line": 271,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L271"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L271"
 								}
 							],
 							"type": {
@@ -1446,7 +1446,7 @@
 					]
 				},
 				{
-					"id": 66474,
+					"id": 66487,
 					"name": "listRetrievableFields",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1456,12 +1456,12 @@
 							"fileName": "search/service.ts",
 							"line": 285,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L285"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L285"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66475,
+							"id": 66488,
 							"name": "listRetrievableFields",
 							"variant": "signature",
 							"kind": 4096,
@@ -1531,12 +1531,12 @@
 									"fileName": "search/service.ts",
 									"line": 285,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L285"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L285"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66476,
+									"id": 66489,
 									"name": "index",
 									"variant": "param",
 									"kind": 32768,
@@ -1566,7 +1566,7 @@
 					]
 				},
 				{
-					"id": 66477,
+					"id": 66490,
 					"name": "getIndex",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1576,12 +1576,12 @@
 							"fileName": "search/service.ts",
 							"line": 299,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L299"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L299"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66478,
+							"id": 66491,
 							"name": "getIndex",
 							"variant": "signature",
 							"kind": 4096,
@@ -1635,12 +1635,12 @@
 									"fileName": "search/service.ts",
 									"line": 299,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L299"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L299"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66479,
+									"id": 66492,
 									"name": "index",
 									"variant": "param",
 									"kind": 32768,
@@ -1672,7 +1672,7 @@
 					]
 				},
 				{
-					"id": 66480,
+					"id": 66493,
 					"name": "reindex",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1682,12 +1682,12 @@
 							"fileName": "search/service.ts",
 							"line": 339,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L339"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L339"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66481,
+							"id": 66494,
 							"name": "reindex",
 							"variant": "signature",
 							"kind": 4096,
@@ -1753,12 +1753,12 @@
 									"fileName": "search/service.ts",
 									"line": 339,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L339"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L339"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66482,
+									"id": 66495,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -1783,7 +1783,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 66438,
+										"target": 66451,
 										"name": "SearchReindexInput",
 										"package": "@medusajs/types"
 									}
@@ -1798,7 +1798,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 66443,
+										"target": 66456,
 										"name": "SearchReindexResult",
 										"package": "@medusajs/types"
 									}
@@ -1810,7 +1810,7 @@
 					]
 				},
 				{
-					"id": 66483,
+					"id": 66496,
 					"name": "deleteIndex",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1820,12 +1820,12 @@
 							"fileName": "search/service.ts",
 							"line": 359,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L359"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L359"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66484,
+							"id": 66497,
 							"name": "deleteIndex",
 							"variant": "signature",
 							"kind": 4096,
@@ -1863,12 +1863,12 @@
 									"fileName": "search/service.ts",
 									"line": 359,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L359"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L359"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66485,
+									"id": 66498,
 									"name": "index",
 									"variant": "param",
 									"kind": 32768,
@@ -1896,7 +1896,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 66446,
+										"target": 66459,
 										"name": "SearchIndexDeleteResult",
 										"package": "@medusajs/types"
 									}
@@ -1908,7 +1908,7 @@
 					]
 				},
 				{
-					"id": 66486,
+					"id": 66499,
 					"name": "createIndexMigrationPlan",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1918,12 +1918,12 @@
 							"fileName": "search/service.ts",
 							"line": 378,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L378"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L378"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66487,
+							"id": 66500,
 							"name": "createIndexMigrationPlan",
 							"variant": "signature",
 							"kind": 4096,
@@ -1938,7 +1938,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "executeIndexMigrationPlan",
-										"target": 66488
+										"target": 66501
 									},
 									{
 										"kind": "text",
@@ -1973,7 +1973,7 @@
 												"kind": "inline-tag",
 												"tag": "@link",
 												"text": "executeIndexMigrationPlan",
-												"target": 66488
+												"target": 66501
 											},
 											{
 												"kind": "text",
@@ -1997,7 +1997,7 @@
 									"fileName": "search/service.ts",
 									"line": 378,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L378"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L378"
 								}
 							],
 							"type": {
@@ -2027,7 +2027,7 @@
 					]
 				},
 				{
-					"id": 66488,
+					"id": 66501,
 					"name": "executeIndexMigrationPlan",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2037,12 +2037,12 @@
 							"fileName": "search/service.ts",
 							"line": 397,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L397"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L397"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66489,
+							"id": 66502,
 							"name": "executeIndexMigrationPlan",
 							"variant": "signature",
 							"kind": 4096,
@@ -2080,12 +2080,12 @@
 									"fileName": "search/service.ts",
 									"line": 397,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L397"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L397"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66490,
+									"id": 66503,
 									"name": "actions",
 									"variant": "param",
 									"kind": 32768,
@@ -2100,7 +2100,7 @@
 												"kind": "inline-tag",
 												"tag": "@link",
 												"text": "createIndexMigrationPlan",
-												"target": 66486
+												"target": 66499
 											},
 											{
 												"kind": "text",
@@ -2145,18 +2145,18 @@
 				{
 					"title": "Methods",
 					"children": [
-						66450,
-						66454,
-						66457,
 						66463,
-						66469,
-						66472,
-						66474,
-						66477,
-						66480,
-						66483,
-						66486,
-						66488
+						66467,
+						66470,
+						66476,
+						66482,
+						66485,
+						66487,
+						66490,
+						66493,
+						66496,
+						66499,
+						66501
 					]
 				}
 			],
@@ -2165,7 +2165,7 @@
 					"fileName": "search/service.ts",
 					"line": 84,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/search/service.ts#L84"
+					"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/search/service.ts#L84"
 				}
 			],
 			"extendedTypes": [
@@ -2185,238 +2185,238 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				66438,
-				66443,
-				66446,
-				66449
+				66451,
+				66456,
+				66459,
+				66462
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				66437
+				66450
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"66436": {
+		"66449": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": ""
 		},
-		"66437": {
+		"66450": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchReindexStrategy"
 		},
-		"66438": {
+		"66451": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchReindexInput"
 		},
-		"66439": {
+		"66452": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchReindexInput.index"
 		},
-		"66440": {
+		"66453": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchReindexInput.strategy"
 		},
-		"66441": {
+		"66454": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchReindexInput.filters"
 		},
-		"66442": {
+		"66455": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchReindexInput.since"
 		},
-		"66443": {
+		"66456": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchReindexResult"
 		},
-		"66444": {
+		"66457": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchReindexResult.job_id"
 		},
-		"66445": {
+		"66458": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchReindexResult.indexes"
 		},
-		"66446": {
+		"66459": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchIndexDeleteResult"
 		},
-		"66447": {
+		"66460": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchIndexDeleteResult.index"
 		},
-		"66448": {
+		"66461": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "SearchIndexDeleteResult.deleted_versions"
 		},
-		"66449": {
+		"66462": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "ISearchModuleService"
 		},
-		"66450": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.search"
-		},
-		"66451": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.search"
-		},
-		"66452": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "T"
-		},
-		"66453": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "query"
-		},
-		"66454": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.searchMany"
-		},
-		"66455": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.searchMany"
-		},
-		"66456": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "queries"
-		},
-		"66457": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.upsertDocuments"
-		},
-		"66458": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.upsertDocuments"
-		},
-		"66459": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "input"
-		},
-		"66460": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "__type"
-		},
-		"66461": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "__type.index"
-		},
-		"66462": {
-			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "__type.documents"
-		},
 		"66463": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.deleteDocuments"
+			"qualifiedName": "ISearchModuleService.search"
 		},
 		"66464": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.deleteDocuments"
+			"qualifiedName": "ISearchModuleService.search"
 		},
 		"66465": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "input"
+			"qualifiedName": "T"
 		},
 		"66466": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "query"
 		},
 		"66467": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "__type.index"
+			"qualifiedName": "ISearchModuleService.searchMany"
 		},
 		"66468": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "__type.filters"
+			"qualifiedName": "ISearchModuleService.searchMany"
 		},
 		"66469": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.ingest"
+			"qualifiedName": "queries"
 		},
 		"66470": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.ingest"
+			"qualifiedName": "ISearchModuleService.upsertDocuments"
 		},
 		"66471": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "event"
+			"qualifiedName": "ISearchModuleService.upsertDocuments"
 		},
 		"66472": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.listIndexes"
+			"qualifiedName": "input"
 		},
 		"66473": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.listIndexes"
+			"qualifiedName": "__type"
 		},
 		"66474": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.listRetrievableFields"
+			"qualifiedName": "__type.index"
 		},
 		"66475": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.listRetrievableFields"
+			"qualifiedName": "__type.documents"
 		},
 		"66476": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "index"
+			"qualifiedName": "ISearchModuleService.deleteDocuments"
 		},
 		"66477": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.getIndex"
+			"qualifiedName": "ISearchModuleService.deleteDocuments"
 		},
 		"66478": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.getIndex"
+			"qualifiedName": "input"
 		},
 		"66479": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "index"
+			"qualifiedName": "__type"
 		},
 		"66480": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.reindex"
+			"qualifiedName": "__type.index"
 		},
 		"66481": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.reindex"
+			"qualifiedName": "__type.filters"
 		},
 		"66482": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "input"
+			"qualifiedName": "ISearchModuleService.ingest"
 		},
 		"66483": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.deleteIndex"
+			"qualifiedName": "ISearchModuleService.ingest"
 		},
 		"66484": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.deleteIndex"
+			"qualifiedName": "event"
 		},
 		"66485": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "index"
+			"qualifiedName": "ISearchModuleService.listIndexes"
 		},
 		"66486": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.createIndexMigrationPlan"
+			"qualifiedName": "ISearchModuleService.listIndexes"
 		},
 		"66487": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.createIndexMigrationPlan"
+			"qualifiedName": "ISearchModuleService.listRetrievableFields"
 		},
 		"66488": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.executeIndexMigrationPlan"
+			"qualifiedName": "ISearchModuleService.listRetrievableFields"
 		},
 		"66489": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
-			"qualifiedName": "ISearchModuleService.executeIndexMigrationPlan"
+			"qualifiedName": "index"
 		},
 		"66490": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.getIndex"
+		},
+		"66491": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.getIndex"
+		},
+		"66492": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "index"
+		},
+		"66493": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.reindex"
+		},
+		"66494": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.reindex"
+		},
+		"66495": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "input"
+		},
+		"66496": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.deleteIndex"
+		},
+		"66497": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.deleteIndex"
+		},
+		"66498": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "index"
+		},
+		"66499": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.createIndexMigrationPlan"
+		},
+		"66500": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.createIndexMigrationPlan"
+		},
+		"66501": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.executeIndexMigrationPlan"
+		},
+		"66502": {
+			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
+			"qualifiedName": "ISearchModuleService.executeIndexMigrationPlan"
+		},
+		"66503": {
 			"sourceFileName": "../../../../packages/core/types/src/search/service.ts",
 			"qualifiedName": "actions"
 		}
@@ -2426,7 +2426,7 @@
 			"1": "../../../../packages/core/types/src/search/service.ts"
 		},
 		"reflections": {
-			"1": 66436
+			"1": 66449
 		}
 	}
 }

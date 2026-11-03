@@ -531,7 +531,6 @@ function normalizeProjectConfig(
 
   const mergedCloudOptions: MedusaCloudOptions = {
     environmentHandle: process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE,
-    sandboxHandle: process.env.MEDUSA_CLOUD_SANDBOX_HANDLE,
     apiKey: process.env.MEDUSA_CLOUD_API_KEY,
     webhookSecret: process.env.MEDUSA_CLOUD_WEBHOOK_SECRET,
     emailsEndpoint: process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT,
@@ -547,6 +546,7 @@ function normalizeProjectConfig(
       process.env.MEDUSA_CLOUD_OAUTH_DISABLED === "true" ? true : undefined,
     oauthJwksUri: process.env.MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT,
     oauthAudience: process.env.MEDUSA_CLOUD_OAUTH_AUDIENCE,
+    oauthClientSecret: process.env.MEDUSA_CLOUD_OAUTH_CLIENT_SECRET,
     ...cloud,
   }
   const hasCloudOptions = Object.values(mergedCloudOptions).some(
@@ -679,7 +679,6 @@ function applyCloudOptionsToModules(
             api_key: config.apiKey,
             endpoint: config.emailsEndpoint,
             environment_handle: config.environmentHandle,
-            sandbox_handle: config.sandboxHandle,
           },
           ...(module.options ?? {}),
         }
@@ -692,7 +691,6 @@ function applyCloudOptionsToModules(
             endpoint: config.paymentsEndpoint,
             payment_accounts: config.paymentAccounts,
             environment_handle: config.environmentHandle,
-            sandbox_handle: config.sandboxHandle,
           },
           ...(module.options ?? {}),
         }
@@ -718,8 +716,8 @@ function applyCloudOptionsToModules(
             oauth_token_endpoint: config.oauthTokenEndpoint,
             oauth_jwks_uri: config.oauthJwksUri,
             oauth_audience: config.oauthAudience,
+            oauth_client_secret: config.oauthClientSecret,
             environment_handle: config.environmentHandle,
-            sandbox_handle: config.sandboxHandle,
             api_key: config.apiKey,
             callback_url: callbackUrl,
             disabled: config.oauthDisabled,

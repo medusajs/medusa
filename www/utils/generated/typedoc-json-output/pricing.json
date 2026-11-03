@@ -1429,7 +1429,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/repository-service.ts",
-							"line": 148,
+							"line": 144,
 							"character": 2
 						}
 					],
@@ -1456,7 +1456,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/repository-service.ts",
-					"line": 144,
+					"line": 140,
 					"character": 12
 				}
 			],
@@ -1508,7 +1508,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/repository-service.ts",
-							"line": 160,
+							"line": 156,
 							"character": 2
 						}
 					],
@@ -1535,7 +1535,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/repository-service.ts",
-					"line": 156,
+					"line": 152,
 					"character": 12
 				}
 			],
@@ -2067,7 +2067,7 @@
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 											"line": 45,
-											"character": 6
+											"character": 8
 										}
 									],
 									"type": {
@@ -2150,7 +2150,7 @@
 											{
 												"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 												"line": 49,
-												"character": 6
+												"character": 10
 											}
 										],
 										"type": {
@@ -2171,7 +2171,7 @@
 									{
 										"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 										"line": 48,
-										"character": 14
+										"character": 16
 									}
 								]
 							}
@@ -2224,7 +2224,7 @@
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 													"line": 53,
-													"character": 6
+													"character": 12
 												}
 											],
 											"type": {
@@ -2245,7 +2245,7 @@
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
 											"line": 52,
-											"character": 14
+											"character": 18
 										}
 									]
 								}
@@ -3052,7 +3052,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-					"line": 87,
+					"line": 84,
 					"character": 5
 				}
 			],
@@ -3087,7 +3087,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-					"line": 89,
+					"line": 86,
 					"character": 12
 				}
 			],
@@ -3287,8 +3287,8 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-											"line": 99,
-											"character": 16
+											"line": 91,
+											"character": 18
 										}
 									],
 									"indexSignatures": [
@@ -3301,8 +3301,8 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-													"line": 99,
-													"character": 18
+													"line": 91,
+													"character": 20
 												}
 											],
 											"parameters": [
@@ -3421,7 +3421,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/dal/utils.ts",
-					"line": 107,
+					"line": 99,
 					"character": 12
 				}
 			],
@@ -5568,7 +5568,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-					"line": 143,
+					"line": 136,
 					"character": 12
 				}
 			],
@@ -5601,7 +5601,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 146,
+											"line": 139,
 											"character": 4
 										}
 									],
@@ -5706,7 +5706,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 168,
+											"line": 161,
 											"character": 4
 										}
 									],
@@ -5726,7 +5726,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 169,
+											"line": 162,
 											"character": 4
 										}
 									],
@@ -5754,7 +5754,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 173,
+											"line": 166,
 											"character": 4
 										}
 									],
@@ -5793,7 +5793,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 145,
+									"line": 138,
 									"character": 2
 								}
 							]
@@ -5813,7 +5813,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-					"line": 191,
+					"line": 184,
 					"character": 12
 				}
 			],
@@ -5886,7 +5886,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 198,
+											"line": 191,
 											"character": 2
 										}
 									],
@@ -5906,7 +5906,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 199,
+											"line": 192,
 											"character": 2
 										}
 									],
@@ -5941,7 +5941,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 200,
+											"line": 193,
 											"character": 2
 										}
 									],
@@ -5966,7 +5966,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 201,
+											"line": 194,
 											"character": 2
 										}
 									],
@@ -5990,7 +5990,7 @@
 														"sources": [
 															{
 																"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																"line": 202,
+																"line": 195,
 																"character": 4
 															}
 														],
@@ -6010,7 +6010,7 @@
 														"sources": [
 															{
 																"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																"line": 203,
+																"line": 196,
 																"character": 4
 															}
 														],
@@ -6030,7 +6030,7 @@
 														"sources": [
 															{
 																"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																"line": 204,
+																"line": 197,
 																"character": 4
 															}
 														],
@@ -6070,7 +6070,7 @@
 																						"sources": [
 																							{
 																								"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																								"line": 208,
+																								"line": 201,
 																								"character": 10
 																							}
 																						],
@@ -6090,7 +6090,7 @@
 																						"sources": [
 																							{
 																								"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																								"line": 209,
+																								"line": 202,
 																								"character": 10
 																							}
 																						],
@@ -6113,7 +6113,7 @@
 																						"sources": [
 																							{
 																								"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																								"line": 210,
+																								"line": 203,
 																								"character": 10
 																							}
 																						],
@@ -6136,7 +6136,7 @@
 																				"sources": [
 																					{
 																						"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																						"line": 207,
+																						"line": 200,
 																						"character": 8
 																					}
 																				]
@@ -6158,7 +6158,7 @@
 														"sources": [
 															{
 																"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-																"line": 213,
+																"line": 206,
 																"character": 4
 															}
 														],
@@ -6199,7 +6199,7 @@
 												"sources": [
 													{
 														"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-														"line": 201,
+														"line": 194,
 														"character": 12
 													}
 												]
@@ -6218,7 +6218,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 215,
+											"line": 208,
 											"character": 2
 										}
 									],
@@ -6238,7 +6238,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 216,
+											"line": 209,
 											"character": 2
 										}
 									],
@@ -6269,7 +6269,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 220,
+											"line": 213,
 											"character": 2
 										}
 									],
@@ -6297,7 +6297,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 224,
+											"line": 217,
 											"character": 2
 										}
 									],
@@ -6340,7 +6340,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 228,
+											"line": 221,
 											"character": 2
 										}
 									],
@@ -6368,7 +6368,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 233,
+											"line": 226,
 											"character": 2
 										}
 									],
@@ -6402,7 +6402,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 239,
+											"line": 232,
 											"character": 2
 										}
 									],
@@ -6422,7 +6422,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 240,
+											"line": 233,
 											"character": 2
 										}
 									],
@@ -6454,7 +6454,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 244,
+															"line": 237,
 															"character": 4
 														}
 													],
@@ -6482,7 +6482,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 248,
+															"line": 241,
 															"character": 4
 														}
 													],
@@ -6502,7 +6502,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 249,
+															"line": 242,
 															"character": 4
 														}
 													],
@@ -6527,7 +6527,7 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-													"line": 240,
+													"line": 233,
 													"character": 19
 												}
 											]
@@ -6557,7 +6557,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 194,
+									"line": 187,
 									"character": 4
 								}
 							]
@@ -6575,7 +6575,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-					"line": 253,
+					"line": 246,
 					"character": 20
 				}
 			],
@@ -6616,7 +6616,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 257,
+											"line": 250,
 											"character": 2
 										}
 									],
@@ -6644,7 +6644,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 262,
+											"line": 255,
 											"character": 2
 										}
 									],
@@ -6675,7 +6675,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 267,
+											"line": 260,
 											"character": 2
 										}
 									],
@@ -6698,7 +6698,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 253,
+									"line": 246,
 									"character": 68
 								}
 							]
@@ -6725,7 +6725,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-							"line": 336,
+							"line": 328,
 							"character": 2
 						}
 					],
@@ -6745,7 +6745,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 336,
+									"line": 328,
 									"character": 2
 								}
 							],
@@ -6775,7 +6775,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-							"line": 341,
+							"line": 333,
 							"character": 2
 						}
 					],
@@ -6799,7 +6799,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 342,
+											"line": 334,
 											"character": 4
 										}
 									],
@@ -6814,7 +6814,7 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-													"line": 342,
+													"line": 334,
 													"character": 25
 												}
 											],
@@ -6828,7 +6828,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 342,
+															"line": 334,
 															"character": 25
 														}
 													],
@@ -6863,7 +6863,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 343,
+											"line": 335,
 											"character": 4
 										}
 									],
@@ -6878,7 +6878,7 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-													"line": 343,
+													"line": 335,
 													"character": 28
 												}
 											],
@@ -6892,7 +6892,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 343,
+															"line": 335,
 															"character": 28
 														}
 													],
@@ -6927,7 +6927,7 @@
 									"sources": [
 										{
 											"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-											"line": 344,
+											"line": 336,
 											"character": 4
 										}
 									],
@@ -6942,7 +6942,7 @@
 											"sources": [
 												{
 													"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-													"line": 344,
+													"line": 336,
 													"character": 35
 												}
 											],
@@ -6956,7 +6956,7 @@
 													"sources": [
 														{
 															"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-															"line": 344,
+															"line": 336,
 															"character": 35
 														}
 													],
@@ -6994,7 +6994,7 @@
 							"sources": [
 								{
 									"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-									"line": 341,
+									"line": 333,
 									"character": 12
 								}
 							]
@@ -7019,7 +7019,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/modules-sdk/index.ts",
-					"line": 332,
+					"line": 324,
 					"character": 17
 				}
 			],
@@ -8015,7 +8015,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/money-amount.ts",
-							"line": 149,
+							"line": 148,
 							"character": 2
 						}
 					],
@@ -8046,7 +8046,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/money-amount.ts",
-							"line": 153,
+							"line": 152,
 							"character": 2
 						}
 					],
@@ -10234,7 +10234,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 235,
+							"line": 234,
 							"character": 2
 						}
 					],
@@ -10262,7 +10262,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 239,
+							"line": 238,
 							"character": 2
 						}
 					],
@@ -10302,7 +10302,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 243,
+							"line": 242,
 							"character": 2
 						}
 					],
@@ -10338,7 +10338,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 247,
+							"line": 246,
 							"character": 2
 						}
 					],
@@ -10374,7 +10374,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 251,
+							"line": 250,
 							"character": 2
 						}
 					],
@@ -10407,7 +10407,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 255,
+							"line": 254,
 							"character": 2
 						}
 					],
@@ -10609,7 +10609,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 268,
+							"line": 266,
 							"character": 2
 						}
 					],
@@ -10640,7 +10640,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 272,
+							"line": 270,
 							"character": 2
 						}
 					],
@@ -10671,7 +10671,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 276,
+							"line": 274,
 							"character": 2
 						}
 					],
@@ -10699,7 +10699,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-					"line": 263,
+					"line": 262,
 					"character": 17
 				}
 			],
@@ -10752,7 +10752,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 288,
+							"line": 286,
 							"character": 2
 						}
 					],
@@ -10778,7 +10778,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 293,
+							"line": 291,
 							"character": 2
 						}
 					],
@@ -10804,7 +10804,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 298,
+							"line": 296,
 							"character": 2
 						}
 					],
@@ -10845,7 +10845,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 304,
+							"line": 302,
 							"character": 2
 						}
 					],
@@ -10871,7 +10871,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-					"line": 284,
+					"line": 282,
 					"character": 17
 				}
 			]
@@ -10908,7 +10908,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 332,
+							"line": 330,
 							"character": 2
 						}
 					],
@@ -10934,7 +10934,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 336,
+							"line": 334,
 							"character": 2
 						}
 					],
@@ -10961,7 +10961,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-					"line": 328,
+					"line": 326,
 					"character": 17
 				}
 			]
@@ -10998,7 +10998,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 348,
+							"line": 346,
 							"character": 2
 						}
 					],
@@ -11024,7 +11024,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 352,
+							"line": 350,
 							"character": 2
 						}
 					],
@@ -11051,7 +11051,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-					"line": 344,
+					"line": 342,
 					"character": 17
 				}
 			]
@@ -11088,7 +11088,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 364,
+							"line": 362,
 							"character": 2
 						}
 					],
@@ -11114,7 +11114,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 369,
+							"line": 367,
 							"character": 2
 						}
 					],
@@ -11163,7 +11163,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-					"line": 360,
+					"line": 358,
 					"character": 17
 				}
 			]
@@ -11200,7 +11200,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 381,
+							"line": 379,
 							"character": 2
 						}
 					],
@@ -11226,7 +11226,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-							"line": 385,
+							"line": 383,
 							"character": 2
 						}
 					],
@@ -11251,7 +11251,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-list.ts",
-					"line": 377,
+					"line": 375,
 					"character": 17
 				}
 			]
@@ -12096,7 +12096,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-preference.ts",
-							"line": 86,
+							"line": 85,
 							"character": 2
 						}
 					],
@@ -12160,7 +12160,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-preference.ts",
-							"line": 90,
+							"line": 89,
 							"character": 2
 						}
 					],
@@ -12224,7 +12224,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-preference.ts",
-							"line": 94,
+							"line": 93,
 							"character": 2
 						}
 					],
@@ -13209,7 +13209,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-rule.ts",
-							"line": 126,
+							"line": 125,
 							"character": 2
 						}
 					],
@@ -13273,7 +13273,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-rule.ts",
-							"line": 130,
+							"line": 129,
 							"character": 2
 						}
 					],
@@ -13337,7 +13337,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-rule.ts",
-							"line": 134,
+							"line": 133,
 							"character": 2
 						}
 					],
@@ -13401,7 +13401,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-rule.ts",
-							"line": 138,
+							"line": 137,
 							"character": 2
 						}
 					],
@@ -13465,7 +13465,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-rule.ts",
-							"line": 142,
+							"line": 141,
 							"character": 2
 						}
 					],
@@ -13529,7 +13529,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-rule.ts",
-							"line": 146,
+							"line": 145,
 							"character": 2
 						}
 					],
@@ -13593,7 +13593,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-rule.ts",
-							"line": 150,
+							"line": 149,
 							"character": 2
 						}
 					],
@@ -13688,7 +13688,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-rule.ts",
-					"line": 159,
+					"line": 158,
 					"character": 12
 				}
 			],
@@ -15308,7 +15308,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-							"line": 237,
+							"line": 239,
 							"character": 2
 						}
 					],
@@ -15336,7 +15336,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-					"line": 233,
+					"line": 235,
 					"character": 17
 				}
 			],
@@ -15381,7 +15381,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-							"line": 261,
+							"line": 263,
 							"character": 2
 						}
 					],
@@ -15407,7 +15407,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-							"line": 265,
+							"line": 267,
 							"character": 2
 						}
 					],
@@ -15434,7 +15434,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-					"line": 257,
+					"line": 259,
 					"character": 17
 				}
 			]
@@ -15473,7 +15473,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-							"line": 277,
+							"line": 279,
 							"character": 2
 						}
 					],
@@ -15499,7 +15499,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-					"line": 273,
+					"line": 275,
 					"character": 17
 				}
 			]
@@ -15538,7 +15538,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-							"line": 290,
+							"line": 292,
 							"character": 2
 						}
 					],
@@ -15567,7 +15567,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-							"line": 302,
+							"line": 304,
 							"character": 2
 						}
 					],
@@ -15599,7 +15599,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-					"line": 285,
+					"line": 287,
 					"character": 17
 				}
 			],
@@ -15646,7 +15646,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-							"line": 302,
+							"line": 304,
 							"character": 2
 						}
 					],
@@ -15672,7 +15672,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-					"line": 298,
+					"line": 300,
 					"character": 17
 				}
 			],
@@ -15917,7 +15917,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-							"line": 316,
+							"line": 317,
 							"character": 2
 						}
 					],
@@ -15948,7 +15948,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-							"line": 320,
+							"line": 321,
 							"character": 2
 						}
 					],
@@ -15975,7 +15975,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price-set.ts",
-					"line": 310,
+					"line": 312,
 					"character": 17
 				}
 			],
@@ -16624,7 +16624,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price.ts",
-							"line": 129,
+							"line": 128,
 							"character": 2
 						}
 					],
@@ -16655,7 +16655,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price.ts",
-							"line": 133,
+							"line": 132,
 							"character": 2
 						}
 					],
@@ -16695,7 +16695,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price.ts",
-							"line": 137,
+							"line": 136,
 							"character": 2
 						}
 					],
@@ -16726,7 +16726,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/pricing/common/price.ts",
-							"line": 141,
+							"line": 140,
 							"character": 2
 						}
 					],
@@ -16802,7 +16802,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 102,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L102"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L102"
 						}
 					],
 					"signatures": [
@@ -16865,7 +16865,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 102,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L102"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L102"
 								}
 							],
 							"parameters": [
@@ -16971,7 +16971,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 144,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L144"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L144"
 						}
 					],
 					"signatures": [
@@ -17026,7 +17026,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 144,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L144"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L144"
 								}
 							],
 							"parameters": [
@@ -17151,7 +17151,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 205,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L205"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L205"
 						}
 					],
 					"signatures": [
@@ -17246,7 +17246,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 205,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L205"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L205"
 								}
 							],
 							"parameters": [
@@ -17378,7 +17378,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 269,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L269"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L269"
 						}
 					],
 					"signatures": [
@@ -17473,7 +17473,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 269,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L269"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L269"
 								}
 							],
 							"parameters": [
@@ -17614,13 +17614,13 @@
 							"fileName": "pricing/service.ts",
 							"line": 338,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L338"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L338"
 						},
 						{
 							"fileName": "pricing/service.ts",
 							"line": 401,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L401"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L401"
 						}
 					],
 					"signatures": [
@@ -17675,7 +17675,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 338,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L338"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L338"
 								}
 							],
 							"parameters": [
@@ -17781,7 +17781,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 401,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L401"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L401"
 								}
 							],
 							"parameters": [
@@ -17867,13 +17867,13 @@
 							"fileName": "pricing/service.ts",
 							"line": 425,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L425"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L425"
 						},
 						{
 							"fileName": "pricing/service.ts",
 							"line": 443,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L443"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L443"
 						}
 					],
 					"signatures": [
@@ -17916,7 +17916,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 425,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L425"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L425"
 								}
 							],
 							"parameters": [
@@ -18028,7 +18028,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 443,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L443"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L443"
 								}
 							],
 							"parameters": [
@@ -18108,13 +18108,13 @@
 							"fileName": "pricing/service.ts",
 							"line": 464,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L464"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L464"
 						},
 						{
 							"fileName": "pricing/service.ts",
 							"line": 488,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L488"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L488"
 						}
 					],
 					"signatures": [
@@ -18157,7 +18157,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 464,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L464"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L464"
 								}
 							],
 							"parameters": [
@@ -18282,7 +18282,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 488,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L488"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L488"
 								}
 							],
 							"parameters": [
@@ -18386,7 +18386,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 504,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L504"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L504"
 						}
 					],
 					"signatures": [
@@ -18429,7 +18429,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 504,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L504"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L504"
 								}
 							],
 							"parameters": [
@@ -18508,13 +18508,13 @@
 							"fileName": "pricing/service.ts",
 							"line": 564,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L564"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L564"
 						},
 						{
 							"fileName": "pricing/service.ts",
 							"line": 603,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L603"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L603"
 						}
 					],
 					"signatures": [
@@ -18577,7 +18577,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 564,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L564"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L564"
 								}
 							],
 							"parameters": [
@@ -18683,7 +18683,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 603,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L603"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L603"
 								}
 							],
 							"parameters": [
@@ -18769,7 +18769,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 663,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L663"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L663"
 						}
 					],
 					"signatures": [
@@ -18864,7 +18864,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 663,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L663"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L663"
 								}
 							],
 							"parameters": [
@@ -18996,7 +18996,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 687,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L687"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L687"
 						}
 					],
 					"signatures": [
@@ -19055,7 +19055,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 687,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L687"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L687"
 								}
 							],
 							"typeParameters": [
@@ -19210,7 +19210,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 713,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L713"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L713"
 						}
 					],
 					"signatures": [
@@ -19244,7 +19244,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 713,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L713"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L713"
 								}
 							],
 							"typeParameters": [
@@ -19415,7 +19415,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 777,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L777"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L777"
 						}
 					],
 					"signatures": [
@@ -19510,7 +19510,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 777,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L777"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L777"
 								}
 							],
 							"parameters": [
@@ -19651,7 +19651,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 817,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L817"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L817"
 						}
 					],
 					"signatures": [
@@ -19706,7 +19706,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 817,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L817"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L817"
 								}
 							],
 							"parameters": [
@@ -19831,7 +19831,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 878,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L878"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L878"
 						}
 					],
 					"signatures": [
@@ -19926,7 +19926,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 878,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L878"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L878"
 								}
 							],
 							"parameters": [
@@ -20058,7 +20058,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 942,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L942"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L942"
 						}
 					],
 					"signatures": [
@@ -20153,7 +20153,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 942,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L942"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L942"
 								}
 							],
 							"parameters": [
@@ -20294,7 +20294,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 965,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L965"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L965"
 						}
 					],
 					"signatures": [
@@ -20337,7 +20337,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 965,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L965"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L965"
 								}
 							],
 							"parameters": [
@@ -20423,7 +20423,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 986,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L986"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L986"
 						}
 					],
 					"signatures": [
@@ -20466,7 +20466,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 986,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L986"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L986"
 								}
 							],
 							"parameters": [
@@ -20552,7 +20552,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1004,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1004"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1004"
 						}
 					],
 					"signatures": [
@@ -20595,7 +20595,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1004,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1004"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1004"
 								}
 							],
 							"parameters": [
@@ -20674,7 +20674,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1043,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1043"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1043"
 						}
 					],
 					"signatures": [
@@ -20729,7 +20729,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1043,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1043"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1043"
 								}
 							],
 							"parameters": [
@@ -20854,7 +20854,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1104,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1104"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1104"
 						}
 					],
 					"signatures": [
@@ -20949,7 +20949,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1104,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1104"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1104"
 								}
 							],
 							"parameters": [
@@ -21081,7 +21081,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1168,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1168"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1168"
 						}
 					],
 					"signatures": [
@@ -21176,7 +21176,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1168,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1168"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1168"
 								}
 							],
 							"parameters": [
@@ -21317,7 +21317,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1195,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1195"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1195"
 						}
 					],
 					"signatures": [
@@ -21360,7 +21360,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1195,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1195"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1195"
 								}
 							],
 							"parameters": [
@@ -21446,7 +21446,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1220,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1220"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1220"
 						}
 					],
 					"signatures": [
@@ -21489,7 +21489,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1220,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1220"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1220"
 								}
 							],
 							"parameters": [
@@ -21583,7 +21583,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1238,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1238"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1238"
 						}
 					],
 					"signatures": [
@@ -21626,7 +21626,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1238,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1238"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1238"
 								}
 							],
 							"parameters": [
@@ -21705,7 +21705,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1261,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1261"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1261"
 						}
 					],
 					"signatures": [
@@ -21764,7 +21764,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1261,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1261"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1261"
 								}
 							],
 							"typeParameters": [
@@ -21919,7 +21919,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1287,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1287"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1287"
 						}
 					],
 					"signatures": [
@@ -21978,7 +21978,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1287,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1287"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1287"
 								}
 							],
 							"typeParameters": [
@@ -22149,7 +22149,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1332,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1332"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1332"
 						}
 					],
 					"signatures": [
@@ -22204,7 +22204,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1332,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1332"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1332"
 								}
 							],
 							"parameters": [
@@ -22329,7 +22329,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1396,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1396"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1396"
 						}
 					],
 					"signatures": [
@@ -22424,7 +22424,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1396,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1396"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1396"
 								}
 							],
 							"parameters": [
@@ -22556,7 +22556,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1460,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1460"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1460"
 						}
 					],
 					"signatures": [
@@ -22651,7 +22651,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1460,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1460"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1460"
 								}
 							],
 							"parameters": [
@@ -22792,7 +22792,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1479,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1479"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1479"
 						}
 					],
 					"signatures": [
@@ -22835,7 +22835,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1479,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1479"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1479"
 								}
 							],
 							"parameters": [
@@ -22914,7 +22914,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1506,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1506"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1506"
 						}
 					],
 					"signatures": [
@@ -22957,7 +22957,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1506,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1506"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1506"
 								}
 							],
 							"parameters": [
@@ -23043,7 +23043,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1535,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1535"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1535"
 						}
 					],
 					"signatures": [
@@ -23086,7 +23086,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1535,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1535"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1535"
 								}
 							],
 							"parameters": [
@@ -23180,7 +23180,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1557,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1557"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1557"
 						}
 					],
 					"signatures": [
@@ -23223,7 +23223,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1557,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1557"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1557"
 								}
 							],
 							"parameters": [
@@ -23311,7 +23311,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1577,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1577"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1577"
 						}
 					],
 					"signatures": [
@@ -23354,7 +23354,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1577,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1577"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1577"
 								}
 							],
 							"parameters": [
@@ -23442,7 +23442,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1595,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1595"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1595"
 						}
 					],
 					"signatures": [
@@ -23485,7 +23485,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1595,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1595"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1595"
 								}
 							],
 							"parameters": [
@@ -23564,7 +23564,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1615,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1615"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1615"
 						}
 					],
 					"signatures": [
@@ -23611,7 +23611,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1615,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1615"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1615"
 								}
 							],
 							"parameters": [
@@ -23736,7 +23736,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1655,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1655"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1655"
 						}
 					],
 					"signatures": [
@@ -23823,7 +23823,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1655,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1655"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1655"
 								}
 							],
 							"parameters": [
@@ -23955,13 +23955,13 @@
 							"fileName": "pricing/service.ts",
 							"line": 1679,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1679"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1679"
 						},
 						{
 							"fileName": "pricing/service.ts",
 							"line": 1698,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1698"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1698"
 						}
 					],
 					"signatures": [
@@ -24008,7 +24008,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1679,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1679"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1679"
 								}
 							],
 							"parameters": [
@@ -24114,7 +24114,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1698,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1698"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1698"
 								}
 							],
 							"parameters": [
@@ -24200,13 +24200,13 @@
 							"fileName": "pricing/service.ts",
 							"line": 1720,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1720"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1720"
 						},
 						{
 							"fileName": "pricing/service.ts",
 							"line": 1742,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1742"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1742"
 						}
 					],
 					"signatures": [
@@ -24249,7 +24249,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1720,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1720"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1720"
 								}
 							],
 							"parameters": [
@@ -24361,7 +24361,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1742,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1742"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1742"
 								}
 							],
 							"parameters": [
@@ -24441,13 +24441,13 @@
 							"fileName": "pricing/service.ts",
 							"line": 1763,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1763"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1763"
 						},
 						{
 							"fileName": "pricing/service.ts",
 							"line": 1787,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1787"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1787"
 						}
 					],
 					"signatures": [
@@ -24490,7 +24490,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1763,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1763"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1763"
 								}
 							],
 							"parameters": [
@@ -24615,7 +24615,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1787,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1787"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1787"
 								}
 							],
 							"parameters": [
@@ -24719,7 +24719,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1810,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1810"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1810"
 						}
 					],
 					"signatures": [
@@ -24770,7 +24770,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1810,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1810"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1810"
 								}
 							],
 							"typeParameters": [
@@ -24925,7 +24925,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1834,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1834"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1834"
 						}
 					],
 					"signatures": [
@@ -24976,7 +24976,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1834,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1834"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1834"
 								}
 							],
 							"typeParameters": [
@@ -25131,7 +25131,7 @@
 							"fileName": "pricing/service.ts",
 							"line": 1850,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1850"
+							"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1850"
 						}
 					],
 					"signatures": [
@@ -25174,7 +25174,7 @@
 									"fileName": "pricing/service.ts",
 									"line": 1850,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L1850"
+									"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L1850"
 								}
 							],
 							"parameters": [
@@ -25299,7 +25299,7 @@
 					"fileName": "pricing/service.ts",
 					"line": 43,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/pricing/service.ts#L43"
+					"url": "https://github.com/medusajs/medusa/blob/cfff3f57381873097dcc77851038d5dbe8f5839c/packages/core/types/src/pricing/service.ts#L43"
 				}
 			],
 			"extendedTypes": [
@@ -25812,7 +25812,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 31,
+							"line": 30,
 							"character": 2
 						}
 					],
@@ -25856,7 +25856,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 35,
+							"line": 34,
 							"character": 2
 						}
 					],
@@ -25903,7 +25903,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 39,
+							"line": 38,
 							"character": 2
 						}
 					],
@@ -25966,7 +25966,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 43,
+							"line": 42,
 							"character": 2
 						}
 					],
@@ -25994,7 +25994,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 47,
+							"line": 46,
 							"character": 2
 						}
 					],
@@ -26022,7 +26022,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 51,
+							"line": 50,
 							"character": 2
 						}
 					],
@@ -26050,7 +26050,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 55,
+							"line": 54,
 							"character": 2
 						}
 					],
@@ -26078,7 +26078,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 60,
+							"line": 59,
 							"character": 2
 						}
 					],
@@ -26106,7 +26106,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 65,
+							"line": 64,
 							"character": 2
 						}
 					],
@@ -26136,7 +26136,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 70,
+							"line": 69,
 							"character": 2
 						}
 					],
@@ -26164,7 +26164,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 75,
+							"line": 74,
 							"character": 2
 						}
 					],
@@ -26192,7 +26192,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 80,
+							"line": 79,
 							"character": 2
 						}
 					],
@@ -26220,7 +26220,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 85,
+							"line": 84,
 							"character": 2
 						}
 					],
@@ -26248,7 +26248,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 90,
+							"line": 89,
 							"character": 2
 						}
 					],
@@ -26276,7 +26276,7 @@
 					"sources": [
 						{
 							"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-							"line": 96,
+							"line": 95,
 							"character": 2
 						}
 					],
@@ -26311,7 +26311,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/shared-context.ts",
-					"line": 30,
+					"line": 29,
 					"character": 12
 				}
 			],
@@ -26394,7 +26394,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../node_modules/bignumber.js/types.d.ts",
+							"sourceFileName": "../../../../node_modules/bignumber.js/dist/bignumber.d.cts",
 							"qualifiedName": "BigNumber"
 						},
 						"name": "BigNumber",
@@ -26629,7 +26629,7 @@
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../node_modules/bignumber.js/types.d.ts",
+							"sourceFileName": "../../../../node_modules/bignumber.js/dist/bignumber.d.cts",
 							"qualifiedName": "BigNumber"
 						},
 						"name": "BigNumberJS",
@@ -26654,7 +26654,7 @@
 			"sources": [
 				{
 					"fileName": "/home/runner/work/medusa/medusa/packages/core/types/src/totals/big-number.ts",
-					"line": 24,
+					"line": 20,
 					"character": 12
 				}
 			],
@@ -26664,7 +26664,7 @@
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../node_modules/bignumber.js/types.d.ts",
+							"sourceFileName": "../../../../node_modules/bignumber.js/dist/bignumber.d.cts",
 							"qualifiedName": "BigNumber"
 						},
 						"name": "BigNumberJS",

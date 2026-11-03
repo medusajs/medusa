@@ -216,7 +216,7 @@ jobs:
         # `@v1` tag let an upstream release silently roll into CI (a change
         # that enabled the bwrap Bash sandbox broke every allowlisted script
         # call), so we pin to a SHA and bump deliberately.
-        uses: anthropics/claude-code-action@b76a0776ae74036e77cd11018083743453d7ad35 # v1
+        uses: anthropics/claude-code-action@f27be6b65a4652f08a2ba3cff79114829b588967 # v1.0.252 (Claude Code 2.1.302)
         env:
           # Read-only default token. The agent has no App token in this job.
           GH_TOKEN: ${{ github.token }}
@@ -229,9 +229,9 @@ jobs:
           # settings default cannot switch it on underneath us.
           #
           # Isolation for this job is enforced by: the tight --allowedTools
-          # allowlist (only specific `bash scripts/*.sh` + Read + Write, no
-          # arbitrary Bash), the read-only default token with NO App token in
-          # this job, and the `chmod -R a-w scripts` step above.
+          # allowlist (only specific `bash scripts/*.sh` + Read + Grep + Glob +
+          # Write, no arbitrary Bash), the read-only default token with NO App
+          # token in this job, and the `chmod -R a-w scripts` step above.
           #
           # The deny rules cover the two things the generic `Read`/`Write`
           # tools could otherwise reach. Neither tool goes through the sandbox
@@ -244,16 +244,38 @@ jobs:
           #     so this keeps a prompt-injected model from trying to widen its
           #     own allowlist or register an MCP server mid-run.
           # `review-decision.json` at the repo root stays writable.
+          #
+          # Grep and Glob only check `Read` deny rules against the directory
+          # they search, so `Grep(path: "/")` or `Glob("/proc/*/environ")`
+          # would still reach `/proc`, and `Grep(...)`/`Glob(...)` path rules
+          # never match (https://code.claude.com/docs/en/permissions#read-and-edit).
+          # `blockReadsOutsideWorkingDirectories` (Claude Code 2.1.257+) refuses
+          # Read, Grep, and Glob outside the checkout; the PreToolUse hook
+          # enforces the same for Grep and Glob if the action pin ever rolls back.
           settings: |
             {
               "sandbox": { "enabled": false },
               "permissions": {
+                "blockReadsOutsideWorkingDirectories": true,
                 "deny": [
                   "Read(//proc/**)",
                   "Write(//**/.claude/**)",
                   "Edit(//**/.claude/**)",
                   "Write(//**/.mcp.json)",
                   "Edit(//**/.mcp.json)"
+                ]
+              },
+              "hooks": {
+                "PreToolUse": [
+                  {
+                    "matcher": "Grep|Glob",
+                    "hooks": [
+                      {
+                        "type": "command",
+                        "command": "python3 -I \"$CLAUDE_PROJECT_DIR/scripts/confine_search_paths.py\""
+                      }
+                    ]
+                  }
                 ]
               }
             }
@@ -284,6 +306,11 @@ jobs:
             scripts (listed in --allowedTools). You do not have any tool that
             can post comments, change labels, approve, request changes, or
             otherwise modify the repository. Do not try to invoke such tools.
+
+            The working directory is the BASE branch, not the PR. `Read`,
+            `Grep`, and `Glob` see the code before the PR. Read the PR's
+            version of a file with `bash scripts/get_pr_file.sh`, and its
+            changes with `bash scripts/get_pr_diff.sh`.
 
             STEPS:
             1. Run `bash scripts/get_pr.sh ${{ inputs.pr_number }}` to retrieve the PR title and author.
@@ -355,12 +382,13 @@ jobs:
             Do not print the JSON to stdout. Only write the file.
 
           claude_args: >-
-            --model claude-sonnet-4-6
-            --max-turns 80
+            --model claude-opus-5-5
+            --max-turns 200
             --allowedTools
             "Bash(bash scripts/get_pr.sh:*),
             Bash(bash scripts/get_pr_files.sh:*),
             Bash(bash scripts/get_pr_diff.sh:*),
+            Bash(bash scripts/get_pr_file.sh:*),
             Bash(bash scripts/get_linked_issues.sh:*),
             Bash(bash scripts/search_prs.sh:*),
             Bash(bash scripts/get_comments.sh:*),
@@ -368,6 +396,8 @@ jobs:
             Bash(bash scripts/get_issue.sh:*),
             Bash(bash scripts/get_dependency_releases.sh:*),
             Read,
+            Grep,
+            Glob,
             Write"
 
       - name: Detect broken Bash tooling

@@ -3095,6 +3095,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionUpdateStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionsDeletableStep",
+    "newSlug": "/references/medusa-workflows/steps/validatePaymentSessionsDeletableStep",
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionsDeletableStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.createPaymentSessionsWorkflow",
     "newSlug": "/references/medusa-workflows/createPaymentSessionsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.createPaymentSessionsWorkflow/page.json"

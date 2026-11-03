@@ -1,5 +1,18 @@
 # @medusajs/ui
 
+## 4.2.9
+
+### Patch Changes
+
+- [#17528](https://github.com/medusajs/medusa/pull/17528) [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui): update react-aria to ^3.53.1 and react-stately to ^3.51.0, and declare the directly imported @internationalized/date
+
+- [#17572](https://github.com/medusajs/medusa/pull/17572) [`842d781`](https://github.com/medusajs/medusa/commit/842d781152debf6cd6d4daafcd57cb1af295a841) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update admin and design-system UI dependencies (clsx 2.1.1, cmdk 1.1.1, copy-to-clipboard 4.0.2, date-fns 4.4.0, @dnd-kit/sortable 10.0.0 with @dnd-kit/core ^6.3.0, @hookform/resolvers 6.0.0, match-sorter 8.3.0, motion 14.6.0, react-currency-input-field 4.0.14, react-helmet-async 3.0.0, react-jwt 2.1.1, sonner 2.0.8)
+
+- [#17543](https://github.com/medusajs/medusa/pull/17543) [`5ac3fdc`](https://github.com/medusajs/medusa/commit/5ac3fdcbf82e818337d424852c778ce2ffd5e8e9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(ui): stop long labels from shifting left in DataTable select filter options
+
+- Updated dependencies [[`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d)]:
+  - @medusajs/icons@2.22.2
+
 ## 4.2.8
 
 ### Patch Changes
@@ -634,12 +647,10 @@
   This minor release contains a few bug fixes and improvements, as well as a new primitive component.
 
   ### Fixes
-
   - Fixes an issue that was preventing the onChange event from firing for the `DatePicker` component when `showTimePicker` was false.
   - Fixes an issue where the `DatePicker` component would fire the onChange event when clicking outside of the component. It now only fires the event when the "Apply" button is clicked.
 
   ### New Components
-
   - Adds a new `Popover` component. This component is a primitive component that can be used to create popovers. It shares much of the same styling as the `DropdownMenu` component, and can be used as a replacement when building highly customized dropdowns where the `DropdownMenu` component is not flexible enough.
 
 ## 2.1.0
@@ -649,7 +660,6 @@
 - 035fa72: feat(ui,ui-preset): Release 2.1.0
 
   ## `@medusajs/ui`
-
   - The styling of buttons, inputs, and the CommandBar has been adjusted to have a more consistent look and feel.
   - Fixed an issue that caused DropdownMenu.Content to overflow the viewport.
   - Fixed an issue with the DatePicker component where deleting a time segment would throw an error.
@@ -657,11 +667,9 @@
   - Adds a new subcomponent to RadioGroup called RadioGroup.ChoiceBox. This component wraps the RadioGroup.Item component with a mandatory label and description.
 
   ## `@medusajs/ui-preset`
-
   - Updated several colors, shadows, and gradient effects.
 
   ## `@medusajs/icons`
-
   - Introduces 6 new icons: QuestionMark, SparklesMiniSolid, SparklesMini, ThumbDown, ThumbUp, and UserCircleMini.
   - There have been slight adjustments made to ArrowPathMini, EllipseBlueSolid, EllipseGreenSolid, EllipseGreySolid, EllipseOrangeSolid, EllipsePurpleSolid, and EllipseRedSolid.
 
@@ -679,7 +687,6 @@
   # Changes in `@medusajs/ui`
 
   ## New components
-
   - `IconButton` - A button that only contains an icon.
   - `IconBadge` - A badge that only contains an icon.
   - `StatusBadge` - A badge component specifically designed to be used for displaying statuses.
@@ -699,7 +706,6 @@
   - CodeBlock - The `hideLineNumbers` property has been moved to the `snippets` property. This allows users to control the visibility of line numbers on a per snippet basis.
 
   ## Other changes
-
   - The `z-index`'s of all components have been cleaned up to to make stacking portalled components easier.
   - `Table.Pagination` has been tweaked to ensure that it displays the correct number of pages when there is no data.
   - `Calendar` has been tweaked to prevent clicking a date from submitting any forms that precede it in the DOM.
@@ -707,7 +713,6 @@
   # Changes in `@medusajs/icons`
 
   ## New icons
-
   - `X`
   - `AcademicCap`
   - `Figma`

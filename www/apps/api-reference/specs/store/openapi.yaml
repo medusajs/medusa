@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.21.2
+  version: 2.22.2
   title: Medusa Storefront API
   license:
     name: MIT
@@ -37,8 +37,7 @@ tags:
       These API routes allow customers to browse collections and their products.
     externalDocs:
       description: How to list product collections in a storefront.
-      url: >-
-        https://docs.medusajs.com/resources/storefront-development/products/collections/list
+      url: https://docs.medusajs.com/resources/storefront-development/products/collections/list
     x-associatedSchema:
       $ref: ./components/schemas/StoreCollection.yaml
   - name: Currencies
@@ -54,8 +53,7 @@ tags:
       These API routes allow customers to browse currencies.
     externalDocs:
       description: How to retrieve product variant prices in a storefront.
-      url: >-
-        https://docs.medusajs.com/resources/storefront-development/products/price
+      url: https://docs.medusajs.com/resources/storefront-development/products/price
     x-associatedSchema:
       $ref: ./components/schemas/StoreCurrency.yaml
   - name: Customers
@@ -101,8 +99,7 @@ tags:
       supported locales in the store.
     externalDocs:
       description: Learn more about locales and translations.
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/translation/concepts
+      url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: ./components/schemas/StoreLocale.yaml
   - name: Multi-Factor Authentication (MFA) Factors
@@ -132,8 +129,7 @@ tags:
       and authorize its payment session.
     externalDocs:
       description: How to implement payment during checkout.
-      url: >-
-        https://docs.medusajs.com/resources/storefront-development/checkout/payment
+      url: https://docs.medusajs.com/resources/storefront-development/checkout/payment
     x-associatedSchema:
       $ref: ./components/schemas/StorePaymentCollection.yaml
   - name: Payment Providers
@@ -150,8 +146,7 @@ tags:
       their region.
     externalDocs:
       description: How to implement payment during checkout.
-      url: >-
-        https://docs.medusajs.com/resources/storefront-development/checkout/payment
+      url: https://docs.medusajs.com/resources/storefront-development/checkout/payment
     x-associatedSchema:
       $ref: ./components/schemas/StorePaymentProvider.yaml
   - name: Product Categories
@@ -161,8 +156,7 @@ tags:
       These API routes allow customers to browse categories and their products.
     externalDocs:
       description: How to list product categories in a storefront.
-      url: >-
-        https://docs.medusajs.com/resources/storefront-development/products/categories/list
+      url: https://docs.medusajs.com/resources/storefront-development/products/categories/list
     x-associatedSchema:
       $ref: ./components/schemas/StoreProductCategory.yaml
   - name: Product Options
@@ -176,8 +170,7 @@ tags:
       These API routes allow customers to view product options.
     externalDocs:
       description: Use Product Options in a Storefront
-      url: >-
-        https://docs.medusajs.com/resources/storefront-development/products/options
+      url: https://docs.medusajs.com/resources/storefront-development/products/options
   - name: Product Tags
     x-associatedSchema:
       $ref: ./components/schemas/StoreProductTag.yaml
@@ -256,8 +249,7 @@ tags:
       for their context.
     externalDocs:
       description: How to implement shipping during checkout.
-      url: >-
-        https://docs.medusajs.com/resources/storefront-development/checkout/shipping
+      url: https://docs.medusajs.com/resources/storefront-development/checkout/shipping
     x-associatedSchema:
       $ref: ./components/schemas/StoreShippingOption.yaml
   - name: Store Credit Accounts
@@ -367,6 +359,8 @@ paths:
     $ref: paths/store_payment-collections.yaml
   /store/payment-collections/{id}/payment-sessions:
     $ref: paths/store_payment-collections_{id}_payment-sessions.yaml
+  /store/payment-collections/{id}/payment-sessions/{session_id}:
+    $ref: paths/store_payment-collections_{id}_payment-sessions_{session_id}.yaml
   /store/payment-providers:
     $ref: paths/store_payment-providers.yaml
   /store/product-categories:

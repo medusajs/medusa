@@ -503,13 +503,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_claims_{id}_inbound_shipping-method_{action_id}/post.js
+        $ref: ../code_samples/JavaScript/admin_claims_{id}_inbound_shipping-method_{action_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_claims_{id}_inbound_shipping-method_{action_id}/post.sh
+        $ref: ../code_samples/Shell/admin_claims_{id}_inbound_shipping-method_{action_id}/post.sh
   tags:
     - Claims
   responses:
@@ -585,13 +583,11 @@ delete:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_claims_{id}_inbound_shipping-method_{action_id}/delete.js
+        $ref: ../code_samples/JavaScript/admin_claims_{id}_inbound_shipping-method_{action_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_claims_{id}_inbound_shipping-method_{action_id}/delete.sh
+        $ref: ../code_samples/Shell/admin_claims_{id}_inbound_shipping-method_{action_id}/delete.sh
   tags:
     - Claims
   responses:

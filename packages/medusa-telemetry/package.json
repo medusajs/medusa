@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/telemetry",
-  "version": "2.22.1",
+  "version": "2.22.2",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -35,7 +35,7 @@
     "test": "../../node_modules/.bin/jest --passWithNoTests src"
   },
   "dependencies": {
-    "@babel/runtime": "^7.29.10",
+    "@babel/runtime": "^8.0.10",
     "axios": "^1.20.0",
     "axios-retry": "^4.5.0",
     "boxen": "^9.0.0",
