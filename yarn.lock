@@ -3746,11 +3746,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/deps@workspace:packages/deps"
   dependencies:
-    "@mikro-orm/cli": 6.6.14
-    "@mikro-orm/core": 6.6.14
-    "@mikro-orm/knex": 6.6.14
-    "@mikro-orm/migrations": 6.6.14
-    "@mikro-orm/postgresql": 6.6.14
+    "@mikro-orm/cli": 6.6.17
+    "@mikro-orm/core": 6.6.17
+    "@mikro-orm/knex": 6.6.17
+    "@mikro-orm/migrations": 6.6.17
+    "@mikro-orm/postgresql": 6.6.17
     "@opentelemetry/api": ^1.9.0
     "@opentelemetry/instrumentation-pg": ^0.73.0
     "@opentelemetry/resources": ^2.7.0
@@ -4695,41 +4695,41 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@mikro-orm/cli@npm:6.6.14":
-  version: 6.6.14
-  resolution: "@mikro-orm/cli@npm:6.6.14"
+"@mikro-orm/cli@npm:6.6.17":
+  version: 6.6.17
+  resolution: "@mikro-orm/cli@npm:6.6.17"
   dependencies:
     "@jercle/yargonaut": 1.1.5
-    "@mikro-orm/core": 6.6.14
-    "@mikro-orm/knex": 6.6.14
+    "@mikro-orm/core": 6.6.17
+    "@mikro-orm/knex": 6.6.17
     fs-extra: 11.3.3
     tsconfig-paths: 4.2.0
     yargs: 17.7.2
   bin:
     mikro-orm: cli
     mikro-orm-esm: esm
-  checksum: 36cfd0abbddec52a52f128a3112d1a5fb382fa28256b326ad6b3ed0d59127020ead399c76db71a28f3a5282d473794bfb7218b227556631f1d578a1cca54d062
+  checksum: adc862a3b8c7b642fffd0a60c7fa349da51cb46bec56bbe3ac6025645bc8bf07f2d5b766f21d556ac920d7374c93ee98fa5f01fb96cd98bf35a30c119e21e59c
   languageName: node
   linkType: hard
 
-"@mikro-orm/core@npm:6.6.14":
-  version: 6.6.14
-  resolution: "@mikro-orm/core@npm:6.6.14"
+"@mikro-orm/core@npm:6.6.17":
+  version: 6.6.17
+  resolution: "@mikro-orm/core@npm:6.6.17"
   dependencies:
     dataloader: 2.2.3
     dotenv: 17.3.1
     esprima: 4.0.1
     fs-extra: 11.3.3
     globby: 11.1.0
-    mikro-orm: 6.6.14
+    mikro-orm: 6.6.17
     reflect-metadata: 0.2.2
-  checksum: 2eb34abc5f5d63771d49d2487c4f9551928a378d9ec71e3ddc1ea7ae2d1adb93f14eaade83fa07201f8d1e21bd77aa6c1c5774570ad1b136efe9adda4389cde0
+  checksum: 02a9feb97371461d0c6ffd931d0ef946047283b5b236aa8b3d77526a21fba320dad25b27c41a6556edbba1c27b0749db1cd865a720e50c4d948932576278e081
   languageName: node
   linkType: hard
 
-"@mikro-orm/knex@npm:6.6.14":
-  version: 6.6.14
-  resolution: "@mikro-orm/knex@npm:6.6.14"
+"@mikro-orm/knex@npm:6.6.17":
+  version: 6.6.17
+  resolution: "@mikro-orm/knex@npm:6.6.17"
   dependencies:
     fs-extra: 11.3.3
     knex: 3.2.10
@@ -4746,35 +4746,35 @@ __metadata:
       optional: true
     mariadb:
       optional: true
-  checksum: 748acbbee846bcfac00b3506e7aa4038856801084e70db62ac3db0bccebc7f8d3473c6a9c993069e95b79b6fcd92fa16259fa841771df86277352720712feeab
+  checksum: a88a22d4dd360b310cf53f8bc56a0c257c62604e6b9e76cbd95c3eb48a1bd19e950a1b104807681af4dcd7c9a49e73fff7560af3d25385acd01daf89ca0ddb2a
   languageName: node
   linkType: hard
 
-"@mikro-orm/migrations@npm:6.6.14":
-  version: 6.6.14
-  resolution: "@mikro-orm/migrations@npm:6.6.14"
+"@mikro-orm/migrations@npm:6.6.17":
+  version: 6.6.17
+  resolution: "@mikro-orm/migrations@npm:6.6.17"
   dependencies:
-    "@mikro-orm/knex": 6.6.14
+    "@mikro-orm/knex": 6.6.17
     fs-extra: 11.3.3
     umzug: 3.8.2
   peerDependencies:
     "@mikro-orm/core": ^6.0.0
-  checksum: d43119adcc66689a22ab67ad4c59bfb727acdbf1ec7f00a8e231c945a54f64ca379b048cdd787fd4673d41735fbc295392e1ddbd1c9b95f309eb997c3c8d05e4
+  checksum: d1c89a0ddf292f9f20bd6f0cb4af4fe94791c36f8241e76a3fcf0f0af1212df4cb8148693fc180fc1ff2b4138c6fd31225bec550ebacb69f5e84aa3c36eb4b71
   languageName: node
   linkType: hard
 
-"@mikro-orm/postgresql@npm:6.6.14":
-  version: 6.6.14
-  resolution: "@mikro-orm/postgresql@npm:6.6.14"
+"@mikro-orm/postgresql@npm:6.6.17":
+  version: 6.6.17
+  resolution: "@mikro-orm/postgresql@npm:6.6.17"
   dependencies:
-    "@mikro-orm/knex": 6.6.14
+    "@mikro-orm/knex": 6.6.17
     pg: 8.20.0
     postgres-array: 3.0.4
     postgres-date: 2.1.0
     postgres-interval: 4.0.2
   peerDependencies:
     "@mikro-orm/core": ^6.0.0
-  checksum: 78c5afd5f1681956829535425776d73fd09c99efd09b944e2a1704574663385006fde91841ccf6ab7908e6ea06c0c384c40a8f023319b190fa7d30a207697cef
+  checksum: 52b113f65beb59c48f23783f3d3872f1e92a51028ae67e14e2de8efe7969323ddf2da99c59bee01946bddddd9f1c88553c08b0b5e32c511afd5bb49df3bd9d4c
   languageName: node
   linkType: hard
 
@@ -16643,10 +16643,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mikro-orm@npm:6.6.14":
-  version: 6.6.14
-  resolution: "mikro-orm@npm:6.6.14"
-  checksum: 699858fb70de6bd9f97ada53f3facfffe49d95b13429ec655448f4058fa0e8892ef0ce9b8351f7cffe272c540feda4903dd8fb440e3f2be97612b6134d11aa81
+"mikro-orm@npm:6.6.17":
+  version: 6.6.17
+  resolution: "mikro-orm@npm:6.6.17"
+  checksum: 73ad6fae171ac92a26c14a9085dcdf4e0b2bc3876c6a62f2c293d24c51b8c2ab4646c76c72293c71148c839f8d8e15a5b192fe928c3c4b11138e50c21380f4a7
   languageName: node
   linkType: hard
 
