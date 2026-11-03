@@ -424,6 +424,54 @@ medusaIntegrationTestRunner({
           "User with id: usr_does-not-exist was not found"
         )
       })
+
+      it("refuses to issue a token for a user whose roles the actor can't grant", async () => {
+        const rbacModule = container.resolve(Modules.RBAC)
+        const [userUpdate] = await rbacModule.listRbacPolicies({
+          resource: "user",
+          operation: "update",
+        })
+        const role = await rbacModule.createRbacRoles({ name: "User Updater" })
+        await rbacModule.createRbacRolePolicies([
+          { role_id: role.id, policy_id: userUpdate.id },
+        ])
+
+        const updaterHeaders = { headers: { ...adminHeaders.headers } }
+        await createAdminUser(dbConnection, updaterHeaders, container, {
+          email: "user-updater@medusa.js",
+          roles: [role.id],
+        })
+
+        const { user: superAdmin } = await createAdminUser(
+          dbConnection,
+          { headers: { ...adminHeaders.headers } },
+          container,
+          { email: "reset-super-admin-target@medusa.js" }
+        )
+        const { user: withoutRoles } = await createAdminUser(
+          dbConnection,
+          { headers: { ...adminHeaders.headers } },
+          container,
+          { email: "reset-no-roles-target@medusa.js", roles: [] }
+        )
+
+        const error = await api
+          .post(
+            `/admin/users/${superAdmin.id}/reset-password`,
+            {},
+            updaterHeaders
+          )
+          .catch((e) => e)
+        expect(error.response.status).toEqual(403)
+
+        const response = await api.post(
+          `/admin/users/${withoutRoles.id}/reset-password`,
+          {},
+          updaterHeaders
+        )
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({ token: expect.any(String) })
+      })
     })
 
     // TODO: Migrate when implemented in 2.0
