@@ -5,7 +5,7 @@ Payment Module (`Modules.PAYMENT`): payment collections, sessions, payments, cap
 ## Using this package
 
 - Registered by default as `@medusajs/medusa/payment`; it always registers the system provider (`pp_system_default`, no external calls).
-- Options (`PaymentModuleOptions` in `src/types/index.ts`): `providers[]` of `{ resolve, id, options? }`. `packages/core/types/src/payment/service.ts` also types `webhook_delay` and `webhook_retries`. A private `cloud` object (`api_key`, `endpoint`, `webhook_secret`, `payment_accounts`, `environment_handle` / `sandbox_handle`) is injected by `defineConfig` on Medusa Cloud.
+- Options (`PaymentModuleOptions` in `src/types/index.ts`): `providers[]` of `{ resolve, id, options? }`. `packages/core/types/src/payment/service.ts` also types `webhook_delay` and `webhook_retries`. A private `cloud` object (`api_key`, `endpoint`, `webhook_secret`, `payment_accounts`, `environment_handle`) is injected by `defineConfig` on Medusa Cloud.
 
 ```ts
 module.exports = defineConfig({
