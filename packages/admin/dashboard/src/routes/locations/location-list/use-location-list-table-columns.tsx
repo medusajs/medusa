@@ -7,12 +7,18 @@ import { PlaceholderCell } from "../../../components/table/table-cells/common/pl
 import { getFormattedAddress } from "../../../lib/addresses"
 import { FulfillmentSetType } from "../common/constants"
 import { ListSummary } from "../../../components/common/list-summary"
+import {
+  useFulfillmentSetPermissions,
+  useSalesChannelPermissions,
+} from "../../../hooks/use-resource-permissions"
 import { LocationListTableActions } from "./location-list-table-actions"
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminStockLocation>()
 
 export const useLocationListTableColumns = () => {
   const { t } = useTranslation()
+  const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
+  const { canRead: canReadFulfillmentSets } = useFulfillmentSetPermissions()
 
   return useMemo(
     () => [
@@ -52,69 +58,81 @@ export const useLocationListTableColumns = () => {
           )
         },
       }),
-      columnHelper.accessor("fulfillment_sets", {
-        id: "shipping_fulfillment",
-        header: t("stockLocations.fulfillmentSets.shipping.header"),
-        cell: ({ getValue }) => {
-          const fulfillmentSets = getValue()
-          const shippingSet = fulfillmentSets?.find(
-            (f) => f.type === FulfillmentSetType.Shipping
-          )
-          const fulfillmentSetExists = !!shippingSet
+      ...(canReadFulfillmentSets
+        ? [
+            columnHelper.accessor("fulfillment_sets", {
+              id: "shipping_fulfillment",
+              header: t("stockLocations.fulfillmentSets.shipping.header"),
+              cell: ({ getValue }) => {
+                const fulfillmentSets = getValue()
+                const shippingSet = fulfillmentSets?.find(
+                  (f) => f.type === FulfillmentSetType.Shipping
+                )
+                const fulfillmentSetExists = !!shippingSet
 
-          return (
-            <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
-              {t(
-                fulfillmentSetExists ? "statuses.enabled" : "statuses.disabled"
-              )}
-            </StatusBadge>
-          )
-        },
-      }),
-      columnHelper.accessor("fulfillment_sets", {
-        id: "pickup_fulfillment",
-        header: t("stockLocations.fulfillmentSets.pickup.header"),
-        cell: ({ getValue }) => {
-          const fulfillmentSets = getValue()
-          const pickupSet = fulfillmentSets?.find(
-            (f) => f.type === FulfillmentSetType.Pickup
-          )
-          const fulfillmentSetExists = !!pickupSet
+                return (
+                  <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
+                    {t(
+                      fulfillmentSetExists
+                        ? "statuses.enabled"
+                        : "statuses.disabled"
+                    )}
+                  </StatusBadge>
+                )
+              },
+            }),
+            columnHelper.accessor("fulfillment_sets", {
+              id: "pickup_fulfillment",
+              header: t("stockLocations.fulfillmentSets.pickup.header"),
+              cell: ({ getValue }) => {
+                const fulfillmentSets = getValue()
+                const pickupSet = fulfillmentSets?.find(
+                  (f) => f.type === FulfillmentSetType.Pickup
+                )
+                const fulfillmentSetExists = !!pickupSet
 
-          return (
-            <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
-              {t(
-                fulfillmentSetExists ? "statuses.enabled" : "statuses.disabled"
-              )}
-            </StatusBadge>
-          )
-        },
-      }),
-      columnHelper.accessor("sales_channels", {
-        header: t("stockLocations.salesChannels.label"),
-        cell: ({ getValue }) => {
-          const salesChannels = getValue()
+                return (
+                  <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
+                    {t(
+                      fulfillmentSetExists
+                        ? "statuses.enabled"
+                        : "statuses.disabled"
+                    )}
+                  </StatusBadge>
+                )
+              },
+            }),
+          ]
+        : []),
+      ...(canReadSalesChannels
+        ? [
+            columnHelper.accessor("sales_channels", {
+              header: t("stockLocations.salesChannels.label"),
+              cell: ({ getValue }) => {
+                const salesChannels = getValue()
 
-          if (!salesChannels?.length) {
-            return <PlaceholderCell />
-          }
+                if (!salesChannels?.length) {
+                  return <PlaceholderCell />
+                }
 
-          return (
-            <div className="flex items-center">
-              <ListSummary
-                inline
-                n={1}
-                list={salesChannels.map((s) => s.name)}
-              />
-            </div>
-          )
-        },
-      }),
+                return (
+                  <div className="flex items-center">
+                    <ListSummary
+                      inline
+                      n={1}
+                      list={salesChannels.map((s) => s.name)}
+                    />
+                  </div>
+                )
+              },
+            }),
+          ]
+        : []),
       columnHelper.display({
         id: "action",
         cell: ({ row }) => <LocationListTableActions location={row.original} />,
       }),
     ],
-    [t]
+    [canReadSalesChannels, canReadFulfillmentSets, t]
   )
 }

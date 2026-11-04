@@ -1,5 +1,6 @@
 export enum Entities {
   order_exchange = "order_exchange",
+  order = "order",
 }
 
 export const defaultAdminExchangeFields = [

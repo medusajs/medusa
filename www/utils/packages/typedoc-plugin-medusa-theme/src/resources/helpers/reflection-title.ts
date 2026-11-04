@@ -2,7 +2,7 @@ import Handlebars from "handlebars"
 import { PageEvent, ParameterReflection, ReflectionKind } from "typedoc"
 import { MarkdownTheme } from "../../theme.js"
 import { getDisplayName } from "../../utils.js"
-import { escapeChars } from "utils"
+import { escapeChars, getReflectionUrl } from "utils"
 import { replaceTemplateVariables } from "../../utils/reflection-template-strings.js"
 
 export default function (theme: MarkdownTheme) {
@@ -26,11 +26,11 @@ export default function (theme: MarkdownTheme) {
       if (
         reflectionTitle?.kind &&
         this.model?.kind &&
-        this.url !== this.project.url
+        this.url !== getReflectionUrl(this.project)
       ) {
         title.push(`${ReflectionKind.singularString(this.model.kind)}: `)
       }
-      if (this.url === this.project.url) {
+      if (this.url === getReflectionUrl(this.project)) {
         title.push(theme.indexTitle || getDisplayName(this.model))
       } else {
         title.push(

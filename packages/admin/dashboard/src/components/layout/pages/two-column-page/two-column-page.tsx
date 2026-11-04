@@ -38,6 +38,10 @@ const Root = <TData,>({
    */
   showMetadata = false,
   /**
+   * Whether to show required permissions section. Defaults to true.
+   */
+  showRequiredPermissions = false,
+  /**
    * Optional section rendered under the JSON section.
    */
   requiredPermissionsSection = <RequiredPermissionsSection />,
@@ -76,7 +80,7 @@ const Root = <TData,>({
   }
 
   const [main, sidebar] = childrenArray
-  const showExtraData = showJSON || showMetadata
+  const showExtraData = showJSON || showMetadata || showRequiredPermissions
 
   return (
     <div className="flex w-full flex-col gap-y-3">
@@ -93,7 +97,7 @@ const Root = <TData,>({
             <div className="hidden flex-col gap-y-3 xl:flex">
               {showMetadata && <MetadataSection data={data!} />}
               {showJSON && <JsonViewSection data={data!} />}
-              {showJSON && requiredPermissionsSection}
+              {showRequiredPermissions && requiredPermissionsSection}
             </div>
           )}
         </div>

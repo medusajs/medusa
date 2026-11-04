@@ -2781,7 +2781,6 @@
     "editUser": "แก้ไขผู้ใช้งาน",
     "inviteUser": "เชิญผู้ใช้งาน",
     "inviteUserHint": "เชิญผู้ใช้งานใหม่ให้เข้าร่วมร้านค้าของคุณ",
-    "inviteRolesTooltip": "หากไม่ได้เลือกบทบาท ผู้ใช้จะถูกเชิญในฐานะ superuser",
     "sendInvite": "ส่งคำเชิญ",
     "pendingInvites": "คำเชิญที่รอดำเนินการ",
     "deleteInviteWarning": "คุณกำลังจะลบคำเชิญของ {{email}} การกระทำนี้ไม่สามารถย้อนกลับได้",
@@ -2856,7 +2855,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "ผู้ใช้มีบทบาทนี้แล้ว",
-      "unassignableRoleTooltip": "คุณไม่มีสิทธิ์กำหนดบทบาทนี้ — สิทธิ์ของคุณไม่ครอบคลุมนโยบายทั้งหมด",
       "add": {
         "successToast_other": "เพิ่มผู้ใช้ในบทบาทสำเร็จ",
         "list": {

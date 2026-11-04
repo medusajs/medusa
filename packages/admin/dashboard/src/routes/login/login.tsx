@@ -25,7 +25,7 @@ export const Login = () => {
     ((token: string) => void | Promise<void>) | null
   >(null)
 
-  const from = location.state?.from?.pathname || "/orders"
+  const from = location.state?.from?.pathname || "/"
 
   const { providers, isLoading: isProvidersLoading } = useAuthProviders()
 

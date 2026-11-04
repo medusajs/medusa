@@ -4,7 +4,6 @@ import {
   Converter,
   ReflectionKind,
   TypeScript as ts,
-  ReferenceType,
   Reflection,
   DeclarationReflection,
   ProjectReflection,
@@ -59,7 +58,7 @@ export function load(app: Application) {
     referencedSymbols.set(program, ownedByOther)
 
     for (const s of [...referenced]) {
-      if (context.project.getReflectionFromSymbol(s)) {
+      if (context.getReflectionFromSymbol(s)) {
         referenced.delete(s)
       } else if (symbolToOwningModule.get(s) !== owningModule) {
         referenced.delete(s)
@@ -71,8 +70,8 @@ export function load(app: Application) {
   }
 
   // Monkey patch the constructor for references so that we can get every
-  const origCreateSymbolReference = ReferenceType.createSymbolReference
-  ReferenceType.createSymbolReference = function (symbol, context, name) {
+  const origCreateSymbolReference = Context.prototype.createSymbolReference
+  Context.prototype.createSymbolReference = function (symbol, context, name) {
     if (!app.options.getValue("enableInternalResolve")) {
       return origCreateSymbolReference.call(this, symbol, context, name)
     }
@@ -221,7 +220,7 @@ export function load(app: Application) {
   )
 
   app.converter.on(Converter.EVENT_END, () => {
-    ReferenceType.createSymbolReference = origCreateSymbolReference
+    Context.prototype.createSymbolReference = origCreateSymbolReference
     referencedSymbols = new Map()
     symbolToOwningModule = new Map()
     knownPrograms = new Map()

@@ -102,8 +102,7 @@ export class MermaidDiagramGenerator {
       return
     }
 
-    this.mainFileReflection =
-      context.project.getReflectionFromSymbol(mainFileSymbol)
+    this.mainFileReflection = context.getReflectionFromSymbol(mainFileSymbol)
 
     if (!this.mainFileReflection) {
       // console.error(`Couldn't fine the main file's reflection`)
@@ -216,7 +215,7 @@ export class MermaidDiagramGenerator {
   }
 
   getReflectionDecorators(context: Context, reflection: Reflection): string[] {
-    const symbol = context.project.getSymbolFromReflection(reflection)
+    const symbol = context.getSymbolFromReflection(reflection)
     const decorators: string[] = []
 
     symbol?.declarations?.forEach((declaration) => {

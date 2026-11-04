@@ -27,6 +27,7 @@ const StoreCreditAccountsPage = () => {
 export const config = defineRouteConfig({
   label: "Store Credits",
   icon: StoreCreditIcon,
+  permissions: ["store_credit_account:read"],
 })
 
 export default StoreCreditAccountsPage

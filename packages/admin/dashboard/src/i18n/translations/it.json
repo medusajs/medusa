@@ -2787,7 +2787,6 @@
     "editUser": "Modifica Utente",
     "inviteUser": "Invita Utente",
     "inviteUserHint": "Invita un nuovo utente al tuo negozio.",
-    "inviteRolesTooltip": "Se non viene selezionato alcun ruolo, l'utente verrà invitato con un ruolo di superutente.",
     "sendInvite": "Invia invito",
     "pendingInvites": "Inviti in attesa",
     "deleteInviteWarning": "Stai per eliminare l'invito per {{email}}. Questa azione non può essere annullata.",
@@ -2862,7 +2861,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "L'utente ha già questo ruolo.",
-      "unassignableRoleTooltip": "Non hai accesso per assegnare questo ruolo — i tuoi permessi non coprono tutte le sue policy.",
       "add": {
         "successToast_one": "L'utente è stato aggiunto al ruolo con successo.",
         "successToast_other": "Gli utenti sono stati aggiunti al ruolo con successo.",

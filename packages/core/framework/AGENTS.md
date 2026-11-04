@@ -73,7 +73,7 @@ export default defineMiddlewares({
 - `src/types/container.ts` augments `ModuleImplementations` so `container.resolve(Modules.PRODUCT)` / `ContainerRegistrationKeys.QUERY` are typed. The `utils`, `http`, `config`, `workflows-sdk`, `database` index files `import "../types/container"` to pull that augmentation in.
 - `src/container.ts` exports the singleton `container`; `config/loader.ts` registers `configModule` on it at import time.
 - `medusa-app-loader.ts` (`MedusaAppLoader`) bootstraps modules and links via `@medusajs/modules-sdk`.
-- Boot order (driven by `packages/medusa/src/loaders/index.ts`): feature flags -> `configLoader` -> policies -> `pgConnectionLoader` -> `LinkLoader` -> `MedusaAppLoader().load()` -> `WorkflowLoader` -> `SubscriberLoader` -> `JobLoader` (only when background processors run) -> `expressLoader`/API routes.
+- Boot order (driven by `packages/medusa/src/loaders/index.ts`): feature flags -> `configLoader` -> `pgConnectionLoader` -> `LinkLoader` -> `MedusaAppLoader().load()` -> `WorkflowLoader` -> `SubscriberLoader` -> `JobLoader` (only when background processors run) -> `expressLoader`/API routes.
 - `http/`: `routes-loader.ts` (file-based routing), `middleware-file-loader.ts`, `router.ts` (`ApiLoader`), `middlewares/` (auth, publishable key, error handler), `utils/` (query/body validation, field restriction).
 
 ## Development

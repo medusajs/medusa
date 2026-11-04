@@ -147,7 +147,7 @@ Execute the workflow in your login flow after the auth provider creates the auth
 
 When a guest customer registers, use the [createCustomerAccountWorkflow](/references/medusa-workflows/createCustomerAccountWorkflow) to create a registered customer with the same email. The workflow also sets the customer's ID in the auth identity's app metadata. It doesn't change the existing guest customer.
 
-The guest customer's orders stay linked to the guest customer. To move them to the registered customer, the customer can request an order transfer using the [Request Order Transfer API route](!api!/store#orders_postordersidtransferrequest).
+The guest customer's orders stay linked to the guest customer. To move them to the registered customer, the customer can request an order transfer using the [Request Order Transfer API route](!api!/store/orders/request-order-transfer).
 
 ### Email Must Match the Auth Identity
 

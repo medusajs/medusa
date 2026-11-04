@@ -59,6 +59,7 @@ import {
 } from "../../../../lib/utils/order-utils"
 import { pluralize } from "../../../../lib/utils/string-utils"
 import { ActionMenu } from "../../../../components/common/action-menu"
+import { EDIT_DRAFT_ORDER_SHIPPING_PERMISSIONS } from "../../../../lib/permissions"
 
 const STACKED_FOCUS_MODAL_ID = "shipping-form"
 
@@ -1039,6 +1040,10 @@ const CustomAmountField = ({
       }}
     />
   )
+}
+
+export const handle = {
+  permissions: EDIT_DRAFT_ORDER_SHIPPING_PERMISSIONS,
 }
 
 export default Shipping
