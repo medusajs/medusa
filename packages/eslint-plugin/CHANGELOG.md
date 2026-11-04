@@ -1,5 +1,13 @@
 # @medusajs/eslint-plugin
 
+## 2.22.3
+
+### Patch Changes
+
+- [#17590](https://github.com/medusajs/medusa/pull/17590) [`73874df`](https://github.com/medusajs/medusa/commit/73874df1e40b02e96f5235e8d2a9874b90e4fb38) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(eslint-plugin,workflow-engine-inmemory): update cron-parser to v5
+
+- [#17618](https://github.com/medusajs/medusa/pull/17618) [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update jest to v30.5.2 and use the `--testPathPatterns` flag in test scripts
+
 ## 2.22.2
 
 ### Patch Changes

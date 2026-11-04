@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.22.3
+
+### Patch Changes
+
+- [#17611](https://github.com/medusajs/medusa/pull/17611) [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-vite-plugin,dashboard,telemetry,draft-order): update babel to v8
+
 ## 2.22.2
 
 ### Patch Changes
