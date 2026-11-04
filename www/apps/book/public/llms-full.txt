@@ -46553,8 +46553,8 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
 |`apiKey`|A string indicating the Stripe Secret API key.|Yes|-|
 |`webhookSecret`|A string indicating the Stripe webhook secret. This is only useful for deployed Medusa applications.|Yes|-|
 |`capture`|Whether to automatically capture payment after authorization.|No|`false`|
-|`automatic_payment_methods`|A boolean value indicating whether to enable Stripe's automatic payment methods. This is useful if you integrate services like Apple pay or Google pay.|No|`false`|
-|`payment_description`|A string used as the default description of a payment if none is available in cart.context.payment\_description.|No|-|
+|`automaticPaymentMethods`|A boolean value indicating whether to enable Stripe's automatic payment methods. This is useful if you integrate services like Apple pay or Google pay.|No|`false`|
+|`paymentDescription`|A string used as the default description of a payment if none is available in `cart.context.payment_description`.|No|-|
 |`oxxoExpiresDays`|The number of days before an OXXO payment expires. Only applicable if you plan to use OXXO as a payment method.|No|`3`|
 |`paymentMethodConfiguration` (v2.18.0+)|A string indicating the ID of a Stripe [Payment Method Configuration](https://docs.stripe.com/payments/payment-method-configurations) (PMC) to apply a Dashboard-managed set of payment methods to the intent. This option is only used when `payment_method_types` is not set.|No|-|
 |`apiVersion` (v2.22.3+)|A string indicating the [Stripe API version](https://docs.stripe.com/upgrades) to send requests with. For example, `2026-09-30.endive`. For API versions before `2026-07-29`, the provider passes payment method types to Stripe as `payment_method_types`. For `2026-07-29` and later, it passes them as `allowed_payment_method_types`.|No|`2024-04-10`|
@@ -161037,8 +161037,8 @@ The icons package is installed independently from Medusa UI. Learn how to instal
 To use Medusa UI in your standalone project, you must have:
 
 - React v18.3.1 or later (within the React 18 range) installed. The package's peer dependency requires `react@^18.3.1`, so React 19 is not officially supported yet. Most React 18-compatible frameworks and libraries, such as Next.js and Vite, satisfy this requirement.
-- [Tailwind CSS](https://v3.tailwindcss.com/) installed. The components in Medusa UI are styled using Tailwind CSS, so you'll need to install it in your project as well.
-  - Medusa UI was built with Tailwind CSS v3, but it may also support v4.
+- [Tailwind CSS](https://tailwindcss.com/) v3.4.3 or later, or v4, installed. The components in Medusa UI are styled using Tailwind CSS, so you'll need to install it in your project as well.
+  - Since `@medusajs/ui-preset` v2.22.3, the preset supports both Tailwind CSS v3 and v4.
 
 ***
 
@@ -161066,11 +161066,27 @@ npm install @medusajs/ui-preset --save-dev
 
 ## Step 3: Configure Tailwind CSS
 
-Next, you'll need to configure Tailwind CSS to use the Medusa UI preset and explicitly add the paths to the Medusa UI components as content files.
+Next, you'll need to configure Tailwind CSS to use the Medusa UI preset and explicitly add the paths to the Medusa UI components as content files. The configurations differ based on your Tailwind CSS version.
+
+### Tailwind CSS v4 Configurations
+
+The CSS-first theme is available since `@medusajs/ui-preset` v2.22.3. In earlier versions, use the [Tailwind CSS v3 configurations](#tailwind-css-v3-configurations) with the `@config` directive instead.
+
+In Tailwind CSS v4, import the Medusa UI theme in the CSS file that imports Tailwind CSS, and add the path to the Medusa UI components with the `@source` directive:
+
+```css title="globals.css"
+@import "tailwindcss";
+@import "@medusajs/ui-preset/theme.css";
+@source "../node_modules/@medusajs/ui/dist";
+```
+
+The `@medusajs/ui-preset/theme.css` file includes the Medusa UI design tokens, colors, shadows, fonts, typography utilities, and animations. It also defines a `dark` variant that applies dark mode styles when an element or its ancestor has the `dark` class or the `data-mode="dark"` attribute.
+
+Make sure the path in the `@source` directive is relative to your CSS file. For example, if your CSS file is at `src/app/globals.css`, use `@source "../../node_modules/@medusajs/ui/dist";`.
 
 ### Tailwind CSS v3 Configurations
 
-In Tailwind CSS v3, which is the recommended version to use with Medusa UI, you need to add the following configurations to your `tailwind.config.js` or `tailwind.config.ts` file:
+In Tailwind CSS v3, you need to add the following configurations to your `tailwind.config.js` or `tailwind.config.ts` file:
 
 1. Add the Medusa UI preset to the `presets` array.
 2. Ensure that the `content` field includes the path to the Medusa UI package.
@@ -161108,19 +161124,7 @@ module.exports = {
 
 ```
 
-### Tailwind CSS v4 Configurations
-
-Medusa UI isn't officially compatible with Tailwind CSS v4 yet, so use it with caution.
-
-In your CSS file that imports Tailwind CSS, add the following `@import`, `@config`, and `@source` directives:
-
-```css
-@import "tailwindcss";
-@source "../node_modules/@medusajs/ui";
-@config "@medusajs/ui-preset";
-```
-
-This will explicitly include the Medusa UI preset and its components in your Tailwind CSS build and apply the preset styles to your project.
+By default, the preset applies Medusa UI's dark mode styles based on the user's system preference. To apply them when an element has the `dark` class instead, set the `darkMode` field in your Tailwind CSS configurations to `"class"`.
 
 ***
 
