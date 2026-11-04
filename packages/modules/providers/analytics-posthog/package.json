@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/analytics-posthog",
-  "version": "2.21.2",
+  "version": "2.22.3",
   "description": "Posthog analytics provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -13,10 +13,14 @@
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "engines": {
     "node": ">=22.22.0"
   },
@@ -28,12 +32,12 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.21.2",
-    "posthog-node": "^5.11.0"
+    "@medusajs/framework": "2.22.3",
+    "posthog-node": "^5.57.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.21.2",
-    "posthog-node": "^5.11.0"
+    "@medusajs/framework": "2.22.3",
+    "posthog-node": "^5.57.0"
   },
   "keywords": [
     "medusa-plugin",

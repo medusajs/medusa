@@ -68,6 +68,10 @@ export const product = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
   },
   {
+    "title": "Manage Products with Admin API",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/manage-with-admin-api"
+  },
+  {
     "title": "Get Variant Prices",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/price"
   },

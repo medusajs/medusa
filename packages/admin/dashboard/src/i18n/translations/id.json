@@ -1082,6 +1082,24 @@
       "hint": "Buat pelanggan baru dan kelola detailnya.",
       "successToast": "Pelanggan {{email}} berhasil dibuat."
     },
+    "export": {
+      "header": "Ekspor Daftar Pelanggan",
+      "description": "Ekspor daftar pelanggan ke file.",
+      "success": {
+        "title": "Kami sedang memproses ekspor Anda",
+        "description": "Mengekspor data mungkin memakan waktu beberapa menit. Kami akan memberitahu Anda setelah selesai."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Pilih format file yang diekspor. JSON menangkap data bersarang di seluruh modul tanpa kehilangan data, yang direkomendasikan untuk permintaan akses data subjek.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filter",
+        "description": "Terapkan filter di tabel ikhtisar untuk menyesuaikan tampilan ini"
+      }
+    },
     "groups": {
       "label": "Grup pelanggan",
       "remove": "Anda yakin ingin menghapus pelanggan dari grup pelanggan \"{{name}}\"?",
@@ -2763,7 +2781,6 @@
     "editUser": "Edit Pengguna",
     "inviteUser": "Undang Pengguna",
     "inviteUserHint": "Undang pengguna baru ke toko Anda.",
-    "inviteRolesTooltip": "Jika tidak ada peran yang dipilih, pengguna akan diundang dengan peran superuser.",
     "sendInvite": "Kirim undangan",
     "pendingInvites": "Undangan Tertunda",
     "deleteInviteWarning": "Anda akan menghapus undangan untuk {{email}}. Tindakan ini tidak dapat dibatalkan.",
@@ -2838,7 +2855,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Pengguna sudah memiliki peran ini.",
-      "unassignableRoleTooltip": "Anda tidak memiliki akses untuk menetapkan peran ini — izin Anda tidak mencakup semua kebijakannya.",
       "add": {
         "successToast_other": "Pengguna berhasil ditambahkan ke peran.",
         "list": {

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/locking-postgres",
-  "version": "2.21.2",
+  "version": "2.22.3",
   "description": "Postgres Advisory Locks for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -13,20 +13,24 @@
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "engines": {
     "node": ">=22.22.0"
   },
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.21.2"
+    "@medusajs/framework": "2.22.3"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.21.2"
+    "@medusajs/framework": "2.22.3"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
@@ -34,7 +38,7 @@
     "resolve:aliases": "yarn run -T tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && yarn run -T tsc-alias -p tsconfig.resolved.json && yarn run -T rimraf tsconfig.resolved.json",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build && npm run resolve:aliases",
     "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
-    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
     "migration:initial": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm migration:create --initial -n InitialSetupMigration",
     "migration:create": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm migration:create",
     "migration:up": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm migration:up",

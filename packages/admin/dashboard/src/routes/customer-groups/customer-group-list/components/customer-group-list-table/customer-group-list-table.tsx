@@ -9,12 +9,14 @@ import { useDataTableDateFilters } from "../../../../../components/data-table/he
 import { useCustomerGroups } from "../../../../../hooks/api"
 import { useDate } from "../../../../../hooks/use-date"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { useCustomerGroupPermissions } from "../../../../../hooks/use-resource-permissions"
 import { CustomerGroupListTableActions } from "./customer-group-list-table-actions"
 
 const PAGE_SIZE = 10
 
 export const CustomerGroupListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useCustomerGroupPermissions()
 
   const { q, order, offset, created_at, updated_at } = useQueryParams([
     "q",
@@ -57,10 +59,14 @@ export const CustomerGroupListTable = () => {
         rowCount={count}
         getRowId={(row) => row.id}
         rowHref={(row) => `/customer-groups/${row.id}`}
-        action={{
-          label: t("actions.create"),
-          to: "/customer-groups/create",
-        }}
+        action={
+          canCreate
+            ? {
+                label: t("actions.create"),
+                to: "/customer-groups/create",
+              }
+            : undefined
+        }
         emptyState={{
           empty: {
             heading: t("customerGroups.list.empty.heading"),

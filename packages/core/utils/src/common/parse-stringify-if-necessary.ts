@@ -31,7 +31,7 @@ export function parseStringifyIfNecessary(result: unknown): any {
 
   const copy: any = {}
   for (const key in result) {
-    if (result.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(result, key)) {
       const value = (result as any)[key]
 
       if (typeof value === "function" || typeof value === "symbol") {

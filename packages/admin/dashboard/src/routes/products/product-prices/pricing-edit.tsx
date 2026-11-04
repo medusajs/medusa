@@ -45,10 +45,13 @@ export const PricingEdit = ({
       return {}
     }
 
-    return regions.reduce((acc: Record<string, string>, reg) => {
-      acc[reg.id] = reg.currency_code
-      return acc
-    }, {} as Record<string, string>)
+    return regions.reduce(
+      (acc: Record<string, string>, reg) => {
+        acc[reg.id] = reg.currency_code
+        return acc
+      },
+      {} as Record<string, string>
+    )
   }, [regions])
 
   const variants = variantId

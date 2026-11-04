@@ -16,7 +16,7 @@ import TranslationFeatureFlag from "../../../feature-flags/translation"
 
 export type RequestWithContext<
   Body,
-  QueryFields = Record<string, unknown>
+  QueryFields = Record<string, unknown>,
 > = StoreRequestWithContext<Body, QueryFields>
 
 export const refetchProduct = async (

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/notification-sendgrid",
-  "version": "2.21.2",
+  "version": "2.22.3",
   "description": "Sendgrid notification provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -13,10 +13,14 @@
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "engines": {
     "node": ">=22.22.0"
   },
@@ -24,18 +28,18 @@
   "license": "MIT",
   "scripts": {
     "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
-    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build ./tsconfig.json",
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.21.2"
+    "@medusajs/framework": "2.22.3"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.6"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.21.2"
+    "@medusajs/framework": "2.22.3"
   },
   "keywords": [
     "medusa-provider",

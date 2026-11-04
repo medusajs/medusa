@@ -105,6 +105,11 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory(
       }
 
       if (productToUpdate.variants) {
+        productToUpdate.variants = productToUpdate.variants.map(
+          ({ options, ...variant }: any) =>
+            isPresent(options) ? { ...variant, options } : variant
+        )
+
         const expectedOptionIds = expectedOptionIdsMap.get(product.id)
         const optionsForValidation = expectedOptionIds
           ? product.options.filter((o) => expectedOptionIds.has(o.id))

@@ -1,0 +1,20 @@
+{
+  "source": [
+    "package.json",
+    "packages/**/package.json",
+    "integration-tests/**/package.json",
+    "!**/node_modules/**"
+  ],
+  "versionGroups": [
+    {
+      "label": "Workspace packages are versioned by changesets",
+      "dependencies": ["@medusajs/**", "medusa-*", "create-medusa-app"],
+      "isIgnored": true
+    },
+    {
+      "label": "Peer ranges, root resolutions, and package versions are managed separately",
+      "dependencyTypes": ["peer", "resolutions", "local"],
+      "isIgnored": true
+    }
+  ]
+}

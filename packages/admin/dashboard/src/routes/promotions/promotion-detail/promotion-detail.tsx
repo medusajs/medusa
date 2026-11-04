@@ -10,6 +10,7 @@ import { PromotionGeneralSection } from "./components/promotion-general-section"
 import { promotionLoader } from "./loader"
 import { AdminPromotionRule } from "@medusajs/types"
 import { BasePromotionRuleValue } from "@medusajs/types/dist/http/promotion/common"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export type ExtendedPromotionRule = Omit<AdminPromotionRule, "values"> & {
   attribute_label?: string
@@ -94,7 +95,9 @@ export const PromotionDetail = () => {
         side: (
           <>
             <LayoutComposer.Entry id="CampaignSection">
-              <CampaignSection campaign={promotion.campaign!} />
+              <PermissionGuard permission="campaign:read">
+                <CampaignSection campaign={promotion.campaign!} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
           </>
         ),

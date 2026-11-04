@@ -97,7 +97,7 @@ Next, you want to create a link between the created products and the brand. To d
 To use Link in the `productsCreated` hook, replace the `TODO` with the following:
 
 export const hook2Highlights = [
-  ["1", `"link"`, "Resolve Link from the container."]
+  ["1", "LINK", "Resolve Link from the container."],
   ["6", "links", "Define an array to store the links in."],
   ["9", "push", "Add a link to be created."],
   ["19", "create", "Create the links."]
@@ -170,7 +170,7 @@ Now that you've consumed the `productsCreated` hook, you want to configure the `
 
 You configure the properties accepted in `additional_data` in the `src/api/middlewares.ts` that exports middleware configurations. So, create the file (or, if already existing, add to the file) `src/api/middlewares.ts` the following content:
 
-![Directory structure after adding the middelwares file](https://res.cloudinary.com/dza7lstvk/image/upload/v1733386868/Medusa%20Book/brands-middleware-dir-overview_uczos1.jpg)
+![Directory structure after adding the middlewares file](https://res.cloudinary.com/dza7lstvk/image/upload/v1733386868/Medusa%20Book/brands-middleware-dir-overview_uczos1.jpg)
 
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/framework/http"

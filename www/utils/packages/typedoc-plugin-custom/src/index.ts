@@ -14,8 +14,10 @@ import { MermaidDiagramDMLGenerator } from "./mermaid-diagram-dml-generator.js"
 import { load as dmlJsonParser } from "./dml-json-parser.js"
 import { GenerateCustomNamespacePlugin } from "./generate-custom-namespaces.js"
 import { EventsResolver } from "./events-resolver.js"
+import { load as legacyConversionPlugin } from "./legacy-conversion.js"
 
 export function load(app: Application) {
+  legacyConversionPlugin(app)
   resolveReferencesPluginLoad(app)
   frontmatterPlugin(app)
   parseOasSchemaPlugin(app)

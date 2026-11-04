@@ -50,8 +50,7 @@ export interface CampaignDTO {
 /**
  * The filters to apply on the retrieved campaigns.
  */
-export interface FilterableCampaignProps
-  extends BaseFilterable<FilterableCampaignProps> {
+export interface FilterableCampaignProps extends BaseFilterable<FilterableCampaignProps> {
   /**
    * Find campaigns by their name or description through this search term.
    */

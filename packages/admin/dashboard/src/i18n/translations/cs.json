@@ -1117,6 +1117,24 @@
       "hint": "Vytvořte nového zákazníka a spravujte jeho detaily.",
       "successToast": "Zákazník {{email}} byl úspěšně vytvořen."
     },
+    "export": {
+      "header": "Exportovat seznam zákazníků",
+      "description": "Exportovat seznam zákazníků do souboru.",
+      "success": {
+        "title": "Zpracováváme váš export",
+        "description": "Export dat může trvat několik minut. Oznámíme vám, až budeme hotovi."
+      },
+      "format": {
+        "label": "Formát",
+        "description": "Vyberte formát exportovaného souboru. JSON zachycuje vnořená data napříč moduly bez ztráty, což se doporučuje pro žádosti o přístup k osobním údajům.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtry",
+        "description": "Použijte filtry v přehledu tabulky pro úpravu tohoto zobrazení"
+      }
+    },
     "groups": {
       "label": "Skupiny zákazníků",
       "remove": "Jste si jisti, že chcete odstranit zákazníka ze skupiny zákazníků \"{{name}}\"?",
@@ -2827,7 +2845,6 @@
     "editUser": "Upravit uživatele",
     "inviteUser": "Pozvat uživatele",
     "inviteUserHint": "Pozvěte nového uživatele do vašeho obchodu.",
-    "inviteRolesTooltip": "Pokud není vybrána žádná role, uživatel bude pozván s rolí superuživatele.",
     "sendInvite": "Odeslat pozvánku",
     "pendingInvites": "Čekající pozvánky",
     "deleteInviteWarning": "Chystáte se smazat pozvánku pro {{email}}. Tuto akci nelze vrátit zpět.",
@@ -2902,7 +2919,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Uživatel již má tuto roli.",
-      "unassignableRoleTooltip": "Nemáte přístup k přiřazení této role — vaše oprávnění nepokrývají všechny její zásady.",
       "add": {
         "successToast_one": "Uživatel byl úspěšně přidán do role.",
         "successToast_few": "Uživatelé byli úspěšně přidáni do role.",

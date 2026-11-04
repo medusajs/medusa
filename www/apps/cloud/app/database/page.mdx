@@ -1,4 +1,4 @@
-import { getOsShortcut, Kbd, InlineIcon, Table } from "docs-ui"
+import { getOsShortcut, Kbd, InlineIcon, Note, Table } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
@@ -16,6 +16,8 @@ Medusa provisions and manages databases for each of your environments on Cloud.
 Each project environment has a dedicated PostgreSQL database. These databases are entirely isolated from one another.
 
 This isolation allows you to safely make or test changes in environments without affecting one another, especially the production environment and its data.
+
+When you create a new long-lived environment, its database starts empty rather than as a copy of the Production environment's database. Learn more in the [Long-Lived Environments](../environments/long-lived/page.mdx#new-environments-database) guide.
 
 ![Diagram showcasing isolation between environment databases](https://res.cloudinary.com/dza7lstvk/image/upload/v1750174759/Cloud/databases-cloud_hzjyrn.jpg)
 
@@ -128,6 +130,12 @@ To restore your database from a backup:
 4. Click **Restore backup** to confirm.
 
 Medusa notifies you when the restore completes or if an error occurs.
+
+<Note title="Important" type="warning">
+
+After the restore completes, [redeploy the environment's live deployment](../deployments/page.mdx#redeploy-a-deployment). The restore drops and recreates your database's tables, so the running application can fail with `relation does not exist` errors, or return `401` errors for all requests when it can't read the `api_key` table. These errors can persist after the restore finishes until you redeploy.
+
+</Note>
 
 <Note title="Tip">
 
@@ -289,6 +297,12 @@ Make sure you're generating the database dump from PostgreSQL v16 and that [pg_d
 
 </Note>
 
+<Note title="Important" type="warning">
+
+After the import completes, [redeploy the environment's live deployment](../deployments/page.mdx#redeploy-a-deployment). The import drops and recreates your database's tables, so the running application can fail with `relation does not exist` errors, or return `401` errors for all requests when it can't read the `api_key` table. These errors can persist after the import finishes until you redeploy.
+
+</Note>
+
 - **Export**: Download the current database as a dump file. You'll then receive a notification once the export is ready for download. Then, you can restore the database dump locally using `pg_restore`. For example:
 
 ```bash
@@ -327,6 +341,20 @@ Each environment has its own database, so Medusa runs a data migration script on
 
 - A script that completed in a previous deployment doesn't run again in later deployments.
 - A script that throws an error, or that was interrupted, runs again in the next deployment until it completes successfully.
+
+### Failed Data Migration Scripts
+
+Starting from Medusa v2.22.0, a data migration script that throws an error fails the deployment. The deployment's status becomes "Deploy failed", and the previous deployment remains live. Any database migrations and link changes that ran before the script in the same deployment remain applied.
+
+To fix the failure, check the [runtime logs](../logs/page.mdx) for the script's error, fix the script, and deploy the changes again. The script then runs again in the new deployment.
+
+In earlier versions, the deployment goes live even if a data migration script throws an error, and the script runs again in the next deployment.
+
+<Note>
+
+If your data migration script throws an error on purpose so that it runs again in a later deployment, it fails every deployment until it completes successfully. Instead, return from the script without throwing, and move the retry logic into the script itself or into a [scheduled job](!docs!/learn/fundamentals/scheduled-jobs).
+
+</Note>
 
 ### Run One-Off Data Scripts on Cloud
 

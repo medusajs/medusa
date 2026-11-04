@@ -2,6 +2,10 @@ const path = require("path")
 
 require("dotenv").config({ path: path.join(__dirname, ".env.test") })
 
+// Some of the apps under test configure license gated packages (rbac,
+// auth-oidc), which refuse to boot without a license key.
+require("@medusajs/test-utils").setTestLicense(["rbac", "auth-oidc"])
+
 if (typeof process.env.DB_TEMP_NAME === "undefined") {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   const chunkNumber = parseInt(process.env.CHUNK || "1")

@@ -28,13 +28,7 @@ export * from "./remote-query-entry-points"
 export * from "./to-remote-query"
 
 export type LogLevel =
-  | "query"
-  | "schema"
-  | "error"
-  | "warn"
-  | "info"
-  | "log"
-  | "migration"
+  "query" | "schema" | "error" | "warn" | "info" | "log" | "migration"
 export type LoggerOptions = boolean | "all" | LogLevel[]
 
 export type CustomModuleDefinition = {
@@ -100,8 +94,7 @@ export type ModuleDefinition = {
   /** @internal only used in exceptional cases - relying on the shared contrainer breaks encapsulation */
   __passSharedContainer?: boolean
   defaultModuleDeclaration:
-    | InternalModuleDeclaration
-    | ExternalModuleDeclaration
+    InternalModuleDeclaration | ExternalModuleDeclaration
 }
 
 export type LinkModuleDefinition = {
@@ -323,8 +316,7 @@ export type ModuleServiceInitializeCustomDataLayerOptions = {
 }
 
 export type ModuleBootstrapDeclaration =
-  | InternalModuleDeclaration
-  | ExternalModuleDeclaration
+  InternalModuleDeclaration | ExternalModuleDeclaration
 // TODO: These should be added back when the chain of types are fixed
 // | ModuleServiceInitializeOptions
 // | ModuleServiceInitializeCustomDataLayerOptions

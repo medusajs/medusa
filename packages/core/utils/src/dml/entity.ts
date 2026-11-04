@@ -94,9 +94,8 @@ function extractNameAndTableName<const Config extends IDmlEntityConfig>(
  */
 export class DmlEntity<
   const Schema extends DMLSchema,
-  const TConfig extends IDmlEntityConfig
-> implements IDmlEntity<Schema, TConfig>
-{
+  const TConfig extends IDmlEntityConfig,
+> implements IDmlEntity<Schema, TConfig> {
   [IsDmlEntity] = true
 
   name: InferDmlEntityNameFromConfig<TConfig>

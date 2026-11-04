@@ -59,4 +59,8 @@ const StoreCreditAccountPage = () => {
   )
 }
 
+export const handle = {
+  permissions: ["store_credit_account:read"],
+}
+
 export default StoreCreditAccountPage

@@ -58,7 +58,7 @@ export function createStepHandler<
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
   TInvokeResultOutput,
-  TInvokeResultCompensateInput
+  TInvokeResultCompensateInput,
 >(
   this: CreateWorkflowComposerContext,
   {

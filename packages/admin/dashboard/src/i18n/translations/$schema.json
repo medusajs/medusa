@@ -580,6 +580,9 @@
         "edit": {
           "type": "string"
         },
+        "view": {
+          "type": "string"
+        },
         "addItems": {
           "type": "string"
         },
@@ -663,6 +666,7 @@
         "reset",
         "confirm",
         "edit",
+        "view",
         "addItems",
         "download",
         "clear",
@@ -4183,6 +4187,64 @@
           "required": ["header", "hint", "successToast"],
           "additionalProperties": false
         },
+        "export": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "success": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
+            "format": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "json": {
+                  "type": "string"
+                },
+                "csv": {
+                  "type": "string"
+                }
+              },
+              "required": ["label", "description", "json", "csv"],
+              "additionalProperties": false
+            },
+            "filters": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["header", "description", "success", "format", "filters"],
+          "additionalProperties": false
+        },
         "groups": {
           "type": "object",
           "properties": {
@@ -4400,6 +4462,7 @@
         "domain",
         "list",
         "create",
+        "export",
         "groups",
         "edit",
         "delete",
@@ -10800,9 +10863,6 @@
             "alreadyAddedTooltip": {
               "type": "string"
             },
-            "unassignableRoleTooltip": {
-              "type": "string"
-            },
             "add": {
               "type": "object",
               "properties": {
@@ -10892,13 +10952,7 @@
               "additionalProperties": false
             }
           },
-          "required": [
-            "alreadyAddedTooltip",
-            "unassignableRoleTooltip",
-            "add",
-            "remove",
-            "list"
-          ],
+          "required": ["alreadyAddedTooltip", "add", "remove", "list"],
           "additionalProperties": false
         },
         "permissions": {
@@ -10935,9 +10989,19 @@
               },
               "required": ["heading", "description"],
               "additionalProperties": false
+            },
+            "manage": {
+              "type": "object",
+              "properties": {
+                "successToast": {
+                  "type": "string"
+                }
+              },
+              "required": ["successToast"],
+              "additionalProperties": false
             }
           },
-          "required": ["header", "hint", "empty", "filtered"],
+          "required": ["header", "hint", "empty", "filtered", "manage"],
           "additionalProperties": false
         },
         "list": {
@@ -11019,11 +11083,14 @@
             "header": {
               "type": "string"
             },
+            "identityHint": {
+              "type": "string"
+            },
             "successToast": {
               "type": "string"
             }
           },
-          "required": ["header", "successToast"],
+          "required": ["header", "identityHint", "successToast"],
           "additionalProperties": false
         },
         "delete": {
@@ -14517,6 +14584,19 @@
           "required": ["title", "description", "requiredPermission", "action"],
           "additionalProperties": false
         },
+        "noPermissions": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description"],
+          "additionalProperties": false
+        },
         "requiredPermissions": {
           "type": "object",
           "properties": {
@@ -14681,6 +14761,7 @@
       },
       "required": [
         "accessDenied",
+        "noPermissions",
         "requiredPermissions",
         "resources",
         "actions"

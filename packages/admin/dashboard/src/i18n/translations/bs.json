@@ -1100,6 +1100,24 @@
       "hint": "Kreiraj novog kupca i upravljaj njegovim podacima.",
       "successToast": "Kupac {{email}} je uspješno kreiran."
     },
+    "export": {
+      "header": "Izvoz liste kupaca",
+      "description": "Izvezite listu kupaca u fajl.",
+      "success": {
+        "title": "Obrađujemo vaš izvoz",
+        "description": "Izvoz podataka može potrajati nekoliko minuta. Obavijestićemo vas kada završimo."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Odaberite format izvezenog fajla. JSON bilježi ugniježđene podatke iz svih modula bez gubitaka, što se preporučuje za zahtjeve za pristup podacima.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filteri",
+        "description": "Primijenite filtere u preglednoj tabli da prilagodite ovaj prikaz"
+      }
+    },
     "groups": {
       "label": "Grupe kupaca",
       "remove": "Jeste li sigurni da želite ukloniti kupca iz grupe \"{{name}}\"?",
@@ -2799,7 +2817,6 @@
     "editUser": "Uredi korisnika",
     "inviteUser": "Pozovi korisnika",
     "inviteUserHint": "Pozovite novog korisnika u vašu trgovinu.",
-    "inviteRolesTooltip": "Ako nije odabrana uloga, korisnik će biti pozvan s ulogom superkorisnika.",
     "sendInvite": "Pošaljite pozivnicu",
     "pendingInvites": "Pozivnice na čekanju",
     "deleteInviteWarning": "Spremate se izbrisati pozivnicu za {{email}}. Ova akcija se ne može poništiti.",
@@ -2874,7 +2891,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Korisnik već ima ovu ulogu.",
-      "unassignableRoleTooltip": "Nemate pristup za dodjelu ove uloge — vaše dozvole ne pokrivaju sve njene politike.",
       "add": {
         "successToast_one": "Korisnik je uspješno dodan u ulogu.",
         "successToast_few": "Korisnici su uspješno dodani u ulogu.",

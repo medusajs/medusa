@@ -12,6 +12,16 @@ Medusa is for businesses and teams looking for a digital commerce platform with 
 
 Businesses of all sizes can use Medusa, from small start ups to large enterprises. Also, technical teams of all sizes can build with Medusa; all it takes is a developer to manage and deploy Medusa projects.
 
+## Documentation Indexes
+
+Each documentation project has its own index listing all of its pages:
+
+- [Development Resources Index](https://docs.medusajs.com/resources/llms.txt): All guides, recipes, tutorials, and references for Commerce Modules, Infrastructure Modules, integrations, storefront development, and tools.
+- [API Reference Index](https://docs.medusajs.com/api/llms.txt): All Store and Admin API routes.
+- [Medusa UI Index](https://docs.medusajs.com/ui/llms.txt): All Medusa UI components, hooks, and guides.
+- [Admin User Guide Index](https://docs.medusajs.com/user-guide/llms.txt): All Medusa Admin user guides.
+- [Medusa Cloud Index](https://docs.medusajs.com/cloud/llms.txt): All Medusa Cloud documentation pages.
+
 ## Get Started
 
 - [Get Started](https://docs.medusajs.com/learn/installation): Install a digital commerce application with Medusa.

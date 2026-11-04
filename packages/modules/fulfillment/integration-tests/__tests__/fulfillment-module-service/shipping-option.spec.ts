@@ -489,9 +489,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             jest.clearAllMocks()
 
-            const createdShippingOption = await service.createShippingOptions(
-              createData
-            )
+            const createdShippingOption =
+              await service.createShippingOptions(createData)
 
             expect(createdShippingOption).toEqual(
               expect.objectContaining({
@@ -577,9 +576,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             jest.clearAllMocks()
 
-            const createdShippingOptions = await service.createShippingOptions(
-              createData
-            )
+            const createdShippingOptions =
+              await service.createShippingOptions(createData)
 
             expect(createdShippingOptions).toHaveLength(2)
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(6)
@@ -709,9 +707,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               provider_id: providerId,
             })
 
-            const shippingOption = await service.createShippingOptions(
-              shippingOptionData
-            )
+            const shippingOption =
+              await service.createShippingOptions(shippingOptionData)
 
             const existingRule = shippingOption.rules[0]!
 
@@ -871,9 +868,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               provider_id: providerId,
             })
 
-            const shippingOption = await service.createShippingOptions(
-              shippingOptionData
-            )
+            const shippingOption =
+              await service.createShippingOptions(shippingOptionData)
 
             const updateData: Partial<UpdateShippingOptionDTO> = {
               id: shippingOption.id,
@@ -969,9 +965,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               }),
             ]
 
-            const shippingOptions = await service.createShippingOptions(
-              shippingOptionData
-            )
+            const shippingOptions =
+              await service.createShippingOptions(shippingOptionData)
 
             const updateData = [
               {
@@ -1022,9 +1017,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const updatedShippingOption = await service.upsertShippingOptions(
-              updateData
-            )
+            const updatedShippingOption =
+              await service.upsertShippingOptions(updateData)
 
             for (const data_ of updateData) {
               const expectedShippingOption = updatedShippingOption.find(
@@ -1157,9 +1151,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               provider_id: providerId,
             })
 
-            const shippingOption = await service.createShippingOptions(
-              shippingOptionData
-            )
+            const shippingOption =
+              await service.createShippingOptions(shippingOptionData)
 
             const updateData = [
               {
@@ -1202,9 +1195,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               provider_id: providerId,
             })
 
-            const shippingOption = await service.createShippingOptions(
-              shippingOptionData
-            )
+            const shippingOption =
+              await service.createShippingOptions(shippingOptionData)
 
             const updateData = [
               {
@@ -2185,9 +2177,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             jest.clearAllMocks()
 
-            const updatedRule = await service.updateShippingOptionRules(
-              updateData
-            )
+            const updatedRule =
+              await service.updateShippingOptionRules(updateData)
 
             expect(updatedRule).toEqual(
               expect.objectContaining({

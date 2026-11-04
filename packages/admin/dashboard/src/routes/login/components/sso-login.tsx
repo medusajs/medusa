@@ -65,8 +65,8 @@ export const SsoLogin = ({ providers, onMfaChallenge }: SsoLoginProps) => {
   // Render full-screen overlay during the callback to hide the login form
   if (isCallback) {
     return (
-      <div className="bg-ui-bg-subtle fixed inset-0 z-50 flex items-center justify-center">
-        <Spinner className="text-ui-fg-subtle animate-spin" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-ui-bg-subtle">
+        <Spinner className="animate-spin text-ui-fg-subtle" />
       </div>
     )
   }
@@ -105,11 +105,11 @@ const OrDivider = () => {
 
   return (
     <div className="flex items-center gap-x-3">
-      <hr className="bg-ui-border-base h-px flex-1 border-0" />
+      <hr className="h-px flex-1 border-0 bg-ui-border-base" />
       <Text size="small" leading="compact" className="text-ui-fg-muted">
         {t("auth.login.or")}
       </Text>
-      <hr className="bg-ui-border-base h-px flex-1 border-0" />
+      <hr className="h-px flex-1 border-0 bg-ui-border-base" />
     </div>
   )
 }

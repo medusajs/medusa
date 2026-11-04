@@ -1,4 +1,4 @@
-import { workerCompatibleFetch } from "docs-utils"
+import { inlineMdxImports, workerCompatibleFetch } from "docs-utils"
 import path from "path"
 import { loadReferenceFromBinding } from "./load-reference-from-binding"
 import { fetchFromAssetsBinding } from "./fetch-from-assets-binding"
@@ -49,9 +49,11 @@ export async function fetchMdxContent(
       fallbackAction: async () => {
         try {
           const { promises: fs } = await import("fs")
-          return await fs.readFile(
-            path.join(process.cwd(), "app", relPath),
-            "utf-8"
+          const filePath = path.join(process.cwd(), "app", relPath)
+          // mirrors the inlining done when copying pages to `public/raw-mdx`
+          return await inlineMdxImports(
+            await fs.readFile(filePath, "utf-8"),
+            filePath
           )
         } catch {
           return null

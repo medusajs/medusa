@@ -1068,6 +1068,24 @@
       "hint": "Skapa en ny kund och hantera kundens uppgifter.",
       "successToast": "Kund {{email}} har skapats."
     },
+    "export": {
+      "header": "Exportera kundlista",
+      "description": "Exportera kundlistan till en fil.",
+      "success": {
+        "title": "Vi bearbetar din export",
+        "description": "Exporten kan ta några minuter. Du får en avisering när den är klar."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Välj format för den exporterade filen. JSON fångar nästlad data från alla moduler utan dataförlust, vilket rekommenderas för begäranden om dataportabilitet.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filter",
+        "description": "Tillämpa filter i tabellöversikten för att justera den här vyn"
+      }
+    },
     "groups": {
       "label": "Kundgrupper",
       "remove": "Är du säker på att du vill ta bort kund från \"{{name}}\" kundgrupp?",
@@ -2748,7 +2766,6 @@
     "editUser": "Redigera användare",
     "inviteUser": "Bjud in användare",
     "inviteUserHint": "Bjud in en ny användare till butiken.",
-    "inviteRolesTooltip": "Om ingen roll väljs bjuds användaren in med en superanvändarroll.",
     "sendInvite": "Skicka inbjudan",
     "pendingInvites": "Väntande inbjudningar",
     "deleteInviteWarning": "Du håller på att ta bort inbjudan för {{email}}. Den här åtgärden kan inte ångras.",
@@ -2823,7 +2840,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Användaren har redan den här rollen.",
-      "unassignableRoleTooltip": "Du har inte behörighet att tilldela den här rollen – dina behörigheter omfattar inte alla dess policyer.",
       "add": {
         "successToast_one": "Användaren har lagts till i rollen.",
         "successToast_other": "Användarna har lagts till i rollen.",

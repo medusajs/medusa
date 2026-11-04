@@ -6,7 +6,7 @@ import { DataGridCoordinates } from "../types"
 
 type UseDataGridClipboardEventsOptions<
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 > = {
   matrix: DataGridMatrix<TData, TFieldValues>
   isEditing: boolean
@@ -24,7 +24,7 @@ type UseDataGridClipboardEventsOptions<
 
 export const useDataGridClipboardEvents = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >({
   matrix,
   anchor,

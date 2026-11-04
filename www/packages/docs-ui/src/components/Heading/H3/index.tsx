@@ -39,7 +39,7 @@ export const H3 = ({
           text={copyText}
           className="opacity-0 group-hover/h3:opacity-100 transition-opacity ml-docs_0.5 inline-block"
         >
-          <Link href={`#${props.id}`} scroll={false}>
+          <Link href={`#${props.id}`} scroll={false} data-markdown-ignore>
             #
           </Link>
         </CopyButton>

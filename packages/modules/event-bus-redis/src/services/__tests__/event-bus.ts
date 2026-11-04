@@ -15,6 +15,7 @@ const loggerMock = {
 const pipelineMock = {
   rpush: jest.fn(),
   expire: jest.fn(),
+  pexpire: jest.fn(),
   del: jest.fn(),
   exec: jest.fn().mockResolvedValue([]),
 }
@@ -27,6 +28,7 @@ const redisMock = {
   expire: () => jest.fn(),
   unlink: () => jest.fn(),
   pipeline: jest.fn(() => pipelineMock),
+  multi: jest.fn(() => pipelineMock),
 } as unknown as Redis
 
 const moduleDeps = {
@@ -1085,6 +1087,73 @@ describe("RedisEventBusService", () => {
 
         callInterceptorsSpy.mockRestore()
       })
+    })
+  })
+
+  describe("clearGroupedEvents", () => {
+    beforeEach(async () => {
+      jest.clearAllMocks()
+
+      eventBus = new RedisEventBusService(moduleDeps, {}, moduleDeclaration)
+      redis = (eventBus as any).eventBusRedisConnection_
+    })
+
+    it("should re-stage a large number of kept events without overflowing the call stack and keep the TTL", async () => {
+      const keptCount = 300_000
+      const staged = Array.from({ length: keptCount }, (_, i) =>
+        JSON.stringify({ name: "kept-event", data: { data: { i } } })
+      )
+      staged.push(JSON.stringify({ name: "cleared-event", data: {} }))
+
+      redis.lrange = jest.fn().mockResolvedValue(staged)
+      redis.pttl = jest.fn().mockResolvedValue(600_000)
+
+      await eventBus.clearGroupedEvents("large-group", {
+        eventNames: ["cleared-event"],
+      })
+
+      expect(pipelineMock.del).toHaveBeenCalledWith("staging:large-group")
+
+      const pushed = pipelineMock.rpush.mock.calls.flatMap((call) => {
+        expect(call[0]).toEqual("staging:large-group")
+        return call.slice(1)
+      })
+      expect(pushed).toHaveLength(keptCount)
+      expect(pushed[0]).toEqual(staged[0])
+      expect(pushed[keptCount - 1]).toEqual(staged[keptCount - 1])
+
+      expect(pipelineMock.pexpire).toHaveBeenCalledWith(
+        "staging:large-group",
+        600_000
+      )
+      expect(pipelineMock.exec).toHaveBeenCalledTimes(1)
+    })
+
+    it("should re-stage kept events in a transaction and throw when a command in it fails", async () => {
+      const staged = [
+        JSON.stringify({ name: "kept-event", data: {} }),
+        JSON.stringify({ name: "cleared-event", data: {} }),
+      ]
+      const rpushError = new Error(
+        "OOM command not allowed when used memory > 'maxmemory'."
+      )
+
+      redis.lrange = jest.fn().mockResolvedValue(staged)
+      redis.pttl = jest.fn().mockResolvedValue(600_000)
+      pipelineMock.exec.mockResolvedValueOnce([
+        [null, 1],
+        [rpushError, null],
+        [null, 1],
+      ])
+
+      await expect(
+        eventBus.clearGroupedEvents("failing-group", {
+          eventNames: ["cleared-event"],
+        })
+      ).rejects.toThrow(rpushError)
+
+      expect(redis.multi).toHaveBeenCalledTimes(1)
+      expect(redis.pipeline).not.toHaveBeenCalled()
     })
   })
 

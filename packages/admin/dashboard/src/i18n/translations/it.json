@@ -1083,6 +1083,24 @@
       "hint": "Crea un nuovo cliente e gestisci i suoi dettagli.",
       "successToast": "Cliente {{email}} creato con successo."
     },
+    "export": {
+      "header": "Esporta Elenco Clienti",
+      "description": "Esporta l'elenco dei clienti in un file.",
+      "success": {
+        "title": "Stiamo elaborando la tua esportazione",
+        "description": "L'esportazione dei dati potrebbe richiedere alcuni minuti. Ti notificheremo quando saremo pronti."
+      },
+      "format": {
+        "label": "Formato",
+        "description": "Scegli il formato del file esportato. JSON acquisisce dati annidati tra i moduli senza perdita di informazioni, ed è consigliato per le richieste di accesso ai dati personali.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtri",
+        "description": "Applica i filtri nella panoramica della tabella per modificare questa visualizzazione"
+      }
+    },
     "groups": {
       "label": "Gruppi di clienti",
       "remove": "Sei sicuro di voler rimuovere il cliente dal gruppo \"{{name}}\"?",
@@ -2769,7 +2787,6 @@
     "editUser": "Modifica Utente",
     "inviteUser": "Invita Utente",
     "inviteUserHint": "Invita un nuovo utente al tuo negozio.",
-    "inviteRolesTooltip": "Se non viene selezionato alcun ruolo, l'utente verrà invitato con un ruolo di superutente.",
     "sendInvite": "Invia invito",
     "pendingInvites": "Inviti in attesa",
     "deleteInviteWarning": "Stai per eliminare l'invito per {{email}}. Questa azione non può essere annullata.",
@@ -2844,7 +2861,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "L'utente ha già questo ruolo.",
-      "unassignableRoleTooltip": "Non hai accesso per assegnare questo ruolo — i tuoi permessi non coprono tutte le sue policy.",
       "add": {
         "successToast_one": "L'utente è stato aggiunto al ruolo con successo.",
         "successToast_other": "Gli utenti sono stati aggiunti al ruolo con successo.",

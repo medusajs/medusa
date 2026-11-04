@@ -18,19 +18,19 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
-    "glob": "13.0.6",
+    "glob": "14.0.2",
     "react-docgen": "^7.0.1",
     "resolve": "^1.22.8",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.27.5",
+    "typedoc": "^0.28.20",
     "typedoc-plugin-custom": "*",
-    "typescript": "^5.6.2",
+    "typescript": "^6.0.3",
     "utils": "*"
   },
   "devDependencies": {
     "@types/node": "^20.12.10"
   },
   "peerDependencies": {
-    "typedoc": "0.27.x"
+    "typedoc": "0.28.x"
   }
 }

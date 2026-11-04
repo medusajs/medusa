@@ -1115,6 +1115,24 @@
       "hint": "Crea un nuevo cliente y administra sus detalles.",
       "successToast": "Cliente {{email}} creado correctamente."
     },
+    "export": {
+      "header": "Exportar lista de clientes",
+      "description": "Exporta la lista de clientes a un archivo.",
+      "success": {
+        "title": "Estamos procesando tu exportación",
+        "description": "Exportar los datos puede tomar unos minutos. Te notificaremos cuando hayamos terminado."
+      },
+      "format": {
+        "label": "Formato",
+        "description": "Elige el formato del archivo exportado. JSON captura datos anidados en todos los módulos sin pérdida, lo cual es recomendado para solicitudes de acceso a datos personales.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtros",
+        "description": "Aplica filtros en la vista general de la tabla para ajustar esta vista"
+      }
+    },
     "groups": {
       "label": "Grupos de clientes",
       "remove": "¿Estás seguro de que deseas eliminar al cliente del grupo de clientes \"{{name}}\"?",
@@ -1897,15 +1915,15 @@
         "action": "Editar precios"
       },
       "conditionalPrices": {
-        "header": "Precios Condicionales",
+        "header": "Precios Condicionales para {{name}}",
         "description": "Establece precios diferentes basados en condiciones específicas.",
         "attributes": {
           "cartItemTotal": "Total de artículos del carrito"
         },
         "summaries": {
-          "range": "Rango",
-          "greaterThan": "Mayor que",
-          "lessThan": "Menor que"
+          "range": "Si <0>{{attribute}}</0> está entre <1>{{gte}}</1> y <2>{{lte}}</2>",
+          "greaterThan": "Si <0>{{attribute}}</0> ≥ <1>{{gte}}</1>",
+          "lessThan": "Si <0>{{attribute}}</0> ≤ <1>{{lte}}</1>"
         },
         "actions": {
           "addPrice": "Agregar precio",
@@ -2867,7 +2885,6 @@
     "editUser": "Editar Usuario",
     "inviteUser": "Invitar Usuario",
     "inviteUserHint": "Invita a un nuevo usuario a tu tienda.",
-    "inviteRolesTooltip": "Si no se selecciona ningún rol, el usuario será invitado con un rol de superusuario.",
     "sendInvite": "Enviar invitación",
     "pendingInvites": "Invitaciones Pendientes",
     "deleteInviteWarning": "Estás a punto de eliminar la invitación para {{email}}. Esta acción no puede deshacerse.",
@@ -2932,7 +2949,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "El usuario ya tiene este rol.",
-      "unassignableRoleTooltip": "No tienes acceso para asignar este rol — tus permisos no cubren todas sus políticas.",
       "add": {
         "successToast_one": "El usuario fue agregado correctamente al rol.",
         "successToast_other": "Los usuarios fueron agregados correctamente al rol.",

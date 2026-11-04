@@ -219,9 +219,8 @@ medusaIntegrationTestRunner({
 
         await indexEngine.query<"product">(queryArgs)
 
-        const { data: results, metadata } = await indexEngine.query<"product">(
-          queryArgs
-        )
+        const { data: results, metadata } =
+          await indexEngine.query<"product">(queryArgs)
       })
     })
   },

@@ -1165,6 +1165,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Common/Workflows_Common/functions/core_flows.Common.Workflows_Common.updateLinksWorkflow/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Customer/Steps_Customer/functions/core_flows.Customer.Steps_Customer.collectCustomerIdsToExportStep",
+    "newSlug": "/references/medusa-workflows/steps/collectCustomerIdsToExportStep",
+    "filePath": "/www/apps/resources/references/core_flows/Customer/Steps_Customer/functions/core_flows.Customer.Steps_Customer.collectCustomerIdsToExportStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Customer/Steps_Customer/functions/core_flows.Customer.Steps_Customer.createCustomerAddressesStep",
     "newSlug": "/references/medusa-workflows/steps/createCustomerAddressesStep",
     "filePath": "/www/apps/resources/references/core_flows/Customer/Steps_Customer/functions/core_flows.Customer.Steps_Customer.createCustomerAddressesStep/page.json"
@@ -1183,6 +1188,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Customer/Steps_Customer/functions/core_flows.Customer.Steps_Customer.deleteCustomersStep",
     "newSlug": "/references/medusa-workflows/steps/deleteCustomersStep",
     "filePath": "/www/apps/resources/references/core_flows/Customer/Steps_Customer/functions/core_flows.Customer.Steps_Customer.deleteCustomersStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Customer/Steps_Customer/functions/core_flows.Customer.Steps_Customer.exportCustomersStep",
+    "newSlug": "/references/medusa-workflows/steps/exportCustomersStep",
+    "filePath": "/www/apps/resources/references/core_flows/Customer/Steps_Customer/functions/core_flows.Customer.Steps_Customer.exportCustomersStep/page.json"
   },
   {
     "origSlug": "/references/core_flows/Customer/Steps_Customer/functions/core_flows.Customer.Steps_Customer.maybeUnsetDefaultBillingAddressesStep",
@@ -1233,6 +1243,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.deleteCustomersWorkflow",
     "newSlug": "/references/medusa-workflows/deleteCustomersWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.deleteCustomersWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.exportCustomersWorkflow",
+    "newSlug": "/references/medusa-workflows/exportCustomersWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.exportCustomersWorkflow/page.json"
   },
   {
     "origSlug": "/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.getCustomerAuthIdentityStep",
@@ -3055,6 +3070,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentCollectionStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentSessionStep",
+    "newSlug": "/references/medusa-workflows/steps/updatePaymentSessionStep",
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentSessionStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updateRefundReasonsStep",
     "newSlug": "/references/medusa-workflows/steps/updateRefundReasonsStep",
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updateRefundReasonsStep/page.json"
@@ -3068,6 +3088,16 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentProviderInRegionStep",
     "newSlug": "/references/medusa-workflows/steps/validatePaymentProviderInRegionStep",
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentProviderInRegionStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionUpdateStep",
+    "newSlug": "/references/medusa-workflows/steps/validatePaymentSessionUpdateStep",
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionUpdateStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionsDeletableStep",
+    "newSlug": "/references/medusa-workflows/steps/validatePaymentSessionsDeletableStep",
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.validatePaymentSessionsDeletableStep/page.json"
   },
   {
     "origSlug": "/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.createPaymentSessionsWorkflow",
@@ -3088,6 +3118,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.deleteRefundReasonsWorkflow",
     "newSlug": "/references/medusa-workflows/deleteRefundReasonsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.deleteRefundReasonsWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.updatePaymentSessionClientDataWorkflow",
+    "newSlug": "/references/medusa-workflows/updatePaymentSessionClientDataWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.updatePaymentSessionClientDataWorkflow/page.json"
   },
   {
     "origSlug": "/references/core_flows/Payment_Collection/Workflows_Payment_Collection/functions/core_flows.Payment_Collection.Workflows_Payment_Collection.updateRefundReasonsWorkflow",
@@ -3743,6 +3778,16 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Promotion/Workflows_Promotion/functions/core_flows.Promotion.Workflows_Promotion.updatePromotionsWorkflow",
     "newSlug": "/references/medusa-workflows/updatePromotionsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Promotion/Workflows_Promotion/functions/core_flows.Promotion.Workflows_Promotion.updatePromotionsWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStep",
+    "newSlug": "/references/medusa-workflows/steps/getRoleAssignmentsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStep",
+    "newSlug": "/references/medusa-workflows/steps/validateAssignmentReferencesStep",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStep/page.json"
   },
   {
     "origSlug": "/references/core_flows/Region/Steps_Region/functions/core_flows.Region.Steps_Region.createRegionsStep",
@@ -5510,6 +5555,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.locale/page.json"
   },
   {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.module",
+    "newSlug": "/references/js-sdk/admin/module",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.module/page.json"
+  },
+  {
     "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification",
     "newSlug": "/references/js-sdk/admin/notification",
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification/page.json"
@@ -5840,6 +5890,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.deleteGiftCards/page.json"
   },
   {
+    "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.getOptions",
+    "newSlug": "/references/loyalty/getOptions",
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.getOptions/page.json"
+  },
+  {
     "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.listGiftCards",
     "newSlug": "/references/loyalty/listGiftCards",
     "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.listGiftCards/page.json"
@@ -5908,6 +5963,11 @@ export const slugChanges = [
     "origSlug": "/references/module_events/module_events.Payment",
     "newSlug": "/references/payment/events",
     "filePath": "/www/apps/resources/references/module_events/module_events.Payment/page.json"
+  },
+  {
+    "origSlug": "/references/module_events/module_events.Pricing",
+    "newSlug": "/references/pricing/events",
+    "filePath": "/www/apps/resources/references/module_events/module_events.Pricing/page.json"
   },
   {
     "origSlug": "/references/module_events/module_events.Product",
@@ -6013,6 +6073,11 @@ export const slugChanges = [
     "origSlug": "/references/modules/promotion_models",
     "newSlug": "/references/promotion/models",
     "filePath": "/www/apps/resources/references/modules/promotion_models/page.json"
+  },
+  {
+    "origSlug": "/references/modules/rbac_models",
+    "newSlug": "/references/rbac/models",
+    "filePath": "/www/apps/resources/references/modules/rbac_models/page.json"
   },
   {
     "origSlug": "/references/modules/region_models",
@@ -8018,6 +8083,196 @@ export const slugChanges = [
     "origSlug": "/references/promotion_models/variables/promotion_models.PromotionRuleValue",
     "newSlug": "/references/promotion/models/PromotionRuleValue",
     "filePath": "/www/apps/resources/references/promotion_models/variables/promotion_models.PromotionRuleValue/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacPolicies",
+    "newSlug": "/references/rbac/createRbacPolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacPolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleParents",
+    "newSlug": "/references/rbac/createRbacRoleParents",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleParents/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRolePolicies",
+    "newSlug": "/references/rbac/createRbacRolePolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRolePolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoles",
+    "newSlug": "/references/rbac/createRbacRoles",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoles/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacPolicies",
+    "newSlug": "/references/rbac/deleteRbacPolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacPolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleParents",
+    "newSlug": "/references/rbac/deleteRbacRoleParents",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleParents/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRolePolicies",
+    "newSlug": "/references/rbac/deleteRbacRolePolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRolePolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoles",
+    "newSlug": "/references/rbac/deleteRbacRoles",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoles/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacPolicies",
+    "newSlug": "/references/rbac/listAndCountRbacPolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacPolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleParents",
+    "newSlug": "/references/rbac/listAndCountRbacRoleParents",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleParents/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRolePolicies",
+    "newSlug": "/references/rbac/listAndCountRbacRolePolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRolePolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoles",
+    "newSlug": "/references/rbac/listAndCountRbacRoles",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoles/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listPoliciesForRole",
+    "newSlug": "/references/rbac/listPoliciesForRole",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listPoliciesForRole/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacPolicies",
+    "newSlug": "/references/rbac/listRbacPolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacPolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleParents",
+    "newSlug": "/references/rbac/listRbacRoleParents",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleParents/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRolePolicies",
+    "newSlug": "/references/rbac/listRbacRolePolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRolePolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoles",
+    "newSlug": "/references/rbac/listRbacRoles",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoles/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacPolicies",
+    "newSlug": "/references/rbac/restoreRbacPolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacPolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleParents",
+    "newSlug": "/references/rbac/restoreRbacRoleParents",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleParents/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRolePolicies",
+    "newSlug": "/references/rbac/restoreRbacRolePolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRolePolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoles",
+    "newSlug": "/references/rbac/restoreRbacRoles",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoles/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacPolicy",
+    "newSlug": "/references/rbac/retrieveRbacPolicy",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacPolicy/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRole",
+    "newSlug": "/references/rbac/retrieveRbacRole",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRole/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleParent",
+    "newSlug": "/references/rbac/retrieveRbacRoleParent",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleParent/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRolePolicy",
+    "newSlug": "/references/rbac/retrieveRbacRolePolicy",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRolePolicy/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacPolicies",
+    "newSlug": "/references/rbac/softDeleteRbacPolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacPolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleParents",
+    "newSlug": "/references/rbac/softDeleteRbacRoleParents",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleParents/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRolePolicies",
+    "newSlug": "/references/rbac/softDeleteRbacRolePolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRolePolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoles",
+    "newSlug": "/references/rbac/softDeleteRbacRoles",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoles/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacPolicies",
+    "newSlug": "/references/rbac/updateRbacPolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacPolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleParents",
+    "newSlug": "/references/rbac/updateRbacRoleParents",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleParents/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRolePolicies",
+    "newSlug": "/references/rbac/updateRbacRolePolicies",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRolePolicies/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoles",
+    "newSlug": "/references/rbac/updateRbacRoles",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoles/page.json"
+  },
+  {
+    "origSlug": "/references/rbac/interfaces/rbac.IRbacModuleService",
+    "newSlug": "/references/rbac",
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.IRbacModuleService/page.json"
+  },
+  {
+    "origSlug": "/references/rbac_models/variables/rbac_models.RbacPolicy",
+    "newSlug": "/references/rbac/models/RbacPolicy",
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacPolicy/page.json"
+  },
+  {
+    "origSlug": "/references/rbac_models/variables/rbac_models.RbacRole",
+    "newSlug": "/references/rbac/models/RbacRole",
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRole/page.json"
+  },
+  {
+    "origSlug": "/references/rbac_models/variables/rbac_models.RbacRoleParent",
+    "newSlug": "/references/rbac/models/RbacRoleParent",
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRoleParent/page.json"
+  },
+  {
+    "origSlug": "/references/rbac_models/variables/rbac_models.RbacRolePolicy",
+    "newSlug": "/references/rbac/models/RbacRolePolicy",
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRolePolicy/page.json"
   },
   {
     "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.createRegions",

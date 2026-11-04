@@ -53,17 +53,17 @@ describe("load internal", () => {
         expect(resources.services).toHaveLength(1)
         expect(resources.services[0]).toEqual(ModuleService)
         expect(resources.models).toHaveLength(2)
-        expect(resources.models).toEqual(
+        expect(resources.models.map((model) => model.name)).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ name: upperCaseFirst(dmlEntity.name) }),
-            expect.objectContaining({ name: upperCaseFirst(EntityModel.name) }),
+            upperCaseFirst(dmlEntity.name),
+            upperCaseFirst(EntityModel.name),
           ])
         )
         expect(resources.repositories).toHaveLength(0)
         expect(resources.loaders).toHaveLength(2)
-        expect(resources.loaders).toEqual([
-          expect.objectContaining({ name: "connectionLoader" }),
-          expect.objectContaining({ name: "containerLoader" }),
+        expect(resources.loaders.map((loader) => loader.name)).toEqual([
+          "connectionLoader",
+          "containerLoader",
         ])
         expect(resources.moduleService).toEqual(ModuleService)
 
@@ -146,17 +146,17 @@ describe("load internal", () => {
         expect(resources.services).toHaveLength(1)
         expect(resources.services[0]).toEqual(ModuleService)
         expect(resources.models).toHaveLength(2)
-        expect(resources.models).toEqual(
+        expect(resources.models.map((model) => model.name)).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ name: upperCaseFirst(dmlEntity.name) }),
-            expect.objectContaining({ name: upperCaseFirst(entityModel.name) }),
+            upperCaseFirst(dmlEntity.name),
+            upperCaseFirst(entityModel.name),
           ])
         )
         expect(resources.repositories).toHaveLength(0)
         expect(resources.loaders).toHaveLength(2)
-        expect(resources.loaders).toEqual([
-          expect.objectContaining({ name: "connectionLoader" }),
-          expect.objectContaining({ name: "containerLoader" }),
+        expect(resources.loaders.map((loader) => loader.name)).toEqual([
+          "connectionLoader",
+          "containerLoader",
         ])
         expect(resources.moduleService).toEqual(ModuleService)
 
@@ -249,17 +249,17 @@ describe("load internal", () => {
         expect(resources.services).toHaveLength(1)
         expect(resources.services[0]).toEqual(ModuleService)
         expect(resources.models).toHaveLength(2)
-        expect(resources.models).toEqual(
+        expect(resources.models.map((model) => model.name)).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ name: upperCaseFirst(EntityModel.name) }),
-            expect.objectContaining({ name: upperCaseFirst(Entity2.name) }),
+            upperCaseFirst(EntityModel.name),
+            upperCaseFirst(Entity2.name),
           ])
         )
         expect(resources.repositories).toHaveLength(0)
         expect(resources.loaders).toHaveLength(2)
-        expect(resources.loaders).toEqual([
-          expect.objectContaining({ name: "connectionLoader" }),
-          expect.objectContaining({ name: "containerLoader" }),
+        expect(resources.loaders.map((loader) => loader.name)).toEqual([
+          "connectionLoader",
+          "containerLoader",
         ])
         expect(resources.moduleService).toEqual(ModuleService)
 
@@ -332,17 +332,17 @@ describe("load internal", () => {
         expect(resources.services).toHaveLength(1)
         expect(resources.services[0]).toEqual(ModuleService)
         expect(resources.models).toHaveLength(2)
-        expect(resources.models).toEqual(
+        expect(resources.models.map((model) => model.name)).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ name: upperCaseFirst(EntityModel.name) }),
-            expect.objectContaining({ name: upperCaseFirst(Entity2.name) }),
+            upperCaseFirst(EntityModel.name),
+            upperCaseFirst(Entity2.name),
           ])
         )
         expect(resources.repositories).toHaveLength(0)
         expect(resources.loaders).toHaveLength(2)
-        expect(resources.loaders).toEqual([
-          expect.objectContaining({ name: "connectionLoader" }),
-          expect.objectContaining({ name: "containerLoader" }),
+        expect(resources.loaders.map((loader) => loader.name)).toEqual([
+          "connectionLoader",
+          "containerLoader",
         ])
         expect(resources.moduleService).toEqual(ModuleService)
 

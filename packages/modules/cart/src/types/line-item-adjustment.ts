@@ -9,7 +9,6 @@ export interface CreateLineItemAdjustmentDTO {
   provider_id?: string
 }
 
-export interface UpdateLineItemAdjustmentDTO
-  extends Partial<CreateLineItemAdjustmentDTO> {
+export interface UpdateLineItemAdjustmentDTO extends Partial<CreateLineItemAdjustmentDTO> {
   id: string
 }

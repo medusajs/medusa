@@ -725,7 +725,7 @@ export default class ProductModuleService
   > {
     let normalizedInput: UpdateProductVariantInput[] = []
     if (isString(idOrSelector)) {
-      normalizedInput = [{ id: idOrSelector, ...data }]
+      normalizedInput = [{ ...data, id: idOrSelector }]
     } else {
       const variants = await this.productVariantService_.list(
         idOrSelector,
@@ -734,8 +734,8 @@ export default class ProductModuleService
       )
 
       normalizedInput = variants.map((variant) => ({
-        id: variant.id,
         ...data,
+        id: variant.id,
       }))
     }
 
@@ -758,7 +758,7 @@ export default class ProductModuleService
     // needed in that case. When no variant carries `options`, all of that work is
     // dead weight — and on a product with a large number of variants it is very
     // expensive (see below), so we skip it.
-    const hasOptions = data.some((d) => !!d.options)
+    const hasOptions = data.some((d) => isPresent(d.options))
 
     // Validation step
     const variantIdsToUpdate = data.map(({ id }) => id)
@@ -781,10 +781,13 @@ export default class ProductModuleService
     // Data normalization
     const variantsWithProductId: UpdateProductVariantInput[] = variants.map(
       (variant) => {
-        const update = data.find(({ id }) => id === variant.id)!
+        const { options, ...update } = data.find(
+          ({ id }) => id === variant.id
+        )!
 
         return {
           ...update,
+          ...(isPresent(options) ? { options } : {}),
           id: variant.id,
           product_id: variant.product_id,
           ...(isPresent(update.metadata)

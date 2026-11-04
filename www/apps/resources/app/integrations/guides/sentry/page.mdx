@@ -151,7 +151,7 @@ Next, you set the global propagator to Sentry's propagator, which allows Sentry 
 Finally, you export a `register` function that registers OpenTelemetry. It uses the `registerOtel` function from Medusa, which accepts [OpenTelemetry configurations](https://open-telemetry.github.io/opentelemetry-js/interfaces/_opentelemetry_sdk-node.NodeSDKConfiguration.html) with the following custom Medusa options:
 
 - `serviceName`: The name of your service, which you set to "medusa". You can change it to a more descriptive name if needed.
-- `instrument`: An object that specifies what to trace in your Medusa application. You enable tracing for HTTP requests, workflows, Query usages, and database operations by setting their respective properties to `true`.
+- `instrument`: An object that specifies what to trace in your Medusa application. You enable tracing for HTTP requests, workflows, Query usages, and database operations by setting their respective properties to `true`. Since Medusa v2.22.0, you can also pass an object to `http` to choose which query parameter values Medusa reports to Sentry. Learn more in the [Instrumentation](!docs!/learn/debugging-and-testing/instrumentation#configure-http-tracing) chapter.
 
 You can add any additional configurations to either Sentry or OpenTelemetry as needed for your use case.
 

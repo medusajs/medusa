@@ -10,8 +10,6 @@ checks:
   - markdown-url-support
   - content-negotiation
   - rendering-strategy
-  - page-size-markdown
-  - page-size-html
   - content-start-position
   - tabbed-content-serialization
   - section-header-quality

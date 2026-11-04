@@ -41,7 +41,11 @@ import {
 } from "@medusajs/ui"
 
 import { AdminReservation } from "@medusajs/types/src/http"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import DisplayId from "../../../../../components/common/display-id/display-id"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { useClaims } from "../../../../../hooks/api/claims"
@@ -51,6 +55,16 @@ import { useMarkPaymentCollectionAsPaid } from "../../../../../hooks/api/payment
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
+import {
+  useOrderChangePermissions,
+  useOrderClaimPermissions,
+  useOrderExchangePermissions,
+  useOrderPermissions,
+  usePaymentCollectionPermissions,
+  useRefundPermissions,
+  useReservationItemPermissions,
+  useReturnPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { getTotalCreditLines } from "../../../../../lib/credit-line"
 import { formatCurrency } from "../../../../../lib/format-currency"
 import { getReservationsLimitCount } from "../../../../../lib/orders"
@@ -79,6 +93,18 @@ export const OrderSummarySection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
 
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateReturn } = useReturnPermissions()
+  const { canCreate: canCreateReservation } = useReservationItemPermissions()
+  const { canUpdate: canUpdatePaymentCollection } =
+    usePaymentCollectionPermissions()
+  const { canCreate: canCreateRefund } = useRefundPermissions()
+
+  const canReceiveReturn = canUpdateReturn
+  const canAllocate = canCreateReservation
+  const canMarkAsPaid = canUpdatePaymentCollection && canUpdateOrder
+  const canRefund = canCreateRefund && canUpdateOrder
+
   const { reservations } = useReservationItems(
     {
       line_item_id: order?.items?.map((i) => i.id),
@@ -100,13 +126,13 @@ export const OrderSummarySection = ({
     [returns]
   )
 
-  const showReturns = !!receivableReturns.length
+  const showReturns = !!receivableReturns.length && canReceiveReturn
 
   /**
    * Show Allocation button only if there are unfulfilled items that don't have reservations
    */
   const showAllocateButton = useMemo(() => {
-    if (!reservations) {
+    if (!reservations || !canAllocate) {
       return false
     }
 
@@ -128,7 +154,7 @@ export const OrderSummarySection = ({
     }
 
     return false
-  }, [order.items, reservations])
+  }, [order.items, reservations, canAllocate])
 
   const unpaidPaymentCollection = order.payment_collections.find(
     (pc) => pc.status === "not_paid"
@@ -146,8 +172,11 @@ export const OrderSummarySection = ({
   )
 
   const showPayment =
-    unpaidPaymentCollection && pendingDifference > 0 && isAmountSignificant
-  const showRefund = pendingDifference < 0 && isAmountSignificant
+    unpaidPaymentCollection &&
+    pendingDifference > 0 &&
+    isAmountSignificant &&
+    canMarkAsPaid
+  const showRefund = pendingDifference < 0 && isAmountSignificant && canRefund
 
   const handleMarkAsPaid = async (
     paymentCollection: AdminPaymentCollection
@@ -197,92 +226,95 @@ export const OrderSummarySection = ({
       <DiscountAndTotalBreakdown order={order} plugins={plugins} />
       <Total order={order} />
 
-      {(showAllocateButton || showReturns || showPayment || showRefund) && (
-        <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-          {showReturns &&
-            (receivableReturns.length === 1 ? (
-              <Button asChild variant="secondary" size="small">
-                <Link
-                  to={`/orders/${order.id}/returns/${receivableReturns[0].id}/receive`}
+      {showReturns ||
+        showAllocateButton ||
+        showPayment ||
+        (showRefund && (
+          <div className="flex items-center justify-end gap-x-2 rounded-b-xl bg-ui-bg-subtle px-4 py-4">
+            {showReturns &&
+              (receivableReturns.length === 1 ? (
+                <Button asChild variant="secondary" size="small">
+                  <Link
+                    to={`/orders/${order.id}/returns/${receivableReturns[0].id}/receive`}
+                  >
+                    {t("orders.returns.receive.action")}
+                  </Link>
+                </Button>
+              ) : (
+                <ActionMenu
+                  groups={[
+                    {
+                      actions: receivableReturns.map((r) => {
+                        let id = r.id
+                        let returnType = "Return"
+
+                        if (r.exchange_id) {
+                          id = r.exchange_id
+                          returnType = "Exchange"
+                        }
+
+                        if (r.claim_id) {
+                          id = r.claim_id
+                          returnType = "Claim"
+                        }
+
+                        return {
+                          label: t("orders.returns.receive.receiveItems", {
+                            id: `#${id.slice(-7)}`,
+                            returnType,
+                          }),
+                          icon: <ArrowLongRight />,
+                          to: `/orders/${order.id}/returns/${r.id}/receive`,
+                        }
+                      }),
+                    },
+                  ]}
                 >
-                  {t("orders.returns.receive.action")}
+                  <Button variant="secondary" size="small">
+                    {t("orders.returns.receive.action")}
+                  </Button>
+                </ActionMenu>
+              ))}
+
+            {showAllocateButton && (
+              <Button asChild variant="secondary" size="small">
+                <Link to="allocate-items">
+                  {t("orders.allocateItems.action")}
                 </Link>
               </Button>
-            ) : (
-              <ActionMenu
-                groups={[
-                  {
-                    actions: receivableReturns.map((r) => {
-                      let id = r.id
-                      let returnType = "Return"
+            )}
 
-                      if (r.exchange_id) {
-                        id = r.exchange_id
-                        returnType = "Exchange"
-                      }
+            {showPayment && (
+              <CopyPaymentLink
+                paymentCollection={unpaidPaymentCollection}
+                order={order}
+              />
+            )}
 
-                      if (r.claim_id) {
-                        id = r.claim_id
-                        returnType = "Claim"
-                      }
-
-                      return {
-                        label: t("orders.returns.receive.receiveItems", {
-                          id: `#${id.slice(-7)}`,
-                          returnType,
-                        }),
-                        icon: <ArrowLongRight />,
-                        to: `/orders/${order.id}/returns/${r.id}/receive`,
-                      }
-                    }),
-                  },
-                ]}
+            {showPayment && (
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={() => handleMarkAsPaid(unpaidPaymentCollection)}
               >
-                <Button variant="secondary" size="small">
-                  {t("orders.returns.receive.action")}
-                </Button>
-              </ActionMenu>
-            ))}
+                {t("orders.payment.markAsPaid")}
+              </Button>
+            )}
 
-          {showAllocateButton && (
-            <Button asChild variant="secondary" size="small">
-              <Link to="allocate-items">
-                {t("orders.allocateItems.action")}
-              </Link>
-            </Button>
-          )}
-
-          {showPayment && (
-            <CopyPaymentLink
-              paymentCollection={unpaidPaymentCollection}
-              order={order}
-            />
-          )}
-
-          {showPayment && (
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={() => handleMarkAsPaid(unpaidPaymentCollection)}
-            >
-              {t("orders.payment.markAsPaid")}
-            </Button>
-          )}
-
-          {showRefund && (
-            <Button size="small" variant="secondary" asChild>
-              <Link to={`/orders/${order.id}/refund`}>
-                {t("orders.payment.refundAmount", {
-                  amount: getStylizedAmount(
-                    pendingDifference * -1,
-                    order?.currency_code
-                  ),
-                })}
-              </Link>
-            </Button>
-          )}
-        </div>
-      )}
+            {showRefund && (
+              <Button size="small" variant="secondary" asChild>
+                <Link to={`/orders/${order.id}/refund`}>
+                  {t("orders.payment.refundAmount", {
+                    amount: getStylizedAmount(
+                      pendingDifference * -1,
+                      order?.currency_code
+                    ),
+                  })}
+                </Link>
+              </Button>
+            )}
+          </div>
+        ))}
     </Container>
   )
 }
@@ -295,6 +327,19 @@ const Header = ({
   orderPreview?: AdminOrderPreview
 }) => {
   const { t } = useTranslation()
+  const { canCreate: canCreateOrderChange, canUpdate: canUpdateOrderChange } =
+    useOrderChangePermissions()
+  const { canCreate: canCreateReturn, canUpdate: canUpdateReturn } =
+    useReturnPermissions()
+  const { canCreate: canCreateExchange, canUpdate: canUpdateExchange } =
+    useOrderExchangePermissions()
+  const { canCreate: canCreateClaim, canUpdate: canUpdateClaim } =
+    useOrderClaimPermissions()
+
+  const canEditOrder = canCreateOrderChange && canUpdateOrderChange
+  const canCreateReturnAction = canCreateReturn && canUpdateReturn
+  const canCreateExchangeAction = canCreateExchange && canUpdateExchange
+  const canCreateClaimAction = canCreateClaim && canUpdateClaim
 
   // is ture if there is no shipped items ATM
   const shouldDisableReturn = order.items.every(
@@ -307,76 +352,88 @@ const Header = ({
     orderPreview?.order_change?.change_type === "edit" &&
     orderPreview?.order_change?.status === "pending"
 
+  const rmaActions: Action[] = []
+
+  if (canCreateReturnAction) {
+    rmaActions.push({
+      label: t("orders.returns.create"),
+      to: `/orders/${order.id}/returns`,
+      icon: <ArrowUturnLeft />,
+      disabled:
+        shouldDisableReturn ||
+        isOrderEditActive ||
+        !!orderPreview?.order_change?.exchange_id ||
+        !!orderPreview?.order_change?.claim_id,
+    })
+  }
+
+  if (canCreateExchangeAction) {
+    rmaActions.push({
+      label:
+        orderPreview?.order_change?.id &&
+        orderPreview?.order_change?.exchange_id
+          ? t("orders.exchanges.manage")
+          : t("orders.exchanges.create"),
+      to: `/orders/${order.id}/exchanges`,
+      icon: <ArrowPath />,
+      disabled:
+        shouldDisableReturn ||
+        isOrderEditActive ||
+        (!!orderPreview?.order_change?.return_id &&
+          !orderPreview?.order_change?.exchange_id) ||
+        !!orderPreview?.order_change?.claim_id,
+    })
+  }
+
+  if (canCreateClaimAction) {
+    rmaActions.push({
+      label:
+        orderPreview?.order_change?.id && orderPreview?.order_change?.claim_id
+          ? t("orders.claims.manage")
+          : t("orders.claims.create"),
+      to: `/orders/${order.id}/claims`,
+      icon: <ExclamationCircle />,
+      disabled:
+        shouldDisableReturn ||
+        isOrderEditActive ||
+        (!!orderPreview?.order_change?.return_id &&
+          !orderPreview?.order_change?.claim_id) ||
+        !!orderPreview?.order_change?.exchange_id,
+    })
+  }
+
+  const groups: ActionGroup[] = []
+
+  if (canEditOrder) {
+    groups.push({
+      actions: [
+        {
+          label: t(
+            isOrderEditPending
+              ? "orders.summary.editOrderContinue"
+              : "orders.summary.editOrder"
+          ),
+          to: `/orders/${order.id}/edits`,
+          icon: <PencilSquare />,
+          disabled:
+            order.status === "canceled" ||
+            (orderPreview?.order_change &&
+              orderPreview?.order_change?.change_type !== "edit") ||
+            (orderPreview?.order_change?.change_type === "edit" &&
+              orderPreview?.order_change?.status === "requested"),
+        },
+      ],
+    })
+  }
+
+  if (rmaActions.length) {
+    groups.push({ actions: rmaActions })
+  }
+
   return (
     <div className="flex items-center justify-between px-6 py-4">
       <Heading level="h2">{t("fields.summary")}</Heading>
-      <ActionMenu
-        groups={[
-          {
-            actions: [
-              {
-                label: t(
-                  isOrderEditPending
-                    ? "orders.summary.editOrderContinue"
-                    : "orders.summary.editOrder"
-                ),
-                to: `/orders/${order.id}/edits`,
-                icon: <PencilSquare />,
-                disabled:
-                  order.status === "canceled" ||
-                  (orderPreview?.order_change &&
-                    orderPreview?.order_change?.change_type !== "edit") ||
-                  (orderPreview?.order_change?.change_type === "edit" &&
-                    orderPreview?.order_change?.status === "requested"),
-              },
-            ],
-          },
-          {
-            actions: [
-              {
-                label: t("orders.returns.create"),
-                to: `/orders/${order.id}/returns`,
-                icon: <ArrowUturnLeft />,
-                disabled:
-                  shouldDisableReturn ||
-                  isOrderEditActive ||
-                  !!orderPreview?.order_change?.exchange_id ||
-                  !!orderPreview?.order_change?.claim_id,
-              },
-              {
-                label:
-                  orderPreview?.order_change?.id &&
-                  orderPreview?.order_change?.exchange_id
-                    ? t("orders.exchanges.manage")
-                    : t("orders.exchanges.create"),
-                to: `/orders/${order.id}/exchanges`,
-                icon: <ArrowPath />,
-                disabled:
-                  shouldDisableReturn ||
-                  isOrderEditActive ||
-                  (!!orderPreview?.order_change?.return_id &&
-                    !orderPreview?.order_change?.exchange_id) ||
-                  !!orderPreview?.order_change?.claim_id,
-              },
-              {
-                label:
-                  orderPreview?.order_change?.id &&
-                  orderPreview?.order_change?.claim_id
-                    ? t("orders.claims.manage")
-                    : t("orders.claims.create"),
-                to: `/orders/${order.id}/claims`,
-                icon: <ExclamationCircle />,
-                disabled:
-                  shouldDisableReturn ||
-                  isOrderEditActive ||
-                  (!!orderPreview?.order_change?.return_id &&
-                    !orderPreview?.order_change?.claim_id) ||
-                  !!orderPreview?.order_change?.exchange_id,
-              },
-            ],
-          },
-        ]}
-      />
+      {groups.length > 0 && <ActionMenu groups={groups} />}
     </div>
   )
 }
@@ -413,10 +470,10 @@ const Item = ({
     <>
       <div
         key={item.id}
-        className="text-ui-fg-subtle grid grid-cols-2 items-center gap-x-4 px-6 py-4"
+        className="grid grid-cols-2 items-center gap-x-4 px-6 py-4 text-ui-fg-subtle"
       >
-        <div className=" flex justify-between gap-x-2 ">
-          <div className=" group flex items-start gap-x-4">
+        <div className="flex justify-between gap-x-2">
+          <div className="group flex items-start gap-x-4">
             <Thumbnail src={item.thumbnail} />
             <div>
               <Text size="small" leading="compact" className="text-ui-fg-base">
@@ -428,7 +485,7 @@ const Item = ({
                   <Text size="small">{item.variant_sku}</Text>
                   <Copy
                     content={item.variant_sku}
-                    className="text-ui-fg-muted hidden group-hover:block"
+                    className="hidden text-ui-fg-muted group-hover:block"
                   />
                 </div>
               )}
@@ -447,7 +504,7 @@ const Item = ({
                 </span>
               }
             >
-              <ReceiptPercent className="text-ui-fg-subtle flex-shrink self-center " />
+              <ReceiptPercent className="flex-shrink self-center text-ui-fg-subtle" />
             </Tooltip>
           )}
         </div>
@@ -631,7 +688,7 @@ const CostBreakdown = ({
   const hasTaxes = !!Object.keys(taxCodes).length
 
   return (
-    <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
+    <div className="flex flex-col gap-y-2 px-6 py-4 text-ui-fg-subtle">
       <Cost
         label={t("orders.summary.itemSubtotal")}
         value={getLocaleAmount(order.item_subtotal, order.currency_code)}
@@ -737,12 +794,12 @@ const CostBreakdown = ({
           </div>
         )}
       </>
-      <div className="text-ui-fg-base flex items-center justify-between">
+      <div className="flex items-center justify-between text-ui-fg-base">
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
           {t("fields.total")}
         </Text>
         <Text
-          className="text-ui-fg-subtle text-bold"
+          className="text-bold text-ui-fg-subtle"
           size="small"
           leading="compact"
         >
@@ -806,7 +863,7 @@ const DiscountAndTotalBreakdown = ({
   const hasCreditLines = creditLines.length > 0
 
   return (
-    <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
+    <div className="flex flex-col gap-y-2 px-6 py-4 text-ui-fg-subtle">
       <Cost
         label={
           <div
@@ -895,17 +952,17 @@ const DiscountAndTotalBreakdown = ({
                         size="small"
                         leading="compact"
                         weight="plus"
-                        className="txt-small text-ui-fg-subtle font-medium"
+                        className="txt-small font-medium text-ui-fg-subtle"
                       >
                         <DisplayId id={creditLine.id} />
                       </Text>
-                      <span className="txt-small text-ui-fg-subtle mx-1">
+                      <span className="txt-small mx-1 text-ui-fg-subtle">
                         -
                       </span>
                       <Text
                         size="small"
                         leading="compact"
-                        className="txt-small text-ui-fg-subtle capitalize"
+                        className="txt-small capitalize text-ui-fg-subtle"
                       >
                         ({prettyReference})
                       </Text>
@@ -927,12 +984,12 @@ const DiscountAndTotalBreakdown = ({
         </>
       )}
 
-      <div className="text-ui-fg-base flex items-center justify-between">
+      <div className="flex items-center justify-between text-ui-fg-base">
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
           {t("orders.summary.totalAfterDiscount")}
         </Text>
         <Text
-          className="text-ui-fg-subtle text-bold"
+          className="text-bold text-ui-fg-subtle"
           size="small"
           leading="compact"
         >
@@ -961,7 +1018,7 @@ const InventoryKitBreakdown = ({ item }: { item: AdminOrderLineItem }) => {
             transform: `rotate(${isOpen ? 0 : -90}deg)`,
           }}
         />
-        <span className="text-ui-fg-muted txt-small select-none">
+        <span className="txt-small select-none text-ui-fg-muted">
           {t("orders.summary.inventoryKit", { count: inventory.length })}
         </span>
       </div>
@@ -974,11 +1031,11 @@ const InventoryKitBreakdown = ({ item }: { item: AdminOrderLineItem }) => {
                 className="flex items-center justify-between gap-x-2"
               >
                 <div>
-                  <span className="txt-small text-ui-fg-subtle font-medium">
+                  <span className="txt-small font-medium text-ui-fg-subtle">
                     {i.inventory?.title}
 
                     {i.inventory?.sku && (
-                      <span className="text-ui-fg-subtle font-normal">
+                      <span className="font-normal text-ui-fg-subtle">
                         {" "}
                         ⋅ {i.inventory?.sku}
                       </span>
@@ -1016,7 +1073,7 @@ const ReturnBreakdownWithDamages = ({
     item && (
       <div
         key={orderReturn.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-t-2 border-dotted px-6 py-4"
+        className="txt-compact-small-plus flex flex-row justify-between gap-y-2 border-t-2 border-dotted bg-ui-bg-subtle px-6 py-4 text-ui-fg-subtle"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -1028,7 +1085,7 @@ const ReturnBreakdownWithDamages = ({
 
           {item?.note && (
             <Tooltip content={item.note}>
-              <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+              <DocumentText className="ml-1 inline text-ui-tag-neutral-icon" />
             </Tooltip>
           )}
 
@@ -1088,7 +1145,7 @@ const ReturnBreakdown = ({
         )}
         <div
           key={item.id}
-          className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-t-2 border-dotted px-6 py-4"
+          className="txt-compact-small-plus flex flex-row justify-between gap-y-2 border-t-2 border-dotted bg-ui-bg-subtle px-6 py-4 text-ui-fg-subtle"
         >
           <div className="flex items-center gap-2">
             <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -1106,7 +1163,7 @@ const ReturnBreakdown = ({
 
             {item?.note && (
               <Tooltip content={item.note}>
-                <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+                <DocumentText className="ml-1 inline text-ui-tag-neutral-icon" />
               </Tooltip>
             )}
 
@@ -1162,7 +1219,7 @@ const ClaimBreakdown = ({
     !!items.length && (
       <div
         key={claim.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
+        className="txt-compact-small-plus flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted bg-ui-bg-subtle px-6 py-4 text-ui-fg-subtle"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -1202,7 +1259,7 @@ const ExchangeBreakdown = ({
     !!items.length && (
       <div
         key={exchange.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted px-6 py-4"
+        className="txt-compact-small-plus flex flex-row justify-between gap-y-2 border-b-2 border-t-2 border-dotted bg-ui-bg-subtle px-6 py-4 text-ui-fg-subtle"
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -1228,8 +1285,8 @@ const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
-    <div className=" flex flex-col gap-y-2 px-6 py-4">
-      <div className="text-ui-fg-base flex items-center justify-between">
+    <div className="flex flex-col gap-y-2 px-6 py-4">
+      <div className="flex items-center justify-between text-ui-fg-base">
         <Text className="text-ui-fg-subtle" size="small" leading="compact">
           {t("fields.paidTotal")}
         </Text>
@@ -1242,7 +1299,7 @@ const Total = ({ order }: { order: AdminOrder }) => {
       </div>
 
       {getTotalCreditLines(order.credit_lines ?? []) > 0 && (
-        <div className="text-ui-fg-base flex items-center justify-between">
+        <div className="flex items-center justify-between text-ui-fg-base">
           <Text className="text-ui-fg-subtle" size="small" leading="compact">
             {t("fields.creditTotal")}
           </Text>
@@ -1256,16 +1313,16 @@ const Total = ({ order }: { order: AdminOrder }) => {
         </div>
       )}
 
-      <div className="text-ui-fg-base flex items-center justify-between">
+      <div className="flex items-center justify-between text-ui-fg-base">
         <Text
-          className="text-ui-fg-subtle text-semibold"
+          className="text-semibold text-ui-fg-subtle"
           size="small"
           leading="compact"
         >
           {t("orders.returns.outstandingAmount")}
         </Text>
         <Text
-          className="text-ui-fg-subtle text-bold" // ici
+          className="text-bold text-ui-fg-subtle" // ici
           size="small"
           leading="compact"
         >

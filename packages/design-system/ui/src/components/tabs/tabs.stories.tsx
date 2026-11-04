@@ -25,7 +25,7 @@ const Demo = () => {
           <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
           <Tabs.Trigger value="tab3">Tab 3</Tabs.Trigger>
         </Tabs.List>
-        <Container className="txt-compact-medium text-ui-fg-base mt-4 h-full p-3">
+        <Container className="txt-compact-medium mt-4 h-full p-3 text-ui-fg-base">
           <Tabs.Content value="tab1">Tab 1 content</Tabs.Content>
           <Tabs.Content value="tab2">Tab 2 content</Tabs.Content>
           <Tabs.Content value="tab3">Tab 3 content</Tabs.Content>

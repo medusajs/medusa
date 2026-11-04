@@ -399,6 +399,10 @@ export class RedisLockingProvider implements ILockingProvider {
     return results.every((released) => released)
   }
 
+  async shutdown(): Promise<void> {
+    this.redisClient.disconnect()
+  }
+
   async releaseAll(args?: { ownerId?: string | null }): Promise<void> {
     const ownerId = args?.ownerId ?? "*"
 

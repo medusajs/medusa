@@ -9,16 +9,20 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/cache@v4
+    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
       id: cache
       with:
         path: |
           .yarn/cache
           node_modules
+          packages/*/node_modules
+          packages/*/*/node_modules
+          packages/*/*/*/node_modules
+          integration-tests/*/node_modules
           .pnp.*
-        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v8-${{ hashFiles('**/yarn.lock') }}-3
+        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v8-${{ hashFiles('**/yarn.lock') }}-4
         restore-keys: |
-          ${{ runner.os }}-yarn-${{inputs.extension}}-v8-3
+          ${{ runner.os }}-yarn-${{inputs.extension}}-v8-4
       # We want to only bootstrap and install if no cache is found.
     - run: yarn install --immutable --inline-builds
       shell: bash

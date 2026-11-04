@@ -1083,6 +1083,24 @@
       "hint": "新しい顧客を作成し、その詳細を管理します。",
       "successToast": "顧客「{{email}}」が正常に作成されました。"
     },
+    "export": {
+      "header": "顧客リストをエクスポート",
+      "description": "顧客リストをファイルにエクスポートします。",
+      "success": {
+        "title": "エクスポートを処理中です",
+        "description": "データのエクスポートには数分かかる場合があります。完了時にお知らせします。"
+      },
+      "format": {
+        "label": "フォーマット",
+        "description": "エクスポートするファイルのフォーマットを選択します。JSONはモジュール間のネストされたデータをロスなくキャプチャするため、データアクセス要求に推奨されます。",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "フィルター",
+        "description": "テーブル概要でフィルターを適用してこのビューを調整します"
+      }
+    },
     "groups": {
       "label": "顧客グループ",
       "remove": "顧客を「{{name}}」グループから削除してもよろしいですか？",
@@ -2769,7 +2787,6 @@
     "editUser": "ユーザーを編集",
     "inviteUser": "ユーザーを招待",
     "inviteUserHint": "新しいユーザーをストアに招待します。",
-    "inviteRolesTooltip": "ロールが選択されていない場合、ユーザーはスーパーユーザーロールで招待されます。",
     "sendInvite": "招待を送信",
     "pendingInvites": "保留中の招待",
     "deleteInviteWarning": "{{email}}への招待を削除しようとしています 。この操作は取り消せません。",
@@ -2844,7 +2861,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "ユーザーはすでにこのロールを持っています。",
-      "unassignableRoleTooltip": "このロールを割り当てるアクセス権がありません。あなたの権限では、このロールのすべてのポリシーをカバーできません。",
       "add": {
         "successToast_one": "ユーザーが正常にロールに追加されました。",
         "successToast_other": "ユーザーが正常にロールに追加されました。",

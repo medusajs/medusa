@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
 import {
   generateEditedDates,
+  generateLlmsIndex,
   generateSidebar,
   generateSitemapUrls,
+  getMdxPagesLlmsLinks,
   copyMdxToPublic,
 } from "build-scripts"
 import { sidebar } from "../sidebar.mjs"
@@ -17,6 +19,19 @@ async function main() {
   await generateSidebar(sidebar)
   await generateEditedDates()
   await generateSitemapUrls()
+  await generateLlmsIndex({
+    title: "Medusa UI",
+    description:
+      "Documentation for Medusa UI, the React component library and design system used to build the Medusa Admin and its customizations.",
+    sections: [
+      {
+        title: "Pages",
+        links: getMdxPagesLlmsLinks({
+          baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}${process.env.NEXT_PUBLIC_BASE_PATH || "/ui"}`,
+        }),
+      },
+    ],
+  })
   if (process.env.CLOUDFLARE_ENV) {
     await copyMdxToPublic({
       srcDir: path.join(process.cwd(), "app"),

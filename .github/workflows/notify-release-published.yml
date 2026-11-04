@@ -23,6 +23,10 @@ jobs:
       matrix:
         repo:
           - medusa-mcp
+          - dtc-starter
+          - b2b-starter
+          - modern-dtc-starter
+          - industrials-b2b-starter
     steps:
       - name: Resolve the release
         id: release
@@ -72,6 +76,27 @@ jobs:
           out("published_at", release.publishedAt ?? "")
           console.log(`Announcing published release ${release.tagName}`)
           EOF
+
+      - name: Wait for the version on npm
+        if: steps.release.outputs.should_notify == 'true'
+        timeout-minutes: 30
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -uo pipefail
+
+          packages="@medusajs/medusa @medusajs/framework @medusajs/admin-sdk @medusajs/cli"
+
+          for pkg in $packages; do
+            until [ "$(npm view "$pkg@$VERSION" version 2>/dev/null)" = "$VERSION" ]; do
+              echo "$pkg@$VERSION not on npm yet, retrying in 30s..."
+              sleep 30
+            done
+            echo "$pkg@$VERSION is available"
+          done
+
+          # npm view can resolve before the registry CDN serves the version everywhere.
+          sleep 60
 
       - name: Generate GitHub App token
         if: steps.release.outputs.should_notify == 'true'

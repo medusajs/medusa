@@ -27,12 +27,7 @@ export interface InvalidationEvent {
  * delete.
  */
 export type InvalidationOperation =
-  | "created"
-  | "updated"
-  | "deleted"
-  | "restored"
-  | "attached"
-  | "detached"
+  "created" | "updated" | "deleted" | "restored" | "attached" | "detached"
 
 const LIST_AFFECTING_OPERATIONS: InvalidationOperation[] = [
   "created",
@@ -59,16 +54,19 @@ export class CacheInvalidationParser {
       }
     })
 
-    this.idPrefixToEntityName = joinerConfigs.reduce((acc, joinerConfig) => {
-      if (joinerConfig.idPrefixToEntityName) {
-        Object.entries(joinerConfig.idPrefixToEntityName).forEach(
-          ([idPrefix, entityName]) => {
-            acc[idPrefix] = entityName
-          }
-        )
-      }
-      return acc
-    }, {} as Record<string, string>)
+    this.idPrefixToEntityName = joinerConfigs.reduce(
+      (acc, joinerConfig) => {
+        if (joinerConfig.idPrefixToEntityName) {
+          Object.entries(joinerConfig.idPrefixToEntityName).forEach(
+            ([idPrefix, entityName]) => {
+              acc[idPrefix] = entityName
+            }
+          )
+        }
+        return acc
+      },
+      {} as Record<string, string>
+    )
   }
 
   /**
@@ -127,7 +125,7 @@ export class CacheInvalidationParser {
    * Detect entity type based on object structure and GraphQL type map
    */
   private detectEntityType(obj: any, suggestedType?: string): string | null {
-    if (obj.id) {
+    if (typeof obj.id === "string") {
       const idParts = obj.id.split("_")
       if (idParts.length > 1 && this.idPrefixToEntityName[idParts[0]]) {
         return this.idPrefixToEntityName[idParts[0]]

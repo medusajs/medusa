@@ -4,5 +4,8 @@ import Translation from "../modules/translation"
 
 export default defineLink(
   ProductModule.linkable.productVariant.id,
-  Translation.linkable.translation.id
+  {
+    linkable: Translation.linkable.translation.id,
+    deleteCascade: true,
+  }
 )

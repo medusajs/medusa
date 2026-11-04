@@ -322,7 +322,7 @@ export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
                 }}
               />
 
-              <div className="bg-ui-border-base h-px w-full" />
+              <div className="h-px w-full bg-ui-border-base" />
               <div className="flex flex-col gap-y-4">
                 <div>
                   <Text size="small" leading="compact" weight="plus">
@@ -405,7 +405,7 @@ export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
                   </StackedFocusModal.Content>
                 </StackedFocusModal>
               </div>
-              <div className="bg-ui-border-base h-px w-full" />
+              <div className="h-px w-full bg-ui-border-base" />
               <div className="flex flex-col gap-y-4">
                 <div>
                   <Text size="small" leading="compact" weight="plus">
@@ -510,14 +510,14 @@ const CountryTag = ({
   onRemove: (code: string) => void
 }) => {
   return (
-    <div className="bg-ui-bg-field shadow-borders-base transition-fg hover:bg-ui-bg-field-hover flex h-7 items-center overflow-hidden rounded-md">
+    <div className="flex h-7 items-center overflow-hidden rounded-md bg-ui-bg-field shadow-borders-base transition-fg hover:bg-ui-bg-field-hover">
       <div className="txt-compact-small-plus flex h-full select-none items-center justify-center px-2 py-0.5">
         {country.name}
       </div>
       <button
         type="button"
         onClick={() => onRemove(country.code)}
-        className="focus-visible:bg-ui-bg-field-hover transition-fg hover:bg-ui-bg-field-hover flex h-full w-7 items-center justify-center border-l outline-none"
+        className="flex h-full w-7 items-center justify-center border-l outline-none transition-fg hover:bg-ui-bg-field-hover focus-visible:bg-ui-bg-field-hover"
       >
         <XMarkMini className="text-ui-fg-muted" />
       </button>

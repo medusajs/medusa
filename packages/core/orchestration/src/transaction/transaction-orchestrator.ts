@@ -879,6 +879,8 @@ export class TransactionOrchestrator extends EventEmitter {
       }
     }
 
+    step.retryRescheduledAt = null
+
     try {
       await transaction.saveCheckpoint({
         _v: step._v,

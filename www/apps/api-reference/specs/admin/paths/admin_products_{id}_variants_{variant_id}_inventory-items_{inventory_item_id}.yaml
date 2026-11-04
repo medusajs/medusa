@@ -56,8 +56,7 @@ post:
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_products_{id}_variants_{variant_id}_inventory-items_{inventory_item_id}/post.sh
+        $ref: ../code_samples/Shell/admin_products_{id}_variants_{variant_id}_inventory-items_{inventory_item_id}/post.sh
   tags:
     - Products
   responses:
@@ -132,8 +131,7 @@ delete:
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_products_{id}_variants_{variant_id}_inventory-items_{inventory_item_id}/delete.sh
+        $ref: ../code_samples/Shell/admin_products_{id}_variants_{variant_id}_inventory-items_{inventory_item_id}/delete.sh
   tags:
     - Products
   responses:
@@ -142,8 +140,7 @@ delete:
       content:
         application/json:
           schema:
-            $ref: >-
-              ../components/schemas/AdminProductVariantInventoryLinkDeleteResponse.yaml
+            $ref: ../components/schemas/AdminProductVariantInventoryLinkDeleteResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -361,8 +361,8 @@ export function getAllFieldsAndRelations(
     allFields.length && !shouldSelectAll
       ? allFields
       : shouldSelectAll
-      ? undefined
-      : []
+        ? undefined
+        : []
 
   return {
     select,

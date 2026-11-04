@@ -1,7 +1,7 @@
 export enum Entities {
   order = "order",
   fulfillment = "fulfillment",
-  credit_line = "credit_line",
+  order_credit_line = "order_credit_line",
 }
 
 export const defaultAdminOrderFields = [

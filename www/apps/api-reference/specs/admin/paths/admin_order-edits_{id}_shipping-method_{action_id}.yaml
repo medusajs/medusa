@@ -32,14 +32,12 @@ post:
     content:
       application/json:
         schema:
-          $ref: >-
-            ../components/schemas/AdminPostOrderEditsShippingActionReqSchema.yaml
+          $ref: ../components/schemas/AdminPostOrderEditsShippingActionReqSchema.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_order-edits_{id}_shipping-method_{action_id}/post.sh
+        $ref: ../code_samples/Shell/admin_order-edits_{id}_shipping-method_{action_id}/post.sh
   tags:
     - Order Edits
   responses:
@@ -97,8 +95,7 @@ delete:
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_order-edits_{id}_shipping-method_{action_id}/delete.sh
+        $ref: ../code_samples/Shell/admin_order-edits_{id}_shipping-method_{action_id}/delete.sh
   tags:
     - Order Edits
   responses:

@@ -1017,6 +1017,24 @@
       "hint": "Kreiraj novog kupca i upravljaj njegovim podacima.",
       "successToast": "Kupac {{email}} je uspješno kreiran."
     },
+    "export": {
+      "header": "Izvoz liste kupaca",
+      "description": "Izvezite popis kupaca u datoteku.",
+      "success": {
+        "title": "Obrađujemo vaš izvoz",
+        "description": "Izvoz podataka može potrajati nekoliko minuta. Obavijestit ćemo vas kada završimo."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Odaberite format izvezene datoteke. JSON bilježi ugniježđene podatke između modula bez gubitka, što se preporučuje za zahtjeve za pristup podacima ispitanika.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filteri",
+        "description": "Primijenite filtre u prikazu tablice kako biste prilagodili ovaj prikaz"
+      }
+    },
     "groups": {
       "label": "Grupe kupaca",
       "remove": "Jeste li sigurni da želite ukloniti kupca iz grupe \"{{name}}\"?",
@@ -2743,7 +2761,6 @@
     "deleteUserWarning": "Spremate se izbrisati korisnika {{name}}. Ova radnja se ne može poništiti.",
     "deleteUserSuccess": "Korisnik {{name}} uspješno izbrisan",
     "invite": "Pozovi",
-    "inviteRolesTooltip": "Ako nije odabrana nijedna uloga, korisnik će biti pozvan s ulogom superkorisnika.",
     "copyResetPasswordLink": "Kopiraj poveznicu za resetiranje lozinke",
     "copyResetPasswordLinkSuccess": "Poveznica za resetiranje lozinke kopirana je u međuspremnik",
     "copyResetPasswordLinkHint": "Poveznica ubrzo istječe i poništava sve prethodno poslane poveznice za resetiranje lozinke za ovog korisnika."
@@ -3688,7 +3705,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Korisnik već ima ovu ulogu.",
-      "unassignableRoleTooltip": "Nemate pristup za dodjelu ove uloge — vaše ovlasti ne obuhvaćaju sva njezina pravila pristupa.",
       "add": {
         "successToast_one": "Korisnik je uspješno dodan ulozi.",
         "successToast_few": "Korisnici su uspješno dodani ulozi.",

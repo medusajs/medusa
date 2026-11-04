@@ -1,5 +1,6 @@
 import { promises as fs } from "fs"
 import path from "path"
+import { inlineMdxImports } from "docs-utils"
 
 type Options = {
   srcDir: string
@@ -21,7 +22,9 @@ async function copyDir(src: string, dest: string): Promise<void> {
       entry.isFile() &&
       (entry.name === "page.mdx" || entry.name === "_md-content.mdx")
     ) {
-      await fs.copyFile(srcPath, destPath)
+      // partials aren't copied, so inline them into the page's content
+      const content = await fs.readFile(srcPath, "utf-8")
+      await fs.writeFile(destPath, await inlineMdxImports(content, srcPath))
     }
   }
 }

@@ -45,6 +45,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          check-latest: true
 
       - name: Find missing translations
         id: missing
@@ -159,6 +160,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          check-latest: true
 
       - name: Download translations
         uses: actions/download-artifact@v4

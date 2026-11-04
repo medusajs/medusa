@@ -7,7 +7,7 @@ import { GridColumnOption } from "../types"
 
 export function useDataGridColumnVisibility<
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >(grid: Table<TData>, matrix: DataGridMatrix<TData, TFieldValues>) {
   const columns = grid.getAllLeafColumns()
 

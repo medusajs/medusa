@@ -453,6 +453,8 @@ export const createOrderWorkflow = createWorkflow(
         "shipping_methods.adjustments.*",
         "total",
         "id",
+        "email",
+        "customer_id",
       ],
       filters: {
         id: order.id,

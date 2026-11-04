@@ -1015,6 +1015,24 @@
       "hint": "Yeni bir müşteri oluşturun ve detaylarını yönetin.",
       "successToast": "{{email}} müşterisi başarıyla oluşturuldu."
     },
+    "export": {
+      "header": "Müşteri Listesini Dışa Aktar",
+      "description": "Müşteri listesini bir dosyaya dışa aktarın.",
+      "success": {
+        "title": "Dışa aktarma işleminiz işleniyor",
+        "description": "Veri dışa aktarımı birkaç dakika sürebilir. İşlem tamamlandığında size bildireceğiz."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Dışa aktarılan dosyanın formatını seçin. JSON, modüller arası iç içe verileri kayıpsız yakalar; bu, veri erişim talepleri için önerilir.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtreler",
+        "description": "Bu görünümü ayarlamak için tablo görünümünde filtreleri uygulayın"
+      }
+    },
     "groups": {
       "label": "Müşteri grupları",
       "remove": "\"{{name}}\" müşteri grubundan müşteriyi kaldırmak istediğinizden emin misiniz?",
@@ -2730,7 +2748,6 @@
     "deleteUserWarning": "{{name}} kullanıcısını silmek üzeresiniz. Bu işlem geri alınamaz.",
     "deleteUserSuccess": "Kullanıcı {{name}} başarıyla silindi",
     "invite": "Davet Et",
-    "inviteRolesTooltip": "Rol seçilmezse kullanıcı süper kullanıcı rolüyle davet edilir.",
     "copyResetPasswordLink": "Şifre sıfırlama bağlantısını kopyala",
     "copyResetPasswordLinkSuccess": "Şifre sıfırlama bağlantısı panoya kopyalandı",
     "copyResetPasswordLinkHint": "Bağlantının süresi kısa sürede dolar ve bu kullanıcıya daha önce gönderilmiş şifre sıfırlama bağlantılarını geçersiz kılar."
@@ -3660,7 +3677,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Kullanıcı zaten bu role sahip.",
-      "unassignableRoleTooltip": "Bu rolü atama izniniz yok — izinleriniz bu rolün tüm politikalarını kapsamıyor.",
       "add": {
         "successToast_one": "Kullanıcı role başarıyla eklendi.",
         "successToast_other": "Kullanıcılar role başarıyla eklendi.",

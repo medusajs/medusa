@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 import { resolve } from "path"
 import Figma from "./figma"
 
-dotenv.config({ path: resolve(process.cwd(), ".env") })
+dotenv.config({ path: resolve(process.cwd(), ".env"), quiet: true })
 
 const accessToken = process.env.FIGMA_TOKEN || ""
 

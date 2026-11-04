@@ -28,6 +28,9 @@ cd packages/modules/<module> && yarn test:integration <spec-path>
 # HTTP integration (needs Postgres; slow, run one file)
 cd integration-tests/http && yarn test:integration <spec-path>
 
+# Before re-running integration tests after a fix: they load each package's built dist/
+cd packages/<path> && yarn build   # once per changed package
+
 # Admin dashboard (Vitest)
 cd packages/admin/dashboard && npx vitest --run <spec-path>
 ```

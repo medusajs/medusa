@@ -983,6 +983,58 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should filter and count orders by a read-only linked sales channel when paginated", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+          const orderService: any = container.resolve(Modules.ORDER)
+          const salesChannelService: any = container.resolve(
+            Modules.SALES_CHANNEL
+          )
+
+          const retailChannel = await salesChannelService.createSalesChannels({
+            name: "Paginated Order Retail Channel",
+          })
+          const wholesaleChannel =
+            await salesChannelService.createSalesChannels({
+              name: "Paginated Order Wholesale Channel",
+            })
+
+          await orderService.createOrders([
+            {
+              currency_code: "usd",
+              email: "retail-order-1@test.com",
+              sales_channel_id: retailChannel.id,
+            },
+            {
+              currency_code: "usd",
+              email: "retail-order-2@test.com",
+              sales_channel_id: retailChannel.id,
+            },
+            {
+              currency_code: "usd",
+              email: "wholesale-order@test.com",
+              sales_channel_id: wholesaleChannel.id,
+            },
+          ])
+
+          const { data: filteredOrders, metadata } = await query.graph({
+            entity: "order",
+            fields: ["id", "email"],
+            filters: {
+              sales_channel: {
+                name: "Paginated Order Retail Channel",
+              },
+            },
+            pagination: { skip: 0, take: 1 },
+          })
+
+          expect(filteredOrders).toHaveLength(1)
+          expect(filteredOrders[0].email).toMatch(/^retail-order-\d@test\.com$/)
+          expect(metadata).toEqual(
+            expect.objectContaining({ count: 2, skip: 0, take: 1 })
+          )
+        })
+
         it("should filter carts by a field of the read-only linked product", async () => {
           const container = getContainer()
           const query = container.resolve("query")

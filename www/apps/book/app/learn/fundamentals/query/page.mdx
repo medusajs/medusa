@@ -410,7 +410,7 @@ The returned `data` nests each level under the previous one. For example:
 
 <Note>
 
-Filtering by a linked data model's property isn't supported at any level of the chain. Refer to the [Apply Filters](#apply-filters) section for details.
+To retrieve only records whose linked records match a condition, refer to the [Filter by Linked Data Model's Property](#filter-by-linked-data-models-property) section.
 
 </Note>
 
@@ -560,7 +560,7 @@ In the example above, you filter the `post` records by multiple IDs.
 
 <Note>
 
-Filters don't apply on fields of linked data models from other modules. Refer to the [Retrieve Linked Records](#retrieve-linked-records) section for an alternative solution.
+To filter by the properties of a linked data model from another module, refer to the [Filter by Linked Data Model's Property](#filter-by-linked-data-models-property) section.
 
 </Note>
 
@@ -780,7 +780,7 @@ const { data: posts } = useQueryGraphStep({
   </CodeTab>
 </CodeTabs>
 
-While it's not possible to filter by a linked data model's property, you can filter by a relation's property (that is, the property of a related data model that is defined in the same module).
+You can filter by a relation's property (that is, the property of a related data model that is defined in the same module). To filter by a linked data model's property, refer to the [Filter by Linked Data Model's Property](#filter-by-linked-data-models-property) section.
 
 In the example above, only posts that have an author with the name `John` are retrieved.
 
@@ -847,6 +847,80 @@ To filter by a relationship property whose value doesn't match a specific condit
 2. The relationship's property is not equal to the specific value.
 
 So, in the example above, the query retrieves posts that either don't have an author or have an author whose name is not "John".
+
+### Filter by Linked Data Model's Property
+
+<Note>
+
+Filtering by a linked data model's property is available starting [Medusa v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0).
+
+</Note>
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title", "brand.*"],
+  filters: {
+    brand: {
+      name: "Acme",
+    },
+  },
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title", "brand.*"],
+  filters: {
+    brand: {
+      name: "Acme",
+    },
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+You can filter records by the properties of a data model linked to them from another module. Pass in `filters` the linked data model's name, as you would pass it in `fields`, with an object of filters on its properties.
+
+In the example above, assuming you [defined a link](../module-links/page.mdx) between the `Product` data model and a custom `Brand` data model, you retrieve the products linked to a brand whose name is `Acme`.
+
+The filter restricts the main records that Query returns, not the linked records. So, a product is returned if at least one of its linked brands matches the filter. The product's `brand` property isn't filtered.
+
+You can also filter through multiple links by nesting the filter objects. For example, `filters: { brand: { vendor: { handle: "acme" } } }` retrieves products whose brand is linked to a vendor with the handle `acme`.
+
+#### Query In-Memory Filtering Conditions
+
+By default, Query applies a linked data model's filter in the database. However, Query applies the filter in memory if any of the following is true:
+
+- The modules of the main data model and the linked data model use different databases. Modules share the same database by default in a Medusa application.
+- A step in the path isn't a [module link](../module-links/page.mdx), a [read-only module link](../module-links/read-only/page.mdx), or a relation between data models of the same module.
+- A filtered property isn't stored in the database, such as a computed property like a variant's `calculated_price`.
+- An operator isn't one of the following: `$eq`, `$ne`, `$in`, `$nin`, `$gt`, `$gte`, `$lt`, `$lte`, `$like`, `$ilike`, and `$is`. Grouping conditions with `$and` and `$or` inside the linked data model's filter object doesn't cause in-memory filtering.
+
+If any condition in a linked data model's filter object requires in-memory filtering, Query applies the whole object in memory.
+
+To filter in memory, Query retrieves all main records matching the rest of the filters, retrieves their linked records, then keeps only the main records that match. Query applies pagination after filtering, so `count` and the returned page are still correct.
+
+<Note type="warning">
+
+In-memory filtering ignores pagination when retrieving records. So, a query that returns one page of 20 records may load thousands of records and their linked records into memory, which slows down the query and increases your application's memory usage. On data models with many records, make sure your filters meet the database conditions, add other filters that narrow down the main records, or use the [Index Module](./index-module/page.mdx).
+
+</Note>
+
+#### Limitations of Linked Data Model Filters
+
+- You can't pass a linked data model's filter inside a top-level `$and`, `$or`, or `$not` operator, such as `filters: { $or: [{ brand: { name: "Acme" } }] }`. Query passes top-level operators as-is to the main data model's module, which doesn't recognize the linked data model's property.
+- A linked data model's filter matches when at least one linked record matches. You can't retrieve records that have no linked record matching a condition. For example, `brand: { name: { $ne: "Acme" } }` retrieves products linked to at least one brand not named `Acme`, and it doesn't retrieve products without brands.
+- When Query filters in memory, it throws an error if you use an operator that it can't apply in memory.
 
 ---
 
@@ -1002,7 +1076,7 @@ const { data: posts } = useQueryGraphStep({
 
 <Note>
 
-Sorting doesn't work on fields of linked data models from other modules.
+Starting from [Medusa v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0), you can sort by a linked data model's property, such as `order: { brand: { name: "ASC" } }`. Query sorts in memory based on the same conditions as [linked data model filters](#query-in-memory-filtering-conditions). If any sorted property can't be sorted in the database, Query sorts by all properties in memory.
 
 </Note>
 
@@ -1392,7 +1466,7 @@ Refer to the [Caching Module documentation](!resources!/infrastructure-modules/c
     {
       type: "`number` \| `((args: any[]) => number \| undefined)`",
       name: "ttl",
-      description: "The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the [configured TTL of the Caching Module](!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.\n\nIf a function is passed, it receives as a parameter the `query.graph` parameters, and returns a number indicating the TTL.",
+      description: "The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the [configured TTL of the Caching Module](!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.\n\nSet the TTL to `0` to cache the results without expiry. Learn more in the [Set TTL](#set-ttl) section.\n\nIf a function is passed, it receives as a parameter the `query.graph` parameters, and returns a number indicating the TTL.",
     },
     {
       type: "`boolean` \| `((args: any[]) => boolean \| undefined)`",
@@ -1666,6 +1740,30 @@ const { data: products } = await query.graph({
 In the example above, you use a function to determine the TTL. The function accepts the arguments passed to `query.graph` as an array.
 
 Then, you set the TTL based on the ID of the product passed in the filters.
+
+#### Cache Without Expiry
+
+To cache query results without expiry, set `cache.ttl` to `0`. The Redis Caching Module Provider and the in-memory cache don't set an expiry time in this case. So, the cached results remain in the cache until they're invalidated, either [automatically](#set-auto-invalidation) when the data changes or [manually](!resources!/infrastructure-modules/caching/guides/clear-cache) by clearing the cache.
+
+<Note title="Important">
+
+Setting `cache.ttl` to `0` doesn't enable caching on its own. Make sure to also set `cache.enable` to `true`.
+
+</Note>
+
+```ts highlights={[["6"], ["7"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    ttl: 0, // no expiry
+  },
+})
+```
+
+If you disable auto invalidation for results cached without expiry, they remain in the cache until you clear them manually. If you use a custom Caching Module Provider, make sure its [set method](!resources!/references/caching-module-provider#set) handles a TTL of `0`.
 
 ### Set Auto Invalidation
 

@@ -151,14 +151,10 @@ export interface SearchResult<T = Record<string, unknown>> {
 }
 
 export type InstantSearchFacetFilters =
-  | string
-  | string[]
-  | Array<string | string[]>
+  string | string[] | Array<string | string[]>
 
 export type InstantSearchNumericFilters =
-  | string
-  | string[]
-  | Array<string | string[]>
+  string | string[] | Array<string | string[]>
 
 export interface InstantSearchSearchParams {
   query?: string
@@ -198,8 +194,7 @@ export interface InstantSearchHighlightResult {
 }
 
 export type HighlightResultNode =
-  | InstantSearchHighlightResult
-  | { [attribute: string]: HighlightResultNode }
+  InstantSearchHighlightResult | { [attribute: string]: HighlightResultNode }
 
 export interface InstantSearchHit {
   objectID: string

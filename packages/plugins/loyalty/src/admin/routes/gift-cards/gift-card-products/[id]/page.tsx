@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 
 import { LayoutComposer } from "@medusajs/dashboard/components"
+import { PermissionGuard } from "@medusajs/dashboard/hooks"
 import { JsonViewSection } from "../../../../components/json-view-section"
 import { useProduct } from "../../../../hooks/api/products"
 import { ProductGeneralSection } from "./components/product-general-section"
@@ -32,7 +33,9 @@ export const ProductDetail = () => {
               <ProductGeneralSection product={product} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductVariantSection">
-              <ProductVariantSection product={product} />
+              <PermissionGuard permission="product_variant:read">
+                <ProductVariantSection product={product} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="JsonViewSection">
               <JsonViewSection data={product} />
@@ -42,7 +45,9 @@ export const ProductDetail = () => {
         side: (
           <>
             <LayoutComposer.Entry id="ProductSalesChannelSection">
-              <ProductSalesChannelSection product={product} />
+              <PermissionGuard permission="sales_channel:read">
+                <ProductSalesChannelSection product={product} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductMediaSection">
               <ProductMediaSection product={product} />
@@ -52,6 +57,10 @@ export const ProductDetail = () => {
       }}
     />
   )
+}
+
+export const handle = {
+  permissions: ["product:read"],
 }
 
 export default ProductDetail

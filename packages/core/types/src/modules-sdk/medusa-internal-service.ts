@@ -11,7 +11,7 @@ import { InferEntityType } from "../dml"
 
 export interface IMedusaInternalService<
   TEntity extends {},
-  TContainer extends object = object
+  TContainer extends object = object,
 > {
   get __container__(): TContainer
 
@@ -89,10 +89,7 @@ export interface IMedusaInternalService<
 
   softDelete(
     idsOrFilter:
-      | string
-      | string[]
-      | InternalFilterQuery
-      | InternalFilterQuery[],
+      string | string[] | InternalFilterQuery | InternalFilterQuery[],
     sharedContext?: Context
   ): Promise<[InferEntityType<TEntity>[], Record<string, unknown[]>]>
 

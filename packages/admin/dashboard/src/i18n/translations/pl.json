@@ -1102,6 +1102,24 @@
       "hint": "Utwórz nowego klienta i zarządzaj jego danymi.",
       "successToast": "Klient {{email}} został pomyślnie utworzony."
     },
+    "export": {
+      "header": "Eksportuj listę klientów",
+      "description": "Eksportuj listę klientów do pliku.",
+      "success": {
+        "title": "Przetwarzamy Twój eksport",
+        "description": "Eksportowanie danych może potrwać kilka minut. Powiadomimy Cię, gdy będzie gotowe."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Wybierz format eksportowanego pliku. JSON przechowuje zagnieżdżone dane z różnych modułów bez utraty informacji, co jest zalecane w przypadku żądań dostępu do danych osobowych.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtry",
+        "description": "Zastosuj filtry w podglądzie tabeli, aby dostosować ten widok"
+      }
+    },
     "groups": {
       "label": "Grupy klientów",
       "remove": "Czy na pewno chcesz usunąć klienta z grupy \"{{name}}\"?",
@@ -1255,7 +1273,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Użytkownik ma już tę rolę.",
-      "unassignableRoleTooltip": "Nie możesz przypisać tej roli — Twoje uprawnienia nie obejmują wszystkich jej polityk.",
       "add": {
         "successToast_one": "Użytkownik został pomyślnie dodany do roli.",
         "successToast_few": "Użytkownicy zostali pomyślnie dodani do roli.",
@@ -3013,7 +3030,6 @@
     "editUser": "Edytuj użytkownika",
     "inviteUser": "Zaproś użytkownika",
     "inviteUserHint": "Zaproś nowego użytkownika do swojego sklepu.",
-    "inviteRolesTooltip": "Jeśli nie wybierzesz żadnej roli, użytkownik zostanie zaproszony z rolą superużytkownika.",
     "sendInvite": "Wyślij zaproszenie",
     "pendingInvites": "Oczekujące zaproszenia",
     "deleteInviteWarning": "Zamierzasz usunąć zaproszenie dla użytkownika {{email}}. Tej akcji nie można cofnąć.",

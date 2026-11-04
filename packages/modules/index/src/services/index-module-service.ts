@@ -155,7 +155,13 @@ export default class IndexModuleService
         await this.storageProvider_.onApplicationStart()
       }
 
-      await gqlSchemaToTypes(executableSchema!)
+      await gqlSchemaToTypes(executableSchema!).catch((e) => {
+        this.logger_.warn(
+          `[Index engine] Failed to generate the index entry points types: ${
+            e?.message ?? e
+          }`
+        )
+      })
 
       /**
        * Only run the data synchronization in worker mode
@@ -230,8 +236,7 @@ export default class IndexModuleService
   }
 
   private buildSchemaObjectRepresentation_():
-    | GraphQLUtils.GraphQLSchema
-    | undefined {
+    GraphQLUtils.GraphQLSchema | undefined {
     if (this.schemaObjectRepresentation_) {
       return
     }

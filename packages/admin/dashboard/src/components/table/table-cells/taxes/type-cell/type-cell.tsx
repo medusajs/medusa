@@ -26,7 +26,7 @@ export const TypeCell = ({ is_combinable }: CellProps) => {
 
 export const TypeHeader = ({ text }: HeaderProps) => {
   return (
-    <div className=" flex h-full w-full items-center">
+    <div className="flex h-full w-full items-center">
       <span>{text}</span>
     </div>
   )

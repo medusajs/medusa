@@ -1083,6 +1083,24 @@
       "hint": "Crie um novo cliente e gerencie seus detalhes.",
       "successToast": "Cliente {{email}} criado com sucesso."
     },
+    "export": {
+      "header": "Exportar lista de clientes",
+      "description": "Exporte a lista de clientes para um arquivo.",
+      "success": {
+        "title": "Estamos processando sua exportação",
+        "description": "A exportação de dados pode levar alguns minutos. Vamos notificar você quando terminarmos."
+      },
+      "format": {
+        "label": "Formato",
+        "description": "Escolha o formato do arquivo exportado. O JSON captura dados aninhados entre módulos sem perdas, sendo recomendado para solicitações de acesso a dados do titular.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtros",
+        "description": "Aplique filtros na visão geral da tabela para ajustar esta visualização"
+      }
+    },
     "groups": {
       "label": "Grupos de clientes",
       "remove": "Tem certeza de que deseja remover o cliente do grupo \"{{name}}\"?",
@@ -2763,7 +2781,6 @@
     "editUser": "Editar Usuário",
     "inviteUser": "Convidar Usuário",
     "inviteUserHint": "Convide um novo usuário para sua loja.",
-    "inviteRolesTooltip": "Se nenhuma função for selecionada, o usuário será convidado com função de superusuário.",
     "sendInvite": "Enviar convite",
     "pendingInvites": "Convites Pendentes",
     "deleteInviteWarning": "Você está prestes a excluir o convite para {{email}}. Esta ação não pode ser desfeita.",
@@ -2838,7 +2855,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "O usuário já possui esta função.",
-      "unassignableRoleTooltip": "Você não tem acesso para atribuir esta função — suas permissões não cobrem todas as políticas dela.",
       "add": {
         "successToast_one": "Usuário adicionado à função com sucesso.",
         "successToast_other": "Usuários adicionados à função com sucesso.",

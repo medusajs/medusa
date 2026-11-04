@@ -63,8 +63,7 @@ export interface InventoryLevelDTO {
 /**
  * The filters to apply on the retrieved inventory levels.
  */
-export interface FilterableInventoryLevelProps
-  extends BaseFilterable<FilterableInventoryLevelProps> {
+export interface FilterableInventoryLevelProps extends BaseFilterable<FilterableInventoryLevelProps> {
   /**
    * Filter inventory levels by the ID
    */
