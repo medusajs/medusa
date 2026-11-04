@@ -31,7 +31,7 @@
     "typedoc-plugin-rename-defaults": "^0.7.1",
     "typedoc-plugin-workflows": "*",
     "types": "*",
-    "typescript": "^5.6.2",
+    "typescript": "^6.0.3",
     "utils": "*",
     "yaml": "^2.3.4"
   },
