@@ -202,7 +202,7 @@ export const PriceListConfigurationForm = ({
                     <div
                       className={clx(
                         "grid gap-1.5 rounded-xl bg-ui-bg-component py-1.5 shadow-elevation-card-rest transition-fg",
-                        "aria-[invalid='true']:shadow-borders-error"
+                        "aria-invalid:shadow-borders-error"
                       )}
                       role="application"
                       ref={field.ref}

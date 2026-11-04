@@ -52,7 +52,7 @@ const Inner = ({
   return (
     <input
       className={clx(
-        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent outline-none",
+        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent outline-hidden",
         "focus:cursor-text"
       )}
       autoComplete="off"

@@ -315,7 +315,7 @@ export const ExchangeCreateForm = ({
         <RouteFocusModal.Header />
 
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
-          <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
+          <div className="mt-16 w-[720px] max-w-full px-4 md:p-0">
             <Heading level="h1">{t("orders.exchanges.create")}</Heading>
 
             <ExchangeInboundSection
@@ -580,7 +580,7 @@ export const ExchangeCreateForm = ({
                                 </Tooltip>
                               </Form.Hint>
                             </Form.Label>
-                            <Form.Hint className="!mt-1">
+                            <Form.Hint className="mt-1!">
                               {t("orders.exchanges.carryOverPromotionHint")}
                             </Form.Hint>
                           </div>
@@ -615,7 +615,7 @@ export const ExchangeCreateForm = ({
                           <Form.Label>
                             {t("orders.returns.sendNotification")}
                           </Form.Label>
-                          <Form.Hint className="!mt-1">
+                          <Form.Hint className="mt-1!">
                             {t("orders.returns.sendNotificationHint")}
                           </Form.Hint>
                         </div>

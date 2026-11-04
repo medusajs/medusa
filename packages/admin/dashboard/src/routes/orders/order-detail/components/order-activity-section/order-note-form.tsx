@@ -84,7 +84,7 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
                         {...field}
                         ref={textareaRef}
                         onInput={handleResize}
-                        className="txt-small resize-none overflow-hidden bg-transparent text-ui-fg-base outline-none placeholder:text-ui-fg-muted"
+                        className="txt-small resize-none overflow-hidden bg-transparent text-ui-fg-base outline-hidden placeholder:text-ui-fg-muted"
                         placeholder={t("orders.activity.comment.placeholder")}
                         rows={1}
                       />

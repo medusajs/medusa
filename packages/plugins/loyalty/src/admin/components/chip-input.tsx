@@ -157,7 +157,7 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
                       type="button"
                       onClick={() => handleRemoveChip(v)}
                       className={clx(
-                        "text-ui-fg-subtle transition-fg outline-none"
+                        "text-ui-fg-subtle transition-fg outline-hidden"
                       )}
                     >
                       <XMarkMini />
@@ -172,7 +172,7 @@ export const ChipInput = forwardRef<HTMLInputElement, ChipInputProps>(
           className={clx(
             "caret-ui-fg-base text-ui-fg-base txt-compact-small flex-1 appearance-none bg-transparent",
             "disabled:text-ui-fg-disabled disabled:cursor-not-allowed",
-            "focus:outline-none",
+            "focus:outline-hidden",
             "placeholder:text-ui-fg-muted"
           )}
           onKeyDown={handleKeyDown}

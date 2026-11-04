@@ -25,7 +25,7 @@ export const UserLink = ({
   return (
     <Link
       to={link}
-      className="flex w-fit items-center gap-x-2 rounded-md outline-none transition-fg hover:text-ui-fg-subtle focus-visible:shadow-borders-focus"
+      className="flex w-fit items-center gap-x-2 rounded-md outline-hidden transition-fg hover:text-ui-fg-subtle focus-visible:shadow-borders-focus"
     >
       <Avatar size="2xsmall" fallback={fallback.toUpperCase()} />
       <Text size="small" leading="compact" weight="regular">

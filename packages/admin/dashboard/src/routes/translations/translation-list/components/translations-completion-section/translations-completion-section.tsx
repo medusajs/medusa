@@ -92,7 +92,7 @@ export const TranslationsCompletionSection = ({
           {percentage > 0 ? (
             <>
               <div
-                className="mr-0.5 h-full rounded-sm transition-all"
+                className="mr-0.5 h-full rounded-xs transition-all"
                 style={{
                   width: `${percentage}%`,
                   backgroundColor: "var(--tag-blue-icon)",
@@ -100,7 +100,7 @@ export const TranslationsCompletionSection = ({
                 }}
               />
               <div
-                className="h-full flex-1 rounded-sm"
+                className="h-full flex-1 rounded-xs"
                 style={{
                   backgroundColor: "var(--tag-blue-border)",
                   boxShadow: "inset 0 0 0 0.5px var(--alpha-250)",
@@ -109,7 +109,7 @@ export const TranslationsCompletionSection = ({
             </>
           ) : (
             <div
-              className="h-full w-full rounded-sm"
+              className="h-full w-full rounded-xs"
               style={{
                 backgroundColor: "var(--tag-blue-border)",
                 boxShadow: "inset 0 0 0 0.5px var(--alpha-250)",
@@ -211,7 +211,7 @@ export const TranslationsCompletionSection = ({
                       >
                         {translatedPercent === 0 ? (
                           <div
-                            className="w-full rounded-sm"
+                            className="w-full rounded-xs"
                             style={{
                               height: "100%",
                               backgroundColor: "var(--tag-neutral-bg)",
@@ -221,7 +221,7 @@ export const TranslationsCompletionSection = ({
                         ) : (
                           <>
                             <div
-                              className="w-full rounded-sm"
+                              className="w-full rounded-xs"
                               style={{
                                 height: `${100 - translatedPercent}%`,
                                 backgroundColor: "var(--tag-blue-border)",
@@ -231,7 +231,7 @@ export const TranslationsCompletionSection = ({
                             />
                             {translatedPercent > 0 && (
                               <div
-                                className="mt-0.5 w-full rounded-sm"
+                                className="mt-0.5 w-full rounded-xs"
                                 style={{
                                   height: `${translatedPercent}%`,
                                   backgroundColor: "var(--tag-blue-icon)",
@@ -260,7 +260,7 @@ export const TranslationsCompletionSection = ({
                     <Text
                       size="xsmall"
                       weight="plus"
-                      className="min-w-2 whitespace-normal break-words text-center leading-tight text-ui-fg-subtle"
+                      className="min-w-2 whitespace-normal wrap-break-word text-center leading-tight text-ui-fg-subtle"
                     >
                       {localeStatsCount < 6 ? locale.name : locale.code}
                     </Text>

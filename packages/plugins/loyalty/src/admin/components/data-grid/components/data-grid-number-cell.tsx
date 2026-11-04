@@ -81,7 +81,7 @@ const Inner = ({
         type="number"
         inputMode="decimal"
         className={clx(
-          "txt-compact-small size-full bg-transparent outline-none",
+          "txt-compact-small size-full bg-transparent outline-hidden",
           "placeholder:text-ui-fg-muted"
         )}
         tabIndex={-1}

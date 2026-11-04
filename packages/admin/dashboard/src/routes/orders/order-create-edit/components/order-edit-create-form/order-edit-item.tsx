@@ -187,7 +187,7 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
         </div>
 
         <div className="flex flex-1 items-center justify-between">
-          <div className="flex flex-grow items-center gap-2">
+          <div className="flex grow items-center gap-2">
             <Input
               className="txt-small w-[67px] rounded-lg bg-ui-bg-base [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               type="number"
@@ -209,7 +209,7 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
             </Text>
 
             {appliedPromoCodes.length > 0 && (
-              <div className="flex flex-shrink pt-[2px]">
+              <div className="flex shrink pt-[2px]">
                 <Tooltip
                   content={
                     <span className="text-pretty">
@@ -225,7 +225,7 @@ function OrderEditItem({ item, currencyCode, orderId }: OrderEditItemProps) {
             )}
           </div>
 
-          <div className="txt-small mr-2 flex flex-shrink-0 text-ui-fg-subtle">
+          <div className="txt-small mr-2 flex shrink-0 text-ui-fg-subtle">
             <MoneyAmountCell currencyCode={currencyCode} amount={item.total} />
           </div>
 

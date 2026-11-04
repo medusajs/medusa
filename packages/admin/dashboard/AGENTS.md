@@ -86,4 +86,6 @@ yarn i18n:sync missing
 - Layout preferences are stored per `widgetsZonePrefix`, keyed by widget id and `LayoutComposer.Entry` id. Renaming an entry id drops users' saved placement for it.
 - The `src/exports/*` surface is documented API for extensions. Changing a signature breaks plugins; update the matching page under `www/apps/resources/app/admin-components`.
 - A new virtual module must be added to `external` in `tsup.config.cjs` and to `VIRTUAL_MODULES` in `@medusajs/admin-shared`.
+- `src/app.css` ships as `@medusajs/dashboard/css` and must stay plain CSS (no `@import "tailwindcss"` or `@apply`). `@medusajs/admin-bundler` generates every utility in one Tailwind pass, so a second copy in `app.css` would override the classes of admin extensions. `src/index.css` is the Tailwind entry for `yarn dev` only.
+- Use `gap-*` rather than `space-*` / `divide-*` on containers whose children can render inline popovers or conditional siblings. In Tailwind 4, `space-y-*` adds a margin to every child except the last, so a popover appended at the end shifts the layout.
 - `yarn generate:static` writes `src/lib/currencies.ts`, but the app imports `src/lib/data/currencies.ts`. Move the output before relying on it.

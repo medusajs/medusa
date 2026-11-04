@@ -54,7 +54,7 @@ function InventoryItemRow({
       key={inventoryItem.id}
       className="grid grid-cols-[1fr_28px] items-center gap-1.5 rounded-xl bg-ui-bg-component p-1.5 shadow-elevation-card-rest"
     >
-      <div className="grid grid-cols-[min-content,1fr] items-center gap-1.5">
+      <div className="grid grid-cols-[min-content_1fr] items-center gap-1.5">
         <div className="flex items-center px-2 py-1.5">
           <Label
             size="xsmall"

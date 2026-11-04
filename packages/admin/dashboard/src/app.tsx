@@ -17,7 +17,7 @@ import {
   defineSearchEntity,
 } from "./lib/search/search-entities"
 
-import "./index.css"
+import "./app.css"
 
 import { registerReloadOnPreloadError } from "./lib/reload-on-preload-error"
 

@@ -300,7 +300,7 @@ const CommandDialog = ({ children, ...props }: RadixDialog.DialogProps) => {
           <RadixDialog.Description className="sr-only">
             {t("app.search.description")}
           </RadixDialog.Description>
-          <CommandPalette className="[&_[cmdk-group-heading]]:text-muted-foreground flex h-full flex-col overflow-hidden [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0">
+          <CommandPalette className="[&_[cmdk-group-heading]]:text-muted-foreground flex h-full flex-col overflow-hidden **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:font-medium [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0">
             {children}
           </CommandPalette>
           <div className="flex items-center justify-end border-t bg-ui-bg-field px-4 py-3 text-ui-fg-subtle">
@@ -413,12 +413,12 @@ const CommandInput = forwardRef<
             value={value}
             onValueChange={onValueChange}
             className={clx(
-              "flex !h-6 w-full rounded-md bg-transparent text-sm outline-none placeholder:text-ui-fg-muted disabled:cursor-not-allowed disabled:opacity-50",
+              "flex h-6! w-full rounded-md bg-transparent text-sm outline-hidden placeholder:text-ui-fg-muted disabled:cursor-not-allowed disabled:opacity-50",
               className
             )}
             {...props}
           />
-          <div className="absolute end-4 top-1/2 flex -translate-y-1/2 items-center justify-end gap-x-2">
+          <div className="absolute inset-e-4 top-1/2 flex -translate-y-1/2 items-center justify-end gap-x-2">
             {isFetching && (
               <Spinner className="animate-spin text-ui-fg-muted" />
             )}
@@ -522,7 +522,7 @@ const CommandGroup = forwardRef<
   <Command.Group
     ref={ref}
     className={clx(
-      "overflow-hidden text-ui-fg-base [&_[cmdk-group-heading]]:txt-compact-xsmall-plus [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-1 [&_[cmdk-group-heading]]:pt-3 [&_[cmdk-group-heading]]:text-ui-fg-muted [&_[cmdk-item]]:py-2",
+      "overflow-hidden text-ui-fg-base **:[[cmdk-group-heading]]:txt-compact-xsmall-plus **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:pb-1 **:[[cmdk-group-heading]]:pt-3 **:[[cmdk-group-heading]]:text-ui-fg-muted **:[[cmdk-item]]:py-2",
       className
     )}
     {...props}
@@ -550,7 +550,7 @@ const CommandItem = forwardRef<
   <Command.Item
     ref={ref}
     className={clx(
-      "txt-compact-small relative flex cursor-pointer select-none items-center gap-x-3 rounded-md p-2 outline-none focus-visible:bg-ui-bg-base-hover aria-selected:bg-ui-bg-base-hover data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50 [&>svg]:text-ui-fg-subtle",
+      "txt-compact-small relative flex cursor-pointer select-none items-center gap-x-3 rounded-md p-2 outline-hidden focus-visible:bg-ui-bg-base-hover aria-selected:bg-ui-bg-base-hover data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50 [&>svg]:text-ui-fg-subtle",
       className
     )}
     {...props}

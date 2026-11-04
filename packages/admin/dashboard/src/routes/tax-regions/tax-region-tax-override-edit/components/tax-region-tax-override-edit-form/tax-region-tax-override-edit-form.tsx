@@ -463,7 +463,7 @@ export const TaxRegionTaxOverrideEditForm = ({
                   type="button"
                   size="small"
                   variant="transparent"
-                  className="flex-shrink-0 text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+                  className="shrink-0 text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
                 >
                   {t("taxRegions.fields.targets.action")}
                 </Button>
@@ -502,12 +502,12 @@ export const TaxRegionTaxOverrideEditForm = ({
                         field: { value: _value, onChange: _onChange, ...field },
                       }) => {
                         return (
-                          <Form.Item className="space-y-0">
+                          <Form.Item className="gap-y-0">
                             <Form.Label className="sr-only">{label}</Form.Label>
                             <div
                               className={clx(
                                 "grid gap-1.5 rounded-xl bg-ui-bg-component py-1.5 shadow-elevation-card-rest transition-fg",
-                                "aria-[invalid='true']:shadow-borders-error"
+                                "aria-invalid:shadow-borders-error"
                               )}
                               role="application"
                               {...field}
@@ -549,7 +549,7 @@ export const TaxRegionTaxOverrideEditForm = ({
                                   <StackedDrawer.Trigger asChild>
                                     <button
                                       type="button"
-                                      className="txt-compact-small flex flex-1 items-center gap-x-2 rounded-md bg-ui-bg-field-component px-2 py-1.5 text-ui-fg-muted shadow-borders-base outline-none transition-fg hover:bg-ui-bg-field-component-hover focus-visible:shadow-borders-interactive-with-active"
+                                      className="txt-compact-small flex flex-1 items-center gap-x-2 rounded-md bg-ui-bg-field-component px-2 py-1.5 text-ui-fg-muted shadow-borders-base outline-hidden transition-fg hover:bg-ui-bg-field-component-hover focus-visible:shadow-borders-interactive-with-active"
                                     >
                                       <MagnifyingGlass />
                                       {searchPlaceholder}

@@ -381,7 +381,7 @@ export const DataTable = <TData,>({
     <UiDataTable
       instance={instance}
       className={
-        layout === "fill" ? "h-full [&_tr]:last-of-type:!border-b" : undefined
+        layout === "fill" ? "h-full [&_tr]:last-of-type:border-b!" : undefined
       }
     >
       <UiDataTable.Toolbar

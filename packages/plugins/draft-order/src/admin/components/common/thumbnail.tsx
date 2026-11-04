@@ -7,7 +7,7 @@ interface ThumbnailProps {
 
 export const Thumbnail = ({ thumbnail, alt = "" }: ThumbnailProps) => {
   return (
-    <div className="relative w-6 h-8 rounded overflow-hidden flex items-center justify-center bg-ui-bg-component">
+    <div className="relative w-6 h-8 rounded-sm overflow-hidden flex items-center justify-center bg-ui-bg-component">
       {thumbnail ? (
         <img
           src={thumbnail}

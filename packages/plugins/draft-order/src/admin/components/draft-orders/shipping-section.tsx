@@ -378,7 +378,7 @@ const ShippingBadge = ({ className }: ShippingBadgeProps) => {
         className
       )}
     >
-      <div className="size-6 rounded bg-ui-bg-component-hover flex items-center justify-center">
+      <div className="size-6 rounded-sm bg-ui-bg-component-hover flex items-center justify-center">
         <Shopping className="text-ui-fg-subtle" />
       </div>
     </div>

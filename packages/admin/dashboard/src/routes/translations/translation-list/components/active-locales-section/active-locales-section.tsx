@@ -65,7 +65,7 @@ export const ActiveLocalesSection = ({
             }
           >
             <Container
-              className="border-r-1 flex items-center gap-x-4 bg-ui-bg-component px-[19px] py-2"
+              className="border-r flex items-center gap-x-4 bg-ui-bg-component px-[19px] py-2"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >

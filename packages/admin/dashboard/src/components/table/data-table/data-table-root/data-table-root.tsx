@@ -132,7 +132,7 @@ export const DataTableRoot = <TData,>({
         ref={scrollableRef}
         onScroll={handleHorizontalScroll}
         className={clx("w-full", {
-          "min-h-0 flex-grow overflow-auto": layout === "fill",
+          "min-h-0 grow overflow-auto": layout === "fill",
           "overflow-x-auto": layout === "fit",
         })}
       >
@@ -176,9 +176,9 @@ export const DataTableRoot = <TData,>({
                                 : undefined,
                             }}
                             className={clx({
-                              "sticky start-0 bg-ui-bg-subtle after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                              "sticky inset-s-0 bg-ui-bg-subtle after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                 isStickyHeader,
-                              "start-[68px]":
+                              "inset-s-[68px]":
                                 isStickyHeader && hasSelect && !isSelectHeader,
                               "after:bg-ui-border-base":
                                 showStickyBorder &&
@@ -219,7 +219,7 @@ export const DataTableRoot = <TData,>({
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
-                        "!hover:bg-ui-bg-disabled !bg-ui-bg-disabled":
+                        "!hover:bg-ui-bg-disabled bg-ui-bg-disabled!":
                           isRowDisabled,
                       }
                     )}
@@ -262,15 +262,15 @@ export const DataTableRoot = <TData,>({
                         <Table.Cell
                           key={cell.id}
                           className={clx({
-                            "!pe-0 !ps-0": shouldRenderAsLink,
-                            "sticky start-0 bg-ui-bg-base transition-fg after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-[''] group-hover/row:bg-ui-bg-base-hover group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover":
+                            "pe-0! ps-0!": shouldRenderAsLink,
+                            "sticky inset-s-0 bg-ui-bg-base transition-fg after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-[''] group-hover/row:bg-ui-bg-base-hover group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover":
                               isStickyCell,
                             "bg-ui-bg-subtle group-hover/row:bg-ui-bg-subtle-hover":
                               isOdd && isStickyCell,
-                            "start-[68px]": hasLeftOffset,
+                            "inset-s-[68px]": hasLeftOffset,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
-                            "!hover:bg-ui-bg-disabled !bg-ui-bg-disabled":
+                            "!hover:bg-ui-bg-disabled bg-ui-bg-disabled!":
                               isRowDisabled,
                           })}
                           style={{
@@ -282,7 +282,7 @@ export const DataTableRoot = <TData,>({
                           {shouldRenderAsLink ? (
                             <Link
                               to={to}
-                              className="size-full outline-none"
+                              className="size-full outline-hidden"
                               data-row-link
                               tabIndex={isTabableLink ? 0 : -1}
                             >
@@ -374,7 +374,7 @@ const Pagination = (props: PaginationProps) => {
 
   return (
     <Table.Pagination
-      className="flex-shrink-0"
+      className="shrink-0"
       {...props}
       translations={translations}
     />

@@ -34,7 +34,7 @@ function ChangeDetailsTooltip(props: ChangeDetailsTooltipProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         autoFocus={false}
-        className="focus-visible:outline-none"
+        className="focus-visible:outline-hidden"
       >
         <Text size="small" leading="compact" weight="plus">
           {title}
@@ -44,7 +44,7 @@ function ChangeDetailsTooltip(props: ChangeDetailsTooltipProps) {
       <Popover.Content
         align="center"
         side="top"
-        className="max-w-[200px] bg-ui-bg-component p-0 focus-visible:outline-none"
+        className="max-w-[200px] bg-ui-bg-component p-0 focus-visible:outline-hidden"
       >
         <div className="flex flex-col">
           {!!previous && (

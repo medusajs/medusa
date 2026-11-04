@@ -99,7 +99,7 @@ export const TaxRegionCard = ({
                 className={clx(
                   "flex size-fit items-center justify-center overflow-hidden rounded-[1px]",
                   {
-                    "rounded-sm": type === "header",
+                    "rounded-xs": type === "header",
                   }
                 )}
               >

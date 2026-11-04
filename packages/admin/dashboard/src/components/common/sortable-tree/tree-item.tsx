@@ -74,7 +74,7 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
               "border-l": depth > 0,
               "w-fit rounded-lg border-none bg-ui-bg-base pr-6 opacity-80 shadow-elevation-flyout":
                 clone,
-              "z-[1] bg-ui-bg-base-hover opacity-50": ghost,
+              "z-1 bg-ui-bg-base-hover opacity-50": ghost,
               "bg-ui-bg-disabled": disabled,
             }
           )}
@@ -181,7 +181,7 @@ type ValueProps = {
 
 const Value = ({ value }: ValueProps) => {
   return (
-    <div className="txt-compact-small flex-grow truncate text-ui-fg-subtle">
+    <div className="txt-compact-small grow truncate text-ui-fg-subtle">
       {value}
     </div>
   )

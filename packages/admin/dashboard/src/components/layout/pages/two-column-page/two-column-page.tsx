@@ -87,7 +87,7 @@ const Root = <TData,>({
       {before.map((Component, i) => {
         return <Component {...widgetProps} key={i} />
       })}
-      <div className="flex w-full flex-col items-start gap-x-4 gap-y-3 xl:grid xl:grid-cols-[minmax(0,_1fr)_440px]">
+      <div className="flex w-full flex-col items-start gap-x-4 gap-y-3 xl:grid xl:grid-cols-[minmax(0,1fr)_440px]">
         <div className="flex w-full min-w-0 flex-col gap-y-3">
           {main}
           {after.map((Component, i) => {
@@ -143,7 +143,7 @@ const Sidebar = ({
   return (
     <div
       className={clx(
-        "flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[440px]",
+        "flex w-full max-w-full flex-col gap-y-3 xl:mt-0 xl:max-w-[440px]",
         className
       )}
       {...props}

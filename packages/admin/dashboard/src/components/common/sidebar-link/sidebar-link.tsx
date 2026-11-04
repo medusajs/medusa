@@ -19,7 +19,7 @@ export const SidebarLink = ({
   icon,
 }: SidebarLinkProps) => {
   return (
-    <Link to={to} className="group outline-none">
+    <Link to={to} className="group outline-hidden">
       <div className="flex flex-col gap-2 px-2 pb-2">
         <div className="rounded-md bg-ui-bg-component px-4 py-2 shadow-elevation-card-rest transition-fg hover:bg-ui-bg-component-hover active:bg-ui-bg-component-pressed group-focus-visible:shadow-borders-interactive-with-active">
           <div className="flex items-center gap-4">

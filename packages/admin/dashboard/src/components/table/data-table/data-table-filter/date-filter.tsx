@@ -147,7 +147,7 @@ export const DateFilter = ({
             sideOffset={8}
             collisionPadding={24}
             className={clx(
-              "h-full max-h-[var(--radix-popper-available-height)] w-[300px] overflow-auto rounded-lg bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout"
+              "h-full max-h-(--radix-popper-available-height) w-[300px] overflow-auto rounded-lg bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout"
             )}
             onInteractOutside={(e) => {
               if (e.target instanceof HTMLElement) {
@@ -168,7 +168,7 @@ export const DateFilter = ({
                 return (
                   <li key={preset.label}>
                     <button
-                      className="txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-none transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed data-[disabled]:pointer-events-none data-[disabled]:text-ui-fg-disabled"
+                      className="txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-hidden transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed data-disabled:pointer-events-none data-disabled:text-ui-fg-disabled"
                       type="button"
                       onClick={() => {
                         handleSelectPreset(preset.value)
@@ -191,7 +191,7 @@ export const DateFilter = ({
               })}
               <li>
                 <button
-                  className="txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-none transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed data-[disabled]:pointer-events-none data-[disabled]:text-ui-fg-disabled"
+                  className="txt-compact-small relative flex w-full cursor-pointer select-none items-center rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-hidden transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed data-disabled:pointer-events-none data-disabled:text-ui-fg-disabled"
                   type="button"
                   onClick={handleSelectCustom}
                 >

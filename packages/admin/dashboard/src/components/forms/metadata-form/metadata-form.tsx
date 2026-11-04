@@ -227,7 +227,7 @@ const InnerForm = <TRes,>({
                     <DropdownMenu dir={direction}>
                       <DropdownMenu.Trigger
                         className={clx(
-                          "invisible absolute inset-y-0 -end-2.5 my-auto group-hover/table:visible data-[state='open']:visible",
+                          "invisible absolute inset-y-0 -inset-e-2.5 my-auto group-hover/table:visible data-[state='open']:visible",
                           {
                             hidden: isDisabled,
                           }
@@ -320,7 +320,7 @@ const GridInput = forwardRef<
       {...props}
       autoComplete="off"
       className={clx(
-        "txt-compact-small bg-transparent px-2 py-1.5 text-ui-fg-base outline-none placeholder:text-ui-fg-muted disabled:bg-ui-bg-base disabled:text-ui-fg-disabled",
+        "txt-compact-small bg-transparent px-2 py-1.5 text-ui-fg-base outline-hidden placeholder:text-ui-fg-muted disabled:bg-ui-bg-base disabled:text-ui-fg-disabled",
         className
       )}
     />

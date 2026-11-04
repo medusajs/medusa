@@ -1,7 +1,6 @@
 import { VIRTUAL_MODULES } from "@medusajs/admin-shared"
 import path from "path"
 import type { HmrOptions, InlineConfig } from "vite"
-import { injectTailwindCSS } from "../plugins/inject-tailwindcss"
 import { writeStaticFiles } from "../plugins/write-static-files"
 import { BundlerOptions } from "../types"
 
@@ -11,6 +10,7 @@ export async function getViteConfig(
   const { searchForWorkspaceRoot, mergeConfig } = await import("vite")
   const { default: react } = await import("@vitejs/plugin-react")
   const { default: medusa } = await import("@medusajs/admin-vite-plugin")
+  const { default: tailwindcss } = await import("@tailwindcss/vite")
 
   const getPort = await import("get-port")
   const hmrPort = process.env.HMR_PORT
@@ -82,12 +82,9 @@ export async function getViteConfig(
     plugins: [
       writeStaticFiles({
         plugins: options.plugins,
-      }),
-      injectTailwindCSS({
-        entry: root,
         sources: options.sources,
-        plugins: options.plugins,
       }),
+      tailwindcss(),
       react(),
       medusa({
         sources: options.sources,

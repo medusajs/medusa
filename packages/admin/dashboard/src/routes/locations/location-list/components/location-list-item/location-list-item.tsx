@@ -127,7 +127,7 @@ function LocationListItem(props: LocationProps) {
             </div>
           </div>
 
-          <div className="grow-1 flex flex-1 flex-col">
+          <div className="grow flex flex-1 flex-col">
             <Text weight="plus">{location.name}</Text>
             <Text className="txt-small text-ui-fg-subtle">
               {getFormattedAddress({
@@ -160,7 +160,7 @@ function LocationListItem(props: LocationProps) {
                 },
               ]}
             />
-            <div className="h-[12px] w-[1px] bg-ui-border-strong" />
+            <div className="h-[12px] w-px bg-ui-border-strong" />
             <LinkButton to={`/settings/locations/${location.id}`}>
               {t("actions.viewDetails")}
             </LinkButton>

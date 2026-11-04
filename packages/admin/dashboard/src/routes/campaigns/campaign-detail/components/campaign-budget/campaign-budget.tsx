@@ -32,7 +32,7 @@ export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
   return (
     <Container className="flex flex-col gap-y-4 px-6 py-4">
       <div className="flex justify-between">
-        <div className="mb-2 grid flex-grow grid-cols-[28px_1fr] items-center gap-x-3">
+        <div className="mb-2 grid grow grid-cols-[28px_1fr] items-center gap-x-3">
           <div className="flex size-7 items-center justify-center rounded-md bg-ui-bg-base shadow-borders-base">
             <div className="flex size-6 items-center justify-center rounded-[4px] bg-ui-bg-component">
               <ChartPie className="text-ui-fg-subtle" />

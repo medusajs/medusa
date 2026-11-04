@@ -31,7 +31,7 @@ export const TieredPriceControls = ({
 
   return (
     <div
-      className="absolute inset-y-0 z-[3] flex w-fit items-center justify-center"
+      className="absolute inset-y-0 z-3 flex w-fit items-center justify-center"
       style={{
         left: symbolWidth ? `${symbolWidth + 16 + 4}px` : undefined,
       }}

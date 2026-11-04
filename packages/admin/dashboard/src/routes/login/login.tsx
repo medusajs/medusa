@@ -110,7 +110,7 @@ export const Login = () => {
                 <Link
                   key="reset-password-link"
                   to="/reset-password"
-                  className="font-medium text-ui-fg-interactive outline-none transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover"
+                  className="font-medium text-ui-fg-interactive outline-hidden transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover"
                 />,
               ]}
             />
