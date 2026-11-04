@@ -52,6 +52,12 @@ The RBAC Module is an [enterprise feature](../page.mdx), so it only loads when y
 MEDUSA_LICENSE_KEY=your_license_key
 ```
 
+<Note>
+
+If your application is deployed on Cloud, the `MEDUSA_LICENSE_KEY` variable is automatically injected.
+
+</Note>
+
 If the key is missing or doesn't cover the `rbac` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](../page.mdx) documentation.
 
 ### 2. Register the RBAC Module
