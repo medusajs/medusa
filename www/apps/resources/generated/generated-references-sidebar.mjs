@@ -5616,6 +5616,109 @@ const generatedgeneratedReferencesSidebarSidebar = {
             {
               "loaded": true,
               "type": "sub-category",
+              "title": "Workflows",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/assignRolesWorkflow",
+                  "title": "assignRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/createRbacPoliciesWorkflow",
+                  "title": "createRbacPoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/createRbacRolePoliciesWorkflow",
+                  "title": "createRbacRolePoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/createRbacRolesWorkflow",
+                  "title": "createRbacRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/deleteRbacPoliciesWorkflow",
+                  "title": "deleteRbacPoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/deleteRbacRolePoliciesWorkflow",
+                  "title": "deleteRbacRolePoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/deleteRbacRolesWorkflow",
+                  "title": "deleteRbacRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/getAssignablePoliciesWorkflow",
+                  "title": "getAssignablePoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/getAssignableRolesWorkflow",
+                  "title": "getAssignableRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/unassignRolesWorkflow",
+                  "title": "unassignRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/updateRbacPoliciesWorkflow",
+                  "title": "updateRbacPoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/updateRbacRolesWorkflow",
+                  "title": "updateRbacRolesWorkflow",
+                  "description": "",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "sub-category",
               "title": "Steps",
               "children": [
                 {

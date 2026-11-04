@@ -21396,6 +21396,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"swagger-inline@patch:swagger-inline@npm:^8.1.0#.yarn/patches/swagger-inline-npm-8.1.0-ba84ecd7e8.patch::locator=root%40workspace%3A.":
+  version: 8.1.0
+  resolution: "swagger-inline@patch:swagger-inline@npm%3A8.1.0#.yarn/patches/swagger-inline-npm-8.1.0-ba84ecd7e8.patch::version=8.1.0&hash=580ff3&locator=root%40workspace%3A."
+  dependencies:
+    commander: ^6.0.0
+    globby: ^11.0.1
+    js-yaml: ^5.4.2
+    multilang-extract-comments: ^0.4.0
+  bin:
+    swagger-inline: bin/swagger-inline
+  checksum: ce90a307cd42872b605c52f0981775f9926f87ff218302ab683ce31cad7a9918945f210eaf792396544a55a13d1fe66a291016807b7efb50ac7547e86f044938
+  languageName: node
+  linkType: hard
+
 "swap-case@npm:^3.0.2":
   version: 3.0.3
   resolution: "swap-case@npm:3.0.3"

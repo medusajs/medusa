@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.2
+  version: 2.22.3
   title: Medusa Storefront API
   license:
     name: MIT
@@ -19898,6 +19898,32 @@ components:
           type: number
           title: apply_to_quantity
           description: The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
+    AdminAssignUserRoles:
+      type: object
+      description: The RBAC roles to assign to a user.
+      x-schemaName: AdminAssignUserRoles
+      properties:
+        assignments:
+          type: array
+          description: The roles to assign to the user.
+          items:
+            type: object
+            description: A role to assign to the user.
+            required:
+              - role_id
+            properties:
+              role_id:
+                type: string
+                title: role_id
+                description: The ID of the role to assign to the user.
+              scope:
+                type: string
+                title: scope
+                description: The type of the scope's entity, such as `organization`. Must be passed with `scope_id`.
+              scope_id:
+                type: string
+                title: scope_id
+                description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
     AdminAuthorizeOrderPaymentSession:
       type: object
       description: The details for authorizing a payment session for an order.
@@ -26605,7 +26631,6 @@ components:
         - id
         - email
         - accepted
-        - token
         - expires_at
         - created_at
         - updated_at
@@ -26651,7 +26676,6 @@ components:
         rbac_roles:
           type: array
           description: The roles of the invited user.
-          x-featureFlag: rbac
           items:
             $ref: '#/components/schemas/AdminRbacRole'
     AdminInviteResponse:
@@ -26903,6 +26927,29 @@ components:
           title: provider_id
           description: The ID of the payment provider to use for marking the payment collection as paid. If not provided, the `system` provider will be used.
       x-schemaName: AdminMarkPaymentCollectionAsPaid
+    AdminModule:
+      type: object
+      description: A module installed in the Medusa application.
+      x-schemaName: AdminModule
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          title: key
+          description: The module's key, such as `rbac` or a custom module's name.
+    AdminModulesListResponse:
+      type: object
+      description: The list of installed modules.
+      x-schemaName: AdminModulesListResponse
+      required:
+        - modules
+      properties:
+        modules:
+          type: array
+          description: The modules installed in the Medusa application.
+          items:
+            $ref: '#/components/schemas/AdminModule'
     AdminNotification:
       type: object
       description: The notification's details.
@@ -31128,10 +31175,6 @@ components:
         metadata:
           type: object
           description: Key-value pairs that hold additional information about the policy.
-        inherited_from_role_id:
-          type: string
-          title: inherited_from_role_id
-          description: The ID of the role from which the policy is inherited.
         created_at:
           type: string
           format: date-time
@@ -31155,7 +31198,6 @@ components:
         - id
         - name
         - description
-        - parent_id
         - metadata
         - created_at
         - updated_at
@@ -31173,10 +31215,6 @@ components:
           type: string
           title: description
           description: The description of the RBAC role.
-        parent_id:
-          type: string
-          title: parent_id
-          description: The ID of the parent RBAC role.
         metadata:
           type: object
           description: Key-value pairs that hold additional information about the RBAC role.
@@ -31200,6 +31238,79 @@ components:
           format: date-time
           title: deleted_at
           description: The date the RBAC role was deleted.
+        scope:
+          type: object
+          description: The scope the role is constrained to, if any.
+          required:
+            - type
+            - id
+          properties:
+            type:
+              type: string
+              title: type
+              description: The type of the scope's entity, such as `organization`.
+            id:
+              type: string
+              title: id
+              description: The ID of the scope's entity, such as `org_123`.
+    AdminRbacRoleAssignment:
+      type: object
+      description: The assignment of an RBAC role to an entity, such as a user.
+      x-schemaName: AdminRbacRoleAssignment
+      required:
+        - id
+        - role_id
+        - reference
+        - reference_id
+        - scope
+        - scope_id
+        - metadata
+        - created_at
+        - updated_at
+        - deleted_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The assignment's ID.
+        role_id:
+          type: string
+          title: role_id
+          description: The ID of the role the assignment is for.
+        reference:
+          type: string
+          title: reference
+          description: The type of entity the role is assigned to (e.g. `user`, `invite`).
+        reference_id:
+          type: string
+          title: reference_id
+          description: The ID of the entity the role is assigned to.
+        scope:
+          type: string
+          title: scope
+          description: The type of the scope's entity that the assignment is constrained to, such as `organization`.
+        scope_id:
+          type: string
+          title: scope_id
+          description: The ID of the scope's entity that the assignment is constrained to, such as `org_123`.
+        metadata:
+          type: object
+          description: The assignment's metadata.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the assignment was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the assignment was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the assignment was deleted.
     AdminReceiveItems:
       type: object
       description: The items details.
@@ -33908,6 +34019,45 @@ components:
               type: boolean
               title: deleted
               description: Whether the translations were successfully deleted.
+    AdminUnassignUserRole:
+      type: object
+      description: The scope to unassign the role from the user in.
+      x-schemaName: AdminUnassignUserRole
+      properties:
+        scope:
+          type: string
+          title: scope
+          description: The type of the scope's entity, such as `organization`. Must be passed with `scope_id`.
+        scope_id:
+          type: string
+          title: scope_id
+          description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
+    AdminUnassignUserRoles:
+      type: object
+      description: The RBAC roles to unassign from a user.
+      x-schemaName: AdminUnassignUserRoles
+      properties:
+        assignments:
+          type: array
+          description: The roles to unassign from the user.
+          items:
+            type: object
+            description: A role to unassign from the user.
+            required:
+              - role_id
+            properties:
+              role_id:
+                type: string
+                title: role_id
+                description: The ID of the role to unassign from the user.
+              scope:
+                type: string
+                title: scope
+                description: The type of the scope's entity, such as `organization`. Must be passed with `scope_id`.
+              scope_id:
+                type: string
+                title: scope_id
+                description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
     AdminUpdateApiKey:
       type: object
       description: The details to update in an API key.
@@ -35905,6 +36055,38 @@ components:
       properties:
         user:
           $ref: '#/components/schemas/AdminUser'
+    AdminUserRoleListResponse:
+      type: object
+      description: The paginated list of roles assigned to the user.
+      x-schemaName: AdminUserRoleListResponse
+      required:
+        - limit
+        - offset
+        - count
+        - roles
+      properties:
+        limit:
+          type: number
+          title: limit
+          description: The maximum number of items retrieved.
+        offset:
+          type: number
+          title: offset
+          description: The number of items to skip before retrieving the returned items.
+        count:
+          type: number
+          title: count
+          description: The total number of items.
+        estimate_count:
+          type: number
+          title: estimate_count
+          description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+          x-featureFlag: index_engine
+        roles:
+          type: array
+          description: The list of roles.
+          items:
+            $ref: '#/components/schemas/AdminRbacRole'
     AdminViewConfiguration:
       type: object
       description: The details of a view configuration.

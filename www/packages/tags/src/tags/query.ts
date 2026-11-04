@@ -72,6 +72,18 @@ export const query = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep"
   },
   {
+    "title": "collectCustomerIdsToExportStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/collectCustomerIdsToExportStep"
+  },
+  {
+    "title": "exportCustomersStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportCustomersStep"
+  },
+  {
+    "title": "exportCustomersWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportCustomersWorkflow"
+  },
+  {
     "title": "createDefaultsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createDefaultsWorkflow"
   },
