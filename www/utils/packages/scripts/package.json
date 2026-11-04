@@ -6,8 +6,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
     "check:freshness": "node ./dist/freshness-check.js",
     "generate:message": "node ./dist/get-generate-diff-message.js",
     "check:release-commit": "node ./dist/check-release-commit.js",
