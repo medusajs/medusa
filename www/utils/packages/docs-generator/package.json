@@ -4,9 +4,9 @@
   "scripts": {
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production yarn run -T tsc --build",
     "generate:oas": "yarn generate:route-examples && yarn generate:events && yarn start run ../../../../packages/medusa/src/api ../../../../packages/plugins/loyalty/src/api --type oas && yarn start clean:oas",
     "generate:dml": "yarn start run ../../../../packages/modules --type dml && yarn start clean:dml",
     "generate:route-examples": "yarn start run ../../../../packages/core/js-sdk/src --type route-examples",

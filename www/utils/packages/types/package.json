@@ -7,8 +7,8 @@
   },
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
     "lint": "eslint --ext .ts src"
   },
   "peerDependencies": {

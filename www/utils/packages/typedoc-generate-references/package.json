@@ -4,9 +4,9 @@
   "scripts": {
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production yarn run -T tsc --build",
     "generate:references": "yarn start generate all --merge"
   },
   "publishConfig": {
