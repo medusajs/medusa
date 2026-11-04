@@ -5,8 +5,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
     "analyze": "node dist/index.js analyze",
     "analyze-cloud": "node dist/index.js analyze-cloud",
     "analyze-webhooks": "node dist/index.js analyze-webhooks"

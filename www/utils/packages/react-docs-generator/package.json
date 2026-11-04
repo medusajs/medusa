@@ -5,8 +5,8 @@
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
     "generate:ui": "yarn start --src ../../../../packages/design-system/ui/src --output ../../../apps/ui/specs/components --clean",
-    "build": "tsc",
-    "watch": "tsc --watch"
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch"
   },
   "publishConfig": {
     "access": "public"
