@@ -16,7 +16,7 @@ import {
 import { HttpTypes } from "@medusajs/framework/types"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminGetUserRolesParams>,
@@ -53,7 +53,7 @@ export const GET = async (
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminAssignUserRoles>,
@@ -107,7 +107,7 @@ export const POST = async (
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUnassignUserRoles>,

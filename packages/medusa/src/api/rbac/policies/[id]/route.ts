@@ -16,7 +16,7 @@ import {
 } from "@medusajs/framework/utils"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminRbacPolicyParams>,
@@ -42,7 +42,7 @@ export const GET = async (
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateRbacPolicy>,
@@ -82,7 +82,7 @@ export const POST = async (
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,

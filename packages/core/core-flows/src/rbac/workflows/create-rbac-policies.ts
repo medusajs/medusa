@@ -7,19 +7,19 @@ import { CreateRbacPolicyDTO } from "@medusajs/framework/types"
 import { createRbacPoliciesStep } from "../steps"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type CreateRbacPoliciesWorkflowInput = {
   policies: CreateRbacPolicyDTO[]
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const createRbacPoliciesWorkflowId = "create-rbac-policies"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const createRbacPoliciesWorkflow = createWorkflow(
   createRbacPoliciesWorkflowId,

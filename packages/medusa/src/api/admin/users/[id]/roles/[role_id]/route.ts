@@ -8,7 +8,7 @@ import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { defineFileConfig, Modules } from "@medusajs/framework/utils"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUnassignUserRole>,

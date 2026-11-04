@@ -10,7 +10,7 @@ import { deleteRbacRolesStep } from "../steps"
 import { validateActorRolePermissionsStep } from "../steps/validate-actor-role-permissions"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type DeleteRbacRolesWorkflowInput = {
   ids: string[]
@@ -27,7 +27,7 @@ export type DeleteRbacRolesWorkflowInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const deleteRbacRolesWorkflowId = "delete-rbac-roles"
 
@@ -35,7 +35,7 @@ export const deleteRbacRolesWorkflowId = "delete-rbac-roles"
  * This workflow deletes RBAC roles. When an actor is provided, it validates
  * that the actor holds every policy of the roles being deleted, so that an
  * actor cannot delete roles more privileged than themselves.
- * @ignore
+ * @since 2.22.3
  */
 export const deleteRbacRolesWorkflow = createWorkflow(
   deleteRbacRolesWorkflowId,
