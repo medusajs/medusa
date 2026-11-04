@@ -27,11 +27,36 @@ Medusa Security includes the following features:
 - [Bot Detection](#bot-detection): Blocks requests coming from malicious bots.
 - [Security Analytics](./analytics/page.mdx): View the requests that security features allow or block, and look up a blocked request by its Ray ID.
 
+All security features run at the edge, so Medusa blocks malicious requests before they reach your Medusa application.
+
 <Note>
 
 To learn how Medusa encrypts, stores, and backs up your project's data, refer to the [Data Protection](./data-protection/page.mdx) guide.
 
 </Note>
+
+---
+
+## Enable Medusa Security
+
+Medusa Security is enabled automatically for all new projects. For existing projects, you enable Medusa Security from the project's Security settings. It's highly recommended to enable it right away to harden your application's security.
+
+<Note type="warning">
+
+In the second half of November 2026, Medusa will enable Medusa Security automatically for all existing projects, and you won't be able to disable it. Medusa notifies the organization owner before enabling it.
+
+</Note>
+
+To enable Medusa Security for an existing project:
+
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project you want to manage.
+3. In the project's dashboard, click **Security** in the sidebar, then click **Settings**.
+4. Enable Medusa Security for the project.
+   - If you're concerned about security features blocking legitimate requests, enable them first on a [preview](../environments/preview/page.mdx) or staging environment to check how they perform.
+   - Enable Medusa Security for your Production environment once you have verified that it works correctly in your preview or staging environment. Learn how to choose environments in the [Configurable Security Features Per Environment](#configurable-security-features-per-environment) section.
+
+Until Medusa enables it automatically, you can disable security features at any time if you notice too many false positives. Use [Security Analytics](./analytics/page.mdx) to review the requests that security features block.
 
 ---
 
