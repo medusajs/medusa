@@ -2761,7 +2761,6 @@
     "deleteUserWarning": "Spremate se izbrisati korisnika {{name}}. Ova radnja se ne može poništiti.",
     "deleteUserSuccess": "Korisnik {{name}} uspješno izbrisan",
     "invite": "Pozovi",
-    "inviteRolesTooltip": "Ako nije odabrana nijedna uloga, korisnik će biti pozvan s ulogom superkorisnika.",
     "copyResetPasswordLink": "Kopiraj poveznicu za resetiranje lozinke",
     "copyResetPasswordLinkSuccess": "Poveznica za resetiranje lozinke kopirana je u međuspremnik",
     "copyResetPasswordLinkHint": "Poveznica ubrzo istječe i poništava sve prethodno poslane poveznice za resetiranje lozinke za ovog korisnika."
@@ -3706,7 +3705,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Korisnik već ima ovu ulogu.",
-      "unassignableRoleTooltip": "Nemate pristup za dodjelu ove uloge — vaše ovlasti ne obuhvaćaju sva njezina pravila pristupa.",
       "add": {
         "successToast_one": "Korisnik je uspješno dodan ulozi.",
         "successToast_few": "Korisnici su uspješno dodani ulozi.",

@@ -2785,7 +2785,6 @@
     "editUser": "Gebruiker bewerken",
     "inviteUser": "Gebruiker uitnodigen",
     "inviteUserHint": "Nodig een nieuwe gebruiker uit voor uw winkel.",
-    "inviteRolesTooltip": "Als er geen rol is geselecteerd, wordt de gebruiker uitgenodigd met een supergebruikersrol.",
     "sendInvite": "Uitnodiging versturen",
     "pendingInvites": "Openstaande uitnodigingen",
     "deleteInviteWarning": "U staat op het punt de uitnodiging voor {{email}} te verwijderen. Deze actie kan niet ongedaan worden gemaakt.",
@@ -2860,7 +2859,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Gebruiker heeft deze rol al.",
-      "unassignableRoleTooltip": "U heeft geen toegang om deze rol toe te wijzen — uw machtigingen omvatten niet alle beleidsregels ervan.",
       "add": {
         "successToast_one": "Gebruiker is succesvol toegevoegd aan de rol.",
         "successToast_other": "Gebruikers zijn succesvol toegevoegd aan de rol.",

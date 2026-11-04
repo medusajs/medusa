@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { usePriceLists } from "../../../../../hooks/api/price-lists"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { usePriceListPermissions } from "../../../../../hooks/use-resource-permissions"
 import { usePricingTableColumns } from "./use-pricing-table-columns"
 import { usePricingTableFilters } from "./use-pricing-table-filters"
 import { usePricingTableQuery } from "./use-pricing-table-query"
@@ -13,6 +14,7 @@ const PAGE_SIZE = 20
 
 export const PriceListListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = usePriceListPermissions()
 
   const { searchParams, raw } = usePricingTableQuery({
     pageSize: PAGE_SIZE,
@@ -49,9 +51,11 @@ export const PriceListListTable = () => {
             {t("priceLists.subtitle")}
           </Text>
         </div>
-        <Button size="small" variant="secondary" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
+        {canCreate && (
+          <Button size="small" variant="secondary" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        )}
       </div>
       <_DataTable
         table={table}

@@ -163,4 +163,8 @@ const schema = z.object({
   }),
 })
 
+export const handle = {
+  permissions: ["store_credit_account:read", "store_credit_account:update"],
+}
+
 export default Note

@@ -5,16 +5,11 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import {
-  createRbacRoleParentsStep,
-  createRbacRolePoliciesStep,
-  createRbacRolesStep,
-} from "../steps"
-import { validateUserPermissionsStep } from "../steps/validate-user-permissions"
+import { createRbacRolePoliciesStep, createRbacRolesStep } from "../steps"
+import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type CreateRbacRolesWorkflowInput = {
   actor_id?: string
@@ -23,20 +18,17 @@ export type CreateRbacRolesWorkflowInput = {
     name: string
     description?: string | null
     metadata?: Record<string, unknown> | null
-    parent_ids?: string[]
     policy_ids?: string[]
   }[]
 }
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRolesWorkflowId = "create-rbac-roles"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const createRbacRolesWorkflow = createWorkflow(
   createRbacRolesWorkflowId,
@@ -56,7 +48,7 @@ export const createRbacRolesWorkflow = createWorkflow(
     when({ validationData }, ({ validationData }) => {
       return !!validationData?.actor_id && !!validationData?.policy_ids?.length
     }).then(() => {
-      validateUserPermissionsStep(validationData)
+      validateActorPermissionsStep(validationData)
     })
 
     const roleData = transform({ input }, ({ input }) => ({
@@ -68,25 +60,6 @@ export const createRbacRolesWorkflow = createWorkflow(
     }))
 
     const createdRoles = createRbacRolesStep(roleData)
-
-    const parentData = transform(
-      { input, createdRoles },
-      ({ input, createdRoles }) => {
-        const parents: any[] = []
-
-        createdRoles.forEach((role, index) => {
-          const inheritedRoleIds = input.roles[index].parent_ids || []
-          inheritedRoleIds.forEach((inheritedRoleId) => {
-            parents.push({
-              role_id: role.id,
-              parent_id: inheritedRoleId,
-            })
-          })
-        })
-
-        return { role_parents: parents }
-      }
-    )
 
     const policiesData = transform(
       { input, createdRoles },
@@ -104,8 +77,6 @@ export const createRbacRolesWorkflow = createWorkflow(
         return { policies: allPolicies }
       }
     )
-
-    createRbacRoleParentsStep(parentData)
 
     createRbacRolePoliciesStep(policiesData)
 

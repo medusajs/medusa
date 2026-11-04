@@ -7,7 +7,6 @@ import { IRbacModuleService, UpdateRbacRoleDTO } from "@medusajs/types"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export type UpdateRbacRolesStepInput = {
   selector: Record<string, any>
@@ -16,13 +15,11 @@ export type UpdateRbacRolesStepInput = {
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const updateRbacRolesStepId = "update-rbac-roles"
 
 /**
  * @ignore
- * @featureFlag rbac
  */
 export const updateRbacRolesStep = createStep(
   updateRbacRolesStepId,

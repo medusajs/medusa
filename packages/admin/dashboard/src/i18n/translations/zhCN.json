@@ -2781,7 +2781,6 @@
     "editUser": "编辑用户",
     "inviteUser": "邀请用户",
     "inviteUserHint": "邀请新用户到您的商店。",
-    "inviteRolesTooltip": "如果未选择角色，用户将以超级用户角色受邀。",
     "sendInvite": "发送邀请",
     "pendingInvites": "待处理邀请",
     "deleteInviteWarning": "您即将删除邀请 {{email}}。此操作无法撤销。",
@@ -2856,7 +2855,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "用户已拥有此角色。",
-      "unassignableRoleTooltip": "您无权分配此角色——您的权限未涵盖其所有策略。",
       "add": {
         "successToast_other": "用户已成功添加到角色。",
         "list": {

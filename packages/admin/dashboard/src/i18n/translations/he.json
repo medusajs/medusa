@@ -2847,7 +2847,6 @@
     "editUser": "ערוך משתמש",
     "inviteUser": "הזמן משתמש",
     "inviteUserHint": "הזמן משתמש חדש לחנות שלך.",
-    "inviteRolesTooltip": "אם לא נבחרה תפקיד, המשתמש יוזמן עם תפקיד מנהל-על.",
     "sendInvite": "שלח הזמנה",
     "pendingInvites": "הזמנות ממתינות",
     "deleteInviteWarning": "אתה עומד למחוק את ההזמנה עבור {{email}}. פעולה זו אינה ניתנת לביטול.",
@@ -2922,7 +2921,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "למשתמש כבר יש תפקיד זה.",
-      "unassignableRoleTooltip": "אין לך גישה להקצות תפקיד זה — ההרשאות שלך אינן מכסות את כל המדיניות שלו.",
       "add": {
         "successToast_one": "המשתמש נוסף בהצלחה לתפקיד.",
         "successToast_two": "המשתמשים נוספו בהצלחה לתפקיד.",

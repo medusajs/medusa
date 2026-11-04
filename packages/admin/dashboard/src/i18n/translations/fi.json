@@ -2766,7 +2766,6 @@
     "editUser": "Muokkaa käyttäjää",
     "inviteUser": "Kutsu käyttäjä",
     "inviteUserHint": "Kutsu uusi käyttäjä kauppaasi.",
-    "inviteRolesTooltip": "Jos roolia ei ole valittu, käyttäjä kutsutaan pääkäyttäjän roolilla.",
     "sendInvite": "Lähetä kutsu",
     "pendingInvites": "Odottavat kutsut",
     "deleteInviteWarning": "Olet poistamassa kutsun käyttäjälle {{email}}. Tätä toimintoa ei voi peruuttaa.",
@@ -2841,7 +2840,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Käyttäjällä on jo tämä rooli.",
-      "unassignableRoleTooltip": "Sinulla ei ole oikeutta määrittää tätä roolia — luvatasi eivät kata kaikkia sen käytäntöjä.",
       "add": {
         "successToast_one": "Käyttäjä lisättiin rooliin onnistuneesti.",
         "successToast_other": "Käyttäjät lisättiin rooliin onnistuneesti.",

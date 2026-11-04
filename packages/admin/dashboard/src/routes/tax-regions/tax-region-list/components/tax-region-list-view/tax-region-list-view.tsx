@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 
 import { useTaxRegions } from "../../../../../hooks/api/tax-regions"
 import { useTaxRegionTableQuery } from "../../../../../hooks/table/query/use-tax-region-table-query"
+import { useTaxRegionPermissions } from "../../../../../hooks/use-resource-permissions"
 import { TaxRegionTable } from "../../../common/components/tax-region-table"
 import { useTaxRegionTable } from "../../../common/hooks/use-tax-region-table"
 
@@ -11,6 +12,7 @@ const PAGE_SIZE = 20
 
 export const TaxRegionListView = () => {
   const { t } = useTranslation()
+  const { canCreate } = useTaxRegionPermissions()
 
   const { searchParams, raw } = useTaxRegionTableQuery({
     pageSize: PAGE_SIZE,
@@ -39,10 +41,14 @@ export const TaxRegionListView = () => {
   return (
     <Container className="divide-y p-0">
       <TaxRegionTable
-        action={{
-          to: "create",
-          label: t("actions.create"),
-        }}
+        action={
+          canCreate
+            ? {
+                to: "create",
+                label: t("actions.create"),
+              }
+            : undefined
+        }
         isPending={isPending}
         queryObject={raw}
         table={table}

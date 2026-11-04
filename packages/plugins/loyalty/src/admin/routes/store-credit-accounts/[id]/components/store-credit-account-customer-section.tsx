@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Container } from "@medusajs/ui";
 import { User } from "@medusajs/icons";
 
@@ -10,11 +11,14 @@ function StoreCreditAccountCustomerSection({
 }: {
   customerId?: string;
 }) {
+  const { hasPermission } = usePermissions();
+  const canReadCustomer = hasPermission("customer:read");
+
   const { customer, isPending } = useCustomer(customerId as string, undefined, {
-    enabled: !!customerId,
+    enabled: !!customerId && canReadCustomer,
   });
 
-  if (isPending || !customer) {
+  if (!canReadCustomer || isPending || !customer) {
     return null;
   }
 
