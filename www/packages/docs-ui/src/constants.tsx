@@ -259,6 +259,11 @@ export const navDropdownItems: NavigationItem[] = [
             title: "RBAC",
             link: "/resources/enterprise/rbac",
           },
+          {
+            type: "link",
+            title: "SSO",
+            link: "/resources/enterprise/sso",
+          },
         ],
       },
     ],

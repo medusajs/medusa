@@ -29,6 +29,12 @@ export type WhatsNewItem = {
 
 export const whatsNewItems: WhatsNewItem[] = [
   {
+    title: "RBAC & SSO",
+    tag: "Enterprise",
+    date: "2026-11-04",
+    link: "https://docs.medusajs.com/resources/enterprise",
+  },
+  {
     title: "Medusa MCP",
     tag: "Medusa Cloud",
     date: "2026-10-20",

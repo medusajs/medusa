@@ -10,7 +10,7 @@ export const metadata = {
 
 # {metadata.title}
 
-<EnterpriseNotice beta />
+<EnterpriseNotice />
 
 In this section of the documentation, you will find resources to learn more about the role-based access control (RBAC) Module and how to use it in your application.
 
@@ -51,6 +51,12 @@ The RBAC Module is an [enterprise feature](../page.mdx), so it only loads when y
 ```shell
 MEDUSA_LICENSE_KEY=your_license_key
 ```
+
+<Note>
+
+If your application is deployed on Cloud, the `MEDUSA_LICENSE_KEY` variable is automatically injected.
+
+</Note>
 
 If the key is missing or doesn't cover the `rbac` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](../page.mdx) documentation.
 
