@@ -8144,6 +8144,7 @@ __metadata:
     ts-node: ^10.9.1
     typedoc: ^0.28.20
     typedoc-plugin-custom: "*"
+    types: "*"
     typescript: ^6.0.3
     utils: "*"
   peerDependencies:

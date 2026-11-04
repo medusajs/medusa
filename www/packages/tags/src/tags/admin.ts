@@ -72,6 +72,10 @@ export const admin = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/locale"
   },
   {
+    "title": "module",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/module"
+  },
+  {
     "title": "notification",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/notification"
   },

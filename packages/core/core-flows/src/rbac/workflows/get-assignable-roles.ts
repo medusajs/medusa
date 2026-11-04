@@ -10,24 +10,24 @@ import {
 } from "../steps/get-assignable-roles"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type GetAssignableRolesWorkflowInput = GetAssignableRolesStepInput
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type GetAssignableRolesWorkflowOutput = GetAssignableRolesStepOutput
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const getAssignableRolesWorkflowId = "get-assignable-roles-workflow"
 
 /**
  * Returns the set of `rbac_role`s that the actor is allowed to assign.
  *
- * @ignore
+ * @since 2.22.3
  */
 export const getAssignableRolesWorkflow = createWorkflow(
   getAssignableRolesWorkflowId,

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.2
+  version: 2.22.3
   title: Medusa Admin API
   license:
     name: MIT
@@ -246,6 +246,19 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: ./components/schemas/AdminLocale.yaml
+  - name: Modules
+    description: >
+      A module is a package of reusable commerce or architectural functionality
+      installed in a Medusa application, such as the Product Module or a custom
+      module.
+
+      These API routes allow admin users to retrieve the installed modules, for
+      example to check whether a module, such as the RBAC Module, is installed.
+    externalDocs:
+      description: Learn more about modules.
+      url: https://docs.medusajs.com/learn/fundamentals/modules
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminModule.yaml
   - name: Multi-Factor Authentication
     description: >
       Multi-factor authentication (MFA) adds an extra layer of security to admin
@@ -981,6 +994,8 @@ paths:
     $ref: paths/admin_locales.yaml
   /admin/locales/{code}:
     $ref: paths/admin_locales_{code}.yaml
+  /admin/modules:
+    $ref: paths/admin_modules.yaml
   /admin/notifications:
     $ref: paths/admin_notifications.yaml
   /admin/notifications/{id}:
@@ -1297,6 +1312,10 @@ paths:
     $ref: paths/admin_users_{id}_auth-providers.yaml
   /admin/users/{id}/reset-password:
     $ref: paths/admin_users_{id}_reset-password.yaml
+  /admin/users/{id}/roles:
+    $ref: paths/admin_users_{id}_roles.yaml
+  /admin/users/{id}/roles/{role_id}:
+    $ref: paths/admin_users_{id}_roles_{role_id}.yaml
   /admin/views/entities:
     $ref: paths/admin_views_entities.yaml
   /admin/views/{entity}/columns:

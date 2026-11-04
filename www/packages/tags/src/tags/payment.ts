@@ -204,6 +204,10 @@ export const payment = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePaymentCollectionStep"
   },
   {
+    "title": "updatePaymentSessionStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePaymentSessionStep"
+  },
+  {
     "title": "updateRefundReasonsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateRefundReasonsStep"
   },
@@ -222,6 +226,10 @@ export const payment = [
   {
     "title": "deleteRefundReasonsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRefundReasonsWorkflow"
+  },
+  {
+    "title": "updatePaymentSessionClientDataWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePaymentSessionClientDataWorkflow"
   },
   {
     "title": "updateRefundReasonsWorkflow",

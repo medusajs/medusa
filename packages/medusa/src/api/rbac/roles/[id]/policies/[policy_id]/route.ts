@@ -16,7 +16,7 @@ import {
  * Detaches a policy from a role. The actor must hold the policy being
  * detached, the same requirement as for attaching it.
  *
- * @ignore
+ * @since 2.22.3
  */
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,

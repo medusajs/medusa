@@ -16,7 +16,7 @@ import { validateActorRolePermissionsStep } from "../steps/validate-actor-role-p
 import { useQueryGraphStep } from "../../common"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type UnassignRole = {
   role_id: string
@@ -47,7 +47,7 @@ export type UnassignRolesWorkflowInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const unassignRolesWorkflowId = "unassign-roles"
 
@@ -61,7 +61,7 @@ export const unassignRolesWorkflowId = "unassign-roles"
  * being removed, and that at least one user keeps the super admin role. That
  * check and the removal run under a lock, so concurrent removals can't both
  * pass it.
- * @ignore
+ * @since 2.22.3
  */
 export const unassignRolesWorkflow = createWorkflow(
   unassignRolesWorkflowId,

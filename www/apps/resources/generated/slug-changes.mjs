@@ -3790,6 +3790,66 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.assignRolesWorkflow",
+    "newSlug": "/references/medusa-workflows/assignRolesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.assignRolesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacPoliciesWorkflow",
+    "newSlug": "/references/medusa-workflows/createRbacPoliciesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacPoliciesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacRolePoliciesWorkflow",
+    "newSlug": "/references/medusa-workflows/createRbacRolePoliciesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacRolePoliciesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacRolesWorkflow",
+    "newSlug": "/references/medusa-workflows/createRbacRolesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacRolesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacPoliciesWorkflow",
+    "newSlug": "/references/medusa-workflows/deleteRbacPoliciesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacPoliciesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacRolePoliciesWorkflow",
+    "newSlug": "/references/medusa-workflows/deleteRbacRolePoliciesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacRolePoliciesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacRolesWorkflow",
+    "newSlug": "/references/medusa-workflows/deleteRbacRolesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacRolesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.getAssignablePoliciesWorkflow",
+    "newSlug": "/references/medusa-workflows/getAssignablePoliciesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.getAssignablePoliciesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.getAssignableRolesWorkflow",
+    "newSlug": "/references/medusa-workflows/getAssignableRolesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.getAssignableRolesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.unassignRolesWorkflow",
+    "newSlug": "/references/medusa-workflows/unassignRolesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.unassignRolesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.updateRbacPoliciesWorkflow",
+    "newSlug": "/references/medusa-workflows/updateRbacPoliciesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.updateRbacPoliciesWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.updateRbacRolesWorkflow",
+    "newSlug": "/references/medusa-workflows/updateRbacRolesWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.updateRbacRolesWorkflow/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Region/Steps_Region/functions/core_flows.Region.Steps_Region.createRegionsStep",
     "newSlug": "/references/medusa-workflows/steps/createRegionsStep",
     "filePath": "/www/apps/resources/references/core_flows/Region/Steps_Region/functions/core_flows.Region.Steps_Region.createRegionsStep/page.json"

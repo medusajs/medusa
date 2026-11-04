@@ -10,21 +10,18 @@ import {
 } from "../steps/get-assignable-policies"
 
 /**
- * @ignore
- * @since 2.16.0
+ * @since 2.22.3
  */
 export type GetAssignablePoliciesWorkflowInput = GetAssignablePoliciesStepInput
 
 /**
- * @ignore
- * @since 2.16.0
+ * @since 2.22.3
  */
 export type GetAssignablePoliciesWorkflowOutput =
   GetAssignablePoliciesStepOutput
 
 /**
- * @ignore
- * @since 2.16.0
+ * @since 2.22.3
  */
 export const getAssignablePoliciesWorkflowId =
   "get-assignable-policies-workflow"
@@ -32,8 +29,7 @@ export const getAssignablePoliciesWorkflowId =
 /**
  * Returns the set of `rbac_policy` rows the actor is allowed to assign.
  *
- * @ignore
- * @since 2.16.0
+ * @since 2.22.3
  */
 export const getAssignablePoliciesWorkflow = createWorkflow(
   getAssignablePoliciesWorkflowId,
