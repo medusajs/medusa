@@ -54,6 +54,7 @@ export default class TypedocManager {
   private options: Options
   private mappedReflectionSignatures: MappedReflectionSignature[]
   private project: ProjectReflection | undefined
+  private context: Context | undefined
   private getTypeOptions = {
     hideLink: true,
     wrapBackticks: false,
@@ -95,6 +96,10 @@ export default class TypedocManager {
         }
       }
     )
+
+    this.app.converter.on(Converter.EVENT_END, (context: Context) => {
+      this.context = context
+    })
 
     this.project = await this.app.convert()
 
@@ -752,6 +757,6 @@ export default class TypedocManager {
   }
 
   getReflectionSymbol(reflection: Reflection): ts.Symbol | undefined {
-    return this.project?.getSymbolFromReflection(reflection)
+    return this.context?.getSymbolFromReflection(reflection)
   }
 }
