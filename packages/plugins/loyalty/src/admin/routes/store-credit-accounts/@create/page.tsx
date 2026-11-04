@@ -17,4 +17,8 @@ const StoreCreditAccountCreate = () => {
   );
 };
 
+export const handle = {
+  permissions: ["store_credit_account:create"],
+};
+
 export default StoreCreditAccountCreate;

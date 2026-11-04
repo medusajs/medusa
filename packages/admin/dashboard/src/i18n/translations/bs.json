@@ -2817,7 +2817,6 @@
     "editUser": "Uredi korisnika",
     "inviteUser": "Pozovi korisnika",
     "inviteUserHint": "Pozovite novog korisnika u vašu trgovinu.",
-    "inviteRolesTooltip": "Ako nije odabrana uloga, korisnik će biti pozvan s ulogom superkorisnika.",
     "sendInvite": "Pošaljite pozivnicu",
     "pendingInvites": "Pozivnice na čekanju",
     "deleteInviteWarning": "Spremate se izbrisati pozivnicu za {{email}}. Ova akcija se ne može poništiti.",
@@ -2892,7 +2891,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Korisnik već ima ovu ulogu.",
-      "unassignableRoleTooltip": "Nemate pristup za dodjelu ove uloge — vaše dozvole ne pokrivaju sve njene politike.",
       "add": {
         "successToast_one": "Korisnik je uspješno dodan u ulogu.",
         "successToast_few": "Korisnici su uspješno dodani u ulogu.",

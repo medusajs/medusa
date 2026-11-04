@@ -45,31 +45,27 @@ RBAC (role-based access control) and SSO (single sign-on) are Medusa Enterprise 
 
 - `packages/modules/rbac/`
 - `packages/core/core-flows/src/rbac/`
-- `packages/medusa/src/api/admin/rbac/`
+- `packages/medusa/src/api/rbac/`
 - `packages/core/types/src/rbac/`
 - `packages/core/types/src/http/rbac/`
 - `packages/core/framework/src/policies/`
-- `packages/core/framework/src/http/middlewares/check-permissions.ts`
+- `packages/core/framework/src/http/middlewares/authorize.ts`
+- `packages/core/framework/src/http/utils/build-authz-context.ts`
+- `packages/core/framework/src/http/utils/resolve-roles.ts`
 - `packages/core/framework/src/http/utils/policies/rbac-field-filter.ts`
-- `packages/core/utils/src/modules-sdk/define-policies.ts`
-- `packages/core/utils/src/modules-sdk/policy-to-types.ts`
-- `packages/medusa/src/feature-flags/rbac.ts`
-- `packages/medusa/src/feature-flags/rbac-filter-fields.ts`
+- `packages/core/utils/src/policies/`
 - `packages/medusa/src/modules/rbac.ts`
+- `packages/medusa/src/migration-scripts/create-super-admin-role.ts`
+- `packages/medusa/src/migration-scripts/migrate-rbac-role-assignments.ts`
+- `packages/medusa/src/api/admin/views/[entity]/columns/helpers.ts`
 - `packages/modules/link-modules/src/definitions/invite-rbac-role.ts`
+- `packages/modules/link-modules/src/definitions/invite-rbac-role-assignment.ts`
 - `packages/modules/link-modules/src/definitions/user-rbac-role.ts`
+- `packages/modules/link-modules/src/definitions/user-rbac-role-assignment.ts`
 
 ### RBAC user and invite workflows and APIs
 
 - `packages/core/core-flows/src/invite/steps/get-invite-roles.ts`
-- `packages/core/core-flows/src/invite/steps/validate-roles-exist.ts`
-- `packages/core/core-flows/src/user/steps/get-assignable-policies.ts`
-- `packages/core/core-flows/src/user/steps/get-assignable-roles.ts`
-- `packages/core/core-flows/src/user/steps/validate-user-role-permissions.ts`
-- `packages/core/core-flows/src/user/workflows/assign-user-roles.ts`
-- `packages/core/core-flows/src/user/workflows/get-assignable-policies.ts`
-- `packages/core/core-flows/src/user/workflows/get-assignable-roles.ts`
-- `packages/core/core-flows/src/user/workflows/remove-user-roles.ts`
 - `packages/medusa/src/api/admin/users/[id]/roles/`
 
 ### SDK and Admin dashboard
@@ -78,17 +74,30 @@ RBAC (role-based access control) and SSO (single sign-on) are Medusa Enterprise 
 - `packages/core/js-sdk/src/admin/rbac-role.ts`
 - `packages/admin/dashboard/src/routes/policies/`
 - `packages/admin/dashboard/src/routes/roles/`
+- `packages/admin/dashboard/src/routes/no-permissions/`
+- `packages/admin/dashboard/src/routes/users/user-detail/components/user-role-section/`
 - `packages/admin/dashboard/src/hooks/api/rbac-policies.tsx`
 - `packages/admin/dashboard/src/hooks/api/rbac-roles.tsx`
 - `packages/admin/dashboard/src/hooks/use-require-rbac-feature.tsx`
+- `packages/admin/dashboard/src/hooks/use-resource-permissions.tsx`
+- `packages/admin/dashboard/src/components/authentication/route-permission-guard/`
+- `packages/admin/dashboard/src/components/common/permission-guard/`
+- `packages/admin/dashboard/src/components/common/role-guard/`
 - `packages/admin/dashboard/src/components/common/required-permissions-section/`
+- `packages/admin/dashboard/src/dashboard-app/routes/wrap-route-loaders.ts`
 - `packages/admin/dashboard/src/lib/permissions/`
 - `packages/admin/dashboard/src/providers/permissions-provider/`
 
 ### RBAC-specific tests
 
 - `packages/modules/rbac/integration-tests/`
+- `packages/core/framework/src/http/__fixtures__/routers-rbac/`
+- `packages/core/framework/src/http/middlewares/__tests__/authorize.spec.ts`
+- `packages/core/framework/src/http/utils/__tests__/build-authz-context.spec.ts`
+- `packages/core/framework/src/http/utils/__tests__/resolve-roles.spec.ts`
+- `packages/core/framework/src/http/utils/policies/__tests__/rbac-field-filter.spec.ts`
 - `integration-tests/http/__tests__/rbac/`
+- `integration-tests/http/__tests__/modules/admin/modules-rbac.spec.ts`
 - `integration-tests/modules/__tests__/rbac/`
 - `integration-tests/modules/__tests__/rbac-match-endpoint-entities.spec.ts`
 

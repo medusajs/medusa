@@ -1,6 +1,7 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import {
   LayoutComposer,
@@ -51,26 +52,30 @@ export const ProductOptionDetail = () => {
               <ProductOptionGeneralSection productOption={product_option} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductOptionValuesSection">
-              {isViewConfigEnabled ? (
-                <ConfigurableProductOptionValuesSection
-                  productOption={product_option}
-                />
-              ) : (
-                <ProductOptionValuesSection productOption={product_option} />
-              )}
+              <PermissionGuard permission="product_option_value:read">
+                {isViewConfigEnabled ? (
+                  <ConfigurableProductOptionValuesSection
+                    productOption={product_option}
+                  />
+                ) : (
+                  <ProductOptionValuesSection productOption={product_option} />
+                )}
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductOptionProductSection">
-              {isViewConfigEnabled ? (
-                <ConfigurableProductOptionProductSection
-                  productOptionId={product_option.id}
-                />
-              ) : (
-                <ProductOptionProductSection
-                  productOptionId={product_option.id}
-                />
-              )}
+              <PermissionGuard permission="product:read">
+                {isViewConfigEnabled ? (
+                  <ConfigurableProductOptionProductSection
+                    productOptionId={product_option.id}
+                  />
+                ) : (
+                  <ProductOptionProductSection
+                    productOptionId={product_option.id}
+                  />
+                )}
+              </PermissionGuard>
             </LayoutComposer.Entry>
-            {detailPageDefaultEntries(product_option, { permissions: false })}
+            {detailPageDefaultEntries(product_option)}
           </>
         ),
       }}

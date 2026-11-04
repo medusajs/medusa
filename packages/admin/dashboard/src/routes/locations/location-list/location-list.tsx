@@ -8,6 +8,7 @@ import { LayoutComposer } from "../../../components/layout-composer"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { ConfigurableLocationListTable } from "./configurable-location-list-table"
 import { LocationListTable } from "./location-list-table"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export function LocationList() {
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
@@ -31,7 +32,14 @@ export function LocationList() {
         side: (
           <>
             <LayoutComposer.Entry id="LinksSection">
-              <LinksSection />
+              <PermissionGuard
+                permissions={[
+                  "shipping_option_type:read",
+                  "shipping_profile:read",
+                ]}
+              >
+                <LinksSection />
+              </PermissionGuard>
             </LayoutComposer.Entry>
           </>
         ),
@@ -49,22 +57,26 @@ const LinksSection = () => {
         <Heading level="h2">{t("stockLocations.sidebar.header")}</Heading>
       </div>
 
-      <SidebarLink
-        to="/settings/locations/shipping-profiles"
-        labelKey={t("stockLocations.sidebar.shippingProfiles.label")}
-        descriptionKey={t(
-          "stockLocations.sidebar.shippingProfiles.description"
-        )}
-        icon={<ShoppingBag />}
-      />
-      <SidebarLink
-        to="/settings/locations/shipping-option-types"
-        labelKey={t("stockLocations.sidebar.shippingOptionTypes.label")}
-        descriptionKey={t(
-          "stockLocations.sidebar.shippingOptionTypes.description"
-        )}
-        icon={<TruckFast />}
-      />
+      <PermissionGuard permission={"shipping_profile:read"}>
+        <SidebarLink
+          to="/settings/locations/shipping-profiles"
+          labelKey={t("stockLocations.sidebar.shippingProfiles.label")}
+          descriptionKey={t(
+            "stockLocations.sidebar.shippingProfiles.description"
+          )}
+          icon={<ShoppingBag />}
+        />
+      </PermissionGuard>
+      <PermissionGuard permission={"shipping_option_type:read"}>
+        <SidebarLink
+          to="/settings/locations/shipping-option-types"
+          labelKey={t("stockLocations.sidebar.shippingOptionTypes.label")}
+          descriptionKey={t(
+            "stockLocations.sidebar.shippingOptionTypes.description"
+          )}
+          icon={<TruckFast />}
+        />
+      </PermissionGuard>
     </Container>
   )
 }

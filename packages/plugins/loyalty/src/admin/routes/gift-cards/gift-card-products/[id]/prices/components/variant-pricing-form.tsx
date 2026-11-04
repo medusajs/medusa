@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { HttpTypes } from "@medusajs/types";
 import { useMemo } from "react";
 import { UseFormReturn, useWatch } from "react-hook-form";
@@ -17,9 +18,18 @@ type VariantPricingFormProps = {
 };
 
 export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {
+  const { hasPermission } = usePermissions();
   const { store } = useStore();
-  const { regions } = useRegions({ limit: 9999 });
-  const { price_preferences: pricePreferences } = usePricePreferences({});
+  // Region price columns and the tax-inclusive hints are optional: the grid
+  // still edits the currency prices without them.
+  const { regions } = useRegions(
+    { limit: 9999 },
+    { enabled: hasPermission("region:read") }
+  );
+  const { price_preferences: pricePreferences } = usePricePreferences(
+    {},
+    { enabled: hasPermission("price_preference:read") }
+  );
 
   const { setCloseOnEscape } = useRouteModal();
 

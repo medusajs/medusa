@@ -2781,7 +2781,6 @@
     "editUser": "Editar Usuário",
     "inviteUser": "Convidar Usuário",
     "inviteUserHint": "Convide um novo usuário para sua loja.",
-    "inviteRolesTooltip": "Se nenhuma função for selecionada, o usuário será convidado com função de superusuário.",
     "sendInvite": "Enviar convite",
     "pendingInvites": "Convites Pendentes",
     "deleteInviteWarning": "Você está prestes a excluir o convite para {{email}}. Esta ação não pode ser desfeita.",
@@ -2856,7 +2855,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "O usuário já possui esta função.",
-      "unassignableRoleTooltip": "Você não tem acesso para atribuir esta função — suas permissões não cobrem todas as políticas dela.",
       "add": {
         "successToast_one": "Usuário adicionado à função com sucesso.",
         "successToast_other": "Usuários adicionados à função com sucesso.",

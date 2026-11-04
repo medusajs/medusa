@@ -2779,7 +2779,6 @@
     "editUser": "編輯使用者",
     "inviteUser": "邀請使用者",
     "inviteUserHint": "邀請新使用者加入您的商店。",
-    "inviteRolesTooltip": "若未選擇角色，使用者將以超級使用者角色受邀。",
     "sendInvite": "傳送邀請",
     "pendingInvites": "待處理邀請",
     "deleteInviteWarning": "您即將刪除 {{email}} 的邀請。此操作無法復原。",
@@ -2854,7 +2853,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "使用者已擁有此角色。",
-      "unassignableRoleTooltip": "您無權指派此角色，您的權限未涵蓋其所有政策。",
       "add": {
         "successToast_other": "使用者已成功新增至角色。",
         "list": {

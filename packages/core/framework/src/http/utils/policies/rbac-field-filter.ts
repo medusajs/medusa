@@ -1,13 +1,10 @@
-import {
-  GraphQLUtils,
-  PolicyDefinition,
-  PolicyResource,
-  promiseAll,
-  toSnakeCase,
-} from "@medusajs/framework/utils"
+import { GraphQLUtils, toSnakeCase } from "@medusajs/framework/utils"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import type { MedusaContainer } from "@medusajs/types"
-import { hasPermission } from "../../../policies/has-permission"
+import {
+  fetchPolicyResources,
+  isGranted,
+} from "../../../policies/has-permission"
 import { FieldFilterContext, IFieldFilter } from "../field-filtering/index"
 
 /**
@@ -398,25 +395,24 @@ function collectUniqueEntityPaths(
 }
 
 /**
- * RBAC Field Filter using the Strategy pattern
- * Optimized for parallel permission checks
+ * RBAC Field Filter using the Strategy pattern. The actor's permissions are
+ * fetched once, then every governed relation path is checked against them.
  */
 export class RBACFieldFilter implements IFieldFilter {
-  private policies: PolicyDefinition[]
-  private userRoles: string[]
+  private getPermissions: () => Promise<string[]>
   private container: MedusaContainer
 
   constructor({
-    policies,
-    userRoles,
+    getPermissions,
     container,
   }: {
-    policies: PolicyDefinition[]
-    userRoles: string[]
+    /**
+     * The actor's `resource:operation` permissions, wildcards as stored.
+     */
+    getPermissions: () => Promise<string[]>
     container: MedusaContainer
   }) {
-    this.policies = policies
-    this.userRoles = userRoles
+    this.getPermissions = getPermissions
     this.container = container
   }
 
@@ -425,33 +421,20 @@ export class RBACFieldFilter implements IFieldFilter {
     const { fields, starFields } = parsedFields
     const fieldsToCheck = [...fields, ...Array.from(starFields)]
 
-    if (!fieldsToCheck.length || !this.policies.length || !entity) {
+    if (!fieldsToCheck.length || !entity) {
       return []
     }
 
+    const permissions = new Set(await this.getPermissions())
+    const policyResources = await fetchPolicyResources(this.container)
+
     const uniquePaths = collectUniqueEntityPaths(entity, fieldsToCheck)
 
-    const pathsNeedingCheck: { path: string; entityName: string }[] = []
-    for (const [path, info] of uniquePaths) {
-      if (info.entityName && PolicyResource[info.entityName]) {
-        pathsNeedingCheck.push({ path, entityName: info.entityName })
-      }
-    }
-
-    const permissionResults = await promiseAll(
-      pathsNeedingCheck.map(async ({ path, entityName }) => {
-        const hasAccess = await hasPermission({
-          roles: this.userRoles,
-          actions: { resource: entityName, operation: "read" },
-          container: this.container,
-        })
-        return { path, hasAccess }
-      })
-    )
-
     const accessMap = new Map<string, boolean>()
-    for (const result of permissionResults) {
-      accessMap.set(result.path, result.hasAccess)
+    for (const [path, info] of uniquePaths) {
+      if (info.entityName && policyResources.has(info.entityName)) {
+        accessMap.set(path, isGranted(permissions, info.entityName, "read"))
+      }
     }
 
     const notAllowedFields: string[] = []

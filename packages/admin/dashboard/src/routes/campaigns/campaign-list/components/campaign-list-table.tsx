@@ -10,12 +10,14 @@ import { useCampaigns } from "../../../../hooks/api/campaigns"
 import { useCampaignTableColumns } from "../../../../hooks/table/columns/use-campaign-table-columns"
 import { useCampaignTableQuery } from "../../../../hooks/table/query/use-campaign-table-query"
 import { useDataTable } from "../../../../hooks/use-data-table"
+import { useCampaignPermissions } from "../../../../hooks/use-resource-permissions"
 import { CampaignListTableActions } from "./campaign-list-table-actions"
 
 const PAGE_SIZE = 20
 
 export const CampaignListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useCampaignPermissions()
   const { raw, searchParams } = useCampaignTableQuery({ pageSize: PAGE_SIZE })
 
   const {
@@ -47,11 +49,13 @@ export const CampaignListTable = () => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h1">{t("campaigns.domain")}</Heading>
-        <Link to="/campaigns/create">
-          <Button size="small" variant="secondary">
-            {t("actions.create")}
-          </Button>
-        </Link>
+        {canCreate && (
+          <Link to="/campaigns/create">
+            <Button size="small" variant="secondary">
+              {t("actions.create")}
+            </Button>
+          </Link>
+        )}
       </div>
 
       <_DataTable

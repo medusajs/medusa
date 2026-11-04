@@ -15,6 +15,7 @@ import { ExtendedProduct, PRODUCT_DETAIL_FIELDS } from "./constants"
 import { productLoader } from "./loader"
 
 import { ProductShippingProfileSection } from "./components/product-shipping-profile-section"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const ProductDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -60,10 +61,14 @@ export const ProductDetail = () => {
               <ProductMediaSection product={product} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductOptionSection">
-              <ProductOptionSection product={product} />
+              <PermissionGuard permission="product_option:read">
+                <ProductOptionSection product={product} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductVariantSection">
-              <ProductVariantSection product={product} />
+              <PermissionGuard permission="product_variant:read">
+                <ProductVariantSection product={product} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(product)}
           </>
@@ -71,15 +76,28 @@ export const ProductDetail = () => {
         side: (
           <>
             <LayoutComposer.Entry id="ProductSalesChannelSection">
-              <ProductSalesChannelSection product={product} />
+              <PermissionGuard permission="sales_channel:read">
+                <ProductSalesChannelSection product={product} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductShippingProfileSection">
-              <ProductShippingProfileSection
-                product={product as ExtendedProduct}
-              />
+              <PermissionGuard permission="shipping_profile:read">
+                <ProductShippingProfileSection
+                  product={product as ExtendedProduct}
+                />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductOrganizationSection">
-              <ProductOrganizationSection product={product} />
+              <PermissionGuard
+                permissions={[
+                  "product_tag:read",
+                  "product_type:read",
+                  "product_collection:read",
+                  "product_category:read",
+                ]}
+              >
+                <ProductOrganizationSection product={product} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ProductAttributeSection">
               <ProductAttributeSection product={product} />

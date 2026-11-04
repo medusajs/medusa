@@ -1,11 +1,14 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 
 import { refreshInviteTokensWorkflow } from "@medusajs/core-flows"
 import { HttpTypes } from "@medusajs/framework/types"
 import { refetchInvite } from "../../helpers"
 
 export const POST = async (
-  req: MedusaRequest<{}, HttpTypes.SelectParams>,
+  req: AuthenticatedMedusaRequest<{}, HttpTypes.SelectParams>,
   res: MedusaResponse<HttpTypes.AdminInviteResponse>
 ) => {
   const workflow = refreshInviteTokensWorkflow(req.scope)
@@ -15,11 +18,7 @@ export const POST = async (
   }
 
   const { result } = await workflow.run({ input })
-  const invite = await refetchInvite(
-    result[0].id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const invite = await refetchInvite(req, result[0].id)
 
   res.status(200).json({ invite })
 }

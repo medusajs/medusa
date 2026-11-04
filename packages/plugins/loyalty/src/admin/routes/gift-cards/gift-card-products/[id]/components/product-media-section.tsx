@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { ThumbnailBadge } from "@medusajs/icons";
 import { AdminProduct, HttpTypes } from "@medusajs/types";
 import {
@@ -22,6 +23,8 @@ type ProductMedisaSectionProps = {
 export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
   const prompt = usePrompt();
   const [selection, setSelection] = useState<Record<string, boolean>>({});
+  const { hasPermission } = usePermissions();
+  const canUpdate = hasPermission("product:update");
 
   const media = getMedia(product);
 
@@ -79,7 +82,7 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">Media</Heading>
 
-        {media.length > 0 && (
+        {canUpdate && media.length > 0 && (
           <Link
             to={`media?view=edit`}
             className="text-ui-fg-muted text-sm  txt-compact-medium-plus"
@@ -99,19 +102,21 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
                 className="shadow-elevation-card-rest hover:shadow-elevation-card-hover transition-fg group relative aspect-square size-full cursor-pointer overflow-hidden rounded-[8px]"
                 key={i.id}
               >
-                <div
-                  className={clx(
-                    "transition-fg invisible absolute right-2 top-2 opacity-0 group-hover:visible group-hover:opacity-100",
-                    {
-                      "visible opacity-100": isSelected,
-                    }
-                  )}
-                >
-                  <Checkbox
-                    checked={selection[i.id] || false}
-                    onCheckedChange={() => handleCheckedChange(i.id)}
-                  />
-                </div>
+                {canUpdate && (
+                  <div
+                    className={clx(
+                      "transition-fg invisible absolute right-2 top-2 opacity-0 group-hover:visible group-hover:opacity-100",
+                      {
+                        "visible opacity-100": isSelected,
+                      }
+                    )}
+                  >
+                    <Checkbox
+                      checked={selection[i.id] || false}
+                      onCheckedChange={() => handleCheckedChange(i.id)}
+                    />
+                  </div>
+                )}
                 {i.isThumbnail && (
                   <div className="absolute left-2 top-2">
                     <Tooltip content="Thumbnail">
@@ -145,12 +150,14 @@ export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
               Add images to your product
             </Text>
           </div>
-          <Button size="small" variant="secondary" asChild>
-            <Link to="media?view=edit">Add images</Link>
-          </Button>
+          {canUpdate && (
+            <Button size="small" variant="secondary" asChild>
+              <Link to="media?view=edit">Add images</Link>
+            </Button>
+          )}
         </div>
       )}
-      <CommandBar open={!!Object.keys(selection).length}>
+      <CommandBar open={canUpdate && !!Object.keys(selection).length}>
         <CommandBar.Bar>
           <CommandBar.Value>
             {Object.keys(selection).length} selected
