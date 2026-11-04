@@ -65,7 +65,7 @@
     "tailwindcss": "^3.3.3",
     "tsc-alias": "^1.8.7",
     "types": "*",
-    "typescript": "^5.1.6",
+    "typescript": "^6.0.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
   },
