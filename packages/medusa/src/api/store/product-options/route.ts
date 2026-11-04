@@ -14,12 +14,17 @@ export const GET = async (
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { data: product_options, metadata } = await query.graph({
-    entity: "product_option",
-    filters: req.filterableFields,
-    pagination: req.queryConfig.pagination,
-    fields: req.queryConfig.fields,
-  })
+  const { data: product_options, metadata } = await query.graph(
+    {
+      entity: "product_option",
+      filters: req.filterableFields,
+      pagination: req.queryConfig.pagination,
+      fields: req.queryConfig.fields,
+    },
+    {
+      locale: req.locale,
+    }
+  )
 
   res.json({
     product_options,
