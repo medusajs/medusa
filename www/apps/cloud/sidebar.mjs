@@ -537,6 +537,23 @@ export const sidebar = [
             title: "IP Addresses",
             path: "/ip-addresses",
           },
+          {
+            type: "link",
+            title: "Medusa Security",
+            path: "/security",
+            children: [
+              {
+                type: "link",
+                title: "Security Analytics",
+                path: "/security/analytics",
+              },
+              {
+                type: "link",
+                title: "Data Protection",
+                path: "/security/data-protection",
+              },
+            ],
+          },
         ],
       },
       {
