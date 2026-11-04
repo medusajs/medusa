@@ -34677,6 +34677,121 @@ The [Authenticate or Login API Route](undefined/Users/shahednasser/projects/medu
 - [How to implement Google social login in the storefront](undefined/Users/shahednasser/projects/medusa-pr-reviews/www/apps/resources/app/storefront-development/customers/third-party-login)
 
 
+# OpenID Connect (OIDC) Auth Module Provider
+
+In this guide, you'll learn about the OpenID Connect (OIDC) Auth Module Provider and how to install and use it in the Auth Module.
+
+The OIDC Auth Module Provider is available since Medusa [v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
+
+The OIDC Auth Module Provider allows you to authenticate users with any identity provider (IdP) that complies with the OpenID Connect specification, such as Okta, Microsoft Entra ID, Auth0, Keycloak, or Google Workspace.
+
+The provider resolves the identity provider's configuration from its discovery document, and it secures the authentication flow with PKCE (S256), a nonce, and full ID token validation.
+
+## Register the OIDC Auth Module Provider
+
+### Prerequisites
+
+
+
+To use the OIDC Auth Module Provider, add the module to the array of providers passed to the Auth Module in your `medusa-config.ts`. You can register the provider multiple times, once per identity provider, with a different `id` for each registration:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    // ...
+    {
+      resolve: "@medusajs/medusa/auth",
+      options: {
+        providers: [
+          // other providers...
+          {
+            resolve: "@medusajs/medusa/auth-emailpass",
+            id: "emailpass",
+          },
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              issuer: process.env.OKTA_ISSUER,
+              client_id: process.env.OKTA_CLIENT_ID,
+              client_secret: process.env.OKTA_CLIENT_SECRET,
+              callback_url: process.env.OKTA_CALLBACK_URL,
+              display_name: "Okta",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+The `id` of each registration becomes part of the authentication routes. For example, with the above configuration, customers authenticate through the `/auth/customer/okta` route.
+
+When you override the `providers` option of the Auth Module, the default `emailpass` provider is no longer registered. Make sure to add it again if you still need it.
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```plain
+OKTA_ISSUER=<YOUR_OKTA_ISSUER_URL>
+OKTA_CLIENT_ID=<YOUR_OKTA_CLIENT_ID>
+OKTA_CLIENT_SECRET=<YOUR_OKTA_CLIENT_SECRET>
+OKTA_CALLBACK_URL=<YOUR_OKTA_CALLBACK_URL>
+```
+
+### Module Options
+
+|Configuration|Description|Required|
+|---|---|---|
+|`issuer`|A string indicating the identity provider's issuer URL. The provider uses it to resolve the discovery document at `{issuer}/.well-known/openid-configuration` and to validate the `iss` claim of returned ID tokens. The URL must use `https`. Outside of production, you can use an `http` URL for `localhost`, `127.0.0.1`, or `::1`, which is useful when testing with a local identity provider.|Yes|
+|`client_id`|A string indicating the OAuth 2 client ID registered with the identity provider.|Yes|
+|`client_secret`|A string indicating the OAuth 2 client secret registered with the identity provider. If you don't set it, the provider authenticates as a public client using PKCE only.|No|
+|`callback_url`|A string indicating the URL to redirect to in your frontend after the user completes their authentication in the identity provider. At this URL, the frontend receives query parameters such as `code` and `state`. It then sends all of these query parameters to the Medusa application's `/auth/{actor_type}/{id}/callback` route, where `{id}` is the provider's ID.|Yes|
+|`allowed_callback_urls`|An array of strings indicating the callback URLs that an authentication request can use to override `callback_url`. The provider rejects any override that doesn't exactly match a URL in this list. If you don't set this option, the provider accepts any callback URL override and leaves the validation to the identity provider.|No|
+|`scopes`|An array of strings indicating the scopes to request. The identity provider only returns an ID token if you request the `openid` scope, so always include it when you set this option. Default: `["openid", "email", "profile"]`|No|
+|`authorization_endpoint`|A string indicating the identity provider's authorization endpoint. If set, it overrides the value from the discovery document.|No|
+|`token_endpoint`|A string indicating the identity provider's token endpoint. If set, it overrides the value from the discovery document.|No|
+|`jwks_uri`|A string indicating the JWKS URI used to verify the ID token's signature. If set, it overrides the value from the discovery document. If you set `authorization_endpoint`, `token_endpoint`, and `jwks_uri`, the provider doesn't fetch the discovery document.|No|
+|`claim_mappings`|An object that maps the auth identity's fields to the ID token's claims. The key is the field, and the value is the name of the claim to read it from:   `entity_id`: The claim to use as the auth identity's `entity_id`.  `email`: The claim to read the user's email from.  `name`: The claim to read the user's name from. You can also add custom keys. The provider copies the value of each mapped claim into the auth identity's `user_metadata` under the key's name. Default: `{ entity_id: "sub", email: "email", name: "name" }`|No|
+|`require_verified_email`|A boolean indicating whether the identity provider must confirm that the user's email is verified with the `email_verified` claim. If the identity provider doesn't return the `email_verified` claim, every login fails unless you set this option to `false`. Default: `true`|No|
+|`allowed_email_domains`|An array of strings indicating the email domains allowed to authenticate through this provider. For example, `["example.com"]`. If set, the provider rejects users whose email domain isn't in the list.|No|
+|`clock_tolerance_seconds`|A number indicating the allowed clock skew, in seconds, when validating the ID token's time-based claims, such as `exp`. Default: `5`|No|
+|`state_ttl_seconds`|A number indicating how long, in seconds, the `state` value stored during authentication remains valid. The user must complete the authentication in the identity provider within this time. Default: `600`|No|
+|`display_name`|A string indicating the provider's display name. This is useful when you register the provider multiple times for different identity providers. Default: `OpenID Connect`|No|
+
+***
+
+## Authentication Flow
+
+The OIDC Auth Module Provider supports authentication only. It doesn't support the registration route, since users are registered in the identity provider.
+
+The authentication flow is:
+
+1. The frontend sends a request to the [Authenticate or Login API Route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#login-route) at `/auth/{actor_type}/{id}`. The route returns a `location` URL in the identity provider.
+2. The frontend redirects the user to the `location` URL to log in with the identity provider.
+3. After the user logs in, the identity provider redirects them to the callback URL.
+4. The frontend sends all query parameters it received to the [Validate Callback API Route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#validate-callback-route) at `/auth/{actor_type}/{id}/callback`. On success, the route returns a JWT token.
+
+On the first login, the provider creates an auth identity whose `entity_id` is the value of the `sub` claim by default. On every following login, the provider updates the auth identity's `user_metadata` with the latest claims from the ID token.
+
+### Troubleshooting Authentication Errors
+
+To avoid leaking sensitive details, the provider always returns a generic `Authentication failed` error to the client when authentication fails. The Medusa application logs the actual cause with the `[auth-oidc]` prefix, so check the logs when debugging a failed login.
+
+For example, if the identity provider can't be reached or rejects the token request, the logs contain the reason and, when available, the identity provider's error code and description.
+
+***
+
+## Override Callback URL During Authentication
+
+In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
+
+The [Authenticate or Login API Route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#login-route) can accept a `callback_url` body parameter to override the provider's `callback_url` option. To restrict which URLs are accepted, set the `allowed_callback_urls` option.
+
+
 # Auth Module Provider
 
 In this guide, you’ll learn about the Auth Module Provider and how it's used.
@@ -34692,6 +34807,7 @@ For example, the EmailPass Auth Module Provider authenticates a user using their
 - [Emailpass](undefined/commerce-modules/auth/auth-providers/emailpass)
 - [Google](undefined/commerce-modules/auth/auth-providers/google)
 - [GitHub](undefined/commerce-modules/auth/auth-providers/github)
+- [OpenID Connect (OIDC)](undefined/commerce-modules/auth/auth-providers/oidc)
 
 ***
 
@@ -39364,12 +39480,44 @@ The guest customer's orders stay linked to the guest customer. To move them to t
 
 When you pass an `authIdentityId` to the `createCustomerAccountWorkflow`, the workflow retrieves the auth identity and its provider identities. It then checks that the customer's email matches one of the following values of a provider identity:
 
-- The `entity_id`, which holds the email for providers like the `emailpass` provider.
+- The `entity_id` of an `emailpass` provider identity, or of any provider identity whose `entity_id` is a valid email.
 - The `email` property in the `user_metadata`, which third-party providers like Google set.
 
 The comparison ignores letter case and leading or trailing whitespace. If the email doesn't match, the workflow throws an `unauthorized` error with the message `The customer's email must match the email of the authenticated identity`.
 
 This check prevents a customer from creating an account with an email they didn't authenticate with. If you use a custom auth provider, make sure it stores the customer's email in the provider identity's `entity_id` or `user_metadata.email`.
+
+Since Medusa [v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3), the workflow skips this check if none of the auth identity's provider identities has an email in the values above. For example, a phone-based provider that stores the phone number in `entity_id` and has no `user_metadata.email`. Before that version, the workflow threw an error in this case.
+
+### Add Custom Validation
+
+The `validate` hook is available since Medusa [v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3).
+
+The `createCustomerAccountWorkflow` has a `validate` hook that runs after the built-in validation and before the workflow creates the customer. Consume the hook to add your own validation, such as verifying the email when the auth identity has no email to match against. Throw an error in the hook's handler to stop the workflow.
+
+For example, to only allow emails of a specific domain:
+
+```ts title="src/workflows/hooks/validate-customer-account.ts"
+import {
+  createCustomerAccountWorkflow,
+} from "@medusajs/medusa/core-flows"
+import { MedusaError } from "@medusajs/framework/utils"
+
+createCustomerAccountWorkflow.hooks.validate(
+  async ({ input }) => {
+    const email = input.customerData.email?.toLowerCase()
+
+    if (!email?.endsWith("@example.com")) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Only example.com emails can register"
+      )
+    }
+  }
+)
+```
+
+Learn more about consuming workflow hooks in the [Workflow Hooks](undefined/docs/learn/fundamentals/workflows/workflow-hooks) chapter.
 
 ***
 
@@ -46030,6 +46178,7 @@ The Adyen Module Provider integrates [Adyen](https://www.adyen.com/) into your M
 - Manual or automatic capture of payments.
 - Refunds and cancellations.
 - Saved cards for customers with an account.
+- [Off-session payments](#off-session-payments) with saved cards, such as for subscription renewals.
 
 - The provider only supports cards (`scheme`), Apple Pay (`applepay`), and Google Pay (`googlepay`). It only retrieves these payment methods from Adyen, so Drop-in doesn't show other methods, and it throws an error if the storefront submits a different payment method type.
 - Payment methods that complete through a redirect or that Adyen confirms asynchronously through the `AUTHORISATION` webhook, such as iDEAL or bank transfers, aren't supported yet.
@@ -46196,6 +46345,54 @@ To save a card during payment, pass `store_payment_method: true` in the payment 
 
 Saving a card during a payment requires the "Merchant Recurring" role for your Adyen API credential. Saving a card without a payment requires the "API tokenise payment details" role.
 
+### Off-Session Payments
+
+Off-session payments are available since Medusa [v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3).
+
+The Adyen Module Provider can charge a customer's saved card without the customer being present, such as for subscription renewals or follow-up payments.
+
+When you save a card without making a payment, for example, with the Payment Module's `createPaymentMethods` method, pass `usage: "off_session"` in the payment method's `data` to save the card for off-session payments:
+
+```ts
+await paymentModuleService.createPaymentMethods({
+  provider_id: "pp_adyen_adyen",
+  data: {
+    // the paymentMethod object from Drop-in's state data
+    payment_method: dropInPaymentMethod,
+    usage: "off_session",
+  },
+  context: {
+    account_holder: accountHolder,
+    customer,
+  },
+})
+```
+
+Then, to charge the saved card, create a payment session for a customer that has an [account holder](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/payment/account-holder), and pass the following properties in the payment session's `data`:
+
+- `payment_method`: The ID of the saved card in Adyen. You can retrieve the customer's saved cards with the Payment Module's `listPaymentMethods` method.
+- `off_session`: `true` to charge the card without the customer present.
+
+For example, in a workflow:
+
+```ts
+const paymentSession = createPaymentSessionsWorkflow.runAsStep({
+  input: {
+    payment_collection_id: paymentCollection.id,
+    provider_id: "pp_adyen_adyen",
+    customer_id: customerId,
+    data: {
+      payment_method: savedCardId,
+      off_session: true,
+    },
+  },
+})
+```
+
+When the payment session is authorized, for example, when you complete the cart, the provider charges the saved card as an unscheduled card-on-file payment, without requiring any client data from the storefront.
+
+The provider ignores the `off_session` property for guest customers, since they don't have an account holder. Adyen also only charges cards saved for the same customer.
+
 ***
 
 ## Setup Adyen Webhooks
@@ -46360,6 +46557,7 @@ STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
 |`paymentDescription`|A string used as the default description of a payment if none is available in `cart.context.payment_description`.|No|-|
 |`oxxoExpiresDays`|The number of days before an OXXO payment expires. Only applicable if you plan to use OXXO as a payment method.|No|`3`|
 |`paymentMethodConfiguration` (v2.18.0+)|A string indicating the ID of a Stripe [Payment Method Configuration](https://docs.stripe.com/payments/payment-method-configurations) (PMC) to apply a Dashboard-managed set of payment methods to the intent. This option is only used when `payment_method_types` is not set.|No|-|
+|`apiVersion` (v2.22.3+)|A string indicating the [Stripe API version](https://docs.stripe.com/upgrades) to send requests with. For example, `2026-09-30.endive`. For API versions before `2026-07-29`, the provider passes payment method types to Stripe as `payment_method_types`. For `2026-07-29` and later, it passes them as `allowed_payment_method_types`.|No|`2024-04-10`|
 
 ***
 
@@ -160912,8 +161110,8 @@ The icons package is installed independently from Medusa UI. Learn how to instal
 To use Medusa UI in your standalone project, you must have:
 
 - React v18.3.1 or later (within the React 18 range) installed. The package's peer dependency requires `react@^18.3.1`, so React 19 is not officially supported yet. Most React 18-compatible frameworks and libraries, such as Next.js and Vite, satisfy this requirement.
-- [Tailwind CSS](https://v3.tailwindcss.com/) installed. The components in Medusa UI are styled using Tailwind CSS, so you'll need to install it in your project as well.
-  - Medusa UI was built with Tailwind CSS v3, but it may also support v4.
+- [Tailwind CSS](https://tailwindcss.com/) v3.4.3 or later, or v4, installed. The components in Medusa UI are styled using Tailwind CSS, so you'll need to install it in your project as well.
+  - Since `@medusajs/ui-preset` v2.22.3, the preset supports both Tailwind CSS v3 and v4.
 
 ***
 
@@ -160941,11 +161139,27 @@ npm install @medusajs/ui-preset --save-dev
 
 ## Step 3: Configure Tailwind CSS
 
-Next, you'll need to configure Tailwind CSS to use the Medusa UI preset and explicitly add the paths to the Medusa UI components as content files.
+Next, you'll need to configure Tailwind CSS to use the Medusa UI preset and explicitly add the paths to the Medusa UI components as content files. The configurations differ based on your Tailwind CSS version.
+
+### Tailwind CSS v4 Configurations
+
+The CSS-first theme is available since `@medusajs/ui-preset` v2.22.3. In earlier versions, use the [Tailwind CSS v3 configurations](#tailwind-css-v3-configurations) with the `@config` directive instead.
+
+In Tailwind CSS v4, import the Medusa UI theme in the CSS file that imports Tailwind CSS, and add the path to the Medusa UI components with the `@source` directive:
+
+```css title="globals.css"
+@import "tailwindcss";
+@import "@medusajs/ui-preset/theme.css";
+@source "../node_modules/@medusajs/ui/dist";
+```
+
+The `@medusajs/ui-preset/theme.css` file includes the Medusa UI design tokens, colors, shadows, fonts, typography utilities, and animations. It also defines a `dark` variant that applies dark mode styles when an element or its ancestor has the `dark` class or the `data-mode="dark"` attribute.
+
+Make sure the path in the `@source` directive is relative to your CSS file. For example, if your CSS file is at `src/app/globals.css`, use `@source "../../node_modules/@medusajs/ui/dist";`.
 
 ### Tailwind CSS v3 Configurations
 
-In Tailwind CSS v3, which is the recommended version to use with Medusa UI, you need to add the following configurations to your `tailwind.config.js` or `tailwind.config.ts` file:
+In Tailwind CSS v3, you need to add the following configurations to your `tailwind.config.js` or `tailwind.config.ts` file:
 
 1. Add the Medusa UI preset to the `presets` array.
 2. Ensure that the `content` field includes the path to the Medusa UI package.
@@ -160983,19 +161197,7 @@ module.exports = {
 
 ```
 
-### Tailwind CSS v4 Configurations
-
-Medusa UI isn't officially compatible with Tailwind CSS v4 yet, so use it with caution.
-
-In your CSS file that imports Tailwind CSS, add the following `@import`, `@config`, and `@source` directives:
-
-```css
-@import "tailwindcss";
-@source "../node_modules/@medusajs/ui";
-@config "@medusajs/ui-preset";
-```
-
-This will explicitly include the Medusa UI preset and its components in your Tailwind CSS build and apply the preset styles to your project.
+By default, the preset applies Medusa UI's dark mode styles based on the user's system preference. To apply them when an element has the `dark` class instead, set the `darkMode` field in your Tailwind CSS configurations to `"class"`.
 
 ***
 
