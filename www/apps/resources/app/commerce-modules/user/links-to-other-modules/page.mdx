@@ -78,7 +78,7 @@ An admin user can have multiple roles, and a role can be assigned to multiple us
 
 ### Retrieve with Query
 
-To retrieve the roles of a user with [Query](!docs!/learn/fundamentals/module-links/query), pass `rbac_roles.*` in `fields`:
+To retrieve the roles of a user with [Query](!docs!/learn/fundamentals/query), pass `rbac_roles.*` in `fields`:
 
 <CodeTabs group="relation-query">
   <CodeTab label="query.graph" value="method">
@@ -148,7 +148,7 @@ To remove a role from an admin user, use the `unassignRolesWorkflow` with the sa
 
 An invite can grant roles to the admin user created when someone accepts the invite. Medusa stores these grants as `RbacRoleAssignment` records whose `reference` is `invite`.
 
-To retrieve the roles of an invite with [Query](!docs!/learn/fundamentals/module-links/query), pass `rbac_roles.*` in `fields`:
+To retrieve the roles of an invite with [Query](!docs!/learn/fundamentals/query), pass `rbac_roles.*` in `fields`:
 
 ```ts
 const { data: invites } = await query.graph({

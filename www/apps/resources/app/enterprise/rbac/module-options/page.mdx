@@ -48,7 +48,7 @@ The `actors` option is an object whose keys are actor types. Each actor type acc
 - `grantees`: An array of objects, each specifying an entity that can hold role assignments for that actor type. Each object accepts the following properties:
   - `entity`: A string indicating the name of the entity that holds the assignments. Medusa matches it against the `reference` property of a role assignment.
   - `path`: A string indicating the path from the actor to the entity's ID, such as `id` or `vendors.id`.
-- `actor_entity`: An optional string indicating the name of the entity Medusa retrieves the actor from with [Query](!docs!/learn/fundamentals/module-links/query) to resolve the `path` of each grantee. It defaults to the actor type, so you only need it when the actor type and the entity have different names, such as the `api-key` actor type and the `api_key` entity.
+- `actor_entity`: An optional string indicating the name of the entity Medusa retrieves the actor from with [Query](!docs!/learn/fundamentals/query) to resolve the `path` of each grantee. It defaults to the actor type, so you only need it when the actor type and the entity have different names, such as the `api-key` actor type and the `api_key` entity.
 
 An actor type without an entry resolves to no roles at all.
 

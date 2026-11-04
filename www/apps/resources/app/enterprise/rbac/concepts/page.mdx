@@ -49,6 +49,12 @@ You can't delete a core policy from the Medusa Admin dashboard, since policies a
 
 </Note>
 
+<Note type="warning">
+
+The `notification:read` policy allows a user to view the `data` property of every notification, which holds the data that your customizations and Medusa pass to notification templates. Only assign it to roles whose users can see that data. Learn more in the [Send Notification](../../../infrastructure-modules/notification/send-notification/page.mdx) guide.
+
+</Note>
+
 You can also create policies for your custom resources. Learn how in the [Define Custom Policies](../define-policies/page.mdx) guide.
 
 ---
@@ -83,8 +89,14 @@ Calling the RBAC Module's service directly skips these checks.
 
 Some operations affect the whole application, so they require the `*:*` wildcard policy that the Super Admin role has:
 
-- Running a workflow with the [Execute Workflow API route](!api!/admin#workflows-executions_postworkflowsexecutionsworkflow_idrun) (`POST /admin/workflows-executions/:workflow_id/run`).
+- Running a workflow with the [Execute Workflow API route](!api!/admin/workflows-executions/execute-a-workflow) (`POST /admin/workflows-executions/:workflow_id/run`).
 - Creating, updating, or deleting a system default view configuration, and setting the default layout configuration, in the Medusa Admin.
+
+<Note type="warning">
+
+The [Succeed a Step](!api!/admin/workflows-executions/succed-a-step) and [Fail a Step](!api!/admin/workflows-executions/fail-a-step) API routes (`POST /admin/workflows-executions/:workflow_id/steps/success` and `/steps/failure`) only require the `workflow_execution:read` and `workflow_execution:update` policies. A user with those policies can resume any long-running workflow waiting on an async step, even if they don't have the policies for the actions that the workflow performs. Only assign the `workflow_execution:update` policy to roles you trust with those actions.
+
+</Note>
 
 ### Delete a Role
 
