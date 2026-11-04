@@ -63,8 +63,8 @@ export const InfiniteList = <
   }, [data, responseKey])
 
   const parentRef = useRef<HTMLDivElement>(null)
-  const startObserver = useRef<IntersectionObserver>()
-  const endObserver = useRef<IntersectionObserver>()
+  const startObserver = useRef<IntersectionObserver>(undefined)
+  const endObserver = useRef<IntersectionObserver>(undefined)
   const fetchNextPageRef = useRef(fetchNextPage)
   const fetchPreviousPageRef = useRef(fetchPreviousPage)
 
