@@ -5213,7 +5213,7 @@ __metadata:
     "@types/node": ^20.12.10
     chalk: ^5.4.1
     commander: ^11.1.0
-    typescript: ^5.6.2
+    typescript: ^6.0.3
   languageName: unknown
   linkType: soft
 
@@ -5236,7 +5236,7 @@ __metadata:
     pluralize: ^8.0.0
     ts-node: ^10.9.1
     types: "*"
-    typescript: ^5.6.2
+    typescript: ^6.0.3
     utils: "*"
     yaml: ^2.3.4
   languageName: unknown
@@ -8144,7 +8144,7 @@ __metadata:
     ts-node: ^10.9.1
     typedoc: ^0.28.20
     typedoc-plugin-custom: "*"
-    typescript: ^5.6.2
+    typescript: ^6.0.3
     utils: "*"
   peerDependencies:
     typedoc: 0.28.x
@@ -8241,7 +8241,7 @@ __metadata:
     dotenv: ^16.3.1
     rimraf: ^5.0.5
     satori: ^0.63.2
-    typescript: ^5.6.2
+    typescript: ^6.0.3
   languageName: unknown
   linkType: soft
 
@@ -8524,7 +8524,7 @@ __metadata:
     glob: 14.0.2
     randomcolor: ^0.6.2
     ts-node: ^10.9.1
-    typescript: ^5.6.2
+    typescript: ^6.0.3
     utils: "*"
   languageName: unknown
   linkType: soft
@@ -9172,7 +9172,7 @@ __metadata:
     typedoc-plugin-rename-defaults: ^0.7.1
     typedoc-plugin-workflows: "*"
     types: "*"
-    typescript: ^5.6.2
+    typescript: ^6.0.3
     utils: "*"
     yaml: ^2.3.4
   peerDependencies:
@@ -9190,7 +9190,7 @@ __metadata:
     glob: 14.0.2
     minimatch: ^11.0.1
     types: "*"
-    typescript: ^5.6.2
+    typescript: ^6.0.3
     utils: "*"
     yaml: ^2.3.3
   peerDependencies:
@@ -9210,7 +9210,7 @@ __metadata:
     slugify: ^1.6.6
     typedoc: ^0.28.20
     types: "*"
-    typescript: ^5.6.2
+    typescript: ^6.0.3
     utils: "*"
     vitest: ^2.1.8
   peerDependencies:
@@ -9241,7 +9241,7 @@ __metadata:
     eslint: ^8.53.0
     glob: 14.0.2
     types: "*"
-    typescript: ^5.6.2
+    typescript: ^6.0.3
     utils: "*"
     yaml: ^2.3.3
   peerDependencies:
@@ -9270,29 +9270,29 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "types@workspace:packages/types"
   dependencies:
-    typescript: ^5.6.2
+    typescript: ^6.0.3
   peerDependencies:
     typedoc: 0.28.x
   languageName: unknown
   linkType: soft
 
-"typescript@npm:^5.6.2":
-  version: 5.9.3
-  resolution: "typescript@npm:5.9.3"
+"typescript@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "typescript@npm:6.0.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 6bd7552ce39f97e711db5aa048f6f9995b53f1c52f7d8667c1abdc1700c68a76a308f579cd309ce6b53646deb4e9a1be7c813a93baaf0a28ccd536a30270e1c5
+  checksum: 4a25ff5045b984370f48f196b3a0120779b1b343d40b9a68d114ea5e5fff099809b2bb777576991a63a5cd59cf7bffd96ff6fe10afcefbcb8bd6fb96ad4b6606
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.6.2#~builtin<compat/typescript>":
-  version: 5.9.3
-  resolution: "typescript@patch:typescript@npm%3A5.9.3#~builtin<compat/typescript>::version=5.9.3&hash=7ad353"
+"typescript@patch:typescript@^6.0.3#~builtin<compat/typescript>":
+  version: 6.0.3
+  resolution: "typescript@patch:typescript@npm%3A6.0.3#~builtin<compat/typescript>::version=6.0.3&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 6f7e53bf0d9702350deeb6f35e08b69cbc8b958c33e0ec77bdc0ad6a6c8e280f3959dcbfde6f5b0848bece57810696489deaaa53d75de3578ff255d168c1efbd
+  checksum: eed465bd04b344517bd91eb232fd0187d93e34625c65ec93777449e29157c6c2accae409474a68a867b90465224d4908f9bce78ad763c159cacd7263ae24b5fc
   languageName: node
   linkType: hard
 
@@ -9483,7 +9483,7 @@ __metadata:
     octokit: ^3.1.2
     prettier: ^3.4.2
     rimraf: ^5.0.5
-    typescript: ^5.6.2
+    typescript: ^6.0.3
   peerDependencies:
     typedoc: 0.28.x
   languageName: unknown
@@ -9695,7 +9695,7 @@ __metadata:
     commander: ^11.1.0
     puppeteer: ^25.0.0
     ts-node: ^10.9.1
-    typescript: ^5.6.2
+    typescript: ^6.0.3
   bin:
     workflow-diagrams-generator: dist/index.js
   languageName: unknown
