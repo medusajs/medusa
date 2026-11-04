@@ -3780,6 +3780,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Promotion/Workflows_Promotion/functions/core_flows.Promotion.Workflows_Promotion.updatePromotionsWorkflow/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStep",
+    "newSlug": "/references/medusa-workflows/steps/getRoleAssignmentsStep",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStep/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStep",
+    "newSlug": "/references/medusa-workflows/steps/validateAssignmentReferencesStep",
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Region/Steps_Region/functions/core_flows.Region.Steps_Region.createRegionsStep",
     "newSlug": "/references/medusa-workflows/steps/createRegionsStep",
     "filePath": "/www/apps/resources/references/core_flows/Region/Steps_Region/functions/core_flows.Region.Steps_Region.createRegionsStep/page.json"
@@ -5545,6 +5555,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.locale/page.json"
   },
   {
+    "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.module",
+    "newSlug": "/references/js-sdk/admin/module",
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.module/page.json"
+  },
+  {
     "origSlug": "/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification",
     "newSlug": "/references/js-sdk/admin/notification",
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification/page.json"
@@ -5873,6 +5888,11 @@ export const slugChanges = [
     "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.deleteGiftCards",
     "newSlug": "/references/loyalty/deleteGiftCards",
     "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.deleteGiftCards/page.json"
+  },
+  {
+    "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.getOptions",
+    "newSlug": "/references/loyalty/getOptions",
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.getOptions/page.json"
   },
   {
     "origSlug": "/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.listGiftCards",
