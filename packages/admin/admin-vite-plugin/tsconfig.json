@@ -5,6 +5,7 @@
     "module": "ES2020",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
+    "types": ["*"],
     "isolatedModules": true,
     "strict": true,
     "declarationMap": true,
