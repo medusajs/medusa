@@ -14,7 +14,7 @@ import { CreateRbacRoleAssignmentDTO } from "@medusajs/framework/types"
 import { deduplicate } from "@medusajs/framework/utils"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type AssignRole = {
   role_id: string
@@ -43,7 +43,7 @@ export type AssignRolesWorkflowInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const assignRolesWorkflowId = "assign-roles"
 
@@ -56,7 +56,7 @@ export const assignRolesWorkflowId = "assign-roles"
  * It validates that the roles exist, that each reference is a grantee entity
  * configured for some actor type, and that the granting actor holds all the
  * policies of the roles being assigned.
- * @ignore
+ * @since 2.22.3
  */
 export const assignRolesWorkflow = createWorkflow(
   assignRolesWorkflowId,
