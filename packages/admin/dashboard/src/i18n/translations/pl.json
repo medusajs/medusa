@@ -1273,7 +1273,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Użytkownik ma już tę rolę.",
-      "unassignableRoleTooltip": "Nie możesz przypisać tej roli — Twoje uprawnienia nie obejmują wszystkich jej polityk.",
       "add": {
         "successToast_one": "Użytkownik został pomyślnie dodany do roli.",
         "successToast_few": "Użytkownicy zostali pomyślnie dodani do roli.",
@@ -3031,7 +3030,6 @@
     "editUser": "Edytuj użytkownika",
     "inviteUser": "Zaproś użytkownika",
     "inviteUserHint": "Zaproś nowego użytkownika do swojego sklepu.",
-    "inviteRolesTooltip": "Jeśli nie wybierzesz żadnej roli, użytkownik zostanie zaproszony z rolą superużytkownika.",
     "sendInvite": "Wyślij zaproszenie",
     "pendingInvites": "Oczekujące zaproszenia",
     "deleteInviteWarning": "Zamierzasz usunąć zaproszenie dla użytkownika {{email}}. Tej akcji nie można cofnąć.",

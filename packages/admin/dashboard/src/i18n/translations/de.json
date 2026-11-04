@@ -2787,7 +2787,6 @@
     "editUser": "Benutzer bearbeiten",
     "inviteUser": "Benutzer einladen",
     "inviteUserHint": "Laden Sie einen neuen Benutzer in Ihren Shop ein.",
-    "inviteRolesTooltip": "Wenn keine Rolle ausgewählt ist, wird der Benutzer mit einer Superuser-Rolle eingeladen.",
     "sendInvite": "Einladung senden",
     "pendingInvites": "Ausstehende Einladungen",
     "deleteInviteWarning": "Sie sind dabei, die Einladung für {{email}} zu löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
@@ -2862,7 +2861,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Benutzer hat diese Rolle bereits.",
-      "unassignableRoleTooltip": "Sie haben keinen Zugriff, um diese Rolle zuzuweisen – Ihre Berechtigungen decken nicht alle zugehörigen Richtlinien ab.",
       "add": {
         "successToast_one": "Benutzer wurde erfolgreich zur Rolle hinzugefügt.",
         "successToast_other": "Benutzer wurden erfolgreich zur Rolle hinzugefügt.",

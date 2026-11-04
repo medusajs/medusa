@@ -55,12 +55,12 @@ const expectedRoutesWithoutLoaders = `
         {
             Component: RouteComponent0,
             path: "/one",
-            handle: { label: HandleConfig0.label, translationNs: HandleConfig0.translationNs }
+            handle: { label: HandleConfig0.label, translationNs: HandleConfig0.translationNs, permissions: HandleConfig0.permissions }
         },
         {
             Component: RouteComponent1,
             path: "/two",
-            handle: { label: HandleConfig1.label, translationNs: HandleConfig1.translationNs }
+            handle: { label: HandleConfig1.label, translationNs: HandleConfig1.translationNs, permissions: HandleConfig1.permissions }
         }
     ]
 `
@@ -95,12 +95,12 @@ const expectedRoutesWithParallel = `
         {
             Component: RouteComponent0,
             path: "/brands",
-            handle: { label: HandleConfig0.label, translationNs: HandleConfig0.translationNs },
+            handle: { label: HandleConfig0.label, translationNs: HandleConfig0.translationNs, permissions: HandleConfig0.permissions },
             children: [
                 {
                     Component: RouteComponent1,
                     path: "/brands/create",
-                    handle: { label: HandleConfig1.label, translationNs: HandleConfig1.translationNs }
+                    handle: { label: HandleConfig1.label, translationNs: HandleConfig1.translationNs, permissions: HandleConfig1.permissions }
                 }
             ]
         }
@@ -153,13 +153,13 @@ const expectedRoutesWithHandleLoader = `
     {
       Component: RouteComponent0,
       path: "/one",
-      handle: { label: HandleConfig0.label, translationNs: HandleConfig0.translationNs, ...handle0 },
+      handle: { label: HandleConfig0.label, translationNs: HandleConfig0.translationNs, permissions: HandleConfig0.permissions, ...handle0 },
       loader: loader0
     },
     {
       Component: RouteComponent1,
       path: "/two",
-      handle: { label: HandleConfig1.label, translationNs: HandleConfig1.translationNs },
+      handle: { label: HandleConfig1.label, translationNs: HandleConfig1.translationNs, permissions: HandleConfig1.permissions },
       loader: loader1
     }
   ]

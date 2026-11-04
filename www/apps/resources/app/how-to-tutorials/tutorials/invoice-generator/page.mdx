@@ -2030,6 +2030,12 @@ export async function GET(
 
 You expose a `GET` API route at `/store/orders/:id/invoices` that allows customers to download their order invoices.
 
+<Note title="Security consideration" type="warning">
+
+This API route follows the same access rules as Medusa's [Get Order API route](!api!/store/orders/get-an-order): anyone with the order ID can access it, which allows guest customers to download their invoices. Since the invoice includes the customer's personal details, consider restricting access in production. For example, you can [protect the route](!docs!/learn/fundamentals/api-routes/protected-routes#protect-custom-api-routes) for registered customers and check that the order's `customer_id` matches the [authenticated customer's ID](!docs!/learn/fundamentals/api-routes/protected-routes#access-authentication-details-in-api-routes) before generating the invoice.
+
+</Note>
+
 You'll test out both API routes in the next steps.
 
 ---

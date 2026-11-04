@@ -2748,8 +2748,7 @@
     "invite": "Mời",
     "copyResetPasswordLink": "Sao chép liên kết đặt lại mật khẩu",
     "copyResetPasswordLinkHint": "Liên kết hết hạn trong thời gian ngắn và vô hiệu hóa mọi liên kết đặt lại mật khẩu đã gửi trước đó cho người dùng này.",
-    "copyResetPasswordLinkSuccess": "Liên kết đặt lại mật khẩu đã được sao chép vào bộ nhớ tạm",
-    "inviteRolesTooltip": "Nếu không có vai trò nào được chọn, người dùng sẽ được mời với vai trò siêu người dùng."
+    "copyResetPasswordLinkSuccess": "Liên kết đặt lại mật khẩu đã được sao chép vào bộ nhớ tạm"
   },
   "store": {
     "domain": "Cửa hàng",
@@ -3734,8 +3733,7 @@
         "description_other": "Bạn sắp xóa {{count}} người dùng khỏi vai trò. Hành động này không thể hoàn tác.",
         "title_one": "Xóa người dùng",
         "title_other": "Xóa người dùng"
-      },
-      "unassignableRoleTooltip": "Bạn không có quyền gán vai trò này — quyền của bạn không bao phủ tất cả các chính sách của nó."
+      }
     }
   },
   "searchIndexes": {

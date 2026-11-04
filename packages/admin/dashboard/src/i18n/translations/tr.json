@@ -2748,7 +2748,6 @@
     "deleteUserWarning": "{{name}} kullanıcısını silmek üzeresiniz. Bu işlem geri alınamaz.",
     "deleteUserSuccess": "Kullanıcı {{name}} başarıyla silindi",
     "invite": "Davet Et",
-    "inviteRolesTooltip": "Rol seçilmezse kullanıcı süper kullanıcı rolüyle davet edilir.",
     "copyResetPasswordLink": "Şifre sıfırlama bağlantısını kopyala",
     "copyResetPasswordLinkSuccess": "Şifre sıfırlama bağlantısı panoya kopyalandı",
     "copyResetPasswordLinkHint": "Bağlantının süresi kısa sürede dolar ve bu kullanıcıya daha önce gönderilmiş şifre sıfırlama bağlantılarını geçersiz kılar."
@@ -3678,7 +3677,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Kullanıcı zaten bu role sahip.",
-      "unassignableRoleTooltip": "Bu rolü atama izniniz yok — izinleriniz bu rolün tüm politikalarını kapsamıyor.",
       "add": {
         "successToast_one": "Kullanıcı role başarıyla eklendi.",
         "successToast_other": "Kullanıcılar role başarıyla eklendi.",

@@ -1,6 +1,7 @@
 import { ProjectReflection, Reflection } from "typedoc"
 import { MarkdownTheme } from "../theme.js"
 import { getPageFrontmatter } from "./frontmatter.js"
+import { getReflectionUrl, reflectionHasOwnDocument } from "utils"
 
 const PAGE_FILE_RE = /\/page\.(mdx|md|json)$/
 
@@ -46,13 +47,14 @@ export function buildSlugMap(
   const map = new Map<string, string>()
 
   const visit = (reflection: Reflection) => {
+    const url = getReflectionUrl(reflection)
     if (
-      reflection.url &&
-      !MarkdownTheme.URL_PREFIX.test(reflection.url) &&
-      reflection.hasOwnDocument &&
-      !map.has(reflection.url)
+      url &&
+      !MarkdownTheme.URL_PREFIX.test(url) &&
+      reflectionHasOwnDocument(reflection) &&
+      !map.has(url)
     ) {
-      map.set(reflection.url, resolvePageSlug(theme, reflection, reflection.url))
+      map.set(url, resolvePageSlug(theme, reflection, url))
     }
 
     reflection.traverse((child) => {

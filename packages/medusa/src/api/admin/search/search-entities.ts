@@ -128,3 +128,15 @@ export const ADMIN_SEARCH_ENTITY_MAP = new Map(
 export const DEFAULT_ADMIN_SEARCH_ENTITY_NAMES = ADMIN_SEARCH_ENTITIES.map(
   (entity) => entity.name
 )
+
+/**
+ * Used to resolve the underlying graph entity for a search index
+ */
+export const resolveSearchEntity = (
+  name: string,
+  indexEntities: Map<string, string>
+): string => {
+  const config = ADMIN_SEARCH_ENTITY_MAP.get(name)
+
+  return indexEntities.get(name) ?? config?.graphEntity ?? config?.name ?? name
+}

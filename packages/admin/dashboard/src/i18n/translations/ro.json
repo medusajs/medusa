@@ -2818,7 +2818,6 @@
     "editUser": "Editați utilizatorul",
     "inviteUser": "Invitați utilizator",
     "inviteUserHint": "Invitați un utilizator nou în magazinul dvs.",
-    "inviteRolesTooltip": "Dacă nu este selectat niciun rol, utilizatorul va fi invitat cu rolul de superutilizator.",
     "sendInvite": "Trimite invitația",
     "pendingInvites": "Invitații în așteptare",
     "deleteInviteWarning": "Sunteți pe cale să ștergeți invitația pentru {{email}}. ",
@@ -2893,7 +2892,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Utilizatorul are deja acest rol.",
-      "unassignableRoleTooltip": "Nu aveți acces pentru a atribui acest rol — permisiunile dvs. nu acoperă toate politicile sale.",
       "add": {
         "successToast_one": "Utilizatorul a fost adăugat cu succes la rol.",
         "successToast_few": "Utilizatorii au fost adăugați cu succes la rol.",

@@ -28,6 +28,7 @@ import { NavLink, To, useLocation } from "react-router-dom"
 import { useLayoutEdit } from "../../../hooks/use-layout-edit"
 import { useGlobalShortcuts } from "../../../providers/keybind-provider/hooks"
 import { ConditionalTooltip } from "../../common/conditional-tooltip"
+import type { Permission } from "../../../lib/permissions"
 
 type ItemType = "core" | "extension" | "setting"
 
@@ -35,6 +36,10 @@ type NestedItemProps = {
   label: string
   to: string
   translationNs?: string
+  /**
+   * The permissions the user must all hold to see the item.
+   */
+  permissions?: Permission[]
 }
 
 export type INavItem = {
@@ -46,6 +51,10 @@ export type INavItem = {
   from?: string
   nested?: string
   translationNs?: string
+  /**
+   * The permissions the user must all hold to see the item.
+   */
+  permissions?: Permission[]
 }
 
 const BASE_NAV_LINK_CLASSES =
