@@ -1,7 +1,7 @@
 import * as fs from "fs"
 import Handlebars from "handlebars"
-import { CommentDisplayPart } from "typedoc"
-import { escapeChars } from "utils"
+import { CommentDisplayPart, Reflection } from "typedoc"
+import { escapeChars, getReflectionUrl } from "utils"
 
 export default function () {
   Handlebars.registerHelper("comment", function (parts: CommentDisplayPart[]) {
@@ -27,8 +27,10 @@ export default function () {
                 const url =
                   typeof part.target === "string"
                     ? part.target
-                    : "url" in part.target
-                      ? Handlebars.helpers.relativeURL(part.target.url)
+                    : part.target instanceof Reflection
+                      ? Handlebars.helpers.relativeURL(
+                          getReflectionUrl(part.target)
+                        )
                       : ""
                 const wrap = part.tag === "@linkcode" ? "`" : ""
                 result.push(

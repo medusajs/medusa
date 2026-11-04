@@ -16,7 +16,7 @@
     "watch": "tsc --watch"
   },
   "peerDependencies": {
-    "typedoc": "0.27.x"
+    "typedoc": "0.28.x"
   },
   "devDependencies": {
     "@types/node": "^20.12.10",
