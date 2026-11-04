@@ -248,6 +248,19 @@ export const navDropdownItems: NavigationItem[] = [
           },
         ],
       },
+      {
+        type: "sub-menu",
+        title: "Enterprise",
+        link: "/resources/enterprise",
+        sidebar_id: "enterprise",
+        items: [
+          {
+            type: "link",
+            title: "RBAC",
+            link: "/resources/enterprise/rbac",
+          },
+        ],
+      },
     ],
   },
   {

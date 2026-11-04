@@ -596,6 +596,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Login Options",
+              "path": "https://docs.medusajs.com/user-guide/tips/login-options",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Reset Password",
               "path": "https://docs.medusajs.com/user-guide/reset-password",
               "children": []
@@ -14101,6 +14108,17 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
     },
     {
       "loaded": true,
+      "type": "ref",
+      "path": "/enterprise/rbac",
+      "title": "RBAC Module",
+      "badge": {
+        "variant": "purple",
+        "text": "Enterprise"
+      },
+      "children": []
+    },
+    {
+      "loaded": true,
       "type": "sidebar",
       "sidebar_id": "region",
       "title": "Region Module",
@@ -18079,6 +18097,20 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
+          "title": "Concepts",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/user/links-to-other-modules",
+              "title": "Link to Modules",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
           "title": "Server Guides",
           "autogenerate_tags": "server+user",
           "autogenerate_as_ref": true,
@@ -18120,6 +18152,20 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Common Roles",
+              "path": "https://docs.medusajs.com/user-guide/settings/roles/common-roles",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Login Options",
+              "path": "https://docs.medusajs.com/user-guide/tips/login-options",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Manage Invites",
               "path": "https://docs.medusajs.com/user-guide/settings/users/invites",
               "children": []
@@ -18134,6 +18180,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Manage Roles",
+              "path": "https://docs.medusajs.com/user-guide/settings/roles",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Manage Users",
               "path": "https://docs.medusajs.com/user-guide/settings/users",
               "children": []
@@ -18143,6 +18196,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Reset Password",
               "path": "https://docs.medusajs.com/user-guide/reset-password",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "View Policies",
+              "path": "https://docs.medusajs.com/user-guide/settings/policies",
               "children": []
             }
           ]

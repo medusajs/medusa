@@ -1,0 +1,229 @@
+---
+generate_toc: true
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `SSO with OIDC`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice beta featureName="module provider" />
+
+In this section of the documentation, you will find resources to learn more about single sign-on (SSO) in Medusa and how to use it in your application.
+
+Medusa supports SSO through the OIDC Auth Module Provider. [OpenID Connect (OIDC)](https://openid.net/developers/how-connect-works/) is an identity layer on top of OAuth 2.0 that identity providers, such as Okta or Microsoft Entra ID, implement to authenticate users on behalf of your application.
+
+The provider works with any spec-compliant identity provider. It resolves the provider's endpoints from its discovery document, so you only configure the issuer URL and the credentials of the application you registered with that identity provider.
+
+<Note title="Looking for social login?">
+
+SSO with OIDC is intended for the users of your organization, such as admin users authenticating with your company's identity provider.
+
+To let customers log in to your storefront with a social account, use the [Google](../../commerce-modules/auth/auth-providers/google/page.mdx) or [GitHub](../../commerce-modules/auth/auth-providers/github/page.mdx) Auth Module Providers instead. They don't require an enterprise license.
+
+</Note>
+
+## SSO Features
+
+- [Any OIDC Identity Provider](./identity-providers/page.mdx): Authenticate users with Okta, Microsoft Entra ID, Auth0, Keycloak, Google Workspace, or any other identity provider that implements OIDC.
+- [Multiple Identity Providers](./identity-providers/page.mdx#register-multiple-identity-providers): Register the provider more than once to offer users a choice between identity providers.
+- [Claim Mappings](./provider-options/page.mdx#claim_mappings): Choose which claims of the ID token identify the user and which ones are stored on the auth identity.
+- [Access Restrictions](./provider-options/page.mdx#allowed_email_domains): Restrict authentication to verified emails, to specific email domains, and to an allowlist of callback URLs.
+- [Admin SSO](./admin-login/page.mdx): Log in to the Medusa Admin dashboard with your identity provider, with a login button that the dashboard renders for you.
+- [Custom Frontends](./custom-frontend/page.mdx): Run the same login flow in your own storefront or dashboard with the JS SDK.
+- [Standard OIDC Flow](./how-it-works/page.mdx): Authenticate with the authorization code flow and PKCE, with full validation of the identity provider's ID tokens.
+
+---
+
+## How to Use the OIDC Auth Module Provider
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.21.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.21.0"
+    }
+  ]}
+/>
+
+### 1. Configure an Enterprise License Key
+
+The OIDC Auth Module Provider is an [enterprise feature](../page.mdx), so it only loads when you configure a license key that covers the `auth-oidc` feature:
+
+```shell
+MEDUSA_LICENSE_KEY=your_license_key
+MEDUSA_LICENSE_PUBLIC_KEY=your_license_public_key
+```
+
+If the key is missing or doesn't cover the `auth-oidc` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](../page.mdx) documentation.
+
+### 2. Register the OIDC Auth Module Provider
+
+To use the OIDC Auth Module Provider in your Medusa application, add it to the array of providers passed to the [Auth Module](../../commerce-modules/auth/page.mdx) in `medusa-config.ts`:
+
+export const highlights = [
+  ["20", "resolve", "The path of the OIDC Auth Module Provider."],
+  ["21", "id", "The provider's ID, used in the authentication routes."],
+  ["23", "issuer", "The identity provider's issuer URL."],
+  ["26", "callback_url", "Where the identity provider redirects to after login."],
+]
+
+```ts title="medusa-config.ts" highlights={highlights}
+import {
+  Modules,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      dependencies: [
+        Modules.CACHE,
+        ContainerRegistrationKeys.LOGGER,
+      ],
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              issuer: process.env.OIDC_ISSUER,
+              client_id: process.env.OIDC_CLIENT_ID,
+              client_secret: process.env.OIDC_CLIENT_SECRET,
+              callback_url: process.env.OIDC_CALLBACK_URL,
+              display_name: "Okta",
+              // claim_mappings: {
+              //   given_name: "given_name",
+              //   family_name: "family_name",
+              // },
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+The registration accepts the following properties:
+
+- `resolve`: The path of the OIDC Auth Module Provider.
+- `id`: The provider's ID in Medusa. It becomes part of the authentication routes, so the above registration is reached at `/auth/user/okta` and `/auth/user/okta/callback`. Choose an ID that names the identity provider, since you can register the provider more than once.
+- `options`: The provider's options, which are:
+    - `issuer`: The identity provider's issuer URL. Medusa resolves the identity provider's endpoints from it, and validates that returned tokens were issued by it.
+    - `client_id`: The client ID of the application you registered with the identity provider.
+    - `client_secret`: The client secret of that application. You can omit it if you registered a public client, since Medusa always authenticates with PKCE.
+    - `callback_url`: The URL that the identity provider redirects to after the user authenticates. It must be a page of your frontend that sends the callback request to Medusa.
+    - `display_name`: The name shown for the provider in a frontend, such as on the dashboard's login button.
+    - `claim_mappings`: An optional object that changes which of the ID token's claims Medusa stores on the authenticated identity. Uncomment it to also store the user's first and last name, which Medusa then sets on the [admin user it creates](./admin-login/page.mdx#set-the-created-users-name).
+
+<Note title="Tip">
+
+Find all the provider's options in the [Provider Options](./provider-options/page.mdx) guide, and the values to use for common identity providers in the [Identity Providers](./identity-providers/page.mdx) guide.
+
+</Note>
+
+### 3. Add the Environment Variables
+
+Next, add the OIDC provider's option values as environment variables:
+
+```bash title=".env"
+OIDC_ISSUER=https://your-org.okta.com
+OIDC_CLIENT_ID=<YOUR_CLIENT_ID>
+OIDC_CLIENT_SECRET=<YOUR_CLIENT_SECRET>
+OIDC_CALLBACK_URL=http://localhost:9000/app/login?auth_provider=okta
+```
+
+When using the OIDC provider with the Medusa Admin dashboard, the dashboard sends its own callback URL, which is its login page with the provider's ID as a query parameter. Learn more in the [Admin SSO](./admin-login/page.mdx#register-the-dashboards-callback-url) guide.
+
+The URL above is for local development. In production, use your application's public URL, such as `https://example.com/app/login?auth_provider=okta`.
+
+### 4. Enable the Provider for the Actor Types
+
+By default, admin users can only authenticate with the `emailpass` provider, and customers can authenticate with all registered providers.
+
+To enable the provider for admin users (or other actor types), set the [http.authMethodsPerActor configuration](../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx) in your `medusa-config.ts` file:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      authMethodsPerActor: {
+        user: ["emailpass", "okta"],
+        customer: ["emailpass"],
+      },
+      // ...
+    },
+    // ...
+  },
+})
+```
+
+In this example, only admin users can authenticate with the `okta` provider. You can also allow customers or other custom actor types like `manager` to use it by adding them to the `authMethodsPerActor` configuration.
+
+### 5. Authenticate Users
+
+Once you allow the provider for admin users, the Medusa Admin dashboard renders a login button for it automatically. Learn more in the [Admin SSO](./admin-login/page.mdx) guide.
+
+To test it out, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, open the admin dashboard at `http://localhost:9000/app`. You'll see a login button for the `okta` provider you added. Click on it to authenticate with the provider.
+
+#### Authenticate Users in a Custom Frontend
+
+In your own frontend, such as a storefront, you can authenticate users with the [JS SDK](../../js-sdk/auth/overview/page.mdx):
+
+```ts
+const result = await sdk.auth.login("user", "okta", {})
+
+if (typeof result === "object" && result.location) {
+  window.location.href = result.location
+}
+```
+
+The `login` method returns a `location` property holding the identity provider's authorization URL. After the user authenticates, the identity provider redirects them back to your `callback_url`, where you send the query parameters to the callback route:
+
+```ts
+const token = await sdk.auth.callback(
+  "user",
+  "okta",
+  Object.fromEntries(searchParams)
+)
+```
+
+The `callback` method returns a JWT token for the authenticated identity. Refer to the [SSO in a Custom Frontend](./custom-frontend/page.mdx) guide for the full flow, including creating the record of the authenticated identity.
+
+---
+
+## Troubleshoot SSO
+
+### The Login Button Isn't Shown
+
+The dashboard only shows the button when the provider is allowed for the `user` actor type, which isn't the default. Check that the provider's ID is in the `user` array of the [authMethodsPerActor configuration](#4-enable-the-provider-for-the-actor-types).
+
+### "The identity provider did not confirm a verified email address"
+
+Your identity provider doesn't return the `email_verified` claim. Set the [require_verified_email option](./provider-options/page.mdx#require_verified_email) to `false`, and restrict who can authenticate with [allowed_email_domains](./provider-options/page.mdx#allowed_email_domains) instead.
+
+### "No state provided, or session expired"
+
+The user took longer to authenticate than the [state_ttl_seconds option](./provider-options/page.mdx#state_ttl_seconds) allows, or the identity provider redirected back without the `state` query parameter. Retry the login, and increase the option if your users need more time.
+
+### "The provided callback URL is not allowed"
+
+The callback URL isn't in the [allowed_callback_urls option](./provider-options/page.mdx#allowed_callback_urls). Add the [dashboard's callback URL](./admin-login/page.mdx#register-the-dashboards-callback-url) to the list, or remove the option to let the identity provider validate the URL.
+
+### "Email is required to create a user account"
+
+The authenticated identity has no email in its metadata, so Medusa can't create the admin user. Check that the identity provider returns the claim that the [claim_mappings option](./provider-options/page.mdx#claim_mappings) reads the email from, and that the `email` scope is among the [requested scopes](./provider-options/page.mdx#scopes).

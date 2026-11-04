@@ -1,0 +1,351 @@
+---
+generate_toc: true
+sidebar_label: "SSO in a Custom Frontend"
+---
+
+import { Prerequisites, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Authenticate with SSO in a Custom Frontend`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice beta featureName="module provider" />
+
+In this guide, you'll learn how to authenticate users with your identity provider in your own frontend, such as a storefront or a custom dashboard, using the [OIDC Auth Module Provider](../page.mdx).
+
+<Note title="Looking for social login?">
+
+SSO with OIDC is intended for the users of your organization, such as admin users authenticating with your company's identity provider.
+
+To let customers log in to your storefront with a social account, use the [Google](../../../commerce-modules/auth/auth-providers/google/page.mdx) or [GitHub](../../../commerce-modules/auth/auth-providers/github/page.mdx) Auth Module Providers instead. They don't require an enterprise license.
+
+</Note>
+
+<Prerequisites
+  items={[
+    {
+      text: "OIDC Auth Module Provider registered.",
+      link: "../page.mdx#how-to-use-the-oidc-auth-module-provider"
+    },
+    {
+      text: "The provider allowed for the actor type you authenticate.",
+      link: "../page.mdx#4-allow-the-provider-for-the-actor-types-that-use-it"
+    }
+  ]}
+/>
+
+## Overview
+
+The Medusa Admin dashboard implements the SSO flow out of the box, as explained in the [Admin SSO](../admin-login/page.mdx) guide. In your own frontend, you implement the same flow with the [JS SDK](../../../js-sdk/auth/overview/page.mdx).
+
+The steps in this guide apply to any [actor type](../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx), so replace the `user` actor type in the examples with `customer`, or with a custom actor type, as your use case requires.
+
+<Note title="Tip">
+
+Refer to the [How SSO Works](../how-it-works/page.mdx) guide for the requests that make up the flow, and for what Medusa validates in each of them. If a login fails, refer to the [Troubleshoot SSO](../page.mdx#troubleshoot-sso) section for the errors that the OIDC provider can return.
+
+</Note>
+
+---
+
+## Step 1: Render a Button for Each Provider
+
+Retrieve the providers that the actor type can authenticate with, then render a button for each one that authenticates through a redirect:
+
+export const providersHighlights = [
+  ["1", "listProviders", "Retrieve the allowed providers of an actor type."],
+  ["4", "flow", "Only redirect providers, such as OIDC, start an SSO flow."],
+]
+
+export const buttonsHighlights = [
+  ["14", "listProviders", "Retrieve the providers when the component mounts."],
+  ["24", "startLogin", "The function you implement in the next step."],
+  ["35", "display_name", "Label the button with the provider's name."],
+]
+
+<CodeTabs group="frontend">
+  <CodeTab label="JS SDK" value="js-sdk">
+
+  ```ts highlights={providersHighlights}
+  const { providers } = await sdk.auth.listProviders("user")
+
+  const ssoProviders = providers.filter(
+    (provider) => provider.flow === "redirect"
+  )
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+  ```tsx title="src/components/sso-buttons.tsx" highlights={buttonsHighlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+  import { sdk } from "../lib/sdk"
+
+  export const SsoButtons = () => {
+    const [providers, setProviders] = useState<
+      HttpTypes.AuthProvider[]
+    >([])
+
+    useEffect(() => {
+      sdk.auth
+        .listProviders("user")
+        .then(({ providers }) => {
+          setProviders(
+            providers.filter(
+              (provider) => provider.flow === "redirect"
+            )
+          )
+        })
+    }, [])
+
+    const startLogin = async (providerId: string) => {
+      // TODO start the authentication (see step 2)
+    }
+
+    return (
+      <div>
+        {providers.map((provider) => (
+          <button
+            key={provider.id}
+            onClick={() => startLogin(provider.id)}
+          >
+            Continue with {provider.display_name}
+          </button>
+        ))}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Each provider has an `id` to use in the authentication requests, and a `display_name` to label its button with. In the React example, `startLogin` is the function you implement in the next step.
+
+A provider's `flow` is either `credentials`, such as the Emailpass provider, or `redirect`, which is what the OIDC provider uses. So, filtering by `flow` separates the providers that need a redirect from the ones that accept credentials in a form.
+
+If no provider is returned, render your own login form instead, since no identity provider is available for the actor type.
+
+<Note>
+
+The route only returns the providers allowed for the actor type you pass, so you don't have to filter them by your `authMethodsPerActor` configuration.
+
+</Note>
+
+---
+
+## Step 2: Start the Authentication
+
+When the user clicks a provider's button, start the authentication and redirect the browser to the returned URL:
+
+<Note title="Tip">
+
+If you followed the React example, replace its `// TODO start the authentication` comment with the code below.
+
+</Note>
+
+export const loginHighlights = [
+  ["1", "login", "Start the authentication with the provider."],
+  ["2", "callback_url", "The page that handles the redirect back."],
+  ["5", "location", "The identity provider's authorization URL."],
+  ["6", "sessionStorage", "Remember the provider for the callback page."],
+]
+
+```ts highlights={loginHighlights}
+const result = await sdk.auth.login("user", providerId, {
+  callback_url: "https://storefront.example.com/callback",
+})
+
+if (typeof result === "object" && result.location) {
+  sessionStorage.setItem("sso_provider", providerId)
+  window.location.href = result.location
+  return
+}
+```
+
+The `callback_url` is the page of your frontend that handles the redirect back from the identity provider, which you implement in the next step. You can omit it, in which case Medusa uses the provider's [callback_url option](../provider-options/page.mdx#callback_url).
+
+Use your frontend's local URL, such as `http://localhost:8000/callback`, while you develop, and its public URL in production. Register the URL of every environment with your identity provider, since identity providers match redirect URIs exactly.
+
+You also store the provider's ID before redirecting, since the callback page needs it to send the callback request to the same provider.
+
+<Note title="Warning" type="warning">
+
+Add the callback URL to the redirect URIs of the application you registered with your identity provider, and to the [allowed_callback_urls option](../provider-options/page.mdx#allowed_callback_urls) if you set it. Otherwise, the login fails.
+
+</Note>
+
+---
+
+## Step 3: Validate the Callback
+
+The identity provider redirects the user back to your callback URL with a `code` and a `state` query parameter. On that page, send the parameters to Medusa:
+
+export const callbackHighlights = [
+  ["5", "callback", "Validate the redirect back from the provider."],
+]
+
+export const callbackPageHighlights = [
+  ["9", "validated", "Guard against a second request."],
+  ["30", "callback", "Validate the redirect back from the provider."],
+]
+
+<CodeTabs group="frontend">
+  <CodeTab label="JS SDK" value="js-sdk">
+
+  ```ts highlights={callbackHighlights}
+  const searchParams = new URLSearchParams(
+    window.location.search
+  )
+
+  const token = await sdk.auth.callback(
+    "user",
+    providerId,
+    Object.fromEntries(searchParams)
+  )
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+  ```tsx title="src/components/sso-callback.tsx" highlights={callbackPageHighlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useRef, useState } from "react"
+  import { sdk } from "../lib/sdk"
+
+  export const SsoCallback = () => {
+    const [error, setError] = useState<string>()
+    // Prevent a second request in React's strict mode
+    const validated = useRef(false)
+
+    useEffect(() => {
+      if (validated.current) {
+        return
+      }
+      validated.current = true
+
+      const providerId = sessionStorage.getItem(
+        "sso_provider"
+      )
+      const searchParams = new URLSearchParams(
+        window.location.search
+      )
+
+      if (!providerId) {
+        setError("Authentication failed")
+        return
+      }
+
+      sdk.auth
+        .callback(
+          "user",
+          providerId,
+          Object.fromEntries(searchParams)
+        )
+        .then((token) => {
+          // TODO create the actor of the identity (see step 4)
+        })
+        .catch(() => setError("Authentication failed"))
+    }, [])
+
+    return <div>{error ?? "Signing you in..."}</div>
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+Medusa validates the identity provider's response, then returns a JWT token for the authenticated identity.
+
+<Note>
+
+Send the callback request once. The `state` value is single-use, so a retry with the same parameters fails. That's what the `validated` ref guards against in the React example, since React remounts the component in strict mode.
+
+</Note>
+
+---
+
+## Step 4: Create the Actor of the Authenticated Identity
+
+An [auth identity](../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx) isn't an admin user or a customer. So, the token that the callback returned has an empty `actor_id` when the user authenticates for the first time, and you must create the record it belongs to before the user can access your application.
+
+If you followed the React example, replace its `// TODO create the actor of the identity` comment with the code of the section that applies to your actor type.
+
+### For Admin Users
+
+Medusa creates or links the admin user for you through the `/auth/{provider_id}/user` API route:
+
+The example below decodes the token with the [react-jwt](https://www.npmjs.com/package/react-jwt) package, so install it first:
+
+```bash npm2yarn
+npm install react-jwt
+```
+
+Then, create or link the admin user:
+
+export const userHighlights = [
+  ["8", "createUser", "Create or link the admin user."],
+  ["12", "refresh", "Get a token bound to the created user."],
+]
+
+```ts highlights={userHighlights}
+import { decodeToken } from "react-jwt"
+
+const { actor_id } = decodeToken(token) as {
+  actor_id: string
+}
+
+if (!actor_id) {
+  await sdk.auth.createUser(providerId, {
+    Authorization: `Bearer ${token}`,
+  })
+
+  await sdk.auth.refresh({
+    Authorization: `Bearer ${token}`,
+  })
+}
+```
+
+Refresh the token after creating the user, since the token you passed isn't bound to it. Learn what the route does, and the conditions it enforces, in the [Admin SSO](../admin-login/page.mdx#how-admin-users-are-created) guide.
+
+### For Other Actor Types
+
+For any other actor type, create the record yourself with the token from the callback.
+
+For example, to create a customer:
+
+```ts
+if (!actor_id) {
+  await sdk.store.customer.create({
+    email: "customer@example.com",
+  }, {}, {
+    Authorization: `Bearer ${token}`,
+  })
+
+  await sdk.auth.refresh({
+    Authorization: `Bearer ${token}`,
+  })
+}
+```
+
+<Note title="Warning" type="warning">
+
+Never let the user choose the email of the created record. Read it from the authenticated identity's metadata instead, which holds the claims that your identity provider returned. Otherwise, anyone your identity provider lets through can create a record with another person's email.
+
+</Note>
+
+For a custom actor type, create your record in a custom API route, then link it to the auth identity. Refer to the [Create an Actor Type](../../../commerce-modules/auth/create-actor-type/page.mdx) guide for the full implementation.
+
+---
+
+## Step 5: Use the Token
+
+Once the token is bound to a record, use it to send authenticated requests. The JS SDK stores it for you, so its methods use it automatically.
+
+Learn more about handling the token, including the `jwt` and `session` authentication types, in the [JS SDK Authentication](../../../js-sdk/auth/overview/page.mdx) guide.
