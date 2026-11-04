@@ -8524,6 +8524,38 @@ export const filesMap = [
     "pathname": "/references/core_flows/Promotion/core_flows.Promotion.Workflows_Promotion"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/getRoleAssignmentsStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/validateAssignmentReferencesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.SUPER_ADMIN_GUARD_LOCK_KEY/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.SUPER_ADMIN_GUARD_LOCK_KEY"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/core_flows.Rbac.Steps_Rbac/page.json",
+    "pathname": "/references/core_flows/Rbac/core_flows.Rbac.Steps_Rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/core_flows.Rbac.Workflows_Rbac/page.json",
+    "pathname": "/references/core_flows/Rbac/core_flows.Rbac.Workflows_Rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/functions/core_flows.Rbac.canActorGrantPolicies/page.json",
+    "pathname": "/references/core_flows/Rbac/functions/core_flows.Rbac.canActorGrantPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/functions/core_flows.Rbac.canActorGrantRoles/page.json",
+    "pathname": "/references/core_flows/Rbac/functions/core_flows.Rbac.canActorGrantRoles"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Region/Steps_Region/functions/core_flows.Region.Steps_Region.createRegionsStep/page.json",
     "pathname": "/references/medusa-workflows/steps/createRegionsStep"
   },
@@ -10212,6 +10244,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ArchiveOrdersWorkflowOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRolesWorkflowInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AttachInventoryItemToVariantsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AttachInventoryItemToVariantsStepInput"
   },
@@ -11196,6 +11232,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GenerateProductCsvStepOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GenerateResetPasswordTokenWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GenerateResetPasswordTokenWorkflowInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAllProductsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAllProductsStepInput"
   },
@@ -11222,6 +11262,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetPromotionCodesToApplyStepOutput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetPromotionCodesToApplyStepOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetRoleAssignmentsStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetRoleAssignmentsStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetVariantAvailabilityStepInput/page.json",
@@ -11550,6 +11594,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.TransferOrderToGuestValidationStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.TransferOrderToGuestValidationStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRolesWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateApiKeysStepInput/page.json",
@@ -12114,6 +12162,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_flows.Promotion/page.json",
     "pathname": "/references/core_flows/core_flows.Promotion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_flows.Rbac/page.json",
+    "pathname": "/references/core_flows/core_flows.Rbac"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_flows.Region/page.json",
@@ -14724,6 +14776,10 @@ export const filesMap = [
     "pathname": "/references/js-sdk/admin/locale"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.module/page.json",
+    "pathname": "/references/js-sdk/admin/module"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification/page.json",
     "pathname": "/references/js-sdk/admin/notification"
   },
@@ -15552,6 +15608,14 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/Locale/properties/js_sdk.admin.Locale.client"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Module/methods/js_sdk.admin.Module.list/page.json",
+    "pathname": "/references/js_sdk/admin/Module/methods/js_sdk.admin.Module.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Module/properties/js_sdk.admin.Module.client/page.json",
+    "pathname": "/references/js_sdk/admin/Module/properties/js_sdk.admin.Module.client"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.list/page.json",
     "pathname": "/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.list"
   },
@@ -16148,6 +16212,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/RbacPolicy/properties/js_sdk.admin.RbacPolicy.client"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addAssignments/page.json",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addAssignments"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addPolicies/page.json",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addPolicies"
   },
@@ -16172,6 +16240,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignable"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignments/page.json",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignments"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies/page.json",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies"
   },
@@ -16182,6 +16254,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions/page.json",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removeAssignments/page.json",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removeAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy/page.json",
@@ -16740,6 +16816,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.update"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.updateMe/page.json",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.updateMe"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/User/properties/js_sdk.admin.User.client/page.json",
     "pathname": "/references/js_sdk/admin/User/properties/js_sdk.admin.User.client"
   },
@@ -16862,6 +16942,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Locale/page.json",
     "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Locale"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Module/page.json",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Module"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Notification/page.json",
@@ -17268,6 +17352,10 @@ export const filesMap = [
     "pathname": "/references/loyalty/deleteGiftCards"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.getOptions/page.json",
+    "pathname": "/references/loyalty/getOptions"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.listGiftCards/page.json",
     "pathname": "/references/loyalty/listGiftCards"
   },
@@ -17352,6 +17440,22 @@ export const filesMap = [
     "pathname": "/references/loyalty/interfaces/loyalty.ModuleGiftCardFilters"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Constructor/page.json",
+    "pathname": "/references/loyalty/types/loyalty.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.CrossModuleJoinLink/page.json",
+    "pathname": "/references/loyalty/types/loyalty.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/loyalty/types/loyalty.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/loyalty/types/loyalty.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Event/page.json",
     "pathname": "/references/loyalty/types/loyalty.Event"
   },
@@ -17360,8 +17464,32 @@ export const filesMap = [
     "pathname": "/references/loyalty/types/loyalty.EventMetadata"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.ExpandScalar/page.json",
+    "pathname": "/references/loyalty/types/loyalty.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FilterQuery/page.json",
+    "pathname": "/references/loyalty/types/loyalty.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FilterQueryProperties/page.json",
+    "pathname": "/references/loyalty/types/loyalty.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FilterValue/page.json",
+    "pathname": "/references/loyalty/types/loyalty.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FilterValue2/page.json",
+    "pathname": "/references/loyalty/types/loyalty.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FindConfigOrder/page.json",
     "pathname": "/references/loyalty/types/loyalty.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.InternalQueryOptions/page.json",
+    "pathname": "/references/loyalty/types/loyalty.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.JoinerRelationship/page.json",
@@ -17370,6 +17498,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.LinkModulesExtraFields/page.json",
     "pathname": "/references/loyalty/types/loyalty.LinkModulesExtraFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.LoyaltyPluginOptions/page.json",
+    "pathname": "/references/loyalty/types/loyalty.LoyaltyPluginOptions"
   },
   {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Message/page.json",
@@ -17396,20 +17528,36 @@ export const filesMap = [
     "pathname": "/references/loyalty/types/loyalty.ModuleUpdateGiftCard"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.OperatorMap/page.json",
+    "pathname": "/references/loyalty/types/loyalty.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.PrevLimit/page.json",
+    "pathname": "/references/loyalty/types/loyalty.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Primary/page.json",
+    "pathname": "/references/loyalty/types/loyalty.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Query/page.json",
+    "pathname": "/references/loyalty/types/loyalty.Query"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.RawMessageFormat/page.json",
     "pathname": "/references/loyalty/types/loyalty.RawMessageFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.ReadonlyPrimary/page.json",
+    "pathname": "/references/loyalty/types/loyalty.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Scalar/page.json",
+    "pathname": "/references/loyalty/types/loyalty.Scalar"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty_models/variables/loyalty_models.GiftCard/page.json",
     "pathname": "/references/loyalty/models/GiftCard"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.RestrictedFields/page.json",
-    "pathname": "/references/medusa/classes/medusa.RestrictedFields"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.DefaultPolicyResources/page.json",
-    "pathname": "/references/medusa/interfaces/medusa.DefaultPolicyResources"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FindConfig/page.json",
@@ -17426,6 +17574,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.RequestQueryFields/page.json",
     "pathname": "/references/medusa/interfaces/medusa.RequestQueryFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.RestrictedFieldsSet/page.json",
+    "pathname": "/references/medusa/interfaces/medusa.RestrictedFieldsSet"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.SubscriberContext/page.json",
@@ -17450,14 +17602,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.CrossModuleJoinTarget/page.json",
     "pathname": "/references/medusa/types/medusa.CrossModuleJoinTarget"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.DefaultResourceKey/page.json",
-    "pathname": "/references/medusa/types/medusa.DefaultResourceKey"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.DefaultResourceValue/page.json",
-    "pathname": "/references/medusa/types/medusa.DefaultResourceValue"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.Event/page.json",
@@ -23592,6 +23736,22 @@ export const filesMap = [
     "pathname": "/references/store_credit/types/store_credit.BigNumberValue"
   },
   {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Constructor/page.json",
+    "pathname": "/references/store_credit/types/store_credit.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.CrossModuleJoinLink/page.json",
+    "pathname": "/references/store_credit/types/store_credit.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/store_credit/types/store_credit.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/store_credit/types/store_credit.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Event/page.json",
     "pathname": "/references/store_credit/types/store_credit.Event"
   },
@@ -23600,8 +23760,32 @@ export const filesMap = [
     "pathname": "/references/store_credit/types/store_credit.EventMetadata"
   },
   {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ExpandScalar/page.json",
+    "pathname": "/references/store_credit/types/store_credit.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FilterQuery/page.json",
+    "pathname": "/references/store_credit/types/store_credit.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FilterQueryProperties/page.json",
+    "pathname": "/references/store_credit/types/store_credit.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FilterValue/page.json",
+    "pathname": "/references/store_credit/types/store_credit.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FilterValue2/page.json",
+    "pathname": "/references/store_credit/types/store_credit.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FindConfigOrder/page.json",
     "pathname": "/references/store_credit/types/store_credit.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.InternalQueryOptions/page.json",
+    "pathname": "/references/store_credit/types/store_credit.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.JoinerRelationship/page.json",
@@ -23656,8 +23840,32 @@ export const filesMap = [
     "pathname": "/references/store_credit/types/store_credit.ModuleUpdateStoreCreditAccount"
   },
   {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.OperatorMap/page.json",
+    "pathname": "/references/store_credit/types/store_credit.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.PrevLimit/page.json",
+    "pathname": "/references/store_credit/types/store_credit.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Primary/page.json",
+    "pathname": "/references/store_credit/types/store_credit.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Query/page.json",
+    "pathname": "/references/store_credit/types/store_credit.Query"
+  },
+  {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.RawMessageFormat/page.json",
     "pathname": "/references/store_credit/types/store_credit.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ReadonlyPrimary/page.json",
+    "pathname": "/references/store_credit/types/store_credit.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Scalar/page.json",
+    "pathname": "/references/store_credit/types/store_credit.Scalar"
   },
   {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.TransactionTypeValues/page.json",
@@ -25000,6 +25208,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAddRolePolicies"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminApiKey/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminApiKey"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminApiKeyResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminApiKeyResponse"
   },
@@ -25430,6 +25642,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateReturnReason/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateReturnReason"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateRoleAssignments/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateRoleAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateSalesChannel/page.json",
@@ -26068,6 +26284,14 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminMarkPaymentCollectionAsPaid"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminModule/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminModule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminModulesListResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminModulesListResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminNotification/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminNotification"
   },
@@ -26500,8 +26724,16 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignablePoliciesListResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignablePolicyListParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignablePolicyListParams"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignableRolesListResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignableRolesListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacMePermissionsParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacMePermissionsParams"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacMePermissionsResponse/page.json",
@@ -26544,6 +26776,26 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRole"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignment/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentListParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentListResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentsDeleteResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentsDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentsResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentsResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleDeleteResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleDeleteResponse"
   },
@@ -26558,6 +26810,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleParams/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePoliciesResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePoliciesResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePolicyDeleteResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePolicyDeleteResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleResponse/page.json",
@@ -26578,6 +26838,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUsersResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUsersResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacScopeParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacScopeParams"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReceiveItems/page.json",
@@ -26648,12 +26912,12 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveDraftOrderPromotions"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers/page.json",
-    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers"
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleAssignments/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleAssignments"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveUserRoles/page.json",
-    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveUserRoles"
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRequestClaim/page.json",
@@ -27038,6 +27302,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUnassignUserRole/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUnassignUserRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUnassignUserRoles/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUnassignUserRoles"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateApiKey/page.json",
@@ -29664,10 +29936,6 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.AddToCartWorkflowInputDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminApiKey/page.json",
-    "pathname": "/references/types/interfaces/types.AdminApiKey"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AdminBatchUpdateProduct/page.json",
     "pathname": "/references/types/interfaces/types.AdminBatchUpdateProduct"
   },
@@ -29784,12 +30052,20 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.AdminUpsertGeoZone"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AuthContext/page.json",
+    "pathname": "/references/types/interfaces/types.AuthContext"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AuthIdentityProviderService/page.json",
     "pathname": "/references/types/interfaces/types.AuthIdentityProviderService"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AuthProviderInfoDTO/page.json",
     "pathname": "/references/types/interfaces/types.AuthProviderInfoDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AuthenticatedMedusaRequest/page.json",
+    "pathname": "/references/types/interfaces/types.AuthenticatedMedusaRequest"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AuthenticationInput/page.json",
@@ -30336,6 +30612,10 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.FileServiceUploadResult"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.FilterableRbacRoleAssignmentProps/page.json",
+    "pathname": "/references/types/interfaces/types.FilterableRbacRoleAssignmentProps"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.FixtureEntryPoints/page.json",
     "pathname": "/references/types/interfaces/types.FixtureEntryPoints"
   },
@@ -30400,6 +30680,10 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.IRbacModuleService"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.IRbacModuleServiceOptions/page.json",
+    "pathname": "/references/types/interfaces/types.IRbacModuleServiceOptions"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.ITaxProvider/page.json",
     "pathname": "/references/types/interfaces/types.ITaxProvider"
   },
@@ -30456,6 +30740,14 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.LocalAnalyticsServiceOptions"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.MedusaRequest/page.json",
+    "pathname": "/references/types/interfaces/types.MedusaRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.MedusaStoreRequest/page.json",
+    "pathname": "/references/types/interfaces/types.MedusaStoreRequest"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.MessageAggregatorFormat/page.json",
     "pathname": "/references/types/interfaces/types.MessageAggregatorFormat"
   },
@@ -30476,6 +30768,14 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.PaymentProviderOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.PolicyOperationRegistry/page.json",
+    "pathname": "/references/types/interfaces/types.PolicyOperationRegistry"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.PolicyResourceRegistry/page.json",
+    "pathname": "/references/types/interfaces/types.PolicyResourceRegistry"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.PosthogAnalyticsServiceOptions/page.json",
     "pathname": "/references/types/interfaces/types.PosthogAnalyticsServiceOptions"
   },
@@ -30486,6 +30786,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.ProductCategoryTransformOptions/page.json",
     "pathname": "/references/types/interfaces/types.ProductCategoryTransformOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.PublishableKeyContext/page.json",
+    "pathname": "/references/types/interfaces/types.PublishableKeyContext"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.ReceiveReturnItem/page.json",
@@ -30506,6 +30810,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.RemoteJoinerQuery/page.json",
     "pathname": "/references/types/interfaces/types.RemoteJoinerQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.RestrictedFieldsSet/page.json",
+    "pathname": "/references/types/interfaces/types.RestrictedFieldsSet"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.RetrieveAccountHolderInput/page.json",
@@ -30530,6 +30838,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.SavePaymentMethodOutput/page.json",
     "pathname": "/references/types/interfaces/types.SavePaymentMethodOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.SecretKeyContext/page.json",
+    "pathname": "/references/types/interfaces/types.SecretKeyContext"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.StoreCreateReturnItem/page.json",
@@ -30636,6 +30948,10 @@ export const filesMap = [
     "pathname": "/references/types/types/types.AdminUpsertFulfillmentSetServiceZoneGeoZone"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.AuthzContextConfig/page.json",
+    "pathname": "/references/types/types/types.AuthzContextConfig"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.BasePaymentCollectionStatus/page.json",
     "pathname": "/references/types/types/types.BasePaymentCollectionStatus"
   },
@@ -30680,6 +30996,10 @@ export const filesMap = [
     "pathname": "/references/types/types/types.CleanupObject"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.CorePolicyResourceMap/page.json",
+    "pathname": "/references/types/types/types.CorePolicyResourceMap"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.CreateCalculatedShippingOptionInput/page.json",
     "pathname": "/references/types/types/types.CreateCalculatedShippingOptionInput"
   },
@@ -30716,12 +31036,12 @@ export const filesMap = [
     "pathname": "/references/types/types/types.CreateRbacPolicyDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacRoleDTO"
+    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleAssignmentDTO/page.json",
+    "pathname": "/references/types/types/types.CreateRbacRoleAssignmentDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleParentDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacRoleParentDTO"
+    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleDTO/page.json",
+    "pathname": "/references/types/types/types.CreateRbacRoleDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRolePolicyDTO/page.json",
@@ -30794,10 +31114,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacPolicyProps/page.json",
     "pathname": "/references/types/types/types.FilterableRbacPolicyProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRoleParentProps/page.json",
-    "pathname": "/references/types/types/types.FilterableRbacRoleParentProps"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRolePolicyProps/page.json",
@@ -30964,6 +31280,18 @@ export const filesMap = [
     "pathname": "/references/types/types/types.Maybe"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.MedusaNextFunction/page.json",
+    "pathname": "/references/types/types/types.MedusaNextFunction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.MedusaRequestHandler/page.json",
+    "pathname": "/references/types/types/types.MedusaRequestHandler"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.MedusaResponse/page.json",
+    "pathname": "/references/types/types/types.MedusaResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.ModuleConfigForResolve/page.json",
     "pathname": "/references/types/types/types.ModuleConfigForResolve"
   },
@@ -31028,6 +31356,18 @@ export const filesMap = [
     "pathname": "/references/types/types/types.PluralizationSpecialRules"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.PolicyAction/page.json",
+    "pathname": "/references/types/types/types.PolicyAction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.PolicyOperationValue/page.json",
+    "pathname": "/references/types/types/types.PolicyOperationValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.PolicyResourceValue/page.json",
+    "pathname": "/references/types/types/types.PolicyResourceValue"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.Prettify/page.json",
     "pathname": "/references/types/types/types.Prettify"
   },
@@ -31080,20 +31420,32 @@ export const filesMap = [
     "pathname": "/references/types/types/types.RawBigNumberPrefix"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.RbacContext/page.json",
+    "pathname": "/references/types/types/types.RbacContext"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.RbacGrantingContext/page.json",
+    "pathname": "/references/types/types/types.RbacGrantingContext"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.RbacPolicyDTO/page.json",
     "pathname": "/references/types/types/types.RbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.RbacRoleAssignmentDTO/page.json",
+    "pathname": "/references/types/types/types.RbacRoleAssignmentDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.RbacRoleDTO/page.json",
     "pathname": "/references/types/types/types.RbacRoleDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacRoleParentDTO/page.json",
-    "pathname": "/references/types/types/types.RbacRoleParentDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/types/types.RbacRolePolicyDTO/page.json",
     "pathname": "/references/types/types/types.RbacRolePolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.RbacScope/page.json",
+    "pathname": "/references/types/types/types.RbacScope"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.ReadonlyPrimary/page.json",
@@ -31184,12 +31536,12 @@ export const filesMap = [
     "pathname": "/references/types/types/types.UpdateRbacPolicyDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacRoleDTO"
+    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleAssignmentDTO/page.json",
+    "pathname": "/references/types/types/types.UpdateRbacRoleAssignmentDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleParentDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacRoleParentDTO"
+    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleDTO/page.json",
+    "pathname": "/references/types/types/types.UpdateRbacRoleDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRolePolicyDTO/page.json",
@@ -31388,6 +31740,10 @@ export const filesMap = [
     "pathname": "/references/user/interfaces/user.Context"
   },
   {
+    "filePath": "/www/apps/resources/references/user/interfaces/user.CreateActorRoleDTO/page.json",
+    "pathname": "/references/user/interfaces/user.CreateActorRoleDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/user/interfaces/user.CreateInviteDTO/page.json",
     "pathname": "/references/user/interfaces/user.CreateInviteDTO"
   },
@@ -31542,6 +31898,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/user/types/user.RawMessageFormat/page.json",
     "pathname": "/references/user/types/user.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.RbacScope/page.json",
+    "pathname": "/references/user/types/user.RbacScope"
   },
   {
     "filePath": "/www/apps/resources/references/user/types/user.ReadonlyPrimary/page.json",
@@ -31934,6 +32294,22 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/interfaces/utils.WorkflowResourceData/page.json",
     "pathname": "/references/utils/interfaces/utils.WorkflowResourceData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.BuildPoliciesForResourceInput/page.json",
+    "pathname": "/references/utils/types/utils.BuildPoliciesForResourceInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.BuildPoliciesForResourcesInput/page.json",
+    "pathname": "/references/utils/types/utils.BuildPoliciesForResourcesInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.BuildPoliciesInput/page.json",
+    "pathname": "/references/utils/types/utils.BuildPoliciesInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.BuiltPolicy/page.json",
+    "pathname": "/references/utils/types/utils.BuiltPolicy"
   },
   {
     "filePath": "/www/apps/resources/references/utils/types/utils.CSVNormalizerContext/page.json",

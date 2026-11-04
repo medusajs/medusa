@@ -6161,6 +6161,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/references/loyalty/getOptions",
+                      "title": "getOptions",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/references/loyalty/listGiftCards",
                       "title": "listGiftCards",
                       "description": "",
@@ -9635,6 +9643,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "updatePaymentSessionClientDataWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePaymentSessionClientDataWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "updateRefundReasonsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRefundReasonsWorkflow",
                       "children": []
@@ -9745,6 +9760,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updatePaymentCollectionStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePaymentCollectionStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updatePaymentSessionStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updatePaymentSessionStep",
                       "children": []
                     },
                     {
