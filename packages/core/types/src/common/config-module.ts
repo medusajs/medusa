@@ -278,6 +278,30 @@ export type HttpCompressionOptions = {
 /**
  * @interface
  *
+ * Additional CORS configurations applied to the `/admin`, `/store`, and `/auth` API Routes.
+ */
+export type HttpCorsOptions = {
+  /**
+   * How long, in seconds, browsers can cache the response of a preflight request, set in the `Access-Control-Max-Age` header.
+   */
+  maxAge?: number
+  /**
+   * The response headers exposed to the browser, set in the `Access-Control-Expose-Headers` header.
+   */
+  exposedHeaders?: string | string[]
+  /**
+   * The request headers allowed in cross-origin requests, set in the `Access-Control-Allow-Headers` header.
+   */
+  allowedHeaders?: string | string[]
+  /**
+   * The HTTP methods allowed in cross-origin requests, set in the `Access-Control-Allow-Methods` header.
+   */
+  methods?: string | string[]
+}
+
+/**
+ * @interface
+ *
  * Medusa Cloud configurations.
  */
 export type MedusaCloudOptions = {
@@ -818,6 +842,28 @@ export type ProjectConfigOptions = {
      */
     authCors: string
     /**
+     * Additional CORS configurations applied to the `/admin`, `/store`, and `/auth` API Routes, on top of the
+     * allowed origins set in `adminCors`, `storeCors`, and `authCors`.
+     *
+     * For example, set `maxAge` so browsers cache preflight responses.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       corsOptions: {
+     *         maxAge: 7200,
+     *       }
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    corsOptions?: HttpCorsOptions
+    /**
      *
      * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
      * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
@@ -1325,7 +1371,9 @@ type GenericModuleConfig = ModuleConfigForResolve<string & {}>
  * Automatically infers options type for known modules registered in ModuleOptions.
  */
 export type InputConfigModules = (
-  KnownModuleConfigs | GenericModuleConfig | ExternalModuleDeclarationOverride
+  | KnownModuleConfigs
+  | GenericModuleConfig
+  | ExternalModuleDeclarationOverride
 )[]
 
 /**
@@ -1356,7 +1404,8 @@ export type InputConfigWithObjectModules = InputConfigBase & {
  * The configuration accepted by the "defineConfig" helper
  */
 export type InputConfig =
-  InputConfigWithArrayModules | InputConfigWithObjectModules
+  | InputConfigWithArrayModules
+  | InputConfigWithObjectModules
 
 type PluginAdminDetails = {
   type: "local" | "package"
