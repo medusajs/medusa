@@ -67,9 +67,15 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
     method: "POST",
     matcher: "/admin/invites/accept",
     middlewares: [
-      authenticate("user", ["session", "bearer"], {
-        allowUnregistered: true,
-      }),
+      // A bearer token is the identity accepting the invite, so it takes
+      // precedence over a session from another signed-in user.
+      (req, res, next) => {
+        const hasBearer = /^bearer\s/i.test(req.headers.authorization ?? "")
+
+        return authenticate("user", hasBearer ? ["bearer"] : ["session"], {
+          allowUnregistered: true,
+        })(req, res, next)
+      },
       validateAndTransformBody(AdminInviteAccept),
       validateAndTransformQuery(
         AdminGetInviteAcceptParams,
