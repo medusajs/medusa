@@ -21,7 +21,7 @@ When you self-host Medusa, you're responsible for setting up a firewall, mitigat
 Medusa Security includes the following features:
 
 - [Configurable Features Per Environment](#configurable-security-features-per-environment): Enable or disable specific security features for different environments of your project.
-- [Medusa Ruleset](#medusa-ruleset): Blocks requests that try to exploit vulnerabilities and attack patterns specific to Medusa applications.
+- [Medusa Instant Protection](#medusa-instant-protection): Blocks requests that try to exploit vulnerabilities and attack patterns specific to Medusa applications.
 - [Basic Protection Ruleset](#basic-protection-ruleset): Blocks requests that try to exploit common web attacks and widely exploited vulnerabilities.
 - [DDoS Protection](#ddos-protection): Detects and mitigates distributed denial-of-service (DDoS) attacks.
 - [Bot Detection](#bot-detection): Blocks requests coming from malicious bots.
@@ -81,11 +81,11 @@ For Production environments, it is recommended to enable all security features t
 
 ---
 
-## Medusa Ruleset
+## Medusa Instant Protection
 
-The Medusa Ruleset is a set of security rules that Medusa maintains to protect Medusa applications from known vulnerabilities and attack patterns.
+Medusa Instant Protection is a set of security rules that Medusa maintains to protect Medusa applications from known vulnerabilities and attack patterns.
 
-While the [Basic Protection Ruleset](#basic-protection-ruleset) covers general web attacks, the Medusa Ruleset focuses on threats specific to Medusa applications. Medusa continuously monitors for new vulnerabilities and attack patterns identified in the Medusa open source project and deploys corresponding protections to the Medusa Ruleset.
+While the [Basic Protection Ruleset](#basic-protection-ruleset) covers general web attacks, Medusa Instant Protection focuses on threats specific to Medusa applications. Medusa continuously monitors for new vulnerabilities and attack patterns identified in the Medusa open source project and deploys corresponding protections to Medusa Instant Protection.
 
 This protects your projects even before you [update your Medusa application](../update-medusa/page.mdx) to a version that fixes the vulnerability.
 
@@ -95,14 +95,14 @@ You should still update your application regularly to receive the fixes in your 
 
 </Note>
 
-### Configure Environments for the Medusa Ruleset
+### Configure Environments for Medusa Instant Protection
 
-To configure which environments the Medusa Ruleset applies to:
+To configure which environments Medusa Instant Protection applies to:
 
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization).
 2. Click **Projects** in the sidebar and select the project you want to manage.
 3. In the project's dashboard, click **Security** in the sidebar, then click **Settings**.
-4. In the "Medusa Ruleset" section, click the **Environments** dropdown.
+4. In the "Medusa Instant Protection" section, click the **Environments** dropdown.
 5. Select the environments or environment types where you want to enable the feature.
 
 <Note type="warning">
