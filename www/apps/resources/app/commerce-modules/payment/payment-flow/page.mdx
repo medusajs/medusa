@@ -410,7 +410,7 @@ When you pass an `idempotency_key`, the Payment Module handles a retry with the 
 - If the previous refund with that key is still waiting for the payment provider's response, the Payment Module throws a conflict error. It only retries the refund if it has been pending for more than 15 minutes.
 - If the amount is different from the amount of the previous refund with that key, the Payment Module throws an error.
 
-You can also pass the `idempotency_key` in the request body of the [Refund Payment API route](!api!/admin#payments_postpaymentsidrefund).
+You can also pass the `idempotency_key` in the request body of the [Refund Payment API route](!api!/admin/payments/refund-payment).
 
 <Note title="Refund Status">
 
