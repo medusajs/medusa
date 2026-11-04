@@ -630,7 +630,7 @@ const DataTableTableSkeleton = ({
   return (
     <div className="flex w-full flex-1 flex-col overflow-hidden">
       <div className="min-h-0 w-full flex-1 overscroll-auto border-y">
-        <div className="flex flex-col divide-y">
+        <div className="flex flex-col [&>*+*]:border-t">
           <Skeleton className="h-12 w-full" />
           {Array.from({ length: pageSize }, (_, i) => i).map((row) => (
             <Skeleton key={row} className="h-12 w-full rounded-none" />
