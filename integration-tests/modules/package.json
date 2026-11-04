@@ -47,6 +47,6 @@
     "@swc/core": "^1.16.20",
     "@swc/jest": "^0.2.36",
     "jest": "^30.5.2",
-    "typescript": "^5.6.2"
+    "typescript": "^6.0.3"
   }
 }

@@ -114,7 +114,7 @@
     "@types/qrcode": "^1.5.5",
     "@typescript/native-preview": "^7.0.0-dev.20260423.1",
     "eslint": "^9.39.5",
-    "typescript": "5.9.3"
+    "typescript": "6.0.3"
   },
   "packageManager": "yarn@3.2.1",
   "engines": {
