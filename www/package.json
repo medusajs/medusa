@@ -48,7 +48,7 @@
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-react": "7.37.2",
     "jsdom": "^25.0.1",
-    "typescript-eslint": "8.11.0",
+    "typescript-eslint": "^8.72.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
   },

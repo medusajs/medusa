@@ -62,7 +62,7 @@
     "ts-node": "^10.9.2",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5",
+    "typescript": "^6.0.3",
     "wrangler": "^4.151.3"
   },
   "engines": {
