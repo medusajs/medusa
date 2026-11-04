@@ -7,7 +7,7 @@
   "scripts": {
     "test:integration": "jest --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage",
     "test:integration:chunk": "jest --silent --no-cache --bail --forceExit",
-    "build": "tsc --allowJs --outDir ./dist"
+    "build": "yarn run -T tsc --allowJs --outDir ./dist"
   },
   "dependencies": {
     "@medusajs/api-key": "workspace:^",
@@ -46,6 +46,6 @@
     "@swc/jest": "^0.2.36",
     "jest": "^30.5.2",
     "json-2-csv": "^5.6.0",
-    "typescript": "^6.0.3"
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }
