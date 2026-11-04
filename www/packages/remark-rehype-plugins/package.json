@@ -41,7 +41,7 @@
     "rimraf": "^5.0.5",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5.3.3"
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=18.17.0"
