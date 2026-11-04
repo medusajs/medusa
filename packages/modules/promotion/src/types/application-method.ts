@@ -18,6 +18,7 @@ export interface CreateApplicationMethodDTO {
   currency_code?: string | null
   promotion: InferEntityType<typeof Promotion> | string | PromotionDTO
   max_quantity?: BigNumberInput | null
+  min_quantity?: BigNumberInput | null
   buy_rules_min_quantity?: BigNumberInput | null
   apply_to_quantity?: BigNumberInput | null
   target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
@@ -32,6 +33,7 @@ export interface UpdateApplicationMethodDTO {
   currency_code?: string | null
   promotion?: InferEntityType<typeof Promotion> | string | PromotionDTO
   max_quantity?: BigNumberInput | null
+  min_quantity?: BigNumberInput | null
   buy_rules_min_quantity?: BigNumberInput | null
   apply_to_quantity?: BigNumberInput | null
   target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues

@@ -69,6 +69,12 @@ export interface ApplicationMethodDTO {
   max_quantity?: number | null
 
   /**
+   * The minimum quantity a single line item must have for the associated
+   * promotion to apply to it.
+   */
+  min_quantity?: number | null
+
+  /**
    * The minimum quantity required for a `buyget` promotion to be applied.
    * For example, if the promotion is a "Buy 2 shirts get 1 free", the
    * value of this attribute is `2`.
@@ -142,6 +148,12 @@ export interface CreateApplicationMethodDTO {
    * The max quantity allowed in the cart for the associated promotion to be applied.
    */
   max_quantity?: number | null
+
+  /**
+   * The minimum quantity a single line item must have for the associated
+   * promotion to apply to it.
+   */
+  min_quantity?: number | null
 
   /**
    * The minimum quantity required for a `buyget` promotion to be applied.
@@ -222,6 +234,12 @@ export interface UpdateApplicationMethodDTO {
    * The max quantity allowed in the cart for the associated promotion to be applied.
    */
   max_quantity?: number | null
+
+  /**
+   * The minimum quantity a single line item must have for the associated
+   * promotion to apply to it.
+   */
+  min_quantity?: number | null
 
   /**
    * The minimum quantity required for a `buyget` promotion to be applied.

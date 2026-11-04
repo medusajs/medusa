@@ -2383,6 +2383,10 @@
         "title": "Maximum Quantity",
         "description": "Maximum quantity of items this promotion applies to."
       },
+      "min_quantity": {
+        "title": "Minimum Quantity",
+        "description": "Minimum quantity a single line item must have for this promotion to apply to it."
+      },
       "type": {
         "standard": {
           "title": "Standard",

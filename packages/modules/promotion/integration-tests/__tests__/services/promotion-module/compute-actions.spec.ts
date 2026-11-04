@@ -1918,6 +1918,146 @@ moduleIntegrationTestRunner({
         })
       })
 
+      describe("when promotion has min_quantity", () => {
+        const createMinQuantityPromotion = (
+          code: string,
+          value: number,
+          minQuantity: number
+        ) =>
+          createDefaultPromotion(service, {
+            code,
+            campaign_id: undefined,
+            application_method: {
+              type: ApplicationMethodType.PERCENTAGE,
+              target_type: "items",
+              allocation: "each",
+              value,
+              max_quantity: 1000,
+              min_quantity: minQuantity,
+              target_rules: [
+                {
+                  attribute: "items.product.id",
+                  operator: "eq",
+                  values: ["prod_board"],
+                },
+              ],
+            } as any,
+          })
+
+        const boardLine = (id: string, quantity: number) => ({
+          id,
+          quantity,
+          subtotal: 100 * quantity,
+          original_total: 100 * quantity,
+          is_discountable: true,
+          product: { id: "prod_board" },
+        })
+
+        it("should apply only to line items whose own quantity reaches min_quantity", async () => {
+          await createMinQuantityPromotion("VOLUME_3", 5, 3)
+
+          const result = await service.computeActions(["VOLUME_3"], {
+            currency_code: "usd",
+            items: [boardLine("item_qty_3", 3), boardLine("item_qty_2", 2)],
+          })
+
+          // 3 x 100 - 5% = 285; the line of 2 stays at 200
+          expect(JSON.parse(JSON.stringify(result))).toEqual([
+            {
+              action: "addItemAdjustment",
+              item_id: "item_qty_3",
+              amount: 15,
+              code: "VOLUME_3",
+              is_tax_inclusive: false,
+            },
+          ])
+        })
+
+        it("should not aggregate quantities across line items", async () => {
+          await createMinQuantityPromotion("VOLUME_3", 5, 3)
+
+          const result = await service.computeActions(["VOLUME_3"], {
+            currency_code: "usd",
+            items: [boardLine("item_a", 2), boardLine("item_b", 2)],
+          })
+
+          expect(result).toEqual([])
+        })
+
+        it("should evaluate several promotions with different min_quantity independently", async () => {
+          await createMinQuantityPromotion("VOLUME_3", 5, 3)
+          await createMinQuantityPromotion("VOLUME_10", 8, 10)
+
+          const belowBoth = await service.computeActions(
+            ["VOLUME_3", "VOLUME_10"],
+            { currency_code: "usd", items: [boardLine("item", 2)] }
+          )
+          expect(belowBoth).toEqual([])
+
+          const firstOnly = await service.computeActions(
+            ["VOLUME_3", "VOLUME_10"],
+            { currency_code: "usd", items: [boardLine("item", 5)] }
+          )
+          expect(JSON.parse(JSON.stringify(firstOnly))).toEqual([
+            {
+              action: "addItemAdjustment",
+              item_id: "item",
+              amount: 25,
+              code: "VOLUME_3",
+              is_tax_inclusive: false,
+            },
+          ])
+
+          const both = await service.computeActions(
+            ["VOLUME_3", "VOLUME_10"],
+            { currency_code: "usd", items: [boardLine("item", 10)] }
+          )
+          expect(both).toHaveLength(2)
+          expect(both).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ item_id: "item", code: "VOLUME_3" }),
+              expect.objectContaining({ item_id: "item", code: "VOLUME_10" }),
+            ])
+          )
+        })
+
+        it("should apply an automatic promotion with min_quantity", async () => {
+          await createDefaultPromotion(service, {
+            code: "AUTO_VOLUME_3",
+            is_automatic: true,
+            campaign_id: undefined,
+            application_method: {
+              type: ApplicationMethodType.PERCENTAGE,
+              target_type: "items",
+              allocation: "each",
+              value: 5,
+              max_quantity: 1000,
+              min_quantity: 3,
+            } as any,
+          })
+
+          const below = await service.computeActions([], {
+            currency_code: "usd",
+            items: [boardLine("item", 2)],
+          })
+          expect(below).toEqual([])
+
+          const reached = await service.computeActions([], {
+            currency_code: "usd",
+            items: [boardLine("item", 3)],
+          })
+          expect(JSON.parse(JSON.stringify(reached))).toEqual([
+            {
+              action: "addItemAdjustment",
+              item_id: "item",
+              amount: 15,
+              code: "AUTO_VOLUME_3",
+              is_tax_inclusive: false,
+            },
+          ])
+        })
+      })
+
       describe("when promotion is for items and allocation is across", () => {
         describe("when application type is fixed", () => {
           it("should compute the correct item amendments", async () => {

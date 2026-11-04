@@ -1006,6 +1006,22 @@
           "enumItems": [],
           "mappedType": "integer"
         },
+        "min_quantity": {
+          "name": "min_quantity",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
         "apply_to_quantity": {
           "name": "apply_to_quantity",
           "type": "integer",

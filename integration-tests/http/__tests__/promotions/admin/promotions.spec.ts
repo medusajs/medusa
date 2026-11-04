@@ -319,6 +319,62 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should create and update a promotion with min_quantity", async () => {
+          const created = await api.post(
+            `/admin/promotions`,
+            {
+              ...standardPromotionPayload,
+              application_method: {
+                ...standardPromotionPayload.application_method,
+                type: "percentage",
+                value: 5,
+                min_quantity: 3,
+              },
+            },
+            adminHeaders
+          )
+
+          expect(created.status).toEqual(200)
+          expect(created.data.promotion.application_method).toEqual(
+            expect.objectContaining({ min_quantity: 3 })
+          )
+
+          const updated = await api.post(
+            `/admin/promotions/${created.data.promotion.id}`,
+            { application_method: { min_quantity: null } },
+            adminHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.promotion.application_method).toEqual(
+            expect.objectContaining({ min_quantity: null })
+          )
+        })
+
+        it("should throw an error if min_quantity is passed for a non-items target type", async () => {
+          const { response } = await api
+            .post(
+              `/admin/promotions`,
+              {
+                ...standardPromotionPayload,
+                application_method: {
+                  type: "percentage",
+                  target_type: "order",
+                  allocation: "across",
+                  value: 5,
+                  min_quantity: 3,
+                },
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data.message).toContain(
+            "application_method.min_quantity is only allowed when application_method.target_type is 'items'"
+          )
+        })
+
         it("should throw an error if buy_rules params are not passed", async () => {
           const { response } = await api
             .post(

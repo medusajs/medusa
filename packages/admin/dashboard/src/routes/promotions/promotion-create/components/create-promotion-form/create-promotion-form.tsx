@@ -66,6 +66,7 @@ const defaultValues = {
     max_quantity: 1,
     target_selection_strategy:
       "most_expensive_first" as ApplicationMethodTargetSelectionStrategyValues,
+    min_quantity: null,
     target_rules: [],
     buy_rules: [],
   },
@@ -321,6 +322,13 @@ export const CreatePromotionForm = () => {
   })
 
   const isTargetTypeOrder = targetType === "order"
+  const isTargetTypeItems = targetType === "items"
+
+  useEffect(() => {
+    if (!isTypeStandard || !isTargetTypeItems) {
+      setValue("application_method.min_quantity", null)
+    }
+  }, [isTypeStandard, isTargetTypeItems, setValue])
 
   const watchCampaignChoice = useWatch({
     control: form.control,
@@ -935,6 +943,54 @@ export const CreatePromotionForm = () => {
                                 />
                               </RadioGroup>
                             </Form.Control>
+                            <Form.ErrorMessage />
+                          </Form.Item>
+                        )
+                      }}
+                    />
+                  )}
+
+                  {isTypeStandard && isTargetTypeItems && (
+                    <Form.Field
+                      control={form.control}
+                      name="application_method.min_quantity"
+                      render={({ field: { onChange, value, ...field } }) => {
+                        return (
+                          <Form.Item className="basis-1/2">
+                            <Form.Label optional>
+                              {t("promotions.form.min_quantity.title")}
+                            </Form.Label>
+
+                            <Form.Control>
+                              <Input
+                                type="number"
+                                min={1}
+                                placeholder="3"
+                                value={value ?? ""}
+                                onChange={(e) => {
+                                  const value = e.target.value
+
+                                  if (value === "") {
+                                    onChange(null)
+                                  } else {
+                                    onChange(Number(value))
+                                  }
+                                }}
+                                {...field}
+                              />
+                            </Form.Control>
+
+                            <Text
+                              size="small"
+                              leading="compact"
+                              className="text-ui-fg-subtle"
+                            >
+                              <Trans
+                                t={t}
+                                i18nKey="promotions.form.min_quantity.description"
+                                components={[<br key="break" />]}
+                              />
+                            </Text>
                             <Form.ErrorMessage />
                           </Form.Item>
                         )

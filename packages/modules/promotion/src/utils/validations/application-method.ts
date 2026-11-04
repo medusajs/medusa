@@ -43,6 +43,10 @@ export function validateApplicationMethodAttributes(
   const applicationMethodType = data.type || applicationMethod?.type
   const value = new BigNumber(data.value ?? applicationMethod.value ?? 0)
   const maxQuantity = data.max_quantity || applicationMethod.max_quantity
+  const minQuantity =
+    "min_quantity" in data
+      ? data.min_quantity
+      : applicationMethod.min_quantity
   const allocation = data.allocation || applicationMethod.allocation
   const targetSelectionStrategy =
     data.target_selection_strategy ||
@@ -118,6 +122,29 @@ export function validateApplicationMethodAttributes(
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `max_quantity (${maxQuantity}) must be greater than or equal to apply_to_quantity (${applyToQuantity}) for BUYGET promotions.`
+      )
+    }
+  }
+
+  if (isPresent(minQuantity)) {
+    if (promotion?.type === PromotionType.BUYGET) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.min_quantity is not allowed for Promotion type of ${PromotionType.BUYGET}, use buy_rules_min_quantity instead`
+      )
+    }
+
+    if (targetType !== ApplicationMethodTargetType.ITEMS) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.min_quantity is only allowed when application_method.target_type is '${ApplicationMethodTargetType.ITEMS}'`
+      )
+    }
+
+    if (!Number.isInteger(Number(minQuantity)) || Number(minQuantity) < 1) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.min_quantity should be an integer greater than or equal to 1`
       )
     }
   }

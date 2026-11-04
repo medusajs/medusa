@@ -574,6 +574,90 @@ moduleIntegrationTestRunner({
           )
         })
 
+        it("should create a promotion with min_quantity", async () => {
+          const promotion = await createDefaultPromotion(service, {
+            application_method: {
+              type: "percentage",
+              target_type: "items",
+              allocation: "each",
+              value: 5,
+              max_quantity: 100,
+              min_quantity: 3,
+            } as any,
+          })
+
+          expect(promotion.application_method).toEqual(
+            expect.objectContaining({ min_quantity: 3 })
+          )
+        })
+
+        it("should throw an error when min_quantity is set and target_type is not items", async () => {
+          const error = await createDefaultPromotion(service, {
+            application_method: {
+              type: "percentage",
+              target_type: "order",
+              allocation: "across",
+              value: 5,
+              min_quantity: 3,
+            } as any,
+          }).catch((e) => e)
+
+          expect(error.message).toContain(
+            "application_method.min_quantity is only allowed when application_method.target_type is 'items'"
+          )
+        })
+
+        it("should throw an error when min_quantity is set for a buyget promotion", async () => {
+          const error = await createDefaultPromotion(service, {
+            type: PromotionType.BUYGET,
+            application_method: {
+              apply_to_quantity: 1,
+              buy_rules_min_quantity: 1,
+              max_quantity: 1,
+              min_quantity: 3,
+              allocation: "each",
+              buy_rules: [
+                {
+                  attribute: "items.product_collection.id",
+                  operator: "eq",
+                  values: ["pcol_towel"],
+                },
+              ],
+              target_rules: [
+                {
+                  attribute: "items.product.id",
+                  operator: "eq",
+                  values: ["prod_mat"],
+                },
+              ],
+            } as any,
+          }).catch((e) => e)
+
+          expect(error.message).toContain(
+            "application_method.min_quantity is not allowed for Promotion type of buyget"
+          )
+        })
+
+        it.each([0, -1, 2.5])(
+          "should throw an error when min_quantity is %s",
+          async (minQuantity) => {
+            const error = await createDefaultPromotion(service, {
+              application_method: {
+                type: "percentage",
+                target_type: "items",
+                allocation: "each",
+                value: 5,
+                max_quantity: 100,
+                min_quantity: minQuantity,
+              } as any,
+            }).catch((e) => e)
+
+            expect(error.message).toContain(
+              "application_method.min_quantity should be an integer greater than or equal to 1"
+            )
+          }
+        )
+
         it("should create a budget promotion with rules successfully", async () => {
           const createdPromotion = await createDefaultPromotion(service, {
             type: PromotionType.BUYGET,
@@ -681,6 +765,43 @@ moduleIntegrationTestRunner({
                 value: 200,
               }),
             })
+          )
+        })
+
+        it("should set and clear min_quantity of an application method", async () => {
+          const createdPromotion = await createDefaultPromotion(service, {
+            application_method: {
+              type: "percentage",
+              allocation: "each",
+              value: 5,
+              max_quantity: 100,
+            },
+          } as any)
+          const applicationMethodId = createdPromotion.application_method?.id!
+
+          const [withMinQuantity] = await service.updatePromotions([
+            {
+              id: createdPromotion.id,
+              application_method: { id: applicationMethodId, min_quantity: 3 },
+            },
+          ])
+
+          expect(withMinQuantity.application_method).toEqual(
+            expect.objectContaining({ min_quantity: 3 })
+          )
+
+          const [cleared] = await service.updatePromotions([
+            {
+              id: createdPromotion.id,
+              application_method: {
+                id: applicationMethodId,
+                min_quantity: null,
+              },
+            },
+          ])
+
+          expect(cleared.application_method).toEqual(
+            expect.objectContaining({ min_quantity: null })
           )
         })
 

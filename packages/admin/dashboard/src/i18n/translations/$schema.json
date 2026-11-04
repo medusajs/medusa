@@ -9153,6 +9153,19 @@
               "required": ["title", "description"],
               "additionalProperties": false
             },
+            "min_quantity": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["title", "description"],
+              "additionalProperties": false
+            },
             "type": {
               "type": "object",
               "properties": {
@@ -9347,6 +9360,7 @@
             "status",
             "method",
             "max_quantity",
+            "min_quantity",
             "type",
             "allocation",
             "target_selection_strategy",

@@ -65,6 +65,12 @@ export interface AdminCreateApplicationMethod {
    */
   max_quantity?: number | null
   /**
+   * The minimum quantity a single line item must have for the promotion to
+   * apply to it. Quantities aren't aggregated across line items. Only
+   * applies when the `target_type` is `items`.
+   */
+  min_quantity?: number | null
+  /**
    * The type of the application method.
    */
   type: ApplicationMethodTypeValues
@@ -116,6 +122,12 @@ export interface AdminUpdateApplicationMethod {
    * The max quantity allowed in the cart for the associated promotion to be applied.
    */
   max_quantity?: number | null
+  /**
+   * The minimum quantity a single line item must have for the promotion to
+   * apply to it. Quantities aren't aggregated across line items. Only
+   * applies when the `target_type` is `items`.
+   */
+  min_quantity?: number | null
   /**
    * The currency code of the application method.
    *

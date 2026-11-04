@@ -240,6 +240,16 @@ function getValidItemsForPromotion(
       return false
     }
 
+    if (
+      !isTargetShippingMethod &&
+      !meetsMinQuantity(
+        item as PromotionTypes.ComputeActionItemLine,
+        promotion.application_method?.min_quantity
+      )
+    ) {
+      return false
+    }
+
     if (!hasTargetRules) {
       return true
     }
@@ -250,4 +260,20 @@ function getValidItemsForPromotion(
       ApplicationMethodTargetType.ITEMS
     )
   })
+}
+
+/**
+ * Whether the line item's own quantity reaches the application method's
+ * `min_quantity`. Quantities of other line items are not taken into account,
+ * so two lines of 2 don't satisfy a `min_quantity` of 3.
+ */
+function meetsMinQuantity(
+  item: PromotionTypes.ComputeActionItemLine,
+  minQuantity: BigNumberInput | null | undefined
+): boolean {
+  if (minQuantity === null || minQuantity === undefined) {
+    return true
+  }
+
+  return MathBN.gte(item.quantity, minQuantity)
 }
