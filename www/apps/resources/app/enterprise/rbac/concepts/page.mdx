@@ -4,7 +4,7 @@ export const metadata = {
 
 # {metadata.title}
 
-<EnterpriseNotice beta />
+<EnterpriseNotice />
 
 In this guide, you'll learn about the main concepts of the role-based access control (RBAC) Module: policies, roles, and role assignments.
 
@@ -218,7 +218,7 @@ When the RBAC Module isn't installed, Medusa enforces no access control, and adm
 
 ### Permission Caching
 
-When you use the [Caching Module](../../../infrastructure-modules/caching/page.mdx), Medusa caches the policies of each role for 24 hours to avoid retrieving them from the database on every request.
+When you use the [Caching Module](../../../infrastructure-modules/caching/page.mdx), Medusa caches the policies of each role to avoid retrieving them from the database on every request.
 
 Medusa clears the cached policies when the RBAC Module creates, updates, deletes, or restores roles, policies, or the links between them. So, changes you make with Medusa's API routes, workflows, or the RBAC Module's service apply immediately.
 
