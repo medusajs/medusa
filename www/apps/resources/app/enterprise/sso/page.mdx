@@ -55,8 +55,13 @@ The OIDC Auth Module Provider is an [enterprise feature](../page.mdx), so it onl
 
 ```shell
 MEDUSA_LICENSE_KEY=your_license_key
-MEDUSA_LICENSE_PUBLIC_KEY=your_license_public_key
 ```
+
+<Note>
+
+If your application is deployed on Cloud, the `MEDUSA_LICENSE_KEY` variable is automatically injected.
+
+</Note>
 
 If the key is missing or doesn't cover the `auth-oidc` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](../page.mdx) documentation.
 

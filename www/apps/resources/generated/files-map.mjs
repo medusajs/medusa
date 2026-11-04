@@ -280,10 +280,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/auth-providers/google"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/oidc/page.mdx",
-    "pathname": "/commerce-modules/auth/auth-providers/oidc"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/page.mdx",
     "pathname": "/commerce-modules/auth/auth-providers"
   },
@@ -8540,6 +8536,102 @@ export const filesMap = [
     "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStepId"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.assignRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/assignRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacPoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/createRbacPoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacRolePoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/createRbacRolePoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/createRbacRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacPoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/deleteRbacPoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacRolePoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/deleteRbacRolePoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/deleteRbacRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.getAssignablePoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/getAssignablePoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.getAssignableRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/getAssignableRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.unassignRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/unassignRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.updateRbacPoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/updateRbacPoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.updateRbacRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/updateRbacRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.assignRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.assignRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacPoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacPoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacRolePoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacRolePoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacPoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacPoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacRolePoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacRolePoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.getAssignablePoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.getAssignablePoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.getAssignableRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.getAssignableRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.unassignRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.unassignRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.updateRbacPoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.updateRbacPoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.updateRbacRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.updateRbacRolesWorkflowId"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Rbac/core_flows.Rbac.Steps_Rbac/page.json",
     "pathname": "/references/core_flows/Rbac/core_flows.Rbac.Steps_Rbac"
   },
@@ -10244,6 +10336,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ArchiveOrdersWorkflowOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRole/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRole"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRolesWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRolesWorkflowInput"
   },
@@ -10680,6 +10776,18 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreatePromotionsWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacPoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacPoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolePoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolePoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolesWorkflowInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRefundReasonStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRefundReasonStepInput"
   },
@@ -11028,6 +11136,18 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeletePromotionsWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacPoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacPoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolePoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolePoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolesWorkflowInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRefundReasonsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRefundReasonsStepInput"
   },
@@ -11238,6 +11358,22 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAllProductsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAllProductsStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowOutput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesWorkflowOutput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesWorkflowOutput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetExistingPriceListsPriceIdsStepInput/page.json",
@@ -11596,6 +11732,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.TransferOrderToGuestValidationStepInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRole/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRole"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRolesWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRolesWorkflowInput"
   },
@@ -11826,6 +11966,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdatePromotionsWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdatePromotionsWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacPoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacPoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacRolesWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateReceiveItemReturnRequestValidationStepInput/page.json",

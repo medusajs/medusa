@@ -505,5 +505,6 @@ export const generatedEditDates = {
   "app/infrastructure-modules/search/product-index-examples/page.mdx": "2026-09-22T14:47:38.498Z",
   "app/troubleshooting/query/not-assignable-type/page.mdx": "2026-10-09T07:56:42.960Z",
   "app/commerce-modules/payment/payment-provider/adyen/page.mdx": "2026-10-30T12:26:02.502Z",
-  "app/commerce-modules/auth/auth-providers/oidc/page.mdx": "2026-11-03T15:43:50.332Z"
+  "app/enterprise/page.mdx": "2026-11-04T14:14:01.603Z",
+  "app/enterprise/sso/page.mdx": "2026-11-04T14:13:11.080Z"
 }

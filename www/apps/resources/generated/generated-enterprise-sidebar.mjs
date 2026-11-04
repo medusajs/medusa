@@ -167,7 +167,70 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
               "path": "/enterprise/rbac/workflows",
               "title": "Workflows",
               "hideChildren": true,
-              "children": []
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "category",
+                  "title": "Workflows",
+                  "autogenerate_tags": "workflow+rbac",
+                  "autogenerate_as_ref": true,
+                  "sort_sidebar": "alphabetize",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "acceptInviteWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/acceptInviteWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "deleteInvitesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteInvitesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "deleteUsersWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteUsersWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "generateResetPasswordTokenWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "removeUserAccountWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeUserAccountWorkflow",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "loaded": true,
+                  "type": "category",
+                  "title": "Steps",
+                  "autogenerate_tags": "step+rbac",
+                  "autogenerate_as_ref": true,
+                  "sort_sidebar": "alphabetize",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "getRoleAssignmentsStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getRoleAssignmentsStep",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
             },
             {
               "loaded": true,
