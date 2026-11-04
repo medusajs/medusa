@@ -6161,6 +6161,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/references/loyalty/getOptions",
+                      "title": "getOptions",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/references/loyalty/listGiftCards",
                       "title": "listGiftCards",
                       "description": "",

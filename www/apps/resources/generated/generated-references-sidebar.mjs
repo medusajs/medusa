@@ -5611,6 +5611,36 @@ const generatedgeneratedReferencesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
+          "title": "Rbac",
+          "children": [
+            {
+              "loaded": true,
+              "type": "sub-category",
+              "title": "Steps",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/getRoleAssignmentsStep",
+                  "title": "getRoleAssignmentsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateAssignmentReferencesStep",
+                  "title": "validateAssignmentReferencesStep",
+                  "description": "",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
           "title": "Region",
           "children": [
             {

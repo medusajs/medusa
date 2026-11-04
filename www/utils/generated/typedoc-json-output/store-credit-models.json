@@ -1,6 +1,6 @@
 {
 	"schemaVersion": "2.0",
-	"id": 67347,
+	"id": 67782,
 	"name": "store-credit-models",
 	"variant": "project",
 	"kind": 1,
@@ -19,7 +19,7 @@
 	},
 	"children": [
 		{
-			"id": 67348,
+			"id": 67783,
 			"name": "AccountTransaction",
 			"variant": "declaration",
 			"kind": 32,
@@ -29,7 +29,7 @@
 					"fileName": "account-transaction.ts",
 					"line": 5,
 					"character": 0,
-					"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L5"
 				}
 			],
 			"type": {
@@ -51,14 +51,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 67349,
+									"id": 67784,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 67350,
+											"id": 67785,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -68,7 +68,7 @@
 													"fileName": "account-transaction.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L8"
 												}
 											],
 											"type": {
@@ -96,7 +96,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67351,
+											"id": 67786,
 											"name": "amount",
 											"variant": "declaration",
 											"kind": 1024,
@@ -106,7 +106,7 @@
 													"fileName": "account-transaction.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L10"
 												}
 											],
 											"type": {
@@ -122,7 +122,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67352,
+											"id": 67787,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -132,7 +132,7 @@
 													"fileName": "account-transaction.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L11"
 												}
 											],
 											"type": {
@@ -164,7 +164,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67353,
+											"id": 67788,
 											"name": "reference",
 											"variant": "declaration",
 											"kind": 1024,
@@ -174,7 +174,7 @@
 													"fileName": "account-transaction.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L12"
 												}
 											],
 											"type": {
@@ -190,7 +190,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67354,
+											"id": 67789,
 											"name": "reference_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -200,7 +200,7 @@
 													"fileName": "account-transaction.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L13"
 												}
 											],
 											"type": {
@@ -216,7 +216,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67355,
+											"id": 67790,
 											"name": "note",
 											"variant": "declaration",
 											"kind": 1024,
@@ -228,7 +228,7 @@
 													"fileName": "account-transaction.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L14"
 												}
 											],
 											"type": {
@@ -244,7 +244,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67356,
+											"id": 67791,
 											"name": "account",
 											"variant": "declaration",
 											"kind": 1024,
@@ -254,7 +254,7 @@
 													"fileName": "account-transaction.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L16"
 												}
 											],
 											"type": {
@@ -267,7 +267,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 67375,
+														"target": 67810,
 														"name": "StoreCreditAccount"
 													}
 												],
@@ -277,7 +277,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67371,
+											"id": 67806,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -289,7 +289,7 @@
 													"fileName": "account-transaction.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L20"
 												}
 											],
 											"type": {
@@ -343,14 +343,14 @@
 										{
 											"title": "Properties",
 											"children": [
-												67350,
-												67351,
-												67352,
-												67353,
-												67354,
-												67355,
-												67356,
-												67371
+												67785,
+												67786,
+												67787,
+												67788,
+												67789,
+												67790,
+												67791,
+												67806
 											]
 										}
 									]
@@ -363,14 +363,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 67372,
+							"id": 67807,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67373,
+									"id": 67808,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -382,7 +382,7 @@
 											"fileName": "account-transaction.ts",
 											"line": 6,
 											"character": 4,
-											"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L6"
 										}
 									],
 									"type": {
@@ -392,7 +392,7 @@
 									"defaultValue": "\"store_credit_account_transaction\""
 								},
 								{
-									"id": 67374,
+									"id": 67809,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -404,7 +404,7 @@
 											"fileName": "account-transaction.ts",
 											"line": 6,
 											"character": 51,
-											"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/account-transaction.ts#L6"
 										}
 									],
 									"type": {
@@ -418,8 +418,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										67373,
-										67374
+										67808,
+										67809
 									]
 								}
 							]
@@ -431,7 +431,7 @@
 			}
 		},
 		{
-			"id": 67375,
+			"id": 67810,
 			"name": "StoreCreditAccount",
 			"variant": "declaration",
 			"kind": 32,
@@ -441,7 +441,7 @@
 					"fileName": "store-credit-account.ts",
 					"line": 4,
 					"character": 0,
-					"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L4"
 				}
 			],
 			"type": {
@@ -463,14 +463,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 67376,
+									"id": 67811,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 67377,
+											"id": 67812,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -480,7 +480,7 @@
 													"fileName": "store-credit-account.ts",
 													"line": 8,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L8"
 												}
 											],
 											"type": {
@@ -508,7 +508,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67378,
+											"id": 67813,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -520,7 +520,7 @@
 													"fileName": "store-credit-account.ts",
 													"line": 9,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L9"
 												}
 											],
 											"type": {
@@ -536,7 +536,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67379,
+											"id": 67814,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -546,7 +546,7 @@
 													"fileName": "store-credit-account.ts",
 													"line": 10,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L10"
 												}
 											],
 											"type": {
@@ -562,7 +562,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67380,
+											"id": 67815,
 											"name": "customer_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -574,7 +574,7 @@
 													"fileName": "store-credit-account.ts",
 													"line": 11,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L11"
 												}
 											],
 											"type": {
@@ -590,7 +590,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67381,
+											"id": 67816,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -602,7 +602,7 @@
 													"fileName": "store-credit-account.ts",
 													"line": 12,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L12"
 												}
 											],
 											"type": {
@@ -652,7 +652,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 67382,
+											"id": 67817,
 											"name": "transactions",
 											"variant": "declaration",
 											"kind": 1024,
@@ -662,7 +662,7 @@
 													"fileName": "store-credit-account.ts",
 													"line": 14,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L14"
 												}
 											],
 											"type": {
@@ -675,7 +675,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 67348,
+														"target": 67783,
 														"name": "AccountTransaction"
 													}
 												],
@@ -689,12 +689,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												67377,
-												67378,
-												67379,
-												67380,
-												67381,
-												67382
+												67812,
+												67813,
+												67814,
+												67815,
+												67816,
+												67817
 											]
 										}
 									]
@@ -707,14 +707,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 67399,
+							"id": 67834,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67400,
+									"id": 67835,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -726,7 +726,7 @@
 											"fileName": "store-credit-account.ts",
 											"line": 6,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L6"
 										}
 									],
 									"type": {
@@ -736,7 +736,7 @@
 									"defaultValue": "\"store_credit_account\""
 								},
 								{
-									"id": 67401,
+									"id": 67836,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -748,7 +748,7 @@
 											"fileName": "store-credit-account.ts",
 											"line": 6,
 											"character": 41,
-											"url": "https://github.com/medusajs/medusa/blob/69420228b04b08149c7a5719600f8e1e4d8546e1/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/plugins/loyalty/src/modules/store-credit/models/store-credit-account.ts#L6"
 										}
 									],
 									"type": {
@@ -762,8 +762,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										67400,
-										67401
+										67835,
+										67836
 									]
 								}
 							]
@@ -779,284 +779,284 @@
 		{
 			"title": "Variables",
 			"children": [
-				67348,
-				67375
+				67783,
+				67810
 			]
 		}
 	],
 	"packageName": "@medusajs/loyalty-plugin",
 	"symbolIdMap": {
-		"67347": {
+		"67782": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/index.ts",
 			"qualifiedName": ""
 		},
-		"67348": {
+		"67783": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "default"
 		},
-		"67349": {
+		"67784": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object"
 		},
-		"67350": {
+		"67785": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.id"
 		},
-		"67351": {
+		"67786": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.amount"
 		},
-		"67352": {
+		"67787": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.type"
 		},
-		"67353": {
+		"67788": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.reference"
 		},
-		"67354": {
+		"67789": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.reference_id"
 		},
-		"67355": {
+		"67790": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.note"
 		},
-		"67356": {
+		"67791": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.account"
 		},
-		"67357": {
+		"67792": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__function"
 		},
-		"67358": {
+		"67793": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__function"
 		},
-		"67359": {
+		"67794": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object"
 		},
-		"67360": {
+		"67795": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.id"
 		},
-		"67361": {
+		"67796": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.code"
 		},
-		"67362": {
+		"67797": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"67363": {
+		"67798": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.customer_id"
 		},
-		"67364": {
+		"67799": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"67365": {
+		"67800": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.transactions"
 		},
-		"67366": {
+		"67801": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__function"
 		},
-		"67367": {
+		"67802": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__function"
 		},
-		"67368": {
+		"67803": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object"
 		},
-		"67369": {
+		"67804": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"67370": {
+		"67805": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.name"
 		},
-		"67371": {
+		"67806": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"67372": {
+		"67807": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object"
 		},
-		"67373": {
+		"67808": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"67374": {
+		"67809": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.name"
 		},
-		"67375": {
+		"67810": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "default"
 		},
-		"67376": {
+		"67811": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object"
 		},
-		"67377": {
+		"67812": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.id"
 		},
-		"67378": {
+		"67813": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.code"
 		},
-		"67379": {
+		"67814": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"67380": {
+		"67815": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.customer_id"
 		},
-		"67381": {
+		"67816": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"67382": {
+		"67817": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.transactions"
 		},
-		"67383": {
+		"67818": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__function"
 		},
-		"67384": {
+		"67819": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__function"
 		},
-		"67385": {
+		"67820": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object"
 		},
-		"67386": {
+		"67821": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.id"
 		},
-		"67387": {
+		"67822": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.amount"
 		},
-		"67388": {
+		"67823": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.type"
 		},
-		"67389": {
+		"67824": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.reference"
 		},
-		"67390": {
+		"67825": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.reference_id"
 		},
-		"67391": {
+		"67826": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.note"
 		},
-		"67392": {
+		"67827": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.account"
 		},
-		"67393": {
+		"67828": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__function"
 		},
-		"67394": {
+		"67829": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__function"
 		},
-		"67395": {
+		"67830": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"67396": {
+		"67831": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object"
 		},
-		"67397": {
+		"67832": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"67398": {
+		"67833": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/account-transaction.ts",
 			"qualifiedName": "__object.name"
 		},
-		"67399": {
+		"67834": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object"
 		},
-		"67400": {
+		"67835": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"67401": {
+		"67836": {
 			"packageName": "@medusajs/loyalty-plugin",
 			"packagePath": "src/modules/store-credit/models/store-credit-account.ts",
 			"qualifiedName": "__object.name"
@@ -1067,7 +1067,7 @@
 			"1": "../../../../packages/plugins/loyalty/src/modules/store-credit/models/index.ts"
 		},
 		"reflections": {
-			"1": 67347
+			"1": 67782
 		}
 	}
 }
