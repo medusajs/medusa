@@ -22,6 +22,7 @@ import {
 } from "typedoc"
 import { escapeChars, getHTMLChar } from "./str-utils.js"
 import { getProjectChild } from "./get-project-child.js"
+import { getReflectionUrl } from "./reflection-routes.js"
 
 export type ReflectionParameterType =
   | ParameterReflection
@@ -325,14 +326,15 @@ export function getReferenceType({
   if (modelReflection || (model.name && model.typeArguments)) {
     const reflection: string[] = [wrappedInBackticks ? "`" : ""]
 
-    if (modelReflection?.url) {
-      const reflectionName = normalizeTypeName(modelReflection.name || "")
+    const modelReflectionUrl = getReflectionUrl(modelReflection)
+    if (modelReflectionUrl) {
+      const reflectionName = normalizeTypeName(modelReflection!.name || "")
       const reflectionUrl =
-        modelReflection.name === "__type" ? undefined : modelReflection.url
+        modelReflection!.name === "__type" ? undefined : modelReflectionUrl
       reflection.push(
         shouldShowLink && reflectionUrl
           ? `[${reflectionName}](${
-              getRelativeUrlMethod?.(modelReflection.url) || modelReflection.url
+              getRelativeUrlMethod?.(modelReflectionUrl) || modelReflectionUrl
             })`
           : getFormattedStr(reflectionName, false, escape)
       )

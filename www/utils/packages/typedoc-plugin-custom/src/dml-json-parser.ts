@@ -42,7 +42,7 @@ function getDescriptionsFromJson(
     return
   }
 
-  const fileName = context.project
+  const fileName = context
     .getSymbolFromReflection(reflection)
     ?.valueDeclaration?.parent.getSourceFile().fileName
 

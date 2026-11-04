@@ -20,7 +20,7 @@
     "lint": "eslint --ext .ts src"
   },
   "peerDependencies": {
-    "typedoc": "0.27.x"
+    "typedoc": "0.28.x"
   },
   "devDependencies": {
     "@types/eslint": "^9.6.1",

@@ -51,6 +51,10 @@ const allReferences = [
   "mfa",
   "search",
   "search-provider",
+  "loyalty",
+  "loyalty-models",
+  "store-credit",
+  "store-credit-models",
 ]
 
 export default allReferences
