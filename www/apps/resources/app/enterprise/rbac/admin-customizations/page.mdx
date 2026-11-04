@@ -1,0 +1,320 @@
+---
+sidebar_label: "Check Permissions in Admin Customizations"
+tags:
+  - rbac
+  - admin
+  - how to
+---
+
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `Check Permissions in Admin Customizations`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice beta />
+
+In this guide, you'll learn how to show or hide content in your admin customizations based on the logged-in admin user's permissions and roles.
+
+## Permission Utilities Overview
+
+In your [admin customizations](!docs!/learn/fundamentals/admin), such as widgets and UI routes, you can use the following utilities to check the admin user's permissions and roles:
+
+- `PermissionGuard`: A component that renders its children only if the admin user has the specified permissions.
+- `RoleGuard`: A component that renders its children only if the admin user has the specified roles.
+- `usePermissions`: A hook that returns functions to check the admin user's permissions and roles.
+
+A permission is a string of the format `resource:operation`, such as `customer:create`. It matches the [policies](../concepts/page.mdx#policy) of the admin user's roles, including wildcard policies.
+
+When the RBAC Module isn't installed, these utilities allow all permissions and roles.
+
+<Note title="Tip">
+
+These utilities only change what the Medusa Admin dashboard displays. The Medusa backend still checks the admin user's permissions when the dashboard sends requests to API routes. Learn how to guard your custom API routes in the [Protect API Routes](../protect-routes/page.mdx) guide.
+
+</Note>
+
+---
+
+## PermissionGuard Component
+
+The `PermissionGuard` component renders its children only if the admin user has the specified permissions.
+
+For example, to show a button only to admin users who can create customers:
+
+export const guardHighlights = [
+  ["8", "PermissionGuard", "Render the button only if the user can create customers."],
+]
+
+```tsx title="src/admin/widgets/customer-actions.tsx" highlights={guardHighlights}
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Button, Container } from "@medusajs/ui"
+import { PermissionGuard } from "@medusajs/dashboard/hooks"
+
+const CustomerActionsWidget = () => {
+  return (
+    <Container>
+      <PermissionGuard resource="customer" operation="create">
+        <Button>Create Customer</Button>
+      </PermissionGuard>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "customer.list.before",
+})
+
+export default CustomerActionsWidget
+```
+
+The `PermissionGuard` component accepts the following props:
+
+<TypeList
+  types={[
+    {
+      name: "resource",
+      type: "`string`",
+      description: "The resource to check, such as `customer`. Pass it with `operation`.",
+      optional: true,
+    },
+    {
+      name: "operation",
+      type: "`string`",
+      description: "The operation to check on the resource, such as `create`. Pass it with `resource`.",
+      optional: true,
+    },
+    {
+      name: "permission",
+      type: "`string`",
+      description: "A single permission to check, such as `customer:read`. Use it instead of `resource` and `operation`.",
+      optional: true,
+    },
+    {
+      name: "permissions",
+      type: "`string[]`",
+      description: "Multiple permissions to check. By default, the admin user must have at least one of them.",
+      optional: true,
+    },
+    {
+      name: "requireAll",
+      type: "`boolean`",
+      description: "Whether the admin user must have all the permissions in `permissions`.",
+      optional: true,
+      defaultValue: "false",
+    },
+    {
+      name: "fallback",
+      type: "`ReactNode`",
+      description: "The content to render if the admin user doesn't have the permissions. By default, the component renders nothing.",
+      optional: true,
+    },
+    {
+      name: "showLoading",
+      type: "`boolean`",
+      description: "Whether to render `loadingComponent` while the admin user's permissions load.",
+      optional: true,
+      defaultValue: "false",
+    },
+    {
+      name: "loadingComponent",
+      type: "`ReactNode`",
+      description: "The content to render while the admin user's permissions load, if `showLoading` is enabled.",
+      optional: true,
+    },
+  ]}
+  sectionTitle="PermissionGuard Component"
+/>
+
+For example, to require multiple permissions and show a message if the admin user doesn't have them:
+
+```tsx
+<PermissionGuard
+  permissions={["customer:read", "order:read"]}
+  requireAll
+  fallback={<Text>You can't view customer orders.</Text>}
+>
+  <CustomerOrders />
+</PermissionGuard>
+```
+
+---
+
+## RoleGuard Component
+
+The `RoleGuard` component renders its children only if the admin user has the specified roles, by their names. It's useful when checking a role is more practical than listing its permissions.
+
+For example:
+
+```tsx
+import { RoleGuard } from "@medusajs/dashboard/hooks"
+
+// ...
+
+<RoleGuard role="Billing">
+  <BillingSection />
+</RoleGuard>
+```
+
+By default, an admin user has a role if their permissions cover all the policies of that role, even if the role isn't assigned to them. For example, a super admin passes every role check. To require that the role is assigned to the admin user, set the `match` prop to `assigned`:
+
+```tsx
+<RoleGuard role="Auditor" match="assigned">
+  <AuditLogExport />
+</RoleGuard>
+```
+
+The `RoleGuard` component accepts the following props:
+
+<TypeList
+  types={[
+    {
+      name: "role",
+      type: "`string`",
+      description: "The name of the role to check.",
+      optional: true,
+    },
+    {
+      name: "roles",
+      type: "`string[]`",
+      description: "The names of multiple roles to check. By default, the admin user must have at least one of them.",
+      optional: true,
+    },
+    {
+      name: "requireAll",
+      type: "`boolean`",
+      description: "Whether the admin user must have all the roles in `roles`.",
+      optional: true,
+      defaultValue: "false",
+    },
+    {
+      name: "match",
+      type: "`\"covers\"` \\| `\"assigned\"`",
+      description: "How to match roles. `covers` passes if the admin user's permissions include all the role's policies. `assigned` passes only if the role is assigned to the admin user.",
+      optional: true,
+      defaultValue: "\"covers\"",
+    },
+    {
+      name: "fallback",
+      type: "`ReactNode`",
+      description: "The content to render if the admin user doesn't have the roles. By default, the component renders nothing.",
+      optional: true,
+    },
+    {
+      name: "showLoading",
+      type: "`boolean`",
+      description: "Whether to render `loadingComponent` while the admin user's permissions load.",
+      optional: true,
+      defaultValue: "false",
+    },
+    {
+      name: "loadingComponent",
+      type: "`ReactNode`",
+      description: "The content to render while the admin user's permissions load, if `showLoading` is enabled.",
+      optional: true,
+    },
+  ]}
+  sectionTitle="RoleGuard Component"
+/>
+
+<Note type="warning">
+
+`RoleGuard` matches roles by their names. If you rename a role, update the guards that reference its old name.
+
+</Note>
+
+---
+
+## usePermissions Hook
+
+The `usePermissions` hook returns functions to check the admin user's permissions and roles in your component's logic.
+
+For example:
+
+export const hookHighlights = [
+  ["9", "usePermissions", "Retrieve the permission check functions."],
+  ["15", "can", "Check whether the user can delete customers."],
+]
+
+```tsx title="src/admin/widgets/customer-delete.tsx" highlights={hookHighlights}
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Button, Container } from "@medusajs/ui"
+import { usePermissions } from "@medusajs/dashboard/hooks"
+
+const CustomerDeleteWidget = () => {
+  const {
+    can,
+    isLoading,
+  } = usePermissions()
+
+  if (isLoading) {
+    return null
+  }
+
+  if (!can("customer", "delete")) {
+    return null
+  }
+
+  return (
+    <Container>
+      <Button variant="danger">Delete Customers</Button>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "customer.list.before",
+})
+
+export default CustomerDeleteWidget
+```
+
+The hook returns an object with the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "can",
+      type: "`(resource: string, operation: string) => boolean`",
+      description: "Whether the admin user can perform an operation on a resource.",
+    },
+    {
+      name: "hasPermission",
+      type: "`(permission: string) => boolean`",
+      description: "Whether the admin user has a permission, such as `customer:read`.",
+    },
+    {
+      name: "hasAnyPermission",
+      type: "`(permissions: string[]) => boolean`",
+      description: "Whether the admin user has at least one of the permissions.",
+    },
+    {
+      name: "hasAllPermissions",
+      type: "`(permissions: string[]) => boolean`",
+      description: "Whether the admin user has all the permissions.",
+    },
+    {
+      name: "hasRole",
+      type: "`(role: string, match?: \"covers\" | \"assigned\") => boolean`",
+      description: "Whether the admin user has a role, by its name. The `match` parameter works like the `match` prop of `RoleGuard`.",
+    },
+    {
+      name: "hasAnyRole",
+      type: "`(roles: string[], match?: \"covers\" | \"assigned\") => boolean`",
+      description: "Whether the admin user has at least one of the roles.",
+    },
+    {
+      name: "hasAllRoles",
+      type: "`(roles: string[], match?: \"covers\" | \"assigned\") => boolean`",
+      description: "Whether the admin user has all the roles.",
+    },
+    {
+      name: "isLoading",
+      type: "`boolean`",
+      description: "Whether the admin user's permissions are still loading.",
+    },
+  ]}
+  sectionTitle="usePermissions Hook"
+/>

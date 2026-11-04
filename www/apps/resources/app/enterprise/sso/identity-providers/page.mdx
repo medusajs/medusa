@@ -1,0 +1,379 @@
+---
+generate_toc: true
+sidebar_label: "Common Provider Configurations"
+---
+
+export const metadata = {
+  title: `Configure Common Identity Providers for SSO`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice beta featureName="module provider" />
+
+In this guide, you'll learn how to configure the [OIDC Auth Module Provider](../page.mdx) for common identity providers.
+
+<Note title="Looking for social login?">
+
+SSO with OIDC is intended for the users of your organization, such as admin users authenticating with your company's identity provider.
+
+To let customers log in to your storefront with a social account, use the [Google](../../../commerce-modules/auth/auth-providers/google/page.mdx) or [GitHub](../../../commerce-modules/auth/auth-providers/github/page.mdx) Auth Module Providers instead. They don't require an enterprise license.
+
+</Note>
+
+Every identity provider in this guide implements OIDC, so the setup is the same in all of them:
+
+1. Register an application, which identity providers also call a client or an app integration, with your identity provider.
+2. Set the application's redirect URI to the page of your frontend that sends the callback request to Medusa. For the Medusa Admin dashboard, that's `{your_medusa_url}/app/login?auth_provider={provider_id}`, where `{provider_id}` is the `id` you register the provider with.
+3. Configure the application's client ID, client secret, and the identity provider's issuer URL in the provider's options.
+
+The sections below cover the values and settings specific to each identity provider.
+
+---
+
+## Configure Okta for SSO Authentication
+
+### Register the Application in Okta
+
+1. Log in to the [Okta Admin Console](https://developer.okta.com/login/).
+2. Go to Applications → Applications, then click "Create App Integration".
+3. Choose "OIDC - OpenID Connect" as the sign-in method, and "Web Application" as the application type.
+4. Set the following in the application's settings:
+    - **Sign-in redirect URIs**: The page that sends the callback request to Medusa. For local development, use `http://localhost:9000/app/login?auth_provider=okta`. In production, use your application's public URL, such as `https://example.com/app/login?auth_provider=okta`.
+    - **Sign-out redirect URIs**: The page to redirect to after a sign-out. For local development, use `http://localhost:9000/app/login`. In production, use your application's public URL, such as `https://example.com/app/login`.
+    - **Assignments**: The users or groups in your organization that can authenticate.
+5. Once the application is created, copy its client ID and client secret from the application's "General" tab.
+
+### Configure the Provider for Okta
+
+Add the following configuration to `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              issuer: process.env.OKTA_ISSUER,
+              client_id: process.env.OKTA_CLIENT_ID,
+              client_secret: process.env.OKTA_CLIENT_SECRET,
+              callback_url: process.env.OKTA_CALLBACK_URL,
+              display_name: "Okta",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Where the environment variables are:
+
+```bash
+OKTA_ISSUER=https://your-org.okta.com
+OKTA_CLIENT_ID=<YOUR_CLIENT_ID>
+OKTA_CLIENT_SECRET=<YOUR_CLIENT_SECRET>
+OKTA_CALLBACK_URL=http://localhost:9000/app/login?auth_provider=okta
+```
+
+Use `https://your-org.okta.com` as the issuer to authenticate against the org authorization server. If you created a custom authorization server, use its issuer URL instead, which looks like `https://your-org.okta.com/oauth2/{authorization_server_id}`.
+
+Okta returns the `email_verified` claim with the default scopes, so you don't need to change the [require_verified_email option](../provider-options/page.mdx#require_verified_email).
+
+---
+
+## Configure Microsoft Entra ID for SSO Authentication
+
+### Register the Application in Entra ID
+
+1. Log in to the [Microsoft Entra admin center](https://entra.microsoft.com/).
+2. Go to Identity → Applications → App registrations, then click "New registration".
+3. Under "Redirect URI", choose "Web" as the platform and set the URI to the page that sends the callback request to Medusa. For local development, use `http://localhost:9000/app/login?auth_provider=entra`. In production, use your application's public URL, such as `https://example.com/app/login?auth_provider=entra`.
+4. Once the application is registered, copy the "Application (client) ID" and the "Directory (tenant) ID" from its Overview page.
+5. Go to the application's "Certificates & secrets" tab, create a new client secret, and copy its value.
+
+### Configure the Provider for Entra ID
+
+Add the following configuration to `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "entra",
+            options: {
+              issuer: process.env.ENTRA_ISSUER,
+              client_id: process.env.ENTRA_CLIENT_ID,
+              client_secret: process.env.ENTRA_CLIENT_SECRET,
+              callback_url: process.env.ENTRA_CALLBACK_URL,
+              display_name: "Microsoft Entra ID",
+              require_verified_email: false,
+              claim_mappings: {
+                email: "preferred_username",
+                name: "name",
+              },
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Entra ID doesn't return the `email_verified` claim, so you must set [require_verified_email](../provider-options/page.mdx#require_verified_email) to `false`. It also omits the `email` claim for users without a set mail attribute, which is why the configuration above reads the email from the `preferred_username` claim instead.
+
+Where the environment variables are:
+
+```bash
+ENTRA_ISSUER=https://login.microsoftonline.com/<TENANT_ID>/v2.0
+ENTRA_CLIENT_ID=<YOUR_CLIENT_ID>
+ENTRA_CLIENT_SECRET=<YOUR_CLIENT_SECRET>
+ENTRA_CALLBACK_URL=http://localhost:9000/app/login?auth_provider=entra
+```
+
+Replace `<TENANT_ID>` with your directory's tenant ID. The `/v2.0` suffix is required, since it selects the endpoints that return an ID token.
+
+<Note title="Warning" type="warning">
+
+Entra ID accepts a static query parameter in a redirect URI, which the dashboard's callback URL has, but the Microsoft Entra admin center has historically blocked entering one. If it rejects the URI, add it to the application's manifest instead.
+
+Entra ID also matches redirect URIs case-sensitively, and only accepts `https` URIs, with an exception for `localhost`.
+
+</Note>
+
+---
+
+## Configure Auth0 for SSO Authentication
+
+### Register the Application in Auth0
+
+1. Log in to the [Auth0 Dashboard](https://manage.auth0.com/).
+2. Go to Applications → Applications, then click "Create Application".
+3. Choose "Regular Web Applications" as the application type.
+4. In the application's Settings tab, set "Allowed Callback URLs" to the page that sends the callback request to Medusa. For local development, use `http://localhost:9000/app/login?auth_provider=auth0`. In production, use your application's public URL, such as `https://example.com/app/login?auth_provider=auth0`. Auth0 matches the URL exactly, including its protocol and port.
+5. Copy the application's domain, client ID, and client secret from the same tab.
+
+### Configure the Provider for Auth0
+
+Add the following configuration to `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "auth0",
+            options: {
+              issuer: process.env.AUTH0_ISSUER,
+              client_id: process.env.AUTH0_CLIENT_ID,
+              client_secret: process.env.AUTH0_CLIENT_SECRET,
+              callback_url: process.env.AUTH0_CALLBACK_URL,
+              display_name: "Auth0",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Where the environment variables are:
+
+```bash
+AUTH0_ISSUER=https://your-tenant.us.auth0.com/
+AUTH0_CLIENT_ID=<YOUR_CLIENT_ID>
+AUTH0_CLIENT_SECRET=<YOUR_CLIENT_SECRET>
+AUTH0_CALLBACK_URL=http://localhost:9000/app/login?auth_provider=auth0
+```
+
+Auth0's issuer URL ends with a trailing slash, and its ID tokens carry the same value in the `iss` claim. Keep the slash, since Medusa validates the claim against the configured issuer.
+
+---
+
+## Configure Keycloak for SSO Authentication
+
+### Register the Client in Keycloak
+
+1. Log in to the Keycloak Admin Console and select the realm to authenticate against.
+2. Go to Clients, then click "Create client".
+3. Choose "OpenID Connect" as the client type, and set a client ID.
+4. Enable "Client authentication" to create a confidential client, and keep the "Standard flow" authentication flow enabled.
+5. Set "Valid redirect URIs" to the page that sends the callback request to Medusa. For local development, use `http://localhost:9000/app/login?auth_provider=keycloak`. In production, use your application's public URL, such as `https://example.com/app/login?auth_provider=keycloak`.
+6. Once the client is created, copy its secret from the client's "Credentials" tab.
+
+### Configure the Provider for Keycloak
+
+Add the following configuration to `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "keycloak",
+            options: {
+              issuer: process.env.KEYCLOAK_ISSUER,
+              client_id: process.env.KEYCLOAK_CLIENT_ID,
+              client_secret: process.env.KEYCLOAK_CLIENT_SECRET,
+              callback_url: process.env.KEYCLOAK_CALLBACK_URL,
+              display_name: "Keycloak",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Where the environment variables are:
+
+```bash
+KEYCLOAK_ISSUER=https://auth.example.com/realms/your-realm
+KEYCLOAK_CLIENT_ID=<YOUR_CLIENT_ID>
+KEYCLOAK_CLIENT_SECRET=<YOUR_CLIENT_SECRET>
+KEYCLOAK_CALLBACK_URL=http://localhost:9000/app/login?auth_provider=keycloak
+```
+
+The issuer is the realm's URL, so it always includes the `/realms/{realm_name}` path. A Keycloak instance served over `http` only works for `localhost` outside of production.
+
+---
+
+## Configure Google Workspace for SSO Authentication
+
+<Note title="Tip">
+
+If you only need social login for customers in your storefront, use the [Google Auth Module Provider](../../../commerce-modules/auth/auth-providers/google/page.mdx) instead. It doesn't require an enterprise license.
+
+</Note>
+
+### Register the Application in Google Cloud
+
+1. Log in to the [Google Cloud Console](https://console.cloud.google.com/) and select or create a project.
+2. Go to APIs & Services → Credentials, then click "Create Credentials" and choose "OAuth client ID".
+3. Choose "Web application" as the application type.
+4. Under "Authorized redirect URIs", add the page that sends the callback request to Medusa. For local development, use `http://localhost:9000/app/login?auth_provider=google-workspace`. In production, use your application's public URL, such as `https://example.com/app/login?auth_provider=google-workspace`.
+5. Copy the generated client ID and client secret.
+
+### Configure the Provider for Google Workspace
+
+Add the following configuration to `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "google-workspace",
+            options: {
+              issuer: "https://accounts.google.com",
+              client_id: process.env.GOOGLE_CLIENT_ID,
+              client_secret: process.env.GOOGLE_CLIENT_SECRET,
+              callback_url: process.env.GOOGLE_CALLBACK_URL,
+              display_name: "Google",
+              allowed_email_domains: ["example.com"],
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Any Google account can authenticate with a Google OAuth client, not only the accounts in your Workspace organization. So, always set the [allowed_email_domains option](../provider-options/page.mdx#allowed_email_domains) to your organization's domains, otherwise anyone with a Google account can create an identity in your Medusa application.
+
+---
+
+## Register Multiple Identity Providers
+
+You can register the OIDC Auth Module Provider more than once, which is useful when different groups of users authenticate with different identity providers.
+
+Each registration needs its own `id` and, since the ID isn't shown to users, its own `display_name`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/auth",
+      // ...
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "okta",
+            options: {
+              // Okta options...
+              display_name: "Okta",
+            },
+          },
+          {
+            resolve: "@medusajs/medusa/auth-oidc",
+            id: "entra",
+            options: {
+              // Entra ID options...
+              display_name: "Microsoft Entra ID",
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Each registration is reached at its own routes, so the above registers `/auth/user/okta` and `/auth/user/entra`. Add every ID you want an actor type to use to the [authMethodsPerActor configuration](../page.mdx#4-allow-the-provider-for-the-actor-types-that-use-it).
+
+---
+
+## Use Another Identity Provider
+
+The provider works with any identity provider that implements OIDC, so it isn't limited to the ones in this guide. To configure a different one:
+
+1. Find the identity provider's issuer URL. Its discovery document is served at `{issuer}/.well-known/openid-configuration`, so opening that URL in your browser confirms the value is correct.
+2. Register an application with the identity provider, and set its redirect URI to the page that sends the callback request to Medusa.
+3. Check the discovery document's `claims_supported` property, or the identity provider's documentation, for the claims it returns. If `email_verified` isn't among them, set [require_verified_email](../provider-options/page.mdx#require_verified_email) to `false`.
+
+If the identity provider doesn't serve a discovery document, set its [authorization_endpoint, token_endpoint, and jwks_uri](../provider-options/page.mdx#endpoint-options) options explicitly.
