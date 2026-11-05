@@ -3711,7 +3711,7 @@ __metadata:
     jsonwebtoken: "npm:^9.0.2"
     lodash.memoize: "npm:^4.1.2"
     morgan: "npm:^1.12.0"
-    path-to-regexp: "npm:^8.4.0"
+    path-to-regexp: "npm:^9.0.0"
     tsconfig-paths: "npm:^4.2.0"
     zod-validation-error: "npm:5.0.0"
   peerDependencies:
@@ -18219,10 +18219,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:^8.4.0":
-  version: 8.4.2
-  resolution: "path-to-regexp@npm:8.4.2"
-  checksum: 10c0/05b115c49b47ad252ce05faa32930f643f23769c68b8bcfe78ad833545140c48bbffb3266986d6c8d5db13a64cf12e07e0d72d9882cab830efeefa553533ebaf
+"path-to-regexp@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "path-to-regexp@npm:9.0.0"
+  checksum: 10c0/1a49c788d9a9ef3af682a8e16ffcd537457fd98aab16a269ea1a20a6915053e0dca28b74fa3dc0a0ece9a12802057ab01da124af2f0c0cd669295deb06884131
   languageName: node
   linkType: hard
 
