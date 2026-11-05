@@ -1,5 +1,18 @@
 import crypto from "node:crypto"
-import Scrypt from "scrypt-kdf"
+
+type ScryptKdf = typeof import("scrypt-kdf", {
+  with: { "resolution-mode": "import" },
+})
+
+let scryptKdf: ScryptKdf | undefined
+
+// scrypt-kdf is ESM-only, and Jest run with --experimental-vm-modules rejects require() of ESM
+async function loadScrypt(): Promise<ScryptKdf> {
+  scryptKdf ??= (
+    (await import("scrypt-kdf")) as unknown as { default: ScryptKdf }
+  ).default
+  return scryptKdf
+}
 
 const ENCRYPTION_VERSION = "v1"
 const RECOVERY_CODE_HASH_CONFIG = { logN: 15, r: 8, p: 1 }
@@ -55,18 +68,20 @@ export function generateRecoveryCode(): string {
 }
 
 export async function hashRecoveryCode(code: string): Promise<string> {
+  const Scrypt = await loadScrypt()
   const hash = await Scrypt.kdf(
     normalizeRecoveryCode(code),
     RECOVERY_CODE_HASH_CONFIG
   )
 
-  return hash.toString("base64")
+  return Buffer.from(hash).toString("base64")
 }
 
 export async function verifyRecoveryCodeHash(
   hash: string,
   code: string
 ): Promise<boolean> {
+  const Scrypt = await loadScrypt()
   return await Scrypt.verify(
     Buffer.from(hash, "base64"),
     normalizeRecoveryCode(code)

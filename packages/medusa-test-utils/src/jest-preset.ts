@@ -2,7 +2,7 @@
  * ESM-only packages loaded by Medusa at runtime. Jest can't `require()` them,
  * so the preset lets the project's transformer compile them to CommonJS.
  */
-export const ESM_ONLY_DEPENDENCIES: string[] = []
+export const ESM_ONLY_DEPENDENCIES: string[] = ["scrypt-kdf"]
 
 const PNP_PATTERN = "\\.pnp\\.[^\\/]+$"
 
