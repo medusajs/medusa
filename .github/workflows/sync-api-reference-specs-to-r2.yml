@@ -82,21 +82,37 @@ jobs:
           STRIPPED=$(echo "$DELETED_FILES" | tr ' ' '\n' | sed 's|^www/apps/api-reference/||' | tr '\n' ' ')
           node ./scripts/upload-specs-to-r2.mjs --remove $STRIPPED
 
+      # The `secrets` context isn't available in a step's `if`, so the check is
+      # done here and exposed as an output.
+      - name: Check whether the cloud repo is configured
+        id: cloud
+        if: steps.changed.outputs.any_changed == 'true'
+        env:
+          MEDUSA_CLOUD_REPO: ${{ secrets.MEDUSA_CLOUD_REPO }}
+        run: |
+          if [ -n "$MEDUSA_CLOUD_REPO" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Skipping the sync to cloud: MEDUSA_CLOUD_REPO isn't set."
+          fi
+
       - name: Generate GitHub App token
         id: app-token
-        if: steps.changed.outputs.any_changed == 'true'
+        if: steps.cloud.outputs.configured == 'true'
         uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1
         with:
           app-id: ${{ secrets.MEDUSA_APP_ID }}
           private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
-          owner: medusajs
-          repositories: platform
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ secrets.MEDUSA_CLOUD_REPO }}
           permission-contents: write
 
       - name: Sync to cloud
-        if: steps.changed.outputs.any_changed == 'true'
+        if: steps.cloud.outputs.configured == 'true'
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          CLOUD_REPO: ${{ github.repository_owner }}/${{ secrets.MEDUSA_CLOUD_REPO }}
         run: |
           VERSION="$(sed -nE 's/^  version: ([0-9]+\.[0-9]+\.[0-9]+)$/\1/p' specs/admin/openapi.full.yaml | head -1)"
           if [ -z "$VERSION" ]; then
@@ -104,6 +120,6 @@ jobs:
             exit 1
           fi
 
-          gh api repos/medusajs/platform/dispatches \
+          gh api "repos/$CLOUD_REPO/dispatches" \
             -f event_type=medusa-specs-uploaded \
             -f "client_payload[version]=$VERSION"
