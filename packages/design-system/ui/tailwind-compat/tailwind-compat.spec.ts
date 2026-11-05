@@ -1,5 +1,6 @@
 import { compile } from "@tailwindcss/node"
 import { Scanner } from "@tailwindcss/oxide"
+import { beforeAll, describe, expect, it } from "vitest"
 import path from "path"
 import postcss from "postcss"
 import tailwindcssV3 from "tailwindcss-v3"

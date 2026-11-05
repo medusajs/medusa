@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "types": ["node", "vitest/globals"]
+  },
+  "include": [
+    "tailwind-compat/**/*.ts",
+    "tailwind-compat/**/*.tsx"
+  ]
+}

@@ -24,7 +24,8 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "yarn run -T tsup",
-    "generate": "toolbox tokens -o './src/theme'"
+    "generate": "toolbox tokens -o './src/theme'",
+    "test": "yarn run -T vitest --run src/theme-css.spec.ts"
   },
   "dependencies": {
     "tailwindcss-animate": "^1.0.6",
