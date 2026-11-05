@@ -1,0 +1,197 @@
+import { Kbd, Note, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Vault`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to store and manage your organization's third-party service secrets with Vault.
+
+<Note>
+
+Vault is currently available only to organizations that have the feature enabled. If your organization doesn't have access, the dashboard redirects you to the organization's settings page when you try to open Vault.
+
+</Note>
+
+## What is Vault?
+
+Vault is a section in your organization's settings where you store secrets, such as API keys, for the third-party services that your projects use. For example, you can store your Stripe secret key under the `stripe.com` service.
+
+Vault encrypts the secrets you store and lets you control which projects and environments can access each secret.
+
+Vault groups secrets by service, where each service is identified by its domain. A service can have multiple secrets, and each secret keeps a version history as you rotate its value.
+
+---
+
+## View Vault Services
+
+To view the services that your organization stores secrets for:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization) whose secrets you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Vault** in the sidebar.
+
+If your organization doesn't have any secrets yet, the page shows an empty state with an **Add secret** button to [add your first secret](#add-secrets).
+
+Otherwise, the page shows a list of services grouped by domain, along with the total number of services and secrets. Each row shows the service's name, its domain, and the number of secrets stored for it.
+
+To search the services, type in the search field above the list. You can press <Kbd>/</Kbd> to focus the search field.
+
+---
+
+## Add Secrets
+
+You can add one or more secrets for a service at once.
+
+To add secrets:
+
+1. [Go to the Vault page](#view-vault-services).
+2. Click the **Add secret** button at the top right. You can also click **Add secret** from a [service's details page](#view-a-services-secrets), which pre-fills the service's domain.
+3. In the **Service** field, enter the domain of the third-party service, such as `stripe.com`. If Vault recognizes the service, it shows the service's name with a checkmark next to the field.
+4. For each secret, enter the following details:
+    - **Name**: The secret's identifier key, such as `STRIPE_API_KEY`.
+    - **Value**: The secret's value.
+    - **Expiration**: Optionally, choose when the secret expires. You can choose **None**, **30 days**, **90 days**, **1 year**, or **Custom**. If you choose **Custom**, select the expiration date from the date picker.
+5. To add more secrets for the same service, click **Add another** and repeat the previous step.
+6. Click the submit button, or press <Kbd>⌘</Kbd> + <Kbd>↵</Kbd>, to save the secrets.
+
+---
+
+## View a Service's Secrets
+
+To view the secrets of a service:
+
+1. [Go to the Vault page](#view-vault-services).
+2. Click the service's row.
+
+The service's page shows its name, domain, and the date that the first secret was added. It also shows a table of the service's secrets with the following columns:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Column
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        **Secret**
+      </Table.Cell>
+      <Table.Cell>
+        The secret's name and unique ID.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        **Value**
+      </Table.Cell>
+      <Table.Cell>
+        The secret's masked value.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        **Expires**
+      </Table.Cell>
+      <Table.Cell>
+        The date that the secret expires.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        **Last changed**
+      </Table.Cell>
+      <Table.Cell>
+        When the secret was last changed.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## View a Secret's Details
+
+To view a secret's details:
+
+1. [Go to the service's page](#view-a-services-secrets).
+2. Click the secret's row.
+
+The secret's page shows its name and unique ID, which you can copy with the copy button next to it. The page also has the following sections:
+
+- **Value**: The secret's masked value. Learn how to view it in the [Reveal a Secret's Value](#reveal-a-secrets-value) section.
+- **Project access**: The projects and environments that can access the secret. Learn how to manage them in the [Manage Project Access](#manage-project-access) section.
+- **Details**: The secret's service, version number, expiration date, when it was last changed, when it was created, and the user who created it. If the secret expires soon or has already expired, the expiration date shows an **Expiring soon** or **Expired** badge.
+
+---
+
+## Reveal a Secret's Value
+
+To reveal a secret's value:
+
+1. [Go to the secret's page](#view-a-secrets-details).
+2. In the **Value** section, click **Reveal**.
+3. Confirm revealing the value in the prompt.
+
+The page shows the plaintext value. You can then copy the value, or hide it again.
+
+---
+
+## Manage Project Access
+
+The **Project access** section of a secret's page lists the projects and environments that can access the secret.
+
+### Add Project Access
+
+To give a project access to a secret:
+
+1. [Go to the secret's page](#view-a-secrets-details).
+2. In the **Project access** section, click the button to add project access.
+3. In the modal that opens, select a project, or select **All projects**.
+4. Choose the environments that can access the secret. You can choose all environments, or select specific environments from the list. You can filter the list to find environments.
+5. Save the project access.
+
+### Edit Project Access
+
+To edit the environments that a project can access a secret from:
+
+1. [Go to the secret's page](#view-a-secrets-details).
+2. In the **Project access** section, choose to edit the project's access.
+3. Change the project or environment selection, then save your changes.
+
+### Remove Project Access
+
+To remove a project's access to a secret:
+
+1. [Go to the secret's page](#view-a-secrets-details).
+2. In the **Project access** section, choose to remove the project's access.
+3. Confirm removing the access in the prompt.
+
+---
+
+## Rotate a Secret
+
+Rotating a secret replaces its value with a new one. Vault saves the new value as a new version of the secret.
+
+To rotate a secret:
+
+1. [Go to the secret's page](#view-a-secrets-details).
+2. Open the secret's action menu and choose **Rotate**.
+3. In the **New value** field, enter the secret's new value.
+4. Optionally, choose a new expiration from the **Expiration** dropdown. It has the same options as when you [add a secret](#add-secrets).
+5. Submit the form to save the new value.
+
+---
+
+## Delete a Secret
+
+To delete a secret:
+
+1. [Go to the secret's page](#view-a-secrets-details).
+2. Open the secret's action menu and choose **Delete**.

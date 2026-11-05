@@ -136,6 +136,13 @@ export const generatedSidebars = [
                 "title": "Connections",
                 "path": "/organizations/connections",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Vault",
+                "path": "/organizations/vault",
+                "children": []
               }
             ]
           },
