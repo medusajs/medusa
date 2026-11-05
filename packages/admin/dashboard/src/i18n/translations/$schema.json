@@ -12854,6 +12854,15 @@
         "passwordMismatch": {
           "type": "string"
         },
+        "signedInTitle": {
+          "type": "string"
+        },
+        "signedInHint": {
+          "type": "string"
+        },
+        "signOut": {
+          "type": "string"
+        },
         "toast": {
           "type": "object",
           "properties": {
@@ -12879,6 +12888,9 @@
         "invalidTokenTitle",
         "invalidTokenHint",
         "passwordMismatch",
+        "signedInTitle",
+        "signedInHint",
+        "signOut",
         "toast"
       ],
       "additionalProperties": false

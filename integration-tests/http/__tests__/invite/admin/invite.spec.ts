@@ -100,42 +100,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should accept an invite with the bearer token when another user's session is present", async () => {
-        const createSession = await api.post("/auth/session", {}, adminHeaders)
-        const [cookie] = createSession.headers["set-cookie"][0].split(";")
-
-        const signup = await api.post("/auth/user/emailpass/register", {
-          email: "invite@medusa-commerce.com",
-          password: "secret_password",
-        })
-
-        const response = await api
-          .post(
-            `/admin/invites/accept?token=${invite.token}`,
-            {
-              first_name: "Test",
-              last_name: "User",
-            },
-            {
-              headers: {
-                Cookie: cookie,
-                authorization: `Bearer ${signup.data.token}`,
-              },
-            }
-          )
-          .catch((e) => e.response)
-
-        expect(response.status).toEqual(200)
-        expect(response.data.user).toEqual(
-          expect.objectContaining({
-            email: "invite@medusa-commerce.com",
-            first_name: "Test",
-            last_name: "User",
-          })
-        )
-      })
-
-      it("should still reject accepting an invite with only another user's session", async () => {
+      it("should reject accepting an invite with another user's session", async () => {
         const createSession = await api.post("/auth/session", {}, adminHeaders)
         const [cookie] = createSession.headers["set-cookie"][0].split(";")
 
