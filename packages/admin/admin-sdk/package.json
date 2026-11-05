@@ -29,5 +29,5 @@
     "@medusajs/admin-shared": "2.22.3",
     "zod": "4.6.6"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@4.18.1"
 }
