@@ -94,4 +94,5 @@ yarn test src/http/__tests__/validate-query.spec.ts
 - In production, a missing `http.jwtSecret` / `http.cookieSecret` throws (`ConfigManager.rejectErrors`); in development it only warns and falls back to `"supersecret"`. Setting `jwtPublicKey` without an `algorithm` in `jwtOptions`/`jwtVerifyOptions` is also rejected.
 - Build validators with `z` from `@medusajs/framework/zod`: the HTTP validators are typed against and run with the Zod v4 copy in `@medusajs/deps/zod`, not whatever zod version a project installs.
 - `@medusajs/framework/caching` is listed in `exports` but has no `src/caching` source and no build output; do not import it.
+- `build-tools/compiler.ts` uses the TypeScript API on 5.x and 6.x, but on 7.x (no emit API) runs the project's `tsc` binary with a temporary `.medusa/tsconfig.build.json`. On 7.x, `loadTSConfigFile()` returns the `tsc --showConfig` options, so enum options are strings (`"es2021"`), not numbers.
 - `validateAndTransformQuery` consumes and resets `req.allowed`, so custom allowed fields must be set by a middleware that runs before it on the same route.
