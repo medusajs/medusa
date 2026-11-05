@@ -323,6 +323,7 @@ export class Compiler {
     }
 
     const { compilerOptions = {}, files = [] } = JSON.parse(output)
+    // Options keep their tsconfig JSON form, so enums are strings ("es2021"), not ts enum values
     return {
       options: compilerOptions,
       fileNames: files.map((file: string) =>
