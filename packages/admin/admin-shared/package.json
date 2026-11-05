@@ -25,5 +25,5 @@
   "scripts": {
     "build": "yarn run -T tsup"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@4.18.1"
 }

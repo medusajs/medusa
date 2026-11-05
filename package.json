@@ -161,5 +161,5 @@
     "vite": "^7.3.6",
     "swagger-inline@^8.1.0": "patch:swagger-inline@npm:^8.1.0#.yarn/patches/swagger-inline-npm-8.1.0-ba84ecd7e8.patch"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@4.18.1"
 }

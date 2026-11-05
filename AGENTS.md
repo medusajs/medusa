@@ -73,7 +73,7 @@ Medusa apps are customized, not forked. An application (or plugin) extends Medus
 
 ### 2. Build System & Commands
 
-**Package Manager**: Yarn 3.2.1 with node-modules linker
+**Package Manager**: Yarn 4.18.1 with node-modules linker
 
 **Essential Commands:**
 
