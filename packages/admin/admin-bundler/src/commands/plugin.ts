@@ -1,8 +1,8 @@
 import { readFileSync } from "fs"
-import { builtinModules } from "node:module"
 import path from "path"
 import type { UserConfig } from "vite"
 import { clearPluginBuild } from "../plugins/clear-plugin-build"
+import { escapeRegExp } from "../utils/escape-regexp"
 
 interface PluginOptions {
   root: string
@@ -50,10 +50,6 @@ export async function plugin(options: PluginOptions) {
       /**
        * Must match the target in `utils/config.ts` — plugin admin extensions are
        * loaded by the dashboard bundle, so they need the same browser floor.
-       *
-       * This also has to be set explicitly: esbuild 0.27+ refuses to lower
-       * destructuring for `safari14`, which Vite's old `modules` default
-       * included, so leaving it unset breaks `medusa plugin:build` outright.
        */
       target: "baseline-widely-available",
       lib: {
@@ -64,39 +60,9 @@ export async function plugin(options: PluginOptions) {
       emptyOutDir: false,
       minify: false,
       outDir,
-      rollupOptions: {
-        external: (id, importer) => {
-          // If there's no importer, it's a direct dependency
-          // Keep the existing external behavior
-          if (!importer) {
-            const idParts = id.split("/")
-            const name = idParts[0]?.startsWith("@")
-              ? `${idParts[0]}/${idParts[1]}`
-              : idParts[0]
-
-            const builtinModulesWithNodePrefix = [
-              ...builtinModules,
-              ...builtinModules.map((modName) => `node:${modName}`),
-            ]
-
-            return Boolean(
-              (name && external.has(name)) ||
-              (name && builtinModulesWithNodePrefix.includes(name))
-            )
-          }
-
-          // For transient dependencies (those with importers),
-          // bundle them if they're not in our external set
-          const idParts = id.split("/")
-          const name = idParts[0]?.startsWith("@")
-            ? `${idParts[0]}/${idParts[1]}`
-            : idParts[0]
-
-          return Boolean(name && external.has(name))
-        },
+      rolldownOptions: {
         output: {
           preserveModules: false,
-          interop: "auto",
           chunkFileNames: () => {
             return `_chunks/[name]-[hash]`
           },
@@ -104,6 +70,11 @@ export async function plugin(options: PluginOptions) {
       },
     },
     plugins: [
+      vite.esmExternalRequirePlugin({
+        external: [...external].map(
+          (name) => new RegExp(`^${escapeRegExp(name)}(/.*)?$`)
+        ),
+      }),
       react(),
       medusa({
         pluginMode: true,

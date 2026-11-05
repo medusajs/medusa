@@ -50,9 +50,10 @@ Docs: https://docs.medusajs.com/learn/fundamentals/admin/environment-variables.m
 
 ```bash
 yarn build   # tsup, then scripts/assert-esm-imports.mjs
+yarn test    # vitest, specs in src/**/__tests__
 ```
 
-No tests in this package. Exercise changes through a test app with `medusa develop`, `medusa build`, or `medusa plugin:build`.
+`src/commands/__tests__/plugin.spec.ts` runs a full `plugin()` build of a fixture plugin in a temp directory; the other specs cover helpers. `develop` and `build` have no tests, so exercise them through a test app with `medusa develop` and `medusa build`.
 
 ## Gotchas
 
