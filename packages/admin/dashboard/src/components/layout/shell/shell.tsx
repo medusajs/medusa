@@ -28,6 +28,7 @@ import {
   LAYOUT_CONTROLS_LOCATION,
 } from "../../layout-composer/constants"
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+import { useRememberedSearch } from "./use-remembered-search"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const globalShortcuts = useGlobalShortcuts()
@@ -104,7 +105,8 @@ const Gutter = ({ children }: PropsWithChildren) => {
   )
 }
 
-const Breadcrumbs = () => {
+export const Breadcrumbs = () => {
+  const withRememberedSearch = useRememberedSearch()
   const matches = useMatches() as unknown as UIMatch<
     unknown,
     {
@@ -151,7 +153,7 @@ const Breadcrumbs = () => {
             {!isLast ? (
               <Link
                 className="transition-fg hover:text-ui-fg-subtle"
-                to={crumb.path}
+                to={withRememberedSearch(crumb.path)}
               >
                 {crumb.label}
               </Link>
