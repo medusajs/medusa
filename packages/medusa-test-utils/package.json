@@ -22,6 +22,7 @@
   "files": [
     "dist",
     "AGENTS.md",
+    "jest-preset.js",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
