@@ -143,6 +143,7 @@
     "reset": "Palauta",
     "confirm": "Vahvista",
     "edit": "Muokkaa",
+    "view": "Näytä",
     "addItems": "Lisää tuotteita",
     "download": "Lataa",
     "clear": "Tyhjennä",
@@ -2766,6 +2767,7 @@
     "editUser": "Muokkaa käyttäjää",
     "inviteUser": "Kutsu käyttäjä",
     "inviteUserHint": "Kutsu uusi käyttäjä kauppaasi.",
+    "inviteRolesTooltip": "Jos roolia ei valita, käyttäjä kutsutaan ilman oikeuksia. Voit määrittää roolit myöhemmin.",
     "sendInvite": "Lähetä kutsu",
     "pendingInvites": "Odottavat kutsut",
     "deleteInviteWarning": "Olet poistamassa kutsun käyttäjälle {{email}}. Tätä toimintoa ei voi peruuttaa.",
@@ -2867,6 +2869,9 @@
       "filtered": {
         "heading": "Ei tuloksia",
         "description": "Yksikään lupa ei vastaa nykyisiä suodatinehtoja."
+      },
+      "manage": {
+        "successToast": "Luvat päivitettiin onnistuneesti."
       }
     },
     "list": {
@@ -2890,6 +2895,7 @@
     },
     "edit": {
       "header": "Muokkaa käytäntöä",
+      "identityHint": "Avain, resurssi ja toiminto yksilöivät käytännön eikä niitä voi muuttaa. Luo sen sijaan uusi käytäntö.",
       "successToast": "Käytäntö {{key}} päivitetty"
     },
     "delete": {
@@ -3782,6 +3788,10 @@
       "description": "Sinulla ei ole oikeutta käyttää tätä sivua.",
       "requiredPermission": "Vaadittu lupa: {{permission}}",
       "action": "Sinulla ei ole oikeutta suorittaa tätä toimintoa."
+    },
+    "noPermissions": {
+      "title": "Ei lupia vielä",
+      "description": "Sinulle ei ole vielä määritetty lupia. Ota yhteyttä järjestelmänvalvojaan pyytääksesi pääsyä tarvitsemiisi alueisiin."
     },
     "requiredPermissions": {
       "title": "Vaaditut luvat",

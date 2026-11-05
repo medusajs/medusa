@@ -31,7 +31,7 @@ Docs: https://docs.medusajs.com/resources/medusa-cli.md, plus per-command pages 
 
 ## Architecture
 
-- `cli.js`: bin entry. Registers `ts-node` + `tsconfig-paths` (warns if unavailable outside `NODE_ENV=production`), loads `.env` via `dotenv`, then requires `dist/index.js`.
+- `cli.js`: bin entry. Registers `ts-node` + `tsconfig-paths` (warns if unavailable outside `NODE_ENV=production`), loads `.env` via `dotenv`, then requires `dist/index.js`. When the app's `typescript` is 7.x, ts-node runs on the optional peer `@typescript/typescript6`, since TS 7 has no compiler API. If that package is missing, the CLI prints an install message and exits with code 1 (outside `NODE_ENV=production`).
 - `src/create-cli.ts`: every command definition and flag lives here. Handlers call `getCommandHandler("<path>")`, which resolves `@medusajs/medusa/commands/<path>` from the cwd. Command logic belongs in `packages/medusa/src/commands/` (e.g. `db/migrate.ts`, `plugin/build.ts`), not here.
 - `src/commands/new.ts`: the only command implemented in this package.
 - `src/codemods/`: codemod registry (`index.ts`); each codemod implements `Codemod` from `types.ts`.
