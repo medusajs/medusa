@@ -31,6 +31,8 @@ Property labels are global, so they apply to all admin users, and each property 
 
 ## View Property Labels
 
+<PermissionsBadge permissions={["property_label:read"]} />
+
 To view property labels, go to Settings → Property Labels. Here, you can see a table of the data models in your store, such as orders and products.
 
 The table has the following columns:
@@ -45,6 +47,8 @@ You can sort the list by module or model to find the data model you're looking f
 ---
 
 ## Set Property Labels
+
+<PermissionsBadge permissions={["property_label:read", "property_label:create", "property_label:update", "property_label:delete"]} />
 
 To set custom labels for a data model's properties:
 
@@ -69,6 +73,8 @@ After saving, the custom labels appear as the column names for that data model's
 ---
 
 ## Remove a Property Label
+
+<PermissionsBadge permissions={["property_label:read", "property_label:create", "property_label:update", "property_label:delete"]} />
 
 To remove a custom label:
 

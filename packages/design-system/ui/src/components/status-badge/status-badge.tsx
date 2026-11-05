@@ -4,7 +4,7 @@ import { clx } from "@/utils/clx"
 import { VariantProps, cva } from "cva"
 
 const statusBadgeVariants = cva({
-  base: "flex items-center justify-center w-5 h-[18px] [&_div]:w-2 [&_div]:h-2 [&_div]:rounded-sm",
+  base: "flex items-center justify-center w-5 h-[18px] [&_div]:w-2 [&_div]:h-2 [&_div]:rounded-xs",
   variants: {
     color: {
       green: "[&_div]:bg-ui-tag-green-icon",

@@ -1123,6 +1123,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/js-sdk/admin/module",
+                  "title": "module",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/js-sdk/admin/notification",
                   "title": "notification",
                   "description": "",

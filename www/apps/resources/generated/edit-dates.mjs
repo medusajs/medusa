@@ -1,6 +1,6 @@
 export const generatedEditDates = {
   "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-09-11T07:40:12.255Z",
-  "app/commerce-modules/auth/auth-providers/page.mdx": "2026-10-19T11:48:20.868Z",
+  "app/commerce-modules/auth/auth-providers/page.mdx": "2026-11-03T15:43:57.311Z",
   "app/commerce-modules/auth/authentication-route/page.mdx": "2026-07-16T11:13:16.231Z",
   "app/commerce-modules/auth/module-options/page.mdx": "2026-06-09T08:32:58.240Z",
   "app/commerce-modules/auth/page.mdx": "2026-06-09T08:33:36.509Z",
@@ -9,7 +9,7 @@ export const generatedEditDates = {
   "app/commerce-modules/cart/tax-lines/page.mdx": "2026-07-16T10:51:03.732Z",
   "app/commerce-modules/cart/page.mdx": "2025-04-17T08:48:27.822Z",
   "app/commerce-modules/currency/page.mdx": "2025-04-17T08:48:30.550Z",
-  "app/commerce-modules/customer/customer-accounts/page.mdx": "2026-10-23T11:03:43.163Z",
+  "app/commerce-modules/customer/customer-accounts/page.mdx": "2026-11-04T10:25:00.455Z",
   "app/commerce-modules/customer/page.mdx": "2025-04-17T08:48:31.918Z",
   "app/commerce-modules/fulfillment/concepts/page.mdx": "2025-04-24T09:21:37.616Z",
   "app/commerce-modules/fulfillment/fulfillment-provider/page.mdx": "2025-05-20T07:51:40.707Z",
@@ -32,8 +32,8 @@ export const generatedEditDates = {
   "app/commerce-modules/payment/module-options/page.mdx": "2026-09-11T07:40:12.260Z",
   "app/commerce-modules/payment/payment/page.mdx": "2025-05-20T07:51:40.709Z",
   "app/commerce-modules/payment/payment-collection/page.mdx": "2025-09-01T15:10:39.107Z",
-  "app/commerce-modules/payment/payment-flow/page.mdx": "2026-10-27T11:48:49.642Z",
-  "app/commerce-modules/payment/payment-provider/stripe/page.mdx": "2026-09-11T07:40:12.259Z",
+  "app/commerce-modules/payment/payment-flow/page.mdx": "2026-11-04T10:25:12.786Z",
+  "app/commerce-modules/payment/payment-provider/stripe/page.mdx": "2026-11-03T10:07:26.978Z",
   "app/commerce-modules/payment/payment-provider/page.mdx": "2026-10-30T08:35:15.935Z",
   "app/commerce-modules/payment/payment-session/page.mdx": "2026-10-22T11:43:58.323Z",
   "app/commerce-modules/payment/webhook-events/page.mdx": "2026-10-27T21:56:24.114Z",
@@ -341,7 +341,7 @@ export const generatedEditDates = {
   "app/commerce-modules/cart/cart-totals/page.mdx": "2026-07-14T09:11:53.408Z",
   "app/commerce-modules/order/order-totals/page.mdx": "2026-07-14T09:12:29.485Z",
   "app/commerce-modules/user/invite-user-subscriber/page.mdx": "2025-08-01T12:01:54.551Z",
-  "app/how-to-tutorials/tutorials/invoice-generator/page.mdx": "2026-07-28T05:43:12.300Z",
+  "app/how-to-tutorials/tutorials/invoice-generator/page.mdx": "2026-11-04T10:24:25.930Z",
   "app/how-to-tutorials/tutorials/product-builder/page.mdx": "2026-07-28T05:43:12.292Z",
   "app/integrations/guides/payload/page.mdx": "2026-06-04T06:32:27.301Z",
   "app/commerce-modules/order/draft-orders/page.mdx": "2026-10-23T08:46:52.273Z",
@@ -504,5 +504,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/search/store-search/page.mdx": "2026-09-22T14:46:48.291Z",
   "app/infrastructure-modules/search/product-index-examples/page.mdx": "2026-09-22T14:47:38.498Z",
   "app/troubleshooting/query/not-assignable-type/page.mdx": "2026-10-09T07:56:42.960Z",
-  "app/commerce-modules/payment/payment-provider/adyen/page.mdx": "2026-10-30T09:39:57.351Z"
+  "app/commerce-modules/payment/payment-provider/adyen/page.mdx": "2026-10-30T12:26:02.502Z",
+  "app/enterprise/page.mdx": "2026-11-04T14:14:01.603Z",
+  "app/enterprise/sso/page.mdx": "2026-11-04T14:13:11.080Z"
 }

@@ -142,6 +142,7 @@
     "reset": "초기화",
     "confirm": "확인",
     "edit": "편집",
+    "view": "보기",
     "addItems": "상품 추가",
     "download": "다운로드",
     "clear": "지우기",
@@ -2781,7 +2782,7 @@
     "editUser": "사용자 편집",
     "inviteUser": "사용자 초대",
     "inviteUserHint": "새 사용자를 스토어에 초대합니다.",
-    "inviteRolesTooltip": "역할을 선택하지 않으면 사용자는 슈퍼유저 역할로 초대됩니다.",
+    "inviteRolesTooltip": "역할을 선택하지 않으면 사용자는 권한 없이 초대됩니다. 나중에 역할을 할당할 수 있습니다.",
     "sendInvite": "초대장 보내기",
     "pendingInvites": "대기 중인 초대",
     "deleteInviteWarning": "{{email}}에 대한 초대를 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
@@ -2856,7 +2857,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "사용자가 이미 이 역할을 가지고 있습니다.",
-      "unassignableRoleTooltip": "이 역할을 할당할 권한이 없습니다. 권한이 모든 정책을 포함하지 않습니다.",
       "add": {
         "successToast_other": "사용자가 역할에 성공적으로 추가되었습니다.",
         "list": {
@@ -2881,6 +2881,9 @@
       "filtered": {
         "heading": "결과 없음",
         "description": "현재 필터 조건과 일치하는 권한이 없습니다."
+      },
+      "manage": {
+        "successToast": "권한이 성공적으로 업데이트되었습니다."
       }
     },
     "list": {
@@ -2904,6 +2907,7 @@
     },
     "edit": {
       "header": "정책 편집",
+      "identityHint": "키, 리소스 및 작업은 정책을 식별하므로 변경할 수 없습니다. 대신 새 정책을 만드세요.",
       "successToast": "정책 {{key}}이(가) 업데이트되었습니다."
     },
     "delete": {
@@ -3795,6 +3799,10 @@
       "description": "이 페이지에 접근할 권한이 없습니다.",
       "requiredPermission": "필요한 권한: {{permission}}",
       "action": "이 작업을 수행할 권한이 없습니다."
+    },
+    "noPermissions": {
+      "title": "아직 권한이 없습니다",
+      "description": "아직 할당된 권한이 없습니다. 필요한 영역에 대한 접근 권한을 요청하려면 관리자에게 문의하세요."
     },
     "requiredPermissions": {
       "title": "필요한 권한",

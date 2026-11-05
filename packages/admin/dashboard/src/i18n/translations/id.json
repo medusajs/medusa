@@ -142,6 +142,7 @@
     "reset": "Atur ulang",
     "confirm": "Konfirmasi",
     "edit": "Edit",
+    "view": "Lihat",
     "addItems": "Tambah item",
     "download": "Unduh",
     "clear": "Bersihkan",
@@ -2781,7 +2782,7 @@
     "editUser": "Edit Pengguna",
     "inviteUser": "Undang Pengguna",
     "inviteUserHint": "Undang pengguna baru ke toko Anda.",
-    "inviteRolesTooltip": "Jika tidak ada peran yang dipilih, pengguna akan diundang dengan peran superuser.",
+    "inviteRolesTooltip": "Jika tidak ada peran yang dipilih, pengguna akan diundang tanpa izin apa pun. Anda dapat menetapkan peran nanti.",
     "sendInvite": "Kirim undangan",
     "pendingInvites": "Undangan Tertunda",
     "deleteInviteWarning": "Anda akan menghapus undangan untuk {{email}}. Tindakan ini tidak dapat dibatalkan.",
@@ -2856,7 +2857,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Pengguna sudah memiliki peran ini.",
-      "unassignableRoleTooltip": "Anda tidak memiliki akses untuk menetapkan peran ini — izin Anda tidak mencakup semua kebijakannya.",
       "add": {
         "successToast_other": "Pengguna berhasil ditambahkan ke peran.",
         "list": {
@@ -2881,6 +2881,9 @@
       "filtered": {
         "heading": "Tidak ada hasil",
         "description": "Tidak ada izin yang cocok dengan kriteria filter saat ini."
+      },
+      "manage": {
+        "successToast": "Izin berhasil diperbarui."
       }
     },
     "list": {
@@ -2904,6 +2907,7 @@
     },
     "edit": {
       "header": "Edit kebijakan",
+      "identityHint": "Kunci, sumber daya, dan operasi mengidentifikasi kebijakan dan tidak dapat diubah. Buat kebijakan baru sebagai gantinya.",
       "successToast": "Kebijakan {{key}} diperbarui"
     },
     "delete": {
@@ -3795,6 +3799,10 @@
       "description": "Anda tidak memiliki izin untuk mengakses halaman ini.",
       "requiredPermission": "Izin yang diperlukan: {{permission}}",
       "action": "Anda tidak memiliki izin untuk melakukan tindakan ini."
+    },
+    "noPermissions": {
+      "title": "Belum ada izin",
+      "description": "Anda belum memiliki izin yang ditetapkan. Hubungi administrator Anda untuk meminta akses ke area yang Anda butuhkan."
     },
     "requiredPermissions": {
       "title": "Izin yang diperlukan",

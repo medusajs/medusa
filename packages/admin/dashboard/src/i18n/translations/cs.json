@@ -149,6 +149,7 @@
     "reset": "Resetovat",
     "confirm": "Potvrdit",
     "edit": "Upravit",
+    "view": "Zobrazit",
     "addItems": "Přidat položky",
     "download": "Stáhnout",
     "clear": "Vyčistit",
@@ -2845,7 +2846,7 @@
     "editUser": "Upravit uživatele",
     "inviteUser": "Pozvat uživatele",
     "inviteUserHint": "Pozvěte nového uživatele do vašeho obchodu.",
-    "inviteRolesTooltip": "Pokud není vybrána žádná role, uživatel bude pozván s rolí superuživatele.",
+    "inviteRolesTooltip": "Pokud není vybrána žádná role, uživatel bude pozván bez jakýchkoliv oprávnění. Role můžete přiřadit později.",
     "sendInvite": "Odeslat pozvánku",
     "pendingInvites": "Čekající pozvánky",
     "deleteInviteWarning": "Chystáte se smazat pozvánku pro {{email}}. Tuto akci nelze vrátit zpět.",
@@ -2920,7 +2921,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Uživatel již má tuto roli.",
-      "unassignableRoleTooltip": "Nemáte přístup k přiřazení této role — vaše oprávnění nepokrývají všechny její zásady.",
       "add": {
         "successToast_one": "Uživatel byl úspěšně přidán do role.",
         "successToast_few": "Uživatelé byli úspěšně přidáni do role.",
@@ -2954,6 +2954,9 @@
       "filtered": {
         "heading": "Žádné výsledky",
         "description": "Žádná oprávnění neodpovídají aktuálním kritériím filtru."
+      },
+      "manage": {
+        "successToast": "Oprávnění byla úspěšně aktualizována."
       }
     },
     "list": {
@@ -2977,6 +2980,7 @@
     },
     "edit": {
       "header": "Upravit zásadu",
+      "identityHint": "Klíč, zdroj a operace identifikují zásadu a nelze je změnit. Místo toho vytvořte novou zásadu.",
       "successToast": "Zásada {{key}} aktualizována"
     },
     "delete": {
@@ -3901,6 +3905,10 @@
       "description": "Nemáte oprávnění k přístupu na tuto stránku.",
       "requiredPermission": "Požadované oprávnění: {{permission}}",
       "action": "Nemáte oprávnění k provedení této akce."
+    },
+    "noPermissions": {
+      "title": "Zatím žádná oprávnění",
+      "description": "Zatím vám nebyla přiřazena žádná oprávnění. Obraťte se na svého správce a požádejte o přístup k oblastem, které potřebujete."
     },
     "requiredPermissions": {
       "title": "Požadovaná oprávnění",

@@ -6,8 +6,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
     "check:freshness": "node ./dist/freshness-check.js",
     "generate:message": "node ./dist/get-generate-diff-message.js",
     "check:release-commit": "node ./dist/check-release-commit.js",
@@ -24,10 +24,10 @@
     "@linear/sdk": "^52.0.0",
     "@octokit/core": "^5.2.2",
     "chalk": "^5.3.0",
-    "glob": "13.0.6",
+    "glob": "14.0.2",
     "randomcolor": "^0.6.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.6.2",
+    "typescript": "^6.0.3",
     "utils": "*"
   },
   "devDependencies": {

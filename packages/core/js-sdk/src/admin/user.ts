@@ -231,7 +231,7 @@ export class User {
     queryParams?: HttpTypes.AdminRbacRoleUserListParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminGetUserRolesParams>(
+    return this.client.fetch<HttpTypes.AdminUserRoleListResponse>(
       `/admin/users/${id}/roles`,
       {
         query: queryParams,
@@ -251,7 +251,7 @@ export class User {
    *
    * @example
    * sdk.admin.user.addRoles("user_123", {
-   *   roles: ["role_123"]
+   *   assignments: [{ role_id: "role_123" }]
    * })
    * .then(({ roles }) => {
    *   console.log(roles)
@@ -308,7 +308,7 @@ export class User {
    *
    * @example
    * sdk.admin.user.removeRoles("user_123", {
-   *   roles: ["role_123"]
+   *   assignments: [{ role_id: "role_123" }]
    * })
    * .then(({ deleted }) => {
    *   console.log(deleted)
@@ -316,7 +316,7 @@ export class User {
    */
   async removeRoles(
     id: string,
-    body: HttpTypes.AdminRemoveUserRoles,
+    body: HttpTypes.AdminUnassignUserRoles,
     headers?: ClientHeaders
   ) {
     return this.client.fetch<HttpTypes.AdminUserRolesDeleteResponse>(
@@ -390,6 +390,40 @@ export class User {
     return this.client.fetch<HttpTypes.AdminUserResponse>(`/admin/users/me`, {
       query,
       headers,
+    })
+  }
+
+  /**
+   * This method updates the currently authenticated user. It sends a request to the
+   * Update Logged-In User API route, which every user may call regardless of its
+   * RBAC permissions.
+   *
+   * @param body - The details of the user to update.
+   * @param query - Configure the fields and relations to retrieve in the user.
+   * @param headers - Headers to pass in the request.
+   * @returns The user's details.
+   *
+   * @example
+   * sdk.admin.user.updateMe({
+   *   first_name: "John",
+   *   last_name: "Doe",
+   * })
+   * .then(({ user }) => {
+   *   console.log(user)
+   * })
+   *
+   * @since 2.23.0
+   */
+  async updateMe(
+    body: HttpTypes.AdminUpdateUser,
+    query?: HttpTypes.AdminUserParams,
+    headers?: ClientHeaders
+  ) {
+    return this.client.fetch<HttpTypes.AdminUserResponse>(`/admin/users/me`, {
+      method: "POST",
+      headers,
+      body,
+      query,
     })
   }
 }

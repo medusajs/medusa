@@ -34,9 +34,7 @@ export default function (theme: MarkdownTheme) {
         )
       }
 
-      const flags = this.flags.getFlagStrings(
-        theme.application.internationalization
-      )
+      const flags = this.flags.getFlagStrings()
       if (flags.length > 0 && !this.flags.isRest) {
         md.push(" " + flags.map((flag) => `\`${flag}\``).join(" "))
       }

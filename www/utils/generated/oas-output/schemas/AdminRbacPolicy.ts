@@ -44,10 +44,6 @@
  *   metadata:
  *     type: object
  *     description: Key-value pairs that hold additional information about the policy.
- *   inherited_from_role_id:
- *     type: string
- *     title: inherited_from_role_id
- *     description: The ID of the role from which the policy is inherited.
  *   created_at:
  *     type: string
  *     format: date-time

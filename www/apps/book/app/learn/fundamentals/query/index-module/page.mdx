@@ -22,7 +22,7 @@ The Index Module is a tool to perform high-performance queries across modules, f
 
 While modules share the same database by default, Medusa [isolates modules](../../modules/isolation/page.mdx) to allow using external data sources or different database types.
 
-So, when you retrieve data across modules using Query, Medusa aggregates the data coming from different modules to create the end result. This approach limits your ability to filter data by linked modules. For example, you can't filter products (created in the Product Module) by their brand (created in the Brand Module).
+So, when you retrieve data across modules using Query, Medusa aggregates the data coming from different modules to create the end result. Query's `graph` method can [filter by linked data models](../page.mdx#filter-by-linked-data-models-property) in the database only when the modules share the same database and the filters meet certain conditions. Otherwise, it filters the data in memory after retrieving it, which is slower on a large number of records.
 
 The Index Module solves this problem by ingesting data into a central data store on application startup. The data store has a relational structure that enables efficient filtering of data ingested from different modules (and their data stores). So, when you retrieve data with the Index Module, you're retrieving it from the Index Module's data store, not the original data source.
 
@@ -960,7 +960,7 @@ This will retrieve all brands that are linked to at least one product.
 
 ### Sales Channel Filtering for Multi-Vendor Setups
 
-For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike Query which has limitations with cross-module filtering, the Index Module enables complex filtering across linked data models.
+For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike `query.graph`, which may filter by linked data models in memory, the Index Module filters across linked data models in its own data store.
 
 For example, to filter vendor products by multiple sales channels:
 

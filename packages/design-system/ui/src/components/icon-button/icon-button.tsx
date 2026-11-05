@@ -7,7 +7,7 @@ import { clx } from "@/utils/clx"
 
 const iconButtonVariants = cva({
   base: clx(
-    "transition-fg inline-flex w-fit items-center justify-center overflow-hidden rounded-md outline-none",
+    "transition-fg inline-flex w-fit items-center justify-center overflow-hidden rounded-md outline-hidden",
     "disabled:bg-ui-bg-disabled disabled:shadow-buttons-neutral disabled:text-ui-fg-disabled "
   ),
   variants: {

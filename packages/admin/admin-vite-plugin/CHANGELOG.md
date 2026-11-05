@@ -1,5 +1,16 @@
 # @medusajs/admin-vite-plugin
 
+## 2.22.3
+
+### Patch Changes
+
+- [#17594](https://github.com/medusajs/medusa/pull/17594) [`da4480a`](https://github.com/medusajs/medusa/commit/da4480ae9a01276104047166b639d43db3a4638e) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-vite-plugin): update magic-string to 1.4.3
+
+- [#17611](https://github.com/medusajs/medusa/pull/17611) [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-vite-plugin,dashboard,telemetry,draft-order): update babel to v8
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

@@ -11,6 +11,7 @@ import { useProductOptionTableQuery } from "../../../../../hooks/table/query/use
 import { useProductOptionTableFilters } from "../../../../../hooks/table/filters"
 import { DataTable } from "../../../../../components/data-table"
 import { ProductOptionListTableActions } from "./product-option-list-table-actions"
+import { useResourcePermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 const DEFAULT_IS_EXCLUSIVE_FILTER = JSON.stringify("false")
@@ -48,6 +49,7 @@ export const ProductOptionListTable = () => {
     })
 
   const filters = useProductOptionTableFilters()
+  const { canCreate } = useResourcePermissions("product_option")
   const columns = useColumns()
   const handleCreate = useCallback(() => {
     const params = urlSearchParams.toString()
@@ -80,12 +82,16 @@ export const ProductOptionListTable = () => {
             description: t("general.noRecordsMessageFiltered"),
           },
         }}
-        actions={[
-          {
-            label: t("actions.create"),
-            onClick: handleCreate,
-          },
-        ]}
+        actions={
+          canCreate
+            ? [
+                {
+                  label: t("actions.create"),
+                  onClick: handleCreate,
+                },
+              ]
+            : []
+        }
         isLoading={isLoading}
         enableSearch={true}
         rowHref={(row) => `/product-options/${row.id}`}

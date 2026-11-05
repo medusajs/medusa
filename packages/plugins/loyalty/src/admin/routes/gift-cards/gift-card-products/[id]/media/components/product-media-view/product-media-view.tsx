@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { useSearchParams } from "react-router-dom"
 import { EditProductMediaForm } from "../edit-product-media-form"
 import { ProductMediaGallery } from "../product-media-gallery"
@@ -24,7 +25,12 @@ const getView = (searchParams: URLSearchParams) => {
 
 export const ProductMediaView = ({ product }: ProductMediaViewProps) => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const view = getView(searchParams)
+  const { hasPermission } = usePermissions()
+  // The edit view saves through POST /admin/products/:id, so users who can only
+  // read the product stay on the gallery.
+  const view = hasPermission("product:update")
+    ? getView(searchParams)
+    : View.GALLERY
 
   const handleGoToView = (view: View) => {
     return () => {

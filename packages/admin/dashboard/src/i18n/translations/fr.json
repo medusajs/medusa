@@ -143,6 +143,7 @@
     "reset": "Réinitialiser",
     "confirm": "Confirmer",
     "edit": "Modifier",
+    "view": "Voir",
     "addItems": "Ajouter des éléments",
     "download": "Télécharger",
     "clear": "Effacer",
@@ -2787,7 +2788,7 @@
     "editUser": "Modifier l'utilisateur",
     "inviteUser": "Inviter un utilisateur",
     "inviteUserHint": "Inviter un nouvel utilisateur à votre boutique.",
-    "inviteRolesTooltip": "Si aucun rôle n'est sélectionné, l'utilisateur sera invité avec un rôle de super-utilisateur.",
+    "inviteRolesTooltip": "Si aucun rôle n'est sélectionné, l'utilisateur sera invité sans aucune permission. Vous pourrez lui attribuer des rôles ultérieurement.",
     "sendInvite": "Envoyer l'invitation",
     "pendingInvites": "Invitations en attente",
     "deleteInviteWarning": "Vous êtes sur le point de supprimer l'invitation pour {{email}}. Cette action ne peut être annulée.",
@@ -2862,7 +2863,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "L'utilisateur a déjà ce rôle.",
-      "unassignableRoleTooltip": "Vous n'avez pas accès à l'attribution de ce rôle — vos permissions ne couvrent pas toutes ses politiques.",
       "add": {
         "successToast_one": "L'utilisateur a été ajouté au rôle avec succès.",
         "successToast_other": "Les utilisateurs ont été ajoutés au rôle avec succès.",
@@ -2890,6 +2890,9 @@
       "filtered": {
         "heading": "Aucun résultat",
         "description": "Aucune permission ne correspond aux critères de filtrage."
+      },
+      "manage": {
+        "successToast": "Les permissions ont été mises à jour avec succès."
       }
     },
     "list": {
@@ -2913,6 +2916,7 @@
     },
     "edit": {
       "header": "Modifier la politique",
+      "identityHint": "La clé, la ressource et l'opération identifient la politique et ne peuvent pas être modifiées. Créez plutôt une nouvelle politique.",
       "successToast": "Politique {{key}} mise à jour"
     },
     "delete": {
@@ -3806,6 +3810,10 @@
       "description": "Vous n'avez pas la permission d'accéder à cette page.",
       "requiredPermission": "Permission requise : {{permission}}",
       "action": "Vous n'avez pas la permission d'effectuer cette action."
+    },
+    "noPermissions": {
+      "title": "Aucune permission pour l'instant",
+      "description": "Aucune permission ne vous a encore été attribuée. Contactez votre administrateur pour demander l'accès aux sections dont vous avez besoin."
     },
     "requiredPermissions": {
       "title": "Permissions requises",

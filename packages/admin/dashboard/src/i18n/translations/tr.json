@@ -143,6 +143,7 @@
     "reset": "Sıfırla",
     "confirm": "Onayla",
     "edit": "Düzenle",
+    "view": "Görüntüle",
     "addItems": "Ürünler Ekle",
     "download": "İndir",
     "clear": "Temizle",
@@ -2717,6 +2718,7 @@
     "editUser": "Kullanıcıyı Düzenle",
     "inviteUser": "Kullanıcı Davet Et",
     "inviteUserHint": "Mağazanıza yeni bir kullanıcı davet edin.",
+    "inviteRolesTooltip": "Herhangi bir rol seçilmezse, kullanıcı herhangi bir izin olmadan davet edilecektir. Rolleri daha sonra atayabilirsiniz.",
     "sendInvite": "Davet gönder",
     "pendingInvites": "Bekleyen Davetler",
     "deleteInviteWarning": "{{email}} için daveti silmek üzeresiniz. Bu işlem geri alınamaz.",
@@ -2748,7 +2750,6 @@
     "deleteUserWarning": "{{name}} kullanıcısını silmek üzeresiniz. Bu işlem geri alınamaz.",
     "deleteUserSuccess": "Kullanıcı {{name}} başarıyla silindi",
     "invite": "Davet Et",
-    "inviteRolesTooltip": "Rol seçilmezse kullanıcı süper kullanıcı rolüyle davet edilir.",
     "copyResetPasswordLink": "Şifre sıfırlama bağlantısını kopyala",
     "copyResetPasswordLinkSuccess": "Şifre sıfırlama bağlantısı panoya kopyalandı",
     "copyResetPasswordLinkHint": "Bağlantının süresi kısa sürede dolar ve bu kullanıcıya daha önce gönderilmiş şifre sıfırlama bağlantılarını geçersiz kılar."
@@ -3678,7 +3679,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Kullanıcı zaten bu role sahip.",
-      "unassignableRoleTooltip": "Bu rolü atama izniniz yok — izinleriniz bu rolün tüm politikalarını kapsamıyor.",
       "add": {
         "successToast_one": "Kullanıcı role başarıyla eklendi.",
         "successToast_other": "Kullanıcılar role başarıyla eklendi.",
@@ -3706,6 +3706,9 @@
       "filtered": {
         "heading": "Sonuç yok",
         "description": "Hiçbir izin mevcut filtre kriterlerine uymuyor."
+      },
+      "manage": {
+        "successToast": "İzinler başarıyla güncellendi."
       }
     },
     "list": {
@@ -3729,6 +3732,7 @@
     },
     "edit": {
       "header": "Politikayı düzenle",
+      "identityHint": "Anahtar, kaynak ve işlem politikayı tanımlar ve değiştirilemez. Bunun yerine yeni bir politika oluşturun.",
       "successToast": "{{key}} politikası güncellendi"
     },
     "delete": {
@@ -3804,6 +3808,10 @@
       "description": "Bu sayfaya erişim izniniz yok.",
       "requiredPermission": "Gerekli izin: {{permission}}",
       "action": "Bu işlemi gerçekleştirme izniniz yok."
+    },
+    "noPermissions": {
+      "title": "Henüz izin yok",
+      "description": "Henüz herhangi bir izniniz atanmamış. İhtiyacınız olan alanlara erişim talep etmek için yöneticinize başvurun."
     },
     "requiredPermissions": {
       "title": "Gerekli izinler",

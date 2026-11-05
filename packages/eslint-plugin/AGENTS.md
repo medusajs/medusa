@@ -32,7 +32,7 @@ export default defineConfig([...medusa.configs.recommended])
 ## Development
 
 - `yarn build`, `yarn watch`, `yarn test` (jest over `src`).
-- Single rule: `../../node_modules/.bin/jest src/rules/<rule-name>` from this directory (`yarn test <path>` ignores the path because the script already sets `--testPathPattern=src`).
+- Single rule: `../../node_modules/.bin/jest src/rules/<rule-name>` from this directory (`yarn test <path>` ignores the path because the script already sets `--testPathPatterns=src`).
 - Tests use `createRuleTester()` from `src/test-utils.ts`. Cross-file rules (`scheduled-job-name-unique`, `loader-must-be-exported-in-module-definition`, `use-validated-body-or-query`) need real files: use `createFixtureWorkspace(subPath, files)`, lint with the absolute path from `resolve(rel)`, and `afterAll(cleanupFixtureWorkspaces)`.
 - Adding a rule:
   1. `src/rules/<name>/` with `rule.ts`, `index.ts`, `__tests__/rule.spec.ts`

@@ -25,6 +25,7 @@ const GiftCardProductsPage = () => {
 
 export const config = defineRouteConfig({
   label: "Gift Card Products",
+  permissions: ["product:read"],
 })
 
 export default GiftCardProductsPage

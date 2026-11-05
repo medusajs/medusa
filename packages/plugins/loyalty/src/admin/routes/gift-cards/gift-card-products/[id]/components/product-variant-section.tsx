@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { PencilSquare, Trash } from "@medusajs/icons";
 import { HttpTypes } from "@medusajs/types";
 import {
@@ -21,6 +22,11 @@ import {
 } from "../../../../../hooks/api/products";
 import { useDataTableDateFilters } from "../../../../../hooks/common/use-data-table-date-filters";
 import { useQueryParams } from "../../../../../hooks/common/use-query-params";
+import {
+  DELETE_GIFT_CARD_DENOMINATION_PERMISSIONS,
+  EDIT_GIFT_CARD_DENOMINATIONS_PERMISSIONS,
+  EDIT_GIFT_CARD_PRICES_PERMISSIONS,
+} from "../../../../../lib/permissions";
 
 type ProductVariantSectionProps = {
   product: HttpTypes.AdminProduct;
@@ -53,7 +59,16 @@ export const ProductVariantSection = ({
     PREFIX
   );
 
-  const columns = useColumns(product);
+  const { hasAllPermissions } = usePermissions();
+  const canEditDenominations = hasAllPermissions(
+    EDIT_GIFT_CARD_DENOMINATIONS_PERMISSIONS
+  );
+  const canEditPrices = hasAllPermissions(EDIT_GIFT_CARD_PRICES_PERMISSIONS);
+  const canDeleteDenomination = hasAllPermissions(
+    DELETE_GIFT_CARD_DENOMINATION_PERMISSIONS
+  );
+
+  const columns = useColumns(product, canDeleteDenomination);
   const filters = useFilters();
 
   const { variants, count, isPending, isError, error } = useProductVariants(
@@ -100,28 +115,40 @@ export const ProductVariantSection = ({
           },
         }}
         actions={[
-          {
-            label: "Edit denominations",
-            to: `denominations`,
-          },
-          {
-            label: "Edit prices",
-            to: `prices`,
-          },
-        ]}
-        actionMenu={{
-          groups: [
-            {
-              actions: [
+          ...(canEditDenominations
+            ? [
+                {
+                  label: "Edit denominations",
+                  to: `denominations`,
+                },
+              ]
+            : []),
+          ...(canEditPrices
+            ? [
                 {
                   label: "Edit prices",
                   to: `prices`,
-                  icon: <PencilSquare />,
                 },
-              ],
-            },
-          ],
-        }}
+              ]
+            : []),
+        ]}
+        actionMenu={
+          canEditPrices
+            ? {
+                groups: [
+                  {
+                    actions: [
+                      {
+                        label: "Edit prices",
+                        to: `prices`,
+                        icon: <PencilSquare />,
+                      },
+                    ],
+                  },
+                ],
+              }
+            : undefined
+        }
         prefix={PREFIX}
       />
     </Container>
@@ -131,7 +158,10 @@ export const ProductVariantSection = ({
 const columnHelper =
   createDataTableColumnHelper<HttpTypes.AdminProductVariant>();
 
-const useColumns = (product: HttpTypes.AdminProduct) => {
+const useColumns = (
+  product: HttpTypes.AdminProduct,
+  canDeleteDenomination: boolean
+) => {
   const navigate = useNavigate();
   const { mutateAsync } = useDeleteVariantLazy(product.id);
   const prompt = usePrompt();
@@ -230,11 +260,15 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
         sortAscLabel: "Asc",
         sortDescLabel: "Desc",
       }),
-      columnHelper.action({
-        actions: getActions,
-      }),
+      ...(canDeleteDenomination
+        ? [
+            columnHelper.action({
+              actions: getActions,
+            }),
+          ]
+        : []),
     ];
-  }, [optionColumns, dateColumns, getActions]);
+  }, [optionColumns, dateColumns, getActions, canDeleteDenomination]);
 };
 
 const useFilters = () => {

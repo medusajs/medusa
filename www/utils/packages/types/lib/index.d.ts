@@ -39,6 +39,7 @@ export type SectionKey =
   | "reflection_implementedBy"
   | "reflection_callable"
   | "reflection_indexable"
+  | "feature_flag"
 
 export type Sections = {
   [k in SectionKey]?: boolean
@@ -471,6 +472,13 @@ export declare type DocBlock =
       kind: "sourceCodeLink"
       link: string
       text?: string
+    }
+  | {
+      kind: "enterpriseNotice"
+      featureName?: string
+      featureFlag?: string
+      featureFlagHref?: string
+      beta?: boolean
     }
   | {
       kind: "table"

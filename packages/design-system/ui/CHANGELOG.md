@@ -1,5 +1,14 @@
 # @medusajs/ui
 
+## 4.2.10
+
+### Patch Changes
+
+- [#17631](https://github.com/medusajs/medusa/pull/17631) [`6942022`](https://github.com/medusajs/medusa/commit/69420228b04b08149c7a5719600f8e1e4d8546e1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui,ui-preset): support Tailwind CSS 4. `@medusajs/ui-preset` adds a CSS-first `theme.css` for Tailwind CSS 4 and keeps supporting Tailwind CSS 3, and `@medusajs/ui` updates `tailwind-merge` to v3 and uses class names that work in both versions
+
+- Updated dependencies []:
+  - @medusajs/icons@2.22.3
+
 ## 4.2.9
 
 ### Patch Changes

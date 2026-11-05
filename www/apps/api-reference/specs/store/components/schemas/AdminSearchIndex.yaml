@@ -27,8 +27,7 @@ properties:
       The identifier of the Search Module Provider backing this index, such as
       `pg-search`.
     externalDocs:
-      url: >-
-        https://docs.medusajs.com/resources/infrastructure-modules/search/providers
+      url: https://docs.medusajs.com/resources/infrastructure-modules/search/providers
       description: Learn about Search Module Providers
   status:
     type: string
@@ -48,8 +47,7 @@ properties:
       The leaf fields stored in the index, each with the capabilities declared
       on it.
     externalDocs:
-      url: >-
-        https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/fields
+      url: https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/fields
       description: Learn about search index field types and modifiers
     items:
       $ref: ./AdminSearchIndexField.yaml

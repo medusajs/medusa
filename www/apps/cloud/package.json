@@ -7,7 +7,7 @@
     "dev:monorepo": "yarn prep && yarn dev -p 3005",
     "dev:wrangler": "wrangler dev --port 3000",
     "build": "yarn prep && next build --webpack",
-    "build:cloudflare": "CF_PAGES=1 yarn prep && opennextjs-cloudflare build",
+    "build:cloudflare": "CLOUDFLARE_ENV=1 yarn prep && opennextjs-cloudflare build",
     "build:dev": "NODE_ENV=test yarn build",
     "start": "next start",
     "start:monorepo": "yarn start -p 3005",
@@ -22,7 +22,7 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@medusajs/icons": "2.22.2",
+    "@medusajs/icons": "2.22.3",
     "@next/mdx": "16.4.2",
     "@sanity/client": "^7.11.0",
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
@@ -56,7 +56,7 @@
     "tailwindcss": "^3.3.0",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5",
+    "typescript": "^6.0.3",
     "wrangler": "^4.151.3"
   },
   "engines": {

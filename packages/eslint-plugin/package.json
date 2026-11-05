@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/eslint-plugin",
-  "version": "2.22.2",
+  "version": "2.22.3",
   "description": "Official ESLint plugin for Medusa projects. Enforces Medusa's framework conventions across API routes, modules, workflows, subscribers, jobs, admin extensions, and module links.",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --build --watch",
-    "test": "../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathPattern=src"
+    "test": "../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathPatterns=src"
   },
   "engines": {
     "node": ">=22.22.0"
@@ -60,6 +60,6 @@
     "@types/eslint": "^9.6.1",
     "@typescript-eslint/rule-tester": "^8.72.0",
     "eslint": "^10.13.0",
-    "typescript": "^5.4.0"
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }
