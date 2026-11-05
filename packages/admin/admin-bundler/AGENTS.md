@@ -50,9 +50,10 @@ Docs: https://docs.medusajs.com/learn/fundamentals/admin/environment-variables.m
 
 ```bash
 yarn build   # tsup, then scripts/assert-esm-imports.mjs
+yarn test    # vitest, specs in src/**/__tests__
 ```
 
-No tests in this package. Exercise changes through a test app with `medusa develop`, `medusa build`, or `medusa plugin:build`.
+Unit tests cover helpers only. Exercise bundler changes through a test app with `medusa develop`, `medusa build`, or `medusa plugin:build`.
 
 ## Gotchas
 

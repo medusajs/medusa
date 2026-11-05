@@ -59,8 +59,8 @@
     "@typescript-eslint/parser": "^8.72.0",
     "@typescript-eslint/rule-tester": "^8.72.0",
     "@typescript/native": "npm:typescript@^7.0.2",
-    "@vitejs/plugin-react": "^5.2.0",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitejs/plugin-react": "^6.1.2",
+    "@vitest/coverage-v8": "^5.0.5",
     "ajv": "^8.18.0",
     "autocannon": "^8.0.0",
     "autoprefixer": "^10.6.1",
@@ -110,9 +110,9 @@
     "tsup": "^9.0.0",
     "turbo": "^2.11.10",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "vite": "^7.3.6",
-    "vite-plugin-inspect": "^11.4.1",
-    "vitest": "^4.1.10",
+    "vite": "^8.3.5",
+    "vite-plugin-inspect": "^12.1.0",
+    "vitest": "^5.0.5",
     "yalc": "^1.0.0-pre.53",
     "zod": "4.6.6",
     "zod-validation-error": "5.0.0"
@@ -158,7 +158,7 @@
     "@opentelemetry/core": "^2.7.0",
     "@rushstack/node-core-library/ajv": "^8.18.0",
     "@changesets/assemble-release-plan@^6.0.10": "patch:@changesets/assemble-release-plan@npm:^6.0.10#.yarn/patches/@changesets-assemble-release-plan-npm-6.0.9-e01af97ef4.patch",
-    "vite": "^7.3.6",
+    "vite": "^8.3.5",
     "swagger-inline@^8.1.0": "patch:swagger-inline@npm:^8.1.0#.yarn/patches/swagger-inline-npm-8.1.0-ba84ecd7e8.patch"
   },
   "packageManager": "yarn@3.2.1"
