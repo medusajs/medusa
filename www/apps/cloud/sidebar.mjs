@@ -105,6 +105,11 @@ export const sidebar = [
                 title: "Connections",
                 path: "/organizations/connections",
               },
+              {
+                type: "link",
+                title: "Vault",
+                path: "/organizations/vault",
+              },
             ],
           },
           {
