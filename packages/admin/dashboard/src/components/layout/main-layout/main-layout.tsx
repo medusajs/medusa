@@ -367,7 +367,7 @@ const SidebarRoutes = () => {
     if (item.nested) {
       const route = coreRoutes.find((route) => route.to === item.nested)
       if (route) {
-        route.items?.push(item)
+        route.items = [...(route.items ?? []), item]
       }
     }
   })
