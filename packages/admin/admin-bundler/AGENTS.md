@@ -53,7 +53,7 @@ yarn build   # tsup, then scripts/assert-esm-imports.mjs
 yarn test    # vitest, specs in src/**/__tests__
 ```
 
-Unit tests cover helpers only. Exercise bundler changes through a test app with `medusa develop`, `medusa build`, or `medusa plugin:build`.
+`src/commands/__tests__/plugin.spec.ts` runs a full `plugin()` build of a fixture plugin in a temp directory; the other specs cover helpers. `develop` and `build` have no tests, so exercise them through a test app with `medusa develop` and `medusa build`.
 
 ## Gotchas
 

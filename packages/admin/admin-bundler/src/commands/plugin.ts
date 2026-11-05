@@ -1,5 +1,4 @@
 import { readFileSync } from "fs"
-import { builtinModules } from "node:module"
 import path from "path"
 import type { UserConfig } from "vite"
 import { clearPluginBuild } from "../plugins/clear-plugin-build"
@@ -62,14 +61,6 @@ export async function plugin(options: PluginOptions) {
       minify: false,
       outDir,
       rolldownOptions: {
-        external: (id, importer) => {
-          if (importer) {
-            return false
-          }
-
-          const name = id.split("/")[0].replace(/^node:/, "")
-          return builtinModules.includes(name)
-        },
         output: {
           preserveModules: false,
           chunkFileNames: () => {
