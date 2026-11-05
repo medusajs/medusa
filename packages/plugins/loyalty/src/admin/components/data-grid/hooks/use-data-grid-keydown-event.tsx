@@ -1,3 +1,4 @@
+import { DataTableRowData } from "@medusajs/ui"
 import React, { useCallback } from "react"
 import type {
   FieldValues,
@@ -14,7 +15,10 @@ import {
 } from "../models"
 import { DataGridCoordinates } from "../types"
 
-type UseDataGridKeydownEventOptions<TData, TFieldValues extends FieldValues> = {
+type UseDataGridKeydownEventOptions<
+  TData extends DataTableRowData,
+  TFieldValues extends FieldValues,
+> = {
   containerRef: React.RefObject<HTMLDivElement>
   matrix: DataGridMatrix<TData, TFieldValues>
   anchor: DataGridCoordinates | null
@@ -46,7 +50,7 @@ const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
 const VERTICAL_KEYS = ["ArrowUp", "ArrowDown"]
 
 export const useDataGridKeydownEvent = <
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues,
 >({
   containerRef,

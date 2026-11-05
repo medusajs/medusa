@@ -1,6 +1,7 @@
 import { AdminApiKeyResponse } from "@medusajs/types"
 import { Badge } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -14,7 +15,10 @@ import {
 } from "../../../common/utils"
 import { ApiKeyRowActions } from "./api-key-row-actions"
 
-const columnHelper = createColumnHelper<AdminApiKeyResponse["api_key"]>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  AdminApiKeyResponse["api_key"]
+>()
 
 export const useApiKeyManagementTableColumns = () => {
   const { t } = useTranslation()

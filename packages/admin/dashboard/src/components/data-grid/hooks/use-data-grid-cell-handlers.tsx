@@ -1,9 +1,13 @@
+import { RowData } from "@tanstack/react-table"
 import { FocusEvent, MouseEvent, useCallback } from "react"
 import { FieldValues, UseFormSetValue } from "react-hook-form"
 import { DataGridMatrix, DataGridUpdateCommand } from "../models"
 import { DataGridCoordinates } from "../types"
 
-type UseDataGridCellHandlersOptions<TData, TFieldValues extends FieldValues> = {
+type UseDataGridCellHandlersOptions<
+  TData extends RowData,
+  TFieldValues extends FieldValues,
+> = {
   matrix: DataGridMatrix<TData, TFieldValues>
   anchor: DataGridCoordinates | null
   rangeEnd: DataGridCoordinates | null
@@ -21,7 +25,7 @@ type UseDataGridCellHandlersOptions<TData, TFieldValues extends FieldValues> = {
 }
 
 export const useDataGridCellHandlers = <
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues,
 >({
   matrix,

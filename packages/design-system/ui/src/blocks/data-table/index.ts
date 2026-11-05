@@ -29,4 +29,7 @@ export type {
 } from "./types"
 
 // Re-export types from @tanstack/react-table that are used in the public API
-export type { VisibilityState, ColumnOrderState } from "@tanstack/react-table"
+export type {
+  ColumnVisibilityState as VisibilityState,
+  ColumnOrderState,
+} from "@tanstack/react-table"

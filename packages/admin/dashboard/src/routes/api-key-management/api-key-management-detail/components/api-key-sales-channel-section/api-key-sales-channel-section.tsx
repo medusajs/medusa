@@ -9,7 +9,6 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { RowSelectionState } from "@tanstack/react-table"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
@@ -32,7 +31,9 @@ const PREFIX = "sc"
 export const ApiKeySalesChannelSection = ({
   apiKey,
 }: ApiKeySalesChannelSectionProps) => {
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>(
+    {}
+  )
   const { t } = useTranslation()
   const { canUpdate: canUpdateApiKey } = useApiKeyPermissions()
   const { canUpdate: canUpdateSalesChannels } = useSalesChannelPermissions()

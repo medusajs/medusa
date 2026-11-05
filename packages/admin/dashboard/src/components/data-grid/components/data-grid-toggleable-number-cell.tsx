@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import { Switch } from "@medusajs/ui"
 import { useEffect, useRef, useState } from "react"
 import CurrencyInput, { CurrencyInputProps } from "react-currency-input-field"
@@ -15,7 +16,10 @@ import { DataGridCellContainer } from "./data-grid-cell-container"
  */
 const QUANTITY_DECIMALS_LIMIT = 4
 
-export const DataGridTogglableNumberCell = <TData, TValue = any>({
+export const DataGridTogglableNumberCell = <
+  TData extends RowData,
+  TValue = any,
+>({
   context,
   disabledToggleTooltip,
   ...rest

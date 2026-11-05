@@ -8,6 +8,7 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -168,7 +169,10 @@ export const SalesChannelProductSection = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProduct
+>()
 
 const useColumns = (canUpdate: boolean) => {
   const base = useProductTableColumns()
@@ -183,6 +187,7 @@ const useColumns = (canUpdate: boolean) => {
                 return (
                   <Checkbox
                     checked={
+                      !table.getIsAllPageRowsSelected() &&
                       table.getIsSomePageRowsSelected()
                         ? "indeterminate"
                         : table.getIsAllPageRowsSelected()

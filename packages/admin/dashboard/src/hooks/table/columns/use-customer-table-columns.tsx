@@ -1,4 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 
 import {
@@ -19,7 +20,10 @@ import {
 } from "../../../components/table/table-cells/customer/first-seen-cell"
 import { HttpTypes } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminCustomer>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminCustomer
+>()
 
 export const useCustomerTableColumns = () => {
   return useMemo(

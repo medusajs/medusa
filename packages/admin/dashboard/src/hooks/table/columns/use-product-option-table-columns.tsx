@@ -1,11 +1,10 @@
-import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { TextCell } from "../../../components/table/table-cells/common/text-cell"
 import { HttpTypes } from "@medusajs/types"
-import { Badge } from "@medusajs/ui"
+import { Badge, createDataTableColumnHelper } from "@medusajs/ui"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProductOption>()
+const columnHelper = createDataTableColumnHelper<HttpTypes.AdminProductOption>()
 
 export const useProductOptionTableColumns = () => {
   const { t } = useTranslation()

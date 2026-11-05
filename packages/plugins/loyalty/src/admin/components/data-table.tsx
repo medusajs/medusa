@@ -8,6 +8,7 @@ import {
   DataTableFilteringState,
   DataTablePaginationState,
   DataTableRow,
+  DataTableRowData,
   DataTableRowSelectionState,
   DataTableSortingState,
   Heading,
@@ -54,7 +55,7 @@ type DataTableActionMenuProps = {
   groups: DataTableActionMenuGroupProps[];
 };
 
-interface DataTableProps<TData> {
+interface DataTableProps<TData extends DataTableRowData> {
   data?: TData[];
   columns: DataTableColumnDef<TData, any>[];
   filters?: DataTableFilter[];
@@ -81,7 +82,7 @@ interface DataTableProps<TData> {
   layout?: "fill" | "auto";
 }
 
-export const DataTable = <TData,>({
+export const DataTable = <TData extends DataTableRowData>({
   data = [],
   columns,
   filters,

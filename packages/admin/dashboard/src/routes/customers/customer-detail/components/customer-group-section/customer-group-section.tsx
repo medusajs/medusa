@@ -8,6 +8,7 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { t } from "i18next"
 import { useMemo, useState } from "react"
 
@@ -253,7 +254,10 @@ export const CustomerGroupRowActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminCustomerGroup
+>()
 
 const useColumns = (customerId: string, canManageMembers: boolean) => {
   const columns = useCustomerGroupTableColumns()
@@ -269,6 +273,7 @@ const useColumns = (customerId: string, canManageMembers: boolean) => {
                 return (
                   <Checkbox
                     checked={
+                      !table.getIsAllPageRowsSelected() &&
                       table.getIsSomePageRowsSelected()
                         ? "indeterminate"
                         : table.getIsAllPageRowsSelected()

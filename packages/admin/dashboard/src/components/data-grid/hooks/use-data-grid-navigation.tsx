@@ -1,24 +1,36 @@
-import { Column, Row, VisibilityState } from "@tanstack/react-table"
+import {
+  Column,
+  Row,
+  ColumnVisibilityState,
+  RowData,
+} from "@tanstack/react-table"
+import { DataGridFeatures } from "../data-grid-features"
 import { ScrollToOptions, Virtualizer } from "@tanstack/react-virtual"
 import { Dispatch, SetStateAction, useCallback } from "react"
 import { FieldValues } from "react-hook-form"
 import { DataGridMatrix, DataGridQueryTool } from "../models"
 import { DataGridCoordinates } from "../types"
 
-type UseDataGridNavigationOptions<TData, TFieldValues extends FieldValues> = {
+type UseDataGridNavigationOptions<
+  TData extends RowData,
+  TFieldValues extends FieldValues,
+> = {
   matrix: DataGridMatrix<TData, TFieldValues>
   anchor: DataGridCoordinates | null
-  visibleRows: Row<TData>[]
-  visibleColumns: Column<TData, unknown>[]
+  visibleRows: Row<DataGridFeatures, TData>[]
+  visibleColumns: Column<DataGridFeatures, TData, unknown>[]
   rowVirtualizer: Virtualizer<HTMLDivElement, Element>
   columnVirtualizer: Virtualizer<HTMLDivElement, Element>
-  setColumnVisibility: Dispatch<SetStateAction<VisibilityState>>
-  flatColumns: Column<TData, unknown>[]
+  setColumnVisibility: Dispatch<SetStateAction<ColumnVisibilityState>>
+  flatColumns: Column<DataGridFeatures, TData, unknown>[]
   queryTool: DataGridQueryTool | null
   setSingleRange: (coords: DataGridCoordinates | null) => void
 }
 
-export const useDataGridNavigation = <TData, TFieldValues extends FieldValues>({
+export const useDataGridNavigation = <
+  TData extends RowData,
+  TFieldValues extends FieldValues,
+>({
   matrix,
   anchor,
   visibleColumns,

@@ -2,6 +2,7 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -214,7 +215,10 @@ export const CustomerActions = ({
   return <ActionMenu groups={groups} />
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminCustomer>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminCustomer
+>()
 
 const useColumns = ({ canManageMembers }: { canManageMembers: boolean }) => {
   const columns = useCustomerTableColumns()
@@ -229,6 +233,7 @@ const useColumns = ({ canManageMembers }: { canManageMembers: boolean }) => {
                 return (
                   <Checkbox
                     checked={
+                      !table.getIsAllPageRowsSelected() &&
                       table.getIsSomePageRowsSelected()
                         ? "indeterminate"
                         : table.getIsAllPageRowsSelected()

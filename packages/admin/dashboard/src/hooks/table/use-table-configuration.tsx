@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
 import { HttpTypes } from "@medusajs/types"
-import { DataTableFilter } from "@medusajs/ui"
+import { DataTableFilter, DataTableRowData } from "@medusajs/ui"
 import {
   useViewConfigurations,
   useViewConfiguration,
@@ -26,7 +26,7 @@ export interface UseTableConfigurationOptions {
   entity: string
   pageSize?: number
   queryPrefix?: string
-  transformColumns?: TableAdapter<unknown>["transformColumns"]
+  transformColumns?: TableAdapter<DataTableRowData>["transformColumns"]
   /**
    * Extra client-side columns to append to the API columns (e.g. the virtual
    * actions column). They participate in column state like any other column.

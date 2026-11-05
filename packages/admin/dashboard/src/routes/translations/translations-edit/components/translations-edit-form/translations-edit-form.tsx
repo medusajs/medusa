@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminStoreLocale, HttpTypes } from "@medusajs/types"
 import { Button, Copy, Prompt, Select, toast, Text } from "@medusajs/ui"
 import { ColumnDef } from "@tanstack/react-table"
+import { DataGridFeatures } from "../../../../../components/data-grid/data-grid-features"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -237,7 +238,7 @@ function useTranslationsGridColumns({
       (l) => l.locale_code === selectedLocale
     )
 
-    const columns: ColumnDef<TranslationRow>[] = [
+    const columns: ColumnDef<DataGridFeatures, TranslationRow>[] = [
       columnHelper.column({
         id: "field",
         name: "field",

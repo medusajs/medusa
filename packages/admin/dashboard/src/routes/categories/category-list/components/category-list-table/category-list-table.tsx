@@ -3,6 +3,7 @@ import { AdminProductCategoryResponse } from "@medusajs/types"
 import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -168,8 +169,10 @@ const CategoryRowActions = ({
   return <ActionMenu groups={groups} />
 }
 
-const columnHelper =
-  createColumnHelper<AdminProductCategoryResponse["product_category"]>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  AdminProductCategoryResponse["product_category"]
+>()
 
 const useColumns = () => {
   const base = useCategoryTableColumns()

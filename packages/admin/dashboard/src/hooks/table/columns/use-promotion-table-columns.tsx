@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -13,7 +14,10 @@ import {
 } from "../../../components/table/table-cells/common/text-cell"
 import { StatusCell } from "../../../components/table/table-cells/promotion/status-cell"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminPromotion>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminPromotion
+>()
 
 export const usePromotionTableColumns = () => {
   const { t } = useTranslation()

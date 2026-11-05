@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { CreatedAtCell } from "../../../../../components/table/table-cells/common/created-at-cell"
@@ -20,7 +21,10 @@ export interface ExtendedReservationItem extends HttpTypes.AdminReservation {
   location?: HttpTypes.AdminStockLocation
 }
 
-const columnHelper = createColumnHelper<ExtendedReservationItem>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  ExtendedReservationItem
+>()
 
 export const useReservationTableColumn = ({
   sku,

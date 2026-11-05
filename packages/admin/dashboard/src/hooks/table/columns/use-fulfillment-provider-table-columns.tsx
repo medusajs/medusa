@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import {
@@ -8,7 +9,10 @@ import {
 } from "../../../components/table/table-cells/common/text-cell"
 import { formatProvider } from "../../../lib/format-provider"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminFulfillmentProvider>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminFulfillmentProvider
+>()
 
 export const useFulfillmentProviderTableColumns = () => {
   const { t } = useTranslation()

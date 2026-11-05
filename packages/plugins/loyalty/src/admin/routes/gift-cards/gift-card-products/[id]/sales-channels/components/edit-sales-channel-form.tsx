@@ -1,5 +1,8 @@
-import { Button, createDataTableColumnHelper } from "@medusajs/ui"
-import { RowSelectionState } from "@tanstack/react-table"
+import {
+  Button,
+  createDataTableColumnHelper,
+  DataTableRowSelectionState,
+} from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import * as zod from "@medusajs/framework/zod"
 
@@ -45,10 +48,10 @@ export const EditSalesChannelsForm = ({
     product.sales_channels?.reduce((acc, curr) => {
       acc[curr.id] = true
       return acc
-    }, {} as RowSelectionState) ?? {}
+    }, {} as DataTableRowSelectionState) ?? {}
 
   const [rowSelection, setRowSelection] =
-    useState<RowSelectionState>(initialState)
+    useState<DataTableRowSelectionState>(initialState)
 
   useEffect(() => {
     const ids = Object.keys(rowSelection)

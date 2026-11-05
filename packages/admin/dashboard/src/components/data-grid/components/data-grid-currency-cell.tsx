@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import CurrencyInput, {
   CurrencyInputProps,
   formatValue,
@@ -12,13 +13,13 @@ import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
 export interface DataGridCurrencyCellProps<
-  TData,
+  TData extends RowData,
   TValue = any,
 > extends DataGridCellProps<TData, TValue> {
   code: string
 }
 
-export const DataGridCurrencyCell = <TData, TValue = any>({
+export const DataGridCurrencyCell = <TData extends RowData, TValue = any>({
   context,
   code,
 }: DataGridCurrencyCellProps<TData, TValue>) => {

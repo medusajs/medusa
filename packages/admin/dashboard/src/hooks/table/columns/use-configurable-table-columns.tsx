@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { createDataTableColumnHelper } from "@medusajs/ui"
+import { createDataTableColumnHelper, DataTableRowData } from "@medusajs/ui"
 import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import {
@@ -8,7 +8,9 @@ import {
 } from "../../../lib/table/cell-renderers"
 import { TableAdapter } from "../../../lib/table/table-adapters"
 
-export function useConfigurableTableColumns<TData = any>(
+export function useConfigurableTableColumns<
+  TData extends DataTableRowData = any,
+>(
   apiColumns: HttpTypes.AdminColumn[] | undefined,
   adapter?: TableAdapter<TData>
 ) {
