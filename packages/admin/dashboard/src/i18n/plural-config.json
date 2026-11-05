@@ -2,6 +2,7 @@
   "ar": ["zero", "one", "two", "few", "many", "other"],
   "bg": ["one", "other"],
   "bs": ["one", "few", "other"],
+  "sr": ["one", "few", "other"],
   "cs": ["one", "few", "many", "other"],
   "de": ["one", "other"],
   "el": ["one", "other"],

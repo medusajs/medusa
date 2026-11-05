@@ -3,6 +3,7 @@ import {
   bg,
   bs,
   cs,
+  sr,
   de,
   el,
   enGB,
@@ -38,6 +39,12 @@ import {
 import { Language } from "./types"
 
 export const languages: Language[] = [
+  {
+    code: "sr",
+    display_name: "Srpski",
+    ltr: true,
+    date_locale: sr,
+  },
   {
     code: "bs",
     display_name: "Bosanski",
