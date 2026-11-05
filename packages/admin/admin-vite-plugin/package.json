@@ -49,7 +49,7 @@
     "outdent": "^0.8.0",
     "picocolors": "^1.1.0"
   },
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@4.18.1",
   "engines": {
     "node": ">=22.22.0"
   }
