@@ -44,8 +44,8 @@
   ],
   "scripts": {
     "build": "yarn clean && yarn build:js:cjs && yarn build:js:esm",
-    "build:js:cjs": "tsc --project tsconfig.cjs.json && tsc-alias -p tsconfig.cjs.json",
-    "build:js:esm": "tsc --project tsconfig.esm.json && tsc-alias -p tsconfig.esm.json",
+    "build:js:cjs": "yarn run -T tsc --project tsconfig.cjs.json && tsc-alias -p tsconfig.cjs.json",
+    "build:js:esm": "yarn run -T tsc --project tsconfig.esm.json && tsc-alias -p tsconfig.esm.json",
     "clean": "rimraf dist",
     "dev": "yarn build:js:cjs && yarn build:js:esm",
     "generate:mermaid-icons": "node scripts/generate-mermaid-icons.mjs",

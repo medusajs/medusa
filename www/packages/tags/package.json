@@ -23,10 +23,10 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "yarn clean && yarn generate:tags && tsc",
+    "build": "yarn clean && yarn generate:tags && yarn run -T tsc",
     "generate:tags": "node --loader ts-node/esm src/scripts/generate-tags.ts",
     "clean": "rimraf dist",
-    "watch": "tsc --watch"
+    "watch": "yarn run -T tsc --watch"
   },
   "dependencies": {
     "docs-utils": "*"
