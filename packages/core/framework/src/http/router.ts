@@ -33,7 +33,7 @@ import { applyLocale, authenticate, AuthType } from "./middlewares"
 import { createBodyParserMiddlewaresStack } from "./middlewares/bodyparser"
 import { ensurePublishableApiKeyMiddleware } from "./middlewares/ensure-publishable-api-key"
 import { errorHandler } from "./middlewares/error-handler"
-import { RoutesFinder } from "./routes-finder"
+import { preloadPathToRegexp, RoutesFinder } from "./routes-finder"
 import { RoutesLoader } from "./routes-loader"
 import { RoutesSorter } from "./routes-sorter"
 import { RestrictedFields } from "./utils/restricted-fields"
@@ -467,6 +467,8 @@ export class ApiLoader {
       this.#baseRestrictedFields,
       this.#storeRelationsLimit
     )
+
+    await preloadPathToRegexp()
 
     const {
       errorHandler: sourceErrorHandler,
