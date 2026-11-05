@@ -56,7 +56,7 @@
 | `./opentelemetry/api` | `@opentelemetry/api` | `@medusajs/framework/opentelemetry/api` |
 | `./opentelemetry/resources` | `@opentelemetry/resources` | `@medusajs/framework/opentelemetry/resources` |
 | `./opentelemetry/sdk-node` | `@opentelemetry/sdk-node` | `@medusajs/framework/opentelemetry/sdk-node` |
-| `./opentelemetry/sdk-trace-node` | `@opentelemetry/sdk-trace-node` | `@medusajs/framework/opentelemetry/sdk-trace-node` |
+| `./opentelemetry/sdk-trace` | `@opentelemetry/sdk-trace` | `@medusajs/framework/opentelemetry/sdk-trace` |
 | `./opentelemetry/instrumentation-pg` | `@opentelemetry/instrumentation-pg` | `@medusajs/framework/opentelemetry/instrumentation-pg` |
 | `./awilix` | `awilix` | `@medusajs/framework/awilix` |
 | `./pg` | `pg` | `@medusajs/framework/pg` |

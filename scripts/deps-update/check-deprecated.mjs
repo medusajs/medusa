@@ -23,14 +23,8 @@ const config = JSON.parse(
 const locked = parseLockfile(readFileSync(path.join(root, "yarn.lock"), "utf8"))
 const declarations = collectDeclarations(listWorkspaces(root), config)
 
-// TODO: remove once #17596 (OpenTelemetry SDK 3) merges and replaces it with @opentelemetry/sdk-trace.
-const IGNORED = new Set(["@opentelemetry/sdk-trace-node"])
-
 const byName = new Map()
 for (const d of declarations) {
-  if (IGNORED.has(d.name)) {
-    continue
-  }
   const version = locked.get(`${d.name}@npm:${d.spec}`)
   if (version) {
     if (!byName.has(d.name)) {
