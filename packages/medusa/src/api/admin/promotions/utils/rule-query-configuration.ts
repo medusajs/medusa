@@ -14,6 +14,11 @@ export const ruleQueryConfigurations = {
     labelAttr: "name",
     valueAttr: "id",
   },
+  customer: {
+    entryPoint: "customer",
+    labelAttr: "email",
+    valueAttr: "id",
+  },
   sales_channel: {
     entryPoint: "sales_channel",
     labelAttr: "name",

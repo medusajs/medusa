@@ -27,6 +27,14 @@ const ruleAttributes = [
     operators: Object.values(operatorsMap),
   },
   {
+    id: "customer",
+    value: "customer.id",
+    label: "Customer",
+    required: false,
+    field_type: "multiselect",
+    operators: Object.values(operatorsMap),
+  },
+  {
     id: "region",
     value: "region.id",
     label: "Region",

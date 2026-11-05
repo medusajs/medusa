@@ -3981,6 +3981,13 @@ medusaIntegrationTestRunner({
                 field_type: "multiselect",
               }),
               expect.objectContaining({
+                id: "customer",
+                value: "customer.id",
+                label: "Customer",
+                required: false,
+                field_type: "multiselect",
+              }),
+              expect.objectContaining({
                 id: "region",
                 value: "region.id",
                 label: "Region",
@@ -4204,6 +4211,27 @@ medusaIntegrationTestRunner({
             {
               label: "VIP",
               value: group.id,
+            },
+          ])
+
+          const customer = (
+            await api.post(
+              "/admin/customers",
+              { email: "jane@example.com", first_name: "Jane" },
+              adminHeaders
+            )
+          ).data.customer
+
+          response = await api.get(
+            `/admin/promotions/rule-value-options/rules/customer?q=jane`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.values).toEqual([
+            {
+              label: "jane@example.com",
+              value: customer.id,
             },
           ])
 

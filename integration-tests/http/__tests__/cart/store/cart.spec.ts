@@ -7967,6 +7967,116 @@ medusaIntegrationTestRunner({
             { code: "EXCEEDED_50OFF", reason: "promotion_limit_exceeded" },
           ])
         })
+
+        describe("with a promotion targeting an individual customer", () => {
+          let customerPromotion
+
+          const createCart = async (headers) =>
+            (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                },
+                headers
+              )
+            ).data.cart
+
+          beforeEach(async () => {
+            customerPromotion = (
+              await api.post(
+                `/admin/promotions`,
+                {
+                  code: "CUSTOMER_ONLY",
+                  type: PromotionType.STANDARD,
+                  status: PromotionStatus.ACTIVE,
+                  rules: [
+                    {
+                      attribute: "customer.id",
+                      operator: "in",
+                      values: [customer.id],
+                    },
+                  ],
+                  application_method: {
+                    type: "fixed",
+                    target_type: "items",
+                    allocation: "each",
+                    value: 100,
+                    max_quantity: 1,
+                    currency_code: "usd",
+                  },
+                },
+                adminHeaders
+              )
+            ).data.promotion
+          })
+
+          it("should apply the promotion to the targeted customer's cart", async () => {
+            const customerCart = await createCart(storeHeadersWithCustomer)
+
+            const updatedCart = (
+              await api.post(
+                `/store/carts/${customerCart.id}/promotions`,
+                { promo_codes: [customerPromotion.code] },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            expect(updatedCart.discount_total).toEqual(105)
+            expect(updatedCart.items[0].adjustments).toEqual([
+              expect.objectContaining({
+                code: "CUSTOMER_ONLY",
+                promotion_id: customerPromotion.id,
+                amount: 100,
+              }),
+            ])
+          })
+
+          it("should not apply the promotion to another customer's cart", async () => {
+            const otherCustomer = await createAuthenticatedCustomer(
+              api,
+              storeHeaders,
+              { email: "pepper@stark-industries.com" }
+            )
+            const otherHeaders = {
+              headers: {
+                ...storeHeaders.headers,
+                authorization: `Bearer ${otherCustomer.jwt}`,
+              },
+            }
+            const otherCart = await createCart(otherHeaders)
+
+            const updatedCart = (
+              await api.post(
+                `/store/carts/${otherCart.id}/promotions`,
+                { promo_codes: [customerPromotion.code] },
+                otherHeaders
+              )
+            ).data.cart
+
+            expect(updatedCart.discount_total).toEqual(0)
+            expect(updatedCart.items[0].adjustments).toEqual([])
+          })
+
+          it("should not apply the promotion to a guest cart", async () => {
+            const guestCart = await createCart(storeHeaders)
+
+            const updatedCart = (
+              await api.post(
+                `/store/carts/${guestCart.id}/promotions`,
+                { promo_codes: [customerPromotion.code] },
+                storeHeaders
+              )
+            ).data.cart
+
+            expect(updatedCart.discount_total).toEqual(0)
+            expect(updatedCart.items[0].adjustments).toEqual([])
+          })
+        })
       })
 
       describe("DELETE /store/carts/:id/promotions", () => {
