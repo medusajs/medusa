@@ -178,6 +178,7 @@
     "reset": "Restablecer",
     "confirm": "Confirmar",
     "edit": "Editar",
+    "view": "Ver",
     "addItems": "Agregar artículos",
     "download": "Descargar",
     "clear": "Borrar",
@@ -2528,6 +2529,10 @@
       "requiredPermission": "Permiso requerido: {{permission}}",
       "action": "No tienes permiso para realizar esta acción."
     },
+    "noPermissions": {
+      "title": "Aún no hay permisos",
+      "description": "Aún no tienes ningún permiso asignado. Contacta con tu administrador para solicitar acceso a las áreas que necesitas."
+    },
     "requiredPermissions": {
       "title": "Permisos requeridos",
       "none": "No hay permisos declarados en esta vista.",
@@ -2885,6 +2890,7 @@
     "editUser": "Editar Usuario",
     "inviteUser": "Invitar Usuario",
     "inviteUserHint": "Invita a un nuevo usuario a tu tienda.",
+    "inviteRolesTooltip": "Si no se selecciona ningún rol, el usuario será invitado sin ningún permiso. Puedes asignar roles más tarde.",
     "sendInvite": "Enviar invitación",
     "pendingInvites": "Invitaciones Pendientes",
     "deleteInviteWarning": "Estás a punto de eliminar la invitación para {{email}}. Esta acción no puede deshacerse.",
@@ -2976,6 +2982,9 @@
       "filtered": {
         "heading": "Sin resultados",
         "description": "Ningún permiso coincide con los criterios de filtro actuales."
+      },
+      "manage": {
+        "successToast": "Los permisos se actualizaron correctamente."
       }
     },
     "list": {
@@ -2999,6 +3008,7 @@
     },
     "edit": {
       "header": "Editar política",
+      "identityHint": "La clave, el recurso y la operación identifican la política y no se pueden cambiar. Crea una nueva política en su lugar.",
       "successToast": "Política {{key}} actualizada"
     },
     "delete": {

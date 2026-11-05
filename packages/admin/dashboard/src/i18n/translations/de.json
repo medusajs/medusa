@@ -143,6 +143,7 @@
     "reset": "Zurücksetzen",
     "confirm": "Bestätigen",
     "edit": "Bearbeiten",
+    "view": "Ansicht",
     "addItems": "Elemente hinzufügen",
     "download": "Herunterladen",
     "clear": "Klar",
@@ -2787,6 +2788,7 @@
     "editUser": "Benutzer bearbeiten",
     "inviteUser": "Benutzer einladen",
     "inviteUserHint": "Laden Sie einen neuen Benutzer in Ihren Shop ein.",
+    "inviteRolesTooltip": "Wenn keine Rolle ausgewählt ist, wird der Benutzer ohne Berechtigungen eingeladen. Rollen können später zugewiesen werden.",
     "sendInvite": "Einladung senden",
     "pendingInvites": "Ausstehende Einladungen",
     "deleteInviteWarning": "Sie sind dabei, die Einladung für {{email}} zu löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
@@ -2888,6 +2890,9 @@
       "filtered": {
         "heading": "Keine Ergebnisse",
         "description": "Keine Berechtigungen entsprechen den aktuellen Filterkriterien."
+      },
+      "manage": {
+        "successToast": "Berechtigungen wurden erfolgreich aktualisiert."
       }
     },
     "list": {
@@ -2911,6 +2916,7 @@
     },
     "edit": {
       "header": "Richtlinie bearbeiten",
+      "identityHint": "Der Schlüssel, die Ressource und die Operation identifizieren die Richtlinie und können nicht geändert werden. Erstellen Sie stattdessen eine neue Richtlinie.",
       "successToast": "Richtlinie {{key}} aktualisiert"
     },
     "delete": {
@@ -3804,6 +3810,10 @@
       "description": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen.",
       "requiredPermission": "Erforderliche Berechtigung: {{permission}}",
       "action": "Sie haben keine Berechtigung, diese Aktion durchzuführen."
+    },
+    "noPermissions": {
+      "title": "Noch keine Berechtigungen",
+      "description": "Ihnen sind noch keine Berechtigungen zugewiesen. Wenden Sie sich an Ihren Administrator, um Zugang zu den benötigten Bereichen anzufordern."
     },
     "requiredPermissions": {
       "title": "Erforderliche Berechtigungen",

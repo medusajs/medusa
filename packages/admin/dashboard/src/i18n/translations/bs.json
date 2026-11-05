@@ -148,6 +148,7 @@
     "reset": "Resetuj",
     "confirm": "Potvrdi",
     "edit": "Uredi",
+    "view": "Pogledaj",
     "addItems": "Dodaj stavke",
     "download": "Preuzmi",
     "clear": "Očisti",
@@ -2817,6 +2818,7 @@
     "editUser": "Uredi korisnika",
     "inviteUser": "Pozovi korisnika",
     "inviteUserHint": "Pozovite novog korisnika u vašu trgovinu.",
+    "inviteRolesTooltip": "Ako nije odabrana nijedna uloga, korisnik će biti pozvan bez ikakvih dozvola. Uloge možete dodijeliti kasnije.",
     "sendInvite": "Pošaljite pozivnicu",
     "pendingInvites": "Pozivnice na čekanju",
     "deleteInviteWarning": "Spremate se izbrisati pozivnicu za {{email}}. Ova akcija se ne može poništiti.",
@@ -2921,6 +2923,9 @@
       "filtered": {
         "heading": "Nema rezultata",
         "description": "Nijedna dozvola ne odgovara trenutnim kriterijima filtera."
+      },
+      "manage": {
+        "successToast": "Dozvole su uspješno ažurirane."
       }
     },
     "list": {
@@ -2944,6 +2949,7 @@
     },
     "edit": {
       "header": "Uredi politiku",
+      "identityHint": "Ključ, resurs i operacija identificiraju politiku i ne mogu se promijeniti. Umjesto toga kreirajte novu politiku.",
       "successToast": "Politika {{key}} ažurirana"
     },
     "delete": {
@@ -3852,6 +3858,10 @@
       "description": "Nemate dozvolu za pristup ovoj stranici.",
       "requiredPermission": "Potrebna dozvola: {{permission}}",
       "action": "Nemate dozvolu za izvođenje ove radnje."
+    },
+    "noPermissions": {
+      "title": "Još nema dozvola",
+      "description": "Nemate dodijeljenih dozvola. Obratite se svom administratoru da biste zatražili pristup područjima koja su vam potrebna."
     },
     "requiredPermissions": {
       "title": "Potrebne dozvole",

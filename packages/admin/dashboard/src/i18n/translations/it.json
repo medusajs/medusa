@@ -143,6 +143,7 @@
     "reset": "Ripristina",
     "confirm": "Conferma",
     "edit": "Modifica",
+    "view": "Visualizza",
     "addItems": "Aggiungi elementi",
     "download": "Scarica",
     "clear": "Pulisci",
@@ -2787,6 +2788,7 @@
     "editUser": "Modifica Utente",
     "inviteUser": "Invita Utente",
     "inviteUserHint": "Invita un nuovo utente al tuo negozio.",
+    "inviteRolesTooltip": "Se non viene selezionato alcun ruolo, l'utente verrà invitato senza alcun permesso. Puoi assegnare ruoli in seguito.",
     "sendInvite": "Invia invito",
     "pendingInvites": "Inviti in attesa",
     "deleteInviteWarning": "Stai per eliminare l'invito per {{email}}. Questa azione non può essere annullata.",
@@ -2888,6 +2890,9 @@
       "filtered": {
         "heading": "Nessun risultato",
         "description": "Nessun permesso corrisponde ai criteri di filtro correnti."
+      },
+      "manage": {
+        "successToast": "I permessi sono stati aggiornati con successo."
       }
     },
     "list": {
@@ -2911,6 +2916,7 @@
     },
     "edit": {
       "header": "Modifica policy",
+      "identityHint": "La chiave, la risorsa e l'operazione identificano la policy e non possono essere modificate. Crea invece una nuova policy.",
       "successToast": "Policy {{key}} aggiornata"
     },
     "delete": {
@@ -3804,6 +3810,10 @@
       "description": "Non hai il permesso di accedere a questa pagina.",
       "requiredPermission": "Permesso richiesto: {{permission}}",
       "action": "Non hai il permesso di eseguire questa azione."
+    },
+    "noPermissions": {
+      "title": "Nessun permesso",
+      "description": "Non hai ancora nessun permesso assegnato. Contatta il tuo amministratore per richiedere l'accesso alle aree di cui hai bisogno."
     },
     "requiredPermissions": {
       "title": "Permessi richiesti",
