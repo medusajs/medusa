@@ -153,6 +153,7 @@
     "reset": "Atstatyti",
     "confirm": "Patvirtinti",
     "edit": "Keisti",
+    "view": "Žiūrėti",
     "addItems": "Pridėti",
     "download": "Parsisiųsti",
     "clear": "Išvalyti",
@@ -2850,6 +2851,7 @@
     "editUser": "Keisti administratorių",
     "inviteUser": "Pakviesti administratorių",
     "inviteUserHint": "Pakvieskite naują parduotuvės administratorių.",
+    "inviteRolesTooltip": "Jei rolė nepasirinkta, vartotojas bus pakviestas be jokių leidimų. Roles galite priskirti vėliau.",
     "sendInvite": "Siųsti pakvietimą",
     "pendingInvites": "Laukiantys pakvietimai",
     "deleteInviteWarning": "Ketinate pašalinti pakvietimą, išsiųstą {{email}}. Šis veiksmas neatstatomas.",
@@ -2957,6 +2959,9 @@
       "filtered": {
         "heading": "Nėra rezultatų",
         "description": "Nė vienas leidimas neatitinka dabartinių filtro kriterijų."
+      },
+      "manage": {
+        "successToast": "Leidimai sėkmingai atnaujinti."
       }
     },
     "list": {
@@ -2980,6 +2985,7 @@
     },
     "edit": {
       "header": "Redaguoti politiką",
+      "identityHint": "Raktas, išteklius ir operacija identifikuoja politiką ir negali būti pakeisti. Vietoj to sukurkite naują politiką.",
       "successToast": "Politika {{key}} atnaujinta"
     },
     "delete": {
@@ -3905,6 +3911,10 @@
       "description": "Neturite leidimo pasiekti šio puslapio.",
       "requiredPermission": "Reikalingas leidimas: {{permission}}",
       "action": "Neturite leidimo atlikti šio veiksmo."
+    },
+    "noPermissions": {
+      "title": "Nėra leidimų",
+      "description": "Jums dar nėra priskirta jokių leidimų. Susisiekite su administratoriumi, kad gautumėte prieigą prie jums reikalingų sričių."
     },
     "requiredPermissions": {
       "title": "Reikalingi leidimai",

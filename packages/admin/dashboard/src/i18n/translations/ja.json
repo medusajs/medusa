@@ -143,6 +143,7 @@
     "reset": "リセット",
     "confirm": "確認",
     "edit": "編集",
+    "view": "表示",
     "addItems": "項目を追加",
     "download": "ダウンロード",
     "clear": "クリア",
@@ -2787,6 +2788,7 @@
     "editUser": "ユーザーを編集",
     "inviteUser": "ユーザーを招待",
     "inviteUserHint": "新しいユーザーをストアに招待します。",
+    "inviteRolesTooltip": "ロールが選択されていない場合、ユーザーは権限なしで招待されます。後でロールを割り当てることができます。",
     "sendInvite": "招待を送信",
     "pendingInvites": "保留中の招待",
     "deleteInviteWarning": "{{email}}への招待を削除しようとしています 。この操作は取り消せません。",
@@ -2888,6 +2890,9 @@
       "filtered": {
         "heading": "結果がありません",
         "description": "現在のフィルター条件に一致する権限はありません。"
+      },
+      "manage": {
+        "successToast": "権限が正常に更新されました。"
       }
     },
     "list": {
@@ -2911,6 +2916,7 @@
     },
     "edit": {
       "header": "ポリシーを編集",
+      "identityHint": "キー、リソース、および操作はポリシーを識別するものであり、変更できません。代わりに新しいポリシーを作成してください。",
       "successToast": "ポリシー{{key}}が更新されました"
     },
     "delete": {
@@ -3804,6 +3810,10 @@
       "description": "このページにアクセスする権限がありません。",
       "requiredPermission": "必要な権限: {{permission}}",
       "action": "この操作を実行する権限がありません。"
+    },
+    "noPermissions": {
+      "title": "権限がまだありません",
+      "description": "まだ権限が割り当てられていません。必要なエリアへのアクセスをリクエストするには、管理者にお問い合わせください。"
     },
     "requiredPermissions": {
       "title": "必要な権限",

@@ -148,6 +148,7 @@
     "reset": "Resetiraj",
     "confirm": "Potvrdi",
     "edit": "Uredi",
+    "view": "Prikaži",
     "addItems": "Dodaj stavke",
     "download": "Preuzmi",
     "clear": "Očisti",
@@ -2730,6 +2731,7 @@
     "editUser": "Uredi korisnika",
     "inviteUser": "Pozovi korisnika",
     "inviteUserHint": "Pozovite novog korisnika u vašu trgovinu.",
+    "inviteRolesTooltip": "Ako nije odabrana nijedna uloga, korisnik će biti pozvan bez ikakvih ovlasti. Uloge možete dodijeliti kasnije.",
     "sendInvite": "Pošaljite pozivnicu",
     "pendingInvites": "Pozivnice na čekanju",
     "deleteInviteWarning": "Spremate se izbrisati pozivnicu za {{email}}. Ova radnja se ne može poništiti.",
@@ -3735,6 +3737,9 @@
       "filtered": {
         "heading": "Nema rezultata",
         "description": "Nijedna ovlast ne odgovara trenutačnim kriterijima filtriranja."
+      },
+      "manage": {
+        "successToast": "Ovlasti su uspješno ažurirane."
       }
     },
     "list": {
@@ -3758,6 +3763,7 @@
     },
     "edit": {
       "header": "Uredi pravilo pristupa",
+      "identityHint": "Ključ, resurs i operacija identificiraju pravilo pristupa i ne mogu se mijenjati. Umjesto toga kreirajte novo pravilo pristupa.",
       "successToast": "Pravilo pristupa {{key}} je ažurirano"
     },
     "delete": {
@@ -3833,6 +3839,10 @@
       "description": "Nemate ovlast za pristup ovoj stranici.",
       "requiredPermission": "Potrebna ovlast: {{permission}}",
       "action": "Nemate ovlast za izvođenje ove radnje."
+    },
+    "noPermissions": {
+      "title": "Još nema ovlasti",
+      "description": "Nemate dodijeljenih ovlasti. Obratite se svom administratoru kako biste zatražili pristup područjima koja su vam potrebna."
     },
     "requiredPermissions": {
       "title": "Potrebne ovlasti",

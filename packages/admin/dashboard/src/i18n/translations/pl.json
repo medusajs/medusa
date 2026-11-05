@@ -153,6 +153,7 @@
     "reset": "Resetuj",
     "confirm": "Potwierdź",
     "edit": "Edytuj",
+    "view": "Wyświetl",
     "addItems": "Dodaj przedmioty",
     "download": "Pobierz",
     "clear": "Wyczyść",
@@ -1306,6 +1307,9 @@
       "filtered": {
         "heading": "Brak wyników",
         "description": "Żadne uprawnienie nie spełnia bieżących kryteriów filtrowania."
+      },
+      "manage": {
+        "successToast": "Uprawnienia zostały pomyślnie zaktualizowane."
       }
     },
     "list": {
@@ -1329,6 +1333,7 @@
     },
     "edit": {
       "header": "Edytuj politykę",
+      "identityHint": "Klucz, zasób i operacja identyfikują politykę i nie można ich zmienić. Zamiast tego utwórz nową politykę.",
       "successToast": "Polityka {{key}} została zaktualizowana"
     },
     "delete": {
@@ -3030,6 +3035,7 @@
     "editUser": "Edytuj użytkownika",
     "inviteUser": "Zaproś użytkownika",
     "inviteUserHint": "Zaproś nowego użytkownika do swojego sklepu.",
+    "inviteRolesTooltip": "Jeśli nie zostanie wybrana żadna rola, użytkownik zostanie zaproszony bez żadnych uprawnień. Możesz przypisać role później.",
     "sendInvite": "Wyślij zaproszenie",
     "pendingInvites": "Oczekujące zaproszenia",
     "deleteInviteWarning": "Zamierzasz usunąć zaproszenie dla użytkownika {{email}}. Tej akcji nie można cofnąć.",
@@ -3884,6 +3890,10 @@
       "description": "Nie masz uprawnień dostępu do tej strony.",
       "requiredPermission": "Wymagane uprawnienie: {{permission}}",
       "action": "Nie masz uprawnień do wykonania tej akcji."
+    },
+    "noPermissions": {
+      "title": "Brak uprawnień",
+      "description": "Nie masz jeszcze przypisanych żadnych uprawnień. Skontaktuj się z administratorem, aby uzyskać dostęp do potrzebnych obszarów."
     },
     "requiredPermissions": {
       "title": "Wymagane uprawnienia",

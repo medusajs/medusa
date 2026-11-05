@@ -148,6 +148,7 @@
     "reset": "Resetați",
     "confirm": "Confirma",
     "edit": "Edita",
+    "view": "Vedere",
     "addItems": "Adăugați articole",
     "download": "Descărcați",
     "clear": "Clar",
@@ -2818,6 +2819,7 @@
     "editUser": "Editați utilizatorul",
     "inviteUser": "Invitați utilizator",
     "inviteUserHint": "Invitați un utilizator nou în magazinul dvs.",
+    "inviteRolesTooltip": "Dacă nu este selectat niciun rol, utilizatorul va fi invitat fără nicio permisiune. Puteți atribui roluri mai târziu.",
     "sendInvite": "Trimite invitația",
     "pendingInvites": "Invitații în așteptare",
     "deleteInviteWarning": "Sunteți pe cale să ștergeți invitația pentru {{email}}. ",
@@ -2922,6 +2924,9 @@
       "filtered": {
         "heading": "Niciun rezultat",
         "description": "Nicio permisiune nu corespunde criteriilor actuale de filtrare."
+      },
+      "manage": {
+        "successToast": "Permisiunile au fost actualizate cu succes."
       }
     },
     "list": {
@@ -2945,6 +2950,7 @@
     },
     "edit": {
       "header": "Editați politica",
+      "identityHint": "Cheia, resursa și operațiunea identifică politica și nu pot fi modificate. Creați în schimb o nouă politică.",
       "successToast": "Politica {{key}} actualizată"
     },
     "delete": {
@@ -3854,6 +3860,10 @@
       "description": "Nu aveți permisiunea de a accesa această pagină.",
       "requiredPermission": "Permisiune necesară: {{permission}}",
       "action": "Nu aveți permisiunea de a efectua această acțiune."
+    },
+    "noPermissions": {
+      "title": "Nicio permisiune deocamdată",
+      "description": "Nu aveți nicio permisiune atribuită deocamdată. Contactați administratorul dvs. pentru a solicita acces la zonele de care aveți nevoie."
     },
     "requiredPermissions": {
       "title": "Permisiuni necesare",

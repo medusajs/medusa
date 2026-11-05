@@ -143,6 +143,7 @@
     "reset": "Repor",
     "confirm": "Confirmar",
     "edit": "Editar",
+    "view": "Ver",
     "addItems": "Adicionar itens",
     "download": "Transferir",
     "clear": "Limpar",
@@ -2781,6 +2782,7 @@
     "editUser": "Editar utilizador",
     "inviteUser": "Convidar utilizador",
     "inviteUserHint": "Convida um novo utilizador para a tua loja.",
+    "inviteRolesTooltip": "Se não for selecionada nenhuma função, o utilizador será convidado sem quaisquer permissões. Pode atribuir funções mais tarde.",
     "sendInvite": "Enviar convite",
     "pendingInvites": "Convites pendentes",
     "deleteInviteWarning": "Estás prestes a eliminar o convite de {{email}}. Esta ação não pode ser anulada.",
@@ -2882,6 +2884,9 @@
       "filtered": {
         "heading": "Sem resultados",
         "description": "Nenhuma permissão corresponde aos critérios de filtro atuais."
+      },
+      "manage": {
+        "successToast": "As permissões foram atualizadas com sucesso."
       }
     },
     "list": {
@@ -2905,6 +2910,7 @@
     },
     "edit": {
       "header": "Editar política",
+      "identityHint": "A chave, o recurso e a operação identificam a política e não podem ser alterados. Crie uma nova política em alternativa.",
       "successToast": "Política {{key}} atualizada"
     },
     "delete": {
@@ -3797,6 +3803,10 @@
       "description": "Não tens permissão para aceder a esta página.",
       "requiredPermission": "Permissão necessária: {{permission}}",
       "action": "Não tens permissão para realizar esta ação."
+    },
+    "noPermissions": {
+      "title": "Ainda não tem permissões",
+      "description": "Ainda não tem permissões atribuídas. Contacte o seu administrador para solicitar acesso às áreas de que necessita."
     },
     "requiredPermissions": {
       "title": "Permissões necessárias",
