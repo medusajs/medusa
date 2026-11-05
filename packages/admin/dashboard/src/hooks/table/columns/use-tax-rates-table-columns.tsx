@@ -1,4 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -13,7 +14,10 @@ import {
   TypeHeader,
 } from "../../../components/table/table-cells/taxes/type-cell"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminTaxRate>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminTaxRate
+>()
 
 export const useTaxRateTableColumns = () => {
   const { t } = useTranslation()

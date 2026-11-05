@@ -1,4 +1,5 @@
-import { ColumnDef, Row } from "@tanstack/react-table"
+import { ColumnDef, Row, RowData } from "@tanstack/react-table"
+import { DataGridFeatures } from "../data-grid-features"
 import { FieldValues } from "react-hook-form"
 import {
   DataGridColumnType,
@@ -8,15 +9,18 @@ import {
   InternalColumnMeta,
 } from "../types"
 
-export class DataGridMatrix<TData, TFieldValues extends FieldValues> {
+export class DataGridMatrix<
+  TData extends RowData,
+  TFieldValues extends FieldValues,
+> {
   private multiColumnSelection: boolean
   private cells: Grid<TFieldValues>
   public rowAccessors: (string | null)[] = []
   public columnAccessors: (string | null)[] = []
 
   constructor(
-    data: Row<TData>[],
-    columns: ColumnDef<TData>[],
+    data: Row<DataGridFeatures, TData>[],
+    columns: ColumnDef<DataGridFeatures, TData>[],
     multiColumnSelection: boolean = false
   ) {
     this.multiColumnSelection = multiColumnSelection
@@ -376,7 +380,10 @@ export class DataGridMatrix<TData, TFieldValues extends FieldValues> {
     }
   }
 
-  private _populateCells(rows: Row<TData>[], columns: ColumnDef<TData>[]) {
+  private _populateCells(
+    rows: Row<DataGridFeatures, TData>[],
+    columns: ColumnDef<DataGridFeatures, TData>[]
+  ) {
     const cells = Array.from({ length: rows.length }, () =>
       Array(columns.length).fill(null)
     ) as Grid<TFieldValues>

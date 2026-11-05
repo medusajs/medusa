@@ -1,12 +1,13 @@
-import { Skeleton } from "@medusajs/ui";
+import { Skeleton, DataTableRowData } from "@medusajs/ui";
 import { ColumnDef } from "@tanstack/react-table";
+import { DataGridFeatures } from "../data-grid-features";
 
-type DataGridSkeletonProps<TData> = {
-  columns: ColumnDef<TData>[];
+type DataGridSkeletonProps<TData extends DataTableRowData> = {
+  columns: ColumnDef<DataGridFeatures, TData>[];
   rows?: number;
 };
 
-export const DataGridSkeleton = <TData,>({
+export const DataGridSkeleton = <TData extends DataTableRowData,>({
   columns,
   rows: rowCount = 10,
 }: DataGridSkeletonProps<TData>) => {

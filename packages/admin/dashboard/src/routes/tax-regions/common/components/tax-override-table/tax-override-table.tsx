@@ -1,6 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
-import { Table } from "@tanstack/react-table"
+import { ReactTable } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { ReactNode } from "react"
 import { Link } from "react-router-dom"
 import {
@@ -17,7 +18,7 @@ type TaxOverrideTableProps = {
   isPending: boolean
   queryObject: Record<string, any>
   count?: number
-  table: Table<HttpTypes.AdminTaxRate>
+  table: ReactTable<DataTableFeatures, HttpTypes.AdminTaxRate>
   action?: { label: string; to: string }
   prefix?: string
   children?: ReactNode
@@ -53,7 +54,7 @@ export const TaxOverrideTable = ({
   const noResults = !isPending && count === 0 && !noQuery
   const noRecords = !isPending && count === 0 && noQuery
 
-  const { pageIndex, pageSize } = table.getState().pagination
+  const { pageIndex, pageSize } = table.state.pagination
 
   return (
     <div className="flex flex-col divide-y">

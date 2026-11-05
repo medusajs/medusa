@@ -1,11 +1,11 @@
-import { Checkbox } from "@medusajs/ui";
+import { Checkbox, DataTableRowData } from "@medusajs/ui";
 import { Controller, ControllerRenderProps } from "react-hook-form";
 import { useCombinedRefs } from "../../../utils/refs";
 import { useDataGridCell, useDataGridCellError } from "../hooks";
 import { DataGridCellProps, InputProps } from "../types";
 import { DataGridCellContainer } from "./data-grid-cell-container";
 
-export const DataGridBooleanCell = <TData, TValue = any>({
+export const DataGridBooleanCell = <TData extends DataTableRowData, TValue = any>({
   context,
   disabled,
 }: DataGridCellProps<TData, TValue> & { disabled?: boolean }) => {

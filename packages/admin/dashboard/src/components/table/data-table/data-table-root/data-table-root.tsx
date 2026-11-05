@@ -1,10 +1,12 @@
 import { CommandBar, Table, clx } from "@medusajs/ui"
 import {
   ColumnDef,
-  Table as ReactTable,
+  ReactTable,
   Row,
+  RowData,
   flexRender,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../data-table-features"
 import {
   ComponentPropsWithoutRef,
   Fragment,
@@ -23,19 +25,19 @@ type BulkCommand = {
   action: (selection: Record<string, boolean>) => Promise<void>
 }
 
-export interface DataTableRootProps<TData> {
+export interface DataTableRootProps<TData extends RowData> {
   /**
    * The table instance to render
    */
-  table: ReactTable<TData>
+  table: ReactTable<DataTableFeatures, TData>
   /**
    * The columns to render
    */
-  columns: ColumnDef<TData, any>[]
+  columns: ColumnDef<DataTableFeatures, TData, any>[]
   /**
    * Function to generate a link to navigate to when clicking on a row
    */
-  navigateTo?: (row: Row<TData>) => string
+  navigateTo?: (row: Row<DataTableFeatures, TData>) => string
   /**
    * Bulk actions to render
    */
@@ -76,7 +78,7 @@ export interface DataTableRootProps<TData> {
 /**
  * Table component for rendering a table with pagination, filtering and ordering.
  */
-export const DataTableRoot = <TData,>({
+export const DataTableRoot = <TData extends RowData>({
   table,
   columns,
   pagination,
@@ -96,8 +98,8 @@ export const DataTableRoot = <TData,>({
   const hasActions = columns.find((c) => c.id === "actions")
   const hasCommandBar = commands && commands.length > 0
 
-  const rowSelection = table.getState().rowSelection
-  const { pageIndex, pageSize } = table.getState().pagination
+  const rowSelection = table.state.rowSelection
+  const { pageIndex, pageSize } = table.state.pagination
 
   const colCount = columns.length - (hasSelect ? 1 : 0) - (hasActions ? 1 : 0)
   const colWidth = 100 / colCount

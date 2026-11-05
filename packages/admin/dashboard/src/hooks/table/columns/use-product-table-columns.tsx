@@ -1,5 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table"
-import { useMemo } from "react"
+import { DataTableFeatures } from "../../../components/table/data-table/data-table-features"
+import { ReactNode, useMemo } from "react"
 
 import {
   CollectionCell,
@@ -28,57 +29,79 @@ import {
   useSalesChannelPermissions,
 } from "../../use-resource-permissions"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProduct
+>()
 
-export const useProductTableColumns = () => {
+export type ProductTableColumnDef = {
+  id: string
+  header: () => ReactNode
+  cell: (context: { row: { original: HttpTypes.AdminProduct } }) => ReactNode
+}
+
+export const useProductTableColumnDefs = () => {
   const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
   const { canRead: canReadVariants } = useProductVariantPermissions()
   const { canRead: canReadCollections } = useProductCollectionPermissions()
 
-  return useMemo(
+  return useMemo<ProductTableColumnDef[]>(
     () => [
-      columnHelper.display({
+      {
         id: "product",
         header: () => <ProductHeader />,
         cell: ({ row }) => <ProductCell product={row.original} />,
-      }),
+      },
       ...(canReadCollections
         ? [
-            columnHelper.accessor("collection", {
+            {
+              id: "collection",
               header: () => <CollectionHeader />,
               cell: ({ row }) => (
                 <CollectionCell collection={row.original.collection} />
               ),
-            }),
+            },
           ]
         : []),
       ...(canReadSalesChannels
         ? [
-            columnHelper.accessor("sales_channels", {
+            {
+              id: "sales_channels",
               header: () => <SalesChannelHeader />,
               cell: ({ row }) => (
                 <SalesChannelsCell
                   salesChannels={row.original.sales_channels}
                 />
               ),
-            }),
+            },
           ]
         : []),
       ...(canReadVariants
         ? [
-            columnHelper.accessor("variants", {
+            {
+              id: "variants",
               header: () => <VariantHeader />,
               cell: ({ row }) => (
                 <VariantCell variants={row.original.variants} />
               ),
-            }),
+            },
           ]
         : []),
-      columnHelper.accessor("status", {
+      {
+        id: "status",
         header: () => <ProductStatusHeader />,
         cell: ({ row }) => <ProductStatusCell status={row.original.status} />,
-      }),
+      },
     ],
-    []
+    [canReadCollections, canReadSalesChannels, canReadVariants]
+  )
+}
+
+export const useProductTableColumns = () => {
+  const columns = useProductTableColumnDefs()
+
+  return useMemo(
+    () => columns.map((column) => columnHelper.display(column)),
+    [columns]
   )
 }

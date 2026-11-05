@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -10,7 +11,10 @@ import { PriceListListTableActions } from "./price-list-list-table-actions"
 import { PriceCountCell } from "./price-count-cell"
 import { usePricePermissions } from "../../../../../hooks/use-resource-permissions"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminPriceList>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminPriceList
+>()
 
 export const usePricingTableColumns = () => {
   const { t } = useTranslation()

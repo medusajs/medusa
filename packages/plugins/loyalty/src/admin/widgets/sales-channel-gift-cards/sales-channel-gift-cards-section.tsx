@@ -2,8 +2,14 @@
 import { usePermissions } from "@medusajs/dashboard/hooks";
 import { PencilSquare, Trash } from "@medusajs/icons";
 import { AdminSalesChannel, HttpTypes } from "@medusajs/types";
-import { Checkbox, Container, toast, usePrompt } from "@medusajs/ui";
-import { RowSelectionState, createColumnHelper } from "@tanstack/react-table";
+import {
+  Checkbox,
+  Container,
+  createDataTableColumnHelper,
+  DataTableRowSelectionState,
+  toast,
+  usePrompt,
+} from "@medusajs/ui";
 import { useMemo, useState } from "react";
 
 import { ActionMenu } from "../../components/action-menu";
@@ -35,7 +41,7 @@ type SalesChannelGiftCardsSectionProps = {
 export const SalesChannelGiftCardsSection = ({
   salesChannel,
 }: SalesChannelGiftCardsSectionProps) => {
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>({});
   const { searchParams, raw } = useGiftCardProductsTableQuery({
     pageSize: PAGE_SIZE,
   });
@@ -138,7 +144,7 @@ export const SalesChannelGiftCardsSection = ({
   );
 };
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>();
+const columnHelper = createDataTableColumnHelper<HttpTypes.AdminProduct>();
 
 const useColumns = ({
   salesChannel,
@@ -178,6 +184,7 @@ const selectColumn = columnHelper.display({
     return (
       <Checkbox
         checked={
+          !table.getIsAllPageRowsSelected() &&
           table.getIsSomePageRowsSelected()
             ? "indeterminate"
             : table.getIsAllPageRowsSelected()

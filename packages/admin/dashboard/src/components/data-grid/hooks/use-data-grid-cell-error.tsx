@@ -1,15 +1,16 @@
-import { CellContext } from "@tanstack/react-table"
+import { CellContext, RowData } from "@tanstack/react-table"
+import { DataGridFeatures } from "../data-grid-features"
 import { useMemo } from "react"
 import { FieldError, FieldErrors, get } from "react-hook-form"
 
 import { useDataGridContext } from "../context"
 import { DataGridCellContext, DataGridRowError } from "../types"
 
-type UseDataGridCellErrorOptions<TData, TValue> = {
-  context: CellContext<TData, TValue>
+type UseDataGridCellErrorOptions<TData extends RowData, TValue> = {
+  context: CellContext<DataGridFeatures, TData, TValue>
 }
 
-export const useDataGridCellError = <TextData, TValue>({
+export const useDataGridCellError = <TextData extends RowData, TValue>({
   context,
 }: UseDataGridCellErrorOptions<TextData, TValue>) => {
   const { errors, getCellErrorMetadata, navigateToField } = useDataGridContext()

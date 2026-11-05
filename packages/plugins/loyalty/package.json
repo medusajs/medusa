@@ -70,6 +70,7 @@
     "@medusajs/ui": "4.2.10",
     "@medusajs/ui-preset": "2.22.3",
     "@swc/core": "^1.16.20",
+    "@tanstack/react-table": "9.3.1",
     "@types/node": "^22.20.5",
     "cross-env": "^10.1.0",
     "ts-node": "^10.9.2",
@@ -84,6 +85,7 @@
     "@medusajs/medusa": "2.22.3",
     "@medusajs/test-utils": "2.22.3",
     "@medusajs/ui": "4.2.10",
+    "@tanstack/react-table": "^9.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.4 || ^7.0.0"

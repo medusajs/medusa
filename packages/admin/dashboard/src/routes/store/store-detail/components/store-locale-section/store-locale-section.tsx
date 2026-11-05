@@ -10,6 +10,7 @@ import {
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -230,7 +231,10 @@ const LocaleActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminLocale>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminLocale
+>()
 
 const useColumns = ({ canUpdate }: { canUpdate: boolean }) => {
   const base = useLocalesTableColumns()
@@ -245,6 +249,7 @@ const useColumns = ({ canUpdate }: { canUpdate: boolean }) => {
                 return (
                   <Checkbox
                     checked={
+                      !table.getIsAllPageRowsSelected() &&
                       table.getIsSomePageRowsSelected()
                         ? "indeterminate"
                         : table.getIsAllPageRowsSelected()

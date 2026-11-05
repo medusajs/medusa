@@ -2,13 +2,14 @@ import { AdminInventoryItem } from "@medusajs/types"
 
 import { Checkbox } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../../../../components/table/table-cells/common/placeholder-cell"
 import { formatQuantity } from "../../../../lib/format-quantity"
 import { InventoryActions } from "./inventory-actions"
 
-const columnHelper = createColumnHelper<AdminInventoryItem>()
+const columnHelper = createColumnHelper<DataTableFeatures, AdminInventoryItem>()
 
 export const useInventoryTableColumns = ({
   showSelectColumn,
@@ -33,6 +34,7 @@ export const useInventoryTableColumns = ({
                 return (
                   <Checkbox
                     checked={
+                      !table.getIsAllPageRowsSelected() &&
                       table.getIsSomePageRowsSelected()
                         ? "indeterminate"
                         : table.getIsAllPageRowsSelected()

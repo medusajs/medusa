@@ -5,6 +5,7 @@ import {
   DataTableCommand,
   DataTableEmptyStateProps,
   DataTableFilter,
+  DataTableRowData,
 } from "@medusajs/ui"
 import { ReactNode } from "react"
 
@@ -12,7 +13,7 @@ import { ReactNode } from "react"
  * Adapter interface for configurable tables.
  * Defines how to fetch and display data for a specific entity type.
  */
-export interface TableAdapter<TData> {
+export interface TableAdapter<TData extends DataTableRowData> {
   /**
    * The entity type (e.g., "orders", "products", "customers")
    */
@@ -215,7 +216,7 @@ export function createActionsColumn(name: string): HttpTypes.AdminColumn {
 /**
  * Helper to create a type-safe table adapter
  */
-export function createTableAdapter<TData>(
+export function createTableAdapter<TData extends DataTableRowData>(
   adapter: TableAdapter<TData>
 ): TableAdapter<TData> {
   return {

@@ -1,6 +1,11 @@
 import { useMemo, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Button, DataTableRowSelectionState } from "@medusajs/ui"
+import {
+  Container,
+  Button,
+  DataTableRowData,
+  DataTableRowSelectionState,
+} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../data-table"
 import { SaveViewDialog } from "../save-view-dialog"
@@ -26,7 +31,7 @@ type DataTableActionProps = {
     }
 )
 
-export interface ConfigurableDataTableProps<TData> {
+export interface ConfigurableDataTableProps<TData extends DataTableRowData> {
   adapter: TableAdapter<TData>
   heading?: string
   subHeading?: string
@@ -36,7 +41,7 @@ export interface ConfigurableDataTableProps<TData> {
   actions?: DataTableActionProps[]
 }
 
-export function ConfigurableDataTable<TData>({
+export function ConfigurableDataTable<TData extends DataTableRowData>({
   adapter,
   heading,
   subHeading,

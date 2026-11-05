@@ -1,14 +1,19 @@
+import { DataTableRowData } from "@medusajs/ui"
 import {
   CellContext,
   ColumnDefTemplate,
   createColumnHelper,
   HeaderContext,
 } from "@tanstack/react-table"
+import { DataGridFeatures } from "../data-grid-features"
 import { FieldValues } from "react-hook-form"
 
 import { DataGridColumnType, FieldFunction } from "../types"
 
-type DataGridHelperColumnsProps<TData, TFieldValues extends FieldValues> = {
+type DataGridHelperColumnsProps<
+  TData extends DataTableRowData,
+  TFieldValues extends FieldValues,
+> = {
   /**
    * The id of the column.
    */
@@ -20,11 +25,14 @@ type DataGridHelperColumnsProps<TData, TFieldValues extends FieldValues> = {
   /**
    * The header template for the column.
    */
-  header: ColumnDefTemplate<HeaderContext<TData, unknown>> | undefined
+  header:
+    | ColumnDefTemplate<HeaderContext<DataGridFeatures, TData, unknown>>
+    | undefined
   /**
    * The cell template for the column.
    */
-  cell: ColumnDefTemplate<CellContext<TData, unknown>> | undefined
+  cell:
+    ColumnDefTemplate<CellContext<DataGridFeatures, TData, unknown>> | undefined
   /**
    * Callback to set the field path for each cell in the column.
    * If a callback is not provided, or returns null, the cell will not be editable.
@@ -45,10 +53,10 @@ type DataGridHelperColumnsProps<TData, TFieldValues extends FieldValues> = {
 )
 
 export function createDataGridHelper<
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues,
 >() {
-  const columnHelper = createColumnHelper<TData>()
+  const columnHelper = createColumnHelper<DataGridFeatures, TData>()
 
   return {
     column: ({

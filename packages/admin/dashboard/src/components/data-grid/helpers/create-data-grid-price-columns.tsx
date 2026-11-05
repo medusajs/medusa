@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 import { HttpTypes } from "@medusajs/types"
-import { ColumnDef, CellContext } from "@tanstack/react-table"
+import { ColumnDef, CellContext, RowData } from "@tanstack/react-table"
+import { DataGridFeatures } from "../data-grid-features"
 import { TFunction } from "i18next"
 import { FieldPath, FieldValues } from "react-hook-form"
 import { IncludesTaxTooltip } from "../../common/tax-badge/tax-badge"
@@ -10,7 +11,7 @@ import { FieldContext } from "../types"
 import { createDataGridHelper } from "./create-data-grid-column-helper"
 
 type CreateDataGridPriceColumnsProps<
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues,
 > = {
   currencies?: string[]
@@ -19,7 +20,7 @@ type CreateDataGridPriceColumnsProps<
   isReadyOnly?: (context: FieldContext<TData>) => boolean
   renderPriceCell?: (
     code: string,
-    context: CellContext<TData, any>
+    context: CellContext<DataGridFeatures, TData, any>
   ) => ReactNode
   getFieldName: (
     context: FieldContext<TData>,
@@ -29,7 +30,7 @@ type CreateDataGridPriceColumnsProps<
 }
 
 export const createDataGridPriceColumns = <
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues,
 >({
   currencies,
@@ -40,6 +41,7 @@ export const createDataGridPriceColumns = <
   getFieldName,
   t,
 }: CreateDataGridPriceColumnsProps<TData, TFieldValues>): ColumnDef<
+  DataGridFeatures,
   TData,
   unknown
 >[] => {

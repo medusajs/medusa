@@ -2,7 +2,11 @@ import { HttpTypes } from "@medusajs/types"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-import { createDataTableColumnHelper, Tooltip } from "@medusajs/ui"
+import {
+  createDataTableColumnHelper,
+  DataTableColumnDef,
+  Tooltip,
+} from "@medusajs/ui"
 import { DataTableStatusCell } from "../../components/data-table-status-cell/data-table-status-cell"
 import { useDataTableDateColumns } from "../general/use-data-table-date-columns"
 
@@ -12,7 +16,7 @@ export const useSalesChannelTableColumns = () => {
   const { t } = useTranslation()
   const dateColumns = useDataTableDateColumns<HttpTypes.AdminSalesChannel>()
 
-  return useMemo(
+  return useMemo<DataTableColumnDef<HttpTypes.AdminSalesChannel, any>[]>(
     () => [
       columnHelper.accessor("name", {
         header: () => t("fields.name"),

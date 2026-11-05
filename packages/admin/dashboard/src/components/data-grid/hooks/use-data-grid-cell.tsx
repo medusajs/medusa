@@ -1,4 +1,5 @@
-import { CellContext } from "@tanstack/react-table"
+import { CellContext, RowData } from "@tanstack/react-table"
+import { DataGridFeatures } from "../data-grid-features"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { useDataGridContext } from "../context"
@@ -9,14 +10,14 @@ import {
 } from "../types"
 import { isCellMatch, isSpecialFocusKey } from "../utils"
 
-type UseDataGridCellOptions<TData, TValue> = {
-  context: CellContext<TData, TValue>
+type UseDataGridCellOptions<TData extends RowData, TValue> = {
+  context: CellContext<DataGridFeatures, TData, TValue>
 }
 
 const textCharacterRegex = /^.$/u
 const numberCharacterRegex = /^[0-9]$/u
 
-export const useDataGridCell = <TData, TValue>({
+export const useDataGridCell = <TData extends RowData, TValue>({
   context,
 }: UseDataGridCellOptions<TData, TValue>) => {
   const {

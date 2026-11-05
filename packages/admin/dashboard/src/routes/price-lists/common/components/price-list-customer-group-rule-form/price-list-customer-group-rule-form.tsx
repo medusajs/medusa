@@ -6,6 +6,7 @@ import {
   RowSelectionState,
   createColumnHelper,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { StackedDrawer } from "../../../../../components/modals/stacked-drawer"
@@ -152,7 +153,10 @@ export const PriceListCustomerGroupRuleForm = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminCustomerGroup
+>()
 
 const useColumns = () => {
   const base = useCustomerGroupTableColumns()
@@ -165,6 +169,7 @@ const useColumns = () => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

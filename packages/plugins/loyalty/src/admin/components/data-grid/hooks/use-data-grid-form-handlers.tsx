@@ -1,3 +1,4 @@
+import { DataTableRowData } from "@medusajs/ui"
 import get from "lodash/get"
 import set from "lodash/set"
 import { useCallback } from "react"
@@ -10,14 +11,17 @@ import {
   DataGridToggleableNumber,
 } from "../types"
 
-type UseDataGridFormHandlersOptions<TData, TFieldValues extends FieldValues> = {
+type UseDataGridFormHandlersOptions<
+  TData extends DataTableRowData,
+  TFieldValues extends FieldValues,
+> = {
   matrix: DataGridMatrix<TData, TFieldValues>
   form: UseFormReturn<TFieldValues>
   anchor: DataGridCoordinates | null
 }
 
 export const useDataGridFormHandlers = <
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues,
 >({
   matrix,

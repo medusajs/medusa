@@ -14,12 +14,13 @@ import { DataTableSortingMenu } from "./components/data-table-sorting-menu"
 import { DataTableTable } from "./components/data-table-table"
 import { DataTableToolbar } from "./components/data-table-toolbar"
 import { DataTableContextProvider } from "./context/data-table-context-provider"
+import { DataTableRowData } from "./types"
 import { UseDataTableReturn } from "./use-data-table"
 
 /**
  * The props of the `DataTable` component.
  */
-interface DataTableProps<TData> {
+interface DataTableProps<TData extends DataTableRowData> {
   /**
    * The instance returned by the `useDataTable` hook.
    */
@@ -39,7 +40,7 @@ interface DataTableProps<TData> {
  * It's built on top of the `Table` component while expanding its functionality.
  * The `DataTable` is useful to create tables similar to those in the Medusa Admin dashboard.
  */
-const Root = <TData,>({
+const Root = <TData extends DataTableRowData>({
   instance,
   children,
   className,

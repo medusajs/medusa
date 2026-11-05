@@ -66,7 +66,7 @@
     "@medusajs/icons": "2.22.3",
     "@radix-ui/react-dialog": "1.1.4",
     "@radix-ui/react-dismissable-layer": "1.1.4",
-    "@tanstack/react-table": "8.20.5",
+    "@tanstack/react-table": "9.3.1",
     "clsx": "^2.1.1",
     "copy-to-clipboard": "^4.0.2",
     "cva": "1.0.0-beta.1",

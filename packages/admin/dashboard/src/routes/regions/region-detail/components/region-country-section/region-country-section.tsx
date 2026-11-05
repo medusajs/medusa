@@ -6,6 +6,7 @@ import {
   RowSelectionState,
   createColumnHelper,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -212,7 +213,7 @@ const CountryActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<StaticCountry>()
+const columnHelper = createColumnHelper<DataTableFeatures, StaticCountry>()
 
 const useColumns = (canUpdate: boolean) => {
   const base = useCountryTableColumns()
@@ -227,6 +228,7 @@ const useColumns = (canUpdate: boolean) => {
                 return (
                   <Checkbox
                     checked={
+                      !table.getIsAllPageRowsSelected() &&
                       table.getIsSomePageRowsSelected()
                         ? "indeterminate"
                         : table.getIsAllPageRowsSelected()
@@ -270,5 +272,5 @@ const useColumns = (canUpdate: boolean) => {
         : []),
     ],
     [base, canUpdate]
-  ) as ColumnDef<StaticCountry>[]
+  ) as ColumnDef<DataTableFeatures, StaticCountry>[]
 }

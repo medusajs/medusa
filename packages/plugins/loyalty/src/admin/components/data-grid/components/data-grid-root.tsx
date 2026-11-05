@@ -3,18 +3,18 @@ import {
   AdjustmentsDone,
   ExclamationCircle,
 } from "@medusajs/icons";
-import { Button, DropdownMenu, clx } from "@medusajs/ui";
+import { Button, DropdownMenu, clx, DataTableRowData } from "@medusajs/ui";
 import {
   Cell,
   CellContext,
   Column,
   ColumnDef,
   Row,
-  VisibilityState,
+  ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
+  useTable,
 } from "@tanstack/react-table";
+import { DataGridFeatures, dataGridFeatures } from "../data-grid-features";
 import { VirtualItem, useVirtualizer } from "@tanstack/react-virtual";
 import React, {
   CSSProperties,
@@ -46,11 +46,11 @@ import { DataGridMatrix } from "../models";
 import { DataGridCoordinates, GridColumnOption } from "../types";
 import { isCellMatch, isSpecialFocusKey } from "../utils";
 export interface DataGridRootProps<
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues = FieldValues
 > {
   data?: TData[];
-  columns: ColumnDef<TData>[];
+  columns: ColumnDef<DataGridFeatures, TData>[];
   state: UseFormReturn<TFieldValues>;
   getSubRows?: (row: TData) => TData[] | undefined;
   onEditingChange?: (isEditing: boolean) => void;
@@ -60,8 +60,8 @@ export interface DataGridRootProps<
 
 const ROW_HEIGHT = 40;
 
-const getCommonPinningStyles = <TData,>(
-  column: Column<TData>
+const getCommonPinningStyles = <TData extends DataTableRowData,>(
+  column: Column<DataGridFeatures, TData>
 ): CSSProperties => {
   const isPinned = column.getIsPinned();
 
@@ -81,8 +81,8 @@ const getCommonPinningStyles = <TData,>(
     zIndex: isPinned ? 1 : 0,
     borderBottom: isPinned ? `1px solid ${BORDER_COLOR}` : undefined,
     borderRight: isPinned ? `1px solid ${BORDER_COLOR}` : undefined,
-    left: isPinned === "left" ? `${column.getStart("left")}px` : undefined,
-    right: isPinned === "right" ? `${column.getAfter("right")}px` : undefined,
+    left: isPinned === "start" ? `${column.getStart("start")}px` : undefined,
+    right: isPinned === "end" ? `${column.getAfter("end")}px` : undefined,
   };
 };
 
@@ -92,7 +92,7 @@ const getCommonPinningStyles = <TData,>(
  */
 
 export const DataGridRoot = <
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues = FieldValues
 >({
   data = [],
@@ -127,15 +127,17 @@ export const DataGridRoot = <
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowVisibility, setRowVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({});
+  const [rowVisibility, setRowVisibility] = useState<ColumnVisibilityState>({});
 
-  const grid = useReactTable({
+  const grid = useTable({
+    features: dataGridFeatures,
     data: data,
     columns,
     initialState: {
       columnPinning: {
-        left: [columns[0].id!],
+        start: [columns[0].id!],
+        end: [],
       },
     },
     state: {
@@ -143,7 +145,6 @@ export const DataGridRoot = <
     },
     onColumnVisibilityChange: setColumnVisibility,
     getSubRows,
-    getCoreRowModel: getCoreRowModel(),
     defaultColumn: {
       size: 200,
       maxSize: 400,
@@ -645,7 +646,7 @@ export const DataGridRoot = <
                 }}
               >
                 {virtualRows.map((virtualRow) => {
-                  const row = visibleRows[virtualRow.index] as Row<TData>;
+                  const row = visibleRows[virtualRow.index] as Row<DataGridFeatures, TData>;
                   const rowIndex = flatRows.findIndex((r) => r.id === row.id);
 
                   return (
@@ -772,8 +773,8 @@ const DataGridHeader = ({
   );
 };
 
-type DataGridCellProps<TData> = {
-  cell: Cell<TData, unknown>;
+type DataGridCellProps<TData extends DataTableRowData> = {
+  cell: Cell<DataGridFeatures, TData, unknown>;
   columnIndex: number;
   rowIndex: number;
   anchor: DataGridCoordinates | null;
@@ -781,7 +782,7 @@ type DataGridCellProps<TData> = {
   multiColumnSelection: boolean;
 };
 
-const DataGridCell = <TData,>({
+const DataGridCell = <TData extends DataTableRowData,>({
   cell,
   columnIndex,
   rowIndex,
@@ -817,7 +818,7 @@ const DataGridCell = <TData,>({
           ...cell.getContext(),
           columnIndex,
           rowIndex: rowIndex,
-        } as CellContext<TData, any>)}
+        } as CellContext<DataGridFeatures, TData, any>)}
         {isAnchor && (
           <div
             onMouseDown={onDragToFillStart}
@@ -834,20 +835,20 @@ const DataGridCell = <TData,>({
   );
 };
 
-type DataGridRowProps<TData> = {
-  row: Row<TData>;
+type DataGridRowProps<TData extends DataTableRowData> = {
+  row: Row<DataGridFeatures, TData>;
   rowIndex: number;
   virtualRow: VirtualItem;
   virtualPaddingLeft?: number;
   virtualPaddingRight?: number;
   virtualColumns: VirtualItem[];
-  flatColumns: Column<TData, unknown>[];
+  flatColumns: Column<DataGridFeatures, TData, unknown>[];
   anchor: DataGridCoordinates | null;
   onDragToFillStart: (e: React.MouseEvent<HTMLElement>) => void;
   multiColumnSelection: boolean;
 };
 
-const DataGridRow = <TData,>({
+const DataGridRow = <TData extends DataTableRowData,>({
   row,
   rowIndex,
   virtualRow,

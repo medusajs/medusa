@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import { clx, Textarea } from "@medusajs/ui"
 import { Popover as RadixPopover } from "radix-ui"
 import React, { useCallback, useEffect, useRef, useState } from "react"
@@ -9,14 +10,17 @@ import { useDataGridContext } from "../context"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
-type DataGridExpandableTextCellProps<TData, TValue = any> = DataGridCellProps<
-  TData,
-  TValue
-> & {
+type DataGridExpandableTextCellProps<
+  TData extends RowData,
+  TValue = any,
+> = DataGridCellProps<TData, TValue> & {
   fieldLabel?: string
 }
 
-export const DataGridExpandableTextCell = <TData, TValue = any>({
+export const DataGridExpandableTextCell = <
+  TData extends RowData,
+  TValue = any,
+>({
   context,
   fieldLabel,
 }: DataGridExpandableTextCellProps<TData, TValue>) => {

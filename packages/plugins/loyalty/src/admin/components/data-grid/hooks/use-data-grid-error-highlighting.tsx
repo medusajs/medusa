@@ -1,4 +1,6 @@
-import { Table, VisibilityState } from "@tanstack/react-table"
+import { DataTableRowData } from "@medusajs/ui"
+import { Table, ColumnVisibilityState } from "@tanstack/react-table"
+import { DataGridFeatures } from "../data-grid-features"
 import { useCallback, useMemo, useState } from "react"
 import { FieldError, FieldErrors, FieldValues } from "react-hook-form"
 
@@ -6,11 +8,11 @@ import { DataGridMatrix } from "../models"
 import { VisibilitySnapshot } from "../types"
 
 export const useDataGridErrorHighlighting = <
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues,
 >(
   matrix: DataGridMatrix<TData, TFieldValues>,
-  grid: Table<TData>,
+  grid: Table<DataGridFeatures, TData>,
   errors: FieldErrors<TFieldValues>
 ) => {
   const [isHighlighted, setIsHighlighted] = useState<boolean>(false)
@@ -52,10 +54,10 @@ export const useDataGridErrorHighlighting = <
 
   const toggleErrorHighlighting = useCallback(
     (
-      currentRowVisibility: VisibilityState,
-      currentColumnVisibility: VisibilityState,
-      setRowVisibility: (visibility: VisibilityState) => void,
-      setColumnVisibility: (visibility: VisibilityState) => void
+      currentRowVisibility: ColumnVisibilityState,
+      currentColumnVisibility: ColumnVisibilityState,
+      setRowVisibility: (visibility: ColumnVisibilityState) => void,
+      setColumnVisibility: (visibility: ColumnVisibilityState) => void
     ) => {
       if (isHighlighted) {
         // Clear error highlights

@@ -1,5 +1,6 @@
 import { Checkbox } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -12,7 +13,7 @@ import {
   VariantInventoryHeader,
 } from "../../../../../components/table/table-cells/product/variant-inventory-cell"
 
-const columnHelper = createColumnHelper<any>()
+const columnHelper = createColumnHelper<DataTableFeatures, any>()
 
 export const useExchangeOutboundItemTableColumns = (currencyCode: string) => {
   const { t } = useTranslation()
@@ -25,6 +26,7 @@ export const useExchangeOutboundItemTableColumns = (currencyCode: string) => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

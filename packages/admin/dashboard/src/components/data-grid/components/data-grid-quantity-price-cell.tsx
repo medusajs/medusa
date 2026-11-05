@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import { DataGridCellProps } from "../types"
 import { CurrencyInfo } from "../../../lib/data/currencies"
 import { useTranslation } from "react-i18next"
@@ -5,14 +6,14 @@ import { useQuantityPrice } from "../../../routes/price-lists/common/components/
 import { TieredPriceCell } from "../../table/table-cells/common/tiered-price-cell/tiered-price-cell"
 
 interface DataGridQuantityPriceCellProps<
-  TData,
+  TData extends RowData,
   TValue = any,
 > extends DataGridCellProps<TData, TValue> {
   code: string
   getTieredFieldName: (field: string) => string
 }
 
-export const DataGridQuantityPriceCell = <TData, TValue = any>({
+export const DataGridQuantityPriceCell = <TData extends RowData, TValue = any>({
   context,
   code,
   getTieredFieldName,

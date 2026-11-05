@@ -1,3 +1,4 @@
+import { DataTableRowData } from "@medusajs/ui"
 import { FieldValues } from "react-hook-form"
 
 import {
@@ -12,13 +13,16 @@ import {
 } from "./components"
 
 interface DataGridProps<
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues = FieldValues,
 > extends DataGridRootProps<TData, TFieldValues> {
   isLoading?: boolean
 }
 
-const _DataGrid = <TData, TFieldValues extends FieldValues = FieldValues>({
+const _DataGrid = <
+  TData extends DataTableRowData,
+  TFieldValues extends FieldValues = FieldValues,
+>({
   isLoading,
   ...props
 }: DataGridProps<TData, TFieldValues>) => {

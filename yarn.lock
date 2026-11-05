@@ -3827,7 +3827,7 @@ __metadata:
     "@radix-ui/react-dialog": 1.1.4
     "@radix-ui/react-dismissable-layer": 1.1.4
     "@tanstack/react-query": 5.64.2
-    "@tanstack/react-table": 8.20.5
+    "@tanstack/react-table": 9.3.1
     "@tanstack/react-virtual": ^3.14.22
     "@types/qrcode": ^1.5.5
     "@uiw/react-json-view": ^2.0.0-alpha.17
@@ -4202,6 +4202,7 @@ __metadata:
     "@medusajs/ui": 4.2.10
     "@medusajs/ui-preset": 2.22.3
     "@swc/core": ^1.16.20
+    "@tanstack/react-table": 9.3.1
     "@types/node": ^22.20.5
     cross-env: ^10.1.0
     ts-node: ^10.9.2
@@ -4215,6 +4216,7 @@ __metadata:
     "@medusajs/medusa": 2.22.3
     "@medusajs/test-utils": 2.22.3
     "@medusajs/ui": 4.2.10
+    "@tanstack/react-table": ^9.3.1
     react: ^18.3.1
     react-dom: ^18.3.1
     react-router-dom: ^6.30.4 || ^7.0.0
@@ -4721,7 +4723,7 @@ __metadata:
     "@tailwindcss/node": ^4.3.3
     "@tailwindcss/oxide": ^4.3.3
     "@tailwindcss/postcss": ^4.3.3
-    "@tanstack/react-table": 8.20.5
+    "@tanstack/react-table": 9.3.1
     clsx: ^2.1.1
     copy-to-clipboard: ^4.0.2
     cva: 1.0.0-beta.1
@@ -8927,15 +8929,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-table@npm:8.20.5":
-  version: 8.20.5
-  resolution: "@tanstack/react-table@npm:8.20.5"
+"@tanstack/react-store@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "@tanstack/react-store@npm:0.11.2"
   dependencies:
-    "@tanstack/table-core": 8.20.5
+    "@tanstack/store": 0.11.2
+    use-sync-external-store: ^1.6.0
   peerDependencies:
-    react: ">=16.8"
-    react-dom: ">=16.8"
-  checksum: 574fa62fc6868a3b1113dbd043323f8b73aeb60555609caa164d5137a14636d4502784a961191afde2ec46f33f8c2bbfc4561d27a701c3d084e899a632dda3c8
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: a755aa369c13824709ca5b29355ab7a72ba913d3561786f993412c8c375f36c54b20c0366bd406cf21b363b12e516a251a774ee7140479571b628e895448a93d
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-table@npm:9.3.1":
+  version: 9.3.1
+  resolution: "@tanstack/react-table@npm:9.3.1"
+  dependencies:
+    "@tanstack/react-store": ^0.11.2
+    "@tanstack/table-core": 9.3.1
+  peerDependencies:
+    react: ">=18"
+  checksum: f9661605c1aa1308622cb26cd6867bd84c446c1a7586be2248d8aee1637ca918fa31740fdc3147fd08faf9a0409111b2a71c6c48a5cd2d920b97607b91966461
   languageName: node
   linkType: hard
 
@@ -8951,10 +8966,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/table-core@npm:8.20.5":
-  version: 8.20.5
-  resolution: "@tanstack/table-core@npm:8.20.5"
-  checksum: 3c27b5debd61b6bd9bfbb40bfc7c5d5af90873ae1a566b20e3bf2d2f4f2e9a78061c081aacc5259a00e256f8df506ec250eb5472f5c01ff04baf9918b554982b
+"@tanstack/store@npm:0.11.2, @tanstack/store@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "@tanstack/store@npm:0.11.2"
+  checksum: 5422149c853c16e642a0ddfb51c2b4a867a11516069d3b9647659212e9762b86d609144de6ac6ec099b0360c3b198d1243f613148d69c1028dee56382f0430cd
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:9.3.1":
+  version: 9.3.1
+  resolution: "@tanstack/table-core@npm:9.3.1"
+  dependencies:
+    "@tanstack/store": ^0.11.2
+  checksum: c3210477e552a046e9e80b8108dd5bad00d7651481ff47a2ffe7d18b0f51d4dcbeaa2e4d05fd8c2af2175ba7d6f730c597d0e791faa0032cea10b1fdc4b747d8
   languageName: node
   linkType: hard
 

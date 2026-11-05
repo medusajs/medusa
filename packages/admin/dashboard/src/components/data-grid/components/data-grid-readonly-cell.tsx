@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import { PropsWithChildren } from "react"
 
 import { clx } from "@medusajs/ui"
@@ -5,14 +6,15 @@ import { useDataGridCellError } from "../hooks"
 import { DataGridCellProps } from "../types"
 import { DataGridRowErrorIndicator } from "./data-grid-row-error-indicator"
 
-type DataGridReadonlyCellProps<TData, TValue = any> = PropsWithChildren<
-  DataGridCellProps<TData, TValue>
-> & {
+type DataGridReadonlyCellProps<
+  TData extends RowData,
+  TValue = any,
+> = PropsWithChildren<DataGridCellProps<TData, TValue>> & {
   color?: "muted" | "normal"
   isMultiLine?: boolean
 }
 
-export const DataGridReadonlyCell = <TData, TValue = any>({
+export const DataGridReadonlyCell = <TData extends RowData, TValue = any>({
   context,
   color = "muted",
   children,

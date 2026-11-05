@@ -1,4 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../components/table/data-table/data-table-features"
 
 import { AdminCampaign } from "@medusajs/types"
 import { useMemo } from "react"
@@ -17,7 +18,7 @@ import {
   NameHeader,
 } from "../../../components/table/table-cells/sales-channel/name-cell"
 
-const columnHelper = createColumnHelper<AdminCampaign>()
+const columnHelper = createColumnHelper<DataTableFeatures, AdminCampaign>()
 
 export const useCampaignTableColumns = () => {
   const { t } = useTranslation()
