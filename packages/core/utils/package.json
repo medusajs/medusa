@@ -45,7 +45,7 @@
     "@types/pluralize": "^0.0.33",
     "bignumber.js": "^11.1.5",
     "dotenv": "^18.0.9",
-    "dotenv-expand": "^1000.0.0",
+    "dotenv-expand": "^13.0.0",
     "graphql": "^17.0.2",
     "jsonwebtoken": "^9.0.2",
     "pg-connection-string": "^2.14.1",
