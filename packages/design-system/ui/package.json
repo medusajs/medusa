@@ -69,7 +69,7 @@
     "@tanstack/react-table": "8.20.5",
     "clsx": "^2.1.1",
     "copy-to-clipboard": "^4.0.2",
-    "cva": "1.0.0-beta.1",
+    "cva": "1.0.0-beta.12",
     "lodash.isequal": "^4.5.0",
     "prism-react-renderer": "^2.0.6",
     "prismjs": "^1.30.0",

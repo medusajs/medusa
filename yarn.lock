@@ -4272,7 +4272,7 @@ __metadata:
     "@tanstack/react-table": "npm:8.20.5"
     clsx: "npm:^2.1.1"
     copy-to-clipboard: "npm:^4.0.2"
-    cva: "npm:1.0.0-beta.1"
+    cva: "npm:1.0.0-beta.12"
     lodash.isequal: "npm:^4.5.0"
     prism-react-renderer: "npm:^2.0.6"
     prismjs: "npm:^1.30.0"
@@ -9721,13 +9721,13 @@ __metadata:
   linkType: hard
 
 "@uiw/react-json-view@npm:^2.0.0-alpha.17":
-  version: 2.0.0-alpha.39
-  resolution: "@uiw/react-json-view@npm:2.0.0-alpha.39"
+  version: 2.0.0-alpha.44
+  resolution: "@uiw/react-json-view@npm:2.0.0-alpha.44"
   peerDependencies:
     "@babel/runtime": ">=7.10.0"
     react: ">=18.0.0"
     react-dom: ">=18.0.0"
-  checksum: 10c0/80590e58b041f85613f28cb91508def8a0608d6a96d1bc83092d9f7ec679635ffba443f3c6f8f5b7223fd8808441ad479b357d193ccb3d4b069227d47eaa3879
+  checksum: 10c0/97e7dd7ac483d3d69901855147e73711e6b750b074388620f919acbd1aa5223462c438ca77add312b7c4a8053b0778d516d1925bdff13563a5c37b76f6a1fab3
   languageName: node
   linkType: hard
 
@@ -11397,13 +11397,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:2.0.0":
-  version: 2.0.0
-  resolution: "clsx@npm:2.0.0"
-  checksum: 10c0/c09f43b3144a0b7826b6b11b6a111b2c7440831004eecc02d333533c5e58ef0aa5f2dce071d3b25fbb8c8ea97b45df96c74bcc1d51c8c2027eb981931107b0cd
-  languageName: node
-  linkType: hard
-
 "clsx@npm:^2.0.0, clsx@npm:^2.1.1":
   version: 2.1.1
   resolution: "clsx@npm:2.1.1"
@@ -11966,17 +11959,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cva@npm:1.0.0-beta.1":
-  version: 1.0.0-beta.1
-  resolution: "cva@npm:1.0.0-beta.1"
+"cva@npm:1.0.0-beta.12":
+  version: 1.0.0-beta.12
+  resolution: "cva@npm:1.0.0-beta.12"
   dependencies:
-    clsx: "npm:2.0.0"
+    clsx: "npm:^2.1.1"
   peerDependencies:
-    typescript: ">= 4.5.5 < 6"
+    typescript: ">= 6.0.0"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/0ac27613b156d0ff6b1450c3257c1b98356865366165cb973748a102ed576dc07824cd098b23da6e24155d3b732d6222b4fa83cff85fbd2df3924a5b425bfbde
+  checksum: 10c0/34be87aafab98095cbb25fea99797c441b822b3440296fcc4c3fd2243f2cc3dfe45e196d663b08ee73c94bbbeeac8e0478db836fde55cce92060cb63078e3aaa
   languageName: node
   linkType: hard
 
