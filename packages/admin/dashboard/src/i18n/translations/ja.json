@@ -3378,6 +3378,9 @@
     "invalidTokenTitle": "招待トークンが無効です",
     "invalidTokenHint": "新しい招待リンクをリクエストしてみてください。",
     "passwordMismatch": "パスワードが一致しません",
+    "signedInTitle": "すでにサインインしています",
+    "signedInHint": "{{email}}としてサインインしています。この招待を受け入れるにはサインアウトしてください。",
+    "signOut": "サインアウト",
     "toast": {
       "accepted": "招待が正常に受け入れられました"
     }

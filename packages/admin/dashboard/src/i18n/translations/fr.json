@@ -3378,6 +3378,9 @@
     "invalidTokenTitle": "Votre lien d'invitation est invalide",
     "invalidTokenHint": "Essayez de demander un nouveau lien d'invitation.",
     "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "signedInTitle": "Vous êtes déjà connecté(e)",
+    "signedInHint": "Vous êtes connecté(e) en tant que {{email}}. Déconnectez-vous pour accepter cette invitation.",
+    "signOut": "Se déconnecter",
     "toast": {
       "accepted": "Invitation acceptée avec succès"
     }

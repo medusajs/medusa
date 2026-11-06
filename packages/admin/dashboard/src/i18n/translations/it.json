@@ -3378,6 +3378,9 @@
     "invalidTokenTitle": "Il tuo token di invito non è valido",
     "invalidTokenHint": "Prova a richiedere un nuovo link di invito.",
     "passwordMismatch": "Le password non corrispondono",
+    "signedInTitle": "Hai già effettuato l'accesso",
+    "signedInHint": "Hai effettuato l'accesso come {{email}}. Esci per accettare questo invito.",
+    "signOut": "Esci",
     "toast": {
       "accepted": "Invito accettato con successo"
     }

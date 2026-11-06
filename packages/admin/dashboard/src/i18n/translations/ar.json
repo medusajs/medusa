@@ -3549,6 +3549,9 @@
     "invalidTokenTitle": "رمز الدعوة غير صالح",
     "invalidTokenHint": "حاول طلب رابط دعوة جديد.",
     "passwordMismatch": "كلمات المرور غير متطابقة",
+    "signedInTitle": "أنت مسجّل الدخول بالفعل",
+    "signedInHint": "أنت مسجّل الدخول بوصفك {{email}}. سجّل الخروج لقبول هذه الدعوة.",
+    "signOut": "تسجيل الخروج",
     "toast": {
       "accepted": "تم قبول الدعوة بنجاح"
     }

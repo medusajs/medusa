@@ -3356,6 +3356,9 @@
     "invalidTokenTitle": "Kutsutunnuksesi on virheellinen",
     "invalidTokenHint": "Yritä pyytää uusi kutsulinkki.",
     "passwordMismatch": "Salasanat eivät täsmää",
+    "signedInTitle": "Olet jo kirjautunut sisään",
+    "signedInHint": "Olet kirjautunut sisään käyttäjänä {{email}}. Kirjaudu ulos hyväksyäksesi tämän kutsun.",
+    "signOut": "Kirjaudu ulos",
     "toast": {
       "accepted": "Kutsu hyväksyttiin onnistuneesti"
     }

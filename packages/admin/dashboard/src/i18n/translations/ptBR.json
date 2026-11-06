@@ -3371,6 +3371,9 @@
     "invalidTokenTitle": "Seu token de convite é inválido",
     "invalidTokenHint": "Tente solicitar um novo link de convite.",
     "passwordMismatch": "As senhas não correspondem",
+    "signedInTitle": "Você já está conectado",
+    "signedInHint": "Você está conectado como {{email}}. Saia para aceitar este convite.",
+    "signOut": "Sair",
     "toast": {
       "accepted": "Convite aceito com sucesso"
     }

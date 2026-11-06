@@ -3107,6 +3107,9 @@
     "invalidTokenTitle": "Mã mời của bạn không hợp lệ",
     "invalidTokenHint": "Hãy thử yêu cầu một liên kết mời mới.",
     "passwordMismatch": "Mật khẩu không khớp",
+    "signedInTitle": "Bạn đã đăng nhập",
+    "signedInHint": "Bạn đang đăng nhập với tư cách {{email}}. Đăng xuất để chấp nhận lời mời này.",
+    "signOut": "Đăng xuất",
     "toast": {
       "accepted": "Lời mời đã được chấp nhận thành công"
     }
