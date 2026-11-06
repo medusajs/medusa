@@ -14,7 +14,7 @@
     "i18n:validate": "node ./scripts/i18n/validate-translation.js",
     "i18n:schema": "node ./scripts/i18n/generate-schema.js",
     "i18n:sync": "node ./scripts/i18n/sync-translations.js",
-    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint . --ext ts,tsx --ignore-pattern dist --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --ignore-pattern dist --report-unused-disable-directives --max-warnings 0"
   },
   "main": "dist/app.js",
   "module": "dist/app.mjs",
@@ -112,7 +112,7 @@
     "@medusajs/types": "2.22.4",
     "@medusajs/ui-preset": "2.22.4",
     "@types/qrcode": "^1.5.5",
-    "eslint": "^9.39.5",
+    "eslint": "^10.13.0",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "packageManager": "yarn@4.18.1",
