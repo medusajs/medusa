@@ -1,5 +1,11 @@
 # @medusajs/instantsearch-adapter
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
 ## 2.22.3
 
 ## 2.22.2

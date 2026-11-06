@@ -1,5 +1,70 @@
 # Change Log
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17655](https://github.com/medusajs/medusa/pull/17655) [`7167fa2`](https://github.com/medusajs/medusa/commit/7167fa2e6b0675000f18267923eca4c61908fed9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(core-flows,medusa): document RBAC workflows and API routes
+
+- Updated dependencies [[`d8b4839`](https://github.com/medusajs/medusa/commit/d8b48391d45f8e90090b2f9d43ba70d1ee88bc9c), [`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5), [`7167fa2`](https://github.com/medusajs/medusa/commit/7167fa2e6b0675000f18267923eca4c61908fed9), [`62339fd`](https://github.com/medusajs/medusa/commit/62339fd120ac0b3be1fdab8f0f286a4ddd3d5496), [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/auth@2.22.4
+  - @medusajs/auth-emailpass@2.22.4
+  - @medusajs/framework@2.22.4
+  - @medusajs/core-flows@2.22.4
+  - @medusajs/notification-sendgrid@2.22.4
+  - @medusajs/draft-order@2.22.4
+  - @medusajs/telemetry@2.22.4
+  - @medusajs/admin-bundler@2.22.4
+  - @medusajs/analytics@2.22.4
+  - @medusajs/api-key@2.22.4
+  - @medusajs/caching@2.22.4
+  - @medusajs/cart@2.22.4
+  - @medusajs/currency@2.22.4
+  - @medusajs/customer@2.22.4
+  - @medusajs/file@2.22.4
+  - @medusajs/fulfillment@2.22.4
+  - @medusajs/index@2.22.4
+  - @medusajs/inventory@2.22.4
+  - @medusajs/link-modules@2.22.4
+  - @medusajs/locking@2.22.4
+  - @medusajs/notification@2.22.4
+  - @medusajs/order@2.22.4
+  - @medusajs/payment@2.22.4
+  - @medusajs/pricing@2.22.4
+  - @medusajs/product@2.22.4
+  - @medusajs/promotion@2.22.4
+  - @medusajs/search-postgres@2.22.4
+  - @medusajs/rbac@2.22.4
+  - @medusajs/region@2.22.4
+  - @medusajs/sales-channel@2.22.4
+  - @medusajs/search@2.22.4
+  - @medusajs/settings@2.22.4
+  - @medusajs/stock-location@2.22.4
+  - @medusajs/store@2.22.4
+  - @medusajs/tax@2.22.4
+  - @medusajs/translation@2.22.4
+  - @medusajs/user@2.22.4
+  - @medusajs/workflow-engine-inmemory@2.22.4
+  - @medusajs/workflow-engine-redis@2.22.4
+  - @medusajs/cache-inmemory@2.22.4
+  - @medusajs/cache-redis@2.22.4
+  - @medusajs/event-bus-local@2.22.4
+  - @medusajs/event-bus-redis@2.22.4
+  - @medusajs/analytics-local@2.22.4
+  - @medusajs/analytics-posthog@2.22.4
+  - @medusajs/auth-github@2.22.4
+  - @medusajs/auth-google@2.22.4
+  - @medusajs/auth-oidc@2.22.4
+  - @medusajs/caching-redis@2.22.4
+  - @medusajs/file-local@2.22.4
+  - @medusajs/file-s3@2.22.4
+  - @medusajs/fulfillment-manual@2.22.4
+  - @medusajs/locking-postgres@2.22.4
+  - @medusajs/locking-redis@2.22.4
+  - @medusajs/notification-local@2.22.4
+  - @medusajs/payment-adyen@2.22.4
+  - @medusajs/payment-stripe@2.22.4
+
 ## 2.22.3
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @medusajs/admin-bundler
 
+## 2.22.4
+
+### Patch Changes
+
+- Updated dependencies [[`74827c2`](https://github.com/medusajs/medusa/commit/74827c2a849a9a7fdbb943ca9ffce4b26b670391), [`43c5ec2`](https://github.com/medusajs/medusa/commit/43c5ec2d2c16623546573cf1a5abc92fb41442c9), [`e3a2f38`](https://github.com/medusajs/medusa/commit/e3a2f3846c636f9df31bbc33af025896cb5e65b3), [`82d65fc`](https://github.com/medusajs/medusa/commit/82d65fc804627839c62b441737757609386841e3), [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/dashboard@2.22.4
+  - @medusajs/admin-shared@2.22.4
+  - @medusajs/admin-vite-plugin@2.22.4
+
 ## 2.22.3
 
 ### Patch Changes

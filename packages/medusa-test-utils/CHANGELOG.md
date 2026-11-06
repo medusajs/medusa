@@ -1,5 +1,20 @@
 # Change Log
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17679](https://github.com/medusajs/medusa/pull/17679) [`d8b4839`](https://github.com/medusajs/medusa/commit/d8b48391d45f8e90090b2f9d43ba70d1ee88bc9c) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(auth,auth-emailpass,test-utils): update scrypt-kdf to 4.0.0
+
+- [#17678](https://github.com/medusajs/medusa/pull/17678) [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework,test-utils): upgrade path-to-regexp to v9
+
+- [#17673](https://github.com/medusajs/medusa/pull/17673) [`df7f931`](https://github.com/medusajs/medusa/commit/df7f931bf8b8fd5634c97f7a7133660f59067e99) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(test-utils): add a Jest preset for Medusa applications and plugins
+
+- Updated dependencies [[`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5), [`7167fa2`](https://github.com/medusajs/medusa/commit/7167fa2e6b0675000f18267923eca4c61908fed9)]:
+  - @medusajs/framework@2.22.4
+  - @medusajs/core-flows@2.22.4
+  - @medusajs/medusa@2.22.4
+
 ## 2.22.3
 
 ### Patch Changes
