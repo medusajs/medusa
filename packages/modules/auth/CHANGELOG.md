@@ -1,5 +1,14 @@
 # @medusajs/auth
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17679](https://github.com/medusajs/medusa/pull/17679) [`d8b4839`](https://github.com/medusajs/medusa/commit/d8b48391d45f8e90090b2f9d43ba70d1ee88bc9c) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(auth,auth-emailpass,test-utils): update scrypt-kdf to 4.0.0
+
+- Updated dependencies [[`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5)]:
+  - @medusajs/framework@2.22.4
+
 ## 2.22.3
 
 ### Patch Changes

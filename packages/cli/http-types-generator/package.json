@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/http-types-generator",
-  "version": "2.22.3",
+  "version": "2.22.4",
   "description": "Generate and validate HTTP TypeScript types",
   "main": "dist/index.js",
   "bin": {
