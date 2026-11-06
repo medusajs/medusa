@@ -4004,7 +4004,7 @@ __metadata:
   dependencies:
     "@medusajs/framework": "npm:2.22.4"
     "@medusajs/test-utils": "npm:2.22.4"
-    stripe: "npm:23.1.0"
+    stripe: "npm:^23.1.0"
   peerDependencies:
     "@medusajs/framework": 2.22.4
   languageName: unknown
@@ -20403,7 +20403,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:23.1.0, stripe@npm:^23.1.0":
+"stripe@npm:^23.1.0":
   version: 23.1.0
   resolution: "stripe@npm:23.1.0"
   peerDependencies:
