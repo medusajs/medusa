@@ -228,6 +228,10 @@ export const link = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductCategoriesWorkflow"
   },
   {
+    "title": "deleteRbacRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolesWorkflow"
+  },
+  {
     "title": "setRegionsPaymentProvidersStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setRegionsPaymentProvidersStep"
   },
