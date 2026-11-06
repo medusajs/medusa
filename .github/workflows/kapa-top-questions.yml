@@ -126,8 +126,9 @@ jobs:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           claude_args: >-
             --model claude-opus-5-5
-            --max-turns 100
+            --max-turns 200
             --allowedTools "Read,Write,Glob,Grep,Bash(ls:*),Bash(find:*),Bash(cat:*)"
+            --disallowedTools "Agent,Task"
           prompt: |
             IMPORTANT: Never modify files in the repository. The only file you may write is /tmp/uncovered.json.
 
