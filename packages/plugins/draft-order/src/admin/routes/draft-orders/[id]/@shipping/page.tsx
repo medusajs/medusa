@@ -24,7 +24,7 @@ import {
   TriangleRightMini,
   TruckFast,
 } from "@medusajs/icons"
-import isEqual from "lodash.isequal"
+import { dequal as isEqual } from "dequal"
 import { Accordion } from "radix-ui"
 import { ConditionalTooltip } from "../../../../components/common/conditional-tooltip"
 import { Form } from "../../../../components/common/form"
