@@ -90,6 +90,7 @@ yarn migration:create      # after any change to src/models; never hand-write mi
 
 - MFA challenges and OAuth state live in the Cache Module (`Modules.CACHE`), not the DB: challenge key `auth:mfa:challenge:<id>`; state defaults to a 1200s TTL and is deleted on first read (single-use). Without a cache dependency these paths throw `INVALID_ARGUMENT`.
 - TOTP secrets are encrypted with `mfa.encryption_key`; missing it throws "MFA encryption key is required to use MFA methods" on enroll/verify.
+- Recovery codes are hashed with the ESM-only `scrypt-kdf`, loaded with `import()` in `src/utils/mfa.ts`. Jest suites that generate or use recovery codes need `NODE_OPTIONS=--experimental-vm-modules` and the `@medusajs/test-utils` preset.
 - Custom MFA/verification providers without `resolve` are rejected unless their `id` is a built-in (`totp` / `token`), which only overrides options.
 - MFA and verification providers must have a static `identifier` (loader throws otherwise); auth providers are keyed by config `id` instead.
 - `retrieve`/`update` in the identity provider service throw `INVALID_DATA` if more than one `AuthIdentity` matches the `entity_id` + provider.
