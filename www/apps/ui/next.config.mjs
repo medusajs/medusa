@@ -15,6 +15,7 @@ import {
   recmaInjectMdxDataPlugin,
   validateHighlightsPlugin,
   uiRehypePlugin,
+  mdContentOverrideRehypePlugin,
 } from "remark-rehype-plugins"
 import bundleAnalyzer from "@next/bundle-analyzer"
 import { withMdxWebpackLayers } from "build-scripts"
@@ -116,6 +117,7 @@ const withMDX = mdx({
           specsBaseUrl: process.env.UI_SPECS_R2_BASE_URL,
         },
       ],
+      [mdContentOverrideRehypePlugin],
     ],
     remarkPlugins: [
       [remarkFrontmatter],
