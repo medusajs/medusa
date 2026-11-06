@@ -21920,8 +21920,8 @@ export const filesMap = [
     "pathname": "/references/rbac/createRbacPolicies"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleParents/page.json",
-    "pathname": "/references/rbac/createRbacRoleParents"
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/createRbacRoleAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRolePolicies/page.json",
@@ -21936,8 +21936,8 @@ export const filesMap = [
     "pathname": "/references/rbac/deleteRbacPolicies"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleParents/page.json",
-    "pathname": "/references/rbac/deleteRbacRoleParents"
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/deleteRbacRoleAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRolePolicies/page.json",
@@ -21952,8 +21952,8 @@ export const filesMap = [
     "pathname": "/references/rbac/listAndCountRbacPolicies"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleParents/page.json",
-    "pathname": "/references/rbac/listAndCountRbacRoleParents"
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/listAndCountRbacRoleAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRolePolicies/page.json",
@@ -21964,6 +21964,10 @@ export const filesMap = [
     "pathname": "/references/rbac/listAndCountRbacRoles"
   },
   {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listGranteeEntities/page.json",
+    "pathname": "/references/rbac/listGranteeEntities"
+  },
+  {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listPoliciesForRole/page.json",
     "pathname": "/references/rbac/listPoliciesForRole"
   },
@@ -21972,8 +21976,8 @@ export const filesMap = [
     "pathname": "/references/rbac/listRbacPolicies"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleParents/page.json",
-    "pathname": "/references/rbac/listRbacRoleParents"
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/listRbacRoleAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRolePolicies/page.json",
@@ -21988,8 +21992,8 @@ export const filesMap = [
     "pathname": "/references/rbac/restoreRbacPolicies"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleParents/page.json",
-    "pathname": "/references/rbac/restoreRbacRoleParents"
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/restoreRbacRoleAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRolePolicies/page.json",
@@ -22000,6 +22004,10 @@ export const filesMap = [
     "pathname": "/references/rbac/restoreRbacRoles"
   },
   {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveActorAuthzContextConfig/page.json",
+    "pathname": "/references/rbac/retrieveActorAuthzContextConfig"
+  },
+  {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacPolicy/page.json",
     "pathname": "/references/rbac/retrieveRbacPolicy"
   },
@@ -22008,8 +22016,8 @@ export const filesMap = [
     "pathname": "/references/rbac/retrieveRbacRole"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleParent/page.json",
-    "pathname": "/references/rbac/retrieveRbacRoleParent"
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleAssignment/page.json",
+    "pathname": "/references/rbac/retrieveRbacRoleAssignment"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRolePolicy/page.json",
@@ -22020,8 +22028,8 @@ export const filesMap = [
     "pathname": "/references/rbac/softDeleteRbacPolicies"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleParents/page.json",
-    "pathname": "/references/rbac/softDeleteRbacRoleParents"
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/softDeleteRbacRoleAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRolePolicies/page.json",
@@ -22036,8 +22044,8 @@ export const filesMap = [
     "pathname": "/references/rbac/updateRbacPolicies"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleParents/page.json",
-    "pathname": "/references/rbac/updateRbacRoleParents"
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/updateRbacRoleAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRolePolicies/page.json",
@@ -22048,8 +22056,16 @@ export const filesMap = [
     "pathname": "/references/rbac/updateRbacRoles"
   },
   {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.BaseFilterable/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.BaseFilterable"
+  },
+  {
     "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.Context/page.json",
     "pathname": "/references/rbac/interfaces/rbac.Context"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.FilterableRbacRoleAssignmentProps/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.FilterableRbacRoleAssignmentProps"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.FindConfig/page.json",
@@ -22068,6 +22084,10 @@ export const filesMap = [
     "pathname": "/references/rbac"
   },
   {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.IRbacModuleServiceOptions/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.IRbacModuleServiceOptions"
+  },
+  {
     "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.JoinerServiceConfig/page.json",
     "pathname": "/references/rbac/interfaces/rbac.JoinerServiceConfig"
   },
@@ -22080,6 +22100,14 @@ export const filesMap = [
     "pathname": "/references/rbac/interfaces/rbac.MessageAggregatorFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.PolicyOperationRegistry/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.PolicyOperationRegistry"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.PolicyResourceRegistry/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.PolicyResourceRegistry"
+  },
+  {
     "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.RestoreReturn/page.json",
     "pathname": "/references/rbac/interfaces/rbac.RestoreReturn"
   },
@@ -22088,20 +22116,28 @@ export const filesMap = [
     "pathname": "/references/rbac/interfaces/rbac.SoftDeleteReturn"
   },
   {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.AuthzContextConfig/page.json",
+    "pathname": "/references/rbac/types/rbac.AuthzContextConfig"
+  },
+  {
     "filePath": "/www/apps/resources/references/rbac/types/rbac.Constructor/page.json",
     "pathname": "/references/rbac/types/rbac.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CorePolicyResourceMap/page.json",
+    "pathname": "/references/rbac/types/rbac.CorePolicyResourceMap"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacPolicyDTO/page.json",
     "pathname": "/references/rbac/types/rbac.CreateRbacPolicyDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRoleDTO/page.json",
-    "pathname": "/references/rbac/types/rbac.CreateRbacRoleDTO"
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRoleAssignmentDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacRoleAssignmentDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRoleParentDTO/page.json",
-    "pathname": "/references/rbac/types/rbac.CreateRbacRoleParentDTO"
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRoleDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacRoleDTO"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRolePolicyDTO/page.json",
@@ -22152,10 +22188,6 @@ export const filesMap = [
     "pathname": "/references/rbac/types/rbac.FilterableRbacPolicyProps"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterableRbacRoleParentProps/page.json",
-    "pathname": "/references/rbac/types/rbac.FilterableRbacRoleParentProps"
-  },
-  {
     "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterableRbacRolePolicyProps/page.json",
     "pathname": "/references/rbac/types/rbac.FilterableRbacRolePolicyProps"
   },
@@ -22196,6 +22228,14 @@ export const filesMap = [
     "pathname": "/references/rbac/types/rbac.OperatorMap"
   },
   {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.PolicyOperationValue/page.json",
+    "pathname": "/references/rbac/types/rbac.PolicyOperationValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.PolicyResourceValue/page.json",
+    "pathname": "/references/rbac/types/rbac.PolicyResourceValue"
+  },
+  {
     "filePath": "/www/apps/resources/references/rbac/types/rbac.PrevLimit/page.json",
     "pathname": "/references/rbac/types/rbac.PrevLimit"
   },
@@ -22216,12 +22256,12 @@ export const filesMap = [
     "pathname": "/references/rbac/types/rbac.RbacPolicyDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRoleDTO/page.json",
-    "pathname": "/references/rbac/types/rbac.RbacRoleDTO"
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRoleAssignmentDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacRoleAssignmentDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRoleParentDTO/page.json",
-    "pathname": "/references/rbac/types/rbac.RbacRoleParentDTO"
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRoleDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacRoleDTO"
   },
   {
     "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRolePolicyDTO/page.json",
@@ -22240,16 +22280,20 @@ export const filesMap = [
     "pathname": "/references/rbac/types/rbac.UpdateRbacPolicyDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRoleAssignmentDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.UpdateRbacRoleAssignmentDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRoleDTO/page.json",
     "pathname": "/references/rbac/types/rbac.UpdateRbacRoleDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRoleParentDTO/page.json",
-    "pathname": "/references/rbac/types/rbac.UpdateRbacRoleParentDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRolePolicyDTO/page.json",
     "pathname": "/references/rbac/types/rbac.UpdateRbacRolePolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/variables/rbac.CORE_POLICY_RESOURCES/page.json",
+    "pathname": "/references/rbac/variables/rbac.CORE_POLICY_RESOURCES"
   },
   {
     "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacPolicy/page.json",
@@ -22260,8 +22304,8 @@ export const filesMap = [
     "pathname": "/references/rbac/models/RbacRole"
   },
   {
-    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRoleParent/page.json",
-    "pathname": "/references/rbac/models/RbacRoleParent"
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRoleAssignment/page.json",
+    "pathname": "/references/rbac/models/RbacRoleAssignment"
   },
   {
     "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRolePolicy/page.json",
@@ -30760,10 +30804,6 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.FileServiceUploadResult"
   },
   {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.FilterableRbacRoleAssignmentProps/page.json",
-    "pathname": "/references/types/interfaces/types.FilterableRbacRoleAssignmentProps"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.FixtureEntryPoints/page.json",
     "pathname": "/references/types/interfaces/types.FixtureEntryPoints"
   },
@@ -30822,14 +30862,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.IPaymentProvider/page.json",
     "pathname": "/references/types/interfaces/types.IPaymentProvider"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.IRbacModuleService/page.json",
-    "pathname": "/references/types/interfaces/types.IRbacModuleService"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.IRbacModuleServiceOptions/page.json",
-    "pathname": "/references/types/interfaces/types.IRbacModuleServiceOptions"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.ITaxProvider/page.json",
@@ -30914,14 +30946,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.PaymentProviderOutput/page.json",
     "pathname": "/references/types/interfaces/types.PaymentProviderOutput"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.PolicyOperationRegistry/page.json",
-    "pathname": "/references/types/interfaces/types.PolicyOperationRegistry"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.PolicyResourceRegistry/page.json",
-    "pathname": "/references/types/interfaces/types.PolicyResourceRegistry"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.PosthogAnalyticsServiceOptions/page.json",
@@ -31096,10 +31120,6 @@ export const filesMap = [
     "pathname": "/references/types/types/types.AdminUpsertFulfillmentSetServiceZoneGeoZone"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.AuthzContextConfig/page.json",
-    "pathname": "/references/types/types/types.AuthzContextConfig"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/types/types.BasePaymentCollectionStatus/page.json",
     "pathname": "/references/types/types/types.BasePaymentCollectionStatus"
   },
@@ -31144,10 +31164,6 @@ export const filesMap = [
     "pathname": "/references/types/types/types.CleanupObject"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.CorePolicyResourceMap/page.json",
-    "pathname": "/references/types/types/types.CorePolicyResourceMap"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/types/types.CreateCalculatedShippingOptionInput/page.json",
     "pathname": "/references/types/types/types.CreateCalculatedShippingOptionInput"
   },
@@ -31178,22 +31194,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.CreateProductWorkflowInputDTO/page.json",
     "pathname": "/references/types/types/types.CreateProductWorkflowInputDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacPolicyDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacPolicyDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleAssignmentDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacRoleAssignmentDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacRoleDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRolePolicyDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacRolePolicyDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.CrossModuleJoinLink/page.json",
@@ -31258,18 +31258,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.FilterValue2/page.json",
     "pathname": "/references/types/types/types.FilterValue2"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacPolicyProps/page.json",
-    "pathname": "/references/types/types/types.FilterableRbacPolicyProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRolePolicyProps/page.json",
-    "pathname": "/references/types/types/types.FilterableRbacRolePolicyProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRoleProps/page.json",
-    "pathname": "/references/types/types/types.FilterableRbacRoleProps"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.FlowRunOptions/page.json",
@@ -31504,18 +31492,6 @@ export const filesMap = [
     "pathname": "/references/types/types/types.PluralizationSpecialRules"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.PolicyAction/page.json",
-    "pathname": "/references/types/types/types.PolicyAction"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.PolicyOperationValue/page.json",
-    "pathname": "/references/types/types/types.PolicyOperationValue"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.PolicyResourceValue/page.json",
-    "pathname": "/references/types/types/types.PolicyResourceValue"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/types/types.Prettify/page.json",
     "pathname": "/references/types/types/types.Prettify"
   },
@@ -31566,34 +31542,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.RawBigNumberPrefix/page.json",
     "pathname": "/references/types/types/types.RawBigNumberPrefix"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacContext/page.json",
-    "pathname": "/references/types/types/types.RbacContext"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacGrantingContext/page.json",
-    "pathname": "/references/types/types/types.RbacGrantingContext"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacPolicyDTO/page.json",
-    "pathname": "/references/types/types/types.RbacPolicyDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacRoleAssignmentDTO/page.json",
-    "pathname": "/references/types/types/types.RbacRoleAssignmentDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacRoleDTO/page.json",
-    "pathname": "/references/types/types/types.RbacRoleDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacRolePolicyDTO/page.json",
-    "pathname": "/references/types/types/types.RbacRolePolicyDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacScope/page.json",
-    "pathname": "/references/types/types/types.RbacScope"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.ReadonlyPrimary/page.json",
@@ -31678,22 +31626,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.UpdatePromotionRulesWorkflowDTO/page.json",
     "pathname": "/references/types/types/types.UpdatePromotionRulesWorkflowDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacPolicyDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacPolicyDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleAssignmentDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacRoleAssignmentDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacRoleDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRolePolicyDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacRolePolicyDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.ValidateFulfillmentDataContext/page.json",
