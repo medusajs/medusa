@@ -1,5 +1,20 @@
 # @medusajs/draft-order
 
+## 2.22.5
+
+### Patch Changes
+
+- [#17702](https://github.com/medusajs/medusa/pull/17702) [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,draft-order): replace deprecated lodash.isequal with dequal
+- Updated dependencies [[`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760), [`43ee8be`](https://github.com/medusajs/medusa/commit/43ee8be5405956a5bc1578b23e3725ef8b84f83e), [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b), [`cc17c71`](https://github.com/medusajs/medusa/commit/cc17c713185046f26bf00e3ba23ad6df5639db00)]:
+  - @medusajs/dashboard@2.22.5
+  - @medusajs/ui@4.2.12
+  - @medusajs/cli@2.22.5
+  - @medusajs/framework@2.22.5
+  - @medusajs/js-sdk@2.22.5
+  - @medusajs/test-utils@2.22.5
+  - @medusajs/admin-sdk@2.22.5
+  - @medusajs/icons@2.22.5
+
 ## 2.22.4
 
 ### Patch Changes

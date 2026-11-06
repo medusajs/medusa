@@ -1,5 +1,14 @@
 # @medusajs/oas-cli
 
+## 2.22.5
+
+### Patch Changes
+
+- [#17699](https://github.com/medusajs/medusa/pull/17699) [`b7be6bb`](https://github.com/medusajs/medusa/commit/b7be6bb607c67fcf3b2b8373f2a1932c8d7742f5) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(medusa-oas-cli): remove deprecated @readme/json-schema-ref-parser dependency
+- Updated dependencies [[`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760), [`9bee47a`](https://github.com/medusajs/medusa/commit/9bee47a20d9d2ee9e1c59f0bf5cf94e1dc745609)]:
+  - @medusajs/utils@2.22.5
+  - @medusajs/medusa@2.22.5
+
 ## 2.22.4
 
 ### Patch Changes
