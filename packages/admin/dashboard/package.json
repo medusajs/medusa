@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/dashboard",
-  "version": "2.22.3",
+  "version": "2.22.4",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "typecheck": "yarn run -T tsc --noEmit -p tsconfig.typecheck.json",
@@ -72,10 +72,10 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "6.0.0",
-    "@medusajs/admin-shared": "2.22.3",
-    "@medusajs/icons": "2.22.3",
-    "@medusajs/js-sdk": "2.22.3",
-    "@medusajs/ui": "4.2.10",
+    "@medusajs/admin-shared": "2.22.4",
+    "@medusajs/icons": "2.22.4",
+    "@medusajs/js-sdk": "2.22.4",
+    "@medusajs/ui": "4.2.11",
     "@radix-ui/react-dialog": "1.1.4",
     "@radix-ui/react-dismissable-layer": "1.1.4",
     "@tanstack/react-query": "5.64.2",
@@ -107,10 +107,10 @@
     "zod": "4.6.6"
   },
   "devDependencies": {
-    "@medusajs/admin-shared": "2.22.3",
-    "@medusajs/admin-vite-plugin": "2.22.3",
-    "@medusajs/types": "2.22.3",
-    "@medusajs/ui-preset": "2.22.3",
+    "@medusajs/admin-shared": "2.22.4",
+    "@medusajs/admin-vite-plugin": "2.22.4",
+    "@medusajs/types": "2.22.4",
+    "@medusajs/ui-preset": "2.22.4",
     "@types/qrcode": "^1.5.5",
     "eslint": "^9.39.5",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
