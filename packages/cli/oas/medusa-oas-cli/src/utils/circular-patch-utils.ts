@@ -1,7 +1,6 @@
 import { OpenAPIObject } from "openapi3-ts/oas30"
-import $RefParser from "@readme/json-schema-ref-parser"
 import { compileErrors, validate } from "@readme/openapi-parser"
-import { jsonObjectToYamlString } from "./yaml-utils"
+import { jsonObjectToYamlString, readYaml } from "./yaml-utils"
 
 export const getCircularReferences = async (
   srcFile: string
@@ -10,23 +9,65 @@ export const getCircularReferences = async (
   if (!validation.valid) {
     throw new Error(compileErrors(validation))
   }
-  // @readme/openapi-parser's own circular detection reports every path through
-  // a cycle, which would over-recommend patches; this keeps one edge per cycle.
-  const parser = new $RefParser()
-  const oas = (await parser.dereference(srcFile, {
-    dereference: {
-      circular: "ignore",
-    },
-  })) as OpenAPIObject
-  if (parser.$refs.circular) {
-    let circularRefs = parser.$refs.circularRefs.map(
-      (ref) => ref.match(/#\/components\/schemas\/.*/)![0]
-    )
-    circularRefs = [...new Set(circularRefs)]
-    circularRefs.sort()
-    return { circularRefs, oas }
+  const oas = (await readYaml(srcFile)) as OpenAPIObject
+  const circularRefs = [
+    ...new Set(
+      findCircularRefs(oas)
+        .map((ref) => ref.match(/#\/components\/schemas\/.*/)?.[0])
+        .filter((ref): ref is string => !!ref)
+    ),
+  ]
+  circularRefs.sort()
+  return { circularRefs, oas }
+}
+
+// @readme/openapi-parser's circular detection reports every ref that reaches a
+// cycle, which would over-recommend patches. This reports only the ref that
+// closes each cycle, and none for refs already resolved.
+const findCircularRefs = (oas: OpenAPIObject): string[] => {
+  const circularRefs: string[] = []
+  const resolvedRefs = new Set<string>()
+  const parents = new Set<unknown>()
+
+  const resolvePointer = (ref: string): unknown =>
+    ref
+      .slice(2)
+      .split("/")
+      .map((key) =>
+        decodeURIComponent(key).replace(/~1/g, "/").replace(/~0/g, "~")
+      )
+      .reduce<any>((current, key) => current?.[key], oas)
+
+  const crawl = (node: unknown, path: string) => {
+    if (!node || typeof node !== "object") {
+      return
+    }
+    parents.add(node)
+    for (const [key, value] of Object.entries(node)) {
+      const keyPath = `${path}/${key.replace(/~/g, "~0").replace(/\//g, "~1")}`
+      if (typeof value?.$ref !== "string") {
+        crawl(value, keyPath)
+        continue
+      }
+      const ref: string = value.$ref
+      if (!ref.startsWith("#/") || resolvedRefs.has(ref)) {
+        continue
+      }
+      const target = resolvePointer(ref)
+      if (parents.has(target)) {
+        circularRefs.push(keyPath)
+      } else {
+        crawl(target, ref)
+      }
+      if (Object.keys(value).length === 1) {
+        resolvedRefs.add(ref)
+      }
+    }
+    parents.delete(node)
   }
-  return { circularRefs: [], oas }
+
+  crawl(oas, "#")
+  return circularRefs
 }
 
 export const getCircularPatchRecommendation = (
