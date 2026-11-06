@@ -2,7 +2,8 @@
  * @oas [post] /rbac/roles/{id}/assignments
  * operationId: PostRolesIdAssignments
  * summary: Assign Role
- * description: Assign a role to one or more entities of the same type, such as users or invites. Pass `scope` and `scope_id` to constrain the assignments to a scope. You can only assign roles whose policies you have.
+ * description: Assign a role to one or more entities of the same type, such as users or invites. Pass `scope` and `scope_id` to constrain the assignments to a scope. You can only assign roles whose
+ *   policies you have.
  * x-authenticated: false
  * parameters:
  *   - name: id
