@@ -3378,6 +3378,9 @@
     "invalidTokenTitle": "Ihr Einladungstoken ist ungültig",
     "invalidTokenHint": "Versuchen Sie, einen neuen Einladungslink anzufordern.",
     "passwordMismatch": "Passwörter stimmen nicht überein",
+    "signedInTitle": "Sie sind bereits angemeldet",
+    "signedInHint": "Sie sind als {{email}} angemeldet. Melden Sie sich ab, um diese Einladung anzunehmen.",
+    "signOut": "Abmelden",
     "toast": {
       "accepted": "Einladung erfolgreich angenommen"
     }

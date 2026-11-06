@@ -3418,6 +3418,9 @@
     "invalidTokenTitle": "Vaš pozivni token je nevažeći",
     "invalidTokenHint": "Pokušajte zatražiti novi pozivni link.",
     "passwordMismatch": "Lozinke se ne podudaraju",
+    "signedInTitle": "Već ste prijavljeni",
+    "signedInHint": "Prijavljeni ste kao {{email}}. Odjavite se da biste prihvatili ovu pozivnicu.",
+    "signOut": "Odjavite se",
     "toast": {
       "accepted": "Pozivnica uspješno prihvaćena"
     }

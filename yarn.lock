@@ -1739,21 +1739,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint-community/regexpp@npm:^4.12.1, @eslint-community/regexpp@npm:^4.12.2":
+"@eslint-community/regexpp@npm:^4.12.2":
   version: 4.12.2
   resolution: "@eslint-community/regexpp@npm:4.12.2"
   checksum: 10c0/fddcbc66851b308478d04e302a4d771d6917a0b3740dc351513c0da9ca2eab8a1adf99f5e0aa7ab8b13fa0df005c81adeee7e63a92f3effd7d367a163b721c2d
-  languageName: node
-  linkType: hard
-
-"@eslint/config-array@npm:^0.21.2":
-  version: 0.21.2
-  resolution: "@eslint/config-array@npm:0.21.2"
-  dependencies:
-    "@eslint/object-schema": "npm:^2.1.7"
-    debug: "npm:^4.3.1"
-    minimatch: "npm:^3.1.5"
-  checksum: 10c0/89dfe815d18456177c0a1f238daf4593107fd20298b3598e0103054360d3b8d09d967defd8318f031185d68df1f95cfa68becf1390a9c5c6887665f1475142e3
   languageName: node
   linkType: hard
 
@@ -1768,30 +1757,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-helpers@npm:^0.4.2":
-  version: 0.4.2
-  resolution: "@eslint/config-helpers@npm:0.4.2"
-  dependencies:
-    "@eslint/core": "npm:^0.17.0"
-  checksum: 10c0/92efd7a527b2d17eb1a148409d71d80f9ac160b565ac73ee092252e8bf08ecd08670699f46b306b94f13d22e88ac88a612120e7847570dd7cdc72f234d50dcb4
-  languageName: node
-  linkType: hard
-
 "@eslint/config-helpers@npm:^0.7.0":
   version: 0.7.0
   resolution: "@eslint/config-helpers@npm:0.7.0"
   dependencies:
     "@eslint/core": "npm:^1.2.1"
   checksum: 10c0/fd40d57d6f1db49f7b647048b88a433dc7f6522ef3edf855a43cb526ef4fc40622ceed0dc8de2e03d254f30f8e035370570de1d4bd8e7c2b1200131451e0d331
-  languageName: node
-  linkType: hard
-
-"@eslint/core@npm:^0.17.0":
-  version: 0.17.0
-  resolution: "@eslint/core@npm:0.17.0"
-  dependencies:
-    "@types/json-schema": "npm:^7.0.15"
-  checksum: 10c0/9a580f2246633bc752298e7440dd942ec421860d1946d0801f0423830e67887e4aeba10ab9a23d281727a978eb93d053d1922a587d502942a713607f40ed704e
   languageName: node
   linkType: hard
 
@@ -1804,34 +1775,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^3.3.6":
-  version: 3.3.7
-  resolution: "@eslint/eslintrc@npm:3.3.7"
-  dependencies:
-    ajv: "npm:^6.14.0"
-    debug: "npm:^4.3.2"
-    espree: "npm:^10.0.1"
-    globals: "npm:^14.0.0"
-    ignore: "npm:^5.2.0"
-    import-fresh: "npm:^3.2.1"
-    js-yaml: "npm:^4.3.2"
-    minimatch: "npm:^3.1.5"
-    strip-json-comments: "npm:^3.1.1"
-  checksum: 10c0/010fca3403489ff109cfb5b9996142a2a4b4be28bbb233eda3c30ed004826aeab84d6914d0c5c4b1cd80add7051525adb7818268e0fb4775ddb6dbc620f00c72
-  languageName: node
-  linkType: hard
-
-"@eslint/js@npm:9.39.5":
-  version: 9.39.5
-  resolution: "@eslint/js@npm:9.39.5"
-  checksum: 10c0/49894e98ba313a7d3bfb1b20d55c0f9826be45a7db876fd84e533ac7f101b1d95b51cd22c6a6db3a45066b9c0d068c31b4a22fa0db8a6cc8744a25540efdb824
-  languageName: node
-  linkType: hard
-
-"@eslint/object-schema@npm:^2.1.7":
-  version: 2.1.7
-  resolution: "@eslint/object-schema@npm:2.1.7"
-  checksum: 10c0/936b6e499853d1335803f556d526c86f5fe2259ed241bc665000e1d6353828edd913feed43120d150adb75570cae162cf000b5b0dfc9596726761c36b82f4e87
+"@eslint/js@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "@eslint/js@npm:10.0.1"
+  peerDependencies:
+    eslint: ^10.0.0
+  peerDependenciesMeta:
+    eslint:
+      optional: true
+  checksum: 10c0/9f3fcaf71ba7fdf65d82e8faad6ecfe97e11801cc3c362b306a88ea1ed1344ae0d35330dddb0e8ad18f010f6687a70b75491b9e01c8af57acd7987cee6b3ec6c
   languageName: node
   linkType: hard
 
@@ -1839,16 +1791,6 @@ __metadata:
   version: 3.0.5
   resolution: "@eslint/object-schema@npm:3.0.5"
   checksum: 10c0/1db337431f520b99e9edda64ef5fafd7ec6a029843eeb608753025125b6649d861d843cffafafd3c4e37926d7d5f9ec0c6a8e3665c13c3da2144e8132892e92e
-  languageName: node
-  linkType: hard
-
-"@eslint/plugin-kit@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "@eslint/plugin-kit@npm:0.4.1"
-  dependencies:
-    "@eslint/core": "npm:^0.17.0"
-    levn: "npm:^0.4.1"
-  checksum: 10c0/51600f78b798f172a9915dffb295e2ffb44840d583427bc732baf12ecb963eb841b253300e657da91d890f4b323d10a1bd12934bf293e3018d8bb66fdce5217b
   languageName: node
   linkType: hard
 
@@ -3121,14 +3063,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/admin-bundler@npm:2.22.3, @medusajs/admin-bundler@workspace:packages/admin/admin-bundler":
+"@medusajs/admin-bundler@npm:2.22.4, @medusajs/admin-bundler@workspace:packages/admin/admin-bundler":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-bundler@workspace:packages/admin/admin-bundler"
   dependencies:
-    "@medusajs/admin-shared": "npm:2.22.3"
-    "@medusajs/admin-vite-plugin": "npm:2.22.3"
-    "@medusajs/dashboard": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
+    "@medusajs/admin-shared": "npm:2.22.4"
+    "@medusajs/admin-vite-plugin": "npm:2.22.4"
+    "@medusajs/dashboard": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
     "@vitejs/plugin-react": "npm:^5.2.0"
     autoprefixer: "npm:^10.6.1"
     compression: "npm:^1.8.2"
@@ -3142,29 +3084,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-sdk@npm:2.22.3, @medusajs/admin-sdk@workspace:packages/admin/admin-sdk":
+"@medusajs/admin-sdk@npm:2.22.4, @medusajs/admin-sdk@workspace:packages/admin/admin-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-sdk@workspace:packages/admin/admin-sdk"
   dependencies:
-    "@medusajs/admin-shared": "npm:2.22.3"
+    "@medusajs/admin-shared": "npm:2.22.4"
     zod: "npm:4.6.6"
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-shared@npm:2.22.3, @medusajs/admin-shared@workspace:packages/admin/admin-shared":
+"@medusajs/admin-shared@npm:2.22.4, @medusajs/admin-shared@workspace:packages/admin/admin-shared":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-shared@workspace:packages/admin/admin-shared"
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-vite-plugin@npm:2.22.3, @medusajs/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin":
+"@medusajs/admin-vite-plugin@npm:2.22.4, @medusajs/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-vite-plugin@workspace:packages/admin/admin-vite-plugin"
   dependencies:
     "@babel/parser": "npm:8.0.10"
     "@babel/traverse": "npm:8.0.10"
     "@babel/types": "npm:8.0.10"
-    "@medusajs/admin-shared": "npm:2.22.3"
+    "@medusajs/admin-shared": "npm:2.22.4"
     fdir: "npm:6.1.1"
     magic-string: "npm:1.4.3"
     outdent: "npm:^0.8.0"
@@ -3175,101 +3117,101 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/analytics-local@npm:2.22.3, @medusajs/analytics-local@workspace:packages/modules/providers/analytics-local":
+"@medusajs/analytics-local@npm:2.22.4, @medusajs/analytics-local@workspace:packages/modules/providers/analytics-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/analytics-local@workspace:packages/modules/providers/analytics-local"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/analytics-posthog@npm:2.22.3, @medusajs/analytics-posthog@workspace:packages/modules/providers/analytics-posthog":
+"@medusajs/analytics-posthog@npm:2.22.4, @medusajs/analytics-posthog@workspace:packages/modules/providers/analytics-posthog":
   version: 0.0.0-use.local
   resolution: "@medusajs/analytics-posthog@workspace:packages/modules/providers/analytics-posthog"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     posthog-node: "npm:^5.57.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
     posthog-node: ^5.57.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/analytics@npm:2.22.3, @medusajs/analytics@workspace:packages/modules/analytics":
+"@medusajs/analytics@npm:2.22.4, @medusajs/analytics@workspace:packages/modules/analytics":
   version: 0.0.0-use.local
   resolution: "@medusajs/analytics@workspace:packages/modules/analytics"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/api-key@npm:2.22.3, @medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/modules/api-key":
+"@medusajs/api-key@npm:2.22.4, @medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/modules/api-key":
   version: 0.0.0-use.local
   resolution: "@medusajs/api-key@workspace:packages/modules/api-key"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-emailpass@npm:2.22.3, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
+"@medusajs/auth-emailpass@npm:2.22.4, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     scrypt-kdf: "npm:^4.0.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-github@npm:2.22.3, @medusajs/auth-github@workspace:packages/modules/providers/auth-github":
+"@medusajs/auth-github@npm:2.22.4, @medusajs/auth-github@workspace:packages/modules/providers/auth-github":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-github@workspace:packages/modules/providers/auth-github"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-google@npm:2.22.3, @medusajs/auth-google@workspace:packages/modules/providers/auth-google":
+"@medusajs/auth-google@npm:2.22.4, @medusajs/auth-google@workspace:packages/modules/providers/auth-google":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-google@workspace:packages/modules/providers/auth-google"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     jsonwebtoken: "npm:^9.0.2"
     jwks-rsa: "npm:^4.1.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-oidc@npm:2.22.3, @medusajs/auth-oidc@workspace:packages/modules/providers/auth-oidc":
+"@medusajs/auth-oidc@npm:2.22.4, @medusajs/auth-oidc@workspace:packages/modules/providers/auth-oidc":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-oidc@workspace:packages/modules/providers/auth-oidc"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     oauth4webapi: "npm:^3.8.8"
     openid-client: "npm:^6.8.8"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth@npm:2.22.3, @medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
+"@medusajs/auth@npm:2.22.4, @medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
     "@otplib/core": "npm:^13.5.0"
     "@otplib/plugin-crypto-node": "npm:^13.5.0"
     "@otplib/totp": "npm:^13.5.0"
@@ -3278,77 +3220,77 @@ __metadata:
     jwks-rsa: "npm:^4.1.0"
     scrypt-kdf: "npm:^4.0.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/cache-inmemory@npm:2.22.3, @medusajs/cache-inmemory@workspace:*, @medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory":
+"@medusajs/cache-inmemory@npm:2.22.4, @medusajs/cache-inmemory@workspace:*, @medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/cache-redis@npm:2.22.3, @medusajs/cache-redis@workspace:packages/modules/cache-redis":
+"@medusajs/cache-redis@npm:2.22.4, @medusajs/cache-redis@workspace:packages/modules/cache-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-redis@workspace:packages/modules/cache-redis"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     ioredis: "npm:^5.11.1"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/caching-redis@npm:2.22.3, @medusajs/caching-redis@workspace:packages/modules/providers/caching-redis":
+"@medusajs/caching-redis@npm:2.22.4, @medusajs/caching-redis@workspace:packages/modules/providers/caching-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/caching-redis@workspace:packages/modules/providers/caching-redis"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     ioredis: "npm:^5.11.1"
     xxhash-wasm: "npm:^1.1.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/caching@npm:2.22.3, @medusajs/caching@workspace:*, @medusajs/caching@workspace:packages/modules/caching":
+"@medusajs/caching@npm:2.22.4, @medusajs/caching@workspace:*, @medusajs/caching@workspace:packages/modules/caching":
   version: 0.0.0-use.local
   resolution: "@medusajs/caching@workspace:packages/modules/caching"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
     awilix: "npm:^13.0.5"
     fast-json-stable-stringify: "npm:^2.1.0"
     node-cache: "npm:^5.1.2"
     xxhash-wasm: "npm:^1.1.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
     awilix: ^13.0.5
   languageName: unknown
   linkType: soft
 
-"@medusajs/cart@npm:2.22.3, @medusajs/cart@workspace:packages/modules/cart":
+"@medusajs/cart@npm:2.22.4, @medusajs/cart@workspace:packages/modules/cart":
   version: 0.0.0-use.local
   resolution: "@medusajs/cart@workspace:packages/modules/cart"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/cli@npm:2.22.3, @medusajs/cli@workspace:packages/cli/medusa-cli":
+"@medusajs/cli@npm:2.22.4, @medusajs/cli@workspace:packages/cli/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/cli@workspace:packages/cli/medusa-cli"
   dependencies:
-    "@medusajs/deps": "npm:2.22.3"
-    "@medusajs/telemetry": "npm:2.22.3"
-    "@medusajs/utils": "npm:2.22.3"
+    "@medusajs/deps": "npm:2.22.4"
+    "@medusajs/telemetry": "npm:2.22.4"
+    "@medusajs/utils": "npm:2.22.4"
     "@types/express": "npm:^4.17.21"
     configstore: "npm:^8.0.0"
     dotenv: "npm:^18.0.9"
@@ -3377,42 +3319,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/core-flows@npm:2.22.3, @medusajs/core-flows@workspace:*, @medusajs/core-flows@workspace:^, @medusajs/core-flows@workspace:packages/core/core-flows":
+"@medusajs/core-flows@npm:2.22.4, @medusajs/core-flows@workspace:*, @medusajs/core-flows@workspace:^, @medusajs/core-flows@workspace:packages/core/core-flows":
   version: 0.0.0-use.local
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     csv-parse: "npm:^7.0.2"
     deeks: "npm:^3.2.1"
     json-2-csv: "npm:^5.6.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/currency@npm:2.22.3, @medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/modules/currency":
+"@medusajs/currency@npm:2.22.4, @medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/modules/currency":
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/modules/currency"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/customer@npm:2.22.3, @medusajs/customer@workspace:^, @medusajs/customer@workspace:packages/modules/customer":
+"@medusajs/customer@npm:2.22.4, @medusajs/customer@workspace:^, @medusajs/customer@workspace:packages/modules/customer":
   version: 0.0.0-use.local
   resolution: "@medusajs/customer@workspace:packages/modules/customer"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/dashboard@npm:2.22.3, @medusajs/dashboard@workspace:packages/admin/dashboard":
+"@medusajs/dashboard@npm:2.22.4, @medusajs/dashboard@workspace:packages/admin/dashboard":
   version: 0.0.0-use.local
   resolution: "@medusajs/dashboard@workspace:packages/admin/dashboard"
   dependencies:
@@ -3423,13 +3365,13 @@ __metadata:
     "@dnd-kit/utilities": "npm:^3.2.2"
     "@hookform/error-message": "npm:^2.0.1"
     "@hookform/resolvers": "npm:6.0.0"
-    "@medusajs/admin-shared": "npm:2.22.3"
-    "@medusajs/admin-vite-plugin": "npm:2.22.3"
-    "@medusajs/icons": "npm:2.22.3"
-    "@medusajs/js-sdk": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/ui": "npm:4.2.10"
-    "@medusajs/ui-preset": "npm:2.22.3"
+    "@medusajs/admin-shared": "npm:2.22.4"
+    "@medusajs/admin-vite-plugin": "npm:2.22.4"
+    "@medusajs/icons": "npm:2.22.4"
+    "@medusajs/js-sdk": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/ui": "npm:4.2.11"
+    "@medusajs/ui-preset": "npm:2.22.4"
     "@radix-ui/react-dialog": "npm:1.1.4"
     "@radix-ui/react-dismissable-layer": "npm:1.1.4"
     "@tanstack/react-query": "npm:5.64.2"
@@ -3441,7 +3383,7 @@ __metadata:
     cmdk: "npm:^1.1.1"
     copy-to-clipboard: "npm:^4.0.2"
     date-fns: "npm:^4.4.0"
-    eslint: "npm:^9.39.5"
+    eslint: "npm:^10.13.0"
     i18next: "npm:23.7.11"
     i18next-browser-languagedetector: "npm:7.2.0"
     lodash.debounce: "npm:^4.0.8"
@@ -3465,7 +3407,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/deps@npm:2.22.3, @medusajs/deps@workspace:packages/deps":
+"@medusajs/deps@npm:2.22.4, @medusajs/deps@workspace:packages/deps":
   version: 0.0.0-use.local
   resolution: "@medusajs/deps@workspace:packages/deps"
   dependencies:
@@ -3485,23 +3427,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/draft-order@npm:2.22.3, @medusajs/draft-order@workspace:packages/plugins/draft-order":
+"@medusajs/draft-order@npm:2.22.4, @medusajs/draft-order@workspace:packages/plugins/draft-order":
   version: 0.0.0-use.local
   resolution: "@medusajs/draft-order@workspace:packages/plugins/draft-order"
   dependencies:
     "@ariakit/react": "npm:^0.4.15"
     "@babel/runtime": "npm:^8.0.10"
     "@hookform/resolvers": "npm:6.0.0"
-    "@medusajs/admin-sdk": "npm:2.22.3"
-    "@medusajs/cli": "npm:2.22.3"
-    "@medusajs/dashboard": "npm:2.22.3"
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/icons": "npm:2.22.3"
-    "@medusajs/js-sdk": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/ui": "npm:4.2.10"
-    "@medusajs/ui-preset": "npm:2.22.3"
+    "@medusajs/admin-sdk": "npm:2.22.4"
+    "@medusajs/cli": "npm:2.22.4"
+    "@medusajs/dashboard": "npm:2.22.4"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/icons": "npm:2.22.4"
+    "@medusajs/js-sdk": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/ui": "npm:4.2.11"
+    "@medusajs/ui-preset": "npm:2.22.4"
     "@tanstack/react-query": "npm:5.64.2"
     "@uiw/react-json-view": "npm:^2.0.0-alpha.17"
     cross-env: "npm:^10.1.0"
@@ -3513,13 +3455,13 @@ __metadata:
     react-hook-form: "npm:7.83.0"
     zod: "npm:4.6.6"
   peerDependencies:
-    "@medusajs/admin-sdk": 2.22.3
-    "@medusajs/cli": 2.22.3
-    "@medusajs/dashboard": 2.22.3
-    "@medusajs/framework": 2.22.3
-    "@medusajs/icons": 2.22.3
-    "@medusajs/test-utils": 2.22.3
-    "@medusajs/ui": 4.2.10
+    "@medusajs/admin-sdk": 2.22.4
+    "@medusajs/cli": 2.22.4
+    "@medusajs/dashboard": 2.22.4
+    "@medusajs/framework": 2.22.4
+    "@medusajs/icons": 2.22.4
+    "@medusajs/test-utils": 2.22.4
+    "@medusajs/ui": 4.2.11
     react: ^18.3.1
     react-dom: ^18.3.1
     react-router-dom: ^6.30.4 || ^7.0.0
@@ -3562,79 +3504,79 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/event-bus-local@npm:2.22.3, @medusajs/event-bus-local@workspace:*, @medusajs/event-bus-local@workspace:packages/modules/event-bus-local":
+"@medusajs/event-bus-local@npm:2.22.4, @medusajs/event-bus-local@workspace:*, @medusajs/event-bus-local@workspace:packages/modules/event-bus-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/modules/event-bus-local"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/event-bus-redis@npm:2.22.3, @medusajs/event-bus-redis@workspace:*, @medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis":
+"@medusajs/event-bus-redis@npm:2.22.4, @medusajs/event-bus-redis@workspace:*, @medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/utils": "npm:2.22.4"
     bullmq: "npm:5.13.0"
     ioredis: "npm:^5.11.1"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/file-local@npm:2.22.3, @medusajs/file-local@workspace:packages/modules/providers/file-local":
+"@medusajs/file-local@npm:2.22.4, @medusajs/file-local@workspace:packages/modules/providers/file-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/file-local@workspace:packages/modules/providers/file-local"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/file-s3@npm:2.22.3, @medusajs/file-s3@workspace:packages/modules/providers/file-s3":
+"@medusajs/file-s3@npm:2.22.4, @medusajs/file-s3@workspace:packages/modules/providers/file-s3":
   version: 0.0.0-use.local
   resolution: "@medusajs/file-s3@workspace:packages/modules/providers/file-s3"
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.1156.0"
     "@aws-sdk/lib-storage": "npm:^3.1156.0"
     "@aws-sdk/s3-request-presigner": "npm:^3.1156.0"
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     ulid: "npm:^3.0.2"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/file@npm:2.22.3, @medusajs/file@workspace:packages/modules/file":
+"@medusajs/file@npm:2.22.4, @medusajs/file@workspace:packages/modules/file":
   version: 0.0.0-use.local
   resolution: "@medusajs/file@workspace:packages/modules/file"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@npm:2.22.3, @medusajs/framework@workspace:*, @medusajs/framework@workspace:packages/core/framework":
+"@medusajs/framework@npm:2.22.4, @medusajs/framework@workspace:*, @medusajs/framework@workspace:packages/core/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/core/framework"
   dependencies:
     "@aws-sdk/client-dynamodb": "npm:^3.1156.0"
     "@jercle/yargonaut": "npm:^1.1.5"
-    "@medusajs/cli": "npm:2.22.3"
-    "@medusajs/deps": "npm:2.22.3"
-    "@medusajs/modules-sdk": "npm:2.22.3"
-    "@medusajs/orchestration": "npm:2.22.3"
-    "@medusajs/telemetry": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/utils": "npm:2.22.3"
-    "@medusajs/workflows-sdk": "npm:2.22.3"
+    "@medusajs/cli": "npm:2.22.4"
+    "@medusajs/deps": "npm:2.22.4"
+    "@medusajs/modules-sdk": "npm:2.22.4"
+    "@medusajs/orchestration": "npm:2.22.4"
+    "@medusajs/telemetry": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/utils": "npm:2.22.4"
+    "@medusajs/workflows-sdk": "npm:2.22.4"
     "@types/express": "npm:^4.17.21"
     chokidar: "npm:^6.0.0"
     compression: "npm:^1.8.2"
@@ -3653,7 +3595,7 @@ __metadata:
     tsconfig-paths: "npm:^4.2.0"
     zod-validation-error: "npm:5.0.0"
   peerDependencies:
-    "@medusajs/cli": 2.22.3
+    "@medusajs/cli": 2.22.4
     ioredis: ^5.11.1
   peerDependenciesMeta:
     ioredis:
@@ -3663,24 +3605,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment-manual@npm:2.22.3, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
+"@medusajs/fulfillment-manual@npm:2.22.4, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment@npm:2.22.3, @medusajs/fulfillment@workspace:^, @medusajs/fulfillment@workspace:packages/modules/fulfillment":
+"@medusajs/fulfillment@npm:2.22.4, @medusajs/fulfillment@workspace:^, @medusajs/fulfillment@workspace:packages/modules/fulfillment":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment@workspace:packages/modules/fulfillment"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
@@ -3700,25 +3642,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/icons@npm:2.22.3, @medusajs/icons@workspace:packages/design-system/icons":
+"@medusajs/icons@npm:2.22.4, @medusajs/icons@workspace:packages/design-system/icons":
   version: 0.0.0-use.local
   resolution: "@medusajs/icons@workspace:packages/design-system/icons"
   dependencies:
-    "@medusajs/toolbox": "npm:2.22.3"
+    "@medusajs/toolbox": "npm:2.22.4"
     react: "npm:^18.3.1"
   peerDependencies:
     react: ^18.3.1 || ^19.0.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/index@npm:2.22.3, @medusajs/index@workspace:packages/modules/index":
+"@medusajs/index@npm:2.22.4, @medusajs/index@workspace:packages/modules/index":
   version: 0.0.0-use.local
   resolution: "@medusajs/index@workspace:packages/modules/index"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
@@ -3728,68 +3670,68 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/inventory@npm:2.22.3, @medusajs/inventory@workspace:^, @medusajs/inventory@workspace:packages/modules/inventory":
+"@medusajs/inventory@npm:2.22.4, @medusajs/inventory@workspace:^, @medusajs/inventory@workspace:packages/modules/inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/modules/inventory"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/js-sdk@npm:2.22.3, @medusajs/js-sdk@workspace:packages/core/js-sdk":
+"@medusajs/js-sdk@npm:2.22.4, @medusajs/js-sdk@workspace:packages/core/js-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/js-sdk@workspace:packages/core/js-sdk"
   dependencies:
-    "@medusajs/types": "npm:2.22.3"
+    "@medusajs/types": "npm:2.22.4"
     fetch-event-stream: "npm:^0.1.5"
     qs: "npm:^6.16.1"
   languageName: unknown
   linkType: soft
 
-"@medusajs/link-modules@npm:2.22.3, @medusajs/link-modules@workspace:^, @medusajs/link-modules@workspace:packages/modules/link-modules":
+"@medusajs/link-modules@npm:2.22.4, @medusajs/link-modules@workspace:^, @medusajs/link-modules@workspace:packages/modules/link-modules":
   version: 0.0.0-use.local
   resolution: "@medusajs/link-modules@workspace:packages/modules/link-modules"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
     cross-env: "npm:^10.1.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/locking-postgres@npm:2.22.3, @medusajs/locking-postgres@workspace:packages/modules/providers/locking-postgres":
+"@medusajs/locking-postgres@npm:2.22.4, @medusajs/locking-postgres@workspace:packages/modules/providers/locking-postgres":
   version: 0.0.0-use.local
   resolution: "@medusajs/locking-postgres@workspace:packages/modules/providers/locking-postgres"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/locking-redis@npm:2.22.3, @medusajs/locking-redis@workspace:packages/modules/providers/locking-redis":
+"@medusajs/locking-redis@npm:2.22.4, @medusajs/locking-redis@workspace:packages/modules/providers/locking-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/locking-redis@workspace:packages/modules/providers/locking-redis"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     ioredis: "npm:^5.11.1"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/locking@npm:2.22.3, @medusajs/locking@workspace:packages/modules/locking":
+"@medusajs/locking@npm:2.22.4, @medusajs/locking@workspace:packages/modules/locking":
   version: 0.0.0-use.local
   resolution: "@medusajs/locking@workspace:packages/modules/locking"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
@@ -3797,30 +3739,30 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/loyalty-plugin@workspace:packages/plugins/loyalty"
   dependencies:
-    "@medusajs/admin-sdk": "npm:2.22.3"
-    "@medusajs/cli": "npm:2.22.3"
-    "@medusajs/dashboard": "npm:2.22.3"
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/icons": "npm:2.22.3"
-    "@medusajs/medusa": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/ui": "npm:4.2.10"
-    "@medusajs/ui-preset": "npm:2.22.3"
+    "@medusajs/admin-sdk": "npm:2.22.4"
+    "@medusajs/cli": "npm:2.22.4"
+    "@medusajs/dashboard": "npm:2.22.4"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/icons": "npm:2.22.4"
+    "@medusajs/medusa": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/ui": "npm:4.2.11"
+    "@medusajs/ui-preset": "npm:2.22.4"
     "@swc/core": "npm:^1.16.20"
     "@types/node": "npm:^22.20.5"
     cross-env: "npm:^10.1.0"
     ts-node: "npm:^10.9.2"
     typescript: "npm:@typescript/typescript6@^6.0.2"
   peerDependencies:
-    "@medusajs/admin-sdk": 2.22.3
-    "@medusajs/cli": 2.22.3
-    "@medusajs/dashboard": 2.22.3
-    "@medusajs/framework": 2.22.3
-    "@medusajs/icons": 2.22.3
-    "@medusajs/medusa": 2.22.3
-    "@medusajs/test-utils": 2.22.3
-    "@medusajs/ui": 4.2.10
+    "@medusajs/admin-sdk": 2.22.4
+    "@medusajs/cli": 2.22.4
+    "@medusajs/dashboard": 2.22.4
+    "@medusajs/framework": 2.22.4
+    "@medusajs/icons": 2.22.4
+    "@medusajs/medusa": 2.22.4
+    "@medusajs/test-utils": 2.22.4
+    "@medusajs/ui": 4.2.11
     react: ^18.3.1
     react-dom: ^18.3.1
     react-router-dom: ^6.30.4 || ^7.0.0
@@ -3846,13 +3788,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-oas-cli@npm:2.22.3, @medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli":
+"@medusajs/medusa-oas-cli@npm:2.22.4, @medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/cli/oas/medusa-oas-cli"
   dependencies:
-    "@medusajs/medusa": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/utils": "npm:2.22.3"
+    "@medusajs/medusa": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/utils": "npm:2.22.4"
     "@readme/json-schema-ref-parser": "npm:^1.2.0"
     "@readme/openapi-parser": "npm:^10.0.0"
     "@redocly/cli": "npm:2.71.0"
@@ -3867,70 +3809,70 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@npm:2.22.3, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@npm:2.22.4, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
     "@inquirer/checkbox": "npm:^5.2.7"
     "@inquirer/confirm": "npm:^6.3.4"
     "@inquirer/input": "npm:^5.1.8"
-    "@medusajs/admin-bundler": "npm:2.22.3"
-    "@medusajs/analytics": "npm:2.22.3"
-    "@medusajs/analytics-local": "npm:2.22.3"
-    "@medusajs/analytics-posthog": "npm:2.22.3"
-    "@medusajs/api-key": "npm:2.22.3"
-    "@medusajs/auth": "npm:2.22.3"
-    "@medusajs/auth-emailpass": "npm:2.22.3"
-    "@medusajs/auth-github": "npm:2.22.3"
-    "@medusajs/auth-google": "npm:2.22.3"
-    "@medusajs/auth-oidc": "npm:2.22.3"
-    "@medusajs/cache-inmemory": "npm:2.22.3"
-    "@medusajs/cache-redis": "npm:2.22.3"
-    "@medusajs/caching": "npm:2.22.3"
-    "@medusajs/caching-redis": "npm:2.22.3"
-    "@medusajs/cart": "npm:2.22.3"
-    "@medusajs/core-flows": "npm:2.22.3"
-    "@medusajs/currency": "npm:2.22.3"
-    "@medusajs/customer": "npm:2.22.3"
-    "@medusajs/draft-order": "npm:2.22.3"
-    "@medusajs/event-bus-local": "npm:2.22.3"
-    "@medusajs/event-bus-redis": "npm:2.22.3"
-    "@medusajs/file": "npm:2.22.3"
-    "@medusajs/file-local": "npm:2.22.3"
-    "@medusajs/file-s3": "npm:2.22.3"
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/fulfillment": "npm:2.22.3"
-    "@medusajs/fulfillment-manual": "npm:2.22.3"
-    "@medusajs/index": "npm:2.22.3"
-    "@medusajs/inventory": "npm:2.22.3"
-    "@medusajs/link-modules": "npm:2.22.3"
-    "@medusajs/locking": "npm:2.22.3"
-    "@medusajs/locking-postgres": "npm:2.22.3"
-    "@medusajs/locking-redis": "npm:2.22.3"
-    "@medusajs/notification": "npm:2.22.3"
-    "@medusajs/notification-local": "npm:2.22.3"
-    "@medusajs/notification-sendgrid": "npm:2.22.3"
-    "@medusajs/order": "npm:2.22.3"
-    "@medusajs/payment": "npm:2.22.3"
-    "@medusajs/payment-adyen": "npm:2.22.3"
-    "@medusajs/payment-stripe": "npm:2.22.3"
-    "@medusajs/pricing": "npm:2.22.3"
-    "@medusajs/product": "npm:2.22.3"
-    "@medusajs/promotion": "npm:2.22.3"
-    "@medusajs/rbac": "npm:2.22.3"
-    "@medusajs/region": "npm:2.22.3"
-    "@medusajs/sales-channel": "npm:2.22.3"
-    "@medusajs/search": "npm:2.22.3"
-    "@medusajs/search-postgres": "npm:2.22.3"
-    "@medusajs/settings": "npm:2.22.3"
-    "@medusajs/stock-location": "npm:2.22.3"
-    "@medusajs/store": "npm:2.22.3"
-    "@medusajs/tax": "npm:2.22.3"
-    "@medusajs/telemetry": "npm:2.22.3"
-    "@medusajs/translation": "npm:2.22.3"
-    "@medusajs/user": "npm:2.22.3"
-    "@medusajs/workflow-engine-inmemory": "npm:2.22.3"
-    "@medusajs/workflow-engine-redis": "npm:2.22.3"
+    "@medusajs/admin-bundler": "npm:2.22.4"
+    "@medusajs/analytics": "npm:2.22.4"
+    "@medusajs/analytics-local": "npm:2.22.4"
+    "@medusajs/analytics-posthog": "npm:2.22.4"
+    "@medusajs/api-key": "npm:2.22.4"
+    "@medusajs/auth": "npm:2.22.4"
+    "@medusajs/auth-emailpass": "npm:2.22.4"
+    "@medusajs/auth-github": "npm:2.22.4"
+    "@medusajs/auth-google": "npm:2.22.4"
+    "@medusajs/auth-oidc": "npm:2.22.4"
+    "@medusajs/cache-inmemory": "npm:2.22.4"
+    "@medusajs/cache-redis": "npm:2.22.4"
+    "@medusajs/caching": "npm:2.22.4"
+    "@medusajs/caching-redis": "npm:2.22.4"
+    "@medusajs/cart": "npm:2.22.4"
+    "@medusajs/core-flows": "npm:2.22.4"
+    "@medusajs/currency": "npm:2.22.4"
+    "@medusajs/customer": "npm:2.22.4"
+    "@medusajs/draft-order": "npm:2.22.4"
+    "@medusajs/event-bus-local": "npm:2.22.4"
+    "@medusajs/event-bus-redis": "npm:2.22.4"
+    "@medusajs/file": "npm:2.22.4"
+    "@medusajs/file-local": "npm:2.22.4"
+    "@medusajs/file-s3": "npm:2.22.4"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/fulfillment": "npm:2.22.4"
+    "@medusajs/fulfillment-manual": "npm:2.22.4"
+    "@medusajs/index": "npm:2.22.4"
+    "@medusajs/inventory": "npm:2.22.4"
+    "@medusajs/link-modules": "npm:2.22.4"
+    "@medusajs/locking": "npm:2.22.4"
+    "@medusajs/locking-postgres": "npm:2.22.4"
+    "@medusajs/locking-redis": "npm:2.22.4"
+    "@medusajs/notification": "npm:2.22.4"
+    "@medusajs/notification-local": "npm:2.22.4"
+    "@medusajs/notification-sendgrid": "npm:2.22.4"
+    "@medusajs/order": "npm:2.22.4"
+    "@medusajs/payment": "npm:2.22.4"
+    "@medusajs/payment-adyen": "npm:2.22.4"
+    "@medusajs/payment-stripe": "npm:2.22.4"
+    "@medusajs/pricing": "npm:2.22.4"
+    "@medusajs/product": "npm:2.22.4"
+    "@medusajs/promotion": "npm:2.22.4"
+    "@medusajs/rbac": "npm:2.22.4"
+    "@medusajs/region": "npm:2.22.4"
+    "@medusajs/sales-channel": "npm:2.22.4"
+    "@medusajs/search": "npm:2.22.4"
+    "@medusajs/search-postgres": "npm:2.22.4"
+    "@medusajs/settings": "npm:2.22.4"
+    "@medusajs/stock-location": "npm:2.22.4"
+    "@medusajs/store": "npm:2.22.4"
+    "@medusajs/tax": "npm:2.22.4"
+    "@medusajs/telemetry": "npm:2.22.4"
+    "@medusajs/translation": "npm:2.22.4"
+    "@medusajs/user": "npm:2.22.4"
+    "@medusajs/workflow-engine-inmemory": "npm:2.22.4"
+    "@medusajs/workflow-engine-redis": "npm:2.22.4"
     boxen: "npm:^9.0.0"
     chokidar: "npm:^6.0.0"
     compression: "npm:^1.8.2"
@@ -3943,7 +3885,7 @@ __metadata:
     request-ip: "npm:^3.3.0"
     slugify: "npm:^1.6.6"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
     "@swc/core": ^1.7.28
     posthog-node: ^5.57.0
     react-dom: ^18.3.1
@@ -3960,46 +3902,46 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@npm:2.22.3, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
+"@medusajs/modules-sdk@npm:2.22.4, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
-    "@medusajs/deps": "npm:2.22.3"
-    "@medusajs/query": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/utils": "npm:2.22.3"
+    "@medusajs/deps": "npm:2.22.4"
+    "@medusajs/query": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/utils": "npm:2.22.4"
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification-local@npm:2.22.3, @medusajs/notification-local@workspace:packages/modules/providers/notification-local":
+"@medusajs/notification-local@npm:2.22.4, @medusajs/notification-local@workspace:packages/modules/providers/notification-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification-local@workspace:packages/modules/providers/notification-local"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification-sendgrid@npm:2.22.3, @medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid":
+"@medusajs/notification-sendgrid@npm:2.22.4, @medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     "@sendgrid/mail": "npm:^8.1.6"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification@npm:2.22.3, @medusajs/notification@workspace:packages/modules/notification":
+"@medusajs/notification@npm:2.22.4, @medusajs/notification@workspace:packages/modules/notification":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification@workspace:packages/modules/notification"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
@@ -4007,210 +3949,210 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/oas-github-ci@workspace:packages/cli/oas/oas-github-ci"
   dependencies:
-    "@medusajs/medusa-oas-cli": "npm:2.22.3"
+    "@medusajs/medusa-oas-cli": "npm:2.22.4"
     execa: "npm:^10.2.1"
   languageName: unknown
   linkType: soft
 
-"@medusajs/orchestration@npm:2.22.3, @medusajs/orchestration@workspace:packages/core/orchestration":
+"@medusajs/orchestration@npm:2.22.4, @medusajs/orchestration@workspace:packages/core/orchestration":
   version: 0.0.0-use.local
   resolution: "@medusajs/orchestration@workspace:packages/core/orchestration"
   dependencies:
-    "@medusajs/deps": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/utils": "npm:2.22.3"
+    "@medusajs/deps": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/utils": "npm:2.22.4"
     ulid: "npm:^3.0.2"
   languageName: unknown
   linkType: soft
 
-"@medusajs/order@npm:2.22.3, @medusajs/order@workspace:packages/modules/order":
+"@medusajs/order@npm:2.22.4, @medusajs/order@workspace:packages/modules/order":
   version: 0.0.0-use.local
   resolution: "@medusajs/order@workspace:packages/modules/order"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment-adyen@npm:2.22.3, @medusajs/payment-adyen@workspace:packages/modules/providers/payment-adyen":
+"@medusajs/payment-adyen@npm:2.22.4, @medusajs/payment-adyen@workspace:packages/modules/providers/payment-adyen":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment-adyen@workspace:packages/modules/providers/payment-adyen"
   dependencies:
     "@adyen/api-library": "npm:^32.2.0"
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment-stripe@npm:2.22.3, @medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe":
+"@medusajs/payment-stripe@npm:2.22.4, @medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
     stripe: "npm:^23.1.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment@npm:2.22.3, @medusajs/payment@workspace:^, @medusajs/payment@workspace:packages/modules/payment":
+"@medusajs/payment@npm:2.22.4, @medusajs/payment@workspace:^, @medusajs/payment@workspace:packages/modules/payment":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment@workspace:packages/modules/payment"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
     stripe: "npm:23.1.0"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/pricing@npm:2.22.3, @medusajs/pricing@workspace:^, @medusajs/pricing@workspace:packages/modules/pricing":
+"@medusajs/pricing@npm:2.22.4, @medusajs/pricing@workspace:^, @medusajs/pricing@workspace:packages/modules/pricing":
   version: 0.0.0-use.local
   resolution: "@medusajs/pricing@workspace:packages/modules/pricing"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/product@npm:2.22.3, @medusajs/product@workspace:^, @medusajs/product@workspace:packages/modules/product":
+"@medusajs/product@npm:2.22.4, @medusajs/product@workspace:^, @medusajs/product@workspace:packages/modules/product":
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/modules/product"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/promotion@npm:2.22.3, @medusajs/promotion@workspace:^, @medusajs/promotion@workspace:packages/modules/promotion":
+"@medusajs/promotion@npm:2.22.4, @medusajs/promotion@workspace:^, @medusajs/promotion@workspace:packages/modules/promotion":
   version: 0.0.0-use.local
   resolution: "@medusajs/promotion@workspace:packages/modules/promotion"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/query@npm:2.22.3, @medusajs/query@workspace:packages/core/query":
+"@medusajs/query@npm:2.22.4, @medusajs/query@workspace:packages/core/query":
   version: 0.0.0-use.local
   resolution: "@medusajs/query@workspace:packages/core/query"
   dependencies:
-    "@medusajs/deps": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/utils": "npm:2.22.3"
+    "@medusajs/deps": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/utils": "npm:2.22.4"
   languageName: unknown
   linkType: soft
 
-"@medusajs/rbac@npm:2.22.3, @medusajs/rbac@workspace:packages/modules/rbac":
+"@medusajs/rbac@npm:2.22.4, @medusajs/rbac@workspace:packages/modules/rbac":
   version: 0.0.0-use.local
   resolution: "@medusajs/rbac@workspace:packages/modules/rbac"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/region@npm:2.22.3, @medusajs/region@workspace:^, @medusajs/region@workspace:packages/modules/region":
+"@medusajs/region@npm:2.22.4, @medusajs/region@workspace:^, @medusajs/region@workspace:packages/modules/region":
   version: 0.0.0-use.local
   resolution: "@medusajs/region@workspace:packages/modules/region"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/sales-channel@npm:2.22.3, @medusajs/sales-channel@workspace:packages/modules/sales-channel":
+"@medusajs/sales-channel@npm:2.22.4, @medusajs/sales-channel@workspace:packages/modules/sales-channel":
   version: 0.0.0-use.local
   resolution: "@medusajs/sales-channel@workspace:packages/modules/sales-channel"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/search-postgres@npm:2.22.3, @medusajs/search-postgres@workspace:packages/modules/providers/search-postgres":
+"@medusajs/search-postgres@npm:2.22.4, @medusajs/search-postgres@workspace:packages/modules/providers/search-postgres":
   version: 0.0.0-use.local
   resolution: "@medusajs/search-postgres@workspace:packages/modules/providers/search-postgres"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/search@npm:2.22.3, @medusajs/search@workspace:packages/modules/search":
+"@medusajs/search@npm:2.22.4, @medusajs/search@workspace:packages/modules/search":
   version: 0.0.0-use.local
   resolution: "@medusajs/search@workspace:packages/modules/search"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/settings@npm:2.22.3, @medusajs/settings@workspace:packages/modules/settings":
+"@medusajs/settings@npm:2.22.4, @medusajs/settings@workspace:packages/modules/settings":
   version: 0.0.0-use.local
   resolution: "@medusajs/settings@workspace:packages/modules/settings"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/stock-location@npm:2.22.3, @medusajs/stock-location@workspace:^, @medusajs/stock-location@workspace:packages/modules/stock-location":
+"@medusajs/stock-location@npm:2.22.4, @medusajs/stock-location@workspace:^, @medusajs/stock-location@workspace:packages/modules/stock-location":
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/modules/stock-location"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/store@npm:2.22.3, @medusajs/store@workspace:^, @medusajs/store@workspace:packages/modules/store":
+"@medusajs/store@npm:2.22.4, @medusajs/store@workspace:^, @medusajs/store@workspace:packages/modules/store":
   version: 0.0.0-use.local
   resolution: "@medusajs/store@workspace:packages/modules/store"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/tax@npm:2.22.3, @medusajs/tax@workspace:^, @medusajs/tax@workspace:packages/modules/tax":
+"@medusajs/tax@npm:2.22.4, @medusajs/tax@workspace:^, @medusajs/tax@workspace:packages/modules/tax":
   version: 0.0.0-use.local
   resolution: "@medusajs/tax@workspace:packages/modules/tax"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/telemetry@npm:2.22.3, @medusajs/telemetry@workspace:packages/medusa-telemetry":
+"@medusajs/telemetry@npm:2.22.4, @medusajs/telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "@medusajs/telemetry@workspace:packages/medusa-telemetry"
   dependencies:
@@ -4226,20 +4168,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/test-utils@npm:2.22.3, @medusajs/test-utils@workspace:*, @medusajs/test-utils@workspace:packages/medusa-test-utils":
+"@medusajs/test-utils@npm:2.22.4, @medusajs/test-utils@workspace:*, @medusajs/test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/test-utils@workspace:packages/medusa-test-utils"
   dependencies:
-    "@medusajs/core-flows": "npm:2.22.3"
-    "@medusajs/framework": "npm:2.22.3"
+    "@medusajs/core-flows": "npm:2.22.4"
+    "@medusajs/framework": "npm:2.22.4"
     "@types/express": "npm:^4.17.21"
     axios: "npm:^1.20.0"
     express: "npm:^4.21.0"
     ulid: "npm:^3.0.2"
   peerDependencies:
-    "@medusajs/core-flows": 2.22.3
-    "@medusajs/framework": 2.22.3
-    "@medusajs/medusa": 2.22.3
+    "@medusajs/core-flows": 2.22.4
+    "@medusajs/framework": 2.22.4
+    "@medusajs/medusa": 2.22.4
   peerDependenciesMeta:
     "@medusajs/core-flows":
       optional: true
@@ -4248,7 +4190,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/toolbox@npm:2.22.3, @medusajs/toolbox@workspace:packages/design-system/toolbox":
+"@medusajs/toolbox@npm:2.22.4, @medusajs/toolbox@workspace:packages/design-system/toolbox":
   version: 0.0.0-use.local
   resolution: "@medusajs/toolbox@workspace:packages/design-system/toolbox"
   dependencies:
@@ -4268,22 +4210,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/translation@npm:2.22.3, @medusajs/translation@workspace:*, @medusajs/translation@workspace:packages/modules/translation":
+"@medusajs/translation@npm:2.22.4, @medusajs/translation@workspace:*, @medusajs/translation@workspace:packages/modules/translation":
   version: 0.0.0-use.local
   resolution: "@medusajs/translation@workspace:packages/modules/translation"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@npm:2.22.3, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/core/types":
+"@medusajs/types@npm:2.22.4, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/core/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/core/types"
   dependencies:
-    "@medusajs/deps": "npm:2.22.3"
+    "@medusajs/deps": "npm:2.22.4"
     bignumber.js: "npm:^11.1.5"
   peerDependencies:
     express: ^4.21.0
@@ -4299,11 +4241,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui-preset@npm:2.22.3, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
+"@medusajs/ui-preset@npm:2.22.4, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
   version: 0.0.0-use.local
   resolution: "@medusajs/ui-preset@workspace:packages/design-system/ui-preset"
   dependencies:
-    "@medusajs/toolbox": "npm:2.22.3"
+    "@medusajs/toolbox": "npm:2.22.4"
     tailwindcss: "npm:^4.3.3"
     tailwindcss-animate: "npm:^1.0.6"
     tw-animate-css: "npm:^1.4.0"
@@ -4312,7 +4254,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui@npm:4.2.10, @medusajs/ui@workspace:packages/design-system/ui":
+"@medusajs/ui@npm:4.2.11, @medusajs/ui@workspace:packages/design-system/ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/ui@workspace:packages/design-system/ui"
   dependencies:
@@ -4320,8 +4262,8 @@ __metadata:
     "@dnd-kit/sortable": "npm:^10.0.0"
     "@dnd-kit/utilities": "npm:^3.2.2"
     "@internationalized/date": "npm:^3.12.4"
-    "@medusajs/icons": "npm:2.22.3"
-    "@medusajs/ui-preset": "npm:2.22.3"
+    "@medusajs/icons": "npm:2.22.4"
+    "@medusajs/ui-preset": "npm:2.22.4"
     "@radix-ui/react-dialog": "npm:1.1.4"
     "@radix-ui/react-dismissable-layer": "npm:1.1.4"
     "@tailwindcss/node": "npm:^4.3.3"
@@ -4350,19 +4292,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/user@npm:2.22.3, @medusajs/user@workspace:^, @medusajs/user@workspace:packages/modules/user":
+"@medusajs/user@npm:2.22.4, @medusajs/user@workspace:^, @medusajs/user@workspace:packages/modules/user":
   version: 0.0.0-use.local
   resolution: "@medusajs/user@workspace:packages/modules/user"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
     jsonwebtoken: "npm:^9.0.2"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@npm:2.22.3, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
+"@medusajs/utils@npm:2.22.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/core/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/core/utils"
   dependencies:
@@ -4370,8 +4312,8 @@ __metadata:
     "@graphql-codegen/typescript": "npm:^6.1.2"
     "@graphql-tools/merge": "npm:^10.0.6"
     "@graphql-tools/schema": "npm:^11.0.6"
-    "@medusajs/deps": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
+    "@medusajs/deps": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
     "@types/pluralize": "npm:^0.0.33"
     bignumber.js: "npm:^11.1.5"
     dotenv: "npm:^18.0.9"
@@ -4387,42 +4329,42 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-inmemory@npm:2.22.3, @medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
+"@medusajs/workflow-engine-inmemory@npm:2.22.4, @medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
     cron-parser: "npm:^5.10.2"
     ulid: "npm:^3.0.2"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-redis@npm:2.22.3, @medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis":
+"@medusajs/workflow-engine-redis@npm:2.22.4, @medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis"
   dependencies:
-    "@medusajs/framework": "npm:2.22.3"
-    "@medusajs/test-utils": "npm:2.22.3"
+    "@medusajs/framework": "npm:2.22.4"
+    "@medusajs/test-utils": "npm:2.22.4"
     bullmq: "npm:5.13.0"
     ioredis: "npm:^5.11.1"
     ulid: "npm:^3.0.2"
   peerDependencies:
-    "@medusajs/framework": 2.22.3
+    "@medusajs/framework": 2.22.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-sdk@npm:2.22.3, @medusajs/workflows-sdk@workspace:packages/core/workflows-sdk":
+"@medusajs/workflows-sdk@npm:2.22.4, @medusajs/workflows-sdk@workspace:packages/core/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/core/workflows-sdk"
   dependencies:
-    "@medusajs/deps": "npm:2.22.3"
-    "@medusajs/modules-sdk": "npm:2.22.3"
-    "@medusajs/orchestration": "npm:2.22.3"
-    "@medusajs/types": "npm:2.22.3"
-    "@medusajs/utils": "npm:2.22.3"
+    "@medusajs/deps": "npm:2.22.4"
+    "@medusajs/modules-sdk": "npm:2.22.4"
+    "@medusajs/orchestration": "npm:2.22.4"
+    "@medusajs/types": "npm:2.22.4"
+    "@medusajs/utils": "npm:2.22.4"
     ulid: "npm:^3.0.2"
   languageName: unknown
   linkType: soft
@@ -11180,7 +11122,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.2":
+"chalk@npm:^4.1.0, chalk@npm:^4.1.2":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
@@ -11851,8 +11793,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-medusa-app@workspace:packages/cli/create-medusa-app"
   dependencies:
-    "@medusajs/deps": "npm:2.22.3"
-    "@medusajs/telemetry": "npm:2.22.3"
+    "@medusajs/deps": "npm:2.22.4"
+    "@medusajs/telemetry": "npm:2.22.4"
     boxen: "npm:^9.0.0"
     chalk: "npm:^6.0.1"
     commander: "npm:^15.0.0"
@@ -12988,12 +12930,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-refresh@npm:^0.4.5":
-  version: 0.4.26
-  resolution: "eslint-plugin-react-refresh@npm:0.4.26"
+"eslint-plugin-react-refresh@npm:^0.5.7":
+  version: 0.5.7
+  resolution: "eslint-plugin-react-refresh@npm:0.5.7"
   peerDependencies:
-    eslint: ">=8.40"
-  checksum: 10c0/11c2b25b7a7025e621b02970c4cf3815b0b77486027df9f8bb731cc52972156804fd163b0f99404b33e36a3c60cd1a1be8199ba64c66b5276da3173bbb5ab6e7
+    eslint: ^9 || ^10
+  checksum: 10c0/e9de48cd59170e65d0bb3abe4cc6d3a41087ff5d5bd191f87ce8b90fb5a43100ab4ded040dc6b53a6ef175e15945d5586ffca67be68f69e2a6014010f1760cb3
   languageName: node
   linkType: hard
 
@@ -13038,16 +12980,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-scope@npm:^8.4.0":
-  version: 8.4.0
-  resolution: "eslint-scope@npm:8.4.0"
-  dependencies:
-    esrecurse: "npm:^4.3.0"
-    estraverse: "npm:^5.2.0"
-  checksum: 10c0/407f6c600204d0f3705bd557f81bd0189e69cd7996f408f8971ab5779c0af733d1af2f1412066b40ee1588b085874fc37a2333986c6521669cdbdd36ca5058e0
-  languageName: node
-  linkType: hard
-
 "eslint-scope@npm:^9.1.2":
   version: 9.1.2
   resolution: "eslint-scope@npm:9.1.2"
@@ -13064,13 +12996,6 @@ __metadata:
   version: 3.4.3
   resolution: "eslint-visitor-keys@npm:3.4.3"
   checksum: 10c0/92708e882c0a5ffd88c23c0b404ac1628cf20104a108c745f240a13c332a11aac54f49a22d5762efbffc18ecbc9a580d1b7ad034bf5f3cc3307e5cbff2ec9820
-  languageName: node
-  linkType: hard
-
-"eslint-visitor-keys@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "eslint-visitor-keys@npm:4.2.1"
-  checksum: 10c0/fcd43999199d6740db26c58dbe0c2594623e31ca307e616ac05153c9272f12f1364f5a0b1917a8e962268fdecc6f3622c1c2908b4fcc2e047a106fe6de69dc43
   languageName: node
   linkType: hard
 
@@ -13126,70 +13051,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.39.5":
-  version: 9.39.5
-  resolution: "eslint@npm:9.39.5"
-  dependencies:
-    "@eslint-community/eslint-utils": "npm:^4.8.0"
-    "@eslint-community/regexpp": "npm:^4.12.1"
-    "@eslint/config-array": "npm:^0.21.2"
-    "@eslint/config-helpers": "npm:^0.4.2"
-    "@eslint/core": "npm:^0.17.0"
-    "@eslint/eslintrc": "npm:^3.3.6"
-    "@eslint/js": "npm:9.39.5"
-    "@eslint/plugin-kit": "npm:^0.4.1"
-    "@humanfs/node": "npm:^0.16.6"
-    "@humanwhocodes/module-importer": "npm:^1.0.1"
-    "@humanwhocodes/retry": "npm:^0.4.2"
-    "@types/estree": "npm:^1.0.6"
-    ajv: "npm:^6.14.0"
-    chalk: "npm:^4.0.0"
-    cross-spawn: "npm:^7.0.6"
-    debug: "npm:^4.3.2"
-    escape-string-regexp: "npm:^4.0.0"
-    eslint-scope: "npm:^8.4.0"
-    eslint-visitor-keys: "npm:^4.2.1"
-    espree: "npm:^10.4.0"
-    esquery: "npm:^1.5.0"
-    esutils: "npm:^2.0.2"
-    fast-deep-equal: "npm:^3.1.3"
-    file-entry-cache: "npm:^8.0.0"
-    find-up: "npm:^5.0.0"
-    glob-parent: "npm:^6.0.2"
-    ignore: "npm:^5.2.0"
-    imurmurhash: "npm:^0.1.4"
-    is-glob: "npm:^4.0.0"
-    json-stable-stringify-without-jsonify: "npm:^1.0.1"
-    lodash.merge: "npm:^4.6.2"
-    minimatch: "npm:^3.1.5"
-    natural-compare: "npm:^1.4.0"
-    optionator: "npm:^0.9.3"
-  peerDependencies:
-    jiti: "*"
-  peerDependenciesMeta:
-    jiti:
-      optional: true
-  bin:
-    eslint: bin/eslint.js
-  checksum: 10c0/46335bfcf180ffea9955b38122b578ac9e075b6220e5695be1c988354ea429b04f5db05edc132aa9019ce9847736e9ca0c9ea6d6cedda3c06209c9b52dbd0fd5
-  languageName: node
-  linkType: hard
-
 "esm@npm:^3.2.25":
   version: 3.2.25
   resolution: "esm@npm:3.2.25"
   checksum: 10c0/8e60e8075506a7ce28681c30c8f54623fe18a251c364cd481d86719fc77f58aa055b293d80632d9686d5408aaf865ffa434897dc9fd9153c8b3f469fad23f094
-  languageName: node
-  linkType: hard
-
-"espree@npm:^10.0.1, espree@npm:^10.4.0":
-  version: 10.4.0
-  resolution: "espree@npm:10.4.0"
-  dependencies:
-    acorn: "npm:^8.15.0"
-    acorn-jsx: "npm:^5.3.2"
-    eslint-visitor-keys: "npm:^4.2.1"
-  checksum: 10c0/c63fe06131c26c8157b4083313cb02a9a54720a08e21543300e55288c40e06c3fc284bdecf108d3a1372c5934a0a88644c98714f38b6ae8ed272b40d9ea08d6b
   languageName: node
   linkType: hard
 
@@ -13214,7 +13079,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esquery@npm:^1.5.0, esquery@npm:^1.7.0":
+"esquery@npm:^1.7.0":
   version: 1.7.0
   resolution: "esquery@npm:1.7.0"
   dependencies:
@@ -13575,15 +13440,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-entry-cache@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "file-entry-cache@npm:8.0.0"
-  dependencies:
-    flat-cache: "npm:^4.0.0"
-  checksum: 10c0/9e2b5938b1cd9b6d7e3612bdc533afd4ac17b2fc646569e9a8abbf2eb48e5eb8e316bc38815a3ef6a1b456f4107f0d0f055a614ca613e75db6bf9ff4d72c1638
-  languageName: node
-  linkType: hard
-
 "fill-range@npm:^7.1.1":
   version: 7.1.1
   resolution: "fill-range@npm:7.1.1"
@@ -13639,16 +13495,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flat-cache@npm:^4.0.0":
-  version: 4.0.1
-  resolution: "flat-cache@npm:4.0.1"
-  dependencies:
-    flatted: "npm:^3.2.9"
-    keyv: "npm:^4.5.4"
-  checksum: 10c0/2c59d93e9faa2523e4fda6b4ada749bed432cfa28c8e251f33b25795e426a1c6dbada777afb1f74fcfff33934fdbdea921ee738fcc33e71adc9d6eca984a1cfc
-  languageName: node
-  linkType: hard
-
 "flat-cache@npm:^6.1.23":
   version: 6.1.23
   resolution: "flat-cache@npm:6.1.23"
@@ -13660,7 +13506,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flatted@npm:^3.2.9, flatted@npm:^3.4.2":
+"flatted@npm:^3.4.2":
   version: 3.4.4
   resolution: "flatted@npm:3.4.4"
   checksum: 10c0/a3a52a88ea5a4c333e5a1f097dcd87a037fa31c236a77cf46222c2aa4036ef895ab9bc76138a66d9dc22bdb3652128f9598cd26e7439561bf19f67276e2bc37e
@@ -14518,7 +14364,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"import-fresh@npm:^3.2.1, import-fresh@npm:^3.3.0":
+"import-fresh@npm:^3.3.0":
   version: 3.3.1
   resolution: "import-fresh@npm:3.3.1"
   dependencies:
@@ -15857,7 +15703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.1.0, js-yaml@npm:^4.3.2":
+"js-yaml@npm:^4.1.0":
   version: 4.3.2
   resolution: "js-yaml@npm:4.3.2"
   dependencies:
@@ -15928,13 +15774,6 @@ __metadata:
     deeks: "npm:3.2.1"
     doc-path: "npm:4.1.4"
   checksum: 10c0/4205d7e12f902ced3f3c23ee5f996537f83069feaedea217364419a02e161d6e7e01b18778e721e5c330552050d41227ff7b32960f79b00cfae320a9223605c2
-  languageName: node
-  linkType: hard
-
-"json-buffer@npm:3.0.1":
-  version: 3.0.1
-  resolution: "json-buffer@npm:3.0.1"
-  checksum: 10c0/0d1c91569d9588e7eef2b49b59851f297f3ab93c7b35c7c221e288099322be6b562767d11e4821da500f3219542b9afd2e54c5dc573107c1126ed1080f8e96d7
   languageName: node
   linkType: hard
 
@@ -16076,15 +15915,6 @@ __metadata:
     jwa: "npm:^2.0.1"
     safe-buffer: "npm:^5.0.1"
   checksum: 10c0/6be1ed93023aef570ccc5ea8d162b065840f3ef12f0d1bb3114cade844de7a357d5dc558201d9a65101e70885a6fa56b17462f520e6b0d426195510618a154d0
-  languageName: node
-  linkType: hard
-
-"keyv@npm:^4.5.4":
-  version: 4.5.4
-  resolution: "keyv@npm:4.5.4"
-  dependencies:
-    json-buffer: "npm:3.0.1"
-  checksum: 10c0/aa52f3c5e18e16bb6324876bb8b59dd02acf782a4b789c7b2ae21107fab95fab3890ed448d4f8dba80ce05391eeac4bfabb4f02a20221342982f806fa2cf271e
   languageName: node
   linkType: hard
 
@@ -16445,7 +16275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.merge@npm:4.6.2, lodash.merge@npm:^4.6.2":
+"lodash.merge@npm:4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: 10c0/402fa16a1edd7538de5b5903a90228aa48eb5533986ba7fa26606a49db2572bf414ff73a2c9f5d5fd36b31c46a5d5c7e1527749c07cbcf965ccff5fbdf32c506
@@ -16852,7 +16682,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^3.0.4, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2, minimatch@npm:^3.1.5":
+"minimatch@npm:^3.0.4, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.5
   resolution: "minimatch@npm:3.1.5"
   dependencies:
@@ -19608,6 +19438,7 @@ __metadata:
     "@atomico/rollup-plugin-sizes": "npm:^1.1.4"
     "@changesets/changelog-github": "npm:^1.0.1"
     "@changesets/cli": "npm:^3.0.3"
+    "@eslint/js": "npm:^10.0.1"
     "@faker-js/faker": "npm:^10.6.0"
     "@medusajs/eslint-plugin": "workspace:^"
     "@rollup/plugin-node-resolve": "npm:^16.0.3"
@@ -19656,17 +19487,18 @@ __metadata:
     configstore: "npm:^8.0.0"
     cross-env: "npm:^10.1.0"
     esbuild: "npm:^0.28.2"
-    eslint: "npm:^9.39.5"
+    eslint: "npm:^10.13.0"
     eslint-config-google: "npm:^0.14.0"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-prettier: "npm:^5.5.7"
     eslint-plugin-react: "npm:^7.31.11"
     eslint-plugin-react-hooks: "npm:^7.1.1"
-    eslint-plugin-react-refresh: "npm:^0.4.5"
+    eslint-plugin-react-refresh: "npm:^0.5.7"
     eslint-plugin-unused-imports: "npm:^4.4.1"
     expect-type: "npm:^1.4.0"
     express: "npm:^4.21.0"
     glob: "npm:14.0.2"
+    globals: "npm:^14.0.0"
     ioredis: "npm:^5.11.1"
     jest: "npm:^30.5.2"
     js-yaml: "npm:^5.5.0"

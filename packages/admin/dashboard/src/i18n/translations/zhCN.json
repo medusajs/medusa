@@ -3367,6 +3367,9 @@
     "invalidTokenTitle": "您的邀请令牌无效",
     "invalidTokenHint": "尝试请求新的邀请链接。",
     "passwordMismatch": "密码不匹配",
+    "signedInTitle": "您已登录",
+    "signedInHint": "您当前以 {{email}} 身份登录。请退出登录后再接受此邀请。",
+    "signOut": "退出登录",
     "toast": {
       "accepted": "邀请已成功接受"
     }

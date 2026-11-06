@@ -3376,6 +3376,9 @@
     "invalidTokenTitle": "Uw uitnodigingstoken is ongeldig",
     "invalidTokenHint": "Probeer een nieuwe uitnodigingslink aan te vragen.",
     "passwordMismatch": "Wachtwoorden komen niet overeen",
+    "signedInTitle": "U bent al aangemeld",
+    "signedInHint": "U bent aangemeld als {{email}}. Log uit om deze uitnodiging te accepteren.",
+    "signOut": "Uitloggen",
     "toast": {
       "accepted": "Uitnodiging succesvol geaccepteerd"
     }

@@ -3184,6 +3184,9 @@
     "invalidTokenTitle": "Davet tokeniniz geçersiz",
     "invalidTokenHint": "Yeni bir davet bağlantısı talep etmeyi deneyin.",
     "passwordMismatch": "Şifreler uyuşmuyor",
+    "signedInTitle": "Zaten giriş yaptınız",
+    "signedInHint": "{{email}} olarak giriş yaptınız. Bu daveti kabul etmek için çıkış yapın.",
+    "signOut": "Çıkış Yap",
     "toast": {
       "accepted": "Davet başarıyla kabul edildi"
     }

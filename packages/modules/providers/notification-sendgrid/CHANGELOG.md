@@ -1,5 +1,14 @@
 # @medusajs/notification-sendgrid
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17657](https://github.com/medusajs/medusa/pull/17657) [`62339fd`](https://github.com/medusajs/medusa/commit/62339fd120ac0b3be1fdab8f0f286a4ddd3d5496) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(notification-sendgrid): derive the `MailDataRequired` type from `send()` so the package builds with TypeScript 7
+
+- Updated dependencies [[`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5)]:
+  - @medusajs/framework@2.22.4
+
 ## 2.22.3
 
 ### Patch Changes

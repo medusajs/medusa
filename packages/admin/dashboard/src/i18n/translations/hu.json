@@ -3376,6 +3376,9 @@
     "invalidTokenTitle": "Meghívó tokenje érvénytelen",
     "invalidTokenHint": "Próbáljon új meghívó linket kérni.",
     "passwordMismatch": "A jelszavak nem egyeznek",
+    "signedInTitle": "Már be van jelentkezve",
+    "signedInHint": "Be van jelentkezve {{email}} fiókkal. Jelentkezzen ki a meghívó elfogadásához.",
+    "signOut": "Kijelentkezés",
     "toast": {
       "accepted": "Meghívó sikeresen elfogadva"
     }

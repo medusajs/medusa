@@ -3356,6 +3356,9 @@
     "invalidTokenTitle": "Din inbjudningskod är ogiltig",
     "invalidTokenHint": "Begär en ny inbjudningslänk.",
     "passwordMismatch": "Lösenorden matchar inte",
+    "signedInTitle": "Du är redan inloggad",
+    "signedInHint": "Du är inloggad som {{email}}. Logga ut för att acceptera den här inbjudan.",
+    "signOut": "Logga ut",
     "toast": {
       "accepted": "Inbjudan har godkänts"
     }

@@ -3367,6 +3367,9 @@
     "invalidTokenTitle": "초대 토큰이 유효하지 않습니다",
     "invalidTokenHint": "새 초대 링크를 요청해 보세요.",
     "passwordMismatch": "비밀번호가 일치하지 않습니다",
+    "signedInTitle": "이미 로그인되어 있습니다",
+    "signedInHint": "{{email}}으로 로그인되어 있습니다. 이 초대를 수락하려면 로그아웃하세요.",
+    "signOut": "로그아웃",
     "toast": {
       "accepted": "초대가 성공적으로 수락되었습니다"
     }

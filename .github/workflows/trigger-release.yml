@@ -209,7 +209,7 @@ jobs:
         uses: changesets/action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          version-script: yarn version
+          version-script: yarn run version
           commit-message: "Chore: Release"
           pr-title: "Chore: Release"
           create-github-releases: false

@@ -1,5 +1,16 @@
 # Change Log
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17660](https://github.com/medusajs/medusa/pull/17660) [`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(framework,cli): support TypeScript 7 in Medusa applications and plugins
+
+- Updated dependencies [[`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/telemetry@2.22.4
+  - @medusajs/utils@2.22.4
+  - @medusajs/deps@2.22.4
+
 ## 2.22.3
 
 ### Patch Changes

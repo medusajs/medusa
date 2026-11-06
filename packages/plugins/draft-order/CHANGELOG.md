@@ -1,5 +1,21 @@
 # @medusajs/draft-order
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`74827c2`](https://github.com/medusajs/medusa/commit/74827c2a849a9a7fdbb943ca9ffce4b26b670391), [`d8b4839`](https://github.com/medusajs/medusa/commit/d8b48391d45f8e90090b2f9d43ba70d1ee88bc9c), [`43c5ec2`](https://github.com/medusajs/medusa/commit/43c5ec2d2c16623546573cf1a5abc92fb41442c9), [`e3a2f38`](https://github.com/medusajs/medusa/commit/e3a2f3846c636f9df31bbc33af025896cb5e65b3), [`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`82d65fc`](https://github.com/medusajs/medusa/commit/82d65fc804627839c62b441737757609386841e3), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5), [`df7f931`](https://github.com/medusajs/medusa/commit/df7f931bf8b8fd5634c97f7a7133660f59067e99), [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/dashboard@2.22.4
+  - @medusajs/test-utils@2.22.4
+  - @medusajs/framework@2.22.4
+  - @medusajs/cli@2.22.4
+  - @medusajs/admin-sdk@2.22.4
+  - @medusajs/icons@2.22.4
+  - @medusajs/js-sdk@2.22.4
+  - @medusajs/ui@4.2.11
+
 ## 2.22.3
 
 ### Patch Changes
