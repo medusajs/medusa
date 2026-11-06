@@ -1,11 +1,13 @@
 import {
   BigNumberInput,
+  ApplicationMethodTargetSelectionStrategyValues,
   CampaignBudgetUsageDTO,
   ComputeActionItemLine,
   InferEntityType,
   PromotionTypes,
 } from "@medusajs/framework/types"
 import {
+  ApplicationMethodTargetSelectionStrategy,
   ApplicationMethodTargetType,
   ApplicationMethodType,
   ComputedActions,
@@ -22,20 +24,40 @@ export type EligibleItem = {
   quantity: BigNumberInput
 }
 
-function sortByPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
-  const priceA = MathBN.div(a.subtotal, a.quantity)
-  const priceB = MathBN.div(b.subtotal, b.quantity)
+function getUnitPrice(item: ComputeActionItemLine) {
+  return MathBN.gt(item.quantity, 0)
+    ? MathBN.div(item.subtotal, item.quantity)
+    : MathBN.convert(0)
+}
 
-  // Returning a non-zero value for equal prices makes this an inconsistent
-  // comparator, which leaves the order of equally priced items up to the sort
-  // implementation rather than keeping it stable. Since the resulting order
-  // decides which items are reserved for the buy side below, that turned into
-  // the promotion being applied or not depending on line item order.
-  if (MathBN.eq(priceA, priceB)) {
-    return 0
+type SortDirection = "asc" | "desc"
+
+type ItemComparator = (
+  a: ComputeActionItemLine,
+  b: ComputeActionItemLine
+) => number
+
+/*
+  Items are ranked by unit price, not line subtotal: three units at 199 have a
+  higher subtotal than one unit at 379, but they are still the cheaper units.
+*/
+function compareByUnitPrice(direction: SortDirection): ItemComparator {
+  return (a, b) => {
+    const aPrice = getUnitPrice(a)
+    const bPrice = getUnitPrice(b)
+
+    // Returning a non-zero value for equal prices makes this an inconsistent
+    // comparator, which leaves the order of equally priced items up to the sort
+    // implementation rather than keeping it stable. Since the resulting order
+    // decides which items are reserved for the buy side below, that would turn
+    // into the promotion being applied or not depending on line item order.
+    if (MathBN.eq(aPrice, bPrice)) {
+      return 0
+    }
+
+    const ascending = MathBN.lt(aPrice, bPrice) ? -1 : 1
+    return direction === "asc" ? ascending : -ascending
   }
-
-  return MathBN.lt(priceA, priceB) ? 1 : -1
 }
 
 function isValidPromotionContext(
@@ -496,8 +518,9 @@ function createComputedActionsFromPromotionApplication(
 }
 
 /*
-  Grabs all the items in the context where the rules apply
-  We then sort by price to prioritize most valuable item
+  Grabs all the items in the context where the rules apply, most expensive
+  first. This is the order buy units are reserved in, regardless of the target
+  selection strategy.
 */
 function filterItemsByPromotionRules(
   itemsContext: ComputeActionItemLine[],
@@ -511,7 +534,38 @@ function filterItemsByPromotionRules(
         ApplicationMethodTargetType.ITEMS
       )
     )
-    .sort(sortByPrice)
+    .sort(compareByUnitPrice("desc"))
+}
+
+/*
+  The order in which target units are discounted for each target selection
+  strategy. Only the target side depends on the strategy.
+
+  With `most_expensive_first` (default) each application round discounts the
+  most expensive target left over. With `cheapest_first` it discounts the
+  cheapest one left over, so for "buy 3, get 1 free" with eight units priced
+  100 to 800, the 100 and 200 units are discounted.
+*/
+const TARGET_ITEM_COMPARATORS: Record<
+  ApplicationMethodTargetSelectionStrategyValues,
+  ItemComparator
+> = {
+  [ApplicationMethodTargetSelectionStrategy.MOST_EXPENSIVE_FIRST]:
+    compareByUnitPrice("desc"),
+  [ApplicationMethodTargetSelectionStrategy.CHEAPEST_FIRST]:
+    compareByUnitPrice("asc"),
+}
+
+function sortTargetItemsByStrategy(
+  items: ComputeActionItemLine[],
+  strategy?: ApplicationMethodTargetSelectionStrategyValues | null
+): ComputeActionItemLine[] {
+  const comparator =
+    TARGET_ITEM_COMPARATORS[
+      strategy ?? ApplicationMethodTargetSelectionStrategy.MOST_EXPENSIVE_FIRST
+    ]
+
+  return [...items].sort(comparator)
 }
 
 export function getComputedActionsForBuyGet(
@@ -555,6 +609,11 @@ export function getComputedActionsForBuyGet(
     promotion.code!
   )
 
+  const targetItemsInDiscountOrder = sortTargetItemsByStrategy(
+    eligibleTargetItems,
+    promotion.application_method?.target_selection_strategy
+  )
+
   const totalEligibleBuyItemsMap = new Map<string, EligibleItem>()
   const totalEligibleTargetItemsMap = new Map<string, EligibleItem>()
   const itemIdPromotionAmountMap = new Map<string, BigNumberInput>()
@@ -592,7 +651,7 @@ export function getComputedActionsForBuyGet(
     // and the total eligible items
     const applicationState = preparePromotionApplicationState(
       eligibleBuyItems,
-      eligibleTargetItems,
+      targetItemsInDiscountOrder,
       remainingBuyQuantities,
       remainingTargetQuantities,
       applicationConfig,
