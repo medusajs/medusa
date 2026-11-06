@@ -203,15 +203,15 @@ jobs:
 
       - name: Create Release Pull Request or Publish packages
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
-          version: yarn version
-          commit: "Chore: Release"
-          title: "Chore: Release"
-          createGithubReleases: false
-          publish: yarn changeset publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          version-script: yarn version
+          commit-message: "Chore: Release"
+          pr-title: "Chore: Release"
+          create-github-releases: false
+          push-git-tags: false
+          publish-script: yarn changeset publish
 
       - name: Trigger release notes generation
         if: steps.changesets.outputs.published == 'true'
@@ -219,7 +219,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const packages = JSON.parse('${{ steps.changesets.outputs.publishedPackages }}')
+            const packages = JSON.parse('${{ steps.changesets.outputs.published-packages }}')
             const version = packages[0]?.version ?? ''
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
