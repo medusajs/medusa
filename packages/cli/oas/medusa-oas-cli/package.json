@@ -37,7 +37,6 @@
   "dependencies": {
     "@medusajs/medusa": "2.22.4",
     "@medusajs/utils": "2.22.4",
-    "@readme/json-schema-ref-parser": "^1.2.0",
     "@readme/openapi-parser": "^10.0.0",
     "@redocly/cli": "2.71.0",
     "commander": "^15.0.0",
