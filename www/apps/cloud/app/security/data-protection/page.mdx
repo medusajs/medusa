@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn how Medusa protects your project's data on Cloud, including encryption, data location, isolation, backups, and self-hosting options.
+In this guide, you'll learn how Medusa protects your project's data on Cloud, including encryption, data location, isolation, backups, subprocessors, and self-hosting options.
 
 ## How Medusa Protects Your Data
 
@@ -178,6 +178,14 @@ Cloud provides the following features to control access to your organization and
 - **Organization roles**: Only organization owners can perform sensitive actions, such as managing database write access. Learn more in the [Organizations](../../organizations/page.mdx) guide.
 - **Database IP allowlist**: Restrict which IP addresses can connect to your environments' databases. Learn more in the [Database](../../database/page.mdx#restrict-database-access-by-ip-address) guide.
 - **Static outgoing IP addresses**: Allowlist Cloud's outgoing IP addresses in third-party services your Medusa application connects to. Learn more in the [IP Addresses](../../ip-addresses/page.mdx) guide.
+
+---
+
+## Subprocessors
+
+Medusa uses third-party vendors, also known as subprocessors, to host and operate Cloud. Subprocessors may process your project's data on Medusa's behalf.
+
+Find the up-to-date list of Medusa's subprocessors in the [Medusa Trust Center](https://trust.medusajs.com/subprocessors).
 
 ---
 
