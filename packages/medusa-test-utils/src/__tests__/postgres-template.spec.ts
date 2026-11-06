@@ -17,6 +17,7 @@ import {
   createDatabase,
   dropDatabase,
   dropPostgresDatabaseTemplate,
+  restorePostgresDatabaseFromTemplate,
 } from "../medusa-test-runner-utils/postgres-template"
 
 const pgError = (code: string, message = "pg error") =>
@@ -182,6 +183,61 @@ describe("test-utils database management (pg-god replacement)", () => {
         expect.objectContaining({ password: "second-secret" })
       )
       expect(mockEnd).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe("restorePostgresDatabaseFromTemplate", () => {
+    afterEach(async () => {
+      await closeWaitingroomClient()
+    })
+
+    const mockRoleLessBackendRefusingSignals = () => {
+      mockQuery.mockImplementation(async (query: string) => {
+        const signalsBackends =
+          query.includes("pg_cancel_backend") ||
+          query.includes("pg_terminate_backend")
+
+        if (signalsBackends && !/usename IS NOT NULL/i.test(query)) {
+          throw pgError("42501", "permission denied to cancel query")
+        }
+
+        return { rows: [], rowCount: 0 }
+      })
+    }
+
+    it("should not signal role-less backends such as autovacuum workers when restoring", async () => {
+      mockRoleLessBackendRefusingSignals()
+
+      await expect(
+        restorePostgresDatabaseFromTemplate({
+          databaseName: "test_db",
+          templateName: "test_db-template",
+        })
+      ).resolves.toBeUndefined()
+
+      expect(mockQuery).toHaveBeenCalledWith(
+        `CREATE DATABASE "test_db" WITH TEMPLATE "test_db-template";`
+      )
+    })
+
+    it("should not signal role-less backends when dropping a template", async () => {
+      mockRoleLessBackendRefusingSignals()
+
+      await expect(
+        dropPostgresDatabaseTemplate("test_db-template")
+      ).resolves.toBeUndefined()
+
+      expect(mockQuery).toHaveBeenCalledWith(
+        `DROP DATABASE IF EXISTS "test_db-template";`
+      )
+    })
+
+    it("should not signal role-less backends in dropDatabase", async () => {
+      mockRoleLessBackendRefusingSignals()
+
+      await expect(
+        dropDatabase({ databaseName: "test_db" })
+      ).resolves.toBeUndefined()
     })
   })
 })
