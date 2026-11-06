@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/auth-emailpass",
-  "version": "2.22.0",
+  "version": "2.22.4",
   "description": "Email and password credential authentication provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -28,18 +28,18 @@
   "license": "MIT",
   "scripts": {
     "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
-    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.22.0"
+    "@medusajs/framework": "2.22.4"
   },
   "dependencies": {
-    "scrypt-kdf": "^2.0.1"
+    "scrypt-kdf": "^4.0.0"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.22.0"
+    "@medusajs/framework": "2.22.4"
   },
   "keywords": [
     "medusa-provider",

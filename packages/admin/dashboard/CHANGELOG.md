@@ -1,5 +1,87 @@
 # @medusajs/dashboard
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17667](https://github.com/medusajs/medusa/pull/17667) [`74827c2`](https://github.com/medusajs/medusa/commit/74827c2a849a9a7fdbb943ca9ffce4b26b670391) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show extension routes nested under Orders in the sidebar
+
+- [#17662](https://github.com/medusajs/medusa/pull/17662) [`43c5ec2`](https://github.com/medusajs/medusa/commit/43c5ec2d2c16623546573cf1a5abc92fb41442c9) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): ask signed-in users to sign out before accepting an invite
+
+- [#17674](https://github.com/medusajs/medusa/pull/17674) [`e3a2f38`](https://github.com/medusajs/medusa/commit/e3a2f3846c636f9df31bbc33af025896cb5e65b3) Thanks [@medusa-agents](https://github.com/apps/medusa-agents)! - fix(dashboard): keep list filters and page when going back through breadcrumbs
+
+- [#17665](https://github.com/medusajs/medusa/pull/17665) [`82d65fc`](https://github.com/medusajs/medusa/commit/82d65fc804627839c62b441737757609386841e3) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show the order summary footer buttons again
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/admin-shared@2.22.4
+  - @medusajs/icons@2.22.4
+  - @medusajs/js-sdk@2.22.4
+  - @medusajs/ui@4.2.11
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17613](https://github.com/medusajs/medusa/pull/17613) [`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils,dashboard,loyalty-plugin): add the Aruban Florin (AWG) currency
+
+- [#17611](https://github.com/medusajs/medusa/pull/17611) [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-vite-plugin,dashboard,telemetry,draft-order): update babel to v8
+
+- [#15620](https://github.com/medusajs/medusa/pull/15620) [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,core-flows,framework,js-sdk,modules-sdk,types,utils,link-modules,rbac): end to end RBAC implementation
+
+- Updated dependencies [[`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`6942022`](https://github.com/medusajs/medusa/commit/69420228b04b08149c7a5719600f8e1e4d8546e1)]:
+  - @medusajs/js-sdk@2.22.3
+  - @medusajs/ui@4.2.10
+  - @medusajs/admin-shared@2.22.3
+  - @medusajs/icons@2.22.3
+
+## 2.22.2
+
+### Patch Changes
+
+- [#17528](https://github.com/medusajs/medusa/pull/17528) [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,telemetry,draft-order): update @babel/runtime to ^7.29.10
+
+- [#17527](https://github.com/medusajs/medusa/pull/17527) [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,js-sdk,medusa): update qs to ^6.16.1
+
+- [#17528](https://github.com/medusajs/medusa/pull/17528) [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard): update @tanstack/react-virtual to ^3.14.22
+
+- [#17515](https://github.com/medusajs/medusa/pull/17515) [`7b34df3`](https://github.com/medusajs/medusa/commit/7b34df35bf8e57ce0d2ab2373a624dc2cc573ca5) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps): bump zod from 4.2.0 to 4.6.6
+
+- [#17575](https://github.com/medusajs/medusa/pull/17575) [`2f0b2e9`](https://github.com/medusajs/medusa/commit/2f0b2e94d6fa7193386d83b1e72bb0fc65caeddf) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(types,utils,dashboard): update bignumber.js to 11.1.5
+
+- [#17572](https://github.com/medusajs/medusa/pull/17572) [`842d781`](https://github.com/medusajs/medusa/commit/842d781152debf6cd6d4daafcd57cb1af295a841) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update admin and design-system UI dependencies (clsx 2.1.1, cmdk 1.1.1, copy-to-clipboard 4.0.2, date-fns 4.4.0, @dnd-kit/sortable 10.0.0 with @dnd-kit/core ^6.3.0, @hookform/resolvers 6.0.0, match-sorter 8.3.0, motion 14.6.0, react-currency-input-field 4.0.14, react-helmet-async 3.0.0, react-jwt 2.1.1, sonner 2.0.8)
+
+- [#17567](https://github.com/medusajs/medusa/pull/17567) [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update development and test tooling (cross-env 10.1.0, esbuild 0.28.2, tsup 9.0.0, expect-type 1.4.0, @faker-js/faker 10.6.0, jsdom 30.1.3, @types/jsonwebtoken 9.0.10, msw 3.0.3, rimraf 6.1.3, Testing Library, turbo 2.11.10, @types/node 22, boxen 9.0.0, chalk 6.0.1, ci-info 4.4.0, commander 15.0.0, configstore 8.0.0, dotenv 18.0.9, execa 10.2.1, get-port 7.2.0, inquirer 14.2.4, @inquirer/checkbox 5.2.7, @inquirer/confirm 6.3.4, @inquirer/input 5.1.8, is-docker 4.0.0, meant 2.0.1, open 11.0.4, openapi3-ts 4.6.2, ora 9.4.1, @readme/openapi-parser 10.0.0, @redocly/cli 2.71.0, stack-trace 1.0.0, swagger-inline 8.1.0, yargs 18.2.0) and remove unused development dependencies; drop hosted-git-info from @medusajs/cli; fix the medusa-oas-cli circular patch recommendation crashing on references nested in inline schemas; `medusa-oas docs --preview` now serves a static Redoc 3 build since Redocly removed `preview-docs`; replace chalk with Node's built-in `util.styleText` in CommonJS packages; replace uuid with Node's built-in `crypto.randomUUID`; replace get-port with a built-in free-port helper in @medusajs/test-utils
+
+- Updated dependencies [[`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae), [`842d781`](https://github.com/medusajs/medusa/commit/842d781152debf6cd6d4daafcd57cb1af295a841), [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d), [`80deffc`](https://github.com/medusajs/medusa/commit/80deffc6ffdbd39d49036749a9806667d4235050), [`5ac3fdc`](https://github.com/medusajs/medusa/commit/5ac3fdcbf82e818337d424852c778ce2ffd5e8e9)]:
+  - @medusajs/js-sdk@2.22.2
+  - @medusajs/ui@4.2.9
+  - @medusajs/admin-shared@2.22.2
+  - @medusajs/icons@2.22.2
+
+## 2.22.1
+
+### Patch Changes
+
+- [#17459](https://github.com/medusajs/medusa/pull/17459) [`3a3207347379b065142895fb0740442fea5f4033`](https://github.com/medusajs/medusa/commit/3a3207347379b065142895fb0740442fea5f4033) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils,dashboard,loyalty-plugin): add the Haitian Gourde (HTG) currency
+
+- [#17458](https://github.com/medusajs/medusa/pull/17458) [`8ef41c356312e73b76cdcf19be19cff80c466b76`](https://github.com/medusajs/medusa/commit/8ef41c356312e73b76cdcf19be19cff80c466b76) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): define missing build-time constants in the dev server config
+
+- [#17438](https://github.com/medusajs/medusa/pull/17438) [`33deceee8465af8e04f0cfa77090c2208db51658`](https://github.com/medusajs/medusa/commit/33deceee8465af8e04f0cfa77090c2208db51658) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): let Enter activate buttons and links inside modal and drawer forms
+
+- [#17469](https://github.com/medusajs/medusa/pull/17469) [`6917a271ff2dd5afbd98c27bdca44c6bdfbd1630`](https://github.com/medusajs/medusa/commit/6917a271ff2dd5afbd98c27bdca44c6bdfbd1630) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): apply the product list filters to product exports
+
+- [#17431](https://github.com/medusajs/medusa/pull/17431) [`879fb81983bc33ae3901a9aecba63dfebe040c43`](https://github.com/medusajs/medusa/commit/879fb81983bc33ae3901a9aecba63dfebe040c43) Thanks [@vethan](https://github.com/vethan)! - fix(order,dashboard): stop return requests exceeding the returnable quantity. Units already received or dismissed on an earlier return are no longer counted as available to return, and the return, exchange and claim forms cap the quantity input at the returnable quantity.
+
+- [#17445](https://github.com/medusajs/medusa/pull/17445) [`8604053686b9b4c5bf033f03dc32412f9de902ce`](https://github.com/medusajs/medusa/commit/8604053686b9b4c5bf033f03dc32412f9de902ce) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): stop product media edit on failed upload and show the error
+
+- Updated dependencies [[`7c3b0339379efeda7863f48b9f60e3391cece091`](https://github.com/medusajs/medusa/commit/7c3b0339379efeda7863f48b9f60e3391cece091), [`89f67a6a0bc8183fb5fa3243138a2d38e247774c`](https://github.com/medusajs/medusa/commit/89f67a6a0bc8183fb5fa3243138a2d38e247774c)]:
+  - @medusajs/js-sdk@2.22.1
+  - @medusajs/ui@4.2.8
+  - @medusajs/admin-shared@2.22.1
+  - @medusajs/icons@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

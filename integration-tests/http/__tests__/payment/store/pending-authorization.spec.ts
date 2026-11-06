@@ -418,6 +418,14 @@ medusaIntegrationTestRunner({
     describe("POST /hooks/payment/:provider — webhook authorize for existing order", () => {
       const webhookProviderPath = "pending-auth_pending-auth"
 
+      it("should reject webhooks for an unknown provider", async () => {
+        const response = await api
+          .post("/hooks/payment/unknown_provider", {})
+          .catch((error) => error.response)
+
+        expect(response.status).toBe(400)
+      })
+
       async function waitForPaymentStatus(
         orderId: string,
         expectedStatus: string,

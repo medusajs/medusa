@@ -49,7 +49,7 @@ Unit tests are in `src/utils/__tests__/`. Jest maps `.js` imports back to `.ts` 
 - `--seed` is parsed and passed into `prepareProject`, but nothing acts on it: no seed command runs.
 - The README's default `--repo-url` (`medusa-starter-default`) is out of date; the code clones `dtc-starter`.
 - `logMessage({ type: "error" })` calls commander's `program.error()`, which exits the process. Use `warn` for non-fatal messages.
-- The Node version check enforces `MIN_SUPPORTED_NODE_VERSION` (`22.22.0`) in `src/utils/node-version.ts`, even though `package.json` `engines` says `>=14.16`. Keep the constant in sync with Medusa's engine requirement.
+- The Node version check enforces `MIN_SUPPORTED_NODE_VERSION` (`22.22.0`) in `src/utils/node-version.ts`. Keep the constant in sync with `package.json` `engines` and Medusa's engine requirement.
 - Generated `.env` hardcodes `JWT_SECRET=supersecret` / `COOKIE_SECRET=supersecret`, `REDIS_URL=redis://localhost:6379`, CORS values that include `https://docs.medusajs.com`, and a random `AUTH_MFA_ENCRYPTION_KEY`.
 - Migrations are verified by checking for the `mikro_orm_migrations` table. If it's missing, the CLI throws with the command output.
 - The browser opens `http://localhost:9000/app/invite?token=...` after polling `http://localhost:9000/health`, so the starter must serve on port 9000.

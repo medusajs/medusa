@@ -29,6 +29,12 @@ export default class LockingModuleService implements ILockingModule {
     this.defaultProviderId = container[LockingDefaultProvider]
   }
 
+  __hooks = {
+    onApplicationShutdown: async () => {
+      await this.providerService_.shutdown()
+    },
+  }
+
   async execute<T>(
     keys: string | string[],
     job: (signal?: AbortSignal) => Promise<T>,

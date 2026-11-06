@@ -43,7 +43,9 @@ const Section = () => {
   - utils `clx`, `toast`
 - In the admin, `Toaster` and `TooltipProvider` are already mounted by the dashboard. Call `toast.*` directly and don't render another `Toaster`.
 - Style with the preset's semantic classes (`bg-ui-bg-base`, `text-ui-fg-subtle`, `border-ui-border-base`, `txt-compact-small-plus`) rather than raw Tailwind colors so light and dark themes work.
-- Standalone projects need Tailwind v3 with `presets: [require("@medusajs/ui-preset")]` and `@medusajs/ui`'s `dist` in `content`.
+- Standalone projects work with Tailwind 3 or 4:
+  - v3: `presets: [require("@medusajs/ui-preset")]` and `@medusajs/ui`'s `dist` in `content`.
+  - v4: `@import "tailwindcss"; @import "@medusajs/ui-preset/theme.css";` plus an `@source` for `@medusajs/ui`'s `dist`.
 
 Docs:
 - https://docs.medusajs.com/ui/index.html.md
@@ -79,5 +81,7 @@ yarn storybook         # port 6006, loads src/main.css
 - `CONTRIBUTING.md`: new components from external contributors are not accepted. Propose them in an issue instead.
 - Peer deps are `react` / `react-dom` `^18.3.1`. Don't use React 19-only APIs.
 - `clx` uses `tailwind-merge`, so a consumer's `className` overrides conflicting variant classes. Pass user `className` last.
+- Classes in `src` must compile to the same CSS in Tailwind 3 and 4, since storefronts compile them with their own Tailwind. Use `outline-hidden`, `rounded-xs`, `shrink-0`, and `gap-*` instead of `outline-none`, `rounded-sm`, `flex-shrink-0`, and `space-*` / `divide-*`; no trailing `!` or other v4-only syntax. `tailwind-compat/tailwind-compat.spec.ts` enforces this.
+- Don't center an animated element with `translate-*` (e.g. `left-1/2 -translate-x-1/2` plus `animate-in`). Tailwind 4's `translate` property stacks with the enter animation's `transform`, so it animates in from off-center. Center with `inset-0 m-auto h-fit` instead, as `Prompt` does.
 - Test config sets `css: false`. Tests can't assert on computed styles, only on class names.
 - Changing a component's props or the exports in `src/index.ts` is a public API change for every admin extension. Regenerate the UI docs specs.

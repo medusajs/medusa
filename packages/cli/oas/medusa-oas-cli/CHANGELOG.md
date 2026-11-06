@@ -1,5 +1,41 @@
 # @medusajs/oas-cli
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`7167fa2`](https://github.com/medusajs/medusa/commit/7167fa2e6b0675000f18267923eca4c61908fed9)]:
+  - @medusajs/medusa@2.22.4
+  - @medusajs/utils@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- Updated dependencies [[`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7), [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828), [`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d), [`12a5580`](https://github.com/medusajs/medusa/commit/12a55804efc97a0d685fc9e69ca005b9f44d3761), [`39fb481`](https://github.com/medusajs/medusa/commit/39fb48168d4d63306623cb39f6973bc534a9c59a), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828), [`536d630`](https://github.com/medusajs/medusa/commit/536d63013b9bbaea5aceede3e02403a4c021f634), [`2e3b55d`](https://github.com/medusajs/medusa/commit/2e3b55d8914dbe9724cfa0076c1a1be91b42ab95), [`954edc7`](https://github.com/medusajs/medusa/commit/954edc77b2009a4a5c8e08536ac7c094b9e565f0)]:
+  - @medusajs/utils@2.22.3
+  - @medusajs/medusa@2.22.3
+
+## 2.22.2
+
+### Patch Changes
+
+- [#17567](https://github.com/medusajs/medusa/pull/17567) [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update development and test tooling (cross-env 10.1.0, esbuild 0.28.2, tsup 9.0.0, expect-type 1.4.0, @faker-js/faker 10.6.0, jsdom 30.1.3, @types/jsonwebtoken 9.0.10, msw 3.0.3, rimraf 6.1.3, Testing Library, turbo 2.11.10, @types/node 22, boxen 9.0.0, chalk 6.0.1, ci-info 4.4.0, commander 15.0.0, configstore 8.0.0, dotenv 18.0.9, execa 10.2.1, get-port 7.2.0, inquirer 14.2.4, @inquirer/checkbox 5.2.7, @inquirer/confirm 6.3.4, @inquirer/input 5.1.8, is-docker 4.0.0, meant 2.0.1, open 11.0.4, openapi3-ts 4.6.2, ora 9.4.1, @readme/openapi-parser 10.0.0, @redocly/cli 2.71.0, stack-trace 1.0.0, swagger-inline 8.1.0, yargs 18.2.0) and remove unused development dependencies; drop hosted-git-info from @medusajs/cli; fix the medusa-oas-cli circular patch recommendation crashing on references nested in inline schemas; `medusa-oas docs --preview` now serves a static Redoc 3 build since Redocly removed `preview-docs`; replace chalk with Node's built-in `util.styleText` in CommonJS packages; replace uuid with Node's built-in `crypto.randomUUID`; replace get-port with a built-in free-port helper in @medusajs/test-utils
+
+- Updated dependencies [[`d5e0ddf`](https://github.com/medusajs/medusa/commit/d5e0ddf7e510c5d54fae40e30a47b6e4d43c30b7), [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`7e30ecb`](https://github.com/medusajs/medusa/commit/7e30ecbbaf858a567c8d5e606b2a35cd3a4e8765), [`26e5807`](https://github.com/medusajs/medusa/commit/26e58070c1661c14aedc02ee6cfb0b2bb28d497b), [`8e7ed52`](https://github.com/medusajs/medusa/commit/8e7ed5206e617b530512a25d7e0ee034479ea4dd), [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`7b34df3`](https://github.com/medusajs/medusa/commit/7b34df35bf8e57ce0d2ab2373a624dc2cc573ca5), [`2f0b2e9`](https://github.com/medusajs/medusa/commit/2f0b2e94d6fa7193386d83b1e72bb0fc65caeddf), [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d), [`c61fea6`](https://github.com/medusajs/medusa/commit/c61fea69bf0f42e0a4579f21e9e7f1549a9d5943), [`029fb31`](https://github.com/medusajs/medusa/commit/029fb31fd077ab9c6d6fd9d68c676c17c71294c7)]:
+  - @medusajs/medusa@2.22.2
+  - @medusajs/utils@2.22.2
+
+## 2.22.1
+
+### Patch Changes
+
+- Updated dependencies [[`3a3207347379b065142895fb0740442fea5f4033`](https://github.com/medusajs/medusa/commit/3a3207347379b065142895fb0740442fea5f4033), [`ea2d48190febf36389aa66242247c180f9f48212`](https://github.com/medusajs/medusa/commit/ea2d48190febf36389aa66242247c180f9f48212), [`52f4c751d2277ab704c1a184c7971a6684e11a74`](https://github.com/medusajs/medusa/commit/52f4c751d2277ab704c1a184c7971a6684e11a74), [`d731a694cdb83c158fb78b5d85ecba8909150945`](https://github.com/medusajs/medusa/commit/d731a694cdb83c158fb78b5d85ecba8909150945), [`ccee953690a41e14e7520e7e2d97272f25d1ff69`](https://github.com/medusajs/medusa/commit/ccee953690a41e14e7520e7e2d97272f25d1ff69), [`c959d5e3e7d4b482d0784eef67ef8ef766442d5e`](https://github.com/medusajs/medusa/commit/c959d5e3e7d4b482d0784eef67ef8ef766442d5e), [`3a4fa0cc36a82dba9481e87c20e423cb65c2ee91`](https://github.com/medusajs/medusa/commit/3a4fa0cc36a82dba9481e87c20e423cb65c2ee91), [`7c3b0339379efeda7863f48b9f60e3391cece091`](https://github.com/medusajs/medusa/commit/7c3b0339379efeda7863f48b9f60e3391cece091)]:
+  - @medusajs/utils@2.22.1
+  - @medusajs/medusa@2.22.1
+
 ## 2.22.0
 
 ### Patch Changes

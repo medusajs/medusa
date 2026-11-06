@@ -12,6 +12,7 @@ import { usePromotionTableColumns } from "../../../../../hooks/table/columns/use
 import { usePromotionTableFilters } from "../../../../../hooks/table/filters/use-promotion-table-filters"
 import { usePromotionTableQuery } from "../../../../../hooks/table/query/use-promotion-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { usePromotionPermissions } from "../../../../../hooks/use-resource-permissions"
 import { promotionsLoader } from "../../loader"
 import { PromotionListTableActions } from "./promotion-list-table-actions"
 
@@ -19,6 +20,7 @@ const PAGE_SIZE = 20
 
 export const PromotionListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = usePromotionPermissions()
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof promotionsLoader>>
   >
@@ -53,9 +55,11 @@ export const PromotionListTable = () => {
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h1">{t("promotions.domain")}</Heading>
 
-        <Button size="small" variant="secondary" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
+        {canCreate && (
+          <Button size="small" variant="secondary" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        )}
       </div>
 
       <_DataTable

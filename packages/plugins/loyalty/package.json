@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/loyalty-plugin",
-  "version": "2.22.0",
+  "version": "2.22.4",
   "description": "Medusa Plugin: Loyalty - Gift Cards",
   "author": "Medusa (https://medusajs.com)",
   "license": "MIT",
@@ -55,35 +55,35 @@
     "dev": "medusa plugin:develop",
     "prepare": "cross-env NODE_ENV=production yarn run build:plugin",
     "link:watch": "medusa plugin:publish && medusa plugin:develop",
-    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src",
+    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPatterns=src",
     "watch": "medusa plugin:develop"
   },
   "devDependencies": {
-    "@medusajs/admin-sdk": "2.22.0",
-    "@medusajs/cli": "2.22.0",
-    "@medusajs/dashboard": "2.22.0",
-    "@medusajs/framework": "2.22.0",
-    "@medusajs/icons": "2.22.0",
-    "@medusajs/medusa": "2.22.0",
-    "@medusajs/test-utils": "2.22.0",
-    "@medusajs/types": "2.22.0",
-    "@medusajs/ui": "4.2.7",
-    "@medusajs/ui-preset": "2.22.0",
-    "@swc/core": "1.5.7",
-    "@types/node": "^20.0.0",
-    "cross-env": "^7.0.3",
+    "@medusajs/admin-sdk": "2.22.4",
+    "@medusajs/cli": "2.22.4",
+    "@medusajs/dashboard": "2.22.4",
+    "@medusajs/framework": "2.22.4",
+    "@medusajs/icons": "2.22.4",
+    "@medusajs/medusa": "2.22.4",
+    "@medusajs/test-utils": "2.22.4",
+    "@medusajs/types": "2.22.4",
+    "@medusajs/ui": "4.2.11",
+    "@medusajs/ui-preset": "2.22.4",
+    "@swc/core": "^1.16.20",
+    "@types/node": "^22.20.5",
+    "cross-env": "^10.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "peerDependencies": {
-    "@medusajs/admin-sdk": "2.22.0",
-    "@medusajs/cli": "2.22.0",
-    "@medusajs/dashboard": "2.22.0",
-    "@medusajs/framework": "2.22.0",
-    "@medusajs/icons": "2.22.0",
-    "@medusajs/medusa": "2.22.0",
-    "@medusajs/test-utils": "2.22.0",
-    "@medusajs/ui": "4.2.7",
+    "@medusajs/admin-sdk": "2.22.4",
+    "@medusajs/cli": "2.22.4",
+    "@medusajs/dashboard": "2.22.4",
+    "@medusajs/framework": "2.22.4",
+    "@medusajs/icons": "2.22.4",
+    "@medusajs/medusa": "2.22.4",
+    "@medusajs/test-utils": "2.22.4",
+    "@medusajs/ui": "4.2.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.4 || ^7.0.0"
@@ -120,5 +120,5 @@
   "engines": {
     "node": ">=22.22.0"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@4.18.1"
 }

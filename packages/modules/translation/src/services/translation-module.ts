@@ -100,8 +100,7 @@ export default class TranslationModuleService
     )
 
     const settingsToUpsert: (
-      | CreateTranslationSettingsDTO
-      | UpdateTranslationSettingsDTO
+      CreateTranslationSettingsDTO | UpdateTranslationSettingsDTO
     )[] = []
 
     for (const setting of currentTranslationSettings) {
@@ -142,12 +141,15 @@ export default class TranslationModuleService
       {},
       sharedContext
     )
-    return settings.reduce((acc, setting) => {
-      acc[setting.entity_type] = setting.is_active
-        ? (setting.fields as unknown as string[])
-        : []
-      return acc
-    }, {} as Record<string, string[]>)
+    return settings.reduce(
+      (acc, setting) => {
+        acc[setting.entity_type] = setting.is_active
+          ? (setting.fields as unknown as string[])
+          : []
+        return acc
+      },
+      {} as Record<string, string[]>
+    )
   }
 
   @InjectManager()
@@ -255,9 +257,10 @@ export default class TranslationModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<
-      TranslationTypes.TranslationDTO[]
-    >(results)
+    const serialized =
+      await this.baseRepository_.serialize<TranslationTypes.TranslationDTO[]>(
+        results
+      )
 
     const translatableFieldsConfig = await this.getTranslatableFields(
       undefined,
@@ -284,9 +287,10 @@ export default class TranslationModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<
-      TranslationTypes.TranslationDTO[]
-    >(results)
+    const serialized =
+      await this.baseRepository_.serialize<TranslationTypes.TranslationDTO[]>(
+        results
+      )
 
     const translatableFieldsConfig = await this.getTranslatableFields(
       undefined,
@@ -328,9 +332,8 @@ export default class TranslationModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<LocaleDTO[]>(
-      createdLocales
-    )
+    const serialized =
+      await this.baseRepository_.serialize<LocaleDTO[]>(createdLocales)
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
@@ -374,9 +377,10 @@ export default class TranslationModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<
-      TranslationTypes.TranslationDTO[]
-    >(createdTranslations)
+    const serialized =
+      await this.baseRepository_.serialize<TranslationTypes.TranslationDTO[]>(
+        createdTranslations
+      )
 
     return Array.isArray(data) ? serialized : serialized[0]
   }
@@ -450,9 +454,10 @@ export default class TranslationModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<
-      TranslationTypes.TranslationDTO[]
-    >(updatedTranslations)
+    const serialized =
+      await this.baseRepository_.serialize<TranslationTypes.TranslationDTO[]>(
+        updatedTranslations
+      )
 
     return Array.isArray(data) ? serialized : serialized[0]
   }
@@ -527,9 +532,10 @@ export default class TranslationModuleService
       await this.translationService_.update(toUpdate, sharedContext)
     }
 
-    const serialized = await this.baseRepository_.serialize<
-      TranslationTypes.TranslationSettingsDTO[]
-    >(updatedSettings)
+    const serialized =
+      await this.baseRepository_.serialize<
+        TranslationTypes.TranslationSettingsDTO[]
+      >(updatedSettings)
 
     return Array.isArray(data) ? serialized : serialized[0]
   }

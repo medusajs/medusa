@@ -1,5 +1,37 @@
 # @medusajs/types
 
+## 2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17619](https://github.com/medusajs/medusa/pull/17619) [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828) Thanks [@sradevski](https://github.com/sradevski)! - feat(auth,types,utils): read the Medusa Cloud OAuth client secret from MEDUSA_CLOUD_OAUTH_CLIENT_SECRET, falling back to the API key
+
+- [#17574](https://github.com/medusajs/medusa/pull/17574) [`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps,caching,framework,types,utils): update awilix to 13.0.5
+
+- [#15620](https://github.com/medusajs/medusa/pull/15620) [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,core-flows,framework,js-sdk,modules-sdk,types,utils,link-modules,rbac): end to end RBAC implementation
+
+- [#17619](https://github.com/medusajs/medusa/pull/17619) [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828) Thanks [@sradevski](https://github.com/sradevski)! - chore(auth,notification,payment,types,utils): remove the unused Medusa Cloud sandbox handle
+
+## 2.22.2
+
+### Patch Changes
+
+- [#17533](https://github.com/medusajs/medusa/pull/17533) [`26e5807`](https://github.com/medusajs/medusa/commit/26e58070c1661c14aedc02ee6cfb0b2bb28d497b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update ioredis to ^5.11.1
+
+- [#17503](https://github.com/medusajs/medusa/pull/17503) [`c78a95a`](https://github.com/medusajs/medusa/commit/c78a95a6e1fdf3967efbcddca9fa195d0e8c5817) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(caching): close the in-memory cache provider's client on application shutdown
+
+- [#17575](https://github.com/medusajs/medusa/pull/17575) [`2f0b2e9`](https://github.com/medusajs/medusa/commit/2f0b2e94d6fa7193386d83b1e72bb0fc65caeddf) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(types,utils,dashboard): update bignumber.js to 11.1.5
+
+## 2.22.1
+
+### Patch Changes
+
+- [#17428](https://github.com/medusajs/medusa/pull/17428) [`081bcd2ef57e3d8e946ded205f2bdbd99c2834ba`](https://github.com/medusajs/medusa/commit/081bcd2ef57e3d8e946ded205f2bdbd99c2834ba) Thanks [@medusa-agents](https://github.com/apps/medusa-agents)! - fix(types): add attribute, value and operator to FilterablePriceRuleProps
+
+- [#17432](https://github.com/medusajs/medusa/pull/17432) [`7c3b0339379efeda7863f48b9f60e3391cece091`](https://github.com/medusajs/medusa/commit/7c3b0339379efeda7863f48b9f60e3391cece091) Thanks [@sradevski](https://github.com/sradevski)! - feat(medusa,core-flows,types,js-sdk): add store route to update a payment session's client data
+
 ## 2.22.0
 
 ### Minor Changes

@@ -1,6 +1,7 @@
 import {
   BigNumberInput,
   ApplicationMethodTargetSelectionStrategyValues,
+  CampaignBudgetUsageDTO,
   ComputeActionItemLine,
   InferEntityType,
   PromotionTypes,
@@ -336,7 +337,8 @@ function applyPromotionToTargetItems(
   methodIdPromoValueMap: Map<string, BigNumberInput>,
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   itemsMap: Map<string, ComputeActionItemLine>,
-  applicationConfig: PromotionConfig
+  applicationConfig: PromotionConfig,
+  attributeUsage?: CampaignBudgetUsageDTO
 ): {
   computedActions: PromotionTypes.ComputeActions[]
   appliedPromotionQuantity: BigNumberInput
@@ -356,7 +358,10 @@ function applyPromotionToTargetItems(
     const appliedPromoValue =
       methodIdPromoValueMap.get(item.id) ?? MathBN.convert(0)
     const multiplier = MathBN.min(targetItem.quantity, remainingQtyToApply)
-    const pricePerUnit = MathBN.div(item.subtotal, item.quantity)
+    const pricePerUnit = MathBN.div(
+      promotion.is_tax_inclusive ? item.original_total : item.subtotal,
+      item.quantity
+    )
     const applicableAmount = MathBN.mult(pricePerUnit, multiplier)
 
     let amount
@@ -381,7 +386,8 @@ function applyPromotionToTargetItems(
 
     const budgetExceededAction = computeActionForBudgetExceeded(
       promotion,
-      amount
+      amount,
+      attributeUsage
     )
 
     if (budgetExceededAction) {
@@ -389,9 +395,13 @@ function applyPromotionToTargetItems(
       continue
     }
 
+    const appliedAmountExclTax = promotion.is_tax_inclusive
+      ? MathBN.mult(amount, MathBN.div(item.subtotal, item.original_total))
+      : amount
+
     methodIdPromoValueMap.set(
       item.id,
-      MathBN.add(appliedPromoValue, amount).toNumber()
+      MathBN.add(appliedPromoValue, appliedAmountExclTax).toNumber()
     )
 
     const currentPromotionAmount =
@@ -487,7 +497,8 @@ function updateEligibleItems(
 
 function createComputedActionsFromPromotionApplication(
   itemIdPromotionAmountMap: Map<string, BigNumberInput>,
-  promotionCode: string
+  promotionCode: string,
+  isTaxInclusive?: boolean
 ): PromotionTypes.ComputeActions[] {
   const computedActions: PromotionTypes.ComputeActions[] = []
 
@@ -498,6 +509,7 @@ function createComputedActionsFromPromotionApplication(
         item_id: itemId,
         amount: totalAmount,
         code: promotionCode,
+        ...(isTaxInclusive ? { is_tax_inclusive: true } : {}),
       })
     }
   }
@@ -561,7 +573,8 @@ export function getComputedActionsForBuyGet(
   itemsContext: ComputeActionItemLine[],
   methodIdPromoValueMap: Map<string, BigNumberInput>,
   eligibleBuyItemMap: Map<string, EligibleItem[]>,
-  eligibleTargetItemMap: Map<string, EligibleItem[]>
+  eligibleTargetItemMap: Map<string, EligibleItem[]>,
+  attributeUsage?: CampaignBudgetUsageDTO
 ): PromotionTypes.ComputeActions[] {
   if (!isValidPromotionContext(promotion, itemsContext)) {
     return []
@@ -660,7 +673,8 @@ export function getComputedActionsForBuyGet(
       methodIdPromoValueMap,
       promotion,
       itemsMap,
-      applicationConfig
+      applicationConfig,
+      attributeUsage
     )
 
     computedActions.push(...application.computedActions)
@@ -688,7 +702,8 @@ export function getComputedActionsForBuyGet(
 
   const finalActions = createComputedActionsFromPromotionApplication(
     itemIdPromotionAmountMap,
-    promotion.code!
+    promotion.code!,
+    promotion.is_tax_inclusive
   )
   computedActions.push(...finalActions)
 

@@ -38,6 +38,10 @@
  *     $ref: "#/components/schemas/BasePayment"
  *   refund_reason:
  *     $ref: "#/components/schemas/BaseRefundReason"
+ *   idempotency_key:
+ *     type: string
+ *     title: idempotency_key
+ *     description: The refund's idempotency key.
  * 
 */
 

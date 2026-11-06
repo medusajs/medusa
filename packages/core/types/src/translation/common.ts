@@ -123,8 +123,7 @@ export interface TranslationSettingsDTO {
 /**
  * The filters to apply on the retrieved locales.
  */
-export interface FilterableLocaleProps
-  extends BaseFilterable<FilterableLocaleProps> {
+export interface FilterableLocaleProps extends BaseFilterable<FilterableLocaleProps> {
   /**
    * The IDs to filter the locales by.
    */
@@ -144,8 +143,7 @@ export interface FilterableLocaleProps
 /**
  * The filters to apply on the retrieved translations.
  */
-export interface FilterableTranslationProps
-  extends BaseFilterable<FilterableTranslationProps> {
+export interface FilterableTranslationProps extends BaseFilterable<FilterableTranslationProps> {
   /**
    * Search through translated content using this search term.
    * This searches within the JSONB translations field values.
@@ -173,8 +171,7 @@ export interface FilterableTranslationProps
   locale_code?: string | string[] | OperatorMap<string>
 }
 
-export interface FilterableTranslationSettingsProps
-  extends BaseFilterable<FilterableTranslationSettingsProps> {
+export interface FilterableTranslationSettingsProps extends BaseFilterable<FilterableTranslationSettingsProps> {
   /**
    * The IDs to filter the translation settings by.
    */

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Reporter handles "Error" signature correctly 1`] = `
 [
@@ -27,4 +27,4 @@ exports[`Reporter handles "String, Error" signature correctly 1`] = `
     "stack": Any<Array>,
   },
 ]
-`
+`;

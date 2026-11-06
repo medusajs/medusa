@@ -56,7 +56,7 @@ No tests in this package. Exercise changes through a test app with `medusa devel
 
 ## Gotchas
 
-- The package ships as CJS, but `vite` (v6+) and `@vitejs/plugin-react` (v5+) are ESM-only:
+- The package ships as CJS, but `vite` (v6+), `@vitejs/plugin-react` (v5+) and `get-port` (v6+) are ESM-only:
   - Always load them with `await import(...)`, never top-level imports.
   - `scripts/assert-esm-imports.mjs` fails the build if esbuild rewrites those imports into `require()`.
 - `build.target` is pinned to `"baseline-widely-available"` in both `config.ts` and `plugin.ts`. Keep the two in sync: plugin bundles load inside the dashboard bundle.

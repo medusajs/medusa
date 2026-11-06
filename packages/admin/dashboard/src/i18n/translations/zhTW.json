@@ -142,6 +142,7 @@
     "reset": "重設",
     "confirm": "確認",
     "edit": "編輯",
+    "view": "檢視",
     "addItems": "新增項目",
     "download": "下載",
     "clear": "清除",
@@ -2779,7 +2780,7 @@
     "editUser": "編輯使用者",
     "inviteUser": "邀請使用者",
     "inviteUserHint": "邀請新使用者加入您的商店。",
-    "inviteRolesTooltip": "若未選擇角色，使用者將以超級使用者角色受邀。",
+    "inviteRolesTooltip": "若未選擇角色，使用者將在沒有任何權限的情況下被邀請。您可以稍後指派角色。",
     "sendInvite": "傳送邀請",
     "pendingInvites": "待處理邀請",
     "deleteInviteWarning": "您即將刪除 {{email}} 的邀請。此操作無法復原。",
@@ -2854,7 +2855,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "使用者已擁有此角色。",
-      "unassignableRoleTooltip": "您無權指派此角色，您的權限未涵蓋其所有政策。",
       "add": {
         "successToast_other": "使用者已成功新增至角色。",
         "list": {
@@ -2879,6 +2879,9 @@
       "filtered": {
         "heading": "沒有結果",
         "description": "沒有權限符合目前的篩選條件。"
+      },
+      "manage": {
+        "successToast": "權限已成功更新。"
       }
     },
     "list": {
@@ -2902,6 +2905,7 @@
     },
     "edit": {
       "header": "編輯政策",
+      "identityHint": "金鑰、資源和操作標識了此原則，無法更改。請改為建立新原則。",
       "successToast": "政策 {{key}} 已更新"
     },
     "delete": {
@@ -3362,6 +3366,9 @@
     "invalidTokenTitle": "您的邀請令牌無效",
     "invalidTokenHint": "請嘗試請求新的邀請連結。",
     "passwordMismatch": "密碼不符合",
+    "signedInTitle": "您已登入",
+    "signedInHint": "您已以 {{email}} 登入。請登出以接受此邀請。",
+    "signOut": "登出",
     "toast": {
       "accepted": "邀請已成功接受"
     }
@@ -3794,6 +3801,10 @@
       "description": "您沒有權限存取此頁面。",
       "requiredPermission": "所需權限：{{permission}}",
       "action": "您沒有權限執行此操作。"
+    },
+    "noPermissions": {
+      "title": "尚無權限",
+      "description": "您尚未被指派任何權限。請聯絡您的管理員，以請求存取您所需的區域。"
     },
     "requiredPermissions": {
       "title": "所需權限",

@@ -47,7 +47,8 @@ type DatePickerValueProps = {
 }
 
 interface DatePickerProps
-  extends Omit<
+  extends
+    Omit<
       BaseDatePickerProps<CalendarDateTime | CalendarDate>,
       keyof DatePickerValueProps
     >,
@@ -179,7 +180,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
         <Popover.Content
           ref={contentRef}
           {...dialogProps}
-          className="flex flex-col divide-y p-0"
+          className="flex flex-col p-0 [&>*+*]:border-t"
         >
           <div className="p-3">
             <InternalCalendar autoFocus {...calendarProps} />

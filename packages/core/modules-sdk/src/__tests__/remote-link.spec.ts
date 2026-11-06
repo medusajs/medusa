@@ -199,7 +199,7 @@ describe("Remote Link", function () {
       },
     ])
 
-    expect(ProductInventoryLinkModule.create).toBeCalledWith(
+    expect(ProductInventoryLinkModule.create).toHaveBeenCalledWith(
       [
         ["var_123", "inv_123"],
         ["var_abc", "inv_abc"],
@@ -208,7 +208,7 @@ describe("Remote Link", function () {
       undefined,
       {}
     )
-    expect(InventoryStockLocationLink.create).toBeCalledWith(
+    expect(InventoryStockLocationLink.create).toHaveBeenCalledWith(
       [["ilev_123", "loc_123"]],
       undefined,
       undefined,
@@ -253,10 +253,10 @@ describe("Remote Link", function () {
       },
     })
 
-    expect(ProductInventoryLinkModule.softDelete).toBeCalledTimes(2)
-    expect(ProductModule.softDelete).toBeCalledTimes(1)
-    expect(InventoryModule.softDelete).toBeCalledTimes(1)
-    expect(InventoryStockLocationLink.softDelete).toBeCalledTimes(1)
+    expect(ProductInventoryLinkModule.softDelete).toHaveBeenCalledTimes(2)
+    expect(ProductModule.softDelete).toHaveBeenCalledTimes(1)
+    expect(InventoryModule.softDelete).toHaveBeenCalledTimes(1)
+    expect(InventoryStockLocationLink.softDelete).toHaveBeenCalledTimes(1)
 
     expect(ProductInventoryLinkModule.softDelete).toHaveBeenNthCalledWith(
       1,
@@ -272,13 +272,13 @@ describe("Remote Link", function () {
       {}
     )
 
-    expect(ProductModule.softDelete).toBeCalledWith(
+    expect(ProductModule.softDelete).toHaveBeenCalledWith(
       { id: ["var_123"] },
       { returnLinkableKeys: ["product_id", "variant_id"] },
       {}
     )
 
-    expect(InventoryModule.softDelete).toBeCalledWith(
+    expect(InventoryModule.softDelete).toHaveBeenCalledWith(
       { id: ["inv_123"] },
       {
         returnLinkableKeys: [
@@ -290,7 +290,7 @@ describe("Remote Link", function () {
       {}
     )
 
-    expect(InventoryStockLocationLink.softDelete).toBeCalledWith(
+    expect(InventoryStockLocationLink.softDelete).toHaveBeenCalledWith(
       {
         inventory_level_id: ["ilev_123"],
       },

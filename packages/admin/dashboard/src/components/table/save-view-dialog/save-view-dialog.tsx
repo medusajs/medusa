@@ -145,7 +145,7 @@ export const SaveViewDialog: React.FC<SaveViewDialogProps> = ({
                 autoFocus
               />
               {errors.name && (
-                <span className="text-ui-fg-error text-sm">
+                <span className="text-sm text-ui-fg-error">
                   {errors.name.message}
                 </span>
               )}

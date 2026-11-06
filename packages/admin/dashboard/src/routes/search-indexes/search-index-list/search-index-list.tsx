@@ -160,7 +160,7 @@ export const SearchIndexList = () => {
   if (isLoading || enabled === false) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Spinner className="text-ui-fg-interactive animate-spin" />
+        <Spinner className="animate-spin text-ui-fg-interactive" />
       </div>
     )
   }

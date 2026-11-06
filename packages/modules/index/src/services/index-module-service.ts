@@ -236,8 +236,7 @@ export default class IndexModuleService
   }
 
   private buildSchemaObjectRepresentation_():
-    | GraphQLUtils.GraphQLSchema
-    | undefined {
+    GraphQLUtils.GraphQLSchema | undefined {
     if (this.schemaObjectRepresentation_) {
       return
     }

@@ -295,8 +295,8 @@ const formatInventoryInput = ({
         location_ids: locationsWithAvailability.length
           ? locationsWithAvailability
           : locationsWithLevel.length
-          ? locationsWithLevel
-          : location_ids,
+            ? locationsWithLevel
+            : location_ids,
       })
     })
   })

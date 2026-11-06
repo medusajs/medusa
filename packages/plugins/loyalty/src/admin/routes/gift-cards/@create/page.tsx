@@ -20,4 +20,8 @@ const GiftCardCreate = () => {
   );
 };
 
+export const handle = {
+  permissions: ["gift_card:create", "store:read"],
+};
+
 export default GiftCardCreate;

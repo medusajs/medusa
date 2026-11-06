@@ -58,8 +58,17 @@ type StripeIndeterminateState = {
 
 type StripeErrorData = Stripe.PaymentIntent | StripeIndeterminateState
 type HandledErrorType =
-  | { retry: true }
-  | { retry: false; data: StripeErrorData }
+  { retry: true } | { retry: false; data: StripeErrorData }
+
+// Stripe API versions before 2026-07-29 don't have `allowed_payment_method_types`,
+// and versions from 2026-09-30.endive reject `payment_method_types`.
+type PaymentMethodTypesParams = {
+  payment_method_types?: string[]
+  allowed_payment_method_types?: Stripe.PaymentIntentCreateParams.AllowedPaymentMethodType[]
+}
+
+const DEFAULT_STRIPE_API_VERSION = "2024-04-10"
+const ALLOWED_PAYMENT_METHOD_TYPES_API_VERSION = "2026-07-29"
 
 abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   protected readonly options_: StripeOptions
@@ -96,7 +105,10 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     this.container_ = cradle
     this.options_ = options
 
-    this.stripe_ = new Stripe(options.apiKey)
+    this.stripe_ = new Stripe(options.apiKey, {
+      apiVersion: (options.apiVersion ??
+        DEFAULT_STRIPE_API_VERSION) as Stripe.LatestApiVersion,
+    })
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
@@ -105,12 +117,31 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     return this.options_
   }
 
+  protected getPaymentMethodTypesParams(
+    paymentMethodTypes?: string[]
+  ): PaymentMethodTypesParams {
+    if (!paymentMethodTypes) {
+      return {}
+    }
+
+    const apiVersion = this.options_.apiVersion ?? DEFAULT_STRIPE_API_VERSION
+
+    return apiVersion >= ALLOWED_PAYMENT_METHOD_TYPES_API_VERSION
+      ? {
+          allowed_payment_method_types:
+            paymentMethodTypes as Stripe.PaymentIntentCreateParams.AllowedPaymentMethodType[],
+        }
+      : { payment_method_types: paymentMethodTypes }
+  }
+
   normalizePaymentIntentParameters(
     extra?: Record<string, unknown>
-  ): Partial<Stripe.PaymentIntentCreateParams> {
-    const res = {} as Partial<Stripe.PaymentIntentCreateParams>
+  ): Partial<Stripe.PaymentIntentCreateParams> & PaymentMethodTypesParams {
+    const res = {} as Partial<Stripe.PaymentIntentCreateParams> &
+      PaymentMethodTypesParams
 
     const paymentMethodTypes =
+      (extra?.allowed_payment_method_types as string[] | undefined) ??
       (extra?.payment_method_types as string[] | undefined) ??
       (this.paymentIntentOptions.payment_method_types as string[] | undefined)
 
@@ -126,7 +157,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       (extra?.setup_future_usage as "off_session" | "on_session" | undefined) ??
       this.paymentIntentOptions.setup_future_usage
 
-    res.payment_method_types = paymentMethodTypes
+    Object.assign(res, this.getPaymentMethodTypesParams(paymentMethodTypes))
 
     res.payment_method_data =
       extra?.payment_method_data as Stripe.PaymentIntentCreateParams.PaymentMethodData
@@ -283,8 +314,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     }
 
     intentRequest.customer = context?.account_holder?.data?.id as
-      | string
-      | undefined
+      string | undefined
 
     const sessionData = await this.executeWithRetry<Stripe.PaymentIntent>(() =>
       this.stripe_.paymentIntents.create(intentRequest, {
@@ -321,7 +351,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         return { data: data }
       }
 
-      const res = await this.stripe_.paymentIntents.cancel(id, {
+      const res = await this.stripe_.paymentIntents.cancel(id, undefined, {
         idempotencyKey: context?.idempotency_key,
       })
       return { data: res as unknown as Record<string, unknown> }
@@ -341,7 +371,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     const id = data?.id as string
 
     try {
-      const intent = await this.stripe_.paymentIntents.capture(id, {
+      const intent = await this.stripe_.paymentIntents.capture(id, undefined, {
         idempotencyKey: context?.idempotency_key,
       })
       return { data: intent as unknown as Record<string, unknown> }
@@ -587,8 +617,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     context,
   }: ListPaymentMethodsInput): Promise<ListPaymentMethodsOutput> {
     const accountHolderId = context?.account_holder?.data?.id as
-      | string
-      | undefined
+      string | undefined
     if (!accountHolderId) {
       return []
     }
@@ -611,8 +640,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     data,
   }: SavePaymentMethodInput): Promise<SavePaymentMethodOutput> {
     const accountHolderId = context?.account_holder?.data?.id as
-      | string
-      | undefined
+      string | undefined
 
     if (!accountHolderId) {
       throw this.buildError(
@@ -621,11 +649,16 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       )
     }
 
+    const { payment_method_types, ...setupIntentData } = data ?? {}
+
     const resp = await this.stripe_.setupIntents.create(
       {
         customer: accountHolderId,
-        ...data,
-      },
+        ...setupIntentData,
+        ...this.getPaymentMethodTypesParams(
+          payment_method_types as string[] | undefined
+        ),
+      } as Stripe.SetupIntentCreateParams,
       {
         idempotencyKey: context?.idempotency_key,
       }
@@ -647,7 +680,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
       )
     }
 
-    await this.stripe_.paymentMethods.detach(paymentMethodId, {
+    await this.stripe_.paymentMethods.detach(paymentMethodId, undefined, {
       idempotencyKey: context?.idempotency_key,
     })
 
@@ -719,8 +752,8 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
           typeof webhookPaymentMethod === "object"
             ? (intent.payment_method as Stripe.PaymentMethod)
             : typeof webhookPaymentMethod === "string"
-            ? await this.stripe_.paymentMethods.retrieve(webhookPaymentMethod)
-            : null
+              ? await this.stripe_.paymentMethods.retrieve(webhookPaymentMethod)
+              : null
 
         return {
           action:

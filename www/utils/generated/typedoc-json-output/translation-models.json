@@ -1,12 +1,13 @@
 {
-	"id": 20135,
+	"schemaVersion": "2.0",
+	"id": 20031,
 	"name": "translation-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 20144,
+			"id": 20040,
 			"name": "Locale",
 			"variant": "declaration",
 			"kind": 32,
@@ -18,34 +19,36 @@
 					"fileName": "locale.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/locale.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/locale.ts#L3"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 20145,
+									"id": 20041,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 20146,
+											"id": 20042,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -63,20 +66,22 @@
 													"fileName": "locale.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/locale.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/locale.ts#L5"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/id.ts",
 															"qualifiedName": "IdProperty"
 														},
 														"name": "IdProperty",
@@ -89,7 +94,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20147,
+											"id": 20043,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -111,13 +116,14 @@
 													"fileName": "locale.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/locale.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/locale.ts#L9"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -126,7 +132,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20148,
+											"id": 20044,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -148,13 +154,14 @@
 													"fileName": "locale.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/locale.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/locale.ts#L13"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -167,18 +174,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												20146,
-												20147,
-												20148
+												20042,
+												20043,
+												20044
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "locale.ts",
-											"line": 4,
-											"character": 20,
-											"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/locale.ts#L4"
 										}
 									]
 								}
@@ -198,7 +197,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 20149,
+			"id": 20045,
 			"name": "Settings",
 			"variant": "declaration",
 			"kind": 32,
@@ -224,34 +223,36 @@
 					"fileName": "settings.ts",
 					"line": 6,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/settings.ts#L6"
+					"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/settings.ts#L6"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 20150,
+									"id": 20046,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 20151,
+											"id": 20047,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -261,20 +262,22 @@
 													"fileName": "settings.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/settings.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/settings.ts#L8"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/id.ts",
 															"qualifiedName": "IdProperty"
 														},
 														"name": "IdProperty",
@@ -287,7 +290,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20152,
+											"id": 20048,
 											"name": "entity_type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -305,13 +308,14 @@
 													"fileName": "settings.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/settings.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/settings.ts#L12"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -320,7 +324,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20153,
+											"id": 20049,
 											"name": "fields",
 											"variant": "declaration",
 											"kind": 1024,
@@ -349,27 +353,30 @@
 													"fileName": "settings.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/settings.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/settings.ts#L20"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
 															"qualifiedName": "NoInfer"
 														},
 														"typeArguments": [
 															{
 																"type": "reference",
 																"target": {
-																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
 																	"qualifiedName": "Record"
 																},
 																"typeArguments": [
@@ -396,7 +403,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20154,
+											"id": 20050,
 											"name": "is_active",
 											"variant": "declaration",
 											"kind": 1024,
@@ -425,13 +432,14 @@
 													"fileName": "settings.ts",
 													"line": 26,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/settings.ts#L26"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/settings.ts#L26"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/boolean.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/boolean.ts",
 													"qualifiedName": "BooleanProperty"
 												},
 												"name": "BooleanProperty",
@@ -444,19 +452,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												20151,
-												20152,
-												20153,
-												20154
+												20047,
+												20048,
+												20049,
+												20050
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "settings.ts",
-											"line": 7,
-											"character": 34,
-											"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/settings.ts#L7"
 										}
 									]
 								}
@@ -476,7 +476,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 20136,
+			"id": 20032,
 			"name": "Translation",
 			"variant": "declaration",
 			"kind": 32,
@@ -488,34 +488,36 @@
 					"fileName": "translation.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/translation.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/translation.ts#L3"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 20137,
+									"id": 20033,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 20138,
+											"id": 20034,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -533,20 +535,22 @@
 													"fileName": "translation.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/translation.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/translation.ts#L5"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/id.ts",
 															"qualifiedName": "IdProperty"
 														},
 														"name": "IdProperty",
@@ -559,7 +563,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20139,
+											"id": 20035,
 											"name": "reference_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -581,13 +585,14 @@
 													"fileName": "translation.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/translation.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/translation.ts#L9"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -596,7 +601,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20140,
+											"id": 20036,
 											"name": "reference",
 											"variant": "declaration",
 											"kind": 1024,
@@ -618,13 +623,14 @@
 													"fileName": "translation.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/translation.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/translation.ts#L13"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -633,7 +639,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20141,
+											"id": 20037,
 											"name": "locale_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -666,13 +672,14 @@
 													"fileName": "translation.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/translation.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/translation.ts#L20"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -681,7 +688,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20142,
+											"id": 20038,
 											"name": "translations",
 											"variant": "declaration",
 											"kind": 1024,
@@ -714,27 +721,30 @@
 													"fileName": "translation.ts",
 													"line": 31,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/translation.ts#L31"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/translation.ts#L31"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
 															"qualifiedName": "NoInfer"
 														},
 														"typeArguments": [
 															{
 																"type": "reference",
 																"target": {
-																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
 																	"qualifiedName": "Record"
 																},
 																"typeArguments": [
@@ -761,7 +771,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20143,
+											"id": 20039,
 											"name": "translated_field_count",
 											"variant": "declaration",
 											"kind": 1024,
@@ -783,13 +793,14 @@
 													"fileName": "translation.ts",
 													"line": 36,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/translation.ts#L36"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/translation/src/models/translation.ts#L36"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/number.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/number.ts",
 													"qualifiedName": "NumberProperty"
 												},
 												"name": "NumberProperty",
@@ -802,21 +813,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												20138,
-												20139,
-												20140,
-												20141,
-												20142,
-												20143
+												20034,
+												20035,
+												20036,
+												20037,
+												20038,
+												20039
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "translation.ts",
-											"line": 4,
-											"character": 25,
-											"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/translation/src/models/translation.ts#L4"
 										}
 									]
 								}
@@ -840,92 +843,112 @@
 		{
 			"title": "Variables",
 			"children": [
-				20144,
-				20149,
-				20136
+				20040,
+				20045,
+				20032
 			]
 		}
 	],
 	"packageName": "@medusajs/translation",
 	"symbolIdMap": {
-		"20135": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/index.ts",
+		"20031": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"20136": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
+		"20032": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/translation.ts",
 			"qualifiedName": "Translation"
 		},
-		"20137": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
+		"20033": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/translation.ts",
 			"qualifiedName": "__object"
 		},
-		"20138": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
+		"20034": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/translation.ts",
 			"qualifiedName": "__object.id"
 		},
-		"20139": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
+		"20035": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/translation.ts",
 			"qualifiedName": "__object.reference_id"
 		},
-		"20140": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
+		"20036": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/translation.ts",
 			"qualifiedName": "__object.reference"
 		},
-		"20141": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
+		"20037": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/translation.ts",
 			"qualifiedName": "__object.locale_code"
 		},
-		"20142": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
+		"20038": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/translation.ts",
 			"qualifiedName": "__object.translations"
 		},
-		"20143": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/translation.ts",
+		"20039": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/translation.ts",
 			"qualifiedName": "__object.translated_field_count"
 		},
-		"20144": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
+		"20040": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/locale.ts",
 			"qualifiedName": "Locale"
 		},
-		"20145": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
+		"20041": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/locale.ts",
 			"qualifiedName": "__object"
 		},
-		"20146": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
+		"20042": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/locale.ts",
 			"qualifiedName": "__object.id"
 		},
-		"20147": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
+		"20043": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/locale.ts",
 			"qualifiedName": "__object.code"
 		},
-		"20148": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/locale.ts",
+		"20044": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/locale.ts",
 			"qualifiedName": "__object.name"
 		},
-		"20149": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
+		"20045": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/settings.ts",
 			"qualifiedName": "Settings"
 		},
-		"20150": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
+		"20046": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/settings.ts",
 			"qualifiedName": "__object"
 		},
-		"20151": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
+		"20047": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/settings.ts",
 			"qualifiedName": "__object.id"
 		},
-		"20152": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
+		"20048": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/settings.ts",
 			"qualifiedName": "__object.entity_type"
 		},
-		"20153": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
+		"20049": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/settings.ts",
 			"qualifiedName": "__object.fields"
 		},
-		"20154": {
-			"sourceFileName": "../../../../packages/modules/translation/src/models/settings.ts",
+		"20050": {
+			"packageName": "@medusajs/translation",
+			"packagePath": "src/models/settings.ts",
 			"qualifiedName": "__object.is_active"
 		}
 	},
@@ -934,7 +957,7 @@
 			"1": "../../../../packages/modules/translation/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 20135
+			"1": 20031
 		}
 	}
 }

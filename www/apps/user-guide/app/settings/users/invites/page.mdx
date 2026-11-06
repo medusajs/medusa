@@ -32,30 +32,43 @@ Make sure you've set up [Medusa Emails](!cloud!/emails) in your Cloud project to
 
 ## Invite a User
 
+<PermissionsBadge permissions={["invite:create", "invite:read"]} />
+
 To send an invite to a user:
 
 1. Go to Settings → Users.
 2. Click the Invite button.
 3. Enter the user’s email.
-4. Once done, click on the "Send invite" button.
+4. If your store uses the role-based access control (RBAC) feature, you can select the roles to assign the user in the optional **Roles** field. The user gets these roles when they accept the invite.
+5. Once done, click on the "Send invite" button.
 
 ![Invite user form](https://res.cloudinary.com/dza7lstvk/image/upload/v1739964961/User%20Guide/Screenshot_2025-02-19_at_1.35.52_PM_rewdrm.png)
+
+### Assign Roles in Invites
+
+The **Roles** field only appears if your store uses the RBAC feature and you have the `rbac_role:read` policy. The field only lists the roles that you can assign, which are the roles whose policies you hold yourself.
+
+If you don't select any roles, the user has no permissions after accepting the invite. They see a **No permissions yet** page until you [assign them a role](../../roles/page.mdx#assign-users-to-a-role).
 
 ---
 
 ## View Pending Invites
 
+<PermissionsBadge permissions={["invite:create", "invite:read"]} />
+
 To view pending invites:
 
 1. Go to Settings → Users.
 2. Click the Invite button.
-3. Below the form, you'll find a Pending Invites table with all the invites that haven't been accepted yet.
+3. Below the form, you'll find a Pending Invites table with all the invites that haven't been accepted yet. If your store uses the RBAC feature, the table also shows the roles of each invite.
 
 ![Pending invites table](https://res.cloudinary.com/dza7lstvk/image/upload/v1739964999/User%20Guide/Screenshot_2025-02-19_at_1.36.30_PM_jvkqcw.png)
 
 ---
 
 ## Resend an Invite
+
+<PermissionsBadge permissions={["invite:create", "invite:read", "invite:update"]} />
 
 You can resend an invite if the user hasn't received it, they lost their link, or the invite has expired.
 
@@ -72,6 +85,8 @@ A notification will be sent to the user [as configured by your technical team](!
 
 ## Get Invite Link
 
+<PermissionsBadge permissions={["invite:create", "invite:read"]} />
+
 In addition to sending the user an invite, you can copy the invite link and send it manually to the user.
 
 To copy the invite link:
@@ -86,6 +101,8 @@ You can then send this link to the user to sign up.
 ---
 
 ## Delete Invite
+
+<PermissionsBadge permissions={["invite:create", "invite:read", "invite:delete"]} />
 
 <Note type="warning">
 

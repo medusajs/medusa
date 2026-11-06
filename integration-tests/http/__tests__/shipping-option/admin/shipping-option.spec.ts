@@ -144,6 +144,48 @@ medusaIntegrationTestRunner({
 
           expect(shippingOptions2.data.shipping_options).toHaveLength(0)
         })
+
+        it("should return soft-deleted options when with_deleted is true", async () => {
+          const shippingOption = (
+            await api.post(
+              `/admin/shipping-options`,
+              {
+                name: "Test shipping option",
+                service_zone_id: fulfillmentSet.service_zones[0].id,
+                shipping_profile_id: shippingProfile.id,
+                provider_id: "manual_test-provider",
+                price_type: "flat",
+                type_id: type.id,
+                prices: [{ currency_code: "usd", amount: 1000 }],
+              },
+              adminHeaders
+            )
+          ).data.shipping_option
+
+          await api.delete(
+            `/admin/shipping-options/${shippingOption.id}`,
+            adminHeaders
+          )
+
+          const withoutDeleted = await api.get(
+            `/admin/shipping-options?id=${shippingOption.id}`,
+            adminHeaders
+          )
+
+          expect(withoutDeleted.data.shipping_options).toHaveLength(0)
+
+          const withDeleted = await api.get(
+            `/admin/shipping-options?id=${shippingOption.id}&with_deleted=true&fields=id,deleted_at`,
+            adminHeaders
+          )
+
+          expect(withDeleted.data.shipping_options).toEqual([
+            expect.objectContaining({
+              id: shippingOption.id,
+              deleted_at: expect.any(String),
+            }),
+          ])
+        })
       })
 
       describe("GET /admin/shipping-options/:id", () => {

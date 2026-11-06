@@ -4,7 +4,6 @@ import {
   ApplicationMethodTargetType,
   ApplicationMethodType,
   BigNumber,
-  isDefined,
   isPresent,
   MathBN,
   MedusaError,
@@ -181,7 +180,7 @@ export function validateApplicationMethodAttributes(
   if (
     allocation &&
     allowedAllocationForQuantity.includes(allocation) &&
-    !isDefined(maxQuantity)
+    !isPresent(maxQuantity)
   ) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,

@@ -8,21 +8,24 @@ interface UseExtendableFormProps<
   TSchema extends ZodObject<any>,
   TContext = any,
   TData = any,
-  TTransformedValues extends FieldValues = z.infer<TSchema>
+  TTransformedValues extends FieldValues = z.infer<TSchema>,
 > extends Omit<
-    UseFormProps<z.infer<TSchema>, TContext, TTransformedValues>,
-    "resolver"
-  > {
+  UseFormProps<z.infer<TSchema>, TContext, TTransformedValues>,
+  "resolver"
+> {
   schema: TSchema | z.ZodPipe<TSchema, z.ZodType>
   configs: ConfigField[]
   data?: TData
 }
 
 function createAdditionalDataSchema(configs: ConfigField[]) {
-  return configs.reduce((acc, config) => {
-    acc[config.name] = config.validation
-    return acc
-  }, {} as Record<string, z.ZodTypeAny>)
+  return configs.reduce(
+    (acc, config) => {
+      acc[config.name] = config.validation
+      return acc
+    },
+    {} as Record<string, z.ZodTypeAny>
+  )
 }
 
 /**
@@ -71,13 +74,16 @@ function createExtendedDefaultValues<TData>(
   configs: ConfigField[],
   data?: TData
 ) {
-  const additional_data = configs.reduce((acc, config) => {
-    const { name, defaultValue } = config
+  const additional_data = configs.reduce(
+    (acc, config) => {
+      const { name, defaultValue } = config
 
-    acc[name] =
-      typeof defaultValue === "function" ? defaultValue(data) : defaultValue
-    return acc
-  }, {} as Record<string, any>)
+      acc[name] =
+        typeof defaultValue === "function" ? defaultValue(data) : defaultValue
+      return acc
+    },
+    {} as Record<string, any>
+  )
 
   return Object.assign(baseDefaultValues, { additional_data })
 }
@@ -85,7 +91,7 @@ function createExtendedDefaultValues<TData>(
 export const useExtendableForm = <
   TSchema extends ZodObject<any>,
   TContext = any,
-  TTransformedValues extends FieldValues = z.infer<TSchema>
+  TTransformedValues extends FieldValues = z.infer<TSchema>,
 >({
   defaultValues: baseDefaultValues,
   schema: baseSchema,

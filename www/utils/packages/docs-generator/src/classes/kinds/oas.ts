@@ -2572,6 +2572,44 @@ class OasKindGenerator extends FunctionKindGenerator {
     ) {
       oldSchemaObj.anyOf = newSchemaObj.anyOf
       wasUpdated = true
+    } else if (oldSchemaType === "allOf") {
+      const getPropertyType = (
+        property: OpenApiSchema | OpenAPIV3.ReferenceObject
+      ) => {
+        return this.oasSchemaHelper.isRefObject(property)
+          ? "object"
+          : this.inferOasSchemaType(property)
+      }
+
+      oldSchemaObj!.allOf!.forEach((oldItem, index) => {
+        const newItem = newSchemaObj.allOf![index]
+        if (
+          this.oasSchemaHelper.isRefObject(oldItem) ||
+          this.oasSchemaHelper.isRefObject(newItem) ||
+          !oldItem.properties ||
+          !newItem.properties
+        ) {
+          return
+        }
+
+        Object.entries(oldItem.properties).forEach(
+          ([propertyName, oldProperty]) => {
+            const newProperty = newItem.properties![propertyName]
+            if (
+              !newProperty ||
+              getPropertyType(oldProperty) === getPropertyType(newProperty)
+            ) {
+              return
+            }
+
+            oldItem.properties![propertyName] = this.mergeWithExistingSchema({
+              schema: newProperty,
+              level: maybeIncrementLevel(level, "object"),
+            }).schema
+            wasUpdated = true
+          }
+        )
+      })
     } else if (oldSchemaType === "object") {
       if (!oldSchemaObj?.properties && newSchemaObj?.properties) {
         oldSchemaObj!.properties = newSchemaObj.properties
@@ -2635,50 +2673,13 @@ class OasKindGenerator extends FunctionKindGenerator {
               !Object.hasOwn(oldSchemaObj!.properties!, propertyKey)
           )
           .forEach((newPropertyKey) => {
-            const tryToUpdateSchema = (
-              schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
-            ) => {
-              let updatedSchema = schema
-              const newPropertySchemaName = this.oasSchemaHelper.isRefObject(
-                schema
-              )
-                ? schema.$ref
-                : "x-schemaName" in schema
-                  ? (schema["x-schemaName"] as string)
-                  : undefined
-              if (newPropertySchemaName) {
-                const schemaToUpdate = this.oasSchemaHelper.getSchemaByName(
-                  newPropertySchemaName,
-                  true,
-                  true
-                )
+            const updateResult = this.mergeWithExistingSchema({
+              schema: newSchemaObj!.properties![newPropertyKey],
+              level: maybeIncrementLevel(level, "object"),
+            })
+            wasUpdated = updateResult.wasUpdated || wasUpdated
 
-                if (schemaToUpdate) {
-                  const updateResult = this.updateSchema({
-                    oldSchema: schemaToUpdate.schema,
-                    newSchema: schema,
-                    level: maybeIncrementLevel(level, "object"),
-                  })
-                  updatedSchema = updateResult?.schema || newProperty
-                  wasUpdated = updateResult?.wasUpdated || wasUpdated
-                }
-              }
-
-              return updatedSchema
-            }
-
-            let newProperty = newSchemaObj!.properties![newPropertyKey]
-
-            if (
-              !this.oasSchemaHelper.isRefObject(newProperty) &&
-              newProperty.type === "array"
-            ) {
-              newProperty.items = tryToUpdateSchema(newProperty.items)
-            } else {
-              newProperty = tryToUpdateSchema(newProperty)
-            }
-
-            oldSchemaObj!.properties![newPropertyKey] = newProperty
+            oldSchemaObj!.properties![newPropertyKey] = updateResult.schema
           })
       }
     } else if (
@@ -2749,6 +2750,56 @@ class OasKindGenerator extends FunctionKindGenerator {
     return {
       schema: oldSchemaObj,
       wasUpdated,
+    }
+  }
+
+  /**
+   * Merges a schema, or an array schema's items, that references a named schema
+   * with the named schema's existing output, so that its manual changes are kept.
+   *
+   * @returns The merged schema and whether the named schema was updated.
+   */
+  mergeWithExistingSchema({
+    schema,
+    level,
+  }: {
+    schema: OpenApiSchema | OpenAPIV3.ReferenceObject
+    level: number
+  }): {
+    schema: OpenApiSchema | OpenAPIV3.ReferenceObject
+    wasUpdated: boolean
+  } {
+    if (!this.oasSchemaHelper.isRefObject(schema) && schema.type === "array") {
+      const updateResult = this.mergeWithExistingSchema({
+        schema: schema.items,
+        level,
+      })
+      return {
+        schema: { ...schema, items: updateResult.schema },
+        wasUpdated: updateResult.wasUpdated,
+      }
+    }
+
+    const schemaName = this.oasSchemaHelper.isRefObject(schema)
+      ? schema.$ref
+      : (schema["x-schemaName"] as string | undefined)
+    const existingSchema = schemaName
+      ? this.oasSchemaHelper.getSchemaByName(schemaName, true, true)
+      : undefined
+
+    if (!existingSchema) {
+      return { schema, wasUpdated: false }
+    }
+
+    const updateResult = this.updateSchema({
+      oldSchema: existingSchema.schema,
+      newSchema: schema,
+      level,
+    })
+
+    return {
+      schema: updateResult?.schema || schema,
+      wasUpdated: updateResult?.wasUpdated || false,
     }
   }
 

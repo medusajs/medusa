@@ -24,7 +24,7 @@ function SalesChannels(props: SalesChannelsProps) {
         <Text
           size="small"
           weight="plus"
-          className="text-ui-fg-subtle flex-1"
+          className="flex-1 text-ui-fg-subtle"
           as="div"
         >
           {t(`stockLocations.salesChannels.label`)}
@@ -63,7 +63,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
         <Text
           size="small"
           weight="plus"
-          className="text-ui-fg-subtle flex-1"
+          className="flex-1 text-ui-fg-subtle"
           as="div"
         >
           {t(`stockLocations.fulfillmentSets.${type}.header`)}
@@ -121,19 +121,18 @@ function LocationListItem(props: LocationProps) {
     <Container className="flex flex-col divide-y p-0">
       <div className="px-6 py-4">
         <div className="flex flex-row items-center justify-between gap-x-4">
-          <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">
-            <div className="bg-ui-bg-field flex size-6 items-center justify-center rounded-[4px]">
+          <div className="flex size-7 items-center justify-center rounded-md shadow-borders-base">
+            <div className="flex size-6 items-center justify-center rounded-[4px] bg-ui-bg-field">
               <Buildings className="text-ui-fg-subtle" />
             </div>
           </div>
 
           <div className="grow-1 flex flex-1 flex-col">
             <Text weight="plus">{location.name}</Text>
-            <Text className="text-ui-fg-subtle txt-small">
+            <Text className="txt-small text-ui-fg-subtle">
               {getFormattedAddress({
                 address: location.address as
-                  | HttpTypes.AdminOrderAddress
-                  | undefined,
+                  HttpTypes.AdminOrderAddress | undefined,
               }).join(", ")}
             </Text>
           </div>
@@ -161,7 +160,7 @@ function LocationListItem(props: LocationProps) {
                 },
               ]}
             />
-            <div className="bg-ui-border-strong h-[12px] w-[1px]" />
+            <div className="h-[12px] w-[1px] bg-ui-border-strong" />
             <LinkButton to={`/settings/locations/${location.id}`}>
               {t("actions.viewDetails")}
             </LinkButton>

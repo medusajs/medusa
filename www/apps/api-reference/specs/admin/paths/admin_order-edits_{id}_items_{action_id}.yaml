@@ -37,8 +37,7 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_order-edits_{id}_items_{action_id}/post.js
+        $ref: ../code_samples/JavaScript/admin_order-edits_{id}_items_{action_id}/post.js
     - lang: Shell
       label: cURL
       source:
@@ -100,13 +99,11 @@ delete:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_order-edits_{id}_items_{action_id}/delete.js
+        $ref: ../code_samples/JavaScript/admin_order-edits_{id}_items_{action_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_order-edits_{id}_items_{action_id}/delete.sh
+        $ref: ../code_samples/Shell/admin_order-edits_{id}_items_{action_id}/delete.sh
   tags:
     - Order Edits
   responses:

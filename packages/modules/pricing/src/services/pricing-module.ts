@@ -302,9 +302,8 @@ export default class PricingModuleService
       sharedContext
     )
     if (!pricingContext || !priceSets.length) {
-      const serializedPriceSets = await this.baseRepository_.serialize<
-        PriceSetDTO[]
-      >(priceSets)
+      const serializedPriceSets =
+        await this.baseRepository_.serialize<PriceSetDTO[]>(priceSets)
       return [serializedPriceSets, count]
     }
 
@@ -324,9 +323,8 @@ export default class PricingModuleService
       priceSet.calculated_price = calculatedPrice ?? null
     }
 
-    const serializedPriceSets = await this.baseRepository_.serialize<
-      PriceSetDTO[]
-    >(priceSets)
+    const serializedPriceSets =
+      await this.baseRepository_.serialize<PriceSetDTO[]>(priceSets)
 
     return [serializedPriceSets, count]
   }
@@ -431,7 +429,8 @@ export default class PricingModuleService
          * When deciding which price to use we follow the following logic:
          * - If the price list is of type OVERRIDE, we always use the price list price.
          *   - If there are multiple price list prices of type OVERRIDE, we use the one with the lowest amount.
-         * - If the price list is of type SALE, we use the lowest price between the price list price and the default price
+         * - If the price list is of type SALE, we use the lowest price between the price list price and the original price
+         *   (the matching OVERRIDE price list price if any, otherwise the default price)
          */
         if (priceListPrice) {
           switch (priceListPrice.price_list_type) {
@@ -442,13 +441,13 @@ export default class PricingModuleService
             case PriceListType.SALE: {
               let lowestPrice = priceListPrice
 
-              if (defaultPrice?.amount && priceListPrice.amount) {
+              if (originalPrice?.amount && priceListPrice.amount) {
                 lowestPrice = MathBN.lte(
                   priceListPrice.amount,
-                  defaultPrice.amount
+                  originalPrice.amount
                 )
                   ? priceListPrice
-                  : defaultPrice
+                  : originalPrice
               }
 
               calculatedPrice = lowestPrice
@@ -1171,9 +1170,8 @@ export default class PricingModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<
-      PricePreferenceDTO[]
-    >(preferences)
+    const serialized =
+      await this.baseRepository_.serialize<PricePreferenceDTO[]>(preferences)
     return Array.isArray(data) ? serialized : serialized[0]
   }
 

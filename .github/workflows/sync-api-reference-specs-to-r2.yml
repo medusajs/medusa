@@ -29,6 +29,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+          check-latest: true
           cache: "yarn"
 
       - name: Install dependencies
@@ -39,7 +40,14 @@ jobs:
         if: inputs.commit_sha != ''
         id: dispatch_base
         working-directory: .
-        run: echo "base_sha=$(git rev-parse ${{ inputs.commit_sha }}^)" >> "$GITHUB_OUTPUT"
+        env:
+          COMMIT_SHA: ${{ inputs.commit_sha }}
+        run: |
+          if ! [[ "$COMMIT_SHA" =~ ^[0-9a-f]{7,40}$ ]]; then
+            echo "::error::commit_sha must be a hex commit SHA" >&2
+            exit 1
+          fi
+          echo "base_sha=$(git rev-parse "${COMMIT_SHA}^")" >> "$GITHUB_OUTPUT"
 
       - name: Get changed spec files
         id: changed
@@ -76,37 +84,42 @@ jobs:
 
       # The `secrets` context isn't available in a step's `if`, so the check is
       # done here and exposed as an output.
-      - name: Check whether the resync webhook is configured
-        id: webhook
-        if: steps.changed.outputs.any_changed == 'true' || steps.changed.outputs.any_deleted == 'true'
+      - name: Check whether the cloud repo is configured
+        id: cloud
+        if: steps.changed.outputs.any_changed == 'true'
         env:
-          MEDUSA_CLOUD_API_URL: ${{ secrets.MEDUSA_CLOUD_API_URL }}
-          MEDUSA_CLOUD_API_KEY: ${{ secrets.MEDUSA_CLOUD_API_KEY }}
+          MEDUSA_CLOUD_REPO: ${{ secrets.MEDUSA_CLOUD_REPO }}
         run: |
-          if [ -n "$MEDUSA_CLOUD_API_URL" ] && [ -n "$MEDUSA_CLOUD_API_KEY" ]; then
+          if [ -n "$MEDUSA_CLOUD_REPO" ]; then
             echo "configured=true" >> "$GITHUB_OUTPUT"
           else
             echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Skipping the resync trigger: MEDUSA_CLOUD_API_URL and/or MEDUSA_CLOUD_API_KEY aren't set."
+            echo "::notice::Skipping the sync to cloud: MEDUSA_CLOUD_REPO isn't set."
           fi
 
-      - name: Trigger specs resync
-        if: steps.webhook.outputs.configured == 'true'
-        env:
-          MEDUSA_CLOUD_API_URL: ${{ secrets.MEDUSA_CLOUD_API_URL }}
-          MEDUSA_CLOUD_API_KEY: ${{ secrets.MEDUSA_CLOUD_API_KEY }}
-          COMMIT_SHA: ${{ inputs.commit_sha || github.sha }}
-        run: |
-          # the secret may hold a bare host, so the scheme is added when missing
-          BASE_URL="$MEDUSA_CLOUD_API_URL"
-          case "$BASE_URL" in
-            http://*|https://*) ;;
-            *) BASE_URL="https://$BASE_URL" ;;
-          esac
-          BASE_URL="${BASE_URL%/}"
+      - name: Generate GitHub App token
+        id: app-token
+        if: steps.cloud.outputs.configured == 'true'
+        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ secrets.MEDUSA_CLOUD_REPO }}
+          permission-contents: write
 
-          curl --fail-with-body --silent --show-error --location \
-            --request POST "$BASE_URL/hooks/oas-specs" \
-            --header "Authorization: Basic $MEDUSA_CLOUD_API_KEY" \
-            --header "Content-Type: application/json" \
-            --data "{\"commit_sha\": \"$COMMIT_SHA\"}"
+      - name: Sync to cloud
+        if: steps.cloud.outputs.configured == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          CLOUD_REPO: ${{ github.repository_owner }}/${{ secrets.MEDUSA_CLOUD_REPO }}
+        run: |
+          VERSION="$(sed -nE 's/^  version: ([0-9]+\.[0-9]+\.[0-9]+)$/\1/p' specs/admin/openapi.full.yaml | head -1)"
+          if [ -z "$VERSION" ]; then
+            echo "::error::No version found in specs/admin/openapi.full.yaml"
+            exit 1
+          fi
+
+          gh api "repos/$CLOUD_REPO/dispatches" \
+            -f event_type=medusa-specs-uploaded \
+            -f "client_payload[version]=$VERSION"

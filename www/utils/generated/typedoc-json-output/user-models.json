@@ -1,12 +1,13 @@
 {
-	"id": 20588,
+	"schemaVersion": "2.0",
+	"id": 20491,
 	"name": "user-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 20597,
+			"id": 20500,
 			"name": "Invite",
 			"variant": "declaration",
 			"kind": 32,
@@ -18,34 +19,36 @@
 					"fileName": "invite.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/invite.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/invite.ts#L3"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 20598,
+									"id": 20501,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 20599,
+											"id": 20502,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -63,20 +66,22 @@
 													"fileName": "invite.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/invite.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/invite.ts#L5"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/id.ts",
 															"qualifiedName": "IdProperty"
 														},
 														"name": "IdProperty",
@@ -89,7 +94,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20600,
+											"id": 20503,
 											"name": "email",
 											"variant": "declaration",
 											"kind": 1024,
@@ -107,13 +112,14 @@
 													"fileName": "invite.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/invite.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/invite.ts#L6"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -122,7 +128,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20601,
+											"id": 20504,
 											"name": "accepted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -140,13 +146,14 @@
 													"fileName": "invite.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/invite.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/invite.ts#L7"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/boolean.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/boolean.ts",
 													"qualifiedName": "BooleanProperty"
 												},
 												"name": "BooleanProperty",
@@ -155,7 +162,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20602,
+											"id": 20505,
 											"name": "token",
 											"variant": "declaration",
 											"kind": 1024,
@@ -173,13 +180,14 @@
 													"fileName": "invite.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/invite.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/invite.ts#L8"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -188,7 +196,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20603,
+											"id": 20506,
 											"name": "expires_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -206,13 +214,14 @@
 													"fileName": "invite.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/invite.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/invite.ts#L9"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/date-time.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/date-time.ts",
 													"qualifiedName": "DateTimeProperty"
 												},
 												"name": "DateTimeProperty",
@@ -221,7 +230,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20604,
+											"id": 20507,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -241,27 +250,30 @@
 													"fileName": "invite.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/invite.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/invite.ts#L10"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
 															"qualifiedName": "NoInfer"
 														},
 														"typeArguments": [
 															{
 																"type": "reference",
 																"target": {
-																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
 																	"qualifiedName": "Record"
 																},
 																"typeArguments": [
@@ -292,21 +304,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												20599,
-												20600,
-												20601,
-												20602,
-												20603,
-												20604
+												20502,
+												20503,
+												20504,
+												20505,
+												20506,
+												20507
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "invite.ts",
-											"line": 4,
-											"character": 20,
-											"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/invite.ts#L4"
 										}
 									]
 								}
@@ -326,7 +330,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 20589,
+			"id": 20492,
 			"name": "User",
 			"variant": "declaration",
 			"kind": 32,
@@ -338,34 +342,36 @@
 					"fileName": "user.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/user.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/user.ts#L3"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 20590,
+									"id": 20493,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 20591,
+											"id": 20494,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -383,20 +389,22 @@
 													"fileName": "user.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/user.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/user.ts#L5"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/id.ts",
 															"qualifiedName": "IdProperty"
 														},
 														"name": "IdProperty",
@@ -409,7 +417,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20592,
+											"id": 20495,
 											"name": "first_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -429,13 +437,14 @@
 													"fileName": "user.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/user.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/user.ts#L6"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -444,7 +453,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20593,
+											"id": 20496,
 											"name": "last_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -464,13 +473,14 @@
 													"fileName": "user.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/user.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/user.ts#L7"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -479,7 +489,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20594,
+											"id": 20497,
 											"name": "email",
 											"variant": "declaration",
 											"kind": 1024,
@@ -497,13 +507,14 @@
 													"fileName": "user.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/user.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/user.ts#L8"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -512,7 +523,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20595,
+											"id": 20498,
 											"name": "avatar_url",
 											"variant": "declaration",
 											"kind": 1024,
@@ -532,13 +543,14 @@
 													"fileName": "user.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/user.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/user.ts#L9"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -547,7 +559,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20596,
+											"id": 20499,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -567,27 +579,30 @@
 													"fileName": "user.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/user.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/user/src/models/user.ts#L10"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
 															"qualifiedName": "NoInfer"
 														},
 														"typeArguments": [
 															{
 																"type": "reference",
 																"target": {
-																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
 																	"qualifiedName": "Record"
 																},
 																"typeArguments": [
@@ -618,21 +633,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												20591,
-												20592,
-												20593,
-												20594,
-												20595,
-												20596
+												20494,
+												20495,
+												20496,
+												20497,
+												20498,
+												20499
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "user.ts",
-											"line": 4,
-											"character": 18,
-											"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/user/src/models/user.ts#L4"
 										}
 									]
 								}
@@ -656,79 +663,96 @@
 		{
 			"title": "Variables",
 			"children": [
-				20597,
-				20589
+				20500,
+				20492
 			]
 		}
 	],
 	"packageName": "@medusajs/user",
 	"symbolIdMap": {
-		"20588": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/index.ts",
+		"20491": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"20589": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
+		"20492": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/user.ts",
 			"qualifiedName": "User"
 		},
-		"20590": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
+		"20493": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object"
 		},
-		"20591": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
+		"20494": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.id"
 		},
-		"20592": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
+		"20495": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.first_name"
 		},
-		"20593": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
+		"20496": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.last_name"
 		},
-		"20594": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
+		"20497": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.email"
 		},
-		"20595": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
+		"20498": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.avatar_url"
 		},
-		"20596": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/user.ts",
+		"20499": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"20597": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
+		"20500": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "Invite"
 		},
-		"20598": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
+		"20501": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object"
 		},
-		"20599": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
+		"20502": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.id"
 		},
-		"20600": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
+		"20503": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.email"
 		},
-		"20601": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
+		"20504": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.accepted"
 		},
-		"20602": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
+		"20505": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.token"
 		},
-		"20603": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
+		"20506": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.expires_at"
 		},
-		"20604": {
-			"sourceFileName": "../../../../packages/modules/user/src/models/invite.ts",
+		"20507": {
+			"packageName": "@medusajs/user",
+			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.metadata"
 		}
 	},
@@ -737,7 +761,7 @@
 			"1": "../../../../packages/modules/user/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 20588
+			"1": 20491
 		}
 	}
 }

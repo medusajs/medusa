@@ -143,6 +143,7 @@
     "reset": "Visszaállítás",
     "confirm": "Megerősítés",
     "edit": "Szerkesztés",
+    "view": "Megtekintés",
     "addItems": "Elemek hozzáadása",
     "download": "Letöltés",
     "clear": "Törlés",
@@ -2785,7 +2786,7 @@
     "editUser": "Felhasználó Szerkesztése",
     "inviteUser": "Felhasználó Meghívása",
     "inviteUserHint": "Hívjon meg egy új felhasználót az áruházába.",
-    "inviteRolesTooltip": "Ha nincs kiválasztva szerepkör, a felhasználó szuperfelhasználói szerepkörrel kerül meghívásra.",
+    "inviteRolesTooltip": "Ha nincs szerepkör kiválasztva, a felhasználó jogosultságok nélkül lesz meghívva. Szerepköröket később is hozzárendelhet.",
     "sendInvite": "Meghívó küldése",
     "pendingInvites": "Függőben lévő Meghívók",
     "deleteInviteWarning": "A(z) {{email}} meghívó törlésére készül. Ez a művelet nem vonható vissza.",
@@ -2860,7 +2861,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "A felhasználó már rendelkezik ezzel a szerepkörrel.",
-      "unassignableRoleTooltip": "Nincs hozzáférése ennek a szerepkörnek a hozzárendeléséhez — a jogosultságai nem fednek le minden kapcsolódó szabályzatot.",
       "add": {
         "successToast_one": "A felhasználó sikeresen hozzáadva a szerepkörhöz.",
         "successToast_other": "A felhasználók sikeresen hozzáadva a szerepkörhöz.",
@@ -2888,6 +2888,9 @@
       "filtered": {
         "heading": "Nincs találat",
         "description": "Nincs olyan jogosultság, amely megfelel a jelenlegi szűrési feltételeknek."
+      },
+      "manage": {
+        "successToast": "A jogosultságok sikeresen frissítve."
       }
     },
     "list": {
@@ -2911,6 +2914,7 @@
     },
     "edit": {
       "header": "Szabályzat szerkesztése",
+      "identityHint": "A kulcs, az erőforrás és a művelet azonosítja az irányelvet, és nem módosítható. Helyette hozzon létre egy új irányelvet.",
       "successToast": "{{key}} szabályzat frissítve"
     },
     "delete": {
@@ -3372,6 +3376,9 @@
     "invalidTokenTitle": "Meghívó tokenje érvénytelen",
     "invalidTokenHint": "Próbáljon új meghívó linket kérni.",
     "passwordMismatch": "A jelszavak nem egyeznek",
+    "signedInTitle": "Már be van jelentkezve",
+    "signedInHint": "Be van jelentkezve {{email}} fiókkal. Jelentkezzen ki a meghívó elfogadásához.",
+    "signOut": "Kijelentkezés",
     "toast": {
       "accepted": "Meghívó sikeresen elfogadva"
     }
@@ -3804,6 +3811,10 @@
       "description": "Nincs jogosultsága az oldal megtekintéséhez.",
       "requiredPermission": "Szükséges jogosultság: {{permission}}",
       "action": "Nincs jogosultsága a művelet elvégzéséhez."
+    },
+    "noPermissions": {
+      "title": "Még nincsenek jogosultságok",
+      "description": "Még nincs hozzárendelt jogosultsága. Forduljon a rendszergazdához, hogy hozzáférést kérjen a szükséges területekhez."
     },
     "requiredPermissions": {
       "title": "Szükséges jogosultságok",

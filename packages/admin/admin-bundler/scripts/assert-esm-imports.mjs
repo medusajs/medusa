@@ -18,7 +18,7 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-const ESM_ONLY_DEPENDENCIES = ["vite", "@vitejs/plugin-react"]
+const ESM_ONLY_DEPENDENCIES = ["vite", "@vitejs/plugin-react", "get-port"]
 
 const bundlePath = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),

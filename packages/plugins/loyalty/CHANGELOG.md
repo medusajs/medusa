@@ -1,5 +1,75 @@
 # @medusajs/loyalty-plugin
 
+## 2.22.4
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`74827c2`](https://github.com/medusajs/medusa/commit/74827c2a849a9a7fdbb943ca9ffce4b26b670391), [`d8b4839`](https://github.com/medusajs/medusa/commit/d8b48391d45f8e90090b2f9d43ba70d1ee88bc9c), [`43c5ec2`](https://github.com/medusajs/medusa/commit/43c5ec2d2c16623546573cf1a5abc92fb41442c9), [`e3a2f38`](https://github.com/medusajs/medusa/commit/e3a2f3846c636f9df31bbc33af025896cb5e65b3), [`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`82d65fc`](https://github.com/medusajs/medusa/commit/82d65fc804627839c62b441737757609386841e3), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5), [`7167fa2`](https://github.com/medusajs/medusa/commit/7167fa2e6b0675000f18267923eca4c61908fed9), [`df7f931`](https://github.com/medusajs/medusa/commit/df7f931bf8b8fd5634c97f7a7133660f59067e99), [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/dashboard@2.22.4
+  - @medusajs/test-utils@2.22.4
+  - @medusajs/framework@2.22.4
+  - @medusajs/cli@2.22.4
+  - @medusajs/medusa@2.22.4
+  - @medusajs/admin-sdk@2.22.4
+  - @medusajs/icons@2.22.4
+  - @medusajs/ui@4.2.11
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17613](https://github.com/medusajs/medusa/pull/17613) [`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils,dashboard,loyalty-plugin): add the Aruban Florin (AWG) currency
+
+- [#17618](https://github.com/medusajs/medusa/pull/17618) [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update jest to v30.5.2 and use the `--testPathPatterns` flag in test scripts
+
+- Updated dependencies [[`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7), [`86b1067`](https://github.com/medusajs/medusa/commit/86b1067632c481d351d9c455f9f65c46086876f9), [`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d), [`39fb481`](https://github.com/medusajs/medusa/commit/39fb48168d4d63306623cb39f6973bc534a9c59a), [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`2276c84`](https://github.com/medusajs/medusa/commit/2276c84d47d0d6dc078a6eea2350b9d097a0231b), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`536d630`](https://github.com/medusajs/medusa/commit/536d63013b9bbaea5aceede3e02403a4c021f634), [`954edc7`](https://github.com/medusajs/medusa/commit/954edc77b2009a4a5c8e08536ac7c094b9e565f0), [`6942022`](https://github.com/medusajs/medusa/commit/69420228b04b08149c7a5719600f8e1e4d8546e1)]:
+  - @medusajs/dashboard@2.22.3
+  - @medusajs/cli@2.22.3
+  - @medusajs/framework@2.22.3
+  - @medusajs/medusa@2.22.3
+  - @medusajs/test-utils@2.22.3
+  - @medusajs/ui@4.2.10
+  - @medusajs/admin-sdk@2.22.3
+  - @medusajs/icons@2.22.3
+
+## 2.22.2
+
+### Patch Changes
+
+- [#17525](https://github.com/medusajs/medusa/pull/17525) [`f03b71a`](https://github.com/medusajs/medusa/commit/f03b71a2be56746080e34e0eadbbeb658ca2f562) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(loyalty-plugin): update @swc/core dev dependency to ^1.16.20
+
+- [#17567](https://github.com/medusajs/medusa/pull/17567) [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update development and test tooling (cross-env 10.1.0, esbuild 0.28.2, tsup 9.0.0, expect-type 1.4.0, @faker-js/faker 10.6.0, jsdom 30.1.3, @types/jsonwebtoken 9.0.10, msw 3.0.3, rimraf 6.1.3, Testing Library, turbo 2.11.10, @types/node 22, boxen 9.0.0, chalk 6.0.1, ci-info 4.4.0, commander 15.0.0, configstore 8.0.0, dotenv 18.0.9, execa 10.2.1, get-port 7.2.0, inquirer 14.2.4, @inquirer/checkbox 5.2.7, @inquirer/confirm 6.3.4, @inquirer/input 5.1.8, is-docker 4.0.0, meant 2.0.1, open 11.0.4, openapi3-ts 4.6.2, ora 9.4.1, @readme/openapi-parser 10.0.0, @redocly/cli 2.71.0, stack-trace 1.0.0, swagger-inline 8.1.0, yargs 18.2.0) and remove unused development dependencies; drop hosted-git-info from @medusajs/cli; fix the medusa-oas-cli circular patch recommendation crashing on references nested in inline schemas; `medusa-oas docs --preview` now serves a static Redoc 3 build since Redocly removed `preview-docs`; replace chalk with Node's built-in `util.styleText` in CommonJS packages; replace uuid with Node's built-in `crypto.randomUUID`; replace get-port with a built-in free-port helper in @medusajs/test-utils
+
+- Updated dependencies [[`d5e0ddf`](https://github.com/medusajs/medusa/commit/d5e0ddf7e510c5d54fae40e30a47b6e4d43c30b7), [`ca881e5`](https://github.com/medusajs/medusa/commit/ca881e5e758c49cfcbac4130d7e626dc06f439a6), [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae), [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`26e5807`](https://github.com/medusajs/medusa/commit/26e58070c1661c14aedc02ee6cfb0b2bb28d497b), [`7e30ecb`](https://github.com/medusajs/medusa/commit/7e30ecbbaf858a567c8d5e606b2a35cd3a4e8765), [`8e7ed52`](https://github.com/medusajs/medusa/commit/8e7ed5206e617b530512a25d7e0ee034479ea4dd), [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae), [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae), [`7b34df3`](https://github.com/medusajs/medusa/commit/7b34df35bf8e57ce0d2ab2373a624dc2cc573ca5), [`2f0b2e9`](https://github.com/medusajs/medusa/commit/2f0b2e94d6fa7193386d83b1e72bb0fc65caeddf), [`842d781`](https://github.com/medusajs/medusa/commit/842d781152debf6cd6d4daafcd57cb1af295a841), [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d), [`5ac3fdc`](https://github.com/medusajs/medusa/commit/5ac3fdcbf82e818337d424852c778ce2ffd5e8e9), [`c61fea6`](https://github.com/medusajs/medusa/commit/c61fea69bf0f42e0a4579f21e9e7f1549a9d5943), [`029fb31`](https://github.com/medusajs/medusa/commit/029fb31fd077ab9c6d6fd9d68c676c17c71294c7)]:
+  - @medusajs/medusa@2.22.2
+  - @medusajs/framework@2.22.2
+  - @medusajs/test-utils@2.22.2
+  - @medusajs/dashboard@2.22.2
+  - @medusajs/cli@2.22.2
+  - @medusajs/ui@4.2.9
+  - @medusajs/admin-sdk@2.22.2
+  - @medusajs/icons@2.22.2
+
+## 2.22.1
+
+### Patch Changes
+
+- [#17459](https://github.com/medusajs/medusa/pull/17459) [`3a3207347379b065142895fb0740442fea5f4033`](https://github.com/medusajs/medusa/commit/3a3207347379b065142895fb0740442fea5f4033) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils,dashboard,loyalty-plugin): add the Haitian Gourde (HTG) currency
+
+- [#17402](https://github.com/medusajs/medusa/pull/17402) [`4a75f02fbadb204f390bd5989dd0302f8a3f6774`](https://github.com/medusajs/medusa/commit/4a75f02fbadb204f390bd5989dd0302f8a3f6774) Thanks [@medusa-agents](https://github.com/apps/medusa-agents)! - fix(core-flows, loyalty-plugin): validate cart customer ownership checks
+
+- Updated dependencies [[`3a3207347379b065142895fb0740442fea5f4033`](https://github.com/medusajs/medusa/commit/3a3207347379b065142895fb0740442fea5f4033), [`ea2d48190febf36389aa66242247c180f9f48212`](https://github.com/medusajs/medusa/commit/ea2d48190febf36389aa66242247c180f9f48212), [`8ef41c356312e73b76cdcf19be19cff80c466b76`](https://github.com/medusajs/medusa/commit/8ef41c356312e73b76cdcf19be19cff80c466b76), [`52f4c751d2277ab704c1a184c7971a6684e11a74`](https://github.com/medusajs/medusa/commit/52f4c751d2277ab704c1a184c7971a6684e11a74), [`33deceee8465af8e04f0cfa77090c2208db51658`](https://github.com/medusajs/medusa/commit/33deceee8465af8e04f0cfa77090c2208db51658), [`6917a271ff2dd5afbd98c27bdca44c6bdfbd1630`](https://github.com/medusajs/medusa/commit/6917a271ff2dd5afbd98c27bdca44c6bdfbd1630), [`879fb81983bc33ae3901a9aecba63dfebe040c43`](https://github.com/medusajs/medusa/commit/879fb81983bc33ae3901a9aecba63dfebe040c43), [`8604053686b9b4c5bf033f03dc32412f9de902ce`](https://github.com/medusajs/medusa/commit/8604053686b9b4c5bf033f03dc32412f9de902ce), [`7c3b0339379efeda7863f48b9f60e3391cece091`](https://github.com/medusajs/medusa/commit/7c3b0339379efeda7863f48b9f60e3391cece091), [`bb1cece185d747fcac1e9bd15d99e1189b0d9973`](https://github.com/medusajs/medusa/commit/bb1cece185d747fcac1e9bd15d99e1189b0d9973), [`89f67a6a0bc8183fb5fa3243138a2d38e247774c`](https://github.com/medusajs/medusa/commit/89f67a6a0bc8183fb5fa3243138a2d38e247774c)]:
+  - @medusajs/dashboard@2.22.1
+  - @medusajs/medusa@2.22.1
+  - @medusajs/test-utils@2.22.1
+  - @medusajs/ui@4.2.8
+  - @medusajs/cli@2.22.1
+  - @medusajs/framework@2.22.1
+  - @medusajs/admin-sdk@2.22.1
+  - @medusajs/icons@2.22.1
+
 ## 2.22.0
 
 ### Minor Changes

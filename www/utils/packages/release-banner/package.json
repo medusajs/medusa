@@ -7,8 +7,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "yarn clean && tsc",
-    "watch": "tsc --watch",
+    "build": "yarn clean && yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
     "clean": "rimraf dist",
     "lint": "eslint --ext .ts src",
     "render": "node dist/cli.js render",
@@ -22,11 +22,11 @@
     "cloudinary": "^2.10.0",
     "commander": "^11.1.0",
     "dotenv": "^16.3.1",
-    "satori": "^0.12.1"
+    "satori": "^0.63.2"
   },
   "devDependencies": {
     "@types/node": "^20.12.10",
     "rimraf": "^5.0.5",
-    "typescript": "^5.6.2"
+    "typescript": "^6.0.3"
   }
 }

@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { Channels, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -14,6 +15,7 @@ import { useRegion } from "../../hooks/api/regions"
 import { getFullDate } from "../../lib/utils/date-utils"
 import { ActionMenu } from "../common/action-menu"
 import { useDeleteDraftOrder } from "../../hooks/api/draft-orders"
+import { EDIT_DRAFT_ORDER_SALES_CHANNEL_PERMISSIONS } from "../../lib/permissions"
 
 interface GeneralSectionProps {
   order: HttpTypes.AdminOrder
@@ -21,6 +23,12 @@ interface GeneralSectionProps {
 
 export const GeneralSection = ({ order }: GeneralSectionProps) => {
   const navigate = useNavigate()
+  const { hasPermission, hasAllPermissions } = usePermissions()
+  const canReadRegion = hasPermission("region:read")
+  const canEditSalesChannel = hasAllPermissions(
+    EDIT_DRAFT_ORDER_SALES_CHANNEL_PERMISSIONS
+  )
+  const canDelete = hasPermission("order:delete")
 
   const { mutateAsync: deleteDraftOrder, isPending: isDeleting } =
     useDeleteDraftOrder()
@@ -29,7 +37,7 @@ export const GeneralSection = ({ order }: GeneralSectionProps) => {
     order.region_id!,
     undefined,
     {
-      enabled: !!order.region_id,
+      enabled: canReadRegion && !!order.region_id,
     }
   )
 
@@ -45,13 +53,16 @@ export const GeneralSection = ({ order }: GeneralSectionProps) => {
         <div className="flex items-center gap-x-2">
           <Heading>Draft Order #{order.display_id}</Heading>
           <Copy content={`#${order.display_id}`} />
-          {isRegionLoaded ? (
-            <Badge size="2xsmall" rounded="full" asChild>
-              <Link to={`/settings/regions/${region?.id}`}>{region?.name}</Link>
-            </Badge>
-          ) : (
-            <Skeleton className="w-14 h-5 rounded-full" />
-          )}
+          {canReadRegion &&
+            (isRegionLoaded ? (
+              <Badge size="2xsmall" rounded="full" asChild>
+                <Link to={`/settings/regions/${region?.id}`}>
+                  {region?.name}
+                </Link>
+              </Badge>
+            ) : (
+              <Skeleton className="w-14 h-5 rounded-full" />
+            ))}
         </div>
         <Text size="small" className="text-ui-fg-subtle">
           {`${getFullDate({
@@ -60,32 +71,42 @@ export const GeneralSection = ({ order }: GeneralSectionProps) => {
           })} from ${order.sales_channel?.name}`}
         </Text>
       </div>
-      <ActionMenu
-        groups={[
-          {
-            actions: [
-              {
-                label: "Edit sales channel",
-                icon: <Channels />,
-                to: "sales-channel",
-              },
-              {
-                label: "Delete draft order",
-                icon: <Trash />,
-                onClick: async () => {
-                  try {
-                    await deleteDraftOrder(order.id)
-                    navigate("/draft-orders")
-                  } catch (error: any) {
-                    toast.error(error.message)
-                  }
-                },
-                disabled: isDeleting,
-              },
-            ],
-          },
-        ]}
-      />
+      {(canEditSalesChannel || canDelete) && (
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                ...(canEditSalesChannel
+                  ? [
+                      {
+                        label: "Edit sales channel",
+                        icon: <Channels />,
+                        to: "sales-channel",
+                      },
+                    ]
+                  : []),
+                ...(canDelete
+                  ? [
+                      {
+                        label: "Delete draft order",
+                        icon: <Trash />,
+                        onClick: async () => {
+                          try {
+                            await deleteDraftOrder(order.id)
+                            navigate("/draft-orders")
+                          } catch (error: any) {
+                            toast.error(error.message)
+                          }
+                        },
+                        disabled: isDeleting,
+                      },
+                    ]
+                  : []),
+              ],
+            },
+          ]}
+        />
+      )}
     </Container>
   )
 }

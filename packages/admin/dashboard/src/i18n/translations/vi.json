@@ -139,6 +139,7 @@
     "reset": "Đặt lại",
     "confirm": "Xác nhận",
     "edit": "Chỉnh sửa",
+    "view": "Xem",
     "addItems": "Thêm mục",
     "download": "Tải xuống",
     "clear": "Xóa sạch",
@@ -2715,6 +2716,7 @@
     "editUser": "Chỉnh sửa người dùng",
     "inviteUser": "Mời người dùng",
     "inviteUserHint": "Mời một người dùng mới đến cửa hàng của bạn.",
+    "inviteRolesTooltip": "Nếu không có vai trò nào được chọn, người dùng sẽ được mời mà không có bất kỳ quyền nào. Bạn có thể chỉ định vai trò sau.",
     "sendInvite": "Gửi lời mời",
     "pendingInvites": "Lời mời đang chờ",
     "deleteInviteWarning": "Bạn sắp xóa lời mời cho {{email}}. Hành động này không thể hoàn tác.",
@@ -2748,8 +2750,7 @@
     "invite": "Mời",
     "copyResetPasswordLink": "Sao chép liên kết đặt lại mật khẩu",
     "copyResetPasswordLinkHint": "Liên kết hết hạn trong thời gian ngắn và vô hiệu hóa mọi liên kết đặt lại mật khẩu đã gửi trước đó cho người dùng này.",
-    "copyResetPasswordLinkSuccess": "Liên kết đặt lại mật khẩu đã được sao chép vào bộ nhớ tạm",
-    "inviteRolesTooltip": "Nếu không có vai trò nào được chọn, người dùng sẽ được mời với vai trò siêu người dùng."
+    "copyResetPasswordLinkSuccess": "Liên kết đặt lại mật khẩu đã được sao chép vào bộ nhớ tạm"
   },
   "store": {
     "domain": "Cửa hàng",
@@ -3106,6 +3107,9 @@
     "invalidTokenTitle": "Mã mời của bạn không hợp lệ",
     "invalidTokenHint": "Hãy thử yêu cầu một liên kết mời mới.",
     "passwordMismatch": "Mật khẩu không khớp",
+    "signedInTitle": "Bạn đã đăng nhập",
+    "signedInHint": "Bạn đang đăng nhập với tư cách {{email}}. Đăng xuất để chấp nhận lời mời này.",
+    "signOut": "Đăng xuất",
     "toast": {
       "accepted": "Lời mời đã được chấp nhận thành công"
     }
@@ -3477,6 +3481,10 @@
       "requiredPermission": "Quyền bắt buộc: {{permission}}",
       "title": "Từ chối truy cập"
     },
+    "noPermissions": {
+      "title": "Chưa có quyền nào",
+      "description": "Bạn chưa được gán bất kỳ quyền nào. Hãy liên hệ với quản trị viên để yêu cầu quyền truy cập vào các khu vực bạn cần."
+    },
     "actions": {
       "create": "Tạo",
       "delete": "Xóa",
@@ -3535,6 +3543,7 @@
     "domain": "Chính sách",
     "edit": {
       "header": "Chỉnh sửa chính sách",
+      "identityHint": "Khóa, tài nguyên và thao tác xác định chính sách và không thể thay đổi. Hãy tạo một chính sách mới.",
       "successToast": "Chính sách {{key}} đã được cập nhật"
     },
     "fields": {
@@ -3713,6 +3722,9 @@
         "description": "Không có quyền nào khớp với tiêu chí bộ lọc hiện tại.",
         "heading": "Không có kết quả"
       },
+      "manage": {
+        "successToast": "Quyền đã được cập nhật thành công."
+      },
       "header": "Quản lý quyền",
       "hint": "Chọn các quyền mà vai trò này nên bao gồm."
     },
@@ -3734,8 +3746,7 @@
         "description_other": "Bạn sắp xóa {{count}} người dùng khỏi vai trò. Hành động này không thể hoàn tác.",
         "title_one": "Xóa người dùng",
         "title_other": "Xóa người dùng"
-      },
-      "unassignableRoleTooltip": "Bạn không có quyền gán vai trò này — quyền của bạn không bao phủ tất cả các chính sách của nó."
+      }
     }
   },
   "searchIndexes": {

@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next"
 
 import { TaxRateLine } from "../../../common/components/tax-rate-line"
 import { TaxRegionCard } from "../../../common/components/tax-region-card"
+import { useTaxRatePermissions } from "../../../../../hooks/use-resource-permissions"
+import { PermissionGuard } from "../../../../../components/common/permission-guard"
 
 type TaxRegionProvinceDetailSectionProps = {
   taxRegion: HttpTypes.AdminTaxRegion
@@ -13,9 +15,10 @@ export const TaxRegionProvinceDetailSection = ({
   taxRegion,
 }: TaxRegionProvinceDetailSectionProps) => {
   const { t } = useTranslation()
+  const { canRead: canReadTaxRates } = useTaxRatePermissions()
 
   const defaultRates = taxRegion.tax_rates.filter((r) => r.is_default === true)
-  const showBage = defaultRates.length === 0
+  const showBage = defaultRates.length === 0 && canReadTaxRates
 
   return (
     <Container className="divide-y p-0">
@@ -33,10 +36,11 @@ export const TaxRegionProvinceDetailSection = ({
           )
         }
       />
-
-      {defaultRates.map((rate) => {
-        return <TaxRateLine key={rate.id} taxRate={rate} isSublevelTaxRate />
-      })}
+      <PermissionGuard permission="tax_rate:read">
+        {defaultRates.map((rate) => {
+          return <TaxRateLine key={rate.id} taxRate={rate} isSublevelTaxRate />
+        })}
+      </PermissionGuard>
     </Container>
   )
 }

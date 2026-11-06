@@ -43,4 +43,6 @@ yarn openapi:generate --dry-run                     # from repo root: full CI pi
 - Without `--local`, `oas` ignores the codebase entirely and validates the public spec. Use `--local` when you're testing repo changes.
 - `docs` detects unhandled circular references and appends them to this package's `redocly/redocly-config.yaml` on disk. Expect that file to show up in your diff after a run, and commit the change if it's intended.
 - Invalid OAS calls `process.exit(1)` unless `--force` is passed.
+- `docs --dry-run` runs `git checkout` on `redocly/redocly-config.yaml` to undo its own edits, which also discards your unstaged changes to that file. Stage them before a dry run.
+- The Redocly plugin is CommonJS, so its files must keep the `.cjs` extension: Redocly CLI v2 is ESM. The `circular-patch` decorator patches refs on `leave`, because Redocly still reads `$ref` after the enter visitor runs.
 - The `--local` paths are resolved relative to the compiled file (`../../../../../www/...`), so the command only works from inside this monorepo layout.

@@ -53,26 +53,26 @@ export const UserMenu = () => {
           <DropdownMenu.Separator />
           <DropdownMenu.Item asChild>
             <Link to="/settings/profile" state={{ from: location.pathname }}>
-              <UserIcon className="text-ui-fg-subtle me-2" />
+              <UserIcon className="me-2 text-ui-fg-subtle" />
               {t("app.menus.user.profileSettings")}
             </Link>
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item asChild>
             <Link to="https://docs.medusajs.com" target="_blank">
-              <BookOpen className="text-ui-fg-subtle me-2" />
+              <BookOpen className="me-2 text-ui-fg-subtle" />
               {t("app.menus.user.documentation")}
             </Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item asChild>
             <Link to="https://medusajs.com/changelog/" target="_blank">
-              <TimelineVertical className="text-ui-fg-subtle me-2" />
+              <TimelineVertical className="me-2 text-ui-fg-subtle" />
               {t("app.menus.user.changelog")}
             </Link>
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item onClick={toggleModal}>
-            <Keyboard className="text-ui-fg-subtle me-2" />
+            <Keyboard className="me-2 text-ui-fg-subtle" />
             {t("app.menus.user.shortcuts")}
           </DropdownMenu.Item>
           <ThemeToggle />
@@ -95,7 +95,7 @@ const UserBadge = () => {
 
   if (isPending) {
     return (
-      <button className="shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pe-2.5 ps-1">
+      <button className="flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pe-2.5 ps-1 shadow-borders-base">
         <Skeleton className="h-5 w-5 rounded-full" />
         <Skeleton className="h-[9px] w-[70px]" />
       </button>
@@ -111,7 +111,7 @@ const UserBadge = () => {
       <DropdownMenu.Trigger
         disabled={!user}
         className={clx(
-          "bg-ui-bg-subtle grid w-full cursor-pointer grid-cols-[24px_1fr_15px] items-center gap-2 rounded-md py-1 pe-2 ps-0.5 outline-none",
+          "grid w-full cursor-pointer grid-cols-[24px_1fr_15px] items-center gap-2 rounded-md bg-ui-bg-subtle py-1 pe-2 ps-0.5 outline-none",
           "hover:bg-ui-bg-subtle-hover",
           "data-[state=open]:bg-ui-bg-subtle-hover",
           "focus-visible:shadow-borders-focus"
@@ -154,7 +154,7 @@ const ThemeToggle = () => {
         dir="ltr"
         className="rounded-md rtl:rotate-180"
       >
-        <CircleHalfSolid className="text-ui-fg-subtle me-2" />
+        <CircleHalfSolid className="me-2 text-ui-fg-subtle" />
         <span className="rtl:rotate-180">
           {t("app.menus.user.theme.label")}
         </span>
@@ -240,8 +240,8 @@ const GlobalKeybindsModal = (props: {
   return (
     <RadixDialog.Root {...props}>
       <RadixDialog.Portal>
-        <RadixDialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <RadixDialog.Content className="bg-ui-bg-subtle shadow-elevation-modal fixed left-[50%] top-[50%] flex h-full max-h-[612px] w-full max-w-[560px] translate-x-[-50%] translate-y-[-50%] flex-col divide-y overflow-hidden rounded-lg">
+        <RadixDialog.Overlay className="fixed inset-0 bg-ui-bg-overlay" />
+        <RadixDialog.Content className="fixed left-[50%] top-[50%] flex h-full max-h-[612px] w-full max-w-[560px] translate-x-[-50%] translate-y-[-50%] flex-col divide-y overflow-hidden rounded-lg bg-ui-bg-subtle shadow-elevation-modal">
           <div className="flex flex-col gap-y-3 px-6 py-4">
             <div className="flex items-center justify-between">
               <div>
@@ -272,7 +272,7 @@ const GlobalKeybindsModal = (props: {
               return (
                 <div
                   key={index}
-                  className="text-ui-fg-subtle flex items-center justify-between px-6 py-3"
+                  className="flex items-center justify-between px-6 py-3 text-ui-fg-subtle"
                 >
                   <Text size="small">{shortcut.label}</Text>
                   <div className="flex items-center gap-x-1">
@@ -338,7 +338,7 @@ const UserItem = () => {
           <Text
             size="xsmall"
             leading="compact"
-            className="text-ui-fg-subtle overflow-hidden text-ellipsis whitespace-nowrap"
+            className="overflow-hidden text-ellipsis whitespace-nowrap text-ui-fg-subtle"
           >
             {email}
           </Text>

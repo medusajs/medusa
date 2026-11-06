@@ -150,9 +150,8 @@ export default class UserModuleService
   ): Promise<UserTypes.InviteDTO[]> {
     const invites = await this.refreshInviteTokens_(inviteIds, sharedContext)
 
-    const serializedInvites = await this.baseRepository_.serialize<
-      UserTypes.InviteDTO[]
-    >(invites)
+    const serializedInvites =
+      await this.baseRepository_.serialize<UserTypes.InviteDTO[]>(invites)
 
     moduleEventBuilderFactory({
       eventName: UserEvents.INVITE_TOKEN_GENERATED,
@@ -255,9 +254,8 @@ export default class UserModuleService
 
     const updatedUsers = await this.userService_.update(input, sharedContext)
 
-    const serializedUsers = await this.baseRepository_.serialize<
-      UserTypes.UserDTO[]
-    >(updatedUsers)
+    const serializedUsers =
+      await this.baseRepository_.serialize<UserTypes.UserDTO[]>(updatedUsers)
 
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
@@ -359,9 +357,10 @@ export default class UserModuleService
       sharedContext
     )
 
-    const serializedInvites = await this.baseRepository_.serialize<
-      UserTypes.InviteDTO[]
-    >(updatedInvites)
+    const serializedInvites =
+      await this.baseRepository_.serialize<UserTypes.InviteDTO[]>(
+        updatedInvites
+      )
 
     moduleEventBuilderFactory({
       eventName: UserEvents.INVITE_TOKEN_GENERATED,
