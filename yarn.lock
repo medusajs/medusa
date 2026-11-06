@@ -3286,7 +3286,7 @@ __metadata:
   resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
   dependencies:
     "@medusajs/framework": "npm:2.22.3"
-    scrypt-kdf: "npm:^2.0.1"
+    scrypt-kdf: "npm:^4.0.0"
   peerDependencies:
     "@medusajs/framework": 2.22.3
   languageName: unknown
@@ -3338,7 +3338,7 @@ __metadata:
     "@otplib/uri": "npm:^13.5.0"
     jsonwebtoken: "npm:^9.0.2"
     jwks-rsa: "npm:^4.1.0"
-    scrypt-kdf: "npm:^2.0.1"
+    scrypt-kdf: "npm:^4.0.0"
   peerDependencies:
     "@medusajs/framework": 2.22.3
   languageName: unknown
@@ -14809,7 +14809,7 @@ __metadata:
     jest: "npm:^30.5.2"
     jsonwebtoken: "npm:^9.0.2"
     pg: "npm:^8.23.1"
-    scrypt-kdf: "npm:^2.0.1"
+    scrypt-kdf: "npm:^4.0.0"
     typescript: "npm:@typescript/typescript6@^6.0.2"
   languageName: unknown
   linkType: soft
@@ -19981,10 +19981,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scrypt-kdf@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "scrypt-kdf@npm:2.0.1"
-  checksum: 10c0/bcac66fd13b0e7e6b60ff83018a0e9a1b02d8fadbc5bf7693e6cfca2e6f842728311de338640ea682fa5dc3078ddc9391ea8763578077a04929ffaf291ab30ba
+"scrypt-kdf@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "scrypt-kdf@npm:4.0.0"
+  checksum: 10c0/c4da8c2630306de7ce3e5114c17719e9a5bb74232777daa5e962d0bda26d3f5f5733e78949d63a7da7d8893690ca2260d4bfa1692abcf6c318f735b8b4830f66
   languageName: node
   linkType: hard
 

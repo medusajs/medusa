@@ -86,7 +86,7 @@ export const createAdminUser = async (
     }
 
     const hashConfig = { logN: 15, r: 8, p: 1 }
-    const passwordHash = await Scrypt.kdf("somepassword", hashConfig)
+    const passwordHash = Buffer.from(await Scrypt.kdf("somepassword", hashConfig))
 
     authIdentity = await authModule.createAuthIdentities({
       provider_identities: [

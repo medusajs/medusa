@@ -36,7 +36,7 @@
     "@medusajs/framework": "2.22.3"
   },
   "dependencies": {
-    "scrypt-kdf": "^2.0.1"
+    "scrypt-kdf": "^4.0.0"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.3"
