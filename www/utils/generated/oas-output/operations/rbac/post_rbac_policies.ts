@@ -4,7 +4,6 @@
  * summary: Create a Policy
  * description: Create an RBAC policy.
  * x-authenticated: false
- * parameters: []
  * requestBody:
  *   content:
  *     application/json:
