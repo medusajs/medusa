@@ -6,6 +6,7 @@ import {
   brokenLinkCheckerPlugin,
   crossProjectLinksPlugin,
   validateHighlightsPlugin,
+  mdContentOverrideRehypePlugin,
 } from "remark-rehype-plugins"
 import path from "path"
 import { catchBadRedirects, withMdxWebpackLayers } from "build-scripts"
@@ -128,6 +129,7 @@ const withMDX = createMDX({
       ],
       [validateHighlightsPlugin, { verbose: false }],
       [rehypeSlug],
+      [mdContentOverrideRehypePlugin],
     ],
     development: process.env.NODE_ENV === "development",
   },
