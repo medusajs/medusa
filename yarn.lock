@@ -13930,13 +13930,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"growly@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "growly@npm:1.3.0"
-  checksum: 10c0/3043bd5c064e87f89e8c9b66894ed09fd882c7fa645621a543b45b72f040c7241e25061207a858ab191be2fbdac34795ff57c2a40962b154a6b2908a5e509252
-  languageName: node
-  linkType: hard
-
 "gzip-size@npm:^5.1.1":
   version: 5.1.1
   resolution: "gzip-size@npm:5.1.1"
@@ -17108,20 +17101,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-notifier@npm:^10.0.1":
-  version: 10.0.1
-  resolution: "node-notifier@npm:10.0.1"
-  dependencies:
-    growly: "npm:^1.3.0"
-    is-wsl: "npm:^2.2.0"
-    semver: "npm:^7.3.5"
-    shellwords: "npm:^0.1.1"
-    uuid: "npm:^8.3.2"
-    which: "npm:^2.0.2"
-  checksum: 10c0/8888f6c4c277c588e6be991019e32ebbf4abdd598151683de59b9f70c31e6bbbddf0e443ea373da44338ab82a958695dcf73035c96e336a398940228d59399eb
-  languageName: node
-  linkType: hard
-
 "node-releases@npm:^2.0.59":
   version: 2.0.60
   resolution: "node-releases@npm:2.0.60"
@@ -19453,7 +19432,6 @@ __metadata:
     js-yaml: "npm:^5.5.0"
     jsdom: "npm:^30.1.3"
     msw: "npm:^3.0.3"
-    node-notifier: "npm:^10.0.1"
     pg-god: "npm:^1.0.12"
     postcss: "npm:^8.5.10"
     posthog-node: "npm:^5.57.0"
@@ -19768,13 +19746,6 @@ __metadata:
   version: 1.12.0
   resolution: "shell-quote@npm:1.12.0"
   checksum: 10c0/1605a4ed6a758bf13de7cb8197a4184d8015f7a4dbdcd6cd4a717d5b30b3ae7666300cc4ae7f3155cf80ace9739e9e82061ee5aa1a648f53f5fab31a220816d0
-  languageName: node
-  linkType: hard
-
-"shellwords@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "shellwords@npm:0.1.1"
-  checksum: 10c0/7d66b28927e0b524b71b2e185651fcd88a70473a077dd230fbf86188380e948ffb36cea00832d78fc13c93cd15f6f52286fb05f2746b7580623ca1ec619eb004
   languageName: node
   linkType: hard
 
@@ -21907,7 +21878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"which@npm:^2.0.1, which@npm:^2.0.2":
+"which@npm:^2.0.1":
   version: 2.0.2
   resolution: "which@npm:2.0.2"
   dependencies:
