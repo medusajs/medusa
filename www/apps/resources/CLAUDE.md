@@ -115,7 +115,8 @@ the doc-model analogue of `getCleanMd`; app pages still use `getCleanMd`.
 ## Gotchas
 
 - Links in the doc-model are final site slugs (`/references/...`); `md-content`
-  absolutizes them with `NEXT_PUBLIC_BASE_URL`.
+  absolutizes them with `NEXT_PUBLIC_BASE_URL` + `NEXT_PUBLIC_BASE_PATH`
+  (`/resources`); dropping the base path makes every link 404.
 - `react-query` reference rendering exists in the theme but is not exercised —
   no reference in the current set produces `UseMutationResult` /
   `UseQueryOptionsWrapper` types.
