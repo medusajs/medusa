@@ -97,9 +97,7 @@ moduleIntegrationTestRunner({
               (acc, a) =>
                 MathBN.add(
                   acc,
-                  a.is_tax_inclusive
-                    ? MathBN.div(a.amount, taxRatio)
-                    : a.amount
+                  a.is_tax_inclusive ? MathBN.div(a.amount, taxRatio) : a.amount
                 ),
               MathBN.convert(0)
             )
@@ -6075,6 +6073,352 @@ moduleIntegrationTestRunner({
       })
 
       describe("when promotion of type buyget", () => {
+        describe("when target_selection_strategy is cheapest_first", () => {
+          const eligibleProduct = "prod_eligible"
+          const otherProduct = "prod_other"
+
+          const eligibleRules = [
+            {
+              attribute: "items.product.id",
+              operator: "in",
+              values: [eligibleProduct],
+            },
+          ]
+
+          // Buy 3, get 1 free, on any unit of the eligible product.
+          const createBuyThreeGetOne = (data: Record<string, any> = {}) => {
+            const { application_method = {}, ...promotion } = data
+
+            return createDefaultPromotion(service, {
+              code: "CHEAPEST_4_FOR_3",
+              type: PromotionType.BUYGET,
+              ...promotion,
+              application_method: {
+                type: "percentage",
+                target_type: "items",
+                value: 100,
+                allocation: "each",
+                max_quantity: 100,
+                apply_to_quantity: 1,
+                buy_rules_min_quantity: 3,
+                buy_rules: eligibleRules,
+                target_rules: eligibleRules,
+                target_selection_strategy: "cheapest_first",
+                ...application_method,
+              } as any,
+            })
+          }
+
+          const line = (
+            id: string,
+            unitPrice: number,
+            quantity = 1,
+            productId = eligibleProduct
+          ) => ({
+            id,
+            quantity,
+            subtotal: unitPrice * quantity,
+            original_total: unitPrice * quantity,
+            is_discountable: true,
+            product: { id: productId },
+          })
+
+          const singleUnits = (prices: number[]) =>
+            prices.map((price) => line(`item_${price}`, price))
+
+          const computeAdjustments = async (codes: string[], items) => {
+            const result = await service.computeActions(codes, {
+              currency_code: "usd",
+              items,
+            })
+
+            return JSON.parse(JSON.stringify(result))
+              .filter(({ action }) => action === "addItemAdjustment")
+              .sort((a, b) => a.item_id.localeCompare(b.item_id))
+          }
+
+          const adjustment = (
+            itemId: string,
+            amount: number,
+            code = "CHEAPEST_4_FOR_3"
+          ) => ({
+            action: "addItemAdjustment",
+            item_id: itemId,
+            amount,
+            code,
+          })
+
+          const prices = [100, 200, 300, 400, 500, 600, 700, 800]
+
+          it("should discount the cheapest units across the cart", async () => {
+            await createBuyThreeGetOne()
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits(prices)
+            )
+
+            expect(result).toEqual([
+              adjustment("item_100", 100),
+              adjustment("item_200", 200),
+            ])
+          })
+
+          it("should discount the same units whatever the line order", async () => {
+            await createBuyThreeGetOne()
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits([...prices].reverse())
+            )
+
+            expect(result).toEqual([
+              adjustment("item_100", 100),
+              adjustment("item_200", 200),
+            ])
+          })
+
+          it("should keep the default selection when the strategy is not set", async () => {
+            await createBuyThreeGetOne({
+              application_method: { target_selection_strategy: undefined },
+            })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits(prices)
+            )
+
+            expect(result).toEqual([
+              adjustment("item_100", 100),
+              adjustment("item_500", 500),
+            ])
+          })
+
+          it("should keep the default selection when the strategy is most_expensive_first", async () => {
+            await createBuyThreeGetOne({
+              application_method: {
+                target_selection_strategy: "most_expensive_first",
+              },
+            })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits(prices)
+            )
+
+            expect(result).toEqual([
+              adjustment("item_100", 100),
+              adjustment("item_500", 500),
+            ])
+          })
+
+          it("should not allow cheapest_first on a standard promotion", async () => {
+            const error = await createDefaultPromotion(service, {
+              code: "STANDARD_CHEAPEST_FIRST",
+              type: PromotionType.STANDARD,
+              application_method: {
+                type: "percentage",
+                target_type: "items",
+                value: 10,
+                allocation: "each",
+                max_quantity: 1,
+                target_rules: eligibleRules,
+                target_selection_strategy: "cheapest_first",
+              } as any,
+            }).catch((e) => e)
+
+            expect(error.message).toContain(
+              "application_method.target_selection_strategy 'cheapest_first' is only allowed for Promotion type of buyget"
+            )
+          })
+
+          it("should discount the cheaper line when lines hold several units", async () => {
+            await createBuyThreeGetOne()
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              [line("expensive", 799, 4), line("cheap", 79, 4)]
+            )
+
+            expect(result).toEqual([adjustment("cheap", 158)])
+          })
+
+          it("should rank lines by unit price, not by line subtotal", async () => {
+            await createBuyThreeGetOne()
+
+            // The 2-per-unit line has the highest subtotal (8) but is cheaper per
+            // unit than the 4-per-unit line. The cheapest unit is the 0.75 one.
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              [line("line_2", 2, 4), line("line_4", 4), line("line_075", 0.75)]
+            )
+
+            expect(result).toEqual([adjustment("line_075", 0.75)])
+          })
+
+          it("should not apply with fewer units than one group", async () => {
+            await createBuyThreeGetOne()
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits([100, 200, 300])
+            )
+
+            expect(result).toEqual([])
+          })
+
+          it("should only discount units for complete groups", async () => {
+            await createBuyThreeGetOne()
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits([...prices, 900, 1000, 1100])
+            )
+
+            expect(result).toEqual([
+              adjustment("item_100", 100),
+              adjustment("item_200", 200),
+            ])
+          })
+
+          it("should stop at max_quantity", async () => {
+            await createBuyThreeGetOne({
+              application_method: { max_quantity: 1 },
+            })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits(prices)
+            )
+
+            expect(result).toEqual([adjustment("item_100", 100)])
+          })
+
+          it("should apply a percentage below 100", async () => {
+            await createBuyThreeGetOne({ application_method: { value: 50 } })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits(prices)
+            )
+
+            expect(result).toEqual([
+              adjustment("item_100", 50),
+              adjustment("item_200", 100),
+            ])
+          })
+
+          it("should cap a fixed amount at the unit price", async () => {
+            await createBuyThreeGetOne({
+              application_method: { type: "fixed", value: 150 },
+            })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              singleUnits(prices)
+            )
+
+            expect(result).toEqual([
+              adjustment("item_100", 100),
+              adjustment("item_200", 150),
+            ])
+          })
+
+          it("should rank the buy side by unit price as well", async () => {
+            await createBuyThreeGetOne()
+
+            // Three units at 199 have a higher line subtotal (597) than one unit
+            // at 379. Ranked by subtotal, they would pay and the 379 unit would
+            // be the only one left to discount.
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              [line("expensive", 379), line("cheap", 199, 3)]
+            )
+
+            expect(result).toEqual([adjustment("cheap", 199)])
+          })
+
+          it("should discount the cheapest target when buy and target rules differ", async () => {
+            // Buy 2 of the other product, get 1 of the eligible product free.
+            await createBuyThreeGetOne({
+              application_method: {
+                buy_rules_min_quantity: 2,
+                buy_rules: [
+                  {
+                    attribute: "items.product.id",
+                    operator: "in",
+                    values: [otherProduct],
+                  },
+                ],
+              },
+            })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              [
+                line("other_300", 300, 1, otherProduct),
+                line("other_400", 400, 1, otherProduct),
+                line("target_50", 50),
+                line("target_80", 80),
+              ]
+            )
+
+            expect(result).toEqual([adjustment("target_50", 50)])
+          })
+
+          it("should discount the cheapest target when the target is also in the buy rules", async () => {
+            // Buy 2 of either product, get 1 of the eligible product free.
+            await createBuyThreeGetOne({
+              application_method: {
+                buy_rules_min_quantity: 2,
+                buy_rules: [
+                  {
+                    attribute: "items.product.id",
+                    operator: "in",
+                    values: [eligibleProduct, otherProduct],
+                  },
+                ],
+              },
+            })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3"],
+              [
+                line("target_100", 100),
+                line("target_200", 200),
+                line("other_300", 300, 1, otherProduct),
+                line("other_400", 400, 1, otherProduct),
+              ]
+            )
+
+            // The other product pays, so the cheapest eligible unit is free.
+            expect(result).toEqual([adjustment("target_100", 100)])
+          })
+
+          it("should not reuse units another promotion has used", async () => {
+            await createBuyThreeGetOne({
+              application_method: { max_quantity: 1 },
+            })
+            await createBuyThreeGetOne({
+              code: "CHEAPEST_4_FOR_3_SECOND",
+              application_method: { max_quantity: 1 },
+            })
+
+            const result = await computeAdjustments(
+              ["CHEAPEST_4_FOR_3", "CHEAPEST_4_FOR_3_SECOND"],
+              singleUnits(prices)
+            )
+
+            // Each promotion uses a whole group of four units, so between them
+            // they discount the cheapest unit of each group: 100 and 200.
+            expect(result.map(({ item_id }) => item_id)).toEqual([
+              "item_100",
+              "item_200",
+            ])
+            expect(new Set(result.map(({ code }) => code)).size).toEqual(2)
+          })
+        })
+
         describe("when the promotion is tax inclusive", () => {
           // 20% tax: subtotal 250 (excl), original_total 300 (incl)
           const context = {
@@ -8222,9 +8566,7 @@ moduleIntegrationTestRunner({
                 context
               )
 
-              const targetItemId = `item_${productOrder.indexOf(
-                targetProduct
-              )}`
+              const targetItemId = `item_${productOrder.indexOf(targetProduct)}`
 
               expect(JSON.parse(JSON.stringify(result))).toEqual([
                 {
