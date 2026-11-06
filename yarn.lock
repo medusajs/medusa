@@ -3007,13 +3007,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jsdevtools/ono@npm:^7.1.3":
-  version: 7.1.3
-  resolution: "@jsdevtools/ono@npm:7.1.3"
-  checksum: 10c0/a9f7e3e8e3bc315a34959934a5e2f874c423cf4eae64377d3fc9de0400ed9f36cb5fd5ebce3300d2e8f4085f557c4a8b591427a583729a87841fda46e6c216b9
-  languageName: node
-  linkType: hard
-
 "@keyv/bigmap@npm:^1.3.1":
   version: 1.3.1
   resolution: "@keyv/bigmap@npm:1.3.1"
@@ -3795,7 +3788,6 @@ __metadata:
     "@medusajs/medusa": "npm:2.22.4"
     "@medusajs/types": "npm:2.22.4"
     "@medusajs/utils": "npm:2.22.4"
-    "@readme/json-schema-ref-parser": "npm:^1.2.0"
     "@readme/openapi-parser": "npm:^10.0.0"
     "@redocly/cli": "npm:2.71.0"
     commander: "npm:^15.0.0"
@@ -7358,18 +7350,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@readme/json-schema-ref-parser@npm:^1.2.0":
-  version: 1.2.1
-  resolution: "@readme/json-schema-ref-parser@npm:1.2.1"
-  dependencies:
-    "@jsdevtools/ono": "npm:^7.1.3"
-    "@types/json-schema": "npm:^7.0.12"
-    call-me-maybe: "npm:^1.0.1"
-    js-yaml: "npm:^4.1.0"
-  checksum: 10c0/e9487c8af051733dd4e54648009cd9dd43be2abcfc6fd0abe19bae788f944153df67caff560898c1d6bdf90ec2d3b63a24596dc7c4b37baa6293fa982eb8335c
-  languageName: node
-  linkType: hard
-
 "@readme/openapi-parser@npm:^10.0.0":
   version: 10.0.0
   resolution: "@readme/openapi-parser@npm:10.0.0"
@@ -8943,7 +8923,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.12, @types/json-schema@npm:^7.0.15":
+"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.15":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 10c0/a996a745e6c5d60292f36731dd41341339d4eeed8180bb09226e5c8d23759067692b1d88e5d91d72ee83dfc00d3aca8e7bd43ea120516c17922cbcb7c3e252db
@@ -11045,13 +11025,6 @@ __metadata:
     call-bind-apply-helpers: "npm:^1.0.2"
     get-intrinsic: "npm:^1.3.0"
   checksum: 10c0/f4796a6a0941e71c766aea672f63b72bc61234c4f4964dc6d7606e3664c307e7d77845328a8f3359ce39ddb377fed67318f9ee203dea1d47e46165dcf2917644
-  languageName: node
-  linkType: hard
-
-"call-me-maybe@npm:^1.0.1":
-  version: 1.0.2
-  resolution: "call-me-maybe@npm:1.0.2"
-  checksum: 10c0/8eff5dbb61141ebb236ed71b4e9549e488bcb5451c48c11e5667d5c75b0532303788a1101e6978cafa2d0c8c1a727805599c2741e3e0982855c9f1d78cd06c9f
   languageName: node
   linkType: hard
 
