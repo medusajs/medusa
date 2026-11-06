@@ -203,12 +203,14 @@ const RULE_SOURCES = [
   {
     from: `promotion_application_method am
       JOIN application_method_target_rules amtr ON am.id = amtr.application_method_id
+        AND am.deleted_at IS NULL
       JOIN promotion_rule pr ON amtr.promotion_rule_id = pr.id`,
     promotionId: "am.promotion_id",
   },
   {
     from: `promotion_application_method am
       JOIN application_method_buy_rules ambr ON am.id = ambr.application_method_id
+        AND am.deleted_at IS NULL
       JOIN promotion_rule pr ON ambr.promotion_rule_id = pr.id`,
     promotionId: "am.promotion_id",
   },
