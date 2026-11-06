@@ -915,10 +915,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
                 status: "pending_authorization",
               })
 
-            const result = await service.authorizePaymentSession(
-              session.id,
-              {}
-            )
+            const result = await service.authorizePaymentSession(session.id, {})
 
             expect(result).toBeNull()
 
@@ -936,8 +933,9 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             expect(payments).toHaveLength(0)
 
             // Verify payment collection stays in awaiting
-            const updatedCollection =
-              await service.retrievePaymentCollection(collection.id)
+            const updatedCollection = await service.retrievePaymentCollection(
+              collection.id
+            )
             expect(updatedCollection.status).toBe("awaiting")
           })
 
@@ -999,8 +997,9 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
 
             // Verify payment collection is now authorized
-            const updatedCollection =
-              await service.retrievePaymentCollection(collection.id)
+            const updatedCollection = await service.retrievePaymentCollection(
+              collection.id
+            )
             expect(updatedCollection.status).toBe("authorized")
           })
 
@@ -1936,13 +1935,13 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
           })
 
           it("should persist the data returned by the payment provider on cancel", async () => {
-            const providerData = { canceled: true, provider_cancel_id: "ext-cancel-123" }
+            const providerData = {
+              canceled: true,
+              provider_cancel_id: "ext-cancel-123",
+            }
 
             jest
-              .spyOn(
-                (service as any).paymentProviderService_,
-                "cancelPayment"
-              )
+              .spyOn((service as any).paymentProviderService_, "cancelPayment")
               .mockResolvedValueOnce({ data: providerData })
 
             const payment = await service.cancelPayment("pay-id-2")
@@ -1954,6 +1953,103 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
                 data: providerData,
               })
             )
+          })
+
+          describe("with an authorized payment session", () => {
+            let session
+
+            beforeEach(async () => {
+              const collection = await service.createPaymentCollections({
+                amount: 100,
+                currency_code: "usd",
+              })
+
+              session = await service.createPaymentSession(collection.id, {
+                provider_id: "pp_system_default",
+                amount: 100,
+                currency_code: "usd",
+                data: {},
+              })
+            })
+
+            it("should mark the payment session as canceled", async () => {
+              const payment = await service.authorizePaymentSession(
+                session.id,
+                {}
+              )
+
+              await service.cancelPayment(payment!.id)
+
+              const canceledSession = await service.retrievePaymentSession(
+                session.id
+              )
+              expect(canceledSession.status).toEqual("canceled")
+            })
+
+            it("should recompute the payment collection once its payment is canceled", async () => {
+              const payment = await service.authorizePaymentSession(
+                session.id,
+                {}
+              )
+
+              await service.cancelPayment(payment!.id)
+
+              const collection = await service.retrievePaymentCollection(
+                session.payment_collection_id
+              )
+              expect(collection).toEqual(
+                expect.objectContaining({
+                  status: "not_paid",
+                  authorized_amount: 0,
+                })
+              )
+            })
+
+            it("should keep a canceled payment collection canceled when its payment is canceled", async () => {
+              const payment = await service.authorizePaymentSession(
+                session.id,
+                {}
+              )
+
+              // cancelPaymentCollectionWorkflow cancels the collection before
+              // canceling its payments
+              await service.updatePaymentCollections(
+                session.payment_collection_id,
+                { status: "canceled" }
+              )
+              await service.cancelPayment(payment!.id)
+
+              const collection = await service.retrievePaymentCollection(
+                session.payment_collection_id
+              )
+              expect(collection).toEqual(
+                expect.objectContaining({
+                  status: "canceled",
+                  authorized_amount: 0,
+                })
+              )
+            })
+
+            it("should not return a canceled payment when authorizing its session again", async () => {
+              const payment = await service.authorizePaymentSession(
+                session.id,
+                {}
+              )
+
+              await service.cancelPayment(payment!.id)
+              await (service as any).paymentSessionService_.update({
+                id: session.id,
+                status: "authorized",
+              })
+
+              const error = await service
+                .authorizePaymentSession(session.id, {})
+                .catch((e) => e)
+
+              expect(error.message).toEqual(
+                `The payment of session: ${session.id} was canceled. Create a new payment session.`
+              )
+            })
           })
 
           // TODO: revisit when totals are implemented
@@ -2183,17 +2279,26 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               data: {},
             })
 
-            const payment = await service.authorizePaymentSession(session.id, {})
+            const payment = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
 
             // Two concurrent captures that each pass the guard in isolation
             // (500 - 0 = 500 remaining seen by both) but together capture 600.
             const outcomes = await promiseAll([
               service
                 .capturePayment({ amount: 300, payment_id: payment.id })
-                .then(() => "ok", () => "threw"),
+                .then(
+                  () => "ok",
+                  () => "threw"
+                ),
               service
                 .capturePayment({ amount: 300, payment_id: payment.id })
-                .then(() => "ok", () => "threw"),
+                .then(
+                  () => "ok",
+                  () => "threw"
+                ),
             ])
 
             // Exactly one capture is admitted; the other is rejected by the guard.
@@ -2219,19 +2324,31 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               data: {},
             })
 
-            const payment = await service.authorizePaymentSession(session.id, {})
+            const payment = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
 
-            await service.capturePayment({ amount: 500, payment_id: payment.id })
+            await service.capturePayment({
+              amount: 500,
+              payment_id: payment.id,
+            })
 
             // Two concurrent refunds that each pass the guard in isolation
             // (500 captured, 0 refunded seen by both) but together refund 600.
             const outcomes = await promiseAll([
               service
                 .refundPayment({ amount: 300, payment_id: payment.id })
-                .then(() => "ok", () => "threw"),
+                .then(
+                  () => "ok",
+                  () => "threw"
+                ),
               service
                 .refundPayment({ amount: 300, payment_id: payment.id })
-                .then(() => "ok", () => "threw"),
+                .then(
+                  () => "ok",
+                  () => "threw"
+                ),
             ])
 
             // Exactly one refund is admitted; the other is rejected by the guard.
