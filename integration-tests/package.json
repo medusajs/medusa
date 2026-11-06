@@ -10,11 +10,10 @@
   "author": "Zakaria S. El Asri",
   "license": "ISC",
   "devDependencies": {
-    "dotenv": "^10.0.0"
+    "dotenv": "^18.0.9"
   },
   "dependencies": {
     "express": "^4.21.0",
-    "get-port": "^7.1.0",
     "@medusajs/medusa": "^1.20.10",
     "@medusajs/core-flows": "^0.0.10",
     "axios": "^1.20.0",
