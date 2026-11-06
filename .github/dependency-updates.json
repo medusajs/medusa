@@ -10,6 +10,11 @@
     "major": { "files": 80, "lines": 2000, "newDependencies": 5 }
   },
   "ignore": ["@medusajs/*", "create-medusa-app", "medusa-*"],
+  "holdMajors": {
+    "@mikro-orm/*": "MikroORM majors are migrated manually, outside the weekly run",
+    "typescript": "stays on TypeScript 6 until TypeScript 7.1",
+    "node-notifier": "stays on 10 until Jest supports newer majors"
+  },
   "groups": [
     {
       "name": "vite",
