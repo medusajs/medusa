@@ -8150,9 +8150,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacPolicies/page.json"
   },
   {
-    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleParents",
-    "newSlug": "/references/rbac/createRbacRoleParents",
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleParents/page.json"
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleAssignments",
+    "newSlug": "/references/rbac/createRbacRoleAssignments",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleAssignments/page.json"
   },
   {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRolePolicies",
@@ -8170,9 +8170,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacPolicies/page.json"
   },
   {
-    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleParents",
-    "newSlug": "/references/rbac/deleteRbacRoleParents",
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleParents/page.json"
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleAssignments",
+    "newSlug": "/references/rbac/deleteRbacRoleAssignments",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleAssignments/page.json"
   },
   {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRolePolicies",
@@ -8190,9 +8190,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacPolicies/page.json"
   },
   {
-    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleParents",
-    "newSlug": "/references/rbac/listAndCountRbacRoleParents",
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleParents/page.json"
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleAssignments",
+    "newSlug": "/references/rbac/listAndCountRbacRoleAssignments",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleAssignments/page.json"
   },
   {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRolePolicies",
@@ -8205,6 +8205,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoles/page.json"
   },
   {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listGranteeEntities",
+    "newSlug": "/references/rbac/listGranteeEntities",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listGranteeEntities/page.json"
+  },
+  {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listPoliciesForRole",
     "newSlug": "/references/rbac/listPoliciesForRole",
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listPoliciesForRole/page.json"
@@ -8215,9 +8220,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacPolicies/page.json"
   },
   {
-    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleParents",
-    "newSlug": "/references/rbac/listRbacRoleParents",
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleParents/page.json"
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleAssignments",
+    "newSlug": "/references/rbac/listRbacRoleAssignments",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleAssignments/page.json"
   },
   {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRolePolicies",
@@ -8235,9 +8240,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacPolicies/page.json"
   },
   {
-    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleParents",
-    "newSlug": "/references/rbac/restoreRbacRoleParents",
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleParents/page.json"
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleAssignments",
+    "newSlug": "/references/rbac/restoreRbacRoleAssignments",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleAssignments/page.json"
   },
   {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRolePolicies",
@@ -8250,6 +8255,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoles/page.json"
   },
   {
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveActorAuthzContextConfig",
+    "newSlug": "/references/rbac/retrieveActorAuthzContextConfig",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveActorAuthzContextConfig/page.json"
+  },
+  {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacPolicy",
     "newSlug": "/references/rbac/retrieveRbacPolicy",
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacPolicy/page.json"
@@ -8260,9 +8270,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRole/page.json"
   },
   {
-    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleParent",
-    "newSlug": "/references/rbac/retrieveRbacRoleParent",
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleParent/page.json"
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleAssignment",
+    "newSlug": "/references/rbac/retrieveRbacRoleAssignment",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleAssignment/page.json"
   },
   {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRolePolicy",
@@ -8275,9 +8285,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacPolicies/page.json"
   },
   {
-    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleParents",
-    "newSlug": "/references/rbac/softDeleteRbacRoleParents",
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleParents/page.json"
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleAssignments",
+    "newSlug": "/references/rbac/softDeleteRbacRoleAssignments",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleAssignments/page.json"
   },
   {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRolePolicies",
@@ -8295,9 +8305,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacPolicies/page.json"
   },
   {
-    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleParents",
-    "newSlug": "/references/rbac/updateRbacRoleParents",
-    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleParents/page.json"
+    "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleAssignments",
+    "newSlug": "/references/rbac/updateRbacRoleAssignments",
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleAssignments/page.json"
   },
   {
     "origSlug": "/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRolePolicies",
@@ -8325,9 +8335,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRole/page.json"
   },
   {
-    "origSlug": "/references/rbac_models/variables/rbac_models.RbacRoleParent",
-    "newSlug": "/references/rbac/models/RbacRoleParent",
-    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRoleParent/page.json"
+    "origSlug": "/references/rbac_models/variables/rbac_models.RbacRoleAssignment",
+    "newSlug": "/references/rbac/models/RbacRoleAssignment",
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRoleAssignment/page.json"
   },
   {
     "origSlug": "/references/rbac_models/variables/rbac_models.RbacRolePolicy",

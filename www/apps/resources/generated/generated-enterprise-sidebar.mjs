@@ -300,8 +300,8 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
-                      "path": "/references/rbac/createRbacRoleParents",
-                      "title": "createRbacRoleParents",
+                      "path": "/references/rbac/createRbacRoleAssignments",
+                      "title": "createRbacRoleAssignments",
                       "description": "",
                       "children": []
                     },
@@ -332,8 +332,8 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
-                      "path": "/references/rbac/deleteRbacRoleParents",
-                      "title": "deleteRbacRoleParents",
+                      "path": "/references/rbac/deleteRbacRoleAssignments",
+                      "title": "deleteRbacRoleAssignments",
                       "description": "",
                       "children": []
                     },
@@ -364,8 +364,8 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
-                      "path": "/references/rbac/listAndCountRbacRoleParents",
-                      "title": "listAndCountRbacRoleParents",
+                      "path": "/references/rbac/listAndCountRbacRoleAssignments",
+                      "title": "listAndCountRbacRoleAssignments",
                       "description": "",
                       "children": []
                     },
@@ -388,6 +388,14 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/references/rbac/listGranteeEntities",
+                      "title": "listGranteeEntities",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/references/rbac/listPoliciesForRole",
                       "title": "listPoliciesForRole",
                       "description": "",
@@ -404,8 +412,8 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
-                      "path": "/references/rbac/listRbacRoleParents",
-                      "title": "listRbacRoleParents",
+                      "path": "/references/rbac/listRbacRoleAssignments",
+                      "title": "listRbacRoleAssignments",
                       "description": "",
                       "children": []
                     },
@@ -436,8 +444,8 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
-                      "path": "/references/rbac/restoreRbacRoleParents",
-                      "title": "restoreRbacRoleParents",
+                      "path": "/references/rbac/restoreRbacRoleAssignments",
+                      "title": "restoreRbacRoleAssignments",
                       "description": "",
                       "children": []
                     },
@@ -460,6 +468,14 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/references/rbac/retrieveActorAuthzContextConfig",
+                      "title": "retrieveActorAuthzContextConfig",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/references/rbac/retrieveRbacPolicy",
                       "title": "retrieveRbacPolicy",
                       "description": "",
@@ -476,8 +492,8 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
-                      "path": "/references/rbac/retrieveRbacRoleParent",
-                      "title": "retrieveRbacRoleParent",
+                      "path": "/references/rbac/retrieveRbacRoleAssignment",
+                      "title": "retrieveRbacRoleAssignment",
                       "description": "",
                       "children": []
                     },
@@ -500,8 +516,8 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
-                      "path": "/references/rbac/softDeleteRbacRoleParents",
-                      "title": "softDeleteRbacRoleParents",
+                      "path": "/references/rbac/softDeleteRbacRoleAssignments",
+                      "title": "softDeleteRbacRoleAssignments",
                       "description": "",
                       "children": []
                     },
@@ -532,8 +548,8 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
-                      "path": "/references/rbac/updateRbacRoleParents",
-                      "title": "updateRbacRoleParents",
+                      "path": "/references/rbac/updateRbacRoleAssignments",
+                      "title": "updateRbacRoleAssignments",
                       "description": "",
                       "children": []
                     },
@@ -600,8 +616,8 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
-                      "path": "/references/rbac/models/RbacRoleParent",
-                      "title": "RbacRoleParent",
+                      "path": "/references/rbac/models/RbacRoleAssignment",
+                      "title": "RbacRoleAssignment",
                       "description": "",
                       "children": []
                     },
