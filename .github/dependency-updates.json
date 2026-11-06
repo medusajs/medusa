@@ -1,5 +1,5 @@
 {
-  "dryRun": true,
+  "dryRun": false,
   "includeMajors": false,
   "cooldownDays": 3,
   "maxMajorsPerWeek": 2,

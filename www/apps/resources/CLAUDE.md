@@ -107,7 +107,7 @@ the doc-model analogue of `getCleanMd`; app pages still use `getCleanMd`.
   read via the `REFERENCES_R2_BUCKET` binding (see `wrangler.jsonc`).
 - `scripts/upload-references-to-r2.mjs` — full or selective (`--upload`/`--remove`)
   upload of `references/` `page.json`.
-- `.github/workflows/sync-resources-references-to-r2.yml` — syncs changed
+- `.github/workflows/sync-docs-to-r2.yml` (`resources` matrix entry) — syncs changed
   `references/**` `page.json` to R2 on push to `develop`.
 - `.github/workflows/generate-public-references.yml` — regenerates references
   and opens the automated PR (commits `references/**`).
