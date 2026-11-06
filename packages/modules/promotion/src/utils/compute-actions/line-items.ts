@@ -36,7 +36,8 @@ export function getComputedActionsForItems(
   items: PromotionTypes.ComputeActionContext[TargetType.ITEMS],
   appliedPromotionsMap: Map<string, number>,
   allocationOverride?: ApplicationMethodAllocationValues,
-  attributeUsage?: CampaignBudgetUsageDTO
+  attributeUsage?: CampaignBudgetUsageDTO,
+  budgetAllottedAmounts?: Map<string, BigNumberInput>
 ): PromotionTypes.ComputeActions[] {
   validateContext("items", items)
 
@@ -45,7 +46,8 @@ export function getComputedActionsForItems(
     items,
     appliedPromotionsMap,
     allocationOverride,
-    attributeUsage
+    attributeUsage,
+    budgetAllottedAmounts
   )
 }
 
@@ -54,7 +56,8 @@ function applyPromotionToItems(
   items: PromotionTypes.ComputeActionContext[TargetType.ITEMS],
   appliedPromotionsMap: Map<string, BigNumberInput>,
   allocationOverride?: ApplicationMethodAllocationValues,
-  attributeUsage?: CampaignBudgetUsageDTO
+  attributeUsage?: CampaignBudgetUsageDTO,
+  budgetAllottedAmounts?: Map<string, BigNumberInput>
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
 
@@ -161,7 +164,8 @@ function applyPromotionToItems(
     const budgetExceededAction = computeActionForBudgetExceeded(
       promotion,
       amount,
-      attributeUsage
+      attributeUsage,
+      budgetAllottedAmounts
     )
 
     if (budgetExceededAction) {
