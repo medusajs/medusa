@@ -29,20 +29,34 @@ function getUnitPrice(item: ComputeActionItemLine) {
     : MathBN.convert(0)
 }
 
-function sortByPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
-  const priceA = MathBN.div(a.subtotal, a.quantity)
-  const priceB = MathBN.div(b.subtotal, b.quantity)
+type SortDirection = "asc" | "desc"
 
-  // Returning a non-zero value for equal prices makes this an inconsistent
-  // comparator, which leaves the order of equally priced items up to the sort
-  // implementation rather than keeping it stable. Since the resulting order
-  // decides which items are reserved for the buy side below, that turned into
-  // the promotion being applied or not depending on line item order.
-  if (MathBN.eq(priceA, priceB)) {
-    return 0
+type ItemComparator = (
+  a: ComputeActionItemLine,
+  b: ComputeActionItemLine
+) => number
+
+/*
+  Items are ranked by unit price, not line subtotal: three units at 199 have a
+  higher subtotal than one unit at 379, but they are still the cheaper units.
+*/
+function compareByUnitPrice(direction: SortDirection): ItemComparator {
+  return (a, b) => {
+    const aPrice = getUnitPrice(a)
+    const bPrice = getUnitPrice(b)
+
+    // Returning a non-zero value for equal prices makes this an inconsistent
+    // comparator, which leaves the order of equally priced items up to the sort
+    // implementation rather than keeping it stable. Since the resulting order
+    // decides which items are reserved for the buy side below, that would turn
+    // into the promotion being applied or not depending on line item order.
+    if (MathBN.eq(aPrice, bPrice)) {
+      return 0
+    }
+
+    const ascending = MathBN.lt(aPrice, bPrice) ? -1 : 1
+    return direction === "asc" ? ascending : -ascending
   }
-
-  return MathBN.lt(priceA, priceB) ? 1 : -1
 }
 
 function isValidPromotionContext(
@@ -492,8 +506,9 @@ function createComputedActionsFromPromotionApplication(
 }
 
 /*
-  Grabs all the items in the context where the rules apply
-  We then sort by price to prioritize most valuable item
+  Grabs all the items in the context where the rules apply, most expensive
+  first. This is the order buy units are reserved in, regardless of the target
+  selection strategy.
 */
 function filterItemsByPromotionRules(
   itemsContext: ComputeActionItemLine[],
@@ -507,79 +522,38 @@ function filterItemsByPromotionRules(
         ApplicationMethodTargetType.ITEMS
       )
     )
-    .sort(sortByPrice)
+    .sort(compareByUnitPrice("desc"))
 }
 
 /*
-  Opt-in target selection strategy, enabled with
-  `application_method.target_selection_strategy = "cheapest_first"`.
+  The order in which target units are discounted for each target selection
+  strategy. Only the target side depends on the strategy.
 
-  By default (`most_expensive_first`) each application round pays with the
-  most expensive eligible units and discounts the most expensive target left
-  over. With this option the target is the cheapest one left over instead, so
-  across the cart the cheapest eligible units are the ones discounted. For "buy 3, get 1 free" with
-  eight units priced 100 to 800, the 100 and 200 units are discounted.
-
-  Both sides are ranked by unit price: three units at 199 have a higher line
-  subtotal than one unit at 379, but they are still the cheaper units.
+  With `most_expensive_first` (default) each application round discounts the
+  most expensive target left over. With `cheapest_first` it discounts the
+  cheapest one left over, so for "buy 3, get 1 free" with eight units priced
+  100 to 800, the 100 and 200 units are discounted.
 */
-function compareUnitPriceByStrategy(
-  a: ComputeActionItemLine,
-  b: ComputeActionItemLine,
-  strategy: ApplicationMethodTargetSelectionStrategyValues
-) {
-  const aUnitPrice = getUnitPrice(a)
-  const bUnitPrice = getUnitPrice(b)
-
-  // Equal prices keep their order, so ties don't depend on the sort
-  // implementation.
-  if (MathBN.eq(aUnitPrice, bUnitPrice)) {
-    return 0
-  }
-
-  const cheapestFirst =
-    strategy === ApplicationMethodTargetSelectionStrategy.CHEAPEST_FIRST
-
-  return MathBN.lt(aUnitPrice, bUnitPrice) === cheapestFirst ? -1 : 1
+const TARGET_ITEM_COMPARATORS: Record<
+  ApplicationMethodTargetSelectionStrategyValues,
+  ItemComparator
+> = {
+  [ApplicationMethodTargetSelectionStrategy.MOST_EXPENSIVE_FIRST]:
+    compareByUnitPrice("desc"),
+  [ApplicationMethodTargetSelectionStrategy.CHEAPEST_FIRST]:
+    compareByUnitPrice("asc"),
 }
 
-/*
-  Returns the buy and target items in the order they are picked in for the
-  given target selection strategy. Buy items are always reserved from the
-  most expensive end, and target items are picked in the order of the
-  strategy.
+function sortTargetItemsByStrategy(
+  items: ComputeActionItemLine[],
+  strategy?: ApplicationMethodTargetSelectionStrategyValues | null
+): ComputeActionItemLine[] {
+  const comparator =
+    TARGET_ITEM_COMPARATORS[
+      strategy ?? ApplicationMethodTargetSelectionStrategy.MOST_EXPENSIVE_FIRST
+    ]
 
-  With the default strategy both lists keep the order they already have
-  (most expensive first, from `filterItemsByPromotionRules`), so the default
-  path is unchanged.
-*/
-function sortItemsBySelectionStrategy(
-  items: {
-    buyItems: ComputeActionItemLine[]
-    targetItems: ComputeActionItemLine[]
-  },
-  config: {
-    target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues | null
-  }
-) {
-  const strategy = config.target_selection_strategy
-
-  if (strategy !== ApplicationMethodTargetSelectionStrategy.CHEAPEST_FIRST) {
-    return items
-  }
-
-  return {
-    buyItems: [...items.buyItems].sort((a, b) =>
-      compareUnitPriceByStrategy(
-        a,
-        b,
-        ApplicationMethodTargetSelectionStrategy.MOST_EXPENSIVE_FIRST
-      )
-    ),
-    targetItems: [...items.targetItems].sort((a, b) =>
-      compareUnitPriceByStrategy(a, b, strategy)
-    ),
-  }
+  return [...items].sort(comparator)
 }
 
 export function getComputedActionsForBuyGet(
@@ -622,18 +596,9 @@ export function getComputedActionsForBuyGet(
     promotion.code!
   )
 
-  // Buy items are reserved in the order given (after the items that can't be
-  // targets) and targets are picked in the order given, so ordering the two
-  // lists is all the option needs.
-  const {
-    buyItems: buyItemsInSelectionOrder,
-    targetItems: targetItemsInSelectionOrder,
-  } = sortItemsBySelectionStrategy(
-    { buyItems: eligibleBuyItems, targetItems: eligibleTargetItems },
-    {
-      target_selection_strategy:
-        promotion.application_method?.target_selection_strategy,
-    }
+  const targetItemsInDiscountOrder = sortTargetItemsByStrategy(
+    eligibleTargetItems,
+    promotion.application_method?.target_selection_strategy
   )
 
   const totalEligibleBuyItemsMap = new Map<string, EligibleItem>()
@@ -672,8 +637,8 @@ export function getComputedActionsForBuyGet(
     // We use this as a source of truth to update the remaining quantities of the eligible items
     // and the total eligible items
     const applicationState = preparePromotionApplicationState(
-      buyItemsInSelectionOrder,
-      targetItemsInSelectionOrder,
+      eligibleBuyItems,
+      targetItemsInDiscountOrder,
       remainingBuyQuantities,
       remainingTargetQuantities,
       applicationConfig,
