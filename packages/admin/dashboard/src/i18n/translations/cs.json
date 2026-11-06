@@ -3383,6 +3383,9 @@
     "invalidTokenTitle": "Váš pozvánkový token je neplatný",
     "invalidTokenHint": "Zkuste požádat o nový odkaz na pozvánku.",
     "passwordMismatch": "Hesla se neshodují",
+    "signedInTitle": "Již jste přihlášeni",
+    "signedInHint": "Jste přihlášeni jako {{email}}. Odhlaste se, abyste přijali tuto pozvánku.",
+    "signOut": "Odhlásit se",
     "toast": {
       "accepted": "Pozvánka byla úspěšně přijata"
     }

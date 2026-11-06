@@ -3420,6 +3420,9 @@
     "invalidTokenTitle": "Indicatorul dvs. de invitație este nevalid",
     "invalidTokenHint": "Încercați să solicitați un nou link de invitație.",
     "passwordMismatch": "Parolele nu se potrivesc",
+    "signedInTitle": "Sunteți deja autentificat",
+    "signedInHint": "Sunteți autentificat ca {{email}}. Deconectați-vă pentru a accepta această invitație.",
+    "signOut": "Deconectați-vă",
     "toast": {
       "accepted": "Invitația a fost acceptată"
     }

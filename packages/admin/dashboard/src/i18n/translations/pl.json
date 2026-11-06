@@ -3442,6 +3442,9 @@
     "invalidTokenTitle": "Twój token zaproszenia jest nieprawidłowy",
     "invalidTokenHint": "Spróbuj poprosić o nowy link z zaproszeniem.",
     "passwordMismatch": "Hasła nie pasują",
+    "signedInTitle": "Jesteś już zalogowany(-a)",
+    "signedInHint": "Jesteś zalogowany(-a) jako {{email}}. Wyloguj się, aby zaakceptować to zaproszenie.",
+    "signOut": "Wyloguj się",
     "toast": {
       "accepted": "Zaproszenie zostało pomyślnie zaakceptowane"
     }

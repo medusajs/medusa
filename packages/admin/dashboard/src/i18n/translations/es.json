@@ -3471,6 +3471,9 @@
     "invalidTokenTitle": "Tu token de invitación es inválido",
     "invalidTokenHint": "Intenta solicitar un nuevo enlace de invitación.",
     "passwordMismatch": "Las contraseñas no coinciden",
+    "signedInTitle": "Ya has iniciado sesión",
+    "signedInHint": "Has iniciado sesión como {{email}}. Cierra sesión para aceptar esta invitación.",
+    "signOut": "Cerrar sesión",
     "toast": {
       "accepted": "Invitación aceptada exitosamente"
     }

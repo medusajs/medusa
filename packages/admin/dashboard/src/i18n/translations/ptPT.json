@@ -3371,6 +3371,9 @@
     "invalidTokenTitle": "O teu token de convite é inválido",
     "invalidTokenHint": "Tenta pedir um novo link de convite.",
     "passwordMismatch": "As palavras-passe não coincidem",
+    "signedInTitle": "Já tens sessão iniciada",
+    "signedInHint": "Tens sessão iniciada como {{email}}. Termina sessão para aceitar este convite.",
+    "signOut": "Terminar sessão",
     "toast": {
       "accepted": "Convite aceite com sucesso"
     }
