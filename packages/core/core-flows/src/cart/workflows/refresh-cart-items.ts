@@ -129,6 +129,54 @@ export const refreshCartItemsWorkflowId = "refresh-cart-items"
  *
  * :::
  *
+ * @property hooks.afterPromotionsApplied - This hook is executed after the cart's prices, tax lines, and promotion adjustments are
+ * up to date, and before the cart's payment collection is refreshed. It receives the cart's ID, so you can retrieve the cart with
+ * all its line items and the fields your logic needs. You can consume it to apply custom pricing that depends on the whole cart,
+ * such as discounts calculated across several line items.
+ *
+ * Changes made in this hook are not overwritten by the rest of the refresh, and the payment collection is refreshed with the
+ * resulting cart total. Tax amounts are calculated from the cart's tax lines when the cart totals are computed, so they reflect
+ * the line item prices and adjustments set in this hook.
+ *
+ * Line item adjustments that have a `code` are removed and recalculated by the promotion step on every refresh, before this hook runs.
+ * So, if you persist your pricing as line item adjustments, recreate them in this hook on every refresh.
+ *
+ * To reject the cart change, for example when no price can be determined for the customer, throw an error in the hook. The workflow
+ * then rolls back and the cart operation fails with that error.
+ *
+ * For example:
+ *
+ * ```ts
+ * import { refreshCartItemsWorkflow } from "@medusajs/medusa/core-flows";
+ * import {
+ *   ContainerRegistrationKeys,
+ *   MedusaError,
+ * } from "@medusajs/framework/utils";
+ *
+ * refreshCartItemsWorkflow.hooks.afterPromotionsApplied(
+ *   async ({ cart_id, additional_data }, { container }) => {
+ *     const query = container.resolve(ContainerRegistrationKeys.QUERY);
+ *     const {
+ *       data: [cart],
+ *     } = await query.graph({
+ *       entity: "cart",
+ *       fields: ["id", "customer_id", "items.*", "items.adjustments.*"],
+ *       filters: { id: cart_id },
+ *     });
+ *
+ *     if (!cart.customer_id) {
+ *       throw new MedusaError(
+ *         MedusaError.Types.NOT_ALLOWED,
+ *         "No price is available for this cart"
+ *       );
+ *     }
+ *
+ *     // Calculate custom pricing for cart.items and persist it,
+ *     // for example as line item adjustments.
+ *   }
+ * );
+ * ```
+ *
  */
 export const refreshCartItemsWorkflow = createWorkflow(
   {
@@ -258,6 +306,11 @@ export const refreshCartItemsWorkflow = createWorkflow(
       })
     })
 
+    const afterPromotionsApplied = createHook("afterPromotionsApplied", {
+      cart_id: input.cart_id,
+      additional_data: input.additional_data,
+    })
+
     const beforeRefreshingPaymentCollection = createHook(
       "beforeRefreshingPaymentCollection",
       { input }
@@ -272,7 +325,11 @@ export const refreshCartItemsWorkflow = createWorkflow(
     })
 
     return new WorkflowResponse(refetchedCart, {
-      hooks: [setPricingContext, beforeRefreshingPaymentCollection] as const,
+      hooks: [
+        setPricingContext,
+        afterPromotionsApplied,
+        beforeRefreshingPaymentCollection,
+      ] as const,
     })
   }
 )
