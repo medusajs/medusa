@@ -15452,6 +15452,52 @@ This retrieves records that include `New Products` in their `title` property.
 
 ***
 
+## Computed Property
+
+Use the `computed` method on a property's definition to indicate that it's a computed property.
+
+Medusa doesn't store computed properties in the database. So, it doesn't create a column for them in migrations, and it doesn't set their value when you retrieve records.
+
+For example:
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  calculated_price: model.bigNumber().computed(),
+  // ...
+})
+
+export default Post
+```
+
+In this example, the `calculated_price` property is computed, so the `post` table has no column for it.
+
+You compute and set the property's value in your own code. For example, in a custom method of your module's service, set the property on the records after retrieving them:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+import Post from "./models/post"
+
+class BlogModuleService extends MedusaService({
+  Post,
+}) {
+  async listPostsWithPrices() {
+    const posts = await this.listPosts()
+
+    return posts.map((post) => ({
+      ...post,
+      calculated_price: 100, // compute the value here
+    }))
+  }
+}
+
+export default BlogModuleService
+```
+
+***
+
 ## Make Property Translatable
 
 ### Prerequisites
@@ -33733,7 +33779,7 @@ Learn more about using the publishable API key in the [Storefront Development gu
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.22.3. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.3).
+Medusa's current version is v2.22.4. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.4).
 
 ## Medusa Versioning
 
