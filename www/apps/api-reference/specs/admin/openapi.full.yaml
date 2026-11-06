@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.3
+  version: 2.22.4
   title: Medusa Admin API
   license:
     name: MIT
@@ -71429,6 +71429,7 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+      x-since: 2.22.3
     post:
       operationId: PostUsersIdRoles
       summary: Add Roles to User
@@ -71493,6 +71494,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: assignRolesWorkflow
       x-events: []
+      x-since: 2.22.3
     delete:
       operationId: DeleteUsersIdRoles
       summary: Remove Roles from User
@@ -71557,6 +71559,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: assignRolesWorkflow
       x-events: []
+      x-since: 2.22.3
   /admin/users/{id}/roles/{role_id}:
     delete:
       operationId: DeleteUsersIdRolesRole_id
@@ -71626,6 +71629,7 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: unassignRolesWorkflow
       x-events: []
+      x-since: 2.22.3
   /admin/views/entities:
     get:
       operationId: GetViewsEntities

@@ -176,6 +176,7 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-since: 2.22.3
 post:
   operationId: PostUsersIdRoles
   summary: Add Roles to User
@@ -226,6 +227,7 @@ post:
       $ref: ../components/responses/500_error.yaml
   x-workflow: assignRolesWorkflow
   x-events: []
+  x-since: 2.22.3
 delete:
   operationId: DeleteUsersIdRoles
   summary: Remove Roles from User
@@ -274,3 +276,4 @@ delete:
       $ref: ../components/responses/500_error.yaml
   x-workflow: assignRolesWorkflow
   x-events: []
+  x-since: 2.22.3

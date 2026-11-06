@@ -4,7 +4,6 @@
  * summary: List Roles
  * description: Retrieve a list of RBAC roles. The roles can be filtered by fields such as `id`. The roles can also be sorted or paginated.
  * x-authenticated: false
- * parameters: []
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
