@@ -3371,6 +3371,9 @@
     "invalidTokenTitle": "Your invite token is invalid",
     "invalidTokenHint": "Try requesting a new invite link.",
     "passwordMismatch": "Passwords do not match",
+    "signedInTitle": "You're already signed in",
+    "signedInHint": "You're signed in as {{email}}. Sign out to accept this invite.",
+    "signOut": "Sign out",
     "toast": {
       "accepted": "Invite successfully accepted"
     }

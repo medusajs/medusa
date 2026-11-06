@@ -3204,6 +3204,9 @@
     "invalidTokenTitle": "Vaš pozivni token je nevažeći",
     "invalidTokenHint": "Pokušajte zatražiti novu pozivnu poveznicu.",
     "passwordMismatch": "Lozinke se ne podudaraju",
+    "signedInTitle": "Već ste prijavljeni",
+    "signedInHint": "Prijavljeni ste kao {{email}}. Odjavite se kako biste prihvatili ovu pozivnicu.",
+    "signOut": "Odjavi se",
     "toast": {
       "accepted": "Pozivnica uspješno prihvaćena"
     }

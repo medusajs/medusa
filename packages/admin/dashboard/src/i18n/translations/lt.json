@@ -3463,6 +3463,9 @@
     "invalidTokenTitle": "Jūsų kvietimo prieigos raktas neteisingas",
     "invalidTokenHint": "Pabandykite paprašyti naujos kvietimo nuorodos.",
     "passwordMismatch": "Slptažodžiai nesutampa",
+    "signedInTitle": "Jūs jau prisijungę",
+    "signedInHint": "Jūs prisijungę kaip {{email}}. Atsijunkite, kad priimtumėte šį kvietimą.",
+    "signOut": "Atsijungti",
     "toast": {
       "accepted": "Kvietimas sėkmingai priimtas"
     }

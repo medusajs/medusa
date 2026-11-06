@@ -3459,6 +3459,9 @@
     "invalidTokenTitle": "אסימון ההזמנה שלך אינו תקף",
     "invalidTokenHint": "נסה לבקש קישור הזמנה חדש.",
     "passwordMismatch": "הסיסמאות אינן תואמות",
+    "signedInTitle": "אתה כבר מחובר",
+    "signedInHint": "אתה מחובר כ-{{email}}. התנתק כדי לקבל את ההזמנה הזו.",
+    "signOut": "התנתק",
     "toast": {
       "accepted": "ההזמנה התקבלה בהצלחה"
     }

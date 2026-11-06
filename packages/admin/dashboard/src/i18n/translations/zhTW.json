@@ -3366,6 +3366,9 @@
     "invalidTokenTitle": "您的邀請令牌無效",
     "invalidTokenHint": "請嘗試請求新的邀請連結。",
     "passwordMismatch": "密碼不符合",
+    "signedInTitle": "您已登入",
+    "signedInHint": "您已以 {{email}} 登入。請登出以接受此邀請。",
+    "signOut": "登出",
     "toast": {
       "accepted": "邀請已成功接受"
     }

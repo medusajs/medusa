@@ -3367,6 +3367,9 @@
     "invalidTokenTitle": "Token undangan Anda tidak valid",
     "invalidTokenHint": "Coba minta tautan undangan baru.",
     "passwordMismatch": "Kata sandi tidak cocok",
+    "signedInTitle": "Anda sudah masuk",
+    "signedInHint": "Anda masuk sebagai {{email}}. Keluar untuk menerima undangan ini.",
+    "signOut": "Keluar",
     "toast": {
       "accepted": "Undangan berhasil diterima"
     }
