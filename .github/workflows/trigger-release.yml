@@ -102,9 +102,9 @@ jobs:
         run: yarn build
 
       - name: Publish packages under next tag
-        run: |
-          set -o pipefail
-          yarn changeset publish --tag ${{ github.event.inputs.version || 'preview' }} | tee publish-output.txt
+        run: yarn changeset publish --tag ${{ github.event.inputs.version || 'preview' }}
+        env:
+          CHANGESETS_OUTPUT: publish-output.ndjson
 
       - name: Comment published versions on pull request
         if: github.event.inputs.pr_number != ''
@@ -121,10 +121,13 @@ jobs:
               return
             }
 
-            const output = fs.readFileSync('publish-output.txt', 'utf8')
-            const newTags = Array
-              .from(output.matchAll(/New tag:\s+(\S+)/g))
-              .map(([_, tag]) => tag)
+            const newTags = fs
+              .readFileSync('publish-output.ndjson', 'utf8')
+              .split('\n')
+              .filter(Boolean)
+              .map((line) => JSON.parse(line))
+              .filter((event) => event.type === 'git-tag')
+              .map((event) => event.tag)
             if (!newTags.length) {
               return
             }
