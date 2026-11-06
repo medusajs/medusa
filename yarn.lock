@@ -4317,7 +4317,7 @@ __metadata:
     "@types/pluralize": "npm:^0.0.33"
     bignumber.js: "npm:^11.1.5"
     dotenv: "npm:^18.0.9"
-    dotenv-expand: "npm:^11.0.6"
+    dotenv-expand: "npm:^1000.0.0"
     express: "npm:^4.21.0"
     graphql: "npm:^17.0.2"
     jsonwebtoken: "npm:^9.0.2"
@@ -12383,12 +12383,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-expand@npm:^11.0.6":
-  version: 11.0.7
-  resolution: "dotenv-expand@npm:11.0.7"
-  dependencies:
-    dotenv: "npm:^16.4.5"
-  checksum: 10c0/d80b8a7be085edf351270b96ac0e794bc3ddd7f36157912939577cb4d33ba6492ebee349d59798b71b90e36f498d24a2a564fb4aa00073b2ef4c2a3a49c467b1
+"dotenv-expand@npm:^1000.0.0":
+  version: 1000.0.0
+  resolution: "dotenv-expand@npm:1000.0.0"
+  checksum: 10c0/c8f897db0276f729445a5b5cbd022f4301a9c7d53f6b5007ba1545cb99378fbd36a16568cb1b390e9b466dddbfd5f298d025431eaa0569bb6f451e31e57e5fe0
   languageName: node
   linkType: hard
 
@@ -12396,13 +12394,6 @@ __metadata:
   version: 17.3.1
   resolution: "dotenv@npm:17.3.1"
   checksum: 10c0/c78e0c2d5a549c751e544cc60e2b95e7cb67e0c551f42e094d161c6b297aa44b630a3c2dcacf5569e529a6c2a6b84e2ab9be8d37b299d425df5a18b81ce4a35f
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:^16.4.5":
-  version: 16.6.1
-  resolution: "dotenv@npm:16.6.1"
-  checksum: 10c0/15ce56608326ea0d1d9414a5c8ee6dcf0fffc79d2c16422b4ac2268e7e2d76ff5a572d37ffe747c377de12005f14b3cc22361e79fc7f1061cce81f77d2c973dc
   languageName: node
   linkType: hard
 
