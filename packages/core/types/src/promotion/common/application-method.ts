@@ -79,9 +79,8 @@ export interface ApplicationMethodDTO {
 
   /**
    * How a `buyget` promotion picks the items it discounts. With
-   * `most_expensive_first`, each application pays with the most expensive
-   * eligible items and discounts the most expensive target left over. With
-   * `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
    */
   target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 
@@ -155,9 +154,8 @@ export interface CreateApplicationMethodDTO {
 
   /**
    * How a `buyget` promotion picks the items it discounts. With
-   * `most_expensive_first`, each application pays with the most expensive
-   * eligible items and discounts the most expensive target left over. With
-   * `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
    */
   target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 
@@ -236,9 +234,8 @@ export interface UpdateApplicationMethodDTO {
 
   /**
    * How a `buyget` promotion picks the items it discounts. With
-   * `most_expensive_first`, each application pays with the most expensive
-   * eligible items and discounts the most expensive target left over. With
-   * `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
    */
   target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 

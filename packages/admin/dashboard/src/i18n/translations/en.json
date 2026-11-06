@@ -2409,11 +2409,11 @@
       "target_selection_strategy": {
         "most_expensive_first": {
           "title": "Most expensive first",
-          "description": "Default. The most expensive items pay, and the most expensive one left is discounted"
+          "description": "Discounts the most expensive eligible items in the cart"
         },
         "cheapest_first": {
           "title": "Cheapest first",
-          "description": "Always discounts the cheapest eligible items in the cart"
+          "description": "Discounts the cheapest eligible items in the cart"
         }
       },
       "code": {

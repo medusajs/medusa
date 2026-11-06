@@ -64,28 +64,26 @@ export function validateApplicationMethodAttributes(
     ApplicationMethodTargetSelectionStrategy
   )
 
-  if (
-    targetSelectionStrategy &&
-    !allTargetSelectionStrategies.includes(targetSelectionStrategy)
-  ) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `application_method.target_selection_strategy should be one of ${allTargetSelectionStrategies.join(
-        ", "
-      )}`
-    )
-  }
+  if (targetSelectionStrategy) {
+    if (!allTargetSelectionStrategies.includes(targetSelectionStrategy)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.target_selection_strategy should be one of ${allTargetSelectionStrategies.join(
+          ", "
+        )}`
+      )
+    }
 
-  if (
-    promotion?.type !== PromotionType.BUYGET &&
-    targetSelectionStrategy &&
-    targetSelectionStrategy !==
-      ApplicationMethodTargetSelectionStrategy.MOST_EXPENSIVE_FIRST
-  ) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `application_method.target_selection_strategy '${targetSelectionStrategy}' is only allowed for Promotion type of ${PromotionType.BUYGET}`
-    )
+    if (
+      promotion?.type !== PromotionType.BUYGET &&
+      targetSelectionStrategy !==
+        ApplicationMethodTargetSelectionStrategy.MOST_EXPENSIVE_FIRST
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.target_selection_strategy '${targetSelectionStrategy}' is only allowed for Promotion type of ${PromotionType.BUYGET}`
+      )
+    }
   }
 
   if (promotion?.type === PromotionType.BUYGET) {

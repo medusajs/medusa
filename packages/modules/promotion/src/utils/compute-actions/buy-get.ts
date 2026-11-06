@@ -1,5 +1,6 @@
 import {
   BigNumberInput,
+  ApplicationMethodTargetSelectionStrategyValues,
   ComputeActionItemLine,
   InferEntityType,
   PromotionTypes,
@@ -522,7 +523,11 @@ function filterItemsByPromotionRules(
   Both sides are ranked by unit price: three units at 199 have a higher line
   subtotal than one unit at 379, but they are still the cheaper units.
 */
-function compareUnitPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
+function compareUnitPriceByStrategy(
+  a: ComputeActionItemLine,
+  b: ComputeActionItemLine,
+  strategy: ApplicationMethodTargetSelectionStrategyValues
+) {
   const aUnitPrice = getUnitPrice(a)
   const bUnitPrice = getUnitPrice(b)
 
@@ -532,7 +537,49 @@ function compareUnitPrice(a: ComputeActionItemLine, b: ComputeActionItemLine) {
     return 0
   }
 
-  return MathBN.lt(aUnitPrice, bUnitPrice) ? -1 : 1
+  const cheapestFirst =
+    strategy === ApplicationMethodTargetSelectionStrategy.CHEAPEST_FIRST
+
+  return MathBN.lt(aUnitPrice, bUnitPrice) === cheapestFirst ? -1 : 1
+}
+
+/*
+  Returns the buy and target items in the order they are picked in for the
+  given target selection strategy. Buy items are always reserved from the
+  most expensive end, and target items are picked in the order of the
+  strategy.
+
+  With the default strategy both lists keep the order they already have
+  (most expensive first, from `filterItemsByPromotionRules`), so the default
+  path is unchanged.
+*/
+function sortItemsBySelectionStrategy(
+  items: {
+    buyItems: ComputeActionItemLine[]
+    targetItems: ComputeActionItemLine[]
+  },
+  config: {
+    target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues | null
+  }
+) {
+  const strategy = config.target_selection_strategy
+
+  if (strategy !== ApplicationMethodTargetSelectionStrategy.CHEAPEST_FIRST) {
+    return items
+  }
+
+  return {
+    buyItems: [...items.buyItems].sort((a, b) =>
+      compareUnitPriceByStrategy(
+        a,
+        b,
+        ApplicationMethodTargetSelectionStrategy.MOST_EXPENSIVE_FIRST
+      )
+    ),
+    targetItems: [...items.targetItems].sort((a, b) =>
+      compareUnitPriceByStrategy(a, b, strategy)
+    ),
+  }
 }
 
 export function getComputedActionsForBuyGet(
@@ -578,17 +625,16 @@ export function getComputedActionsForBuyGet(
   // Buy items are reserved in the order given (after the items that can't be
   // targets) and targets are picked in the order given, so ordering the two
   // lists is all the option needs.
-  const cheapestFirst =
-    promotion.application_method?.target_selection_strategy ===
-    ApplicationMethodTargetSelectionStrategy.CHEAPEST_FIRST
-
-  const buyItemsInSelectionOrder = cheapestFirst
-    ? [...eligibleBuyItems].sort((a, b) => compareUnitPrice(b, a))
-    : eligibleBuyItems
-
-  const targetItemsInSelectionOrder = cheapestFirst
-    ? [...eligibleTargetItems].sort(compareUnitPrice)
-    : eligibleTargetItems
+  const {
+    buyItems: buyItemsInSelectionOrder,
+    targetItems: targetItemsInSelectionOrder,
+  } = sortItemsBySelectionStrategy(
+    { buyItems: eligibleBuyItems, targetItems: eligibleTargetItems },
+    {
+      target_selection_strategy:
+        promotion.application_method?.target_selection_strategy,
+    }
+  )
 
   const totalEligibleBuyItemsMap = new Map<string, EligibleItem>()
   const totalEligibleTargetItemsMap = new Map<string, EligibleItem>()
