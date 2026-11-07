@@ -2256,6 +2256,8 @@
       "method": "Metod",
       "allocation": "Fördelning",
       "allocationTooltip": "”Varje” tillämpar antalsgränsen per artikel, medan ”En gång” tillämpar antalsgränsen på hela varukorgen.",
+      "targetSelectionStrategy": "Rabatterade artiklar",
+      "targetSelectionStrategyTooltip": "Vilka berättigade artiklar i varukorgen som får rabatten",
       "addCondition": "Lägg till villkor",
       "clearAll": "Rensa alla",
       "taxInclusive": "Inklusive moms",
@@ -2403,6 +2405,16 @@
         "once": {
           "title": "En gång",
           "description": "Tillämpar värdet på ett begränsat antal artiklar."
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Dyraste först",
+          "description": "Rabatterar de dyraste berättigade artiklarna i varukorgen"
+        },
+        "cheapest_first": {
+          "title": "Billigaste först",
+          "description": "Rabatterar de billigaste berättigade artiklarna i varukorgen"
         }
       },
       "code": {

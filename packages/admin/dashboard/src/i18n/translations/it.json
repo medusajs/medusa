@@ -2274,6 +2274,8 @@
       "method": "Metodo",
       "allocation": "Allocazione",
       "allocationTooltip": "Each applica il limite di quantità per articolo, mentre Once applica il limite di quantità sull'intero carrello",
+      "targetSelectionStrategy": "Articoli scontati",
+      "targetSelectionStrategyTooltip": "Quali articoli idonei nel carrello ricevono lo sconto",
       "addCondition": "Aggiungi condizione",
       "clearAll": "Cancella tutto",
       "taxInclusive": "Inclusivo di tasse",
@@ -2424,6 +2426,16 @@
         "once": {
           "title": "Una volta",
           "description": "Applica il valore a un numero limitato di articoli"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Prima i più costosi",
+          "description": "Applica lo sconto agli articoli idonei più costosi nel carrello"
+        },
+        "cheapest_first": {
+          "title": "Prima i meno costosi",
+          "description": "Applica lo sconto agli articoli idonei meno costosi nel carrello"
         }
       },
       "code": {

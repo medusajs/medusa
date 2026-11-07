@@ -2273,6 +2273,8 @@
       "method": "Methode",
       "allocation": "Toewijzing",
       "allocationTooltip": "Elk handhaaft de hoeveelheidsbeperking per artikel, terwijl Eénmalig de hoeveelheidsbeperking voor de gehele winkelwagen handhaaft",
+      "targetSelectionStrategy": "Artikelen met korting",
+      "targetSelectionStrategyTooltip": "Welke in aanmerking komende artikelen in de winkelwagen de korting ontvangen",
       "addCondition": "Voorwaarde toevoegen",
       "clearAll": "Alles wissen",
       "taxInclusive": "Belasting inclusief",
@@ -2422,6 +2424,16 @@
         "once": {
           "title": "Eénmalig",
           "description": "Past waarde toe op een beperkt aantal artikelen"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Duurste eerst",
+          "description": "Past korting toe op de duurste in aanmerking komende artikelen in de winkelwagen"
+        },
+        "cheapest_first": {
+          "title": "Goedkoopste eerst",
+          "description": "Past korting toe op de goedkoopste in aanmerking komende artikelen in de winkelwagen"
         }
       },
       "code": {

@@ -2304,6 +2304,8 @@
       "method": "Metodă",
       "allocation": "Alocare",
       "allocationTooltip": "Each aplică limita de cantitate per articol, în timp ce Once aplică limita de cantitate pentru întregul coș",
+      "targetSelectionStrategy": "Articole cu reducere",
+      "targetSelectionStrategyTooltip": "Care articole eligibile din coș primesc reducerea",
       "addCondition": "Adăugați o condiție",
       "clearAll": "Ștergeți totul",
       "taxInclusive": "Inclusiv taxe",
@@ -2453,6 +2455,16 @@
         "once": {
           "title": "O dată",
           "description": "Aplică valoarea unui număr limitat de articole"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Cele mai scumpe primele",
+          "description": "Aplică reducerea la cele mai scumpe articole eligibile din coș"
+        },
+        "cheapest_first": {
+          "title": "Cele mai ieftine primele",
+          "description": "Aplică reducerea la cele mai ieftine articole eligibile din coș"
         }
       },
       "code": {

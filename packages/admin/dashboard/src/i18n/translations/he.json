@@ -2331,6 +2331,8 @@
       "method": "שיטה",
       "allocation": "הקצאה",
       "allocationTooltip": "Each מאכף את מגבלת הכמות לכל פריט, בעוד Once מאכף את מגבלת הכמות על פני כל העגלה",
+      "targetSelectionStrategy": "פריטים מוזלים",
+      "targetSelectionStrategyTooltip": "אילו פריטים זכאים בעגלה מקבלים את ההנחה",
       "addCondition": "הוסף תנאי",
       "clearAll": "נקה הכל",
       "taxInclusive": "כולל מס",
@@ -2480,6 +2482,16 @@
         "once": {
           "title": "פעם אחת",
           "description": "מחיל ערך על מספר מוגבל של פריטים"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "היקר ביותר ראשון",
+          "description": "מחיל הנחה על הפריטים הזכאים היקרים ביותר בעגלה"
+        },
+        "cheapest_first": {
+          "title": "הזול ביותר ראשון",
+          "description": "מחיל הנחה על הפריטים הזכאים הזולים ביותר בעגלה"
         }
       },
       "code": {

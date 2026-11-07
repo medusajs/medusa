@@ -2256,6 +2256,8 @@
       "method": "روش",
       "allocation": "تخصیص",
       "allocationTooltip": "Each محدودیت تعداد را برای هر آیتم اعمال می‌کند، در حالی که Once محدودیت تعداد را برای کل سبد خرید اعمال می‌کند",
+      "targetSelectionStrategy": "آیتم‌های تخفیف‌دار",
+      "targetSelectionStrategyTooltip": "کدام آیتم‌های واجد شرایط در سبد خرید تخفیف دریافت می‌کنند",
       "addCondition": "افزودن شرط",
       "clearAll": "پاک کردن همه",
       "taxInclusive": "شامل مالیات",
@@ -2403,6 +2405,16 @@
         "once": {
           "title": "یک بار",
           "description": "مقدار را روی تعداد محدودی از آیتم‌ها اعمال می‌کند"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "گران‌ترین اول",
+          "description": "به گران‌ترین آیتم‌های واجد شرایط در سبد خرید تخفیف اعمال می‌کند"
+        },
+        "cheapest_first": {
+          "title": "ارزان‌ترین اول",
+          "description": "به ارزان‌ترین آیتم‌های واجد شرایط در سبد خرید تخفیف اعمال می‌کند"
         }
       },
       "code": {

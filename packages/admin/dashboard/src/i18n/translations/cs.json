@@ -2361,6 +2361,8 @@
         }
       },
       "allocationTooltip": "Každý vynucuje limit množství na položku, zatímco Jednou vynucuje limit množství v celém košíku",
+      "targetSelectionStrategy": "Zlevněné položky",
+      "targetSelectionStrategyTooltip": "Které způsobilé položky v košíku obdrží slevu",
       "usageLimit": "Limit použití",
       "usage": "Použití"
     },
@@ -2478,6 +2480,16 @@
         "once": {
           "title": "Jednou",
           "description": "Aplikuje hodnotu na omezený počet položek"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Nejdražší první",
+          "description": "Zlevní nejdražší způsobilé položky v košíku"
+        },
+        "cheapest_first": {
+          "title": "Nejlevnější první",
+          "description": "Zlevní nejlevnější způsobilé položky v košíku"
         }
       },
       "code": {
