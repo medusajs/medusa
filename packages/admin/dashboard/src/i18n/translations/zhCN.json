@@ -2269,6 +2269,8 @@
       "method": "方式",
       "allocation": "分配",
       "allocationTooltip": "每件（Each）按商品数量限制，一次（Once）按整个购物车限制",
+      "targetSelectionStrategy": "折扣商品",
+      "targetSelectionStrategyTooltip": "购物车中哪些符合条件的商品将获得折扣",
       "addCondition": "添加条件",
       "clearAll": "清除全部",
       "taxInclusive": "含税",
@@ -2418,6 +2420,16 @@
         "once": {
           "title": "一次",
           "description": "将折扣值应用于有限数量的商品"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "最贵优先",
+          "description": "对购物车中最贵的符合条件的商品进行折扣"
+        },
+        "cheapest_first": {
+          "title": "最便宜优先",
+          "description": "对购物车中最便宜的符合条件的商品进行折扣"
         }
       },
       "code": {

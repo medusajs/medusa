@@ -2271,6 +2271,8 @@
       "method": "Método",
       "allocation": "Alocação",
       "allocationTooltip": "Cada aplica o limite de quantidade por item, enquanto Uma vez aplica o limite de quantidade a todo o carrinho",
+      "targetSelectionStrategy": "Itens com desconto",
+      "targetSelectionStrategyTooltip": "Quais itens elegíveis no carrinho recebem o desconto",
       "addCondition": "Adicionar condição",
       "clearAll": "Limpar tudo",
       "taxInclusive": "Impostos inclusos",
@@ -2418,6 +2420,16 @@
         "once": {
           "title": "Uma vez",
           "description": "Aplica o valor a um número limitado de itens"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Mais caro primeiro",
+          "description": "Aplica desconto nos itens elegíveis mais caros do carrinho"
+        },
+        "cheapest_first": {
+          "title": "Mais barato primeiro",
+          "description": "Aplica desconto nos itens elegíveis mais baratos do carrinho"
         }
       },
       "code": {

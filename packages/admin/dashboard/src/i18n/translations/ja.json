@@ -2274,6 +2274,8 @@
       "method": "方法",
       "allocation": "配分",
       "allocationTooltip": "「各」はアイテムごとに数量制限を適用し、「一度」はカート全体にわたって数量制限を適用します",
+      "targetSelectionStrategy": "割引対象アイテム",
+      "targetSelectionStrategyTooltip": "カート内のどの対象アイテムに割引が適用されるか",
       "addCondition": "条件を追加",
       "clearAll": "すべてクリア",
       "taxInclusive": "税込み",
@@ -2424,6 +2426,16 @@
         "once": {
           "title": "一度",
           "description": "限られた数のアイテムに値を適用します"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "最も高価なアイテムから",
+          "description": "カート内の最も高価な対象アイテムに割引を適用します"
+        },
+        "cheapest_first": {
+          "title": "最も安いアイテムから",
+          "description": "カート内の最も安い対象アイテムに割引を適用します"
         }
       },
       "code": {

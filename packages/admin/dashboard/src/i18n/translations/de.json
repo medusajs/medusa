@@ -2274,6 +2274,8 @@
       "method": "Verfahren",
       "allocation": "Zuweisung",
       "allocationTooltip": "\"Jeder\" erzwingt das Mengenlimit pro Artikel, während \"Einmal\" das Mengenlimit über den gesamten Warenkorb hinweg erzwingt",
+      "targetSelectionStrategy": "Rabattierte Artikel",
+      "targetSelectionStrategyTooltip": "Welche berechtigten Artikel im Warenkorb den Rabatt erhalten",
       "addCondition": "Bedingung hinzufügen",
       "clearAll": "Alles löschen",
       "taxInclusive": "Steuerinklusive",
@@ -2424,6 +2426,16 @@
         "once": {
           "title": "Einmal",
           "description": "Wendet den Wert auf eine begrenzte Anzahl von Artikeln an"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Teuerste zuerst",
+          "description": "Rabattiert die teuersten berechtigten Artikel im Warenkorb"
+        },
+        "cheapest_first": {
+          "title": "Günstigste zuerst",
+          "description": "Rabattiert die günstigsten berechtigten Artikel im Warenkorb"
         }
       },
       "code": {

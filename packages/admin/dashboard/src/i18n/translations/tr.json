@@ -2195,6 +2195,8 @@
       "method": "Yöntem",
       "allocation": "Dağıtım",
       "allocationTooltip": "EACH, miktar limitini ürün başına uygular; ONCE ise miktar limitini tüm sepet genelinde uygular",
+      "targetSelectionStrategy": "İndirim uygulanan ürünler",
+      "targetSelectionStrategyTooltip": "Sepetteki hangi uygun ürünlerin indirim alacağı",
       "addCondition": "Şart ekle",
       "clearAll": "Tümünü Temizle",
       "taxInclusive": "Vergi Dahil",
@@ -2344,6 +2346,16 @@
         "once": {
           "title": "Bir kez",
           "description": "Değeri sınırlı sayıda ürüne uygular"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "En pahalıdan başla",
+          "description": "Sepetteki en pahalı uygun ürünlere indirim uygular"
+        },
+        "cheapest_first": {
+          "title": "En ucuzdan başla",
+          "description": "Sepetteki en ucuz uygun ürünlere indirim uygular"
         }
       },
       "code": {
