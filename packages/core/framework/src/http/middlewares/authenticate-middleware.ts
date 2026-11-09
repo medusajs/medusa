@@ -30,6 +30,13 @@ type MedusaSession = {
   auth_context: AuthContext
 }
 
+const getOwn = <T extends object, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] | undefined => {
+  return Object.prototype.hasOwnProperty.call(obj, key) ? obj[key] : undefined
+}
+
 export const authenticate = (
   actorType: string | string[],
   authType: AuthType | AuthType[],
@@ -49,17 +56,9 @@ export const authenticate = (
     const req_ = req as AuthenticatedMedusaRequest
     const logger = req.scope.resolve(ContainerRegistrationKeys.LOGGER)
 
-    const hasOwn = (key: string) =>
-      Object.prototype.hasOwnProperty.call(options, key)
-    const allowUnauthenticated = hasOwn("allowUnauthenticated")
-      ? options.allowUnauthenticated
-      : undefined
-    const allowUnregistered = hasOwn("allowUnregistered")
-      ? options.allowUnregistered
-      : undefined
-    const requireMfaOption = hasOwn("requireMfa")
-      ? options.requireMfa
-      : undefined
+    const allowUnauthenticated = getOwn(options, "allowUnauthenticated")
+    const allowUnregistered = getOwn(options, "allowUnregistered")
+    const requireMfaOption = getOwn(options, "requireMfa")
 
     // We only allow authenticating using a secret API key on the admin
     const isExclusivelyUser =
