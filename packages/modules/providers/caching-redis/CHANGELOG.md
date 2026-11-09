@@ -1,5 +1,12 @@
 # @medusajs/caching-redis
 
+## 2.22.5
+
+### Patch Changes
+
+- Updated dependencies [[`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/framework@2.22.5
+
 ## 2.22.4
 
 ### Patch Changes

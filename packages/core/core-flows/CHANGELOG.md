@@ -1,5 +1,13 @@
 # @medusajs/core-flows
 
+## 2.22.5
+
+### Patch Changes
+
+- [#17710](https://github.com/medusajs/medusa/pull/17710) [`10c7d1d`](https://github.com/medusajs/medusa/commit/10c7d1d9ae2e61947423888518305754bac010a9) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): don't copy a location's fulfillment sets into each shipping option
+- Updated dependencies [[`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/framework@2.22.5
+
 ## 2.22.4
 
 ### Patch Changes
