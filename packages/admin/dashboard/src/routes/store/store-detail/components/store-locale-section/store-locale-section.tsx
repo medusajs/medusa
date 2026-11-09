@@ -1,4 +1,4 @@
-import { Plus, Trash } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
   Checkbox,
@@ -124,8 +124,8 @@ export const StoreLocaleSection = ({ store }: StoreLocaleSectionProps) => {
               {
                 actions: [
                   {
-                    icon: <Plus />,
-                    label: t("actions.add"),
+                    icon: <PencilSquare />,
+                    label: t("actions.edit"),
                     to: "locales",
                   },
                 ],
