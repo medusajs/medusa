@@ -1,5 +1,21 @@
 # @medusajs/loyalty-plugin
 
+## 2.22.6
+
+### Patch Changes
+
+- [#17734](https://github.com/medusajs/medusa/pull/17734) [`3e35fe3`](https://github.com/medusajs/medusa/commit/3e35fe35392092866945cc360d0b2bc0f7fff642) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(draft-order,loyalty-plugin): include build output when packed with Yarn
+
+- Updated dependencies [[`94774b6`](https://github.com/medusajs/medusa/commit/94774b6cf9ec67b3f5aabbff02a8b118d51a8783)]:
+  - @medusajs/medusa@2.22.6
+  - @medusajs/test-utils@2.22.6
+  - @medusajs/admin-sdk@2.22.6
+  - @medusajs/dashboard@2.22.6
+  - @medusajs/cli@2.22.6
+  - @medusajs/framework@2.22.6
+  - @medusajs/icons@2.22.6
+  - @medusajs/ui@4.2.13
+
 ## 2.22.5
 
 ### Patch Changes
