@@ -1,7 +1,7 @@
 /**
  * @schema AdminRbacRoleAssignment
  * type: object
- * description: The assignment's assignments.
+ * description: The assignment of an RBAC role to an entity, such as a user.
  * x-schemaName: AdminRbacRoleAssignment
  * required:
  *   - id
@@ -34,11 +34,11 @@
  *   scope:
  *     type: string
  *     title: scope
- *     description: The assignment's scope.
+ *     description: The type of the scope's entity that the assignment is constrained to, such as `organization`.
  *   scope_id:
  *     type: string
  *     title: scope_id
- *     description: The assignment's scope id.
+ *     description: The ID of the scope's entity that the assignment is constrained to, such as `org_123`.
  *   metadata:
  *     type: object
  *     description: The assignment's metadata.
