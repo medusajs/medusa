@@ -4,6 +4,7 @@ import {
   ContainerRegistrationKeys,
   defineFileConfig,
   FeatureFlag,
+  TRANSLATION_LIST_CACHE_TAG,
 } from "@medusajs/framework/utils"
 import TranslationFeatureFlag from "../../../feature-flags/translation"
 
@@ -25,7 +26,11 @@ export const GET = async (
       pagination: req.queryConfig.pagination,
     },
     {
-      cache: { enable: true },
+      cache: {
+        enable: true,
+        tags: [TRANSLATION_LIST_CACHE_TAG],
+        computeAutomaticTags: true,
+      },
     }
   )
 

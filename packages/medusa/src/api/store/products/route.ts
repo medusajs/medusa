@@ -5,6 +5,7 @@ import {
   FeatureFlag,
   isPresent,
   QueryContext,
+  TRANSLATION_LIST_CACHE_TAG,
 } from "@medusajs/framework/utils"
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import {
@@ -80,6 +81,8 @@ async function getProductsWithIndexEngine(
     {
       cache: {
         enable: true,
+        tags: [TRANSLATION_LIST_CACHE_TAG],
+        computeAutomaticTags: true,
       },
       locale: req.locale,
     }
@@ -133,6 +136,8 @@ async function getProducts(
     {
       cache: {
         enable: true,
+        tags: [TRANSLATION_LIST_CACHE_TAG],
+        computeAutomaticTags: true,
       },
       locale: req.locale,
     }
