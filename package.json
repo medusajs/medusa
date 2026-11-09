@@ -143,7 +143,7 @@
   },
   "dependencies": {
     "@changesets/changelog-github": "^1.0.1",
-    "@changesets/cli": "^3.0.3"
+    "@changesets/cli": "^2.31.1"
   },
   "resolutions": {
     "lodash": "^4.18.1",
@@ -157,6 +157,7 @@
     "postcss": "^8.5.10",
     "@opentelemetry/core": "^2.7.0",
     "@rushstack/node-core-library/ajv": "^8.18.0",
+    "@changesets/assemble-release-plan@^6.0.10": "patch:@changesets/assemble-release-plan@npm:^6.0.10#.yarn/patches/@changesets-assemble-release-plan-npm-6.0.9-e01af97ef4.patch",
     "vite": "^7.3.6",
     "swagger-inline@^8.1.0": "patch:swagger-inline@npm:^8.1.0#.yarn/patches/swagger-inline-npm-8.1.0-ba84ecd7e8.patch"
   },
