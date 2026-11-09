@@ -31,7 +31,7 @@
 					"fileName": "rbac-policy.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-policy.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-policy.ts#L3"
 				}
 			],
 			"type": {
@@ -78,7 +78,7 @@
 													"fileName": "rbac-policy.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-policy.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-policy.ts#L5"
 												}
 											],
 											"type": {
@@ -124,7 +124,7 @@
 													"fileName": "rbac-policy.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-policy.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-policy.ts#L6"
 												}
 											],
 											"type": {
@@ -158,7 +158,7 @@
 													"fileName": "rbac-policy.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-policy.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-policy.ts#L7"
 												}
 											],
 											"type": {
@@ -192,7 +192,7 @@
 													"fileName": "rbac-policy.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-policy.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-policy.ts#L8"
 												}
 											],
 											"type": {
@@ -228,7 +228,7 @@
 													"fileName": "rbac-policy.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-policy.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-policy.ts#L9"
 												}
 											],
 											"type": {
@@ -264,7 +264,7 @@
 													"fileName": "rbac-policy.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-policy.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-policy.ts#L10"
 												}
 											],
 											"type": {
@@ -300,7 +300,7 @@
 													"fileName": "rbac-policy.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-policy.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-policy.ts#L11"
 												}
 											],
 											"type": {
@@ -393,7 +393,7 @@
 					"fileName": "rbac-role-assignment.ts",
 					"line": 4,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-assignment.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-assignment.ts#L4"
 				}
 			],
 			"type": {
@@ -440,7 +440,7 @@
 													"fileName": "rbac-role-assignment.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-assignment.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-assignment.ts#L6"
 												}
 											],
 											"type": {
@@ -489,7 +489,7 @@
 													"fileName": "rbac-role-assignment.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-assignment.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-assignment.ts#L7"
 												}
 											],
 											"type": {
@@ -530,7 +530,7 @@
 													"fileName": "rbac-role-assignment.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-assignment.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-assignment.ts#L8"
 												}
 											],
 											"type": {
@@ -564,7 +564,7 @@
 													"fileName": "rbac-role-assignment.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-assignment.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-assignment.ts#L9"
 												}
 											],
 											"type": {
@@ -600,7 +600,7 @@
 													"fileName": "rbac-role-assignment.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-assignment.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-assignment.ts#L10"
 												}
 											],
 											"type": {
@@ -636,7 +636,7 @@
 													"fileName": "rbac-role-assignment.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-assignment.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-assignment.ts#L11"
 												}
 											],
 											"type": {
@@ -672,7 +672,7 @@
 													"fileName": "rbac-role-assignment.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-assignment.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-assignment.ts#L12"
 												}
 											],
 											"type": {
@@ -765,7 +765,7 @@
 					"fileName": "rbac-role-policy.ts",
 					"line": 5,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-policy.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-policy.ts#L5"
 				}
 			],
 			"type": {
@@ -812,7 +812,7 @@
 													"fileName": "rbac-role-policy.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-policy.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-policy.ts#L7"
 												}
 											],
 											"type": {
@@ -861,7 +861,7 @@
 													"fileName": "rbac-role-policy.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-policy.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-policy.ts#L8"
 												}
 											],
 											"type": {
@@ -905,7 +905,7 @@
 													"fileName": "rbac-role-policy.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-policy.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-policy.ts#L9"
 												}
 											],
 											"type": {
@@ -948,7 +948,7 @@
 													"fileName": "rbac-role-policy.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role-policy.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role-policy.ts#L10"
 												}
 											],
 											"type": {
@@ -1038,7 +1038,7 @@
 					"fileName": "rbac-role.ts",
 					"line": 5,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role.ts#L5"
 				}
 			],
 			"type": {
@@ -1085,7 +1085,7 @@
 													"fileName": "rbac-role.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role.ts#L7"
 												}
 											],
 											"type": {
@@ -1131,7 +1131,7 @@
 													"fileName": "rbac-role.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role.ts#L8"
 												}
 											],
 											"type": {
@@ -1167,7 +1167,7 @@
 													"fileName": "rbac-role.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role.ts#L9"
 												}
 											],
 											"type": {
@@ -1203,7 +1203,7 @@
 													"fileName": "rbac-role.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role.ts#L10"
 												}
 											],
 											"type": {
@@ -1274,7 +1274,7 @@
 													"fileName": "rbac-role.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role.ts#L11"
 												}
 											],
 											"type": {
@@ -1318,7 +1318,7 @@
 													"fileName": "rbac-role.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/rbac/src/models/rbac-role.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/rbac/src/models/rbac-role.ts#L14"
 												}
 											],
 											"type": {
