@@ -1,6 +1,7 @@
 // Those utils are used in a typeorm context and we can't be sure that they can be used elsewhere
 
 import { objectFromStringPath } from "./object-from-string-path"
+import { isUnsafePathSegment } from "./unsafe-path-keys"
 
 export type Order = {
   [key: string]: "ASC" | "DESC" | Order
@@ -26,8 +27,6 @@ function buildRelationsOrSelect(collection: string[]): Selects | Relations {
   return objectFromStringPath(collection)
 }
 
-const UNSAFE_ORDER_KEYS = new Set(["__proto__", "constructor", "prototype"])
-
 /**
  * Convert an order of dot string into a nested object
  * @example
@@ -52,7 +51,7 @@ export function buildOrder(orderBy: { [k: string]: "ASC" | "DESC" }): Order {
     const nestedOrder = order.split(".")
 
     // Guard against prototype pollution through user-controlled order keys
-    if (nestedOrder.some((segment) => UNSAFE_ORDER_KEYS.has(segment))) {
+    if (nestedOrder.some(isUnsafePathSegment)) {
       continue
     }
 
