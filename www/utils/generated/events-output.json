@@ -1074,8 +1074,8 @@
       "cancelOrderFulfillmentWorkflow",
       "convertDraftOrderWorkflow",
       "completeCartWorkflow",
-      "confirmOrderEditRequestWorkflow",
       "confirmExchangeRequestWorkflow",
+      "confirmOrderEditRequestWorkflow",
       "confirmClaimRequestWorkflow"
     ],
     "since": "2.18.0",

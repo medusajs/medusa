@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.5
+  version: 2.22.6
   title: Medusa Storefront API
   license:
     name: MIT
