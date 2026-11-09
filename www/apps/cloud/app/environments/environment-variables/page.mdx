@@ -189,5 +189,67 @@ You can also navigate to an environment's variables from the [command palette](.
 
 A file download will start with the name `env.txt`, which contains the environment variables in `.env` format.
 
+If any of the exported variables are [linked to a Vault secret](#link-environment-variables-to-vault-secrets), the dashboard asks you to confirm before it reveals their values and includes them in the file.
+
 You can rename the file to `.env` and use it in your local development.
+
+---
+
+## Reveal Sensitive Environment Variables
+
+The environment variables table masks the values of sensitive variables. To reveal a sensitive variable's value:
+
+1. In the "Environment variables" section, find the variable you want to reveal.
+2. Click the eye icon next to its masked value.
+3. Confirm that you want to reveal the value.
+
+If the variable is linked to a Vault secret, the dashboard retrieves its value from Vault.
+
+---
+
+## Link Environment Variables to Vault Secrets
+
+<Note>
+
+Vault integration for environment variables may not be available to all organizations yet.
+
+</Note>
+
+If your organization uses Vault, you can store the values of your Medusa backend's sensitive environment variables as Vault secrets, then link environment variables to them. Vault integration isn't available for storefront environment variables.
+
+In the environment variables table, a lock icon appears next to the masked value of a variable linked to a Vault secret. Hover over the icon to see which secret the variable is linked to.
+
+### Add a Variable Linked to a Vault Secret
+
+To link a new environment variable to an existing Vault secret:
+
+1. In the "Add new environment variables" section, enter the variable's key.
+2. Click the lock button at the right side of the value field.
+3. Search for and select the Vault secret to link the variable to.
+4. Click the "Save" button.
+
+Once you link a secret, the value field shows the secret's identifier. You can click the unlink button next to it to enter a plain value instead. The **Sensitive** toggle is enabled and locked while the variable is linked to a secret.
+
+### Move an Existing Variable to Vault
+
+You can move the value of an existing sensitive backend variable into a new Vault secret. To do that:
+
+1. In the "Environment variables" section, find the variable you want to move.
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the variable's right side.
+3. Choose "Move to Vault" from the dropdown menu. You can also click the "Move to Vault" link in the variable's edit side window.
+4. In the window that opens, fill in the following fields:
+   - **Service**: (optional) The domain of the service the secret belongs to, such as `stripe.com`. The dashboard pre-fills this field if it recognizes the service from the variable's key.
+   - **Name**: A slug-style name of the secret within the service. The dashboard pre-fills this field based on the variable's key.
+5. Review the preview of the secret's identifier, which has the format `service/name`.
+6. Submit the form.
+
+Medusa moves the variable's value into a new Vault secret and links the variable to it.
+
+### Edit a Variable Linked to a Vault Secret
+
+When you [edit an environment variable](#edit-environment-variables-on-cloud) linked to a Vault secret, the side window shows the secret's identifier and version instead of the value field. To change the value, click the "Open in Vault" link to go to the secret's page in your organization's Vault settings.
+
+The **Sensitive** toggle is always enabled for variables linked to a Vault secret, and you can't disable it.
+
+If the variable isn't fully linked to its Vault secret yet, the value field remains editable. Medusa keeps the variable's current value unless you enter a new one.
 
