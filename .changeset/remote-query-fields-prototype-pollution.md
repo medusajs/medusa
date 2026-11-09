@@ -4,4 +4,4 @@
 "@medusajs/framework": patch
 ---
 
-fix(utils, query, framework): prevent prototype pollution through field paths in remoteQueryObjectFromString
+fix(utils, query, framework): harden dotted field/filter path handling when building queries
