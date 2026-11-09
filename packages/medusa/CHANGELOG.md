@@ -1,5 +1,70 @@
 # Change Log
 
+## 2.22.6
+
+### Patch Changes
+
+- [#17721](https://github.com/medusajs/medusa/pull/17721) [`94774b6`](https://github.com/medusajs/medusa/commit/94774b6cf9ec67b3f5aabbff02a8b118d51a8783) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(medusa): restart the dev server on Windows after a failed boot
+
+- Updated dependencies [[`9d9fd8d`](https://github.com/medusajs/medusa/commit/9d9fd8dbab62395df645a41a8c5db2e94a6e52a2), [`3e35fe3`](https://github.com/medusajs/medusa/commit/3e35fe35392092866945cc360d0b2bc0f7fff642)]:
+  - @medusajs/core-flows@2.22.6
+  - @medusajs/draft-order@2.22.6
+  - @medusajs/analytics@2.22.6
+  - @medusajs/api-key@2.22.6
+  - @medusajs/auth@2.22.6
+  - @medusajs/caching@2.22.6
+  - @medusajs/cart@2.22.6
+  - @medusajs/currency@2.22.6
+  - @medusajs/customer@2.22.6
+  - @medusajs/file@2.22.6
+  - @medusajs/fulfillment@2.22.6
+  - @medusajs/index@2.22.6
+  - @medusajs/inventory@2.22.6
+  - @medusajs/link-modules@2.22.6
+  - @medusajs/locking@2.22.6
+  - @medusajs/notification@2.22.6
+  - @medusajs/order@2.22.6
+  - @medusajs/payment@2.22.6
+  - @medusajs/pricing@2.22.6
+  - @medusajs/product@2.22.6
+  - @medusajs/promotion@2.22.6
+  - @medusajs/search-postgres@2.22.6
+  - @medusajs/rbac@2.22.6
+  - @medusajs/region@2.22.6
+  - @medusajs/sales-channel@2.22.6
+  - @medusajs/search@2.22.6
+  - @medusajs/settings@2.22.6
+  - @medusajs/stock-location@2.22.6
+  - @medusajs/store@2.22.6
+  - @medusajs/tax@2.22.6
+  - @medusajs/translation@2.22.6
+  - @medusajs/user@2.22.6
+  - @medusajs/workflow-engine-inmemory@2.22.6
+  - @medusajs/workflow-engine-redis@2.22.6
+  - @medusajs/admin-bundler@2.22.6
+  - @medusajs/framework@2.22.6
+  - @medusajs/telemetry@2.22.6
+  - @medusajs/cache-inmemory@2.22.6
+  - @medusajs/cache-redis@2.22.6
+  - @medusajs/event-bus-local@2.22.6
+  - @medusajs/event-bus-redis@2.22.6
+  - @medusajs/analytics-local@2.22.6
+  - @medusajs/analytics-posthog@2.22.6
+  - @medusajs/auth-emailpass@2.22.6
+  - @medusajs/auth-github@2.22.6
+  - @medusajs/auth-google@2.22.6
+  - @medusajs/auth-oidc@2.22.6
+  - @medusajs/caching-redis@2.22.6
+  - @medusajs/file-local@2.22.6
+  - @medusajs/file-s3@2.22.6
+  - @medusajs/fulfillment-manual@2.22.6
+  - @medusajs/locking-postgres@2.22.6
+  - @medusajs/locking-redis@2.22.6
+  - @medusajs/notification-local@2.22.6
+  - @medusajs/notification-sendgrid@2.22.6
+  - @medusajs/payment-adyen@2.22.6
+  - @medusajs/payment-stripe@2.22.6
+
 ## 2.22.5
 
 ### Patch Changes

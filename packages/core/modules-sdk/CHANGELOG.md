@@ -1,5 +1,14 @@
 # @medusajs/modules-sdk
 
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/query@2.22.6
+  - @medusajs/utils@2.22.6
+  - @medusajs/deps@2.22.6
+
 ## 2.22.5
 
 ### Patch Changes
