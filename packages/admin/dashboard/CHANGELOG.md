@@ -1,5 +1,22 @@
 # @medusajs/dashboard
 
+## 2.22.5
+
+### Patch Changes
+
+- [#17563](https://github.com/medusajs/medusa/pull/17563) [`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760) Thanks [@kristianjakschnltg](https://github.com/kristianjakschnltg)! - feat(promotion,utils,types,medusa,dashboard): add target selection strategy for buy-get promotions
+
+  Adds `application_method.target_selection_strategy` to choose which eligible items a Buy X Get Y promotion discounts. The default, `most_expensive_first`, keeps the current behaviour. `cheapest_first` discounts the cheapest eligible units across the cart: for "buy 3, get 1 free" with eight units priced 100 to 800, the 100 and 200 units are discounted instead of 100 and 500. The option is available in the admin promotion create and edit forms.
+
+- [#17702](https://github.com/medusajs/medusa/pull/17702) [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,draft-order): replace deprecated lodash.isequal with dequal
+
+- [#17687](https://github.com/medusajs/medusa/pull/17687) [`cc17c71`](https://github.com/medusajs/medusa/commit/cc17c713185046f26bf00e3ba23ad6df5639db00) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard): lint with the root ESLint flat config and update eslint to 10.13.0 and eslint-plugin-react-refresh to 0.5.7
+- Updated dependencies [[`43ee8be`](https://github.com/medusajs/medusa/commit/43ee8be5405956a5bc1578b23e3725ef8b84f83e), [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b)]:
+  - @medusajs/ui@4.2.12
+  - @medusajs/js-sdk@2.22.5
+  - @medusajs/admin-shared@2.22.5
+  - @medusajs/icons@2.22.5
+
 ## 2.22.4
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @medusajs/payment
 
+## 2.22.5
+
+### Patch Changes
+
+- [#17697](https://github.com/medusajs/medusa/pull/17697) [`74a2c09`](https://github.com/medusajs/medusa/commit/74a2c09031afb2f673ce63bc884a55fe35d72c1e) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(payment): use a caret range for stripe to match @medusajs/payment-stripe
+- Updated dependencies [[`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/framework@2.22.5
+
 ## 2.22.4
 
 ### Patch Changes
