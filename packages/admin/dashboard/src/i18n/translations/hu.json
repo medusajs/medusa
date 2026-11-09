@@ -2294,6 +2294,8 @@
         }
       },
       "allocationTooltip": "A Minden opció tételenként érvényesíti a mennyiségi korlátot, míg az Egyszer a teljes kosárra érvényesíti azt.",
+      "targetSelectionStrategy": "Kedvezményes tételek",
+      "targetSelectionStrategyTooltip": "Melyik jogosult tételek kapnak kedvezményt a kosárban",
       "taxInclusive": "Adót is tartalmaz",
       "usageLimit": "Felhasználási korlát",
       "usage": "Felhasználás"
@@ -2408,6 +2410,16 @@
         "once": {
           "title": "Egyszer",
           "description": "Értéket alkalmaz korlátozott számú tételre"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Legdrágább először",
+          "description": "A kosárban lévő legdrágább jogosult tételekre alkalmazza a kedvezményt"
+        },
+        "cheapest_first": {
+          "title": "Legolcsóbb először",
+          "description": "A kosárban lévő legolcsóbb jogosult tételekre alkalmazza a kedvezményt"
         }
       },
       "code": {

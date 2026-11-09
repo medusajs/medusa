@@ -2256,6 +2256,8 @@
       "method": "Menetelmä",
       "allocation": "Kohdistus",
       "allocationTooltip": "Each-asetus rajoittaa määrän per tuote, kun taas Once-asetus rajoittaa määrän koko ostoskorin osalta",
+      "targetSelectionStrategy": "Alennettavat tuotteet",
+      "targetSelectionStrategyTooltip": "Mitkä ostoskorin hyväksyttävät tuotteet saavat alennuksen",
       "addCondition": "Lisää ehto",
       "clearAll": "Tyhjennä kaikki",
       "taxInclusive": "Sisältää veron",
@@ -2403,6 +2405,16 @@
         "once": {
           "title": "Kerran",
           "description": "Soveltaa arvoa rajattuun määrään tuotteita"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Kallein ensin",
+          "description": "Antaa alennuksen ostoskorin kalleimmille hyväksyttäville tuotteille"
+        },
+        "cheapest_first": {
+          "title": "Halvin ensin",
+          "description": "Antaa alennuksen ostoskorin halvimmille hyväksyttäville tuotteille"
         }
       },
       "code": {

@@ -2208,6 +2208,8 @@
       "method": "Način",
       "allocation": "Alokacija",
       "allocationTooltip": "Each nameće ograničenje količine po stavci, dok Once nameće ograničenje količine na razini cijele košarice",
+      "targetSelectionStrategy": "Artikli s popustom",
+      "targetSelectionStrategyTooltip": "Koji prihvatljivi artikli u košarici dobivaju popust",
       "addCondition": "Dodaj uvjet",
       "clearAll": "Očisti sve",
       "taxInclusive": "Uključuje porez",
@@ -2355,6 +2357,16 @@
         "once": {
           "title": "Jednom",
           "description": "Primjenjuje vrijednost na ograničen broj stavki"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Najskuplji prvo",
+          "description": "Primjenjuje popust na najskuplje prihvatljive artikle u košarici"
+        },
+        "cheapest_first": {
+          "title": "Najjeftiniji prvo",
+          "description": "Primjenjuje popust na najjeftinije prihvatljive artikle u košarici"
         }
       },
       "code": {

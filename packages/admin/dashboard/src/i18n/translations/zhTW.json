@@ -2269,6 +2269,8 @@
       "method": "方式",
       "allocation": "分配",
       "allocationTooltip": "「每個」對每個項目強制執行數量限制，而「一次」對整個購物車強制執行數量限制",
+      "targetSelectionStrategy": "折扣項目",
+      "targetSelectionStrategyTooltip": "購物車中哪些符合條件的項目將獲得折扣",
       "addCondition": "新增條件",
       "clearAll": "清除全部",
       "taxInclusive": "含稅",
@@ -2416,6 +2418,16 @@
         "once": {
           "title": "一次",
           "description": "對有限數量的項目套用值"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "最貴的優先",
+          "description": "對購物車中最貴的符合條件項目套用折扣"
+        },
+        "cheapest_first": {
+          "title": "最便宜的優先",
+          "description": "對購物車中最便宜的符合條件項目套用折扣"
         }
       },
       "code": {

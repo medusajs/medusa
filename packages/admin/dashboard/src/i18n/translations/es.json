@@ -2314,6 +2314,8 @@
       "method": "Método",
       "allocation": "Asignación",
       "allocationTooltip": "Each aplica el límite de cantidad por artículo, mientras que Once aplica el límite de cantidad en todo el carrito",
+      "targetSelectionStrategy": "Artículos con descuento",
+      "targetSelectionStrategyTooltip": "Qué artículos elegibles del carrito reciben el descuento",
       "addCondition": "Agregar condición",
       "clearAll": "Limpiar todo",
       "amount": {
@@ -2457,6 +2459,16 @@
         "once": {
           "title": "Once",
           "description": "Aplica el valor a un número limitado de artículos"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "El más caro primero",
+          "description": "Aplica el descuento a los artículos elegibles más caros del carrito"
+        },
+        "cheapest_first": {
+          "title": "El más barato primero",
+          "description": "Aplica el descuento a los artículos elegibles más baratos del carrito"
         }
       },
       "code": {

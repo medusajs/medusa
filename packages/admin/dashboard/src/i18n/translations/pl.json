@@ -2520,6 +2520,8 @@
       "method": "Metoda",
       "allocation": "Przydział",
       "allocationTooltip": "„Każdy” egzekwuje limit ilości dla każdej pozycji, natomiast „Jednorazowo” egzekwuje limit ilości w całym koszyku",
+      "targetSelectionStrategy": "Pozycje objęte rabatem",
+      "targetSelectionStrategyTooltip": "Które kwalifikujące się pozycje w koszyku otrzymają rabat",
       "addCondition": "Dodaj warunek",
       "clearAll": "Wyczyść wszystko",
       "taxInclusive": "Zawiera podatek",
@@ -2667,6 +2669,16 @@
         "once": {
           "title": "Jednorazowo",
           "description": "Stosuje wartość do ograniczonej liczby elementów"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Najdroższe pierwsze",
+          "description": "Obejmuje rabatem najdroższe kwalifikujące się pozycje w koszyku"
+        },
+        "cheapest_first": {
+          "title": "Najtańsze pierwsze",
+          "description": "Obejmuje rabatem najtańsze kwalifikujące się pozycje w koszyku"
         }
       },
       "code": {

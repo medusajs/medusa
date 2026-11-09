@@ -2334,6 +2334,8 @@
       "method": "Būdas",
       "allocation": "Paskirstymas",
       "allocationTooltip": "Kiekvienas nustato kiekio apribojimą kiekvienam elementui, o Kartą – kiekio apribojimą visam krepšeliui",
+      "targetSelectionStrategy": "Nuolaidžiamos prekės",
+      "targetSelectionStrategyTooltip": "Kurios tinkamos krepšelio prekės gauna nuolaidą",
       "addCondition": "Pridėti sąlygą",
       "clearAll": "Išvalyti visus",
       "taxInclusive": "Su mokesčiais",
@@ -2483,6 +2485,16 @@
         "once": {
           "title": "Kartą",
           "description": "Taiko reikšmę ribotam elementų skaičiui"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Brangiausios pirmiausia",
+          "description": "Nuolaida taikoma brangiausiosioms tinkamoms krepšelio prekėms"
+        },
+        "cheapest_first": {
+          "title": "Pigiausios pirmiausia",
+          "description": "Nuolaida taikoma pigiausioms tinkamoms krepšelio prekėms"
         }
       },
       "code": {

@@ -2274,6 +2274,8 @@
       "method": "Méthode",
       "allocation": "Allocation",
       "allocationTooltip": "Each applique la limite de quantité par article, tandis que Once applique la limite de quantité sur l'ensemble du panier",
+      "targetSelectionStrategy": "Articles remisés",
+      "targetSelectionStrategyTooltip": "Quels articles éligibles dans le panier reçoivent la remise",
       "addCondition": "Ajouter une condition",
       "clearAll": "Effacer tout",
       "taxInclusive": "Taxes incluses",
@@ -2424,6 +2426,16 @@
         "once": {
           "title": "Une fois",
           "description": "Applique la valeur à un nombre limité d'articles"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Les plus chers en premier",
+          "description": "Applique la remise aux articles éligibles les plus chers du panier"
+        },
+        "cheapest_first": {
+          "title": "Les moins chers en premier",
+          "description": "Applique la remise aux articles éligibles les moins chers du panier"
         }
       },
       "code": {
