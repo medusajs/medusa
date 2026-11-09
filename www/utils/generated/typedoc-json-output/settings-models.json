@@ -1,13 +1,13 @@
 {
 	"schemaVersion": "2.0",
-	"id": 17555,
+	"id": 17564,
 	"name": "settings-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 17577,
+			"id": 17586,
 			"name": "LayoutConfiguration",
 			"variant": "declaration",
 			"kind": 32,
@@ -19,7 +19,7 @@
 					"fileName": "layout-configuration.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/layout-configuration.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/layout-configuration.ts#L3"
 				}
 			],
 			"type": {
@@ -41,14 +41,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 17578,
+									"id": 17587,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 17579,
+											"id": 17588,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -66,7 +66,7 @@
 													"fileName": "layout-configuration.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/layout-configuration.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/layout-configuration.ts#L5"
 												}
 											],
 											"type": {
@@ -94,7 +94,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17580,
+											"id": 17589,
 											"name": "zone",
 											"variant": "declaration",
 											"kind": 1024,
@@ -112,7 +112,7 @@
 													"fileName": "layout-configuration.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/layout-configuration.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/layout-configuration.ts#L6"
 												}
 											],
 											"type": {
@@ -128,7 +128,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17581,
+											"id": 17590,
 											"name": "user_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -148,7 +148,7 @@
 													"fileName": "layout-configuration.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/layout-configuration.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/layout-configuration.ts#L7"
 												}
 											],
 											"type": {
@@ -164,7 +164,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17582,
+											"id": 17591,
 											"name": "is_system_default",
 											"variant": "declaration",
 											"kind": 1024,
@@ -182,7 +182,7 @@
 													"fileName": "layout-configuration.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/layout-configuration.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/layout-configuration.ts#L8"
 												}
 											],
 											"type": {
@@ -198,7 +198,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17583,
+											"id": 17592,
 											"name": "configuration",
 											"variant": "declaration",
 											"kind": 1024,
@@ -216,7 +216,7 @@
 													"fileName": "layout-configuration.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/layout-configuration.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/layout-configuration.ts#L9"
 												}
 											],
 											"type": {
@@ -270,11 +270,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												17579,
-												17580,
-												17581,
-												17582,
-												17583
+												17588,
+												17589,
+												17590,
+												17591,
+												17592
 											]
 										}
 									]
@@ -295,7 +295,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 17570,
+			"id": 17579,
 			"name": "PropertyLabel",
 			"variant": "declaration",
 			"kind": 32,
@@ -315,7 +315,7 @@
 					"fileName": "property-label.ts",
 					"line": 8,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/property-label.ts#L8"
+					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/property-label.ts#L8"
 				}
 			],
 			"type": {
@@ -337,14 +337,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 17571,
+									"id": 17580,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 17572,
+											"id": 17581,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -362,7 +362,7 @@
 													"fileName": "property-label.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/property-label.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/property-label.ts#L10"
 												}
 											],
 											"type": {
@@ -390,7 +390,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17573,
+											"id": 17582,
 											"name": "entity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -412,7 +412,7 @@
 													"fileName": "property-label.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/property-label.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/property-label.ts#L14"
 												}
 											],
 											"type": {
@@ -428,7 +428,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17574,
+											"id": 17583,
 											"name": "property",
 											"variant": "declaration",
 											"kind": 1024,
@@ -450,7 +450,7 @@
 													"fileName": "property-label.ts",
 													"line": 18,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/property-label.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/property-label.ts#L18"
 												}
 											],
 											"type": {
@@ -466,7 +466,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17575,
+											"id": 17584,
 											"name": "label",
 											"variant": "declaration",
 											"kind": 1024,
@@ -488,7 +488,7 @@
 													"fileName": "property-label.ts",
 													"line": 22,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/property-label.ts#L22"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/property-label.ts#L22"
 												}
 											],
 											"type": {
@@ -504,7 +504,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17576,
+											"id": 17585,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -528,7 +528,7 @@
 													"fileName": "property-label.ts",
 													"line": 26,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/property-label.ts#L26"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/property-label.ts#L26"
 												}
 											],
 											"type": {
@@ -548,11 +548,11 @@
 										{
 											"title": "Properties",
 											"children": [
-												17572,
-												17573,
-												17574,
-												17575,
-												17576
+												17581,
+												17582,
+												17583,
+												17584,
+												17585
 											]
 										}
 									]
@@ -573,7 +573,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 17564,
+			"id": 17573,
 			"name": "UserPreference",
 			"variant": "declaration",
 			"kind": 32,
@@ -585,7 +585,7 @@
 					"fileName": "user-preference.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/user-preference.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/user-preference.ts#L3"
 				}
 			],
 			"type": {
@@ -607,14 +607,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 17565,
+									"id": 17574,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 17566,
+											"id": 17575,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -632,7 +632,7 @@
 													"fileName": "user-preference.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/user-preference.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/user-preference.ts#L5"
 												}
 											],
 											"type": {
@@ -660,7 +660,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17567,
+											"id": 17576,
 											"name": "user_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -678,7 +678,7 @@
 													"fileName": "user-preference.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/user-preference.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/user-preference.ts#L6"
 												}
 											],
 											"type": {
@@ -694,7 +694,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17568,
+											"id": 17577,
 											"name": "key",
 											"variant": "declaration",
 											"kind": 1024,
@@ -712,7 +712,7 @@
 													"fileName": "user-preference.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/user-preference.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/user-preference.ts#L7"
 												}
 											],
 											"type": {
@@ -728,7 +728,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17569,
+											"id": 17578,
 											"name": "value",
 											"variant": "declaration",
 											"kind": 1024,
@@ -746,7 +746,7 @@
 													"fileName": "user-preference.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/user-preference.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/user-preference.ts#L8"
 												}
 											],
 											"type": {
@@ -800,10 +800,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												17566,
-												17567,
-												17568,
-												17569
+												17575,
+												17576,
+												17577,
+												17578
 											]
 										}
 									]
@@ -824,7 +824,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 17556,
+			"id": 17565,
 			"name": "ViewConfiguration",
 			"variant": "declaration",
 			"kind": 32,
@@ -836,7 +836,7 @@
 					"fileName": "view-configuration.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/view-configuration.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/view-configuration.ts#L3"
 				}
 			],
 			"type": {
@@ -858,14 +858,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 17557,
+									"id": 17566,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 17558,
+											"id": 17567,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -883,7 +883,7 @@
 													"fileName": "view-configuration.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/view-configuration.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/view-configuration.ts#L5"
 												}
 											],
 											"type": {
@@ -911,7 +911,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17559,
+											"id": 17568,
 											"name": "entity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -929,7 +929,7 @@
 													"fileName": "view-configuration.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/view-configuration.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/view-configuration.ts#L6"
 												}
 											],
 											"type": {
@@ -945,7 +945,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17560,
+											"id": 17569,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -965,7 +965,7 @@
 													"fileName": "view-configuration.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/view-configuration.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/view-configuration.ts#L7"
 												}
 											],
 											"type": {
@@ -981,7 +981,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17561,
+											"id": 17570,
 											"name": "user_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1001,7 +1001,7 @@
 													"fileName": "view-configuration.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/view-configuration.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/view-configuration.ts#L8"
 												}
 											],
 											"type": {
@@ -1017,7 +1017,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17562,
+											"id": 17571,
 											"name": "is_system_default",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1035,7 +1035,7 @@
 													"fileName": "view-configuration.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/view-configuration.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/view-configuration.ts#L9"
 												}
 											],
 											"type": {
@@ -1051,7 +1051,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 17563,
+											"id": 17572,
 											"name": "configuration",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1069,7 +1069,7 @@
 													"fileName": "view-configuration.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/81edb06c323812773c9c0dcc4da2d9784f3b3319/packages/modules/settings/src/models/view-configuration.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/modules/settings/src/models/view-configuration.ts#L10"
 												}
 											],
 											"type": {
@@ -1123,12 +1123,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												17558,
-												17559,
-												17560,
-												17561,
-												17562,
-												17563
+												17567,
+												17568,
+												17569,
+												17570,
+												17571,
+												17572
 											]
 										}
 									]
@@ -1153,156 +1153,156 @@
 		{
 			"title": "Variables",
 			"children": [
-				17577,
-				17570,
-				17564,
-				17556
+				17586,
+				17579,
+				17573,
+				17565
 			]
 		}
 	],
 	"packageName": "@medusajs/settings",
 	"symbolIdMap": {
-		"17555": {
+		"17564": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"17556": {
+		"17565": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/view-configuration.ts",
 			"qualifiedName": "ViewConfiguration"
 		},
-		"17557": {
+		"17566": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/view-configuration.ts",
 			"qualifiedName": "__object"
 		},
-		"17558": {
+		"17567": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/view-configuration.ts",
 			"qualifiedName": "__object.id"
 		},
-		"17559": {
+		"17568": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/view-configuration.ts",
 			"qualifiedName": "__object.entity"
 		},
-		"17560": {
+		"17569": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/view-configuration.ts",
 			"qualifiedName": "__object.name"
 		},
-		"17561": {
+		"17570": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/view-configuration.ts",
 			"qualifiedName": "__object.user_id"
 		},
-		"17562": {
+		"17571": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/view-configuration.ts",
 			"qualifiedName": "__object.is_system_default"
 		},
-		"17563": {
+		"17572": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/view-configuration.ts",
 			"qualifiedName": "__object.configuration"
 		},
-		"17564": {
+		"17573": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/user-preference.ts",
 			"qualifiedName": "UserPreference"
 		},
-		"17565": {
+		"17574": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/user-preference.ts",
 			"qualifiedName": "__object"
 		},
-		"17566": {
+		"17575": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/user-preference.ts",
 			"qualifiedName": "__object.id"
 		},
-		"17567": {
+		"17576": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/user-preference.ts",
 			"qualifiedName": "__object.user_id"
 		},
-		"17568": {
+		"17577": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/user-preference.ts",
 			"qualifiedName": "__object.key"
 		},
-		"17569": {
+		"17578": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/user-preference.ts",
 			"qualifiedName": "__object.value"
 		},
-		"17570": {
+		"17579": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/property-label.ts",
 			"qualifiedName": "PropertyLabel"
 		},
-		"17571": {
+		"17580": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/property-label.ts",
 			"qualifiedName": "__object"
 		},
-		"17572": {
+		"17581": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/property-label.ts",
 			"qualifiedName": "__object.id"
 		},
-		"17573": {
+		"17582": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/property-label.ts",
 			"qualifiedName": "__object.entity"
 		},
-		"17574": {
+		"17583": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/property-label.ts",
 			"qualifiedName": "__object.property"
 		},
-		"17575": {
+		"17584": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/property-label.ts",
 			"qualifiedName": "__object.label"
 		},
-		"17576": {
+		"17585": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/property-label.ts",
 			"qualifiedName": "__object.description"
 		},
-		"17577": {
+		"17586": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/layout-configuration.ts",
 			"qualifiedName": "LayoutConfiguration"
 		},
-		"17578": {
+		"17587": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/layout-configuration.ts",
 			"qualifiedName": "__object"
 		},
-		"17579": {
+		"17588": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/layout-configuration.ts",
 			"qualifiedName": "__object.id"
 		},
-		"17580": {
+		"17589": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/layout-configuration.ts",
 			"qualifiedName": "__object.zone"
 		},
-		"17581": {
+		"17590": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/layout-configuration.ts",
 			"qualifiedName": "__object.user_id"
 		},
-		"17582": {
+		"17591": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/layout-configuration.ts",
 			"qualifiedName": "__object.is_system_default"
 		},
-		"17583": {
+		"17592": {
 			"packageName": "@medusajs/settings",
 			"packagePath": "src/models/layout-configuration.ts",
 			"qualifiedName": "__object.configuration"
@@ -1313,7 +1313,7 @@
 			"1": "../../../../packages/modules/settings/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 17555
+			"1": 17564
 		}
 	}
 }
