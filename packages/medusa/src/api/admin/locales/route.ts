@@ -1,11 +1,6 @@
-import {
-  ContainerRegistrationKeys,
-  defineFileConfig,
-  FeatureFlag,
-} from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
-import TranslationFeatureFlag from "../../../feature-flags/translation"
 
 /**
  * @since 2.12.3
@@ -36,7 +31,3 @@ export const GET = async (
     limit: metadata?.take ?? 0,
   })
 }
-
-defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled(TranslationFeatureFlag.key),
-})

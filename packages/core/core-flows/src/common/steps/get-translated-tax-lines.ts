@@ -1,8 +1,5 @@
 import { ItemTaxLineDTO, ShippingTaxLineDTO } from "@medusajs/framework/types"
-import {
-  applyTranslationsToTaxLines,
-  FeatureFlag,
-} from "@medusajs/framework/utils"
+import { applyTranslationsToTaxLines } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 export const getTranslatedTaxLinesStepId = "get-translated-tax-lines-step"
 
@@ -24,9 +21,9 @@ export interface GetTranslatedTaxLinesStepInput {
 /**
  * This step retrieves translated tax lines for both item and shipping tax lines based on the provided locale.
  * It returns the translated tax lines in a structured format.
- * 
+ *
  * @since 2.13.0
- * 
+ *
  * @example
  * const translatedTaxLines = getTranslatedTaxLinesStep({
  *   itemTaxLines: [
@@ -52,15 +49,6 @@ export const getTranslatedTaxLinesStep = createStep(
     { itemTaxLines, shippingTaxLines, locale }: GetTranslatedTaxLinesStepInput,
     { container }
   ) => {
-    const isTranslationEnabled = FeatureFlag.isFeatureEnabled("translation")
-
-    if (!isTranslationEnabled) {
-      return new StepResponse({
-        itemTaxLines,
-        shippingTaxLines,
-      })
-    }
-
     const [translatedItemTaxLines, translatedShippingTaxLines] =
       await Promise.all([
         applyTranslationsToTaxLines(itemTaxLines, locale, container),

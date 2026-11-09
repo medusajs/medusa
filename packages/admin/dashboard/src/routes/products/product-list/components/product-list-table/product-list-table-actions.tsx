@@ -8,7 +8,6 @@ import {
   ActionMenu,
 } from "../../../../../components/common/action-menu"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import {
   useProductPermissions,
   useCanOpenTranslations,
@@ -22,10 +21,9 @@ export const ProductActions = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { mutateAsync } = useDeleteProduct(product.id)
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductPermissions()
   const canOpenTranslations = useCanOpenTranslations()
-  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
+  const canManageTranslations = canOpenTranslations
 
   const handleDelete = async () => {
     const res = await prompt({

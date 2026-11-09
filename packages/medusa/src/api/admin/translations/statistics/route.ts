@@ -5,12 +5,9 @@ import {
 import { HttpTypes, ITranslationModuleService } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
-  defineFileConfig,
-  FeatureFlag,
   Modules,
   promiseAll,
 } from "@medusajs/framework/utils"
-import TranslationFeatureFlag from "../../../../feature-flags/translation"
 
 /**
  * @since 2.12.3
@@ -76,7 +73,3 @@ export const GET = async (
     statistics,
   })
 }
-
-defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled(TranslationFeatureFlag.key),
-})
