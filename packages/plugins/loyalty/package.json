@@ -13,7 +13,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "files": [
-    ".medusa/server",
+    ".medusa/server/**",
     "AGENTS.md"
   ],
   "llms": "https://docs.medusajs.com/llms.txt",
