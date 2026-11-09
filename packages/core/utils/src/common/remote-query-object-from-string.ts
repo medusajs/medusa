@@ -3,6 +3,7 @@ import {
   RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
 import { isObject } from "./is-object"
+import { isUnsafePathSegment } from "./unsafe-path-keys"
 
 /**
  * Convert a string fields array to a remote query object
@@ -123,6 +124,12 @@ export function remoteQueryObjectFromString<
     }
 
     const fieldSegments = fieldAsString.split(".")
+
+    // Guard against prototype pollution through unsafe path segments
+    if (fieldSegments.some(isUnsafePathSegment)) {
+      continue
+    }
+
     const fieldProperty = fieldSegments.pop()
 
     let combinedPath = ""
@@ -130,12 +137,16 @@ export function remoteQueryObjectFromString<
     const deepConfigRef = fieldSegments.reduce((acc, curr) => {
       combinedPath = combinedPath ? combinedPath + "." + curr : curr
 
-      if (isObject(variables) && combinedPath in variables) {
-        acc[curr] ??= {}
+      if (!Object.prototype.hasOwnProperty.call(acc, curr)) {
+        acc[curr] = {}
+      }
+
+      if (
+        isObject(variables) &&
+        Object.prototype.hasOwnProperty.call(variables, combinedPath)
+      ) {
         acc[curr]["__args"] = variables[combinedPath]
         usedVariables.add(combinedPath)
-      } else {
-        acc[curr] ??= {}
       }
 
       return acc[curr]
