@@ -1289,7 +1289,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 21,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L21"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L21"
 						}
 					],
 					"type": {
@@ -1318,7 +1318,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 25,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L25"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L25"
 						}
 					],
 					"type": {
@@ -1359,7 +1359,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 29,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L29"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L29"
 						}
 					],
 					"type": {
@@ -1400,7 +1400,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 33,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L33"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L33"
 						}
 					],
 					"type": {
@@ -1441,7 +1441,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 37,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L37"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L37"
 						}
 					],
 					"type": {
@@ -1482,7 +1482,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 41,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L41"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L41"
 						}
 					],
 					"type": {
@@ -1523,7 +1523,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 45,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L45"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L45"
 						}
 					],
 					"type": {
@@ -1564,7 +1564,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 49,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L49"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L49"
 						}
 					],
 					"type": {
@@ -1711,7 +1711,7 @@
 					"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 					"line": 17,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L17"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L17"
 				}
 			],
 			"extendedTypes": [
@@ -1757,7 +1757,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 56,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L56"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L56"
 						}
 					],
 					"signatures": [
@@ -1772,7 +1772,7 @@
 									"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 									"line": 56,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L56"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L56"
 								}
 							],
 							"type": {
@@ -1807,13 +1807,13 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 80,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L80"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L80"
 						},
 						{
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 107,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L107"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L107"
 						}
 					],
 					"signatures": [
@@ -1856,7 +1856,7 @@
 									"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 									"line": 80,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L80"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L80"
 								}
 							],
 							"parameters": [
@@ -1963,7 +1963,7 @@
 									"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 									"line": 107,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L107"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L107"
 								}
 							],
 							"parameters": [
@@ -2050,13 +2050,13 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 125,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L125"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L125"
 						},
 						{
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 145,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L145"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L145"
 						}
 					],
 					"signatures": [
@@ -2099,7 +2099,7 @@
 									"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 									"line": 125,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L125"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L125"
 								}
 							],
 							"parameters": [
@@ -2206,7 +2206,7 @@
 									"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 									"line": 145,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L145"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L145"
 								}
 							],
 							"parameters": [
@@ -2293,7 +2293,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 176,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L176"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L176"
 						}
 					],
 					"signatures": [
@@ -2380,7 +2380,7 @@
 									"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 									"line": 176,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L176"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L176"
 								}
 							],
 							"parameters": [
@@ -2513,7 +2513,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 193,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L193"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L193"
 						}
 					],
 					"signatures": [
@@ -2556,7 +2556,7 @@
 									"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 									"line": 193,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L193"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L193"
 								}
 							],
 							"parameters": [
@@ -2682,7 +2682,7 @@
 							"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 							"line": 209,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L209"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L209"
 						}
 					],
 					"signatures": [
@@ -2725,7 +2725,7 @@
 									"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 									"line": 209,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L209"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L209"
 								}
 							],
 							"parameters": [
@@ -2813,7 +2813,7 @@
 					"fileName": "plugins/loyalty/src/types/loyalty/service.ts",
 					"line": 55,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/e925477440a14aa334461fc9959d7244ccc25247/packages/plugins/loyalty/src/types/loyalty/service.ts#L55"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/types/loyalty/service.ts#L55"
 				}
 			],
 			"extendedTypes": [
