@@ -66,7 +66,7 @@ export const generatedEditDates = {
   "app/commerce-modules/user/user-creation-flows/page.mdx": "2025-02-26T11:35:54.685Z",
   "app/commerce-modules/user/page.mdx": "2026-06-09T08:34:10.480Z",
   "app/commerce-modules/page.mdx": "2026-04-20T10:41:32.836Z",
-  "app/create-medusa-app/page.mdx": "2026-10-05T08:39:16.103Z",
+  "app/create-medusa-app/page.mdx": "2026-11-09T14:19:42.482Z",
   "app/deployment/storefront/vercel/page.mdx": "2026-01-08T09:19:27.493Z",
   "app/deployment/page.mdx": "2026-01-08T09:19:58.734Z",
   "app/integrations/page.mdx": "2026-10-30T08:35:13.265Z",
