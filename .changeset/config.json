@@ -21,10 +21,6 @@
   "ignore": [
     "integration-tests-modules"
   ],
-  "privatePackages": {
-    "version": true,
-    "tag": false
-  },
   "snapshot": {
     "useCalculatedVersion": true
   },
