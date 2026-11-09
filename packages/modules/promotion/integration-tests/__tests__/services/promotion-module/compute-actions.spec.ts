@@ -11,7 +11,6 @@ import {
   PromotionType,
 } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "@medusajs/test-utils"
-import { ALIAS_REPLACEMENT, RawQueryFragment } from "@mikro-orm/postgresql"
 import { buildPromotionRuleQueryFilterFromContext } from "../../../../src/utils/compute-actions/build-promotion-rule-query-filter-from-context"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createDefaultPromotion } from "../../../__fixtures__/promotion"
@@ -8871,25 +8870,76 @@ moduleIntegrationTestRunner({
       })
 
       describe("automatic promotions prefilter", () => {
+        beforeEach(async () => {
+          const rules = [
+            {
+              attribute: "items.product.id",
+              operator: "in",
+              values: ["prod_tshirt"],
+            },
+          ]
+
+          await service.createPromotions(
+            Array.from({ length: 60 }, (_, index) => {
+              const isBuyGet = index % 3 === 0
+
+              return {
+                code: `PREFILTER_${index}`,
+                type: isBuyGet ? PromotionType.BUYGET : PromotionType.STANDARD,
+                status: PromotionStatus.ACTIVE,
+                is_automatic: index % 2 === 0,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  allocation: "each",
+                  value: 10,
+                  max_quantity: 1,
+                  currency_code: "usd",
+                  target_rules: rules,
+                  ...(isBuyGet && {
+                    apply_to_quantity: 1,
+                    buy_rules_min_quantity: 1,
+                    buy_rules: rules,
+                  }),
+                },
+              } as any
+            })
+          )
+        })
+
         const explainPrefilter = async (context: Record<string, any>) => {
           const filter = await buildPromotionRuleQueryFilterFromContext(
             context as any,
             {}
           )
-          const fragment = RawQueryFragment.getKnownFragment(
-            Object.keys(filter!)[0]
-          )!
-          const condition = fragment.sql.split(ALIAS_REPLACEMENT).join("p0")
+          const manager = MikroOrmWrapper.forkManager()
+          const query = manager
+            .createQueryBuilder("Promotion", "p0")
+            .select("id")
+            .where({ $and: [{ is_automatic: true }, filter!] })
+            .getFormattedQuery()
 
-          const knex = MikroOrmWrapper.forkManager().getKnex()
-          return await knex.transaction(async (trx) => {
-            await trx.raw("SET LOCAL enable_seqscan = off")
-            const { rows } = await trx.raw(
-              `EXPLAIN SELECT p0.id FROM promotion p0 WHERE p0.is_automatic = true AND ${condition}`
+          return await manager.getKnex().transaction(async (trx) => {
+            await trx.raw(
+              "ANALYZE promotion, promotion_application_method, application_method_target_rules, application_method_buy_rules"
             )
-            return rows.map((row) => row["QUERY PLAN"]).join("\n")
+            await trx.raw("SET LOCAL enable_seqscan = off")
+            const { rows } = await trx.raw(`EXPLAIN (FORMAT JSON) ${query}`)
+            return rows[0]["QUERY PLAN"][0].Plan
           })
         }
+
+        const countApplicationMethodProbes = (node: any): number =>
+          (node["Index Name"] ===
+            "IDX_promotion_application_method_promotion_id_unique" &&
+          node["Index Cond"] === "(promotion_id = p0.id)"
+            ? 1
+            : 0) +
+          (node.Plans ?? []).reduce(
+            (count: number, child: any) =>
+              count + countApplicationMethodProbes(child),
+            0
+          )
 
         it("should probe the application method of each candidate through the promotion_id index", async () => {
           const plan = await explainPrefilter({
@@ -8897,21 +8947,13 @@ moduleIntegrationTestRunner({
             items: [{ id: "item_1", product: { id: "prod_1" } }],
           })
 
-          expect(
-            plan.match(
-              /IDX_promotion_application_method_promotion_id_unique/g
-            )?.length
-          ).toEqual(2)
+          expect(countApplicationMethodProbes(plan)).toEqual(2)
         })
 
         it("should probe the application method of each candidate through the promotion_id index when the context has no attributes", async () => {
           const plan = await explainPrefilter({})
 
-          expect(
-            plan.match(
-              /IDX_promotion_application_method_promotion_id_unique/g
-            )?.length
-          ).toEqual(2)
+          expect(countApplicationMethodProbes(plan)).toEqual(2)
         })
       })
     })
