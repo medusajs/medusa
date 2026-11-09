@@ -2,6 +2,7 @@ import { z } from "@medusajs/deps/zod"
 import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
 import {
   isDefined,
+  isUnsafePathSegment,
   MedusaError,
   removeUndefinedProperties,
 } from "@medusajs/utils"
@@ -29,12 +30,19 @@ const normalizeQuery = (req: MedusaRequest) => {
       const [parent, child, ...others] = key.split(".")
       if (others.length > 0) {
         throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
+          MedusaError.Types.INVALID_DATA,
           `Key accessor more than 2 levels deep: ${key}`
         )
       }
 
-      if (!acc[parent]) {
+      if (isUnsafePathSegment(parent) || isUnsafePathSegment(child)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invalid query parameter key: ${key}`
+        )
+      }
+
+      if (!Object.prototype.hasOwnProperty.call(acc, parent)) {
         acc[parent] = {}
       }
       acc[parent] = {

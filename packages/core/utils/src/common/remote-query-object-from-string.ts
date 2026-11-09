@@ -3,8 +3,7 @@ import {
   RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
 import { isObject } from "./is-object"
-
-const UNSAFE_PATH_KEYS = new Set(["__proto__", "constructor", "prototype"])
+import { isUnsafePathSegment } from "./unsafe-path-keys"
 
 /**
  * Convert a string fields array to a remote query object
@@ -127,7 +126,7 @@ export function remoteQueryObjectFromString<
     const fieldSegments = fieldAsString.split(".")
 
     // Guard against prototype pollution through unsafe path segments
-    if (fieldSegments.some((segment) => UNSAFE_PATH_KEYS.has(segment))) {
+    if (fieldSegments.some(isUnsafePathSegment)) {
       continue
     }
 

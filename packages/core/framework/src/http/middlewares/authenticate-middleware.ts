@@ -49,6 +49,18 @@ export const authenticate = (
     const req_ = req as AuthenticatedMedusaRequest
     const logger = req.scope.resolve(ContainerRegistrationKeys.LOGGER)
 
+    const hasOwn = (key: string) =>
+      Object.prototype.hasOwnProperty.call(options, key)
+    const allowUnauthenticated = hasOwn("allowUnauthenticated")
+      ? options.allowUnauthenticated
+      : undefined
+    const allowUnregistered = hasOwn("allowUnregistered")
+      ? options.allowUnregistered
+      : undefined
+    const requireMfaOption = hasOwn("requireMfa")
+      ? options.requireMfa
+      : undefined
+
     // We only allow authenticating using a secret API key on the admin
     const isExclusivelyUser =
       actorTypes.length === 1 && actorTypes[0] === ADMIN_ACTOR_TYPE
@@ -93,7 +105,7 @@ export const authenticate = (
       )
     }
 
-    const requireMfa = options.requireMfa ?? !options.allowUnauthenticated
+    const requireMfa = requireMfaOption ?? !allowUnauthenticated
 
     if (requireMfa && authContext?.mfa_enabled) {
       const mfaError = getMfaRequirementError(authContext, requireMfa)
@@ -114,7 +126,7 @@ export const authenticate = (
     // We also don't want to allow creating eg. a customer with a token created for a `user` provider.
     if (
       authContext?.auth_identity_id &&
-      options.allowUnregistered &&
+      allowUnregistered &&
       isActorTypePermitted(actorTypes, authContext.actor_type)
     ) {
       req_.auth_context = authContext
@@ -122,7 +134,7 @@ export const authenticate = (
     }
 
     // If we allow unauthenticated requests (i.e public endpoints), just continue
-    if (options.allowUnauthenticated) {
+    if (allowUnauthenticated) {
       return next()
     }
 
