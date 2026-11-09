@@ -1,9 +1,5 @@
 # @medusajs/http-types-generator
 
-## 2.22.6
-
-No changes in this release.
-
 ## 2.22.5
 
 No changes in this release.
