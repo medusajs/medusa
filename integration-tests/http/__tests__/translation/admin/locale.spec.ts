@@ -7,8 +7,6 @@ import {
 
 jest.setTimeout(100000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Locale API", () => {
@@ -20,10 +18,6 @@ medusaIntegrationTestRunner({
         await translationModule.__hooks?.onApplicationStart?.().catch(() => {})
 
         await dbUtils.snapshot()
-      })
-
-      afterAll(async () => {
-        delete process.env.MEDUSA_FF_TRANSLATION
       })
 
       describe("GET /admin/locales", () => {

@@ -1,8 +1,8 @@
 import { MedusaService } from "@medusajs/framework/utils"
-import { Translation } from "./models"
+import { CustomRecord } from "./models"
 
-export class TranslationModule extends MedusaService({
-  Translation,
+export class CustomRecordModule extends MedusaService({
+  CustomRecord,
 }) {
   private manager_
 
@@ -13,7 +13,7 @@ export class TranslationModule extends MedusaService({
   }
 
   // @ts-expect-error
-  async listTranslations(find, config, medusaContext) {
+  async listCustomRecords(find, config, medusaContext) {
     const { filters, context, id } = find ?? {}
     let lang = null
 
@@ -24,7 +24,7 @@ export class TranslationModule extends MedusaService({
 
     const knex = this.manager_.getKnex()
 
-    const q = knex({ tr: "translation" }).select(["tr.id", "tr.key"])
+    const q = knex({ tr: "custom_record" }).select(["tr.id", "tr.key"])
 
     // Select JSON content for a specific lang if provided
     if (lang) {
