@@ -233,8 +233,9 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
         const fulfillmentSetLocationMap = {}
 
         scFulfillmentSets.stock_locations.forEach((stockLocation) => {
-          stockLocation.fulfillment_sets.forEach((fulfillmentSet) => {
-            fulfillmentSetLocationMap[fulfillmentSet.id] = stockLocation
+          const { fulfillment_sets, ...location } = stockLocation
+          fulfillment_sets.forEach((fulfillmentSet) => {
+            fulfillmentSetLocationMap[fulfillmentSet.id] = location
             fulfillmentSetIds.add(fulfillmentSet.id)
           })
         })
