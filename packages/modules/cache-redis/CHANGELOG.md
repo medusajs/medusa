@@ -1,5 +1,12 @@
 # @medusajs/cache-redis
 
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.6
+
 ## 2.22.5
 
 ### Patch Changes

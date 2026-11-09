@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.22.6
+
+### Patch Changes
+
+- [#17716](https://github.com/medusajs/medusa/pull/17716) [`d06808b`](https://github.com/medusajs/medusa/commit/d06808b468c55247b9a76fedde7dd864aec92eeb) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(create-medusa-app): apply --version to plugin dependencies and peer dependencies
+- Updated dependencies []:
+  - @medusajs/deps@2.22.6
+  - @medusajs/telemetry@2.22.6
+
 ## 2.22.5
 
 ### Patch Changes

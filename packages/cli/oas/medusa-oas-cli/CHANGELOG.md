@@ -1,5 +1,13 @@
 # @medusajs/oas-cli
 
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.22.6
+  - @medusajs/medusa@2.22.6
+
 ## 2.22.5
 
 ### Patch Changes
