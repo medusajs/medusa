@@ -21720,6 +21720,10 @@ export const filesMap = [
     "pathname": "/references/promotion/types/promotion.ApplicationMethodAllocationValues"
   },
   {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.ApplicationMethodTargetSelectionStrategyValues/page.json",
+    "pathname": "/references/promotion/types/promotion.ApplicationMethodTargetSelectionStrategyValues"
+  },
+  {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.ApplicationMethodTargetTypeValues/page.json",
     "pathname": "/references/promotion/types/promotion.ApplicationMethodTargetTypeValues"
   },
@@ -32178,6 +32182,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodAllocation/page.json",
     "pathname": "/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodAllocation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodTargetSelectionStrategy/page.json",
+    "pathname": "/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodTargetSelectionStrategy"
   },
   {
     "filePath": "/www/apps/resources/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodTargetType/page.json",
