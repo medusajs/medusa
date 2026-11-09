@@ -1,5 +1,7 @@
 # Change Log
 
+## 2.22.6
+
 ## 2.22.5
 
 No changes in this release.
