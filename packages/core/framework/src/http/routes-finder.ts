@@ -21,6 +21,13 @@ function loadPathToRegexp(): PathToRegexp {
   return pathToRegexpModule
 }
 
+/**
+ * Upper bound on cached lookups. The cache key is the full request URL, so
+ * every distinct URL - each id under a parametric route, each unmatched path -
+ * adds an entry, and without a bound the map grows for the life of the process.
+ */
+const MAX_CACHED_MATCHES = 1000
+
 export class RoutesFinder<
   T extends
     | { matcher: string | RegExp; methods: MiddlewareVerb | MiddlewareVerb[] }
@@ -98,6 +105,10 @@ export class RoutesFinder<
         return route.method === method && route.matchRegex.test(url)
       }) ?? null
 
+    if (this.#existingMatches.size >= MAX_CACHED_MATCHES) {
+      // A Map iterates in insertion order, so the first key is the oldest.
+      this.#existingMatches.delete(this.#existingMatches.keys().next().value!)
+    }
     this.#existingMatches.set(key, result)
     return result
   }
