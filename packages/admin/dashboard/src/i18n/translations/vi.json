@@ -2225,6 +2225,8 @@
         }
       },
       "allocationTooltip": "Each áp dụng giới hạn số lượng cho từng mục, còn Once áp dụng giới hạn số lượng cho toàn bộ giỏ hàng",
+      "targetSelectionStrategy": "Mục hàng được giảm giá",
+      "targetSelectionStrategyTooltip": "Mục hàng đủ điều kiện nào trong giỏ hàng sẽ nhận được giảm giá",
       "usage": "Lượt sử dụng",
       "usageLimit": "Giới hạn sử dụng"
     },
@@ -2342,6 +2344,16 @@
         "once": {
           "description": "Áp dụng giá trị cho một số lượng mục giới hạn",
           "title": "Một lần"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Đắt nhất trước",
+          "description": "Giảm giá các mục hàng đắt nhất đủ điều kiện trong giỏ hàng"
+        },
+        "cheapest_first": {
+          "title": "Rẻ nhất trước",
+          "description": "Giảm giá các mục hàng rẻ nhất đủ điều kiện trong giỏ hàng"
         }
       },
       "code": {

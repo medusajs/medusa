@@ -2269,6 +2269,8 @@
       "method": "Metode",
       "allocation": "Alokasi",
       "allocationTooltip": "Each memberlakukan batas kuantitas per item, sedangkan Once memberlakukan batas kuantitas di seluruh keranjang",
+      "targetSelectionStrategy": "Item yang didiskon",
+      "targetSelectionStrategyTooltip": "Item mana yang memenuhi syarat dalam keranjang yang menerima diskon",
       "addCondition": "Tambah kondisi",
       "clearAll": "Bersihkan semua",
       "taxInclusive": "Termasuk Pajak",
@@ -2418,6 +2420,16 @@
         "once": {
           "title": "Once",
           "description": "Menerapkan nilai pada jumlah item yang terbatas"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Termahal lebih dulu",
+          "description": "Mendiskon item yang memenuhi syarat paling mahal dalam keranjang"
+        },
+        "cheapest_first": {
+          "title": "Termurah lebih dulu",
+          "description": "Mendiskon item yang memenuhi syarat paling murah dalam keranjang"
         }
       },
       "code": {

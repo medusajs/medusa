@@ -2394,6 +2394,8 @@
       "method": "الطريقة",
       "allocation": "التخصيص",
       "allocationTooltip": "يطبّق Each حد الكمية على كل عنصر، بينما يطبّق Once حد الكمية على السلة بأكملها",
+      "targetSelectionStrategy": "العناصر المخفضة",
+      "targetSelectionStrategyTooltip": "العناصر المؤهلة في السلة التي تحصل على الخصم",
       "addCondition": "إضافة شرط",
       "clearAll": "مسح الكل",
       "taxInclusive": "شامل الضريبة",
@@ -2543,6 +2545,16 @@
         "once": {
           "title": "مرة واحدة",
           "description": "يطبّق القيمة على عدد محدود من العناصر"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "الأغلى أولاً",
+          "description": "يطبّق الخصم على أغلى العناصر المؤهلة في السلة"
+        },
+        "cheapest_first": {
+          "title": "الأرخص أولاً",
+          "description": "يطبّق الخصم على أرخص العناصر المؤهلة في السلة"
         }
       },
       "code": {

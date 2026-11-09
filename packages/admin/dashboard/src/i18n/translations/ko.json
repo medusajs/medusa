@@ -2269,6 +2269,8 @@
       "method": "방법",
       "allocation": "할당",
       "allocationTooltip": "각각(Each)은 항목별로 수량 제한을 적용하고, 한 번(Once)은 전체 장바구니에 걸쳐 수량 제한을 적용합니다.",
+      "targetSelectionStrategy": "할인 대상 항목",
+      "targetSelectionStrategyTooltip": "장바구니에서 할인을 받을 적격 항목을 결정합니다",
       "addCondition": "조건 추가",
       "clearAll": "모두 지우기",
       "taxInclusive": "세금 포함",
@@ -2414,6 +2416,16 @@
         "once": {
           "title": "한 번",
           "description": "제한된 수의 항목에 값을 적용합니다."
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "가장 비싼 항목 먼저",
+          "description": "장바구니에서 가장 비싼 적격 항목에 할인을 적용합니다"
+        },
+        "cheapest_first": {
+          "title": "가장 저렴한 항목 먼저",
+          "description": "장바구니에서 가장 저렴한 적격 항목에 할인을 적용합니다"
         }
       },
       "code": {

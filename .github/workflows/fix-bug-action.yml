@@ -260,6 +260,8 @@ jobs:
           CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"
           DB_HOST: localhost
           DB_USERNAME: postgres
+          # The action runs its own setup-node, defaulting to 18.x
+          NODE_VERSION: 22
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           settings: |
