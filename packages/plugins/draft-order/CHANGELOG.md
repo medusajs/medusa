@@ -1,5 +1,68 @@
 # @medusajs/draft-order
 
+## 2.22.6
+
+### Patch Changes
+
+- [#17734](https://github.com/medusajs/medusa/pull/17734) [`3e35fe3`](https://github.com/medusajs/medusa/commit/3e35fe35392092866945cc360d0b2bc0f7fff642) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(draft-order,loyalty-plugin): include build output when packed with Yarn
+
+- Updated dependencies []:
+  - @medusajs/test-utils@2.22.6
+  - @medusajs/admin-sdk@2.22.6
+  - @medusajs/dashboard@2.22.6
+  - @medusajs/cli@2.22.6
+  - @medusajs/framework@2.22.6
+  - @medusajs/js-sdk@2.22.6
+  - @medusajs/icons@2.22.6
+  - @medusajs/ui@4.2.13
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17702](https://github.com/medusajs/medusa/pull/17702) [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,draft-order): replace deprecated lodash.isequal with dequal
+- Updated dependencies [[`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760), [`43ee8be`](https://github.com/medusajs/medusa/commit/43ee8be5405956a5bc1578b23e3725ef8b84f83e), [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b), [`cc17c71`](https://github.com/medusajs/medusa/commit/cc17c713185046f26bf00e3ba23ad6df5639db00), [`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/dashboard@2.22.5
+  - @medusajs/ui@4.2.12
+  - @medusajs/framework@2.22.5
+  - @medusajs/cli@2.22.5
+  - @medusajs/js-sdk@2.22.5
+  - @medusajs/test-utils@2.22.5
+  - @medusajs/admin-sdk@2.22.5
+  - @medusajs/icons@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`74827c2`](https://github.com/medusajs/medusa/commit/74827c2a849a9a7fdbb943ca9ffce4b26b670391), [`d8b4839`](https://github.com/medusajs/medusa/commit/d8b48391d45f8e90090b2f9d43ba70d1ee88bc9c), [`43c5ec2`](https://github.com/medusajs/medusa/commit/43c5ec2d2c16623546573cf1a5abc92fb41442c9), [`e3a2f38`](https://github.com/medusajs/medusa/commit/e3a2f3846c636f9df31bbc33af025896cb5e65b3), [`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`82d65fc`](https://github.com/medusajs/medusa/commit/82d65fc804627839c62b441737757609386841e3), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5), [`df7f931`](https://github.com/medusajs/medusa/commit/df7f931bf8b8fd5634c97f7a7133660f59067e99), [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/dashboard@2.22.4
+  - @medusajs/test-utils@2.22.4
+  - @medusajs/framework@2.22.4
+  - @medusajs/cli@2.22.4
+  - @medusajs/admin-sdk@2.22.4
+  - @medusajs/icons@2.22.4
+  - @medusajs/js-sdk@2.22.4
+  - @medusajs/ui@4.2.11
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17611](https://github.com/medusajs/medusa/pull/17611) [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-vite-plugin,dashboard,telemetry,draft-order): update babel to v8
+
+- Updated dependencies [[`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7), [`86b1067`](https://github.com/medusajs/medusa/commit/86b1067632c481d351d9c455f9f65c46086876f9), [`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d), [`39fb481`](https://github.com/medusajs/medusa/commit/39fb48168d4d63306623cb39f6973bc534a9c59a), [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`2276c84`](https://github.com/medusajs/medusa/commit/2276c84d47d0d6dc078a6eea2350b9d097a0231b), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`6942022`](https://github.com/medusajs/medusa/commit/69420228b04b08149c7a5719600f8e1e4d8546e1)]:
+  - @medusajs/dashboard@2.22.3
+  - @medusajs/cli@2.22.3
+  - @medusajs/framework@2.22.3
+  - @medusajs/test-utils@2.22.3
+  - @medusajs/js-sdk@2.22.3
+  - @medusajs/ui@4.2.10
+  - @medusajs/admin-sdk@2.22.3
+  - @medusajs/icons@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

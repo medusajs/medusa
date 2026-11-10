@@ -7,7 +7,6 @@ import {
 import {
   ContainerRegistrationKeys,
   deduplicate,
-  FeatureFlag,
   Modules,
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -81,12 +80,6 @@ export const updateCartItemsTranslationsStep = createStep(
   async (data: UpdateCartItemsTranslationsStepInput, { container }) => {
     const originalItems: ItemTranslationSnapshot[] = []
     try {
-      const isTranslationEnabled = FeatureFlag.isFeatureEnabled("translation")
-
-      if (!isTranslationEnabled) {
-        return new StepResponse(void 0, [])
-      }
-
       const cartModule = container.resolve<ICartModuleService>(Modules.CART)
       const query = container.resolve<RemoteQueryFunction>(
         ContainerRegistrationKeys.QUERY

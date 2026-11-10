@@ -1,5 +1,23 @@
 # @medusajs/js-sdk
 
+## 2.22.6
+
+## 2.22.5
+
+No changes in this release.
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+## 2.22.3
+
+### Patch Changes
+
+- [#15620](https://github.com/medusajs/medusa/pull/15620) [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,core-flows,framework,js-sdk,modules-sdk,types,utils,link-modules,rbac): end to end RBAC implementation
+
 ## 2.22.2
 
 ### Patch Changes

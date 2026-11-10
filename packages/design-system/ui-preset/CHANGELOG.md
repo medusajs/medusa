@@ -1,5 +1,23 @@
 # @medusajs/ui-preset
 
+## 2.22.6
+
+## 2.22.5
+
+No changes in this release.
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17631](https://github.com/medusajs/medusa/pull/17631) [`6942022`](https://github.com/medusajs/medusa/commit/69420228b04b08149c7a5719600f8e1e4d8546e1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui,ui-preset): support Tailwind CSS 4. `@medusajs/ui-preset` adds a CSS-first `theme.css` for Tailwind CSS 4 and keeps supporting Tailwind CSS 3, and `@medusajs/ui` updates `tailwind-merge` to v3 and uses class names that work in both versions
+
 ## 2.22.2
 
 ### Patch Changes

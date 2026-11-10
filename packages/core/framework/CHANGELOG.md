@@ -1,5 +1,76 @@
 # @medusajs/framework
 
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/cli@2.22.6
+  - @medusajs/modules-sdk@2.22.6
+  - @medusajs/orchestration@2.22.6
+  - @medusajs/types@2.22.6
+  - @medusajs/utils@2.22.6
+  - @medusajs/workflows-sdk@2.22.6
+  - @medusajs/deps@2.22.6
+  - @medusajs/telemetry@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17712](https://github.com/medusajs/medusa/pull/17712) [`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils, query, framework): harden dotted field/filter path handling when building queries
+- Updated dependencies [[`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760), [`9bee47a`](https://github.com/medusajs/medusa/commit/9bee47a20d9d2ee9e1c59f0bf5cf94e1dc745609), [`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/utils@2.22.5
+  - @medusajs/types@2.22.5
+  - @medusajs/cli@2.22.5
+  - @medusajs/modules-sdk@2.22.5
+  - @medusajs/orchestration@2.22.5
+  - @medusajs/workflows-sdk@2.22.5
+  - @medusajs/deps@2.22.5
+  - @medusajs/telemetry@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17660](https://github.com/medusajs/medusa/pull/17660) [`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(framework,cli): support TypeScript 7 in Medusa applications and plugins
+
+- [#17678](https://github.com/medusajs/medusa/pull/17678) [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework,test-utils): upgrade path-to-regexp to v9
+
+- Updated dependencies [[`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/cli@2.22.4
+  - @medusajs/telemetry@2.22.4
+  - @medusajs/modules-sdk@2.22.4
+  - @medusajs/orchestration@2.22.4
+  - @medusajs/types@2.22.4
+  - @medusajs/utils@2.22.4
+  - @medusajs/workflows-sdk@2.22.4
+  - @medusajs/deps@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17574](https://github.com/medusajs/medusa/pull/17574) [`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps,caching,framework,types,utils): update awilix to 13.0.5
+
+- [#17584](https://github.com/medusajs/medusa/pull/17584) [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework,medusa): update chokidar to v6
+
+- [#17618](https://github.com/medusajs/medusa/pull/17618) [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update jest to v30.5.2 and use the `--testPathPatterns` flag in test scripts
+
+- [#17617](https://github.com/medusajs/medusa/pull/17617) [`2276c84`](https://github.com/medusajs/medusa/commit/2276c84d47d0d6dc078a6eea2350b9d097a0231b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework): register the restricted fields middlewares again when reloading API routes with HMR
+
+- [#15620](https://github.com/medusajs/medusa/pull/15620) [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,core-flows,framework,js-sdk,modules-sdk,types,utils,link-modules,rbac): end to end RBAC implementation
+
+- Updated dependencies [[`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7), [`86b1067`](https://github.com/medusajs/medusa/commit/86b1067632c481d351d9c455f9f65c46086876f9), [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828), [`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`12a5580`](https://github.com/medusajs/medusa/commit/12a55804efc97a0d685fc9e69ca005b9f44d3761), [`39fb481`](https://github.com/medusajs/medusa/commit/39fb48168d4d63306623cb39f6973bc534a9c59a), [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`b1632c1`](https://github.com/medusajs/medusa/commit/b1632c158acd23b845e83e3b3cc682e90e977912), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828), [`2e3b55d`](https://github.com/medusajs/medusa/commit/2e3b55d8914dbe9724cfa0076c1a1be91b42ab95)]:
+  - @medusajs/utils@2.22.3
+  - @medusajs/cli@2.22.3
+  - @medusajs/types@2.22.3
+  - @medusajs/deps@2.22.3
+  - @medusajs/orchestration@2.22.3
+  - @medusajs/workflows-sdk@2.22.3
+  - @medusajs/telemetry@2.22.3
+  - @medusajs/modules-sdk@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

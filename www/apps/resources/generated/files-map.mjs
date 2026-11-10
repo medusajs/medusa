@@ -1016,6 +1016,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/user/js-sdk"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/user/links-to-other-modules/page.mdx",
+    "pathname": "/commerce-modules/user/links-to-other-modules"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/user/module-options/page.mdx",
     "pathname": "/commerce-modules/user/module-options"
   },
@@ -1086,6 +1090,78 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/deployment/storefront/vercel/page.mdx",
     "pathname": "/deployment/storefront/vercel"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/page.mdx",
+    "pathname": "/enterprise"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/admin-customizations/page.mdx",
+    "pathname": "/enterprise/rbac/admin-customizations"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/api-routes/page.mdx",
+    "pathname": "/enterprise/rbac/api-routes"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/concepts/page.mdx",
+    "pathname": "/enterprise/rbac/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/define-policies/page.mdx",
+    "pathname": "/enterprise/rbac/define-policies"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/js-sdk/page.mdx",
+    "pathname": "/enterprise/rbac/js-sdk"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/links-to-other-modules/page.mdx",
+    "pathname": "/enterprise/rbac/links-to-other-modules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/module-options/page.mdx",
+    "pathname": "/enterprise/rbac/module-options"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/page.mdx",
+    "pathname": "/enterprise/rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/protect-routes/page.mdx",
+    "pathname": "/enterprise/rbac/protect-routes"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/scopes/page.mdx",
+    "pathname": "/enterprise/rbac/scopes"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/rbac/workflows/page.mdx",
+    "pathname": "/enterprise/rbac/workflows"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/admin-login/page.mdx",
+    "pathname": "/enterprise/sso/admin-login"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/custom-frontend/page.mdx",
+    "pathname": "/enterprise/sso/custom-frontend"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/how-it-works/page.mdx",
+    "pathname": "/enterprise/sso/how-it-works"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/identity-providers/page.mdx",
+    "pathname": "/enterprise/sso/identity-providers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/page.mdx",
+    "pathname": "/enterprise/sso"
+  },
+  {
+    "filePath": "/www/apps/resources/app/enterprise/sso/provider-options/page.mdx",
+    "pathname": "/enterprise/sso/provider-options"
   },
   {
     "filePath": "/www/apps/resources/app/examples/guides/custom-item-price/page.mdx",
@@ -8444,6 +8520,134 @@ export const filesMap = [
     "pathname": "/references/core_flows/Promotion/core_flows.Promotion.Workflows_Promotion"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/getRoleAssignmentsStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/validateAssignmentReferencesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.SUPER_ADMIN_GUARD_LOCK_KEY/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.SUPER_ADMIN_GUARD_LOCK_KEY"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.assignRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/assignRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacPoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/createRbacPoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacRolePoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/createRbacRolePoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.createRbacRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/createRbacRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacPoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/deleteRbacPoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacRolePoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/deleteRbacRolePoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.deleteRbacRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/deleteRbacRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.getAssignablePoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/getAssignablePoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.getAssignableRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/getAssignableRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.unassignRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/unassignRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.updateRbacPoliciesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/updateRbacPoliciesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.updateRbacRolesWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/updateRbacRolesWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.assignRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.assignRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacPoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacPoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacRolePoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacRolePoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.createRbacRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacPoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacPoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacRolePoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacRolePoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.deleteRbacRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.getAssignablePoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.getAssignablePoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.getAssignableRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.getAssignableRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.unassignRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.unassignRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.updateRbacPoliciesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.updateRbacPoliciesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.updateRbacRolesWorkflowId/page.json",
+    "pathname": "/references/core_flows/Rbac/Workflows_Rbac/variables/core_flows.Rbac.Workflows_Rbac.updateRbacRolesWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/core_flows.Rbac.Steps_Rbac/page.json",
+    "pathname": "/references/core_flows/Rbac/core_flows.Rbac.Steps_Rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/core_flows.Rbac.Workflows_Rbac/page.json",
+    "pathname": "/references/core_flows/Rbac/core_flows.Rbac.Workflows_Rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/functions/core_flows.Rbac.canActorGrantPolicies/page.json",
+    "pathname": "/references/core_flows/Rbac/functions/core_flows.Rbac.canActorGrantPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/functions/core_flows.Rbac.canActorGrantRoles/page.json",
+    "pathname": "/references/core_flows/Rbac/functions/core_flows.Rbac.canActorGrantRoles"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Region/Steps_Region/functions/core_flows.Region.Steps_Region.createRegionsStep/page.json",
     "pathname": "/references/medusa-workflows/steps/createRegionsStep"
   },
@@ -10132,6 +10336,14 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ArchiveOrdersWorkflowOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRole/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AssignRolesWorkflowInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AttachInventoryItemToVariantsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AttachInventoryItemToVariantsStepInput"
   },
@@ -10564,6 +10776,18 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreatePromotionsWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacPoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacPoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolePoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolePoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolesWorkflowInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRefundReasonStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRefundReasonStepInput"
   },
@@ -10912,6 +11136,18 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeletePromotionsWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacPoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacPoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolePoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolePoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolesWorkflowInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRefundReasonsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRefundReasonsStepInput"
   },
@@ -11116,8 +11352,28 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GenerateProductCsvStepOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GenerateResetPasswordTokenWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GenerateResetPasswordTokenWorkflowInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAllProductsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAllProductsStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowOutput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesWorkflowOutput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesWorkflowOutput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetExistingPriceListsPriceIdsStepInput/page.json",
@@ -11142,6 +11398,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetPromotionCodesToApplyStepOutput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetPromotionCodesToApplyStepOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetRoleAssignmentsStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetRoleAssignmentsStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetVariantAvailabilityStepInput/page.json",
@@ -11472,6 +11732,14 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.TransferOrderToGuestValidationStepInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRole/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UnassignRolesWorkflowInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateApiKeysStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateApiKeysStepInput"
   },
@@ -11698,6 +11966,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdatePromotionsWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdatePromotionsWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacPoliciesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacPoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacRolesWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacRolesWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateReceiveItemReturnRequestValidationStepInput/page.json",
@@ -12034,6 +12310,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_flows.Promotion/page.json",
     "pathname": "/references/core_flows/core_flows.Promotion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_flows.Rbac/page.json",
+    "pathname": "/references/core_flows/core_flows.Rbac"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_flows.Region/page.json",
@@ -14644,6 +14924,10 @@ export const filesMap = [
     "pathname": "/references/js-sdk/admin/locale"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.module/page.json",
+    "pathname": "/references/js-sdk/admin/module"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.notification/page.json",
     "pathname": "/references/js-sdk/admin/notification"
   },
@@ -15472,6 +15756,14 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/Locale/properties/js_sdk.admin.Locale.client"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Module/methods/js_sdk.admin.Module.list/page.json",
+    "pathname": "/references/js_sdk/admin/Module/methods/js_sdk.admin.Module.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Module/properties/js_sdk.admin.Module.client/page.json",
+    "pathname": "/references/js_sdk/admin/Module/properties/js_sdk.admin.Module.client"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.list/page.json",
     "pathname": "/references/js_sdk/admin/Notification/methods/js_sdk.admin.Notification.list"
   },
@@ -16068,6 +16360,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/RbacPolicy/properties/js_sdk.admin.RbacPolicy.client"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addAssignments/page.json",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addAssignments"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addPolicies/page.json",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.addPolicies"
   },
@@ -16092,6 +16388,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignable"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignments/page.json",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listAssignments"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies/page.json",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.listPolicies"
   },
@@ -16102,6 +16402,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions/page.json",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.mePermissions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removeAssignments/page.json",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removeAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy/page.json",
@@ -16660,6 +16964,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.update"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/User/methods/js_sdk.admin.User.updateMe/page.json",
+    "pathname": "/references/js_sdk/admin/User/methods/js_sdk.admin.User.updateMe"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/User/properties/js_sdk.admin.User.client/page.json",
     "pathname": "/references/js_sdk/admin/User/properties/js_sdk.admin.User.client"
   },
@@ -16782,6 +17090,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Locale/page.json",
     "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Locale"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Module/page.json",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.Module"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Notification/page.json",
@@ -17188,6 +17500,10 @@ export const filesMap = [
     "pathname": "/references/loyalty/deleteGiftCards"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.getOptions/page.json",
+    "pathname": "/references/loyalty/getOptions"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty/ILoyaltyModuleService/methods/loyalty.ILoyaltyModuleService.listGiftCards/page.json",
     "pathname": "/references/loyalty/listGiftCards"
   },
@@ -17272,6 +17588,22 @@ export const filesMap = [
     "pathname": "/references/loyalty/interfaces/loyalty.ModuleGiftCardFilters"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Constructor/page.json",
+    "pathname": "/references/loyalty/types/loyalty.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.CrossModuleJoinLink/page.json",
+    "pathname": "/references/loyalty/types/loyalty.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/loyalty/types/loyalty.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/loyalty/types/loyalty.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Event/page.json",
     "pathname": "/references/loyalty/types/loyalty.Event"
   },
@@ -17280,8 +17612,32 @@ export const filesMap = [
     "pathname": "/references/loyalty/types/loyalty.EventMetadata"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.ExpandScalar/page.json",
+    "pathname": "/references/loyalty/types/loyalty.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FilterQuery/page.json",
+    "pathname": "/references/loyalty/types/loyalty.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FilterQueryProperties/page.json",
+    "pathname": "/references/loyalty/types/loyalty.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FilterValue/page.json",
+    "pathname": "/references/loyalty/types/loyalty.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FilterValue2/page.json",
+    "pathname": "/references/loyalty/types/loyalty.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.FindConfigOrder/page.json",
     "pathname": "/references/loyalty/types/loyalty.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.InternalQueryOptions/page.json",
+    "pathname": "/references/loyalty/types/loyalty.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.JoinerRelationship/page.json",
@@ -17290,6 +17646,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.LinkModulesExtraFields/page.json",
     "pathname": "/references/loyalty/types/loyalty.LinkModulesExtraFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.LoyaltyPluginOptions/page.json",
+    "pathname": "/references/loyalty/types/loyalty.LoyaltyPluginOptions"
   },
   {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Message/page.json",
@@ -17316,20 +17676,36 @@ export const filesMap = [
     "pathname": "/references/loyalty/types/loyalty.ModuleUpdateGiftCard"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.OperatorMap/page.json",
+    "pathname": "/references/loyalty/types/loyalty.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.PrevLimit/page.json",
+    "pathname": "/references/loyalty/types/loyalty.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Primary/page.json",
+    "pathname": "/references/loyalty/types/loyalty.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Query/page.json",
+    "pathname": "/references/loyalty/types/loyalty.Query"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty/types/loyalty.RawMessageFormat/page.json",
     "pathname": "/references/loyalty/types/loyalty.RawMessageFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.ReadonlyPrimary/page.json",
+    "pathname": "/references/loyalty/types/loyalty.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/loyalty/types/loyalty.Scalar/page.json",
+    "pathname": "/references/loyalty/types/loyalty.Scalar"
+  },
+  {
     "filePath": "/www/apps/resources/references/loyalty_models/variables/loyalty_models.GiftCard/page.json",
     "pathname": "/references/loyalty/models/GiftCard"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.RestrictedFields/page.json",
-    "pathname": "/references/medusa/classes/medusa.RestrictedFields"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.DefaultPolicyResources/page.json",
-    "pathname": "/references/medusa/interfaces/medusa.DefaultPolicyResources"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FindConfig/page.json",
@@ -17346,6 +17722,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.RequestQueryFields/page.json",
     "pathname": "/references/medusa/interfaces/medusa.RequestQueryFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.RestrictedFieldsSet/page.json",
+    "pathname": "/references/medusa/interfaces/medusa.RestrictedFieldsSet"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.SubscriberContext/page.json",
@@ -17370,14 +17750,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.CrossModuleJoinTarget/page.json",
     "pathname": "/references/medusa/types/medusa.CrossModuleJoinTarget"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.DefaultResourceKey/page.json",
-    "pathname": "/references/medusa/types/medusa.DefaultResourceKey"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.DefaultResourceValue/page.json",
-    "pathname": "/references/medusa/types/medusa.DefaultResourceValue"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.Event/page.json",
@@ -17758,6 +18130,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/promotion_models/page.json",
     "pathname": "/references/promotion/models"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/rbac/page.json",
+    "pathname": "/references/modules/rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/rbac_models/page.json",
+    "pathname": "/references/rbac/models"
   },
   {
     "filePath": "/www/apps/resources/references/modules/region/page.json",
@@ -21340,6 +21720,10 @@ export const filesMap = [
     "pathname": "/references/promotion/types/promotion.ApplicationMethodAllocationValues"
   },
   {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.ApplicationMethodTargetSelectionStrategyValues/page.json",
+    "pathname": "/references/promotion/types/promotion.ApplicationMethodTargetSelectionStrategyValues"
+  },
+  {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.ApplicationMethodTargetTypeValues/page.json",
     "pathname": "/references/promotion/types/promotion.ApplicationMethodTargetTypeValues"
   },
@@ -21514,6 +21898,422 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/promotion_models/variables/promotion_models.PromotionRuleValue/page.json",
     "pathname": "/references/promotion/models/PromotionRuleValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.clearMessages/page.json",
+    "pathname": "/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.clearMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.getMessages/page.json",
+    "pathname": "/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.getMessages"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.save/page.json",
+    "pathname": "/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.save"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.saveRawMessageData/page.json",
+    "pathname": "/references/rbac/IMessageAggregator/methods/rbac.IMessageAggregator.saveRawMessageData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IModuleService/methods/rbac.IModuleService.__joinerConfig/page.json",
+    "pathname": "/references/rbac/IModuleService/methods/rbac.IModuleService.__joinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacPolicies/page.json",
+    "pathname": "/references/rbac/createRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/createRbacRoleAssignments"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/createRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.createRbacRoles/page.json",
+    "pathname": "/references/rbac/createRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacPolicies/page.json",
+    "pathname": "/references/rbac/deleteRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/deleteRbacRoleAssignments"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/deleteRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.deleteRbacRoles/page.json",
+    "pathname": "/references/rbac/deleteRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacPolicies/page.json",
+    "pathname": "/references/rbac/listAndCountRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/listAndCountRbacRoleAssignments"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/listAndCountRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listAndCountRbacRoles/page.json",
+    "pathname": "/references/rbac/listAndCountRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listGranteeEntities/page.json",
+    "pathname": "/references/rbac/listGranteeEntities"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listPoliciesForRole/page.json",
+    "pathname": "/references/rbac/listPoliciesForRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacPolicies/page.json",
+    "pathname": "/references/rbac/listRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/listRbacRoleAssignments"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/listRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.listRbacRoles/page.json",
+    "pathname": "/references/rbac/listRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacPolicies/page.json",
+    "pathname": "/references/rbac/restoreRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/restoreRbacRoleAssignments"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/restoreRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.restoreRbacRoles/page.json",
+    "pathname": "/references/rbac/restoreRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveActorAuthzContextConfig/page.json",
+    "pathname": "/references/rbac/retrieveActorAuthzContextConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacPolicy/page.json",
+    "pathname": "/references/rbac/retrieveRbacPolicy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRole/page.json",
+    "pathname": "/references/rbac/retrieveRbacRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRoleAssignment/page.json",
+    "pathname": "/references/rbac/retrieveRbacRoleAssignment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.retrieveRbacRolePolicy/page.json",
+    "pathname": "/references/rbac/retrieveRbacRolePolicy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacPolicies/page.json",
+    "pathname": "/references/rbac/softDeleteRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/softDeleteRbacRoleAssignments"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/softDeleteRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.softDeleteRbacRoles/page.json",
+    "pathname": "/references/rbac/softDeleteRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacPolicies/page.json",
+    "pathname": "/references/rbac/updateRbacPolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoleAssignments/page.json",
+    "pathname": "/references/rbac/updateRbacRoleAssignments"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRolePolicies/page.json",
+    "pathname": "/references/rbac/updateRbacRolePolicies"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/IRbacModuleService/methods/rbac.IRbacModuleService.updateRbacRoles/page.json",
+    "pathname": "/references/rbac/updateRbacRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.BaseFilterable/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.BaseFilterable"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.Context/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.Context"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.FilterableRbacRoleAssignmentProps/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.FilterableRbacRoleAssignmentProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.FindConfig/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.FindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.IMessageAggregator/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.IMessageAggregator"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.IModuleService/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.IModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.IRbacModuleService/page.json",
+    "pathname": "/references/rbac"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.IRbacModuleServiceOptions/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.IRbacModuleServiceOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.JoinerServiceConfig/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.JoinerServiceConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.JoinerServiceConfigAlias/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.JoinerServiceConfigAlias"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.MessageAggregatorFormat/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.MessageAggregatorFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.PolicyOperationRegistry/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.PolicyOperationRegistry"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.PolicyResourceRegistry/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.PolicyResourceRegistry"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.RestoreReturn/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.RestoreReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/interfaces/rbac.SoftDeleteReturn/page.json",
+    "pathname": "/references/rbac/interfaces/rbac.SoftDeleteReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.AuthzContextConfig/page.json",
+    "pathname": "/references/rbac/types/rbac.AuthzContextConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Constructor/page.json",
+    "pathname": "/references/rbac/types/rbac.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CorePolicyResourceMap/page.json",
+    "pathname": "/references/rbac/types/rbac.CorePolicyResourceMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacPolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRoleAssignmentDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacRoleAssignmentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRoleDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CreateRbacRolePolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.CreateRbacRolePolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CrossModuleJoinLink/page.json",
+    "pathname": "/references/rbac/types/rbac.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/rbac/types/rbac.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/rbac/types/rbac.CrossModuleJoinTarget"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Event/page.json",
+    "pathname": "/references/rbac/types/rbac.Event"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.EventMetadata/page.json",
+    "pathname": "/references/rbac/types/rbac.EventMetadata"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.ExpandScalar/page.json",
+    "pathname": "/references/rbac/types/rbac.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterQuery/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterQueryProperties/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterValue/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterValue2/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterValue2"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterableRbacPolicyProps/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterableRbacPolicyProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterableRbacRolePolicyProps/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterableRbacRolePolicyProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FilterableRbacRoleProps/page.json",
+    "pathname": "/references/rbac/types/rbac.FilterableRbacRoleProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.FindConfigOrder/page.json",
+    "pathname": "/references/rbac/types/rbac.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.InternalQueryOptions/page.json",
+    "pathname": "/references/rbac/types/rbac.InternalQueryOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.JoinerRelationship/page.json",
+    "pathname": "/references/rbac/types/rbac.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.LinkModulesExtraFields/page.json",
+    "pathname": "/references/rbac/types/rbac.LinkModulesExtraFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Message/page.json",
+    "pathname": "/references/rbac/types/rbac.Message"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.ModuleJoinerConfig/page.json",
+    "pathname": "/references/rbac/types/rbac.ModuleJoinerConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.ModuleJoinerRelationship/page.json",
+    "pathname": "/references/rbac/types/rbac.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.OperatorMap/page.json",
+    "pathname": "/references/rbac/types/rbac.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.PolicyOperationValue/page.json",
+    "pathname": "/references/rbac/types/rbac.PolicyOperationValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.PolicyResourceValue/page.json",
+    "pathname": "/references/rbac/types/rbac.PolicyResourceValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.PrevLimit/page.json",
+    "pathname": "/references/rbac/types/rbac.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Primary/page.json",
+    "pathname": "/references/rbac/types/rbac.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Query/page.json",
+    "pathname": "/references/rbac/types/rbac.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RawMessageFormat/page.json",
+    "pathname": "/references/rbac/types/rbac.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacPolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRoleAssignmentDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacRoleAssignmentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRoleDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.RbacRolePolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.RbacRolePolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.ReadonlyPrimary/page.json",
+    "pathname": "/references/rbac/types/rbac.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.Scalar/page.json",
+    "pathname": "/references/rbac/types/rbac.Scalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacPolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.UpdateRbacPolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRoleAssignmentDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.UpdateRbacRoleAssignmentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRoleDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.UpdateRbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/types/rbac.UpdateRbacRolePolicyDTO/page.json",
+    "pathname": "/references/rbac/types/rbac.UpdateRbacRolePolicyDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac/variables/rbac.CORE_POLICY_RESOURCES/page.json",
+    "pathname": "/references/rbac/variables/rbac.CORE_POLICY_RESOURCES"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacPolicy/page.json",
+    "pathname": "/references/rbac/models/RbacPolicy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRole/page.json",
+    "pathname": "/references/rbac/models/RbacRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRoleAssignment/page.json",
+    "pathname": "/references/rbac/models/RbacRoleAssignment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/rbac_models/variables/rbac_models.RbacRolePolicy/page.json",
+    "pathname": "/references/rbac/models/RbacRolePolicy"
   },
   {
     "filePath": "/www/apps/resources/references/region/IMessageAggregator/methods/region.IMessageAggregator.clearMessages/page.json",
@@ -23132,6 +23932,22 @@ export const filesMap = [
     "pathname": "/references/store_credit/types/store_credit.BigNumberValue"
   },
   {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Constructor/page.json",
+    "pathname": "/references/store_credit/types/store_credit.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.CrossModuleJoinLink/page.json",
+    "pathname": "/references/store_credit/types/store_credit.CrossModuleJoinLink"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.CrossModuleJoinSpec/page.json",
+    "pathname": "/references/store_credit/types/store_credit.CrossModuleJoinSpec"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.CrossModuleJoinTarget/page.json",
+    "pathname": "/references/store_credit/types/store_credit.CrossModuleJoinTarget"
+  },
+  {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Event/page.json",
     "pathname": "/references/store_credit/types/store_credit.Event"
   },
@@ -23140,8 +23956,32 @@ export const filesMap = [
     "pathname": "/references/store_credit/types/store_credit.EventMetadata"
   },
   {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ExpandScalar/page.json",
+    "pathname": "/references/store_credit/types/store_credit.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FilterQuery/page.json",
+    "pathname": "/references/store_credit/types/store_credit.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FilterQueryProperties/page.json",
+    "pathname": "/references/store_credit/types/store_credit.FilterQueryProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FilterValue/page.json",
+    "pathname": "/references/store_credit/types/store_credit.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FilterValue2/page.json",
+    "pathname": "/references/store_credit/types/store_credit.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.FindConfigOrder/page.json",
     "pathname": "/references/store_credit/types/store_credit.FindConfigOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.InternalQueryOptions/page.json",
+    "pathname": "/references/store_credit/types/store_credit.InternalQueryOptions"
   },
   {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.JoinerRelationship/page.json",
@@ -23196,8 +24036,32 @@ export const filesMap = [
     "pathname": "/references/store_credit/types/store_credit.ModuleUpdateStoreCreditAccount"
   },
   {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.OperatorMap/page.json",
+    "pathname": "/references/store_credit/types/store_credit.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.PrevLimit/page.json",
+    "pathname": "/references/store_credit/types/store_credit.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Primary/page.json",
+    "pathname": "/references/store_credit/types/store_credit.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Query/page.json",
+    "pathname": "/references/store_credit/types/store_credit.Query"
+  },
+  {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.RawMessageFormat/page.json",
     "pathname": "/references/store_credit/types/store_credit.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.ReadonlyPrimary/page.json",
+    "pathname": "/references/store_credit/types/store_credit.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_credit/types/store_credit.Scalar/page.json",
+    "pathname": "/references/store_credit/types/store_credit.Scalar"
   },
   {
     "filePath": "/www/apps/resources/references/store_credit/types/store_credit.TransactionTypeValues/page.json",
@@ -24540,6 +25404,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAddRolePolicies"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminApiKey/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminApiKey"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminApiKeyResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminApiKeyResponse"
   },
@@ -24970,6 +25838,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateReturnReason/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateReturnReason"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateRoleAssignments/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateRoleAssignments"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateSalesChannel/page.json",
@@ -25608,6 +26480,14 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminMarkPaymentCollectionAsPaid"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminModule/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminModule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminModulesListResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminModulesListResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminNotification/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminNotification"
   },
@@ -26040,8 +26920,16 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignablePoliciesListResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignablePolicyListParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignablePolicyListParams"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignableRolesListResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacAssignableRolesListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacMePermissionsParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacMePermissionsParams"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacMePermissionsResponse/page.json",
@@ -26084,6 +26972,26 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRole"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignment/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentListParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentListResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentsDeleteResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentsDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentsResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleAssignmentsResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleDeleteResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleDeleteResponse"
   },
@@ -26098,6 +27006,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleParams/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePoliciesResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePoliciesResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePolicyDeleteResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePolicyDeleteResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleResponse/page.json",
@@ -26118,6 +27034,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUsersResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleUsersResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacScopeParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacScopeParams"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReceiveItems/page.json",
@@ -26188,12 +27108,12 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveDraftOrderPromotions"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers/page.json",
-    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers"
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleAssignments/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleAssignments"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveUserRoles/page.json",
-    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveUserRoles"
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRequestClaim/page.json",
@@ -26578,6 +27498,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTranslationsResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUnassignUserRole/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUnassignUserRole"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUnassignUserRoles/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUnassignUserRoles"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateApiKey/page.json",
@@ -29204,10 +30132,6 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.AddToCartWorkflowInputDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminApiKey/page.json",
-    "pathname": "/references/types/interfaces/types.AdminApiKey"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AdminBatchUpdateProduct/page.json",
     "pathname": "/references/types/interfaces/types.AdminBatchUpdateProduct"
   },
@@ -29324,12 +30248,20 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.AdminUpsertGeoZone"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AuthContext/page.json",
+    "pathname": "/references/types/interfaces/types.AuthContext"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AuthIdentityProviderService/page.json",
     "pathname": "/references/types/interfaces/types.AuthIdentityProviderService"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AuthProviderInfoDTO/page.json",
     "pathname": "/references/types/interfaces/types.AuthProviderInfoDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AuthenticatedMedusaRequest/page.json",
+    "pathname": "/references/types/interfaces/types.AuthenticatedMedusaRequest"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AuthenticationInput/page.json",
@@ -29936,10 +30868,6 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.IPaymentProvider"
   },
   {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.IRbacModuleService/page.json",
-    "pathname": "/references/types/interfaces/types.IRbacModuleService"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.ITaxProvider/page.json",
     "pathname": "/references/types/interfaces/types.ITaxProvider"
   },
@@ -29996,6 +30924,14 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.LocalAnalyticsServiceOptions"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.MedusaRequest/page.json",
+    "pathname": "/references/types/interfaces/types.MedusaRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.MedusaStoreRequest/page.json",
+    "pathname": "/references/types/interfaces/types.MedusaStoreRequest"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.MessageAggregatorFormat/page.json",
     "pathname": "/references/types/interfaces/types.MessageAggregatorFormat"
   },
@@ -30028,6 +30964,10 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.ProductCategoryTransformOptions"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.PublishableKeyContext/page.json",
+    "pathname": "/references/types/interfaces/types.PublishableKeyContext"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.ReceiveReturnItem/page.json",
     "pathname": "/references/types/interfaces/types.ReceiveReturnItem"
   },
@@ -30046,6 +30986,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.RemoteJoinerQuery/page.json",
     "pathname": "/references/types/interfaces/types.RemoteJoinerQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.RestrictedFieldsSet/page.json",
+    "pathname": "/references/types/interfaces/types.RestrictedFieldsSet"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.RetrieveAccountHolderInput/page.json",
@@ -30070,6 +31014,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.SavePaymentMethodOutput/page.json",
     "pathname": "/references/types/interfaces/types.SavePaymentMethodOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.SecretKeyContext/page.json",
+    "pathname": "/references/types/interfaces/types.SecretKeyContext"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.StoreCreateReturnItem/page.json",
@@ -30252,22 +31200,6 @@ export const filesMap = [
     "pathname": "/references/types/types/types.CreateProductWorkflowInputDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacPolicyDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacPolicyDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacRoleDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRoleParentDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacRoleParentDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.CreateRbacRolePolicyDTO/page.json",
-    "pathname": "/references/types/types/types.CreateRbacRolePolicyDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/types/types.CrossModuleJoinLink/page.json",
     "pathname": "/references/types/types/types.CrossModuleJoinLink"
   },
@@ -30330,22 +31262,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.FilterValue2/page.json",
     "pathname": "/references/types/types/types.FilterValue2"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacPolicyProps/page.json",
-    "pathname": "/references/types/types/types.FilterableRbacPolicyProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRoleParentProps/page.json",
-    "pathname": "/references/types/types/types.FilterableRbacRoleParentProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRolePolicyProps/page.json",
-    "pathname": "/references/types/types/types.FilterableRbacRolePolicyProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.FilterableRbacRoleProps/page.json",
-    "pathname": "/references/types/types/types.FilterableRbacRoleProps"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.FlowRunOptions/page.json",
@@ -30504,6 +31420,18 @@ export const filesMap = [
     "pathname": "/references/types/types/types.Maybe"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.MedusaNextFunction/page.json",
+    "pathname": "/references/types/types/types.MedusaNextFunction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.MedusaRequestHandler/page.json",
+    "pathname": "/references/types/types/types.MedusaRequestHandler"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.MedusaResponse/page.json",
+    "pathname": "/references/types/types/types.MedusaResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.ModuleConfigForResolve/page.json",
     "pathname": "/references/types/types/types.ModuleConfigForResolve"
   },
@@ -30620,22 +31548,6 @@ export const filesMap = [
     "pathname": "/references/types/types/types.RawBigNumberPrefix"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacPolicyDTO/page.json",
-    "pathname": "/references/types/types/types.RbacPolicyDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacRoleDTO/page.json",
-    "pathname": "/references/types/types/types.RbacRoleDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacRoleParentDTO/page.json",
-    "pathname": "/references/types/types/types.RbacRoleParentDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.RbacRolePolicyDTO/page.json",
-    "pathname": "/references/types/types/types.RbacRolePolicyDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/types/types.ReadonlyPrimary/page.json",
     "pathname": "/references/types/types/types.ReadonlyPrimary"
   },
@@ -30718,22 +31630,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.UpdatePromotionRulesWorkflowDTO/page.json",
     "pathname": "/references/types/types/types.UpdatePromotionRulesWorkflowDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacPolicyDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacPolicyDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacRoleDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRoleParentDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacRoleParentDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/types/types.UpdateRbacRolePolicyDTO/page.json",
-    "pathname": "/references/types/types/types.UpdateRbacRolePolicyDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.ValidateFulfillmentDataContext/page.json",
@@ -30928,6 +31824,10 @@ export const filesMap = [
     "pathname": "/references/user/interfaces/user.Context"
   },
   {
+    "filePath": "/www/apps/resources/references/user/interfaces/user.CreateActorRoleDTO/page.json",
+    "pathname": "/references/user/interfaces/user.CreateActorRoleDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/user/interfaces/user.CreateInviteDTO/page.json",
     "pathname": "/references/user/interfaces/user.CreateInviteDTO"
   },
@@ -31082,6 +31982,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/user/types/user.RawMessageFormat/page.json",
     "pathname": "/references/user/types/user.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.RbacScope/page.json",
+    "pathname": "/references/user/types/user.RbacScope"
   },
   {
     "filePath": "/www/apps/resources/references/user/types/user.ReadonlyPrimary/page.json",
@@ -31280,6 +32184,10 @@ export const filesMap = [
     "pathname": "/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodAllocation"
   },
   {
+    "filePath": "/www/apps/resources/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodTargetSelectionStrategy/page.json",
+    "pathname": "/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodTargetSelectionStrategy"
+  },
+  {
     "filePath": "/www/apps/resources/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodTargetType/page.json",
     "pathname": "/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodTargetType"
   },
@@ -31474,6 +32382,22 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/interfaces/utils.WorkflowResourceData/page.json",
     "pathname": "/references/utils/interfaces/utils.WorkflowResourceData"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.BuildPoliciesForResourceInput/page.json",
+    "pathname": "/references/utils/types/utils.BuildPoliciesForResourceInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.BuildPoliciesForResourcesInput/page.json",
+    "pathname": "/references/utils/types/utils.BuildPoliciesForResourcesInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.BuildPoliciesInput/page.json",
+    "pathname": "/references/utils/types/utils.BuildPoliciesInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/types/utils.BuiltPolicy/page.json",
+    "pathname": "/references/utils/types/utils.BuiltPolicy"
   },
   {
     "filePath": "/www/apps/resources/references/utils/types/utils.CSVNormalizerContext/page.json",

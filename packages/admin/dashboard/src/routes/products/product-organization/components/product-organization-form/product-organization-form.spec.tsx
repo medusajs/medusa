@@ -61,6 +61,22 @@ vi.mock("../../../../../components/inputs/combobox", () => ({
   ),
 }))
 
+vi.mock("../../../../../hooks/use-resource-permissions", () => {
+  const allowed = () => ({ canUpdate: true })
+  return {
+    useProductCategoryPermissions: allowed,
+    useProductCollectionPermissions: allowed,
+    useProductTagPermissions: allowed,
+    useProductTypePermissions: allowed,
+  }
+})
+
+vi.mock("../../../../../components/common/permission-guard", () => ({
+  PermissionGuard: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
+}))
+
 vi.mock("../../../../../components/modals", () => ({
   RouteDrawer: {
     Form: ({ children }: { children: React.ReactNode }) => <>{children}</>,

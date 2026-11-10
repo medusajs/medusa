@@ -112,21 +112,20 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
 
     const _props = convertProps(props, setValue)
 
+    // Controlled by the local value, so syncing it from props doesn't go
+    // through react-aria's setValue, which would call onChange as if the user
+    // had picked the date.
     const state = useDatePickerState({
       ..._props,
+      value: value ?? null,
       shouldCloseOnSelect,
     })
 
     const { groupProps, fieldProps, buttonProps, dialogProps, calendarProps } =
-      useDatePicker(_props, state, innerRef)
+      useDatePicker({ ..._props, value: value ?? null }, state, innerRef)
 
     React.useEffect(() => {
       setValue(
-        props.value
-          ? updateCalendarDateFromDate(value, props.value, props.granularity)
-          : null
-      )
-      state.setValue(
         props.value
           ? updateCalendarDateFromDate(value, props.value, props.granularity)
           : null
@@ -137,7 +136,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
       e.preventDefault()
       e.stopPropagation()
 
-      props.onChange?.(null)
+      // Goes through the onChange from convertProps, which notifies the consumer
       state.setValue(null)
     }
 
@@ -180,7 +179,7 @@ const DatePicker = React.forwardRef<HTMLDivElement, DatePickerProps>(
         <Popover.Content
           ref={contentRef}
           {...dialogProps}
-          className="flex flex-col divide-y p-0"
+          className="flex flex-col p-0 [&>*+*]:border-t"
         >
           <div className="p-3">
             <InternalCalendar autoFocus {...calendarProps} />

@@ -24,6 +24,7 @@ import {
   useRemoveReceiveItems,
   useUpdateReceiveItem,
 } from "../../../../../hooks/api/returns"
+import { useOrderPermissions } from "../../../../../hooks/use-resource-permissions"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { ReceiveReturnSchema } from "./constants"
 import DismissedQuantity, { DismissedQuantityForm } from "./dismissed-quantity"
@@ -41,6 +42,7 @@ export function OrderReceiveReturnForm({
 }: OrderAllocateItemsFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { canUpdate: canConfirm } = useOrderPermissions()
 
   /**
    * Items on the preview order that are part of the return we are receiving currently.
@@ -392,9 +394,11 @@ export function OrderReceiveReturnForm({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={false}>
-              {t("actions.save")}
-            </Button>
+            {canConfirm && (
+              <Button size="small" type="submit" isLoading={false}>
+                {t("actions.save")}
+              </Button>
+            )}
           </div>
         </RouteDrawer.Footer>
       </KeyboundForm>

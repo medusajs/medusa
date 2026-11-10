@@ -1,8 +1,4 @@
-import {
-  ContainerRegistrationKeys,
-  FeatureFlag,
-  Modules,
-} from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { OrderShippingMethodDTO } from "@medusajs/types"
 
@@ -40,9 +36,7 @@ export const updateOrderShippingMethodsTranslationsStep = createStep(
     data: UpdateOrderShippingMethodsTranslationsStepInput,
     { container }
   ) => {
-    const isTranslationEnabled = FeatureFlag.isFeatureEnabled("translation")
-
-    if (!isTranslationEnabled || !data.locale || !data.shippingMethods.length) {
+    if (!data.locale || !data.shippingMethods.length) {
       return new StepResponse(data.shippingMethods)
     }
 

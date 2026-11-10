@@ -1,10 +1,15 @@
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, isUnsafePathSegment } from "@medusajs/utils"
 import type {
   MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
 } from "../types"
 
+/**
+ * @deprecated Use {@link applyCrossModuleFilter} instead, which filters
+ * through cross-module joins without an extra query. This will be removed
+ * in the next minor release.
+ */
 export function maybeApplyLinkFilter({
   entryPoint,
   resourceId,
@@ -30,7 +35,7 @@ export function maybeApplyLinkFilter({
 
     delete filterableFields[filterableField]
 
-    let existingFilters = filterableFields[filterByField] as
+    const existingFilters = filterableFields[filterByField] as
       string[] | string | undefined
 
     const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
@@ -75,12 +80,20 @@ function transformFilterableFields(filterableFields: Record<string, unknown>) {
   for (const key of Object.keys(filterableFields)) {
     const value = filterableFields[key]
     const keys = key.split(".")
+
+    if (keys.some(isUnsafePathSegment)) {
+      continue
+    }
+
     let current = result
 
     // Iterate over the keys, creating nested objects as needed
     for (let i = 0; i < keys.length; i++) {
       const part = keys[i]
-      current[part] ??= {}
+
+      if (!Object.prototype.hasOwnProperty.call(current, part)) {
+        current[part] = {}
+      }
 
       if (i === keys.length - 1) {
         // If its the last key, assign the value

@@ -1,5 +1,68 @@
 # @medusajs/dashboard
 
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.22.6
+  - @medusajs/js-sdk@2.22.6
+  - @medusajs/icons@2.22.6
+  - @medusajs/ui@4.2.13
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17563](https://github.com/medusajs/medusa/pull/17563) [`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760) Thanks [@kristianjakschnltg](https://github.com/kristianjakschnltg)! - feat(promotion,utils,types,medusa,dashboard): add target selection strategy for buy-get promotions
+
+  Adds `application_method.target_selection_strategy` to choose which eligible items a Buy X Get Y promotion discounts. The default, `most_expensive_first`, keeps the current behaviour. `cheapest_first` discounts the cheapest eligible units across the cart: for "buy 3, get 1 free" with eight units priced 100 to 800, the 100 and 200 units are discounted instead of 100 and 500. The option is available in the admin promotion create and edit forms.
+
+- [#17702](https://github.com/medusajs/medusa/pull/17702) [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,draft-order): replace deprecated lodash.isequal with dequal
+
+- [#17687](https://github.com/medusajs/medusa/pull/17687) [`cc17c71`](https://github.com/medusajs/medusa/commit/cc17c713185046f26bf00e3ba23ad6df5639db00) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard): lint with the root ESLint flat config and update eslint to 10.13.0 and eslint-plugin-react-refresh to 0.5.7
+- Updated dependencies [[`43ee8be`](https://github.com/medusajs/medusa/commit/43ee8be5405956a5bc1578b23e3725ef8b84f83e), [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b)]:
+  - @medusajs/ui@4.2.12
+  - @medusajs/js-sdk@2.22.5
+  - @medusajs/admin-shared@2.22.5
+  - @medusajs/icons@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17667](https://github.com/medusajs/medusa/pull/17667) [`74827c2`](https://github.com/medusajs/medusa/commit/74827c2a849a9a7fdbb943ca9ffce4b26b670391) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show extension routes nested under Orders in the sidebar
+
+- [#17662](https://github.com/medusajs/medusa/pull/17662) [`43c5ec2`](https://github.com/medusajs/medusa/commit/43c5ec2d2c16623546573cf1a5abc92fb41442c9) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): ask signed-in users to sign out before accepting an invite
+
+- [#17674](https://github.com/medusajs/medusa/pull/17674) [`e3a2f38`](https://github.com/medusajs/medusa/commit/e3a2f3846c636f9df31bbc33af025896cb5e65b3) Thanks [@medusa-agents](https://github.com/apps/medusa-agents)! - fix(dashboard): keep list filters and page when going back through breadcrumbs
+
+- [#17665](https://github.com/medusajs/medusa/pull/17665) [`82d65fc`](https://github.com/medusajs/medusa/commit/82d65fc804627839c62b441737757609386841e3) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show the order summary footer buttons again
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/admin-shared@2.22.4
+  - @medusajs/icons@2.22.4
+  - @medusajs/js-sdk@2.22.4
+  - @medusajs/ui@4.2.11
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17613](https://github.com/medusajs/medusa/pull/17613) [`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils,dashboard,loyalty-plugin): add the Aruban Florin (AWG) currency
+
+- [#17611](https://github.com/medusajs/medusa/pull/17611) [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-vite-plugin,dashboard,telemetry,draft-order): update babel to v8
+
+- [#15620](https://github.com/medusajs/medusa/pull/15620) [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,core-flows,framework,js-sdk,modules-sdk,types,utils,link-modules,rbac): end to end RBAC implementation
+
+- Updated dependencies [[`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`6942022`](https://github.com/medusajs/medusa/commit/69420228b04b08149c7a5719600f8e1e4d8546e1)]:
+  - @medusajs/js-sdk@2.22.3
+  - @medusajs/ui@4.2.10
+  - @medusajs/admin-shared@2.22.3
+  - @medusajs/icons@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

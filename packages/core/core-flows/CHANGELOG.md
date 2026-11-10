@@ -1,5 +1,42 @@
 # @medusajs/core-flows
 
+## 2.22.6
+
+### Patch Changes
+
+- [#17719](https://github.com/medusajs/medusa/pull/17719) [`9d9fd8d`](https://github.com/medusajs/medusa/commit/9d9fd8dbab62395df645a41a8c5db2e94a6e52a2) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): don't return order items from getOrdersListWorkflow unless requested
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17710](https://github.com/medusajs/medusa/pull/17710) [`10c7d1d`](https://github.com/medusajs/medusa/commit/10c7d1d9ae2e61947423888518305754bac010a9) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): don't copy a location's fulfillment sets into each shipping option
+- Updated dependencies [[`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/framework@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17655](https://github.com/medusajs/medusa/pull/17655) [`7167fa2`](https://github.com/medusajs/medusa/commit/7167fa2e6b0675000f18267923eca4c61908fed9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(core-flows,medusa): document RBAC workflows and API routes
+
+- Updated dependencies [[`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5)]:
+  - @medusajs/framework@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- [#15620](https://github.com/medusajs/medusa/pull/15620) [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,core-flows,framework,js-sdk,modules-sdk,types,utils,link-modules,rbac): end to end RBAC implementation
+
+- [#17608](https://github.com/medusajs/medusa/pull/17608) [`2e3b55d`](https://github.com/medusajs/medusa/commit/2e3b55d8914dbe9724cfa0076c1a1be91b42ab95) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows,utils): skip customer account email validation when the auth identity has no email, and add a validate hook to createCustomerAccountWorkflow
+
+- Updated dependencies [[`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`2276c84`](https://github.com/medusajs/medusa/commit/2276c84d47d0d6dc078a6eea2350b9d097a0231b), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8)]:
+  - @medusajs/framework@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

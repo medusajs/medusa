@@ -1,5 +1,38 @@
 # @medusajs/query
 
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.22.6
+  - @medusajs/deps@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17712](https://github.com/medusajs/medusa/pull/17712) [`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils, query, framework): harden dotted field/filter path handling when building queries
+- Updated dependencies [[`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760), [`9bee47a`](https://github.com/medusajs/medusa/commit/9bee47a20d9d2ee9e1c59f0bf5cf94e1dc745609), [`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/utils@2.22.5
+  - @medusajs/deps@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/utils@2.22.4
+  - @medusajs/deps@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- Updated dependencies [[`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7), [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828), [`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`12a5580`](https://github.com/medusajs/medusa/commit/12a55804efc97a0d685fc9e69ca005b9f44d3761), [`39fb481`](https://github.com/medusajs/medusa/commit/39fb48168d4d63306623cb39f6973bc534a9c59a), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`b1632c1`](https://github.com/medusajs/medusa/commit/b1632c158acd23b845e83e3b3cc682e90e977912), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828), [`2e3b55d`](https://github.com/medusajs/medusa/commit/2e3b55d8914dbe9724cfa0076c1a1be91b42ab95)]:
+  - @medusajs/utils@2.22.3
+  - @medusajs/deps@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

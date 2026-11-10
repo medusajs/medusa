@@ -137,6 +137,7 @@ export class EntityBuilder {
 
   /**
    * This method defines an automatically generated string ID property.
+   * See [id Property Type](https://docs.medusajs.com/learn/fundamentals/data-models/properties#id) for more information.
    *
    * You must use the "primaryKey" modifier to mark the property as the
    * primary key.
@@ -159,6 +160,7 @@ export class EntityBuilder {
 
   /**
    * This method defines a string property.
+   * See [text Property Type](https://docs.medusajs.com/learn/fundamentals/data-models/properties#text) for more information.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
@@ -178,6 +180,7 @@ export class EntityBuilder {
 
   /**
    * This method defines a boolean property.
+   * See [boolean Property Type](https://docs.medusajs.com/learn/fundamentals/data-models/properties#boolean) for more information.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
@@ -197,6 +200,7 @@ export class EntityBuilder {
 
   /**
    * This method defines a number property.
+   * See [number Property Type](https://docs.medusajs.com/learn/fundamentals/data-models/properties#number) for more information.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
@@ -216,6 +220,7 @@ export class EntityBuilder {
 
   /**
    * This method defines a number property that expects large numbers, such as prices.
+   * See [Big Number Properties](https://docs.medusajs.com/learn/fundamentals/data-models/big-numbers) for more information.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
@@ -241,6 +246,7 @@ export class EntityBuilder {
   /**
    * This method defines a float property that allows for
    * values with decimal places
+   * See [float Property Type](https://docs.medusajs.com/learn/fundamentals/data-models/properties#float) for more information.
    *
    * @since 2.1.2
    *
@@ -282,6 +288,7 @@ export class EntityBuilder {
 
   /**
    * This method defines an array of strings property.
+   * See [array Property Type](https://docs.medusajs.com/learn/fundamentals/data-models/properties#array) for more information.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
@@ -301,6 +308,7 @@ export class EntityBuilder {
 
   /**
    * This method defines a timestamp property.
+   * See [dateTime Property Type](https://docs.medusajs.com/learn/fundamentals/data-models/properties#datetime) for more information.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
@@ -322,6 +330,7 @@ export class EntityBuilder {
    * This method defines a property whose value is stringified JSON. The
    * value is stored in a `jsonb` column, so any JSON-serializable value
    * is supported, including arrays.
+   * See [JSON Properties](https://docs.medusajs.com/learn/fundamentals/data-models/json-properties) for more information.
    *
    * @typeParam T - The type of the stored JSON value. By default, it's
    * a JSON object (`Record<string, unknown>`). Pass a type parameter to
@@ -348,6 +357,7 @@ export class EntityBuilder {
 
   /**
    * This method defines a property whose value can only be one of the specified values.
+   * See [enum Property Type](https://docs.medusajs.com/learn/fundamentals/data-models/properties#enum) for more information.
    *
    * @typeParam Values - The type of possible values. By default, it's `string`.
    *
@@ -373,6 +383,7 @@ export class EntityBuilder {
    * This method defines a relationship between two data models,
    * where the owner of the relationship has one record of the related
    * data model.
+   * See [One-to-One Relationship](https://docs.medusajs.com/learn/fundamentals/data-models/relationships#one-to-one-relationship) for more information.
    *
    * For example: A user "hasOne" email.
    *
@@ -426,6 +437,7 @@ export class EntityBuilder {
 
   /**
    * This method defines the inverse of the {@link hasOne} or {@link hasMany} relationship.
+   * See [Relationships](https://docs.medusajs.com/learn/fundamentals/data-models/relationships) for more information.
    *
    * For example, a product "belongsTo" a store.
    *
@@ -460,6 +472,7 @@ export class EntityBuilder {
    * This method defines a relationship between two data models,
    * where the owner of the relationship has many records of the related
    * data model, but the related data model only has one owner.
+   * See [One-to-Many Relationship](https://docs.medusajs.com/learn/fundamentals/data-models/relationships#one-to-many-relationship) for more information.
    *
    * For example, a store "hasMany" products.
    *
@@ -486,6 +499,7 @@ export class EntityBuilder {
   /**
    * This method defines a relationship between two data models,
    * where both data models have many related records.
+   * See [Many-to-Many Relationship](https://docs.medusajs.com/learn/fundamentals/data-models/relationships#many-to-many-relationship) for more information.
    *
    * For example, an order is associated with many products, and a product
    * is associated with many orders.

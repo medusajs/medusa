@@ -24,6 +24,13 @@ export function updatePackageVersions(
       }
     }
   }
+  if (packageJson.peerDependencies) {
+    for (const dependency of Object.keys(packageJson.peerDependencies)) {
+      if (shouldUpdateVersion(dependency)) {
+        packageJson.peerDependencies[dependency] = version
+      }
+    }
+  }
 
   if (applyChanges && typeof packageJsonOrPath === "string") {
     writeFileSync(packageJsonOrPath, JSON.stringify(packageJson, null, 2))

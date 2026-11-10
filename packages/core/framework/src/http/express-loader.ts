@@ -18,7 +18,8 @@ import {
 
 const NOISY_ENDPOINTS_CHUNKS = ["@fs", "@id", "@vite", "@react", "node_modules"]
 
-const isHealthCheck = (req: MedusaRequest) => req.path === "/health"
+export const isHealthCheck = (req: MedusaRequest) =>
+  req.originalUrl.split("?")[0] === "/health"
 
 /**
  * Resolves the `sameSite` and `secure` flags used for the session cookie.

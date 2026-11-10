@@ -143,6 +143,7 @@
     "reset": "Repor",
     "confirm": "Confirmar",
     "edit": "Editar",
+    "view": "Ver",
     "addItems": "Adicionar itens",
     "download": "Transferir",
     "clear": "Limpar",
@@ -2270,6 +2271,8 @@
       "method": "Método",
       "allocation": "Atribuição",
       "allocationTooltip": "«Cada» impõe o limite de quantidade por item, enquanto «Uma vez» impõe o limite de quantidade em todo o carrinho",
+      "targetSelectionStrategy": "Itens com desconto",
+      "targetSelectionStrategyTooltip": "Quais os itens elegíveis no carrinho que recebem o desconto",
       "addCondition": "Adicionar condição",
       "clearAll": "Limpar tudo",
       "taxInclusive": "Com impostos incluídos",
@@ -2417,6 +2420,16 @@
         "once": {
           "title": "Uma vez",
           "description": "Aplica o valor a um número limitado de itens"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "O mais caro primeiro",
+          "description": "Aplica o desconto nos itens elegíveis mais caros do carrinho"
+        },
+        "cheapest_first": {
+          "title": "O mais barato primeiro",
+          "description": "Aplica o desconto nos itens elegíveis mais baratos do carrinho"
         }
       },
       "code": {
@@ -2781,7 +2794,7 @@
     "editUser": "Editar utilizador",
     "inviteUser": "Convidar utilizador",
     "inviteUserHint": "Convida um novo utilizador para a tua loja.",
-    "inviteRolesTooltip": "Se não for selecionada nenhuma função, o utilizador será convidado com a função de superutilizador.",
+    "inviteRolesTooltip": "Se não for selecionada nenhuma função, o utilizador será convidado sem quaisquer permissões. Pode atribuir funções mais tarde.",
     "sendInvite": "Enviar convite",
     "pendingInvites": "Convites pendentes",
     "deleteInviteWarning": "Estás prestes a eliminar o convite de {{email}}. Esta ação não pode ser anulada.",
@@ -2856,7 +2869,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "O utilizador já tem esta função.",
-      "unassignableRoleTooltip": "Não tens acesso para atribuir esta função — as tuas permissões não abrangem todas as suas políticas.",
       "add": {
         "successToast_one": "O utilizador foi adicionado à função com sucesso.",
         "successToast_other": "Os utilizadores foram adicionados à função com sucesso.",
@@ -2884,6 +2896,9 @@
       "filtered": {
         "heading": "Sem resultados",
         "description": "Nenhuma permissão corresponde aos critérios de filtro atuais."
+      },
+      "manage": {
+        "successToast": "As permissões foram atualizadas com sucesso."
       }
     },
     "list": {
@@ -2907,6 +2922,7 @@
     },
     "edit": {
       "header": "Editar política",
+      "identityHint": "A chave, o recurso e a operação identificam a política e não podem ser alterados. Crie uma nova política em alternativa.",
       "successToast": "Política {{key}} atualizada"
     },
     "delete": {
@@ -3367,6 +3383,9 @@
     "invalidTokenTitle": "O teu token de convite é inválido",
     "invalidTokenHint": "Tenta pedir um novo link de convite.",
     "passwordMismatch": "As palavras-passe não coincidem",
+    "signedInTitle": "Já tens sessão iniciada",
+    "signedInHint": "Tens sessão iniciada como {{email}}. Termina sessão para aceitar este convite.",
+    "signOut": "Terminar sessão",
     "toast": {
       "accepted": "Convite aceite com sucesso"
     }
@@ -3799,6 +3818,10 @@
       "description": "Não tens permissão para aceder a esta página.",
       "requiredPermission": "Permissão necessária: {{permission}}",
       "action": "Não tens permissão para realizar esta ação."
+    },
+    "noPermissions": {
+      "title": "Ainda não tem permissões",
+      "description": "Ainda não tem permissões atribuídas. Contacte o seu administrador para solicitar acesso às áreas de que necessita."
     },
     "requiredPermissions": {
       "title": "Permissões necessárias",

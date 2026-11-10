@@ -192,8 +192,9 @@ export const refundPaymentsWorkflow = createWorkflow(
     const refundedPayments = refundPaymentsStep(input)
 
     const orderTransactionData = transform(
-      { payments, input },
-      ({ payments, input }) => {
+      { payments, input, refundedPayments },
+      ({ payments, input, refundedPayments }) => {
+        const refundedIds = new Set(refundedPayments.map((p) => p.id))
         const paymentsMap: Record<
           string,
           PaymentDTO & {
@@ -206,6 +207,7 @@ export const refundPaymentsWorkflow = createWorkflow(
         }
 
         return input
+          .filter((paymentInput) => refundedIds.has(paymentInput.payment_id))
           .map((paymentInput) => {
             const payment = paymentsMap[paymentInput.payment_id]!
             const order = payment.payment_collection?.order

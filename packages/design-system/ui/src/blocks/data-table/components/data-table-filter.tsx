@@ -197,7 +197,7 @@ const DataTableFilter = ({ id, filter, isNew = false, onUpdate, onRemove }: Data
     <Popover open={open} onOpenChange={onOpenChange} modal>
       <div
         className={clx(
-          "bg-ui-bg-field flex flex-shrink-0 items-stretch overflow-hidden rounded-md",
+          "bg-ui-bg-field flex shrink-0 items-stretch overflow-hidden rounded-md",
           "txt-compact-small-plus shadow-borders-base"
         )}
       >
@@ -222,7 +222,7 @@ const DataTableFilter = ({ id, filter, isNew = false, onUpdate, onRemove }: Data
             <Popover.Trigger asChild>
               <button
                 className={clx(
-                  "flex flex-1 items-center px-2 py-1 outline-none",
+                  "flex flex-1 items-center px-2 py-1 outline-hidden",
                   "hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed transition-fg",
                   {
                     "text-ui-fg-subtle": displayValue,
@@ -237,7 +237,7 @@ const DataTableFilter = ({ id, filter, isNew = false, onUpdate, onRemove }: Data
             </Popover.Trigger>
             <button
               type="button"
-              className="flex size-7 items-center justify-center text-ui-fg-muted outline-none hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed transition-fg"
+              className="flex size-7 items-center justify-center text-ui-fg-muted outline-hidden hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed transition-fg"
               onClick={removeFilter}
             >
               <XMark />
@@ -250,7 +250,7 @@ const DataTableFilter = ({ id, filter, isNew = false, onUpdate, onRemove }: Data
         sideOffset={8}
         collisionPadding={16}
         hideWhenDetached
-        className="bg-ui-bg-component p-0 outline-none"
+        className="bg-ui-bg-component p-0 outline-hidden"
         onOpenAutoFocus={(e) => {
           if (isNew) {
             // For new filters, ensure the first input gets focus
@@ -480,7 +480,7 @@ const DataTableFilterDateContent = ({
   return (
     <React.Fragment>
       <div
-        className="flex flex-col p-1 outline-none"
+        className="flex flex-col p-1 outline-hidden"
         tabIndex={0}
         role="list"
         onFocus={onListFocus}
@@ -619,7 +619,7 @@ const DataTableFilterSelectContent = ({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search..."
-          className="h-8 flex-1 bg-transparent text-sm outline-none placeholder:text-ui-fg-muted"
+          className="h-8 flex-1 bg-transparent text-sm outline-hidden placeholder:text-ui-fg-muted"
           autoFocus
         />
         {search && (
@@ -702,7 +702,7 @@ const DataTableFilterRadioContent = ({
 
   return (
     <div
-      className="flex flex-col p-1 outline-none"
+      className="flex flex-col p-1 outline-hidden"
       role="list"
       tabIndex={0}
       onFocus={onListFocus}
@@ -792,7 +792,7 @@ const OptionButton = React.memo(
       type="button"
       role="listitem"
       className={clx(
-        "bg-ui-bg-component txt-compact-small transition-fg flex items-center gap-2 rounded px-2 py-1 outline-none",
+        "bg-ui-bg-component txt-compact-small transition-fg flex items-center gap-2 rounded px-2 py-1 outline-hidden",
         { "bg-ui-bg-component-hover": isFocused }
       )}
       onClick={onClick}
@@ -947,7 +947,7 @@ const DataTableFilterMultiselectContent = ({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search..."
-          className="h-8 flex-1 bg-transparent text-sm outline-none placeholder:text-ui-fg-muted"
+          className="h-8 flex-1 bg-transparent text-sm outline-hidden placeholder:text-ui-fg-muted"
           autoFocus
         />
         {search && (
@@ -1204,7 +1204,7 @@ const DataTableFilterNumberContent = ({
   ]
 
   return (
-    <div className="p-3 space-y-3 w-[250px]">
+    <div className="flex w-[250px] flex-col gap-3 p-3">
       {includeOperators && (
         <Select value={operator} onValueChange={handleOperatorChange}>
           <Select.Trigger>

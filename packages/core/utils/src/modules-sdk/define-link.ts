@@ -26,6 +26,9 @@ type InputSource = {
   alias?: string
   linkable: string
   primaryKey: string
+  /**
+   * @deprecated Only used by the deprecated Index Module, and will be removed in a future release. Use `query.graph()` to filter by linked data models instead: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property
+   */
   filterable?: string[]
 }
 
@@ -52,6 +55,9 @@ type InputOptions = {
   alias?: string
   isList?: boolean
   deleteCascade?: boolean
+  /**
+   * @deprecated Only used by the deprecated Index Module, and will be removed in a future release. Use `query.graph()` to filter by linked data models instead: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property
+   */
   filterable?: string[]
 }
 

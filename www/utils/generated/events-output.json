@@ -1074,9 +1074,9 @@
       "cancelOrderFulfillmentWorkflow",
       "convertDraftOrderWorkflow",
       "completeCartWorkflow",
+      "confirmExchangeRequestWorkflow",
       "confirmOrderEditRequestWorkflow",
-      "confirmClaimRequestWorkflow",
-      "confirmExchangeRequestWorkflow"
+      "confirmClaimRequestWorkflow"
     ],
     "since": "2.18.0",
     "deprecated": false
@@ -1107,8 +1107,8 @@
       "createOrderFulfillmentWorkflow",
       "cancelOrderWorkflow",
       "confirmOrderEditRequestWorkflow",
-      "cancelOrderClaimWorkflow",
-      "cancelOrderExchangeWorkflow"
+      "cancelOrderExchangeWorkflow",
+      "cancelOrderClaimWorkflow"
     ],
     "since": "2.18.0",
     "deprecated": false

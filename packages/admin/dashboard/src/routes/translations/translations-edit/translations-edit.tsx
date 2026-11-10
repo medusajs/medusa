@@ -7,22 +7,20 @@ import {
   useStore,
   useTranslationSettings,
 } from "../../../hooks/api"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { TranslationsEditForm } from "./components/translations-edit-form"
 
 export const TranslationsEdit = () => {
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const reference = searchParams.get("reference")
   const referenceIdParam = searchParams.getAll("reference_id")
 
   useEffect(() => {
-    if (!reference || !isTranslationsEnabled) {
+    if (!reference) {
       navigate(-1)
       return
     }
-  }, [reference, navigate, isTranslationsEnabled])
+  }, [reference, navigate])
 
   const {
     translation_settings,

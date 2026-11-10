@@ -1,5 +1,40 @@
 # @medusajs/ui
 
+## 4.2.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.22.6
+
+## 4.2.12
+
+### Patch Changes
+
+- [#17695](https://github.com/medusajs/medusa/pull/17695) [`43ee8be`](https://github.com/medusajs/medusa/commit/43ee8be5405956a5bc1578b23e3725ef8b84f83e) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui): update cva to 1.0.0-beta.12
+
+- [#17702](https://github.com/medusajs/medusa/pull/17702) [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,draft-order): replace deprecated lodash.isequal with dequal
+- Updated dependencies []:
+  - @medusajs/icons@2.22.5
+
+## 4.2.11
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/icons@2.22.4
+
+## 4.2.10
+
+### Patch Changes
+
+- [#17631](https://github.com/medusajs/medusa/pull/17631) [`6942022`](https://github.com/medusajs/medusa/commit/69420228b04b08149c7a5719600f8e1e4d8546e1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui,ui-preset): support Tailwind CSS 4. `@medusajs/ui-preset` adds a CSS-first `theme.css` for Tailwind CSS 4 and keeps supporting Tailwind CSS 3, and `@medusajs/ui` updates `tailwind-merge` to v3 and uses class names that work in both versions
+
+- Updated dependencies []:
+  - @medusajs/icons@2.22.3
+
 ## 4.2.9
 
 ### Patch Changes

@@ -4,6 +4,7 @@ import rehypeSlug from "rehype-slug"
 import {
   brokenLinkCheckerPlugin,
   localLinksRehypePlugin,
+  mdContentOverrideRehypePlugin,
   cloudinaryImgRehypePlugin,
   pageNumberRehypePlugin,
   crossProjectLinksPlugin,
@@ -103,6 +104,7 @@ const withMDX = mdx({
         },
       ],
       [withExtractedTableOfContents],
+      [mdContentOverrideRehypePlugin],
     ],
     remarkPlugins: [[remarkFrontmatter], [remarkAttachFrontmatterDataPlugin]],
     recmaPlugins: [[recmaInjectMdxDataPlugin]],

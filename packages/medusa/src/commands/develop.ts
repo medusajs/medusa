@@ -181,7 +181,11 @@ export default async function ({ types, directory, lint, fix }) {
       if (this.childProcess) {
         this.childProcess.removeAllListeners()
         if (process.platform === "win32") {
-          execSync(`taskkill /PID ${this.childProcess.pid} /F /T`)
+          try {
+            execSync(`taskkill /PID ${this.childProcess.pid} /F /T`)
+          } catch {
+            // taskkill fails when the child already exited, e.g. after a failed boot
+          }
         } else {
           this.childProcess.kill("SIGINT")
         }

@@ -26,7 +26,7 @@ export const GET = async (
   } = await query.graph({
     entity: "view_configuration",
     fields: req.queryConfig.fields,
-    filters: { id: req.params.id },
+    filters: { id: req.params.id, entity: req.params.entity },
   })
 
   if (!viewConfiguration) {
@@ -66,7 +66,7 @@ export const POST = async (
   } = await query.graph({
     entity: "view_configuration",
     fields: ["id", "user_id", "is_system_default"],
-    filters: { id: req.params.id },
+    filters: { id: req.params.id, entity: req.params.entity },
   })
 
   if (!existing) {
@@ -97,7 +97,7 @@ export const POST = async (
   } = await query.graph({
     entity: "view_configuration",
     fields: req.queryConfig.fields,
-    filters: { id: req.params.id },
+    filters: { id: req.params.id, entity: req.params.entity },
   })
 
   res.json({ view_configuration: viewConfiguration })
@@ -120,7 +120,7 @@ export const DELETE = async (
   } = await query.graph({
     entity: "view_configuration",
     fields: ["id", "user_id", "is_system_default", "entity", "name"],
-    filters: { id: req.params.id },
+    filters: { id: req.params.id, entity: req.params.entity },
   })
 
   if (!existing) {

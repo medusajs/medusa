@@ -1,5 +1,49 @@
 # Change Log
 
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies [[`94774b6`](https://github.com/medusajs/medusa/commit/94774b6cf9ec67b3f5aabbff02a8b118d51a8783), [`9d9fd8d`](https://github.com/medusajs/medusa/commit/9d9fd8dbab62395df645a41a8c5db2e94a6e52a2)]:
+  - @medusajs/medusa@2.22.6
+  - @medusajs/core-flows@2.22.6
+  - @medusajs/framework@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- Updated dependencies [[`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760), [`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667), [`10c7d1d`](https://github.com/medusajs/medusa/commit/10c7d1d9ae2e61947423888518305754bac010a9)]:
+  - @medusajs/medusa@2.22.5
+  - @medusajs/framework@2.22.5
+  - @medusajs/core-flows@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17679](https://github.com/medusajs/medusa/pull/17679) [`d8b4839`](https://github.com/medusajs/medusa/commit/d8b48391d45f8e90090b2f9d43ba70d1ee88bc9c) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(auth,auth-emailpass,test-utils): update scrypt-kdf to 4.0.0
+
+- [#17678](https://github.com/medusajs/medusa/pull/17678) [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework,test-utils): upgrade path-to-regexp to v9
+
+- [#17673](https://github.com/medusajs/medusa/pull/17673) [`df7f931`](https://github.com/medusajs/medusa/commit/df7f931bf8b8fd5634c97f7a7133660f59067e99) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(test-utils): add a Jest preset for Medusa applications and plugins
+
+- Updated dependencies [[`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5), [`7167fa2`](https://github.com/medusajs/medusa/commit/7167fa2e6b0675000f18267923eca4c61908fed9)]:
+  - @medusajs/framework@2.22.4
+  - @medusajs/core-flows@2.22.4
+  - @medusajs/medusa@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17609](https://github.com/medusajs/medusa/pull/17609) [`39fb481`](https://github.com/medusajs/medusa/commit/39fb48168d4d63306623cb39f6973bc534a9c59a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(cli,orchestration,utils,workflows-sdk,test-utils,file-s3,workflow-engine-inmemory,workflow-engine-redis): update ulid to v3.0.2
+
+- Updated dependencies [[`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`2276c84`](https://github.com/medusajs/medusa/commit/2276c84d47d0d6dc078a6eea2350b9d097a0231b), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`536d630`](https://github.com/medusajs/medusa/commit/536d63013b9bbaea5aceede3e02403a4c021f634), [`2e3b55d`](https://github.com/medusajs/medusa/commit/2e3b55d8914dbe9724cfa0076c1a1be91b42ab95), [`954edc7`](https://github.com/medusajs/medusa/commit/954edc77b2009a4a5c8e08536ac7c094b9e565f0)]:
+  - @medusajs/framework@2.22.3
+  - @medusajs/medusa@2.22.3
+  - @medusajs/core-flows@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

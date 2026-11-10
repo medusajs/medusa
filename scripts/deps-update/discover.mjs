@@ -293,7 +293,12 @@ export function buildPlan({
       })
       continue
     }
-    const reason = isSkippedByState(state, d.name, target, "major")
+    const hold = Object.entries(config.holdMajors ?? {}).find(([pattern]) =>
+      matchesAny(d.name, [pattern])
+    )
+    const reason = hold
+      ? `held: ${hold[1]}`
+      : isSkippedByState(state, d.name, target, "major")
     if (reason) {
       skipped.push({ name: d.name, workspace: d.workspace, reason })
       continue

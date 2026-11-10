@@ -21,7 +21,9 @@ import {
   parseComponentExample,
   parseComponentReference,
   parseDetails,
+  parseEnterpriseNotice,
   parseEventHeader,
+  parsePermissionsBadge,
   parseHookValues,
   parseIconSearch,
   parseInjectedMarkdown,
@@ -68,6 +70,8 @@ const parsers: Record<string, ComponentParser> = {
   Colors: parseColors,
   SplitList: parseSplitList,
   EventHeader: parseEventHeader,
+  PermissionsBadge: parsePermissionsBadge,
+  EnterpriseNotice: parseEnterpriseNotice,
   PricingContent: parseInjectedMarkdown,
 }
 

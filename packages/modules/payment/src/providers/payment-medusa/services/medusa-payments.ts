@@ -110,9 +110,6 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
     if (this.options_.environment_handle) {
       headers["x-medusa-environment-handle"] = this.options_.environment_handle
     }
-    if (this.options_.sandbox_handle) {
-      headers["x-medusa-sandbox-handle"] = this.options_.sandbox_handle
-    }
 
     return fetch(`${this.options_.endpoint}${url}`, {
       ...options,
@@ -125,6 +122,15 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
       const body = await res.json().catch(() => ({}))
 
       if (!res.ok) {
+        // Lets workflows replace the account holder, eg. one copied over with the database from another environment.
+        if (body.type === "MedusaAccountHolderNotFoundError") {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            body.message,
+            MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND
+          )
+        }
+
         throw new CloudServiceError(
           body.type,
           body.originalType,
@@ -587,6 +593,11 @@ export class MedusaPaymentsProvider extends AbstractPaymentProvider<MedusaPaymen
           method: "DELETE",
         }
       )
+    }).catch((error) => {
+      // Deleting an account holder that's already gone is a no-op.
+      if (error?.code !== MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND) {
+        throw error
+      }
     })
 
     return {}
@@ -820,12 +831,9 @@ const validateOptions = (options: MedusaPaymentsOptions): void => {
     )
   }
 
-  if (
-    !isDefined(options.environment_handle) &&
-    !isDefined(options.sandbox_handle)
-  ) {
+  if (!isDefined(options.environment_handle)) {
     throw new Error(
-      "Required option `environment_handle` or `sandbox_handle` is missing in Medusa payments plugin"
+      "Required option `environment_handle` is missing in Medusa payments plugin"
     )
   }
 }
