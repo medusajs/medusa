@@ -7,8 +7,7 @@ import { UpdateRbacRolePolicyDTO } from "@medusajs/types"
 import { updateRbacRolePoliciesStep } from "../steps/update-rbac-role-policies"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * @since 2.22.3
  */
 export type UpdateRbacRolePoliciesWorkflowInput = {
   selector: Record<string, any>
@@ -16,14 +15,12 @@ export type UpdateRbacRolePoliciesWorkflowInput = {
 }
 
 /**
- * @ignore
- * @featureFlag rbac
+ * @since 2.22.3
  */
 export const updateRbacRolePoliciesWorkflowId = "update-rbac-role-policies"
 
 /**
- * @ignore
- * @featureFlag rbac
+ * @since 2.22.3
  */
 export const updateRbacRolePoliciesWorkflow = createWorkflow(
   updateRbacRolePoliciesWorkflowId,

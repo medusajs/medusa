@@ -1,5 +1,6 @@
 import {
   ApplicationMethodAllocationValues,
+  ApplicationMethodTargetSelectionStrategyValues,
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
   BigNumberInput,
@@ -19,6 +20,7 @@ export interface CreateApplicationMethodDTO {
   max_quantity?: BigNumberInput | null
   buy_rules_min_quantity?: BigNumberInput | null
   apply_to_quantity?: BigNumberInput | null
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 }
 
 export interface UpdateApplicationMethodDTO {
@@ -32,4 +34,5 @@ export interface UpdateApplicationMethodDTO {
   max_quantity?: BigNumberInput | null
   buy_rules_min_quantity?: BigNumberInput | null
   apply_to_quantity?: BigNumberInput | null
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 }

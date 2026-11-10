@@ -2,6 +2,8 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework";
+import { authorize } from "@medusajs/framework/http";
+import { PolicyOperation } from "@medusajs/framework/utils";
 import { MiddlewareRoute } from "@medusajs/medusa";
 import {
   listStoreCreditAccountsTransformQueryConfig,
@@ -21,6 +23,12 @@ export const adminStoreCreditAccountMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/store-credit-accounts",
     middlewares: [
+      authorize([
+        {
+          resource: "store_credit_account",
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetStoreCreditAccountsParams,
         listStoreCreditAccountsTransformQueryConfig
@@ -31,6 +39,12 @@ export const adminStoreCreditAccountMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/store-credit-accounts/:id",
     middlewares: [
+      authorize([
+        {
+          resource: "store_credit_account",
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetStoreCreditAccountsParams,
         retrieveStoreCreditAccountTransformQueryConfig
@@ -41,6 +55,12 @@ export const adminStoreCreditAccountMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/store-credit-accounts/:id/transactions",
     middlewares: [
+      authorize([
+        {
+          resource: "store_credit_account",
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetStoreCreditAccountTransactionsParams,
         listStoreCreditAccountTransactionsTransformQueryConfig
@@ -51,6 +71,12 @@ export const adminStoreCreditAccountMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/store-credit-accounts/:id/credit",
     middlewares: [
+      authorize([
+        {
+          resource: "store_credit_account",
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminCreditStoreCreditAccountParams),
       validateAndTransformQuery(
         AdminGetStoreCreditAccountsParams,
@@ -62,6 +88,12 @@ export const adminStoreCreditAccountMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/store-credit-accounts/:id/debit",
     middlewares: [
+      authorize([
+        {
+          resource: "store_credit_account",
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminDebitStoreCreditAccountParams),
       validateAndTransformQuery(
         AdminGetStoreCreditAccountsParams,
@@ -73,6 +105,12 @@ export const adminStoreCreditAccountMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/store-credit-accounts",
     middlewares: [
+      authorize([
+        {
+          resource: "store_credit_account",
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateStoreCreditAccount),
       validateAndTransformQuery(
         AdminGetStoreCreditAccountsParams,

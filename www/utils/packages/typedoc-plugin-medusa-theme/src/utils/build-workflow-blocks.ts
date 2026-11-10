@@ -12,6 +12,7 @@ import {
   getStepOutputType,
   getWorkflowInputType,
   getWorkflowOutputType,
+  getReflectionUrl,
 } from "utils"
 import type { DocBlock, DocTypeListItem, DocWorkflowStep } from "types"
 import { MarkdownTheme } from "../theme.js"
@@ -325,11 +326,9 @@ function getStep(
         ? Handlebars.helpers.comments(associatedReflection.comment, true)
         : "",
     link:
-      type === "hook" || !(associatedReflection as DeclarationReflection)?.url
+      type === "hook" || !getReflectionUrl(associatedReflection)
         ? `#${document.name}`
-        : theme.getRelativeUrl(
-            (associatedReflection as DeclarationReflection).url!
-          ),
+        : theme.getRelativeUrl(getReflectionUrl(associatedReflection)!),
     depth: parseInt(depth),
   }
 }

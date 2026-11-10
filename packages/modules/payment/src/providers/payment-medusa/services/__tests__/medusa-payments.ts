@@ -22,7 +22,6 @@ describe("MedusaPaymentsProvider", () => {
         api_key: "sk_test",
         payment_account: "payacc_test",
         environment_handle: "production",
-        sandbox_handle: "",
       }
     )
   })

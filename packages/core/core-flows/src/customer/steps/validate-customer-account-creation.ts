@@ -1,5 +1,6 @@
 import type { IAuthModuleService } from "@medusajs/framework/types"
 import {
+  isEmail,
   isString,
   MedusaError,
   Modules,
@@ -11,13 +12,17 @@ import { CreateCustomerAccountWorkflowInput } from "../workflows"
 export const validateCustomerAccountCreationStepId =
   "validate-customer-account-creation"
 
+const EMAILPASS_PROVIDER = "emailpass"
+
 /**
  * This step validates the input data for creating a customer account.
  * The step throws an error if:
  *
  * - The email is missing
- * - An auth identity is provided, and the email doesn't match the auth identity's
- *   `entity_id` or the `user_metadata.email` of any of its provider identities.
+ * - An auth identity is provided, and the email doesn't match the `user_metadata.email`
+ *   of any of its provider identities, or the `entity_id` of an `emailpass` provider
+ *   identity or of one whose `entity_id` is an email. The check is skipped when none
+ *   of the provider identities has an email this way.
  * - A customer with the email already exists and has an account
  * - A guest customer with the email already exists
  *
@@ -54,18 +59,25 @@ export const validateCustomerAccountCreation = createStep(
 
       const identityEmails = (authIdentity.provider_identities ?? [])
         .flatMap((providerIdentity) => {
+          const entityId = normalizeString(providerIdentity.entity_id)
           const userMetadataEmail = providerIdentity.user_metadata?.email
 
           return [
-            normalizeString(providerIdentity.entity_id),
+            providerIdentity.provider === EMAILPASS_PROVIDER ||
+            isEmail(entityId)
+              ? entityId
+              : undefined,
             isString(userMetadataEmail)
               ? normalizeString(userMetadataEmail)
               : undefined,
           ]
         })
-        .filter(Boolean)
+        .filter((identityEmail): identityEmail is string => !!identityEmail)
 
-      if (!identityEmails.includes(normalizeString(email))) {
+      if (
+        identityEmails.length &&
+        !identityEmails.includes(normalizeString(email))
+      ) {
         throw new MedusaError(
           MedusaError.Types.UNAUTHORIZED,
           "The customer's email must match the email of the authenticated identity"

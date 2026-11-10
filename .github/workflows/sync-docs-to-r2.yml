@@ -1,0 +1,149 @@
+name: Sync Docs to R2
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Commit SHA to retrieve changed files from (defaults to HEAD)"
+        required: false
+        type: string
+  push:
+    branches:
+      - develop
+    paths:
+      - "www/apps/api-reference/specs/**"
+      - "www/apps/resources/references/**"
+      - "www/apps/ui/specs/**"
+
+jobs:
+  sync:
+    name: Sync ${{ matrix.app }} to R2
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: api-reference
+            files: specs/**
+            pattern: "."
+            script: upload-specs-to-r2.mjs
+            bucket_secret: R2_API_REFERENCE_BUCKET_NAME
+          - app: resources
+            files: references/**
+            pattern: '/page\.json$'
+            script: upload-references-to-r2.mjs
+            bucket_secret: R2_RESOURCES_BUCKET_NAME
+          - app: ui
+            files: specs/**
+            pattern: "."
+            script: upload-specs-to-r2.mjs
+            bucket_secret: R2_UI_BUCKET_NAME
+    defaults:
+      run:
+        working-directory: www/apps/${{ matrix.app }}
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+      CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+      R2_BUCKET_NAME: ${{ secrets[matrix.bucket_secret] }}
+      APP: ${{ matrix.app }}
+      PATTERN: ${{ matrix.pattern }}
+      SCRIPT: ${{ matrix.script }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ inputs.commit_sha != '' && '0' || '2' }}
+
+      - name: Resolve dispatch base SHA
+        if: inputs.commit_sha != ''
+        id: dispatch_base
+        working-directory: .
+        env:
+          COMMIT_SHA: ${{ inputs.commit_sha }}
+        run: |
+          if ! [[ "$COMMIT_SHA" =~ ^[0-9a-f]{7,40}$ ]]; then
+            echo "::error::commit_sha must be a hex commit SHA" >&2
+            exit 1
+          fi
+          echo "base_sha=$(git rev-parse "${COMMIT_SHA}^")" >> "$GITHUB_OUTPUT"
+
+      - name: Get changed files
+        id: changed
+        uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96
+        with:
+          files: "www/apps/${{ matrix.app }}/${{ matrix.files }}"
+          separator: " "
+          # A large batch of changes overflows the argv+env limit when passed
+          # through a step env var, so the lists are read from .github/outputs/*.txt.
+          write_output_files: true
+          sha: ${{ inputs.commit_sha || '' }}
+          base_sha: ${{ steps.dispatch_base.outputs.base_sha || '' }}
+
+      - uses: actions/setup-node@v4
+        if: steps.changed.outputs.any_changed == 'true' || steps.changed.outputs.any_deleted == 'true'
+        with:
+          node-version: "22"
+          check-latest: true
+          cache: "yarn"
+
+      - name: Install dependencies
+        if: steps.changed.outputs.any_changed == 'true' || steps.changed.outputs.any_deleted == 'true'
+        run: yarn install --immutable
+        working-directory: .
+
+      - name: Upload added/modified files
+        if: steps.changed.outputs.any_changed == 'true'
+        run: |
+          tr ' ' '\n' < "$GITHUB_WORKSPACE/.github/outputs/all_changed_files.txt" \
+            | grep -E "$PATTERN" | sed "s|^www/apps/$APP/||" \
+            | xargs -r -d '\n' -n 500 node "./scripts/$SCRIPT" --upload
+
+      - name: Remove deleted files
+        if: steps.changed.outputs.any_deleted == 'true'
+        run: |
+          tr ' ' '\n' < "$GITHUB_WORKSPACE/.github/outputs/deleted_files.txt" \
+            | grep -E "$PATTERN" | sed "s|^www/apps/$APP/||" \
+            | xargs -r -d '\n' -n 500 node "./scripts/$SCRIPT" --remove
+
+      # The `secrets` context isn't available in a step's `if`, so the check is
+      # done here and exposed as an output.
+      - name: Check whether the cloud repo is configured
+        id: cloud
+        if: matrix.app == 'api-reference' && steps.changed.outputs.any_changed == 'true'
+        env:
+          MEDUSA_CLOUD_REPO: ${{ secrets.MEDUSA_CLOUD_REPO }}
+        run: |
+          if [ -n "$MEDUSA_CLOUD_REPO" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Skipping the sync to cloud: MEDUSA_CLOUD_REPO isn't set."
+          fi
+
+      - name: Generate GitHub App token
+        id: app-token
+        if: steps.cloud.outputs.configured == 'true'
+        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ secrets.MEDUSA_CLOUD_REPO }}
+          permission-contents: write
+
+      - name: Sync to cloud
+        if: steps.cloud.outputs.configured == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          CLOUD_REPO: ${{ github.repository_owner }}/${{ secrets.MEDUSA_CLOUD_REPO }}
+        run: |
+          VERSION="$(sed -nE 's/^  version: ([0-9]+\.[0-9]+\.[0-9]+)$/\1/p' specs/admin/openapi.full.yaml | head -1)"
+          if [ -z "$VERSION" ]; then
+            echo "::error::No version found in specs/admin/openapi.full.yaml"
+            exit 1
+          fi
+
+          gh api "repos/$CLOUD_REPO/dispatches" \
+            -f event_type=medusa-specs-uploaded \
+            -f "client_payload[version]=$VERSION"

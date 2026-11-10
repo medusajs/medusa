@@ -1,6 +1,6 @@
 import { EllipseMiniSolid } from "@medusajs/icons"
 import { DatePicker, Text, clx } from "@medusajs/ui"
-import isEqual from "lodash.isequal"
+import { dequal as isEqual } from "dequal"
 import { Popover as RadixPopover } from "radix-ui"
 import { useMemo, useState } from "react"
 

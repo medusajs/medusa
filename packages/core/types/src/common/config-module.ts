@@ -310,10 +310,6 @@ export type MedusaCloudOptions = {
    */
   environmentHandle?: string
   /**
-   * The sandbox handle of the Medusa Cloud sandbox.
-   */
-  sandboxHandle?: string
-  /**
    * The API key used to access Medusa Cloud services.
    */
   apiKey?: string
@@ -368,6 +364,10 @@ export type MedusaCloudOptions = {
    * @since 2.16.0
    */
   oauthAudience?: string
+  /**
+   * The client secret sent to the Medusa Cloud OAuth token endpoint. If not provided, `apiKey` is used.
+   */
+  oauthClientSecret?: string
 }
 
 /**
@@ -842,6 +842,29 @@ export type ProjectConfigOptions = {
      */
     authCors: string
     /**
+     * The allowed origins for the `/rbac` API Routes. Defaults to `adminCors`, since the Medusa Admin dashboard consumes these routes.
+     *
+     * Set it when another client, such as a custom dashboard for a non-`user` actor type, calls the `/rbac` routes from a different origin.
+     * Accepts the same format as `adminCors`.
+     *
+     * When set, it replaces `adminCors` for the `/rbac` routes rather than extending it. If the Medusa Admin dashboard
+     * also uses the `/rbac` routes, include its origin as well.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       rbacCors: process.env.RBAC_CORS
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    rbacCors?: string
+    /**
      * Additional CORS configurations applied to the `/admin`, `/store`, and `/auth` API Routes, on top of the
      * allowed origins set in `adminCors`, `storeCors`, and `authCors`.
      *
@@ -1133,6 +1156,27 @@ export type ProjectConfigOptions = {
      * ```
      */
     storeRelationsLimit?: number
+
+    /**
+     * The actor types that are allowed to authenticate against the `/rbac` API routes.
+     * Requests authenticated as any other actor type are rejected with a 401.
+     *
+     * Defaults to `["user"]`. Pass `["*"]` to allow every authenticated actor type.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       rbacActorTypes: ["user", "custom_actor"],
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    rbacActorTypes?: string[]
   }
 
   /**

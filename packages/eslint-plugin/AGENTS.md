@@ -32,18 +32,18 @@ export default defineConfig([...medusa.configs.recommended])
 ## Development
 
 - `yarn build`, `yarn watch`, `yarn test` (jest over `src`).
-- Single rule: `../../node_modules/.bin/jest src/rules/<rule-name>` from this directory (`yarn test <path>` ignores the path because the script already sets `--testPathPattern=src`).
+- Single rule: `../../node_modules/.bin/jest src/rules/<rule-name>` from this directory (`yarn test <path>` ignores the path because the script already sets `--testPathPatterns=src`).
 - Tests use `createRuleTester()` from `src/test-utils.ts`. Cross-file rules (`scheduled-job-name-unique`, `loader-must-be-exported-in-module-definition`, `use-validated-body-or-query`) need real files: use `createFixtureWorkspace(subPath, files)`, lint with the absolute path from `resolve(rel)`, and `afterAll(cleanupFixtureWorkspaces)`.
 - Adding a rule:
   1. `src/rules/<name>/` with `rule.ts`, `index.ts`, `__tests__/rule.spec.ts`
   2. register it in `src/rules/index.ts`
   3. enable it in the right preset block(s) in `src/configs/` with the right `files` scope
   4. add the docs page `www/apps/resources/app/lint/rules/<name>/page.mdx` (the sidebar autogenerates from `lint/rules` in `www/apps/resources/sidebars/tools.mjs`)
-- The monorepo dogfoods the plugin: root `.eslintrc.js` requires the built package and `eslint.medusa.cjs` / `yarn lint:medusa` (run in CI) apply only the `@medusajs/*` rules. A new `error` rule can fail CI on existing framework code.
+- The monorepo dogfoods the plugin: root `eslint.config.mjs` imports the built package and `eslint.medusa.mjs` / `yarn lint:medusa` (run in CI) apply only the `@medusajs/*` rules. A new `error` rule can fail CI on existing framework code.
 
 ## Gotchas
 
-- Root `.eslintrc.js` and `www` (`link:../packages/eslint-plugin`) load `dist/`, so run `yarn workspace @medusajs/eslint-plugin build` before linting the repo or www after changing a rule (CI does this explicitly).
+- Root `eslint.config.mjs` and `www` (`link:../packages/eslint-plugin`) load `dist/`, so run `yarn workspace @medusajs/eslint-plugin build` before linting the repo or www after changing a rule (CI does this explicitly).
 - Keep the plugin registration block free of `files`; scoping it to TS breaks `.js` files with `Could not find plugin "@medusajs"`.
 - Only `strict` may contain rules that need type information; `recommended` and `modules` must stay zero-config.
 - `subscribers/*` and `jobs/*` globs intentionally match direct children only (Medusa only loads those); nested files are utilities.

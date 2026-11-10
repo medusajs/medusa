@@ -24,7 +24,7 @@ export const DatePickerClearButton = React.forwardRef<
       ref={ref}
       type={type}
       className={clx(
-        "flex size-full items-center justify-center text-ui-fg-muted outline-none transition-fg",
+        "flex size-full items-center justify-center text-ui-fg-muted outline-hidden transition-fg",
         "hover:bg-ui-button-transparent-hover",
         "focus-visible:bg-ui-bg-interactive focus-visible:text-ui-fg-on-color",
         className

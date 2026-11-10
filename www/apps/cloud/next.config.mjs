@@ -7,6 +7,7 @@ import remarkFrontmatter from "remark-frontmatter"
 import {
   brokenLinkCheckerPlugin,
   localLinksRehypePlugin,
+  mdContentOverrideRehypePlugin,
   cloudinaryImgRehypePlugin,
   resolveAdmonitionsPlugin,
   crossProjectLinksPlugin,
@@ -105,6 +106,7 @@ const withMDX = mdx({
         },
       ],
       [withExtractedTableOfContents],
+      [mdContentOverrideRehypePlugin],
     ],
     remarkPlugins: [
       [remarkFrontmatter],

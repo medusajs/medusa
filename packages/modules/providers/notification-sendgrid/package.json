@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/notification-sendgrid",
-  "version": "2.22.1",
+  "version": "2.22.6",
   "description": "Sendgrid notification provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -28,18 +28,18 @@
   "license": "MIT",
   "scripts": {
     "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
-    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build ./tsconfig.json",
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.22.1"
+    "@medusajs/framework": "2.22.6"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.6"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.22.1"
+    "@medusajs/framework": "2.22.6"
   },
   "keywords": [
     "medusa-provider",

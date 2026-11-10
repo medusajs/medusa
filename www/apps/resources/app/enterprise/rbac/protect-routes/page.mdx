@@ -1,0 +1,363 @@
+export const metadata = {
+  title: `Protect API Routes with RBAC`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+In this guide, you'll learn how to guard an API route with role-based access control (RBAC) policies using the `authorize` middleware.
+
+## Guard a Route
+
+The `authorize` middleware from the Medusa Framework checks the request's actor against the policies you pass to it. Add it to a route's [middlewares](!docs!/learn/fundamentals/api-routes/middlewares) to guard that route.
+
+For example, to require the `vendor:create` policy on a custom route:
+
+export const singleHighlights = [
+  ["12", "authorize", "Guard the route with a policy."],
+  ["13", "resource", "The resource the policy applies to."],
+  ["14", "operation", "The operation on that resource."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={singleHighlights}
+import {
+  defineMiddlewares,
+  authorize,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/vendors",
+      methods: ["POST"],
+      middlewares: [
+        authorize({
+          resource: "vendor",
+          operation: "create",
+        }),
+      ],
+    },
+  ],
+})
+```
+
+The actor must hold the `vendor:create` policy through one of its roles, either directly or as a wildcard policy such as `vendor:*` or `*:*`. Otherwise, the request fails with a `403` error:
+
+- If the request has no authenticated actor, or the actor has no roles, the error message is `Forbidden`.
+- If the actor has roles that don't grant the policy, the error message lists the required policies.
+
+When the RBAC Module isn't installed, the middleware allows every request.
+
+To learn how to register the `vendor` resource so that its policies exist and stay type-safe, refer to the [Define Custom Policies](../define-policies/page.mdx) guide.
+
+### Authenticate Routes Outside /admin
+
+Medusa authenticates the routes under `/admin` for you. For a custom route outside `/admin`, add the `authenticate` middleware before `authorize`. Otherwise, the request has no actor and `authorize` rejects it with a `403` error.
+
+For example:
+
+export const authHighlights = [
+  ["13", "authenticate", "Authenticate the actor first."],
+  ["14", "authorize", "Then check the actor's policies."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={authHighlights}
+import {
+  authenticate,
+  authorize,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/vendors/products",
+      methods: ["POST"],
+      middlewares: [
+        authenticate("vendor_admin", ["bearer", "session"]),
+        authorize({
+          resource: "product",
+          operation: "create",
+        }),
+      ],
+    },
+  ],
+})
+```
+
+To resolve the roles of a custom actor type such as `vendor_admin`, you also need to configure it in the RBAC Module's `actors` option. Learn more in the [Module Options](../module-options/page.mdx#actors) guide.
+
+### Require Multiple Policies
+
+Pass an array to `authorize` to require every policy in it.
+
+For example, to guard a route that reads a product and its vendor:
+
+```ts title="src/api/middlewares.ts"
+authorize([
+  { resource: "vendor", operation: "read" },
+  { resource: "product", operation: "read" },
+])
+```
+
+You can also pass an array of operations for a single resource:
+
+```ts title="src/api/middlewares.ts"
+authorize({
+  resource: "vendor",
+  operation: ["read", "update"],
+})
+```
+
+---
+
+## The Request's RBAC Context
+
+The middleware reads from and writes to `req.rbac_context`, which holds four properties:
+
+<TypeList
+  types={[
+    {
+      name: "scope",
+      type: "`object`",
+      optional: true,
+      description: "The `RbacScope` object identifying the scope the request acts within. Medusa never sets it. You set it in a custom middleware as explained in the [Set the Scope Before authorize](#set-the-scope-before-authorize) section. When it isn't set, Medusa considers only unscoped role assignments while resolving the actor's roles.",
+      children: [
+        {
+          name: "type",
+          type: "`string`",
+          optional: false,
+          description: "The scope's type, such as `vendor`."
+        },
+        {
+          name: "id",
+          type: "`string`",
+          optional: false,
+          description: "The ID of the scope entity's record, such as `ven_123`."
+        }
+      ]
+    },
+    {
+      name: "policies",
+      type: "`object[]`",
+      optional: true,
+      description: "The `PolicyAction` objects guarding the request. Each `authorize` middleware the request passes through appends its own policies to this array before it checks them.",
+      children: [
+        {
+          name: "resource",
+          type: "`string`",
+          optional: false,
+          description: "The resource the policy governs, such as `product`, or the wildcard `*`."
+        },
+        {
+          name: "operation",
+          type: "`string` \\| `string[]`",
+          optional: false,
+          description: "The operation, or operations, on that resource, such as `read`, or the wildcard `*`."
+        }
+      ]
+    },
+    {
+      name: "role_ids",
+      type: "`string[]`",
+      optional: true,
+      description: "The IDs of the roles the middleware resolved for the actor. The middleware sets this after a successful check, so the middlewares after it, such as the query config middleware, reuse the roles instead of resolving them again."
+    },
+    {
+      name: "permissions",
+      type: "`string[]`",
+      optional: true,
+      description: "The `resource:operation` permissions the actor's resolved roles grant, as an array of strings. The middleware sets this after a successful check, so the route handler and the middlewares after it can read it. Wildcards appear as they are stored, such as `product:*`."
+    }
+  ]}
+/>
+
+For example, to read the authenticated user's permissions in a route handler:
+
+```ts title="src/api/admin/vendors/route.ts"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const canDelete =
+    req.rbac_context?.permissions?.includes("vendor:delete")
+
+  res.json({ can_delete: !!canDelete })
+}
+```
+
+Since `permissions` lists wildcards as they're stored, `includes("vendor:delete")` returns `false` for an actor that holds `vendor:*` or `*:*`. To check a permission while taking wildcards into account, use `hasPermission` instead.
+
+### Check Permissions with hasPermission
+
+The `hasPermission` function exported from `@medusajs/framework` checks whether roles grant one or more policies, including through wildcard policies. Pass it the role IDs that the route's `authorize` middleware resolved:
+
+export const hasPermissionHighlights = [
+  ["11", "hasPermission", "Check the policy against the actor's roles."],
+  ["12", "role_ids", "The roles that authorize resolved."],
+]
+
+```ts title="src/api/admin/vendors/route.ts" highlights={hasPermissionHighlights}
+import { hasPermission } from "@medusajs/framework"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const canDelete = await hasPermission({
+    roles: req.rbac_context?.role_ids ?? [],
+    actions: { resource: "vendor", operation: "delete" },
+    container: req.scope,
+  })
+
+  res.json({ can_delete: canDelete })
+}
+```
+
+`hasPermission` returns `true` only if the roles grant every policy you pass in `actions`. When the RBAC Module isn't installed, it always returns `true`.
+
+---
+
+## Middleware Order
+
+The `authorize` middleware sits between two other kinds of middlewares, so the order you register them in matters.
+
+### Set the Scope Before authorize
+
+`authorize` resolves the actor's roles for the scope in `req.rbac_context.scope`. A middleware that sets the scope must run before it. Refer to the [Middlewares](!docs!/learn/fundamentals/api-routes/middlewares) documentation to learn how to write and register a middleware.
+
+Medusa runs the middlewares of a route in the order you list them. So, add the middleware that sets the scope before `authorize` in the same `middlewares` array:
+
+export const orderHighlights = [
+  ["13", "req.rbac_context", "Set the scope before authorize runs."],
+  ["22", "authorize", "Resolves the actor's roles for that scope."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={orderHighlights}
+import {
+  defineMiddlewares,
+  authorize,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/vendors",
+      methods: ["POST"],
+      middlewares: [
+        (req, res, next) => {
+          req.rbac_context = {
+            ...req.rbac_context,
+            scope: {
+              type: "vendor",
+              id: req.headers["x-vendor-id"] as string,
+            },
+          }
+          return next()
+        },
+        authorize({
+          resource: "vendor",
+          operation: "create",
+        }),
+      ],
+    },
+  ],
+})
+```
+
+In this example, the middleware reads the `x-vendor-id` header and sets the scope to that vendor before `authorize` runs.
+
+Without a scope, `authorize` considers only the actor's unscoped role assignments.
+
+### Share a Scope Middleware Across Routes
+
+To set the scope for many routes at once, register the scope middleware on a less specific matcher, such as a wildcard matcher. Medusa [sorts route middlewares](!docs!/learn/fundamentals/api-routes/middlewares#middlewares-sorting) so that wildcard matchers run before static matchers. So, the scope middleware runs before the `authorize` middleware of each route:
+
+export const sharedHighlights = [
+  ["9", "matcher", "Set the scope for every vendor route."],
+  ["27", "authorize", "Each route checks its own policies."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={sharedHighlights}
+import {
+  defineMiddlewares,
+  authorize,
+} from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/vendors*",
+      middlewares: [
+        (req, res, next) => {
+          req.rbac_context = {
+            ...req.rbac_context,
+            scope: {
+              type: "vendor",
+              id: req.headers["x-vendor-id"] as string,
+            },
+          }
+          return next()
+        },
+      ],
+    },
+    {
+      matcher: "/admin/vendors",
+      methods: ["POST"],
+      middlewares: [
+        authorize({
+          resource: "vendor",
+          operation: "create",
+        }),
+      ],
+    },
+  ],
+})
+```
+
+Learn more about scopes in the [Scopes](../scopes/page.mdx) guide.
+
+---
+
+## Field-Level Filtering
+
+When a request asks for fields of a related resource that the actor can't read, Medusa removes those fields from the response instead of rejecting the request. This keeps a route usable by actors with partial access.
+
+Medusa walks each requested field path, maps every segment to the resource it belongs to, and checks the actor's `read` policy on it. A request for `id,vendor.name` from an actor without the `vendor:read` policy returns the `id` field and drops `vendor.name`.
+
+Medusa only checks resources that have at least one policy stored in the database. Fields of a resource without any policy are always returned.
+
+Field-level filtering applies automatically when the RBAC Module is installed and the route meets the following conditions:
+
+- The route uses the `authorize` middleware before the `validateAndTransformQuery` middleware, as explained in the next section.
+- The query configuration passed to `validateAndTransformQuery` sets the `entity` property.
+
+### Register Query Config Middlewares After authorize
+
+The `validateAndTransformQuery` middleware reads `req.rbac_context.policies` to filter the fields the request asks for. Since `authorize` records the policies on the request, register `validateAndTransformQuery` after it in the same `middlewares` array:
+
+```ts title="src/api/middlewares.ts"
+middlewares: [
+  authorize({
+    resource: "vendor",
+    operation: "read",
+  }),
+  validateAndTransformQuery(GetVendorsSchema, {
+    entity: "vendor",
+    defaults: ["id", "name"],
+    isList: true,
+  }),
+]
+```
+
+If you register the query config middleware first, it finds no policies on the request and applies no field filtering.

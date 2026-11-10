@@ -92,7 +92,8 @@
 			"allocation": "How is the promotion amount discounted. `each` means the discounted amount is applied on each applicable item; `across` means the discounted amount is split accross the applicable items.",
 			"promotion": "The associated promotion.\n\n@expandable",
 			"target_rules": "The associated target rules.\n\n@expandable",
-			"buy_rules": "The associated buy rules.\n\n@expandable"
+			"buy_rules": "The associated buy rules.\n\n@expandable",
+			"target_selection_strategy": "The target selection strategy of the application method"
 		},
 		"deprecated": {
 			"is_deprecated": false

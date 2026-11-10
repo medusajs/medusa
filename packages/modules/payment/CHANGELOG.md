@@ -1,5 +1,55 @@
 # @medusajs/payment
 
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17697](https://github.com/medusajs/medusa/pull/17697) [`74a2c09`](https://github.com/medusajs/medusa/commit/74a2c09031afb2f673ce63bc884a55fe35d72c1e) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(payment): use a caret range for stripe to match @medusajs/payment-stripe
+- Updated dependencies [[`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/framework@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- Updated dependencies [[`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5)]:
+  - @medusajs/framework@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17605](https://github.com/medusajs/medusa/pull/17605) [`d4494d9`](https://github.com/medusajs/medusa/commit/d4494d963a2bf3d1cba24e9475012f24f894acb9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(payment-stripe,payment): update stripe to v23.1.0.
+
+- [#17618](https://github.com/medusajs/medusa/pull/17618) [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update jest to v30.5.2 and use the `--testPathPatterns` flag in test scripts
+
+- [#17619](https://github.com/medusajs/medusa/pull/17619) [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828) Thanks [@sradevski](https://github.com/sradevski)! - chore(auth,notification,payment,types,utils): remove the unused Medusa Cloud sandbox handle
+
+- Updated dependencies [[`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`2276c84`](https://github.com/medusajs/medusa/commit/2276c84d47d0d6dc078a6eea2350b9d097a0231b), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8)]:
+  - @medusajs/framework@2.22.3
+
+## 2.22.2
+
+### Patch Changes
+
+- [#17577](https://github.com/medusajs/medusa/pull/17577) [`d5e0ddf`](https://github.com/medusajs/medusa/commit/d5e0ddf7e510c5d54fae40e30a47b6e4d43c30b7) Thanks [@sradevski](https://github.com/sradevski)! - feat(payment-adyen): add Adyen payment provider
+
+- [#17558](https://github.com/medusajs/medusa/pull/17558) [`33dbbfc`](https://github.com/medusajs/medusa/commit/33dbbfc8c7bc7272119f9ddb9554107884750f72) Thanks [@sradevski](https://github.com/sradevski)! - fix(payment): Keep Medusa Payments session amounts in the smallest unit, handle deleted account holders, and always save payment methods for the session's account holder
+
+- [#17545](https://github.com/medusajs/medusa/pull/17545) [`2b1234b`](https://github.com/medusajs/medusa/commit/2b1234bd1dc79b75a31293c13b1837e971e74d6c) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(payment): disable payment providers that are no longer registered on startup
+
+- [#17558](https://github.com/medusajs/medusa/pull/17558) [`33dbbfc`](https://github.com/medusajs/medusa/commit/33dbbfc8c7bc7272119f9ddb9554107884750f72) Thanks [@sradevski](https://github.com/sradevski)! - fix(payment): Update Medusa Payments to Stripe SDK 23 and send the payment method types to allow as `allowed_payment_method_types`
+
+- Updated dependencies [[`ca881e5`](https://github.com/medusajs/medusa/commit/ca881e5e758c49cfcbac4130d7e626dc06f439a6), [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`26e5807`](https://github.com/medusajs/medusa/commit/26e58070c1661c14aedc02ee6cfb0b2bb28d497b), [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d)]:
+  - @medusajs/framework@2.22.2
+
 ## 2.22.1
 
 ### Patch Changes

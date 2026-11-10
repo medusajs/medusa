@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin-bundler",
-  "version": "2.22.1",
+  "version": "2.22.6",
   "description": "Bundler for the Medusa admin dashboard.",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "scripts": {
@@ -25,24 +25,24 @@
   "llmsFull": "https://docs.medusajs.com/llms-full.txt",
   "mcpServer": "https://docs.medusajs.com/mcp",
   "devDependencies": {
-    "@medusajs/types": "2.22.1"
+    "@medusajs/types": "2.22.6"
   },
   "dependencies": {
-    "@medusajs/admin-shared": "2.22.1",
-    "@medusajs/admin-vite-plugin": "2.22.1",
-    "@medusajs/dashboard": "2.22.1",
+    "@medusajs/admin-shared": "2.22.6",
+    "@medusajs/admin-vite-plugin": "2.22.6",
+    "@medusajs/dashboard": "2.22.6",
     "@vitejs/plugin-react": "^5.2.0",
     "autoprefixer": "^10.6.1",
     "compression": "^1.8.2",
     "express": "^4.21.0",
     "get-port": "^7.2.0",
-    "glob": "13.0.6",
+    "glob": "14.0.2",
     "outdent": "^0.8.0",
     "postcss": "^8.5.10",
     "tailwindcss": "^3.4.3",
     "vite": "^7.3.7"
   },
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@4.18.1",
   "engines": {
     "node": ">=22.22.0"
   }

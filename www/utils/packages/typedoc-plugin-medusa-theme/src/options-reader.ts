@@ -8,5 +8,8 @@ export class MarkdownThemeOptionsReader implements OptionsReader {
     if (container.getValue("theme") === "default") {
       container.setValue("theme", "markdown")
     }
+    if (container.getValue("router") === "kind") {
+      container.setValue("router", "medusa")
+    }
   }
 }

@@ -113,4 +113,8 @@ const schema = z.object({
   note: z.string().optional(),
 })
 
+export const handle = {
+  permissions: ["gift_card:read", "gift_card:update"],
+}
+
 export default Note

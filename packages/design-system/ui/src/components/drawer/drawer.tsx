@@ -115,7 +115,7 @@ const DrawerContent = React.forwardRef<
       <RadixDialog.Content
         ref={ref}
         className={clx(
-          "bg-ui-bg-base shadow-elevation-modal border-ui-border-base fixed inset-y-2 flex w-full flex-1 flex-col rounded-lg border outline-none max-sm:inset-x-2 max-sm:w-[calc(100%-16px)] sm:right-2 sm:max-w-[560px]",
+          "bg-ui-bg-base shadow-elevation-modal border-ui-border-base fixed inset-y-2 flex w-full flex-1 flex-col rounded-lg border outline-hidden max-sm:inset-x-2 max-sm:w-[calc(100%-16px)] sm:right-2 sm:max-w-[560px]",
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-right-1/2 data-[state=open]:slide-in-from-right-1/2 duration-200",
           className
         )}
@@ -185,7 +185,7 @@ const DrawerFooter = ({
   return (
     <div
       className={clx(
-        "border-ui-border-base flex items-center justify-end space-x-2 overflow-y-auto border-t px-6 py-4",
+        "border-ui-border-base flex items-center justify-end gap-x-2 overflow-y-auto border-t px-6 py-4",
         className
       )}
       {...props}

@@ -15,7 +15,7 @@ Options (from `src/index.ts`):
 - `[project-name]`: prompted if missing. Names containing `.` are rejected (MikroORM path resolution breaks).
 - `--plugin`: clone `medusajs/medusa-starter-plugin` and only install dependencies (no DB, no start).
 - `--repo-url <url>`: starter to clone (default `https://github.com/medusajs/dtc-starter`, branch `main`, `--depth 1`).
-- `--version <version>`: pin every `@medusajs/*` dependency to this version (except `@medusajs/ui`, which is versioned separately).
+- `--version <version>`: pin every `@medusajs/*` entry in `dependencies`, `devDependencies`, and `peerDependencies` to this version (except `@medusajs/ui`, which is versioned separately). Also applies with `--plugin`.
 - `--skip-db`, `--db-url <url>`, `--no-migrations`, `--no-browser`, `--directory-path <path>`.
 - `--with-nextjs-starter`: keep and install `apps/storefront`; otherwise you're prompted, and a "no" deletes it.
 - `--use-npm` / `--use-yarn` / `--use-pnpm` (mutually exclusive), `--verbose`.

@@ -27,7 +27,7 @@ export const EmailPassLogin = ({ onMfaChallenge }: EmailPassLoginProps) => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const from = location.state?.from?.pathname || "/orders"
+  const from = location.state?.from?.pathname || "/"
 
   const form = useForm<z.infer<typeof EmailPassSchema>>({
     resolver: zodResolver(EmailPassSchema),

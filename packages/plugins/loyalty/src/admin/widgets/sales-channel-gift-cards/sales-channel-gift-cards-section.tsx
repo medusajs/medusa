@@ -1,4 +1,5 @@
 /* eslint-disable @medusajs/widget-must-have-default-export, @medusajs/widget-must-export-config */
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { PencilSquare, Trash } from "@medusajs/icons";
 import { AdminSalesChannel, HttpTypes } from "@medusajs/types";
 import { Checkbox, Container, toast, usePrompt } from "@medusajs/ui";
@@ -15,6 +16,17 @@ import { useProductTableColumns } from "./use-gift-card-products-table-columns";
 import { useGiftCardProductsTableQuery } from "./use-gift-card-products-table-query";
 
 const PAGE_SIZE = 10;
+
+const MANAGE_CHANNEL_PRODUCTS_PERMISSIONS = [
+  "sales_channel:update",
+  "product:update",
+] as const;
+
+const useCanManageChannelProducts = () => {
+  const { hasAllPermissions } = usePermissions();
+
+  return hasAllPermissions([...MANAGE_CHANNEL_PRODUCTS_PERMISSIONS]);
+};
 
 type SalesChannelGiftCardsSectionProps = {
   salesChannel: AdminSalesChannel;
@@ -39,7 +51,8 @@ export const SalesChannelGiftCardsSection = ({
     sales_channel_id: [salesChannel.id],
     is_giftcard: true,
   });
-  const columns = useColumns({ salesChannel });
+  const canManageProducts = useCanManageChannelProducts();
+  const columns = useColumns({ salesChannel, canManageProducts });
   const filters = useGiftCardProductsFilters();
   const { mutateAsync } = useSalesChannelRemoveProducts(salesChannel.id);
   const prompt = usePrompt();
@@ -82,13 +95,17 @@ export const SalesChannelGiftCardsSection = ({
         data={products ?? []}
         columns={columns}
         pageSize={PAGE_SIZE}
-        commands={[
-          {
-            action: handleRemove,
-            label: "Remove",
-            shortcut: "r",
-          },
-        ]}
+        commands={
+          canManageProducts
+            ? [
+                {
+                  action: handleRemove,
+                  label: "Remove",
+                  shortcut: "r",
+                },
+              ]
+            : []
+        }
         rowCount={count}
         pagination
         search
@@ -106,12 +123,16 @@ export const SalesChannelGiftCardsSection = ({
         ]}
         queryObject={raw}
         emptyState={emptyState}
-        actions={[
-          {
-            label: "Add",
-            to: `/gift-cards/gift-card-products/${salesChannel.id}/add-gift-card-products`,
-          },
-        ]}
+        actions={
+          canManageProducts
+            ? [
+                {
+                  label: "Add",
+                  to: `/gift-cards/gift-card-products/${salesChannel.id}/add-gift-card-products`,
+                },
+              ]
+            : []
+        }
       />
     </Container>
   );
@@ -119,41 +140,18 @@ export const SalesChannelGiftCardsSection = ({
 
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>();
 
-const useColumns = ({ salesChannel }: { salesChannel: AdminSalesChannel }) => {
+const useColumns = ({
+  salesChannel,
+  canManageProducts,
+}: {
+  salesChannel: AdminSalesChannel;
+  canManageProducts: boolean;
+}) => {
   const base = useProductTableColumns();
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.getRowModel().rows.forEach((row) => {
-                  row.toggleSelected(!!value);
-                })
-              }
-            />
-          );
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            />
-          );
-        },
-      }),
+      ...(canManageProducts ? [selectColumn] : []),
       ...base,
       columnHelper.display({
         id: "actions",
@@ -163,22 +161,56 @@ const useColumns = ({ salesChannel }: { salesChannel: AdminSalesChannel }) => {
               <ProductListCellActions
                 productId={row.original.id}
                 salesChannelId={salesChannel.id}
+                canManageProducts={canManageProducts}
               />
             </div>
           );
         },
       }),
     ],
-    [base]
+    [base, canManageProducts]
   );
 };
+
+const selectColumn = columnHelper.display({
+  id: "select",
+  header: ({ table }) => {
+    return (
+      <Checkbox
+        checked={
+          table.getIsSomePageRowsSelected()
+            ? "indeterminate"
+            : table.getIsAllPageRowsSelected()
+        }
+        onCheckedChange={(value) =>
+          table.getRowModel().rows.forEach((row) => {
+            row.toggleSelected(!!value);
+          })
+        }
+      />
+    );
+  },
+  cell: ({ row }) => {
+    return (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      />
+    );
+  },
+});
 
 const ProductListCellActions = ({
   salesChannelId,
   productId,
+  canManageProducts,
 }: {
   productId: string;
   salesChannelId: string;
+  canManageProducts: boolean;
 }) => {
   const { mutateAsync } = useSalesChannelRemoveProducts(salesChannelId);
 
@@ -206,13 +238,15 @@ const ProductListCellActions = ({
           ],
         },
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: "Remove",
-              onClick: onRemove,
-            },
-          ],
+          actions: canManageProducts
+            ? [
+                {
+                  icon: <Trash />,
+                  label: "Remove",
+                  onClick: onRemove,
+                },
+              ]
+            : [],
         },
       ]}
     />

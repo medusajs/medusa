@@ -118,6 +118,23 @@ The [ApplicationMethod data model](/references/promotion/models/ApplicationMetho
 
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `target_selection_strategy`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Which eligible items does a `buyget` promotion discount? Learn more in the [Target Selection Strategy section](#target-selection-strategy).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `most_expensive_first` (default), `cheapest_first`
+
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
 
@@ -240,7 +257,95 @@ When the cart has more eligible items than the promotion needs, the Promotion Mo
 Then, the Promotion Module selects the items as follows:
 
 1. It reserves items to satisfy the "buy X" condition, starting with the highest-priced items. It prefers items that don't match the target rules, so that matching "get Y" items remain available for the discount.
-2. It applies the discount to the highest-priced items that match the target rules and weren't reserved in the previous step, up to the `apply_to_quantity` and `max_quantity` limits.
+2. It applies the discount to the items that match the target rules and weren't reserved in the previous step, up to the `apply_to_quantity` and `max_quantity` limits. The application method's `target_selection_strategy` determines whether it discounts the highest-priced or the lowest-priced items first, as explained in the next section.
+
+### Target Selection Strategy
+
+<Note>
+
+The `target_selection_strategy` property is available since Medusa [v2.22.5](https://github.com/medusajs/medusa/releases/tag/v2.22.5).
+
+</Note>
+
+The `target_selection_strategy` property of a `buyget` promotion's application method determines which eligible "get Y" items receive the discount. It only affects which target items are discounted. The Promotion Module always reserves the "buy X" items starting with the highest-priced items.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+
+      Value
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+      Behavior
+
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `most_expensive_first`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The default. Each time the promotion applies, it discounts the most expensive eligible target item that's left.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `cheapest_first`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Each time the promotion applies, it discounts the cheapest eligible target item that's left.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+For example, consider a "Buy 3, get 1 free" promotion and a cart with eight eligible items priced from `100` to `800`. The promotion applies twice. With `cheapest_first`, the Promotion Module discounts the items priced `100` and `200`.
+
+You can set the `target_selection_strategy` property when you create or update a `buyget` promotion. For other promotion types, the Promotion Module throws an error if you set it to a value other than `most_expensive_first`.
+
+```ts
+const promotion = await promotionModuleService.createPromotions({
+  code: "BUY3GET1",
+  type: "buyget",
+  application_method: {
+    type: "percentage",
+    target_type: "items",
+    value: 100,
+    allocation: "each",
+    max_quantity: 1,
+    apply_to_quantity: 1,
+    buy_rules_min_quantity: 3,
+    target_selection_strategy: "cheapest_first",
+    target_rules: [
+      {
+        attribute: "items.product.id",
+        operator: "eq",
+        values: ["prod_123"],
+      },
+    ],
+    buy_rules: [
+      {
+        attribute: "items.product.id",
+        operator: "eq",
+        values: ["prod_123"],
+      },
+    ],
+  },
+})
+```
 
 ---
 

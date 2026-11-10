@@ -99,6 +99,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     code: "AUD",
     name_plural: "Australian dollars",
   },
+  AWG: {
+    symbol: "Afl.",
+    name: "Aruban Florin",
+    symbol_native: "Afl.",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "AWG",
+    name_plural: "Aruban florins",
+  },
   AZN: {
     symbol: "man.",
     name: "Azerbaijani Manat",

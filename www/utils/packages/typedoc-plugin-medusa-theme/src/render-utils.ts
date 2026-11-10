@@ -18,6 +18,7 @@ import indexSignatureTitleHelper from "./resources/helpers/index-signature-title
 import parameterTableHelper from "./resources/helpers/parameter-table.js"
 import objectLiteralMemberHelper from "./resources/helpers/type-declaration-members.js"
 import referenceMember from "./resources/helpers/reference-member.js"
+import reflectionRouteHelper from "./resources/helpers/reflection-route.js"
 import reflectionPathHelper from "./resources/helpers/reflection-path.js"
 import reflectionTitleHelper from "./resources/helpers/reflection-title.js"
 import relativeUrlHelper from "./resources/helpers/relative-url.js"
@@ -123,6 +124,7 @@ export function registerHelpers(theme: MarkdownTheme) {
   commentsHelper()
   declarationTitleHelper(theme)
   escapeHelper()
+  reflectionRouteHelper()
   hierarchyHelper()
   ifIsReference()
   ifNamedAnchors(theme)
@@ -160,7 +162,7 @@ export function registerHelpers(theme: MarkdownTheme) {
   showPropertiesAsComponentHelper(theme)
   commentTagHelper(theme)
   exampleHelper()
-  ifFeatureFlagHelper()
+  ifFeatureFlagHelper(theme)
   featureFlagHelper()
   decrementCurrentTitleLevelHelper(theme)
   incrementCurrentTitleLevelHelper(theme)

@@ -46,7 +46,7 @@ const SubMenuTrigger = React.forwardRef<
   <RadixDropdownMenu.SubTrigger
     ref={ref}
     className={clx(
-      "bg-ui-bg-component text-ui-fg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors",
+      "bg-ui-bg-component text-ui-fg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-hidden transition-colors",
       "focus-visible:bg-ui-bg-component-hover focus:bg-ui-bg-component-hover",
       "active:bg-ui-bg-component-hover",
       "data-[disabled]:text-ui-fg-disabled data-[disabled]:pointer-events-none",
@@ -139,7 +139,7 @@ const Item = React.forwardRef<
   <RadixDropdownMenu.Item
     ref={ref}
     className={clx(
-      "bg-ui-bg-component text-ui-fg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-none transition-colors",
+      "bg-ui-bg-component text-ui-fg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 outline-hidden transition-colors",
       "focus-visible:bg-ui-bg-component-hover focus:bg-ui-bg-component-hover",
       "active:bg-ui-bg-component-hover",
       "data-[disabled]:text-ui-fg-disabled data-[disabled]:pointer-events-none",
@@ -160,7 +160,7 @@ const CheckboxItem = React.forwardRef<
   <RadixDropdownMenu.CheckboxItem
     ref={ref}
     className={clx(
-      "bg-ui-bg-component text-ui-fg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-[31px] pr-2 outline-none transition-colors",
+      "bg-ui-bg-component text-ui-fg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-[31px] pr-2 outline-hidden transition-colors",
       "focus-visible:bg-ui-bg-component-hover focus:bg-ui-bg-component-hover",
       "active:bg-ui-bg-component-hover",
       "data-[disabled]:text-ui-fg-disabled data-[disabled]:pointer-events-none",
@@ -190,7 +190,7 @@ const RadioItem = React.forwardRef<
   <RadixDropdownMenu.RadioItem
     ref={ref}
     className={clx(
-      "bg-ui-bg-component txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-[31px] pr-2 outline-none transition-colors",
+      "bg-ui-bg-component txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-[31px] pr-2 outline-hidden transition-colors",
       "focus-visible:bg-ui-bg-component-hover focus:bg-ui-bg-component-hover",
       "active:bg-ui-bg-component-hover",
       "data-[disabled]:text-ui-fg-disabled data-[disabled]:pointer-events-none",

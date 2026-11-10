@@ -550,7 +550,7 @@ const CommandItem = forwardRef<
   <Command.Item
     ref={ref}
     className={clx(
-      "txt-compact-small relative flex cursor-pointer select-none items-center gap-x-3 rounded-md p-2 outline-none focus-visible:bg-ui-bg-base-hover aria-selected:bg-ui-bg-base-hover data-[disabled]:pointer-events-none data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 [&>svg]:text-ui-fg-subtle",
+      "txt-compact-small relative flex cursor-pointer select-none items-center gap-x-3 rounded-md p-2 outline-none focus-visible:bg-ui-bg-base-hover aria-selected:bg-ui-bg-base-hover data-[disabled=true]:pointer-events-none data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50 [&>svg]:text-ui-fg-subtle",
       className
     )}
     {...props}
