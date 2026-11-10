@@ -5,6 +5,11 @@ import type {
   MedusaResponse,
 } from "../types"
 
+/**
+ * @deprecated Use {@link applyCrossModuleFilter} instead, which filters
+ * through cross-module joins without an extra query. This will be removed
+ * in the next minor release.
+ */
 export function maybeApplyLinkFilter({
   entryPoint,
   resourceId,
