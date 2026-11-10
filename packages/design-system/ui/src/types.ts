@@ -1,3 +1,5 @@
+import type { ReactNode } from "react"
+
 // Progress types
 
 export type ProgressStatus = "not-started" | "in-progress" | "completed"
@@ -47,6 +49,11 @@ export type ToastAction = {
    * The button's variant.
    */
   variant?: ToastActionVariant
+  /**
+   * An icon shown after the button's text, such as an arrow for a link
+   * that opens in a new tab.
+   */
+  icon?: ReactNode
 }
 
 export type Granularity = "day" | "hour" | "minute" | "second"

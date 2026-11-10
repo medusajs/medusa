@@ -16,32 +16,27 @@ export type CloudAnnouncementType =
   | "warning"
   | "incident"
   | "release"
+  | "admin"
 
 export type CloudAnnouncement = {
   id: string
   title: string
   subtitle: string | null
+  /**
+   * HTML authored in the Medusa Cloud admin. Sanitize it before rendering.
+   */
+  content: string | null
   image_url: string | null
   type: CloudAnnouncementType
   link_url: string | null
+  /**
+   * The Medusa Admin path the announcement is shown on, such as `/orders`.
+   * Only set for `admin` announcements. When `null`, it can be shown on any page.
+   */
+  admin_path: string | null
   published_at: string | null
 }
 
 export type AdminCloudAnnouncementListResponse = {
   announcements: CloudAnnouncement[]
-}
-
-export type CloudHint = {
-  id: string
-  title: string
-  description: string | null
-  link_url: string | null
-  /**
-   * The Medusa Admin path the hint is shown on, such as `/orders`.
-   */
-  admin_path: string
-}
-
-export type AdminCloudHintListResponse = {
-  hints: CloudHint[]
 }

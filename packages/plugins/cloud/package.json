@@ -21,6 +21,8 @@
   "mcpServer": "https://docs.medusajs.com/mcp",
   "exports": {
     "./package.json": "./package.json",
+    "./.medusa/server/src/modules/*": "./.medusa/server/src/modules/*/index.js",
+    "./modules/*": "./.medusa/server/src/modules/*/index.js",
     "./*": "./.medusa/server/src/*.js",
     "./admin": {
       "import": "./.medusa/server/src/admin/index.mjs",
@@ -45,7 +47,8 @@
   },
   "dependencies": {
     "@medusajs/js-sdk": "2.22.6",
-    "@tanstack/react-query": "5.64.2"
+    "@tanstack/react-query": "5.64.2",
+    "dompurify": "3.4.17"
   },
   "devDependencies": {
     "@medusajs/admin-sdk": "2.22.6",

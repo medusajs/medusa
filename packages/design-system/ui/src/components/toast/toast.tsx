@@ -20,6 +20,7 @@ interface ToastComponentProps {
   description?: React.ReactNode
   action?: ToastAction
   icon?: React.ReactNode
+  media?: React.ReactNode
   dismissable?: boolean
 }
 
@@ -68,6 +69,13 @@ export const Toast = ({
    * @privateRemarks
    * The `toast` utility functions accept this as a parameter.
    */
+  media,
+  /**
+   * @ignore
+   *
+   * @privateRemarks
+   * The `toast` utility functions accept this as a parameter.
+   */
   dismissable = true,
 }: ToastComponentProps) => {
   let icon = _icon
@@ -84,7 +92,7 @@ export const Toast = ({
         icon = <XCircleSolid className="text-ui-tag-red-icon" />
         break
       case "loading":
-        icon = <Spinner className="animate-spin text-ui-tag-blue-icon" />
+        icon = <Spinner className="text-ui-tag-blue-icon animate-spin" />
         break
       case "info":
         icon = <InformationCircleSolid className="text-ui-fg-base" />
@@ -95,59 +103,74 @@ export const Toast = ({
   }
 
   return (
-    <div className="flex w-fit min-w-[360px] max-w-[440px] gap-x-3 overflow-hidden rounded-lg bg-ui-bg-component p-3 shadow-elevation-flyout">
-      <div
-        className={clx("grid flex-1 items-center gap-x-2", {
-          "grid-cols-[20px_1fr]": !!icon,
-          "grid-cols-1": !icon,
-          "items-start": !!description,
-        })}
-      >
-        {!!icon && (
-          <span className="flex size-5 items-center justify-center" aria-hidden>
-            {icon}
-          </span>
-        )}
-        <div className="flex flex-col gap-y-3">
-          <div className="flex flex-col">
-            <span className="txt-compact-small-plus text-ui-fg-base">
-              {title}
+    <div className="bg-ui-bg-component shadow-elevation-flyout flex w-fit max-w-[440px] min-w-[360px] flex-col overflow-hidden rounded-lg">
+      {!!media && (
+        <div className="border-ui-border-base max-h-[132px] overflow-hidden border-b [&>img]:h-full [&>img]:w-full [&>img]:object-cover">
+          {media}
+        </div>
+      )}
+      <div className="flex gap-x-3 p-3">
+        <div
+          className={clx("grid flex-1 items-center gap-x-2", {
+            "grid-cols-[20px_1fr]": !!icon,
+            "grid-cols-1": !icon,
+            "items-start": !!description,
+          })}
+        >
+          {!!icon && (
+            <span
+              className="flex size-5 items-center justify-center"
+              aria-hidden
+            >
+              {icon}
             </span>
-            {description && (
-              <span className="txt-small text-pretty text-ui-fg-subtle">
-                {description}
+          )}
+          <div className="flex flex-col gap-y-3">
+            <div className="flex flex-col">
+              <span className="txt-compact-small-plus text-ui-fg-base">
+                {title}
               </span>
+              {description && (
+                <span className="txt-small text-ui-fg-subtle text-pretty">
+                  {description}
+                </span>
+              )}
+            </div>
+            {!!action && (
+              <button
+                type="button"
+                className={clx(
+                  "txt-compact-small-plus text-ui-fg-base -ml-1.5 flex h-6 w-fit items-center gap-x-1 rounded-md px-1.5 transition-colors",
+                  "focus-visible:shadow-borders-focus",
+                  "hover:bg-ui-button-transparent-hover",
+                  "disabled:text-ui-fg-disabled",
+                  {
+                    "text-ui-fg-error": action.variant === "destructive",
+                  }
+                )}
+                onClick={action.onClick}
+              >
+                {action.label}
+                {!!action.icon && (
+                  <span className="text-ui-fg-muted" aria-hidden>
+                    {action.icon}
+                  </span>
+                )}
+              </button>
             )}
           </div>
-          {!!action && (
-            <button
-              type="button"
-              className={clx(
-                "txt-compact-small-plus flex w-fit items-center rounded-[4px] bg-ui-bg-base text-ui-fg-base transition-colors",
-                "focus-visible:shadow-borders-focus",
-                "hover:text-ui-fg-subtle",
-                "disabled:text-ui-fg-disabled",
-                {
-                  "text-ui-fg-error": action.variant === "destructive",
-                }
-              )}
-              onClick={action.onClick}
-            >
-              {action.label}
-            </button>
-          )}
         </div>
+        {!!dismissable && (
+          <IconButton
+            size="2xsmall"
+            variant="transparent"
+            type="button"
+            onClick={() => toast.dismiss(id)}
+          >
+            <XMark />
+          </IconButton>
+        )}
       </div>
-      {!!dismissable && (
-        <IconButton
-          size="2xsmall"
-          variant="transparent"
-          type="button"
-          onClick={() => toast.dismiss(id)}
-        >
-          <XMark />
-        </IconButton>
-      )}
     </div>
   )
 }

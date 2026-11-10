@@ -41,3 +41,21 @@ describe("toast.loading", () => {
     expect(dismissable).toBe(false)
   })
 })
+
+describe("toast position", () => {
+  afterEach(() => {
+    vi.mocked(sonnerToast.custom).mockClear()
+  })
+
+  it("should default to the top right when props are passed without a position", () => {
+    toast.info("Saved", { description: "The product was saved." })
+
+    expect(getLastToast().external?.position).toEqual("top-right")
+  })
+
+  it("should use the given position", () => {
+    toast.info("Saved", { position: "bottom-left" })
+
+    expect(getLastToast().external?.position).toEqual("bottom-left")
+  })
+})
