@@ -1,7 +1,20 @@
+import { asValue } from "@medusajs/deps/awilix"
 import { ModuleResolution } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+  Modules,
+} from "@medusajs/utils"
 import { MODULE_SCOPE } from "../../types"
 import { moduleLoader } from "../module-loader"
+
+jest.mock("@medusajs/medusa/auth-oidc", () => ({
+  services: [
+    class OidcProviderService {
+      static identifier = "oidc"
+    },
+  ],
+}))
 
 const logger = {
   warn: jest.fn(),
@@ -212,5 +225,122 @@ describe("modules loader", () => {
         "The module TestService has to define its scope (internal | external)"
       )
     }
+  })
+})
+
+describe("license gated modules", () => {
+  const moduleResolutions: Record<string, ModuleResolution> = {
+    [Modules.RBAC]: {
+      resolutionPath: require.resolve("../__mocks__/@modules/default"),
+      definition: {
+        key: Modules.RBAC,
+        defaultPackage: "rbac",
+        label: "RBAC",
+        defaultModuleDeclaration: {
+          scope: MODULE_SCOPE.INTERNAL,
+        },
+      },
+      moduleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+      },
+    },
+  }
+
+  const registerLicense = (container, features: string[]): void => {
+    container.register(
+      ContainerRegistrationKeys.LICENSE,
+      asValue({ token: "token", sub: "org_test", features })
+    )
+  }
+
+  it("refuses to load a gated module when no license is registered", async () => {
+    const container = createMedusaContainer()
+
+    await expect(
+      moduleLoader({ container, moduleResolutions, logger })
+    ).rejects.toThrow("is missing or could not be verified")
+  })
+
+  it("refuses to load a gated module the license does not cover", async () => {
+    const container = createMedusaContainer()
+    registerLicense(container, ["other-feature"])
+
+    await expect(
+      moduleLoader({ container, moduleResolutions, logger })
+    ).rejects.toThrow('does not cover the "rbac" feature')
+  })
+
+  it("loads a gated module the license covers", async () => {
+    const container = createMedusaContainer()
+    registerLicense(container, ["rbac"])
+
+    await moduleLoader({ container, moduleResolutions, logger })
+
+    expect(container.resolve(Modules.RBAC)).toBeDefined()
+  })
+
+  describe("license gated providers", () => {
+    const providerResolutions = (
+      resolve: string
+    ): Record<string, ModuleResolution> => ({
+      [Modules.AUTH]: {
+        resolutionPath: require.resolve("../__mocks__/@modules/default"),
+        definition: {
+          key: Modules.AUTH,
+          defaultPackage: "auth",
+          label: "Auth",
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+          },
+        },
+        moduleDeclaration: {
+          scope: MODULE_SCOPE.INTERNAL,
+        },
+        options: {
+          providers: [{ resolve, id: "oidc" }],
+        },
+      },
+    })
+
+    it.each(["@medusajs/auth-oidc", "@medusajs/medusa/auth-oidc"])(
+      "refuses to load a module with the %s provider when no license is registered",
+      async (resolve) => {
+        const container = createMedusaContainer()
+
+        await expect(
+          moduleLoader({
+            container,
+            moduleResolutions: providerResolutions(resolve),
+            logger,
+          })
+        ).rejects.toThrow("is missing or could not be verified")
+      }
+    )
+
+    it("refuses to load a gated provider the license does not cover", async () => {
+      const container = createMedusaContainer()
+      registerLicense(container, ["rbac"])
+
+      await expect(
+        moduleLoader({
+          container,
+          moduleResolutions: providerResolutions("@medusajs/medusa/auth-oidc"),
+          logger,
+        })
+      ).rejects.toThrow('does not cover the "auth-oidc" feature')
+    })
+
+    it("does not gate a gated provider the license covers", async () => {
+      const container = createMedusaContainer()
+      registerLicense(container, ["auth-oidc"])
+
+      await moduleLoader({
+        container,
+        moduleResolutions: providerResolutions("@medusajs/medusa/auth-oidc"),
+        logger,
+      })
+
+      expect(container.resolve(Modules.AUTH)).toBeDefined()
+    })
   })
 })

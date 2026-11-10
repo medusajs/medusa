@@ -125,8 +125,8 @@ export class BigNumber implements IBigNumber {
     const value = this.bignumber_
       ? this.bignumber_?.toNumber()
       : this.raw_
-      ? new BigNumberJS(this.raw_.value).toNumber()
-      : this.numeric_
+        ? new BigNumberJS(this.raw_.value).toNumber()
+        : this.numeric_
 
     if (Math.abs(value) <= MEDUSA_EPSILON.numeric_) {
       return 0

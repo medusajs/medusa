@@ -1,10 +1,10 @@
 import { validateAndTransformQuery } from "@medusajs/framework"
 import {
+  applyCrossModuleFilter,
   applyDefaultFilters,
   applyParamsAsFilters,
   authenticate,
   clearFiltersByKey,
-  maybeApplyLinkFilter,
   MiddlewareRoute,
 } from "@medusajs/framework/http"
 import { ProductStatus } from "@medusajs/framework/utils"
@@ -39,11 +39,9 @@ export const storeProductVariantRoutesMiddlewares: MiddlewareRoute[] = [
         QueryConfig.listProductVariantConfig
       ),
       filterByValidSalesChannels(),
-      maybeApplyLinkFilter({
-        entryPoint: "product_sales_channel",
-        resourceId: "product_id",
+      applyCrossModuleFilter({
         filterableField: "sales_channel_id",
-        filterByField: "product.id",
+        relationPath: "product.sales_channels.id",
       }),
       applyDefaultFilters({
         product: {
@@ -67,11 +65,9 @@ export const storeProductVariantRoutesMiddlewares: MiddlewareRoute[] = [
       ),
       applyParamsAsFilters({ id: "id" }),
       filterByValidSalesChannels(),
-      maybeApplyLinkFilter({
-        entryPoint: "product_sales_channel",
-        resourceId: "product_id",
+      applyCrossModuleFilter({
         filterableField: "sales_channel_id",
-        filterByField: "product.id",
+        relationPath: "product.sales_channels.id",
       }),
       applyDefaultFilters({
         product: {

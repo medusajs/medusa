@@ -34,22 +34,33 @@ Each entry is:
   tag: "Medusa Cloud",
   comingSoon: true,                 // no date, no link — the row is not clickable
 }
+
+// early access
+{
+  title: "Medusa MCP",
+  tag: "Medusa Cloud",
+  earlyAccess: true,                // no date, has a link to its docs page
+  link: "https://docs.medusajs.com/cloud/medusa-mcp",
+}
 ```
 
 The type is a union, so TypeScript enforces this: a `comingSoon: true` entry
-cannot carry a `date` or `link`, and a shipped entry must have both.
+cannot carry a `date` or `link`, an `earlyAccess: true` entry must have a `link`
+but no `date`, and a shipped entry must have both.
 
 Rules:
 
-- **Coming-soon entries always render first**, followed by shipped entries
-  **sorted by `date` descending**; the first `MAX_WHATS_NEW_ITEMS` (currently
+- **Coming-soon entries always render first**, then early-access entries,
+  followed by shipped entries **sorted by `date` descending**; the first `MAX_WHATS_NEW_ITEMS` (currently
   **4**) are shown. Add new entries anywhere in the array — order in the file
   only matters between two coming-soon entries.
 - A coming-soon row is highlighted (`bg-medusa-bg-highlight`) and shows a
   `[SOON]` label where the date goes. Instead of linking, it opens a modal with
   the newsletter form so visitors can be notified when the feature ships.
-- When a coming-soon feature ships, **convert the entry in place**: drop
-  `comingSoon` and add its `date` and `link`.
+- An early-access row is highlighted like a coming-soon row and shows an
+  `[EARLY ACCESS]` label where the date goes, but it links to its docs page.
+- When a coming-soon or early-access feature ships, **convert the entry in
+  place**: drop `comingSoon` / `earlyAccess` and add its `date` and `link`.
 - **Do not delete old entries** to make room; the slice handles it. Prune only
   when a linked page is removed.
 - `link` must point at a real, already-published docs page. Use an absolute

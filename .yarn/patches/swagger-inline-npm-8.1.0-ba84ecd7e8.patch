@@ -1,0 +1,13 @@
+diff --git a/src/extractor.js b/src/extractor.js
+index 3490e3b3923e8ed76741539eab71d839b4a12946..712b3f9c77e434743bb46dc54d90297e01fa2101 100644
+--- a/src/extractor.js
++++ b/src/extractor.js
+@@ -125,7 +125,7 @@ class Extractor {
+         } else {
+           scopeMatched = true;
+         }
+-        if (line.trim().indexOf('scope:') === 0) {
++        if (options && options.scope && line.trim().indexOf('scope:') === 0) {
+           return;
+         }
+         yamlLines.push(line);

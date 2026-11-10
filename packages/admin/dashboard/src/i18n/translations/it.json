@@ -143,6 +143,7 @@
     "reset": "Ripristina",
     "confirm": "Conferma",
     "edit": "Modifica",
+    "view": "Visualizza",
     "addItems": "Aggiungi elementi",
     "download": "Scarica",
     "clear": "Pulisci",
@@ -1082,6 +1083,24 @@
       "header": "Crea Cliente",
       "hint": "Crea un nuovo cliente e gestisci i suoi dettagli.",
       "successToast": "Cliente {{email}} creato con successo."
+    },
+    "export": {
+      "header": "Esporta Elenco Clienti",
+      "description": "Esporta l'elenco dei clienti in un file.",
+      "success": {
+        "title": "Stiamo elaborando la tua esportazione",
+        "description": "L'esportazione dei dati potrebbe richiedere alcuni minuti. Ti notificheremo quando saremo pronti."
+      },
+      "format": {
+        "label": "Formato",
+        "description": "Scegli il formato del file esportato. JSON acquisisce dati annidati tra i moduli senza perdita di informazioni, ed è consigliato per le richieste di accesso ai dati personali.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtri",
+        "description": "Applica i filtri nella panoramica della tabella per modificare questa visualizzazione"
+      }
     },
     "groups": {
       "label": "Gruppi di clienti",
@@ -2255,6 +2274,8 @@
       "method": "Metodo",
       "allocation": "Allocazione",
       "allocationTooltip": "Each applica il limite di quantità per articolo, mentre Once applica il limite di quantità sull'intero carrello",
+      "targetSelectionStrategy": "Articoli scontati",
+      "targetSelectionStrategyTooltip": "Quali articoli idonei nel carrello ricevono lo sconto",
       "addCondition": "Aggiungi condizione",
       "clearAll": "Cancella tutto",
       "taxInclusive": "Inclusivo di tasse",
@@ -2405,6 +2426,16 @@
         "once": {
           "title": "Una volta",
           "description": "Applica il valore a un numero limitato di articoli"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Prima i più costosi",
+          "description": "Applica lo sconto agli articoli idonei più costosi nel carrello"
+        },
+        "cheapest_first": {
+          "title": "Prima i meno costosi",
+          "description": "Applica lo sconto agli articoli idonei meno costosi nel carrello"
         }
       },
       "code": {
@@ -2769,7 +2800,7 @@
     "editUser": "Modifica Utente",
     "inviteUser": "Invita Utente",
     "inviteUserHint": "Invita un nuovo utente al tuo negozio.",
-    "inviteRolesTooltip": "Se non viene selezionato alcun ruolo, l'utente verrà invitato con un ruolo di superutente.",
+    "inviteRolesTooltip": "Se non viene selezionato alcun ruolo, l'utente verrà invitato senza alcun permesso. Puoi assegnare ruoli in seguito.",
     "sendInvite": "Invia invito",
     "pendingInvites": "Inviti in attesa",
     "deleteInviteWarning": "Stai per eliminare l'invito per {{email}}. Questa azione non può essere annullata.",
@@ -2844,7 +2875,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "L'utente ha già questo ruolo.",
-      "unassignableRoleTooltip": "Non hai accesso per assegnare questo ruolo — i tuoi permessi non coprono tutte le sue policy.",
       "add": {
         "successToast_one": "L'utente è stato aggiunto al ruolo con successo.",
         "successToast_other": "Gli utenti sono stati aggiunti al ruolo con successo.",
@@ -2872,6 +2902,9 @@
       "filtered": {
         "heading": "Nessun risultato",
         "description": "Nessun permesso corrisponde ai criteri di filtro correnti."
+      },
+      "manage": {
+        "successToast": "I permessi sono stati aggiornati con successo."
       }
     },
     "list": {
@@ -2895,6 +2928,7 @@
     },
     "edit": {
       "header": "Modifica policy",
+      "identityHint": "La chiave, la risorsa e l'operazione identificano la policy e non possono essere modificate. Crea invece una nuova policy.",
       "successToast": "Policy {{key}} aggiornata"
     },
     "delete": {
@@ -3356,6 +3390,9 @@
     "invalidTokenTitle": "Il tuo token di invito non è valido",
     "invalidTokenHint": "Prova a richiedere un nuovo link di invito.",
     "passwordMismatch": "Le password non corrispondono",
+    "signedInTitle": "Hai già effettuato l'accesso",
+    "signedInHint": "Hai effettuato l'accesso come {{email}}. Esci per accettare questo invito.",
+    "signOut": "Esci",
     "toast": {
       "accepted": "Invito accettato con successo"
     }
@@ -3788,6 +3825,10 @@
       "description": "Non hai il permesso di accedere a questa pagina.",
       "requiredPermission": "Permesso richiesto: {{permission}}",
       "action": "Non hai il permesso di eseguire questa azione."
+    },
+    "noPermissions": {
+      "title": "Nessun permesso",
+      "description": "Non hai ancora nessun permesso assegnato. Contatta il tuo amministratore per richiedere l'accesso alle aree di cui hai bisogno."
     },
     "requiredPermissions": {
       "title": "Permessi richiesti",

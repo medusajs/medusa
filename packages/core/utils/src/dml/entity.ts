@@ -94,9 +94,8 @@ function extractNameAndTableName<const Config extends IDmlEntityConfig>(
  */
 export class DmlEntity<
   const Schema extends DMLSchema,
-  const TConfig extends IDmlEntityConfig
-> implements IDmlEntity<Schema, TConfig>
-{
+  const TConfig extends IDmlEntityConfig,
+> implements IDmlEntity<Schema, TConfig> {
   [IsDmlEntity] = true
 
   name: InferDmlEntityNameFromConfig<TConfig>
@@ -206,6 +205,7 @@ export class DmlEntity<
   /**
    * This method configures which related data models an operation, such as deletion,
    * should be cascaded to.
+   * See [Cascades](https://docs.medusajs.com/learn/fundamentals/data-models/relationships#cascades) for more information.
    *
    * For example, if a store is deleted, its product should also be deleted.
    *
@@ -253,6 +253,7 @@ export class DmlEntity<
   /**
    * This method defines indices on the data model. An index can be on multiple columns
    * and have conditions.
+   * See [Define Database Index on Data Model](https://docs.medusajs.com/learn/fundamentals/data-models/indexes) for more information.
    *
    * @param indexes - The index's configuration.
    *

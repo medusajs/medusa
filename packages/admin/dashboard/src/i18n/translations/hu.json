@@ -143,6 +143,7 @@
     "reset": "Visszaállítás",
     "confirm": "Megerősítés",
     "edit": "Szerkesztés",
+    "view": "Megtekintés",
     "addItems": "Elemek hozzáadása",
     "download": "Letöltés",
     "clear": "Törlés",
@@ -1082,6 +1083,24 @@
       "header": "Vásárló létrehozása",
       "hint": "Hozzon létre egy új vásárlót.",
       "successToast": "Vásárló {{email}} sikeresen létrehozva."
+    },
+    "export": {
+      "header": "Vásárlólista exportálása",
+      "description": "Exportálja a vásárlólistát egy fájlba.",
+      "success": {
+        "title": "Feldolgozás folyamatban",
+        "description": "Az exportálás néhány percet igénybe vehet. Értesítjük, amikor kész."
+      },
+      "format": {
+        "label": "Formátum",
+        "description": "Válassza ki az exportált fájl formátumát. A JSON formátum veszteség nélkül rögzíti az összes modul beágyazott adatait, amelyet adatvédelmi kérelmekhez ajánlunk.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Szűrők",
+        "description": "Alkalmazzon szűrőket a táblázat áttekintőjében a nézet szűkítéséhez"
+      }
     },
     "groups": {
       "label": "Vásárlói csoportok",
@@ -2275,6 +2294,8 @@
         }
       },
       "allocationTooltip": "A Minden opció tételenként érvényesíti a mennyiségi korlátot, míg az Egyszer a teljes kosárra érvényesíti azt.",
+      "targetSelectionStrategy": "Kedvezményes tételek",
+      "targetSelectionStrategyTooltip": "Melyik jogosult tételek kapnak kedvezményt a kosárban",
       "taxInclusive": "Adót is tartalmaz",
       "usageLimit": "Felhasználási korlát",
       "usage": "Felhasználás"
@@ -2389,6 +2410,16 @@
         "once": {
           "title": "Egyszer",
           "description": "Értéket alkalmaz korlátozott számú tételre"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Legdrágább először",
+          "description": "A kosárban lévő legdrágább jogosult tételekre alkalmazza a kedvezményt"
+        },
+        "cheapest_first": {
+          "title": "Legolcsóbb először",
+          "description": "A kosárban lévő legolcsóbb jogosult tételekre alkalmazza a kedvezményt"
         }
       },
       "code": {
@@ -2767,7 +2798,7 @@
     "editUser": "Felhasználó Szerkesztése",
     "inviteUser": "Felhasználó Meghívása",
     "inviteUserHint": "Hívjon meg egy új felhasználót az áruházába.",
-    "inviteRolesTooltip": "Ha nincs kiválasztva szerepkör, a felhasználó szuperfelhasználói szerepkörrel kerül meghívásra.",
+    "inviteRolesTooltip": "Ha nincs szerepkör kiválasztva, a felhasználó jogosultságok nélkül lesz meghívva. Szerepköröket később is hozzárendelhet.",
     "sendInvite": "Meghívó küldése",
     "pendingInvites": "Függőben lévő Meghívók",
     "deleteInviteWarning": "A(z) {{email}} meghívó törlésére készül. Ez a művelet nem vonható vissza.",
@@ -2842,7 +2873,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "A felhasználó már rendelkezik ezzel a szerepkörrel.",
-      "unassignableRoleTooltip": "Nincs hozzáférése ennek a szerepkörnek a hozzárendeléséhez — a jogosultságai nem fednek le minden kapcsolódó szabályzatot.",
       "add": {
         "successToast_one": "A felhasználó sikeresen hozzáadva a szerepkörhöz.",
         "successToast_other": "A felhasználók sikeresen hozzáadva a szerepkörhöz.",
@@ -2870,6 +2900,9 @@
       "filtered": {
         "heading": "Nincs találat",
         "description": "Nincs olyan jogosultság, amely megfelel a jelenlegi szűrési feltételeknek."
+      },
+      "manage": {
+        "successToast": "A jogosultságok sikeresen frissítve."
       }
     },
     "list": {
@@ -2893,6 +2926,7 @@
     },
     "edit": {
       "header": "Szabályzat szerkesztése",
+      "identityHint": "A kulcs, az erőforrás és a művelet azonosítja az irányelvet, és nem módosítható. Helyette hozzon létre egy új irányelvet.",
       "successToast": "{{key}} szabályzat frissítve"
     },
     "delete": {
@@ -3354,6 +3388,9 @@
     "invalidTokenTitle": "Meghívó tokenje érvénytelen",
     "invalidTokenHint": "Próbáljon új meghívó linket kérni.",
     "passwordMismatch": "A jelszavak nem egyeznek",
+    "signedInTitle": "Már be van jelentkezve",
+    "signedInHint": "Be van jelentkezve {{email}} fiókkal. Jelentkezzen ki a meghívó elfogadásához.",
+    "signOut": "Kijelentkezés",
     "toast": {
       "accepted": "Meghívó sikeresen elfogadva"
     }
@@ -3786,6 +3823,10 @@
       "description": "Nincs jogosultsága az oldal megtekintéséhez.",
       "requiredPermission": "Szükséges jogosultság: {{permission}}",
       "action": "Nincs jogosultsága a művelet elvégzéséhez."
+    },
+    "noPermissions": {
+      "title": "Még nincsenek jogosultságok",
+      "description": "Még nincs hozzárendelt jogosultsága. Forduljon a rendszergazdához, hogy hozzáférést kérjen a szükséges területekhez."
     },
     "requiredPermissions": {
       "title": "Szükséges jogosultságok",

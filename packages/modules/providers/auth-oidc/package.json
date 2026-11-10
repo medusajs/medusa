@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/auth-oidc",
-  "version": "2.21.2",
+  "version": "2.22.6",
   "description": "Generic OpenID Connect (OIDC) authentication provider for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -13,29 +13,34 @@
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.22.0"
   },
   "author": "Medusa",
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
-    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/.*\\.spec\\.ts\"",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --watch"
   },
   "dependencies": {
-    "openid-client": "^5.7.1"
+    "oauth4webapi": "^3.8.8",
+    "openid-client": "^6.8.8"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.21.2"
+    "@medusajs/framework": "2.22.6"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.21.2"
+    "@medusajs/framework": "2.22.6"
   },
   "keywords": [
     "medusa-provider",

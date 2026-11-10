@@ -142,6 +142,7 @@
     "reset": "重置",
     "confirm": "确认",
     "edit": "编辑",
+    "view": "查看",
     "addItems": "添加项目",
     "download": "下载",
     "clear": "清除",
@@ -1081,6 +1082,24 @@
       "header": "创建客户",
       "hint": "创建新客户并管理其详细信息。",
       "successToast": "客户 {{email}} 创建成功。"
+    },
+    "export": {
+      "header": "导出客户列表",
+      "description": "将客户列表导出到文件。",
+      "success": {
+        "title": "我们正在处理您的导出",
+        "description": "导出数据可能需要几分钟。完成后我们会通知您。"
+      },
+      "format": {
+        "label": "格式",
+        "description": "选择导出文件的格式。JSON 可无损捕获各模块的嵌套数据，推荐用于数据主体访问请求。",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "筛选",
+        "description": "在表格概览中应用筛选以调整此视图"
+      }
     },
     "groups": {
       "label": "客户群组",
@@ -2250,6 +2269,8 @@
       "method": "方式",
       "allocation": "分配",
       "allocationTooltip": "每件（Each）按商品数量限制，一次（Once）按整个购物车限制",
+      "targetSelectionStrategy": "折扣商品",
+      "targetSelectionStrategyTooltip": "购物车中哪些符合条件的商品将获得折扣",
       "addCondition": "添加条件",
       "clearAll": "清除全部",
       "taxInclusive": "含税",
@@ -2399,6 +2420,16 @@
         "once": {
           "title": "一次",
           "description": "将折扣值应用于有限数量的商品"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "最贵优先",
+          "description": "对购物车中最贵的符合条件的商品进行折扣"
+        },
+        "cheapest_first": {
+          "title": "最便宜优先",
+          "description": "对购物车中最便宜的符合条件的商品进行折扣"
         }
       },
       "code": {
@@ -2763,7 +2794,7 @@
     "editUser": "编辑用户",
     "inviteUser": "邀请用户",
     "inviteUserHint": "邀请新用户到您的商店。",
-    "inviteRolesTooltip": "如果未选择角色，用户将以超级用户角色受邀。",
+    "inviteRolesTooltip": "如果未选择角色，用户将被邀请而不具有任何权限。您可以稍后分配角色。",
     "sendInvite": "发送邀请",
     "pendingInvites": "待处理邀请",
     "deleteInviteWarning": "您即将删除邀请 {{email}}。此操作无法撤销。",
@@ -2838,7 +2869,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "用户已拥有此角色。",
-      "unassignableRoleTooltip": "您无权分配此角色——您的权限未涵盖其所有策略。",
       "add": {
         "successToast_other": "用户已成功添加到角色。",
         "list": {
@@ -2863,6 +2893,9 @@
       "filtered": {
         "heading": "无结果",
         "description": "没有符合当前筛选条件的权限。"
+      },
+      "manage": {
+        "successToast": "权限已成功更新。"
       }
     },
     "list": {
@@ -2886,6 +2919,7 @@
     },
     "edit": {
       "header": "编辑策略",
+      "identityHint": "密钥、资源和操作用于标识策略，无法更改。请改为创建新策略。",
       "successToast": "策略 {{key}} 已更新"
     },
     "delete": {
@@ -3345,6 +3379,9 @@
     "invalidTokenTitle": "您的邀请令牌无效",
     "invalidTokenHint": "尝试请求新的邀请链接。",
     "passwordMismatch": "密码不匹配",
+    "signedInTitle": "您已登录",
+    "signedInHint": "您当前以 {{email}} 身份登录。请退出登录后再接受此邀请。",
+    "signOut": "退出登录",
     "toast": {
       "accepted": "邀请已成功接受"
     }
@@ -3777,6 +3814,10 @@
       "description": "您没有访问此页面的权限。",
       "requiredPermission": "所需权限：{{permission}}",
       "action": "您没有执行此操作的权限。"
+    },
+    "noPermissions": {
+      "title": "暂无权限",
+      "description": "您尚未分配任何权限。请联系您的管理员申请访问所需区域的权限。"
     },
     "requiredPermissions": {
       "title": "所需权限",

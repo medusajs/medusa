@@ -11,8 +11,7 @@ import {
 type MessageIds = "whenBlockMissingName"
 
 type FunctionLike =
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression
+  TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression
 
 /**
  * Returns the `.then(fn)` callback chained directly off a `when(...)` call,

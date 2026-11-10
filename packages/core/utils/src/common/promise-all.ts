@@ -1,7 +1,7 @@
 import { EOL } from "os"
 
 const getMessageError = (state: PromiseRejectedResult) =>
-  state.reason.message ?? state.reason
+  state.reason?.message ?? String(state.reason)
 
 const isRejected = (
   state: PromiseSettledResult<unknown>

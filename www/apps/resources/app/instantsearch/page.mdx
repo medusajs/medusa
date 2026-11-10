@@ -58,7 +58,7 @@ Add a product search experience to this storefront using the `@medusajs/instants
 - Everything that reads or changes the search must sit inside one `InstantSearch` provider. Where that provider lives decides the shape of the experience.
 - A field only works with a widget if the search index definition marks it as `searchable`, `filterable`, `facetable`, or `sortable`.
 - A range or stats widget needs the field listed in the search client's `numericAttributes` option, on top of being `facetable({ types: ["stats"] })` in the index definition. Without it, the adapter asks for value facets instead of stats, so the widget never receives `facets_stats` and renders no bounds.
-- Consult the Medusa documentation at https://docs.medusajs.com, or the Medusa MCP server if it's available, for anything this prompt doesn't cover.
+- Consult the Medusa documentation at https://docs.medusajs.com, or the Docs MCP server if it's available, for anything this prompt doesn't cover.
 </context>
 
 <input>

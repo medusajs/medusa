@@ -1809,7 +1809,7 @@ Learn more about list links in [this documentation](!docs!/learn/fundamentals/mo
 
 To ensure a model's records linked to another model are deleted when the linked model is deleted:
 
-```ts highlights={[["9", "deleteCascades"]]}
+```ts highlights={[["9", "deleteCascade"]]}
 import BlogModule from "../modules/blog"
 import ProductModule from "@medusajs/medusa/product"
 import { defineLink } from "@medusajs/framework/utils"
@@ -1818,12 +1818,12 @@ export default defineLink(
   ProductModule.linkable.product,
   {
     linkable: BlogModule.linkable.post,
-    deleteCascades: true,
+    deleteCascade: true,
   }
 )
 ```
 
-Learn more in [this documentation](!docs!/learn/fundamentals/module-links#define-a-list-link).
+Learn more in [this documentation](!docs!/learn/fundamentals/module-links#set-delete-cascades-on-link).
 
 ### Add Custom Columns to Module Link
 
@@ -2629,7 +2629,7 @@ await workflowEngineService.setStepSuccess({
 })
 ```
 
-3. In an API route, workflow, or other resource, change a step's status to failure using the [Worfklow Engine Module](../infrastructure-modules/workflow-engine/page.mdx):
+3. In an API route, workflow, or other resource, change a step's status to failure using the [Workflow Engine Module](../infrastructure-modules/workflow-engine/page.mdx):
 
 export const stepFailureHighlights = [
   ["5", "setStepFailure", "Change a step's status to failure"],

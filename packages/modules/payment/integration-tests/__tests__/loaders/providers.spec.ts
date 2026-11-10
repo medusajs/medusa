@@ -1,6 +1,7 @@
+import { ModulesDefinition } from "@medusajs/framework/modules-sdk"
 import { IPaymentModuleService } from "@medusajs/framework/types"
 
-import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { initModules, moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { Modules } from "@medusajs/framework/utils"
 
 jest.setTimeout(30000)
@@ -13,15 +14,16 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
       environment_handle: "test",
       webhook_secret: "test",
       endpoint: "test",
+      payment_accounts: ["default", "eu"],
     },
   },
   testSuite: ({ service }) => {
     describe("Payment Module Service", () => {
       describe("providers", () => {
-        it("should load the system and medusa payments providers by default", async () => {
+        it("should load the system provider and a medusa payments provider per payment account", async () => {
           const paymentProviders = await service.listPaymentProviders()
 
-          expect(paymentProviders).toHaveLength(2)
+          expect(paymentProviders).toHaveLength(3)
           expect(paymentProviders).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -29,6 +31,9 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               }),
               expect.objectContaining({
                 id: "pp_medusa-payments_default",
+              }),
+              expect.objectContaining({
+                id: "pp_medusa-payments_eu",
               }),
             ])
           )
@@ -94,6 +99,79 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
   testSuite: ({ service }) =>
     describe("providers", () => {
       it("should not load the medusa payments provider if the cloud options are not provided", async () => {
+        const paymentProviders = await service.listPaymentProviders()
+        expect(paymentProviders).toHaveLength(1)
+        expect(paymentProviders[0].id).toBe("pp_system_default")
+      })
+    }),
+})
+
+moduleIntegrationTestRunner<IPaymentModuleService>({
+  moduleName: Modules.PAYMENT,
+  moduleOptions: {},
+  testSuite: ({ MikroOrmWrapper, service }) =>
+    describe("providers", () => {
+      it("should disable providers that are no longer registered on bootstrap", async () => {
+        await MikroOrmWrapper.forkManager().execute(
+          `INSERT INTO payment_provider (id, is_enabled) VALUES ('pp_removed_removed', true)`
+        )
+
+        const databaseConfig = {
+          schema: "public",
+          clientUrl: MikroOrmWrapper.clientUrl!,
+        }
+
+        const { shutdown } = await initModules({
+          databaseConfig,
+          modulesConfig: {
+            [Modules.PAYMENT]: {
+              definition: ModulesDefinition[Modules.PAYMENT],
+              options: {
+                database: databaseConfig,
+              },
+            },
+          },
+        })
+        await shutdown()
+
+        const providers = await service.listPaymentProviders({})
+        expect(providers).toHaveLength(2)
+        expect(providers).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "pp_system_default",
+              is_enabled: true,
+            }),
+            expect.objectContaining({
+              id: "pp_removed_removed",
+              is_enabled: false,
+            }),
+          ])
+        )
+
+        const enabledProviders = await service.listPaymentProviders({
+          is_enabled: true,
+        })
+        expect(enabledProviders.map((p) => p.id)).toEqual([
+          "pp_system_default",
+        ])
+      })
+    }),
+})
+
+moduleIntegrationTestRunner<IPaymentModuleService>({
+  moduleName: Modules.PAYMENT,
+  moduleOptions: {
+    cloud: {
+      api_key: "test",
+      environment_handle: "test",
+      webhook_secret: "test",
+      endpoint: "test",
+    },
+  },
+  testSuite: ({ service }) =>
+    describe("providers", () => {
+      it("should not load the medusa payments provider if there are no payment accounts", async () => {
         const paymentProviders = await service.listPaymentProviders()
         expect(paymentProviders).toHaveLength(1)
         expect(paymentProviders[0].id).toBe("pp_system_default")

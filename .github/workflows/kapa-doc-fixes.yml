@@ -34,7 +34,9 @@ on:
     secrets:
       CLAUDE_CODE_API_TOKEN:
         required: true
-      REFERENCE_PAT:
+      MEDUSA_APP_ID:
+        required: true
+      MEDUSA_APP_PRIVATE_KEY:
         required: true
 
 # Callers must upload a `kapa-items` artifact with:
@@ -71,6 +73,9 @@ jobs:
 
       - name: Run Claude Code to fix the docs
         uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
+        env:
+          # The action runs its own setup-node, defaulting to 18.x
+          NODE_VERSION: 22
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           claude_args: >-
@@ -104,12 +109,18 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.sha }}
-          # Use a PAT so the created PR triggers other workflows
-          token: ${{ secrets.REFERENCE_PAT }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Configure git
         env:
@@ -185,7 +196,7 @@ jobs:
       - name: Create Pull Request
         if: steps.apply.outputs.fixed != '0'
         env:
-          GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           REPO: ${{ github.repository }}
           BRANCH: ${{ inputs.branch }}
           PR_TITLE: ${{ inputs.pr_title }}

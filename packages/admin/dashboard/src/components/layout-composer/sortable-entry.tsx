@@ -36,7 +36,7 @@ export function EntryContent({
       <div
         aria-hidden
         className={clx(
-          "text-ui-fg-muted hidden min-h-16 items-center justify-center px-2 text-center text-xs peer-[:empty]:flex",
+          "hidden min-h-16 items-center justify-center px-2 text-center text-xs text-ui-fg-muted peer-[:empty]:flex",
           placeholderClassName
         )}
       >
@@ -95,7 +95,7 @@ export function SortableEntry({
         // when a layout stretches it into equal grid/flex tracks. The author's
         // container can't set this via `[&>*]` because the `display: contents`
         // SortableContext wrapper hides its children from the `>` combinator.
-        "ring-ui-border-base relative min-w-0 rounded-lg ring-1 transition-opacity",
+        "relative min-w-0 rounded-lg ring-1 ring-ui-border-base transition-opacity",
         // Hidden entries are clearly de-emphasized during edit mode so the
         // user can tell at a glance which ones won't render at idle.
         hidden && "opacity-30 grayscale",
@@ -124,14 +124,14 @@ export function SortableEntry({
       {/* Overlay rendered after children so it stacks above them by DOM order */}
       <div
         className={clx(
-          "bg-ui-bg-base shadow-elevation-card-rest absolute flex items-center rounded-md",
+          "absolute flex items-center rounded-md bg-ui-bg-base shadow-elevation-card-rest",
           xsmall && "right-0 top-0 flex-col gap-y-0.5 p-0 opacity-50",
           small && "right-1.5 top-[min(50%,2.5px)] gap-x-0.5 p-0.5",
           showLabel && "right-2 top-2 gap-x-1 p-1"
         )}
       >
         {showLabel && (
-          <span className="text-ui-fg-muted px-1 font-mono text-xs">
+          <span className="px-1 font-mono text-xs text-ui-fg-muted">
             {widgetId} ({order})
           </span>
         )}
@@ -147,7 +147,7 @@ export function SortableEntry({
         <button
           type="button"
           className={clx(
-            "text-ui-fg-muted cursor-grab touch-none rounded focus:outline-none",
+            "cursor-grab touch-none rounded text-ui-fg-muted focus:outline-none",
             xsmall && "p-0",
             small && "p-0.5",
             showLabel && "p-1"

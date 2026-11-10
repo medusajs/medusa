@@ -43,6 +43,7 @@ export type PaginatedResponse<T> = {
    * 
    * @featureFlag index_engine
    * @since 2.8.0
+   * @deprecated Use `count` instead. This property will be removed in the next minor release.
    */
   estimate_count?: number
 } & T

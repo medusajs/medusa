@@ -18,7 +18,7 @@ Refer to this [Medusa Admin User Guide](!user-guide!/settings/regions) to learn 
 
 ## What is a Payment Module Provider?
 
-The Payment Module Provider handles payment processing in the Medusa application. It integrates third-party payment services, such as [Stripe](./stripe/page.mdx).
+The Payment Module Provider handles payment processing in the Medusa application. It integrates third-party payment services, such as [Stripe](./stripe/page.mdx) and [Adyen](./adyen/page.mdx).
 
 To authorize a payment amount with a payment provider, a payment session is created and associated with that payment provider. The payment provider is then used to handle the authorization.
 
@@ -33,6 +33,10 @@ After the payment session is authorized, the payment provider is associated with
     {
       href: "/commerce-modules/payment/payment-provider/stripe",
       title: "Stripe"
+    },
+    {
+      href: "/commerce-modules/payment/payment-provider/adyen",
+      title: "Adyen"
     }
   ]}
 />

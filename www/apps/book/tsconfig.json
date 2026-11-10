@@ -19,6 +19,7 @@
     "**/*.ts",
     "**/*.js",
     ".next/types/**/*.ts",
-    "**/*.mjs"
+    "**/*.mjs",
+    "app/.well-known/**/*.ts"
   ]
 }

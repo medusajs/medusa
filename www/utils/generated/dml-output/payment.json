@@ -72,7 +72,9 @@
 			"refund_reason": "The associated refund reason.\n\n@expandable",
 			"note": "A note with more explanation about the refund",
 			"created_by": "The ID of the user that created the refund.",
-			"metadata": "Holds custom data in key-value pairs."
+			"metadata": "Holds custom data in key-value pairs.",
+			"status": "The status of the refund",
+			"idempotency_key": "The idempotency key of the refund"
 		},
 		"deprecated": {
 			"is_deprecated": false

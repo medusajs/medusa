@@ -9,16 +9,14 @@ export interface AdminPriceListResponse {
   price_list: AdminPriceList
 }
 
-export interface AdminPriceListListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of price lists.
-     */
-    price_lists: AdminPriceList[]
-  }> {}
+export interface AdminPriceListListResponse extends PaginatedResponse<{
+  /**
+   * The list of price lists.
+   */
+  price_lists: AdminPriceList[]
+}> {}
 
-export interface AdminPriceListDeleteResponse
-  extends DeleteResponse<"price_list"> {}
+export interface AdminPriceListDeleteResponse extends DeleteResponse<"price_list"> {}
 
 export interface AdminPriceListBatchResponse {
   /**
@@ -39,7 +37,6 @@ export interface AdminPriceListBatchResponse {
   }
 }
 
-export interface AdminPriceListPriceListResponse
-  extends PaginatedResponse<{
-    prices: AdminPrice[]
-  }> {}
+export interface AdminPriceListPriceListResponse extends PaginatedResponse<{
+  prices: AdminPrice[]
+}> {}

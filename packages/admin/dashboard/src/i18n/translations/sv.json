@@ -143,6 +143,7 @@
     "reset": "Återställ",
     "confirm": "Bekräfta",
     "edit": "Redigera",
+    "view": "Visa",
     "addItems": "Lägg till artiklar",
     "download": "Ladda ner",
     "clear": "Rensa",
@@ -1067,6 +1068,24 @@
       "header": "Skapa kund",
       "hint": "Skapa en ny kund och hantera kundens uppgifter.",
       "successToast": "Kund {{email}} har skapats."
+    },
+    "export": {
+      "header": "Exportera kundlista",
+      "description": "Exportera kundlistan till en fil.",
+      "success": {
+        "title": "Vi bearbetar din export",
+        "description": "Exporten kan ta några minuter. Du får en avisering när den är klar."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Välj format för den exporterade filen. JSON fångar nästlad data från alla moduler utan dataförlust, vilket rekommenderas för begäranden om dataportabilitet.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filter",
+        "description": "Tillämpa filter i tabellöversikten för att justera den här vyn"
+      }
     },
     "groups": {
       "label": "Kundgrupper",
@@ -2237,6 +2256,8 @@
       "method": "Metod",
       "allocation": "Fördelning",
       "allocationTooltip": "”Varje” tillämpar antalsgränsen per artikel, medan ”En gång” tillämpar antalsgränsen på hela varukorgen.",
+      "targetSelectionStrategy": "Rabatterade artiklar",
+      "targetSelectionStrategyTooltip": "Vilka berättigade artiklar i varukorgen som får rabatten",
       "addCondition": "Lägg till villkor",
       "clearAll": "Rensa alla",
       "taxInclusive": "Inklusive moms",
@@ -2384,6 +2405,16 @@
         "once": {
           "title": "En gång",
           "description": "Tillämpar värdet på ett begränsat antal artiklar."
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Dyraste först",
+          "description": "Rabatterar de dyraste berättigade artiklarna i varukorgen"
+        },
+        "cheapest_first": {
+          "title": "Billigaste först",
+          "description": "Rabatterar de billigaste berättigade artiklarna i varukorgen"
         }
       },
       "code": {
@@ -2748,7 +2779,7 @@
     "editUser": "Redigera användare",
     "inviteUser": "Bjud in användare",
     "inviteUserHint": "Bjud in en ny användare till butiken.",
-    "inviteRolesTooltip": "Om ingen roll väljs bjuds användaren in med en superanvändarroll.",
+    "inviteRolesTooltip": "Om ingen roll väljs kommer användaren att bjudas in utan några behörigheter. Du kan tilldela roller senare.",
     "sendInvite": "Skicka inbjudan",
     "pendingInvites": "Väntande inbjudningar",
     "deleteInviteWarning": "Du håller på att ta bort inbjudan för {{email}}. Den här åtgärden kan inte ångras.",
@@ -2823,7 +2854,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Användaren har redan den här rollen.",
-      "unassignableRoleTooltip": "Du har inte behörighet att tilldela den här rollen – dina behörigheter omfattar inte alla dess policyer.",
       "add": {
         "successToast_one": "Användaren har lagts till i rollen.",
         "successToast_other": "Användarna har lagts till i rollen.",
@@ -2851,6 +2881,9 @@
       "filtered": {
         "heading": "Inga resultat",
         "description": "Inga behörigheter matchar de aktuella filtren."
+      },
+      "manage": {
+        "successToast": "Behörigheterna uppdaterades."
       }
     },
     "list": {
@@ -2874,6 +2907,7 @@
     },
     "edit": {
       "header": "Redigera policy",
+      "identityHint": "Nyckeln, resursen och åtgärden identifierar policyn och kan inte ändras. Skapa en ny policy istället.",
       "successToast": "Policyn {{key}} har uppdaterats"
     },
     "delete": {
@@ -3334,6 +3368,9 @@
     "invalidTokenTitle": "Din inbjudningskod är ogiltig",
     "invalidTokenHint": "Begär en ny inbjudningslänk.",
     "passwordMismatch": "Lösenorden matchar inte",
+    "signedInTitle": "Du är redan inloggad",
+    "signedInHint": "Du är inloggad som {{email}}. Logga ut för att acceptera den här inbjudan.",
+    "signOut": "Logga ut",
     "toast": {
       "accepted": "Inbjudan har godkänts"
     }
@@ -3766,6 +3803,10 @@
       "description": "Du har inte behörighet att komma åt den här sidan.",
       "requiredPermission": "Obligatorisk behörighet: {{permission}}",
       "action": "Du har inte behörighet att utföra den här åtgärden."
+    },
+    "noPermissions": {
+      "title": "Inga behörigheter ännu",
+      "description": "Du har inga behörigheter tilldelade ännu. Kontakta din administratör för att begära åtkomst till de områden du behöver."
     },
     "requiredPermissions": {
       "title": "Obligatoriska behörigheter",

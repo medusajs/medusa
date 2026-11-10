@@ -51,6 +51,7 @@ const pathScopedRules = [
       "**/*.{md,mdx}/**/src/types/**",
       "**/*.{md,mdx}/**/src/modules/**/components/**",
       "**/*.{md,mdx}/**/src/modules/**/templates/**",
+      "**/*.{md,mdx}/**/src/components/**",
     ],
     rules: ["import-from-framework-not-internal"],
   },

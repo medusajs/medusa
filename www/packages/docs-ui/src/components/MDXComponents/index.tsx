@@ -1,6 +1,7 @@
 import React from "react"
 import type { MDXComponents as MDXComponentsType } from "mdx/types"
 import { CodeMdx } from "@/components/CodeMdx"
+import { PreMdx } from "@/components/PreMdx"
 import { Details, DetailsProps } from "@/components/Details"
 import { DetailsSummary } from "@/components/Details/Summary"
 import { Kbd } from "@/components/Kbd"
@@ -18,6 +19,7 @@ import { Text } from "@medusajs/ui"
 
 export const MDXComponents: MDXComponentsType = {
   code: CodeMdx,
+  pre: PreMdx,
   kbd: Kbd,
   Kbd,
   // Referenced through a wrapper (read at render time, not module-init time) to

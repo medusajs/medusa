@@ -51,8 +51,7 @@ interface PermissionGuardWithPermissions extends BasePermissionGuardProps {
   operation?: never
 }
 
-interface PermissionGuardWithResourceOperation
-  extends BasePermissionGuardProps {
+interface PermissionGuardWithResourceOperation extends BasePermissionGuardProps {
   /**
    * Resource to check permission for.
    */

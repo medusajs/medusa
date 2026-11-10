@@ -14,9 +14,8 @@ type EntityValues = { id: string }[]
 /**
  * Either infer the properties from a DML object or from a Mikro orm class prototype.
  */
-export type InferRepositoryReturnType<T> = T extends IDmlEntity<any, any>
-  ? InferTypeOf<T>
-  : EntityClass<T>["prototype"]
+export type InferRepositoryReturnType<T> =
+  T extends IDmlEntity<any, any> ? InferTypeOf<T> : EntityClass<T>["prototype"]
 
 export type PerformedActions = {
   created: Record<EntityClassName, EntityValues>
@@ -85,10 +84,7 @@ export interface RepositoryService<T = any> extends BaseRepositoryService {
    */
   softDelete(
     idsOrFilter:
-      | string
-      | string[]
-      | InternalFilterQuery
-      | InternalFilterQuery[],
+      string | string[] | InternalFilterQuery | InternalFilterQuery[],
     context?: Context
   ): Promise<[InferRepositoryReturnType<T>[], Record<string, unknown[]>]>
 

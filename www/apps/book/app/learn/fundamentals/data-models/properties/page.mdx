@@ -16,6 +16,21 @@ By default, Medusa creates the following properties for every data model:
 - `updated_at`: A [dateTime](#dateTime) property that stores when a record of the data model was updated.
 - `deleted_at`: A [dateTime](#dateTime) property that stores when a record of the data model was deleted. When you soft-delete a record, Medusa sets the `deleted_at` property to the current date.
 
+### Precision of Default Timestamp Properties
+
+The `created_at` and `updated_at` properties are stored in `timestamptz` columns, and their precision depends on how you write the record:
+
+- When you create a record through a module's service or the ORM, Medusa sets the value from a JavaScript `Date`, which has millisecond precision.
+- When you insert a record with raw SQL that omits the column, such as in seed scripts, backfills, or imports, PostgreSQL applies the column's `now()` default, which has microsecond precision.
+
+When you retrieve a record, the database driver returns these properties as JavaScript `Date` objects, which drop any sub-millisecond digits. So, a retrieved value may be earlier than the value stored in the database.
+
+<Note title="Warning" type="warning">
+
+Don't use a retrieved `created_at` or `updated_at` value directly in a cursor for keyset pagination or in a `>` comparison against the database column. If the stored value has microsecond precision, the comparison can match the same record again, causing duplicate results or infinite pagination loops. Instead, select the column as text in raw SQL, such as `created_at::text`, or truncate the column to milliseconds with `date_trunc('milliseconds', created_at)` in the comparison.
+
+</Note>
+
 ---
 
 ## Property Types
@@ -195,7 +210,7 @@ The `enum` method defines a property whose value can only be one of the specifie
 
 For example:
 
-export const enumHighlights = [["4", "enum", "Define a `enum` property."]]
+export const enumHighlights = [["4", "enum", "Define an `enum` property."]]
 
 ```ts highlights={enumHighlights}
 import { model } from "@medusajs/framework/utils"
@@ -501,6 +516,56 @@ const posts = await blogModuleService.listPosts({
 ```
 
 This retrieves records that include `New Products` in their `title` property.
+
+---
+
+## Computed Property
+
+Use the `computed` method on a property's definition to indicate that it's a computed property.
+
+Medusa doesn't store computed properties in the database. So, it doesn't create a column for them in migrations, and it doesn't set their value when you retrieve records.
+
+For example:
+
+export const computedHighlights = [
+  ["5", "computed", "Define the `calculated_price` property as computed."]
+]
+
+```ts highlights={computedHighlights}
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  calculated_price: model.bigNumber().computed(),
+  // ...
+})
+
+export default Post
+```
+
+In this example, the `calculated_price` property is computed, so the `post` table has no column for it.
+
+You compute and set the property's value in your own code. For example, in a custom method of your module's service, set the property on the records after retrieving them:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+import Post from "./models/post"
+
+class BlogModuleService extends MedusaService({
+  Post,
+}) {
+  async listPostsWithPrices() {
+    const posts = await this.listPosts()
+
+    return posts.map((post) => ({
+      ...post,
+      calculated_price: 100, // compute the value here
+    }))
+  }
+}
+
+export default BlogModuleService
+```
 
 ---
 

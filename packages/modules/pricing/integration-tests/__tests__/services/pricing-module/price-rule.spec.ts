@@ -1,4 +1,7 @@
-import { IPricingModuleService } from "@medusajs/framework/types"
+import {
+  CreatePriceRuleDTO,
+  IPricingModuleService,
+} from "@medusajs/framework/types"
 import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { Price } from "../../../../src/models"
@@ -45,6 +48,69 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           expect(priceRuleResult).toEqual([
             expect.objectContaining({
               id: "price-rule-1",
+            }),
+          ])
+        })
+
+        it("should list priceRules by attribute", async () => {
+          const priceRuleResult = await service.listPriceRules({
+            attribute: "region_id",
+          })
+
+          expect(priceRuleResult).toEqual([
+            expect.objectContaining({
+              id: "price-rule-2",
+              attribute: "region_id",
+            }),
+          ])
+        })
+
+        it("should list priceRules by attribute and value", async () => {
+          const priceRuleResult = await service.listPriceRules({
+            attribute: ["currency_code", "region_id"],
+            value: { $eq: "usd" },
+          })
+
+          expect(priceRuleResult).toEqual([
+            expect.objectContaining({
+              id: "price-rule-1",
+              attribute: "currency_code",
+              value: "usd",
+            }),
+          ])
+        })
+
+        it("should list priceRules by operator", async () => {
+          await createPriceRules(testManager, [
+            {
+              id: "price-rule-3",
+              attribute: "item_total",
+              value: "100",
+              operator: "gte",
+              price_id: "price-set-money-amount-EUR",
+            },
+          ] as unknown as CreatePriceRuleDTO[])
+
+          const gteRules = await service.listPriceRules({
+            operator: "gte",
+          })
+          const eqRules = await service.listPriceRules({
+            operator: ["eq"],
+          })
+
+          expect(gteRules).toEqual([
+            expect.objectContaining({
+              id: "price-rule-3",
+              attribute: "item_total",
+              operator: "gte",
+            }),
+          ])
+          expect(eqRules).toEqual([
+            expect.objectContaining({
+              id: "price-rule-1",
+            }),
+            expect.objectContaining({
+              id: "price-rule-2",
             }),
           ])
         })

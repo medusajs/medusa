@@ -39,7 +39,7 @@ export const BadgeListSummary = ({
   return (
     <div
       className={clx(
-        "text-ui-fg-subtle txt-compact-small gap-x-2 overflow-hidden",
+        "txt-compact-small gap-x-2 overflow-hidden text-ui-fg-subtle",
         {
           "inline-flex": inline,
           flex: !inline,

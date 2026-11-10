@@ -40,6 +40,10 @@ export const howTo = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/filter-products"
   },
   {
+    "title": "Manage Products with Admin API",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/manage-with-admin-api"
+  },
+  {
     "title": "Get Variant Prices",
     "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/price"
   },
@@ -58,6 +62,14 @@ export const howTo = [
   {
     "title": "Invite User Email",
     "path": "https://docs.medusajs.com/resources/commerce-modules/user/invite-user-subscriber"
+  },
+  {
+    "title": "Check Permissions in Admin Customizations",
+    "path": "https://docs.medusajs.com/resources/enterprise/rbac/admin-customizations"
+  },
+  {
+    "title": "Define Custom Policies",
+    "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies"
   },
   {
     "title": "Create Cache Module",

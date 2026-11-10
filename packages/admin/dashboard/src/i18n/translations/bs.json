@@ -148,6 +148,7 @@
     "reset": "Resetuj",
     "confirm": "Potvrdi",
     "edit": "Uredi",
+    "view": "Pogledaj",
     "addItems": "Dodaj stavke",
     "download": "Preuzmi",
     "clear": "Očisti",
@@ -1099,6 +1100,24 @@
       "header": "Kreiraj kupca",
       "hint": "Kreiraj novog kupca i upravljaj njegovim podacima.",
       "successToast": "Kupac {{email}} je uspješno kreiran."
+    },
+    "export": {
+      "header": "Izvoz liste kupaca",
+      "description": "Izvezite listu kupaca u fajl.",
+      "success": {
+        "title": "Obrađujemo vaš izvoz",
+        "description": "Izvoz podataka može potrajati nekoliko minuta. Obavijestićemo vas kada završimo."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Odaberite format izvezenog fajla. JSON bilježi ugniježđene podatke iz svih modula bez gubitaka, što se preporučuje za zahtjeve za pristup podacima.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filteri",
+        "description": "Primijenite filtere u preglednoj tabli da prilagodite ovaj prikaz"
+      }
     },
     "groups": {
       "label": "Grupe kupaca",
@@ -2284,6 +2303,8 @@
       "method": "Metod",
       "allocation": "Alokacija",
       "allocationTooltip": "Each provodi ograničenje količine po artiklu, dok Once provodi ograničenje količine za cijelu korpu",
+      "targetSelectionStrategy": "Stavke s popustom",
+      "targetSelectionStrategyTooltip": "Koje prihvatljive stavke u korpi primaju popust",
       "addCondition": "Dodaj uvjet",
       "clearAll": "Očisti sve",
       "taxInclusive": "Uključuje porez",
@@ -2433,6 +2454,16 @@
         "once": {
           "title": "Jednom",
           "description": "Primjenjuje vrijednost na ograničen broj artikala"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Najskuplji prvi",
+          "description": "Daje popust na najskuplje prihvatljive stavke u korpi"
+        },
+        "cheapest_first": {
+          "title": "Najjeftiniji prvi",
+          "description": "Daje popust na najjeftinije prihvatljive stavke u korpi"
         }
       },
       "code": {
@@ -2799,7 +2830,7 @@
     "editUser": "Uredi korisnika",
     "inviteUser": "Pozovi korisnika",
     "inviteUserHint": "Pozovite novog korisnika u vašu trgovinu.",
-    "inviteRolesTooltip": "Ako nije odabrana uloga, korisnik će biti pozvan s ulogom superkorisnika.",
+    "inviteRolesTooltip": "Ako nije odabrana nijedna uloga, korisnik će biti pozvan bez ikakvih dozvola. Uloge možete dodijeliti kasnije.",
     "sendInvite": "Pošaljite pozivnicu",
     "pendingInvites": "Pozivnice na čekanju",
     "deleteInviteWarning": "Spremate se izbrisati pozivnicu za {{email}}. Ova akcija se ne može poništiti.",
@@ -2874,7 +2905,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Korisnik već ima ovu ulogu.",
-      "unassignableRoleTooltip": "Nemate pristup za dodjelu ove uloge — vaše dozvole ne pokrivaju sve njene politike.",
       "add": {
         "successToast_one": "Korisnik je uspješno dodan u ulogu.",
         "successToast_few": "Korisnici su uspješno dodani u ulogu.",
@@ -2905,6 +2935,9 @@
       "filtered": {
         "heading": "Nema rezultata",
         "description": "Nijedna dozvola ne odgovara trenutnim kriterijima filtera."
+      },
+      "manage": {
+        "successToast": "Dozvole su uspješno ažurirane."
       }
     },
     "list": {
@@ -2928,6 +2961,7 @@
     },
     "edit": {
       "header": "Uredi politiku",
+      "identityHint": "Ključ, resurs i operacija identificiraju politiku i ne mogu se promijeniti. Umjesto toga kreirajte novu politiku.",
       "successToast": "Politika {{key}} ažurirana"
     },
     "delete": {
@@ -3396,6 +3430,9 @@
     "invalidTokenTitle": "Vaš pozivni token je nevažeći",
     "invalidTokenHint": "Pokušajte zatražiti novi pozivni link.",
     "passwordMismatch": "Lozinke se ne podudaraju",
+    "signedInTitle": "Već ste prijavljeni",
+    "signedInHint": "Prijavljeni ste kao {{email}}. Odjavite se da biste prihvatili ovu pozivnicu.",
+    "signOut": "Odjavite se",
     "toast": {
       "accepted": "Pozivnica uspješno prihvaćena"
     }
@@ -3836,6 +3873,10 @@
       "description": "Nemate dozvolu za pristup ovoj stranici.",
       "requiredPermission": "Potrebna dozvola: {{permission}}",
       "action": "Nemate dozvolu za izvođenje ove radnje."
+    },
+    "noPermissions": {
+      "title": "Još nema dozvola",
+      "description": "Nemate dodijeljenih dozvola. Obratite se svom administratoru da biste zatražili pristup područjima koja su vam potrebna."
     },
     "requiredPermissions": {
       "title": "Potrebne dozvole",

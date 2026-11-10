@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/utils",
-  "version": "2.21.2",
+  "version": "2.22.6",
   "description": "Medusa utilities functions shared by Medusa core and Modules",
   "main": "dist/index.js",
   "exports": {
@@ -15,38 +15,42 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.22.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "dist",
+    "AGENTS.md",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "author": "Medusa",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@medusajs/types": "2.21.2",
+    "@medusajs/types": "2.22.6",
     "express": "^4.21.0"
   },
   "dependencies": {
-    "@graphql-codegen/core": "^4.0.2",
-    "@graphql-codegen/typescript": "^4.0.9",
-    "@graphql-tools/merge": "^9.0.7",
-    "@graphql-tools/schema": "^10.0.6",
-    "@medusajs/deps": "2.21.2",
+    "@graphql-codegen/core": "^6.2.2",
+    "@graphql-codegen/typescript": "^6.1.2",
+    "@graphql-tools/merge": "^10.0.6",
+    "@graphql-tools/schema": "^11.0.6",
+    "@medusajs/deps": "2.22.6",
     "@types/pluralize": "^0.0.33",
-    "bignumber.js": "^9.1.2",
-    "dotenv": "^16.4.5",
-    "dotenv-expand": "^11.0.6",
-    "graphql": "^16.9.0",
+    "bignumber.js": "^11.1.5",
+    "dotenv": "^18.0.9",
+    "dotenv-expand": "^13.0.0",
+    "graphql": "^17.0.2",
     "jsonwebtoken": "^9.0.2",
-    "pg-connection-string": "^2.7.0",
+    "pg-connection-string": "^2.14.1",
     "pluralize": "^8.0.0",
-    "ulid": "^2.3.0"
+    "ulid": "^3.0.2"
   },
   "peerDependencies": {
     "express": "^4.21.0"
@@ -54,7 +58,7 @@
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --build --watch",
-    "test": "../../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathIgnorePatterns='/integration-tests/' --testPathPattern=src",
-    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --silent --bail --forceExit --testPathPattern=\"src/.*/integration-tests/__tests__/.*\\.spec\\.ts\""
+    "test": "../../../node_modules/.bin/jest --silent=false --bail --forceExit --testPathIgnorePatterns='/integration-tests/' --testPathPatterns=src",
+    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --silent --bail --forceExit --testPathPatterns=\"src/.*/integration-tests/__tests__/.*\\.spec\\.ts\""
   }
 }

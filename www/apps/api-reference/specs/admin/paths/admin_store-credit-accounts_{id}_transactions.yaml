@@ -426,8 +426,7 @@ get:
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_store-credit-accounts_{id}_transactions/get.sh
+        $ref: ../code_samples/Shell/admin_store-credit-accounts_{id}_transactions/get.sh
   tags:
     - Store Credit Accounts
   responses:

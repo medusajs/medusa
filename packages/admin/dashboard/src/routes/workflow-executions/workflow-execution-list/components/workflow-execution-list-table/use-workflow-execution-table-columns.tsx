@@ -51,8 +51,7 @@ export const useWorkflowExecutionTableColumns = (): ColumnDef<
         header: t("workflowExecutions.progressLabel"),
         cell: ({ getValue }) => {
           const steps = getValue()?.steps as
-            | Record<string, HttpTypes.AdminWorkflowExecutionStep>
-            | undefined
+            Record<string, HttpTypes.AdminWorkflowExecutionStep> | undefined
 
           if (!steps) {
             return "0 of 0 steps"

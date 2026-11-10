@@ -149,6 +149,7 @@
     "reset": "Resetovat",
     "confirm": "Potvrdit",
     "edit": "Upravit",
+    "view": "Zobrazit",
     "addItems": "Přidat položky",
     "download": "Stáhnout",
     "clear": "Vyčistit",
@@ -1117,6 +1118,24 @@
       "hint": "Vytvořte nového zákazníka a spravujte jeho detaily.",
       "successToast": "Zákazník {{email}} byl úspěšně vytvořen."
     },
+    "export": {
+      "header": "Exportovat seznam zákazníků",
+      "description": "Exportovat seznam zákazníků do souboru.",
+      "success": {
+        "title": "Zpracováváme váš export",
+        "description": "Export dat může trvat několik minut. Oznámíme vám, až budeme hotovi."
+      },
+      "format": {
+        "label": "Formát",
+        "description": "Vyberte formát exportovaného souboru. JSON zachycuje vnořená data napříč moduly bez ztráty, což se doporučuje pro žádosti o přístup k osobním údajům.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtry",
+        "description": "Použijte filtry v přehledu tabulky pro úpravu tohoto zobrazení"
+      }
+    },
     "groups": {
       "label": "Skupiny zákazníků",
       "remove": "Jste si jisti, že chcete odstranit zákazníka ze skupiny zákazníků \"{{name}}\"?",
@@ -1952,7 +1971,7 @@
           "shipping_one": "{{count}} možnost dopravy",
           "shipping_few": "{{count}} možnosti dopravy",
           "shipping_many": "{{count}} možností dopravy",
-          "shipping_other": "{{count}} možnosti dopravy",
+          "shipping_other": "{{count}} možností dopravy",
           "pickup_one": "{{count}} možnost vyzvednutí",
           "pickup_few": "{{count}} možnosti vyzvednutí",
           "pickup_many": "{{count}} možností vyzvednutí",
@@ -1960,7 +1979,7 @@
           "returns_one": "{{count}} možnost vrácení",
           "returns_few": "{{count}} možnosti vrácení",
           "returns_many": "{{count}} možností vrácení",
-          "returns_other": "{{count}} možnosti vrácení"
+          "returns_other": "{{count}} možností vrácení"
         },
         "priceType": {
           "label": "Typ ceny",
@@ -2342,6 +2361,8 @@
         }
       },
       "allocationTooltip": "Každý vynucuje limit množství na položku, zatímco Jednou vynucuje limit množství v celém košíku",
+      "targetSelectionStrategy": "Zlevněné položky",
+      "targetSelectionStrategyTooltip": "Které způsobilé položky v košíku obdrží slevu",
       "usageLimit": "Limit použití",
       "usage": "Použití"
     },
@@ -2459,6 +2480,16 @@
         "once": {
           "title": "Jednou",
           "description": "Aplikuje hodnotu na omezený počet položek"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Nejdražší první",
+          "description": "Zlevní nejdražší způsobilé položky v košíku"
+        },
+        "cheapest_first": {
+          "title": "Nejlevnější první",
+          "description": "Zlevní nejlevnější způsobilé položky v košíku"
         }
       },
       "code": {
@@ -2827,7 +2858,7 @@
     "editUser": "Upravit uživatele",
     "inviteUser": "Pozvat uživatele",
     "inviteUserHint": "Pozvěte nového uživatele do vašeho obchodu.",
-    "inviteRolesTooltip": "Pokud není vybrána žádná role, uživatel bude pozván s rolí superuživatele.",
+    "inviteRolesTooltip": "Pokud není vybrána žádná role, uživatel bude pozván bez jakýchkoliv oprávnění. Role můžete přiřadit později.",
     "sendInvite": "Odeslat pozvánku",
     "pendingInvites": "Čekající pozvánky",
     "deleteInviteWarning": "Chystáte se smazat pozvánku pro {{email}}. Tuto akci nelze vrátit zpět.",
@@ -2902,7 +2933,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Uživatel již má tuto roli.",
-      "unassignableRoleTooltip": "Nemáte přístup k přiřazení této role — vaše oprávnění nepokrývají všechny její zásady.",
       "add": {
         "successToast_one": "Uživatel byl úspěšně přidán do role.",
         "successToast_few": "Uživatelé byli úspěšně přidáni do role.",
@@ -2936,6 +2966,9 @@
       "filtered": {
         "heading": "Žádné výsledky",
         "description": "Žádná oprávnění neodpovídají aktuálním kritériím filtru."
+      },
+      "manage": {
+        "successToast": "Oprávnění byla úspěšně aktualizována."
       }
     },
     "list": {
@@ -2959,6 +2992,7 @@
     },
     "edit": {
       "header": "Upravit zásadu",
+      "identityHint": "Klíč, zdroj a operace identifikují zásadu a nelze je změnit. Místo toho vytvořte novou zásadu.",
       "successToast": "Zásada {{key}} aktualizována"
     },
     "delete": {
@@ -3361,6 +3395,9 @@
     "invalidTokenTitle": "Váš pozvánkový token je neplatný",
     "invalidTokenHint": "Zkuste požádat o nový odkaz na pozvánku.",
     "passwordMismatch": "Hesla se neshodují",
+    "signedInTitle": "Již jste přihlášeni",
+    "signedInHint": "Jste přihlášeni jako {{email}}. Odhlaste se, abyste přijali tuto pozvánku.",
+    "signOut": "Odhlásit se",
     "toast": {
       "accepted": "Pozvánka byla úspěšně přijata"
     }
@@ -3725,31 +3762,31 @@
     "years_one": "Rok",
     "years_few": "Roky",
     "years_many": "Roků",
-    "years_other": "Roky",
+    "years_other": "Roků",
     "months_one": "Měsíc",
     "months_few": "Měsíce",
     "months_many": "Měsíců",
-    "months_other": "Měsíce",
+    "months_other": "Měsíců",
     "weeks_one": "Týden",
     "weeks_few": "Týdny",
     "weeks_many": "Týdnů",
-    "weeks_other": "Týdny",
+    "weeks_other": "Týdnů",
     "days_one": "Den",
     "days_few": "Dny",
     "days_many": "Dnů",
-    "days_other": "Dny",
+    "days_other": "Dnů",
     "hours_one": "Hodina",
     "hours_few": "Hodiny",
     "hours_many": "Hodin",
-    "hours_other": "Hodiny",
+    "hours_other": "Hodin",
     "minutes_one": "Minuta",
     "minutes_few": "Minuty",
     "minutes_many": "Minut",
-    "minutes_other": "Minuty",
+    "minutes_other": "Minut",
     "seconds_one": "Sekunda",
     "seconds_few": "Sekundy",
     "seconds_many": "Sekund",
-    "seconds_other": "Sekundy"
+    "seconds_other": "Sekund"
   },
   "translations": {
     "domain": "Překlady",
@@ -3883,6 +3920,10 @@
       "description": "Nemáte oprávnění k přístupu na tuto stránku.",
       "requiredPermission": "Požadované oprávnění: {{permission}}",
       "action": "Nemáte oprávnění k provedení této akce."
+    },
+    "noPermissions": {
+      "title": "Zatím žádná oprávnění",
+      "description": "Zatím vám nebyla přiřazena žádná oprávnění. Obraťte se na svého správce a požádejte o přístup k oblastem, které potřebujete."
     },
     "requiredPermissions": {
       "title": "Požadovaná oprávnění",

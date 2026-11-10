@@ -85,7 +85,7 @@ export function load(app: Application) {
         return
       }
 
-      const symbol = context.project.getSymbolFromReflection(reflection)
+      const symbol = context.getSymbolFromReflection(reflection)
       const filePath = symbol?.valueDeclaration?.getSourceFile().fileName
 
       if (!filePath) {

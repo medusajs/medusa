@@ -67,6 +67,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     symbol_native: "$",
     decimal_digits: 2,
   },
+  AWG: {
+    code: "AWG",
+    name: "Aruban Florin",
+    symbol_native: "Afl.",
+    decimal_digits: 2,
+  },
   AZN: {
     code: "AZN",
     name: "Azerbaijani Manat",
@@ -287,6 +293,12 @@ export const currencies: Record<string, CurrencyInfo> = {
     code: "HRK",
     name: "Croatian Kuna",
     symbol_native: "kn",
+    decimal_digits: 2,
+  },
+  HTG: {
+    code: "HTG",
+    name: "Haitian Gourde",
+    symbol_native: "G",
     decimal_digits: 2,
   },
   HUF: {

@@ -7,7 +7,7 @@ import { SaveViewDialog } from "../save-view-dialog"
 import { SaveViewDropdown } from "./save-view-dropdown"
 import { useTableConfiguration } from "../../../hooks/table/use-table-configuration"
 import { useConfigurableTableColumns } from "../../../hooks/table/columns/use-configurable-table-columns"
-import { parseFilterParam } from "../../../hooks/table/query"
+import { expandDottedKeys, parseFilterParam } from "../../../hooks/table/query"
 import {
   createActionsColumn,
   createSelectColumn,
@@ -25,32 +25,6 @@ type DataTableActionProps = {
       onClick: () => void
     }
 )
-
-/**
- * Expand dotted param keys into nested objects so the SDK's qs serializer emits
- * bracket notation the endpoint's nested filter schema expects, e.g.
- * `{ "location_levels.location_id": ["x"] }` -> `{ location_levels: { location_id: ["x"] } }`
- * -> `location_levels[location_id][0]=x`. Keys without a dot pass through.
- */
-function expandDottedKeys(params: Record<string, any>): Record<string, any> {
-  const result: Record<string, any> = {}
-  for (const [key, value] of Object.entries(params)) {
-    if (!key.includes(".")) {
-      result[key] = value
-      continue
-    }
-    const parts = key.split(".")
-    let node = result
-    for (let i = 0; i < parts.length - 1; i++) {
-      if (typeof node[parts[i]] !== "object" || node[parts[i]] === null) {
-        node[parts[i]] = {}
-      }
-      node = node[parts[i]]
-    }
-    node[parts[parts.length - 1]] = value
-  }
-  return result
-}
 
 export interface ConfigurableDataTableProps<TData> {
   adapter: TableAdapter<TData>

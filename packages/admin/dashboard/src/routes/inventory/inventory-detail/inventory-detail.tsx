@@ -1,6 +1,7 @@
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
 import { useInventoryItem } from "../../../hooks/api/inventory"
@@ -62,12 +63,20 @@ export const InventoryDetail = () => {
               <InventoryItemGeneralSection inventoryItem={inventory_item} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="InventoryItemLocationLevelsSection">
-              <InventoryItemLocationLevelsSection
-                inventoryItem={inventory_item}
-              />
+              <PermissionGuard
+                permissions={["inventory_level:read", "stock_location:read"]}
+              >
+                <InventoryItemLocationLevelsSection
+                  inventoryItem={inventory_item}
+                />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="InventoryItemReservationsSection">
-              <InventoryItemReservationsSection inventoryItem={inventory_item} />
+              <PermissionGuard permission="reservation_item:read">
+                <InventoryItemReservationsSection
+                  inventoryItem={inventory_item}
+                />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(inventory_item)}
           </>
@@ -75,9 +84,13 @@ export const InventoryDetail = () => {
         side: (
           <>
             <LayoutComposer.Entry id="InventoryItemVariantsSection">
-              <InventoryItemVariantsSection
-                variants={(inventory_item as any).variants}
-              />
+              <PermissionGuard
+                permissions={["product:read", "product_variant:read"]}
+              >
+                <InventoryItemVariantsSection
+                  variants={(inventory_item as any).variants}
+                />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="InventoryItemAttributeSection">
               <InventoryItemAttributeSection

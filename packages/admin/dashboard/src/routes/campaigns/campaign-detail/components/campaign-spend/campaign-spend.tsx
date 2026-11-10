@@ -13,8 +13,8 @@ export const CampaignSpend = ({ campaign }: CampaignSpendProps) => {
   return (
     <Container className="flex flex-col gap-y-4 px-6 py-4">
       <div className="mb-2 grid grid-cols-[28px_1fr] items-center gap-x-3">
-        <div className="bg-ui-bg-base shadow-borders-base flex size-7 items-center justify-center rounded-md">
-          <div className="bg-ui-bg-component flex size-6 items-center justify-center rounded-[4px]">
+        <div className="flex size-7 items-center justify-center rounded-md bg-ui-bg-base shadow-borders-base">
+          <div className="flex size-6 items-center justify-center rounded-[4px] bg-ui-bg-component">
             <CurrencyDollar className="text-ui-fg-subtle" />
           </div>
         </div>
@@ -23,14 +23,14 @@ export const CampaignSpend = ({ campaign }: CampaignSpendProps) => {
           {campaign.budget?.type === "use_by_attribute"
             ? t("campaigns.fields.totalUsedByAttribute")
             : campaign.budget?.type === "spend"
-            ? t("campaigns.fields.total_spend")
-            : t("campaigns.fields.total_used")}
+              ? t("campaigns.fields.total_spend")
+              : t("campaigns.fields.total_used")}
         </Heading>
       </div>
 
       <div>
         <Text
-          className="text-ui-fg-subtle border-ui-border-strong border-l-4 pl-3"
+          className="border-l-4 border-ui-border-strong pl-3 text-ui-fg-subtle"
           size="small"
           leading="compact"
         >
@@ -46,11 +46,11 @@ export const CampaignSpend = ({ campaign }: CampaignSpendProps) => {
             components={[
               <span
                 key="amount"
-                className="text-ui-fg-base txt-compact-medium-plus text-lg"
+                className="txt-compact-medium-plus text-lg text-ui-fg-base"
               />,
               <span
                 key="currency"
-                className="text-ui-fg-base txt-compact-medium-plus text-lg"
+                className="txt-compact-medium-plus text-lg text-ui-fg-base"
               />,
             ]}
           />

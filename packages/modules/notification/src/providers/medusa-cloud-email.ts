@@ -21,10 +21,6 @@ export class MedusaCloudEmailNotificationProvider extends AbstractNotificationPr
       Authorization: `Basic ${this.options_.api_key}`,
     }
 
-    if (this.options_.sandbox_handle) {
-      headers["x-medusa-sandbox-handle"] = this.options_.sandbox_handle
-    }
-
     if (this.options_.environment_handle) {
       headers["x-medusa-environment-handle"] = this.options_.environment_handle
     }

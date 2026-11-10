@@ -516,6 +516,67 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
+        it("should keep the options of a variant when updating with an empty options map", async () => {
+          await service.updateProductVariants(
+            { id: variantOne.id, product_id: productOne.id },
+            { title: "updated variant", options: {} }
+          )
+
+          const productVariant = await service.retrieveProductVariant(
+            variantOne.id,
+            { relations: ["options"] }
+          )
+
+          expect(productVariant.title).toEqual("updated variant")
+          expect(productVariant.options).toHaveLength(2)
+        })
+
+        it("should update the variant matched by the selector even when the data contains another id", async () => {
+          const otherVariant = await service.createProductVariants({
+            title: "other variant",
+            product_id: productOne.id,
+            options: { size: "small", color: "blue" },
+          } as CreateProductVariantDTO)
+
+          const updated = await service.updateProductVariants(
+            { id: variantOne.id, product_id: productOne.id },
+            { id: otherVariant.id, title: "updated" } as UpdateProductVariantDTO
+          )
+
+          expect(updated).toEqual([
+            expect.objectContaining({ id: variantOne.id, title: "updated" }),
+          ])
+
+          const [selected, other] = await Promise.all([
+            service.retrieveProductVariant(variantOne.id),
+            service.retrieveProductVariant(otherVariant.id),
+          ])
+
+          expect(selected.title).toEqual("updated")
+          expect(other.title).toEqual("other variant")
+        })
+
+        it("should update the variant matching the given id even when the data contains another id", async () => {
+          const otherVariant = await service.createProductVariants({
+            title: "other variant",
+            product_id: productOne.id,
+            options: { size: "small", color: "blue" },
+          } as CreateProductVariantDTO)
+
+          await service.updateProductVariants(variantOne.id, {
+            id: otherVariant.id,
+            title: "updated",
+          } as UpdateProductVariantDTO)
+
+          const [selected, other] = await Promise.all([
+            service.retrieveProductVariant(variantOne.id),
+            service.retrieveProductVariant(otherVariant.id),
+          ])
+
+          expect(selected.title).toEqual("updated")
+          expect(other.title).toEqual("other variant")
+        })
+
         it("should throw an error when an id does not exist", async () => {
           let error
 

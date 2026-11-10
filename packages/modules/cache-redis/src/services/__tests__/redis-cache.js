@@ -21,9 +21,9 @@ describe("RedisCacheService", () => {
     )
 
     await cacheService.set("test-key", "value")
-    expect(redisClientMock.set).toBeCalled()
+    expect(redisClientMock.set).toHaveBeenCalled()
 
     await cacheService.get("test-key")
-    expect(redisClientMock.get).toBeCalled()
+    expect(redisClientMock.get).toHaveBeenCalled()
   })
 })

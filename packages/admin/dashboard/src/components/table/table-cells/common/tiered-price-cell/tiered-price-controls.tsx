@@ -45,7 +45,7 @@ export const TieredPriceControls = ({
         ref={buttonRef}
         type="button"
         className={clx(
-          "hover:text-ui-fg-subtle text-ui-fg-muted transition-fg hidden size-[15px] items-center justify-center rounded-md bg-transparent group-hover/container:flex",
+          "hidden size-[15px] items-center justify-center rounded-md bg-transparent text-ui-fg-muted transition-fg hover:text-ui-fg-subtle group-hover/container:flex",
           { flex: isAnchor }
         )}
         onClick={onOpenModal}

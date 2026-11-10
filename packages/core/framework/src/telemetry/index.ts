@@ -20,7 +20,10 @@ export class Tracer {
    * Reference to the underlying OpenTelemetry tracer
    */
   #otTracer: OTTracer
-  constructor(public name: string, public version?: string) {
+  constructor(
+    public name: string,
+    public version?: string
+  ) {
     this.#otTracer = trace.getTracer(name, version)
   }
 

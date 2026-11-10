@@ -1,5 +1,9 @@
 import { CsvError, parse, Parser } from "csv-parse"
-import type { HttpTypes, IFileModuleService } from "@medusajs/framework/types"
+import type {
+  HttpTypes,
+  IFileModuleService,
+  RegionDTO,
+} from "@medusajs/framework/types"
 import {
   CSVNormalizer,
   MedusaError,
@@ -26,9 +30,10 @@ async function processChunk(
   file: IFileModuleService,
   fileKey: string,
   csvRows: ReturnType<(typeof CSVNormalizer)["preProcess"]>[],
-  currentRowNumber: number
+  currentRowNumber: number,
+  regions: RegionDTO[]
 ): Promise<Chunk> {
-  const normalizer = new CSVNormalizer(csvRows)
+  const normalizer = new CSVNormalizer(csvRows, { regions })
   const products = normalizer.proccess(currentRowNumber)
 
   let create = Object.keys(products.toCreate).reduce<
@@ -79,7 +84,8 @@ async function processChunk(
 async function createChunks(
   file: IFileModuleService,
   fileKey: string,
-  stream: Parser
+  stream: Parser,
+  regions: RegionDTO[]
 ): Promise<Chunk[]> {
   /**
    * The row under process
@@ -138,7 +144,8 @@ async function createChunks(
               file,
               `${fileKey}-${chunks.length + 1}`,
               rows,
-              currentCSVRow
+              currentCSVRow,
+              regions
             )
           )
 
@@ -167,7 +174,8 @@ async function createChunks(
           file,
           `${fileKey}-${chunks.length + 1}`,
           rows,
-          currentCSVRow
+          currentCSVRow,
+          regions
         )
       )
     }
@@ -206,6 +214,9 @@ export const normalizeCsvToChunksStep = createStep(
     >(async (resolve, reject) => {
       try {
         const file = container.resolve(Modules.FILE)
+        const regions = await container
+          .resolve(Modules.REGION)
+          .listRegions({}, { select: ["id", "name", "currency_code"] })
         const contents = await file.getDownloadStream(fileKey)
 
         const transformer = parse({
@@ -218,7 +229,8 @@ export const normalizeCsvToChunksStep = createStep(
         const chunks = await createChunks(
           file,
           fileKey,
-          contents.pipe(transformer)
+          contents.pipe(transformer),
+          regions
         )
 
         const summary = chunks.reduce<{ toCreate: number; toUpdate: number }>(

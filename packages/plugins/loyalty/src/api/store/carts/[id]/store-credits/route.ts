@@ -18,6 +18,7 @@ export const POST = async (
     input: {
       cart_id: id,
       ...req.validatedBody,
+      customer_id: req.auth_context.actor_id,
     },
     container: req.scope,
   });

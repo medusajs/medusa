@@ -13,7 +13,7 @@ export const NoMatch = () => {
   return (
     <div className="flex size-full min-h-screen items-center justify-center">
       <div className="flex flex-col items-center gap-y-6">
-        <div className="text-ui-fg-subtle flex flex-col items-center gap-y-3">
+        <div className="flex flex-col items-center gap-y-3 text-ui-fg-subtle">
           <ExclamationCircle />
           <div className="flex flex-col items-center justify-center gap-y-1">
             <Text size="small" leading="compact" weight="plus">
@@ -21,7 +21,7 @@ export const NoMatch = () => {
             </Text>
             <Text
               size="small"
-              className="text-ui-fg-muted text-balance text-center"
+              className="text-balance text-center text-ui-fg-muted"
             >
               {message}
             </Text>

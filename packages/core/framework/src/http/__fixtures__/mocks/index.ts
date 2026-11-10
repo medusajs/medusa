@@ -13,6 +13,10 @@ export const config = {
       authCors: "http://localhost:9000",
       storeCors: "http://localhost:8000",
       adminCors: "http://localhost:7001",
+      corsOptions: {
+        maxAge: 7200,
+        exposedHeaders: ["x-request-id"],
+      },
       jwtSecret: "supersecret",
       cookieSecret: "superSecret",
     },

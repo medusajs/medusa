@@ -1,4 +1,5 @@
 import { isObject } from "@medusajs/framework/utils"
+import { AddressInfo, createServer } from "net"
 
 export function applyEnvVarsToProcess(env?: Record<any, any>) {
   const previousEnvVars = new Map<string, string | undefined>()
@@ -80,4 +81,16 @@ export async function execOrTimeout(
   const fnPromise = typeof fn === "function" ? fn() : fn
 
   return Promise.race([fnPromise, timeoutPromise])
+}
+
+export async function getFreePort(): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const server = createServer()
+    server.unref()
+    server.on("error", reject)
+    server.listen(0, () => {
+      const { port } = server.address() as AddressInfo
+      server.close(() => resolve(port))
+    })
+  })
 }

@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/utils"
-import { parseExpression } from "cron-parser"
+import { CronExpressionParser } from "cron-parser"
 import { createRule } from "../../create-rule"
 import {
   findProperty,
@@ -13,11 +13,12 @@ type MessageIds = "invalidCron"
 /**
  * Returns true when `value` parses as a valid cron expression under the same
  * parser Medusa uses at runtime to schedule jobs (`cron-parser`'s
- * `parseExpression`). Invalid expressions throw; we treat any throw as invalid.
+ * `CronExpressionParser.parse`). Invalid expressions throw; we treat any
+ * throw as invalid.
  */
 const isValidCron = (value: string): boolean => {
   try {
-    parseExpression(value)
+    CronExpressionParser.parse(value)
     return true
   } catch {
     return false

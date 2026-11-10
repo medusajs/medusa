@@ -1096,7 +1096,6 @@ export const TranslationWorkflowEvents = {
    * Emitted when translations are created.
    *
    * @since 2.12.3
-   * @featureFlag translation
    * @eventPayload
    * ```ts
    * {
@@ -1109,7 +1108,6 @@ export const TranslationWorkflowEvents = {
    * Emitted when translations are updated.
    *
    * @since 2.12.3
-   * @featureFlag translation
    * @eventPayload
    * ```ts
    * {
@@ -1122,7 +1120,6 @@ export const TranslationWorkflowEvents = {
    * Emitted when translations are deleted.
    *
    * @since 2.12.3
-   * @featureFlag translation
    * @eventPayload
    * ```ts
    * {

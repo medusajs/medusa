@@ -584,6 +584,128 @@ medusaIntegrationTestRunner({
             )
           })
         })
+
+        describe("with customer group price lists", () => {
+          beforeEach(async () => {
+            const customerGroup = (
+              await api.post(
+                "/admin/customer-groups",
+                { name: "VIP" },
+                adminHeaders
+              )
+            ).data.customer_group
+
+            await api.post(
+              `/admin/customer-groups/${customerGroup.id}/customers`,
+              { add: [customer.id] },
+              adminHeaders
+            )
+
+            await api.post(
+              `/admin/price-lists`,
+              {
+                title: "group price list",
+                description: "test",
+                status: PriceListStatus.ACTIVE,
+                type: PriceListType.SALE,
+                prices: [
+                  {
+                    amount: 200,
+                    currency_code: "usd",
+                    variant_id: product.variants[0].id,
+                  },
+                ],
+                rules: {
+                  "customer.groups.id": [customerGroup.id],
+                },
+              },
+              adminHeaders
+            )
+          })
+
+          it("should apply customer group prices when an authenticated customer creates a cart", async () => {
+            const response = await api.post(
+              `/store/carts`,
+              {
+                email: customer.email,
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeadersWithCustomer
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart).toEqual(
+              expect.objectContaining({
+                customer_id: customer.id,
+                items: [expect.objectContaining({ unit_price: 200 })],
+              })
+            )
+          })
+
+          it("should not resolve a registered customer from the email when creating a cart without authentication", async () => {
+            const response = await api.post(
+              `/store/carts`,
+              {
+                email: customer.email,
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.customer_id).not.toEqual(customer.id)
+            expect(response.data.cart).toEqual(
+              expect.objectContaining({
+                email: customer.email,
+                customer: expect.objectContaining({
+                  email: customer.email,
+                  groups: [],
+                }),
+                items: [expect.objectContaining({ unit_price: 1500 })],
+              })
+            )
+          })
+
+          it("should not resolve a registered customer from the email when updating a cart without authentication", async () => {
+            const created = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                },
+                storeHeaders
+              )
+            ).data.cart
+
+            const response = await api.post(
+              `/store/carts/${created.id}`,
+              { email: customer.email },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.customer_id).not.toEqual(customer.id)
+            expect(response.data.cart).toEqual(
+              expect.objectContaining({
+                email: customer.email,
+                customer: expect.objectContaining({
+                  email: customer.email,
+                  groups: [],
+                }),
+                items: [expect.objectContaining({ unit_price: 1500 })],
+              })
+            )
+          })
+        })
       })
 
       describe("POST /store/carts/:id/line-items", () => {

@@ -153,6 +153,7 @@
     "reset": "Resetuj",
     "confirm": "Potwierdź",
     "edit": "Edytuj",
+    "view": "Wyświetl",
     "addItems": "Dodaj przedmioty",
     "download": "Pobierz",
     "clear": "Wyczyść",
@@ -1102,6 +1103,24 @@
       "hint": "Utwórz nowego klienta i zarządzaj jego danymi.",
       "successToast": "Klient {{email}} został pomyślnie utworzony."
     },
+    "export": {
+      "header": "Eksportuj listę klientów",
+      "description": "Eksportuj listę klientów do pliku.",
+      "success": {
+        "title": "Przetwarzamy Twój eksport",
+        "description": "Eksportowanie danych może potrwać kilka minut. Powiadomimy Cię, gdy będzie gotowe."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Wybierz format eksportowanego pliku. JSON przechowuje zagnieżdżone dane z różnych modułów bez utraty informacji, co jest zalecane w przypadku żądań dostępu do danych osobowych.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtry",
+        "description": "Zastosuj filtry w podglądzie tabeli, aby dostosować ten widok"
+      }
+    },
     "groups": {
       "label": "Grupy klientów",
       "remove": "Czy na pewno chcesz usunąć klienta z grupy \"{{name}}\"?",
@@ -1255,7 +1274,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Użytkownik ma już tę rolę.",
-      "unassignableRoleTooltip": "Nie możesz przypisać tej roli — Twoje uprawnienia nie obejmują wszystkich jej polityk.",
       "add": {
         "successToast_one": "Użytkownik został pomyślnie dodany do roli.",
         "successToast_few": "Użytkownicy zostali pomyślnie dodani do roli.",
@@ -1289,6 +1307,9 @@
       "filtered": {
         "heading": "Brak wyników",
         "description": "Żadne uprawnienie nie spełnia bieżących kryteriów filtrowania."
+      },
+      "manage": {
+        "successToast": "Uprawnienia zostały pomyślnie zaktualizowane."
       }
     },
     "list": {
@@ -1312,6 +1333,7 @@
     },
     "edit": {
       "header": "Edytuj politykę",
+      "identityHint": "Klucz, zasób i operacja identyfikują politykę i nie można ich zmienić. Zamiast tego utwórz nową politykę.",
       "successToast": "Polityka {{key}} została zaktualizowana"
     },
     "delete": {
@@ -2498,6 +2520,8 @@
       "method": "Metoda",
       "allocation": "Przydział",
       "allocationTooltip": "„Każdy” egzekwuje limit ilości dla każdej pozycji, natomiast „Jednorazowo” egzekwuje limit ilości w całym koszyku",
+      "targetSelectionStrategy": "Pozycje objęte rabatem",
+      "targetSelectionStrategyTooltip": "Które kwalifikujące się pozycje w koszyku otrzymają rabat",
       "addCondition": "Dodaj warunek",
       "clearAll": "Wyczyść wszystko",
       "taxInclusive": "Zawiera podatek",
@@ -2645,6 +2669,16 @@
         "once": {
           "title": "Jednorazowo",
           "description": "Stosuje wartość do ograniczonej liczby elementów"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Najdroższe pierwsze",
+          "description": "Obejmuje rabatem najdroższe kwalifikujące się pozycje w koszyku"
+        },
+        "cheapest_first": {
+          "title": "Najtańsze pierwsze",
+          "description": "Obejmuje rabatem najtańsze kwalifikujące się pozycje w koszyku"
         }
       },
       "code": {
@@ -3013,7 +3047,7 @@
     "editUser": "Edytuj użytkownika",
     "inviteUser": "Zaproś użytkownika",
     "inviteUserHint": "Zaproś nowego użytkownika do swojego sklepu.",
-    "inviteRolesTooltip": "Jeśli nie wybierzesz żadnej roli, użytkownik zostanie zaproszony z rolą superużytkownika.",
+    "inviteRolesTooltip": "Jeśli nie zostanie wybrana żadna rola, użytkownik zostanie zaproszony bez żadnych uprawnień. Możesz przypisać role później.",
     "sendInvite": "Wyślij zaproszenie",
     "pendingInvites": "Oczekujące zaproszenia",
     "deleteInviteWarning": "Zamierzasz usunąć zaproszenie dla użytkownika {{email}}. Tej akcji nie można cofnąć.",
@@ -3420,6 +3454,9 @@
     "invalidTokenTitle": "Twój token zaproszenia jest nieprawidłowy",
     "invalidTokenHint": "Spróbuj poprosić o nowy link z zaproszeniem.",
     "passwordMismatch": "Hasła nie pasują",
+    "signedInTitle": "Jesteś już zalogowany(-a)",
+    "signedInHint": "Jesteś zalogowany(-a) jako {{email}}. Wyloguj się, aby zaakceptować to zaproszenie.",
+    "signOut": "Wyloguj się",
     "toast": {
       "accepted": "Zaproszenie zostało pomyślnie zaakceptowane"
     }
@@ -3868,6 +3905,10 @@
       "description": "Nie masz uprawnień dostępu do tej strony.",
       "requiredPermission": "Wymagane uprawnienie: {{permission}}",
       "action": "Nie masz uprawnień do wykonania tej akcji."
+    },
+    "noPermissions": {
+      "title": "Brak uprawnień",
+      "description": "Nie masz jeszcze przypisanych żadnych uprawnień. Skontaktuj się z administratorem, aby uzyskać dostęp do potrzebnych obszarów."
     },
     "requiredPermissions": {
       "title": "Wymagane uprawnienia",

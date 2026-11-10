@@ -1,4 +1,3 @@
-import Configstore from "configstore"
 import path from "path"
 
 import { InMemoryConfigStore } from "./util/in-memory-config"
@@ -8,6 +7,9 @@ import OutboxStore from "./util/outbox-store"
 class Store {
   constructor() {
     try {
+      // configstore is ESM-only; requiring it here lets Jest (which can't load
+      // ESM from node_modules) fall back to the in-memory store below.
+      const { default: Configstore } = require("configstore")
       this.config_ = new Configstore(`medusa`, {}, { globalConfigPath: true })
     } catch (e) {
       this.config_ = new InMemoryConfigStore()

@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { HttpTypes } from "@medusajs/types"
 import {
   Button,
@@ -23,6 +24,7 @@ import { CountrySelect } from "../../../components/inputs/country-select"
 import { RouteFocusModal, useRouteModal } from "../../../components/modals"
 import { useCreateDraftOrder } from "../../../hooks/api/draft-orders"
 import { useComboboxData } from "../../../hooks/common/use-combobox-data"
+import { CREATE_DRAFT_ORDER_PERMISSIONS } from "../../../lib/permissions"
 import { sdk } from "../../../lib/queries/sdk"
 import { addressSchema } from "../../../lib/schemas/address"
 import { getFormattedAddress } from "../../../lib/utils/address-utils"
@@ -38,6 +40,8 @@ const Create = () => {
 
 const CreateForm = () => {
   const { handleSuccess } = useRouteModal()
+  const { hasPermission } = usePermissions()
+  const canReadCustomers = hasPermission("customer:read")
 
   const form = useForm<z.infer<typeof schema>>({
     defaultValues: {
@@ -207,8 +211,15 @@ const CreateForm = () => {
                 />
               </div>
               <Divider variant="dashed" />
-              <CustomerField control={form.control} setValue={form.setValue} />
-              <Divider variant="dashed" />
+              {canReadCustomers && (
+                <>
+                  <CustomerField
+                    control={form.control}
+                    setValue={form.setValue}
+                  />
+                  <Divider variant="dashed" />
+                </>
+              )}
               <EmailField control={form.control} />
               <Divider variant="dashed" />
               <AddressField
@@ -296,16 +307,20 @@ const CustomerField = ({ control, setValue }: CustomerFieldProps) => {
     },
     queryKey: ["customers"],
     getOptions: (data) => {
-      return data.customers.map((customer) => {
-        const name = [customer.first_name, customer.last_name]
-          .filter(Boolean)
-          .join(" ")
+      return data.customers
+        .filter(
+          (customer): customer is HttpTypes.AdminCustomer => customer !== null
+        )
+        .map((customer) => {
+          const name = [customer.first_name, customer.last_name]
+            .filter(Boolean)
+            .join(" ")
 
-        return {
-          label: name ? `${name} (${customer.email})` : customer.email,
-          value: customer.id,
-        }
-      })
+          return {
+            label: name ? `${name} (${customer.email})` : customer.email,
+            value: customer.id,
+          }
+        })
     },
   })
 
@@ -387,6 +402,8 @@ const AddressField = ({ type, control, setValue }: AddressFieldProps) => {
   const customerId = useWatch({ control, name: "customer_id" })
   const addressId = useWatch({ control, name: `${type}_id` })
   const sameAsShipping = useWatch({ control, name: "same_as_shipping" })
+  const { hasPermission } = usePermissions()
+  const canReadAddresses = hasPermission("customer_address:read")
 
   const { customer } = useCustomer(
     customerId!,
@@ -423,7 +440,7 @@ const AddressField = ({ type, control, setValue }: AddressFieldProps) => {
         }
       })
     },
-    enabled: !!customerId,
+    enabled: !!customerId && canReadAddresses,
   })
 
   const onSelectAddress = async (addressId?: string) => {
@@ -503,7 +520,7 @@ const AddressField = ({ type, control, setValue }: AddressFieldProps) => {
         )}
         {showFields && (
           <div className="flex flex-col gap-y-3">
-            {customerId && (
+            {customerId && canReadAddresses && (
               <div className="flex flex-col gap-y-3">
                 <Form.Field
                   control={control}
@@ -775,5 +792,9 @@ const schema = z
       }
     }
   })
+
+export const handle = {
+  permissions: CREATE_DRAFT_ORDER_PERMISSIONS,
+}
 
 export default Create

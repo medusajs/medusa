@@ -4,19 +4,47 @@ If you get the following error in your Medusa application's terminal:
 Trying to query by not existing property LinkModel.X.
 ```
 
-Where `X` is the name of a data model. For example, `LinkModel.cart`.
+Where `X` is the name of a data model. For example, `LinkModel.cart`. The error may also show your data model's name instead of `LinkModel`, such as `Post.cart`.
 
 ## Why this Error Occurred
 
-This error occurs when you're using Query and you're trying to filter by a linked module, which isn't allowed.
+This error occurs when you're using Query to filter by a linked data model's property, and Query can't apply the filter. This happens in the following cases:
 
-For example, assuming you have a `Post` data model and you linked it to the `Cart` data model, this isn't allowed:
+1. You're using a Medusa version before [v2.18.0](https://github.com/medusajs/medusa/releases/tag/v2.18.0), which doesn't support filtering by linked data models.
+2. You passed the linked data model's filter inside a top-level `$and`, `$or`, or `$not` operator. Query passes these operators as-is to your data model's module, which doesn't recognize the linked data model's property.
+
+For example, assuming you have a `Post` data model and you linked it to the `Cart` data model, the following filter isn't supported:
 
 ```ts
 const { data } = await query.graph({
   entity: "post",
   fields: ["*"],
-  filter: {
+  filters: {
+    $or: [
+      {
+        cart: {
+          id: "cart_123",
+        },
+      },
+      {
+        title: "My Post",
+      },
+    ],
+  },
+})
+```
+
+---
+
+## How to Fix it
+
+If you're using Medusa v2.18.0 or later, pass the linked data model's filter as a top-level key in `filters`:
+
+```ts
+const { data } = await query.graph({
+  entity: "post",
+  fields: ["*"],
+  filters: {
     cart: {
       id: "cart_123",
     },
@@ -24,13 +52,9 @@ const { data } = await query.graph({
 })
 ```
 
-You can't filter your custom `post` data model by the ID of their linked cart.
+If you need to combine it with other conditions in an `$or` operator, run a separate query for each condition and merge the results.
 
----
-
-## How to Fix it
-
-You need to query the link's table directly and apply the filters on its ID columns. For example:
+If you're using a Medusa version before v2.18.0, query the link's table directly and apply the filters on its ID columns. For example:
 
 ```ts
 import PostCartLink from "../links/post-cart"
@@ -52,4 +76,5 @@ In the above example, you query the `PostCartLink` data model directly and apply
 
 ## Additional Resources
 
-- [Query](!docs!/learn/fundamentals/query#apply-filters-and-pagination-on-linked-records)
+- [Filter by Linked Data Model's Property](!docs!/learn/fundamentals/query#filter-by-linked-data-models-property)
+- [Query a Module Link's Table](!docs!/learn/fundamentals/query#apply-filters-and-pagination-on-linked-records)

@@ -10,9 +10,9 @@ In this guide, you'll learn about the managed S3 storage service that Medusa pro
 
 ## Managed S3 Storage Service on Cloud
 
-Medusa offers a managed S3 storage service for your project environments on Cloud. Each environment has its own dedicated S3 bucket that is automatically provisioned when the environment is created.
+Medusa offers a managed S3 storage service for your project environments on Cloud. Each environment has its own dedicated S3 bucket prefix that is automatically provisioned when the environment is created.
 
-So, when you create a new project, Medusa creates a production S3 bucket for the production environment. If you create a staging environment, Medusa creates a separate S3 bucket for that environment as well.
+So, when you create a new project, Medusa provides isolated access to a production S3 bucket prefix for the production environment. If you create a staging environment, Medusa creates a separate S3 bucket prefix for that environment as well.
 
 ![Diagram showcasing S3 isolation between environments](https://res.cloudinary.com/dza7lstvk/image/upload/v1750230909/Cloud/s3-cloud_smrtfc.jpg)
 
@@ -32,7 +32,7 @@ If you're using a Medusa version before v2.7.0, contact support for assistance i
 
 ### Access S3 Configurations on Cloud
 
-Since Cloud is a managed service, you can't directly access your S3 bucket.
+Since Cloud is a managed service, you can't directly access the S3 bucket.
 
 You can, however, access the S3 bucket details of your environment. This is useful when setting remote patterns in your storefront to allow loading assets from the S3 bucket.
 
@@ -70,7 +70,7 @@ To set the connection options of your external S3 instance, refer to the [Enviro
 
 ## Upload Files to S3 on Cloud
 
-When you upload files through your Medusa application hosted on Cloud, such as product images or other assets, the files are stored in the S3 bucket associated with that application's environment.
+When you upload files through your Medusa application hosted on Cloud, such as product images or other assets, the files are stored in the S3 bucket prefix associated with that application's environment.
 
 You can also upload files using Medusa's [Upload Files API route](!api!/admin/uploads/upload-files), or in a [custom API route that handles file upload](!docs!/learn/fundamentals/api-routes/parse-body#configure-file-uploads).
 

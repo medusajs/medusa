@@ -113,8 +113,17 @@ The `NodeSDKConfiguration` properties are accepted since Medusa v2.5.1.
       children: [
         {
           name: "http",
-          type: "`boolean`",
-          description: "Whether to trace HTTP requests."
+          type: "`boolean` \| `object`",
+          description: "Whether to trace HTTP requests. Since Medusa v2.22.0, you can pass an object to configure HTTP tracing instead. Learn more in the [Configure HTTP Tracing](#configure-http-tracing) section.",
+          children: [
+            {
+              name: "allowedQueryParams",
+              type: "`string[]` \| `\"*\"`",
+              description: "The query parameters whose values are reported in the `url.query` span attribute. Medusa replaces the values of other query parameters with `REDACTED`. Pass `\"*\"` to report the full query string.",
+              optional: true,
+              defaultValue: "[\"fields\", \"expand\", \"limit\", \"offset\", \"order\", \"with_deleted\"]"
+            }
+          ]
         },
         {
           name: "query",
@@ -147,6 +156,74 @@ The `NodeSDKConfiguration` properties are accepted since Medusa v2.5.1.
   ]}
 />
 
+### Configure HTTP Tracing
+
+<Note>
+
+HTTP tracing options are available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
+
+</Note>
+
+When Medusa traces an HTTP request, it reports the request's URL path, method, route, status code, and headers as span attributes. To avoid leaking sensitive data to your exporter, Medusa:
+
+- Removes the query string from the `http.url` attribute and from span names.
+- Reports the query string in a separate `url.query` attribute, replacing the values of query parameters that aren't allowed with `REDACTED`. By default, Medusa only reports the values of the `fields`, `expand`, `limit`, `offset`, `order`, and `with_deleted` query parameters.
+- Doesn't report request headers whose names contain `authorization`, `cookie`, `key`, `token`, `secret`, `session`, `password`, or `credential`. For example, Medusa doesn't report the `authorization`, `cookie`, and `x-publishable-api-key` headers.
+
+For example, Medusa reports a request to `/store/products?q=shoes&limit=10` with the `url.query` attribute set to `q=REDACTED&limit=10`.
+
+To change the query parameters whose values Medusa reports, pass an object with the `allowedQueryParams` property to the `instrument.http` option:
+
+export const httpHighlights = [
+  ["7", "allowedQueryParams", "Report the values of these query parameters."]
+]
+
+```ts title="instrumentation.ts" highlights={httpHighlights}
+export function register() {
+  registerOtel({
+    serviceName: "medusajs",
+    exporter,
+    instrument: {
+      http: {
+        allowedQueryParams: ["q", "limit", "offset"],
+      },
+      workflows: true,
+      query: true,
+      db: true,
+      cache: true,
+    },
+  })
+}
+```
+
+In this example, Medusa reports the values of the `q`, `limit`, and `offset` query parameters, and replaces the values of other query parameters with `REDACTED`. Medusa matches array parameters by their base name, so `category_id` also allows `category_id[]`.
+
+To report the full query string without redaction, set `allowedQueryParams` to `"*"`:
+
+```ts title="instrumentation.ts"
+export function register() {
+  registerOtel({
+    serviceName: "medusajs",
+    exporter,
+    instrument: {
+      http: {
+        allowedQueryParams: "*",
+      },
+      workflows: true,
+      query: true,
+      db: true,
+      cache: true,
+    },
+  })
+}
+```
+
+<Note type="warning">
+
+Query parameters can hold personal data or secrets, such as search terms, email addresses, or OAuth codes. Only allow query parameters whose values are safe to send to your exporter.
+
+</Note>
+
 ---
 
 ## Test it Out
@@ -167,7 +244,7 @@ If you check traces in your exporter, you'll find new traces reported.
 
 Trace span names start with the following keywords based on what it's reporting:
 
-- `{methodName} {URL}` when reporting HTTP requests, where `{methodName}` is the HTTP method, and `{URL}` is the URL the request is sent to.
+- `{methodName} {URL}` when reporting HTTP requests, where `{methodName}` is the HTTP method, and `{URL}` is the URL path the request is sent to, without the query string.
 - `route:` when reporting route handlers running on an HTTP request.
 - `middleware:` when reporting a middleware running on an HTTP request.
 - `workflow:` when reporting a workflow execution.

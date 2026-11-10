@@ -1,7 +1,7 @@
 import type { AdminOptions, ConfigModule, Logger } from "@medusajs/types"
 import { FileSystem, getConfigFile, getResolvedPlugins } from "@medusajs/utils"
-import chokidar from "chokidar"
-import { access, constants, copyFile, mkdir, rm } from "fs/promises"
+import { spawn } from "child_process"
+import { access, constants, copyFile, mkdir, rm, writeFile } from "fs/promises"
 import path from "path"
 import type tsStatic from "typescript"
 import { isFileIgnored } from "./compiler-utils"
@@ -79,6 +79,43 @@ export class Compiler {
       this.#tsCompiler = await import("typescript")
     }
     return this.#tsCompiler
+  }
+
+  /**
+   * TypeScript 7 exposes only its version from the "typescript" import and
+   * has no emit API, so its builds run the "tsc" binary instead
+   */
+  async #usesTscBinary() {
+    const ts = await this.#loadTSCompiler()
+    return parseInt(ts.version, 10) >= 7
+  }
+
+  /**
+   * Runs the "tsc" binary of the installed "typescript" package from
+   * the project root. The stdout is returned when "captureOutput"
+   * is true, otherwise it is printed to the console
+   */
+  #runTsc(
+    args: string[],
+    captureOutput: boolean
+  ): Promise<{ exitCode: number | null; output: string }> {
+    const tscPath = path.join(
+      path.dirname(require.resolve("typescript/package.json")),
+      "bin",
+      "tsc"
+    )
+
+    return new Promise((resolve, reject) => {
+      const child = spawn(process.execPath, [tscPath, ...args], {
+        cwd: this.#projectRoot,
+        stdio: ["ignore", captureOutput ? "pipe" : "inherit", "inherit"],
+      })
+
+      let output = ""
+      child.stdout?.on("data", (chunk) => (output += chunk))
+      child.on("error", reject)
+      child.on("close", (exitCode) => resolve({ exitCode, output }))
+    })
   }
 
   /**
@@ -185,15 +222,17 @@ export class Compiler {
     tsConfig: tsStatic.ParsedCommandLine,
     chunksToIgnore: string[],
     dist: string
-  ): Promise<{
-    emitResult: tsStatic.EmitResult
-    diagnostics: tsStatic.Diagnostic[]
-  }> {
-    const ts = await this.#loadTSCompiler()
+  ): Promise<{ emitSkipped: boolean; hasErrors: boolean }> {
     const filesToCompile = tsConfig.fileNames.filter((fileName) => {
       const relativeFileName = path.relative(this.#projectRoot, fileName)
       return !isFileIgnored(relativeFileName, chunksToIgnore)
     })
+
+    if (await this.#usesTscBinary()) {
+      return await this.#emitBuildOutputWithTsc(tsConfig, filesToCompile, dist)
+    }
+
+    const ts = await this.#loadTSCompiler()
 
     /**
      * Create emit program to compile and emit output
@@ -216,7 +255,82 @@ export class Compiler {
      */
     this.#printDiagnostics(ts, diagnostics)
 
-    return { emitResult, diagnostics }
+    return {
+      emitSkipped: emitResult.emitSkipped,
+      hasErrors: diagnostics.length > 0,
+    }
+  }
+
+  /**
+   * Compiles the given files by running "tsc" with a temporary
+   * tsconfig file that extends the project's tsconfig file
+   */
+  async #emitBuildOutputWithTsc(
+    tsConfig: tsStatic.ParsedCommandLine,
+    filesToCompile: string[],
+    dist: string
+  ): Promise<{ emitSkipped: boolean; hasErrors: boolean }> {
+    const buildConfigDir = path.join(this.#projectRoot, ".medusa")
+    const buildConfigPath = path.join(buildConfigDir, "tsconfig.build.json")
+
+    await mkdir(buildConfigDir, { recursive: true })
+    await writeFile(
+      buildConfigPath,
+      JSON.stringify({
+        extends: this.#tsConfigPath,
+        compilerOptions: {
+          outDir: dist,
+          // rootDir defaults to the tsconfig's own folder, which is ".medusa" here
+          rootDir: path.resolve(
+            this.#projectRoot,
+            tsConfig.options.rootDir ?? "."
+          ),
+          inlineSourceMap: !tsConfig.options.sourceMap,
+        },
+        files: filesToCompile,
+        include: [],
+      })
+    )
+
+    try {
+      const { exitCode } = await this.#runTsc(
+        ["-p", buildConfigPath, "--pretty"],
+        false
+      )
+      // tsc exits with 2 when it emits despite errors, and with 1 when it skips emitting
+      return {
+        emitSkipped: exitCode !== 0 && exitCode !== 2,
+        hasErrors: exitCode !== 0,
+      }
+    } finally {
+      await rm(buildConfigPath, { force: true })
+    }
+  }
+
+  /**
+   * Loads the TypeScript config file by running "tsc --showConfig"
+   */
+  async #loadTSConfigFileWithTsc(): Promise<
+    tsStatic.ParsedCommandLine | undefined
+  > {
+    const { exitCode, output } = await this.#runTsc(
+      ["--showConfig", "-p", this.#tsConfigPath],
+      true
+    )
+    if (exitCode !== 0) {
+      console.error(output)
+      return
+    }
+
+    const { compilerOptions = {}, files = [] } = JSON.parse(output)
+    // Options keep their tsconfig JSON form, so enums are strings ("es2021"), not ts enum values
+    return {
+      options: compilerOptions,
+      fileNames: files.map((file: string) =>
+        path.resolve(this.#projectRoot, file)
+      ),
+      errors: [],
+    }
   }
 
   /**
@@ -224,6 +338,10 @@ export class Compiler {
    * will be logged using the logger and undefined it returned
    */
   async loadTSConfigFile(): Promise<tsStatic.ParsedCommandLine | undefined> {
+    if (await this.#usesTscBinary()) {
+      return await this.#loadTSConfigFileWithTsc()
+    }
+
     const ts = await this.#loadTSCompiler()
     let tsConfigErrors: tsStatic.Diagnostic[] = []
 
@@ -294,7 +412,7 @@ export class Compiler {
     /**
      * Step 2: Compile TypeScript source code
      */
-    const { emitResult, diagnostics } = await this.#emitBuildOutput(
+    const { emitSkipped, hasErrors } = await this.#emitBuildOutput(
       tsConfig,
       this.#backendIgnoreFiles,
       dist
@@ -303,7 +421,7 @@ export class Compiler {
     /**
      * Exit early if no output is written to the disk
      */
-    if (emitResult.emitSkipped) {
+    if (emitSkipped) {
       this.#logger.warn("Backend build completed without emitting any output")
       return false
     }
@@ -316,7 +434,7 @@ export class Compiler {
     /**
      * Notify about the state of build
      */
-    if (diagnostics.length) {
+    if (hasErrors) {
       this.#logger.warn(
         `Backend build completed with errors (${tracker.getSeconds()}s)`
       )
@@ -439,7 +557,7 @@ export class Compiler {
     /**
      * Step 2: Compile TypeScript source code
      */
-    const { emitResult, diagnostics } = await this.#emitBuildOutput(
+    const { emitSkipped, hasErrors } = await this.#emitBuildOutput(
       tsConfig,
       this.#backendIgnoreFiles,
       dist
@@ -448,7 +566,7 @@ export class Compiler {
     /**
      * Exit early if no output is written to the disk
      */
-    if (emitResult.emitSkipped) {
+    if (emitSkipped) {
       this.#logger.warn("Plugin build completed without emitting any output")
       return false
     }
@@ -456,7 +574,7 @@ export class Compiler {
     /**
      * Notify about the state of build
      */
-    if (diagnostics.length) {
+    if (hasErrors) {
       this.#logger.warn(
         `Plugin build completed with errors (${tracker.getSeconds()}s)`
       )
@@ -488,7 +606,8 @@ export class Compiler {
       srcDir: path.join(this.#projectRoot, "src"),
     })
 
-    const watcher = chokidar.watch(["."], {
+    const { watch } = await import("chokidar")
+    const watcher = watch(["."], {
       ignoreInitial: true,
       cwd: this.#projectRoot,
       ignored: [

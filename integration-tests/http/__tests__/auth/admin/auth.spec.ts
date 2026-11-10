@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken"
 import {
   adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(100000)
@@ -219,6 +221,46 @@ medusaIntegrationTestRunner({
         expect(signup.response.status).toEqual(401)
         expect(signup.response.data.message).toEqual(
           "Invalid email or password"
+        )
+      })
+
+      it("should allow an admin identity to sign in as a customer to create a customer account by default", async () => {
+        const publishableKey = await generatePublishableKey(container)
+        const storeHeaders = generateStoreHeaders({ publishableKey })
+
+        const register = await api
+          .post("/auth/customer/emailpass/register", {
+            email: "admin@medusa.js",
+            password: "somepassword",
+          })
+          .catch((e) => e)
+
+        expect(register.response.status).toEqual(401)
+
+        const login = await api.post("/auth/customer/emailpass", {
+          email: "admin@medusa.js",
+          password: "somepassword",
+        })
+
+        expect(login.status).toEqual(200)
+        expect(jwt.decode(login.data.token)).toEqual(
+          expect.objectContaining({ actor_type: "customer", actor_id: "" })
+        )
+
+        const customer = await api.post(
+          "/store/customers",
+          { email: "admin@medusa.js", first_name: "Admin" },
+          {
+            headers: {
+              authorization: `Bearer ${login.data.token}`,
+              ...storeHeaders.headers,
+            },
+          }
+        )
+
+        expect(customer.status).toEqual(200)
+        expect(customer.data.customer).toEqual(
+          expect.objectContaining({ email: "admin@medusa.js" })
         )
       })
     })

@@ -30,7 +30,7 @@ Let customers narrow a list of search results by a field's values, change the or
 - InstantSearch's sort control switches between indexes, while the Search Module sorts through the query's `pagination.order`. The adapter bridges the two by reading the sort from the index name, in the format `{index}/sort/{field}:{direction}`. The bare index name sorts by relevance. A field must be `sortable()` in the index definition to appear in a sort value.
 - InstantSearch works in pages. The adapter turns the page number and page size into the search query's `skip` and `take`.
 - The number of pages comes from the total count the search provider reports. The query's `search_options.count` chooses the counting strategy: `exact`, `estimated`, or `none`.
-- Consult the Medusa documentation at https://docs.medusajs.com, or the Medusa MCP server if it's available, for anything this prompt doesn't cover.
+- Consult the Medusa documentation at https://docs.medusajs.com, or the Docs MCP server if it's available, for anything this prompt doesn't cover.
 </context>
 
 <input>

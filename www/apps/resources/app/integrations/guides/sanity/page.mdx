@@ -87,7 +87,7 @@ Afterwards, the installation process will start, which will install the Medusa a
 
 Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form.
 
-Afterwards, you can login with the new user and explore the dashboard. The Next.js Starter Storefront is also running at `http://localhost:8000`.
+Afterwards, you can log in with the new user and explore the dashboard. The Next.js Starter Storefront is also running at `http://localhost:8000`.
 
 <Note title="Ran into Errors?">
 
@@ -516,7 +516,7 @@ export default Module(SANITY_MODULE, {
 
 In the file, you export the `SANITY_MODULE` which is the Module's name. You'll use it later when you resolve the module from the Medusa container.
 
-You also export the module definition using `Module` from the Modueles SDK, which accepts as a first parameter the module's name, and as a second parameter an object having a `service` property, indicating the module's service.
+You also export the module definition using `Module` from the Modules SDK, which accepts as a first parameter the module's name, and as a second parameter an object having a `service` property, indicating the module's service.
 
 ### Add Module to Configurations
 
@@ -1562,7 +1562,7 @@ export const useSanityDocument = (
 }
 ```
 
-You define the hook `useSanityDocument` which retrieves the Sanity document of a product using Tankstack Query.
+You define the hook `useSanityDocument` which retrieves the Sanity document of a product using TanStack Query.
 
 You can now create the widget injected in a product's details page. Widgets are react components created in a file under the `src/admin/widgets` directory.
 
@@ -1706,7 +1706,7 @@ Medusa has a [workflow engine](../../../infrastructure-modules/workflow-engine/p
 
 The workflow engine is an [Infrastructure Module](!docs!/learn/fundamentals/modules/infrastructure-modules), which can be replaced with a [Redis Workflow Engine](../../../infrastructure-modules/workflow-engine/redis/page.mdx), or a custom one of your choice, allowing you to take ownership of your application's tooling.
 
-In your customizations, you can resolve the workflow engine from the container and manage executions of a workflow, such as retrieve them and check their progress.
+In your customizations, you can resolve the workflow engine from the container and manage executions of a workflow, such as retrieving them and checking their progress.
 
 In this section, you'll create an API route to retrieve the stored executions of the `sanitySyncProductsWorkflow` workflow, so that you can display them later on the dashboard.
 

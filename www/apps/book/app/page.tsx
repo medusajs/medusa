@@ -1,7 +1,12 @@
 export const revalidate = 3600
 
 import clsx from "clsx"
-import { AiAssistantChatWindow, MainNav, RootProviders } from "docs-ui"
+import {
+  AgentDirective,
+  AiAssistantChatWindow,
+  MainNav,
+  RootProviders,
+} from "docs-ui"
 import Providers from "../providers"
 import HomepageTopSection from "../components/Homepage/TopSection"
 import HomepageSectionsSeparator from "../components/Homepage/SectionsSeparator"
@@ -24,6 +29,7 @@ const Homepage = () => {
         "h-screen overflow-hidden"
       )}
     >
+      <AgentDirective />
       <RootProviders
         layoutProviderProps={{
           disableResizeObserver: true,

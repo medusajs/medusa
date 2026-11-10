@@ -23,36 +23,18 @@ Signs it may be a bug:
 
 If yes:
 1. Search the docs (`www/apps/`) for information related to the user's issue
-2. **If docs cover it:** proceed with the standard support flow below, referencing the docs in your reply
-3. **If docs don't cover it:** do NOT add a comment — only add the `requires-team` label and stop
-
-```bash
-bash scripts/labels.sh <issue_number> add requires-team
-```
+2. **If docs cover it:** proceed with the standard support flow below, referencing the docs in the summary
+3. **If docs don't cover it:** pick `escalate` with `linear.team: "cloud"`, so the ticket goes to the Cloud team (CLO)
 
 ---
 
 ## Standard Support Flow
 
-For non-Cloud support issues:
+Usage questions are closed and pointed to community channels:
 
-1. Add a comment directing the user to GitHub Discussions and community resources
-2. Close the issue
-
-**Comment template:**
-```
-Thanks for reaching out! Questions about implementing custom features or getting help with Medusa are best handled through our community channels, where more people can help and others can benefit from the answer.
-
-Here's where you can get support:
-
-- 💬 **[GitHub Discussions](https://github.com/medusajs/medusa/discussions)** — ask questions, share ideas, and get help from the community
-- 🎮 **[Discord](https://discord.gg/medusajs)** — real-time help from the Medusa community
-- ☁️ **[Medusa Cloud](https://medusajs.com/cloud/)** — premium support available for Cloud customers
-
-I'm converting this to a discussion so it stays accessible. Feel free to continue the conversation there!
-```
-
-Then convert the issue to a discussion:
-```bash
-bash scripts/convert_to_discussion.sh <issue_number> "Support"
-```
+- `outcome: "close"`, `comment_template: "close-invalid"`
+- `summary`: say this is a usage question rather than a bug, point to the
+  relevant docs page when one answers it, and suggest asking in
+  [GitHub Discussions](https://github.com/medusajs/medusa/discussions) or
+  the Medusa Discord. Only github.com/medusajs, docs.medusajs.com, and
+  medusajs.com links survive in the summary, so name Discord without a link.

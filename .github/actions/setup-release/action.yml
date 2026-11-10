@@ -8,6 +8,7 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: 22
+        check-latest: true
 
     - name: Ensure npm 11.5.1+ for OIDC
       shell: bash

@@ -46,3 +46,4 @@ analyze
 # cloudflare
 .open-next
 .wrangler
+public/llms.txt

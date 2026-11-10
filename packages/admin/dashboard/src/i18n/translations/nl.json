@@ -143,6 +143,7 @@
     "reset": "Resetten",
     "confirm": "Bevestigen",
     "edit": "Bewerken",
+    "view": "Bekijken",
     "addItems": "Items toevoegen",
     "download": "Downloaden",
     "clear": "Wissen",
@@ -1082,6 +1083,24 @@
       "header": "Klant aanmaken",
       "hint": "Maak een nieuwe klant aan en beheer hun gegevens.",
       "successToast": "Klant {{email}} is succesvol aangemaakt."
+    },
+    "export": {
+      "header": "Klantenlijst exporteren",
+      "description": "Exporteer de klantenlijst naar een bestand.",
+      "success": {
+        "title": "We verwerken uw export",
+        "description": "Het exporteren van gegevens kan enkele minuten duren. We laten u weten wanneer we klaar zijn."
+      },
+      "format": {
+        "label": "Formaat",
+        "description": "Kies het formaat van het geëxporteerde bestand. JSON legt geneste gegevens over modules heen vast zonder verlies, wat aanbevolen is voor verzoeken om toegang tot persoonsgegevens.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Pas filters toe in de tabelweergave om deze weergave aan te passen"
+      }
     },
     "groups": {
       "label": "Klantengroepen",
@@ -2254,6 +2273,8 @@
       "method": "Methode",
       "allocation": "Toewijzing",
       "allocationTooltip": "Elk handhaaft de hoeveelheidsbeperking per artikel, terwijl Eénmalig de hoeveelheidsbeperking voor de gehele winkelwagen handhaaft",
+      "targetSelectionStrategy": "Artikelen met korting",
+      "targetSelectionStrategyTooltip": "Welke in aanmerking komende artikelen in de winkelwagen de korting ontvangen",
       "addCondition": "Voorwaarde toevoegen",
       "clearAll": "Alles wissen",
       "taxInclusive": "Belasting inclusief",
@@ -2403,6 +2424,16 @@
         "once": {
           "title": "Eénmalig",
           "description": "Past waarde toe op een beperkt aantal artikelen"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Duurste eerst",
+          "description": "Past korting toe op de duurste in aanmerking komende artikelen in de winkelwagen"
+        },
+        "cheapest_first": {
+          "title": "Goedkoopste eerst",
+          "description": "Past korting toe op de goedkoopste in aanmerking komende artikelen in de winkelwagen"
         }
       },
       "code": {
@@ -2767,7 +2798,7 @@
     "editUser": "Gebruiker bewerken",
     "inviteUser": "Gebruiker uitnodigen",
     "inviteUserHint": "Nodig een nieuwe gebruiker uit voor uw winkel.",
-    "inviteRolesTooltip": "Als er geen rol is geselecteerd, wordt de gebruiker uitgenodigd met een supergebruikersrol.",
+    "inviteRolesTooltip": "Als er geen rol is geselecteerd, wordt de gebruiker uitgenodigd zonder enige machtigingen. U kunt later rollen toewijzen.",
     "sendInvite": "Uitnodiging versturen",
     "pendingInvites": "Openstaande uitnodigingen",
     "deleteInviteWarning": "U staat op het punt de uitnodiging voor {{email}} te verwijderen. Deze actie kan niet ongedaan worden gemaakt.",
@@ -2842,7 +2873,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Gebruiker heeft deze rol al.",
-      "unassignableRoleTooltip": "U heeft geen toegang om deze rol toe te wijzen — uw machtigingen omvatten niet alle beleidsregels ervan.",
       "add": {
         "successToast_one": "Gebruiker is succesvol toegevoegd aan de rol.",
         "successToast_other": "Gebruikers zijn succesvol toegevoegd aan de rol.",
@@ -2870,6 +2900,9 @@
       "filtered": {
         "heading": "Geen resultaten",
         "description": "Geen machtigingen voldoen aan de huidige filtercriteria."
+      },
+      "manage": {
+        "successToast": "Machtigingen zijn succesvol bijgewerkt."
       }
     },
     "list": {
@@ -2893,6 +2926,7 @@
     },
     "edit": {
       "header": "Beleidsregel bewerken",
+      "identityHint": "De sleutel, resource en bewerking identificeren het beleid en kunnen niet worden gewijzigd. Maak in plaats daarvan een nieuw beleid aan.",
       "successToast": "Beleidsregel {{key}} bijgewerkt"
     },
     "delete": {
@@ -3354,6 +3388,9 @@
     "invalidTokenTitle": "Uw uitnodigingstoken is ongeldig",
     "invalidTokenHint": "Probeer een nieuwe uitnodigingslink aan te vragen.",
     "passwordMismatch": "Wachtwoorden komen niet overeen",
+    "signedInTitle": "U bent al aangemeld",
+    "signedInHint": "U bent aangemeld als {{email}}. Log uit om deze uitnodiging te accepteren.",
+    "signOut": "Uitloggen",
     "toast": {
       "accepted": "Uitnodiging succesvol geaccepteerd"
     }
@@ -3786,6 +3823,10 @@
       "description": "U heeft geen toestemming om deze pagina te bekijken.",
       "requiredPermission": "Vereiste machtiging: {{permission}}",
       "action": "U heeft geen toestemming om deze actie uit te voeren."
+    },
+    "noPermissions": {
+      "title": "Nog geen machtigingen",
+      "description": "U heeft nog geen machtigingen toegewezen gekregen. Neem contact op met uw beheerder om toegang te vragen tot de gebieden die u nodig heeft."
     },
     "requiredPermissions": {
       "title": "Vereiste machtigingen",

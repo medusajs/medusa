@@ -129,8 +129,7 @@ DataTableSortingMenu.displayName = "DataTable.SortingMenu"
 
 function getSortLabel(column: DataTableColumn<any, unknown>) {
   const meta = column.columnDef.meta as
-    | DataTableSortableColumnDefMeta
-    | undefined
+    DataTableSortableColumnDefMeta | undefined
   let headerValue: string | undefined = undefined
 
   if (typeof column.columnDef.header === "string") {
@@ -149,8 +148,7 @@ function getSortDescriptor(
   }
 
   const meta = column.columnDef.meta as
-    | DataTableSortableColumnDefMeta
-    | undefined
+    DataTableSortableColumnDefMeta | undefined
 
   switch (direction) {
     case "asc":

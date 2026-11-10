@@ -27,10 +27,7 @@ describe.skip("S3 File Plugin", () => {
         additional_client_config: process.env.S3_TEST_ENDPOINT?.includes(
           "localhost"
         )
-          ? {
-              sslEnabled: false,
-              s3ForcePathStyle: true,
-            }
+          ? { forcePathStyle: true }
           : {},
       }
     )
@@ -111,7 +108,7 @@ describe.skip("S3 File Plugin", () => {
     })
 
     expect(resp).toEqual({
-      key: expect.stringMatching(/tests\/catphoto.*\.jpg/),
+      key: expect.stringMatching(/tests\/cat\?photo.*\.jpg/),
       url: expect.stringMatching(/https?:\/\/.*\/cat%3Fphoto.*\.jpg/),
     })
   })

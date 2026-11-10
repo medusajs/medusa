@@ -120,7 +120,7 @@ export default class InventoryModuleService
       ({ id }) => !!id
     ) as [
       { id: string }[],
-      { location_id: string; inventory_item_id: string }[]
+      { location_id: string; inventory_item_id: string }[],
     ]
 
     const inventoryLevels = await this.inventoryLevelService_.list(
@@ -782,10 +782,14 @@ export default class InventoryModuleService
     config?: RestoreReturn<string>,
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    await super.restoreReservationItems({ id: ids }, config, context)
-
     const reservations: InventoryTypes.ReservationItemDTO[] =
-      await super.listReservationItems({ id: ids }, {}, context)
+      await this.reservationItemService_.list(
+        { id: ids, deleted_at: { $ne: null } },
+        { withDeleted: true },
+        context
+      )
+
+    await super.restoreReservationItems({ id: ids }, config, context)
 
     await this.adjustInventoryLevelsForReservationsRestore(
       reservations,
@@ -883,17 +887,17 @@ export default class InventoryModuleService
     lineItemId: string | string[],
     @MedusaContext() context: Context = {}
   ): Promise<void> {
+    const reservations: InventoryTypes.ReservationItemDTO[] =
+      await this.reservationItemService_.list(
+        { line_item_id: lineItemId, deleted_at: { $ne: null } },
+        { withDeleted: true },
+        context
+      )
+
     await this.reservationItemService_.restore(
       { line_item_id: lineItemId },
       context
     )
-
-    const reservations: InventoryTypes.ReservationItemDTO[] =
-      await this.reservationItemService_.list(
-        { line_item_id: lineItemId },
-        {},
-        context
-      )
 
     await this.adjustInventoryLevelsForReservationsRestore(
       reservations,

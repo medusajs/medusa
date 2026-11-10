@@ -340,17 +340,19 @@ export function getAllFieldsAndRelations(
     args[prefix] = expand.args
   }
 
-  for (const property in expand.expands ?? {}) {
+  for (const property of Object.keys(expand.expands ?? {})) {
+    const nestedExpand = expand.expands![property]
+
+    if (!nestedExpand) {
+      continue
+    }
+
     const newPrefix = prefix ? `${prefix}.${property}` : property
 
     relations.push(newPrefix)
     fields.delete(newPrefix)
 
-    const result = getAllFieldsAndRelations(
-      expand.expands![property],
-      newPrefix,
-      args
-    )
+    const result = getAllFieldsAndRelations(nestedExpand, newPrefix, args)
 
     result.select?.forEach(fields.add, fields)
     relations = relations.concat(result.relations)
@@ -361,8 +363,8 @@ export function getAllFieldsAndRelations(
     allFields.length && !shouldSelectAll
       ? allFields
       : shouldSelectAll
-      ? undefined
-      : []
+        ? undefined
+        : []
 
   return {
     select,

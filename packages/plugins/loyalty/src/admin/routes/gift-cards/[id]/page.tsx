@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom"
 import { LayoutComposer } from "@medusajs/dashboard/components"
+import { PermissionGuard, usePermissions } from "@medusajs/dashboard/hooks"
 import { JsonViewSection } from "../../../components/json-view-section"
 import { useGiftCard } from "../../../hooks/api/gift-cards"
 import GiftCardBalanceSection from "./components/gift-card-balance-section"
@@ -15,6 +16,8 @@ type GiftCardWithStoreCreditAccount = AdminGiftCard & {
 
 const GiftCardDetailsPage = () => {
   const { id } = useParams()
+  const { hasPermission } = usePermissions()
+  const canReadStoreCreditAccount = hasPermission("store_credit_account:read")
   const { gift_card: giftCard, isLoading } = useGiftCard(id!, {
     fields: "*line_item.product,*store_credit_account",
   })
@@ -27,8 +30,9 @@ const GiftCardDetailsPage = () => {
     return <>Gift card not found</>
   }
 
-  const storeCreditAccount = (giftCard as GiftCardWithStoreCreditAccount)
-    ?.store_credit_account
+  const storeCreditAccount = canReadStoreCreditAccount
+    ? (giftCard as GiftCardWithStoreCreditAccount)?.store_credit_account
+    : undefined
 
   return (
     <LayoutComposer
@@ -70,13 +74,19 @@ const GiftCardDetailsPage = () => {
               <GiftCardNoteSection giftCard={giftCard!} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="GiftCardOrderSection">
-              <GiftCardOrderSection giftCard={giftCard!} />
+              <PermissionGuard permission="order:read">
+                <GiftCardOrderSection giftCard={giftCard!} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
           </>
         ),
       }}
     />
   )
+}
+
+export const handle = {
+  permissions: ["gift_card:read"],
 }
 
 export default GiftCardDetailsPage

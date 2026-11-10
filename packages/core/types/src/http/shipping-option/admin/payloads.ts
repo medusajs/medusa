@@ -46,8 +46,7 @@ interface AdminShippingOptionPriceWithRules {
   rules?: PriceRule[]
 }
 
-export interface AdminCreateShippingOptionPriceWithCurrency
-  extends AdminShippingOptionPriceWithRules {
+export interface AdminCreateShippingOptionPriceWithCurrency extends AdminShippingOptionPriceWithRules {
   /**
    * The currency code of the shipping option price.
    *
@@ -61,8 +60,7 @@ export interface AdminCreateShippingOptionPriceWithCurrency
   amount: number
 }
 
-export interface AdminCreateShippingOptionPriceWithRegion
-  extends AdminShippingOptionPriceWithRules {
+export interface AdminCreateShippingOptionPriceWithRegion extends AdminShippingOptionPriceWithRules {
   /**
    * The ID of the region that the shipping option price belongs to.
    */
@@ -151,8 +149,7 @@ interface AdminCreateShippingOptionBase {
  * The details of a flat-rate shipping option to create. A flat-rate shipping option
  * has a fixed price set in the `prices` property.
  */
-export interface AdminCreateFlatRateShippingOption
-  extends AdminCreateShippingOptionBase {
+export interface AdminCreateFlatRateShippingOption extends AdminCreateShippingOptionBase {
   /**
    * The shipping option's price type. `flat` indicates that the price is a fixed
    * amount set in the `prices` property.
@@ -172,8 +169,7 @@ export interface AdminCreateFlatRateShippingOption
  * price is calculated during checkout by its fulfillment provider, rather than being set
  * to a fixed amount.
  */
-export interface AdminCreateCalculatedShippingOption
-  extends AdminCreateShippingOptionBase {
+export interface AdminCreateCalculatedShippingOption extends AdminCreateShippingOptionBase {
   /**
    * The shipping option's price type. `calculated` indicates that the price is calculated
    * during checkout by the shipping option's fulfillment provider.
@@ -189,19 +185,16 @@ export interface AdminCreateCalculatedShippingOption
 }
 
 export type AdminCreateShippingOption =
-  | AdminCreateFlatRateShippingOption
-  | AdminCreateCalculatedShippingOption
+  AdminCreateFlatRateShippingOption | AdminCreateCalculatedShippingOption
 
-export interface AdminUpdateShippingOptionRule
-  extends AdminCreateShippingOptionRule {
+export interface AdminUpdateShippingOptionRule extends AdminCreateShippingOptionRule {
   /**
    * The ID of the shipping option rule that is being updated.
    */
   id: string
 }
 
-export interface AdminUpdateShippingOptionPriceWithCurrency
-  extends AdminShippingOptionPriceWithRules {
+export interface AdminUpdateShippingOptionPriceWithCurrency extends AdminShippingOptionPriceWithRules {
   /**
    * The ID of the shipping option price that is being updated.
    * If not provided, a new shipping option price will be created.
@@ -220,8 +213,7 @@ export interface AdminUpdateShippingOptionPriceWithCurrency
   amount?: number
 }
 
-export interface AdminUpdateShippingOptionPriceWithRegion
-  extends AdminShippingOptionPriceWithRules {
+export interface AdminUpdateShippingOptionPriceWithRegion extends AdminShippingOptionPriceWithRules {
   /**
    * The ID of the shipping option price that is being updated.
    * If not provided, a new shipping option price will be created.
