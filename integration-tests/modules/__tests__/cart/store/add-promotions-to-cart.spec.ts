@@ -293,30 +293,114 @@ medusaIntegrationTestRunner({
             },
           ])
 
+          const region = await appContainer
+            .resolve(Modules.REGION)
+            .createRegions({
+              name: "US",
+              currency_code: "usd",
+              countries: ["us"],
+            })
+          const salesChannel = await appContainer
+            .resolve(Modules.SALES_CHANNEL)
+            .createSalesChannels({ name: "Webshop" })
+          const stockLocation = await appContainer
+            .resolve(Modules.STOCK_LOCATION)
+            .createStockLocations({ name: "Warehouse" })
+
+          const fulfillmentModule = appContainer.resolve(Modules.FULFILLMENT)
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [{ type: "country", country_code: "us" }],
+              },
+            ],
+          })
+          const shippingOptions = await fulfillmentModule.createShippingOptions(
+            ["express", "standard"].map((name) => ({
+              name,
+              service_zone_id: fulfillmentSet.service_zones[0].id,
+              shipping_profile_id: shippingProfile.id,
+              provider_id: "manual_test-provider",
+              price_type: "flat" as const,
+              type: { label: name, description: name, code: name },
+            }))
+          )
+
+          const [product] = await appContainer
+            .resolve(Modules.PRODUCT)
+            .createProducts([
+              { title: "Test product", variants: [{ title: "Test variant" }] },
+            ])
+
+          const pricingModule = appContainer.resolve(Modules.PRICING)
+          const priceSets = await pricingModule.createPriceSets(
+            shippingOptions.map(() => ({
+              prices: [{ amount: 500, currency_code: "usd" }],
+            }))
+          )
+
+          await remoteLinkService.create([
+            {
+              [Modules.SALES_CHANNEL]: { sales_channel_id: salesChannel.id },
+              [Modules.STOCK_LOCATION]: { stock_location_id: stockLocation.id },
+            },
+            {
+              [Modules.STOCK_LOCATION]: { stock_location_id: stockLocation.id },
+              [Modules.FULFILLMENT]: { fulfillment_set_id: fulfillmentSet.id },
+            },
+            {
+              [Modules.STOCK_LOCATION]: { stock_location_id: stockLocation.id },
+              [Modules.FULFILLMENT]: {
+                fulfillment_provider_id: "manual_test-provider",
+              },
+            },
+            {
+              [Modules.PRODUCT]: { product_id: product.id },
+              [Modules.FULFILLMENT]: {
+                shipping_profile_id: shippingProfile.id,
+              },
+            },
+            ...shippingOptions.map((option, i) => ({
+              [Modules.FULFILLMENT]: { shipping_option_id: option.id },
+              [Modules.PRICING]: { price_set_id: priceSets[i].id },
+            })),
+          ])
+
           const cart = await cartModuleService.createCarts({
             currency_code: "usd",
             customer_id: "cus_test",
+            region_id: region.id,
+            sales_channel_id: salesChannel.id,
+            shipping_address: { country_code: "us" },
             items: [
               {
                 unit_price: 2000,
                 quantity: 1,
                 title: "Test item",
-                product_id: "prod_mat",
+                product_id: product.id,
+                variant_id: product.variants[0].id,
+                requires_shipping: true,
               } as any,
             ],
           })
 
           const [express, standard] =
-            await cartModuleService.addShippingMethods(cart.id, [
-              {
+            await cartModuleService.addShippingMethods(
+              cart.id,
+              shippingOptions.map((option) => ({
                 amount: 500,
-                name: "express",
-              },
-              {
-                amount: 500,
-                name: "standard",
-              },
-            ])
+                name: option.name,
+                shipping_option_id: option.id,
+              }))
+            )
 
           await remoteLinkService.create({
             [Modules.CART]: { cart_id: cart.id },
