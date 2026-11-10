@@ -145,4 +145,43 @@ describe("remoteQueryObjectFromString", function () {
       },
     })
   })
+
+  it("should not pollute the object prototype through unsafe or inherited field segments", function () {
+    const toStringFn = Object.prototype.toString
+
+    const output = remoteQueryObjectFromString({
+      entryPoint: "region",
+      variables: {},
+      fields: [
+        "id",
+        "__proto__.polluted_proto",
+        "constructor.prototype.polluted_constructor",
+        "countries.__proto__.polluted_nested",
+        "toString.polluted_inherited",
+        "countries.iso_2",
+      ],
+    })
+
+    expect(Object.prototype["fields"]).toBeUndefined()
+    expect(Object.prototype["polluted_constructor"]).toBeUndefined()
+    expect({}["fields"]).toBeUndefined()
+    expect(Object.prototype.toString).toBe(toStringFn)
+    expect(Object.prototype.hasOwnProperty.call(toStringFn, "fields")).toBe(
+      false
+    )
+
+    expect(output.__value).toEqual({
+      region: {
+        __args: {},
+        fields: ["id"],
+        isServiceAccess: false,
+        countries: {
+          fields: ["iso_2"],
+        },
+        toString: {
+          fields: ["polluted_inherited"],
+        },
+      },
+    })
+  })
 })

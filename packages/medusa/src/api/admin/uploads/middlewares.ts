@@ -1,5 +1,6 @@
 import { validateAndTransformQuery } from "@medusajs/framework"
 import {
+  authorize,
   MiddlewareRoute,
   validateAndTransformBody,
 } from "@medusajs/framework/http"
@@ -16,11 +17,13 @@ const upload = multer({ storage: multer.memoryStorage() })
 export const adminUploadRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/uploads/*",
-    policies: [
-      {
-        resource: Entities.file,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.file,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   // TODO: There is a `/protected` route in v1 that might need a bit more thought when implementing
@@ -28,14 +31,14 @@ export const adminUploadRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/uploads",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.file,
+          operation: PolicyOperation.create,
+        },
+      ]),
       upload.array("files"),
       validateAndTransformQuery(AdminGetUploadParams, retrieveUploadConfig),
-    ],
-    policies: [
-      {
-        resource: Entities.file,
-        operation: PolicyOperation.create,
-      },
     ],
   },
   {
@@ -48,23 +51,26 @@ export const adminUploadRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/uploads/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.file,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.file,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/uploads/presigned-urls",
-    middlewares: [validateAndTransformBody(AdminUploadPreSignedUrl)],
-    policies: [
-      {
-        resource: Entities.file,
-        operation: PolicyOperation.create,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.file,
+          operation: PolicyOperation.create,
+        },
+      ]),
+      validateAndTransformBody(AdminUploadPreSignedUrl),
     ],
   },
 ]

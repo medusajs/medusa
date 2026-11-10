@@ -24,6 +24,9 @@ export const Modules = {
   CURRENCY: "currency",
   FILE: "file",
   NOTIFICATION: "notification",
+  /**
+   * @deprecated The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property
+   */
   INDEX: "index",
   SEARCH: "search",
   LOCKING: "locking",

@@ -1,6 +1,7 @@
 import Handlebars from "handlebars"
 import { ContainerReflection, ReflectionKind } from "typedoc"
 import { PageEvent } from "typedoc"
+import { getReflectionUrl } from "utils"
 
 export default function () {
   Handlebars.registerHelper(
@@ -16,13 +17,13 @@ export default function () {
                 `[${
                   this.model.parent.parent.name
                 }](${Handlebars.helpers.relativeURL(
-                  this.model?.parent?.parent.url
+                  getReflectionUrl(this.model?.parent?.parent)
                 )})`
               )
             }
             title.push(
               `[${this.model.parent.name}](${Handlebars.helpers.relativeURL(
-                this.model.parent.url
+                getReflectionUrl(this.model.parent)
               )})`
             )
           }

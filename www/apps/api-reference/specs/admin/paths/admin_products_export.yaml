@@ -624,25 +624,16 @@ post:
       in: query
       required: false
       schema:
-        oneOf:
-          - type: string
-            title: status
-            description: Filter products by their status.
-            enum:
-              - draft
-              - proposed
-              - published
-              - rejected
-          - type: array
-            description: Filter products by multiple statuses.
-            items:
-              type: string
-              description: A product status.
-              enum:
-                - draft
-                - proposed
-                - published
-                - rejected
+        type: array
+        description: Filter products by their statuses.
+        items:
+          type: string
+          description: A product status.
+          enum:
+            - draft
+            - proposed
+            - published
+            - rejected
     - name: id
       in: query
       required: false

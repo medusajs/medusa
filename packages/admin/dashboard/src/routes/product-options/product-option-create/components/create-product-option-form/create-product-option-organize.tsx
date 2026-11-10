@@ -67,9 +67,9 @@ export const CreateProductOptionOrganize = ({
 
   return (
     <div className="px-16">
-      <div className="mx-auto flex w-full max-w-[720px] flex-col gap-y-8 ">
-        <div className="border-ui-border-base flex flex-col gap-y-2 overflow-hidden rounded-xl border">
-          <div className="border-b-base bg-ui-bg-component border-b p-2">
+      <div className="mx-auto flex w-full max-w-[720px] flex-col gap-y-8">
+        <div className="flex flex-col gap-y-2 overflow-hidden rounded-xl border border-ui-border-base">
+          <div className="border-b-base border-b bg-ui-bg-component p-2">
             <Text size="small" leading="compact" weight="plus">
               {t("productOptions.create.tabs.organize")}
             </Text>
@@ -80,7 +80,7 @@ export const CreateProductOptionOrganize = ({
             renderItem={(item) => (
               <SortableList.Item
                 id={item.id}
-                className="border-ui-border-base border-b last:border-b-0"
+                className="border-b border-ui-border-base last:border-b-0"
               >
                 <div className="flex flex-1 items-center gap-x-3 px-4 py-3">
                   <SortableList.DragHandle />

@@ -59,12 +59,12 @@ const InvalidResetToken = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="bg-ui-bg-base flex min-h-dvh w-dvw items-center justify-center">
+    <div className="flex min-h-dvh w-dvw items-center justify-center bg-ui-bg-base">
       <div className="m-4 flex w-full max-w-[300px] flex-col items-center">
         <LogoBox className="mb-4" />
         <div className="mb-6 flex flex-col items-center">
           <Heading>{t("resetPassword.invalidLinkTitle")}</Heading>
-          <Text size="small" className="text-ui-fg-subtle text-center">
+          <Text size="small" className="text-center text-ui-fg-subtle">
             {t("resetPassword.invalidLinkHint")}
           </Text>
         </div>
@@ -84,7 +84,7 @@ const InvalidResetToken = () => {
               <Link
                 key="login-link"
                 to="/login"
-                className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
+                className="text-ui-fg-interactive outline-none transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover"
               />,
             ]}
           />
@@ -143,12 +143,12 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
   }
 
   return (
-    <div className="bg-ui-bg-subtle flex min-h-dvh w-dvw items-center justify-center">
+    <div className="flex min-h-dvh w-dvw items-center justify-center bg-ui-bg-subtle">
       <div className="m-4 flex w-full max-w-[280px] flex-col items-center">
         <LogoBox className="mb-4" />
         <div className="mb-6 flex flex-col items-center">
           <Heading>{t("resetPassword.resetPassword")}</Heading>
-          <Text size="small" className="text-ui-fg-subtle text-center">
+          <Text size="small" className="text-center text-ui-fg-subtle">
             {t("resetPassword.newPasswordHint")}
           </Text>
         </div>
@@ -202,7 +202,7 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
               {showAlert && (
                 <Alert dismissible variant="success">
                   <div className="flex flex-col">
-                    <span className="text-ui-fg-base mb-1">
+                    <span className="mb-1 text-ui-fg-base">
                       {t("resetPassword.successfulResetTitle")}
                     </span>
                     <span>{t("resetPassword.successfulReset")}</span>
@@ -224,7 +224,7 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
               <Link
                 key="login-link"
                 to="/login"
-                className="text-ui-fg-base transition-fg hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover outline-none"
+                className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover text-ui-fg-base outline-none transition-fg"
               />,
             ]}
           />
@@ -272,12 +272,12 @@ export const ResetPassword = () => {
   }
 
   return (
-    <div className="bg-ui-bg-base flex min-h-dvh w-dvw items-center justify-center">
+    <div className="flex min-h-dvh w-dvw items-center justify-center bg-ui-bg-base">
       <div className="m-4 flex w-full max-w-[300px] flex-col items-center">
         <LogoBox className="mb-4" />
         <div className="mb-4 flex flex-col items-center">
           <Heading>{t("resetPassword.resetPassword")}</Heading>
-          <Text size="small" className="text-ui-fg-subtle text-center">
+          <Text size="small" className="text-center text-ui-fg-subtle">
             {t("resetPassword.hint")}
           </Text>
         </div>
@@ -310,7 +310,7 @@ export const ResetPassword = () => {
               {showAlert && (
                 <Alert dismissible variant="success">
                   <div className="flex flex-col">
-                    <span className="text-ui-fg-base mb-1">
+                    <span className="mb-1 text-ui-fg-base">
                       {t("resetPassword.successfulRequestTitle")}
                     </span>
                     <span>{t("resetPassword.successfulRequest")}</span>
@@ -330,7 +330,7 @@ export const ResetPassword = () => {
               <Link
                 key="login-link"
                 to="/login"
-                className="text-ui-fg-base transition-fg hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover outline-none"
+                className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover text-ui-fg-base outline-none transition-fg"
               />,
             ]}
           />

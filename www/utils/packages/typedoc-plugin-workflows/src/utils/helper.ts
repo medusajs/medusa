@@ -1,4 +1,4 @@
-import { DeclarationReflection, ProjectReflection } from "typedoc"
+import { Context, DeclarationReflection, ProjectReflection } from "typedoc"
 import ts from "typescript"
 import { StepModifier, StepType } from "../types.js"
 import { capitalize, findReflectionInNamespaces } from "utils"
@@ -45,10 +45,10 @@ export default class Helper {
    * @returns The symbol and initializer, if found.
    */
   getReflectionSymbolAndInitializer({
-    project,
+    context,
     reflection,
   }: {
-    project: ProjectReflection
+    context: Context
     reflection: DeclarationReflection
   }):
     | {
@@ -56,7 +56,7 @@ export default class Helper {
         initializer: ts.CallExpression
       }
     | undefined {
-    const symbol = project.getSymbolFromReflection(reflection)
+    const symbol = context.getSymbolFromReflection(reflection)
 
     if (
       !symbol ||

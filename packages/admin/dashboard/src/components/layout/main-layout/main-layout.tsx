@@ -20,7 +20,7 @@ import { useStore } from "../../../hooks/api/store"
 import { LayoutComposer } from "../../layout-composer"
 import { PermissionGuard } from "../../common/permission-guard"
 import { Skeleton } from "../../common/skeleton"
-import { INavItem, NavItem } from "../../layout/nav-item"
+import { INavItem, NavItem, usePermittedNavItems } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -30,6 +30,20 @@ import { useExtension } from "../../../providers/extension-provider"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 import { useDocumentDirection } from "../../../hooks/use-document-direction"
+import {
+  useCampaignPermissions,
+  useCustomerGroupPermissions,
+  useCustomerPermissions,
+  useInventoryItemPermissions,
+  useOrderPermissions,
+  usePriceListPermissions,
+  useProductCategoryPermissions,
+  useProductCollectionPermissions,
+  useProductPermissions,
+  usePromotionPermissions,
+  useReservationItemPermissions,
+  useResourcePermissions,
+} from "../../../hooks/use-resource-permissions"
 import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
 
 export const MainLayout = () => {
@@ -45,7 +59,7 @@ const MainSidebar = () => {
     <aside className="flex flex-1 flex-col justify-between overflow-y-auto">
       <div className="flex flex-1 flex-col">
         <PermissionGuard resource="store" operation="read">
-          <div className="bg-ui-bg-subtle sticky top-0">
+          <div className="sticky top-0 bg-ui-bg-subtle">
             <Header />
             <div className="px-3">
               <Divider variant="dashed" />
@@ -58,7 +72,7 @@ const MainSidebar = () => {
           </div>
           <UtilitySection />
         </div>
-        <div className="bg-ui-bg-subtle sticky bottom-0">
+        <div className="sticky bottom-0 bg-ui-bg-subtle">
           <UserSection />
         </div>
       </div>
@@ -113,7 +127,7 @@ const Header = () => {
         <DropdownMenu.Trigger
           disabled={!isLoaded}
           className={clx(
-            "bg-ui-bg-subtle transition-fg grid w-full grid-cols-[24px_1fr_15px] items-center gap-x-3 rounded-md p-0.5 pe-2 outline-none",
+            "grid w-full grid-cols-[24px_1fr_15px] items-center gap-x-3 rounded-md bg-ui-bg-subtle p-0.5 pe-2 outline-none transition-fg",
             "hover:bg-ui-bg-subtle-hover",
             "data-[state=open]:bg-ui-bg-subtle-hover",
             "focus-visible:shadow-borders-focus"
@@ -180,82 +194,132 @@ const Header = () => {
 
 const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { t } = useTranslation()
+  const { canRead: canReadCustomers } = useCustomerPermissions()
+  const { canRead: canReadCustomerGroups } = useCustomerGroupPermissions()
+  const { canRead: canReadOrders } = useOrderPermissions()
+  const { canRead: canReadInventory } = useInventoryItemPermissions()
+  const { canRead: canReadReservations } = useReservationItemPermissions()
+  const { canRead: canReadPromotions } = usePromotionPermissions()
+  const { canRead: canReadCampaigns } = useCampaignPermissions()
+  const { canRead: canReadPriceLists } = usePriceListPermissions()
+  const { canRead: canReadProducts } = useProductPermissions()
+  const { canRead: canReadProductCollections } =
+    useProductCollectionPermissions()
+  const { canRead: canReadProductCategories } = useProductCategoryPermissions()
+  const { canRead: canReadProductOptions } =
+    useResourcePermissions("product_option")
 
   return [
-    {
-      icon: <ShoppingCart />,
-      label: t("orders.domain"),
-      to: "/orders",
-      items: [
-        // TODO: Enable when domin is introduced
-        // {
-        //   label: t("draftOrders.domain"),
-        //   to: "/draft-orders",
-        // },
-      ],
-    },
-    {
-      icon: <Tag />,
-      label: t("products.domain"),
-      to: "/products",
-      items: [
-        {
-          label: t("collections.domain"),
-          to: "/collections",
-        },
-        {
-          label: t("categories.domain"),
-          to: "/categories",
-        },
-        {
-          label: t("productOptions.domain"),
-          to: "/product-options",
-        },
-        // TODO: Enable when domin is introduced
-        // {
-        //   label: t("giftCards.domain"),
-        //   to: "/gift-cards",
-        // },
-      ],
-    },
-    {
-      icon: <Buildings />,
-      label: t("inventory.domain"),
-      to: "/inventory",
-      items: [
-        {
-          label: t("reservations.domain"),
-          to: "/reservations",
-        },
-      ],
-    },
-    {
-      icon: <Users />,
-      label: t("customers.domain"),
-      to: "/customers",
-      items: [
-        {
-          label: t("customerGroups.domain"),
-          to: "/customer-groups",
-        },
-      ],
-    },
-    {
-      icon: <ReceiptPercent />,
-      label: t("promotions.domain"),
-      to: "/promotions",
-      items: [
-        {
-          label: t("campaigns.domain"),
-          to: "/campaigns",
-        },
-      ],
-    },
-    {
-      icon: <CurrencyDollar />,
-      label: t("priceLists.domain"),
-      to: "/price-lists",
-    },
+    ...(canReadOrders
+      ? [
+          {
+            icon: <ShoppingCart />,
+            label: t("orders.domain"),
+            to: "/orders",
+          },
+        ]
+      : []),
+    ...(canReadProducts
+      ? [
+          {
+            icon: <Tag />,
+            label: t("products.domain"),
+            to: "/products",
+            items: [
+              ...(canReadProductCollections
+                ? [
+                    {
+                      label: t("collections.domain"),
+                      to: "/collections",
+                    },
+                  ]
+                : []),
+              ...(canReadProductCategories
+                ? [
+                    {
+                      label: t("categories.domain"),
+                      to: "/categories",
+                    },
+                  ]
+                : []),
+              ...(canReadProductOptions
+                ? [
+                    {
+                      label: t("productOptions.domain"),
+                      to: "/product-options",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+    ...(canReadInventory
+      ? [
+          {
+            icon: <Buildings />,
+            label: t("inventory.domain"),
+            to: "/inventory",
+            items: [
+              ...(canReadReservations
+                ? [
+                    {
+                      label: t("reservations.domain"),
+                      to: "/reservations",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+    ...(canReadCustomers
+      ? [
+          {
+            icon: <Users />,
+            label: t("customers.domain"),
+            to: "/customers",
+            items: [
+              ...(canReadCustomerGroups
+                ? [
+                    {
+                      label: t("customerGroups.domain"),
+                      to: "/customer-groups",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+    ...(canReadPromotions
+      ? [
+          {
+            icon: <ReceiptPercent />,
+            label: t("promotions.domain"),
+            to: "/promotions",
+            items: [
+              ...(canReadCampaigns
+                ? [
+                    {
+                      label: t("campaigns.domain"),
+                      to: "/campaigns",
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+    ...(canReadPriceLists
+      ? [
+          {
+            icon: <CurrencyDollar />,
+            label: t("priceLists.domain"),
+            to: "/price-lists",
+          },
+        ]
+      : []),
   ]
 }
 
@@ -268,7 +332,7 @@ const Searchbar = () => {
       <button
         onClick={toggleSearch}
         className={clx(
-          "bg-ui-bg-subtle text-ui-fg-subtle flex w-full items-center gap-x-2.5 rounded-md px-2 py-1 outline-none",
+          "flex w-full items-center gap-x-2.5 rounded-md bg-ui-bg-subtle px-2 py-1 text-ui-fg-subtle outline-none",
           "hover:bg-ui-bg-subtle-hover",
           "focus-visible:shadow-borders-focus"
         )}
@@ -297,13 +361,13 @@ const SidebarRoutes = () => {
 
   const { getMenu } = useExtension()
 
-  const menuItems = getMenu("coreExtensions")
+  const menuItems = usePermittedNavItems(getMenu("coreExtensions"))
 
   menuItems.forEach((item) => {
     if (item.nested) {
       const route = coreRoutes.find((route) => route.to === item.nested)
       if (route) {
-        route.items?.push(item)
+        route.items = [...(route.items ?? []), item]
       }
     }
   })

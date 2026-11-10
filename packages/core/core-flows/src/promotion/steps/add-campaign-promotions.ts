@@ -36,7 +36,7 @@ export const addCampaignPromotionsStep = createStep(
       })
     }
 
-    return new StepResponse(null, input)
+    return new StepResponse(promotionIdsToAdd, input)
   },
   async (data, { container }) => {
     if (!data) {

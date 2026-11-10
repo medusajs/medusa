@@ -4,7 +4,10 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
-import { getProductFixture } from "../../../../helpers/fixtures"
+import {
+  getPricelistFixture,
+  getProductFixture,
+} from "../../../../helpers/fixtures"
 
 jest.setTimeout(50000)
 
@@ -855,59 +858,36 @@ medusaIntegrationTestRunner({
           )
         })
 
-        // TODO: Enable through http
-        it.skip("should return products filtered by price_list_id", async () => {
-          // const priceList = await breaking(
-          //   async () => {
-          //     return await simplePriceListFactory(dbConnection, {
-          //       prices: [
-          //         {
-          //           variant_id: baseProduct.variants[0].id,
-          //           amount: 100,
-          //           currency_code: "usd",
-          //         },
-          //       ],
-          //     })
-          //   },
-          //   async () => {
-          //     const variantId = baseProduct.variants[0].id
-          //     const priceSet = await createVariantPriceSet({
-          //       container,
-          //       variantId,
-          //     })
-          //     const [priceList] = await pricingService.createPriceLists([
-          //       {
-          //         title: "Test price list",
-          //         description: "Test",
-          //         status: PriceListStatus.ACTIVE,
-          //         type: PriceListType.OVERRIDE,
-          //         prices: [
-          //           {
-          //             amount: 5000,
-          //             currency_code: "usd",
-          //             price_set_id: priceSet.id,
-          //             rules: {
-          //               region_id: "test-region",
-          //             },
-          //           },
-          //         ],
-          //       },
-          //     ])
-          //     return priceList
-          //   }
-          // )
-          // const res = await api.get(
-          //   `/admin/products?price_list_id[]=${priceList.id}`,
-          //   adminHeaders
-          // )
-          // expect(res.status).toEqual(200)
-          // expect(res.data.products.length).toEqual(1)
-          // expect(res.data.products).toEqual([
-          //   expect.objectContaining({
-          //     id: baseProduct.id,
-          //     status: baseProduct.status,
-          //   }),
-          // ])
+        it("should return products filtered by price_list_id", async () => {
+          const priceList = (
+            await api.post(
+              "/admin/price-lists",
+              getPricelistFixture({
+                title: "Test price list",
+                prices: [
+                  {
+                    amount: 5000,
+                    currency_code: "usd",
+                    variant_id: baseProduct.variants[0].id,
+                  },
+                ],
+              }),
+              adminHeaders
+            )
+          ).data.price_list
+
+          const res = await api.get(
+            `/admin/products?price_list_id[]=${priceList.id}`,
+            adminHeaders
+          )
+
+          expect(res.status).toEqual(200)
+          expect(res.data.count).toEqual(1)
+          expect(res.data.products).toEqual([
+            expect.objectContaining({
+              id: baseProduct.id,
+            }),
+          ])
         })
 
         it("should return products filtered by sales_channel_id", async () => {
@@ -939,7 +919,7 @@ medusaIntegrationTestRunner({
           )
 
           expect(res.status).toEqual(200)
-          expect(res.data.products.length).toEqual(1)
+          expect(res.data.count).toEqual(1)
           expect(res.data.products).toEqual([
             expect.objectContaining({
               id: newProduct.id,

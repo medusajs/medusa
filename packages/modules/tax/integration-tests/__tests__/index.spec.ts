@@ -1041,7 +1041,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
               { reference: "product", reference_id: "product_id_1" },
             ],
           })
-        ).rejects.toThrowError(
+        ).rejects.toThrow(
           /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1, already exists./
         )
 
@@ -1059,7 +1059,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
             reference: "product",
             reference_id: "product_id_1",
           })
-        ).rejects.toThrowError(
+        ).rejects.toThrow(
           /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1, already exists./
         )
       })
@@ -1074,7 +1074,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
             parent_id: caRegion.id,
             province_code: "QC",
           })
-        ).rejects.toThrowError(
+        ).rejects.toThrow(
           `Province region must belong to a parent region with the same country code. You are trying to create a province region with (country: us, province: qc) but parent expects (country: ca)`
         )
       })
@@ -1094,7 +1094,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
             country_code: "CA",
             province_code: "QC",
           })
-        ).rejects.toThrowError(
+        ).rejects.toThrow(
           "Tax region with country_code: ca, province_code: qc, already exists."
         )
       })
@@ -1106,7 +1106,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
             country_code: "CA",
             province_code: "QC",
           })
-        ).rejects.toThrowError(
+        ).rejects.toThrow(
           `Province region must belong to a parent region. You are trying to create a province region with (country: ca, province: qc) but parent does not exist`
         )
       })
@@ -1129,9 +1129,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
             is_default: true,
             code: "TEST-CODE-2",
           })
-        ).rejects.toThrowError(
-          /Tax rate with tax_region_id: .*?, already exists./
-        )
+        ).rejects.toThrow(/Tax rate with tax_region_id: .*?, already exists./)
       })
 
       it("should delete all child regions when parent region is deleted", async () => {

@@ -79,8 +79,7 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
   const selectedInventoryItem = inventoryItems.options.find(
     (option) => option.value === inventoryItemId
   )?.inventoryItem as
-    | HttpTypes.AdminInventoryItemResponse["inventory_item"]
-    | undefined
+    HttpTypes.AdminInventoryItemResponse["inventory_item"] | undefined
 
   const locationId = form.watch("location_id")
   const selectedLocationLevel = selectedInventoryItem?.location_levels?.find(
@@ -213,7 +212,7 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
                 }}
               />
             </div>
-            <div className="text-ui-fg-subtle shadow-elevation-card-rest grid grid-rows-4 divide-y rounded-lg">
+            <div className="grid grid-rows-4 divide-y rounded-lg text-ui-fg-subtle shadow-elevation-card-rest">
               <AttributeGridRow
                 title={t("fields.title")}
                 value={

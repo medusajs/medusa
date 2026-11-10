@@ -14,7 +14,7 @@ const eventBaseNames: [
   "productTag",
   "productCategory",
   "productCollection",
-  "productImage"
+  "productImage",
 ] = [
   "product",
   "productVariant",

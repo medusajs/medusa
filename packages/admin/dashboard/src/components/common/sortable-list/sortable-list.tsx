@@ -127,7 +127,7 @@ type SortableOverlayProps = PropsWithChildren
 const Overlay = ({ children }: SortableOverlayProps) => {
   return (
     <DragOverlay
-      className="shadow-elevation-card-hover overflow-hidden rounded-md [&>li]:border-b-0"
+      className="overflow-hidden rounded-md shadow-elevation-card-hover [&>li]:border-b-0"
       dropAnimation={dropAnimationConfig}
     >
       {children}
@@ -195,7 +195,7 @@ const Item = <TItem extends SortableBaseItem>({
   return (
     <SortableItemContext.Provider value={context}>
       <li
-        className={clx("transition-fg flex flex-1 list-none", className)}
+        className={clx("flex flex-1 list-none transition-fg", className)}
         ref={setNodeRef}
         style={style}
       >

@@ -114,7 +114,14 @@ export const OrderEditCreateForm = ({
 
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
           <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
-            <Heading level="h1">{t("orders.edits.create")}</Heading>
+            <RouteFocusModal.Title asChild>
+              <Heading level="h1">{t("orders.edits.create")}</Heading>
+            </RouteFocusModal.Title>
+            <RouteFocusModal.Description asChild>
+              <span className="sr-only">
+                {t("orders.edits.currentItemsDescription")}
+              </span>
+            </RouteFocusModal.Description>
 
             <OrderEditItemsSection preview={preview} order={order} />
 
@@ -179,7 +186,7 @@ export const OrderEditCreateForm = ({
             />
 
             {/* SEND NOTIFICATION*/}
-            <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
+            <div className="mt-8 rounded-lg border bg-ui-bg-field py-2 pl-2 pr-4">
               <Form.Field
                 control={form.control}
                 name="send_notification"

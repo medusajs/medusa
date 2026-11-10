@@ -772,6 +772,16 @@ const generatedgeneratedStoreSidebarSidebar = {
             "variant": "blue",
             "text": "Post"
           }
+        },
+        {
+          "type": "link",
+          "path": "/store/payment-collections/update-payment-session",
+          "title": "Update Payment Session",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
         }
       ]
     },

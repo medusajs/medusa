@@ -65,9 +65,8 @@ export const updatePricePreferencesAsArrayStep = createStep(
       }
     })
 
-    const upsertedPricePreferences = await service.upsertPricePreferences(
-      toUpsert
-    )
+    const upsertedPricePreferences =
+      await service.upsertPricePreferences(toUpsert)
 
     const newIds = arrayDifference(
       upsertedPricePreferences.map((p) => p.id),

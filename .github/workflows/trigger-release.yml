@@ -104,7 +104,7 @@ jobs:
       - name: Publish packages under next tag
         run: |
           set -o pipefail
-          yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }} | tee publish-output.txt
+          yarn changeset publish --tag ${{ github.event.inputs.version || 'preview' }} | tee publish-output.txt
 
       - name: Comment published versions on pull request
         if: github.event.inputs.pr_number != ''
@@ -205,7 +205,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: yarn version
+          version: yarn run version
           commit: "Chore: Release"
           title: "Chore: Release"
           createGithubReleases: false

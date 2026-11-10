@@ -3,9 +3,9 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production yarn run -T tsc --build"
   },
   "publishConfig": {
     "access": "public"
@@ -18,10 +18,11 @@
   },
   "dependencies": {
     "@medusajs/workflows-sdk": "latest",
-    "@mermaid-js/mermaid-cli": "^10.6.1",
+    "@mermaid-js/mermaid-cli": "^12.0.0",
     "commander": "^11.1.0",
+    "puppeteer": "^25.0.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.6.2"
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.12.10"

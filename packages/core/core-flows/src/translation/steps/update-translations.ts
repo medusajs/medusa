@@ -37,7 +37,6 @@ export const updateTranslationsStepId = "update-translations"
  * This step updates translations matching the specified filters or by ID.
  * 
  * @since 2.12.3
- * @featureFlag translation
  *
  * @example
  * To update translations by their ID:

@@ -4,9 +4,10 @@ const IsPrimaryKeyModifier = Symbol.for("isPrimaryKeyModifier")
 /**
  * PrimaryKey modifier marks a schema node as primaryKey
  */
-export class PrimaryKeyModifier<T, Schema extends PropertyType<T>>
-  implements PropertyType<T>
-{
+export class PrimaryKeyModifier<
+  T,
+  Schema extends PropertyType<T>,
+> implements PropertyType<T> {
   [IsPrimaryKeyModifier]: true = true
 
   static isPrimaryKeyModifier(obj: any): obj is PrimaryKeyModifier<any, any> {

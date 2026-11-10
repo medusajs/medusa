@@ -1,4 +1,5 @@
 {
+	"schemaVersion": "2.0",
 	"id": 3618,
 	"name": "currency-models",
 	"variant": "project",
@@ -16,20 +17,22 @@
 					"fileName": "currency.ts",
 					"line": 3,
 					"character": 0,
-					"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/currency/src/models/currency.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/currency/src/models/currency.ts#L3"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
@@ -61,20 +64,22 @@
 													"fileName": "currency.ts",
 													"line": 4,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/currency/src/models/currency.ts#L4"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/currency/src/models/currency.ts#L4"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/text.ts",
 															"qualifiedName": "TextProperty"
 														},
 														"name": "TextProperty",
@@ -105,13 +110,14 @@
 													"fileName": "currency.ts",
 													"line": 5,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/currency/src/models/currency.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/currency/src/models/currency.ts#L5"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -138,13 +144,14 @@
 													"fileName": "currency.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/currency/src/models/currency.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/currency/src/models/currency.ts#L6"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -171,13 +178,14 @@
 													"fileName": "currency.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/currency/src/models/currency.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/currency/src/models/currency.ts#L7"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -204,13 +212,14 @@
 													"fileName": "currency.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/currency/src/models/currency.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/currency/src/models/currency.ts#L8"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/number.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/number.ts",
 													"qualifiedName": "NumberProperty"
 												},
 												"name": "NumberProperty",
@@ -237,13 +246,14 @@
 													"fileName": "currency.ts",
 													"line": 9,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/currency/src/models/currency.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/currency/src/models/currency.ts#L9"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/big-number.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/big-number.ts",
 													"qualifiedName": "BigNumberProperty"
 												},
 												"name": "BigNumberProperty",
@@ -263,14 +273,6 @@
 												3625,
 												3626
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "currency.ts",
-											"line": 3,
-											"character": 40,
-											"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/currency/src/models/currency.ts#L3"
 										}
 									]
 								}
@@ -300,39 +302,48 @@
 	"packageName": "@medusajs/currency",
 	"symbolIdMap": {
 		"3618": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/index.ts",
+			"packageName": "@medusajs/currency",
+			"packagePath": "src/models/index.ts",
 			"qualifiedName": ""
 		},
 		"3619": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"packageName": "@medusajs/currency",
+			"packagePath": "src/models/currency.ts",
 			"qualifiedName": "default"
 		},
 		"3620": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"packageName": "@medusajs/currency",
+			"packagePath": "src/models/currency.ts",
 			"qualifiedName": "__object"
 		},
 		"3621": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"packageName": "@medusajs/currency",
+			"packagePath": "src/models/currency.ts",
 			"qualifiedName": "__object.code"
 		},
 		"3622": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"packageName": "@medusajs/currency",
+			"packagePath": "src/models/currency.ts",
 			"qualifiedName": "__object.symbol"
 		},
 		"3623": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"packageName": "@medusajs/currency",
+			"packagePath": "src/models/currency.ts",
 			"qualifiedName": "__object.symbol_native"
 		},
 		"3624": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"packageName": "@medusajs/currency",
+			"packagePath": "src/models/currency.ts",
 			"qualifiedName": "__object.name"
 		},
 		"3625": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"packageName": "@medusajs/currency",
+			"packagePath": "src/models/currency.ts",
 			"qualifiedName": "__object.decimal_digits"
 		},
 		"3626": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
+			"packageName": "@medusajs/currency",
+			"packagePath": "src/models/currency.ts",
 			"qualifiedName": "__object.rounding"
 		}
 	},

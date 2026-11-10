@@ -69,7 +69,7 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
     <div>
       <Form {...form}>
         <KeyboundForm onSubmit={handleSubmit}>
-          <div className="bg-ui-bg-field shadow-borders-base flex flex-col gap-y-2 rounded-md px-2 py-1.5">
+          <div className="flex flex-col gap-y-2 rounded-md bg-ui-bg-field px-2 py-1.5 shadow-borders-base">
             <Form.Field
               control={form.control}
               name="value"
@@ -84,7 +84,7 @@ export const OrderNoteForm = ({ order }: OrderNoteFormProps) => {
                         {...field}
                         ref={textareaRef}
                         onInput={handleResize}
-                        className="txt-small text-ui-fg-base placeholder:text-ui-fg-muted resize-none overflow-hidden bg-transparent outline-none"
+                        className="txt-small resize-none overflow-hidden bg-transparent text-ui-fg-base outline-none placeholder:text-ui-fg-muted"
                         placeholder={t("orders.activity.comment.placeholder")}
                         rows={1}
                       />

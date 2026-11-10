@@ -73,7 +73,7 @@ Medusa apps are customized, not forked. An application (or plugin) extends Medus
 
 ### 2. Build System & Commands
 
-**Package Manager**: Yarn 3.2.1 with node-modules linker
+**Package Manager**: Yarn 4.18.1 with node-modules linker
 
 **Essential Commands:**
 
@@ -181,6 +181,7 @@ Every package under `packages/` MUST have a `README.md`, an `AGENTS.md`, and a `
 - Module: Node16
 - Strict null checks enabled
 - Decorators enabled (experimental)
+- Types shared across packages or implemented by providers (e.g. `ICachingProviderService`, `IFileProvider`) live in `packages/core/types`. When code needs a member they don't declare, add it there (optional, with TSDoc) instead of a local type, intersection, or cast, so external providers and other packages see it too.
 
 **Naming Conventions:**
 

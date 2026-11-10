@@ -24,7 +24,10 @@ runs:
       run: ./integration-tests/scripts/cli/wait-for-server-live.sh
     - name: Log in with user
       shell: "bash"
-      run: ./integration-tests/scripts/cli/login.sh ${{ inputs.email }} ${{ inputs.password }}
+      env:
+        EMAIL: ${{ inputs.email }}
+        PASSWORD: ${{ inputs.password }}
+      run: ./integration-tests/scripts/cli/login.sh "$EMAIL" "$PASSWORD"
     # - name: GetProducts
     #   shell: "bash"
     #   run: ./integration-tests/scripts/cli/get-products.sh ${{ inputs.pathToSeedData }}

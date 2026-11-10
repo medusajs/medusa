@@ -29,7 +29,7 @@ export function defineMiddlewares<
       res: MedusaResponse,
       next: MedusaNextFunction
     ) => any)[]
-  }
+  },
 >(
   config:
     | Route[]

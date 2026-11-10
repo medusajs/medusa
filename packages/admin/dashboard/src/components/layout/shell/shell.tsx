@@ -28,6 +28,7 @@ import {
   LAYOUT_CONTROLS_LOCATION,
 } from "../../layout-composer/constants"
 import { CORE_LAYOUT_IDS } from "@medusajs/admin-shared"
+import { useRememberedSearch } from "./use-remembered-search"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   const globalShortcuts = useGlobalShortcuts()
@@ -104,7 +105,8 @@ const Gutter = ({ children }: PropsWithChildren) => {
   )
 }
 
-const Breadcrumbs = () => {
+export const Breadcrumbs = () => {
+  const withRememberedSearch = useRememberedSearch()
   const matches = useMatches() as unknown as UIMatch<
     unknown,
     {
@@ -139,7 +141,7 @@ const Breadcrumbs = () => {
   return (
     <ol
       className={clx(
-        "text-ui-fg-muted txt-compact-small-plus flex select-none items-center"
+        "txt-compact-small-plus flex select-none items-center text-ui-fg-muted"
       )}
     >
       {crumbs.map((crumb, index) => {
@@ -151,7 +153,7 @@ const Breadcrumbs = () => {
             {!isLast ? (
               <Link
                 className="transition-fg hover:text-ui-fg-subtle"
-                to={crumb.path}
+                to={withRememberedSearch(crumb.path)}
               >
                 {crumb.label}
               </Link>
@@ -259,14 +261,14 @@ const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
       <RadixDialog.Portal>
         <RadixDialog.Overlay
           className={clx(
-            "bg-ui-bg-overlay fixed inset-0",
+            "fixed inset-0 bg-ui-bg-overlay",
             "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
           )}
         />
         <RadixDialog.Content
           className={clx(
-            "bg-ui-bg-subtle shadow-elevation-modal fixed inset-y-2 start-2 flex w-full max-w-[304px] flex-col overflow-hidden rounded-lg border-r",
-            "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-start-1/2 data-[state=open]:slide-in-from-start-1/2 duration-200"
+            "fixed inset-y-2 start-2 flex w-full max-w-[304px] flex-col overflow-hidden rounded-lg border-r bg-ui-bg-subtle shadow-elevation-modal",
+            "data-[state=closed]:slide-out-to-start-1/2 data-[state=open]:slide-in-from-start-1/2 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
           )}
         >
           <div className="p-3">

@@ -27,25 +27,22 @@ export type StepFunctionReturnConfig<TOutput> = {
 type KeysOfUnion<T> = T extends T ? keyof T : never
 export type HookHandler = (...args: any[]) => void | Promise<void>
 
-type ConvertHookToObject<THook> = THook extends Hook<
-  infer Name,
-  infer Input,
-  infer Output
->
-  ? {
-      [K in Name]: <TCompensateInput>(
-        invoke: InvokeFn<Input, Output, TCompensateInput>,
-        compensate?: CompensateFn<TCompensateInput>
-      ) => void
-    }
-  : never
+type ConvertHookToObject<THook> =
+  THook extends Hook<infer Name, infer Input, infer Output>
+    ? {
+        [K in Name]: <TCompensateInput>(
+          invoke: InvokeFn<Input, Output, TCompensateInput>,
+          compensate?: CompensateFn<TCompensateInput>
+        ) => void
+      }
+    : never
 
 /**
  * Helper to convert an array of hooks to functions
  */
 type ConvertHooksToFunctions<THooks extends any[]> = THooks extends [
   infer A,
-  ...infer R
+  ...infer R,
 ]
   ? ConvertHookToObject<A> & ConvertHooksToFunctions<R>
   : {}
@@ -60,7 +57,7 @@ export type Void = { " $$type": "void" }
  */
 export type StepFunction<
   TInput,
-  TOutput = unknown
+  TOutput = unknown,
 > = (KeysOfUnion<TInput> extends []
   ? // Function that doesn't expect any input
     {
@@ -70,8 +67,9 @@ export type StepFunction<
     }
   : // function that expects an input object
     {
-      (input: WorkflowData<TInput> | TInput): WorkflowData<TOutput> &
-        StepFunctionReturnConfig<TOutput>
+      (
+        input: WorkflowData<TInput> | TInput
+      ): WorkflowData<TOutput> & StepFunctionReturnConfig<TOutput>
     }) &
   WorkflowDataProperties<TOutput>
 
@@ -121,7 +119,7 @@ export type CreateWorkflowComposerContext = {
     }
   >
   parallelizeBinder: <
-    TOutput extends (WorkflowData | undefined)[] = WorkflowData[]
+    TOutput extends (WorkflowData | undefined)[] = WorkflowData[],
   >(
     fn: (this: CreateWorkflowComposerContext) => TOutput
   ) => TOutput
@@ -323,5 +321,5 @@ export type ReturnWorkflow<TData, TResult, THooks extends any[]> = {
  * type WorkflowInputData = UnwrapWorkflowInputDataType<typeof myWorkflow>
  */
 export type UnwrapWorkflowInputDataType<
-  T extends ReturnWorkflow<any, any, any>
+  T extends ReturnWorkflow<any, any, any>,
 > = T extends ReturnWorkflow<infer TData, infer R, infer THooks> ? TData : never

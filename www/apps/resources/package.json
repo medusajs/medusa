@@ -23,7 +23,7 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@medusajs/icons": "2.22.0",
+    "@medusajs/icons": "2.22.6",
     "@next/mdx": "16.4.2",
     "@stefanprobst/rehype-extract-toc": "^3.0.0",
     "clsx": "^2.1.0",
@@ -49,6 +49,7 @@
     "@types/react-dom": "19.2.3",
     "autoprefixer": "^10.0.1",
     "build-scripts": "*",
+    "docs-tailwind": "workspace:*",
     "docs-utils": "*",
     "eslint": "^9.13.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -57,12 +58,11 @@
     "postcss": "^8",
     "remark-rehype-plugins": "*",
     "tags": "*",
-    "tailwind": "*",
     "tailwindcss": "^3.3.0",
     "ts-node": "^10.9.2",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5",
+    "typescript": "^6.0.3",
     "wrangler": "^4.151.3"
   },
   "engines": {

@@ -5,9 +5,7 @@ import { toPosix } from "../../util/filename"
 import { isUnderApiDir } from "../../util/api-route"
 
 type MessageIds =
-  | "singularFilename"
-  | "wrongDirectory"
-  | "missingDefineMiddlewares"
+  "singularFilename" | "wrongDirectory" | "missingDefineMiddlewares"
 
 const SINGULAR_BASENAMES = new Set(["middleware.ts", "middleware.js"])
 const PLURAL_BASENAMES = new Set(["middlewares.ts", "middlewares.js"])

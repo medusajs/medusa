@@ -33,7 +33,7 @@ export const TieredPriceItem = ({
     <RadixAccordion.Item
       value={getRuleValue(index)}
       className={clx(
-        "bg-ui-bg-component shadow-elevation-card-rest rounded-lg"
+        "rounded-lg bg-ui-bg-component shadow-elevation-card-rest"
       )}
     >
       <RadixAccordion.Trigger asChild>

@@ -26,6 +26,11 @@ import {
   useMarkOrderFulfillmentAsDelivered,
 } from "../../../../../hooks/api/orders"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
+import {
+  useFulfillmentPermissions,
+  useOrderPermissions,
+  useStockLocationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 import { FulfillmentSetType } from "../../../../locations/common/constants"
@@ -60,7 +65,7 @@ const UnfulfilledItem = ({
   return (
     <div
       key={item.id}
-      className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4"
+      className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle"
     >
       <div className="flex items-start gap-x-4">
         <Thumbnail src={item.thumbnail} />
@@ -149,6 +154,10 @@ const UnfulfilledItemDisplay = ({
   requiresShipping: boolean
 }) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canCreate: canCreateFulfillment } = useFulfillmentPermissions()
+
+  const canFulfill = canCreateFulfillment && canUpdateOrder
 
   if (order.status === "canceled") {
     return
@@ -170,19 +179,21 @@ const UnfulfilledItemDisplay = ({
             {t("orders.fulfillment.awaitingFulfillmentBadge")}
           </StatusBadge>
 
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("orders.fulfillment.fulfillItems"),
-                    icon: <Buildings />,
-                    to: `/orders/${order.id}/fulfillment?requires_shipping=${requiresShipping}`,
-                  },
-                ],
-              },
-            ]}
-          />
+          {canFulfill && (
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      label: t("orders.fulfillment.fulfillItems"),
+                      icon: <Buildings />,
+                      to: `/orders/${order.id}/fulfillment?requires_shipping=${requiresShipping}`,
+                    },
+                  ],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
       <div>
@@ -210,8 +221,13 @@ const Fulfillment = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateFulfillment } = useFulfillmentPermissions()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
 
-  const showLocation = !!fulfillment.location_id
+  const canManage = canUpdateFulfillment && canUpdateOrder
+
+  const showLocation = !!fulfillment.location_id && canReadStockLocations
 
   const isPickUpFulfillment =
     fulfillment.shipping_option?.service_zone?.fulfillment_set?.type ===
@@ -254,6 +270,7 @@ const Fulfillment = ({
   )
 
   const showShippingButton =
+    canManage &&
     !fulfillment.canceled_at &&
     !fulfillment.shipped_at &&
     !fulfillment.delivered_at &&
@@ -261,7 +278,7 @@ const Fulfillment = ({
     !isPickUpFulfillment
 
   const showDeliveryButton =
-    !fulfillment.canceled_at && !fulfillment.delivered_at
+    canManage && !fulfillment.canceled_at && !fulfillment.delivered_at
 
   const [sendNotification, setSendNotification] = useState(
     !order.no_notification
@@ -353,26 +370,28 @@ const Fulfillment = ({
               {statusText}
             </StatusBadge>
           </Tooltip>
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.cancel"),
-                    icon: <XCircle />,
-                    onClick: handleCancel,
-                    disabled:
-                      !!fulfillment.canceled_at ||
-                      !!fulfillment.shipped_at ||
-                      !!fulfillment.delivered_at,
-                  },
-                ],
-              },
-            ]}
-          />
+          {canManage && (
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      label: t("actions.cancel"),
+                      icon: <XCircle />,
+                      onClick: handleCancel,
+                      disabled:
+                        !!fulfillment.canceled_at ||
+                        !!fulfillment.shipped_at ||
+                        !!fulfillment.delivered_at,
+                    },
+                  ],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("orders.fulfillment.itemsLabel")}
         </Text>
@@ -387,7 +406,7 @@ const Fulfillment = ({
         </ul>
       </div>
       {showLocation && (
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
           <Text size="small" leading="compact" weight="plus">
             {t("orders.fulfillment.shippingFromLabel")}
           </Text>
@@ -398,7 +417,7 @@ const Fulfillment = ({
           ) : stock_location ? (
             <Link
               to={`/settings/locations/${stock_location.id}`}
-              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
+              className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover"
             >
               <Text size="small" leading="compact">
                 {stock_location.name}
@@ -409,7 +428,7 @@ const Fulfillment = ({
           )}
         </div>
       )}
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("fields.provider")}
         </Text>
@@ -418,7 +437,7 @@ const Fulfillment = ({
           {formatProvider(fulfillment.provider_id)}
         </Text>
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("orders.fulfillment.trackingLabel")}
         </Text>
@@ -437,7 +456,7 @@ const Fulfillment = ({
                           href={tlink.tracking_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
+                          className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover"
                         >
                           <Text size="small" leading="compact" as="span">
                             {tlink.tracking_number}
@@ -450,7 +469,7 @@ const Fulfillment = ({
                           href={tlink.label_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
+                          className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover"
                         >
                           <Text size="small" leading="compact" as="span">
                             Label
@@ -479,7 +498,7 @@ const Fulfillment = ({
       </div>
 
       {(showShippingButton || showDeliveryButton) && (
-        <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
+        <div className="flex items-center justify-end gap-x-2 rounded-b-xl bg-ui-bg-subtle px-4 py-4">
           {showDeliveryButton && (
             <Button onClick={handleMarkAsDelivered} variant="secondary">
               {t(
@@ -509,7 +528,7 @@ const Fulfillment = ({
               {t("orders.fulfillment.markAsDeliveredWarning")}
             </Prompt.Description>
           </Prompt.Header>
-          <div className="border-ui-border-base mt-6 flex items-center justify-between border-y border-dotted p-6">
+          <div className="mt-6 flex items-center justify-between border-y border-dotted border-ui-border-base p-6">
             <Label
               htmlFor={`send-notification-${fulfillment.id}`}
               className="txt-compact-small text-ui-fg-subtle"

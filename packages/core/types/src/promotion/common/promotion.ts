@@ -232,8 +232,7 @@ export interface UpdatePromotionDTO {
 /**
  * The filters to apply on the retrieved promotions.
  */
-export interface FilterablePromotionProps
-  extends BaseFilterable<FilterablePromotionProps> {
+export interface FilterablePromotionProps extends BaseFilterable<FilterablePromotionProps> {
   /**
    * The IDs to filter the promotions by.
    */

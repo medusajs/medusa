@@ -68,7 +68,7 @@ export type ExportedWorkflow<
   TData = unknown,
   TResult = unknown,
   TDataOverride = undefined,
-  TResultOverride = undefined
+  TResultOverride = undefined,
 > = {
   run: (
     args?: FlowRunOptions<
