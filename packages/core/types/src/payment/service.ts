@@ -32,6 +32,7 @@ import {
   DeletePaymentMethodDTO,
   PaymentCollectionUpdatableFields,
   ProviderWebhookPayload,
+  ReplaceAccountHolderDTO,
   UpdateAccountHolderDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
@@ -921,6 +922,33 @@ export interface IPaymentModuleService extends IModuleService {
    */
   updateAccountHolder(
     input: UpdateAccountHolderDTO,
+    sharedContext?: Context
+  ): Promise<AccountHolderDTO>
+
+  /**
+   * This method replaces an account holder's record in the payment provider with a new one, keeping the account
+   * holder's ID. It's useful when the provider no longer has the account holder, for example when the database was
+   * copied from a setup that uses another provider account.
+   *
+   * @param {ReplaceAccountHolderDTO} input - The details of the account holder to replace.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<AccountHolderDTO>} The replaced account holder's details.
+   *
+   * @example
+   * const accountHolder =
+   *   await paymentModuleService.replaceAccountHolder({
+   *     id: "acc_holder_123",
+   *     provider_id: "stripe",
+   *     context: {
+   *       customer: {
+   *         id: "cus_123",
+   *         email: "jane@example.com",
+   *       },
+   *     },
+   *   })
+   */
+  replaceAccountHolder(
+    input: ReplaceAccountHolderDTO,
     sharedContext?: Context
   ): Promise<AccountHolderDTO>
 
