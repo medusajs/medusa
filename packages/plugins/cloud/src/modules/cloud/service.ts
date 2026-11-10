@@ -11,6 +11,7 @@ import {
 } from "../../types"
 
 export const DEFAULT_CLOUD_API_URL = "https://api.prod.medusajs.cloud"
+export const CLOUD_DASHBOARD_URL = "https://cloud.medusajs.com"
 export const ANNOUNCEMENTS_LIMIT = 50
 export const ANNOUNCEMENTS_CACHE_TTL = 10 * 60 // 10 minutes
 const REQUEST_TIMEOUT_MS = 5000
@@ -53,7 +54,9 @@ export default class CloudModuleService {
     const now = Date.now()
 
     return announcements
-      .filter((raw) => !(raw.published_at && Date.parse(raw.published_at) > now))
+      .filter(
+        (raw) => !(raw.published_at && Date.parse(raw.published_at) > now)
+      )
       .map((raw) => this.toAnnouncement_(raw))
   }
 
@@ -65,10 +68,31 @@ export default class CloudModuleService {
       content: raw.content || null,
       image_url: this.isHttpUrl_(raw.image_url) ? raw.image_url : null,
       type: raw.type ?? "feature",
-      link_url: this.isHttpUrl_(raw.link_url) ? raw.link_url : null,
+      link_url: this.toLinkUrl_(raw.link_url),
       admin_path: raw.type === "admin" ? raw.admin_path || null : null,
       published_at: raw.published_at ?? null,
     }
+  }
+
+  /**
+   * Returns the link as is when it's an `http(s)` URL. A path, such as `/settings`,
+   * points to the Medusa Cloud dashboard of the organization, so it's only kept
+   * when the organization is known.
+   */
+  protected toLinkUrl_(value?: string | null): string | null {
+    if (!value?.startsWith("/")) {
+      return this.isHttpUrl_(value) ? value : null
+    }
+
+    const { organizationId } = this.options_
+    if (!organizationId) {
+      return null
+    }
+
+    const baseUrl = `${CLOUD_DASHBOARD_URL}/${encodeURIComponent(organizationId)}`
+    const url = new URL(`${baseUrl}${value}`)
+
+    return url.origin === CLOUD_DASHBOARD_URL ? url.toString() : null
   }
 
   protected isHttpUrl_(value?: string | null): value is string {

@@ -1,5 +1,6 @@
 import CloudModuleService, {
   ANNOUNCEMENTS_CACHE_TTL,
+  CLOUD_DASHBOARD_URL,
   DEFAULT_CLOUD_API_URL,
 } from "../service"
 
@@ -82,6 +83,34 @@ describe("CloudModuleService.listAnnouncements", () => {
         published_at: "2026-10-01T00:00:00.000Z",
       },
     ])
+  })
+
+  it("should link paths to the organization's Medusa Cloud dashboard", async () => {
+    fetchMock.mockResolvedValue(
+      mockResponse({
+        announcements: [{ ...rawAnnouncement, link_url: "/settings" }],
+      })
+    )
+
+    const [announcement] = await createService(undefined, {
+      organizationId: "org_123",
+    }).listAnnouncements()
+
+    expect(announcement.link_url).toEqual(
+      `${CLOUD_DASHBOARD_URL}/org_123/settings`
+    )
+  })
+
+  it("should drop path links without an organization", async () => {
+    fetchMock.mockResolvedValue(
+      mockResponse({
+        announcements: [{ ...rawAnnouncement, link_url: "/settings" }],
+      })
+    )
+
+    const [announcement] = await service.listAnnouncements()
+
+    expect(announcement.link_url).toBeNull()
   })
 
   it("should keep the admin path only for admin announcements", async () => {
