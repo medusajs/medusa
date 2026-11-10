@@ -9,7 +9,6 @@ import {
 } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import { usePermissions } from "../../../../../providers/permissions-provider"
 import { useCanOpenTranslations } from "../../../../../hooks/use-resource-permissions"
 import { ExtendedVariant } from "../../constants"
@@ -22,7 +21,6 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { hasAllPermissions } = usePermissions()
   const canOpenTranslations = useCanOpenTranslations()
 
@@ -34,7 +32,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
     "product:update",
     "product_variant:delete",
   ])
-  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
+  const canManageTranslations = canOpenTranslations
 
   const hasInventoryKit = (variant.inventory?.length ?? 0) > 1
 
@@ -93,7 +91,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
               })
             }
 
-            if (canManageTranslations && isTranslationsEnabled) {
+            if (canManageTranslations) {
               groups.push({
                 actions: [
                   {

@@ -171,8 +171,28 @@ async function getOASFromCodebase(apiType: ApiType): Promise<OpenAPIObject> {
   return (await parse(JSON.parse(gen))) as OpenAPIObject
 }
 
+/**
+ * Downloads the public OAS of the installed `@medusajs/medusa` version, so
+ * that its content matches the version set by `setMedusaVersion`. Falls back
+ * to the latest public OAS if no spec is published for that version.
+ */
 async function getPublicOas(apiType: ApiType) {
   const url = `https://docs.medusajs.com/api/download/${apiType}`
+  const medusaVersion = getInstalledMedusaVersion()
+
+  if (medusaVersion) {
+    try {
+      return (await parse(
+        `${url}?version=${encodeURIComponent(medusaVersion)}`
+      )) as OpenAPIObject
+    } catch (err) {
+      console.warn(
+        `🟠 Couldn't download the public OAS of version ${medusaVersion} - ${apiType}. Falling back to the latest public OAS.`,
+        err
+      )
+    }
+  }
+
   return (await parse(url)) as OpenAPIObject
 }
 
@@ -205,13 +225,7 @@ async function getOASFromPaths(
  * placeholder, which is why it's overridden here.
  */
 function setMedusaVersion(oas: OpenAPIObject): void {
-  let medusaVersion: string | undefined
-
-  try {
-    medusaVersion = require("@medusajs/medusa/package.json").version
-  } catch {
-    // the version stays as-is if the package can't be resolved
-  }
+  const medusaVersion = getInstalledMedusaVersion()
 
   if (!medusaVersion) {
     return
@@ -222,6 +236,15 @@ function setMedusaVersion(oas: OpenAPIObject): void {
     version: medusaVersion,
   }
   console.log(`🔵 Set OAS version to ${medusaVersion}`)
+}
+
+function getInstalledMedusaVersion(): string | undefined {
+  try {
+    return require("@medusajs/medusa/package.json").version
+  } catch {
+    // the package can't be resolved
+    return undefined
+  }
 }
 
 async function validateOAS(

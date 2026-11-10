@@ -9,18 +9,12 @@ import {
 
 jest.setTimeout(120000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 medusaIntegrationTestRunner({
   env: {},
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("Store: Product Option API (with translations)", () => {
       let option
       let storeHeaders
-
-      afterAll(async () => {
-        delete process.env.MEDUSA_FF_TRANSLATION
-      })
 
       beforeEach(async () => {
         const container = getContainer()
@@ -38,7 +32,10 @@ medusaIntegrationTestRunner({
           { select: ["id"], take: 1 }
         )
         await storeModule.updateStores(defaultStore.id, {
-          supported_locales: [{ locale_code: "en-US" }, { locale_code: "de-DE" }],
+          supported_locales: [
+            { locale_code: "en-US" },
+            { locale_code: "de-DE" },
+          ],
         })
 
         option = (

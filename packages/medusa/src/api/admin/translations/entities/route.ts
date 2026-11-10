@@ -7,7 +7,6 @@ import { HttpTypes } from "@medusajs/types"
 
 /**
  * @since 2.12.4
- * @featureFlag translation
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<{}, HttpTypes.AdminTranslationEntitiesParams>,

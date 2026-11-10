@@ -96,7 +96,7 @@ export const confirmReceiveReturnValidationStep = createStep(
 )
 
 // Loop through the items in the return and prepare the inventory adjustment of items associated with each variant
-function prepareInventoryUpdate({ orderReturn, returnedQuantityMap }) {
+export function prepareInventoryUpdate({ orderReturn, returnedQuantityMap }) {
   const inventoryAdjustment: {
     inventory_item_id: string
     location_id: string

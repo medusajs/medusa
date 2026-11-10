@@ -18,100 +18,8 @@ export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductListParams>,
   res: MedusaResponse<HttpTypes.StoreProductListResponse>
 ) => {
-  if (FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key)) {
-    // TODO: These filters are not supported by the index engine yet
-    if (
-      isPresent(req.filterableFields.tags) ||
-      isPresent(req.filterableFields.categories) ||
-      isPresent(req.filterableFields.option_value_id) ||
-      isPresent(req.filterableFields.options)
-    ) {
-      return await getProducts(req, res)
-    }
-
-    return await getProductsWithIndexEngine(req, res)
-  }
-
-  return await getProducts(req, res)
-}
-
-async function getProductsWithIndexEngine(
-  req: RequestWithContext<HttpTypes.StoreProductListParams>,
-  res: MedusaResponse<HttpTypes.StoreProductListResponse>
-) {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-
   const context: QueryContextType = {}
-  const { fields, withInventoryQuantity } = prepareInventoryQuantityFields(
-    req.queryConfig.fields,
-    { relation: "variants" }
-  )
-  req.queryConfig.fields = fields
-
-  if (isPresent(req.pricingContext)) {
-    context["variants"] ??= {}
-    context["variants"]["calculated_price"] ??= QueryContext(
-      req.pricingContext!
-    )
-  }
-
-  const filters: Record<string, any> = req.filterableFields
-  if (isPresent(filters.sales_channel_id)) {
-    const salesChannelIds = filters.sales_channel_id
-
-    filters["sales_channels"] ??= {}
-    filters["sales_channels"]["id"] = salesChannelIds
-
-    delete filters.sales_channel_id
-  }
-
-  // TODO: Remove once we implement search by relations in a similar way to query.graph
-  if (isPresent(filters.q)) {
-    filters["variants"] ??= {}
-  }
-
-  const { data: products = [], metadata } = await query.index(
-    {
-      entity: "product",
-      fields: req.queryConfig.fields,
-      filters,
-      pagination: req.queryConfig.pagination,
-      context,
-    },
-    {
-      cache: {
-        enable: true,
-        tags: [TRANSLATION_LIST_CACHE_TAG],
-        computeAutomaticTags: true,
-      },
-      locale: req.locale,
-    }
-  )
-
-  if (withInventoryQuantity) {
-    await wrapVariantsWithInventoryQuantityForSalesChannel(
-      req,
-      products.flatMap((product) => product.variants ?? [])
-    )
-  }
-
-  await wrapProductsWithTaxPrices(req, products)
-
-  res.json({
-    products,
-    count: metadata!.estimate_count,
-    estimate_count: metadata!.estimate_count,
-    offset: metadata!.skip,
-    limit: metadata!.take,
-  })
-}
-
-async function getProducts(
-  req: RequestWithContext<HttpTypes.StoreProductListParams>,
-  res: MedusaResponse<HttpTypes.StoreProductListResponse>
-) {
-  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-  const context: object = {}
   const { fields, withInventoryQuantity } = prepareInventoryQuantityFields(
     req.queryConfig.fields,
     { relation: "variants" }
@@ -155,6 +63,10 @@ async function getProducts(
   res.json({
     products,
     count: metadata!.count,
+    // TODO: remove estimate_count in the next minor release
+    ...(FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) && {
+      estimate_count: metadata!.count,
+    }),
     offset: metadata!.skip,
     limit: metadata!.take,
   })

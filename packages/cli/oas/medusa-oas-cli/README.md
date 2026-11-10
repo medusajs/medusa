@@ -70,7 +70,7 @@ In the Medusa monorepo, run it with `yarn medusa-oas <command>` from the reposit
 
 ### `oas`
 
-Generates `<type>.oas.json` (`admin.oas.json`, `store.oas.json`, or `combined.oas.json`). By default, it starts from the published OAS at `https://docs.medusajs.com/api/download/<type>`; with `--local`, it builds the OAS from the JSDoc in the installed `@medusajs/medusa` package. Invalid OAS throws an error and no file is written, unless `--force` is passed.
+Generates `<type>.oas.json` (`admin.oas.json`, `store.oas.json`, or `combined.oas.json`). By default, it starts from the published OAS of the installed `@medusajs/medusa` version at `https://docs.medusajs.com/api/download/<type>?version=<version>`, falling back to the latest published OAS if that version has none; with `--local`, it builds the OAS from the JSDoc in the installed `@medusajs/medusa` package. Invalid OAS throws an error and no file is written, unless `--force` is passed.
 
 | Option | Description | Default |
 | --- | --- | --- |

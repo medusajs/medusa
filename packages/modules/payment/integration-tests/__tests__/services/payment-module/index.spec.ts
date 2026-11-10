@@ -1632,6 +1632,31 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
               ])
             })
 
+            it("should not count a failed refund in the collection's refunded amount when another refund completes before it fails", async () => {
+              await capture()
+
+              spyOnProviderRefund().mockImplementationOnce(async () => {
+                await service.refundPayment({
+                  amount: 50,
+                  payment_id: "pay-id-2",
+                })
+                throw new Error("provider timed out")
+              })
+
+              await expect(
+                service.refundPayment({
+                  amount: 30,
+                  payment_id: "pay-id-2",
+                })
+              ).rejects.toThrow("provider timed out")
+
+              const collection = await service.retrievePaymentCollection(
+                "pay-col-id-2"
+              )
+
+              expect(collection.refunded_amount).toEqual(50)
+            })
+
             it("should start a new refund when retrying without an idempotency key", async () => {
               await capture()
 
@@ -2242,6 +2267,41 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             })
 
             expect(finalCollection.refunded_amount).toBe(300)
+          })
+        })
+      })
+
+      describe("AccountHolder", () => {
+        describe("replace", () => {
+          it("replaces the account holder in the provider and keeps its id", async () => {
+            const accountHolder = await service.createAccountHolder({
+              provider_id: "pp_system_default",
+              context: {
+                customer: { id: "cus_copied", email: "old@example.com" },
+              },
+            })
+
+            const replaced = await service.replaceAccountHolder({
+              id: accountHolder.id,
+              provider_id: "pp_system_default",
+              context: {
+                customer: { id: "cus_123", email: "new@example.com" },
+              },
+            })
+
+            expect(replaced).toEqual(
+              expect.objectContaining({
+                id: accountHolder.id,
+                external_id: "cus_123",
+                email: "new@example.com",
+              })
+            )
+            expect(await service.listAccountHolders({})).toEqual([
+              expect.objectContaining({
+                id: accountHolder.id,
+                external_id: "cus_123",
+              }),
+            ])
           })
         })
       })
