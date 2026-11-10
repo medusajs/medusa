@@ -3,14 +3,9 @@ import {
   ItemTaxLineDTO,
   TaxableItemDTO,
 } from "@medusajs/framework/types"
-import {
-  calculateAmountsWithTax,
-  FeatureFlag,
-  Modules,
-} from "@medusajs/framework/utils"
+import { calculateAmountsWithTax, Modules } from "@medusajs/framework/utils"
 import { StoreRequestWithContext } from "../types"
 import { applyTranslationsToTaxLines } from "@medusajs/framework/utils"
-import TranslationFeatureFlag from "../../../feature-flags/translation"
 
 export const wrapVariantsWithTaxPrices = async <T>(
   req: StoreRequestWithContext<T>,
@@ -42,16 +37,11 @@ export const wrapVariantsWithTaxPrices = async <T>(
     req.taxContext.taxLineContext
   )) as unknown as ItemTaxLineDTO[]
 
-  const isTranslationEnabled = FeatureFlag.isFeatureEnabled(
-    TranslationFeatureFlag.key
-  )
-  if (isTranslationEnabled) {
-    taxLines = (await applyTranslationsToTaxLines(
-      taxLines,
-      req.locale,
-      req.scope
-    )) as ItemTaxLineDTO[]
-  }
+  taxLines = (await applyTranslationsToTaxLines(
+    taxLines,
+    req.locale,
+    req.scope
+  )) as ItemTaxLineDTO[]
 
   const taxRatesMap = new Map<string, ItemTaxLineDTO[]>()
 

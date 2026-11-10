@@ -1,8 +1,8 @@
 import ProductModule from "@medusajs/medusa/product"
 import { defineLink } from "@medusajs/utils"
-import Translation from "../modules/translation"
+import CustomRecord from "../modules/custom-record"
 
 export default defineLink(
   ProductModule.linkable.productCategory.id,
-  Translation.linkable.translation.id
+  CustomRecord.linkable.customRecord.id
 )

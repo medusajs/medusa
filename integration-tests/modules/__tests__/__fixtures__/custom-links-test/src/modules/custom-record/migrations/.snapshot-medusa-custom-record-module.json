@@ -67,19 +67,19 @@
           "mappedType": "datetime"
         }
       },
-      "name": "translation",
+      "name": "custom_record",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_translation_key_unique",
+          "keyName": "IDX_custom_record_key_unique",
           "columnNames": [],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_translation_key_unique\" ON \"translation\" (key) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_custom_record_key_unique\" ON \"customRecord\" (key) WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "translation_pkey",
+          "keyName": "custom_record_pkey",
           "columnNames": [
             "id"
           ],

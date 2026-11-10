@@ -7,7 +7,6 @@ import {
   ActionMenu,
 } from "../../../../../components/common/action-menu"
 import { useDeleteProductTagAction } from "../../../common/hooks/use-delete-product-tag-action"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import {
   useProductTagPermissions,
   useCanOpenTranslations,
@@ -22,11 +21,10 @@ export const ProductTagGeneralSection = ({
 }: ProductTagGeneralSectionProps) => {
   const { t } = useTranslation()
   const handleDelete = useDeleteProductTagAction({ productTag })
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductTagPermissions()
   const canOpenTranslations = useCanOpenTranslations()
 
-  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
+  const canManageTranslations = canOpenTranslations
 
   const groups: ActionGroup[] = []
 

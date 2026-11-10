@@ -32,7 +32,6 @@ import {
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 import { PRODUCT_VARIANT_IDS_KEY } from "../../../common/constants"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import { usePermissions } from "../../../../../providers/permissions-provider"
 import {
   useInventoryLevelPermissions,
@@ -50,7 +49,6 @@ export const ProductVariantSection = ({
   product,
 }: ProductVariantSectionProps) => {
   const { t } = useTranslation()
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { hasAllPermissions } = usePermissions()
   const { canRead: canReadInventory } = useInventoryLevelPermissions()
   const canOpenTranslations = useCanOpenTranslations()
@@ -81,7 +79,7 @@ export const ProductVariantSection = ({
     "inventory_level:update",
     "inventory_level:delete",
   ])
-  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
+  const canManageTranslations = canOpenTranslations
 
   const { q, order, offset, allow_backorder, manage_inventory } =
     useQueryParams(

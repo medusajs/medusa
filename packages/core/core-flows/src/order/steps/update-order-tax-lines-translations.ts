@@ -2,7 +2,6 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import {
   applyTranslations,
   ContainerRegistrationKeys,
-  FeatureFlag,
   Modules,
 } from "@medusajs/framework/utils"
 
@@ -18,9 +17,9 @@ interface UpdateOrderTaxLinesTranslationsStepInput {
  * This step updates the tax line descriptions of an order based on the provided locale.
  * It retrieves the original tax lines, applies translations, and updates the order accordingly.
  * In case of failure, it compensates by restoring the original tax line descriptions.
- * 
+ *
  * @since 2.13.0
- * 
+ *
  * @example
  * const result = updateOrderTaxLinesTranslationsStep({
  *   order_id: "order_123",
@@ -32,9 +31,7 @@ export const updateOrderTaxLinesTranslationsStep = createStep(
   async (data: UpdateOrderTaxLinesTranslationsStepInput, { container }) => {
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-    const isTranslationEnabled = FeatureFlag.isFeatureEnabled("translation")
-
-    if (!isTranslationEnabled || !data.locale) {
+    if (!data.locale) {
       return new StepResponse(void 0, [])
     }
 

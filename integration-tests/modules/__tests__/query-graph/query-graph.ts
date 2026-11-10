@@ -5,77 +5,77 @@ jest.setTimeout(100000)
 
 import { createProductsWorkflow } from "@medusajs/core-flows"
 import { Modules, QueryContext } from "@medusajs/utils"
-import { TranslationModule } from "../__fixtures__/translation-test/src/modules/translation/service"
+import { CustomRecordModule } from "../__fixtures__/custom-links-test/src/modules/custom-record/service"
 
-const createTranslations = async (container, inputs) => {
-  const translationModule: any = container.resolve("translation")
+const createCustomRecords = async (container, inputs) => {
+  const customRecordModule: any = container.resolve("custom_record")
 
-  const created = await translationModule.createTranslations(inputs as any)
+  const created = await customRecordModule.createCustomRecords(inputs as any)
   return Array.isArray(created) ? created : [created]
 }
 
-const attachTranslationToProduct = async (
+const attachCustomRecordToProduct = async (
   container,
-  { productId, translation }
+  { productId, customRecord }
 ) => {
-  const [created] = await createTranslations(container, [translation])
+  const [created] = await createCustomRecords(container, [customRecord])
 
   const remoteLink: any = container.resolve("remoteLink")
   await remoteLink.create({
     [Modules.PRODUCT]: { product_id: productId },
-    translation: { translation_id: created.id },
+    custom_record: { custom_record_id: created.id },
   })
 
   return created
 }
 
-const attachTranslationToVariant = async (
+const attachCustomRecordToVariant = async (
   container,
-  { variantId, translation }
+  { variantId, customRecord }
 ) => {
-  const [created] = await createTranslations(container, [translation])
+  const [created] = await createCustomRecords(container, [customRecord])
 
   const remoteLink: any = container.resolve("remoteLink")
   await remoteLink.create({
     [Modules.PRODUCT]: { product_variant_id: variantId },
-    translation: { translation_id: created.id },
+    custom_record: { custom_record_id: created.id },
   })
 
   return created
 }
 
-const attachTranslationToOption = async (
+const attachCustomRecordToOption = async (
   container,
-  { optionId, translation }
+  { optionId, customRecord }
 ) => {
-  const [created] = await createTranslations(container, [translation])
+  const [created] = await createCustomRecords(container, [customRecord])
 
   const remoteLink: any = container.resolve("remoteLink")
   await remoteLink.create({
     [Modules.PRODUCT]: { product_option_id: optionId },
-    translation: { translation_id: created.id },
+    custom_record: { custom_record_id: created.id },
   })
 
   return created
 }
 
-const attachTranslationToProductCategory = async (
+const attachCustomRecordToProductCategory = async (
   container,
-  { categoryId, translation }
+  { categoryId, customRecord }
 ) => {
-  const [created] = await createTranslations(container, [translation])
+  const [created] = await createCustomRecords(container, [customRecord])
 
   const remoteLink: any = container.resolve("remoteLink")
   await remoteLink.create({
     [Modules.PRODUCT]: { product_category_id: categoryId },
-    translation: { translation_id: created.id },
+    custom_record: { custom_record_id: created.id },
   })
 
   return created
 }
 
 medusaIntegrationTestRunner({
-  cwd: path.join(__dirname, "../__fixtures__/translation-test"),
+  cwd: path.join(__dirname, "../__fixtures__/custom-links-test"),
   testSuite: ({ getContainer }) => {
     describe("query.graph()", () => {
       beforeEach(async () => {
@@ -150,9 +150,9 @@ medusaIntegrationTestRunner({
         await Promise.all(
           productsWithRels.map(async (p, idx) => {
             const i = idx + 1
-            await attachTranslationToProduct(getContainer(), {
+            await attachCustomRecordToProduct(getContainer(), {
               productId: p.id,
-              translation: {
+              customRecord: {
                 key: p.id,
                 value: {
                   pt: { title: `Produto ${i}` },
@@ -163,9 +163,9 @@ medusaIntegrationTestRunner({
 
             const cat = p.categories?.[0]
             if (cat) {
-              await attachTranslationToProductCategory(getContainer(), {
+              await attachCustomRecordToProductCategory(getContainer(), {
                 categoryId: cat.id,
-                translation: {
+                customRecord: {
                   key: cat.id,
                   value: {
                     pt: { name: `Categoria ${i}` },
@@ -177,9 +177,9 @@ medusaIntegrationTestRunner({
 
             const opt = p.options?.[0]
             if (opt) {
-              await attachTranslationToOption(getContainer(), {
+              await attachCustomRecordToOption(getContainer(), {
                 optionId: opt.id,
-                translation: {
+                customRecord: {
                   key: opt.id,
                   value: {
                     pt: { title: "Tamanho" },
@@ -192,9 +192,9 @@ medusaIntegrationTestRunner({
             await Promise.all(
               (p.variants || []).map((v, vi) => {
                 const variantNumber = v.title.split("").pop()
-                return attachTranslationToVariant(getContainer(), {
+                return attachCustomRecordToVariant(getContainer(), {
                   variantId: v.id,
-                  translation: {
+                  customRecord: {
                     key: v.id,
                     value: {
                       pt: { title: `Variante ${variantNumber}` },
@@ -243,14 +243,14 @@ medusaIntegrationTestRunner({
         const query = container.resolve("query")
         const productService = container.resolve(Modules.PRODUCT)
         const priceService = container.resolve(Modules.PRICING)
-        const translationService = container.resolve(
-          "translation"
-        ) as TranslationModule
+        const customRecordService = container.resolve(
+          "custom_record"
+        ) as CustomRecordModule
 
         const productServiceSpy = jest.spyOn(productService, "listProducts")
-        const translationServiceSpy = jest.spyOn(
-          translationService,
-          "listTranslations"
+        const customRecordServiceSpy = jest.spyOn(
+          customRecordService,
+          "listCustomRecords"
         )
         const priceServiceSpy = jest.spyOn(priceService, "listPriceSets")
 
@@ -260,13 +260,13 @@ medusaIntegrationTestRunner({
           fields: [
             "sales_channels.name",
             "title",
-            "translation.*",
+            "custom_record.*",
             "categories.name",
-            "categories.translation.*",
+            "categories.custom_record.*",
             "variants.title",
-            "variants.translation.*",
+            "variants.custom_record.*",
             "options.title",
-            "options.translation.*",
+            "options.custom_record.*",
             "variants.prices.amount",
             "variants.prices.currency_code",
           ],
@@ -288,8 +288,8 @@ medusaIntegrationTestRunner({
           args: {},
         })
 
-        expect(translationServiceSpy.mock.calls[0][0].id).toHaveLength(3)
-        expect(translationServiceSpy.mock.calls[1][0].id).toHaveLength(12)
+        expect(customRecordServiceSpy.mock.calls[0][0].id).toHaveLength(3)
+        expect(customRecordServiceSpy.mock.calls[1][0].id).toHaveLength(12)
         expect(priceServiceSpy.mock.calls[0][0].id).toHaveLength(6)
 
         expect(result.data).toEqual(
@@ -299,7 +299,7 @@ medusaIntegrationTestRunner({
               categories: [
                 expect.objectContaining({
                   name: "Category 3",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         name: "Catégorie 3",
@@ -314,7 +314,7 @@ medusaIntegrationTestRunner({
               variants: expect.arrayContaining([
                 expect.objectContaining({
                   title: "P3 Variant 2",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         title: "Variante 2",
@@ -333,7 +333,7 @@ medusaIntegrationTestRunner({
                 }),
                 expect.objectContaining({
                   title: "P3 Variant 1",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         title: "Variante 1",
@@ -354,7 +354,7 @@ medusaIntegrationTestRunner({
               options: expect.arrayContaining([
                 expect.objectContaining({
                   title: "size",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         title: "Taille",
@@ -367,7 +367,7 @@ medusaIntegrationTestRunner({
                 }),
               ]),
               sales_channels: [],
-              translation: expect.objectContaining({
+              custom_record: expect.objectContaining({
                 value: {
                   fr: {
                     title: "Produit 3",
@@ -383,7 +383,7 @@ medusaIntegrationTestRunner({
               categories: [
                 expect.objectContaining({
                   name: "Category 1",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         name: "Catégorie 1",
@@ -398,7 +398,7 @@ medusaIntegrationTestRunner({
               variants: expect.arrayContaining([
                 expect.objectContaining({
                   title: "P1 Variant 2",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         title: "Variante 2",
@@ -417,7 +417,7 @@ medusaIntegrationTestRunner({
                 }),
                 expect.objectContaining({
                   title: "P1 Variant 1",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         title: "Variante 1",
@@ -438,7 +438,7 @@ medusaIntegrationTestRunner({
               options: expect.arrayContaining([
                 expect.objectContaining({
                   title: "size",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         title: "Taille",
@@ -451,7 +451,7 @@ medusaIntegrationTestRunner({
                 }),
               ]),
               sales_channels: [],
-              translation: expect.objectContaining({
+              custom_record: expect.objectContaining({
                 value: {
                   fr: {
                     title: "Produit 1",
@@ -467,7 +467,7 @@ medusaIntegrationTestRunner({
               categories: [
                 expect.objectContaining({
                   name: "Category 2",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         name: "Catégorie 2",
@@ -482,7 +482,7 @@ medusaIntegrationTestRunner({
               variants: expect.arrayContaining([
                 expect.objectContaining({
                   title: "P2 Variant 1",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         title: "Variante 1",
@@ -501,7 +501,7 @@ medusaIntegrationTestRunner({
                 }),
                 expect.objectContaining({
                   title: "P2 Variant 2",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         title: "Variante 2",
@@ -522,7 +522,7 @@ medusaIntegrationTestRunner({
               options: expect.arrayContaining([
                 expect.objectContaining({
                   title: "size",
-                  translation: expect.objectContaining({
+                  custom_record: expect.objectContaining({
                     value: {
                       fr: {
                         title: "Taille",
@@ -535,7 +535,7 @@ medusaIntegrationTestRunner({
                 }),
               ]),
               sales_channels: [],
-              translation: expect.objectContaining({
+              custom_record: expect.objectContaining({
                 value: {
                   fr: {
                     title: "Produit 2",
@@ -585,27 +585,27 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should filter products by linked translation key", async () => {
+        it("should filter products by linked custom record key", async () => {
           const container = getContainer()
           const query = container.resolve("query")
 
           const { data: products } = await query.graph({
             entity: "product",
-            fields: ["id", "title", "translation.key"],
+            fields: ["id", "title", "custom_record.key"],
           })
 
           const targetProduct = products.find(
             (product) => product.title === "Product 2"
           )
 
-          expect(targetProduct?.translation?.key).toBeDefined()
+          expect(targetProduct?.custom_record?.key).toBeDefined()
 
           const { data: filteredProducts } = await query.graph({
             entity: "product",
             fields: ["id", "title"],
             filters: {
-              translation: {
-                key: targetProduct!.translation!.key,
+              custom_record: {
+                key: targetProduct!.custom_record!.key,
               },
             },
           })
@@ -1424,23 +1424,23 @@ medusaIntegrationTestRunner({
 
             const { data: products } = await query.graph({
               entity: "product",
-              fields: ["id", "title", "translation.key"],
+              fields: ["id", "title", "custom_record.key"],
             })
 
             const targetProduct = products.find(
               (product) => product.title === "Product 2"
             )
 
-            expect(targetProduct?.translation?.key).toBeDefined()
+            expect(targetProduct?.custom_record?.key).toBeDefined()
 
             // $re is not supported by the SQL pushdown, so the filter is
-            // evaluated in memory against the loaded translations.
+            // evaluated in memory against the loaded custom records.
             const { data: filteredProducts } = await query.graph({
               entity: "product",
               fields: ["id", "title"],
               filters: {
-                translation: {
-                  key: { $re: `^${targetProduct!.translation!.key}$` },
+                custom_record: {
+                  key: { $re: `^${targetProduct!.custom_record!.key}$` },
                 },
               },
             })
@@ -1452,9 +1452,9 @@ medusaIntegrationTestRunner({
                 title: "Product 2",
               })
             )
-            // The translation was loaded only for evaluation and is hidden
+            // The custom record was loaded only for evaluation and is hidden
             // from the payload.
-            expect(filteredProducts[0].translation).toBeUndefined()
+            expect(filteredProducts[0].custom_record).toBeUndefined()
           })
 
           it("should combine pushed-down and residual filters", async () => {
@@ -1463,7 +1463,7 @@ medusaIntegrationTestRunner({
 
             const { data: variants } = await query.graph({
               entity: "variant",
-              fields: ["id", "title", "price_set.id", "translation.key"],
+              fields: ["id", "title", "price_set.id", "custom_record.key"],
             })
 
             const targetVariant = variants.find(
@@ -1474,17 +1474,17 @@ medusaIntegrationTestRunner({
             )
 
             expect(targetVariant?.price_set?.id).toBeDefined()
-            expect(targetVariant?.translation?.key).toBeDefined()
+            expect(targetVariant?.custom_record?.key).toBeDefined()
 
-            // price_set.id is pushed down to SQL while translation.key with
+            // price_set.id is pushed down to SQL while custom_record.key with
             // $re stays residual — both must intersect.
             const { data: matching } = await query.graph({
               entity: "variant",
               fields: ["id", "title"],
               filters: {
                 price_set: { id: targetVariant!.price_set!.id },
-                translation: {
-                  key: { $re: `^${targetVariant!.translation!.key}$` },
+                custom_record: {
+                  key: { $re: `^${targetVariant!.custom_record!.key}$` },
                 },
               },
             })
@@ -1499,8 +1499,8 @@ medusaIntegrationTestRunner({
               fields: ["id"],
               filters: {
                 price_set: { id: otherVariant!.price_set!.id },
-                translation: {
-                  key: { $re: `^${targetVariant!.translation!.key}$` },
+                custom_record: {
+                  key: { $re: `^${targetVariant!.custom_record!.key}$` },
                 },
               },
             })
@@ -1612,13 +1612,13 @@ medusaIntegrationTestRunner({
             const container = getContainer()
             const query = container.resolve("query")
 
-            // Every product's translation key is its id, so the residual
+            // Every product's custom record key is its id, so the residual
             // regex matches all three products before pagination.
             const { data: filteredProducts, metadata } = await query.graph({
               entity: "product",
               fields: ["id", "title"],
               filters: {
-                translation: { key: { $re: "^prod" } },
+                custom_record: { key: { $re: "^prod" } },
               },
               pagination: {
                 skip: 1,
