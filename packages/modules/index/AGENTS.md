@@ -1,6 +1,8 @@
 # @medusajs/index
 
-Index Module (`Modules.INDEX`, experimental): a denormalized Postgres store of data from several modules and their links, so `query.index()` can filter an entity by fields of linked records in one query.
+Index Module (`Modules.INDEX`): a denormalized Postgres store of data from several modules and their links, so `query.index()` can filter an entity by fields of linked records in one query.
+
+> **Deprecated:** the Index Module, `query.index()`, the `index_engine` feature flag, the `/admin/index/*` routes, and `defineLink`'s `filterable` option are deprecated and will be removed in a future release. Use `query.graph()`, which filters across linked modules. See "Filter by linked data models" in https://docs.medusajs.com/learn/fundamentals/query.md
 
 ## Using this package
 
@@ -59,6 +61,7 @@ yarn migration:create          # after any change in src/models
 
 ## Gotchas
 
+- Deprecation warnings (`INDEX_MODULE_DEPRECATION_MESSAGE` from `@medusajs/framework/utils`) are logged once on application start when the module is registered, once per process on the first `query.index()` call, and on every `/admin/index/*` request.
 - Requires the Event Bus Module in the container; the constructor throws otherwise. With the in-memory event bus, incremental updates are not received across processes, so the index only catches up on the next start (docs recommend Redis event bus).
 - Worker mode is anything except `worker_mode: "server"`. Server-mode instances neither subscribe to events nor sync; `sync()` there only resets metadata status (and `last_key` for `full`, or TRUNCATEs all index tables for `reset`) and emits the internal `index.continue-sync` / `index.full-sync` / `index.reset-sync` event for a worker to pick up.
 - `onApplicationStart` catches and only logs errors, so a broken schema does not crash boot; check logs prefixed `[Index engine]`. A failure while generating `.medusa/types/index-service-entry-points.d.ts` is only logged as a warning and does not skip the data sync.

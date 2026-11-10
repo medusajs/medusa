@@ -67,12 +67,6 @@ const TagsOperationDescriptionSection = ({
   operation,
 }: TagsOperationDescriptionSectionProps) => {
   const { area } = useArea()
-  // eslint-disable-next-line no-console
-  console.log(
-    operation.summary,
-    operation["x-allowed"],
-    operation["x-disallowed"]
-  )
   return (
     <>
       <H2>

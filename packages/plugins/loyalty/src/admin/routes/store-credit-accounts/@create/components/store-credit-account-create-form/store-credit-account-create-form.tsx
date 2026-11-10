@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { Button, Heading, Text, toast } from "@medusajs/ui"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -25,6 +26,8 @@ export const StoreCreditAccountCreateForm = () => {
   const { handleSuccess } = useRouteModal()
   const [searchParams] = useSearchParams()
   const prefilledCustomerId = searchParams.get("prefill_customer_id") ?? ""
+  const { hasPermission } = usePermissions()
+  const canReadCustomers = hasPermission("customer:read")
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       currency_code: "",
@@ -81,6 +84,7 @@ export const StoreCreditAccountCreateForm = () => {
   } = useComboboxData({
     queryKey: customersQueryKeys.list(),
     defaultValue: prefilledCustomerId || undefined,
+    enabled: canReadCustomers,
     queryFn: async (params) => {
       return sdk.admin.customer.list(params)
     },
@@ -143,35 +147,37 @@ export const StoreCreditAccountCreateForm = () => {
                 }}
               />
 
-              <Form.Field
-                control={form.control}
-                name="customer_id"
-                render={({ field }) => {
-                  return (
-                    <Form.Item className="w-full">
-                      <Form.Label className="font-normal">Customer</Form.Label>
-                      <Form.Control>
-                        <Combobox
-                          value={field.value}
-                          onChange={field.onChange}
-                          searchValue={searchValue}
-                          onSearchValueChange={onSearchValueChange}
-                          options={customerOptions}
-                          placeholder="Search for a customer..."
-                          fetchNextPage={fetchNextPage}
-                          isFetchingNextPage={isFetchingNextPage}
-                          noResultsPlaceholder={
-                            isLoading
-                              ? "Loading customers..."
-                              : "No customers found"
-                          }
-                        />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
+              {canReadCustomers && (
+                <Form.Field
+                  control={form.control}
+                  name="customer_id"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item className="w-full">
+                        <Form.Label className="font-normal">Customer</Form.Label>
+                        <Form.Control>
+                          <Combobox
+                            value={field.value}
+                            onChange={field.onChange}
+                            searchValue={searchValue}
+                            onSearchValueChange={onSearchValueChange}
+                            options={customerOptions}
+                            placeholder="Search for a customer..."
+                            fetchNextPage={fetchNextPage}
+                            isFetchingNextPage={isFetchingNextPage}
+                            noResultsPlaceholder={
+                              isLoading
+                                ? "Loading customers..."
+                                : "No customers found"
+                            }
+                          />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>

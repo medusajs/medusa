@@ -1,14 +1,15 @@
 import Handlebars from "handlebars"
 import { DeclarationReflection } from "typedoc"
 import { MarkdownTheme } from "../../theme.js"
+import { getReflectionUrl, reflectionHasOwnDocument } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "ifMemberShowTitle",
     function (this: DeclarationReflection, options: Handlebars.HelperOptions) {
-      return !this.hasOwnDocument ||
+      return !reflectionHasOwnDocument(this) ||
         (Handlebars.helpers.sectionEnabled("member_force_title") &&
-          theme.location !== this.url)
+          theme.location !== getReflectionUrl(this))
         ? options.fn(this)
         : options.inverse(this)
     }

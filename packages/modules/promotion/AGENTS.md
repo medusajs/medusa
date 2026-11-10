@@ -16,12 +16,12 @@ const promotionModuleService: IPromotionModuleService =
 ```
 
 - Prefer the existing workflows in `@medusajs/core-flows` (cart promotion workflows, `registerUsageStep` in `core-flows/src/promotion/steps/register-usage.ts`, whose compensation calls `revertUsage`) over calling the service directly.
-- Enums (`PromotionType`, `PromotionStatus`, `ApplicationMethodType`, `ApplicationMethodTargetType`, `ApplicationMethodAllocation`, `CampaignBudgetType`, `ComputedActions`) come from `@medusajs/framework/utils`.
+- Enums (`PromotionType`, `PromotionStatus`, `ApplicationMethodType`, `ApplicationMethodTargetType`, `ApplicationMethodAllocation`, `ApplicationMethodTargetSelectionStrategy`, `CampaignBudgetType`, `ComputedActions`) come from `@medusajs/framework/utils`.
 
 ### Data models (`src/models`)
 
 - `Promotion` (`promo_`): `code` (unique among non-deleted), `type` (`standard` | `buyget`), `status` (`draft` | `active` | `inactive`), `is_automatic`, `is_tax_inclusive`, `limit` / `used`, `campaign`, `application_method`, `rules`.
-- `ApplicationMethod` (`proappmet_`): `value`, `currency_code`, `type`, `target_type` (`order` | `items` | `shipping_methods`), `allocation` (`each` | `across` | `once`), `max_quantity`, `apply_to_quantity`, `buy_rules_min_quantity`, `target_rules`, `buy_rules`.
+- `ApplicationMethod` (`proappmet_`): `value`, `currency_code`, `type`, `target_type` (`order` | `items` | `shipping_methods`), `allocation` (`each` | `across` | `once`), `max_quantity`, `apply_to_quantity`, `buy_rules_min_quantity`, `target_selection_strategy` (`most_expensive_first` | `cheapest_first`, default `most_expensive_first`), `target_rules`, `buy_rules`.
 - `PromotionRule` (`prorul_`) + `PromotionRuleValue` (`prorulval_`): `attribute`, `operator`, `values`. Shared by promotion rules, target rules, and buy rules.
 - `Campaign` (`procamp_`), `CampaignBudget` (`probudg_`, type `spend` | `usage` | `use_by_attribute` | `spend_by_attribute`), `CampaignBudgetUsage` (`probudgus_`, per-attribute-value usage).
 
@@ -66,6 +66,7 @@ yarn migration:create           # after any change in src/models
 
 - `registerUsage` must run inside a transaction: it takes `SELECT ... FOR UPDATE` locks on `promotion` and `promotion_campaign_budget` rows (ordered by id, `lock_timeout = '3s'`) and throws `UNEXPECTED_STATE` otherwise. Re-reads use `options: { refresh: true }`; keep that when touching this code.
 - Exceeding `promotion.limit` or a budget limit in `registerUsage` throws `NOT_ALLOWED`; `computeActions` instead returns `promotionLimitExceeded` / `campaignBudgetExceeded` actions unless `skip_usage_limit_checks` is set.
-- `use_by_attribute` budgets require the budget `attribute` value (e.g. `customer_id`) in the compute context, otherwise `computeActions` throws `INVALID_DATA`.
+- `use_by_attribute` and `spend_by_attribute` budgets require the budget `attribute` value (e.g. `customer_id`) in the compute context. Without it, `computeActions` skips automatic promotions and throws `INVALID_DATA` for code-applied ones. Per-attribute usage (count or spent amount) is stored in `CampaignBudgetUsage`; the budget's own `used` is only an aggregate.
 - Rule attributes for target rules are prefixed by scope (`items.` / `shipping_methods.`); the prefix is stripped before evaluating against the item or shipping method.
 - `buyget` promotions require `apply_to_quantity`, `buy_rules_min_quantity`, and `max_quantity >= apply_to_quantity`; `max_quantity` is not allowed with `across` allocation; percentage values must be 0-100.
+- `target_selection_strategy` only matters for `buyget` promotions: the buy side always reserves the most expensive eligible units, and `cheapest_first` discounts the cheapest units left over instead of the most expensive ones. Any value other than `most_expensive_first` on a `standard` promotion throws `INVALID_DATA`.

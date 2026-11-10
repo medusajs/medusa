@@ -787,8 +787,7 @@ export class PostgresSearchService extends AbstractSearchProviderService {
         useVector,
       }),
       requests: options.facets as
-        | (string | SearchTypes.SearchFacetRequest)[]
-        | undefined,
+        (string | SearchTypes.SearchFacetRequest)[] | undefined,
     })
 
     return {

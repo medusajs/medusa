@@ -31,6 +31,7 @@ export class IdProperty extends BaseProperty<string> {
 
   /**
    * This method indicates that the property is the data model's primary key.
+   * See [Set Primary Key Property](https://docs.medusajs.com/learn/fundamentals/data-models/properties#set-primary-key-property) for more information.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"

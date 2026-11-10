@@ -5,7 +5,12 @@ import {
   RemoteQueryGraph,
   RemoteQueryInput,
 } from "@medusajs/types"
-import { isObject, isString, QueryContext } from "@medusajs/utils"
+import {
+  isObject,
+  isString,
+  isUnsafePathSegment,
+  QueryContext,
+} from "@medusajs/utils"
 
 const FIELDS = "__fields"
 const ARGUMENTS = "__args"
@@ -66,7 +71,7 @@ export function toRemoteQuery<const TEntity extends string>(
     source: Record<string, any>,
     topLevel = true
   ) {
-    for (const key in source) {
+    for (const key of Object.keys(source)) {
       const src = topLevel ? source : source[key]
 
       if (!isObject(src)) {
@@ -115,12 +120,19 @@ export function toRemoteQuery<const TEntity extends string>(
     }
 
     const fieldSegments = fieldAsString.split(".")
+
+    if (fieldSegments.some(isUnsafePathSegment)) {
+      continue
+    }
+
     const fieldProperty = fieldSegments.pop()
 
     let combinedPath = ""
     const deepConfigRef = fieldSegments.reduce((acc, curr) => {
       combinedPath = combinedPath ? combinedPath + "." + curr : curr
-      acc[curr] ??= {}
+      if (!Object.prototype.hasOwnProperty.call(acc, curr)) {
+        acc[curr] = {}
+      }
       return acc[curr]
     }, joinerQuery[entity])
 

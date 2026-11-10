@@ -62,9 +62,8 @@ export async function runMigrationScripts({
 
     const migrator = new MigrationScriptsMigrator({ container: container })
     await migrator.ensureMigrationsTable()
-    const pendingScripts = await migrator.getPendingMigrations(
-      scriptsSourcePaths
-    )
+    const pendingScripts =
+      await migrator.getPendingMigrations(scriptsSourcePaths)
 
     if (!pendingScripts?.length) {
       logger.info("No pending migration scripts to execute")

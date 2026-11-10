@@ -75,8 +75,7 @@ export interface ApiKeyDTO {
 /**
  * The filters to apply on the retrieved API keys.
  */
-export interface FilterableApiKeyProps
-  extends BaseFilterable<FilterableApiKeyProps> {
+export interface FilterableApiKeyProps extends BaseFilterable<FilterableApiKeyProps> {
   /**
    * Search through the api key names and redacted keys using this search term.
    */

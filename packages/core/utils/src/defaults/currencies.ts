@@ -99,6 +99,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     code: "AUD",
     name_plural: "Australian dollars",
   },
+  AWG: {
+    symbol: "Afl.",
+    name: "Aruban Florin",
+    symbol_native: "Afl.",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "AWG",
+    name_plural: "Aruban florins",
+  },
   AZN: {
     symbol: "man.",
     name: "Azerbaijani Manat",
@@ -431,6 +440,15 @@ export const defaultCurrencies: Record<string, Currency> = {
     rounding: 0,
     code: "HRK",
     name_plural: "Croatian kunas",
+  },
+  HTG: {
+    symbol: "HTG",
+    name: "Haitian Gourde",
+    symbol_native: "G",
+    decimal_digits: 2,
+    rounding: 0,
+    code: "HTG",
+    name_plural: "Haitian gourdes",
   },
   HUF: {
     symbol: "Ft",

@@ -3,7 +3,7 @@
 const fs = require("fs/promises")
 const os = require("os")
 const path = require("path")
-const execa = require("execa")
+const { execa } = require("execa")
 
 const isDryRun = process.argv.indexOf("--dry-run") !== -1
 const withFullFile = process.argv.indexOf("--with-full-file") !== -1

@@ -914,5 +914,33 @@ describe("parseAndAssignFilters", () => {
         },
       })
     })
+
+    it("should not pollute the object prototype through unsafe field segments", () => {
+      const format = toRemoteQuery(
+        {
+          entity: "product",
+          fields: [
+            "id",
+            "__proto__.allowUnauthenticated.id",
+            "constructor.prototype.polluted",
+            "variants.sku",
+          ],
+        },
+        parseFiltersJoinerConfigs
+      )
+
+      expect(Object.prototype["allowUnauthenticated"]).toBeUndefined()
+      expect(Object.prototype["polluted"]).toBeUndefined()
+      expect(({} as any).__fields).toBeUndefined()
+
+      expect(format).toEqual({
+        product: {
+          __fields: ["id"],
+          variants: {
+            __fields: ["sku"],
+          },
+        },
+      })
+    })
   })
 })

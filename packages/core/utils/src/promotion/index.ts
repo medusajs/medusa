@@ -26,6 +26,11 @@ export enum ApplicationMethodAllocation {
   ONCE = "once",
 }
 
+export enum ApplicationMethodTargetSelectionStrategy {
+  MOST_EXPENSIVE_FIRST = "most_expensive_first",
+  CHEAPEST_FIRST = "cheapest_first",
+}
+
 export enum PromotionRuleOperator {
   GTE = "gte",
   LTE = "lte",

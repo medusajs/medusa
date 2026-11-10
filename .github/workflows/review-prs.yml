@@ -112,7 +112,7 @@ jobs:
       (github.event_name == 'pull_request_target' &&
        github.event.pull_request.draft == false &&
        github.event.pull_request.state == 'open' &&
-       github.event.pull_request.user.login != 'github-actions[bot]' &&
+       !contains(fromJSON('["github-actions[bot]", "medusa-os-bot[bot]", "medusa-agents[bot]"]'), github.event.pull_request.user.login) &&
        (github.event.action != 'unlabeled' || github.event.label.name == 'requires-linked-issue')) ||
       (github.event_name == 'issue_comment' &&
        github.event.issue.pull_request.url != '' &&
@@ -169,9 +169,9 @@ jobs:
               *)         echo "trigger_reason=${{ github.event.action }}" >> $GITHUB_OUTPUT ;;
             esac
 
-            # Team PRs are reviewed once: when opened or marked ready for review.
+            # Team PRs are reviewed when opened, marked ready for review, or on new commits.
             if bash scripts/is_team_member.sh "$AUTHOR" \
-              && [[ "${{ github.event.action }}" != "opened" && "${{ github.event.action }}" != "ready_for_review" ]]; then
+              && [[ "${{ github.event.action }}" != "opened" && "${{ github.event.action }}" != "ready_for_review" && "${{ github.event.action }}" != "synchronize" ]]; then
               echo "should_review=false" >> $GITHUB_OUTPUT
             else
               echo "should_review=true" >> $GITHUB_OUTPUT

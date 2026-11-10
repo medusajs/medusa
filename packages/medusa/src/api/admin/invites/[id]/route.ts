@@ -13,7 +13,7 @@ export const GET = async (
   res: MedusaResponse<HttpTypes.AdminInviteResponse>
 ) => {
   const { id } = req.params
-  const invite = await refetchInvite(id, req.scope, req.queryConfig.fields)
+  const invite = await refetchInvite(req, id)
 
   if (!invite) {
     throw new MedusaError(

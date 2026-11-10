@@ -86,9 +86,10 @@ export default class NotificationModuleService
       sharedContext
     )
 
-    const serialized = await this.baseRepository_.serialize<
-      NotificationTypes.NotificationDTO[]
-    >(createdNotifications)
+    const serialized =
+      await this.baseRepository_.serialize<NotificationTypes.NotificationDTO[]>(
+        createdNotifications
+      )
 
     return Array.isArray(data) ? serialized : serialized[0]
   }
@@ -150,10 +151,14 @@ export default class NotificationModuleService
               provider?.channels.includes(entry.channel)
             )
 
+            const existing = entry.idempotency_key
+              ? existsMap.get(entry.idempotency_key)
+              : undefined
+
             return {
               provider,
               data: {
-                id: generateEntityId(undefined, "noti"),
+                id: existing?.id ?? generateEntityId(undefined, "noti"),
                 ...entry,
                 provider_id: provider?.id,
               },

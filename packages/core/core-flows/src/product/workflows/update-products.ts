@@ -84,8 +84,7 @@ export type UpdateProductsWorkflowInputProducts = {
  * The data to update one or more products, along with custom data that's passed to the workflow's hooks.
  */
 export type UpdateProductWorkflowInput =
-  | UpdateProductsWorkflowInputSelector
-  | UpdateProductsWorkflowInputProducts
+  UpdateProductsWorkflowInputSelector | UpdateProductsWorkflowInputProducts
 
 function prepareUpdateProductInput({
   input,

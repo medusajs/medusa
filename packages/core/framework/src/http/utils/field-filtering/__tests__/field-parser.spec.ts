@@ -21,4 +21,18 @@ describe("FieldParser", () => {
 
     expect(Array.from(fields)).toEqual(["title", "id"])
   })
+
+  it("drops field paths with unsafe prototype-pollution segments", () => {
+    const protoFn = Object.prototype.toString
+
+    const { fields } = FieldParser.parse(
+      "__proto__.allowUnauthenticated.id,constructor.prototype.polluted,countries.iso_2",
+      ["title"]
+    )
+
+    expect(Array.from(fields)).toEqual(["countries.iso_2", "id"])
+    expect(Object.prototype["allowUnauthenticated"]).toBeUndefined()
+    expect(Object.prototype["polluted"]).toBeUndefined()
+    expect(Object.prototype.toString).toBe(protoFn)
+  })
 })

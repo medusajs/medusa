@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { ExclamationCircleSolid } from "@medusajs/icons"
 import { Button, Container, Divider, Heading, Text, toast } from "@medusajs/ui"
 import { useLocation } from "react-router-dom"
@@ -12,6 +13,8 @@ interface ActiveOrderChangeProps {
 export const ActiveOrderChange = ({ orderId }: ActiveOrderChangeProps) => {
   const { order: preview } = useOrderPreview(orderId)
   const location = useLocation()
+  const { hasPermission } = usePermissions()
+  const canUpdate = hasPermission("order:update")
 
   const isPending = preview?.order_change?.status === "pending"
   const isDetailsPage = DETAILS_PAGE_REGEX.test(location.pathname)
@@ -58,27 +61,31 @@ export const ActiveOrderChange = ({ orderId }: ActiveOrderChangeProps) => {
               : "There is a pending edit on this draft order with changes. Click below to cancel it, or continue to complete the edit."}
           </Text>
         </div>
-        <Divider variant="dashed" />
-        <div className="bg-ui-bg-component px-6 py-4 justify-end items-center flex gap-x-2">
-          {!noActions && (
-            <Button
-              size="small"
-              variant="secondary"
-              isLoading={isMutating}
-              onClick={onCancel}
-            >
-              Continue
-            </Button>
-          )}
-          <Button
-            size="small"
-            variant="secondary"
-            isLoading={isMutating}
-            onClick={onCancel}
-          >
-            Cancel
-          </Button>
-        </div>
+        {canUpdate && (
+          <>
+            <Divider variant="dashed" />
+            <div className="bg-ui-bg-component px-6 py-4 justify-end items-center flex gap-x-2">
+              {!noActions && (
+                <Button
+                  size="small"
+                  variant="secondary"
+                  isLoading={isMutating}
+                  onClick={onCancel}
+                >
+                  Continue
+                </Button>
+              )}
+              <Button
+                size="small"
+                variant="secondary"
+                isLoading={isMutating}
+                onClick={onCancel}
+              >
+                Cancel
+              </Button>
+            </div>
+          </>
+        )}
       </Container>
     </div>
   )

@@ -199,9 +199,8 @@ describe("manyToOne - belongTo", () => {
       }
     )
 
-    const serializedTeams = await mikroOrmSerializer<InstanceType<typeof Team>>(
-      teams
-    )
+    const serializedTeams =
+      await mikroOrmSerializer<InstanceType<typeof Team>>(teams)
     expect(serializedTeams).toHaveLength(2)
     expect(serializedTeams).toEqual(
       expect.arrayContaining([

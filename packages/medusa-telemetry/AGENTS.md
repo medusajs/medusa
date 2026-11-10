@@ -24,7 +24,6 @@ Anonymous usage telemetry for the Medusa CLI and server. Used internally by `@me
 ## Development
 
 - `yarn build`, `yarn watch`, `yarn test` (`jest --passWithNoTests src`; there are currently no tests).
-- The `start` script (nodemon on `plugins/`) is stale; don't rely on it.
 - To debug locally, point `MEDUSA_TELEMETRY_HOST` at a local server and set `MEDUSA_TELEMETRY_VERBOSE=true`.
 
 ## Gotchas
@@ -32,5 +31,5 @@ Anonymous usage telemetry for the Medusa CLI and server. Used internally by `@me
 - Importing the package has side effects: it constructs a `Telemeter`, reads/writes config, may print the opt-out notice (outside CI) on first run, and registers `process.on("exit", flush)`.
 - `postinstall` runs `node dist/postinstall.js || true` to show the opt-out notice on install; it must never throw.
 - `MEDUSA_DISABLE_TELEMETRY` only stops events from being written (`Store.addEvent`); the on/off decision for flushing comes from the stored `telemetry.enabled` config, which defaults to `true` when unset.
-- If `configstore` can't write (read-only home dir), `Store` falls back to `InMemoryConfigStore` with a throwaway `not-a-machine-id-*` id and the OS temp dir as base path.
+- If `configstore` can't load (it's ESM-only, so under Jest) or can't write (read-only home dir), `Store` falls back to `InMemoryConfigStore` with a throwaway `not-a-machine-id-*` id and the OS temp dir as base path.
 - The sender is a separate process: a failed POST writes the batch back to `events.json`, but events can be lost if that process dies mid-send (see comment in `outbox-store.js`).

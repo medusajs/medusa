@@ -48,6 +48,7 @@ Docs: https://docs.medusajs.com/resources/infrastructure-modules/locking.md, htt
 
 - `src/loaders/providers.ts`: always registers `InMemoryLockingProvider` (`identifier = "in-memory"`) under `lp_in-memory` and as the default; then registers each configured provider as `lp_<id>` (alias of its provider registration key). The default becomes the provider with `is_default: true`, or the only configured provider when exactly one is configured.
 - `src/services/locking-provider.ts` resolves `lp_<providerId>`; providers must have a static `identifier` and a non-empty `id`, or registration throws.
+- The service's `__hooks.onApplicationShutdown` calls the optional `shutdown()` of every registered provider (used by `locking-redis` to close its client).
 - `src/providers/in-memory.ts`: process-local `Map` of locks with owner, optional expiration, and a promise queue.
 
 ## Development

@@ -22,7 +22,7 @@ ___
 
 {{#each getAllChildren}}
 
-{{#unless hasOwnDocument}}
+{{#unless (reflectionHasOwnDocument)}}
 
 {{> member removeSeparator=true}}
 

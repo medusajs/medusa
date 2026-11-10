@@ -174,7 +174,7 @@ const renderStatusPill = (
 ): React.ReactNode => {
   const label = variant.label_key
     ? (t(variant.label_key, variant.label ?? fallbackLabel) as string)
-    : variant.label ?? fallbackLabel
+    : (variant.label ?? fallbackLabel)
   return (
     <DataTableStatusIndicator color={variant.color ?? "grey"}>
       {label}
@@ -216,8 +216,7 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
   }
 
   const variants = metadata.status_variants as
-    | Record<string, StatusVariant>
-    | undefined
+    Record<string, StatusVariant> | undefined
   if (variants) {
     const variant = variants[String(rawValue)]
     if (variant) {
@@ -489,8 +488,8 @@ const BooleanRenderer: CellRenderer = (value, _row, _column, t) => {
         ? t("fields.yes", "Yes")
         : "Yes"
       : t
-      ? t("fields.no", "No")
-      : "No"
+        ? t("fields.no", "No")
+        : "No"
   ) as string
 
   return (
@@ -546,7 +545,7 @@ const UrlRenderer: CellRenderer = (value, _row, _column, _t) => {
       href={value}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover flex items-center gap-1"
+      className="flex items-center gap-1 text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
       onClick={(e) => e.stopPropagation()}
     >
       <TruncatedText text={value} className="max-w-[200px]" />
@@ -589,7 +588,7 @@ const JsonRenderer: CellRenderer = (value, _row, _column, _t) => {
         </pre>
       }
     >
-      <span className="text-ui-fg-subtle cursor-help font-mono text-xs">
+      <span className="cursor-help font-mono text-xs text-ui-fg-subtle">
         {truncated}
       </span>
     </Tooltip>

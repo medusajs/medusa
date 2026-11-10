@@ -42,9 +42,8 @@ export const updateInventoryItemsStep = createStep(
       {}
     )
 
-    const updatedInventoryItems = await inventoryService.updateInventoryItems(
-      input
-    )
+    const updatedInventoryItems =
+      await inventoryService.updateInventoryItems(input)
 
     return new StepResponse(updatedInventoryItems, {
       dataBeforeUpdate,

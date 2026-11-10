@@ -119,10 +119,10 @@ export const RenderPrompt = ({
             <Prompt.Description>{description}</Prompt.Description>
           </Prompt.Header>
           {verificationText && (
-            <div className="border-ui-border-base mt-6 flex flex-col gap-y-4 border-y p-6">
+            <div className="mt-6 flex flex-col gap-y-4 border-y border-ui-border-base p-6">
               <Label htmlFor="verificationText" className="text-ui-fg-subtle">
                 {instructionParts[0]}{" "}
-                <span className="text-ui-fg-base txt-compact-medium-plus">
+                <span className="txt-compact-medium-plus text-ui-fg-base">
                   {verificationText}
                 </span>{" "}
                 {instructionParts[1]}

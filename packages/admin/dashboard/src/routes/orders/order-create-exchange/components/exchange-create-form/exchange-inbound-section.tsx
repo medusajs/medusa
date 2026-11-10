@@ -343,7 +343,7 @@ export const ExchangeInboundSection = ({
 
         <StackedFocusModal id="inbound-items">
           <StackedFocusModal.Trigger asChild>
-            <a className="focus-visible:shadow-borders-focus transition-fg txt-compact-small-plus cursor-pointer text-blue-500 outline-none hover:text-blue-400">
+            <a className="txt-compact-small-plus cursor-pointer text-blue-500 outline-none transition-fg hover:text-blue-400 focus-visible:shadow-borders-focus">
               {t("actions.addItems")}
             </a>
           </StackedFocusModal.Trigger>
@@ -491,7 +491,7 @@ export const ExchangeInboundSection = ({
                 <Text
                   size="small"
                   leading="compact"
-                  className="text-ui-fg-muted ml-1 inline"
+                  className="ml-1 inline text-ui-fg-muted"
                 >
                   ({t("fields.optional")})
                 </Text>
@@ -534,10 +534,10 @@ export const ExchangeInboundSection = ({
       )}
       {showLevelsWarning && (
         <Alert variant="warning" dismissible className="mt-4 p-5">
-          <div className="text-ui-fg-subtle txt-small pb-2 font-medium leading-[20px]">
+          <div className="txt-small pb-2 font-medium leading-[20px] text-ui-fg-subtle">
             {t("orders.returns.noInventoryLevel")}
           </div>
-          <Text className="text-ui-fg-subtle txt-small leading-normal">
+          <Text className="txt-small leading-normal text-ui-fg-subtle">
             {t("orders.returns.noInventoryLevelDesc")}
           </Text>
         </Alert>

@@ -188,7 +188,7 @@ jobs:
       status: ${{ steps.result.outputs.status }}
     steps:
       # Sudo must stay disabled, or the agent's test code could flush the egress rules.
-      # harden-runner always allows the Actions cache/artifact hosts, so they aren't listed.
+      # harden-runner allows the Actions cache/artifact storage hosts by default, so they aren't listed.
       - name: Harden runner
         uses: step-security/harden-runner@351661ca32ac09a36dc5ee2d536e3128f2a3c8ed # v2.22.0
         with:
@@ -202,6 +202,7 @@ jobs:
             api.github.com:443
             objects.githubusercontent.com:443
             release-assets.githubusercontent.com:443
+            results-receiver.actions.githubusercontent.com:443
             registry.yarnpkg.com:443
             registry.npmjs.org:443
             repo.yarnpkg.com:443
@@ -239,6 +240,7 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
+          check-latest: true
           cache: "yarn"
 
       - name: Install dependencies and build
@@ -258,6 +260,8 @@ jobs:
           CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"
           DB_HOST: localhost
           DB_USERNAME: postgres
+          # The action runs its own setup-node, defaulting to 18.x
+          NODE_VERSION: 22
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           settings: |
@@ -265,17 +269,11 @@ jobs:
               "permissions": {
                 "deny": [
                   "Read(//proc/**)",
-                  "Write(//**/.claude/**)",
                   "Edit(//**/.claude/**)",
-                  "Write(//**/.github/**)",
                   "Edit(//**/.github/**)",
-                  "Write(//**/.mcp.json)",
                   "Edit(//**/.mcp.json)",
-                  "Write(//**/scripts/**)",
                   "Edit(//**/scripts/**)",
-                  "Write(//**/migrations/**)",
                   "Edit(//**/migrations/**)",
-                  "Write(//**/package.json)",
                   "Edit(//**/package.json)"
                 ]
               }
@@ -300,6 +298,21 @@ jobs:
             5. Never run git commands that stage, commit, push, or switch branches. Leave your changes in the working tree.
             6. Respect the size and path limits in the skill. If the fix can't fit them, write a `needs-team` result instead of a fix.
             7. Write fix-result.json (and pr-body.md when status is "confirmed") at the repository root, as described in the skill's reference/output.md.
+
+      # Only the denied calls are published: the full transcript can hold unmasked tool output.
+      - name: Show denied tool calls
+        if: always()
+        env:
+          ISSUE: ${{ inputs.issue }}
+        run: |
+          FILE="$RUNNER_TEMP/claude-execution-output.json"
+          [[ -f "$FILE" ]] || exit 0
+          {
+            echo "### Denied tool calls (\`$ISSUE\`)"
+            echo
+            jq -r '.[] | select(.type == "result") | .permission_denials[]?
+              | "- `\(.tool_name)`: `\((.tool_input.command // .tool_input.file_path // (.tool_input | tostring)) | .[0:200] | gsub("`"; "'"'"'"))`"' "$FILE"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Package result
         id: result
@@ -616,6 +629,21 @@ jobs:
           jq -n --arg reason "$REASON" '{REASON: $reason}' > "$RUNNER_TEMP/params.json"
           bash scripts/add_comment.sh --workflow fix --template fix-escalated --params-file "$RUNNER_TEMP/params.json"
           bash scripts/labels.sh --workflow fix --action add --label requires-team
+
+      - name: Create Linear ticket
+        if: steps.decide.outputs.reason != '' && steps.decide.outputs.kind == 'github'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ISSUE: ${{ inputs.issue }}
+          REASON: ${{ steps.decide.outputs.reason }}
+          ISSUE_URL: ${{ github.server_url }}/${{ github.repository }}/issues/${{ inputs.issue }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          printf '## Problem\n\nThe automated fix workflow could not open a PR for this issue.\n\n%s\n\nGitHub issue: %s\n\nWorkflow run: %s\n' \
+            "$REASON" "$ISSUE_URL" "$RUN_URL" > "$RUNNER_TEMP/linear-description.md"
+          bash scripts/escalate_to_linear.sh --issue "$ISSUE" --description-file "$RUNNER_TEMP/linear-description.md"
 
       - name: Escalate Linear ticket
         if: steps.decide.outputs.reason != '' && steps.decide.outputs.kind == 'linear'

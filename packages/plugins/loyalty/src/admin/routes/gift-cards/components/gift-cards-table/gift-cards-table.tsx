@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Container } from "@medusajs/ui";
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
@@ -28,6 +29,8 @@ export function GiftCardsTable() {
 
   const columns = useGiftCardTableColumns();
   const filters = useGiftCardFilters();
+  const { hasPermission } = usePermissions();
+  const canCreate = hasPermission("gift_card:create");
 
   return (
     <Fragment>
@@ -52,12 +55,16 @@ export function GiftCardsTable() {
               description: "No gift cards match your filter criteria.",
             },
           }}
-          actions={[
-            {
-              label: "Create",
-              to: "create",
-            },
-          ]}
+          actions={
+            canCreate
+              ? [
+                  {
+                    label: "Create",
+                    to: "create",
+                  },
+                ]
+              : []
+          }
         />
       </Container>
 

@@ -1,0 +1,77 @@
+---
+sidebar_position: 6
+sidebar_label: "Login Options"
+tags:
+  - user guide
+  - user
+  - auth
+products:
+  - user
+  - auth
+---
+
+export const metadata = {
+  title: `Login Options in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about the ways you can log in to the Medusa Admin dashboard.
+
+## Overview
+
+The login page shows the login options that your technical team enabled for your store. So, what you see on it depends on how your Medusa application is set up.
+
+Every option below signs you in to the same dashboard. The difference is only where your password or account lives.
+
+---
+
+## Login with Email and Password
+
+By default, you log in with the email and password of your admin user.
+
+If you're unsure what your email and password are, ask the technical team that set up your Medusa application, or ask a team member who manages users in the dashboard to [send you an invite](../../settings/users/invites/page.mdx).
+
+You can also [reset your password](../../reset-password/page.mdx) if you forget it, and [enable two-factor authentication](../../settings/profile/page.mdx#manage-two-factor-authentication) for an extra layer of security.
+
+---
+
+## Login with Cloud
+
+If your store is deployed on [Cloud](!cloud!), the login page also shows a button to login with your Cloud account.
+
+Click it to log in with the Cloud account you use to manage your store's projects, instead of a separate email and password.
+
+---
+
+## Login with Single Sign-On (SSO)
+
+If your organization uses an identity provider, such as Okta or Microsoft Entra ID, your technical team can let you log in with your work account.
+
+The login page then shows a **Continue with** button, labeled with your identity provider's name. Click it, sign in with your work account, and you're taken back to the dashboard.
+
+With SSO, your organization manages your account, so:
+
+- You don't need a separate password for the Medusa Admin dashboard.
+- Any security requirement of your organization, such as two-factor authentication, applies when you sign in.
+- If your technical team turned off the email and password option, the login page shows only the **Continue with** button, and you can't reset a password from the dashboard.
+
+<Note title="Technical Tip">
+
+SSO is an enterprise feature. Ask your technical team to refer to the [SSO with OIDC](!resources!/enterprise/sso) documentation to set it up, and to the [Configure the Medusa Admin for SSO](!resources!/enterprise/sso/admin-login) guide for the dashboard's login options.
+
+</Note>
+
+---
+
+## Other Login Options
+
+Your technical team can also add a login option that isn't in this list, such as your organization's own login system.
+
+If you see a login option that this guide doesn't cover, ask your technical team what it is and who can use it.
+
+<Note title="Technical Tip">
+
+Refer to the [Auth Module Providers](!resources!/commerce-modules/auth/auth-providers) documentation to learn how to add a custom authentication provider, and to the [Add Custom Authentication in Medusa Admin](!resources!/how-to-tutorials/how-to/admin/auth) guide to add its button to the login page.
+
+</Note>

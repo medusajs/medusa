@@ -649,9 +649,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "test-type",
             }
 
-            const createdFulfillmentSet = await service.createFulfillmentSets(
-              createData
-            )
+            const createdFulfillmentSet =
+              await service.createFulfillmentSets(createData)
 
             const updateData = {
               id: createdFulfillmentSet.id,
@@ -659,9 +658,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "updated-test-type",
             }
 
-            const updatedFulfillmentSets = await service.updateFulfillmentSets(
-              updateData
-            )
+            const updatedFulfillmentSets =
+              await service.updateFulfillmentSets(updateData)
 
             expect(updatedFulfillmentSets).toEqual(
               expect.objectContaining({
@@ -698,9 +696,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdFulfillmentSets = await service.createFulfillmentSets(
-              createData
-            )
+            const createdFulfillmentSets =
+              await service.createFulfillmentSets(createData)
 
             const updateData = createdFulfillmentSets.map(
               (fulfillmentSet, index) => ({
@@ -710,9 +707,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               })
             )
 
-            const updatedFulfillmentSets = await service.updateFulfillmentSets(
-              updateData
-            )
+            const updatedFulfillmentSets =
+              await service.updateFulfillmentSets(updateData)
             const fullfillmentSets = await service.listFulfillmentSets({
               id: updateData.map((ud) => ud.id),
             })
@@ -768,9 +764,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            const createdFulfillmentSet = await service.createFulfillmentSets(
-              createData
-            )
+            const createdFulfillmentSet =
+              await service.createFulfillmentSets(createData)
 
             const createServiceZoneData: CreateServiceZoneDTO = {
               fulfillment_set_id: createdFulfillmentSet.id,
@@ -790,9 +785,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               service_zones: [createServiceZoneData],
             }
 
-            const updatedFulfillmentSet = await service.updateFulfillmentSets(
-              updateData
-            )
+            const updatedFulfillmentSet =
+              await service.updateFulfillmentSets(updateData)
 
             expect(updatedFulfillmentSet).toEqual(
               expect.objectContaining({
@@ -888,9 +882,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            const createdFulfillmentSet = await service.createFulfillmentSets(
-              createData
-            )
+            const createdFulfillmentSet =
+              await service.createFulfillmentSets(createData)
 
             const createServiceZoneData: CreateServiceZoneDTO = {
               fulfillment_set_id: createdFulfillmentSet.id,
@@ -913,9 +906,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            const updatedFulfillmentSet = await service.updateFulfillmentSets(
-              updateData
-            )
+            const updatedFulfillmentSet =
+              await service.updateFulfillmentSets(updateData)
 
             expect(updatedFulfillmentSet).toEqual(
               expect.objectContaining({
@@ -990,9 +982,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdFulfillmentSets = await service.createFulfillmentSets(
-              createData
-            )
+            const createdFulfillmentSets =
+              await service.createFulfillmentSets(createData)
 
             const updateData = {
               id: createdFulfillmentSets[1].id,
@@ -1042,9 +1033,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdFulfillmentSets = await service.createFulfillmentSets(
-              createData
-            )
+            const createdFulfillmentSets =
+              await service.createFulfillmentSets(createData)
 
             const updateData: UpdateFulfillmentSetDTO[] =
               createdFulfillmentSets.map((fulfillmentSet, index) => ({
@@ -1064,9 +1054,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 ],
               }))
 
-            const updatedFulfillmentSets = await service.updateFulfillmentSets(
-              updateData
-            )
+            const updatedFulfillmentSets =
+              await service.updateFulfillmentSets(updateData)
 
             expect(updatedFulfillmentSets).toHaveLength(2)
             expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(10)
@@ -1205,9 +1194,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdFulfillmentSets = await service.createFulfillmentSets(
-              createData
-            )
+            const createdFulfillmentSets =
+              await service.createFulfillmentSets(createData)
 
             const updateData: UpdateFulfillmentSetDTO[] =
               createdFulfillmentSets.map((fulfillmentSet, index) => ({
@@ -1228,9 +1216,8 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 ],
               }))
 
-            const updatedFulfillmentSets = await service.updateFulfillmentSets(
-              updateData
-            )
+            const updatedFulfillmentSets =
+              await service.updateFulfillmentSets(updateData)
 
             expect(updatedFulfillmentSets).toHaveLength(2)
             expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(6)

@@ -1,3 +1,4 @@
+export * from "./aggregations"
 export * from "./api-types"
 export * from "./client"
 export * from "./facets"

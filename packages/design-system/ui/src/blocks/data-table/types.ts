@@ -32,16 +32,22 @@ export type DataTableAction<TData> = {
   icon?: React.ReactNode
 }
 
-export interface DataTableCellContext<TData extends DataTableRowData, TValue>
-  extends CellContext<TData, TValue> {}
+export interface DataTableCellContext<
+  TData extends DataTableRowData,
+  TValue,
+> extends CellContext<TData, TValue> {}
 
-export interface DataTableHeaderContext<TData extends DataTableRowData, TValue>
-  extends HeaderContext<TData, TValue> {}
+export interface DataTableHeaderContext<
+  TData extends DataTableRowData,
+  TValue,
+> extends HeaderContext<TData, TValue> {}
 
 export type DataTableSortDirection = SortDirection
 
-export interface DataTableActionColumnDef<TData>
-  extends Pick<DisplayColumnDef<TData>, "meta"> {
+export interface DataTableActionColumnDef<TData> extends Pick<
+  DisplayColumnDef<TData>,
+  "meta"
+> {
   actions:
     | DataTableAction<TData>[]
     | DataTableAction<TData>[][]
@@ -50,8 +56,10 @@ export interface DataTableActionColumnDef<TData>
       ) => DataTableAction<TData>[] | DataTableAction<TData>[][])
 }
 
-export interface DataTableSelectColumnDef<TData>
-  extends Pick<DisplayColumnDef<TData>, "cell" | "header"> {}
+export interface DataTableSelectColumnDef<TData> extends Pick<
+  DisplayColumnDef<TData>,
+  "cell" | "header"
+> {}
 
 export type DataTableSortableColumnDef = {
   /**
@@ -125,12 +133,12 @@ export type DataTableActionColumnDefMeta<TData> = {
 
 export interface DataTableColumn<
   TData extends DataTableRowData,
-  TValue = unknown
+  TValue = unknown,
 > extends Column<TData, TValue> {}
 
 export type DataTableColumnDef<
   TData extends DataTableRowData,
-  TValue = unknown
+  TValue = unknown,
 > = ColumnDef<TData, TValue>
 
 export type DataTableColumnSizing = {
@@ -149,12 +157,11 @@ export type DataTableColumnSizing = {
 }
 
 type DataTableColumnIdentifiers<TData extends DataTableRowData, TValue> =
-  | IdIdentifier<TData, TValue>
-  | StringHeaderIdentifier
+  IdIdentifier<TData, TValue> | StringHeaderIdentifier
 
 export type DataTableDisplayColumnDef<
   TData extends DataTableRowData,
-  TValue = unknown
+  TValue = unknown,
 > = Pick<
   DisplayColumnDef<TData, TValue>,
   "meta" | "header" | "cell" | "minSize" | "maxSize" | "size"
@@ -163,11 +170,11 @@ export type DataTableDisplayColumnDef<
 
 export interface DataTableIdentifiedColumnDef<
   TData extends DataTableRowData,
-  TValue
+  TValue,
 > extends Pick<
-    IdentifiedColumnDef<TData, TValue>,
-    "meta" | "header" | "cell" | "minSize" | "maxSize" | "size"
-  > {
+  IdentifiedColumnDef<TData, TValue>,
+  "meta" | "header" | "cell" | "minSize" | "maxSize" | "size"
+> {
   id?: string
   header?: StringOrTemplateHeader<TData, TValue>
 }
@@ -182,11 +189,11 @@ export interface DataTableColumnHelper<TData> {
    */
   accessor: <
     TAccessor extends AccessorFn<TData> | DeepKeys<TData>,
-    TValue extends TAccessor extends AccessorFn<TData, infer TReturn>
+    TValue extends (TAccessor extends AccessorFn<TData, infer TReturn>
       ? TReturn
       : TAccessor extends DeepKeys<TData>
-      ? DeepValue<TData, TAccessor>
-      : never
+        ? DeepValue<TData, TAccessor>
+        : never),
   >(
     accessor: TAccessor,
     column: TAccessor extends AccessorFn<TData>
@@ -232,19 +239,13 @@ export interface DataTableSortingState extends ColumnSort {}
 export interface DataTableRowSelectionState extends RowSelectionState {}
 export interface DataTablePaginationState extends PaginationState {}
 export type DataTableFilteringState<
-  T extends Record<string, unknown> = Record<string, unknown>
+  T extends Record<string, unknown> = Record<string, unknown>,
 > = {
   [K in keyof T]: T[K]
 }
 
 export type DataTableFilterType =
-  | "radio"
-  | "select"
-  | "date"
-  | "multiselect"
-  | "string"
-  | "number"
-  | "custom"
+  "radio" | "select" | "date" | "multiselect" | "string" | "number" | "custom"
 export type DataTableFilterOption<T = string> = {
   label: string
   value: T
@@ -311,8 +312,7 @@ export interface DataTableDateFilterProps extends DataTableBaseFilterProps {
   options: DataTableFilterOption<DataTableDateComparisonOperator>[]
 }
 
-export interface DataTableMultiselectFilterProps
-  extends DataTableBaseFilterProps {
+export interface DataTableMultiselectFilterProps extends DataTableBaseFilterProps {
   type: "multiselect"
   options: DataTableFilterOption[]
   /**
@@ -365,7 +365,7 @@ export type DataTableFilterProps =
   | DataTableCustomFilterProps
 
 export type DataTableFilter<
-  T extends DataTableFilterProps = DataTableFilterProps
+  T extends DataTableFilterProps = DataTableFilterProps,
 > = T & {
   id: string
 }

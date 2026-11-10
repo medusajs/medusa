@@ -7,19 +7,26 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { Link } from "react-router-dom"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useProductCategories } from "../../../../../hooks/api/categories"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useDeleteProductCategoryAction } from "../../../common/hooks/use-delete-product-category-action"
 import { useCategoryTableColumns } from "./use-category-table-columns"
 import { useCategoryTableQuery } from "./use-category-table-query"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import {
+  useProductCategoryPermissions,
+  useCanOpenTranslations,
+} from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const CategoryListTable = () => {
   const { t } = useTranslation()
+  const { canCreate, canUpdate } = useProductCategoryPermissions()
 
   const { raw, searchParams } = useCategoryTableQuery({ pageSize: PAGE_SIZE })
 
@@ -59,7 +66,7 @@ export const CategoryListTable = () => {
   })
 
   const showRankingAction =
-    !!product_categories && product_categories.length > 0
+    canUpdate && !!product_categories && product_categories.length > 0
 
   if (isError) {
     throw error
@@ -80,9 +87,11 @@ export const CategoryListTable = () => {
               <Link to="organize">{t("categories.organize.action")}</Link>
             </Button>
           )}
-          <Button size="small" variant="secondary" asChild>
-            <Link to="create">{t("actions.create")}</Link>
-          </Button>
+          {canCreate && (
+            <Button size="small" variant="secondary" asChild>
+              <Link to="create">{t("actions.create")}</Link>
+            </Button>
+          )}
         </div>
       </div>
       <_DataTable
@@ -106,46 +115,55 @@ const CategoryRowActions = ({
   category: AdminProductCategoryResponse["product_category"]
 }) => {
   const { t } = useTranslation()
-  const isTranslationsEnabled = useFeatureFlag("translation")
+  const { canUpdate, canDelete } = useProductCategoryPermissions()
+  const canOpenTranslations = useCanOpenTranslations()
   const handleDelete = useDeleteProductCategoryAction(category)
 
-  return (
-    <ActionMenu
-      groups={[
+  const canManageTranslations = canOpenTranslations
+
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.edit"),
-              icon: <PencilSquare />,
-              to: `${category.id}/edit`,
-            },
-          ],
+          label: t("actions.edit"),
+          icon: <PencilSquare />,
+          to: `${category.id}/edit`,
         },
-        ...(isTranslationsEnabled
-          ? [
-              {
-                actions: [
-                  {
-                    icon: <GlobeEurope />,
-                    label: t("translations.actions.manage"),
-                    to: `/settings/translations/edit?reference=product_category&reference_id=${category.id}`,
-                  },
-                ],
-              },
-            ]
-          : []),
+      ],
+    })
+  }
+
+  if (canManageTranslations) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.delete"),
-              icon: <Trash />,
-              onClick: handleDelete,
-            },
-          ],
+          icon: <GlobeEurope />,
+          label: t("translations.actions.manage"),
+          to: `/settings/translations/edit?reference=product_category&reference_id=${category.id}`,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
+        {
+          label: t("actions.delete"),
+          icon: <Trash />,
+          onClick: handleDelete,
+        },
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }
 
 const columnHelper =

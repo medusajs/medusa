@@ -32,7 +32,6 @@ const useCoverage = !!process.env.GENERATE_JEST_REPORT
 const projects = pkgs.map((pkg) => pkg.concat("/jest.config.js"))
 
 module.exports = {
-  notify: true,
   verbose: true,
   roots: ["<rootDir>"],
   projects: [

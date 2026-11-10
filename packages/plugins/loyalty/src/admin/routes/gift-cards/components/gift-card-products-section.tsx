@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Tag } from "@medusajs/icons";
 import { Container } from "@medusajs/ui";
 import { Link } from "react-router-dom";
@@ -7,6 +8,9 @@ import { SidebarLink } from "../../../components/sidebar-link";
 import { useProducts } from "../../../hooks/api/products";
 
 const GiftCardProductsSection = () => {
+  const { hasPermission } = usePermissions();
+  const canCreateProduct = hasPermission("product:create");
+
   const { products: giftCardProducts, count = 0 } = useProducts({
     is_giftcard: true,
   });
@@ -18,12 +22,14 @@ const GiftCardProductsSection = () => {
       <div className="flex items-center justify-between">
         <Header title="Gift Card Products" />
 
-        <Link
-          to={`/gift-cards/gift-card-products/create`}
-          className="text-ui-fg-muted text-sm px-6"
-        >
-          Create
-        </Link>
+        {canCreateProduct && (
+          <Link
+            to={`/gift-cards/gift-card-products/create`}
+            className="text-ui-fg-muted text-sm px-6"
+          >
+            Create
+          </Link>
+        )}
       </div>
 
       {giftCardProducts?.length === 0 && (
@@ -31,10 +37,14 @@ const GiftCardProductsSection = () => {
           className="px-10 py-4 h-[200px]"
           title="No gift card products"
           message="There are no gift card products to show. Create one to get started."
-          action={{
-            to: "/gift-cards/gift-card-products/create",
-            label: "Create gift card product",
-          }}
+          action={
+            canCreateProduct
+              ? {
+                  to: "/gift-cards/gift-card-products/create",
+                  label: "Create gift card product",
+                }
+              : undefined
+          }
         />
       )}
 

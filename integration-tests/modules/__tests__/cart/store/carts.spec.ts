@@ -2021,9 +2021,8 @@ medusaIntegrationTestRunner({
         it("should keep the same customer when updating the customer cart and update Cart's email if provided", async () => {
           // create a customer
           const mainEmail = "jhon.doe@acme.com"
-          await customerModule.createCustomers({
+          const { jwt } = await createAuthenticatedCustomer(api, storeHeaders, {
             email: mainEmail,
-            has_account: true,
           })
 
           const cart = (
@@ -2043,7 +2042,12 @@ medusaIntegrationTestRunner({
                 },
                 sales_channel_id: salesChannel.id,
               },
-              storeHeaders
+              {
+                headers: {
+                  authorization: `Bearer ${jwt}`,
+                  ...storeHeaders.headers,
+                },
+              }
             )
           ).data.cart
 

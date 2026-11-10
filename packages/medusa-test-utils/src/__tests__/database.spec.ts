@@ -1,4 +1,14 @@
-import { getDatabaseURL } from "../database"
+jest.mock("@medusajs/framework/pg", () => ({
+  Client: jest.fn(() => ({
+    connect: jest.fn().mockResolvedValue(undefined),
+    query: jest.fn().mockResolvedValue({ rows: [], rowCount: 0 }),
+    end: jest.fn().mockResolvedValue(undefined),
+    on: jest.fn(),
+  })),
+}))
+
+import { Client } from "@medusajs/framework/pg"
+import { dbTestUtilFactory, getDatabaseURL } from "../database"
 
 describe("getDatabaseURL", () => {
   const originalEnv = process.env
@@ -97,5 +107,47 @@ describe("getDatabaseURL", () => {
 
     expect(url).toContain("/my_custom_db")
     expect(() => new URL(url)).not.toThrow()
+  })
+})
+
+describe("dbTestUtilFactory", () => {
+  const originalEnv = process.env
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    process.env = {
+      ...originalEnv,
+      DB_HOST: "runner-host",
+      DB_PORT: "6543",
+      DB_USERNAME: "runner-user",
+      DB_PASSWORD: "runner-secret",
+    }
+  })
+
+  afterEach(() => {
+    process.env = originalEnv
+  })
+
+  const expectedCredentials = {
+    host: "runner-host",
+    port: 6543,
+    user: "runner-user",
+    password: "runner-secret",
+  }
+
+  it("should create the database with the DB env vars set after the module was loaded", async () => {
+    await dbTestUtilFactory().create("test_db")
+
+    expect(Client).toHaveBeenCalledWith(
+      expect.objectContaining(expectedCredentials)
+    )
+  })
+
+  it("should drop the database with the DB env vars set after the module was loaded", async () => {
+    await dbTestUtilFactory().shutdown("test_db")
+
+    expect(Client).toHaveBeenCalledWith(
+      expect.objectContaining(expectedCredentials)
+    )
   })
 })

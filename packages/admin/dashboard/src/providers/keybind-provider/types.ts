@@ -1,3 +1,5 @@
+import type { Permission } from "../../lib/permissions"
+
 export type KeybindContextState = {}
 
 export type Platform = "Mac" | "Windows" | "Linux"
@@ -7,15 +9,14 @@ export type Keys = {
 }
 
 export type ShortcutType =
-  | "pageShortcut"
-  | "settingShortcut"
-  | "commandShortcut"
+  "pageShortcut" | "settingShortcut" | "commandShortcut"
 
 export type Shortcut = {
   keys: Keys
   type: ShortcutType
   label: string
   _defaultKeys?: Keys
+  permission?: Permission
 } & (
   | {
       callback: () => void

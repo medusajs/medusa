@@ -461,6 +461,7 @@ export const completeCartWorkflow = createWorkflow(
             cartId: cart.id,
             unitPrice: item.unit_price,
             isTaxInclusive: item.is_tax_inclusive,
+            isCustomPrice: item.is_custom_price,
             taxLines: item.tax_lines ?? [],
             adjustments: item.adjustments ?? [],
           }

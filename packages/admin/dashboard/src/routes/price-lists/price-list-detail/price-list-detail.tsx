@@ -7,6 +7,7 @@ import { PriceListGeneralSection } from "./components/price-list-general-section
 import { PriceListProductSection } from "./components/price-list-product-section"
 import { ConfigurablePriceListProductSection } from "./components/price-list-product-section/configurable-price-list-product-section"
 
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import {
   LayoutComposer,
@@ -47,11 +48,13 @@ export const PriceListDetails = () => {
               <PriceListGeneralSection priceList={price_list} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="PriceListProductSection">
-              {isViewConfigEnabled ? (
-                <ConfigurablePriceListProductSection priceList={price_list} />
-              ) : (
-                <PriceListProductSection priceList={price_list} />
-              )}
+              <PermissionGuard permission="product:read">
+                {isViewConfigEnabled ? (
+                  <ConfigurablePriceListProductSection priceList={price_list} />
+                ) : (
+                  <PriceListProductSection priceList={price_list} />
+                )}
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(price_list)}
           </>

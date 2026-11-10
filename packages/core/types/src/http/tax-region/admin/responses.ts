@@ -15,5 +15,4 @@ export type AdminTaxRegionListResponse = PaginatedResponse<{
   tax_regions: AdminTaxRegion[]
 }>
 
-export interface AdminTaxRegionDeleteResponse
-  extends DeleteResponse<"tax_region"> {}
+export interface AdminTaxRegionDeleteResponse extends DeleteResponse<"tax_region"> {}

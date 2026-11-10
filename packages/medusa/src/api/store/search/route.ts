@@ -198,6 +198,6 @@ function mergeSearchFilters(
 
   return {
     ...(isPresent(q) ? { q } : {}),
-    ...(branches.length > 1 ? { $and: branches } : branches[0] ?? {}),
+    ...(branches.length > 1 ? { $and: branches } : (branches[0] ?? {})),
   }
 }

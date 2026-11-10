@@ -1,4 +1,4 @@
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { isDefined, MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import type {
   BigNumberInput,
@@ -58,7 +58,7 @@ export const updateDraftOrderShippingMethodStep = createStep(
       },
       {
         take: 1,
-        select: ["id", "shipping_option_id", "amount"],
+        select: ["id", "shipping_option_id", "amount", "is_custom_amount"],
       }
     )
 
@@ -74,6 +74,7 @@ export const updateDraftOrderShippingMethodStep = createStep(
         id: input.shipping_method_id,
         shipping_option_id: input.shipping_option_id,
         amount: input.amount,
+        ...(isDefined(input.amount) ? { is_custom_amount: true } : {}),
       },
     ])
 

@@ -67,8 +67,8 @@ export type QuerySearchFunction = {
     [TInput] extends [readonly SearchQuery[]]
       ? Prettify<SearchResultSet<string>>[]
       : TInput extends SearchQuery<infer TEntry>
-      ? Prettify<SearchResultSet<TEntry>>
-      : never
+        ? Prettify<SearchResultSet<TEntry>>
+        : never
   >
 }
 
@@ -76,6 +76,8 @@ export type QuerySearchFunction = {
  * QueryIndexFunction is a wrapper on top of indexModule
  * that simplifies the input it accepts and returns
  * a normalized/consistent output.
+ *
+ * @deprecated The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property
  */
 export type QueryIndexFunction = {
   <const TEntry extends string>(
@@ -151,6 +153,8 @@ export type RemoteQueryFunction = {
   /**
    * Index function uses the index module to query and remoteQuery to hydrate the data
    * returns a result set
+   *
+   * @deprecated The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property
    */
   index: QueryIndexFunction
 

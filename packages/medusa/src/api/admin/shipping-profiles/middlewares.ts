@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import {
   Entities,
@@ -19,61 +19,63 @@ import {
 export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/shipping-profiles/*",
-    policies: [
-      {
-        resource: Entities.shipping_profile,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.shipping_profile,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/shipping-profiles",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.shipping_profile,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateShippingProfile),
       validateAndTransformQuery(
         AdminGetShippingProfilesParams,
         retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.shipping_profile,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["GET"],
     matcher: "/admin/shipping-profiles",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.shipping_profile,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetShippingProfilesParams,
         listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.shipping_profile,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/shipping-profiles/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.shipping_profile,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateShippingProfile),
       validateAndTransformQuery(
         AdminGetShippingProfileParams,
         retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.shipping_profile,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {
@@ -89,12 +91,13 @@ export const adminShippingProfilesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/shipping-profiles/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.shipping_profile,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.shipping_profile,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

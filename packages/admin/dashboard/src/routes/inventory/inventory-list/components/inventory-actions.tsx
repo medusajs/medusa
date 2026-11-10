@@ -1,12 +1,23 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 
-import { ActionMenu } from "../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../components/common/action-menu"
 import { AdminInventoryItem } from "@medusajs/types"
 import { useDeleteInventoryItem } from "../../../../hooks/api/inventory"
 import { usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-export const InventoryActions = ({ item }: { item: AdminInventoryItem }) => {
+export const InventoryActions = ({
+  item,
+  canUpdate,
+  canDelete,
+}: {
+  item: AdminInventoryItem
+  canUpdate: boolean
+  canDelete: boolean
+}) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { mutateAsync } = useDeleteInventoryItem(item.id)
@@ -26,28 +37,35 @@ export const InventoryActions = ({ item }: { item: AdminInventoryItem }) => {
     await mutateAsync()
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `${item.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `${item.id}/edit`,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

@@ -392,7 +392,7 @@ export async function loadInternalModule(args: {
 
     let moduleProviderServices = moduleResources.moduleService
       ? [moduleResources.moduleService]
-      : loadedProvider_.services ?? loadedProvider_
+      : (loadedProvider_.services ?? loadedProvider_)
 
     if (!moduleProviderServices) {
       return
@@ -487,8 +487,7 @@ export async function loadModuleMigrations(
     }
 
     const loadedServices = [mainLoadedModule] as (
-      | ResolvedModule
-      | ResolvedModuleProvider
+      ResolvedModule | ResolvedModuleProvider
     )[]
 
     if (Array.isArray(resolution?.options?.providers)) {
@@ -799,8 +798,7 @@ async function runLoaders(
 
 function prepareLoaders({
   loadedModuleLoaders = [] as
-    | ModuleLoaderFunction[]
-    | ModuleProviderLoaderFunction[],
+    ModuleLoaderFunction[] | ModuleProviderLoaderFunction[],
   models,
   repositories,
   services,

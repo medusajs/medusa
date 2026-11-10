@@ -8,15 +8,13 @@ import {
 import {
   applyTranslationsToTaxLines,
   calculateAmountsWithTax,
-  FeatureFlag,
   Modules,
 } from "@medusajs/framework/utils"
 import { StoreRequestWithContext } from "../types"
-import TranslationFeatureFlag from "../../../feature-flags/translation"
 
 export type RequestWithContext<
   Body,
-  QueryFields = Record<string, unknown>
+  QueryFields = Record<string, unknown>,
 > = StoreRequestWithContext<Body, QueryFields>
 
 export const refetchProduct = async (
@@ -67,16 +65,11 @@ export const wrapProductsWithTaxPrices = async <T>(
     req.taxContext.taxLineContext
   )) as unknown as ItemTaxLineDTO[]
 
-  const isTranslationEnabled = FeatureFlag.isFeatureEnabled(
-    TranslationFeatureFlag.key
-  )
-  if (isTranslationEnabled) {
-    taxLines = (await applyTranslationsToTaxLines(
-      taxLines,
-      req.locale,
-      req.scope
-    )) as ItemTaxLineDTO[]
-  }
+  taxLines = (await applyTranslationsToTaxLines(
+    taxLines,
+    req.locale,
+    req.scope
+  )) as ItemTaxLineDTO[]
 
   const taxRatesMap = new Map<string, ItemTaxLineDTO[]>()
   taxLines.forEach((taxRate) => {

@@ -109,6 +109,7 @@ After selecting the repository, you'll move on to the project configuration step
 3. In the **Build details** section, set the following:
     - **Project root directory**: If your project is in a monorepo, specify the path to the Medusa project in the repository. Otherwise, leave it empty.
     - **Storefront root directory**: If you're deploying a storefront along with your Medusa application, specify the path to the storefront project in the repository. Otherwise, leave it empty.
+    - When you browse the repository to choose a root directory, the browser shows the repository's files on the default branch. If the repository has more than one branch, you can choose a different branch from the branch selector in the browser. Changing the branch clears the path you previously selected, and Medusa uses the chosen branch as the [Production environment's branch](#production-environments-branch).
 4. You can expand the "Environment variables" section to optionally add environment variables for both backend and storefront:
     - Enter the key and value for each environment variable you want to add.
     - Mark the variable as "Sensitive" to hide its value in the UI.
@@ -135,6 +136,8 @@ Once the project is created and deployed, you'll receive a notification in the C
 ### Production Environment's Branch
 
 When you create a project, Medusa creates its Production environment and links it to your repository's default branch, such as `main`. This applies whether you create the project from a starter or from an existing repository. Medusa then deploys the Production environment every time you push a commit to that branch.
+
+When you create a project from an existing repository, the form uses the repository's default branch automatically after you select the repository. If you choose a different branch while browsing the repository for a [root directory](#configure-project-during-creation), Medusa links the Production environment to that branch instead.
 
 To deploy Production from a different branch, [change the environment's branch](../environments/long-lived/page.mdx#change-environments-branch) after creating the project.
 
@@ -221,6 +224,7 @@ On the project's dashboard, you can view the following details:
     - Each environment card shows the environment's name, URLs, and status.
 3. **Preview Environments**: The Preview environments for the project are shown in a table below the long-lived environments.
     - Previews environments are created whenever you create a pull request in the linked GitHub repository. They allow you to preview changes before merging them into the main branch.
+    - A pending preview environment's row shows a **Provision** button. Learn more in the [Pending Preview Environments](../environments/preview/page.mdx#pending-preview-environments) section.
     - Learn more in the [Preview Environments](../environments/preview/page.mdx) guide.
 4. **Production URL**: The URL of the project's production deployment. You'll find the backend and storefront URLs (if deployed) under their respective titles in the Production environment card.
    - If no backend custom domain is configured for the production environment, you'll see a **Setup Custom Domain** link that allows you to configure a custom domain directly from the environment card.
@@ -259,7 +263,7 @@ Then, to add a storefront to an existing project:
 1. [Open the project's dashboard](#open-project-dashboard).
 2. Click on the "Add storefront" button at the Production environment card.
 3. In the "Add Storefront" form, enter the following details:
-    - **Storefront root directory**: The path to the storefront project in the repository.
+    - **Storefront root directory**: The path to the storefront project in the repository. When you browse the repository to choose the path, the browser shows the repository's files on the Production environment's branch.
     - **Environment variables**: (Optional) Expand this section to add any necessary environment variables.
 4. Once you're done, click the "Create" button.
 
@@ -281,6 +285,7 @@ To edit a project's general details:
 2. Click **Settings** > **General** in the sidebar.
 3. You can edit the project's name and root directories of the backend and storefront in the repository.
     - Changing the root directory is useful if the structure of your repository has changed.
+    - When you browse the repository to choose a root directory, the browser shows the repository's files on the Production environment's branch.
 4. Once you're done making changes, click the "Save changes" button next to the input field.
 
 ### Editing Previews Settings

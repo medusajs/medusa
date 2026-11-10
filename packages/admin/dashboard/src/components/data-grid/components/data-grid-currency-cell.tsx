@@ -11,8 +11,10 @@ import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
-export interface DataGridCurrencyCellProps<TData, TValue = any>
-  extends DataGridCellProps<TData, TValue> {
+export interface DataGridCurrencyCellProps<
+  TData,
+  TValue = any,
+> extends DataGridCellProps<TData, TValue> {
   code: string
 }
 
@@ -110,7 +112,7 @@ const Inner = ({
   return (
     <div className="relative flex size-full items-center">
       <span
-        className="txt-compact-small text-ui-fg-muted pointer-events-none absolute left-0 w-fit min-w-4"
+        className="txt-compact-small pointer-events-none absolute left-0 w-fit min-w-4 text-ui-fg-muted"
         aria-hidden
       >
         {currencyInfo.symbol_native}

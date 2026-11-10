@@ -137,9 +137,8 @@ describe("manyToMany - manyToMany", () => {
       }
     )
 
-    const serializedSquad = await mikroOrmSerializer<InstanceType<typeof Team>>(
-      team
-    )
+    const serializedSquad =
+      await mikroOrmSerializer<InstanceType<typeof Team>>(team)
 
     expect(serializedSquad.users).toHaveLength(2)
     expect(serializedSquad).toEqual({
@@ -176,9 +175,8 @@ describe("manyToMany - manyToMany", () => {
       }
     )
 
-    const serializedUser = await mikroOrmSerializer<InstanceType<typeof User>>(
-      user
-    )
+    const serializedUser =
+      await mikroOrmSerializer<InstanceType<typeof User>>(user)
 
     expect(serializedUser.squads).toHaveLength(1)
     expect(serializedUser).toEqual({

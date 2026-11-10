@@ -31,6 +31,7 @@ The payment step requires implementing the following flow:
     - If you're using the JS SDK, it combines the third and fourth steps in a single `initiatePaymentSession` function.
 5. Optionally perform additional actions for payment based on the chosen payment provider. For example, if the customer chooses Stripe, you show them the UI to enter their card details.
     - You can refer to the [Stripe guide](./stripe/page.mdx) for an example of how to implement this.
+    - If the provider's UI collects details that the provider needs to authorize the payment, such as a payment method ID, pass them to the payment session using the [Update Payment Session API route](!api!/store/payment-collections/update-payment-session). Learn more in the [Update Payment Session Client Data](#update-payment-session-client-data) section.
 
 ---
 
@@ -275,6 +276,46 @@ In the example above, you:
 - Once the cart has a payment session, you optionally render the UI to perform additional actions. For example, if the customer chose Stripe, you can show them the card form to enter their credit card.
 
 In the `Fetch API` example, the `handlePayment` function implements this flow by calling the different functions in the correct order.
+
+---
+
+## Update Payment Session Client Data
+
+<Note>
+
+The Update Payment Session API route is available since Medusa [v2.22.1](https://github.com/medusajs/medusa/releases/tag/v2.22.1).
+
+</Note>
+
+Some payment providers' checkout components return details that the provider needs to authorize the payment. To pass these details to the payment session, use the JS SDK's `updatePaymentSession` method, which sends a request to the [Update Payment Session API route](!api!/store/payment-collections/update-payment-session):
+
+```ts
+const activePaymentSession = cart.payment_collection?.
+  payment_sessions?.[0]
+
+const { 
+  payment_collection,
+} = await sdk.store.payment.updatePaymentSession(
+  cart.payment_collection!.id,
+  activePaymentSession!.id,
+  {
+    client_data: {
+      // data collected by the provider's checkout component
+      payment_method: "pm_123",
+    },
+  }
+)
+```
+
+The method accepts the following parameters:
+
+1. The ID of the payment collection that the session belongs to.
+2. The ID of the payment session.
+3. An object with a `client_data` property. Medusa sets its value as the payment session's `data.client` property. The rest of the session's `data` is owned by the payment provider.
+
+The method returns the updated payment collection. You can only update a payment session whose status is `pending`, `requires_more`, or `error`.
+
+Learn more about the payment session's `data` property in the [Payment Session](../../../commerce-modules/payment/payment-session/page.mdx#data-property) guide.
 
 ---
 
