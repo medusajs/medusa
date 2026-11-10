@@ -66,6 +66,12 @@ export const ensureSuperAdminRemainsStep = createStep(
       (assignment) => !excludedIds.has(assignment.id)
     )
 
+    // Only removals that take the super admin role away from a user can lock
+    // everyone out. Other removals pass, even when no user is a super admin.
+    if (remaining.length === superAdminAssignments.length) {
+      return new StepResponse(void 0)
+    }
+
     if (!remaining.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
