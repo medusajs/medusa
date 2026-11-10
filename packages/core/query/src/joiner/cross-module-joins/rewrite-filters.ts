@@ -54,8 +54,21 @@ export function rewriteRootFilters(params: {
     )
 
     // Same-module paths (and plain object-valued filters) are handled
-    // natively by the root module — leave them in place.
+    // natively by the root module — leave them in place, apart from any
+    // cross-module paths nested below them.
     if (resolution.outcome === "native") {
+      if (
+        rewriteNestedRootFilters({
+          pathSegments: [key],
+          filters: value as Record<string, unknown>,
+          serviceConfig,
+          catalog,
+          registry,
+        }) &&
+        !Object.keys(value as object).length
+      ) {
+        delete rootFilters[key]
+      }
       continue
     }
 
@@ -85,6 +98,77 @@ export function rewriteRootFilters(params: {
 
     delete rootFilters[key]
   }
+}
+
+/**
+ * Cross-module filters nested below module-internal relations on the root
+ * filters object, e.g. `{ service_zone: { fulfillment_set: { location: {...} } } }`
+ * on `shipping_option`, which toRemoteQuery leaves on the root. Pushable paths
+ * are pushed down and pruned along with any filters they leave empty. Anything
+ * else stays in place: the residual stage only strips top-level root filters.
+ *
+ * Returns whether any filter was pushed down.
+ */
+function rewriteNestedRootFilters(params: {
+  pathSegments: string[]
+  filters: Record<string, unknown>
+  serviceConfig: InternalJoinerServiceConfig
+  catalog: GraphCatalog
+  registry: SpecRegistry
+}): boolean {
+  const { pathSegments, filters, serviceConfig, catalog, registry } = params
+  let pushed = false
+
+  for (const [key, value] of Object.entries(filters)) {
+    if (key.startsWith("$") || !isObject(value)) {
+      continue
+    }
+
+    const segments = [...pathSegments, key]
+    const resolution = resolveChain(
+      { rootConfig: serviceConfig, pathSegments: segments },
+      catalog
+    )
+
+    if (resolution.outcome === "native") {
+      const nestedFilters = value as Record<string, unknown>
+
+      if (
+        rewriteNestedRootFilters({
+          ...params,
+          pathSegments: segments,
+          filters: nestedFilters,
+        })
+      ) {
+        pushed = true
+        if (!Object.keys(nestedFilters).length) {
+          delete filters[key]
+        }
+      }
+      continue
+    }
+
+    if (resolution.outcome === "residual") {
+      continue
+    }
+
+    const candidates = collectCandidates(
+      {
+        pathSegments: segments,
+        levels: resolution.levels,
+        filters: value as Record<string, unknown>,
+        rootConfig: serviceConfig,
+      },
+      catalog
+    )
+
+    if (candidates && registerCandidates(registry, candidates)) {
+      delete filters[key]
+      pushed = true
+    }
+  }
+
+  return pushed
 }
 
 /**
