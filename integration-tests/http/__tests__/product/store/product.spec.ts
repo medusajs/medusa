@@ -2070,6 +2070,42 @@ medusaIntegrationTestRunner({
         })
       })
 
+      it("should return 404 for a product outside the only sales channel", async () => {
+        const salesChannels = (
+          await api.get("/admin/sales-channels", adminHeaders)
+        ).data.sales_channels
+
+        for (const { id } of salesChannels) {
+          if (id !== defaultSalesChannel.id) {
+            await api.delete(`/admin/sales-channels/${id}`, adminHeaders)
+          }
+        }
+
+        expect(
+          (await api.get("/admin/sales-channels", adminHeaders)).data.count
+        ).toEqual(1)
+
+        const [unlinkedProduct] = await createProducts({
+          title: "unlinked product",
+          status: ProductStatus.PUBLISHED,
+          shipping_profile_id: shippingProfile.id,
+          options: [{ title: "size", values: ["large"] }],
+          variants: [
+            {
+              title: "unlinked variant",
+              options: { size: "large" },
+              prices: [{ amount: 3000, currency_code: "usd" }],
+            },
+          ],
+        })
+
+        const response = await api
+          .get(`/store/products/${unlinkedProduct.id}`, storeHeaders)
+          .catch((e) => e.response)
+
+        expect(response.status).toEqual(404)
+      })
+
       it("should retrieve product successfully", async () => {
         let response = await api.get(
           `/store/products/${product.id}`,

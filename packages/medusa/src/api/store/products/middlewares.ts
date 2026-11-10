@@ -102,7 +102,10 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
       ),
       applyParamsAsFilters({ id: "id" }),
       filterByValidSalesChannels(),
-      applySalesChannelCrossModuleFilter,
+      applyCrossModuleFilter({
+        filterableField: "sales_channel_id",
+        relationPath: "sales_channels.id",
+      }),
       applyDefaultFilters({
         status: ProductStatus.PUBLISHED,
       }),
