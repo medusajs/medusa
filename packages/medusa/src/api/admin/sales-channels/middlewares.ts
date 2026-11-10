@@ -3,8 +3,8 @@ import {
   validateAndTransformQuery,
 } from "@medusajs/framework"
 import {
+  applyCrossModuleFilter,
   authorize,
-  maybeApplyLinkFilter,
   MiddlewareRoute,
 } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
@@ -44,15 +44,13 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetSalesChannelsParams,
         QueryConfig.listTransformQueryConfig
       ),
-      maybeApplyLinkFilter({
-        entryPoint: "sales_channel_location",
-        resourceId: "sales_channel_id",
+      applyCrossModuleFilter({
         filterableField: "location_id",
+        relationPath: "stock_locations.id",
       }),
-      maybeApplyLinkFilter({
-        entryPoint: "publishable_api_key_sales_channel",
-        resourceId: "sales_channel_id",
+      applyCrossModuleFilter({
         filterableField: "publishable_key_id",
+        relationPath: "publishable_api_keys.id",
       }),
     ],
   },

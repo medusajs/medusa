@@ -273,6 +273,7 @@ medusaIntegrationTestRunner({
         })
 
         expect(response.data.products.length).toBe(2)
+        expect(response.data.count).toBe(2)
         expect(response.data.products).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
