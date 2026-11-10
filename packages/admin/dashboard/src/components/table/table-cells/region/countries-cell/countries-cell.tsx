@@ -17,6 +17,7 @@ export const CountriesCell = ({ countries }: CountriesCellProps) => {
   const list = countries
     .map(
       (country) =>
+        country.display_name ||
         COUNTRIES.find((c) => c.iso_2 === country.iso_2)?.display_name
     )
     .filter(Boolean) as string[]

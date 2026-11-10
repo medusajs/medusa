@@ -1,5 +1,12 @@
 import plugin from "tailwindcss/plugin"
-import { FONT_FAMILY_MONO, FONT_FAMILY_SANS } from "./constants"
+import {
+  ANIMATION,
+  BORDER_RADIUS,
+  FONT_FAMILY_MONO,
+  FONT_FAMILY_SANS,
+  KEYFRAMES,
+  TRANSITION_PROPERTY_FG,
+} from "./constants"
 import { theme } from "./theme/extension/theme"
 import { colors } from "./theme/tokens/colors"
 import { components } from "./theme/tokens/components"
@@ -7,7 +14,7 @@ import { effects } from "./theme/tokens/effects"
 import { typography } from "./theme/tokens/typography"
 
 export default plugin(
-  function medusaUi({ addBase, addComponents, config }) {
+  function medusaUi({ addBase, addComponents, addUtilities, config, ...api }) {
     const [darkMode, className = ".dark"] = ([] as string[]).concat(
       config("darkMode", "media")
     )
@@ -16,7 +23,23 @@ export default plugin(
       "*": {
         borderColor: "var(--border-base)",
       },
+      'button:not(:disabled), [role="button"]:not(:disabled)': {
+        cursor: "pointer",
+      },
     })
+
+    // Only Tailwind 3 exposes `corePlugins`; v4 ships `outline-hidden` natively.
+    if ("corePlugins" in api) {
+      addUtilities({
+        ".outline-hidden": {
+          outlineStyle: "none",
+          "@media (forced-colors: active)": {
+            outline: "2px solid transparent",
+            outlineOffset: "2px",
+          },
+        },
+      })
+    }
 
     addComponents(typography)
 
@@ -42,27 +65,16 @@ export default plugin(
     theme: {
       extend: {
         ...theme.extend,
+        borderRadius: BORDER_RADIUS,
         fontFamily: {
           sans: FONT_FAMILY_SANS,
           mono: FONT_FAMILY_MONO,
         },
         transitionProperty: {
-          fg: "color, background-color, border-color, box-shadow, opacity",
+          fg: TRANSITION_PROPERTY_FG,
         },
-        keyframes: {
-          "accordion-down": {
-            from: { height: "0px" },
-            to: { height: "var(--radix-accordion-content-height)" },
-          },
-          "accordion-up": {
-            from: { height: "var(--radix-accordion-content-height)" },
-            to: { height: "0px" },
-          },
-        },
-        animation: {
-          "accordion-down": "accordion-down 0.2s ease-out",
-          "accordion-up": "accordion-up 0.2s ease-out",
-        },
+        keyframes: KEYFRAMES,
+        animation: ANIMATION,
       },
     },
   }

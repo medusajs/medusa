@@ -82,7 +82,7 @@ export interface ApplyStepOptions<
   },
   TInvokeInput,
   TInvokeResultOutput,
-  TInvokeResultCompensateInput
+  TInvokeResultCompensateInput,
 > {
   stepName: string
   stepConfig?: TransactionStepsDefinition
@@ -114,7 +114,7 @@ function createAndConfigureHandler<
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
   TInvokeResultOutput,
-  TInvokeResultCompensateInput
+  TInvokeResultCompensateInput,
 >(
   context: CreateWorkflowComposerContext,
   stepName: string,
@@ -145,7 +145,7 @@ export function applyStep<
     [K in keyof TInvokeInput]: WorkflowData<TInvokeInput[K]>
   },
   TInvokeResultOutput,
-  TInvokeResultCompensateInput
+  TInvokeResultCompensateInput,
 >({
   stepName,
   stepConfig = {},
@@ -434,7 +434,7 @@ export function wrapConditionalStep(
 export function createStep<
   TInvokeInput,
   TInvokeResultOutput,
-  TInvokeResultCompensateInput
+  TInvokeResultCompensateInput,
 >(
   /**
    * The name of the step or its configuration.

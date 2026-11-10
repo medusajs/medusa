@@ -15,7 +15,7 @@ const config = new ConfigStore(
 const packageMangerConfigKey = `cli.packageManager`
 
 export const getPackageManager = () => {
-  return config.get(packageMangerConfigKey)
+  return config.get(packageMangerConfigKey) as string
 }
 
 export const setPackageManager = (packageManager) => {

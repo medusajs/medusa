@@ -825,6 +825,53 @@ medusaIntegrationTestRunner({
           expect(disjoint).toHaveLength(0)
         })
 
+        it("should match nested hasMany filters and link filters on the same child row", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+
+          const { data: variants } = await query.graph({
+            entity: "variant",
+            fields: ["id", "title", "product_id", "price_set.id"],
+          })
+
+          const p1Variant1 = variants.find((v) => v.title === "P1 Variant 1")!
+          const p1Variant2 = variants.find((v) => v.title === "P1 Variant 2")!
+
+          const { data: matching } = await query.graph({
+            entity: "variant",
+            fields: ["id"],
+            filters: {
+              product: {
+                variants: {
+                  title: "P1 Variant 1",
+                  price_set: { id: p1Variant1.price_set!.id },
+                },
+              },
+            },
+          })
+
+          expect(matching.map((v) => v.id).sort()).toEqual(
+            [p1Variant1.id, p1Variant2.id].sort()
+          )
+
+          // Each condition is met by a different variant of Product 1, so no
+          // single variant satisfies both.
+          const { data: split } = await query.graph({
+            entity: "variant",
+            fields: ["id"],
+            filters: {
+              product: {
+                variants: {
+                  title: "P1 Variant 1",
+                  price_set: { id: p1Variant2.price_set!.id },
+                },
+              },
+            },
+          })
+
+          expect(split).toHaveLength(0)
+        })
+
         it("should return no rows when the linked filter matches nothing", async () => {
           const container = getContainer()
           const query = container.resolve("query")
@@ -980,6 +1027,58 @@ medusaIntegrationTestRunner({
             expect.objectContaining({
               email: "retail-order@test.com",
             })
+          )
+        })
+
+        it("should filter and count orders by a read-only linked sales channel when paginated", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+          const orderService: any = container.resolve(Modules.ORDER)
+          const salesChannelService: any = container.resolve(
+            Modules.SALES_CHANNEL
+          )
+
+          const retailChannel = await salesChannelService.createSalesChannels({
+            name: "Paginated Order Retail Channel",
+          })
+          const wholesaleChannel =
+            await salesChannelService.createSalesChannels({
+              name: "Paginated Order Wholesale Channel",
+            })
+
+          await orderService.createOrders([
+            {
+              currency_code: "usd",
+              email: "retail-order-1@test.com",
+              sales_channel_id: retailChannel.id,
+            },
+            {
+              currency_code: "usd",
+              email: "retail-order-2@test.com",
+              sales_channel_id: retailChannel.id,
+            },
+            {
+              currency_code: "usd",
+              email: "wholesale-order@test.com",
+              sales_channel_id: wholesaleChannel.id,
+            },
+          ])
+
+          const { data: filteredOrders, metadata } = await query.graph({
+            entity: "order",
+            fields: ["id", "email"],
+            filters: {
+              sales_channel: {
+                name: "Paginated Order Retail Channel",
+              },
+            },
+            pagination: { skip: 0, take: 1 },
+          })
+
+          expect(filteredOrders).toHaveLength(1)
+          expect(filteredOrders[0].email).toMatch(/^retail-order-\d@test\.com$/)
+          expect(metadata).toEqual(
+            expect.objectContaining({ count: 2, skip: 0, take: 1 })
           )
         })
 

@@ -6,6 +6,7 @@ import { SearchIndexSeedAction } from "@types"
 import { versionPhysicalName } from "../../src/utils/versions"
 import {
   baseProducts,
+  consumedContainers,
   consumedEvents,
   dataset,
   productIndex,
@@ -39,8 +40,7 @@ const migrate = (
 
 const definition = (service: SearchService, name: string) =>
   (service as any).indexes_.get(name) as
-    | SearchTypes.ResolvedSearchIndexDefinition
-    | undefined
+    SearchTypes.ResolvedSearchIndexDefinition | undefined
 
 // `SearchIndex`, `SearchIndexVersion` and `SearchIndexSync` are internal to the
 // module — no generated CRUD, nothing on `SearchTypes` — so the bookkeeping is
@@ -1199,6 +1199,13 @@ moduleIntegrationTestRunner<SearchService>({
           expect(consumedEvents).toEqual([
             { event: "product.updated", index: "product" },
           ])
+        })
+
+        it("hands consume the logger", async () => {
+          await ingest("product.updated", "prod_1")
+
+          expect(consumedContainers).toHaveLength(1)
+          expect(consumedContainers[0].logger).toBe((service as any).logger_)
         })
 
         it("reindexes the document an update points at, in place", async () => {

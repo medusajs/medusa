@@ -49,8 +49,8 @@ function collectExportedHttpMethodNodes(
       exported.type === AST_NODE_TYPES.Identifier
         ? exported.name
         : typeof exported.value === "string"
-        ? exported.value
-        : null
+          ? exported.value
+          : null
     if (exportedName && HTTP_METHODS.has(exportedName)) {
       hits.push(exported)
     }
@@ -104,9 +104,9 @@ export const rule = createRule<[], MessageIds>({
               hit.type === AST_NODE_TYPES.Identifier
                 ? hit.name
                 : hit.type === AST_NODE_TYPES.Literal &&
-                  typeof hit.value === "string"
-                ? hit.value
-                : "handler"
+                    typeof hit.value === "string"
+                  ? hit.value
+                  : "handler"
             context.report({
               node: hit,
               messageId: "wrongFileName",

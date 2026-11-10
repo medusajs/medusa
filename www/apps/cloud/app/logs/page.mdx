@@ -125,6 +125,16 @@ You can filter the runtime logs by:
 
 Apply filters from the "Filters" sidebar. You can select multiple filters at once to narrow down the logs further.
 
+#### Time-Range Limits
+
+When selecting a custom date range for the **Timeline** filter, the date picker enforces the following rules:
+
+- The "from" date must be earlier than the "to" date.
+- The range cannot start before your plan's data-retention boundary.
+- The range cannot exceed the maximum query duration allowed by the API.
+
+If any of these conditions are not met, a warning alert appears inside the date picker and the range is not applied until you correct it.
+
 ### Refresh Runtime Logs
 
 You can refresh the runtime logs to fetch the latest logs from the live deployment or to update the view after applying filters or search terms.

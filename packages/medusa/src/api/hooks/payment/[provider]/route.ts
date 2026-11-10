@@ -1,5 +1,9 @@
 import { PaymentModuleOptions } from "@medusajs/framework/types"
-import { Modules, PaymentWebhookEvents } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  Modules,
+  PaymentWebhookEvents,
+} from "@medusajs/framework/utils"
 
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
@@ -7,9 +11,23 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   try {
     const { provider } = req.params
 
+    const paymentService = req.scope.resolve(Modules.PAYMENT)
+    const providerId = provider.startsWith("pp_") ? provider : `pp_${provider}`
+    const paymentProviders = await paymentService.listPaymentProviders({
+      id: providerId,
+      is_enabled: true,
+    })
+
+    if (!paymentProviders.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Payment provider ${providerId} is not configured`
+      )
+    }
+
     const options: PaymentModuleOptions =
       // @ts-expect-error "Not sure if .options exists on a module"
-      req.scope.resolve(Modules.PAYMENT).options || {}
+      paymentService.options || {}
 
     const event = {
       provider,

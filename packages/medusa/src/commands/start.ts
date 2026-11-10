@@ -9,11 +9,9 @@ import path from "path"
 import {
   ContainerRegistrationKeys,
   dynamicImport,
-  FeatureFlag,
   FileSystem,
   generateContainerTypes,
   generateAugmentationRefs,
-  generatePolicyTypes,
   getResolvedPlugins,
   gqlSchemaToTypes,
   GracefulShutdownServer,
@@ -26,9 +24,9 @@ import {
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { Logger, MedusaContainer } from "@medusajs/framework/types"
 import { parse } from "url"
-import RbacFeatureFlag from "../feature-flags/rbac"
 import loaders, { initializeContainer } from "../loaders"
 import { reloadResources } from "./utils/dev-server"
+import { startLicenseRemoteCheck } from "./utils/license-check"
 import { HMRReloadError } from "./utils/dev-server/errors"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
@@ -298,14 +296,6 @@ async function start(args: {
           )
         }
 
-        if (FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key)) {
-          fileGenPromises.push(
-            generatePolicyTypes({
-              outputDir: typesDirectory,
-            })
-          )
-        }
-
         const configModule = container.resolve(
           ContainerRegistrationKeys.CONFIG_MODULE
         )
@@ -315,7 +305,7 @@ async function start(args: {
         )
 
         await promiseAll(fileGenPromises)
-        logger.debug("Generated policy types")
+        logger.debug("Generated types")
       }
 
       // Register a health check endpoint. Ideally this also checks the readiness of the service, rather than just returning a static response.
@@ -328,6 +318,7 @@ async function start(args: {
           logger.success(serverActivity, `Server is ready on port: ${port}`)
           displayAdminUrl({ container, host, port })
           track("CLI_START_COMPLETED")
+          void startLicenseRemoteCheck(container)
         })
       )
 

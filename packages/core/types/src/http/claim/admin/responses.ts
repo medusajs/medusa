@@ -11,13 +11,12 @@ export interface AdminClaimResponse {
   claim: AdminClaim
 }
 
-export interface AdminClaimListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of claims.
-     */
-    claims: AdminClaim[]
-  }> {}
+export interface AdminClaimListResponse extends PaginatedResponse<{
+  /**
+   * The list of claims.
+   */
+  claims: AdminClaim[]
+}> {}
 
 export interface AdminClaimOrderResponse {
   /**

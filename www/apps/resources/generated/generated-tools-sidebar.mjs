@@ -1123,6 +1123,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/js-sdk/admin/module",
+                  "title": "module",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/js-sdk/admin/notification",
                   "title": "notification",
                   "description": "",
@@ -1433,6 +1441,22 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "children": []
                 }
               ]
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "title": "InstantSearch Adapter",
+          "childSidebarTitle": "InstantSearch Adapter",
+          "path": "/instantsearch",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/instantsearch/examples/filtering-sorting-pagination",
+              "title": "Filtering, Sorting, and Pagination",
+              "children": []
             }
           ]
         },

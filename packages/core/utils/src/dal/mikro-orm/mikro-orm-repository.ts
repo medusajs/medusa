@@ -244,7 +244,7 @@ export class MikroOrmBaseRepository<const T extends object = object>
 }
 
 export class MikroOrmBaseTreeRepository<
-  const T extends object = object
+  const T extends object = object,
 > extends MikroOrmBase {
   constructor() {
     // @ts-ignore
@@ -479,10 +479,13 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
           }
 
           return rows.map((row) =>
-            primaryKeys.reduce((acc, key, index) => {
-              acc[key] = row[primaryKeyColumns[index]]
-              return acc
-            }, {} as Record<string, any>)
+            primaryKeys.reduce(
+              (acc, key, index) => {
+                acc[key] = row[primaryKeyColumns[index]]
+                return acc
+              },
+              {} as Record<string, any>
+            )
           )
         })
     }

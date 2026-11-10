@@ -54,6 +54,7 @@ export const sitemapUrls = [
   "/settings/locations-and-shipping/shipping-option-types",
   "/settings/locations-and-shipping/shipping-profiles",
   "/settings",
+  "/settings/policies",
   "/settings/product-tags",
   "/settings/product-types",
   "/settings/profile",
@@ -61,7 +62,10 @@ export const sitemapUrls = [
   "/settings/refund-reasons",
   "/settings/regions",
   "/settings/return-reasons",
+  "/settings/roles/common-roles",
+  "/settings/roles",
   "/settings/sales-channels",
+  "/settings/search",
   "/settings/store",
   "/settings/tax-regions",
   "/settings/translations",
@@ -71,5 +75,6 @@ export const sitemapUrls = [
   "/tips/languages",
   "/tips/layout-configurations",
   "/tips/lists",
+  "/tips/login-options",
   "/tips/table-views"
 ]

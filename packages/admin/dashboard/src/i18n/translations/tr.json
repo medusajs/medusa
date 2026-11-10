@@ -143,6 +143,7 @@
     "reset": "Sıfırla",
     "confirm": "Onayla",
     "edit": "Düzenle",
+    "view": "Görüntüle",
     "addItems": "Ürünler Ekle",
     "download": "İndir",
     "clear": "Temizle",
@@ -1015,6 +1016,24 @@
       "hint": "Yeni bir müşteri oluşturun ve detaylarını yönetin.",
       "successToast": "{{email}} müşterisi başarıyla oluşturuldu."
     },
+    "export": {
+      "header": "Müşteri Listesini Dışa Aktar",
+      "description": "Müşteri listesini bir dosyaya dışa aktarın.",
+      "success": {
+        "title": "Dışa aktarma işleminiz işleniyor",
+        "description": "Veri dışa aktarımı birkaç dakika sürebilir. İşlem tamamlandığında size bildireceğiz."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Dışa aktarılan dosyanın formatını seçin. JSON, modüller arası iç içe verileri kayıpsız yakalar; bu, veri erişim talepleri için önerilir.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filtreler",
+        "description": "Bu görünümü ayarlamak için tablo görünümünde filtreleri uygulayın"
+      }
+    },
     "groups": {
       "label": "Müşteri grupları",
       "remove": "\"{{name}}\" müşteri grubundan müşteriyi kaldırmak istediğinizden emin misiniz?",
@@ -1146,7 +1165,9 @@
         "paymentMethod": "Ödeme yöntemi",
         "paymentMethodDescription": "Tutarı ödeme yöntemine iade et",
         "creditLine": "Mağaza kredisi",
-        "creditLineDescription": "Tutarı mağaza kredisi olarak iade et"
+        "creditLineDescription": "Tutarı mağaza kredisi olarak iade et",
+        "creditLineGuestDescription": "Yalnızca hesabı olan müşteriler için kullanılabilir. Bu sipariş bir misafir tarafından verildi.",
+        "creditLineNoOutstandingAmountDescription": "Yalnızca siparişin ödenmemiş bir tutarı olduğunda kullanılabilir. Önce bir iade veya sipariş düzenlemesi oluşturun."
       }
     },
     "domain": "Siparişler",
@@ -1216,6 +1237,8 @@
       "title": "Ödemeler",
       "isReadyToBeCaptured": "Ödeme <0/> alınmaya hazır.",
       "totalPaidByCustomer": "Müşteri tarafından ödenen toplam",
+      "totalPending": "Toplam bekleyen",
+      "storeCreditRefund": "Mağaza alacak iadesi",
       "totalStoreCreditRefunds": "Toplam mağaza kredisi iadeleri",
       "capture": "Ödemeyi al",
       "capture_short": "Al",
@@ -1228,6 +1251,7 @@
         "authorized": "Yetkilendirildi",
         "partiallyAuthorized": "Kısmen yetkilendirildi",
         "awaiting": "Bekleniyor",
+        "pending": "Beklemede",
         "captured": "Alındı",
         "partiallyRefunded": "Kısmen iade edildi",
         "partiallyCaptured": "Kısmen alındı",
@@ -2171,6 +2195,8 @@
       "method": "Yöntem",
       "allocation": "Dağıtım",
       "allocationTooltip": "EACH, miktar limitini ürün başına uygular; ONCE ise miktar limitini tüm sepet genelinde uygular",
+      "targetSelectionStrategy": "İndirim uygulanan ürünler",
+      "targetSelectionStrategyTooltip": "Sepetteki hangi uygun ürünlerin indirim alacağı",
       "addCondition": "Şart ekle",
       "clearAll": "Tümünü Temizle",
       "taxInclusive": "Vergi Dahil",
@@ -2320,6 +2346,16 @@
         "once": {
           "title": "Bir kez",
           "description": "Değeri sınırlı sayıda ürüne uygular"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "En pahalıdan başla",
+          "description": "Sepetteki en pahalı uygun ürünlere indirim uygular"
+        },
+        "cheapest_first": {
+          "title": "En ucuzdan başla",
+          "description": "Sepetteki en ucuz uygun ürünlere indirim uygular"
         }
       },
       "code": {
@@ -2694,6 +2730,7 @@
     "editUser": "Kullanıcıyı Düzenle",
     "inviteUser": "Kullanıcı Davet Et",
     "inviteUserHint": "Mağazanıza yeni bir kullanıcı davet edin.",
+    "inviteRolesTooltip": "Herhangi bir rol seçilmezse, kullanıcı herhangi bir izin olmadan davet edilecektir. Rolleri daha sonra atayabilirsiniz.",
     "sendInvite": "Davet gönder",
     "pendingInvites": "Bekleyen Davetler",
     "deleteInviteWarning": "{{email}} için daveti silmek üzeresiniz. Bu işlem geri alınamaz.",
@@ -2725,7 +2762,6 @@
     "deleteUserWarning": "{{name}} kullanıcısını silmek üzeresiniz. Bu işlem geri alınamaz.",
     "deleteUserSuccess": "Kullanıcı {{name}} başarıyla silindi",
     "invite": "Davet Et",
-    "inviteRolesTooltip": "Rol seçilmezse kullanıcı süper kullanıcı rolüyle davet edilir.",
     "copyResetPasswordLink": "Şifre sıfırlama bağlantısını kopyala",
     "copyResetPasswordLinkSuccess": "Şifre sıfırlama bağlantısı panoya kopyalandı",
     "copyResetPasswordLinkHint": "Bağlantının süresi kısa sürede dolar ve bu kullanıcıya daha önce gönderilmiş şifre sıfırlama bağlantılarını geçersiz kılar."
@@ -3160,6 +3196,9 @@
     "invalidTokenTitle": "Davet tokeniniz geçersiz",
     "invalidTokenHint": "Yeni bir davet bağlantısı talep etmeyi deneyin.",
     "passwordMismatch": "Şifreler uyuşmuyor",
+    "signedInTitle": "Zaten giriş yaptınız",
+    "signedInHint": "{{email}} olarak giriş yaptınız. Bu daveti kabul etmek için çıkış yapın.",
+    "signOut": "Çıkış Yap",
     "toast": {
       "accepted": "Davet başarıyla kabul edildi"
     }
@@ -3655,7 +3694,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Kullanıcı zaten bu role sahip.",
-      "unassignableRoleTooltip": "Bu rolü atama izniniz yok — izinleriniz bu rolün tüm politikalarını kapsamıyor.",
       "add": {
         "successToast_one": "Kullanıcı role başarıyla eklendi.",
         "successToast_other": "Kullanıcılar role başarıyla eklendi.",
@@ -3683,6 +3721,9 @@
       "filtered": {
         "heading": "Sonuç yok",
         "description": "Hiçbir izin mevcut filtre kriterlerine uymuyor."
+      },
+      "manage": {
+        "successToast": "İzinler başarıyla güncellendi."
       }
     },
     "list": {
@@ -3706,6 +3747,7 @@
     },
     "edit": {
       "header": "Politikayı düzenle",
+      "identityHint": "Anahtar, kaynak ve işlem politikayı tanımlar ve değiştirilemez. Bunun yerine yeni bir politika oluşturun.",
       "successToast": "{{key}} politikası güncellendi"
     },
     "delete": {
@@ -3759,7 +3801,10 @@
       "building": "Oluşturuluyor",
       "ready": "Hazır",
       "error": "Hata"
-    }
+    },
+    "delete": "Dizini sil",
+    "deleteSuccess": "{{name}} dizini silindi",
+    "deleteWarning": "Bu işlem, \"{{name}}\" dizinini ve onun için oluşturulmuş her sürümü, arama motorundaki verileri de dahil olmak üzere siler. Sonraki geçiş onu sıfırdan yeniden oluşturana kadar bu dizinde hiçbir şey aranamaz. Bu işlem geri alınamaz."
   },
   "propertyLabels": {
     "domain": "Özellik Etiketleri",
@@ -3778,6 +3823,10 @@
       "description": "Bu sayfaya erişim izniniz yok.",
       "requiredPermission": "Gerekli izin: {{permission}}",
       "action": "Bu işlemi gerçekleştirme izniniz yok."
+    },
+    "noPermissions": {
+      "title": "Henüz izin yok",
+      "description": "Henüz herhangi bir izniniz atanmamış. İhtiyacınız olan alanlara erişim talep etmek için yöneticinize başvurun."
     },
     "requiredPermissions": {
       "title": "Gerekli izinler",

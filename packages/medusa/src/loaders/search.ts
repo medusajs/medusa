@@ -12,9 +12,7 @@ export function isSearchModuleEnabled(configModule: ConfigModule): boolean {
   // `false` is accepted alongside `{ disable: true }`, the same way the module
   // loader reads it.
   const declaration = configModule.modules?.[Modules.SEARCH] as
-    | boolean
-    | { disable?: boolean }
-    | undefined
+    boolean | { disable?: boolean } | undefined
 
   if (!declaration) {
     return false

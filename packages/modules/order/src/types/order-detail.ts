@@ -23,7 +23,6 @@ export interface CreateOrderItemDTO extends PartialUpsertOrderItemDTO {
 }
 
 export interface UpdateOrderItemDTO
-  extends PartialUpsertOrderItemDTO,
-    Partial<CreateOrderItemDTO> {
+  extends PartialUpsertOrderItemDTO, Partial<CreateOrderItemDTO> {
   id: string
 }

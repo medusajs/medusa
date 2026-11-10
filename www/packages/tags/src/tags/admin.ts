@@ -1,7 +1,15 @@
 export const admin = [
   {
+    "title": "Manage Products with Admin API",
+    "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/manage-with-admin-api"
+  },
+  {
     "title": "Configure View Configurations",
     "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations"
+  },
+  {
+    "title": "Check Permissions in Admin Customizations",
+    "path": "https://docs.medusajs.com/resources/enterprise/rbac/admin-customizations"
   },
   {
     "title": "apiKey",
@@ -62,6 +70,10 @@ export const admin = [
   {
     "title": "locale",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/locale"
+  },
+  {
+    "title": "module",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/module"
   },
   {
     "title": "notification",

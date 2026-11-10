@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -16,27 +16,29 @@ import {
 export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/regions/*",
-    policies: [
-      {
-        resource: Entities.region,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.region,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/regions",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.region,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetRegionsParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.region,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -53,45 +55,46 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/regions",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.region,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateRegion),
       validateAndTransformQuery(
         AdminGetRegionParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.region,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/regions/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.region,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateRegion),
       validateAndTransformQuery(
         AdminGetRegionParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.region,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/regions/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.region,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.region,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

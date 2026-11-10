@@ -24,9 +24,12 @@ import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
   useCreateOrderCreditLine,
   useRefundPayment,
+  useRefundReasons,
 } from "../../../../../hooks/api"
+import { useOrderCreditLinePermissions } from "../../../../../hooks/use-resource-permissions"
 import { currencies } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
+import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../../../../../lib/orders"
 
@@ -39,6 +42,7 @@ const OrderBalanceSettlementSchema = zod.object({
         float: zod.number().or(zod.null()),
       }),
       note: zod.string().optional(),
+      refund_reason_id: zod.string().optional(),
     })
     .optional(),
   credit_line: zod
@@ -58,8 +62,10 @@ export const OrderBalanceSettlementForm = ({
   order: AdminOrder
 }) => {
   const { t } = useTranslation()
+  const { refund_reasons } = useRefundReasons()
   const [searchParams] = useSearchParams()
   const { handleSuccess } = useRouteModal()
+  const { canCreate: canCreateCreditLine } = useOrderCreditLinePermissions()
   const paymentId = searchParams.get("paymentId")
   const payments = getPaymentsFromOrder(order)
   const pendingDifference = order.summary.pending_difference * -1
@@ -130,6 +136,7 @@ export const OrderBalanceSettlementForm = ({
         {
           amount: data.refund!.amount!.float!,
           note: data.refund!.note,
+          refund_reason_id: data.refund!.refund_reason_id,
         },
         {
           onSuccess: () => {
@@ -193,8 +200,8 @@ export const OrderBalanceSettlementForm = ({
   const creditLineDescription = canSettleWithCreditLine
     ? "orders.balanceSettlement.settlementTypes.creditLineDescription"
     : isRegisteredCustomer
-    ? "orders.balanceSettlement.settlementTypes.creditLineNoOutstandingAmountDescription"
-    : "orders.balanceSettlement.settlementTypes.creditLineGuestDescription"
+      ? "orders.balanceSettlement.settlementTypes.creditLineNoOutstandingAmountDescription"
+      : "orders.balanceSettlement.settlementTypes.creditLineGuestDescription"
 
   return (
     <RouteDrawer.Form form={form}>
@@ -227,15 +234,17 @@ export const OrderBalanceSettlementForm = ({
                   className={clx("basis-1/2")}
                 />
 
-                <RadioGroup.ChoiceBox
-                  value={"credit_line"}
-                  disabled={!canSettleWithCreditLine}
-                  description={t(creditLineDescription)}
-                  label={t(
-                    "orders.balanceSettlement.settlementTypes.creditLine"
-                  )}
-                  className={clx("basis-1/2")}
-                />
+                {canCreateCreditLine && (
+                  <RadioGroup.ChoiceBox
+                    value={"credit_line"}
+                    disabled={!canSettleWithCreditLine}
+                    description={t(creditLineDescription)}
+                    label={t(
+                      "orders.balanceSettlement.settlementTypes.creditLine"
+                    )}
+                    className={clx("basis-1/2")}
+                  />
+                )}
               </RadioGroup>
             </div>
 
@@ -284,7 +293,7 @@ export const OrderBalanceSettlementForm = ({
                               )}
                               {" - "}
                             </span>
-                            <span>{payment.provider_id}</span>
+                            <span>{formatProvider(payment.provider_id)}</span>
                             <span> - ({payment.id.replace("pay_", "")})</span>
                           </Select.Item>
                         )
@@ -321,6 +330,39 @@ export const OrderBalanceSettlementForm = ({
                             }
                             autoFocus
                           />
+                        </Form.Control>
+
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+
+                <Form.Field
+                  control={form.control}
+                  name="refund.refund_reason_id"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>{t("fields.refundReason")}</Form.Label>
+
+                        <Form.Control>
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
+                            <Select.Trigger>
+                              <Select.Value />
+                            </Select.Trigger>
+
+                            <Select.Content>
+                              {refund_reasons?.map((reason) => (
+                                <Select.Item key={reason.id} value={reason.id}>
+                                  {reason.label}
+                                </Select.Item>
+                              ))}
+                            </Select.Content>
+                          </Select>
                         </Form.Control>
 
                         <Form.ErrorMessage />

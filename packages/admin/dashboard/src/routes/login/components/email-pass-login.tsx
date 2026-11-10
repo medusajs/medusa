@@ -27,7 +27,7 @@ export const EmailPassLogin = ({ onMfaChallenge }: EmailPassLoginProps) => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const from = location.state?.from?.pathname || "/orders"
+  const from = location.state?.from?.pathname || "/"
 
   const form = useForm<z.infer<typeof EmailPassSchema>>({
     resolver: zodResolver(EmailPassSchema),
@@ -134,7 +134,7 @@ export const EmailPassLogin = ({ onMfaChallenge }: EmailPassLoginProps) => {
         )}
         {serverError && (
           <Alert
-            className="bg-ui-bg-base items-center p-2"
+            className="items-center bg-ui-bg-base p-2"
             dismissible
             variant="error"
           >

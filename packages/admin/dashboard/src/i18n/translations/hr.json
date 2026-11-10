@@ -148,6 +148,7 @@
     "reset": "Resetiraj",
     "confirm": "Potvrdi",
     "edit": "Uredi",
+    "view": "Prikaži",
     "addItems": "Dodaj stavke",
     "download": "Preuzmi",
     "clear": "Očisti",
@@ -1017,6 +1018,24 @@
       "hint": "Kreiraj novog kupca i upravljaj njegovim podacima.",
       "successToast": "Kupac {{email}} je uspješno kreiran."
     },
+    "export": {
+      "header": "Izvoz liste kupaca",
+      "description": "Izvezite popis kupaca u datoteku.",
+      "success": {
+        "title": "Obrađujemo vaš izvoz",
+        "description": "Izvoz podataka može potrajati nekoliko minuta. Obavijestit ćemo vas kada završimo."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Odaberite format izvezene datoteke. JSON bilježi ugniježđene podatke između modula bez gubitka, što se preporučuje za zahtjeve za pristup podacima ispitanika.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filteri",
+        "description": "Primijenite filtre u prikazu tablice kako biste prilagodili ovaj prikaz"
+      }
+    },
     "groups": {
       "label": "Grupe kupaca",
       "remove": "Jeste li sigurni da želite ukloniti kupca iz grupe \"{{name}}\"?",
@@ -1151,7 +1170,9 @@
         "paymentMethod": "Način plaćanja",
         "paymentMethodDescription": "Vrati iznos na odabrani način plaćanja",
         "creditLine": "Kredit trgovine",
-        "creditLineDescription": "Iznos povrata odobri kao kredit trgovine"
+        "creditLineDescription": "Iznos povrata odobri kao kredit trgovine",
+        "creditLineGuestDescription": "Dostupno samo kupcima s računom. Ovu narudžbu izvršio je gost.",
+        "creditLineNoOutstandingAmountDescription": "Dostupno samo kada narudžba ima nepodmireni iznos. Prvo kreirajte povrat ili uređivanje narudžbe."
       }
     },
     "domain": "Narudžbe",
@@ -1221,7 +1242,9 @@
       "title": "Uplate",
       "isReadyToBeCaptured": "Uplata <0/> spremna je za naplatu.",
       "totalPaidByCustomer": "Ukupno plaćeno od strane kupca",
-      "totalStoreCreditRefunds": "Ukupno povrati na kredit trgovine",
+      "totalPending": "Preostalo za naplatu",
+      "storeCreditRefund": "Povrat sredstava na kredit trgovine",
+      "totalStoreCreditRefunds": "Ukupno vraćeno na kredit trgovine",
       "capture": "Naplati uplatu",
       "capture_short": "Naplati",
       "refund": "Povrat sredstava",
@@ -1233,6 +1256,7 @@
         "authorized": "Autorizirano",
         "partiallyAuthorized": "Djelomično autorizirano",
         "awaiting": "Čekanje",
+        "pending": "Na čekanju",
         "captured": "Naplaćeno",
         "partiallyRefunded": "Djelomično vraćeno",
         "partiallyCaptured": "Djelomično naplaćeno",
@@ -2184,6 +2208,8 @@
       "method": "Način",
       "allocation": "Alokacija",
       "allocationTooltip": "Each nameće ograničenje količine po stavci, dok Once nameće ograničenje količine na razini cijele košarice",
+      "targetSelectionStrategy": "Artikli s popustom",
+      "targetSelectionStrategyTooltip": "Koji prihvatljivi artikli u košarici dobivaju popust",
       "addCondition": "Dodaj uvjet",
       "clearAll": "Očisti sve",
       "taxInclusive": "Uključuje porez",
@@ -2331,6 +2357,16 @@
         "once": {
           "title": "Jednom",
           "description": "Primjenjuje vrijednost na ograničen broj stavki"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Najskuplji prvo",
+          "description": "Primjenjuje popust na najskuplje prihvatljive artikle u košarici"
+        },
+        "cheapest_first": {
+          "title": "Najjeftiniji prvo",
+          "description": "Primjenjuje popust na najjeftinije prihvatljive artikle u košarici"
         }
       },
       "code": {
@@ -2707,6 +2743,7 @@
     "editUser": "Uredi korisnika",
     "inviteUser": "Pozovi korisnika",
     "inviteUserHint": "Pozovite novog korisnika u vašu trgovinu.",
+    "inviteRolesTooltip": "Ako nije odabrana nijedna uloga, korisnik će biti pozvan bez ikakvih ovlasti. Uloge možete dodijeliti kasnije.",
     "sendInvite": "Pošaljite pozivnicu",
     "pendingInvites": "Pozivnice na čekanju",
     "deleteInviteWarning": "Spremate se izbrisati pozivnicu za {{email}}. Ova radnja se ne može poništiti.",
@@ -2738,7 +2775,6 @@
     "deleteUserWarning": "Spremate se izbrisati korisnika {{name}}. Ova radnja se ne može poništiti.",
     "deleteUserSuccess": "Korisnik {{name}} uspješno izbrisan",
     "invite": "Pozovi",
-    "inviteRolesTooltip": "Ako nije odabrana nijedna uloga, korisnik će biti pozvan s ulogom superkorisnika.",
     "copyResetPasswordLink": "Kopiraj poveznicu za resetiranje lozinke",
     "copyResetPasswordLinkSuccess": "Poveznica za resetiranje lozinke kopirana je u međuspremnik",
     "copyResetPasswordLinkHint": "Poveznica ubrzo istječe i poništava sve prethodno poslane poveznice za resetiranje lozinke za ovog korisnika."
@@ -3180,6 +3216,9 @@
     "invalidTokenTitle": "Vaš pozivni token je nevažeći",
     "invalidTokenHint": "Pokušajte zatražiti novu pozivnu poveznicu.",
     "passwordMismatch": "Lozinke se ne podudaraju",
+    "signedInTitle": "Već ste prijavljeni",
+    "signedInHint": "Prijavljeni ste kao {{email}}. Odjavite se kako biste prihvatili ovu pozivnicu.",
+    "signOut": "Odjavi se",
     "toast": {
       "accepted": "Pozivnica uspješno prihvaćena"
     }
@@ -3683,7 +3722,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Korisnik već ima ovu ulogu.",
-      "unassignableRoleTooltip": "Nemate pristup za dodjelu ove uloge — vaše ovlasti ne obuhvaćaju sva njezina pravila pristupa.",
       "add": {
         "successToast_one": "Korisnik je uspješno dodan ulozi.",
         "successToast_few": "Korisnici su uspješno dodani ulozi.",
@@ -3714,6 +3752,9 @@
       "filtered": {
         "heading": "Nema rezultata",
         "description": "Nijedna ovlast ne odgovara trenutačnim kriterijima filtriranja."
+      },
+      "manage": {
+        "successToast": "Ovlasti su uspješno ažurirane."
       }
     },
     "list": {
@@ -3737,6 +3778,7 @@
     },
     "edit": {
       "header": "Uredi pravilo pristupa",
+      "identityHint": "Ključ, resurs i operacija identificiraju pravilo pristupa i ne mogu se mijenjati. Umjesto toga kreirajte novo pravilo pristupa.",
       "successToast": "Pravilo pristupa {{key}} je ažurirano"
     },
     "delete": {
@@ -3790,7 +3832,10 @@
       "building": "Izrada",
       "ready": "Spremno",
       "error": "Greška"
-    }
+    },
+    "delete": "Izbriši indeks",
+    "deleteSuccess": "Indeks {{name}} izbrisan",
+    "deleteWarning": "Ovo uklanja indeks \"{{name}}\" i svaku verziju ikada izgrađenu za njega, uključujući njegove podatke u tražilici. Ništa na ovom indeksu nije moguće pretraživati dok ga sljedeća migracija ne izgradi ispočetka. Ovo se ne može poništiti."
   },
   "propertyLabels": {
     "domain": "Nazivi svojstava",
@@ -3809,6 +3854,10 @@
       "description": "Nemate ovlast za pristup ovoj stranici.",
       "requiredPermission": "Potrebna ovlast: {{permission}}",
       "action": "Nemate ovlast za izvođenje ove radnje."
+    },
+    "noPermissions": {
+      "title": "Još nema ovlasti",
+      "description": "Nemate dodijeljenih ovlasti. Obratite se svom administratoru kako biste zatražili pristup područjima koja su vam potrebna."
     },
     "requiredPermissions": {
       "title": "Potrebne ovlasti",

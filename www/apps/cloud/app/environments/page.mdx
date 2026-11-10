@@ -14,7 +14,7 @@ A Cloud project can have multiple environments, each representing a different st
 
 Each environment has its own deployed Medusa backend, admin dashboard, and storefront. It also has its own resources, such as a database and server instance.
 
-By default, a project has at least a Production environment, and you can create custom environments based on your development needs.
+By default, a project has at least a Production environment, and you can create custom environments based on your development needs. Medusa links the Production environment to your repository's default branch, such as `main`, when you [create the project](../projects/page.mdx#production-environments-branch). You can [change the environment's branch](./long-lived/page.mdx#change-environments-branch) later.
 
 Environments are useful to test changes in production-like conditions before actually pushing them to production. You can test out new features, bug fixes, and integrations without affecting the live application.
 

@@ -19,6 +19,7 @@ import {
   ActionMenu,
 } from "../../../../../components/common/action-menu"
 import { Form } from "../../../../../components/common/form"
+import { getReturnableQuantity } from "../../../../../lib/rma"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell"
@@ -57,7 +58,7 @@ function ExchangeInboundItem({
   )
 
   return (
-    <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
+    <div className="my-2 rounded-xl bg-ui-bg-subtle shadow-elevation-card-rest">
       <div className="flex flex-col items-center gap-x-3 gap-y-2 p-3 text-sm md:flex-row">
         <div className="flex flex-1 items-center gap-x-3">
           <Thumbnail src={item.thumbnail} />
@@ -70,7 +71,7 @@ function ExchangeInboundItem({
 
               {item.variant_sku && <span>({item.variant_sku})</span>}
             </div>
-            <Text as="div" className="text-ui-fg-subtle txt-small">
+            <Text as="div" className="txt-small text-ui-fg-subtle">
               {item.product_title}
             </Text>
           </div>
@@ -102,9 +103,9 @@ function ExchangeInboundItem({
                     <Form.Control>
                       <Input
                         {...field}
-                        className="bg-ui-bg-base txt-small w-[67px] rounded-lg"
+                        className="txt-small w-[67px] rounded-lg bg-ui-bg-base"
                         min={1}
-                        max={item.quantity}
+                        max={getReturnableQuantity(item)}
                         type="number"
                         onBlur={(e) => {
                           const val = e.target.value
@@ -128,7 +129,7 @@ function ExchangeInboundItem({
             </Text>
           </div>
 
-          <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0">
+          <div className="txt-small mr-2 flex flex-shrink-0 text-ui-fg-subtle">
             <MoneyAmountCell
               currencyCode={currencyCode}
               amount={previewItem.return_requested_total}

@@ -1,5 +1,6 @@
 import Handlebars from "handlebars"
 import { ReferenceReflection } from "typedoc"
+import { getReflectionUrl } from "utils"
 
 export default function () {
   Handlebars.registerHelper(
@@ -14,12 +15,12 @@ export default function () {
       if (this.name === referenced.name) {
         return `Re-exports [${
           referenced.name
-        }](${Handlebars.helpers.relativeURL(referenced.url)})`
+        }](${Handlebars.helpers.relativeURL(getReflectionUrl(referenced))})`
       }
 
       return `Renames and re-exports [${
         referenced.name
-      }](${Handlebars.helpers.relativeURL(referenced.url)})`
+      }](${Handlebars.helpers.relativeURL(getReflectionUrl(referenced))})`
     }
   )
 }

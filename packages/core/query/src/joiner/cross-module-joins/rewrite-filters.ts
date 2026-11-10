@@ -6,7 +6,7 @@ import {
   InternalJoinerServiceConfig,
   ResidualCrossModuleFilter,
 } from "../types"
-import { resolveChain, resolvePathHops } from "./build-chain"
+import { buildChainLevels, resolveChain, resolvePathHops } from "./build-chain"
 import { registerCandidates } from "./spec-registry"
 import { ChainLevel, PushdownCandidate, SpecRegistry } from "./types"
 
@@ -36,55 +36,198 @@ export function rewriteRootFilters(params: {
   registry: SpecRegistry
   residual: ResidualCrossModuleFilter[]
 }): void {
-  const { query, serviceConfig, catalog, registry, residual } = params
+  const { query, ...rest } = params
   const rootFilters = getFiltersArg(query.args)?.value
 
   if (!isObject(rootFilters)) {
     return
   }
 
-  for (const [key, value] of Object.entries(rootFilters)) {
+  rewriteFiltersAtPath({
+    ...rest,
+    pathSegments: [],
+    filters: rootFilters as Record<string, unknown>,
+  })
+}
+
+/**
+ * Rewrites the cross-module filters found in `filters`, located at
+ * `pathSegments` below the root. Same-module relation filters are walked to
+ * reach cross-module paths nested below them, e.g.
+ * `{ service_zone: { fulfillment_set: { location: {...} } } }` on
+ * `shipping_option`, which toRemoteQuery leaves on the root. Pushed filters are
+ * pruned, along with relation filters they leave empty.
+ *
+ * Only top-level filters can be residual: the residual stage strips them by
+ * their root key. Nested filters that can't be pushed down stay in place.
+ */
+function rewriteFiltersAtPath(params: {
+  pathSegments: string[]
+  filters: Record<string, unknown>
+  serviceConfig: InternalJoinerServiceConfig
+  catalog: GraphCatalog
+  registry: SpecRegistry
+  residual: ResidualCrossModuleFilter[]
+}): void {
+  const { pathSegments, filters, serviceConfig, catalog, registry, residual } =
+    params
+  const isRoot = !pathSegments.length
+
+  for (const [key, value] of Object.entries(filters)) {
     if (key.startsWith("$") || !isObject(value)) {
       continue
     }
 
+    const segments = [...pathSegments, key]
+    const nestedFilters = value as Record<string, unknown>
     const resolution = resolveChain(
-      { rootConfig: serviceConfig, pathSegments: [key] },
+      { rootConfig: serviceConfig, pathSegments: segments },
       catalog
     )
 
-    // Same-module paths (and plain object-valued filters) are handled
-    // natively by the root module — leave them in place.
     if (resolution.outcome === "native") {
+      const hadFilters = Object.keys(nestedFilters).length > 0
+
+      rewriteRelationFilters({
+        ...params,
+        pathSegments: segments,
+        filters: nestedFilters,
+      })
+
+      if (hadFilters && !Object.keys(nestedFilters).length) {
+        delete filters[key]
+      }
       continue
     }
 
     // Paths that cross modules but cannot be pushed down are residual.
     if (resolution.outcome === "residual") {
-      residual.push({
-        path: key,
-        filters: value as Record<string, unknown>,
-      })
+      if (isRoot) {
+        residual.push({ path: key, filters: nestedFilters })
+      }
       continue
     }
 
-    const candidates = collectCandidates(
+    const isPushed = pushDownFilters(
       {
-        pathSegments: [key],
+        pathSegments: segments,
         levels: resolution.levels,
-        filters: value as Record<string, unknown>,
+        filters: nestedFilters,
         rootConfig: serviceConfig,
+        registry,
       },
       catalog
     )
 
-    if (!candidates || !registerCandidates(registry, candidates)) {
-      residual.push({ path: key, filters: value as Record<string, unknown> })
-      continue
+    if (isPushed) {
+      delete filters[key]
+    } else if (isRoot) {
+      residual.push({ path: key, filters: nestedFilters })
+    }
+  }
+}
+
+/**
+ * Handles a same-module path. Plain object-valued fields and relations with
+ * no cross-module filters below them are left to the module itself.
+ *
+ * Below a hasMany relation, the cross-module filters and their siblings must
+ * match the same child row, so the relation's filters are pushed down as a
+ * whole, or not at all.
+ */
+function rewriteRelationFilters(params: {
+  pathSegments: string[]
+  filters: Record<string, unknown>
+  serviceConfig: InternalJoinerServiceConfig
+  catalog: GraphCatalog
+  registry: SpecRegistry
+  residual: ResidualCrossModuleFilter[]
+}): void {
+  const { pathSegments, filters, serviceConfig, catalog, registry } = params
+
+  const hops = resolvePathHops(
+    { rootConfig: serviceConfig, pathSegments },
+    catalog
+  )
+  const lastHop = hops?.[hops.length - 1]
+
+  if (
+    !hops ||
+    lastHop?.kind !== "internal" ||
+    !hasCrossModuleFilters({ pathSegments, filters, serviceConfig }, catalog)
+  ) {
+    return
+  }
+
+  if (!lastHop.internal?.isList) {
+    rewriteFiltersAtPath(params)
+    return
+  }
+
+  const levels = buildChainLevels({ hops, rootConfig: serviceConfig, catalog })
+  const isPushed =
+    !!levels &&
+    pushDownFilters(
+      { pathSegments, levels, filters, rootConfig: serviceConfig, registry },
+      catalog
+    )
+
+  if (isPushed) {
+    for (const key of Object.keys(filters)) {
+      delete filters[key]
+    }
+  }
+}
+
+function hasCrossModuleFilters(
+  params: {
+    pathSegments: string[]
+    filters: Record<string, unknown>
+    serviceConfig: InternalJoinerServiceConfig
+  },
+  catalog: GraphCatalog
+): boolean {
+  const { pathSegments, filters, serviceConfig } = params
+
+  return Object.entries(filters).some(([key, value]) => {
+    if (key.startsWith("$") || !isObject(value)) {
+      return false
     }
 
-    delete rootFilters[key]
-  }
+    const segments = [...pathSegments, key]
+    const resolution = resolveChain(
+      { rootConfig: serviceConfig, pathSegments: segments },
+      catalog
+    )
+
+    return (
+      resolution.outcome !== "native" ||
+      hasCrossModuleFilters(
+        {
+          pathSegments: segments,
+          filters: value as Record<string, unknown>,
+          serviceConfig,
+        },
+        catalog
+      )
+    )
+  })
+}
+
+function pushDownFilters(
+  params: {
+    pathSegments: string[]
+    levels: ChainLevel[]
+    filters: Record<string, unknown>
+    rootConfig: InternalJoinerServiceConfig
+    registry: SpecRegistry
+  },
+  catalog: GraphCatalog
+): boolean {
+  const { registry, ...candidateParams } = params
+  const candidates = collectCandidates(candidateParams, catalog)
+
+  return !!candidates && registerCandidates(registry, candidates)
 }
 
 /**

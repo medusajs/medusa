@@ -178,7 +178,8 @@ export const ProductOptionsManageForm = ({
     )
 
     const normalizedOptionIds = Array.from(
-      new Set( // deduplicate if needed
+      new Set(
+        // deduplicate if needed
         optionIds.flatMap((optionId) => {
           /**
            * map label from the combobox input to the option id
@@ -248,8 +249,8 @@ export const ProductOptionsManageForm = ({
 
     // Deselecting every value is the user's way of saying "remove this option
     // from the product". Drop the row so the submit pipeline routes it through
-    // optionsToRemove, where the backend's "variants are using it" guard kicks
-    // in if the option can't actually be detached.
+    // optionsToRemove; the backend detaches the option from the product's
+    // variants, or rejects it if that would collide two variants.
     if (!valueIds.length) {
       const currentOptions = form.getValues("options") || []
       form.setValue(
@@ -618,7 +619,7 @@ export const ProductOptionsManageForm = ({
                                 "productOptions.manage.exclusiveOption"
                               )}
                             >
-                              <InformationCircle className="text-ui-fg-subtle pt-[1px]" />
+                              <InformationCircle className="pt-[1px] text-ui-fg-subtle" />
                             </Tooltip>
                           )}
                         </Label>

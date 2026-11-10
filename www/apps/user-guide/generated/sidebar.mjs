@@ -66,6 +66,14 @@ export const generatedSidebars = [
             "title": "Configure Table Views",
             "description": "",
             "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/tips/login-options",
+            "title": "Login Options",
+            "description": "",
+            "children": []
           }
         ]
       },
@@ -468,6 +476,28 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Roles",
+            "path": "/settings/roles",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Common Roles",
+                "path": "/settings/roles/common-roles",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Policies",
+            "path": "/settings/policies",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Regions",
             "path": "/settings/regions",
             "children": []
@@ -591,6 +621,13 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Profile",
             "path": "/settings/profile",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Search Indexes",
+            "path": "/settings/search",
             "children": []
           }
         ]

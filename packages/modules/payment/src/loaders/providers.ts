@@ -47,8 +47,8 @@ export default async ({
       api_key?: string
       endpoint?: string
       environment_handle?: string
-      sandbox_handle?: string
       webhook_secret?: string
+      payment_accounts?: string[]
     }
   }
 >): Promise<void> => {
@@ -61,26 +61,25 @@ export default async ({
     api_key,
     endpoint,
     environment_handle,
-    sandbox_handle,
     webhook_secret,
+    payment_accounts,
   } = options?.cloud ?? {}
 
-  if (
-    api_key &&
-    endpoint &&
-    webhook_secret &&
-    (environment_handle || sandbox_handle)
-  ) {
-    await registrationFn(providers.MedusaPaymentsProvider, container, {
-      options: {
-        api_key,
-        endpoint,
-        environment_handle,
-        sandbox_handle,
-        webhook_secret,
-      },
-      id: "default",
-    })
+  if (api_key && endpoint && webhook_secret && environment_handle) {
+    // Each Medusa Payments account (eg. one per region) gets its own provider, so it can be
+    // assigned to regions and receives the webhooks for that account.
+    for (const payment_account of payment_accounts ?? []) {
+      await registrationFn(providers.MedusaPaymentsProvider, container, {
+        options: {
+          api_key,
+          endpoint,
+          environment_handle,
+          webhook_secret,
+          payment_account,
+        },
+        id: payment_account,
+      })
+    }
   }
 
   await moduleProviderLoader({
@@ -100,10 +99,7 @@ const registerProvidersInDb = async ({
     "paymentProviderService"
   )
 
-  const existingProviders = await paymentProviderService.list(
-    { id: providersToLoad },
-    {}
-  )
+  const existingProviders = await paymentProviderService.list({})
 
   const upsertData: CreatePaymentProviderDTO[] = []
 

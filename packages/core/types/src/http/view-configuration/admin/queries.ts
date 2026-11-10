@@ -6,8 +6,7 @@ export interface AdminGetViewConfigurationParams extends SelectParams {}
 export interface AdminGetPropertyLabelParams extends SelectParams {}
 
 export interface AdminGetPropertyLabelsParams
-  extends FindParams,
-    BaseFilterable<AdminGetPropertyLabelsParams> {
+  extends FindParams, BaseFilterable<AdminGetPropertyLabelsParams> {
   /**
    * Entity to filter by.
    */
@@ -23,8 +22,7 @@ export interface AdminGetPropertyLabelsParams
 }
 
 export interface AdminGetViewConfigurationsParams
-  extends FindParams,
-    BaseFilterable<AdminGetViewConfigurationsParams> {
+  extends FindParams, BaseFilterable<AdminGetViewConfigurationsParams> {
   /**
    * IDs to filter view configurations by.
    */

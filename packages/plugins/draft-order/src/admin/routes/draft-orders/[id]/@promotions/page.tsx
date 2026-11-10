@@ -31,6 +31,7 @@ import { useCancelOrderEdit } from "../../../../hooks/order-edits/use-cancel-ord
 import { useInitiateOrderEdit } from "../../../../hooks/order-edits/use-initiate-order-edit"
 import { getLocaleAmount } from "../../../../lib/data/currencies"
 import { sdk } from "../../../../lib/queries/sdk"
+import { EDIT_DRAFT_ORDER_PROMOTIONS_PERMISSIONS } from "../../../../lib/permissions"
 
 const Promotions = () => {
   const { id } = useParams()
@@ -364,6 +365,10 @@ function getPromotionIds(
   }
 
   return Array.from(promotionIds)
+}
+
+export const handle = {
+  permissions: EDIT_DRAFT_ORDER_PROMOTIONS_PERMISSIONS,
 }
 
 export default Promotions

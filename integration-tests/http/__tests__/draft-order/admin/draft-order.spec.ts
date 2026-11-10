@@ -1643,6 +1643,45 @@ medusaIntegrationTestRunner({
           })
         )
       })
+
+      it("should mark an existing shipping method as custom amount when updated with a custom_amount", async () => {
+        edit = (
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            {},
+            adminHeaders
+          )
+        ).data.draft_order_preview
+
+        const methodId = edit.shipping_methods[0].id
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/shipping-methods/method/${methodId}`,
+          { custom_amount: 15 },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const order = (
+          await api.get(
+            `/admin/draft-orders/${testDraftOrder.id}?fields=+shipping_methods.amount,+shipping_methods.is_custom_amount`,
+            adminHeaders
+          )
+        ).data.draft_order
+
+        expect(order.shipping_methods).toEqual([
+          expect.objectContaining({
+            id: methodId,
+            amount: 15,
+            is_custom_amount: true,
+          }),
+        ])
+      })
     })
 
     describe("POST /draft-orders/:id/edit/items", () => {
@@ -1944,6 +1983,49 @@ medusaIntegrationTestRunner({
             }),
           ])
         )
+      })
+
+      it("should convert a draft order with an out-of-stock item added with allow_backorder", async () => {
+        const variantId = outOfStockProduct.variants[0].id
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+          {
+            items: [
+              { variant_id: variantId, quantity: 2, allow_backorder: true },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const response = await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/convert-to-order`,
+          {},
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.order.status).toBe("pending")
+
+        const reservations = (
+          await api.get(
+            `/admin/reservations?inventory_item_id[]=${outOfStockInventoryItem.id}`,
+            adminHeaders
+          )
+        ).data.reservations
+
+        expect(reservations).toEqual([
+          expect.objectContaining({
+            inventory_item_id: outOfStockInventoryItem.id,
+            quantity: 2,
+          }),
+        ])
       })
     })
   },

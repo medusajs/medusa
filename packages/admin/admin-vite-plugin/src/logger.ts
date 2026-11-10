@@ -16,8 +16,8 @@ function getPrefix(type: "warn" | "info" | "error") {
     type === "warn"
       ? colors.yellow
       : type === "info"
-      ? colors.green
-      : colors.red
+        ? colors.green
+        : colors.red
 
   const prefix = typeColor("[@medusajs/admin-vite-plugin]")
 

@@ -51,7 +51,7 @@ const CustomerInfo = ({ customer }: { customer: HttpTypes.AdminCustomer }) => {
   const name = [customer.first_name, customer.last_name]
     .filter(Boolean)
     .join(" ")
-  const fallback = name ? name[0] : customer.email[0]
+  const fallback = name ? name[0] : customer.email?.[0] || "-"
 
   return (
     <div className="flex items-center gap-4 flex-1">

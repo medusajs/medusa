@@ -827,6 +827,16 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
+          "path": "/admin/customers/export-customers",
+          "title": "Export Customers",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
           "path": "/admin/customers/manage-customer-groups",
           "title": "Manage Customer Groups",
           "loaded": true,
@@ -1865,6 +1875,34 @@ const generatedgeneratedAdminSidebarSidebar = {
           "type": "link",
           "path": "/admin/locales/list-locales",
           "title": "List Locales",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "title": "Modules",
+      "path": "/admin/modules",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/admin/modules/schema",
+          "title": "Module Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/modules/list-modules",
+          "title": "List Modules",
           "loaded": true,
           "badge": {
             "variant": "green",
@@ -4073,12 +4111,60 @@ const generatedgeneratedAdminSidebarSidebar = {
       "children": [
         {
           "type": "link",
-          "path": "/admin/search/list-search",
-          "title": "List Search",
+          "path": "/admin/search/search-admin",
+          "title": "Search Admin",
           "loaded": true,
           "badge": {
             "variant": "green",
             "text": "Get"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "title": "Search Indexes",
+      "path": "/admin/search-indexes",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/schema",
+          "title": "SearchIndex Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/list-search-indexes",
+          "title": "List Search Indexes",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/reindex-a-search-index",
+          "title": "Reindex a Search Index",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/search-indexes/delete-a-search-index",
+          "title": "Delete a Search Index",
+          "loaded": true,
+          "badge": {
+            "variant": "red",
+            "text": "Del"
           }
         }
       ]
@@ -4455,6 +4541,16 @@ const generatedgeneratedAdminSidebarSidebar = {
           "type": "link",
           "path": "/admin/store-credit-accounts/create-store-credit-account",
           "title": "Create Store Credit Account",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/store-credit-accounts/debit-a-store-credit-account",
+          "title": "Debit a Store Credit Account",
           "loaded": true,
           "badge": {
             "variant": "blue",
@@ -4869,12 +4965,32 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
+          "path": "/admin/users/list-users-roles",
+          "title": "List User's Roles",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        },
+        {
+          "type": "link",
           "path": "/admin/users/list-users",
           "title": "List Users",
           "loaded": true,
           "badge": {
             "variant": "green",
             "text": "Get"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/users/add-roles-to-user",
+          "title": "Add Roles to User",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
           }
         },
         {
@@ -4899,8 +5015,38 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
+          "path": "/admin/users/update-logged-in-user",
+          "title": "Update Logged-In User",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        },
+        {
+          "type": "link",
           "path": "/admin/users/delete-a-user",
           "title": "Delete a User",
+          "loaded": true,
+          "badge": {
+            "variant": "red",
+            "text": "Del"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/users/remove-role-from-user",
+          "title": "Remove Role from User",
+          "loaded": true,
+          "badge": {
+            "variant": "red",
+            "text": "Del"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/users/remove-roles-from-user",
+          "title": "Remove Roles from User",
           "loaded": true,
           "badge": {
             "variant": "red",

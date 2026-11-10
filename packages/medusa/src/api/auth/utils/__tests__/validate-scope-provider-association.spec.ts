@@ -14,9 +14,9 @@ const buildRequest = (
           projectConfig: {
             http: authMethodsPerActor ? { authMethodsPerActor } : {},
           },
-        } as unknown as ConfigModule),
+        }) as unknown as ConfigModule,
     },
-  } as unknown as MedusaRequest)
+  }) as unknown as MedusaRequest
 
 const run = async (req: MedusaRequest, actorType?: string) => {
   const next = jest.fn()

@@ -6,11 +6,19 @@ export type WhatsNewItem = {
 } & (
   | {
       comingSoon: true
+      earlyAccess?: never
       date?: never
       link?: never
     }
   | {
+      earlyAccess: true
+      comingSoon?: never
+      date?: never
+      link: string
+    }
+  | {
       comingSoon?: false
+      earlyAccess?: false
       /**
        * ISO date (`YYYY-MM-DD`) the feature shipped. Used for sorting and display.
        */
@@ -21,9 +29,28 @@ export type WhatsNewItem = {
 
 export const whatsNewItems: WhatsNewItem[] = [
   {
+    title: "RBAC & SSO",
+    tag: "Enterprise",
+    date: "2026-11-04",
+    link: "https://docs.medusajs.com/resources/enterprise",
+  },
+  {
+    title: "Medusa MCP",
+    tag: "Medusa Cloud",
+    date: "2026-10-20",
+    link: "https://docs.medusajs.com/cloud/medusa-mcp",
+  },
+  {
+    title: "Medusa Security",
+    date: "2026-11-04",
+    link: "https://docs.medusajs.com/cloud/security",
+    tag: "Medusa Cloud",
+  },
+  {
     title: "Medusa Search",
     tag: "Medusa Cloud",
-    comingSoon: true,
+    date: "2026-09-22",
+    link: "https://docs.medusajs.com/cloud/search",
   },
   {
     title: "Exported Admin Components",

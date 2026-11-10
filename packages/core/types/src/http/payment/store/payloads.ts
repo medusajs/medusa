@@ -15,3 +15,11 @@ export interface StoreInitializePaymentSession {
    */
   data?: Record<string, unknown>
 }
+
+export interface StoreUpdatePaymentSession {
+  /**
+   * Data to merge into the session's `data.client`, such as payment details
+   * collected by the provider's checkout component. Set a property to `null` to remove it.
+   */
+  client_data: Record<string, unknown>
+}

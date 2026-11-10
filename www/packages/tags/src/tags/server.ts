@@ -76,6 +76,10 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/commerce-modules/user/invite-user-subscriber"
   },
   {
+    "title": "Define Custom Policies",
+    "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies"
+  },
+  {
     "title": "Implement Custom Line Item Pricing in Medusa",
     "path": "https://docs.medusajs.com/resources/examples/guides/custom-item-price"
   },
@@ -270,6 +274,10 @@ export const server = [
   {
     "title": "Create Payment Provider",
     "path": "https://docs.medusajs.com/resources/references/payment/provider"
+  },
+  {
+    "title": "Use Search Module",
+    "path": "https://docs.medusajs.com/resources/references/search/service"
   },
   {
     "title": "Create Tax Provider",

@@ -48,7 +48,7 @@ You will first be asked for the project's name. You can also optionally choose t
 
 the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
 
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can login with the new user and explore the dashboard.
+Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
 
 <Note title="Ran into Errors">
 
@@ -653,7 +653,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 - Call the `getProductsFromErp` step to fetch products from Odoo.
 - Use the [useQueryGraphStep](/references/helper-steps/useQueryGraphStep) to fetch the Medusa store configurations, sales channels, and shipping profiles. You'll use this data when creating the products in a later step.
-    - The `useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/module-links/query), which is a tool that retrieves data across modules.
+    - The `useQueryGraphStep` uses [Query](!docs!/learn/fundamentals/query), which is a tool that retrieves data across modules.
 - To figure out which products need to be updated, you retrieve products filtered by their `external_id` field, which you'll set to the Odoo product's ID when you create the products next.
     - Notice that you use `transform` from the Workflows SDK to create the external IDs filters. That's because data manipulation is not allowed in a workflow. You can learn more about this and other restrictions in [this documentation](!docs!/learn/fundamentals/workflows/constructor-constraints).
 

@@ -297,13 +297,15 @@ export const CodeBlockLine = ({
           className={clsx(
             "mr-docs_1 table-cell select-none",
             "sticky left-0 w-[1%] px-docs_1 text-right",
+            "before:content-[attr(data-line-number)]",
             lineNumberColorClassName,
             lineNumberBgClassName
           )}
           data-testid="line-number"
-        >
-          {isTerminal ? "❯" : showLineNumber ? lineNumber + 1 : ""}
-        </span>
+          data-line-number={
+            isTerminal ? "❯" : showLineNumber ? lineNumber + 1 : ""
+          }
+        />
       )}
       <span>
         {transformedLine.map(({ tokens, type, highlight }, index) => {
@@ -346,6 +348,7 @@ export const CodeBlockLine = ({
             </React.Fragment>
           )
         })}
+        {!line[line.length - 1]?.content.endsWith("\n") && "\n"}
       </span>
     </span>
   )

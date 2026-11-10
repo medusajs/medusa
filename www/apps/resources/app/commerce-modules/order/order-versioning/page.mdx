@@ -58,7 +58,7 @@ The merged item also has the following properties:
 - `detail`: the `OrderItem` record of the current version. Use properties like `detail.unit_price` and `detail.metadata` to read the versioned values directly.
 - `line_item_metadata`: the `metadata` of the `OrderLineItem` record, which is the metadata set when the item was first added to the order.
 
-For example, retrieve an order's versioned item details using [Query](!docs!/learn/fundamentals/module-links/query):
+For example, retrieve an order's versioned item details using [Query](!docs!/learn/fundamentals/query):
 
 ```ts
 const { data: orders } = await query.graph({

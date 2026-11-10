@@ -49,8 +49,7 @@ export default class CachingModuleService implements ICachingModuleService {
   constructor(
     container: InjectedDependencies,
     protected readonly moduleDeclaration:
-      | { options: { ttl?: number } }
-      | { ttl?: number }
+      { options: { ttl?: number } } | { ttl?: number }
   ) {
     this.container = container
     this.providerService = container.cacheProviderService
@@ -109,6 +108,7 @@ export default class CachingModuleService implements ICachingModuleService {
 
   protected async onApplicationShutdown() {
     await this.strategy.onApplicationShutdown?.()
+    await this.providerService.shutdown()
   }
 
   protected async onApplicationPrepareShutdown() {

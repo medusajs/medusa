@@ -10,6 +10,7 @@ import { CodeBlock } from "@/components/CodeBlock"
 import { WorkflowDiagram } from "@/components/WorkflowDiagram"
 import { Note } from "@/components/Note"
 import { SourceCodeLink } from "@/components/SourceCodeLink"
+import { EnterpriseNotice } from "@/components/Notices/EnterpriseNotice"
 import { MarkdownContent } from "@/components/MarkdownContent"
 import { BadgesList } from "@/components/BadgesList"
 import type { BadgeVariant } from "@/components/Badge"
@@ -57,20 +58,40 @@ const Block = ({ block }: { block: DocBlock }) => {
       return (
         <CodeTabs group="reference">
           {block.tabs.map((tab, index) => (
-            <CodeTab key={index} label={tab.label} value={`${tab.label}-${index}`}>
-              <CodeBlock source={tab.code} lang={tab.language} title={tab.title} />
+            <CodeTab
+              key={index}
+              label={tab.label}
+              value={`${tab.label}-${index}`}
+            >
+              <CodeBlock
+                source={tab.code}
+                lang={tab.language}
+                title={tab.title}
+              />
             </CodeTab>
           ))}
         </CodeTabs>
       )
     case "note":
       return (
-        <Note type={noteTypeMap[block.variant || "note"] || "default"} title={block.title}>
+        <Note
+          type={noteTypeMap[block.variant || "note"] || "default"}
+          title={block.title}
+        >
           <MarkdownContent>{block.html}</MarkdownContent>
         </Note>
       )
     case "sourceCodeLink":
       return <SourceCodeLink link={block.link} />
+    case "enterpriseNotice":
+      return (
+        <EnterpriseNotice
+          featureName={block.featureName}
+          featureFlag={block.featureFlag}
+          featureFlagHref={block.featureFlagHref}
+          beta={block.beta}
+        />
+      )
     case "linkList": {
       const { ul: Ul, li: Li, a: Anchor } = Mdx
       return (

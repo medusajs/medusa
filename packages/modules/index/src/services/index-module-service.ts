@@ -16,6 +16,7 @@ import {
   MikroOrmBaseRepository as BaseRepository,
   ContainerRegistrationKeys,
   GraphQLUtils,
+  INDEX_MODULE_DEPRECATION_MESSAGE,
   InjectManager,
   MedusaContext,
   Modules,
@@ -47,6 +48,9 @@ type InjectedDependencies = {
   dataSynchronizer: DataSynchronizer
 }
 
+/**
+ * @deprecated The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property
+ */
 export default class IndexModuleService
   extends ModulesSdkUtils.MedusaService({})
   implements IndexTypes.IIndexService
@@ -137,6 +141,8 @@ export default class IndexModuleService
   }
 
   protected async onApplicationStart_() {
+    this.logger_.warn(INDEX_MODULE_DEPRECATION_MESSAGE)
+
     try {
       const executableSchema = this.buildSchemaObjectRepresentation_()
 
@@ -155,7 +161,13 @@ export default class IndexModuleService
         await this.storageProvider_.onApplicationStart()
       }
 
-      await gqlSchemaToTypes(executableSchema!)
+      await gqlSchemaToTypes(executableSchema!).catch((e) => {
+        this.logger_.warn(
+          `[Index engine] Failed to generate the index entry points types: ${
+            e?.message ?? e
+          }`
+        )
+      })
 
       /**
        * Only run the data synchronization in worker mode
@@ -230,8 +242,7 @@ export default class IndexModuleService
   }
 
   private buildSchemaObjectRepresentation_():
-    | GraphQLUtils.GraphQLSchema
-    | undefined {
+    GraphQLUtils.GraphQLSchema | undefined {
     if (this.schemaObjectRepresentation_) {
       return
     }

@@ -122,19 +122,30 @@ const StoreSearchOptions = z
   })
   .strict()
 
+const toUpperCase = (value: unknown) => {
+  return typeof value === "string" ? value.toUpperCase() : value
+}
+
+// Upper-cased before it reaches the module, so no engine has to handle `asc`.
+const StoreSearchOrderDirection = z.preprocess(
+  toUpperCase,
+  z.enum(["ASC", "DESC"])
+)
+
 const StoreSearchPagination = z
   .object({
     skip: z.number().int().nonnegative().optional(),
     // `0` is what InstantSearch sends for a facet-only search.
     take: z.number().int().nonnegative().max(MAX_SEARCH_TAKE).optional(),
-    order: z.record(z.string(), z.enum(["ASC", "DESC"])).optional(),
+    order: z.record(z.string(), StoreSearchOrderDirection).optional(),
     cursor: z.string().optional(),
   })
   .strict()
 
 /**
  * The Search Module's `SearchQuery`, minus the `context` that shapes hydration,
- * which is the endpoint's to build.
+ * which the endpoint never runs. Which `fields` the index can return is a
+ * property of its definition, so the route checks them.
  */
 const StoreSearchQuery = z
   .object({

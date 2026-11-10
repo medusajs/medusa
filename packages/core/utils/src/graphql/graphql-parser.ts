@@ -34,7 +34,10 @@ interface Entity {
 export class GraphQLParser {
   private ast: DocumentNode
 
-  constructor(input: string, private variables: Record<string, unknown> = {}) {
+  constructor(
+    input: string,
+    private variables: Record<string, unknown> = {}
+  ) {
     this.ast = parse(input)
     this.variables = variables
   }

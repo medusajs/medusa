@@ -98,7 +98,7 @@ medusaIntegrationTestRunner({
       })
 
       it("Should list all workflows in execution or completed and retrieve them by id", async () => {
-        for (let i = 3; i--; ) {
+        for (let i = 3; i--;) {
           await api.post(
             `/admin/workflows-executions/my-workflow-name/run`,
             {
@@ -148,7 +148,7 @@ medusaIntegrationTestRunner({
         const promises: any[] = []
         const transactions: string[] = []
 
-        for (let i = 3; i--; ) {
+        for (let i = 3; i--;) {
           const transactionId = "transaction_" + (i + 1)
           transactions.push(transactionId)
           promises.push(

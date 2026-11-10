@@ -132,14 +132,6 @@ export const link = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteInventoryItemWorkflow"
   },
   {
-    "title": "acceptInviteWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/acceptInviteWorkflow"
-  },
-  {
-    "title": "createInvitesWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createInvitesWorkflow"
-  },
-  {
     "title": "deleteLineItemsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
   },
@@ -174,6 +166,10 @@ export const link = [
   {
     "title": "deletePricePreferencesWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deletePricePreferencesWorkflow"
+  },
+  {
+    "title": "createProductVariantsDefaultInventoryStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createProductVariantsDefaultInventoryStep"
   },
   {
     "title": "createVariantPricingLinkStep",
@@ -230,6 +226,10 @@ export const link = [
   {
     "title": "deleteProductCategoriesWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteProductCategoriesWorkflow"
+  },
+  {
+    "title": "deleteRbacRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolesWorkflow"
   },
   {
     "title": "setRegionsPaymentProvidersStep",
@@ -294,14 +294,6 @@ export const link = [
   {
     "title": "deleteStoresWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteStoresWorkflow"
-  },
-  {
-    "title": "createUserAccountWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUserAccountWorkflow"
-  },
-  {
-    "title": "createUsersWorkflow",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUsersWorkflow"
   },
   {
     "title": "deleteUsersWorkflow",

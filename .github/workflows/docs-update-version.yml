@@ -8,18 +8,19 @@ on:
         description: "Update the version in the docs config and open a PR"
         type: boolean
         default: true
-      create_cloud_announcement:
-        description: "Create the Cloud announcement for the latest release"
-        type: boolean
-        default: true
 
 jobs:
   update-docs-version:
     if: github.event_name != 'workflow_dispatch' || inputs.update_docs_version
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
         with:
@@ -34,6 +35,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          check-latest: true
           cache: "yarn"
 
       - name: Install dependencies
@@ -51,11 +53,14 @@ jobs:
 
       - name: Update Docs Version
         run: yarn update:config-version
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         working-directory: www/utils/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54  # v4
         with:
+          token: ${{ steps.app-token.outputs.token }}
           commit-message: "chore(docs): Update version in documentation (automated)"
           base: "develop"
           title: "chore(docs): Update version in documentation (automated)"
@@ -63,36 +68,3 @@ jobs:
           add-paths: www/packages/docs-utils/src/global-config.ts
           branch: "docs/update-config-version"
           branch-suffix: "timestamp"
-  create-cloud-announcement:
-    if: github.event_name != 'workflow_dispatch' || inputs.create_cloud_announcement
-    runs-on: ubuntu-latest
-    env:
-      ANNOUNCEMENTS_API_URL: ${{ secrets.ANNOUNCEMENTS_API_URL }}
-      ANNOUNCEMENTS_API_TOKEN: ${{ secrets.ANNOUNCEMENTS_API_TOKEN }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: docs-update-version
-
-      - name: Install Workspace dependencies
-        run: yarn install
-        working-directory: www/utils
-
-      - name: Build Workspace packages
-        run: yarn build
-        working-directory: www/utils
-
-      - name: Create Cloud Announcement
-        run: yarn create:cloud-announcement
-        working-directory: www/utils/packages/scripts

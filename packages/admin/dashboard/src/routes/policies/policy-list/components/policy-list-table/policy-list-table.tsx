@@ -1,5 +1,5 @@
-// TODO: V1 policies are read-only in the dashboard. They're defined in code via
-// `definePolicies()`. The Create button and per-row Edit / Delete
+// TODO: [rbac] V1 policies are read-only in the dashboard. Core policies are defined in
+// code, in the RBAC module's core policies loader. The Create button and per-row Edit / Delete
 // actions are commented out below — uncomment to re-enable the full CRUD UI
 // once policy management is opened to admins.
 

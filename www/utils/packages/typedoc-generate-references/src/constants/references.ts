@@ -19,6 +19,7 @@ export const modules = [
   "tax",
   "translation",
   "user",
+  "rbac"
 ]
 
 const allReferences = [
@@ -49,6 +50,12 @@ const allReferences = [
   "analytics",
   "analytics-provider",
   "mfa",
+  "search",
+  "search-provider",
+  "loyalty",
+  "loyalty-models",
+  "store-credit",
+  "store-credit-models",
 ]
 
 export default allReferences

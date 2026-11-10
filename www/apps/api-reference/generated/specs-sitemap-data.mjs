@@ -98,6 +98,7 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "customers_getcustomers",
         "customers_postcustomers",
+        "customers_postcustomersexport",
         "customers_getcustomersid",
         "customers_postcustomersid",
         "customers_deletecustomersid",
@@ -248,6 +249,12 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "locales_getlocales",
         "locales_getlocalescode"
+      ]
+    },
+    {
+      "tagSectionId": "modules",
+      "operationSectionIds": [
+        "modules_getmodules"
       ]
     },
     {
@@ -555,6 +562,14 @@ export const specsSitemapData = {
       ]
     },
     {
+      "tagSectionId": "search-indexes",
+      "operationSectionIds": [
+        "search-indexes_getsearchindexes",
+        "search-indexes_deletesearchindexesid",
+        "search-indexes_postsearchindexesidreindex"
+      ]
+    },
+    {
       "tagSectionId": "shipping-option-types",
       "operationSectionIds": [
         "shipping-option-types_getshippingoptiontypes",
@@ -605,6 +620,7 @@ export const specsSitemapData = {
         "store-credit-accounts_poststorecreditaccounts",
         "store-credit-accounts_getstorecreditaccountsid",
         "store-credit-accounts_poststorecreditaccountsidcredit",
+        "store-credit-accounts_poststorecreditaccountsiddebit",
         "store-credit-accounts_getstorecreditaccountsidtransactions"
       ]
     },
@@ -669,11 +685,16 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "users_getusers",
         "users_getusersme",
+        "users_postusersme",
         "users_getusersid",
         "users_postusersid",
         "users_deleteusersid",
         "users_getusersidauthproviders",
-        "users_postusersidresetpassword"
+        "users_postusersidresetpassword",
+        "users_getusersidroles",
+        "users_postusersidroles",
+        "users_deleteusersidroles",
+        "users_deleteusersidrolesrole_id"
       ]
     },
     {
@@ -807,7 +828,8 @@ export const specsSitemapData = {
       "tagSectionId": "payment-collections",
       "operationSectionIds": [
         "payment-collections_postpaymentcollections",
-        "payment-collections_postpaymentcollectionsidpaymentsessions"
+        "payment-collections_postpaymentcollectionsidpaymentsessions",
+        "payment-collections_postpaymentcollectionsidpaymentsessionssession_id"
       ]
     },
     {
@@ -875,6 +897,12 @@ export const specsSitemapData = {
       "tagSectionId": "returns",
       "operationSectionIds": [
         "returns_postreturns"
+      ]
+    },
+    {
+      "tagSectionId": "search",
+      "operationSectionIds": [
+        "search_postsearch"
       ]
     },
     {

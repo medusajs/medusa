@@ -3,7 +3,6 @@ import { spawnSync } from "child_process"
 import fs from "fs"
 import os from "os"
 import path from "path"
-import confirm from "@inquirer/confirm"
 
 const CLAUDE_DIR = path.join(os.homedir(), ".claude")
 const INSTALLED_PLUGINS_FILE = path.join(
@@ -66,6 +65,7 @@ export async function promptClaudeCodePlugin(): Promise<void> {
 
   configStore.setConfig(CONFIG_KEY, true)
 
+  const { default: confirm } = await import("@inquirer/confirm")
   const install = await confirm({
     message:
       "Working with Medusa is easier with the Medusa Plugin for Claude Code. Would you like to install it?",

@@ -583,6 +583,13 @@ export const apiRefPaths = {
             "title": "Create Customer",
             "method": "post"
           },
+          "PostCustomersExport": {
+            "slug": "export-customers",
+            "path": "/admin/customers/export-customers",
+            "oldHash": "customers_postcustomersexport",
+            "title": "Export Customers",
+            "method": "post"
+          },
           "PostCustomersIdCustomerGroups": {
             "slug": "manage-customer-groups",
             "path": "/admin/customers/manage-customer-groups",
@@ -1267,6 +1274,20 @@ export const apiRefPaths = {
             "path": "/admin/locales/list-locales",
             "oldHash": "locales_getlocales",
             "title": "List Locales",
+            "method": "get"
+          }
+        }
+      },
+      "modules": {
+        "name": "Modules",
+        "path": "/admin/modules",
+        "schemaPath": "/admin/modules/schema",
+        "operations": {
+          "GetModules": {
+            "slug": "list-modules",
+            "path": "/admin/modules/list-modules",
+            "oldHash": "modules_getmodules",
+            "title": "List Modules",
             "method": "get"
           }
         }
@@ -2691,11 +2712,39 @@ export const apiRefPaths = {
         "schemaPath": null,
         "operations": {
           "GetSearch": {
-            "slug": "list-search",
-            "path": "/admin/search/list-search",
+            "slug": "search-admin",
+            "path": "/admin/search/search-admin",
             "oldHash": "search_getsearch",
-            "title": "List Search",
+            "title": "Search Admin",
             "method": "get"
+          }
+        }
+      },
+      "search-indexes": {
+        "name": "Search Indexes",
+        "path": "/admin/search-indexes",
+        "schemaPath": "/admin/search-indexes/schema",
+        "operations": {
+          "GetSearchIndexes": {
+            "slug": "list-search-indexes",
+            "path": "/admin/search-indexes/list-search-indexes",
+            "oldHash": "search-indexes_getsearchindexes",
+            "title": "List Search Indexes",
+            "method": "get"
+          },
+          "PostSearchIndexesIdReindex": {
+            "slug": "reindex-a-search-index",
+            "path": "/admin/search-indexes/reindex-a-search-index",
+            "oldHash": "search-indexes_postsearchindexesidreindex",
+            "title": "Reindex a Search Index",
+            "method": "post"
+          },
+          "DeleteSearchIndexesId": {
+            "slug": "delete-a-search-index",
+            "path": "/admin/search-indexes/delete-a-search-index",
+            "oldHash": "search-indexes_deletesearchindexesid",
+            "title": "Delete a Search Index",
+            "method": "delete"
           }
         }
       },
@@ -2933,6 +2982,13 @@ export const apiRefPaths = {
             "path": "/admin/store-credit-accounts/create-store-credit-account",
             "oldHash": "store-credit-accounts_poststorecreditaccounts",
             "title": "Create Store Credit Account",
+            "method": "post"
+          },
+          "PostStoreCreditAccountsIdDebit": {
+            "slug": "debit-a-store-credit-account",
+            "path": "/admin/store-credit-accounts/debit-a-store-credit-account",
+            "oldHash": "store-credit-accounts_poststorecreditaccountsiddebit",
+            "title": "Debit a Store Credit Account",
             "method": "post"
           }
         }
@@ -3187,12 +3243,26 @@ export const apiRefPaths = {
             "title": "List Auth Providers",
             "method": "get"
           },
+          "GetUsersIdRoles": {
+            "slug": "list-users-roles",
+            "path": "/admin/users/list-users-roles",
+            "oldHash": "users_getusersidroles",
+            "title": "List User's Roles",
+            "method": "get"
+          },
           "GetUsers": {
             "slug": "list-users",
             "path": "/admin/users/list-users",
             "oldHash": "users_getusers",
             "title": "List Users",
             "method": "get"
+          },
+          "PostUsersIdRoles": {
+            "slug": "add-roles-to-user",
+            "path": "/admin/users/add-roles-to-user",
+            "oldHash": "users_postusersidroles",
+            "title": "Add Roles to User",
+            "method": "post"
           },
           "PostUsersIdResetPassword": {
             "slug": "generate-reset-password-token",
@@ -3208,11 +3278,32 @@ export const apiRefPaths = {
             "title": "Update a User",
             "method": "post"
           },
+          "PostUsersMe": {
+            "slug": "update-logged-in-user",
+            "path": "/admin/users/update-logged-in-user",
+            "oldHash": "users_postusersme",
+            "title": "Update Logged-In User",
+            "method": "post"
+          },
           "DeleteUsersId": {
             "slug": "delete-a-user",
             "path": "/admin/users/delete-a-user",
             "oldHash": "users_deleteusersid",
             "title": "Delete a User",
+            "method": "delete"
+          },
+          "DeleteUsersIdRolesRole_id": {
+            "slug": "remove-role-from-user",
+            "path": "/admin/users/remove-role-from-user",
+            "oldHash": "users_deleteusersidrolesrole_id",
+            "title": "Remove Role from User",
+            "method": "delete"
+          },
+          "DeleteUsersIdRoles": {
+            "slug": "remove-roles-from-user",
+            "path": "/admin/users/remove-roles-from-user",
+            "oldHash": "users_deleteusersidroles",
+            "title": "Remove Roles from User",
             "method": "delete"
           }
         }
@@ -3817,6 +3908,13 @@ export const apiRefPaths = {
             "oldHash": "payment-collections_postpaymentcollectionsidpaymentsessions",
             "title": "Initialize Payment Session",
             "method": "post"
+          },
+          "PostPaymentCollectionsIdPaymentSessionsSession_id": {
+            "slug": "update-payment-session",
+            "path": "/store/payment-collections/update-payment-session",
+            "oldHash": "payment-collections_postpaymentcollectionsidpaymentsessionssession_id",
+            "title": "Update Payment Session",
+            "method": "post"
           }
         }
       },
@@ -4009,6 +4107,20 @@ export const apiRefPaths = {
           }
         }
       },
+      "search": {
+        "name": "Search",
+        "path": "/store/search",
+        "schemaPath": null,
+        "operations": {
+          "PostSearch": {
+            "slug": "search-indexes",
+            "path": "/store/search/search-indexes",
+            "oldHash": "search_postsearch",
+            "title": "Search Indexes",
+            "method": "post"
+          }
+        }
+      },
       "shipping-options": {
         "name": "Shipping Options",
         "path": "/store/shipping-options",
@@ -4148,6 +4260,7 @@ export const apiRefRedirects = {
     "customers_getcustomers": "/admin/customers/list-customers",
     "customers_postcustomersidaddresses": "/admin/customers/add-address",
     "customers_postcustomers": "/admin/customers/create-customer",
+    "customers_postcustomersexport": "/admin/customers/export-customers",
     "customers_postcustomersidcustomergroups": "/admin/customers/manage-customer-groups",
     "customers_postcustomersid": "/admin/customers/update-a-customer",
     "customers_postcustomersidaddressesaddress_id": "/admin/customers/update-address",
@@ -4257,6 +4370,9 @@ export const apiRefRedirects = {
     "locales_getlocales": "/admin/locales/list-locales",
     "locales_locale_schema": "/admin/locales/schema",
     "locales": "/admin/locales",
+    "modules_getmodules": "/admin/modules/list-modules",
+    "modules_module_schema": "/admin/modules/schema",
+    "modules": "/admin/modules",
     "multi-factor-authentication_getmfafactors": "/admin/multi-factor-authentication/list-mfa-factors",
     "multi-factor-authentication_postmfarecoverycodes": "/admin/multi-factor-authentication/generate-mfa-recovery-codes",
     "multi-factor-authentication_postmfafactors": "/admin/multi-factor-authentication/start-mfa-factor-enrollment",
@@ -4481,8 +4597,13 @@ export const apiRefRedirects = {
     "sales-channels_deletesaleschannelsid": "/admin/sales-channels/delete-a-sales-channel",
     "sales-channels_saleschannel_schema": "/admin/sales-channels/schema",
     "sales-channels": "/admin/sales-channels",
-    "search_getsearch": "/admin/search/list-search",
+    "search_getsearch": "/admin/search/search-admin",
     "search": "/admin/search",
+    "search-indexes_getsearchindexes": "/admin/search-indexes/list-search-indexes",
+    "search-indexes_postsearchindexesidreindex": "/admin/search-indexes/reindex-a-search-index",
+    "search-indexes_deletesearchindexesid": "/admin/search-indexes/delete-a-search-index",
+    "search-indexes_searchindex_schema": "/admin/search-indexes/schema",
+    "search-indexes": "/admin/search-indexes",
     "shipping-option-types_getshippingoptiontypesid": "/admin/shipping-option-types/get-a-shipping-option-type",
     "shipping-option-types_getshippingoptiontypes": "/admin/shipping-option-types/list-shipping-option-types",
     "shipping-option-types_postshippingoptiontypes": "/admin/shipping-option-types/create-shipping-option-type",
@@ -4520,6 +4641,7 @@ export const apiRefRedirects = {
     "store-credit-accounts_getstorecreditaccountsidtransactions": "/admin/store-credit-accounts/list-transactions",
     "store-credit-accounts_poststorecreditaccountsidcredit": "/admin/store-credit-accounts/add-credit-to-store-credit-account",
     "store-credit-accounts_poststorecreditaccounts": "/admin/store-credit-accounts/create-store-credit-account",
+    "store-credit-accounts_poststorecreditaccountsiddebit": "/admin/store-credit-accounts/debit-a-store-credit-account",
     "store-credit-accounts_storecreditaccount_schema": "/admin/store-credit-accounts/schema",
     "store-credit-accounts": "/admin/store-credit-accounts",
     "stores_getstoresid": "/admin/stores/get-a-store",
@@ -4562,10 +4684,15 @@ export const apiRefRedirects = {
     "users_getusersid": "/admin/users/get-a-user",
     "users_getusersme": "/admin/users/get-logged-in-user",
     "users_getusersidauthproviders": "/admin/users/list-auth-providers",
+    "users_getusersidroles": "/admin/users/list-users-roles",
     "users_getusers": "/admin/users/list-users",
+    "users_postusersidroles": "/admin/users/add-roles-to-user",
     "users_postusersidresetpassword": "/admin/users/generate-reset-password-token",
     "users_postusersid": "/admin/users/update-a-user",
+    "users_postusersme": "/admin/users/update-logged-in-user",
     "users_deleteusersid": "/admin/users/delete-a-user",
+    "users_deleteusersidrolesrole_id": "/admin/users/remove-role-from-user",
+    "users_deleteusersidroles": "/admin/users/remove-roles-from-user",
     "users_user_schema": "/admin/users/schema",
     "users": "/admin/users",
     "views_getviewsentityconfigurationsactive": "/admin/views/get-active-view-configuration",
@@ -4670,6 +4797,7 @@ export const apiRefRedirects = {
     "orders": "/store/orders",
     "payment-collections_postpaymentcollections": "/store/payment-collections/create-payment-collection",
     "payment-collections_postpaymentcollectionsidpaymentsessions": "/store/payment-collections/initialize-payment-session",
+    "payment-collections_postpaymentcollectionsidpaymentsessionssession_id": "/store/payment-collections/update-payment-session",
     "payment-collections_paymentcollection_schema": "/store/payment-collections/schema",
     "payment-collections": "/store/payment-collections",
     "payment-providers_getpaymentproviders": "/store/payment-providers/list-payment-providers",
@@ -4709,6 +4837,8 @@ export const apiRefRedirects = {
     "returns_postreturns": "/store/returns/create-return",
     "returns_return_schema": "/store/returns/schema",
     "returns": "/store/returns",
+    "search_postsearch": "/store/search/search-indexes",
+    "search": "/store/search",
     "shipping-options_getshippingoptions": "/store/shipping-options/list-shipping-options-for-cart",
     "shipping-options_postshippingoptionsidcalculate": "/store/shipping-options/calculate-shipping-option-price",
     "shipping-options_shippingoption_schema": "/store/shipping-options/schema",

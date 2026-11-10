@@ -1,5 +1,6 @@
 {
-	"id": 16529,
+	"schemaVersion": "2.0",
+	"id": 16443,
 	"name": "region-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,7 +19,7 @@
 	},
 	"children": [
 		{
-			"id": 16530,
+			"id": 16444,
 			"name": "Country",
 			"variant": "declaration",
 			"kind": 32,
@@ -28,34 +29,36 @@
 					"fileName": "country.ts",
 					"line": 4,
 					"character": 0,
-					"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L4"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 16531,
+									"id": 16445,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 16532,
+											"id": 16446,
 											"name": "iso_2",
 											"variant": "declaration",
 											"kind": 1024,
@@ -73,20 +76,22 @@
 													"fileName": "country.ts",
 													"line": 8,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L8"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/text.ts",
 															"qualifiedName": "TextProperty"
 														},
 														"name": "TextProperty",
@@ -99,7 +104,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16533,
+											"id": 16447,
 											"name": "iso_3",
 											"variant": "declaration",
 											"kind": 1024,
@@ -117,13 +122,14 @@
 													"fileName": "country.ts",
 													"line": 9,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L9"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -132,7 +138,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16534,
+											"id": 16448,
 											"name": "num_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -150,13 +156,14 @@
 													"fileName": "country.ts",
 													"line": 10,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L10"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -165,7 +172,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16535,
+											"id": 16449,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -183,13 +190,14 @@
 													"fileName": "country.ts",
 													"line": 11,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L11"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -198,7 +206,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16536,
+											"id": 16450,
 											"name": "display_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -216,13 +224,14 @@
 													"fileName": "country.ts",
 													"line": 12,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L12"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -231,7 +240,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16537,
+											"id": 16451,
 											"name": "region",
 											"variant": "declaration",
 											"kind": 1024,
@@ -254,19 +263,20 @@
 													"fileName": "country.ts",
 													"line": 13,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L13"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/relations/belongs-to.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/relations/belongs-to.ts",
 													"qualifiedName": "BelongsTo"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 16564,
+														"target": 16478,
 														"name": "Region"
 													}
 												],
@@ -276,7 +286,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16560,
+											"id": 16474,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -296,27 +306,30 @@
 													"fileName": "country.ts",
 													"line": 16,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L16"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
 															"qualifiedName": "NoInfer"
 														},
 														"typeArguments": [
 															{
 																"type": "reference",
 																"target": {
-																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
 																	"qualifiedName": "Record"
 																},
 																"typeArguments": [
@@ -347,22 +360,14 @@
 										{
 											"title": "Properties",
 											"children": [
-												16532,
-												16533,
-												16534,
-												16535,
-												16536,
-												16537,
-												16560
+												16446,
+												16447,
+												16448,
+												16449,
+												16450,
+												16451,
+												16474
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "country.ts",
-											"line": 7,
-											"character": 4,
-											"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L7"
 										}
 									]
 								}
@@ -374,14 +379,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 16561,
+							"id": 16475,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 16562,
+									"id": 16476,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -393,7 +398,7 @@
 											"fileName": "country.ts",
 											"line": 6,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L6"
 										}
 									],
 									"type": {
@@ -403,7 +408,7 @@
 									"defaultValue": "\"Country\""
 								},
 								{
-									"id": 16563,
+									"id": 16477,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -415,7 +420,7 @@
 											"fileName": "country.ts",
 											"line": 6,
 											"character": 23,
-											"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/country.ts#L6"
 										}
 									],
 									"type": {
@@ -429,17 +434,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										16562,
-										16563
+										16476,
+										16477
 									]
-								}
-							],
-							"sources": [
-								{
-									"fileName": "country.ts",
-									"line": 6,
-									"character": 4,
-									"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/country.ts#L6"
 								}
 							]
 						}
@@ -450,7 +447,7 @@
 			}
 		},
 		{
-			"id": 16564,
+			"id": 16478,
 			"name": "Region",
 			"variant": "declaration",
 			"kind": 32,
@@ -460,34 +457,36 @@
 					"fileName": "region.ts",
 					"line": 4,
 					"character": 0,
-					"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/region.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/region.ts#L4"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 16565,
+									"id": 16479,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 16566,
+											"id": 16480,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -505,20 +504,22 @@
 													"fileName": "region.ts",
 													"line": 5,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/region.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/region.ts#L5"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/id.ts",
 															"qualifiedName": "IdProperty"
 														},
 														"name": "IdProperty",
@@ -531,7 +532,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16567,
+											"id": 16481,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -549,13 +550,14 @@
 													"fileName": "region.ts",
 													"line": 6,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/region.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/region.ts#L6"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -564,7 +566,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16568,
+											"id": 16482,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -582,13 +584,14 @@
 													"fileName": "region.ts",
 													"line": 7,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/region.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/region.ts#L7"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -597,7 +600,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16569,
+											"id": 16483,
 											"name": "automatic_taxes",
 											"variant": "declaration",
 											"kind": 1024,
@@ -615,13 +618,14 @@
 													"fileName": "region.ts",
 													"line": 8,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/region.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/region.ts#L8"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/boolean.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/boolean.ts",
 													"qualifiedName": "BooleanProperty"
 												},
 												"name": "BooleanProperty",
@@ -630,7 +634,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16570,
+											"id": 16484,
 											"name": "countries",
 											"variant": "declaration",
 											"kind": 1024,
@@ -651,19 +655,20 @@
 													"fileName": "region.ts",
 													"line": 9,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/region.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/region.ts#L9"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/relations/has-many.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/relations/has-many.ts",
 													"qualifiedName": "HasMany"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 16530,
+														"target": 16444,
 														"name": "Country"
 													}
 												],
@@ -673,7 +678,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16588,
+											"id": 16502,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -693,27 +698,30 @@
 													"fileName": "region.ts",
 													"line": 10,
 													"character": 2,
-													"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/region.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/region/src/models/region.ts#L10"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
 															"qualifiedName": "NoInfer"
 														},
 														"typeArguments": [
 															{
 																"type": "reference",
 																"target": {
-																	"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
 																	"qualifiedName": "Record"
 																},
 																"typeArguments": [
@@ -744,21 +752,13 @@
 										{
 											"title": "Properties",
 											"children": [
-												16566,
-												16567,
-												16568,
-												16569,
-												16570,
-												16588
+												16480,
+												16481,
+												16482,
+												16483,
+												16484,
+												16502
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "region.ts",
-											"line": 4,
-											"character": 38,
-											"url": "https://github.com/medusajs/medusa/blob/afd6d81eeacc83f812bcadd3f844e366842c605b/packages/modules/region/src/models/region.ts#L4"
 										}
 									]
 								}
@@ -781,251 +781,311 @@
 		{
 			"title": "Variables",
 			"children": [
-				16530,
-				16564
+				16444,
+				16478
 			]
 		}
 	],
 	"packageName": "@medusajs/region",
 	"symbolIdMap": {
-		"16529": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/index.ts",
+		"16443": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"16530": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16444": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "default"
 		},
-		"16531": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16445": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object"
 		},
-		"16532": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16446": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.iso_2"
 		},
-		"16533": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16447": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.iso_3"
 		},
-		"16534": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16448": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.num_code"
 		},
-		"16535": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16449": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16536": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16450": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.display_name"
 		},
-		"16537": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16451": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.region"
 		},
-		"16538": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16452": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"16539": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16453": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"16540": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16454": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object"
 		},
-		"16541": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16455": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.id"
 		},
-		"16542": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16456": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16543": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16457": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"16544": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16458": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.automatic_taxes"
 		},
-		"16545": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16459": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.countries"
 		},
-		"16546": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16460": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"16547": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16461": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"16548": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16462": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"16549": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16463": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"16550": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16464": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"16551": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16465": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object"
 		},
-		"16552": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16466": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.id"
 		},
-		"16553": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16467": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16554": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16468": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"16555": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16469": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.automatic_taxes"
 		},
-		"16556": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16470": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.countries"
 		},
-		"16557": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16471": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"16558": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16472": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"16559": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16473": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"16560": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16474": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"16561": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16475": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object"
 		},
-		"16562": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16476": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16563": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16477": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"16564": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16478": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "default"
 		},
-		"16565": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16479": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object"
 		},
-		"16566": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16480": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.id"
 		},
-		"16567": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16481": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16568": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16482": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"16569": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16483": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.automatic_taxes"
 		},
-		"16570": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16484": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.countries"
 		},
-		"16571": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16485": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"16572": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16486": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__function"
 		},
-		"16573": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16487": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object"
 		},
-		"16574": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16488": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.iso_2"
 		},
-		"16575": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16489": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.iso_3"
 		},
-		"16576": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16490": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.num_code"
 		},
-		"16577": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16491": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16578": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16492": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.display_name"
 		},
-		"16579": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16493": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.region"
 		},
-		"16580": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16494": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"16581": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16495": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"16582": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16496": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"16583": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16497": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__function"
 		},
-		"16584": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16498": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"16585": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16499": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object"
 		},
-		"16586": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16500": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16587": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+		"16501": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/country.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"16588": {
-			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+		"16502": {
+			"packageName": "@medusajs/region",
+			"packagePath": "src/models/region.ts",
 			"qualifiedName": "__object.metadata"
 		}
 	},
@@ -1034,7 +1094,7 @@
 			"1": "../../../../packages/modules/region/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 16529
+			"1": 16443
 		}
 	}
 }

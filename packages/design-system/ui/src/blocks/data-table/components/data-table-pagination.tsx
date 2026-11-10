@@ -32,7 +32,7 @@ const DataTablePagination = (props: DataTablePaginationProps) => {
   return (
     <Table.Pagination
       translations={props.translations}
-      className="flex-shrink-0"
+      className="shrink-0"
       canNextPage={instance.getCanNextPage()}
       canPreviousPage={instance.getCanPreviousPage()}
       pageCount={instance.getPageCount()}

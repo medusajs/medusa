@@ -1,4 +1,5 @@
 import { SearchTypes } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import { CloudServiceError } from "../../utils"
 import { MedusaSearchService } from "../medusa-search"
 
@@ -48,6 +49,31 @@ describe("MedusaSearchService", () => {
           endpoint: "https://search.medusa.example",
         } as any)
     ).toThrow(/environment_handle/)
+  })
+
+  it("sends requests through an injected fetch", async () => {
+    const fetchImpl = jest.fn(async () => ({
+      ok: true,
+      status: 200,
+      headers: { get: () => null },
+      json: async () => ({ approx_row_count: 3 }),
+    }))
+    const service = new MedusaSearchService(
+      {},
+      {
+        api_key: "medusa_test",
+        endpoint: "https://search.medusa.example",
+        environment_handle: "test-env",
+        fetch: fetchImpl as unknown as typeof fetch,
+      }
+    )
+
+    await service.upsertIndex({ index: definition })
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "https://search.medusa.example/indexes/product/metadata",
+      expect.objectContaining({ method: "GET" })
+    )
   })
 
   it("creates missing indexes through the explicit create endpoint", async () => {
@@ -262,6 +288,79 @@ describe("MedusaSearchService", () => {
     expect(facetQuery).not.toHaveProperty("limit")
   })
 
+  it("counts groups rather than documents when results are deduplicated", async () => {
+    const service = createService()
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        { rows: [{ id: "variant_1" }, { id: "variant_3" }] },
+        {
+          aggregation_groups: [
+            { product_id: "prod_1", count: 2 },
+            { product_id: "prod_2", count: 1 },
+          ],
+        },
+      ],
+      billing: {},
+      performance: { server_total_ms: 3 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const result = await service.search({
+      index: {
+        ...definition,
+        fields: {
+          ...definition.fields,
+          product_id: { type: "keyword", filterable: true },
+        },
+      },
+      attributes_to_retrieve: [],
+      filters: { status: "published" },
+      search_options: { distinct: "product_id" },
+    })
+
+    expect(result.metadata.count).toBe(2)
+
+    const [hitsQuery, countQuery] = multiQuery.mock.calls[0][0].queries
+    expect(hitsQuery.limit).toEqual({
+      total: 20,
+      per: { attributes: ["product_id"], limit: 1 },
+    })
+    expect(countQuery).toEqual({
+      aggregate_by: { count: ["Count"] },
+      group_by: ["product_id"],
+      filters: ["status", "Eq", "published"],
+      top_k: 10000,
+    })
+  })
+
+  it("rejects deduplicating by an unknown or array field", async () => {
+    const service = createService()
+    const index = {
+      ...definition,
+      fields: {
+        ...definition.fields,
+        tags: { type: "keyword" as const, array: true, filterable: true },
+      },
+    }
+
+    await expect(
+      service.search({
+        index,
+        attributes_to_retrieve: [],
+        search_options: { distinct: "missing" },
+      })
+    ).rejects.toThrow(/unknown field "missing"/)
+    await expect(
+      service.search({
+        index,
+        attributes_to_retrieve: [],
+        search_options: { distinct: "tags" },
+      })
+    ).rejects.toThrow(/cannot deduplicate by "tags"/)
+  })
+
   it("boosts typo-tolerant matches into rank_by and surfaces highlighted fragments", async () => {
     const service = createService()
     const multiQuery = jest.fn().mockResolvedValue({
@@ -319,7 +418,7 @@ describe("MedusaSearchService", () => {
     )
   })
 
-  it("maps stats facets from min/max rank queries and separate Count and Sum aggregations", async () => {
+  it("maps stats facets from min/max rank queries and packs Count and Sum with the total count", async () => {
     const service = createService()
     const priced: SearchTypes.ResolvedSearchIndexDefinition = {
       ...definition,
@@ -335,11 +434,9 @@ describe("MedusaSearchService", () => {
     const multiQuery = jest.fn().mockResolvedValue({
       results: [
         { rows: [{ id: "prod_1", title: "Red shoe", price: 20 }] },
-        { aggregations: { count: 2 } },
+        { aggregations: { count: 2, sum: 50 } },
         { rows: [{ id: "prod_1", price: 10 }] },
         { rows: [{ id: "prod_2", price: 40 }] },
-        { aggregations: { count: 2 } },
-        { aggregations: { sum: 50 } },
       ],
       billing: {},
       performance: { server_total_ms: 5 },
@@ -364,7 +461,11 @@ describe("MedusaSearchService", () => {
     })
 
     const queries = multiQuery.mock.calls[0][0].queries
-    expect(queries).toHaveLength(6)
+    expect(queries).toHaveLength(4)
+    expect(queries[1].aggregate_by).toEqual({
+      count: ["Count"],
+      sum: ["Sum", "price"],
+    })
     expect(queries[2]).toMatchObject({
       rank_by: ["price", "asc"],
       limit: 1,
@@ -375,8 +476,6 @@ describe("MedusaSearchService", () => {
       rank_by: ["price", "desc"],
       limit: 1,
     })
-    expect(queries[4].aggregate_by).toEqual({ count: ["Count"] })
-    expect(queries[5].aggregate_by).toEqual({ sum: ["Sum", "price"] })
   })
 
   it("packs searchMany into one multiQuery per index", async () => {
@@ -460,5 +559,114 @@ describe("MedusaSearchService", () => {
     expect(results[1].facets).toMatchObject({
       status: { type: "value" },
     })
+  })
+
+  it("returns an empty result for an index Medusa search has not created yet", async () => {
+    const service = createService()
+    const multiQuery = jest
+      .fn()
+      .mockRejectedValue(
+        new CloudServiceError(
+          "upstream_error",
+          "not_found",
+          {},
+          "namespace not found",
+          404
+        )
+      )
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const result = await service.search({
+      index: definition,
+      q: "a",
+      attributes_to_retrieve: ["title"],
+      search_options: { facets: [{ field: "status" }] },
+    })
+
+    expect(result.hits).toEqual([])
+    expect(result.metadata.count).toBe(0)
+    expect(result.facets).toEqual({ status: { type: "value", values: [] } })
+  })
+
+  it("surfaces a query the engine rejects as invalid data", async () => {
+    const service = createService()
+    const multiQuery = jest
+      .fn()
+      .mockRejectedValue(
+        new CloudServiceError(
+          "upstream_error",
+          "invalid_request",
+          {},
+          "query is too complex",
+          400
+        )
+      )
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    await expect(
+      service.search({
+        index: definition,
+        q: "table",
+        attributes_to_retrieve: ["title"],
+      })
+    ).rejects.toMatchObject({
+      type: MedusaError.Types.INVALID_DATA,
+      message: "Medusa search rejected the query: query is too complex",
+    })
+  })
+
+  it("rethrows other Cloud errors unchanged", async () => {
+    const service = createService()
+    const error = new CloudServiceError(
+      "search_rate_limit",
+      "rate_limited",
+      {},
+      "Search engine is rate limiting requests",
+      429
+    )
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({
+        multiQuery: jest.fn().mockRejectedValue(error),
+      })),
+    }
+
+    await expect(
+      service.search({
+        index: definition,
+        q: "table",
+        attributes_to_retrieve: ["title"],
+      })
+    ).rejects.toBe(error)
+  })
+
+  it("asks Cloud for the page with offset and reads it from the first row", async () => {
+    const service = createService()
+    const multiQuery = jest.fn().mockResolvedValue({
+      results: [
+        { rows: [{ id: "prod_11", title: "Eleventh" }] },
+        { aggregations: { count: 11 } },
+      ],
+      billing: {},
+      performance: { server_total_ms: 1 },
+    })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const result = await service.search({
+      index: definition,
+      attributes_to_retrieve: ["title"],
+      pagination: { skip: 10, take: 1 },
+    })
+
+    expect(result.hits.map((hit) => hit.id)).toEqual(["prod_11"])
+    expect(result.metadata).toMatchObject({ skip: 10, take: 1, count: 11 })
+
+    const [hitsQuery] = multiQuery.mock.calls[0][0].queries
+    expect(hitsQuery).toMatchObject({ limit: 1, offset: 10 })
   })
 })

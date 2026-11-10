@@ -9,6 +9,8 @@ import {
   buildQueryPlan,
   fromSearchDocument,
   MedusaSearchClient,
+  packAggregations,
+  unpackResults,
   CloudServiceError,
   MedusaSearchProviderOptions,
   ResolvedMedusaSearchProviderOptions,
@@ -19,7 +21,10 @@ import {
   resolveMedusaSearchOptions,
   type FacetQuery,
   type IndexQuery,
+  type IndexMultiQueryParams,
   type IndexMultiQueryResponse,
+  type IndexQueryResult,
+  type PackedQueries,
   type QueryPlan,
   type Row,
 } from "../utils"
@@ -30,12 +35,15 @@ type InjectedDependencies = {
 
 const MAX_WRITE_BYTES = 480 * 1024 * 1024
 const MAX_MULTI_QUERIES = 16
+const MAX_AGGREGATION_GROUPS = 10000
 
 type BuiltMultiQuery = {
   input: SearchTypes.ProviderSearchQuery
   base: QueryPlan
   facets: FacetQuery[]
   queries: IndexQuery[]
+  /** What is sent: `queries` with shared aggregations merged. */
+  packed: PackedQueries
   hitsIndex: number
   countIndex: number
   facetOffset: number
@@ -58,7 +66,9 @@ export class MedusaSearchService extends AbstractSearchProviderService {
 
     this.logger_ = logger
     this.options_ = resolvedOptions
-    this.client_ = new MedusaSearchClient(resolvedOptions)
+    this.client_ = new MedusaSearchClient(resolvedOptions, {
+      fetchImpl: resolvedOptions.fetch,
+    })
   }
 
   /**
@@ -241,7 +251,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     const groups = new Map<string, { item: BuiltMultiQuery; index: number }[]>()
 
     built.forEach((item, index) => {
-      if (!item.queries.length) {
+      if (!item.packed.queries.length) {
         results[index] = this.parseMultiQueryResult(emptyResponse, item)
         return
       }
@@ -264,7 +274,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         let currentCount = 0
 
         for (const entry of group) {
-          const size = entry.item.queries.length
+          const size = entry.item.packed.queries.length
           if (current.length && currentCount + size > MAX_MULTI_QUERIES) {
             chunks.push(current)
             current = []
@@ -283,23 +293,27 @@ export class MedusaSearchService extends AbstractSearchProviderService {
 
         await Promise.all(
           chunks.map(async (chunk) => {
-            const queries = chunk.flatMap((entry) => entry.item.queries)
-            const response = await this.index(physicalName).multiQuery({
+            const queries = chunk.flatMap((entry) => entry.item.packed.queries)
+            const response = await this.multiQuery(physicalName, {
               queries,
               consistency: consistency ? { level: consistency } : undefined,
             })
 
             let offset = 0
             for (const entry of chunk) {
+              const { packed } = entry.item
               const sliced: IndexMultiQueryResponse = {
-                results: response.results.slice(
-                  offset,
-                  offset + entry.item.queries.length
+                results: unpackResults(
+                  response.results.slice(
+                    offset,
+                    offset + packed.queries.length
+                  ),
+                  packed.slots
                 ),
                 billing: response.billing,
                 performance: response.performance,
               }
-              offset += entry.item.queries.length
+              offset += packed.queries.length
               results[entry.index] = this.parseMultiQueryResult(
                 sliced,
                 entry.item
@@ -311,6 +325,34 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     )
 
     return results
+  }
+
+  protected async multiQuery(
+    index: string,
+    body: IndexMultiQueryParams
+  ): Promise<IndexMultiQueryResponse> {
+    try {
+      return await this.index(index).multiQuery(body)
+    } catch (error) {
+      if (!(error instanceof CloudServiceError)) {
+        throw error
+      }
+
+      // Cloud creates an index on its first write, so one seeded with no
+      // documents doesn't exist yet and has nothing to return.
+      if (error.isNotFound) {
+        return { results: [], performance: {} }
+      }
+
+      if (error.status === 400 || error.status === 422) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Medusa search rejected the query: ${error.message}`
+        )
+      }
+
+      throw error
+    }
   }
 
   protected buildMultiQuery(
@@ -331,19 +373,32 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     const countIndex = includeCount ? queries.length : -1
 
     if (includeCount) {
-      queries.push({
-        aggregate_by: { count: ["Count"] },
-        filters: base.query.filters,
-      })
+      // Cloud has no distinct count, so a deduplicated total is the number of
+      // groups. Past MAX_AGGREGATION_GROUPS it is a lower bound.
+      queries.push(
+        base.distinct
+          ? {
+              aggregate_by: { count: ["Count"] },
+              group_by: [base.distinct],
+              filters: base.query.filters,
+              top_k: MAX_AGGREGATION_GROUPS,
+            }
+          : {
+              aggregate_by: { count: ["Count"] },
+              filters: base.query.filters,
+            }
+      )
     }
 
     const facetOffset = queries.length
     queries.push(...facets.map((facet) => facet.query))
 
-    if (queries.length > MAX_MULTI_QUERIES) {
+    const packed = packAggregations(queries)
+
+    if (packed.queries.length > MAX_MULTI_QUERIES) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        `Medusa search accepts at most ${MAX_MULTI_QUERIES} queries per multi-query; this search needs ${queries.length}`
+        `Medusa search accepts at most ${MAX_MULTI_QUERIES} queries per multi-query; this search needs ${packed.queries.length}`
       )
     }
 
@@ -352,6 +407,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
       base,
       facets,
       queries,
+      packed,
       hitsIndex,
       countIndex,
       facetOffset,
@@ -364,7 +420,9 @@ export class MedusaSearchService extends AbstractSearchProviderService {
   ): SearchTypes.SearchResult {
     const { input, base, facets, hitsIndex, countIndex, facetOffset } = built
     const hitResult = hitsIndex === -1 ? undefined : response.results[hitsIndex]
-    const rows = (hitResult?.rows ?? []).slice(base.skip, base.skip + base.take)
+    // Without an `offset` (deduplicated queries), the page starts at `skip`.
+    const start = base.query.offset === undefined ? base.skip : 0
+    const rows = (hitResult?.rows ?? []).slice(start, start + base.take)
     const parsedFacets = parseFacetResults(
       facets,
       response.results.slice(facetOffset)
@@ -381,10 +439,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
       metadata: {
         skip: base.skip,
         take: base.take,
-        count:
-          countIndex === -1
-            ? null
-            : Number(response.results[countIndex]?.aggregations?.count ?? 0),
+        count: this.parseCount(response.results[countIndex], built),
         query: input.q,
         processing_time_ms: response.performance.server_total_ms,
       },
@@ -393,6 +448,19 @@ export class MedusaSearchService extends AbstractSearchProviderService {
         performance: response.performance,
       },
     }
+  }
+
+  protected parseCount(
+    result: IndexQueryResult | undefined,
+    built: BuiltMultiQuery
+  ): number | null {
+    if (built.countIndex === -1) {
+      return null
+    }
+    if (built.base.distinct) {
+      return result?.aggregation_groups?.length ?? 0
+    }
+    return Number(result?.aggregations?.count ?? 0)
   }
 
   protected chunkRows(rows: Row[]): Row[][] {

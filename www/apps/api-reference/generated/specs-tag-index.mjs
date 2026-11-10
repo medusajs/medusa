@@ -43,6 +43,7 @@ export const specsTagIndex = {
     ],
     "customers": [
       "admin_customers.yaml",
+      "admin_customers_export.yaml",
       "admin_customers_{id}.yaml",
       "admin_customers_{id}_addresses.yaml",
       "admin_customers_{id}_addresses_{address_id}.yaml",
@@ -125,6 +126,9 @@ export const specsTagIndex = {
     "locales": [
       "admin_locales.yaml",
       "admin_locales_{code}.yaml"
+    ],
+    "modules": [
+      "admin_modules.yaml"
     ],
     "notifications": [
       "admin_notifications.yaml",
@@ -286,6 +290,11 @@ export const specsTagIndex = {
       "admin_sales-channels_{id}.yaml",
       "admin_sales-channels_{id}_products.yaml"
     ],
+    "search-indexes": [
+      "admin_search-indexes.yaml",
+      "admin_search-indexes_{id}.yaml",
+      "admin_search-indexes_{id}_reindex.yaml"
+    ],
     "search": [
       "admin_search.yaml"
     ],
@@ -313,6 +322,7 @@ export const specsTagIndex = {
       "admin_store-credit-accounts.yaml",
       "admin_store-credit-accounts_{id}.yaml",
       "admin_store-credit-accounts_{id}_credit.yaml",
+      "admin_store-credit-accounts_{id}_debit.yaml",
       "admin_store-credit-accounts_{id}_transactions.yaml"
     ],
     "stores": [
@@ -350,7 +360,9 @@ export const specsTagIndex = {
       "admin_users_me.yaml",
       "admin_users_{id}.yaml",
       "admin_users_{id}_auth-providers.yaml",
-      "admin_users_{id}_reset-password.yaml"
+      "admin_users_{id}_reset-password.yaml",
+      "admin_users_{id}_roles.yaml",
+      "admin_users_{id}_roles_{role_id}.yaml"
     ],
     "views": [
       "admin_views_entities.yaml",
@@ -454,7 +466,8 @@ export const specsTagIndex = {
     ],
     "payment-collections": [
       "store_payment-collections.yaml",
-      "store_payment-collections_{id}_payment-sessions.yaml"
+      "store_payment-collections_{id}_payment-sessions.yaml",
+      "store_payment-collections_{id}_payment-sessions_{session_id}.yaml"
     ],
     "payment-providers": [
       "store_payment-providers.yaml"
@@ -492,6 +505,9 @@ export const specsTagIndex = {
     ],
     "returns": [
       "store_returns.yaml"
+    ],
+    "search": [
+      "store_search.yaml"
     ],
     "shipping-options": [
       "store_shipping-options.yaml",

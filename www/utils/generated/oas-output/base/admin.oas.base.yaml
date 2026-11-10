@@ -239,6 +239,19 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: "#/components/schemas/AdminLocale"
+  - name: Modules
+    description: >
+      A module is a package of reusable commerce or architectural functionality
+      installed in a Medusa application, such as the Product Module or a
+      custom module.
+
+      These API routes allow admin users to retrieve the installed modules, for
+      example to check whether a module, such as the RBAC Module, is installed.
+    externalDocs:
+      description: Learn more about modules.
+      url: https://docs.medusajs.com/learn/fundamentals/modules
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminModule"
   - name: Multi-Factor Authentication
     description: >
       Multi-factor authentication (MFA) adds an extra layer of security to admin
@@ -574,6 +587,18 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/AdminSalesChannel"
   - name: Search
+    description: >
+      Search the entities that have a search index and are registered as search
+      entities in the Medusa Admin dashboard.
+  - name: Search Indexes
+    description: >
+      A search index stores the documents of an entity so they can be searched.
+
+
+      These API routes allow admin users to list the registered search indexes,
+      rebuild them, and delete them.
+    x-associatedSchema:
+      $ref: "#/components/schemas/AdminSearchIndex"
   - name: Shipping Option Types
     x-associatedSchema:
       $ref: "#/components/schemas/AdminShippingOptionType"

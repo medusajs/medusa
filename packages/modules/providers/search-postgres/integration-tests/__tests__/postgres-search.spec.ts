@@ -332,6 +332,32 @@ moduleIntegrationTestRunner<SearchService>({
           })
         })
 
+        it("scopes facet counts to hits above min_score", async () => {
+          const exact = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "running" },
+            search_options: { min_score: 1000, facets: ["brand"] },
+          })
+
+          expect(exact.metadata.count).toBe(0)
+          expect(exact.facets?.brand).toEqual({ type: "value", values: [] })
+
+          const typo = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "runing" },
+            search_options: {
+              typo_tolerance: true,
+              min_score: 1000,
+              facets: ["brand"],
+            },
+          })
+
+          expect(typo.metadata.count).toBe(0)
+          expect(typo.facets?.brand).toEqual({ type: "value", values: [] })
+        })
+
         it("computes range facets alongside filters", async () => {
           const result = await service.search({
             entity: "product",
@@ -487,6 +513,63 @@ moduleIntegrationTestRunner<SearchService>({
             fields: ["id"],
           })
           expect(ids(result).sort()).toEqual(["prod_2", "prod_3"])
+        })
+      })
+
+      describe("vector fields", () => {
+        const vectorIndex = {
+          name: "vector_product",
+          entity: "vector_product",
+          primary_key: "id",
+          provider: "search-postgres",
+          physical_name: "vector_product_v1",
+          definition_hash: "vector-1",
+          settings: {},
+          seed: async function* () {},
+          fields: {
+            id: { type: "keyword", filterable: true },
+            title: { type: "text", searchable: true },
+            embedding: { type: "vector", dimensions: 3 },
+          },
+        } as unknown as SearchTypes.ResolvedSearchIndexDefinition
+
+        afterEach(async () => {
+          await provider(service).deleteIndex({
+            index: vectorIndex.physical_name,
+          })
+        })
+
+        it("ignores vector fields rather than refusing the index", async () => {
+          const p = provider(service)
+
+          await p.upsertIndex({ index: vectorIndex })
+          await p.upsertDocuments({
+            index: vectorIndex.physical_name,
+            definition: vectorIndex,
+            documents: [
+              {
+                id: "vec_1",
+                title: "Red running shoe",
+                embedding: [0.1, 0.2, 0.3],
+              },
+            ],
+          })
+
+          const result = await p.search({
+            index: vectorIndex,
+            q: "shoe",
+            attributes_to_retrieve: ["id"],
+          })
+          expect(ids(result)).toEqual(["vec_1"])
+
+          const columns = (await p.manager_.execute(
+            `SELECT "column_name" FROM information_schema.columns WHERE "table_name" = ?`,
+            ["search_pg_vector_product_v1"]
+          )) as { column_name: string }[]
+
+          expect(columns.map((column) => column.column_name)).not.toContain(
+            "v_embedding"
+          )
         })
       })
     }),

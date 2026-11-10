@@ -15,8 +15,7 @@ export const initialize = async (
     moduleKey: serviceKey,
     defaultPath: "@medusajs//cache-inmemory",
     declaration: options as
-      | InternalModuleDeclaration
-      | ExternalModuleDeclaration,
+      InternalModuleDeclaration | ExternalModuleDeclaration,
   })
 
   return loaded[serviceKey]

@@ -128,6 +128,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Define Custom Policies",
+              "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Enforce Sales Channel Availability",
               "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability",
               "children": []
@@ -275,6 +282,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Use Search Module",
+              "path": "https://docs.medusajs.com/resources/references/search/service",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Use Workflow Engine Module",
               "path": "https://docs.medusajs.com/resources/infrastructure-modules/workflow-engine/how-to-use",
               "children": []
@@ -293,6 +307,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Check Permissions in Admin Customizations",
+              "path": "https://docs.medusajs.com/resources/enterprise/rbac/admin-customizations",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Configure View Configurations",
               "path": "https://docs.medusajs.com/resources/commerce-modules/settings/configure-view-configurations",
               "children": []
@@ -302,6 +323,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "type": "link",
               "title": "Custom Admin Authentication",
               "path": "/how-to-tutorials/how-to/admin/auth",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Manage Products with Admin API",
+              "path": "https://docs.medusajs.com/resources/commerce-modules/product/guides/manage-with-admin-api",
               "children": []
             }
           ]

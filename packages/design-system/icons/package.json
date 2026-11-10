@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/icons",
-  "version": "2.21.0",
+  "version": "2.22.6",
   "description": "Medusa UI React icon library",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
@@ -19,11 +19,15 @@
   "typings": "dist/index.d.ts",
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "AGENTS.md"
   ],
+  "llms": "https://docs.medusajs.com/llms.txt",
+  "llmsFull": "https://docs.medusajs.com/llms-full.txt",
+  "mcpServer": "https://docs.medusajs.com/mcp",
   "scripts": {
     "build": "yarn build:bundles && yarn build:types",
-    "build:bundles": "rollup -c ./rollup.config.mjs",
+    "build:bundles": "yarn run -T rollup -c ./rollup.config.mjs",
     "build:types": "yarn run -T tsc --emitDeclarationOnly",
     "test": "../../../node_modules/.bin/vitest --run",
     "test:watch": "../../../node_modules/.bin/vitest",
@@ -31,13 +35,13 @@
     "generate": "yarn run -T rimraf ./src/components && toolbox icons -o './src/components'"
   },
   "devDependencies": {
-    "@medusajs/toolbox": "2.21.0",
+    "@medusajs/toolbox": "2.22.6",
     "react": "^18.3.1"
   },
   "peerDependencies": {
     "react": "^18.3.1 || ^19.0.0"
   },
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@4.18.1",
   "publishConfig": {
     "access": "public"
   }

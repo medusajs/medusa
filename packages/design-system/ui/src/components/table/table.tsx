@@ -22,7 +22,7 @@ const Root = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <table
     ref={ref}
-    className={clx("text-ui-fg-subtle txt-compact-small w-full", className)}
+    className={clx("txt-compact-small w-full text-ui-fg-subtle", className)}
     {...props}
   />
 ))
@@ -35,7 +35,7 @@ const Row = React.forwardRef<
   <tr
     ref={ref}
     className={clx(
-      "bg-ui-bg-base hover:bg-ui-bg-base-hover border-ui-border-base transition-fg border-b",
+      "border-b border-ui-border-base bg-ui-bg-base transition-fg hover:bg-ui-bg-base-hover",
       "[&_td:last-child]:pr-6 [&_th:last-child]:pr-6",
       "[&_td:first-child]:pl-6 [&_th:first-child]:pl-6",
       className
@@ -60,7 +60,7 @@ const Header = React.forwardRef<
   <thead
     ref={ref}
     className={clx(
-      "border-ui-border-base txt-compact-small-plus [&_tr]:bg-ui-bg-subtle [&_tr]:hover:bg-ui-bg-subtle border-y",
+      "txt-compact-small-plus border-y border-ui-border-base [&_tr]:bg-ui-bg-subtle [&_tr]:hover:bg-ui-bg-subtle",
       className
     )}
     {...props}
@@ -89,7 +89,7 @@ const Body = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
-    className={clx("border-ui-border-base border-b", className)}
+    className={clx("border-b border-ui-border-base", className)}
     {...props}
   />
 ))
@@ -180,7 +180,7 @@ const Pagination = React.forwardRef<HTMLDivElement, TablePaginationProps>(
       <div
         ref={ref}
         className={clx(
-          "text-ui-fg-subtle txt-compact-small-plus flex w-full items-center justify-between px-3 py-4",
+          "txt-compact-small-plus flex w-full items-center justify-between px-3 py-4 text-ui-fg-subtle",
           className
         )}
         {...props}

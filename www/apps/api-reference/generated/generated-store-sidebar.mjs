@@ -772,6 +772,16 @@ const generatedgeneratedStoreSidebarSidebar = {
             "variant": "blue",
             "text": "Post"
           }
+        },
+        {
+          "type": "link",
+          "path": "/store/payment-collections/update-payment-session",
+          "title": "Update Payment Session",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
         }
       ]
     },
@@ -1117,6 +1127,24 @@ const generatedgeneratedStoreSidebarSidebar = {
           "type": "link",
           "path": "/store/returns/create-return",
           "title": "Create Return",
+          "loaded": true,
+          "badge": {
+            "variant": "blue",
+            "text": "Post"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "title": "Search",
+      "path": "/store/search",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/store/search/search-indexes",
+          "title": "Search Indexes",
           "loaded": true,
           "badge": {
             "variant": "blue",

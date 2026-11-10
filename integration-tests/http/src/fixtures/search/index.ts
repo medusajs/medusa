@@ -24,15 +24,16 @@ const productFields = search.define({
  * Products come off `query.graph` with their sales channels as rows, and the
  * index wants them as a flat array of ids — which is all a `transform` is for.
  */
-const toProductDocument = (product: any) => ({
-  id: product.id,
-  title: product.title,
-  handle: product.handle,
-  status: product.status,
-  sales_channel_ids: (product.sales_channels ?? []).map(
-    (channel: any) => channel.id
-  ),
-})
+const toProductDocuments = (products: any[]) =>
+  products.map((product) => ({
+    id: product.id,
+    title: product.title,
+    handle: product.handle,
+    status: product.status,
+    sales_channel_ids: (product.sales_channels ?? []).map(
+      (channel: any) => channel.id
+    ),
+  }))
 
 // Declared like user code: `defineSearchIndex` compiles the DSL schemas and
 // registers the definitions, and medusa-config passes the returned (normalized)
@@ -51,13 +52,13 @@ const productIndex = defineSearchIndex({
 
   consume: graphConsume<typeof productFields>({
     fields: PRODUCT_FIELDS,
-    transform: toProductDocument,
+    transform: toProductDocuments,
   }),
 
   seed: graphSeed<typeof productFields>({
     fields: PRODUCT_FIELDS,
     batch_size: BATCH_SIZE,
-    transform: toProductDocument,
+    transform: toProductDocuments,
   }),
 })
 
@@ -101,4 +102,23 @@ const customerIndex = defineSearchIndex({
   },
 })
 
-export default [productIndex, customerIndex]
+/**
+ * An index whose name differs from its entity, as applications may declare.
+ * The admin search checks it against the `customer` resource, not its name.
+ */
+const customerDirectoryFields = search.define({
+  id: search.keyword().filterable(),
+  email: search.keyword().searchable(),
+})
+
+const customerDirectoryIndex = defineSearchIndex({
+  name: "customer_directory",
+  entity: "customer",
+  fields: customerDirectoryFields,
+  seed: graphSeed<typeof customerDirectoryFields>({
+    fields: ["id", "email"],
+    batch_size: BATCH_SIZE,
+  }),
+})
+
+export default [productIndex, customerIndex, customerDirectoryIndex]

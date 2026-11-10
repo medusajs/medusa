@@ -15,7 +15,15 @@ if (os.platform() === `win32`) {
   // ensureWindowsDriveLetterIsUppercase()
 }
 
+// Logging to a closed stdout/stderr throws again, re-entering these handlers forever
+const isBrokenPipeError = (error: unknown) =>
+  [`EPIPE`, `ERR_STREAM_DESTROYED`].includes((error as any)?.code)
+
 process.on(`unhandledRejection`, (reason) => {
+  if (isBrokenPipeError(reason)) {
+    return process.exit(1)
+  }
+
   // This will exit the process in newer Node anyway so lets be consistent
   // across versions and crash
 
@@ -30,6 +38,10 @@ process.on(`unhandledRejection`, (reason) => {
 })
 
 process.on(`uncaughtException`, (error) => {
+  if (isBrokenPipeError(error)) {
+    return process.exit(1)
+  }
+
   console.log(error)
   // report.panic(`UNHANDLED EXCEPTION`, error)
 })

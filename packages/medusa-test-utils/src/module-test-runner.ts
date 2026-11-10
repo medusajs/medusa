@@ -70,8 +70,8 @@ function createMikroOrmWrapper(options: {
     const modelsPath = fs.existsSync(`${basePath}/dist/models`)
       ? "/dist/models"
       : fs.existsSync(`${basePath}/models`)
-      ? "/models"
-      : ""
+        ? "/models"
+        : ""
 
     if (modelsPath) {
       moduleModels = loadModels(`${basePath}${modelsPath}`)

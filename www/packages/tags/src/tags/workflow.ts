@@ -172,6 +172,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteCustomersWorkflow"
   },
   {
+    "title": "exportCustomersWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportCustomersWorkflow"
+  },
+  {
     "title": "removeCustomerAccountWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeCustomerAccountWorkflow"
   },
@@ -864,6 +868,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRefundReasonsWorkflow"
   },
   {
+    "title": "updatePaymentSessionClientDataWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePaymentSessionClientDataWorkflow"
+  },
+  {
     "title": "updateRefundReasonsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRefundReasonsWorkflow"
   },
@@ -1096,6 +1104,54 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePromotionsWorkflow"
   },
   {
+    "title": "assignRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/assignRolesWorkflow"
+  },
+  {
+    "title": "createRbacPoliciesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacPoliciesWorkflow"
+  },
+  {
+    "title": "createRbacRolePoliciesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolePoliciesWorkflow"
+  },
+  {
+    "title": "createRbacRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolesWorkflow"
+  },
+  {
+    "title": "deleteRbacPoliciesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacPoliciesWorkflow"
+  },
+  {
+    "title": "deleteRbacRolePoliciesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolePoliciesWorkflow"
+  },
+  {
+    "title": "deleteRbacRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolesWorkflow"
+  },
+  {
+    "title": "getAssignablePoliciesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getAssignablePoliciesWorkflow"
+  },
+  {
+    "title": "getAssignableRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getAssignableRolesWorkflow"
+  },
+  {
+    "title": "unassignRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/unassignRolesWorkflow"
+  },
+  {
+    "title": "updateRbacPoliciesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRbacPoliciesWorkflow"
+  },
+  {
+    "title": "updateRbacRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRbacRolesWorkflow"
+  },
+  {
     "title": "createRegionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRegionsWorkflow"
   },
@@ -1150,6 +1206,10 @@ export const workflow = [
   {
     "title": "updateSalesChannelsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateSalesChannelsWorkflow"
+  },
+  {
+    "title": "deleteSearchIndexWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteSearchIndexWorkflow"
   },
   {
     "title": "reindexSearchIndexesWorkflow",
@@ -1254,6 +1314,10 @@ export const workflow = [
   {
     "title": "debitAccountsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitAccountsWorkflow"
+  },
+  {
+    "title": "debitStoreCreditAccountWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/debitStoreCreditAccountWorkflow"
   },
   {
     "title": "createTaxRateRulesWorkflow",

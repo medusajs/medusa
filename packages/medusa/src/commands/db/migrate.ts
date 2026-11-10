@@ -137,7 +137,14 @@ export async function migrate({
      * Run migration scripts
      */
     logger.log(new Array(TERMINAL_SIZE).join("-"))
-    await runCliCommand("db:migrate:scripts", directory)
+    const exitCode = await runCliCommand("db:migrate:scripts", directory)
+
+    // Same reasoning as the search command above: a failed script can leave the
+    // database partway through, and the caller needs to see that instead of a
+    // clean exit that says everything migrated fine.
+    if (exitCode !== 0) {
+      return false
+    }
   }
 
   return true
