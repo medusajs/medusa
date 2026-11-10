@@ -377,7 +377,7 @@ export const generatedEditDates = {
   "app/storefront-development/products/options/page.mdx": "2026-06-04T06:34:03.017Z",
   "app/commerce-modules/store/locales/page.mdx": "2025-12-16T07:13:12.389Z",
   "app/commerce-modules/translation/concepts/page.mdx": "2025-12-16T07:13:50.326Z",
-  "app/commerce-modules/translation/page.mdx": "2026-01-12T12:17:10.801Z",
+  "app/commerce-modules/translation/page.mdx": "2026-11-10T14:40:32.148Z",
   "app/commerce-modules/translation/storefront/page.mdx": "2026-01-06T08:50:03.221Z",
   "app/storefront-development/localization/page.mdx": "2026-10-08T08:38:13.776Z",
   "app/commerce-modules/translation/js-sdk/page.mdx": "2025-12-10T15:24:57.155Z",
