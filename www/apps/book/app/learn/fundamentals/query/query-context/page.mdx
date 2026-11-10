@@ -95,7 +95,7 @@ class BlogModuleService extends MedusaService({
 export default BlogModuleService
 ```
 
-In the above example, you override the generated `listPosts` method. This method receives the filters passed to `query.graph` as its first parameter. The first parameter includes a `context` property that holds the Query context alsopassed to `query.graph`.
+In the previous example, you override the generated `listPosts` method. Its first parameter, `filters`, receives the filters passed to `query.graph`, along with a `context` property that holds the Query context you created with `QueryContext`.
 
 You extract the context from `filters`, then retrieve the posts using the parent's `listPosts` method. If the language is set in the context, you transform the post titles.
 

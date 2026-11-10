@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin-vite-plugin",
-  "version": "2.22.0",
+  "version": "2.22.6",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -40,16 +40,16 @@
     "vite": "^5.4.21 || ^6.0.0 || ^7.0.0"
   },
   "dependencies": {
-    "@babel/parser": "7.25.6",
-    "@babel/traverse": "7.25.6",
-    "@babel/types": "7.25.6",
-    "@medusajs/admin-shared": "2.22.0",
+    "@babel/parser": "8.0.10",
+    "@babel/traverse": "8.0.10",
+    "@babel/types": "8.0.10",
+    "@medusajs/admin-shared": "2.22.6",
     "fdir": "6.1.1",
-    "magic-string": "0.30.5",
+    "magic-string": "1.4.3",
     "outdent": "^0.8.0",
     "picocolors": "^1.1.0"
   },
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@4.18.1",
   "engines": {
     "node": ">=22.22.0"
   }

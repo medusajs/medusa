@@ -1,4 +1,5 @@
 import type { ProviderWebhookPayload } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import type { StripeOptions } from "../../types"
 
 import IdealProviderService from "../../services/stripe-ideal"
@@ -10,6 +11,25 @@ const defaultOptions: StripeOptions = {
 }
 
 describe("StripeBase", () => {
+  describe("constructor", () => {
+    it("uses the 2024-04-10 API version by default", () => {
+      const service = new StripeProviderService({}, defaultOptions)
+
+      expect(service["stripe_"].getApiField("version")).toBe("2024-04-10")
+    })
+
+    it("uses the apiVersion option when provided", () => {
+      const service = new StripeProviderService(
+        {},
+        { ...defaultOptions, apiVersion: "2026-10-28.endive" }
+      )
+
+      expect(service["stripe_"].getApiField("version")).toBe(
+        "2026-10-28.endive"
+      )
+    })
+  })
+
   describe("normalizePaymentIntentParameters", () => {
     it("prefers extra.payment_method_configuration over options.paymentMethodConfiguration", () => {
       const service = new StripeProviderService(
@@ -68,6 +88,35 @@ describe("StripeBase", () => {
       expect(params.payment_method_configuration).toBeUndefined()
     })
 
+    it("sends payment_method_types on API versions before 2026-07-29", () => {
+      const service = new IdealProviderService(
+        {},
+        { ...defaultOptions, apiVersion: "2026-06-24.dahlia" }
+      )
+
+      const params = service.normalizePaymentIntentParameters()
+
+      expect(params.payment_method_types).toEqual(["ideal"])
+      expect(params.allowed_payment_method_types).toBeUndefined()
+    })
+
+    it.each(["2026-07-29.dahlia", "2026-10-28.endive"])(
+      "sends allowed_payment_method_types on API version %s",
+      (apiVersion) => {
+        const service = new StripeProviderService(
+          {},
+          { ...defaultOptions, apiVersion }
+        )
+
+        const params = service.normalizePaymentIntentParameters({
+          payment_method_types: ["card"],
+        })
+
+        expect(params.allowed_payment_method_types).toEqual(["card"])
+        expect(params.payment_method_types).toBeUndefined()
+      }
+    )
+
     it("keeps existing defaults when payment method configuration is not provided", () => {
       const service = new StripeProviderService({}, defaultOptions)
 
@@ -118,6 +167,71 @@ describe("StripeBase", () => {
       await expect(
         service.deletePayment({ data: { id: "pi_123" } })
       ).rejects.toThrow("An error occurred in cancelPayment")
+    })
+  })
+
+  describe("initiatePayment", () => {
+    const stripeError = (param: string) =>
+      Object.assign(new Error(`No such ${param}`), {
+        type: "StripeInvalidRequestError",
+        code: "resource_missing",
+        param,
+      })
+
+    const initiate = (service: StripeProviderService) =>
+      service.initiatePayment({
+        amount: 100,
+        currency_code: "usd",
+        context: { account_holder: { data: { id: "cus_123" } } },
+      } as any)
+
+    it("reports a customer that doesn't exist in the Stripe account", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      jest
+        .spyOn(service["stripe_"].paymentIntents, "create")
+        .mockRejectedValue(stripeError("customer"))
+
+      await expect(initiate(service)).rejects.toMatchObject({
+        type: MedusaError.Types.NOT_FOUND,
+        code: MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND,
+      })
+    })
+
+    it("doesn't report other missing resources as a missing customer", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      jest
+        .spyOn(service["stripe_"].paymentIntents, "create")
+        .mockRejectedValue(stripeError("payment_method"))
+
+      await expect(initiate(service)).rejects.toThrow(
+        "An error occurred in InitiatePayment"
+      )
+    })
+  })
+
+  describe("deleteAccountHolder", () => {
+    const context = { account_holder: { data: { id: "cus_123" } } }
+
+    it("doesn't throw when the customer is already gone", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      jest.spyOn(service["stripe_"].customers, "del").mockRejectedValue(
+        Object.assign(new Error("No such customer: 'cus_123'"), {
+          code: "resource_missing",
+        })
+      )
+
+      expect(await service.deleteAccountHolder({ context } as any)).toEqual({})
+    })
+
+    it("still throws other errors", async () => {
+      const service = new StripeProviderService({}, defaultOptions)
+      jest
+        .spyOn(service["stripe_"].customers, "del")
+        .mockRejectedValue(new Error("Stripe is down"))
+
+      await expect(
+        service.deleteAccountHolder({ context } as any)
+      ).rejects.toThrow("An error occurred in deleteAccountHolder")
     })
   })
 

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/locking-redis",
-  "version": "2.22.0",
+  "version": "2.22.6",
   "description": "Redis Lock for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -27,13 +27,13 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/framework": "2.22.0"
+    "@medusajs/framework": "2.22.6"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.22.0"
+    "@medusajs/framework": "2.22.6"
   },
   "dependencies": {
-    "ioredis": "^5.4.1"
+    "ioredis": "^5.11.1"
   },
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
@@ -41,7 +41,7 @@
     "resolve:aliases": "yarn run -T tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && yarn run -T tsc-alias -p tsconfig.resolved.json && yarn run -T rimraf tsconfig.resolved.json",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build && npm run resolve:aliases",
     "test": "../../../../node_modules/.bin/jest --passWithNoTests src",
-    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPattern=\"integration-tests/__tests__/.*\\.spec\\.ts\""
+    "test:integration": "../../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/.*\\.spec\\.ts\""
   },
   "keywords": [
     "medusa-providers",

@@ -15,5 +15,4 @@ export type AdminShippingProfileListResponse = PaginatedResponse<{
   shipping_profiles: AdminShippingProfile[]
 }>
 
-export interface AdminShippingProfileDeleteResponse
-  extends DeleteResponse<"shipping_profile"> {}
+export interface AdminShippingProfileDeleteResponse extends DeleteResponse<"shipping_profile"> {}

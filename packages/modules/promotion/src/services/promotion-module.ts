@@ -1124,8 +1124,7 @@ export default class PromotionModuleService
   // @ts-expect-error
   async createPromotions(
     data:
-      | PromotionTypes.CreatePromotionDTO
-      | PromotionTypes.CreatePromotionDTO[],
+      PromotionTypes.CreatePromotionDTO | PromotionTypes.CreatePromotionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.PromotionDTO | PromotionTypes.PromotionDTO[]> {
     const input = Array.isArray(data) ? data : [data]
@@ -1414,8 +1413,7 @@ export default class PromotionModuleService
   // @ts-expect-error
   async updatePromotions(
     data:
-      | PromotionTypes.UpdatePromotionDTO
-      | PromotionTypes.UpdatePromotionDTO[],
+      PromotionTypes.UpdatePromotionDTO | PromotionTypes.UpdatePromotionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PromotionTypes.PromotionDTO | PromotionTypes.PromotionDTO[]> {
     const input = Array.isArray(data) ? data : [data]

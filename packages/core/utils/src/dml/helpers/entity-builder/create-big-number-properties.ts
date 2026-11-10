@@ -20,11 +20,12 @@ import { NullableModifier } from "../../properties/nullable"
 export type DMLSchemaWithBigNumber<T extends DMLSchema> = {
   [K in keyof T]: T[K]
 } & {
-  [K in keyof T as T[K] extends
-    | BigNumberProperty
-    | NullableModifier<number, BigNumberProperty>
-    ? `raw_${string & K}`
-    : never]: T[K] extends NullableModifier<number, BigNumberProperty>
+  [
+    K in keyof T as T[K] extends
+      BigNumberProperty | NullableModifier<number, BigNumberProperty>
+      ? `raw_${string & K}`
+      : never
+  ]: T[K] extends NullableModifier<number, BigNumberProperty>
     ? NullableModifier<Record<string, unknown>, JSONProperty>
     : JSONProperty
 }
@@ -61,8 +62,7 @@ export function createBigNumberProperties<Schema extends DMLSchema>(
 
       if (parsed.computed) {
         jsonProperty = jsonProperty.computed() as unknown as
-          | JSONProperty
-          | NullableModifier<Record<string, unknown>, JSONProperty>
+          JSONProperty | NullableModifier<Record<string, unknown>, JSONProperty>
       }
 
       schemaWithBigNumber[`raw_${key}`] = jsonProperty

@@ -250,7 +250,19 @@ jobs:
               PRS="$EVENT_PR_NUMBER"
               ;;
             schedule)
-              PRS=$(gh pr list --repo "$REPO" --state open --label "$LABEL" --limit 500 --json number --jq '.[].number')
+              # Label filters on `gh pr list` and REST go through the search index,
+              # which can miss newly labeled PRs; GraphQL label connections don't.
+              PRS=$(gh api graphql --paginate -F owner="${REPO%/*}" -F name="${REPO#*/}" -F label="$LABEL" -f query='
+                query($owner: String!, $name: String!, $label: String!, $endCursor: String) {
+                  repository(owner: $owner, name: $name) {
+                    label(name: $label) {
+                      pullRequests(states: OPEN, first: 100, after: $endCursor) {
+                        pageInfo { hasNextPage endCursor }
+                        nodes { number }
+                      }
+                    }
+                  }
+                }' --jq '.data.repository.label.pullRequests.nodes[]?.number')
               ;;
             workflow_dispatch)
               if [[ -n "$INPUT_PR_NUMBER" ]]; then

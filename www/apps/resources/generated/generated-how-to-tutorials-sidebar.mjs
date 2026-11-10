@@ -128,6 +128,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Define Custom Policies",
+              "path": "https://docs.medusajs.com/resources/enterprise/rbac/define-policies",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Enforce Sales Channel Availability",
               "path": "https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability",
               "children": []
@@ -297,6 +304,13 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
           "sort_sidebar": "alphabetize",
           "description": "These how-to guides help you customize the Medusa Admin dashboard with practical examples.",
           "children": [
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Check Permissions in Admin Customizations",
+              "path": "https://docs.medusajs.com/resources/enterprise/rbac/admin-customizations",
+              "children": []
+            },
             {
               "loaded": true,
               "type": "ref",

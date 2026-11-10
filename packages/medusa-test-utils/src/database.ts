@@ -163,8 +163,8 @@ export function getMikroOrmWrapper({
       const migrationPaths = Array.isArray(this.pathToMigrations)
         ? this.pathToMigrations
         : this.pathToMigrations
-        ? [this.pathToMigrations]
-        : []
+          ? [this.pathToMigrations]
+          : []
 
       const OrmConfig = getMikroOrmConfig({
         mikroOrmEntities: this.mikroOrmEntities,

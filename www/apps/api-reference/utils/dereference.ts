@@ -1,8 +1,8 @@
 import { OpenAPI } from "types"
-import OpenAPIParser from "@readme/openapi-parser"
+import $RefParser from "@apidevtools/json-schema-ref-parser"
 import { workerCompatibleFetch } from "docs-utils"
 
-// @readme/openapi-parser uses Node.js https.get internally, which is not
+// json-schema-ref-parser uses Node.js https.get internally, which is not
 // available in Cloudflare Workers. Override the HTTP resolver to use
 // the global fetch() API instead.
 const fetchHttpResolver = {
@@ -72,7 +72,7 @@ export default async function dereference({
   }
 
   // resolve references in paths
-  document = (await OpenAPIParser.dereference(`${basePath}/`, document, {
+  document = (await $RefParser.dereference(`${basePath}/`, document, {
     resolve: {
       http: fetchHttpResolver,
     },

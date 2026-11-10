@@ -8,7 +8,7 @@ const eventBaseNames: [
   "priceList",
   "priceRule",
   "priceSet",
-  "price"
+  "price",
 ] = ["priceListRule", "priceList", "priceRule", "priceSet", "price"]
 
 export const PricingEvents = buildEventNamesFromEntityName(

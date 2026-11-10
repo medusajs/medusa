@@ -44,18 +44,18 @@ export type ModelConfigurationsToConfigTemplate<T extends ModelEntries> = {
     dto: T[Key] extends DmlEntity<any, any>
       ? InferEntityType<T[Key]>
       : T[Key] extends Constructor<any>
-      ? InstanceType<T[Key]>
-      : any
+        ? InstanceType<T[Key]>
+        : any
     inputDto: T[Key] extends DmlEntity<any, any>
       ? Omit<InferEntityForModuleService<T[Key]>, DMLDTOExcludeProperties>
       : T[Key] extends Constructor<any>
-      ? InstanceType<T[Key]>
-      : any
+        ? InstanceType<T[Key]>
+        : any
     model: T[Key] extends { model: infer MODEL }
       ? MODEL
       : T[Key] extends IDmlEntity<any, any>
-      ? T[Key]
-      : never
+        ? T[Key]
+        : never
   }
 }
 
@@ -64,7 +64,7 @@ export type ModelConfigurationsToConfigTemplate<T extends ModelEntries> = {
  */
 export type ExtractSingularName<
   T extends Record<any, any>,
-  K = keyof T
+  K = keyof T,
 > = Capitalize<
   T[K] extends { singular?: string } ? T[K]["singular"] & string : K & string
 >
@@ -75,7 +75,7 @@ export type ExtractSingularName<
  */
 export type ExtractPluralName<
   T extends Record<any, any>,
-  K = keyof T
+  K = keyof T,
 > = Capitalize<
   T[K] extends {
     plural?: string
@@ -115,30 +115,36 @@ export type ExtractKeysFromConfig<ModelsConfig> = ModelsConfig extends {
   : keyof ModelsConfig
 
 export type AbstractModuleService<
-  TModelsDtoConfig extends Record<string, { dto: any; inputDto?: any }>
+  TModelsDtoConfig extends Record<string, { dto: any; inputDto?: any }>,
 > = {
-  [TModelName in keyof TModelsDtoConfig as `retrieve${ExtractSingularName<
-    TModelsDtoConfig,
-    TModelName
-  >}`]: (
+  [
+    TModelName in keyof TModelsDtoConfig as `retrieve${ExtractSingularName<
+      TModelsDtoConfig,
+      TModelName
+    >}`
+  ]: (
     id: string,
     config?: FindConfig<TModelsDtoConfig[TModelName]["dto"]>,
     sharedContext?: Context
   ) => Promise<TModelsDtoConfig[TModelName]["dto"]>
 } & {
-  [TModelName in keyof TModelsDtoConfig as `list${ExtractPluralName<
-    TModelsDtoConfig,
-    TModelName
-  >}`]: (
+  [
+    TModelName in keyof TModelsDtoConfig as `list${ExtractPluralName<
+      TModelsDtoConfig,
+      TModelName
+    >}`
+  ]: (
     filters?: any,
     config?: FindConfig<TModelsDtoConfig[TModelName]["dto"]>,
     sharedContext?: Context
   ) => Promise<TModelsDtoConfig[TModelName]["dto"][]>
 } & {
-  [TModelName in keyof TModelsDtoConfig as `listAndCount${ExtractPluralName<
-    TModelsDtoConfig,
-    TModelName
-  >}`]: {
+  [
+    TModelName in keyof TModelsDtoConfig as `listAndCount${ExtractPluralName<
+      TModelsDtoConfig,
+      TModelName
+    >}`
+  ]: {
     (
       filters?: any,
       config?: FindConfig<TModelsDtoConfig[TModelName]["dto"]>,
@@ -146,20 +152,24 @@ export type AbstractModuleService<
     ): Promise<[TModelsDtoConfig[TModelName]["dto"][], number]>
   }
 } & {
-  [TModelName in keyof TModelsDtoConfig as `delete${ExtractPluralName<
-    TModelsDtoConfig,
-    TModelName
-  >}`]: {
+  [
+    TModelName in keyof TModelsDtoConfig as `delete${ExtractPluralName<
+      TModelsDtoConfig,
+      TModelName
+    >}`
+  ]: {
     (
       primaryKeyValues: string | object | string[] | object[],
       sharedContext?: Context
     ): Promise<void>
   }
 } & {
-  [TModelName in keyof TModelsDtoConfig as `softDelete${ExtractPluralName<
-    TModelsDtoConfig,
-    TModelName
-  >}`]: {
+  [
+    TModelName in keyof TModelsDtoConfig as `softDelete${ExtractPluralName<
+      TModelsDtoConfig,
+      TModelName
+    >}`
+  ]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
       config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -167,10 +177,12 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [TModelName in keyof TModelsDtoConfig as `restore${ExtractPluralName<
-    TModelsDtoConfig,
-    TModelName
-  >}`]: {
+  [
+    TModelName in keyof TModelsDtoConfig as `restore${ExtractPluralName<
+      TModelsDtoConfig,
+      TModelName
+    >}`
+  ]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
       config?: RestoreReturn<TReturnableLinkableKeys>,
@@ -178,10 +190,12 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [TModelName in keyof TModelsDtoConfig as `create${ExtractPluralName<
-    TModelsDtoConfig,
-    TModelName
-  >}`]: {
+  [
+    TModelName in keyof TModelsDtoConfig as `create${ExtractPluralName<
+      TModelsDtoConfig,
+      TModelName
+    >}`
+  ]: {
     (
       data: Prettify<GetServiceInput<TModelsDtoConfig[TModelName]>>,
       ...rest: any[]
@@ -192,10 +206,12 @@ export type AbstractModuleService<
     ): Promise<TModelsDtoConfig[TModelName]["dto"][]>
   }
 } & {
-  [TModelName in keyof TModelsDtoConfig as `update${ExtractPluralName<
-    TModelsDtoConfig,
-    TModelName
-  >}`]: {
+  [
+    TModelName in keyof TModelsDtoConfig as `update${ExtractPluralName<
+      TModelsDtoConfig,
+      TModelName
+    >}`
+  ]: {
     (
       data: Prettify<GetServiceInput<TModelsDtoConfig[TModelName]>>,
       ...rest: any[]
@@ -279,19 +295,21 @@ export type AbstractModuleService<
 }*/
 
 type InferModelFromConfig<T> = {
-  [K in keyof T as T[K] extends { model: any }
-    ? K
-    : K extends IDmlEntity<any, any>
-    ? K
-    : never]: T[K] extends {
+  [
+    K in keyof T as T[K] extends { model: any }
+      ? K
+      : K extends IDmlEntity<any, any>
+        ? K
+        : never
+  ]: T[K] extends {
     model: infer MODEL
   }
     ? MODEL extends IDmlEntity<any, any>
       ? MODEL
       : never
     : T[K] extends IDmlEntity<any, any>
-    ? T[K]
-    : never
+      ? T[K]
+      : never
 }
 
 export type MedusaServiceReturnType<ModelsConfig extends Record<string, any>> =

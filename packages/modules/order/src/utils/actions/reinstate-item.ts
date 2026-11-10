@@ -45,12 +45,19 @@ OrderChangeProcessing.registerActionType(ChangeActionType.REINSTATE_ITEM, {
       )
     }
 
-    const quantityAvailable = existing!.quantity ?? 0
+    if (MathBN.lte(action.details.quantity, 0)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Quantity to reinstate item ${refId} must be greater than 0.`
+      )
+    }
+
+    const quantityAvailable = existing!.detail?.written_off_quantity ?? 0
     const greater = MathBN.gt(action.details?.quantity, quantityAvailable)
     if (greater) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Cannot unclaim more items than what was ordered."
+        "Cannot unclaim more items than what was claimed."
       )
     }
   },

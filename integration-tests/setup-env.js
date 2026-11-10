@@ -1,6 +1,9 @@
 const path = require("path")
 
-require("dotenv").config({ path: path.join(__dirname, ".env.test") })
+require("dotenv").config({
+  path: path.join(__dirname, ".env.test"),
+  quiet: true,
+})
 
 // Some of the apps under test configure license gated packages (rbac,
 // auth-oidc), which refuse to boot without a license key.

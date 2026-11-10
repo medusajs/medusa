@@ -31,6 +31,7 @@ export abstract class BaseProperty<T>
 
   /**
    * This method indicates that a property's value can be `null`.
+   * See [Make Property Optional](https://docs.medusajs.com/learn/fundamentals/data-models/properties#make-property-optional) for more information.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
@@ -49,9 +50,13 @@ export abstract class BaseProperty<T>
   }
 
   /**
-   * This method indicated that the property is a computed property.
-   * Computed properties are not stored in the database but are
-   * computed on the fly.
+   * This method indicates that the property is a computed property.
+   * Computed properties are not stored in the database, so Medusa doesn't
+   * create a column for them or set their value.
+   *
+   * You compute and set the property's value in your own code. For example,
+   * in a custom method of your module's service, set the property on the records
+   * after retrieving them.
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
@@ -71,6 +76,7 @@ export abstract class BaseProperty<T>
 
   /**
    * This method defines an index on a property.
+   * See [Define Database Index on Property](https://docs.medusajs.com/learn/fundamentals/data-models/properties#define-database-index-on-property) for more information.
    *
    * @param {string} name - The index's name. If not provided,
    * Medusa generates the name.
@@ -97,6 +103,7 @@ export abstract class BaseProperty<T>
   /**
    * This method indicates that a property's value must be unique in the database.
    * A unique index is created on the property.
+   * See [Unique Property](https://docs.medusajs.com/learn/fundamentals/data-models/properties#unique-property) for more information.
    *
    * @param {string} name - The unique index's name. If not provided,
    * Medusa generates the name.
@@ -120,6 +127,7 @@ export abstract class BaseProperty<T>
 
   /**
    * This method defines the default value of a property.
+   * See [Property Default Value](https://docs.medusajs.com/learn/fundamentals/data-models/properties#property-default-value) for more information.
    *
    * @param {T} value - The default value.
    *

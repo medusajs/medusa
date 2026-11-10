@@ -3,9 +3,7 @@ import { createRule } from "../../create-rule"
 import { findProperty, getPropertyKeyName } from "../../util/ast"
 
 type MessageIds =
-  | "multipliedByHundred"
-  | "centsIdentifier"
-  | "largeIntegerLikelyCents"
+  "multipliedByHundred" | "centsIdentifier" | "largeIntegerLikelyCents"
 
 const PRICE_KEY_REGEX =
   /^(amount|unit_price|raw_amount|price|original_total|subtotal|total|tax_total|shipping_total|discount_total)$/

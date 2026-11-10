@@ -88,3 +88,4 @@ yarn migration:create                       # after any change in src/models
 - Registering the same provider identifier twice throws; `default_provider` naming an unregistered provider throws at boot.
 - Reads use a cached active version and retry once on `NOT_FOUND` (`withActiveIndexRetry`); writes resolve it with `fresh: true`.
 - Seeding retries rate-limited (HTTP 429) provider calls with backoff (`src/utils/rate-limit.ts`).
+- `search-medusa`: Cloud creates an index on its first write, so an index seeded with no documents doesn't exist upstream; queries treat that 404 as an empty result. Typo tolerance only applies `Fuzzy` to words of at least `min_word_size_for_one_typo` characters; shorter words match exactly.

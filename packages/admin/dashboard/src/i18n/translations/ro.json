@@ -148,6 +148,7 @@
     "reset": "Resetați",
     "confirm": "Confirma",
     "edit": "Edita",
+    "view": "Vedere",
     "addItems": "Adăugați articole",
     "download": "Descărcați",
     "clear": "Clar",
@@ -2303,6 +2304,8 @@
       "method": "Metodă",
       "allocation": "Alocare",
       "allocationTooltip": "Each aplică limita de cantitate per articol, în timp ce Once aplică limita de cantitate pentru întregul coș",
+      "targetSelectionStrategy": "Articole cu reducere",
+      "targetSelectionStrategyTooltip": "Care articole eligibile din coș primesc reducerea",
       "addCondition": "Adăugați o condiție",
       "clearAll": "Ștergeți totul",
       "taxInclusive": "Inclusiv taxe",
@@ -2452,6 +2455,16 @@
         "once": {
           "title": "O dată",
           "description": "Aplică valoarea unui număr limitat de articole"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Cele mai scumpe primele",
+          "description": "Aplică reducerea la cele mai scumpe articole eligibile din coș"
+        },
+        "cheapest_first": {
+          "title": "Cele mai ieftine primele",
+          "description": "Aplică reducerea la cele mai ieftine articole eligibile din coș"
         }
       },
       "code": {
@@ -2818,7 +2831,7 @@
     "editUser": "Editați utilizatorul",
     "inviteUser": "Invitați utilizator",
     "inviteUserHint": "Invitați un utilizator nou în magazinul dvs.",
-    "inviteRolesTooltip": "Dacă nu este selectat niciun rol, utilizatorul va fi invitat cu rolul de superutilizator.",
+    "inviteRolesTooltip": "Dacă nu este selectat niciun rol, utilizatorul va fi invitat fără nicio permisiune. Puteți atribui roluri mai târziu.",
     "sendInvite": "Trimite invitația",
     "pendingInvites": "Invitații în așteptare",
     "deleteInviteWarning": "Sunteți pe cale să ștergeți invitația pentru {{email}}. ",
@@ -2893,7 +2906,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Utilizatorul are deja acest rol.",
-      "unassignableRoleTooltip": "Nu aveți acces pentru a atribui acest rol — permisiunile dvs. nu acoperă toate politicile sale.",
       "add": {
         "successToast_one": "Utilizatorul a fost adăugat cu succes la rol.",
         "successToast_few": "Utilizatorii au fost adăugați cu succes la rol.",
@@ -2924,6 +2936,9 @@
       "filtered": {
         "heading": "Niciun rezultat",
         "description": "Nicio permisiune nu corespunde criteriilor actuale de filtrare."
+      },
+      "manage": {
+        "successToast": "Permisiunile au fost actualizate cu succes."
       }
     },
     "list": {
@@ -2947,6 +2962,7 @@
     },
     "edit": {
       "header": "Editați politica",
+      "identityHint": "Cheia, resursa și operațiunea identifică politica și nu pot fi modificate. Creați în schimb o nouă politică.",
       "successToast": "Politica {{key}} actualizată"
     },
     "delete": {
@@ -3416,6 +3432,9 @@
     "invalidTokenTitle": "Indicatorul dvs. de invitație este nevalid",
     "invalidTokenHint": "Încercați să solicitați un nou link de invitație.",
     "passwordMismatch": "Parolele nu se potrivesc",
+    "signedInTitle": "Sunteți deja autentificat",
+    "signedInHint": "Sunteți autentificat ca {{email}}. Deconectați-vă pentru a accepta această invitație.",
+    "signOut": "Deconectați-vă",
     "toast": {
       "accepted": "Invitația a fost acceptată"
     }
@@ -3856,6 +3875,10 @@
       "description": "Nu aveți permisiunea de a accesa această pagină.",
       "requiredPermission": "Permisiune necesară: {{permission}}",
       "action": "Nu aveți permisiunea de a efectua această acțiune."
+    },
+    "noPermissions": {
+      "title": "Nicio permisiune deocamdată",
+      "description": "Nu aveți nicio permisiune atribuită deocamdată. Contactați administratorul dvs. pentru a solicita acces la zonele de care aveți nevoie."
     },
     "requiredPermissions": {
       "title": "Permisiuni necesare",

@@ -50,6 +50,6 @@ export const CategoryTree = ({
 
 const CategoryLeafPlaceholder = () => {
   return (
-    <div className="bg-ui-bg-base -mb-px flex h-12 animate-pulse items-center border-y px-6 py-2.5" />
+    <div className="-mb-px flex h-12 animate-pulse items-center border-y bg-ui-bg-base px-6 py-2.5" />
   )
 }

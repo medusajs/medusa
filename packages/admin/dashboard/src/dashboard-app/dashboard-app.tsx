@@ -18,10 +18,12 @@ import {
   RouterProvider,
 } from "react-router-dom"
 import { INavItem } from "../components/layout/nav-item"
+import type { Permission } from "../lib/permissions"
 import { Providers } from "../providers"
 import coreTranslations from "../i18n/translations"
 import { getRouteMap } from "./routes/get-route.map"
 import { createRouteMap, getRouteExtensions } from "./routes/utils"
+import { wrapRouteLoaders } from "./routes/wrap-route-loaders"
 import { sortMenuItemsByRank } from "./utils/sort-menu-items-by-rank"
 import { CORE_LAYOUTS } from "../components/layout-composer/core-layouts"
 import {
@@ -214,6 +216,9 @@ export class DashboardApp {
         nested: item.nested,
         rank: item.rank,
         translationNs: item.translationNs,
+        permissions: item.permissions
+          ? ([item.permissions].flat() as Permission[])
+          : undefined,
       }
 
       if (parentPath !== "/" && tempRegistry[parentPath]) {
@@ -572,10 +577,12 @@ export class DashboardApp {
   }
 
   render() {
-    const routes = getRouteMap({
-      settingsRoutes: this.settingsRoutes,
-      coreRoutes: this.coreRoutes,
-    })
+    const routes = wrapRouteLoaders(
+      getRouteMap({
+        settingsRoutes: this.settingsRoutes,
+        coreRoutes: this.coreRoutes,
+      })
+    )
 
     const router = createBrowserRouter(routes, {
       basename: __BASE__ || "/",

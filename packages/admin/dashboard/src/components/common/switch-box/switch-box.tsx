@@ -6,12 +6,12 @@ import { Form } from "../../common/form"
 
 interface HeadlessControllerProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<ControllerProps<TFieldValues, TName>, "render"> {}
 
 interface SwitchBoxProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends HeadlessControllerProps<TFieldValues, TName> {
   label: string
   description: string
@@ -32,7 +32,7 @@ interface SwitchBoxProps<
  */
 export const SwitchBox = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   label,
   description,
@@ -47,7 +47,7 @@ export const SwitchBox = <
       render={({ field: { value, onChange, ...field } }) => {
         return (
           <Form.Item>
-            <div className="bg-ui-bg-component shadow-elevation-card-rest flex items-start gap-x-3 rounded-lg p-3">
+            <div className="flex items-start gap-x-3 rounded-lg bg-ui-bg-component p-3 shadow-elevation-card-rest">
               <Form.Control>
                 <Switch
                   className="rtl:rotate-180"

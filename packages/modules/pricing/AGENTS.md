@@ -30,7 +30,7 @@ Docs: https://docs.medusajs.com/resources/commerce-modules/pricing.md, https://d
 ## Architecture
 
 - `src/repositories/pricing.ts` (`PricingRepository.calculatePrices`): one SQL query. Removes `currency_code` and `quantity` from the context, matches a price when all its rules (`rules_count`) match the context, and joins only active price lists within `starts_at` / `ends_at` whose list rules all match. Ordering: price-list prices first, then more rules first, then lowest amount.
-- `calculatePrices` in the service picks per price set: `override` list price always wins; `sale` list price is used only if lower than the default price. `original_amount` is the override price if any, else the default price. Tax-inclusiveness comes from price rules / `PricePreference` for `region_id` or `currency_code`.
+- `calculatePrices` in the service picks per price set: `override` list price always wins; `sale` list price is used only if lower than the original price. `original_amount` is the override price if any, else the default price. Tax-inclusiveness comes from price rules / `PricePreference` for `region_id` or `currency_code`.
 - `src/utils/validate-price-list-dates.ts` validates `starts_at` / `ends_at` input.
 
 ## Development

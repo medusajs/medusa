@@ -23,12 +23,11 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "yarn clean && tsc",
+    "build": "yarn clean && yarn run -T tsc",
     "clean": "rimraf dist",
-    "watch": "tsc --watch"
+    "watch": "yarn run -T tsc --watch"
   },
   "dependencies": {
-    "@readme/openapi-parser": "^3.0.1",
     "docs-utils": "*",
     "fdir": "^6.4.3",
     "pluralize": "^8.0.0",
@@ -43,7 +42,7 @@
     "rimraf": "^5.0.5",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5.3.3"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "docs-utils": "*"

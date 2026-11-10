@@ -8,13 +8,11 @@ export interface AdminProductTypeResponse {
   product_type: AdminProductType
 }
 
-export interface AdminProductTypeListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of product types.
-     */
-    product_types: AdminProductType[]
-  }> {}
+export interface AdminProductTypeListResponse extends PaginatedResponse<{
+  /**
+   * The list of product types.
+   */
+  product_types: AdminProductType[]
+}> {}
 
-export interface AdminProductTypeDeleteResponse
-  extends DeleteResponse<"product_type"> {}
+export interface AdminProductTypeDeleteResponse extends DeleteResponse<"product_type"> {}

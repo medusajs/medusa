@@ -6,14 +6,16 @@ import { StoreGeneralSection } from "./components/store-general-section"
 import { storeLoader } from "./loader"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
-import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 import { StoreCurrencySection } from "./components/store-currency-section"
 import { StoreLocaleSection } from "./components/store-locale-section"
 
 export const StoreDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof storeLoader>>
-  const isTranslationsEnabled = useFeatureFlag("translation")
 
   const { store, isPending, isError, error } = useStore(undefined, {
     initialData,
@@ -39,14 +41,16 @@ export const StoreDetail = () => {
               <StoreGeneralSection store={store} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="StoreCurrencySection">
-              <StoreCurrencySection store={store} />
+              <PermissionGuard permission="currency:read">
+                <StoreCurrencySection store={store} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
-            {isTranslationsEnabled && (
-              <LayoutComposer.Entry id="StoreLocaleSection">
+            <LayoutComposer.Entry id="StoreLocaleSection">
+              <PermissionGuard permission="store_locale:read">
                 <StoreLocaleSection store={store} />
-              </LayoutComposer.Entry>
-            )}
-            {detailPageDefaultEntries(store, { permissions: false })}
+              </PermissionGuard>
+            </LayoutComposer.Entry>
+            {detailPageDefaultEntries(store)}
           </>
         ),
       }}

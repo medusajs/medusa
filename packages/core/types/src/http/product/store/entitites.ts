@@ -11,11 +11,10 @@ import {
   ProductStatus,
 } from "../common"
 
-export interface StoreProduct
-  extends Omit<
-    BaseProduct,
-    "categories" | "sales_channels" | "variants" | "options" | "collection"
-  > {
+export interface StoreProduct extends Omit<
+  BaseProduct,
+  "categories" | "sales_channels" | "variants" | "options" | "collection"
+> {
   /**
    * The product's collection.
    */
@@ -45,8 +44,10 @@ export interface StoreProduct
    */
   images: StoreProductImage[] | null
 }
-export interface StoreProductVariant
-  extends Omit<BaseProductVariant, "product" | "options"> {
+export interface StoreProductVariant extends Omit<
+  BaseProductVariant,
+  "product" | "options"
+> {
   /**
    * The variant's values for the product's options.
    */
@@ -56,8 +57,10 @@ export interface StoreProductVariant
    */
   product?: StoreProduct | null
 }
-export interface StoreProductOption
-  extends Omit<BaseProductOption, "product" | "values"> {
+export interface StoreProductOption extends Omit<
+  BaseProductOption,
+  "product" | "values"
+> {
   /**
    * The product the option belongs to.
    */
@@ -68,8 +71,10 @@ export interface StoreProductOption
   values?: StoreProductOptionValue[]
 }
 export interface StoreProductImage extends BaseProductImage {}
-export interface StoreProductOptionValue
-  extends Omit<BaseProductOptionValue, "option"> {
+export interface StoreProductOptionValue extends Omit<
+  BaseProductOptionValue,
+  "option"
+> {
   /**
    * The product's option.
    */

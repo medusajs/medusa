@@ -32,8 +32,8 @@ export const MfaQrCode = ({ value }: MfaQrCodeProps) => {
 
   if (error) {
     return (
-      <div className="border-ui-border-base bg-ui-bg-subtle flex size-[220px] items-center justify-center rounded-md border">
-        <Text size="small" className="text-ui-fg-subtle text-center">
+      <div className="flex size-[220px] items-center justify-center rounded-md border border-ui-border-base bg-ui-bg-subtle">
+        <Text size="small" className="text-center text-ui-fg-subtle">
           {t("profile.mfa.qrError")}
         </Text>
       </div>
@@ -43,7 +43,7 @@ export const MfaQrCode = ({ value }: MfaQrCodeProps) => {
   return (
     <canvas
       ref={canvasRef}
-      className="border-ui-border-base bg-ui-bg-base rounded-md border"
+      className="rounded-md border border-ui-border-base bg-ui-bg-base"
       height={220}
       width={220}
     />

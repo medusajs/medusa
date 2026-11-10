@@ -1,6 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "envMode": "loose",
+  "tasks": {
     "build": {
       "dependsOn": [
         "^build"

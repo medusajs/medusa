@@ -19,6 +19,7 @@ import {
   SourceReference,
 } from "typedoc"
 import ts from "typescript"
+import type {} from "types"
 import {
   getFunctionType,
   getProjectChild,
@@ -54,6 +55,7 @@ export default class TypedocManager {
   private options: Options
   private mappedReflectionSignatures: MappedReflectionSignature[]
   private project: ProjectReflection | undefined
+  private context: Context | undefined
   private getTypeOptions = {
     hideLink: true,
     wrapBackticks: false,
@@ -81,6 +83,20 @@ export default class TypedocManager {
       logLevel: this.options.verbose ? "Verbose" : "Error",
     })
 
+    // TypeDoc 0.28 converts a mapped type, such as `ComponentPropsWithoutRef<...>`,
+    // as its written reference rather than the resolved type, which hides its props.
+    const convertType = this.app.converter.convertType.bind(this.app.converter)
+    this.app.converter.convertType = ((
+      context: Context,
+      typeOrNode: ts.Type,
+      maybeNode?: ts.TypeNode
+    ) =>
+      convertType(
+        context,
+        typeOrNode,
+        typeOrNode && isMappedType(typeOrNode) ? undefined : maybeNode
+      )) as Converter["convertType"]
+
     // This listener sets the content of mappedReflectionSignatures
     this.app.converter.on(
       Converter.EVENT_RESOLVE,
@@ -95,6 +111,10 @@ export default class TypedocManager {
         }
       }
     )
+
+    this.app.converter.on(Converter.EVENT_END, (context: Context) => {
+      this.context = context
+    })
 
     this.project = await this.app.convert()
 
@@ -752,6 +772,14 @@ export default class TypedocManager {
   }
 
   getReflectionSymbol(reflection: Reflection): ts.Symbol | undefined {
-    return this.project?.getSymbolFromReflection(reflection)
+    return this.context?.getSymbolFromReflection(reflection)
   }
+}
+
+function isMappedType(typeOrNode: ts.Type | ts.TypeNode): boolean {
+  return (
+    !("kind" in typeOrNode) &&
+    !!(typeOrNode.flags & ts.TypeFlags.Object) &&
+    !!((typeOrNode as ts.ObjectType).objectFlags & ts.ObjectFlags.Mapped)
+  )
 }

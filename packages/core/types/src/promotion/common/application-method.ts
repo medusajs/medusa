@@ -11,14 +11,19 @@ export type ApplicationMethodTypeValues = "fixed" | "percentage"
  * The application method's possible target types.
  */
 export type ApplicationMethodTargetTypeValues =
-  | "order"
-  | "shipping_methods"
-  | "items"
+  "order" | "shipping_methods" | "items"
 
 /**
  * The application method's possible allocation values.
  */
 export type ApplicationMethodAllocationValues = "each" | "across" | "once"
+
+/**
+ * The application method's possible target selection strategies.
+ */
+export type ApplicationMethodTargetSelectionStrategyValues =
+  | "most_expensive_first"
+  | "cheapest_first"
 
 /**
  * The application method details.
@@ -69,6 +74,13 @@ export interface ApplicationMethodDTO {
    * value of this attribute is `2`.
    */
   buy_rules_min_quantity?: number | null
+
+  /**
+   * How a `buyget` promotion picks the items it discounts. With
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   */
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 
   /**
    * The quantity that results from matching the `buyget` promotion's condition.
@@ -137,6 +149,13 @@ export interface CreateApplicationMethodDTO {
    * value of this attribute is `2`.
    */
   buy_rules_min_quantity?: number | null
+
+  /**
+   * How a `buyget` promotion picks the items it discounts. With
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   */
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 
   /**
    * The quantity that results from matching the `buyget` promotion's condition.
@@ -212,6 +231,13 @@ export interface UpdateApplicationMethodDTO {
   buy_rules_min_quantity?: number | null
 
   /**
+   * How a `buyget` promotion picks the items it discounts. With
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   */
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
+
+  /**
    * The quantity that results from matching the `buyget` promotion's condition.
    * For example, if the promotion is a "Buy 2 shirts get 1 free", the value
    * of this attribute is `1`.
@@ -227,8 +253,7 @@ export interface UpdateApplicationMethodDTO {
 /**
  * The filters to apply on the retrieved application methods.
  */
-export interface FilterableApplicationMethodProps
-  extends BaseFilterable<FilterableApplicationMethodProps> {
+export interface FilterableApplicationMethodProps extends BaseFilterable<FilterableApplicationMethodProps> {
   /**
    * The IDs to filter the application methods by.
    */

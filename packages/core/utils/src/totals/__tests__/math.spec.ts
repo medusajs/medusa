@@ -14,5 +14,18 @@ describe("MathBN", () => {
     it("does not round when decimalPlaces is omitted", () => {
       expect(MathBN.convert(1.234).toString()).toEqual("1.234")
     })
+
+    it("converts objects from another BigNumber copy through toString", () => {
+      const foreignBigNumber = {
+        raw: { value: "2.5", precision: 20 },
+        toString() {
+          return this.raw.value
+        },
+      }
+
+      expect(MathBN.convert(foreignBigNumber as any).toString()).toEqual(
+        "2.5"
+      )
+    })
   })
 })

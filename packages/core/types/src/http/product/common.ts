@@ -388,8 +388,7 @@ export interface BaseProductOptionValue {
  * The filters to apply on the retrieved products.
  */
 export interface BaseProductListParams
-  extends FindParams,
-    BaseFilterable<BaseProductListParams> {
+  extends FindParams, BaseFilterable<BaseProductListParams> {
   /**
    * A query or keywords to search the searchable fields by.
    */
@@ -469,8 +468,7 @@ export interface BaseProductListParams
 }
 
 export interface BaseProductOptionListParams
-  extends FindParams,
-    BaseFilterable<BaseProductOptionListParams> {
+  extends FindParams, BaseFilterable<BaseProductOptionListParams> {
   /**
    * A query or keywords to search the searchable fields by.
    */
@@ -505,8 +503,7 @@ export interface BaseProductOptionListParams
  * The filters to apply on the retrieved product options.
  */
 export interface BaseProductOptionParams
-  extends FindParams,
-    BaseFilterable<BaseProductOptionParams> {
+  extends FindParams, BaseFilterable<BaseProductOptionParams> {
   /**
    * A query or keywords to search the searchable fields by.
    */
@@ -535,8 +532,7 @@ export interface BaseProductOptionParams
  * The filters to apply on the retrieved product variants.
  */
 export interface BaseProductVariantParams
-  extends FindParams,
-    BaseFilterable<BaseProductVariantParams> {
+  extends FindParams, BaseFilterable<BaseProductVariantParams> {
   /**
    * Query or keywords to filter the variant's searchable fields.
    */

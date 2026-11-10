@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Container } from "@medusajs/ui";
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
@@ -28,6 +29,8 @@ export function GiftCardProductsTable() {
 
   const columns = useGiftCardProductsTableColumns();
   const filters = useGiftCardProductsFilters();
+  const { hasPermission } = usePermissions();
+  const canCreate = hasPermission("product:create");
 
   return (
     <Fragment>
@@ -42,12 +45,16 @@ export function GiftCardProductsTable() {
           rowCount={count}
           enableSearch={false}
           heading="Gift Card Products"
-          actions={[
-            {
-              label: "Create",
-              to: "create",
-            },
-          ]}
+          actions={
+            canCreate
+              ? [
+                  {
+                    label: "Create",
+                    to: "create",
+                  },
+                ]
+              : []
+          }
           rowHref={(row: AdminProduct) => `${row.id}`}
           emptyState={{
             empty: {

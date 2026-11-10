@@ -439,7 +439,7 @@ export default class SearchModuleService
 
     return definitions.map((definition) => {
       const record = byName.get(definition.name)
-      const versions = record ? versionsByIndexId.get(record.id) ?? [] : []
+      const versions = record ? (versionsByIndexId.get(record.id) ?? []) : []
       const activeVersion =
         record?.active_version != null
           ? versions.find(

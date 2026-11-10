@@ -3,6 +3,7 @@ import {
   IIndexService,
   ISearchModuleService,
   LoadedModule,
+  Logger,
   MedusaContainer,
   ModuleJoinerConfig,
   RemoteJoinerOptions,
@@ -18,6 +19,8 @@ import {
   SearchTypes,
 } from "@medusajs/types"
 import {
+  ContainerRegistrationKeys,
+  INDEX_MODULE_DEPRECATION_MESSAGE,
   MedusaError,
   applyTranslations,
   Cached,
@@ -56,6 +59,8 @@ export class Query {
   #indexModule: IIndexService
   #searchModule?: ISearchModuleService
   protected container: MedusaContainer
+
+  static #hasWarnedIndexDeprecation = false
 
   static traceGraphQuery?: (
     queryFn: () => Promise<any>,
@@ -158,8 +163,7 @@ export class Query {
     const normalizedQuery = toRemoteQuery(queryOptions, this.#joinerConfigs)
 
     let response:
-      | any[]
-      | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
+      any[] | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
 
     if (Query.traceGraphQuery) {
       response = await Query.traceGraphQuery(
@@ -213,8 +217,7 @@ export class Query {
   ): Promise<SearchResultSet<TEntry>>
   async search<const TEntry extends string>(
     queryOptions:
-      | SearchTypes.SearchQuery<TEntry>
-      | SearchTypes.SearchQuery<TEntry>[],
+      SearchTypes.SearchQuery<TEntry> | SearchTypes.SearchQuery<TEntry>[],
     options?: RemoteJoinerOptions
   ): Promise<SearchResultSet<TEntry> | SearchResultSet<TEntry>[]> {
     if (!this.#searchModule) {
@@ -314,6 +317,9 @@ export class Query {
     return { data, search_result: searchResult } as SearchResultSet<TEntry>
   }
 
+  /**
+   * @deprecated The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property
+   */
   @Cached(queryCacheDecoratorOptions)
   async index<const TEntry extends string>(
     queryOptions: RemoteQueryInput<TEntry> & {
@@ -326,6 +332,15 @@ export class Query {
         MedusaError.Types.INVALID_DATA,
         "Index module is not loaded."
       )
+    }
+
+    if (!Query.#hasWarnedIndexDeprecation) {
+      Query.#hasWarnedIndexDeprecation = true
+      const logger: Logger =
+        this.container?.resolve(ContainerRegistrationKeys.LOGGER, {
+          allowUnregistered: true,
+        }) ?? (console as unknown as Logger)
+      logger.warn(INDEX_MODULE_DEPRECATION_MESSAGE)
     }
 
     const mainEntity = queryOptions.entity

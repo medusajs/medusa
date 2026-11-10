@@ -1,4 +1,4 @@
-import { getOsShortcut, Kbd, InlineIcon, Table } from "docs-ui"
+import { getOsShortcut, Kbd, InlineIcon, Note, Table } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
@@ -341,6 +341,20 @@ Each environment has its own database, so Medusa runs a data migration script on
 
 - A script that completed in a previous deployment doesn't run again in later deployments.
 - A script that throws an error, or that was interrupted, runs again in the next deployment until it completes successfully.
+
+### Failed Data Migration Scripts
+
+Starting from Medusa v2.22.0, a data migration script that throws an error fails the deployment. The deployment's status becomes "Deploy failed", and the previous deployment remains live. Any database migrations and link changes that ran before the script in the same deployment remain applied.
+
+To fix the failure, check the [runtime logs](../logs/page.mdx) for the script's error, fix the script, and deploy the changes again. The script then runs again in the new deployment.
+
+In earlier versions, the deployment goes live even if a data migration script throws an error, and the script runs again in the next deployment.
+
+<Note>
+
+If your data migration script throws an error on purpose so that it runs again in a later deployment, it fails every deployment until it completes successfully. Instead, return from the script without throwing, and move the retry logic into the script itself or into a [scheduled job](!docs!/learn/fundamentals/scheduled-jobs).
+
+</Note>
 
 ### Run One-Off Data Scripts on Cloud
 

@@ -580,6 +580,9 @@
         "edit": {
           "type": "string"
         },
+        "view": {
+          "type": "string"
+        },
         "addItems": {
           "type": "string"
         },
@@ -663,6 +666,7 @@
         "reset",
         "confirm",
         "edit",
+        "view",
         "addItems",
         "download",
         "clear",
@@ -8714,6 +8718,12 @@
             "allocationTooltip": {
               "type": "string"
             },
+            "targetSelectionStrategy": {
+              "type": "string"
+            },
+            "targetSelectionStrategyTooltip": {
+              "type": "string"
+            },
             "addCondition": {
               "type": "string"
             },
@@ -8827,6 +8837,8 @@
             "method",
             "allocation",
             "allocationTooltip",
+            "targetSelectionStrategy",
+            "targetSelectionStrategyTooltip",
             "addCondition",
             "clearAll",
             "taxInclusive",
@@ -9220,6 +9232,39 @@
               "required": ["each", "across", "once"],
               "additionalProperties": false
             },
+            "target_selection_strategy": {
+              "type": "object",
+              "properties": {
+                "most_expensive_first": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["title", "description"],
+                  "additionalProperties": false
+                },
+                "cheapest_first": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["title", "description"],
+                  "additionalProperties": false
+                }
+              },
+              "required": ["most_expensive_first", "cheapest_first"],
+              "additionalProperties": false
+            },
             "code": {
               "type": "object",
               "properties": {
@@ -9304,6 +9349,7 @@
             "max_quantity",
             "type",
             "allocation",
+            "target_selection_strategy",
             "code",
             "value",
             "value_type",
@@ -10859,9 +10905,6 @@
             "alreadyAddedTooltip": {
               "type": "string"
             },
-            "unassignableRoleTooltip": {
-              "type": "string"
-            },
             "add": {
               "type": "object",
               "properties": {
@@ -10951,13 +10994,7 @@
               "additionalProperties": false
             }
           },
-          "required": [
-            "alreadyAddedTooltip",
-            "unassignableRoleTooltip",
-            "add",
-            "remove",
-            "list"
-          ],
+          "required": ["alreadyAddedTooltip", "add", "remove", "list"],
           "additionalProperties": false
         },
         "permissions": {
@@ -10994,9 +11031,19 @@
               },
               "required": ["heading", "description"],
               "additionalProperties": false
+            },
+            "manage": {
+              "type": "object",
+              "properties": {
+                "successToast": {
+                  "type": "string"
+                }
+              },
+              "required": ["successToast"],
+              "additionalProperties": false
             }
           },
-          "required": ["header", "hint", "empty", "filtered"],
+          "required": ["header", "hint", "empty", "filtered", "manage"],
           "additionalProperties": false
         },
         "list": {
@@ -11078,11 +11125,14 @@
             "header": {
               "type": "string"
             },
+            "identityHint": {
+              "type": "string"
+            },
             "successToast": {
               "type": "string"
             }
           },
-          "required": ["header", "successToast"],
+          "required": ["header", "identityHint", "successToast"],
           "additionalProperties": false
         },
         "delete": {
@@ -11421,9 +11471,6 @@
         "currencyAlreadyAdded": {
           "type": "string"
         },
-        "localeAlreadyAdded": {
-          "type": "string"
-        },
         "edit": {
           "type": "object",
           "properties": {
@@ -11485,7 +11532,6 @@
         "enableTaxInclusivePricing",
         "disableTaxInclusivePricing",
         "currencyAlreadyAdded",
-        "localeAlreadyAdded",
         "edit",
         "toast"
       ],
@@ -12846,6 +12892,15 @@
         "passwordMismatch": {
           "type": "string"
         },
+        "signedInTitle": {
+          "type": "string"
+        },
+        "signedInHint": {
+          "type": "string"
+        },
+        "signOut": {
+          "type": "string"
+        },
         "toast": {
           "type": "object",
           "properties": {
@@ -12871,6 +12926,9 @@
         "invalidTokenTitle",
         "invalidTokenHint",
         "passwordMismatch",
+        "signedInTitle",
+        "signedInHint",
+        "signOut",
         "toast"
       ],
       "additionalProperties": false
@@ -14576,6 +14634,19 @@
           "required": ["title", "description", "requiredPermission", "action"],
           "additionalProperties": false
         },
+        "noPermissions": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": ["title", "description"],
+          "additionalProperties": false
+        },
         "requiredPermissions": {
           "type": "object",
           "properties": {
@@ -14740,6 +14811,7 @@
       },
       "required": [
         "accessDenied",
+        "noPermissions",
         "requiredPermissions",
         "resources",
         "actions"

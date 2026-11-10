@@ -14,7 +14,7 @@ export const LinkButton = ({
   return (
     <Link
       className={clx(
-        "transition-fg txt-compact-small-plus rounded-[4px] outline-none",
+        "txt-compact-small-plus rounded-[4px] outline-none transition-fg",
         "focus-visible:shadow-borders-focus",
         {
           "text-ui-fg-interactive hover:text-ui-fg-interactive-hover":

@@ -26,8 +26,7 @@ export interface CreateShippingOptionRuleDTO {
 /**
  * The attributes to update in the shipping option rule.
  */
-export interface UpdateShippingOptionRuleDTO
-  extends Partial<CreateShippingOptionRuleDTO> {
+export interface UpdateShippingOptionRuleDTO extends Partial<CreateShippingOptionRuleDTO> {
   /**
    * The ID of the shipping option rule.
    */

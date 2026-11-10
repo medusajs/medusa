@@ -2,16 +2,16 @@ import * as path from "path"
 import {
   ContainerReflection,
   DeclarationReflection,
+  PageDefinition,
   PageEvent,
   ProjectReflection,
   Reflection,
   ReflectionKind,
-  RenderTemplate,
   Renderer,
   RendererEvent,
   Theme,
-  UrlMapping,
 } from "typedoc"
+import { getReflectionUrl, setReflectionRoute } from "utils"
 import {
   indexTemplate,
   reflectionMemberTemplate,
@@ -27,7 +27,7 @@ import type {
   FormattingOptionsType,
   ParameterStyle,
 } from "types"
-import { Mapping } from "./types.js"
+import { Mapping, MedusaPageKind } from "./types.js"
 import { getAlias } from "./utils/reflection-template-strings.js"
 
 export class MarkdownTheme extends Theme {
@@ -104,11 +104,20 @@ export class MarkdownTheme extends Theme {
     renderer.on(PageEvent.BEGIN, this.onBeginPage.bind(this))
   }
 
-  render(
-    page: PageEvent<Reflection>,
-    template: RenderTemplate<PageEvent<Reflection>>
-  ): string {
-    return formatContents(template(page) as string)
+  render(page: PageEvent): string {
+    return formatContents(this.renderPage(page))
+  }
+
+  renderPage(page: PageEvent): string {
+    const pageEvent = page as PageEvent<ContainerReflection>
+    switch (page.pageKind as MedusaPageKind) {
+      case "member":
+        return this.getReflectionMemberTemplate()(pageEvent)
+      case "index":
+        return this.getIndexTemplate()(pageEvent)
+      default:
+        return this.getReflectionTemplate()(pageEvent)
+    }
   }
 
   getOption(key: string) {
@@ -116,25 +125,25 @@ export class MarkdownTheme extends Theme {
   }
 
   getUrls(project: ProjectReflection) {
-    const urls: UrlMapping[] = []
+    const urls: PageDefinition[] = []
     const noReadmeFile = this.readme.endsWith("none")
     if (noReadmeFile) {
-      project.url = this.entryDocument
-      urls.push(
-        new UrlMapping(
-          this.entryDocument,
-          project,
-          this.getReflectionTemplate()
-        )
-      )
+      setReflectionRoute(project, {
+        url: this.entryDocument,
+        hasOwnDocument: true,
+      })
+      urls.push({
+        url: this.entryDocument,
+        kind: "reflection",
+        model: project,
+      })
     } else {
-      project.url = this.globalsFile
-      urls.push(
-        new UrlMapping(this.globalsFile, project, this.getReflectionTemplate())
-      )
-      urls.push(
-        new UrlMapping(this.entryDocument, project, this.getIndexTemplate())
-      )
+      setReflectionRoute(project, {
+        url: this.globalsFile,
+        hasOwnDocument: true,
+      })
+      urls.push({ url: this.globalsFile, kind: "reflection", model: project })
+      urls.push({ url: this.entryDocument, kind: "index", model: project })
     }
     project.children?.forEach((child: Reflection) => {
       if (child instanceof DeclarationReflection) {
@@ -155,8 +164,8 @@ export class MarkdownTheme extends Theme {
 
   buildUrls(
     reflection: DeclarationReflection,
-    urls: UrlMapping[]
-  ): UrlMapping[] {
+    urls: PageDefinition[]
+  ): PageDefinition[] {
     const mapping = this.getMappings(
       reflection,
       reflection.parent?.isProject() || !reflection.parent
@@ -175,11 +184,11 @@ export class MarkdownTheme extends Theme {
         })
     )
     if (mapping) {
-      if (!reflection.url || !MarkdownTheme.URL_PREFIX.test(reflection.url)) {
+      const reflectionUrl = getReflectionUrl(reflection)
+      if (!reflectionUrl || !MarkdownTheme.URL_PREFIX.test(reflectionUrl)) {
         const url = this.toUrl(mapping, reflection)
-        urls.push(new UrlMapping(url, reflection, mapping.template))
-        reflection.url = url
-        reflection.hasOwnDocument = true
+        urls.push({ url, kind: mapping.pageKind, model: reflection })
+        setReflectionRoute(reflection, { url, hasOwnDocument: true })
       }
 
       for (const child of reflection.children || []) {
@@ -242,21 +251,23 @@ export class MarkdownTheme extends Theme {
     container: Reflection,
     isSymbol = false
   ) {
+    const containerUrl = getReflectionUrl(container)
+    const reflectionUrl = getReflectionUrl(reflection)
     if (
-      container.url &&
-      (!reflection.url || !MarkdownTheme.URL_PREFIX.test(reflection.url))
+      containerUrl &&
+      (!reflectionUrl || !MarkdownTheme.URL_PREFIX.test(reflectionUrl))
     ) {
       const reflectionId = this.preserveAnchorCasing
         ? reflection.name
         : reflection.name.toLowerCase()
 
       if (isSymbol) {
-        this.anchorMap[container.url]
-          ? this.anchorMap[container.url].push(reflectionId)
-          : (this.anchorMap[container.url] = [reflectionId])
+        this.anchorMap[containerUrl]
+          ? this.anchorMap[containerUrl].push(reflectionId)
+          : (this.anchorMap[containerUrl] = [reflectionId])
       }
 
-      const count = this.anchorMap[container.url]?.filter(
+      const count = this.anchorMap[containerUrl]?.filter(
         (id) => id === reflectionId
       )?.length
 
@@ -264,9 +275,11 @@ export class MarkdownTheme extends Theme {
         reflectionId + (count > 1 ? "-" + (count - 1).toString() : "")
       )
 
-      reflection.url = container.url + "#" + anchor
-      reflection.anchor = anchor
-      reflection.hasOwnDocument = false
+      setReflectionRoute(reflection, {
+        url: containerUrl + "#" + anchor,
+        anchor,
+        hasOwnDocument: false,
+      })
     }
     reflection.traverse((child) => {
       if (child instanceof DeclarationReflection) {
@@ -413,7 +426,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "modules"),
-        template: this.getReflectionTemplate(),
+        pageKind: "reflection",
       })
     }
     if (allowedDocuments[ReflectionKind.Namespace]) {
@@ -425,7 +438,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: false,
         directory: path.join(directoryPrefix || ""),
-        template: this.getReflectionTemplate(),
+        pageKind: "reflection",
       })
     }
     if (allowedDocuments[ReflectionKind.Enum]) {
@@ -437,7 +450,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "enums"),
-        template: this.getReflectionTemplate(),
+        pageKind: "reflection",
       })
     }
     if (allowedDocuments[ReflectionKind.Class]) {
@@ -449,7 +462,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "classes"),
-        template: this.getReflectionTemplate(),
+        pageKind: "reflection",
       })
     }
     if (allowedDocuments[ReflectionKind.Interface]) {
@@ -461,7 +474,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: false,
         directory: path.join(directoryPrefix || "", "interfaces"),
-        template: this.getReflectionTemplate(),
+        pageKind: "reflection",
       })
     }
 
@@ -474,7 +487,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: true,
         directory: path.join(directoryPrefix || "", "types"),
-        template: this.getReflectionMemberTemplate(),
+        pageKind: "member",
       })
     }
 
@@ -487,7 +500,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: true,
         directory: path.join(directoryPrefix || "", "variables"),
-        template: this.getReflectionMemberTemplate(),
+        pageKind: "member",
       })
     }
     if (allowedDocuments[ReflectionKind.Function]) {
@@ -499,7 +512,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: true,
         directory: path.join(directoryPrefix || "", "functions"),
-        template: this.getReflectionMemberTemplate(),
+        pageKind: "member",
       })
     }
     if (allowedDocuments[ReflectionKind.Method]) {
@@ -511,7 +524,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: true,
         directory: path.join(directoryPrefix || "", "methods"),
-        template: this.getReflectionMemberTemplate(),
+        pageKind: "member",
       })
     }
     if (allowedDocuments[ReflectionKind.Property]) {
@@ -523,7 +536,7 @@ export class MarkdownTheme extends Theme {
         },
         isLeaf: true,
         directory: path.join(directoryPrefix || "", "properties"),
-        template: this.getReflectionMemberTemplate(),
+        pageKind: "member",
       })
     }
 

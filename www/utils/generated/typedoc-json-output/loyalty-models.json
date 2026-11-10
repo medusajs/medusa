@@ -1,12 +1,13 @@
 {
-	"id": 0,
+	"schemaVersion": "2.0",
+	"id": 67707,
 	"name": "loyalty-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1,
+			"id": 67708,
 			"name": "GiftCard",
 			"variant": "declaration",
 			"kind": 32,
@@ -16,34 +17,36 @@
 					"fileName": "gift-card.ts",
 					"line": 4,
 					"character": 0,
-					"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L4"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 2,
+									"id": 67709,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 3,
+											"id": 67710,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -53,20 +56,22 @@
 													"fileName": "gift-card.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L7"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/id.ts",
 															"qualifiedName": "IdProperty"
 														},
 														"name": "IdProperty",
@@ -79,7 +84,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 4,
+											"id": 67711,
 											"name": "status",
 											"variant": "declaration",
 											"kind": 1024,
@@ -89,13 +94,14 @@
 													"fileName": "gift-card.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L8"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/enum.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/enum.ts",
 													"qualifiedName": "EnumProperty"
 												},
 												"typeArguments": [
@@ -104,7 +110,8 @@
 														"queryType": {
 															"type": "reference",
 															"target": {
-																"sourceFileName": "../../../../packages/plugins/loyalty/src/types/loyalty/module.ts",
+																"packageName": "@medusajs/loyalty-plugin",
+																"packagePath": "src/types/loyalty/module.ts",
 																"qualifiedName": "GiftCardStatus"
 															},
 															"name": "GiftCardStatus",
@@ -119,7 +126,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 5,
+											"id": 67712,
 											"name": "value",
 											"variant": "declaration",
 											"kind": 1024,
@@ -129,13 +136,14 @@
 													"fileName": "gift-card.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L9"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/big-number.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/big-number.ts",
 													"qualifiedName": "BigNumberProperty"
 												},
 												"name": "BigNumberProperty",
@@ -144,7 +152,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 6,
+											"id": 67713,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -154,13 +162,14 @@
 													"fileName": "gift-card.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L10"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -169,7 +178,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 7,
+											"id": 67714,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -179,13 +188,14 @@
 													"fileName": "gift-card.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L11"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -194,7 +204,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 8,
+											"id": 67715,
 											"name": "expires_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -206,13 +216,14 @@
 													"fileName": "gift-card.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L12"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/date-time.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/date-time.ts",
 													"qualifiedName": "DateTimeProperty"
 												},
 												"name": "DateTimeProperty",
@@ -221,7 +232,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 9,
+											"id": 67716,
 											"name": "reference_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -233,13 +244,14 @@
 													"fileName": "gift-card.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L13"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -248,7 +260,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 10,
+											"id": 67717,
 											"name": "reference",
 											"variant": "declaration",
 											"kind": 1024,
@@ -260,13 +272,14 @@
 													"fileName": "gift-card.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L14"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -275,7 +288,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 11,
+											"id": 67718,
 											"name": "line_item_id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -287,13 +300,14 @@
 													"fileName": "gift-card.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L15"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -302,7 +316,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 12,
+											"id": 67719,
 											"name": "note",
 											"variant": "declaration",
 											"kind": 1024,
@@ -314,13 +328,14 @@
 													"fileName": "gift-card.ts",
 													"line": 16,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L16"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -329,7 +344,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 13,
+											"id": 67720,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -341,15 +356,50 @@
 													"fileName": "gift-card.ts",
 													"line": 17,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L17"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
 												"name": "JSONProperty",
 												"package": "@medusajs/utils"
 											},
@@ -360,26 +410,18 @@
 										{
 											"title": "Properties",
 											"children": [
-												3,
-												4,
-												5,
-												6,
-												7,
-												8,
-												9,
-												10,
-												11,
-												12,
-												13
+												67710,
+												67711,
+												67712,
+												67713,
+												67714,
+												67715,
+												67716,
+												67717,
+												67718,
+												67719,
+												67720
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "gift-card.ts",
-											"line": 6,
-											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L6"
 										}
 									]
 								}
@@ -391,14 +433,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 14,
+							"id": 67721,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 15,
+									"id": 67722,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -410,7 +452,7 @@
 											"fileName": "gift-card.ts",
 											"line": 5,
 											"character": 4,
-											"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L5"
 										}
 									],
 									"type": {
@@ -420,7 +462,7 @@
 									"defaultValue": "\"loyalty_gift_card\""
 								},
 								{
-									"id": 16,
+									"id": 67723,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -432,7 +474,7 @@
 											"fileName": "gift-card.ts",
 											"line": 5,
 											"character": 36,
-											"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L5"
+											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L5"
 										}
 									],
 									"type": {
@@ -446,17 +488,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										15,
-										16
+										67722,
+										67723
 									]
-								}
-							],
-							"sources": [
-								{
-									"fileName": "gift-card.ts",
-									"line": 5,
-									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5b9ad826b3f784d1853d996fdf809cc7d36eb30f/packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts#L5"
 								}
 							]
 						}
@@ -471,78 +505,95 @@
 		{
 			"title": "Variables",
 			"children": [
-				1
+				67708
 			]
 		}
 	],
 	"packageName": "@medusajs/loyalty-plugin",
 	"symbolIdMap": {
-		"0": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/index.ts",
+		"67707": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/index.ts",
 			"qualifiedName": ""
 		},
-		"1": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67708": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "default"
 		},
-		"2": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67709": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object"
 		},
-		"3": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67710": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.id"
 		},
-		"4": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67711": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.status"
 		},
-		"5": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67712": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.value"
 		},
-		"6": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67713": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.code"
 		},
-		"7": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67714": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"8": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67715": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.expires_at"
 		},
-		"9": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67716": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.reference_id"
 		},
-		"10": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67717": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.reference"
 		},
-		"11": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67718": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.line_item_id"
 		},
-		"12": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67719": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.note"
 		},
-		"13": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67720": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"14": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67721": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object"
 		},
-		"15": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67722": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.tableName"
 		},
-		"16": {
-			"sourceFileName": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/gift-card.ts",
+		"67723": {
+			"packageName": "@medusajs/loyalty-plugin",
+			"packagePath": "src/modules/loyalty/models/gift-card.ts",
 			"qualifiedName": "__object.name"
 		}
 	},
@@ -551,7 +602,7 @@
 			"1": "../../../../packages/plugins/loyalty/src/modules/loyalty/models/index.ts"
 		},
 		"reflections": {
-			"1": 0
+			"1": 67707
 		}
 	}
 }

@@ -77,3 +77,9 @@ properties:
       The quantity that results from matching the `buyget` promotion's
       condition. For example, if the promotion is a "Buy 2 shirts get 1 free",
       the value of this attribute is `1`.
+  target_selection_strategy:
+    type: string
+    description: The application method's target selection strategy.
+    enum:
+      - most_expensive_first
+      - cheapest_first

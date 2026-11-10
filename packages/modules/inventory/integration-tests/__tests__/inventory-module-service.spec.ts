@@ -694,6 +694,32 @@ moduleIntegrationTestRunner<IInventoryService>({
             expect.objectContaining({ reserved_quantity: 0 })
           )
         })
+
+        it("should only adjust inventory levels for reservations that were deleted when restoring", async () => {
+          const [deleted, live] = reservationItems
+
+          await service.softDeleteReservationItems([deleted.id])
+
+          await service.restoreReservationItems([deleted.id, live.id])
+          await service.restoreReservationItems([deleted.id, live.id])
+
+          const levels = await service.listInventoryLevels({
+            inventory_item_id: inventoryItem.id,
+          })
+
+          expect(levels).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                location_id: "location-1",
+                reserved_quantity: 2,
+              }),
+              expect.objectContaining({
+                location_id: "location-2",
+                reserved_quantity: 2,
+              }),
+            ])
+          )
+        })
       })
 
       describe("deleteReservationItemsByLineItem", () => {
@@ -806,6 +832,20 @@ moduleIntegrationTestRunner<IInventoryService>({
 
           expect(inventoryLevel).toEqual(
             expect.objectContaining({ reserved_quantity: 2 })
+          )
+        })
+
+        it("should not adjust inventory levels when restoring reservations by line item that are not deleted", async () => {
+          await service.restoreReservationItemsByLineItem("line-item-id")
+
+          const inventoryLevel =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+
+          expect(inventoryLevel).toEqual(
+            expect.objectContaining({ reserved_quantity: 6 })
           )
         })
       })

@@ -32,9 +32,8 @@ export const createReturnItemsFromActionsStep = createStep(
       } as CreateOrderReturnItemDTO
     })
 
-    const createdReturnItems = await orderModuleService.createReturnItems(
-      returnItems
-    )
+    const createdReturnItems =
+      await orderModuleService.createReturnItems(returnItems)
 
     return new StepResponse(
       createdReturnItems,

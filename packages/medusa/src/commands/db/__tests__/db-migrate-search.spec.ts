@@ -1,10 +1,18 @@
 import { MedusaContainer, SearchTypes } from "@medusajs/types"
-import checkbox from "@inquirer/checkbox"
 import { migrateSearchIndexes } from "../migrate-search"
 
 // ─── Mocks ────────────────────────────────────────────────────────────────────
 
-jest.mock("@inquirer/checkbox", () => jest.fn())
+jest.mock("@inquirer/checkbox", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+const checkbox = jest.requireMock("@inquirer/checkbox").default as jest.Mock
+
+jest.mock("boxen", () => ({
+  __esModule: true,
+  default: (text: string) => text,
+}))
 
 jest.mock("../../../loaders", () => ({
   initializeContainer: jest.fn(),
@@ -138,7 +146,7 @@ describe("db:migrate:search – dropping undeclared indexes", () => {
 
   it("asks before dropping, and drops only what was selected", async () => {
     const plan = [drop("blog"), drop("article")]
-    ;(checkbox as unknown as jest.Mock).mockResolvedValue([plan[0]])
+    checkbox.mockResolvedValue([plan[0]])
 
     const { searchModule } = await run(plan)
 

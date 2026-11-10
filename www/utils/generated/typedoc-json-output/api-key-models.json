@@ -1,4 +1,5 @@
 {
+	"schemaVersion": "2.0",
 	"id": 370,
 	"name": "api-key-models",
 	"variant": "project",
@@ -18,20 +19,22 @@
 					"fileName": "api-key.ts",
 					"line": 3,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L3"
 				}
 			],
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
 					{
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
 							"qualifiedName": "DMLEntitySchemaBuilder"
 						},
 						"typeArguments": [
@@ -63,20 +66,22 @@
 													"fileName": "api-key.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L5"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/primary-key.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
 													"qualifiedName": "PrimaryKeyModifier"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
 														"target": {
-															"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/id.ts",
 															"qualifiedName": "IdProperty"
 														},
 														"name": "IdProperty",
@@ -107,13 +112,14 @@
 													"fileName": "api-key.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L6"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -140,13 +146,14 @@
 													"fileName": "api-key.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L7"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -173,13 +180,14 @@
 													"fileName": "api-key.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L8"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -206,13 +214,14 @@
 													"fileName": "api-key.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L9"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -239,13 +248,14 @@
 													"fileName": "api-key.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L10"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/enum.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/enum.ts",
 													"qualifiedName": "EnumProperty"
 												},
 												"typeArguments": [
@@ -289,13 +299,14 @@
 													"fileName": "api-key.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L11"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/date-time.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/date-time.ts",
 													"qualifiedName": "DateTimeProperty"
 												},
 												"name": "DateTimeProperty",
@@ -322,13 +333,14 @@
 													"fileName": "api-key.ts",
 													"line": 12,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L12"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -357,13 +369,14 @@
 													"fileName": "api-key.ts",
 													"line": 13,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L13"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -392,13 +405,14 @@
 													"fileName": "api-key.ts",
 													"line": 14,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/api-key/src/models/api-key.ts#L14"
 												}
 											],
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/date-time.ts",
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/date-time.ts",
 													"qualifiedName": "DateTimeProperty"
 												},
 												"name": "DateTimeProperty",
@@ -422,14 +436,6 @@
 												381,
 												382
 											]
-										}
-									],
-									"sources": [
-										{
-											"fileName": "api-key.ts",
-											"line": 4,
-											"character": 20,
-											"url": "https://github.com/medusajs/medusa/blob/205aff40bacfa0049e0b9d3a7913a674738bff31/packages/modules/api-key/src/models/api-key.ts#L4"
 										}
 									]
 								}
@@ -460,55 +466,68 @@
 	"packageName": "@medusajs/api-key",
 	"symbolIdMap": {
 		"370": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/index.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/index.ts",
 			"qualifiedName": ""
 		},
 		"371": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "ApiKey"
 		},
 		"372": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object"
 		},
 		"373": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.id"
 		},
 		"374": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.token"
 		},
 		"375": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.salt"
 		},
 		"376": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.redacted"
 		},
 		"377": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.title"
 		},
 		"378": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.type"
 		},
 		"379": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.last_used_at"
 		},
 		"380": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.created_by"
 		},
 		"381": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.revoked_by"
 		},
 		"382": {
-			"sourceFileName": "../../../../packages/modules/api-key/src/models/api-key.ts",
+			"packageName": "@medusajs/api-key",
+			"packagePath": "src/models/api-key.ts",
 			"qualifiedName": "__object.revoked_at"
 		}
 	},

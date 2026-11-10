@@ -90,8 +90,24 @@ jobs:
             act "$number" bash scripts/labels.sh --workflow "$workflow" --action remove --label "$LABEL"
           }
 
-          ITEMS=$(gh api --paginate "repos/$REPO/issues?state=open&labels=$LABEL&per_page=100" \
-            --jq '.[] | "\(.number) \(if .pull_request then "pr" else "issue" end)"')
+          # Label filters on REST go through the search index, which can miss
+          # newly labeled items; GraphQL label connections don't.
+          list_labeled() {
+            local connection="$1" kind="$2"
+            gh api graphql --paginate -F owner="${REPO%/*}" -F name="${REPO#*/}" -F label="$LABEL" -f query="
+              query(\$owner: String!, \$name: String!, \$label: String!, \$endCursor: String) {
+                repository(owner: \$owner, name: \$name) {
+                  label(name: \$label) {
+                    $connection(states: OPEN, first: 100, after: \$endCursor) {
+                      pageInfo { hasNextPage endCursor }
+                      nodes { number }
+                    }
+                  }
+                }
+              }" --jq ".data.repository.label.$connection.nodes[]? | \"\(.number) $kind\""
+          }
+
+          ITEMS=$(list_labeled issues issue; list_labeled pullRequests pr)
 
           if [[ -z "$ITEMS" ]]; then
             echo "No open issues or PRs labeled $LABEL."

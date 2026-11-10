@@ -10,7 +10,7 @@ In this chapter, you’ll learn about scheduled jobs and how to use them.
 
 When building your commerce application, you may need to automate tasks and run them repeatedly at a specific schedule. For example, you need to automatically sync products to a third-party service once a day.
 
-In other commerce platforms, this feature isn't natively supported. Instead, you have to setup a separate application to execute cron jobs, which adds complexity as to how you expose this task to be executed in a cron job, or how you debug it when it's not running within the platform's tooling.
+In other commerce platforms, this feature isn't natively supported. Instead, you have to set up a separate application to execute cron jobs, which adds complexity as to how you expose this task to be executed in a cron job, or how you debug it when it's not running within the platform's tooling.
 
 Medusa removes this overhead by supporting this feature natively with scheduled jobs. A scheduled job is an asynchronous function that the Medusa application runs at the interval you specify during the Medusa application's runtime. Your efforts are only spent on implementing the functionality performed by the job, such as syncing products to an ERP.
 

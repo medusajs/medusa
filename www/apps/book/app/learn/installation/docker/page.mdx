@@ -13,7 +13,7 @@ export const metadata = {
 
 In this chapter, you'll learn how to install and run a Medusa application using Docker.
 
-The main supported installation method is using [create-medusa-app](../page.mdx). However, since it requires prerequisites like PostgreSQL, Docker may be a preferred and easier option for some users. You can follow this guide to set up a Medusa application with Docker in this case.
+The main supported installation method is [create-medusa-app](../page.mdx). However, it requires you to install prerequisites like PostgreSQL on your machine. If you'd rather not install them, use this guide to set up a Medusa application with Docker instead.
 
 You can follow this guide on any operating system that supports Docker, including Windows, macOS, and Linux.
 
@@ -48,7 +48,7 @@ The rest of the steps are performed inside this directory.
 
 ### Change Package Manager
 
-The project uses pnpm as the package manager in a monorepo workspace setup, as declared in `package.json`. This demonstrates a working pnpm monorepo configuration for Medusa.
+The project uses pnpm as the package manager in a monorepo workspace setup, as declared in `package.json`.
 
 To use a different package manager:
 
@@ -63,7 +63,7 @@ To use a different package manager:
 }
 ```
 
-3. Remove the `node_modules` directory and `pnpm-lock.yaml` and `pnpm-workspace.yaml` files.
+3. Remove the `node_modules` directory and the `pnpm-lock.yaml` and `pnpm-workspace.yaml` files.
 4. If you're using `yarn`, add a `.yarnrc.yml` file with the following content:
 
 ```yaml title=".yarnrc.yml"
@@ -191,7 +191,7 @@ The anonymous volumes for `node_modules` directories are required because pnpm w
 The ports configuration maps container ports to host ports using the format `"host_port:container_port"`:
 
 - `"5432:5432"`: PostgreSQL database accessible at `localhost:5432`
-- `"6379:6379"`: Redis accessible at `localhost:6379`  
+- `"6379:6379"`: Redis accessible at `localhost:6379`
 - `"9000:9000"`: Medusa backend server accessible at `localhost:9000`
 - `"5173:5173"`: Medusa Admin development server with Hot Module Replacement (HMR)
 - `"8000:8000"`: Storefront accessible at `localhost:8000`
@@ -227,12 +227,6 @@ If this isn't the first Medusa project you're setting up with Docker on your mac
 Create a script file that [runs database migrations](../../fundamentals/data-models/write-migration/page.mdx) and starts the Medusa development server.
 
 Create the file `start.sh` with the following content:
-
-<Note title="Windows Users">
-
-Ensure that the `start.sh` file uses LF line endings instead of CRLF. Git on Windows can sometimes automatically convert line endings, which causes errors when running the script inside the Linux-based Docker container. Learn how to configure your environment to maintain LF line endings in [this guide from GitHub](https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings).
-
-</Note>
 
 <CodeTabs group="npm2yarn" defaultValue="pnpm">
   <CodeTab value="pnpm" label="pnpm">
@@ -282,17 +276,17 @@ npm run dev
   </CodeTab>
 </CodeTabs>
 
+<Note title="Windows Users">
+
+Ensure that the `start.sh` file uses LF line endings instead of CRLF. Git on Windows can sometimes automatically convert line endings, which causes errors when running the script inside the Linux-based Docker container. Learn how to configure your environment to maintain LF line endings in [this guide from GitHub](https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings).
+
+</Note>
+
 ---
 
 ## 4. Create `start-storefront.sh`
 
 Create a separate script for the storefront service:
-
-<Note title="Windows Users">
-
-Apply the same LF line endings requirement mentioned in the previous step to this file as well.
-
-</Note>
 
 <CodeTabs group="npm2yarn" defaultValue="pnpm">
   <CodeTab value="pnpm" label="pnpm">
@@ -324,17 +318,19 @@ npm run dev
   </CodeTab>
 </CodeTabs>
 
-Make sure to give both scripts executable permissions:
+<Note title="Windows Users">
 
-<Note>
-
-Setting permissions isn't necessary on Windows, but it's recommended to run this command on Unix-based systems like macOS and Linux.
+Make sure this file also uses LF line endings, as described in the previous step.
 
 </Note>
+
+On Unix-based systems like macOS and Linux, give both scripts executable permissions:
 
 ```bash
 chmod +x start.sh start-storefront.sh
 ```
+
+This command isn't needed on Windows.
 
 ---
 
@@ -413,7 +409,7 @@ The workspace configuration files and all apps' `package.json` files are copied 
 
 <Note>
 
-While it's more common to use `/app` as the working directory, it's highly recommended to use `/server` for the Medusa service to avoid conflicts with Medusa Admin customizations. Learn more in [this troubleshooting guide](!resources!/troubleshooting/medusa-admin/no-widget-route#errors-in-docker).
+While `/app` is a more common working directory, use `/server` for the Medusa service to avoid conflicts with Medusa Admin customizations. Learn more in [this troubleshooting guide](!resources!/troubleshooting/medusa-admin/no-widget-route#errors-in-docker).
 
 </Note>
 
@@ -634,7 +630,7 @@ You can now log in to the Medusa Admin dashboard at `http://localhost:9000/app`.
 The storefront requires a publishable API key to connect to the Medusa backend:
 
 1. Log in to the admin dashboard at `http://localhost:9000/app`.
-2. Go to **Settings** > **API Key Management** and create a new Publishable API Key.
+2. Go to **Settings** > **Publishable API Keys** and create a new publishable API key.
 3. Add the key to `apps/storefront/.env`:
 
 ```bash
@@ -738,12 +734,12 @@ This is expected behavior. The Medusa backend API endpoints are available at pat
 
 1. Access the Medusa Admin dashboard at `http://localhost:9000/app`
 2. Check the backend health at `http://localhost:9000/health`
-3. Access the storefront at `http://localhost:8000` (if you deployed it)
+3. Access the storefront at `http://localhost:8000` (if you kept the storefront service)
 
-The "Cannot GET /" message doesn't indicate an error - it just means there's no content at the root URL.
+The "Cannot GET /" message doesn't indicate a problem. It means there's no content at the root URL.
 
 ---
 
-## Learn More about your Medusa Application
+## Learn More About Your Medusa Application
 
 You can learn more about your Medusa application and its setup in the [Installation chapter](../page.mdx).

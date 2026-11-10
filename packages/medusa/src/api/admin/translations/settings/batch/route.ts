@@ -1,12 +1,9 @@
 import { batchTranslationSettingsWorkflow } from "@medusajs/core-flows"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { defineFileConfig, FeatureFlag } from "@medusajs/framework/utils"
 import { HttpTypes } from "@medusajs/types"
-import TranslationFeatureFlag from "../../../../../feature-flags/translation"
 
 /**
  * @since 2.13.0
- * @featureFlag translation
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminBatchTranslationSettings>,
@@ -32,7 +29,3 @@ export const POST = async (
     },
   })
 }
-
-defineFileConfig({
-  isDisabled: () => !FeatureFlag.isFeatureEnabled(TranslationFeatureFlag.key),
-})

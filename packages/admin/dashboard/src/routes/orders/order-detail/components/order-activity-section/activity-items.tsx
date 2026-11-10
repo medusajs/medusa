@@ -11,8 +11,7 @@ import { Thumbnail } from "../../../../../components/common/thumbnail"
 
 type ActivityItemsProps = {
   itemsToSend?:
-    | AdminClaim["additional_items"]
-    | AdminExchange["additional_items"]
+    AdminClaim["additional_items"] | AdminExchange["additional_items"]
   itemsToReturn?: AdminReturn["items"]
   itemsMap?: Map<string, AdminOrderLineItem>
   title: string
@@ -54,7 +53,7 @@ function ActivityItems(props: ActivityItemsProps) {
       <Popover.Content
         align="center"
         side="top"
-        className="bg-ui-bg-component max-w-[200px] p-0 focus-visible:outline-none"
+        className="max-w-[200px] bg-ui-bg-component p-0 focus-visible:outline-none"
       >
         <div className="flex flex-col">
           {!!itemsToSend?.length && (
@@ -75,7 +74,7 @@ function ActivityItems(props: ActivityItemsProps) {
 
                       <Thumbnail src={originalItem?.thumbnail} />
 
-                      <Text className="txt-compact-small text-ui-fg-subtle truncate">
+                      <Text className="txt-compact-small truncate text-ui-fg-subtle">
                         {`${originalItem?.variant_title} · ${originalItem?.product_title}`}
                       </Text>
                     </div>
@@ -105,7 +104,7 @@ function ActivityItems(props: ActivityItemsProps) {
 
                       <Thumbnail src={originalItem?.thumbnail} />
 
-                      <Text className="txt-compact-small text-ui-fg-subtle truncate">
+                      <Text className="txt-compact-small truncate text-ui-fg-subtle">
                         {`${originalItem?.variant_title} · ${originalItem?.product_title}`}
                       </Text>
                     </div>

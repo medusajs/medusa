@@ -8,8 +8,7 @@ post:
     API route to check the index's `status` and know when the rebuild is done.
   externalDocs:
     description: Learn about reindexing and index migrations
-    url: >-
-      https://docs.medusajs.com/resources/infrastructure-modules/search/reindexing
+    url: https://docs.medusajs.com/resources/infrastructure-modules/search/reindexing
   x-authenticated: true
   parameters:
     - name: id

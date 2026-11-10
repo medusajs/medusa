@@ -33,9 +33,8 @@ export const GET = async (
     fields: req.queryConfig.fields.map((f) => `payment_provider.${f}`),
   })
 
-  const { rows: regionPaymentProvidersRelation, metadata } = await remoteQuery(
-    queryObject
-  )
+  const { rows: regionPaymentProvidersRelation, metadata } =
+    await remoteQuery(queryObject)
 
   const paymentProviders = regionPaymentProvidersRelation.map(
     (relation) => relation.payment_provider

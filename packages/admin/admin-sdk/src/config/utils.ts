@@ -61,7 +61,7 @@ export function defineLayoutConfig(config: LayoutConfig) {
  * @experimental This API is experimental and may change in the future.
  */
 export function unstable_defineCustomFieldsConfig<
-  TModel extends keyof CustomFieldModelFormMap
+  TModel extends keyof CustomFieldModelFormMap,
 >(config: CustomFieldConfig<TModel>) {
   return createConfigHelper(config)
 }

@@ -101,80 +101,83 @@ export async function generateTokens({ output }: GenerateTokensArgs) {
     },
   }
 
-  const typo = Object.values(textStyles.nodes).reduce((acc, curr) => {
-    if (!curr) {
-      return acc
-    }
-
-    const node = curr.document as unknown as Node<"TEXT">
-
-    const isText = node.name.startsWith("Text")
-
-    if (isText) {
-      const [_parent, identifier] = node.name.split("/")
-      const { lineHeightPx, fontWeight, fontSize } = node.style
-
-      const name = "." + identifier.toLowerCase().replace("text", "txt")
-
-      const style: CSSProperties = {
-        fontSize: `${fontSize / 16}rem`,
-        lineHeight: `${lineHeightPx / 16}rem`,
-        fontWeight: `${fontWeight}`,
-        fontFamily: FONT_FAMILY_SANS.join(", "),
+  const typo = Object.values(textStyles.nodes).reduce(
+    (acc, curr) => {
+      if (!curr) {
+        return acc
       }
 
-      acc[name] = style
+      const node = curr.document as unknown as Node<"TEXT">
 
-      return acc
-    }
+      const isText = node.name.startsWith("Text")
 
-    const isHeader = node.name.startsWith("Headers")
+      if (isText) {
+        const [_parent, identifier] = node.name.split("/")
+        const { lineHeightPx, fontWeight, fontSize } = node.style
 
-    if (isHeader) {
-      const [theme, identifier] = node.name.split("/")
+        const name = "." + identifier.toLowerCase().replace("text", "txt")
 
-      const formattedTheme = theme.toLowerCase().replace("headers ", "")
-      const formattedIdentifier = identifier.toLowerCase()
+        const style: CSSProperties = {
+          fontSize: `${fontSize / 16}rem`,
+          lineHeight: `${lineHeightPx / 16}rem`,
+          fontWeight: `${fontWeight}`,
+          fontFamily: FONT_FAMILY_SANS.join(", "),
+        }
 
-      const name = "." + `${formattedIdentifier}-${formattedTheme}`
+        acc[name] = style
 
-      const { lineHeightPx, fontSize, fontWeight } = node.style
-
-      const style: CSSProperties = {
-        fontSize: `${fontSize / 16}rem`,
-        lineHeight: `${lineHeightPx / 16}rem`,
-        fontWeight: `${fontWeight}`,
-        fontFamily: FONT_FAMILY_SANS.join(", "),
+        return acc
       }
 
-      acc[name] = style
+      const isHeader = node.name.startsWith("Headers")
 
-      return acc
-    }
+      if (isHeader) {
+        const [theme, identifier] = node.name.split("/")
 
-    const isCodeBlock = node.name.startsWith("Code")
+        const formattedTheme = theme.toLowerCase().replace("headers ", "")
+        const formattedIdentifier = identifier.toLowerCase()
 
-    if (isCodeBlock) {
-      const [_parent, identifier] = node.name.split("/")
+        const name = "." + `${formattedIdentifier}-${formattedTheme}`
 
-      const formattedIdentifier = "." + "code-" + identifier.toLowerCase()
+        const { lineHeightPx, fontSize, fontWeight } = node.style
 
-      const { lineHeightPx, fontSize, fontWeight } = node.style
+        const style: CSSProperties = {
+          fontSize: `${fontSize / 16}rem`,
+          lineHeight: `${lineHeightPx / 16}rem`,
+          fontWeight: `${fontWeight}`,
+          fontFamily: FONT_FAMILY_SANS.join(", "),
+        }
 
-      const style: CSSProperties = {
-        fontSize: `${fontSize / 16}rem`,
-        lineHeight: `${lineHeightPx / 16}rem`,
-        fontWeight: `${fontWeight}`,
-        fontFamily: FONT_FAMILY_MONO.join(", "),
+        acc[name] = style
+
+        return acc
       }
 
-      acc[formattedIdentifier] = style
+      const isCodeBlock = node.name.startsWith("Code")
+
+      if (isCodeBlock) {
+        const [_parent, identifier] = node.name.split("/")
+
+        const formattedIdentifier = "." + "code-" + identifier.toLowerCase()
+
+        const { lineHeightPx, fontSize, fontWeight } = node.style
+
+        const style: CSSProperties = {
+          fontSize: `${fontSize / 16}rem`,
+          lineHeight: `${lineHeightPx / 16}rem`,
+          fontWeight: `${fontWeight}`,
+          fontFamily: FONT_FAMILY_MONO.join(", "),
+        }
+
+        acc[formattedIdentifier] = style
+
+        return acc
+      }
 
       return acc
-    }
-
-    return acc
-  }, {} as Record<string, CSSProperties>)
+    },
+    {} as Record<string, CSSProperties>
+  )
 
   const typoPath = path.join(output, "tokens", "typography.ts")
 

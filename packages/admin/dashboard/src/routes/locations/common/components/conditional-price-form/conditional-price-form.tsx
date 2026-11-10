@@ -40,7 +40,7 @@ interface ConditionalPriceFormProps {
 }
 
 const ConditionContainer = ({ children }: { children: ReactNode }) => (
-  <div className="text-ui-fg-subtle txt-small flex flex-wrap items-center gap-1.5">
+  <div className="txt-small flex flex-wrap items-center gap-1.5 text-ui-fg-subtle">
     {children}
   </div>
 )
