@@ -775,7 +775,7 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       expect(getArg(plan, "filters")?.value).toEqual({})
     })
 
-    it("keeps sibling module-internal filters when pushing nested link filters", () => {
+    it("keeps hasMany sibling filters on the same row as the nested link filter", () => {
       const { plan } = compile({
         entity: "variant",
         fields: ["id"],
@@ -790,14 +790,72 @@ describe("cross-module joins (stage 1 pushdown)", () => {
         },
       })
 
-      expect(plan.crossModuleJoins).toHaveLength(3)
-      expect(plan.crossModuleJoins![2].target.filters).toEqual({
-        currency_code: "usd",
+      expect(plan.crossModuleJoins).toEqual([
+        {
+          link: {
+            table: "product_variant",
+            sourceKey: "id",
+            targetKey: "product_id",
+          },
+          target: {
+            table: "product",
+            primaryKey: "id",
+          },
+        },
+        {
+          parent: "product",
+          link: {
+            table: "product_variant",
+            sourceKey: "product_id",
+            targetKey: "id",
+          },
+          target: {
+            table: "product_variant",
+            primaryKey: "id",
+            filters: { sku: "SHIRT-S" },
+          },
+        },
+        {
+          parent: "product_variant",
+          link: {
+            table: "product_variant_price_set",
+            sourceKey: "variant_id",
+            targetKey: "price_set_id",
+          },
+          target: {
+            table: "price_set",
+            primaryKey: "id",
+            filters: { currency_code: "usd" },
+          },
+        },
+      ])
+      expect(getArg(plan, "filters")?.value).toEqual({
+        product: { title: "Shirt" },
       })
+    })
+
+    it("leaves hasMany filters in place when a sibling cannot be pushed down", () => {
+      const { plan } = compile({
+        entity: "variant",
+        fields: ["id"],
+        filters: {
+          product: {
+            variants: {
+              sku: { $exists: true },
+              price_set: { currency_code: "usd" },
+            },
+          },
+        },
+      })
+
+      expect(plan.crossModuleJoins).toEqual([])
+      expect(plan.residualCrossModuleFilters).toEqual([])
       expect(getArg(plan, "filters")?.value).toEqual({
         product: {
-          title: "Shirt",
-          variants: { sku: "SHIRT-S" },
+          variants: {
+            sku: { $exists: true },
+            price_set: { currency_code: "usd" },
+          },
         },
       })
     })
