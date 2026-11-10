@@ -342,6 +342,31 @@ export interface UpdateAccountHolderDTO {
 }
 
 /**
+ * The details of the account holder to replace.
+ */
+export interface ReplaceAccountHolderDTO {
+  /**
+   * The ID of the account holder.
+   */
+  id: string
+
+  /**
+   * The provider's ID.
+   */
+  provider_id: string
+
+  /**
+   * Necessary context data for the associated payment provider.
+   */
+  context: PaymentProviderContext & {
+    /**
+     * The customer information from Medusa.
+     */
+    customer: PaymentCustomerDTO
+  }
+}
+
+/**
  * The details of the webhook event payload.
  */
 export interface ProviderWebhookPayload {
