@@ -26,12 +26,7 @@ export type ToasterPosition =
   | "bottom-right"
 
 export type ToastVariant =
-  | "info"
-  | "success"
-  | "warning"
-  | "error"
-  | "loading"
-  | "message"
+  "info" | "success" | "warning" | "error" | "loading" | "message"
 
 export type ToastActionVariant = "default" | "destructive"
 

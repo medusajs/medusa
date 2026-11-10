@@ -83,7 +83,7 @@ export const booleanString = () =>
  */
 export function recursivelyNormalizeSchema<
   Data extends object,
-  NormalizedData extends object
+  NormalizedData extends object,
 >(transform: (data: Data) => NormalizedData): (data: Data) => NormalizedData {
   return (data: any) => {
     const normalizedData = transform(data)

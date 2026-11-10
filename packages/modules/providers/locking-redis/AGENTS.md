@@ -35,6 +35,7 @@ module.exports = defineConfig({
 ## Architecture
 
 - `src/loaders/index.ts`: creates the ioredis connection and registers `redisClient` and `prefix` in the provider container.
+- `shutdown()` disconnects the client; the Locking Module calls it from its `onApplicationShutdown` hook.
 - `src/services/redis-lock.ts`: `RedisLockingProvider implements ILockingProvider`, `static identifier = "locking-redis"`. Implements `execute`, `acquire`, `release`, `releaseAll`. Atomic acquire/extend/release are custom Lua commands defined with `defineCommand`, all owner-checked.
 - `execute(keys, job, { timeout?, expire? })`: acquires with a per-call owner `execute:{uuid}`, retries with exponential backoff + jitter until `timeout`, then renews the lease (`expire`, default 60 s) every `expire / 3` while `job` runs. If renewal finds the key lost, `job`'s `AbortSignal` is aborted and `execute` throws a `CONFLICT` error even if `job` resolved.
 - Reference for a custom locking provider that needs lease semantics.

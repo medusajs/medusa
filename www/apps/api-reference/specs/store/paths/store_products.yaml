@@ -38,8 +38,7 @@ get:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
@@ -187,8 +186,7 @@ get:
       schema:
         description: Filter by a collection's ID to retrieve the products in it.
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/storefront-development/products/collections/products
+          url: https://docs.medusajs.com/resources/storefront-development/products/collections/products
           description: 'Storefront guide: Retrieve a collection''s products.'
         items:
           type: string
@@ -777,8 +775,7 @@ get:
           The ID of the region the products are being viewed from. This is
           required if you're retrieving product variant prices with taxes.
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/storefront-development/products/price/examples/tax-price
+          url: https://docs.medusajs.com/resources/storefront-development/products/price/examples/tax-price
           description: 'Storefront guide: How to show product variants'' prices with taxes.'
     - name: province
       in: query
@@ -1388,8 +1385,7 @@ get:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: external_id
       in: query

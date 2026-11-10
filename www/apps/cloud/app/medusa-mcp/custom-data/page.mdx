@@ -20,7 +20,7 @@ To answer these questions, create a custom `GET` [API route](!docs!/learn/fundam
 
 <Note>
 
-The AI tool can't find or call custom API routes under other prefixes, such as `/custom`. It also can't call `POST` or `DELETE` API routes, since the Medusa MCP server is read-only.
+The AI tool can't find or call custom API routes under other prefixes, such as `/custom`, or API routes defined in plugins. It also can't call `POST` or `DELETE` API routes, since the Medusa MCP server is read-only.
 
 </Note>
 
@@ -203,18 +203,11 @@ export const GET = async (
 }
 ```
 
-Keep the following in mind when you create API routes for the AI tool:
+The API route uses the `hours`, `limit`, and `offset` query parameters to retrieve the abandoned carts with [Query](!docs!/learn/fundamentals/query). It also follows the [best practices](#best-practices-for-custom-api-routes) that help the AI tool find and call it:
 
-- **Add a comment above the `GET` function**: Medusa uses the comment's first line as the API route's summary and the rest as its description. The AI tool searches these to find the API route that matches your question, so use words you'd use when asking, such as "abandoned carts".
-- **Type the request and response**: Medusa reads the query parameters from the request's type, such as the second type argument of `AuthenticatedMedusaRequest`, and the response's shape from `MedusaResponse`. Without these types, the AI tool doesn't know which parameters the API route accepts.
-- **Paginate list responses**: Accept `limit` and `offset` query parameters, and return `count`, `limit`, and `offset` in the response, like Medusa's list API routes. The AI tool uses them to page through results, and smaller responses are faster to process.
-- **Keep the response shallow**: Medusa truncates the documented response shape of deeply nested or very large types. Return only the fields the AI tool needs.
-
-<Note>
-
-Medusa reads the query parameters from the API route's types, not from the middleware. So, you need both the middleware to validate the parameters, and the types in the API route for the AI tool to know about them.
-
-</Note>
+- The comment above the `GET` function describes the API route.
+- The second type argument of `AuthenticatedMedusaRequest` declares the query parameters.
+- The API route paginates its response.
 
 ---
 
@@ -237,6 +230,126 @@ When you update an API route's code, comments, or types, deploy the changes agai
 
 ---
 
+## Best Practices for Custom API Routes
+
+Medusa doesn't run your API routes to index them. Instead, it reads each API route's file during the build to describe the API route to the AI tool:
+
+- The API route's path, from the file's location under `src/api`.
+- The API route's summary and description, from the comment above the exported `GET` function.
+- The API route's parameters, from the TypeScript types of the request and the comments on their properties.
+
+The AI tool searches the summaries, descriptions, paths, and parameter names to find an API route for your question. Then, it reads the description and parameters to decide how to call it. So, the more your API route's comments and types describe it, the better the AI tool's answers.
+
+Follow these best practices when you create API routes for the AI tool.
+
+### Describe the API Route in a Comment
+
+Add a comment above the exported `GET` function. Medusa uses the comment's first line as the API route's summary, and the rest of the comment as its description:
+
+```ts title="src/api/admin/abandoned-carts/route.ts"
+/**
+ * List abandoned carts
+ *
+ * Retrieve carts with an email that customers didn't
+ * complete or update within the specified number of hours.
+ */
+export const GET = async () => {}
+```
+
+When you write the comment:
+
+- Use the words that you'd use when asking about the data, such as "abandoned carts". The AI tool matches your question against these words.
+- Describe the data that the API route returns, and any path parameters, such as `{id}`. The AI tool reads the description, but it doesn't receive the response's shape or a description of path parameters.
+- Write the comment above the `GET` function, not above a function that it calls. Medusa only reads the comment of the exported function.
+
+Without a comment, Medusa generates a generic summary from the API route's method and path, such as "List abandoned carts", and the AI tool has less information to find the API route.
+
+### Pass the Query Parameters as a Type Argument
+
+Pass the query parameters' type as the second type argument of `MedusaRequest` or `AuthenticatedMedusaRequest`:
+
+```ts title="src/api/admin/abandoned-carts/route.ts"
+export const GET = async (
+  req: AuthenticatedMedusaRequest<
+    unknown,
+    AdminGetAbandonedCartsParamsType
+  >,
+  res: MedusaResponse<AdminAbandonedCartsResponse>
+) => {
+  // ...
+}
+```
+
+Medusa reads the query parameters from this type argument, not from the validation middleware. So, you need both the middleware to validate the parameters, and the type argument for the AI tool to know about them. Without the type argument, the AI tool doesn't know which parameters the API route accepts.
+
+You can infer the type from the Zod schema with `z.infer`, as in the [example](#step-1-add-the-validation-middleware), so that you define the parameters once.
+
+### Pass the Request Body as a Type Argument
+
+For `POST` API routes, pass the request body's type as the first type argument of `MedusaRequest` or `AuthenticatedMedusaRequest`:
+
+```ts title="src/api/admin/brands/route.ts"
+type AdminCreateBrandBody = {
+  /**
+   * The brand's name.
+   */
+  name: string
+}
+
+/**
+ * Create a brand
+ */
+export const POST = async (
+  req: MedusaRequest<AdminCreateBrandBody>,
+  res: MedusaResponse
+) => {
+  // ...
+}
+```
+
+Medusa indexes the request body's type with the API route, similar to query parameters.
+
+<Note>
+
+The Medusa MCP server is read-only, so the AI tool currently only calls `GET` API routes.
+
+</Note>
+
+### Document Each Parameter
+
+Add a comment above each property of the query parameters' type or Zod schema. Medusa uses the comment as the parameter's description, which tells the AI tool which values to pass:
+
+```ts title="src/api/middlewares.ts"
+export const AdminGetAbandonedCartsParams = z.object({
+  /**
+   * Return carts not updated in this number of hours.
+   */
+  hours: z.coerce.number().min(1).default(24),
+})
+```
+
+Medusa doesn't read descriptions that you set with Zod's `describe` method. Use comments instead.
+
+### Use Explicit Types
+
+Medusa can only describe the parameters that it can resolve from your types:
+
+- Don't use `any` or `unknown` for the query parameters or request body. Medusa can't describe their properties, so the AI tool doesn't know which parameters to pass.
+- Avoid index signatures and `Record` types, such as `Record<string, string>`, for parameters. Medusa describes them as a generic object without properties.
+- Keep types shallow. Medusa truncates deeply nested or very large types.
+
+If Medusa can't resolve your project's types during the build, it still indexes your API routes, but without their parameters.
+
+### Paginate List Responses
+
+Accept `limit` and `offset` query parameters, and return `count`, `limit`, and `offset` in the response, like Medusa's list API routes. The AI tool uses them to page through results.
+
+### Return Only the Data the AI Tool Needs
+
+Smaller responses are faster for the AI tool to process, and leave room in its context for your question. Return only the fields that answer the questions that the API route is for, such as with the `fields` option of [Query](!docs!/learn/fundamentals/query).
+
+---
+
 ## Troubleshooting
 
 ### AI Tool Doesn't Find the Custom API Route
@@ -246,7 +359,16 @@ If the AI tool doesn't find your custom API route, make sure that:
 - The API route's path starts with `/admin` or `/store`, and its folder names don't start with an underscore (`_`).
 - The API route's file exports a `GET` function.
 - The environment built and deployed after you added the API route. Redeploying an existing deployment reuses its previous build, so Medusa doesn't index the new API route.
+- The API route is defined in your Medusa application, not in a plugin.
 - The comment above the `GET` function describes the data with the words you use in your question. You can also mention the API route's path in your question, such as "Use the `/admin/abandoned-carts` API route".
+
+### AI Tool Doesn't Pass the Right Query Parameters
+
+If the AI tool calls your API route without the query parameters that your question needs, make sure that:
+
+- You pass the query parameters' type as the second type argument of `MedusaRequest` or `AuthenticatedMedusaRequest`, as explained in the [best practices](#pass-the-query-parameters-as-a-type-argument).
+- Each property in the type or Zod schema has a comment that describes it.
+- The environment built and deployed after you changed the types.
 
 ### Store API Route Returns an Authentication Error
 

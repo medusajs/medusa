@@ -37,6 +37,19 @@ moduleIntegrationTestRunner<ITranslationModuleService>({
         mockGetTranslatableEntities.mockRestore()
       })
 
+      describe("default locales", () => {
+        it("seeds the Persian (Iran) locale", async () => {
+          const [locale] = await service.listLocales({ code: "fa-IR" })
+
+          expect(locale).toEqual(
+            expect.objectContaining({
+              code: "fa-IR",
+              name: "Persian (Iran)",
+            })
+          )
+        })
+      })
+
       it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.TRANSLATION, {
           service: TranslationModuleService,

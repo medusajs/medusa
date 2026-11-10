@@ -141,8 +141,7 @@ export interface NotificationProviderDTO {
  * @prop q - Search through the notifications' attributes, such as trigger types and recipients, using this search term.
  */
 
-export interface FilterableNotificationProps
-  extends BaseFilterable<FilterableNotificationProps> {
+export interface FilterableNotificationProps extends BaseFilterable<FilterableNotificationProps> {
   /**
    * Search through the notifications' attributes, such as trigger types and recipients, using this search term.
    */

@@ -4,6 +4,7 @@ import rehypeSlug from "rehype-slug"
 import {
   brokenLinkCheckerPlugin,
   localLinksRehypePlugin,
+  mdContentOverrideRehypePlugin,
   cloudinaryImgRehypePlugin,
   pageNumberRehypePlugin,
   crossProjectLinksPlugin,
@@ -14,7 +15,7 @@ import {
 import path from "path"
 import redirects from "./utils/redirects.mjs"
 import { generatedSidebars } from "./generated/sidebar.mjs"
-import { catchBadRedirects } from "build-scripts"
+import { catchBadRedirects, withMdxWebpackLayers } from "build-scripts"
 import remarkFrontmatter from "remark-frontmatter"
 import withExtractedTableOfContents from "@stefanprobst/rehype-extract-toc"
 
@@ -103,6 +104,7 @@ const withMDX = mdx({
         },
       ],
       [withExtractedTableOfContents],
+      [mdContentOverrideRehypePlugin],
     ],
     remarkPlugins: [[remarkFrontmatter], [remarkAttachFrontmatterDataPlugin]],
     recmaPlugins: [[recmaInjectMdxDataPlugin]],
@@ -396,4 +398,4 @@ const nextConfig = {
   },
 }
 
-export default withMDX(nextConfig)
+export default withMdxWebpackLayers(withMDX(nextConfig))

@@ -10,12 +10,15 @@ import {
   cloudinaryImgRehypePlugin,
   resolveAdmonitionsPlugin,
   crossProjectLinksPlugin,
+  enterpriseNoticeLinkFixerPlugin,
   prerequisitesLinkFixerPlugin,
   remarkAttachFrontmatterDataPlugin,
   recmaInjectMdxDataPlugin,
   validateHighlightsPlugin,
+  mdContentOverrideRehypePlugin,
 } from "remark-rehype-plugins"
 import bundleAnalyzer from "@next/bundle-analyzer"
+import { withMdxWebpackLayers } from "build-scripts"
 import withExtractedTableOfContents from "@stefanprobst/rehype-extract-toc"
 
 const withMDX = mdx({
@@ -103,7 +106,14 @@ const withMDX = mdx({
           checkLinksType: "value",
         },
       ],
+      [
+        enterpriseNoticeLinkFixerPlugin,
+        {
+          checkLinksType: "value",
+        },
+      ],
       [withExtractedTableOfContents],
+      [mdContentOverrideRehypePlugin],
     ],
     remarkPlugins: [
       [remarkFrontmatter],
@@ -215,4 +225,4 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 })
 
-export default withMDX(withBundleAnalyzer(nextConfig))
+export default withMdxWebpackLayers(withMDX(withBundleAnalyzer(nextConfig)))

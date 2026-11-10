@@ -1,8 +1,7 @@
+import { randomUUID } from "crypto"
 import fs from "fs"
-import isDocker from "is-docker"
 import os from "os"
 import { join, sep } from "path"
-import { v4 as uuidv4 } from "uuid"
 
 import Store from "./store"
 import createFlush from "./util/create-flush"
@@ -36,7 +35,7 @@ class Telemeter {
     }
     let machineId = this.store_.getConfig(`telemetry.machine_id`)
     if (typeof machineId !== `string`) {
-      machineId = uuidv4()
+      machineId = randomUUID()
       this.store_.setConfig(`telemetry.machine_id`, machineId)
     }
     this.machineId = machineId
@@ -73,11 +72,20 @@ class Telemeter {
       is_ci: isCI(),
       ci_name: getCIName(),
       arch: os.arch(),
-      docker: isDocker(),
+      docker: this.isDocker(),
       term_program: getTermProgram(),
     }
     this.osInfo = osInfo
     return osInfo
+  }
+
+  isDocker() {
+    // is-docker is ESM-only, so Jest (which can't load it) reports false.
+    try {
+      return require("is-docker").default()
+    } catch {
+      return false
+    }
   }
 
   getMedusaVersion() {
@@ -121,7 +129,7 @@ class Telemeter {
 
   enqueue_(type, data) {
     const event = {
-      id: `te_${uuidv4()}`,
+      id: `te_${randomUUID()}`,
       type,
       properties: data,
       timestamp: new Date(),

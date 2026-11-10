@@ -7,7 +7,7 @@ import { clx } from "@/utils/clx"
 
 const iconButtonVariants = cva({
   base: clx(
-    "transition-fg inline-flex w-fit items-center justify-center overflow-hidden rounded-md outline-none",
+    "transition-fg inline-flex w-fit items-center justify-center overflow-hidden rounded-md outline-hidden",
     "disabled:bg-ui-bg-disabled disabled:shadow-buttons-neutral disabled:text-ui-fg-disabled "
   ),
   variants: {
@@ -42,7 +42,8 @@ const iconButtonVariants = cva({
 })
 
 interface IconButtonProps
-  extends React.ComponentPropsWithoutRef<"button">,
+  extends
+    React.ComponentPropsWithoutRef<"button">,
     VariantProps<typeof iconButtonVariants> {
   asChild?: boolean
   isLoading?: boolean
@@ -91,7 +92,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           <span className="pointer-events-none">
             <div
               className={clx(
-                "bg-ui-bg-disabled absolute inset-0 flex items-center justify-center rounded-md"
+                "absolute inset-0 flex items-center justify-center rounded-md bg-ui-bg-disabled"
               )}
             >
               <Spinner className="animate-spin" />

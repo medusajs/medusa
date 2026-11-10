@@ -6,7 +6,7 @@
     "declarationMap": true,
     "inlineSources": false,
     "isolatedModules": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
@@ -18,12 +18,13 @@
     "module": "ESNext",
     "target": "es6",
     "resolveJsonModule": true,
+    "rootDir": "src",
     "outDir": "dist",
     "esModuleInterop": true,
-    "baseUrl": "src",
+    "types": ["*"],
     "declarationDir": "dist",
     "paths": {
-      "@medusajs/icon": ["src/index.ts"]
+      "@medusajs/icon": ["./src/index.ts"]
     }
   },
   "include": ["src"],

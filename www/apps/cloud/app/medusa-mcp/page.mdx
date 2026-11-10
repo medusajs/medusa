@@ -10,15 +10,23 @@ In this guide, you'll learn how to connect AI tools like Claude, ChatGPT, and Cu
 
 ## What is the Medusa MCP Server?
 
-The Medusa MCP server is a remote [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that gives AI tools access to the commerce data of your Medusa applications deployed on Cloud. MCP is an open standard that AI tools use to connect to external data and services.
+The Medusa MCP server is a remote [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that gives AI tools access to your Medusa applications deployed on Cloud. MCP is an open standard that AI tools use to connect to external data and services.
+
+The AI tool can access:
+
+- **Commerce data**: Orders, products, customers, and other data from your store's Admin and Store API routes.
+- **Custom data**: Data from your own [custom API routes](#custom-api-routes), such as data from your custom modules.
+- **Cloud data**: Your organizations, projects, deployments, logs, and environment variables.
 
 Once you connect an AI tool to the Medusa MCP server, you can ask it questions about your stores in natural language, such as:
 
 - "Show me the 5 most recent orders in my store, with each order's total and status."
 - "How many orders are waiting to be fulfilled?"
-- "What products are available to shoppers in my B2B sales channel?"
+- "Which carts were abandoned in the last 24 hours?", answered by a custom API route.
+- "Why did my latest deployment fail? Check its build logs."
+- "Show me the errors in my backend's logs from the last hour."
 
-Your AI tool then retrieves the relevant data from your store and presents it to you in a human-readable format.
+Your AI tool then retrieves the relevant data and presents it to you in a human-readable format.
 
 The Medusa MCP is available for all Cloud plans.
 
@@ -211,7 +219,7 @@ If you don't have any environments to select, click the **Create Project** butto
 
 <Note type="warning">
 
-Only approve the connection if you started it yourself. Once approved, the AI tool can read data in the selected stores as you.
+Only approve the connection if you started it yourself. Once approved, the AI tool can read data in the selected stores as you, along with the Cloud data of their projects, such as deployments and logs.
 
 </Note>
 
@@ -237,12 +245,17 @@ After you confirm your identity, return to the AI tool and run the request again
 
 - **Connect to environments**: Connect the AI tool to one or more environments across your organizations, and choose which ones it can access. When you connect multiple environments, mention the store you mean in your question.
 - **Read store data**: Retrieve orders, products, customers, inventory, and other commerce data from your store's Admin API routes as your admin user. The AI tool can also retrieve storefront data, such as the products available in a sales channel, from your store's Store API routes as a guest customer.
-- **Read custom store data**: Retrieve data from your store's custom `GET` API routes under the `/store` and `/admin` prefixes. Medusa indexes your store's API routes each time the environment builds, so the AI tool finds new custom routes after you deploy them.
+- **Read custom store data**: Retrieve data from your store's custom `GET` API routes under the `/store` and `/admin` prefixes. Medusa indexes your store's API routes each time the environment builds, so the AI tool finds new custom routes after you deploy them. Learn more in the [Custom API Routes](#custom-api-routes) section.
+- **Read Cloud data**: Retrieve the details of your organizations and projects, list an environment's deployments, read an environment's build and runtime logs, and inspect its environment variables. Learn more in the [Cloud Tools](#cloud-tools) section.
+- **Check Cloud status**: Check whether Cloud is operational or has an ongoing incident.
 - **Answer Medusa questions**: Search the Medusa documentation to answer general questions about Medusa.
 
 ### Read-Only Access
 
-The Medusa MCP server is read-only. The AI tool can retrieve data from your store's Admin and Store API routes, but it can't create, update, or delete data. For example, if you ask the AI tool to cancel an order, it explains that it can't and points you to the Medusa Admin.
+The Medusa MCP server is read-only. The AI tool can retrieve data from your stores and from Cloud, but it can't create, update, or delete data. For example:
+
+- If you ask the AI tool to cancel an order, it explains that it can't and points you to the Medusa Admin.
+- If you ask the AI tool to redeploy an environment or change an environment variable, it explains that it can't. Use the Cloud dashboard or the [Cloud CLI](../cli/page.mdx) instead.
 
 The AI tool calls Store API routes as a guest customer, so it can't access routes that require a logged-in customer.
 
@@ -251,6 +264,10 @@ The AI tool calls Store API routes as a guest customer, so it can't access route
 ## Available Tools
 
 The Medusa MCP server provides the following tools to AI tools. You don't call these tools directly. The AI tool chooses which tools to call based on your question.
+
+### Commerce Tools
+
+The AI tool uses these tools to retrieve data from your stores, including data from your custom API routes.
 
 <Table>
   <Table.Header>
@@ -324,6 +341,157 @@ The Medusa MCP server provides the following tools to AI tools. You don't call t
         Sends a `GET` request to a store's Store API route as a guest customer, scoped to a publishable API key's sales channels.
       </Table.Cell>
     </Table.Row>
+  </Table.Body>
+</Table>
+
+### Cloud Tools
+
+The AI tool uses these tools to retrieve data about your organizations, projects, and environments on Cloud. For example, you can ask the AI tool:
+
+- "Why did the latest deployment of my production environment fail?"
+- "Show me the errors in my backend's runtime logs from the last hour."
+- "Which environment variables are set in my staging environment?"
+- "Is Cloud having an incident right now?"
+
+The AI tool can only access the organizations, projects, and environments that you connected to it.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Tool
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_connected_organizations`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists the organizations that you connected to the AI tool.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_connected_organization`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an organization's details, including its members and subscription plan.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_projects`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists the projects that you connected to the AI tool, with their connected environments.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_project`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a project's details, including its region, repository, environments, and domains.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_medusa_deployments`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists an environment's deployments, newest first, with their backend and storefront statuses. The AI tool can filter deployments by commit.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_medusa_deployment`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a deployment's details, including its commit, branch, statuses, timings, and Medusa and Node.js versions.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_environment_logs`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an environment's runtime or build logs for its backend or storefront. The AI tool can search runtime logs, and filter them by a time range of up to 30 days.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_environment_variables`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists an environment's backend or storefront environment variables. The AI tool doesn't receive the values of secret variables.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_environment_variable`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an environment variable by its key or ID. The AI tool doesn't receive the value of a secret variable.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_medusa_cloud_status`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves Cloud's current status from the [Cloud status page](https://status.medusajs.com/).
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<Note>
+
+The AI tool never receives the values of secret environment variables. It only receives their keys and whether they're available at build time or runtime.
+
+</Note>
+
+### Documentation and Feedback Tools
+
+The AI tool uses these tools to answer general questions about Medusa and to share your feedback with the Medusa team.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Tool
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
     <Table.Row>
       <Table.Cell>
 
@@ -347,13 +515,21 @@ The Medusa MCP server provides the following tools to AI tools. You don't call t
   </Table.Body>
 </Table>
 
-### Custom API Routes
+---
 
-Medusa indexes a store's API routes, including its custom API routes, each time the environment builds. So, the AI tool can find and call your custom `GET` API routes after you deploy them.
+## Custom API Routes
 
-Medusa only indexes custom API routes under the `/store` and `/admin` prefixes. The AI tool can't find or call custom API routes under other prefixes.
+The AI tool isn't limited to Medusa's API routes. It can also find and call your store's custom `GET` API routes, so you can ask it questions about any data that your store has, such as:
 
-To learn how to create custom API routes that the AI tool can find and use, such as an API route that retrieves abandoned carts, refer to the [Retrieve Custom Data](./custom-data/page.mdx) guide.
+- Data in your [custom modules](!docs!/learn/fundamentals/modules), such as brands, suppliers, or loyalty points.
+- Reports that Medusa's API routes don't provide, such as abandoned carts or products that haven't sold in the last month.
+- Data from third-party systems that your Medusa application integrates with, such as an ERP or a CMS.
+
+Medusa indexes a store's API routes, including its custom API routes, each time the environment builds. Medusa reads each custom API route's comments and TypeScript types to describe the API route to the AI tool. So, the AI tool can find and call your custom API routes after you deploy them, without extra configuration.
+
+Medusa only indexes custom API routes under the `/store` and `/admin` prefixes. The AI tool can't find or call custom API routes under other prefixes, or API routes defined in plugins.
+
+To learn how to create custom API routes that the AI tool can find and use, and the best practices to write them, refer to the [Retrieve Custom Data](./custom-data/page.mdx) guide.
 
 ---
 
@@ -361,7 +537,7 @@ To learn how to create custom API routes that the AI tool can find and use, such
 
 Medusa provides two MCP servers:
 
-- The **Medusa MCP server**, at `https://cloud.medusajs.com/mcp`, reads data from your Cloud stores. It's the server this guide covers.
+- The **Medusa MCP server**, at `https://cloud.medusajs.com/mcp`, reads data from your Cloud stores and projects. It's the server this guide covers.
 - The [Docs MCP server](!docs!/learn/introduction/build-with-llms-ai/docs-mcp-server), at `https://docs.medusajs.com/mcp`, answers development questions from the Medusa documentation and provides implementation guides.
 
 The Medusa MCP server can also search the Medusa documentation, so you don't need both servers to ask general Medusa questions. If you're writing code for your Medusa application, use the Docs MCP server for its implementation guides.

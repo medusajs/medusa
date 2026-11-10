@@ -5,7 +5,7 @@ Notification Module (`Modules.NOTIFICATION`): infrastructure module that records
 ## Using this package
 
 - Registered by default as `@medusajs/medusa/notification` with `@medusajs/medusa/notification-local` (id `local`, `channels: ["feed"]`). Other providers: `@medusajs/medusa/notification-sendgrid` (`packages/modules/providers/notification-*`).
-- Options (`NotificationModuleOptions` in `src/types/index.ts`): `providers[]` of `{ resolve, id, options: { channels: string[], ...providerOptions } }`, plus private `cloud` (`api_key`, `endpoint`, `environment_handle`, `sandbox_handle`) injected by `defineConfig` on Medusa Cloud.
+- Options (`NotificationModuleOptions` in `src/types/index.ts`): `providers[]` of `{ resolve, id, options: { channels: string[], ...providerOptions } }`, plus private `cloud` (`api_key`, `endpoint`, `environment_handle`) injected by `defineConfig` on Medusa Cloud.
 
 ```ts
 module.exports = defineConfig({
@@ -50,7 +50,7 @@ Docs: https://docs.medusajs.com/resources/infrastructure-modules/notification.md
 ## Architecture
 
 - `src/loaders/providers.ts`: registers each provider as `np_<id>` and syncs the `notification_provider` table (`id`/`handle`/`name` = config `id`, `channels` from `options.channels`); DB providers not in config are set `is_enabled: false`.
-- If no configured provider declares the `email` channel and `cloud` has `api_key`, `endpoint` and an `environment_handle` or `sandbox_handle`, the Medusa Cloud email provider (`src/providers/medusa-cloud-email.ts`) is added with id `cloud` and `channels: ["email"]`.
+- If no configured provider declares the `email` channel and `cloud` has `api_key`, `endpoint` and `environment_handle`, the Medusa Cloud email provider (`src/providers/medusa-cloud-email.ts`) is added with id `cloud` and `channels: ["email"]`.
 - `src/services/notification-provider.ts` resolves the provider for each channel and calls its `send`.
 
 ## Development

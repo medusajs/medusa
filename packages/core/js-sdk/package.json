@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/js-sdk",
-  "version": "2.21.2",
+  "version": "2.22.6",
   "description": "SDK for the Medusa API",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -36,11 +36,11 @@
   "author": "Medusa",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@medusajs/types": "2.21.2"
+    "@medusajs/types": "2.22.6"
   },
   "dependencies": {
     "fetch-event-stream": "^0.1.5",
-    "qs": "^6.15.2"
+    "qs": "^6.16.1"
   },
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc -p tsconfig.json && yarn run -T tsc -p tsconfig.esm.json",

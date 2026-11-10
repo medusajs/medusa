@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -37,6 +37,9 @@ export const EditUserForm = ({ user }: EditUserFormProps) => {
     await mutateAsync(values, {
       onSuccess: () => {
         handleSuccess()
+      },
+      onError: (error) => {
+        toast.error(error.message)
       },
     })
   })

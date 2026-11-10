@@ -31,6 +31,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          check-latest: true
 
       # afdocs exits 1 when any check fails, so only a missing or empty report is an error.
       - name: Run AFDocs

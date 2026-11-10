@@ -35,6 +35,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          check-latest: true
 
       - name: Assert changed
         run: ./scripts/assert-changed-files-actions.sh "packages"
@@ -81,7 +82,7 @@ jobs:
         run: yarn workspace @medusajs/eslint-plugin build
 
       # Runs ONLY the @medusajs/eslint-plugin convention rules (scope/rules from
-      # the root config, via eslint.medusa.cjs). ESLint exits non-zero on errors,
+      # the root config, via eslint.medusa.mjs). ESLint exits non-zero on errors,
       # so a Medusa rule error fails this check; warnings do not.
       - name: Lint Medusa rules
         run: yarn lint:medusa
@@ -133,7 +134,7 @@ jobs:
           node ./scripts/assert-plugin-admin-bundle.mjs packages/plugins/draft-order
           node ./scripts/assert-plugin-admin-bundle.mjs packages/plugins/loyalty
 
-      # The dashboard's own `build` script is tsgo + tsup, so a real `vite build`
+      # The dashboard's own `build` script is tsc + tsup, so a real `vite build`
       # of the admin app runs nowhere else in CI. This targets a separate outDir
       # (`dist-vite`), and runs after the steps above, so it cannot clobber the
       # tsup output in `dist` that those steps depend on.

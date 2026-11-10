@@ -85,15 +85,15 @@ export const setOrderTaxLinesForItemsStep = createStep(
       is_full_replacement && itemsTaxLinesData.length
         ? "replace"
         : itemsTaxLinesData.length
-        ? "upsert"
-        : "none"
+          ? "upsert"
+          : "none"
 
     const shippingOp: TaxLinesOp =
       is_full_replacement && shippingTaxLinesData.length
         ? "replace"
         : shippingTaxLinesData.length
-        ? "upsert"
-        : "none"
+          ? "upsert"
+          : "none"
 
     // Capture the tax lines the compensation may need to restore. A "replace"
     // spans the whole order (so any entity's stale line can be restored), an
@@ -126,16 +126,16 @@ export const setOrderTaxLinesForItemsStep = createStep(
       itemsOp === "replace"
         ? orderService.setOrderLineItemTaxLines(order.id, itemsTaxLinesData)
         : itemsOp === "upsert"
-        ? orderService.upsertOrderLineItemTaxLines(itemsTaxLinesData)
-        : Promise.resolve(void 0),
+          ? orderService.upsertOrderLineItemTaxLines(itemsTaxLinesData)
+          : Promise.resolve(void 0),
       shippingOp === "replace"
         ? orderService.setOrderShippingMethodTaxLines(
             order.id,
             shippingTaxLinesData
           )
         : shippingOp === "upsert"
-        ? orderService.upsertOrderShippingMethodTaxLines(shippingTaxLinesData)
-        : Promise.resolve(void 0),
+          ? orderService.upsertOrderShippingMethodTaxLines(shippingTaxLinesData)
+          : Promise.resolve(void 0),
     ])
 
     return new StepResponse(void 0, {

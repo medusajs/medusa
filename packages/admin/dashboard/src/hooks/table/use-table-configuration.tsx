@@ -11,14 +11,7 @@ import { useFeatureFlag } from "../../providers/feature-flag-provider"
 import { useColumnState } from "./columns/use-column-state"
 import { useQueryParams } from "../use-query-params"
 import { calculateRequiredFields } from "../../lib/table/field-utils"
-import {
-  generateFiltersFromColumns,
-  getRelationshipFilterConfigs,
-} from "../../lib/table/filter-utils"
-import {
-  RelationshipFilterConfig,
-  useRelationshipFilterOptions,
-} from "./use-relationship-filter-options"
+import { useColumnFilters } from "./use-column-filters"
 import { TableAdapter } from "../../lib/table/table-adapters"
 
 export interface TableConfiguration {
@@ -135,32 +128,8 @@ export function useTableConfiguration({
       : transformed
   }, [rawApiColumns, transformColumns, extraColumns])
 
-  // Extract relationship filter configs from filterable columns only
-  const relationshipFilterConfigs = useMemo(() => {
-    if (!apiColumns) {
-      return []
-    }
-
-    const filterableColumns = apiColumns.filter(
-      (column) => column.filter?.enabled
-    )
-    return getRelationshipFilterConfigs(filterableColumns)
-  }, [apiColumns])
-
-  const { options: relationshipOptions, isLoading: isLoadingFilterOptions } =
-    useRelationshipFilterOptions(
-      relationshipFilterConfigs as RelationshipFilterConfig[]
-    )
-
-  const resolvedFilters = useMemo(() => {
-    if (!apiColumns) {
-      return []
-    }
-    const filterableColumns = apiColumns.filter(
-      (column) => column.filter?.enabled
-    )
-    return generateFiltersFromColumns(filterableColumns, relationshipOptions)
-  }, [apiColumns, relationshipOptions])
+  const { filters: resolvedFilters, isLoading: isLoadingFilterOptions } =
+    useColumnFilters(apiColumns)
 
   const queryParams = useQueryParams(
     ["q", "order", "offset", "limit", ...resolvedFilters.map((f) => f.id)],

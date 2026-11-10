@@ -193,7 +193,7 @@ async function performCascadingSoftDeletion<T>(
  * @returns A map of entity IDs to their corresponding entity types.
  */
 export const mikroOrmUpdateDeletedAtRecursively = async <
-  T extends object = any
+  T extends object = any,
 >(
   manager: SqlEntityManager,
   entities: (T & { id: string; deleted_at?: string | Date | null })[],

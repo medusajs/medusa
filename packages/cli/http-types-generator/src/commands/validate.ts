@@ -1,7 +1,8 @@
+// @ts-ignore
 import { Command } from "commander"
 import { glob } from "glob"
 import path from "path"
-import chalk from "chalk"
+import { styleText } from "util"
 import { ProgramFactory } from "../core/program-factory"
 import { SchemaExtractor } from "../core/schema-extractor"
 import { TypeResolver } from "../core/type-resolver"
@@ -87,7 +88,7 @@ async function runValidate(options: ValidateOptions): Promise<void> {
   const { area, domain, changedFiles, verbose, ci } = options
 
   console.log(
-    chalk.bold(
+    styleText("bold",
       `\nValidating HTTP types (area: ${area}${domain ? `, domain: ${domain}` : ""})\n`
     )
   )
@@ -114,10 +115,10 @@ async function runValidate(options: ValidateOptions): Promise<void> {
   }
 
   if (validatorFiles.length === 0) {
-    console.log(chalk.yellow("No validator files found."))
+    console.log(styleText("yellow", "No validator files found."))
     if (domain) {
       console.log(
-        chalk.yellow(`  Hint: make sure "${domain}" matches a route directory name in your configured validator paths.`)
+        styleText("yellow", `  Hint: make sure "${domain}" matches a route directory name in your configured validator paths.`)
       )
     }
     return
@@ -150,7 +151,7 @@ async function runValidate(options: ValidateOptions): Promise<void> {
     const sourceFile = program.getSourceFile(validatorFile)
     if (!sourceFile) {
       console.log(
-        chalk.yellow(`  Warning: could not load: ${path.basename(validatorFile)}`)
+        styleText("yellow", `  Warning: could not load: ${path.basename(validatorFile)}`)
       )
       continue
     }
@@ -202,12 +203,12 @@ async function runValidate(options: ValidateOptions): Promise<void> {
   }
 
   if (pairs.length === 0) {
-    console.log(chalk.yellow("No schemas found to validate."))
+    console.log(styleText("yellow", "No schemas found to validate."))
     return
   }
 
   console.log(
-    chalk.gray(
+    styleText("gray",
       `Checking ${pairs.length} schema(s) against existing HTTP types...\n`
     )
   )
@@ -242,7 +243,7 @@ async function runValidate(options: ValidateOptions): Promise<void> {
       continue
     }
 
-    console.log(chalk.bold(`  ${domainKey}`))
+    console.log(styleText("bold", `  ${domainKey}`))
 
     for (const result of domainResults) {
       const line = CompatibilityChecker.formatResult(result, verbose)
@@ -254,19 +255,19 @@ async function runValidate(options: ValidateOptions): Promise<void> {
   }
 
   // Summary
-  console.log(chalk.bold("Summary:"))
+  console.log(styleText("bold", "Summary:"))
   console.log(
-    chalk.green(`  Passed: ${passes.length}`) +
+    styleText("green", `  Passed: ${passes.length}`) +
       "  " +
       (failures.length > 0
-        ? chalk.red(`Failed: ${failures.length}`)
-        : chalk.green(`Failed: 0`))
+        ? styleText("red", `Failed: ${failures.length}`)
+        : styleText("green", `Failed: 0`))
   )
   console.log()
 
   if (failures.length > 0) {
     console.log(
-      chalk.yellow(
+      styleText("yellow",
         "Run the generate command with --dry-run to preview what the correct types should look like.\n" +
           "Run the generate command with --force to overwrite existing types with generated ones."
       )
@@ -276,6 +277,6 @@ async function runValidate(options: ValidateOptions): Promise<void> {
       process.exit(1)
     }
   } else {
-    console.log(chalk.green("All HTTP types are compatible with their Zod schemas."))
+    console.log(styleText("green", "All HTTP types are compatible with their Zod schemas."))
   }
 }

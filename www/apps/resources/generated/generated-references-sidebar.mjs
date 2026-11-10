@@ -1071,6 +1071,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/exportCustomersWorkflow",
+                  "title": "exportCustomersWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/removeCustomerAccountWorkflow",
                   "title": "removeCustomerAccountWorkflow",
                   "description": "Delete a customer account and its auth identity association.",
@@ -1102,6 +1110,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/collectCustomerIdsToExportStep",
+                  "title": "collectCustomerIdsToExportStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/createCustomerAddressesStep",
                   "title": "createCustomerAddressesStep",
                   "description": "",
@@ -1128,6 +1144,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/deleteCustomersStep",
                   "title": "deleteCustomersStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/exportCustomersStep",
+                  "title": "exportCustomersStep",
                   "description": "",
                   "children": []
                 },
@@ -4319,6 +4343,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/updatePaymentSessionClientDataWorkflow",
+                  "title": "updatePaymentSessionClientDataWorkflow",
+                  "description": "Update a payment session's client data.",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/updateRefundReasonsWorkflow",
                   "title": "updateRefundReasonsWorkflow",
                   "description": "Update refund reasons.",
@@ -4382,6 +4414,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/updatePaymentSessionStep",
+                  "title": "updatePaymentSessionStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/updateRefundReasonsStep",
                   "title": "updateRefundReasonsStep",
                   "description": "",
@@ -4400,6 +4440,22 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/validatePaymentProviderInRegionStep",
                   "title": "validatePaymentProviderInRegionStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validatePaymentSessionUpdateStep",
+                  "title": "validatePaymentSessionUpdateStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validatePaymentSessionsDeletableStep",
+                  "title": "validatePaymentSessionsDeletableStep",
                   "description": "",
                   "children": []
                 }
@@ -5545,6 +5601,139 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/updatePromotionsValidationStep",
                   "title": "updatePromotionsValidationStep",
+                  "description": "",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Rbac",
+          "children": [
+            {
+              "loaded": true,
+              "type": "sub-category",
+              "title": "Workflows",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/assignRolesWorkflow",
+                  "title": "assignRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/createRbacPoliciesWorkflow",
+                  "title": "createRbacPoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/createRbacRolePoliciesWorkflow",
+                  "title": "createRbacRolePoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/createRbacRolesWorkflow",
+                  "title": "createRbacRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/deleteRbacPoliciesWorkflow",
+                  "title": "deleteRbacPoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/deleteRbacRolePoliciesWorkflow",
+                  "title": "deleteRbacRolePoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/deleteRbacRolesWorkflow",
+                  "title": "deleteRbacRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/getAssignablePoliciesWorkflow",
+                  "title": "getAssignablePoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/getAssignableRolesWorkflow",
+                  "title": "getAssignableRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/unassignRolesWorkflow",
+                  "title": "unassignRolesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/updateRbacPoliciesWorkflow",
+                  "title": "updateRbacPoliciesWorkflow",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/updateRbacRolesWorkflow",
+                  "title": "updateRbacRolesWorkflow",
+                  "description": "",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "sub-category",
+              "title": "Steps",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/getRoleAssignmentsStep",
+                  "title": "getRoleAssignmentsStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateAssignmentReferencesStep",
+                  "title": "validateAssignmentReferencesStep",
                   "description": "",
                   "children": []
                 }

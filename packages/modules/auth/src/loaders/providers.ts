@@ -28,12 +28,11 @@ const validateCloudOptions = (options: AuthModuleOptions["cloud"]) => {
     oauth_token_endpoint,
     oauth_audience,
     environment_handle,
-    sandbox_handle,
     api_key,
     callback_url,
   } = options ?? {}
 
-  if (!environment_handle && !sandbox_handle) {
+  if (!environment_handle) {
     return false
   }
 

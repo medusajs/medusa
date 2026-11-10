@@ -1,12 +1,13 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { createDataTableFilterHelper } from "@medusajs/ui";
 import { useMemo } from "react";
 import { useCustomers } from "../api/customers";
 
 const filterHelper = createDataTableFilterHelper<any>();
 
-const useCustomerFilterOptions = () => {
+const useCustomerFilterOptions = (enabled: boolean) => {
   // TODO: Add ability to filter by email or name
-  const { customers } = useCustomers({ limit: 1000 });
+  const { customers } = useCustomers({ limit: 1000 }, { enabled });
 
   return useMemo(() => {
     return customers?.map((customer) => {
@@ -19,9 +20,15 @@ const useCustomerFilterOptions = () => {
 };
 
 export const useCustomerFilters = () => {
-  const customerFilterOptions = useCustomerFilterOptions();
+  const { hasPermission } = usePermissions();
+  const canReadCustomers = hasPermission("customer:read");
+  const customerFilterOptions = useCustomerFilterOptions(canReadCustomers);
 
   return useMemo(() => {
+    if (!canReadCustomers) {
+      return [];
+    }
+
     return [
       filterHelper.accessor("customer_id", {
         type: "select",
@@ -29,5 +36,5 @@ export const useCustomerFilters = () => {
         options: customerFilterOptions ?? [],
       }),
     ];
-  }, [customerFilterOptions]);
+  }, [canReadCustomers, customerFilterOptions]);
 };

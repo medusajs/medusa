@@ -75,7 +75,7 @@ Please make sure that the provider is registered in the container and it is conf
 
   async getProviderForChannels<
     TChannel = string | string[],
-    TOutput = TChannel extends string[] ? Provider[] : Provider | undefined
+    TOutput = TChannel extends string[] ? Provider[] : Provider | undefined,
   >(channels: TChannel, sharedContext: Context = {}): Promise<TOutput> {
     if (!this.providersCache) {
       const providers = await this.notificationProviderRepository_.find(

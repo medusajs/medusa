@@ -20,7 +20,9 @@ If you, as a community contributor, wish to work on more extensive features, ple
 
 1. Before you start working on a change please make sure that there is an issue for what you will be working on. You can either find and [existing issue](https://github.com/medusajs/medusa/issues) or [open a new issue](https://github.com/medusajs/medusa/issues/new) if none exists. Doing this makes sure that others can contribute with thoughts or suggest alternatives, ultimately making sure that we only add changes that make
 
-2. When you are ready to start working on a change you should first [fork the Medusa repo](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) and [branch out](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository) from the `develop` branch.
+2. Comment on the issue to ask to work on it, and wait for a maintainer to assign it to you. Pull requests are automatically closed unless they link an open issue (for example, `Fixes #123` in the description) **and** you are assigned to that issue. A PR without a linked issue gets a warning and is closed after 8 hours if no issue is linked; editing the description to link one reopens it. Issues that our automation is already fixing are not assigned to contributors.
+
+3. When you are ready to start working on a change you should first [fork the Medusa repo](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) and [branch out](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository) from the `develop` branch.
 
 After cloning, keep the remotes explicit so that changes are fetched from Medusa while branches and pushes stay on your fork. If you cloned `medusajs/medusa` directly, rename its `origin` remote first:
 
@@ -297,6 +299,21 @@ In your PR's description you should follow the structure:
 - **Why** - why are these changes relevant
 - **How** - how have the changes been implemented
 - **Testing** - how has the changes been tested or how can the reviewer test the feature
+
+**Automated checks**
+
+These rules are enforced automatically on pull requests from contributors outside the Medusa team:
+
+- **Linked and assigned issue:** the PR must link an open issue that you are assigned to (see [Issues before PRs](#issues-before-prs)).
+- **Typo fixes:** a PR that only changes `.md` or `.mdx` files with at most 20 changed lines doesn't need a linked issue.
+- **Translations:** existing admin translation files in `packages/admin/dashboard/src/i18n/translations/` are kept in sync automatically, so PRs that only edit them are closed. Translation updates that are part of a dashboard change are fine. To add a new language, open an issue first and link it from your PR.
+- **Open PR limit:** you can have at most 3 open PRs at a time.
+
+**AI policy**
+
+You may use AI tools to help write code, but you must understand and be able to explain every change. AI-authored pull requests are not accepted: the PR description and your replies to reviewers must be in your own words. Using AI to translate or proofread text you wrote yourself is fine. The PR template asks whether and how you used AI.
+
+Issues and PR descriptions that read as AI-generated get a comment asking you to rewrite them in your own words (your own language is fine). If they aren't rewritten within 8 hours, they're closed automatically. Issues and PRs that are clearly AI-generated and make false claims, for example referencing files or APIs that don't exist in Medusa, are closed right away.
 
 We highly encourage that you do a self-review prior to requesting a review. To do a self review click the review button in the top right corner, go through your code and annotate your changes. This makes it easier for the reviewer to process your PR.
 

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Calendar } from "@medusajs/icons";
 import {
   Badge,
@@ -18,6 +19,9 @@ import { formatAmount } from "../../../../utils/format-amount";
 import { formatDate, getRelativeDate } from "../../../../utils/format-date";
 
 const GiftCardGeneralSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
+  const { hasPermission } = usePermissions();
+  const canUpdate = hasPermission("gift_card:update");
+
   const hasGiftCardExpired = useMemo(() => {
     return giftCard.expires_at && new Date(giftCard.expires_at) < new Date();
   }, [giftCard.expires_at]);
@@ -43,19 +47,21 @@ const GiftCardGeneralSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
           {hasGiftCardExpired && (
             <StatusBadge color="orange">Expired</StatusBadge>
           )}
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    icon: <Calendar />,
-                    label: "Edit expiration date",
-                    to: "expiration",
-                  },
-                ],
-              },
-            ]}
-          />
+          {canUpdate && (
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      icon: <Calendar />,
+                      label: "Edit expiration date",
+                      to: "expiration",
+                    },
+                  ],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
 

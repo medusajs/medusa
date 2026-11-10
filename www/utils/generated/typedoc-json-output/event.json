@@ -1,19 +1,20 @@
 {
-	"id": 65601,
+	"schemaVersion": "2.0",
+	"id": 66640,
 	"name": "event",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 65602,
+			"id": 66641,
 			"name": "IEventBusModuleService",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 65603,
+					"id": 66642,
 					"name": "emit",
 					"variant": "declaration",
 					"kind": 2048,
@@ -23,12 +24,12 @@
 							"fileName": "event-bus-module.ts",
 							"line": 23,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L23"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L23"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65604,
+							"id": 66643,
 							"name": "emit",
 							"variant": "signature",
 							"kind": 4096,
@@ -57,12 +58,12 @@
 									"fileName": "event-bus-module.ts",
 									"line": 23,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L23"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L23"
 								}
 							],
 							"typeParameters": [
 								{
-									"id": 65605,
+									"id": 66644,
 									"name": "T",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -71,7 +72,7 @@
 							],
 							"parameters": [
 								{
-									"id": 65606,
+									"id": 66645,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -90,13 +91,14 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+													"packageName": "@medusajs/types",
+													"packagePath": "src/event-bus/common.ts",
 													"qualifiedName": "Message"
 												},
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 65605,
+														"target": 66644,
 														"name": "T",
 														"package": "@medusajs/types",
 														"refersToTypeParameter": true
@@ -110,13 +112,14 @@
 												"elementType": {
 													"type": "reference",
 													"target": {
-														"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+														"packageName": "@medusajs/types",
+														"packagePath": "src/event-bus/common.ts",
 														"qualifiedName": "Message"
 													},
 													"typeArguments": [
 														{
 															"type": "reference",
-															"target": 65605,
+															"target": 66644,
 															"name": "T",
 															"package": "@medusajs/types",
 															"refersToTypeParameter": true
@@ -130,7 +133,7 @@
 									}
 								},
 								{
-									"id": 65607,
+									"id": 66646,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -148,7 +151,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"packageName": "typescript",
+											"packagePath": "lib/lib.es5.d.ts",
 											"qualifiedName": "Record"
 										},
 										"typeArguments": [
@@ -169,7 +173,8 @@
 							"type": {
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
 									"qualifiedName": "Promise"
 								},
 								"typeArguments": [
@@ -185,7 +190,7 @@
 					]
 				},
 				{
-					"id": 65608,
+					"id": 66647,
 					"name": "subscribe",
 					"variant": "declaration",
 					"kind": 2048,
@@ -195,12 +200,12 @@
 							"fileName": "event-bus-module.ts",
 							"line": 41,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L41"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L41"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65609,
+							"id": 66648,
 							"name": "subscribe",
 							"variant": "signature",
 							"kind": 4096,
@@ -238,12 +243,12 @@
 									"fileName": "event-bus-module.ts",
 									"line": 41,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L41"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L41"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65610,
+									"id": 66649,
 									"name": "eventName",
 									"variant": "param",
 									"kind": 32768,
@@ -271,7 +276,7 @@
 									}
 								},
 								{
-									"id": 65611,
+									"id": 66650,
 									"name": "subscriber",
 									"variant": "param",
 									"kind": 32768,
@@ -287,7 +292,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/event-bus/common.ts",
 											"qualifiedName": "Subscriber"
 										},
 										"name": "Subscriber",
@@ -295,7 +301,7 @@
 									}
 								},
 								{
-									"id": 65612,
+									"id": 66651,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -313,7 +319,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/event-bus/common.ts",
 											"qualifiedName": "SubscriberContext"
 										},
 										"name": "SubscriberContext",
@@ -329,7 +336,7 @@
 					]
 				},
 				{
-					"id": 65613,
+					"id": 66652,
 					"name": "unsubscribe",
 					"variant": "declaration",
 					"kind": 2048,
@@ -339,12 +346,12 @@
 							"fileName": "event-bus-module.ts",
 							"line": 60,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L60"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L60"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65614,
+							"id": 66653,
 							"name": "unsubscribe",
 							"variant": "signature",
 							"kind": 4096,
@@ -382,12 +389,12 @@
 									"fileName": "event-bus-module.ts",
 									"line": 60,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L60"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L60"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65615,
+									"id": 66654,
 									"name": "eventName",
 									"variant": "param",
 									"kind": 32768,
@@ -415,7 +422,7 @@
 									}
 								},
 								{
-									"id": 65616,
+									"id": 66655,
 									"name": "subscriber",
 									"variant": "param",
 									"kind": 32768,
@@ -431,7 +438,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/event-bus/common.ts",
 											"qualifiedName": "Subscriber"
 										},
 										"name": "Subscriber",
@@ -439,7 +447,7 @@
 									}
 								},
 								{
-									"id": 65617,
+									"id": 66656,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -457,7 +465,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/event-bus/common.ts",
 											"qualifiedName": "SubscriberContext"
 										},
 										"name": "SubscriberContext",
@@ -473,7 +482,7 @@
 					]
 				},
 				{
-					"id": 65618,
+					"id": 66657,
 					"name": "releaseGroupedEvents",
 					"variant": "declaration",
 					"kind": 2048,
@@ -483,12 +492,12 @@
 							"fileName": "event-bus-module.ts",
 							"line": 75,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L75"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L75"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65619,
+							"id": 66658,
 							"name": "releaseGroupedEvents",
 							"variant": "signature",
 							"kind": 4096,
@@ -517,12 +526,12 @@
 									"fileName": "event-bus-module.ts",
 									"line": 75,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L75"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L75"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65620,
+									"id": 66659,
 									"name": "eventGroupId",
 									"variant": "param",
 									"kind": 32768,
@@ -544,7 +553,8 @@
 							"type": {
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
 									"qualifiedName": "Promise"
 								},
 								"typeArguments": [
@@ -560,7 +570,7 @@
 					]
 				},
 				{
-					"id": 65621,
+					"id": 66660,
 					"name": "clearGroupedEvents",
 					"variant": "declaration",
 					"kind": 2048,
@@ -570,12 +580,12 @@
 							"fileName": "event-bus-module.ts",
 							"line": 88,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L88"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L88"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65622,
+							"id": 66661,
 							"name": "clearGroupedEvents",
 							"variant": "signature",
 							"kind": 4096,
@@ -604,12 +614,12 @@
 									"fileName": "event-bus-module.ts",
 									"line": 88,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L88"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L88"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65623,
+									"id": 66662,
 									"name": "eventGroupId",
 									"variant": "param",
 									"kind": 32768,
@@ -628,7 +638,7 @@
 									}
 								},
 								{
-									"id": 65624,
+									"id": 66663,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -646,14 +656,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 65625,
+											"id": 66664,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 65626,
+													"id": 66665,
 													"name": "eventNames",
 													"variant": "declaration",
 													"kind": 1024,
@@ -673,7 +683,7 @@
 															"fileName": "event-bus-module.ts",
 															"line": 91,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L91"
+															"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L91"
 														}
 													],
 													"type": {
@@ -689,16 +699,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														65626
+														66665
 													]
-												}
-											],
-											"sources": [
-												{
-													"fileName": "event-bus-module.ts",
-													"line": 90,
-													"character": 14,
-													"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L90"
 												}
 											]
 										}
@@ -708,7 +710,8 @@
 							"type": {
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
 									"qualifiedName": "Promise"
 								},
 								"typeArguments": [
@@ -724,7 +727,7 @@
 					]
 				},
 				{
-					"id": 65627,
+					"id": 66666,
 					"name": "addInterceptor",
 					"variant": "declaration",
 					"kind": 2048,
@@ -736,12 +739,12 @@
 							"fileName": "event-bus-module.ts",
 							"line": 107,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L107"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L107"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65628,
+							"id": 66667,
 							"name": "addInterceptor",
 							"variant": "signature",
 							"kind": 4096,
@@ -779,12 +782,12 @@
 									"fileName": "event-bus-module.ts",
 									"line": 107,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L107"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L107"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65629,
+									"id": 66668,
 									"name": "interceptor",
 									"variant": "param",
 									"kind": 32768,
@@ -800,7 +803,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/event-bus/common.ts",
 											"qualifiedName": "InterceptorSubscriber"
 										},
 										"name": "InterceptorSubscriber",
@@ -816,7 +820,7 @@
 					]
 				},
 				{
-					"id": 65630,
+					"id": 66669,
 					"name": "removeInterceptor",
 					"variant": "declaration",
 					"kind": 2048,
@@ -828,12 +832,12 @@
 							"fileName": "event-bus-module.ts",
 							"line": 120,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L120"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L120"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65631,
+							"id": 66670,
 							"name": "removeInterceptor",
 							"variant": "signature",
 							"kind": 4096,
@@ -871,12 +875,12 @@
 									"fileName": "event-bus-module.ts",
 									"line": 120,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L120"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L120"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65632,
+									"id": 66671,
 									"name": "interceptor",
 									"variant": "param",
 									"kind": 32768,
@@ -892,7 +896,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/event-bus/common.ts",
 											"qualifiedName": "InterceptorSubscriber"
 										},
 										"name": "InterceptorSubscriber",
@@ -912,13 +917,13 @@
 				{
 					"title": "Methods",
 					"children": [
-						65603,
-						65608,
-						65613,
-						65618,
-						65621,
-						65627,
-						65630
+						66642,
+						66647,
+						66652,
+						66657,
+						66660,
+						66666,
+						66669
 					]
 				}
 			],
@@ -927,7 +932,7 @@
 					"fileName": "event-bus-module.ts",
 					"line": 8,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/020565398e436a2bc65777a3b1ad347b4735d6df/packages/core/types/src/event-bus/event-bus-module.ts#L8"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/event-bus/event-bus-module.ts#L8"
 				}
 			]
 		}
@@ -936,138 +941,170 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				65602
+				66641
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"65601": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66640": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": ""
 		},
-		"65602": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66641": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService"
 		},
-		"65603": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66642": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.emit"
 		},
-		"65604": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66643": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.emit"
 		},
-		"65605": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66644": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "T"
 		},
-		"65606": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66645": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "data"
 		},
-		"65607": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66646": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "options"
 		},
-		"65608": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66647": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.subscribe"
 		},
-		"65609": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66648": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.subscribe"
 		},
-		"65610": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66649": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "eventName"
 		},
-		"65611": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66650": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "subscriber"
 		},
-		"65612": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66651": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "context"
 		},
-		"65613": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66652": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.unsubscribe"
 		},
-		"65614": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66653": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.unsubscribe"
 		},
-		"65615": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66654": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "eventName"
 		},
-		"65616": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66655": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "subscriber"
 		},
-		"65617": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66656": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "context"
 		},
-		"65618": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66657": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.releaseGroupedEvents"
 		},
-		"65619": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66658": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.releaseGroupedEvents"
 		},
-		"65620": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66659": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "eventGroupId"
 		},
-		"65621": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66660": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.clearGroupedEvents"
 		},
-		"65622": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66661": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.clearGroupedEvents"
 		},
-		"65623": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66662": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "eventGroupId"
 		},
-		"65624": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66663": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "options"
 		},
-		"65625": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66664": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "__type"
 		},
-		"65626": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66665": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "__type.eventNames"
 		},
-		"65627": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66666": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.addInterceptor"
 		},
-		"65628": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66667": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.addInterceptor"
 		},
-		"65629": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66668": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "interceptor"
 		},
-		"65630": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66669": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.removeInterceptor"
 		},
-		"65631": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66670": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "IEventBusModuleService.removeInterceptor"
 		},
-		"65632": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/event-bus-module.ts",
+		"66671": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/event-bus/event-bus-module.ts",
 			"qualifiedName": "interceptor"
 		}
 	},
@@ -1076,7 +1113,7 @@
 			"1": "../../../../packages/core/types/src/event-bus/event-bus-module.ts"
 		},
 		"reflections": {
-			"1": 65601
+			"1": 66640
 		}
 	}
 }

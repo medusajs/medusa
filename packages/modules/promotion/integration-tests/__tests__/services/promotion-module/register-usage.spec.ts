@@ -408,6 +408,108 @@ moduleIntegrationTestRunner({
           )
         })
 
+        it("should register and revert spent amounts per attribute value for type spend_by_attribute", async () => {
+          const [createdCampaign] = await service.createCampaigns([
+            {
+              name: "spend-by-attr",
+              campaign_identifier: "spend-by-attr",
+              budget: {
+                type: CampaignBudgetType.SPEND_BY_ATTRIBUTE,
+                attribute: "customer_id",
+                currency_code: "usd",
+                limit: 100,
+              },
+            },
+          ])
+
+          const createdPromotion = await createDefaultPromotion(service, {
+            campaign_id: createdCampaign.id,
+          })
+
+          await service.registerUsage(
+            [
+              { amount: 30, code: createdPromotion.code! },
+              { amount: 40, code: createdPromotion.code! },
+            ],
+            { customer_id: "customer-id-1", customer_email: null }
+          )
+
+          await service.registerUsage(
+            [{ amount: 50, code: createdPromotion.code! }],
+            { customer_id: "customer-id-2", customer_email: null }
+          )
+
+          let campaign = await service.retrieveCampaign(createdCampaign.id, {
+            relations: ["budget", "budget.usages"],
+          })
+
+          expect(campaign.budget).toEqual(
+            expect.objectContaining({
+              used: 120,
+              usages: expect.arrayContaining([
+                expect.objectContaining({
+                  attribute_value: "customer-id-1",
+                  used: 70,
+                }),
+                expect.objectContaining({
+                  attribute_value: "customer-id-2",
+                  used: 50,
+                }),
+              ]),
+            })
+          )
+
+          const error = await service
+            .registerUsage([{ amount: 31, code: createdPromotion.code! }], {
+              customer_id: "customer-id-1",
+              customer_email: null,
+            })
+            .catch((e) => e)
+
+          expect(error).toEqual(
+            expect.objectContaining({
+              type: "not_allowed",
+              message: "Promotion usage exceeds the budget limit.",
+            })
+          )
+
+          const firstUseError = await service
+            .registerUsage([{ amount: 150, code: createdPromotion.code! }], {
+              customer_id: "customer-id-3",
+              customer_email: null,
+            })
+            .catch((e) => e)
+
+          expect(firstUseError).toEqual(
+            expect.objectContaining({
+              type: "not_allowed",
+              message: "Promotion usage exceeds the budget limit.",
+            })
+          )
+
+          await service.revertUsage(
+            [{ amount: 40, code: createdPromotion.code! }],
+            { customer_id: "customer-id-1", customer_email: null }
+          )
+
+          campaign = await service.retrieveCampaign(createdCampaign.id, {
+            relations: ["budget", "budget.usages"],
+          })
+
+          expect(campaign.budget!.usages!).toHaveLength(2)
+          expect(campaign.budget).toEqual(
+            expect.objectContaining({
+              used: 80,
+              usages: expect.arrayContaining([
+                expect.objectContaining({
+                  attribute_value: "customer-id-1",
+                  used: 30,
+                }),
+              ]),
+            })
+          )
+        })
+
         it("should requister usage for attribute budget successfully and revert it successfully", async () => {
           const [createdCampaign] = await service.createCampaigns([
             {

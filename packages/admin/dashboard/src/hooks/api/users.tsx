@@ -12,10 +12,14 @@ import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 
 const USERS_QUERY_KEY = "users" as const
-const usersQueryKeys = {
+export const usersQueryKeys = {
   ...queryKeysFactory(USERS_QUERY_KEY),
   me: (query?: HttpTypes.AdminUserParams) =>
     [USERS_QUERY_KEY, "me", query ? { query } : undefined].filter((k) => !!k),
+  roles: (id: string, query?: HttpTypes.AdminRbacRoleUserListParams) =>
+    [USERS_QUERY_KEY, id, "roles", query ? { query } : undefined].filter(
+      (k) => !!k
+    ),
   authProviders: (id: string) => [USERS_QUERY_KEY, id, "auth-providers"],
 }
 
@@ -62,6 +66,28 @@ export const useUser = (
   return { ...data, ...rest }
 }
 
+export const useUserRoles = (
+  id: string,
+  query?: HttpTypes.AdminRbacRoleUserListParams,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminUserRoleListResponse,
+      FetchError,
+      HttpTypes.AdminUserRoleListResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => sdk.admin.user.listRoles(id, query),
+    queryKey: usersQueryKeys.roles(id, query),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
 export const useUsers = (
   query?: HttpTypes.AdminUserListParams,
   options?: Omit<
@@ -81,6 +107,30 @@ export const useUsers = (
   })
 
   return { ...data, ...rest }
+}
+
+export const useUpdateMe = (
+  query?: HttpTypes.AdminUserParams,
+  options?: UseMutationOptions<
+    HttpTypes.AdminUserResponse,
+    FetchError,
+    HttpTypes.AdminUpdateUser,
+    QueryKey
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => sdk.admin.user.updateMe(payload, query),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: usersQueryKeys.me() })
+      queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.detail(data.user.id),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
 }
 
 export const useUpdateUser = (

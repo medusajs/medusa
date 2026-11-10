@@ -48,7 +48,7 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
         </Drawer.Trigger>
         <Drawer.Content
           dir="ltr"
-          className="bg-ui-contrast-bg-base text-ui-code-fg-subtle !shadow-elevation-commandbar overflow-hidden border border-none max-md:inset-x-2 max-md:max-w-[calc(100%-16px)]"
+          className="text-ui-code-fg-subtle overflow-hidden border border-none bg-ui-contrast-bg-base !shadow-elevation-commandbar max-md:inset-x-2 max-md:max-w-[calc(100%-16px)]"
         >
           <div className="bg-ui-code-bg-base flex items-center justify-between px-6 py-4">
             <div className="flex items-center gap-x-4">
@@ -68,14 +68,14 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
               </Drawer.Description>
             </div>
             <div className="flex items-center gap-x-2">
-              <Kbd className="bg-ui-contrast-bg-subtle border-ui-contrast-border-base text-ui-contrast-fg-secondary">
+              <Kbd className="border-ui-contrast-border-base bg-ui-contrast-bg-subtle text-ui-contrast-fg-secondary">
                 esc
               </Kbd>
               <Drawer.Close asChild>
                 <IconButton
                   size="small"
                   variant="transparent"
-                  className="text-ui-contrast-fg-secondary hover:text-ui-contrast-fg-primary hover:bg-ui-contrast-bg-base-hover active:bg-ui-contrast-bg-base-pressed focus-visible:bg-ui-contrast-bg-base-hover focus-visible:shadow-borders-interactive-with-active"
+                  className="text-ui-contrast-fg-secondary hover:bg-ui-contrast-bg-base-hover hover:text-ui-contrast-fg-primary focus-visible:bg-ui-contrast-bg-base-hover focus-visible:shadow-borders-interactive-with-active active:bg-ui-contrast-bg-base-pressed"
                 >
                   <XMarkMini />
                 </IconButton>
@@ -83,7 +83,7 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
             </div>
           </div>
           <Drawer.Body className="flex flex-1 flex-col overflow-hidden px-[5px] py-0 pb-[5px]">
-            <div className="bg-ui-contrast-bg-subtle flex-1 overflow-auto rounded-b-[4px] rounded-t-lg p-3">
+            <div className="flex-1 overflow-auto rounded-b-[4px] rounded-t-lg bg-ui-contrast-bg-subtle p-3">
               <Suspense
                 fallback={<div className="flex size-full flex-col"></div>}
               >
@@ -130,7 +130,7 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
                   <Primitive.CountInfo
                     render={(_props, { value }) => {
                       return (
-                        <span className="text-ui-contrast-fg-secondary ml-2">
+                        <span className="ml-2 text-ui-contrast-fg-secondary">
                           {t("general.items", {
                             count: Object.keys(value as object).length,
                           })}
@@ -139,7 +139,7 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
                     }}
                   />
                   <Primitive.Arrow>
-                    <TriangleDownMini className="text-ui-contrast-fg-secondary -ml-[0.5px]" />
+                    <TriangleDownMini className="-ml-[0.5px] text-ui-contrast-fg-secondary" />
                   </Primitive.Arrow>
                   <Primitive.Colon>
                     <span className="mr-1">:</span>

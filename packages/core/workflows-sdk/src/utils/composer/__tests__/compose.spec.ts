@@ -2675,7 +2675,7 @@ describe("Workflow composer", function () {
 
         return new WorkflowResponse([{ step1_nested_obj: obj.nested }, s2])
       })
-    ).toThrowError(
+    ).toThrow(
       `Workflow with id "workflow1" and step definition already exists.`
     )
 

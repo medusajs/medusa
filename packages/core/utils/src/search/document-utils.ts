@@ -71,8 +71,8 @@ export function searchValueToNumber(
       ? value.getTime()
       : Date.parse(String(value))
     : typeof value === "number"
-    ? value
-    : Number(value)
+      ? value
+      : Number(value)
 
   return Number.isNaN(num) ? undefined : num
 }

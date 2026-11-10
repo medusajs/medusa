@@ -123,13 +123,11 @@ get:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_promotions_rule-value-options_{rule_type}_{rule_attribute_id}/get.js
+        $ref: ../code_samples/JavaScript/admin_promotions_rule-value-options_{rule_type}_{rule_attribute_id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_promotions_rule-value-options_{rule_type}_{rule_attribute_id}/get.sh
+        $ref: ../code_samples/Shell/admin_promotions_rule-value-options_{rule_type}_{rule_attribute_id}/get.sh
   tags:
     - Promotions
   responses:

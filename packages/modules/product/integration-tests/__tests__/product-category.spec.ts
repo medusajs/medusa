@@ -1312,6 +1312,80 @@ moduleIntegrationTestRunner<Service>({
             })
           )
         })
+
+        it("should set the mpath of the category and its descendants when moving it to the top level", async () => {
+          for (const entry of eletronicsCategoriesData) {
+            await service.create([entry])
+          }
+
+          await service.update([
+            {
+              id: "laptops",
+              parent_category_id: null,
+            },
+          ])
+
+          await service.create([
+            {
+              id: "new-laptops",
+              name: "New laptops",
+              handle: "new-laptops",
+              parent_category_id: "laptops",
+            },
+          ])
+
+          const productCategories = await service.list(
+            {
+              id: [
+                "laptops",
+                "gaming-laptops",
+                "high-performance",
+                "vr-ready",
+                "ultrabooks",
+                "new-laptops",
+                "computers",
+              ],
+            },
+            {
+              select: ["id", "mpath", "parent_category_id"],
+            }
+          )
+
+          expect(productCategories).toHaveLength(7)
+          expect(productCategories).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: "laptops",
+                mpath: "laptops",
+                parent_category_id: null,
+              }),
+              expect.objectContaining({
+                id: "gaming-laptops",
+                mpath: "laptops.gaming-laptops",
+              }),
+              expect.objectContaining({
+                id: "high-performance",
+                mpath: "laptops.gaming-laptops.high-performance",
+              }),
+              expect.objectContaining({
+                id: "vr-ready",
+                mpath: "laptops.gaming-laptops.high-performance.vr-ready",
+              }),
+              expect.objectContaining({
+                id: "ultrabooks",
+                mpath: "laptops.ultrabooks",
+              }),
+              expect.objectContaining({
+                id: "new-laptops",
+                mpath: "laptops.new-laptops",
+              }),
+              expect.objectContaining({
+                id: "computers",
+                mpath: "electronics.computers",
+              }),
+            ])
+          )
+        })
       })
 
       describe("delete", () => {

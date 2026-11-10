@@ -6,7 +6,6 @@ import {
 import { isPresent, Modules } from "@medusajs/framework/utils"
 import {
   createWorkflow,
-  parallelize,
   transform,
   when,
   WorkflowData,
@@ -19,6 +18,7 @@ import {
   replacePaymentAccountHolderStep,
   tryCreatePaymentSessionStep,
   validatePaymentProviderInRegionStep,
+  validatePaymentSessionsDeletableStep,
 } from "../steps"
 import { deletePaymentSessionsWorkflow } from "./delete-payment-sessions"
 
@@ -80,7 +80,18 @@ export const createPaymentSessionsWorkflow = createWorkflow(
   ): WorkflowResponse<PaymentSessionDTO> => {
     const paymentCollection = useRemoteQueryStep({
       entry_point: "payment_collection",
-      fields: ["id", "amount", "currency_code", "payment_sessions.*"],
+      fields: [
+        "id",
+        "amount",
+        "currency_code",
+        "payment_sessions.*",
+        "payment_sessions.payment.id",
+        "payment_sessions.payment.canceled_at",
+        "payment_sessions.payment.captured_at",
+        "payment_sessions.payment.amount",
+        "payment_sessions.payment.raw_amount",
+        "payment_sessions.payment.refunds.raw_amount",
+      ],
       variables: { id: input.payment_collection_id },
       list: false,
     }).config({ name: "get-payment-collection" })
@@ -88,6 +99,10 @@ export const createPaymentSessionsWorkflow = createWorkflow(
     validatePaymentProviderInRegionStep({
       payment_collection_id: input.payment_collection_id,
       provider_id: input.provider_id,
+    })
+
+    validatePaymentSessionsDeletableStep({
+      payment_sessions: paymentCollection.payment_sessions,
     })
 
     const { paymentCustomer, accountHolder, existingAccountHolder } = when(
@@ -206,12 +221,11 @@ export const createPaymentSessionsWorkflow = createWorkflow(
     // for a payment collection as we don't support split payments at the moment.
     // When we are ready to accept split payments, this along with other workflows
     // need to be handled correctly
-    const [attempt] = parallelize(
-      tryCreatePaymentSessionStep(paymentSessionInput),
-      deletePaymentSessionsWorkflow.runAsStep({
-        input: deletePaymentSessionInput,
-      })
-    )
+    deletePaymentSessionsWorkflow.runAsStep({
+      input: deletePaymentSessionInput,
+    })
+
+    const attempt = tryCreatePaymentSessionStep(paymentSessionInput)
 
     // The provider can lose an account holder, eg. when the database was copied from a setup that uses another
     // provider account. The account holder is then replaced, and the payment session is created with it.

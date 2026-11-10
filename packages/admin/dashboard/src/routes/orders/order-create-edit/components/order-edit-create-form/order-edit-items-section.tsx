@@ -86,7 +86,16 @@ export const OrderEditItemsSection = ({
             </StackedFocusModal.Trigger>
 
             <StackedFocusModal.Content>
-              <StackedFocusModal.Header />
+              <StackedFocusModal.Header>
+                <StackedFocusModal.Title asChild>
+                  <span className="sr-only">{t("orders.edits.addItems")}</span>
+                </StackedFocusModal.Title>
+                <StackedFocusModal.Description asChild>
+                  <span className="sr-only">
+                    {t("orders.edits.addItemsDescription")}
+                  </span>
+                </StackedFocusModal.Description>
+              </StackedFocusModal.Header>
 
               <AddOrderEditItemsTable
                 currencyCode={order.currency_code}
@@ -137,7 +146,7 @@ export const OrderEditItemsSection = ({
             background:
               "repeating-linear-gradient(-45deg, rgb(212, 212, 216, 0.15), rgb(212, 212, 216,.15) 10px, transparent 10px, transparent 20px)",
           }}
-          className="bg-ui-bg-field mt-4 block h-[56px] w-full rounded-lg border border-dashed"
+          className="mt-4 block h-[56px] w-full rounded-lg border border-dashed bg-ui-bg-field"
         />
       )}
     </div>

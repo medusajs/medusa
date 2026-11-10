@@ -465,8 +465,10 @@ export interface UpdateTaxLineDTO {
 /**
  * The shipping method tax line to be created.
  */
-export interface CreateShippingMethodTaxLineDTO
-  extends Omit<CreateTaxLineDTO, "item_id"> {
+export interface CreateShippingMethodTaxLineDTO extends Omit<
+  CreateTaxLineDTO,
+  "item_id"
+> {
   /**
    * The associated shipping method's ID.
    */
@@ -476,8 +478,10 @@ export interface CreateShippingMethodTaxLineDTO
 /**
  * The attributes to update in the shipping method tax line.
  */
-export interface UpdateShippingMethodTaxLineDTO
-  extends Omit<UpdateTaxLineDTO, "item_id"> {
+export interface UpdateShippingMethodTaxLineDTO extends Omit<
+  UpdateTaxLineDTO,
+  "item_id"
+> {
   /**
    * The associated shipping method's ID.
    */
@@ -665,8 +669,10 @@ export interface UpdateLineItemWithSelectorDTO {
   data: Partial<UpdateLineItemDTO>
 }
 
-export interface UpdateLineItemWithoutSelectorDTO
-  extends Omit<Partial<UpdateLineItemDTO>, "id"> {
+export interface UpdateLineItemWithoutSelectorDTO extends Omit<
+  Partial<UpdateLineItemDTO>,
+  "id"
+> {
   id: string
 }
 
@@ -690,11 +696,10 @@ export interface UpdateCartWithSelectorDTO {
 /**
  * The attributes to update in a line item.
  */
-export interface UpdateLineItemDTO
-  extends Omit<
-    CreateLineItemDTO,
-    "tax_lines" | "adjustments" | "title" | "quantity" | "unit_price"
-  > {
+export interface UpdateLineItemDTO extends Omit<
+  CreateLineItemDTO,
+  "tax_lines" | "adjustments" | "title" | "quantity" | "unit_price"
+> {
   /**
    * The ID of the line item.
    */

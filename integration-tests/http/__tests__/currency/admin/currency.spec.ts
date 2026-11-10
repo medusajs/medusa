@@ -25,12 +25,20 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.currencies).toHaveLength(126)
+        expect(response.data.currencies).toHaveLength(128)
         expect(response.data.currencies).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
+              code: "awg",
+              name: "Aruban Florin",
+            }),
+            expect.objectContaining({
               code: "gmd",
               name: "Gambian Dalasi",
+            }),
+            expect.objectContaining({
+              code: "htg",
+              name: "Haitian Gourde",
             }),
             expect.objectContaining({
               code: "usd",
@@ -38,6 +46,22 @@ medusaIntegrationTestRunner({
             }),
           ])
         )
+      })
+
+      it("should retrieve the Haitian Gourde filtered with q param", async () => {
+        const response = await api.get(
+          `/admin/currencies?q=Haitian`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.currencies).toEqual([
+          expect.objectContaining({
+            code: "htg",
+            name: "Haitian Gourde",
+            decimal_digits: 2,
+          }),
+        ])
       })
 
       it("should retrieve the currencies filtered with q param", async () => {

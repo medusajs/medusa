@@ -3,9 +3,8 @@ import { ModulesDefinition } from "../../definitions"
 import { MODULE_SCOPE } from "../../types"
 import { registerMedusaModule } from "../register-modules"
 
-const testServiceResolved = require.resolve(
-  "../__fixtures__/test-service-resolved"
-)
+const testServiceResolved =
+  require.resolve("../__fixtures__/test-service-resolved")
 const defaultTestService = require.resolve("../__fixtures__/test-service")
 
 describe("module definitions loader", () => {

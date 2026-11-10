@@ -47,7 +47,7 @@ Query and Remote Joiner for Medusa: the engine behind Query, which retrieves dat
 ## Features
 
 - `query.graph()` to retrieve records of a data model and their linked records from other modules.
-- `query.index()` to filter across linked modules using the Index Module.
+- `query.index()` to filter across linked modules using the Index Module. **Deprecated**: use `query.graph()`, which filters across linked modules. See [Filter by linked data models](https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property).
 - `query.search()` to run search queries through the Search Module.
 - `RemoteJoiner`, which resolves and joins data across module services.
 

@@ -63,7 +63,7 @@ Docs:
 ## Development
 
 ```bash
-yarn build          # tsgo typecheck, then tsup
+yarn build          # tsc (TS 7) typecheck, then tsup
 yarn typecheck
 yarn lint
 yarn test           # vitest --run

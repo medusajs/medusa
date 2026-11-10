@@ -7,7 +7,7 @@ import {
   transform,
 } from "@medusajs/framework/workflows-sdk"
 import type { CustomerDTO, OrderPreviewDTO } from "@medusajs/framework/types"
-import { v4 as uid } from "uuid"
+import { randomUUID as uid } from "crypto"
 
 import { emitEventStep, useRemoteQueryStep } from "../../../common"
 import { createOrderChangeStep } from "../../steps/create-order-change"
@@ -18,7 +18,7 @@ import {
   MedusaError,
   OrderChangeStatus,
   OrderWorkflowEvents,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { previewOrderChangeStep, updateOrderChangesStep } from "../../steps"
 
 /**

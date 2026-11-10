@@ -11,8 +11,8 @@ type Func1<T extends object | WorkflowData, U> = (
   input: T extends WorkflowData<infer U>
     ? U
     : T extends object
-    ? { [K in keyof T]: T[K] extends WorkflowData<infer U> ? U : T[K] }
-    : {},
+      ? { [K in keyof T]: T[K] extends WorkflowData<infer U> ? U : T[K] }
+      : {},
   context: StepExecutionContext
 ) => U | Promise<U>
 

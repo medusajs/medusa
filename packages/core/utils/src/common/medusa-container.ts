@@ -4,6 +4,7 @@ import {
   asValue,
   AwilixContainer,
   ClassOrFunctionReturning,
+  ContainerOptions,
   createContainer,
   Resolver,
 } from "@medusajs/deps/awilix"
@@ -28,8 +29,7 @@ function registerAdd(
     this.register(storeKey, asValue([] as Resolver<unknown>[]))
   }
   const store = this.resolve(storeKey) as (
-    | ClassOrFunctionReturning<unknown>
-    | Resolver<unknown>
+    ClassOrFunctionReturning<unknown> | Resolver<unknown>
   )[]
 
   if (this.registrations[name] === undefined) {
@@ -40,8 +40,12 @@ function registerAdd(
   return this
 }
 
-export function createMedusaContainer(...args): MedusaContainer {
-  const container = createContainer.apply(null, args) as MedusaContainer
+export function createMedusaContainer(
+  options?: ContainerOptions,
+  parentContainer?: AwilixContainer | MedusaContainer
+): MedusaContainer {
+  const container = (parentContainer?.createScope() ??
+    createContainer(options)) as MedusaContainer
 
   container.registerAdd = registerAdd.bind(container)
 

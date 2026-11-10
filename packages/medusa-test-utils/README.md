@@ -51,6 +51,7 @@
 - `initModules`: initializes a set of modules for custom test setups.
 - `TestEventUtils.waitSubscribersExecution`: waits until subscribers of an event finish running.
 - `MockEventBusService`, `TestDatabaseUtils`, `JestUtils`, and `normalizeBigNumbers` helpers.
+- A Jest preset (`preset: "@medusajs/test-utils"`) that lets Jest load the ESM-only packages Medusa depends on.
 
 ## Installation
 

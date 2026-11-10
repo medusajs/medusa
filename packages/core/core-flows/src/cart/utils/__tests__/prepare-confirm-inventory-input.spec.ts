@@ -742,6 +742,127 @@ describe("prepareConfirmInventoryInput", () => {
     })
   })
 
+  it("should throw an error if a variant's only stock location is linked to no sales channel", () => {
+    const input = {
+      sales_channel_id: "sc_1",
+      variants: [
+        {
+          id: "pv_1",
+          manage_inventory: true,
+          inventory_items: [
+            {
+              inventory_item_id: "ii_1",
+              variant_id: "pv_1",
+              required_quantity: 1,
+              inventory: [
+                {
+                  location_levels: {
+                    location_id: "sl_1",
+                    stocked_quantity: 10,
+                    reserved_quantity: 0,
+                    stock_locations: [
+                      {
+                        id: "sl_1",
+                        sales_channels: [], // linked to no sales channel
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      items: [
+        {
+          variant_id: "pv_1",
+          quantity: 4,
+          id: "item_1",
+        },
+      ],
+    }
+
+    expect(() => prepareConfirmInventoryInput({ input })).toThrow(
+      `Sales channel sc_1 is not associated with any stock location for variant pv_1.`
+    )
+  })
+
+  it("should not silently skip a variant whose only stock location is linked to no sales channel when another variant is confirmable", () => {
+    const input = {
+      sales_channel_id: "sc_1",
+      variants: [
+        {
+          id: "pv_1",
+          manage_inventory: true,
+          inventory_items: [
+            {
+              inventory_item_id: "ii_1",
+              variant_id: "pv_1",
+              required_quantity: 1,
+              inventory: [
+                {
+                  location_levels: {
+                    location_id: "sl_1",
+                    stocked_quantity: 10,
+                    reserved_quantity: 0,
+                    stock_locations: [
+                      {
+                        id: "sl_1",
+                        sales_channels: [{ id: "sc_1" }],
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "pv_2",
+          manage_inventory: true,
+          inventory_items: [
+            {
+              inventory_item_id: "ii_2",
+              variant_id: "pv_2",
+              required_quantity: 1,
+              inventory: [
+                {
+                  location_levels: {
+                    location_id: "sl_2",
+                    stocked_quantity: 10,
+                    reserved_quantity: 0,
+                    stock_locations: [
+                      {
+                        id: "sl_2",
+                        sales_channels: [], // linked to no sales channel
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      items: [
+        {
+          variant_id: "pv_1",
+          quantity: 1,
+          id: "item_1",
+        },
+        {
+          variant_id: "pv_2",
+          quantity: 4,
+          id: "item_2",
+        },
+      ],
+    }
+
+    expect(() => prepareConfirmInventoryInput({ input })).toThrow(
+      `Sales channel sc_1 is not associated with any stock location for variant pv_2.`
+    )
+  })
+
   it("should throw an error if any variant has no inventory items", () => {
     const input = {
       sales_channel_id: "sc_1",
@@ -790,5 +911,8 @@ describe("prepareConfirmInventoryInput", () => {
     }
 
     expect(() => prepareConfirmInventoryInput({ input })).toThrow(MedusaError)
+    expect(() => prepareConfirmInventoryInput({ input })).toThrow(
+      `Variant pv_2 does not have any inventory items associated with it.`
+    )
   })
 })

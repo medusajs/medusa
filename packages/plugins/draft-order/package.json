@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/draft-order",
-  "version": "2.21.2",
+  "version": "2.22.6",
   "description": "A draft order plugin for Medusa.",
   "author": "Medusa (https://medusajs.com)",
   "license": "MIT",
@@ -13,7 +13,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "files": [
-    ".medusa/server",
+    ".medusa/server/**",
     "AGENTS.md"
   ],
   "llms": "https://docs.medusajs.com/llms.txt",
@@ -48,38 +48,39 @@
   },
   "dependencies": {
     "@ariakit/react": "^0.4.15",
-    "@babel/runtime": "^7.26.10",
-    "@hookform/resolvers": "5.5.7",
-    "@medusajs/js-sdk": "2.21.2",
+    "@babel/runtime": "^8.0.10",
+    "@hookform/resolvers": "6.0.0",
+    "@medusajs/js-sdk": "2.22.6",
     "@tanstack/react-query": "5.64.2",
     "@uiw/react-json-view": "^2.0.0-alpha.17",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.4.0",
+    "dequal": "^2.0.3",
     "lodash.debounce": "^4.0.8",
-    "lodash.isequal": "^4.5.0",
-    "match-sorter": "^6.3.4",
+    "match-sorter": "^8.3.0",
     "radix-ui": "1.1.2",
     "react-hook-form": "7.83.0",
-    "zod": "4.2.0"
+    "zod": "4.6.6"
   },
   "devDependencies": {
-    "@medusajs/admin-sdk": "2.21.2",
-    "@medusajs/cli": "2.21.2",
-    "@medusajs/dashboard": "2.21.2",
-    "@medusajs/framework": "2.21.2",
-    "@medusajs/icons": "2.21.2",
-    "@medusajs/test-utils": "2.21.2",
-    "@medusajs/types": "2.21.2",
-    "@medusajs/ui": "4.2.6",
-    "@medusajs/ui-preset": "2.21.2"
+    "@medusajs/admin-sdk": "2.22.6",
+    "@medusajs/cli": "2.22.6",
+    "@medusajs/dashboard": "2.22.6",
+    "@medusajs/framework": "2.22.6",
+    "@medusajs/icons": "2.22.6",
+    "@medusajs/test-utils": "2.22.6",
+    "@medusajs/types": "2.22.6",
+    "@medusajs/ui": "4.2.13",
+    "@medusajs/ui-preset": "2.22.6",
+    "cross-env": "^10.1.0"
   },
   "peerDependencies": {
-    "@medusajs/admin-sdk": "2.21.2",
-    "@medusajs/cli": "2.21.2",
-    "@medusajs/dashboard": "2.21.2",
-    "@medusajs/framework": "2.21.2",
-    "@medusajs/icons": "2.21.2",
-    "@medusajs/test-utils": "2.21.2",
-    "@medusajs/ui": "4.2.6",
+    "@medusajs/admin-sdk": "2.22.6",
+    "@medusajs/cli": "2.22.6",
+    "@medusajs/dashboard": "2.22.6",
+    "@medusajs/framework": "2.22.6",
+    "@medusajs/icons": "2.22.6",
+    "@medusajs/test-utils": "2.22.6",
+    "@medusajs/ui": "4.2.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.4 || ^7.0.0"
@@ -116,5 +117,5 @@
   "engines": {
     "node": ">=22.22.0"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@4.18.1"
 }

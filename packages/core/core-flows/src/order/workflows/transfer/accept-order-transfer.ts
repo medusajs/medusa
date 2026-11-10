@@ -15,7 +15,7 @@ import {
   ChangeActionType,
   MedusaError,
   OrderChangeStatus,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import { useQueryGraphStep } from "../../../common"
 import { previewOrderChangeStep } from "../../steps"

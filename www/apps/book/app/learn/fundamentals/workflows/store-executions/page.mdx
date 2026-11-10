@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you'll learn how to store workflow executions in the database and access them later.
+In this chapter, you'll learn how to store workflow executions in the database, access them later, and use a workflow's transaction ID to avoid duplicate executions.
 
 ## Workflow Execution Retention
 
@@ -177,3 +177,103 @@ if (workflowExecution.state === "failed") {
 ```
 
 Other state values include `done`, `invoking`, and `compensating`.
+
+---
+
+## Run a Workflow with an Existing Transaction ID
+
+When you execute a workflow, you can pass a `transactionId` in the `context` parameter of the `run` method to set the ID of the execution's transaction. If you don't pass one, Medusa generates a unique ID for every execution.
+
+For example:
+
+```ts
+const { result } = await helloWorkflow(container).run({
+  input: {},
+  context: {
+    transactionId: "hello-123",
+  },
+})
+```
+
+If the workflow stores its executions, Medusa looks up an existing execution with the same transaction ID before running the workflow. What happens next depends on the state of that execution, as explained in the following sections.
+
+<Note>
+
+This behavior only applies to workflows that store their executions. Medusa stores a workflow's executions if you enable its `store`, `retentionTime`, or `idempotent` options, or if it's a [Long-Running Workflow](../long-running-workflow/page.mdx), has a [timeout](../workflow-timeout/page.mdx), or has steps with a timeout or retry interval. Otherwise, Medusa runs the workflow from the start every time, even if you pass the same transaction ID.
+
+</Note>
+
+### Execution Is Still Running
+
+If an execution with the same transaction ID is still in progress, Medusa loads the execution from its last saved checkpoint and resumes it instead of starting a new execution.
+
+Medusa doesn't run the steps that already finished again, and it leaves steps that are waiting for a status change as they are. For example, if a [Long-Running Workflow](../long-running-workflow/page.mdx) is waiting for an async step, the step keeps waiting until you change its status with the Workflow Engine Module's `setStepSuccess` or `setStepFailure` methods.
+
+### Concurrent Executions with the Same Transaction ID
+
+If you start two executions of a workflow with the same transaction ID at the same time, Medusa doesn't run the workflow twice. Instead, the second `run` call either:
+
+- Throws a `SkipExecutionError` with the message `Transaction already started for transactionId: {id}`. This happens when both calls start before either of them saves the execution.
+- Loads the execution that the first call saved and continues it, as explained in the [previous section](#execution-is-still-running). Medusa doesn't run the steps that the first call already finished or is still running. In this case, the second call may also throw a `SkipExecutionError` with a different message if the first call moves ahead of it.
+
+This prevents duplicate executions, for example, when a client retries a request or a third-party service sends the same webhook twice.
+
+<Note type="warning">
+
+The [In-Memory Workflow Engine](!resources!/infrastructure-modules/workflow-engine/in-memory) only detects concurrent executions within the same process. If you run multiple Medusa instances, use the [Redis Workflow Engine](!resources!/infrastructure-modules/workflow-engine/redis) so that all instances share the same executions.
+
+</Note>
+
+### Execution Has Finished
+
+When an execution finishes, Medusa deletes it unless you set the workflow's `retentionTime` option. So, if you run the workflow again with the same transaction ID, Medusa runs it from the start as a new execution.
+
+Setting the `retentionTime` option alone keeps the finished execution stored, but doesn't prevent running the workflow again. Medusa still runs the workflow from the start and stores the new execution with the same transaction ID, but a different run ID.
+
+To return the finished execution instead of running the workflow again, enable the `idempotent` option and set the `retentionTime` option:
+
+export const idempotentHighlights = [
+  ["4", "idempotent", "Return the existing execution of a transaction ID instead of running the workflow again."],
+  ["5", "retentionTime", "Keep finished executions stored for a day."],
+]
+
+```ts highlights={idempotentHighlights}
+export const helloWorkflow = createWorkflow(
+  {
+    name: "hello-workflow",
+    idempotent: true,
+    retentionTime: 86400,
+  },
+  () => {
+    step1()
+  }
+)
+```
+
+Now, when you run `helloWorkflow` with the transaction ID of an execution that finished, Medusa returns the existing execution without running its steps again. This applies to executions that completed successfully, failed, or reverted. If the existing execution failed or reverted, the `run` method throws the execution's original error again, unless you set its `throwOnError` option to `false`.
+
+Once the retention time passes and Medusa deletes the execution, running the workflow with the same transaction ID starts a new execution.
+
+### Use the Transaction ID as an Idempotency Key
+
+Based on the behavior above, you can use the transaction ID as an idempotency key to make sure a workflow runs only once for the same operation. For example, use the ID of a webhook event as the transaction ID, so that receiving the same event multiple times doesn't run the workflow multiple times:
+
+export const idempotencyKeyHighlights = [
+  ["4", "transactionId", "Use the webhook event's ID as the transaction ID."],
+]
+
+```ts highlights={idempotencyKeyHighlights}
+await helloWorkflow(container).run({
+  input: {},
+  context: {
+    transactionId: `webhook-${event.id}`,
+  },
+})
+```
+
+To deduplicate executions reliably:
+
+- Enable the `idempotent` option so that Medusa doesn't run the workflow again after an execution finishes.
+- Set the `retentionTime` option to at least the period during which duplicates may arrive. After the retention time passes, Medusa no longer deduplicates executions with that transaction ID.
+- Use the [Redis Workflow Engine](!resources!/infrastructure-modules/workflow-engine/redis) in production so that all Medusa instances detect concurrent executions.
+- Handle the `SkipExecutionError` in your code, since a concurrent duplicate may throw it instead of returning a result. You can treat this error as a sign that another execution is already handling the operation.

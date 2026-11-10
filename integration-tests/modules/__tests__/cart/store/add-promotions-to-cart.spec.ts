@@ -1,9 +1,11 @@
+import { updateCartPromotionsWorkflow } from "@medusajs/core-flows"
 import { RemoteLink } from "@medusajs/modules-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   Modules,
+  PromotionActions,
   PromotionStatus,
   PromotionType,
 } from "@medusajs/utils"
@@ -375,6 +377,99 @@ medusaIntegrationTestRunner({
             })
           )
         })
+      })
+
+      describe("updateCartPromotionsWorkflow compensation", () => {
+        const createPromotion = (code: string) =>
+          promotionModuleService.createPromotions({
+            code,
+            type: PromotionType.STANDARD,
+            status: PromotionStatus.ACTIVE,
+            application_method: {
+              type: "fixed",
+              target_type: "items",
+              allocation: "across",
+              value: 100,
+              currency_code: "usd",
+              target_rules: [
+                {
+                  attribute: "items.product_id",
+                  operator: "eq",
+                  values: "prod_tshirt",
+                },
+              ],
+            },
+          })
+
+        const getCartPromotionIds = async (cartId: string) => {
+          const query = appContainer.resolve(ContainerRegistrationKeys.QUERY)
+          const {
+            data: [cart],
+          } = await query.graph({
+            entity: "cart",
+            fields: ["promotions.id"],
+            filters: { id: cartId },
+          })
+
+          return cart.promotions.map((promotion) => promotion.id)
+        }
+
+        const runFailingWorkflow = async (input) => {
+          const workflow = updateCartPromotionsWorkflow(appContainer)
+          workflow.addAction(
+            "throw",
+            {
+              invoke: async function failStep() {
+                throw new Error("Failed to update cart promotions")
+              },
+            },
+            { noCompensation: true }
+          )
+
+          const { errors } = await workflow.run({ input, throwOnError: false })
+
+          expect(errors).toHaveLength(1)
+          expect(errors[0].error.message).toEqual(
+            "Failed to update cart promotions"
+          )
+        }
+
+        it.each([PromotionActions.ADD, PromotionActions.REPLACE])(
+          "should restore the cart promotion links when the workflow fails with the %s action",
+          async (action) => {
+            const existingPromotion = await createPromotion(
+              `EXISTING_${action}`
+            )
+            const newPromotion = await createPromotion(`NEW_${action}`)
+
+            const cart = await cartModuleService.createCarts({
+              currency_code: "usd",
+              items: [
+                {
+                  unit_price: 1000,
+                  quantity: 1,
+                  title: "Test item",
+                  product_id: "prod_tshirt",
+                } as any,
+              ],
+            })
+
+            await remoteLinkService.create({
+              [Modules.CART]: { cart_id: cart.id },
+              [Modules.PROMOTION]: { promotion_id: existingPromotion.id },
+            })
+
+            await runFailingWorkflow({
+              cart_id: cart.id,
+              promo_codes: [existingPromotion.code!, newPromotion.code!],
+              action,
+            })
+
+            expect(await getCartPromotionIds(cart.id)).toEqual([
+              existingPromotion.id,
+            ])
+          }
+        )
       })
     })
   },

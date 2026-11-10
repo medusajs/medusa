@@ -1,5 +1,73 @@
 # @medusajs/ui
 
+## 4.2.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/icons@2.22.6
+
+## 4.2.12
+
+### Patch Changes
+
+- [#17695](https://github.com/medusajs/medusa/pull/17695) [`43ee8be`](https://github.com/medusajs/medusa/commit/43ee8be5405956a5bc1578b23e3725ef8b84f83e) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui): update cva to 1.0.0-beta.12
+
+- [#17702](https://github.com/medusajs/medusa/pull/17702) [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,draft-order): replace deprecated lodash.isequal with dequal
+- Updated dependencies []:
+  - @medusajs/icons@2.22.5
+
+## 4.2.11
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/icons@2.22.4
+
+## 4.2.10
+
+### Patch Changes
+
+- [#17631](https://github.com/medusajs/medusa/pull/17631) [`6942022`](https://github.com/medusajs/medusa/commit/69420228b04b08149c7a5719600f8e1e4d8546e1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui,ui-preset): support Tailwind CSS 4. `@medusajs/ui-preset` adds a CSS-first `theme.css` for Tailwind CSS 4 and keeps supporting Tailwind CSS 3, and `@medusajs/ui` updates `tailwind-merge` to v3 and uses class names that work in both versions
+
+- Updated dependencies []:
+  - @medusajs/icons@2.22.3
+
+## 4.2.9
+
+### Patch Changes
+
+- [#17528](https://github.com/medusajs/medusa/pull/17528) [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui): update react-aria to ^3.53.1 and react-stately to ^3.51.0, and declare the directly imported @internationalized/date
+
+- [#17572](https://github.com/medusajs/medusa/pull/17572) [`842d781`](https://github.com/medusajs/medusa/commit/842d781152debf6cd6d4daafcd57cb1af295a841) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update admin and design-system UI dependencies (clsx 2.1.1, cmdk 1.1.1, copy-to-clipboard 4.0.2, date-fns 4.4.0, @dnd-kit/sortable 10.0.0 with @dnd-kit/core ^6.3.0, @hookform/resolvers 6.0.0, match-sorter 8.3.0, motion 14.6.0, react-currency-input-field 4.0.14, react-helmet-async 3.0.0, react-jwt 2.1.1, sonner 2.0.8)
+
+- [#17543](https://github.com/medusajs/medusa/pull/17543) [`5ac3fdc`](https://github.com/medusajs/medusa/commit/5ac3fdcbf82e818337d424852c778ce2ffd5e8e9) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(ui): stop long labels from shifting left in DataTable select filter options
+
+- Updated dependencies [[`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d)]:
+  - @medusajs/icons@2.22.2
+
+## 4.2.8
+
+### Patch Changes
+
+- [#17456](https://github.com/medusajs/medusa/pull/17456) [`89f67a6a0bc8183fb5fa3243138a2d38e247774c`](https://github.com/medusajs/medusa/commit/89f67a6a0bc8183fb5fa3243138a2d38e247774c) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(ui): respect the dismissable prop in toast.loading
+
+- Updated dependencies []:
+  - @medusajs/icons@2.22.1
+
+## 4.2.7
+
+### Patch Changes
+
+- [#17382](https://github.com/medusajs/medusa/pull/17382) [`1db74006ede40300afe64970024688a1a9c2a936`](https://github.com/medusajs/medusa/commit/1db74006ede40300afe64970024688a1a9c2a936) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: ship AGENTS.md in published packages and add agent discovery fields to package.json
+
+- [#16794](https://github.com/medusajs/medusa/pull/16794) [`0e64e7da490fb3c8b8b6255f28cd76a2508be1a3`](https://github.com/medusajs/medusa/commit/0e64e7da490fb3c8b8b6255f28cd76a2508be1a3) Thanks [@thomassarazin](https://github.com/thomassarazin)! - fix(ui): keep the gap between date and time segments in locales whose separator is a space
+
+- Updated dependencies [[`1db74006ede40300afe64970024688a1a9c2a936`](https://github.com/medusajs/medusa/commit/1db74006ede40300afe64970024688a1a9c2a936)]:
+  - @medusajs/icons@2.22.0
+
 ## 4.2.6
 
 ### Patch Changes
@@ -614,12 +682,10 @@
   This minor release contains a few bug fixes and improvements, as well as a new primitive component.
 
   ### Fixes
-
   - Fixes an issue that was preventing the onChange event from firing for the `DatePicker` component when `showTimePicker` was false.
   - Fixes an issue where the `DatePicker` component would fire the onChange event when clicking outside of the component. It now only fires the event when the "Apply" button is clicked.
 
   ### New Components
-
   - Adds a new `Popover` component. This component is a primitive component that can be used to create popovers. It shares much of the same styling as the `DropdownMenu` component, and can be used as a replacement when building highly customized dropdowns where the `DropdownMenu` component is not flexible enough.
 
 ## 2.1.0
@@ -629,7 +695,6 @@
 - 035fa72: feat(ui,ui-preset): Release 2.1.0
 
   ## `@medusajs/ui`
-
   - The styling of buttons, inputs, and the CommandBar has been adjusted to have a more consistent look and feel.
   - Fixed an issue that caused DropdownMenu.Content to overflow the viewport.
   - Fixed an issue with the DatePicker component where deleting a time segment would throw an error.
@@ -637,11 +702,9 @@
   - Adds a new subcomponent to RadioGroup called RadioGroup.ChoiceBox. This component wraps the RadioGroup.Item component with a mandatory label and description.
 
   ## `@medusajs/ui-preset`
-
   - Updated several colors, shadows, and gradient effects.
 
   ## `@medusajs/icons`
-
   - Introduces 6 new icons: QuestionMark, SparklesMiniSolid, SparklesMini, ThumbDown, ThumbUp, and UserCircleMini.
   - There have been slight adjustments made to ArrowPathMini, EllipseBlueSolid, EllipseGreenSolid, EllipseGreySolid, EllipseOrangeSolid, EllipsePurpleSolid, and EllipseRedSolid.
 
@@ -659,7 +722,6 @@
   # Changes in `@medusajs/ui`
 
   ## New components
-
   - `IconButton` - A button that only contains an icon.
   - `IconBadge` - A badge that only contains an icon.
   - `StatusBadge` - A badge component specifically designed to be used for displaying statuses.
@@ -679,7 +741,6 @@
   - CodeBlock - The `hideLineNumbers` property has been moved to the `snippets` property. This allows users to control the visibility of line numbers on a per snippet basis.
 
   ## Other changes
-
   - The `z-index`'s of all components have been cleaned up to to make stacking portalled components easier.
   - `Table.Pagination` has been tweaked to ensure that it displays the correct number of pages when there is no data.
   - `Calendar` has been tweaked to prevent clicking a date from submitting any forms that precede it in the DOM.
@@ -687,7 +748,6 @@
   # Changes in `@medusajs/icons`
 
   ## New icons
-
   - `X`
   - `AcademicCap`
   - `Figma`

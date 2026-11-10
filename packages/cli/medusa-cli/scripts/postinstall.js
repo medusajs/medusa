@@ -1,8 +1,8 @@
-const chalk = require(`chalk`)
+const { styleText } = require(`util`)
 
 const showSuccessMessage = () => {
-  console.log(chalk.green(`Success!\n`))
-  console.log(chalk.cyan(`Welcome to the Medusa CLI!`))
+  console.log(styleText(`green`, `Success!\n`))
+  console.log(styleText(`cyan`, `Welcome to the Medusa CLI!`))
 }
 
 try {

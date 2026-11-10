@@ -1,13 +1,13 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-import { useFeatureFlag } from "../providers/feature-flag-provider"
+import { RBAC_MODULE_KEY, useIsModuleInstalled } from "./api/modules"
 
 /**
- * Guards a route/component on the `rbac` feature flag. When the flag is
- * disabled the consumer is navigated back. Returns the boolean so callers can
+ * Guards a route/component on the RBAC module being installed. When it isn't,
+ * the consumer is navigated back. Returns the boolean so callers can
  * short-circuit JSX (and reuse it in other gates like react-query's
- * `enabled` option) without redeclaring the flag.
+ * `enabled` option) without redeclaring the check.
  *
  * @example
  * ```tsx
@@ -19,14 +19,15 @@ import { useFeatureFlag } from "../providers/feature-flag-provider"
  * ```
  */
 export const useRequireRbacFeature = (): boolean => {
-  const isRbacEnabled = useFeatureFlag("rbac")
+  const { isInstalled, isLoading } = useIsModuleInstalled(RBAC_MODULE_KEY)
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!isRbacEnabled) {
+    // Don't navigate away while the installed modules are still loading.
+    if (!isLoading && !isInstalled) {
       navigate(-1)
     }
-  }, [isRbacEnabled, navigate])
+  }, [isInstalled, isLoading, navigate])
 
-  return isRbacEnabled
+  return isInstalled
 }

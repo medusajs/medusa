@@ -1,6 +1,7 @@
 import { validateAndTransformBody } from "@medusajs/framework"
 import {
   AuthenticatedMedusaRequest,
+  authorize,
   MedusaNextFunction,
   MedusaResponse,
   MiddlewareRoute,
@@ -9,6 +10,7 @@ import { Logger } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   FeatureFlag,
+  MedusaError,
   Modules,
 } from "@medusajs/framework/utils"
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
@@ -32,10 +34,10 @@ const isIndexEnabledMiddleware = (
     !indexService ||
     !FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key)
   ) {
-    logger.warn(
+    const message =
       "Trying to access '/admin/index/*' route but the index module is not configured"
-    )
-    return res.status(404)
+    logger.warn(message)
+    return next(new MedusaError(MedusaError.Types.NOT_FOUND, message))
   }
 
   return next()
@@ -55,6 +57,7 @@ export const adminIndexRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/index/sync",
     middlewares: [
       authenticate("user", ["session", "bearer", "api-key"]),
+      authorize({ resource: "*", operation: "*" }),
       isIndexEnabledMiddleware,
       validateAndTransformBody(AdminIndexSyncPayload),
     ],

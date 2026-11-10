@@ -44,7 +44,7 @@ To view the preview environments for a project, go to the [project's dashboard](
 
 To create a new preview environment, create a PR towards a branch that has an environment in Cloud, such as Production.
 
-Medusa will automatically create a preview environment for the PR and deploy the changes to that environment. Everytime you push a new commit to the PR, Medusa will redeploy the preview environment with the latest changes.
+Medusa will automatically create a preview environment for the PR and deploy the changes to that environment. Every time you push a new commit to the PR, Medusa will redeploy the preview environment with the latest changes.
 
 You can also view the preview deployment and its status in the comment made on your PR in GitHub.
 
@@ -66,6 +66,22 @@ To increase the concurrent previews limit from the project dashboard:
 4. Click the **Increase limit and deploy preview** button to confirm.
 
 This will increase the concurrent previews limit across projects in your organization, and you can view your updated bill in the [Invoices](../../billing/page.mdx#view-billing-history-and-invoices) settings.
+
+---
+
+## Pending Preview Environments
+
+A preview environment is pending when Medusa hasn't provisioned it yet. You can provision a pending preview environment by clicking the **Provision** button, either in its row in the project dashboard's "Previews" table or on the environment's dashboard:
+
+- If your organization has reached its concurrent previews limit, the button takes you to a page where you can [increase the limit](#increase-preview-environment-limits).
+- Otherwise, Medusa provisions the preview environment immediately.
+
+To open a pending preview environment's dashboard, click its row in the "Previews" table. Until you provision the environment, its dashboard:
+
+- Shows a placeholder card with a clock icon, the environment's status, and the **Provision** button instead of the environment's details.
+- Doesn't show the environment's domain links below its name.
+- Disables the **Trigger Build** button.
+- Doesn't show the Deployments section.
 
 ---
 

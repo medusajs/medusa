@@ -446,6 +446,7 @@ export const createOrderWorkflow = createWorkflow(
         "shipping_methods.tax_lines.*",
         "shipping_methods.adjustments.*",
         "transactions.*",
+        "metadata",
         "currency_code",
         "items.tax_lines.*",
         "items.adjustments.*",
@@ -453,6 +454,8 @@ export const createOrderWorkflow = createWorkflow(
         "shipping_methods.adjustments.*",
         "total",
         "id",
+        "email",
+        "customer_id",
       ],
       filters: {
         id: order.id,

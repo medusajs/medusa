@@ -56,7 +56,7 @@ export default defineLink(ProductModule.linkable.product, {
 
 - `MedusaService({ Post })` generates `retrievePost`, `listPosts`, `listAndCountPosts`, `createPosts`, `updatePosts`, `deletePosts`, `softDeletePosts`, `restorePosts`. Names use the model key, pluralized; override with `{ Post: { dto, singular, plural } }`.
 - Generated `update*` accepts `{ id, ...data }` objects or `{ selector, data }`.
-- `defineLink` options: per side `linkable`, `isList`, `deleteCascade`, `filterable`, `field`; third arg `{ database: { table, idPrefix, extraColumns }, readOnly, pk }`.
+- `defineLink` options: per side `linkable`, `isList`, `deleteCascade`, `filterable` (deprecated, only read by the Index Module), `field`; third arg `{ database: { table, idPrefix, extraColumns }, readOnly, pk }`.
 - `ModuleProvider(Modules.FILE, { services: [MyProviderService] })` wraps provider packages; each service needs a static `identifier`.
 - Other frequently used exports: `Modules`, `ContainerRegistrationKeys`, `MedusaError` (`MedusaError.Types.*`), `QueryContext`, `MathBN`/`BigNumber`, `promiseAll`, `generateEntityId`, `loadEnv`, `*WorkflowEvents` constants (`src/core-flows/events.ts`), `defineFileConfig`.
 - Docs: https://docs.medusajs.com/learn/fundamentals/data-models.md, https://docs.medusajs.com/learn/fundamentals/modules/service-factory.md, https://docs.medusajs.com/resources/service-factory-reference.md, https://docs.medusajs.com/learn/fundamentals/module-links.md, https://docs.medusajs.com/learn/configurations/medusa-config.md

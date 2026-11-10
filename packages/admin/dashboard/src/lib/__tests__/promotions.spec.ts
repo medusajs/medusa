@@ -19,7 +19,7 @@ const buildPromotion = (
       ends_at: null,
       ...campaign,
     },
-  } as HttpTypes.AdminPromotion)
+  }) as HttpTypes.AdminPromotion
 
 describe("getPromotionStatus", () => {
   it("should not mark a promotion as expired when a use_by_attribute budget's aggregate usage exceeds the per-attribute limit", () => {

@@ -12,8 +12,7 @@ export interface WorkflowExecutionDTO {
   deleted_at: Date | null
 }
 
-export interface FilterableWorkflowExecutionProps
-  extends BaseFilterable<FilterableWorkflowExecutionProps> {
+export interface FilterableWorkflowExecutionProps extends BaseFilterable<FilterableWorkflowExecutionProps> {
   q?: string
   id?: string | string[] | OperatorMap<string>
   workflow_id?: string | string[] | OperatorMap<string>

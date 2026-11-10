@@ -4219,7 +4219,10 @@ get:
                   - customers
                 properties:
                   customers:
-                    $ref: ../components/schemas/AdminCustomer.yaml
+                    type: array
+                    description: The list of customers.
+                    items:
+                      $ref: ../components/schemas/AdminCustomer.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

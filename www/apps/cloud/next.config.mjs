@@ -7,6 +7,7 @@ import remarkFrontmatter from "remark-frontmatter"
 import {
   brokenLinkCheckerPlugin,
   localLinksRehypePlugin,
+  mdContentOverrideRehypePlugin,
   cloudinaryImgRehypePlugin,
   resolveAdmonitionsPlugin,
   crossProjectLinksPlugin,
@@ -16,6 +17,7 @@ import {
   validateHighlightsPlugin,
 } from "remark-rehype-plugins"
 import bundleAnalyzer from "@next/bundle-analyzer"
+import { withMdxWebpackLayers } from "build-scripts"
 import withExtractedTableOfContents from "@stefanprobst/rehype-extract-toc"
 
 const withMDX = mdx({
@@ -104,6 +106,7 @@ const withMDX = mdx({
         },
       ],
       [withExtractedTableOfContents],
+      [mdContentOverrideRehypePlugin],
     ],
     remarkPlugins: [
       [remarkFrontmatter],
@@ -244,4 +247,4 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 })
 
-export default withMDX(withBundleAnalyzer(nextConfig))
+export default withMdxWebpackLayers(withMDX(withBundleAnalyzer(nextConfig)))

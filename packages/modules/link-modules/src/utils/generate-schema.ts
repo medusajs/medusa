@@ -97,7 +97,7 @@ export function generateGraphQLSchema(
         const path = isString(config) ? config : config.path
         const isList = isString(config)
           ? extend.relationship.isList
-          : config.isList ?? extend.relationship.isList
+          : (config.isList ?? extend.relationship.isList)
 
         const targetEntityAlias = path.split(".").pop()
 

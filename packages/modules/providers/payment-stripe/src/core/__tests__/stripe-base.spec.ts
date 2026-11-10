@@ -11,6 +11,25 @@ const defaultOptions: StripeOptions = {
 }
 
 describe("StripeBase", () => {
+  describe("constructor", () => {
+    it("uses the 2024-04-10 API version by default", () => {
+      const service = new StripeProviderService({}, defaultOptions)
+
+      expect(service["stripe_"].getApiField("version")).toBe("2024-04-10")
+    })
+
+    it("uses the apiVersion option when provided", () => {
+      const service = new StripeProviderService(
+        {},
+        { ...defaultOptions, apiVersion: "2026-10-28.endive" }
+      )
+
+      expect(service["stripe_"].getApiField("version")).toBe(
+        "2026-10-28.endive"
+      )
+    })
+  })
+
   describe("normalizePaymentIntentParameters", () => {
     it("prefers extra.payment_method_configuration over options.paymentMethodConfiguration", () => {
       const service = new StripeProviderService(
@@ -68,6 +87,35 @@ describe("StripeBase", () => {
       expect(params.payment_method_types).toEqual(["card"])
       expect(params.payment_method_configuration).toBeUndefined()
     })
+
+    it("sends payment_method_types on API versions before 2026-07-29", () => {
+      const service = new IdealProviderService(
+        {},
+        { ...defaultOptions, apiVersion: "2026-06-24.dahlia" }
+      )
+
+      const params = service.normalizePaymentIntentParameters()
+
+      expect(params.payment_method_types).toEqual(["ideal"])
+      expect(params.allowed_payment_method_types).toBeUndefined()
+    })
+
+    it.each(["2026-07-29.dahlia", "2026-10-28.endive"])(
+      "sends allowed_payment_method_types on API version %s",
+      (apiVersion) => {
+        const service = new StripeProviderService(
+          {},
+          { ...defaultOptions, apiVersion }
+        )
+
+        const params = service.normalizePaymentIntentParameters({
+          payment_method_types: ["card"],
+        })
+
+        expect(params.allowed_payment_method_types).toEqual(["card"])
+        expect(params.payment_method_types).toBeUndefined()
+      }
+    )
 
     it("keeps existing defaults when payment method configuration is not provided", () => {
       const service = new StripeProviderService({}, defaultOptions)
