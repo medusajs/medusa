@@ -2,6 +2,8 @@ import { MedusaContainer, RemoteQueryFunction } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "../common/container"
 import { isObject } from "../common/is-object"
 
+export const TRANSLATION_LIST_CACHE_TAG = "Translation:list:*"
+
 const excludedKeys = [
   "id",
   "created_at",
@@ -116,7 +118,7 @@ export async function applyTranslations({
     const { data: translations } = await query.graph(
       {
         entity: "translations",
-        fields: ["translations", "reference_id"],
+        fields: ["translations", "reference_id", "id"],
         filters: {
           reference_id: queryBatch,
           locale_code: locale,
@@ -126,7 +128,11 @@ export async function applyTranslations({
         },
       },
       {
-        cache: { enable: true },
+        cache: {
+          enable: true,
+          tags: [TRANSLATION_LIST_CACHE_TAG],
+          computeAutomaticTags: true,
+        },
       }
     )
 
