@@ -912,7 +912,7 @@ To filter in memory, Query retrieves all main records matching the rest of the f
 
 <Note type="warning">
 
-In-memory filtering ignores pagination when retrieving records. So, a query that returns one page of 20 records may load thousands of records and their linked records into memory, which slows down the query and increases your application's memory usage. On data models with many records, make sure your filters meet the database conditions, add other filters that narrow down the main records, or use the [Index Module](./index-module/page.mdx).
+In-memory filtering ignores pagination when retrieving records. So, a query that returns one page of 20 records may load thousands of records and their linked records into memory, which slows down the query and increases your application's memory usage. On data models with many records, make sure your filters meet the database conditions or add other filters that narrow down the main records.
 
 </Note>
 

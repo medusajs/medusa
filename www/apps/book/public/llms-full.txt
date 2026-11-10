@@ -6269,7 +6269,7 @@ There are multiple ways to enable or disable feature flags in Medusa:
 
 The Medusa configurations in `medusa-config.ts` accept a `featureFlags` configuration to toggle feature flags. Its value is an object whose key is the feature flag key (defined in the feature flag's file), and the value is a boolean indicating whether the feature is enabled.
 
-For example, to enable the [Index Module](undefined/learn/fundamentals/query/index-module)'s feature flag in `medusa-config.ts`:
+For example, to enable the deprecated [Index Module](undefined/learn/fundamentals/query/index-module)'s feature flag in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -6290,7 +6290,7 @@ The feature flags can also be enabled or disabled using environment variables. T
 
 To toggle a feature flag using an environment variable, set an environment variable with its environment variable name (defined in the feature flag's file) and set its value to `true` or `false`.
 
-For example, to enable the [Index Module](undefined/learn/fundamentals/query/index-module)'s feature flag using an environment variable:
+For example, to enable the deprecated [Index Module](undefined/learn/fundamentals/query/index-module)'s feature flag using an environment variable:
 
 ```shell
 MEDUSA_FF_INDEX_ENGINE=true
@@ -22090,9 +22090,11 @@ The next chapter explains how you can create and publish a plugin.
 
 In this chapter, you'll learn about the Index Module and how you can use it.
 
-The Index Module is experimental and still in development, so it is subject to change. However, it's being actively used in the Medusa Admin dashboard and is increasingly stable for production use. Consider your application's tolerance for minor issues when deciding to implement it.
+The Index Module and Query's `index` method are deprecated since [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7) and will be removed in a future release. Use Query's `graph` method instead, which [filters by linked data models](undefined/learn/fundamentals/query#filter-by-linked-data-models-property) in the database when [certain conditions](undefined/learn/fundamentals/query#query-in-memory-filtering-conditions) are met. This covers most filtering needs, such as filtering products by sales channels.
 
-Query's `graph` method can also filter by linked data models in the database when [certain conditions](undefined/learn/fundamentals/query#query-in-memory-filtering-conditions) are met, which covers most filtering needs, such as filtering products by sales channels.
+If you still use the Index Module, Medusa logs a deprecation warning when the application starts, the first time you call `query.index`, and when you send a request to the `/admin/index/details` or `/admin/index/sync` API routes.
+
+The `filterable` property of link definitions is also deprecated, since only the Index Module uses it.
 
 ## What is the Index Module?
 
@@ -22181,7 +22183,7 @@ For example, if you create a new product, the Index Module will ingest it into i
 
 ### Enable Index Module Feature Flag
 
-Since the Index Module is still experimental, you must enable its feature flag to use it. To enable the Index Module's feature flag, add the following line to your `.env` file:
+You must enable the Index Module's feature flag to use it. To enable the Index Module's feature flag, add the following line to your `.env` file:
 
 ```env
 MEDUSA_FF_INDEX_ENGINE=true
@@ -22965,7 +22967,9 @@ This will retrieve all brands that are linked to at least one product.
 
 ### Sales Channel Filtering for Multi-Vendor Setups
 
-For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike `query.graph`, which may filter by linked data models in memory, the Index Module filters across linked data models in its own data store.
+For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module filters across linked data models in its own data store.
+
+Query's `graph` method also filters products by sales channels in the database using cross-module joins. Use it instead of the deprecated Index Module, as explained in the [Query](undefined/learn/fundamentals/query#filter-by-linked-data-models-property) chapter.
 
 For example, to filter vendor products by multiple sales channels:
 
@@ -23806,7 +23810,7 @@ If any condition in a linked data model's filter object requires in-memory filte
 
 To filter in memory, Query retrieves all main records matching the rest of the filters, retrieves their linked records, then keeps only the main records that match. Query applies pagination after filtering, so `count` and the returned page are still correct.
 
-In-memory filtering ignores pagination when retrieving records. So, a query that returns one page of 20 records may load thousands of records and their linked records into memory, which slows down the query and increases your application's memory usage. On data models with many records, make sure your filters meet the database conditions, add other filters that narrow down the main records, or use the [Index Module](undefined/learn/fundamentals/query/index-module).
+In-memory filtering ignores pagination when retrieving records. So, a query that returns one page of 20 records may load thousands of records and their linked records into memory, which slows down the query and increases your application's memory usage. On data models with many records, make sure your filters meet the database conditions or add other filters that narrow down the main records.
 
 #### Limitations of Linked Data Model Filters
 
@@ -83862,7 +83866,6 @@ import CustomerModule from "@medusajs/medusa/customer"
 export default defineLink(
   {
     linkable: TierModule.linkable.tier,
-    filterable: ["id"],
   },
   {
     linkable: CustomerModule.linkable.customer,
@@ -83873,7 +83876,7 @@ export default defineLink(
 
 You define a link using the `defineLink` function from the Modules SDK. It accepts two parameters:
 
-1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module. You also specify the `id` property as filterable, allowing you to filter customers by their tier later using the [Index Module](undefined/docs/learn/fundamentals/query/index-module).
+1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module.
 2. An object indicating the second data model in the link. You pass the linkable configurations of the Customer Module's `Customer` data model. You set `isList` to `true` because a tier can have multiple customers.
 
 This link allows you to retrieve and manage customers associated with a tier, and vice versa.
@@ -85238,7 +85241,7 @@ export async function GET(
   const { id } = req.params
 
   // Query customers linked to this tier
-  const { data: customers, metadata } = await query.index({
+  const { data: customers, metadata } = await query.graph({
     entity: "customer",
     filters: {
       tier: {
@@ -85250,7 +85253,7 @@ export async function GET(
 
   res.json({
     customers,
-    count: metadata?.estimate_count || 0,
+    count: metadata?.count || 0,
     offset: metadata?.skip || 0,
     limit: metadata?.take || 15,
   })
@@ -85261,7 +85264,7 @@ You export a `GET` function, which exposes a `GET` API route at `/admin/tiers/:i
 
 In the route handler, you resolve Query from the Medusa container and use it to retrieve customers linked to the tier with the given ID.
 
-Notice that you use the `query.index` method. This method is similar to `query.graph` but allows you to filter by linked records using the [Index Module](undefined/docs/learn/fundamentals/query/index-module).
+Notice that you filter customers by the `tier` linked data model. Query's `graph` method [filters by linked data models](undefined/docs/learn/fundamentals/query#filter-by-linked-data-models-property) in the database, so it only retrieves the customers linked to the tier.
 
 You return the customers in the response.
 
@@ -85298,46 +85301,7 @@ You set the following configurations:
 - `isList`: Set to `true` to indicate that the API route returns a list of records.
 - `defaults`: An array of fields to return by default if the client doesn't specify any fields in the request.
 
-### c. Install Index Module
-
-The [Index Module](undefined/docs/learn/fundamentals/query/index-module) is a tool for performing high-performance queries across modules, such as filtering linked modules.
-
-The Index Module is currently experimental, so you need to install and configure it manually.
-
-To install the Index Module, run the following command in the `apps/backend` directory:
-
-```bash
-npm install @medusajs/index
-```
-
-Then, add the following to your Medusa application's configuration file:
-
-```ts title="medusa-config.ts"
-export default config({
-  modules: [
-    // ...
-    {
-      resolve: "@medusajs/index",
-    },
-  ],
-})
-```
-
-Next, run the migrations to create the necessary tables for the Index Module in your database:
-
-```bash
-npx medusa db:migrate
-```
-
-Lastly, start the Medusa application to ingest the data into the Index Module:
-
-```bash
-npm run dev
-```
-
-You can now use the Index Module to filter customers by their tier. You'll test out the API route when you customize the Medusa Admin dashboard in the next step.
-
-Refer to the [Index Module](undefined/docs/learn/fundamentals/query/index-module) documentation to learn more.
+You'll test out the API route when you customize the Medusa Admin dashboard in the next step.
 
 ***
 
