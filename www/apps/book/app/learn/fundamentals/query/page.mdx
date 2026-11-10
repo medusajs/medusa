@@ -2053,3 +2053,93 @@ Try passing one of the Query configuration parameters, like `fields` or `limit`,
 Learn more about [specifying fields and relations](!api!/store/select-fields-and-relations) and [pagination](!api!/store/pagination) in the API reference.
 
 </Note>
+
+### Filter by Linked Data Model with Query Parameters
+
+<Note>
+
+The `applyCrossModuleFilter` middleware is available starting [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+</Note>
+
+Your API route may accept a flat query parameter that filters records by a linked data model's property, such as `brand_id`. Use the `applyCrossModuleFilter` middleware to transform this query parameter into a nested [linked data model filter](#filter-by-linked-data-models-property) that you can pass to Query.
+
+For example:
+
+export const crossModuleFilterHighlights = [
+  ["10", "brand_id", "Accept a brand_id query parameter."],
+  ["23", "applyCrossModuleFilter", "Transform brand_id into a nested filter."]
+]
+
+```ts title="src/api/middlewares.ts" highlights={crossModuleFilterHighlights}
+import { 
+  applyCrossModuleFilter,
+  validateAndTransformQuery,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+import { z } from "@medusajs/framework/zod"
+
+export const GetProductsSchema = createFindParams().extend({
+  brand_id: z.string().optional(),
+})
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom-products",
+      method: "GET",
+      middlewares: [
+        validateAndTransformQuery(GetProductsSchema, {
+          defaults: ["id", "title", "brand.*"],
+          isList: true,
+        }),
+        applyCrossModuleFilter({
+          filterableField: "brand_id",
+          relationPath: "brand.id",
+        }),
+      ],
+    },
+  ],
+})
+```
+
+The `applyCrossModuleFilter` middleware must be added after the `validateAndTransformQuery` middleware. It accepts an object with the following properties:
+
+- `filterableField`: The name of the query parameter to transform. The `validateAndTransformQuery` middleware adds it to the request's `filterableFields` property.
+- `relationPath`: The dot-separated path of the linked data model's property to filter by. For example, `brand.id` or `variants.prices.price_list_id`.
+
+If the request has the `brand_id` query parameter, the middleware removes it from `req.filterableFields` and adds a `{ brand: { id } }` filter instead. Then, pass `req.filterableFields` to Query in your API route:
+
+```ts title="src/api/custom-products/route.ts" highlights={[["17"]]}
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const { data: products } = await query.graph({
+    entity: "product",
+    filters: req.filterableFields,
+    ...req.queryConfig,
+  })
+
+  res.json({ products })
+}
+```
+
+Query then applies the filter using cross-module joins in the database, as long as the filter meets the [database filtering conditions](#query-in-memory-filtering-conditions).
+
+<Note title="Deprecation Notice">
+
+The `maybeApplyLinkFilter` middleware is deprecated starting from Medusa v2.22.7 and will be removed in the next minor release. Use `applyCrossModuleFilter` instead, which filters through cross-module joins without an extra query.
+
+</Note>

@@ -12,7 +12,7 @@ In this chapter, you'll learn about the Index Module and how you can use it.
 
 The Index Module is experimental and still in development, so it is subject to change. However, it's being actively used in the Medusa Admin dashboard and is increasingly stable for production use. Consider your application's tolerance for minor issues when deciding to implement it.
 
-For multi-vendor setups with sales channel filtering needs, the Index Module provides the most efficient approach for filtering products by sales channels and other linked data models.
+Query's `graph` method can also filter by linked data models in the database when [certain conditions](../page.mdx#query-in-memory-filtering-conditions) are met, which covers most filtering needs, such as filtering products by sales channels.
 
 </Note>
 
@@ -107,15 +107,19 @@ For example, if you create a new product, the Index Module will ingest it into i
 
 ### Enable Index Module Feature Flag
 
-Since the Index Module is still experimental, the `/store/products` and `/admin/products` API routes will use the Index Module to retrieve products only if the Index Module's feature flag is enabled. By enabling the feature flag, you can filter products by their linked data models in these API routes.
-
-To enable the Index Module's feature flag, add the following line to your `.env` file:
+Since the Index Module is still experimental, you must enable its feature flag to use it. To enable the Index Module's feature flag, add the following line to your `.env` file:
 
 ```env
 MEDUSA_FF_INDEX_ENGINE=true
 ```
 
-If you send a request to the `/store/products` or `/admin/products` API routes, you'll receive the following response:
+<Note>
+
+Starting from [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7), the `/store/products` and `/admin/products` API routes no longer use the Index Module, even when its feature flag is enabled. Instead, they retrieve products with Query's `graph` method, which [filters by linked data models](../page.mdx#filter-by-linked-data-models-property) using cross-module joins. You can still use the Index Module in your own customizations with Query's `index` method.
+
+</Note>
+
+When the feature flag is enabled, the `/store/products` and `/admin/products` API routes return an `estimate_count` property in their response:
 
 ```json
 {
@@ -129,7 +133,9 @@ If you send a request to the `/store/products` or `/admin/products` API routes, 
 }
 ```
 
-Notice the `estimate_count` property, which is the estimated total number of products in the database. You'll learn more about it in the [Pagination](#apply-pagination-with-the-index-module) section.
+Starting from Medusa v2.22.7, the `estimate_count` property in these API routes' responses is deprecated and has the same value as `count`. Use `count` instead, as `estimate_count` will be removed in the next minor release.
+
+The `estimate_count` property returned by Query's `index` method is the estimated total number of records in the database. You'll learn more about it in the [Pagination](#apply-pagination-with-the-index-module) section.
 
 ---
 
