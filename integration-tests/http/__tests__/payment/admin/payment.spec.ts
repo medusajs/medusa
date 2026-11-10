@@ -777,6 +777,53 @@ medusaIntegrationTestRunner({
           ),
         })
       })
+
+      it("refundPaymentsWorkflow should not record an order transaction for a refund the provider rejected", async () => {
+        const payment = order.payment_collections[0].payments[0]
+        const paymentModule = container.resolve(Modules.PAYMENT)
+        const orderModule = container.resolve(Modules.ORDER)
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        jest
+          .spyOn(paymentModule, "refundPayment")
+          .mockRejectedValueOnce(new Error("Provider returned HTTP 503"))
+
+        const { result } = await refundPaymentsWorkflow(container).run({
+          input: [{ payment_id: payment.id, amount: 50 }],
+        })
+
+        jest.restoreAllMocks()
+
+        expect(result).toEqual([])
+        expect(
+          (await paymentModule.retrievePayment(payment.id, {
+            relations: ["refunds"],
+          })).refunds
+        ).toHaveLength(0)
+        expect(
+          await orderModule.listOrderTransactions({
+            order_id: order.id,
+            reference: "refund",
+          })
+        ).toHaveLength(0)
+
+        // A successful refund still records its transaction
+        await refundPaymentsWorkflow(container).run({
+          input: [{ payment_id: payment.id, amount: 50 }],
+        })
+
+        const transactions = await orderModule.listOrderTransactions({
+          order_id: order.id,
+          reference: "refund",
+        })
+        expect(transactions).toHaveLength(1)
+        expect(transactions[0].amount).toEqual(-50)
+      })
     })
   },
 })
