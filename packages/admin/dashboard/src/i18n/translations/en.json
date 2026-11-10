@@ -2966,16 +2966,16 @@
       "mainColumn": "Locale"
     },
     "activeLocales": {
-      "heading": "Languages",
+      "heading": "Locales",
       "subtitle": "Activated translations",
-      "noLocalesTip": "Configure at least one language to start translating your data",
+      "noLocalesTip": "Configure at least one locale to start translating your data",
       "noLocalesTipConfigureAction": "Configure"
     },
     "completion": {
       "heading": "Translated fields",
       "translated": "Translated",
       "toTranslate": "Missing",
-      "footer": "Languages"
+      "footer": "Locales"
     }
   },
   "store": {
@@ -3000,7 +3000,6 @@
     "removeLocaleWarning_one": "You are about to remove {{count}} locale from your store. Any translation using this locale will be removed.",
     "removeLocaleWarning_other": "You are about to remove {{count}} locales from your store. Any translation using these locales will be removed.",
     "currencyAlreadyAdded": "The currency has already been added to your store.",
-    "localeAlreadyAdded": "The locale has already been added to your store.",
     "edit": {
       "header": "Edit Store"
     },
