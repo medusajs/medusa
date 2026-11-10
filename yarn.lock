@@ -3381,7 +3381,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/cloud@npm:2.22.6, @medusajs/cloud@workspace:packages/plugins/cloud":
+"@medusajs/cloud@npm:2.22.6, @medusajs/cloud@workspace:^, @medusajs/cloud@workspace:packages/plugins/cloud":
   version: 0.0.0-use.local
   resolution: "@medusajs/cloud@workspace:packages/plugins/cloud"
   dependencies:
@@ -14611,6 +14611,7 @@ __metadata:
     "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/cloud": "workspace:^"
     "@medusajs/core-flows": "workspace:*"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"

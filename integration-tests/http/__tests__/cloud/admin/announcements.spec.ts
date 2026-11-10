@@ -1,0 +1,155 @@
+import { ICachingModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
+
+jest.setTimeout(60 * 1000)
+
+const CLOUD_API_URL = "http://cloud-api.test"
+
+const rawAnnouncements = [
+  {
+    id: "anno_feature",
+    title: "Medusa MCP",
+    subtitle: "Manage your store from your AI assistant",
+    content: "<p>Connect your AI assistant.</p>",
+    type: "feature",
+    link_url: "/settings",
+    plan_handles: [],
+    published: true,
+    published_at: "2026-10-01T00:00:00.000Z",
+  },
+  {
+    id: "anno_admin",
+    title: "Ask AI about your orders",
+    type: "admin",
+    admin_path: "/orders",
+    published: true,
+    published_at: "2026-09-01T00:00:00.000Z",
+  },
+  {
+    id: "anno_scheduled",
+    title: "Scheduled",
+    type: "release",
+    published: true,
+    published_at: "2999-01-01T00:00:00.000Z",
+  },
+]
+
+medusaIntegrationTestRunner({
+  testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
+    const originalFetch = global.fetch
+    let cloudResponse: () => Promise<Response>
+    let fetchSpy: jest.SpyInstance
+
+    beforeAll(async () => {
+      await createAdminUser(dbConnection, adminHeaders, getContainer())
+
+      await dbUtils.snapshot()
+    })
+
+    beforeEach(async () => {
+      await getContainer()
+        .resolve<ICachingModuleService | undefined>(Modules.CACHING, {
+          allowUnregistered: true,
+        })
+        ?.clear({ tags: ["MedusaCloudAnnouncements"] })
+
+      cloudResponse = async () =>
+        new Response(JSON.stringify({ announcements: rawAnnouncements }), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        })
+
+      fetchSpy = jest
+        .spyOn(global, "fetch")
+        .mockImplementation(async (input, init) => {
+          return input.toString().startsWith(CLOUD_API_URL)
+            ? cloudResponse()
+            : originalFetch(input, init)
+        })
+    })
+
+    afterEach(() => {
+      fetchSpy.mockRestore()
+    })
+
+    describe("GET /admin/cloud/announcements", () => {
+      it("should require authentication", async () => {
+        const error = await api
+          .get("/admin/cloud/announcements")
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(401)
+      })
+
+      it("should return the published announcements from Medusa Cloud", async () => {
+        const response = await api.get(
+          "/admin/cloud/announcements",
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.announcements).toEqual([
+          {
+            id: "anno_feature",
+            title: "Medusa MCP",
+            subtitle: "Manage your store from your AI assistant",
+            content: "<p>Connect your AI assistant.</p>",
+            image_url: null,
+            type: "feature",
+            link_url: "https://cloud.medusajs.com/org_test/settings",
+            admin_path: null,
+            published_at: "2026-10-01T00:00:00.000Z",
+          },
+          {
+            id: "anno_admin",
+            title: "Ask AI about your orders",
+            subtitle: null,
+            content: null,
+            image_url: null,
+            type: "admin",
+            link_url: null,
+            admin_path: "/orders",
+            published_at: "2026-09-01T00:00:00.000Z",
+          },
+        ])
+
+        const [url, init] = fetchSpy.mock.calls.find(([input]) =>
+          input.toString().startsWith(CLOUD_API_URL)
+        )!
+        expect(url.toString()).toContain(`${CLOUD_API_URL}/v1/announcements?`)
+        expect(init.headers["x-medusa-organization"]).toEqual("org_test")
+      })
+
+      it("should return no announcements when the Cloud API responds with an error", async () => {
+        cloudResponse = async () => new Response("{}", { status: 500 })
+
+        const response = await api.get(
+          "/admin/cloud/announcements",
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.announcements).toEqual([])
+      })
+
+      it("should return no announcements when the Cloud API can't be reached", async () => {
+        cloudResponse = async () => {
+          throw new TypeError("fetch failed")
+        }
+
+        const response = await api.get(
+          "/admin/cloud/announcements",
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.announcements).toEqual([])
+      })
+    })
+  },
+})

@@ -1,4 +1,5 @@
 import CloudModuleService, {
+  ANNOUNCEMENTS_CACHE_TAG,
   ANNOUNCEMENTS_CACHE_TTL,
   CLOUD_DASHBOARD_URL,
   DEFAULT_CLOUD_API_URL,
@@ -210,44 +211,23 @@ describe("CloudModuleService.listAnnouncements", () => {
     expect(announcement.image_url).toBeNull()
   })
 
-  describe("with http links", () => {
-    const nodeEnv = process.env.NODE_ENV
+  it("should keep http links and images", async () => {
+    fetchMock.mockResolvedValue(
+      mockResponse({
+        announcements: [
+          {
+            ...rawAnnouncement,
+            link_url: "http://localhost:9000/docs",
+            image_url: "http://localhost:9000/image.png",
+          },
+        ],
+      })
+    )
 
-    beforeEach(() => {
-      fetchMock.mockResolvedValue(
-        mockResponse({
-          announcements: [
-            {
-              ...rawAnnouncement,
-              link_url: "http://localhost:9000/docs",
-              image_url: "http://localhost:9000/image.png",
-            },
-          ],
-        })
-      )
-    })
+    const [announcement] = await service.listAnnouncements()
 
-    afterEach(() => {
-      process.env.NODE_ENV = nodeEnv
-    })
-
-    it("should drop them outside local development", async () => {
-      process.env.NODE_ENV = "production"
-
-      const [announcement] = await service.listAnnouncements()
-
-      expect(announcement.link_url).toBeNull()
-      expect(announcement.image_url).toBeNull()
-    })
-
-    it("should keep them in local development", async () => {
-      process.env.NODE_ENV = "development"
-
-      const [announcement] = await service.listAnnouncements()
-
-      expect(announcement.link_url).toEqual("http://localhost:9000/docs")
-      expect(announcement.image_url).toEqual("http://localhost:9000/image.png")
-    })
+    expect(announcement.link_url).toEqual("http://localhost:9000/docs")
+    expect(announcement.image_url).toEqual("http://localhost:9000/image.png")
   })
 
   it("should not cache announcements without the Caching Module", async () => {
@@ -274,7 +254,10 @@ describe("CloudModuleService.listAnnouncements", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(second).toEqual(first)
     expect(caching.set).toHaveBeenCalledWith(
-      expect.objectContaining({ ttl: ANNOUNCEMENTS_CACHE_TTL, tags: [] })
+      expect.objectContaining({
+        ttl: ANNOUNCEMENTS_CACHE_TTL,
+        tags: [ANNOUNCEMENTS_CACHE_TAG],
+      })
     )
   })
 

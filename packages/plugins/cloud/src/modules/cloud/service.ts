@@ -14,6 +14,7 @@ export const DEFAULT_CLOUD_API_URL = "https://api.prod.medusajs.cloud"
 export const CLOUD_DASHBOARD_URL = "https://cloud.medusajs.com"
 export const ANNOUNCEMENTS_LIMIT = 50
 export const ANNOUNCEMENTS_CACHE_TTL = 10 * 60 // 10 minutes
+export const ANNOUNCEMENTS_CACHE_TAG = "MedusaCloudAnnouncements"
 const REQUEST_TIMEOUT_MS = 5000
 
 type RawAnnouncement = {
@@ -159,7 +160,7 @@ export default class CloudModuleService {
           key: cacheKey,
           data: { announcements },
           ttl: ANNOUNCEMENTS_CACHE_TTL,
-          tags: [],
+          tags: [ANNOUNCEMENTS_CACHE_TAG],
         })
       } catch (error) {
         logger.warn(
