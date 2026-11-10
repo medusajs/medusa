@@ -19,16 +19,6 @@ import {
 import IndexEngineFeatureFlag from "../../../../../../feature-flags/index-engine"
 
 /*
-  Entry points that exist as top-level types in the Index module's default schema
-  (packages/modules/index/src/utils/default-schema.ts). Only `product` qualifies
-  today; the other entry points this endpoint may receive (product_category,
-  product_collection, product_type, product_tag, region, currency, customer_group,
-  country, sales_channel, shipping_option_type) are not top-level types in the
-  index, so they keep using query.graph.
-*/
-const ENTITIES_SUPPORTED_BY_INDEX_ENGINE = ["product"]
-
-/*
   This endpoint returns all the potential values for rules (promotion rules, target rules and buy rules)
   given an attribute of a rule. The response for different rule_attributes are returned uniformly
   as an array of labels and values.
@@ -67,39 +57,6 @@ export const GET = async (
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const fields = [queryConfig.labelAttr, queryConfig.valueAttr]
 
-  const useIndexEngine =
-    FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&
-    ENTITIES_SUPPORTED_BY_INDEX_ENGINE.includes(queryConfig.entryPoint)
-
-  if (useIndexEngine) {
-    // TODO: Remove once we implement search by relations in a similar way to query.graph
-    const filters = { ...filterableFields }
-    if (!!filters.q) {
-      filters.variants = filters.variants ?? {}
-    }
-
-    const { data, metadata } = await query.index({
-      entity: queryConfig.entryPoint,
-      fields,
-      filters,
-      pagination: req.queryConfig.pagination,
-    })
-
-    const values = data.map((r) => ({
-      label: r[queryConfig.labelAttr],
-      value: r[queryConfig.valueAttr],
-    }))
-
-    res.json({
-      values,
-      count: metadata!.estimate_count,
-      estimate_count: metadata!.estimate_count,
-      offset: metadata!.skip,
-      limit: metadata!.take,
-    })
-    return
-  }
-
   const { data, metadata } = await query.graph({
     entity: queryConfig.entryPoint,
     fields,
@@ -115,6 +72,11 @@ export const GET = async (
   res.json({
     values,
     count: metadata!.count,
+    // TODO: remove estimate_count in the next minor release
+    ...(FeatureFlag.isFeatureEnabled(IndexEngineFeatureFlag.key) &&
+      queryConfig.entryPoint === "product" && {
+        estimate_count: metadata!.count,
+      }),
     offset: metadata!.skip,
     limit: metadata!.take,
   })
