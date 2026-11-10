@@ -7,7 +7,6 @@ import {
 import {
   ContainerRegistrationKeys,
   deduplicate,
-  FeatureFlag,
   Modules,
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -96,9 +95,7 @@ export const updateOrderItemsTranslationsStep = createStep(
   async (data: UpdateOrderItemsTranslationsStepInput, { container }) => {
     const originalItems: ItemTranslationSnapshot[] = []
     try {
-      const isTranslationEnabled = FeatureFlag.isFeatureEnabled("translation")
-
-      if (!isTranslationEnabled || !data.locale) {
+      if (!data.locale) {
         return new StepResponse(void 0, [])
       }
 

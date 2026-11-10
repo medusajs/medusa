@@ -19,8 +19,8 @@ module.exports = defineConfig({
   },
   modules: [
     {
-      key: "translation",
-      resolve: "./src/modules/translation",
+      key: "custom_record",
+      resolve: "./src/modules/custom-record",
     },
   ],
 })
