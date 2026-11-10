@@ -46,7 +46,7 @@ export const generatedEditDates = {
   "app/commerce-modules/product/guides/price/page.mdx": "2024-12-25T15:10:37.730Z",
   "app/commerce-modules/product/guides/price-with-taxes/page.mdx": "2024-12-25T15:10:40.879Z",
   "app/commerce-modules/product/page.mdx": "2026-06-11T07:42:16.831Z",
-  "app/commerce-modules/promotion/actions/page.mdx": "2025-06-27T15:42:19.142Z",
+  "app/commerce-modules/promotion/actions/page.mdx": "2026-11-10T15:36:37.183Z",
   "app/commerce-modules/promotion/application-method/page.mdx": "2026-11-06T14:03:08.829Z",
   "app/commerce-modules/promotion/campaign/page.mdx": "2025-10-13T07:34:59.008Z",
   "app/commerce-modules/promotion/concepts/page.mdx": "2026-07-14T11:56:14.260Z",
