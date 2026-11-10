@@ -850,7 +850,7 @@ export const PromotionWorkflowEvents = {
   /**
    * Emitted when promotions are created.
    *
-   * @since 2.21.3
+   * @since 2.22.7
    *
    * @eventPayload
    * ```ts
@@ -863,7 +863,7 @@ export const PromotionWorkflowEvents = {
   /**
    * Emitted when promotions are updated, including their status.
    *
-   * @since 2.21.3
+   * @since 2.22.7
    *
    * @eventPayload
    * ```ts
@@ -876,7 +876,7 @@ export const PromotionWorkflowEvents = {
   /**
    * Emitted when promotions are deleted.
    *
-   * @since 2.21.3
+   * @since 2.22.7
    *
    * @eventPayload
    * ```ts
@@ -890,7 +890,7 @@ export const PromotionWorkflowEvents = {
    * Emitted when a promotion's rules, target rules, or buy rules
    * are created, updated, or deleted in a batch.
    *
-   * @since 2.21.3
+   * @since 2.22.7
    *
    * @eventPayload
    * ```ts
@@ -914,7 +914,7 @@ export const CampaignWorkflowEvents = {
   /**
    * Emitted when campaigns are created.
    *
-   * @since 2.21.3
+   * @since 2.22.7
    *
    * @eventPayload
    * ```ts
@@ -927,7 +927,7 @@ export const CampaignWorkflowEvents = {
   /**
    * Emitted when campaigns are updated.
    *
-   * @since 2.21.3
+   * @since 2.22.7
    *
    * @eventPayload
    * ```ts
@@ -940,7 +940,7 @@ export const CampaignWorkflowEvents = {
   /**
    * Emitted when campaigns are deleted.
    *
-   * @since 2.21.3
+   * @since 2.22.7
    *
    * @eventPayload
    * ```ts
@@ -953,7 +953,7 @@ export const CampaignWorkflowEvents = {
   /**
    * Emitted when promotions are added to or removed from a campaign.
    *
-   * @since 2.21.3
+   * @since 2.22.7
    *
    * @eventPayload
    * ```ts
