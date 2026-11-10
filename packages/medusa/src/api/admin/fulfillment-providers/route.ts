@@ -22,9 +22,8 @@ export const GET = async (
     fields: req.queryConfig.fields,
   })
 
-  const { rows: fulfillment_providers, metadata } = await remoteQuery(
-    queryObject
-  )
+  const { rows: fulfillment_providers, metadata } =
+    await remoteQuery(queryObject)
 
   res.json({
     fulfillment_providers,

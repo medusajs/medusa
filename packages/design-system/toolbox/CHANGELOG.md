@@ -1,5 +1,17 @@
 # @medusajs/toolbox
 
+## 2.22.6
+
+## 2.22.5
+
+No changes in this release.
+
+## 2.22.4
+
+## 2.22.3
+
+## 2.22.2
+
 ## 2.22.1
 
 ## 2.22.0

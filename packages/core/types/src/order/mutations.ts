@@ -356,8 +356,7 @@ export interface UpdateOrderAdjustmentDTO {
 /**
  * The line item adjustment to be created.
  */
-export interface CreateOrderLineItemAdjustmentDTO
-  extends CreateOrderAdjustmentDTO {
+export interface CreateOrderLineItemAdjustmentDTO extends CreateOrderAdjustmentDTO {
   /**
    * The associated item's ID.
    */
@@ -367,8 +366,7 @@ export interface CreateOrderLineItemAdjustmentDTO
 /**
  * The attributes to update in the line item adjustment.
  */
-export interface UpdateOrderLineItemAdjustmentDTO
-  extends UpdateOrderAdjustmentDTO {
+export interface UpdateOrderLineItemAdjustmentDTO extends UpdateOrderAdjustmentDTO {
   /**
    * The associated item's ID.
    */
@@ -505,14 +503,12 @@ export interface UpdateOrderTaxLineDTO {
 /**
  * The shipping method tax line to be created.
  */
-export interface CreateOrderShippingMethodTaxLineDTO
-  extends CreateOrderTaxLineDTO {}
+export interface CreateOrderShippingMethodTaxLineDTO extends CreateOrderTaxLineDTO {}
 
 /**
  * The attributes to update in the shipping method tax line.
  */
-export interface UpdateOrderShippingMethodTaxLineDTO
-  extends UpdateOrderTaxLineDTO {}
+export interface UpdateOrderShippingMethodTaxLineDTO extends UpdateOrderTaxLineDTO {}
 
 /**
  * The line item tax line to be created.
@@ -684,11 +680,10 @@ export interface UpdateOrderLineItemWithSelectorDTO {
 /**
  * The attributes to update in the line item.
  */
-export interface UpdateOrderLineItemDTO
-  extends Omit<
-    CreateOrderLineItemDTO,
-    "tax_lines" | "adjustments" | "title" | "quantity" | "unit_price"
-  > {
+export interface UpdateOrderLineItemDTO extends Omit<
+  CreateOrderLineItemDTO,
+  "tax_lines" | "adjustments" | "title" | "quantity" | "unit_price"
+> {
   /**
    * The ID of the line item.
    */
@@ -1582,8 +1577,7 @@ interface BaseOrderBundledActionsDTO {
  * The details to register a fulfillment of an order, return,
  * exchange, or claim.
  */
-export interface RegisterOrderFulfillmentDTO
-  extends BaseOrderBundledActionsDTO {
+export interface RegisterOrderFulfillmentDTO extends BaseOrderBundledActionsDTO {
   /**
    * The items of the fulfillment.
    */
@@ -1718,11 +1712,7 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
  * A return's status.
  */
 export type ReturnStatus =
-  | "open"
-  | "requested"
-  | "received"
-  | "partially_received"
-  | "canceled"
+  "open" | "requested" | "received" | "partially_received" | "canceled"
 
 /**
  * The attributes to update in the return.
@@ -2086,10 +2076,7 @@ export type OrderClaimType = "refund" | "replace"
  * A claim's reason.
  */
 export type ClaimReason =
-  | "missing_item"
-  | "wrong_item"
-  | "production_failure"
-  | "other"
+  "missing_item" | "wrong_item" | "production_failure" | "other"
 
 /**
  * The claim to be created.
@@ -2237,8 +2224,10 @@ export interface CancelOrderExchangeDTO extends BaseOrderBundledActionsDTO {
 /**
  * The details of return receival.
  */
-export interface ReceiveOrderReturnDTO
-  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
+export interface ReceiveOrderReturnDTO extends Omit<
+  BaseOrderBundledActionsDTO,
+  "order_id"
+> {
   /**
    * The items received.
    */

@@ -29,7 +29,7 @@ const FilterChip = ({
   }
 
   return (
-    <div className="bg-ui-bg-field transition-fg shadow-borders-base text-ui-fg-subtle flex cursor-default select-none items-stretch overflow-hidden rounded-md">
+    <div className="flex cursor-default select-none items-stretch overflow-hidden rounded-md bg-ui-bg-field text-ui-fg-subtle shadow-borders-base transition-fg">
       {!hadPreviousValue && <RadixPopover.Anchor />}
       <div
         className={clx(
@@ -82,7 +82,7 @@ const FilterChip = ({
         <button
           onClick={handleRemove}
           className={clx(
-            "text-ui-fg-muted transition-fg flex items-center justify-center p-1",
+            "flex items-center justify-center p-1 text-ui-fg-muted transition-fg",
             "hover:bg-ui-bg-subtle-hover",
             "active:bg-ui-bg-subtle-pressed active:text-ui-fg-base"
           )}

@@ -24,12 +24,17 @@ const API_KEY_AUTH = "api-key"
 const ADMIN_ACTOR_TYPE = "user"
 
 export type AuthType =
-  | typeof SESSION_AUTH
-  | typeof BEARER_AUTH
-  | typeof API_KEY_AUTH
+  typeof SESSION_AUTH | typeof BEARER_AUTH | typeof API_KEY_AUTH
 
 type MedusaSession = {
   auth_context: AuthContext
+}
+
+const getOwn = <T extends object, K extends keyof T>(
+  obj: T,
+  key: K
+): T[K] | undefined => {
+  return Object.prototype.hasOwnProperty.call(obj, key) ? obj[key] : undefined
 }
 
 export const authenticate = (
@@ -50,6 +55,10 @@ export const authenticate = (
     const actorTypes = Array.isArray(actorType) ? actorType : [actorType]
     const req_ = req as AuthenticatedMedusaRequest
     const logger = req.scope.resolve(ContainerRegistrationKeys.LOGGER)
+
+    const allowUnauthenticated = getOwn(options, "allowUnauthenticated")
+    const allowUnregistered = getOwn(options, "allowUnregistered")
+    const requireMfaOption = getOwn(options, "requireMfa")
 
     // We only allow authenticating using a secret API key on the admin
     const isExclusivelyUser =
@@ -95,7 +104,7 @@ export const authenticate = (
       )
     }
 
-    const requireMfa = options.requireMfa ?? !options.allowUnauthenticated
+    const requireMfa = requireMfaOption ?? !allowUnauthenticated
 
     if (requireMfa && authContext?.mfa_enabled) {
       const mfaError = getMfaRequirementError(authContext, requireMfa)
@@ -116,7 +125,7 @@ export const authenticate = (
     // We also don't want to allow creating eg. a customer with a token created for a `user` provider.
     if (
       authContext?.auth_identity_id &&
-      options.allowUnregistered &&
+      allowUnregistered &&
       isActorTypePermitted(actorTypes, authContext.actor_type)
     ) {
       req_.auth_context = authContext
@@ -124,7 +133,7 @@ export const authenticate = (
     }
 
     // If we allow unauthenticated requests (i.e public endpoints), just continue
-    if (options.allowUnauthenticated) {
+    if (allowUnauthenticated) {
       return next()
     }
 

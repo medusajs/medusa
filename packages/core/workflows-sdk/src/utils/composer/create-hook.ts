@@ -112,9 +112,11 @@ export function createHook<Name extends string, TInvokeInput, TInvokeOutput>(
       () => void 0
     )(hookInput)
 
-    function hook<
-      TInvokeResultCompensateInput
-    >(this: CreateWorkflowComposerContext, invokeFn: InvokeFn<TInvokeInput, unknown, TInvokeResultCompensateInput>, compensateFn?: CompensateFn<TInvokeResultCompensateInput>) {
+    function hook<TInvokeResultCompensateInput>(
+      this: CreateWorkflowComposerContext,
+      invokeFn: InvokeFn<TInvokeInput, unknown, TInvokeResultCompensateInput>,
+      compensateFn?: CompensateFn<TInvokeResultCompensateInput>
+    ) {
       const handlers = createStepHandler.bind(this)({
         stepName: name,
         input: hookInput,

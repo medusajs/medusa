@@ -554,11 +554,17 @@ In this example, the `country` field of the `Brand` data model is rendered as a 
 
 In your admin dashboard customization, you can define a custom render mode to render a column's value in a specific way. You can then use that render mode in the entity's override configuration to render a column's value with your custom logic.
 
-Cell renderers are defined in the `src/admin/lib/cell-renderers.tsx` file of your Medusa project. You can define multiple cell renderers in this file, each defined with the `defineCellRenderer` utility.
+You define cell renderers in the `src/admin/cell-renderers.tsx` file of your Medusa project. You can define multiple cell renderers in this file, each defined with the `defineCellRenderer` utility.
 
-For example, create the file `src/admin/lib/cell-renderers.tsx` with the following content:
+<Note>
 
-```tsx title="src/admin/lib/cell-renderers.tsx"
+The file must be located directly under `src/admin`. Medusa ignores a `cell-renderers.tsx` file in any subdirectory, such as `src/admin/lib`, without showing a warning, and columns using its render modes fall back to the default rendering.
+
+</Note>
+
+For example, create the file `src/admin/cell-renderers.tsx` with the following content:
+
+```tsx title="src/admin/cell-renderers.tsx"
 import { defineCellRenderer } from "@medusajs/dashboard/lib"
 
 defineCellRenderer("capitalized", {
@@ -617,7 +623,7 @@ A custom render mode can accept configuration through the column's `metadata`, w
 
 For example, add a `truncated` render mode that shortens a value to a maximum length:
 
-```tsx title="src/admin/lib/cell-renderers.tsx"
+```tsx title="src/admin/cell-renderers.tsx"
 import { defineCellRenderer } from "@medusajs/dashboard/lib"
 
 defineCellRenderer("truncated", {

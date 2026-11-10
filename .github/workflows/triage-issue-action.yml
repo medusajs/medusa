@@ -165,6 +165,8 @@ jobs:
         # call), so we pin to a SHA and bump deliberately.
         uses: anthropics/claude-code-action@b76a0776ae74036e77cd11018083743453d7ad35 # v1
         env:
+          # The action runs its own setup-node, defaulting to 18.x
+          NODE_VERSION: 22
           # Read-only default token. The agent has no App token in this job.
           GH_TOKEN: ${{ github.token }}
           GITHUB_EVENT_NUMBER: ${{ inputs.issue_number }}
@@ -187,6 +189,8 @@ jobs:
           #   - `/proc/**`: reading the tokens straight out of the agent's own
           #     process environment via `/proc/self/environ`. Read rules also
           #     apply to Glob and Grep.
+          #   - `_temp/**`: the runner's GITHUB_ENV/GITHUB_PATH files, which would
+          #     let the model set env vars (e.g. NODE_OPTIONS) for later steps.
           #   - `.claude/**` and `.mcp.json`: writing agent config into the
           #     checkout. The action loads project and local setting sources,
           #     so this keeps a prompt-injected model from trying to widen its
@@ -198,6 +202,9 @@ jobs:
               "permissions": {
                 "deny": [
                   "Read(//proc/**)",
+                  "Read(//home/runner/work/_temp/**)",
+                  "Write(//home/runner/work/_temp/**)",
+                  "Edit(//home/runner/work/_temp/**)",
                   "Write(//**/.claude/**)",
                   "Edit(//**/.claude/**)",
                   "Write(//**/.mcp.json)",

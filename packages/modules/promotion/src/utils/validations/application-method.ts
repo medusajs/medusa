@@ -1,5 +1,6 @@
 import {
   ApplicationMethodAllocation,
+  ApplicationMethodTargetSelectionStrategy,
   ApplicationMethodTargetType,
   ApplicationMethodType,
   BigNumber,
@@ -43,6 +44,9 @@ export function validateApplicationMethodAttributes(
   const value = new BigNumber(data.value ?? applicationMethod.value ?? 0)
   const maxQuantity = data.max_quantity || applicationMethod.max_quantity
   const allocation = data.allocation || applicationMethod.allocation
+  const targetSelectionStrategy =
+    data.target_selection_strategy ||
+    applicationMethod.target_selection_strategy
   const allTargetTypes: string[] = Object.values(ApplicationMethodTargetType)
 
   if (
@@ -53,6 +57,32 @@ export function validateApplicationMethodAttributes(
       MedusaError.Types.INVALID_DATA,
       `Application Method value should be a percentage number between 0 and 100`
     )
+  }
+
+  const allTargetSelectionStrategies: string[] = Object.values(
+    ApplicationMethodTargetSelectionStrategy
+  )
+
+  if (targetSelectionStrategy) {
+    if (!allTargetSelectionStrategies.includes(targetSelectionStrategy)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.target_selection_strategy should be one of ${allTargetSelectionStrategies.join(
+          ", "
+        )}`
+      )
+    }
+
+    if (
+      promotion?.type !== PromotionType.BUYGET &&
+      targetSelectionStrategy !==
+        ApplicationMethodTargetSelectionStrategy.MOST_EXPENSIVE_FIRST
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `application_method.target_selection_strategy '${targetSelectionStrategy}' is only allowed for Promotion type of ${PromotionType.BUYGET}`
+      )
+    }
   }
 
   if (promotion?.type === PromotionType.BUYGET) {

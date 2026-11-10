@@ -2,8 +2,7 @@ type: object
 description: A leaf field stored in a search index, with the capabilities declared on it.
 x-schemaName: AdminSearchIndexField
 externalDocs:
-  url: >-
-    https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/fields
+  url: https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions/fields
   description: Learn about search index field types and modifiers
 required:
   - name

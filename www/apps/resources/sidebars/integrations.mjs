@@ -177,6 +177,11 @@ export const integrationsSidebar = [
         title: "Stripe",
       },
       {
+        type: "ref",
+        path: "/commerce-modules/payment/payment-provider/adyen",
+        title: "Adyen",
+      },
+      {
         type: "link",
         path: "/integrations/guides/paypal",
         title: "PayPal",

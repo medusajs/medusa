@@ -143,6 +143,7 @@
     "reset": "Palauta",
     "confirm": "Vahvista",
     "edit": "Muokkaa",
+    "view": "Näytä",
     "addItems": "Lisää tuotteita",
     "download": "Lataa",
     "clear": "Tyhjennä",
@@ -2255,6 +2256,8 @@
       "method": "Menetelmä",
       "allocation": "Kohdistus",
       "allocationTooltip": "Each-asetus rajoittaa määrän per tuote, kun taas Once-asetus rajoittaa määrän koko ostoskorin osalta",
+      "targetSelectionStrategy": "Alennettavat tuotteet",
+      "targetSelectionStrategyTooltip": "Mitkä ostoskorin hyväksyttävät tuotteet saavat alennuksen",
       "addCondition": "Lisää ehto",
       "clearAll": "Tyhjennä kaikki",
       "taxInclusive": "Sisältää veron",
@@ -2402,6 +2405,16 @@
         "once": {
           "title": "Kerran",
           "description": "Soveltaa arvoa rajattuun määrään tuotteita"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Kallein ensin",
+          "description": "Antaa alennuksen ostoskorin kalleimmille hyväksyttäville tuotteille"
+        },
+        "cheapest_first": {
+          "title": "Halvin ensin",
+          "description": "Antaa alennuksen ostoskorin halvimmille hyväksyttäville tuotteille"
         }
       },
       "code": {
@@ -2766,7 +2779,7 @@
     "editUser": "Muokkaa käyttäjää",
     "inviteUser": "Kutsu käyttäjä",
     "inviteUserHint": "Kutsu uusi käyttäjä kauppaasi.",
-    "inviteRolesTooltip": "Jos roolia ei ole valittu, käyttäjä kutsutaan pääkäyttäjän roolilla.",
+    "inviteRolesTooltip": "Jos roolia ei valita, käyttäjä kutsutaan ilman oikeuksia. Voit määrittää roolit myöhemmin.",
     "sendInvite": "Lähetä kutsu",
     "pendingInvites": "Odottavat kutsut",
     "deleteInviteWarning": "Olet poistamassa kutsun käyttäjälle {{email}}. Tätä toimintoa ei voi peruuttaa.",
@@ -2841,7 +2854,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Käyttäjällä on jo tämä rooli.",
-      "unassignableRoleTooltip": "Sinulla ei ole oikeutta määrittää tätä roolia — luvatasi eivät kata kaikkia sen käytäntöjä.",
       "add": {
         "successToast_one": "Käyttäjä lisättiin rooliin onnistuneesti.",
         "successToast_other": "Käyttäjät lisättiin rooliin onnistuneesti.",
@@ -2869,6 +2881,9 @@
       "filtered": {
         "heading": "Ei tuloksia",
         "description": "Yksikään lupa ei vastaa nykyisiä suodatinehtoja."
+      },
+      "manage": {
+        "successToast": "Luvat päivitettiin onnistuneesti."
       }
     },
     "list": {
@@ -2892,6 +2907,7 @@
     },
     "edit": {
       "header": "Muokkaa käytäntöä",
+      "identityHint": "Avain, resurssi ja toiminto yksilöivät käytännön eikä niitä voi muuttaa. Luo sen sijaan uusi käytäntö.",
       "successToast": "Käytäntö {{key}} päivitetty"
     },
     "delete": {
@@ -3352,6 +3368,9 @@
     "invalidTokenTitle": "Kutsutunnuksesi on virheellinen",
     "invalidTokenHint": "Yritä pyytää uusi kutsulinkki.",
     "passwordMismatch": "Salasanat eivät täsmää",
+    "signedInTitle": "Olet jo kirjautunut sisään",
+    "signedInHint": "Olet kirjautunut sisään käyttäjänä {{email}}. Kirjaudu ulos hyväksyäksesi tämän kutsun.",
+    "signOut": "Kirjaudu ulos",
     "toast": {
       "accepted": "Kutsu hyväksyttiin onnistuneesti"
     }
@@ -3784,6 +3803,10 @@
       "description": "Sinulla ei ole oikeutta käyttää tätä sivua.",
       "requiredPermission": "Vaadittu lupa: {{permission}}",
       "action": "Sinulla ei ole oikeutta suorittaa tätä toimintoa."
+    },
+    "noPermissions": {
+      "title": "Ei lupia vielä",
+      "description": "Sinulle ei ole vielä määritetty lupia. Ota yhteyttä järjestelmänvalvojaan pyytääksesi pääsyä tarvitsemiisi alueisiin."
     },
     "requiredPermissions": {
       "title": "Vaaditut luvat",

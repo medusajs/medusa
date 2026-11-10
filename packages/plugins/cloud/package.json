@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/cloud",
-  "version": "2.22.1",
+  "version": "2.22.6",
   "description": "A Medusa plugin that adds Medusa Cloud features, such as in-app announcements, to the Medusa Admin of Cloud projects.",
   "author": "Medusa (https://medusajs.com)",
   "license": "MIT",
@@ -41,34 +41,34 @@
     "prepare": "cross-env NODE_ENV=production yarn run build:plugin",
     "link:watch": "medusa plugin:publish && medusa plugin:develop",
     "watch": "medusa plugin:develop",
-    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPattern=src"
+    "test": "../../../node_modules/.bin/jest --bail --forceExit --testPathPatterns=src"
   },
   "dependencies": {
-    "@medusajs/js-sdk": "2.22.1",
+    "@medusajs/js-sdk": "2.22.6",
     "@tanstack/react-query": "5.64.2"
   },
   "devDependencies": {
-    "@medusajs/admin-sdk": "2.22.1",
-    "@medusajs/cli": "2.22.1",
-    "@medusajs/dashboard": "2.22.1",
-    "@medusajs/framework": "2.22.1",
-    "@medusajs/icons": "2.22.1",
-    "@medusajs/types": "2.22.1",
-    "@medusajs/ui": "4.2.8",
-    "@medusajs/ui-preset": "2.22.1",
-    "@swc/core": "1.5.7",
-    "@types/node": "^20.0.0",
-    "cross-env": "^7.0.3",
-    "typescript": "^5.7.3"
+    "@medusajs/admin-sdk": "2.22.6",
+    "@medusajs/cli": "2.22.6",
+    "@medusajs/dashboard": "2.22.6",
+    "@medusajs/framework": "2.22.6",
+    "@medusajs/icons": "2.22.6",
+    "@medusajs/types": "2.22.6",
+    "@medusajs/ui": "4.2.13",
+    "@medusajs/ui-preset": "2.22.6",
+    "@swc/core": "^1.16.20",
+    "@types/node": "^22.20.5",
+    "cross-env": "^10.1.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "peerDependencies": {
-    "@medusajs/admin-sdk": "2.22.1",
-    "@medusajs/cli": "2.22.1",
-    "@medusajs/dashboard": "2.22.1",
-    "@medusajs/framework": "2.22.1",
-    "@medusajs/icons": "2.22.1",
-    "@medusajs/test-utils": "2.22.1",
-    "@medusajs/ui": "4.2.8",
+    "@medusajs/admin-sdk": "2.22.6",
+    "@medusajs/cli": "2.22.6",
+    "@medusajs/dashboard": "2.22.6",
+    "@medusajs/framework": "2.22.6",
+    "@medusajs/icons": "2.22.6",
+    "@medusajs/test-utils": "2.22.6",
+    "@medusajs/ui": "4.2.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.4 || ^7.0.0"
@@ -105,5 +105,5 @@
   "engines": {
     "node": ">=22.22.0"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@4.18.1"
 }

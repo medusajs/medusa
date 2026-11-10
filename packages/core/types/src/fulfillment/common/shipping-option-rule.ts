@@ -62,8 +62,7 @@ export interface ShippingOptionRuleDTO {
 /**
  * The filters to apply on the retrieved shipping option rules.
  */
-export interface FilterableShippingOptionRuleProps
-  extends BaseFilterable<FilterableShippingOptionRuleProps> {
+export interface FilterableShippingOptionRuleProps extends BaseFilterable<FilterableShippingOptionRuleProps> {
   /**
    * The IDs to filter the shipping option rules by.
    */

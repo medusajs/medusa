@@ -133,11 +133,13 @@ You can structure your monorepo as you see fit. You'll be required to specify th
 
 Medusa uses Node.js v24.x (LTS) to build storefronts. You can't override this version.
 
-So, ensure that your storefront is compatible with Node.js v24.x.
+Medusa updates the build to newer v24.x patch releases when they include security fixes, so the exact patch version can change between deployments. The storefront's Node.js version also doesn't follow the `engines` field of your Medusa application, which only applies to the Medusa application's build and runtime.
+
+So, ensure that your storefront is compatible with Node.js v24.x, without relying on a specific patch version.
 
 <Note type="warning">
 
-If your storefront's `package.json` has an `engines.node` field that restricts the Node.js version to a range that excludes v24.x (for example, `"22.x"`), the build will fail with a version incompatibility error. Update the field to accept v24.x, for example:
+If your storefront's `package.json` has an `engines.node` field that restricts the Node.js version to a range that excludes the v24.x version Medusa uses, the build will fail with a version incompatibility error. This includes a major version other than v24, such as `"22.x"`, and an exact version, such as `"24.15.0"`. Update the field to accept any v24.x version, for example:
 
 ```json title="apps/storefront/package.json"
 {

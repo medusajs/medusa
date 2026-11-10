@@ -96,7 +96,7 @@ const ProductStockFallback = () => {
             columns={Array.from({ length: 10 }) as ColumnDef<any>[]}
           />
         </div>
-        <div className="bg-ui-bg-base flex items-center justify-end gap-x-2 p-4">
+        <div className="flex items-center justify-end gap-x-2 bg-ui-bg-base p-4">
           <Skeleton className="h-7 w-[59px]" />
           <Skeleton className="h-7 w-[46px]" />
         </div>

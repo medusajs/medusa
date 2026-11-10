@@ -1389,9 +1389,7 @@ export interface IOrderModuleService extends IModuleService {
    */
   updateOrderItem(
     orderItemIdOrDataOrSelector:
-      | string
-      | UpdateOrderItemWithSelectorDTO[]
-      | Partial<OrderItemDTO>,
+      string | UpdateOrderItemWithSelectorDTO[] | Partial<OrderItemDTO>,
     data?: UpdateOrderItemDTO | Partial<UpdateOrderItemDTO>,
     sharedContext?: Context
   ): Promise<OrderItemDTO[] | OrderItemDTO>
@@ -2431,8 +2429,7 @@ export interface IOrderModuleService extends IModuleService {
    */
   upsertOrderShippingMethodTaxLines(
     taxLines: (
-      | CreateOrderShippingMethodTaxLineDTO
-      | UpdateOrderShippingMethodTaxLineDTO
+      CreateOrderShippingMethodTaxLineDTO | UpdateOrderShippingMethodTaxLineDTO
     )[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO[]>
@@ -2474,8 +2471,7 @@ export interface IOrderModuleService extends IModuleService {
   setOrderShippingMethodTaxLines(
     orderId: string,
     taxLines: (
-      | CreateOrderShippingMethodTaxLineDTO
-      | UpdateOrderShippingMethodTaxLineDTO
+      CreateOrderShippingMethodTaxLineDTO | UpdateOrderShippingMethodTaxLineDTO
     )[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO[]>
@@ -3482,7 +3478,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   softDeleteOrderShippingMethods<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -3531,7 +3527,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   softDeleteOrderLineItemAdjustments<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -3557,7 +3553,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   restoreOrderLineItemAdjustments<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
@@ -3582,7 +3578,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   softDeleteOrderShippingMethodAdjustments<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -3608,7 +3604,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   restoreOrderShippingMethodAdjustments<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
@@ -3633,7 +3629,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   softDeleteOrderLineItemTaxLines<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -3682,7 +3678,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   softDeleteOrderShippingMethodTaxLines<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     ids: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -3708,7 +3704,7 @@ export interface IOrderModuleService extends IModuleService {
    * ])
    */
   restoreOrderShippingMethodTaxLines<
-    TReturnableLinkableKeys extends string = string
+    TReturnableLinkableKeys extends string = string,
   >(
     ids: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,

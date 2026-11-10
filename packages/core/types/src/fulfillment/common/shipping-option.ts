@@ -120,8 +120,7 @@ export interface ShippingOptionDTO {
 /**
  * The filters to apply on the retrieved shipping options.
  */
-export interface FilterableShippingOptionProps
-  extends BaseFilterable<FilterableShippingOptionProps> {
+export interface FilterableShippingOptionProps extends BaseFilterable<FilterableShippingOptionProps> {
   /**
    * The IDs to filter the shipping options by.
    */
@@ -164,8 +163,7 @@ export interface FilterableShippingOptionProps
 /**
  * A context's details used to filter the shipping option.
  */
-export interface FilterableShippingOptionForContextProps
-  extends FilterableShippingOptionProps {
+export interface FilterableShippingOptionForContextProps extends FilterableShippingOptionProps {
   /**
    * The fulfillment set's ID used in the context.
    */

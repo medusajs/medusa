@@ -6,7 +6,7 @@ type RawBigNumberPrefix = "raw_"
 type ExpandStarSelector<
   T extends object,
   Depth extends number,
-  Exclusion extends string[]
+  Exclusion extends string[],
 > = ObjectToIndexFields<T & { "*": "*" }, Depth, Exclusion>
 
 /**
@@ -16,42 +16,44 @@ export type ObjectToIndexFields<
   MaybeT,
   Depth extends number = 2,
   Exclusion extends string[] = [],
-  T = TypeOnly<MaybeT> & { "*": "*" }
+  T = TypeOnly<MaybeT> & { "*": "*" },
 > = Depth extends never
   ? never
   : T extends object
-  ? {
-      [K in keyof T]: K extends  // handle big number
-      `${RawBigNumberPrefix}${string}`
-        ? Exclude<K, symbol>
-        : // Special props that should be excluded
-        K extends ExcludedProps
-        ? never
-        : // Prevent recursive reference to itself
-        K extends Exclusion[number]
-        ? never
-        : TypeOnly<T[K]> extends Array<infer R>
-        ? TypeOnly<R> extends Date
+    ? {
+        [
+          K in keyof T
+        ]: K extends  // handle big number
+        `${RawBigNumberPrefix}${string}`
           ? Exclude<K, symbol>
-          : TypeOnly<R> extends { __typename: any }
-          ? `${Exclude<K, symbol>}.${ExpandStarSelector<
-              TypeOnly<R>,
-              Marker[Depth],
-              [K & string, ...Exclusion]
-            >}`
-          : TypeOnly<R> extends object
-          ? Exclude<K, symbol>
-          : never
-        : TypeOnly<T[K]> extends Date
-        ? Exclude<K, symbol>
-        : TypeOnly<T[K]> extends { __typename: any }
-        ? `${Exclude<K, symbol>}.${ExpandStarSelector<
-            TypeOnly<T[K]>,
-            Marker[Depth],
-            [K & string, ...Exclusion]
-          >}`
-        : T[K] extends object
-        ? Exclude<K, symbol>
-        : Exclude<K, symbol>
-    }[keyof T]
-  : never
+          : // Special props that should be excluded
+            K extends ExcludedProps
+            ? never
+            : // Prevent recursive reference to itself
+              K extends Exclusion[number]
+              ? never
+              : TypeOnly<T[K]> extends Array<infer R>
+                ? TypeOnly<R> extends Date
+                  ? Exclude<K, symbol>
+                  : TypeOnly<R> extends { __typename: any }
+                    ? `${Exclude<K, symbol>}.${ExpandStarSelector<
+                        TypeOnly<R>,
+                        Marker[Depth],
+                        [K & string, ...Exclusion]
+                      >}`
+                    : TypeOnly<R> extends object
+                      ? Exclude<K, symbol>
+                      : never
+                : TypeOnly<T[K]> extends Date
+                  ? Exclude<K, symbol>
+                  : TypeOnly<T[K]> extends { __typename: any }
+                    ? `${Exclude<K, symbol>}.${ExpandStarSelector<
+                        TypeOnly<T[K]>,
+                        Marker[Depth],
+                        [K & string, ...Exclusion]
+                      >}`
+                    : T[K] extends object
+                      ? Exclude<K, symbol>
+                      : Exclude<K, symbol>
+      }[keyof T]
+    : never

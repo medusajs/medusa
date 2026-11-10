@@ -12,8 +12,12 @@ import {
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeletePromotion } from "../../../../../hooks/api/promotions"
+import { usePromotionPermissions } from "../../../../../hooks/use-resource-permissions"
 import { formatCurrency } from "../../../../../lib/format-currency"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
 import { getPromotionStatus } from "../../../../../lib/promotions"
@@ -50,6 +54,7 @@ export const PromotionGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { canUpdate, canDelete } = usePromotionPermissions()
   const { mutateAsync } = useDeletePromotion(promotion.id)
 
   const handleDelete = async () => {
@@ -87,9 +92,11 @@ export const PromotionGeneralSection = ({
 
         <div className="flex items-center gap-x-2">
           <StatusBadge color={color}>{text}</StatusBadge>
-          <ActionMenu
-            groups={[
-              {
+          {(() => {
+            const groups: ActionGroup[] = []
+
+            if (canUpdate) {
+              groups.push({
                 actions: [
                   {
                     icon: <PencilSquare />,
@@ -97,8 +104,11 @@ export const PromotionGeneralSection = ({
                     to: `/promotions/${promotion.id}/edit`,
                   },
                 ],
-              },
-              {
+              })
+            }
+
+            if (canDelete) {
+              groups.push({
                 actions: [
                   {
                     icon: <Trash />,
@@ -106,13 +116,15 @@ export const PromotionGeneralSection = ({
                     onClick: handleDelete,
                   },
                 ],
-              },
-            ]}
-          />
+              })
+            }
+
+            return groups.length > 0 ? <ActionMenu groups={groups} /> : null
+          })()}
         </div>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("promotions.fields.campaign")}
         </Text>
@@ -124,7 +136,7 @@ export const PromotionGeneralSection = ({
         </Text>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+      <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("fields.code")}
         </Text>
@@ -144,7 +156,7 @@ export const PromotionGeneralSection = ({
         </Copy>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("promotions.fields.type")}
         </Text>
@@ -154,7 +166,7 @@ export const PromotionGeneralSection = ({
         </Text>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("promotions.fields.value")}
         </Text>
@@ -171,7 +183,7 @@ export const PromotionGeneralSection = ({
         </div>
       </div>
 
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+      <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
         <Text size="small" weight="plus" leading="compact">
           {t("promotions.fields.allocation")}
         </Text>
@@ -182,7 +194,7 @@ export const PromotionGeneralSection = ({
       </div>
 
       {promotion.application_method?.type === "fixed" && (
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+        <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
           <Text size="small" weight="plus" leading="compact">
             {t("promotions.fields.taxInclusive")}
           </Text>
@@ -198,7 +210,7 @@ export const PromotionGeneralSection = ({
       )}
 
       {typeof promotion.limit === "number" && (
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+        <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
           <Text size="small" weight="plus" leading="compact">
             Usage Limit
           </Text>

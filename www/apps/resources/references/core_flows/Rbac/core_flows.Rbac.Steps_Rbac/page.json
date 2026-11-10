@@ -1,0 +1,1 @@
+{"slug":"/references/core_flows/Rbac/core_flows.Rbac.Steps_Rbac","title":"Steps_Rbac","frontmatter":{},"toc":[],"blocks":[{"kind":"linkList","items":[{"title":"getRoleAssignmentsStep","href":"/references/medusa-workflows/steps/getRoleAssignmentsStep"},{"title":"validateAssignmentReferencesStep","href":"/references/medusa-workflows/steps/validateAssignmentReferencesStep"}]}]}

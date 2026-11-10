@@ -4,7 +4,10 @@ import { useLoaderData, useParams } from "react-router-dom"
 import { useProductVariant } from "../../../hooks/api/products"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { VariantGeneralSection } from "./components/variant-general-section"
 import {
   InventorySectionPlaceholder,
@@ -14,6 +17,7 @@ import { VariantMediaSection } from "./components/variant-media-section"
 import { VariantPricesSection } from "./components/variant-prices-section"
 import { ExtendedVariant, VARIANT_DETAIL_FIELDS } from "./constants"
 import { variantLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const ProductVariantDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -63,17 +67,19 @@ export const ProductVariantDetail = () => {
               {!variant.manage_inventory ? (
                 <InventorySectionPlaceholder />
               ) : (
-                <VariantInventorySection
-                  inventoryItems={(variant.inventory_items ?? [])
-                    .filter((i) => i.inventory)
-                    .map((i) => {
-                      return {
-                        ...i.inventory!,
-                        required_quantity: i.required_quantity,
-                        variant,
-                      }
-                    })}
-                />
+                <PermissionGuard permission="inventory_item:read">
+                  <VariantInventorySection
+                    inventoryItems={(variant.inventory_items ?? [])
+                      .filter((i) => i.inventory)
+                      .map((i) => {
+                        return {
+                          ...i.inventory!,
+                          required_quantity: i.required_quantity,
+                          variant,
+                        }
+                      })}
+                  />
+                </PermissionGuard>
               )}
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(variant)}
@@ -82,7 +88,9 @@ export const ProductVariantDetail = () => {
         side: (
           <>
             <LayoutComposer.Entry id="VariantPricesSection">
-              <VariantPricesSection variant={variant as ExtendedVariant} />
+              <PermissionGuard permission="price:read">
+                <VariantPricesSection variant={variant as ExtendedVariant} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
           </>
         ),

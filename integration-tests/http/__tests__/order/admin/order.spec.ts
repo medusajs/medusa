@@ -1674,9 +1674,8 @@ medusaIntegrationTestRunner({
           expect.objectContaining({ amount: 30, deleted_at: expect.any(Date) })
         )
 
-        const paymentCollection = await paymentModule.retrievePaymentCollection(
-          paymentCollectionId
-        )
+        const paymentCollection =
+          await paymentModule.retrievePaymentCollection(paymentCollectionId)
         expect(paymentCollection.refunded_amount).toBe(50)
       })
 

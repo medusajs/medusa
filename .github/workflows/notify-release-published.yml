@@ -27,6 +27,7 @@ jobs:
           - b2b-starter
           - modern-dtc-starter
           - industrials-b2b-starter
+          - medusa-starter-plugin
     steps:
       - name: Resolve the release
         id: release

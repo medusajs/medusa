@@ -199,7 +199,7 @@ export const useProductStockColumns = (
                           checked={checked}
                           disabled
                         />
-                        <span className="text-ui-fg-disabled flex size-full items-center justify-end">
+                        <span className="flex size-full items-center justify-end text-ui-fg-disabled">
                           {quantity}
                         </span>
                       </div>

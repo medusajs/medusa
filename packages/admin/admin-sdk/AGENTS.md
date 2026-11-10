@@ -7,7 +7,7 @@ Config helpers that Medusa apps and plugins use to declare Admin customizations 
 Import directly from `@medusajs/admin-sdk`:
 
 - `defineWidgetConfig({ zone, id? })`: widget in `src/admin/widgets/*.tsx`.
-- `defineRouteConfig({ label?, icon?, nested?, rank?, translationNs? })`: UI route in `src/admin/routes/**/page.tsx`.
+- `defineRouteConfig({ label?, icon?, nested?, rank?, translationNs?, permissions? })`: UI route in `src/admin/routes/**/page.tsx`. `permissions` (`resource:operation` keys, all required) guards the route and hides its sidebar item when RBAC is installed; child routes inherit it. Pages without a `config` (e.g. `@create` parallel routes) declare theirs with `export const handle = { permissions: [...] }`.
 - `defineLayoutConfig({ id, sections })`: custom layout in `src/admin/layouts/`.
 - `unstable_defineCustomFieldsConfig`, `unstable_createFormHelper`: experimental custom fields (product model only) in `src/admin/custom-fields/`.
 - Types: `WidgetConfig`, `RouteConfig`, `LayoutConfig`.

@@ -1,19 +1,20 @@
 {
-	"id": 65978,
+	"schemaVersion": "2.0",
+	"id": 66741,
 	"name": "notification-service",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 65979,
+			"id": 66742,
 			"name": "INotificationModuleService",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 65980,
+					"id": 66743,
 					"name": "createNotifications",
 					"variant": "declaration",
 					"kind": 2048,
@@ -23,18 +24,18 @@
 							"fileName": "notification/service.ts",
 							"line": 29,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L29"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L29"
 						},
 						{
 							"fileName": "notification/service.ts",
 							"line": 48,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L48"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L48"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65981,
+							"id": 66744,
 							"name": "createNotifications",
 							"variant": "signature",
 							"kind": 4096,
@@ -72,12 +73,12 @@
 									"fileName": "notification/service.ts",
 									"line": 29,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L29"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L29"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65982,
+									"id": 66745,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -95,7 +96,8 @@
 										"elementType": {
 											"type": "reference",
 											"target": {
-												"sourceFileName": "../../../../packages/core/types/src/notification/mutations.ts",
+												"packageName": "@medusajs/types",
+												"packagePath": "src/notification/mutations.ts",
 												"qualifiedName": "CreateNotificationDTO"
 											},
 											"name": "CreateNotificationDTO",
@@ -104,7 +106,7 @@
 									}
 								},
 								{
-									"id": 65983,
+									"id": 66746,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -122,7 +124,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/shared-context.ts",
 											"qualifiedName": "Context"
 										},
 										"name": "Context",
@@ -133,7 +136,8 @@
 							"type": {
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
 									"qualifiedName": "Promise"
 								},
 								"typeArguments": [
@@ -142,7 +146,8 @@
 										"elementType": {
 											"type": "reference",
 											"target": {
-												"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+												"packageName": "@medusajs/types",
+												"packagePath": "src/notification/common.ts",
 												"qualifiedName": "NotificationDTO"
 											},
 											"name": "NotificationDTO",
@@ -155,7 +160,7 @@
 							}
 						},
 						{
-							"id": 65984,
+							"id": 66747,
 							"name": "createNotifications",
 							"variant": "signature",
 							"kind": 4096,
@@ -193,12 +198,12 @@
 									"fileName": "notification/service.ts",
 									"line": 48,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L48"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L48"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65985,
+									"id": 66748,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -214,7 +219,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/notification/mutations.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/notification/mutations.ts",
 											"qualifiedName": "CreateNotificationDTO"
 										},
 										"name": "CreateNotificationDTO",
@@ -222,7 +228,7 @@
 									}
 								},
 								{
-									"id": 65986,
+									"id": 66749,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -240,7 +246,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/shared-context.ts",
 											"qualifiedName": "Context"
 										},
 										"name": "Context",
@@ -251,14 +258,16 @@
 							"type": {
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
 									"qualifiedName": "Promise"
 								},
 								"typeArguments": [
 									{
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/notification/common.ts",
 											"qualifiedName": "NotificationDTO"
 										},
 										"name": "NotificationDTO",
@@ -272,7 +281,7 @@
 					]
 				},
 				{
-					"id": 65987,
+					"id": 66750,
 					"name": "retrieveNotification",
 					"variant": "declaration",
 					"kind": 2048,
@@ -282,12 +291,12 @@
 							"fileName": "notification/service.ts",
 							"line": 89,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L89"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L89"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65988,
+							"id": 66751,
 							"name": "retrieveNotification",
 							"variant": "signature",
 							"kind": 4096,
@@ -337,12 +346,12 @@
 									"fileName": "notification/service.ts",
 									"line": 89,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L89"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L89"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65989,
+									"id": 66752,
 									"name": "notificationId",
 									"variant": "param",
 									"kind": 32768,
@@ -361,7 +370,7 @@
 									}
 								},
 								{
-									"id": 65990,
+									"id": 66753,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -395,14 +404,16 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/common/common.ts",
 											"qualifiedName": "FindConfig"
 										},
 										"typeArguments": [
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+													"packageName": "@medusajs/types",
+													"packagePath": "src/notification/common.ts",
 													"qualifiedName": "NotificationDTO"
 												},
 												"name": "NotificationDTO",
@@ -414,7 +425,7 @@
 									}
 								},
 								{
-									"id": 65991,
+									"id": 66754,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -432,7 +443,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/shared-context.ts",
 											"qualifiedName": "Context"
 										},
 										"name": "Context",
@@ -443,14 +455,16 @@
 							"type": {
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
 									"qualifiedName": "Promise"
 								},
 								"typeArguments": [
 									{
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/notification/common.ts",
 											"qualifiedName": "NotificationDTO"
 										},
 										"name": "NotificationDTO",
@@ -464,7 +478,7 @@
 					]
 				},
 				{
-					"id": 65992,
+					"id": 66755,
 					"name": "listNotifications",
 					"variant": "declaration",
 					"kind": 2048,
@@ -474,12 +488,12 @@
 							"fileName": "notification/service.ts",
 							"line": 149,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L149"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L149"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65993,
+							"id": 66756,
 							"name": "listNotifications",
 							"variant": "signature",
 							"kind": 4096,
@@ -569,12 +583,12 @@
 									"fileName": "notification/service.ts",
 									"line": 149,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L149"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L149"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65994,
+									"id": 66757,
 									"name": "filters",
 									"variant": "param",
 									"kind": 32768,
@@ -592,7 +606,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/notification/common.ts",
 											"qualifiedName": "FilterableNotificationProps"
 										},
 										"name": "FilterableNotificationProps",
@@ -600,7 +615,7 @@
 									}
 								},
 								{
-									"id": 65995,
+									"id": 66758,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -634,14 +649,16 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/common/common.ts",
 											"qualifiedName": "FindConfig"
 										},
 										"typeArguments": [
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+													"packageName": "@medusajs/types",
+													"packagePath": "src/notification/common.ts",
 													"qualifiedName": "NotificationDTO"
 												},
 												"name": "NotificationDTO",
@@ -653,7 +670,7 @@
 									}
 								},
 								{
-									"id": 65996,
+									"id": 66759,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -671,7 +688,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/shared-context.ts",
 											"qualifiedName": "Context"
 										},
 										"name": "Context",
@@ -682,7 +700,8 @@
 							"type": {
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
 									"qualifiedName": "Promise"
 								},
 								"typeArguments": [
@@ -691,7 +710,8 @@
 										"elementType": {
 											"type": "reference",
 											"target": {
-												"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+												"packageName": "@medusajs/types",
+												"packagePath": "src/notification/common.ts",
 												"qualifiedName": "NotificationDTO"
 											},
 											"name": "NotificationDTO",
@@ -706,7 +726,7 @@
 					]
 				},
 				{
-					"id": 65997,
+					"id": 66760,
 					"name": "listAndCountNotifications",
 					"variant": "declaration",
 					"kind": 2048,
@@ -716,12 +736,12 @@
 							"fileName": "notification/service.ts",
 							"line": 212,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L212"
+							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L212"
 						}
 					],
 					"signatures": [
 						{
-							"id": 65998,
+							"id": 66761,
 							"name": "listAndCountNotifications",
 							"variant": "signature",
 							"kind": 4096,
@@ -811,12 +831,12 @@
 									"fileName": "notification/service.ts",
 									"line": 212,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L212"
+									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L212"
 								}
 							],
 							"parameters": [
 								{
-									"id": 65999,
+									"id": 66762,
 									"name": "filters",
 									"variant": "param",
 									"kind": 32768,
@@ -834,7 +854,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/notification/common.ts",
 											"qualifiedName": "FilterableNotificationProps"
 										},
 										"name": "FilterableNotificationProps",
@@ -842,7 +863,7 @@
 									}
 								},
 								{
-									"id": 66000,
+									"id": 66763,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -876,14 +897,16 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/common/common.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/common/common.ts",
 											"qualifiedName": "FindConfig"
 										},
 										"typeArguments": [
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+													"packageName": "@medusajs/types",
+													"packagePath": "src/notification/common.ts",
 													"qualifiedName": "NotificationDTO"
 												},
 												"name": "NotificationDTO",
@@ -895,7 +918,7 @@
 									}
 								},
 								{
-									"id": 66001,
+									"id": 66764,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -913,7 +936,8 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+											"packageName": "@medusajs/types",
+											"packagePath": "src/shared-context.ts",
 											"qualifiedName": "Context"
 										},
 										"name": "Context",
@@ -924,7 +948,8 @@
 							"type": {
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
 									"qualifiedName": "Promise"
 								},
 								"typeArguments": [
@@ -936,7 +961,8 @@
 												"elementType": {
 													"type": "reference",
 													"target": {
-														"sourceFileName": "../../../../packages/core/types/src/notification/common.ts",
+														"packageName": "@medusajs/types",
+														"packagePath": "src/notification/common.ts",
 														"qualifiedName": "NotificationDTO"
 													},
 													"name": "NotificationDTO",
@@ -961,10 +987,10 @@
 				{
 					"title": "Methods",
 					"children": [
-						65980,
-						65987,
-						65992,
-						65997
+						66743,
+						66750,
+						66755,
+						66760
 					]
 				}
 			],
@@ -973,14 +999,15 @@
 					"fileName": "notification/service.ts",
 					"line": 7,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/5e244c3d5fd88b09ba4f0d14f39404a4e86fb800/packages/core/types/src/notification/service.ts#L7"
+					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/types/src/notification/service.ts#L7"
 				}
 			],
 			"extendedTypes": [
 				{
 					"type": "reference",
 					"target": {
-						"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+						"packageName": "@medusajs/types",
+						"packagePath": "src/modules-sdk/index.ts",
 						"qualifiedName": "IModuleService"
 					},
 					"name": "IModuleService",
@@ -993,106 +1020,130 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				65979
+				66742
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"65978": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66741": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": ""
 		},
-		"65979": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66742": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService"
 		},
-		"65980": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66743": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.createNotifications"
 		},
-		"65981": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66744": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.createNotifications"
 		},
-		"65982": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66745": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "data"
 		},
-		"65983": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66746": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65984": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66747": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.createNotifications"
 		},
-		"65985": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66748": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "data"
 		},
-		"65986": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66749": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65987": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66750": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.retrieveNotification"
 		},
-		"65988": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66751": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.retrieveNotification"
 		},
-		"65989": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66752": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "notificationId"
 		},
-		"65990": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66753": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "config"
 		},
-		"65991": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66754": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65992": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66755": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.listNotifications"
 		},
-		"65993": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66756": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.listNotifications"
 		},
-		"65994": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66757": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "filters"
 		},
-		"65995": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66758": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "config"
 		},
-		"65996": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66759": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"65997": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66760": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.listAndCountNotifications"
 		},
-		"65998": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66761": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.listAndCountNotifications"
 		},
-		"65999": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66762": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "filters"
 		},
-		"66000": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66763": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "config"
 		},
-		"66001": {
-			"sourceFileName": "../../../../packages/core/types/src/notification/service.ts",
+		"66764": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
 		}
 	},
@@ -1101,7 +1152,7 @@
 			"1": "../../../../packages/core/types/src/notification/service.ts"
 		},
 		"reflections": {
-			"1": 65978
+			"1": 66741
 		}
 	}
 }

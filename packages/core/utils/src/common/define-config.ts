@@ -51,6 +51,13 @@ const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
 const DEFAULT_ADMIN_CORS =
   "http://localhost:7000,http://localhost:7001,http://localhost:5173"
 
+/**
+ * The actor types allowed on the "/rbac" API routes. Defaults to "user" only,
+ * so that existing applications keep the behaviour of the previously
+ * admin-only RBAC routes. Applications opt other actors in explicitly.
+ */
+export const DEFAULT_RBAC_ACTOR_TYPES = ["user"]
+
 export const DEFAULT_STORE_RESTRICTED_FIELDS = [
   "order",
   "orders",
@@ -154,8 +161,8 @@ export function transformModules(
 
       const joinerConfig =
         typeof defaultExport.service.prototype.__joinerConfig === "function"
-          ? defaultExport.service.prototype.__joinerConfig() ?? {}
-          : defaultExport.service.prototype.__joinerConfig ?? {}
+          ? (defaultExport.service.prototype.__joinerConfig() ?? {})
+          : (defaultExport.service.prototype.__joinerConfig ?? {})
 
       serviceName = joinerConfig.serviceName
 
@@ -307,10 +314,6 @@ function resolveModules(
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION],
       disable: !FeatureFlag.isFeatureEnabled("translation"),
-    },
-    {
-      resolve: MODULE_PACKAGE_NAMES[Modules.RBAC],
-      disable: !FeatureFlag.isFeatureEnabled("rbac"),
     },
 
     {
@@ -535,7 +538,6 @@ function normalizeProjectConfig(
 
   const mergedCloudOptions: MedusaCloudOptions = {
     environmentHandle: process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE,
-    sandboxHandle: process.env.MEDUSA_CLOUD_SANDBOX_HANDLE,
     apiKey: process.env.MEDUSA_CLOUD_API_KEY,
     webhookSecret: process.env.MEDUSA_CLOUD_WEBHOOK_SECRET,
     emailsEndpoint: process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT,
@@ -551,6 +553,7 @@ function normalizeProjectConfig(
       process.env.MEDUSA_CLOUD_OAUTH_DISABLED === "true" ? true : undefined,
     oauthJwksUri: process.env.MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT,
     oauthAudience: process.env.MEDUSA_CLOUD_OAUTH_AUDIENCE,
+    oauthClientSecret: process.env.MEDUSA_CLOUD_OAUTH_CLIENT_SECRET,
     ...cloud,
   }
   const hasCloudOptions = Object.values(mergedCloudOptions).some(
@@ -574,6 +577,7 @@ function normalizeProjectConfig(
       restrictedFields: {
         store: DEFAULT_STORE_RESTRICTED_FIELDS,
       },
+      rbacActorTypes: DEFAULT_RBAC_ACTOR_TYPES,
       ...http,
     },
     redisOptions: {
@@ -682,7 +686,6 @@ function applyCloudOptionsToModules(
             api_key: config.apiKey,
             endpoint: config.emailsEndpoint,
             environment_handle: config.environmentHandle,
-            sandbox_handle: config.sandboxHandle,
           },
           ...(module.options ?? {}),
         }
@@ -695,7 +698,6 @@ function applyCloudOptionsToModules(
             endpoint: config.paymentsEndpoint,
             payment_accounts: config.paymentAccounts,
             environment_handle: config.environmentHandle,
-            sandbox_handle: config.sandboxHandle,
           },
           ...(module.options ?? {}),
         }
@@ -721,8 +723,8 @@ function applyCloudOptionsToModules(
             oauth_token_endpoint: config.oauthTokenEndpoint,
             oauth_jwks_uri: config.oauthJwksUri,
             oauth_audience: config.oauthAudience,
+            oauth_client_secret: config.oauthClientSecret,
             environment_handle: config.environmentHandle,
-            sandbox_handle: config.sandboxHandle,
             api_key: config.apiKey,
             callback_url: callbackUrl,
             disabled: config.oauthDisabled,

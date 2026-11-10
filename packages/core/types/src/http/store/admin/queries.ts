@@ -2,8 +2,7 @@ import { BaseFilterable } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
 export interface AdminStoreListParams
-  extends BaseFilterable<AdminStoreListParams>,
-    FindParams {
+  extends BaseFilterable<AdminStoreListParams>, FindParams {
   /**
    * Query or keywords to search the store's searchable fields.
    */

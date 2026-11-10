@@ -54,8 +54,7 @@ export const rule = createRule<[], MessageIds>({
           return
         }
         const firstArg = node.arguments[0] as
-          | TSESTree.CallExpressionArgument
-          | undefined
+          TSESTree.CallExpressionArgument | undefined
         if (!firstArg) {
           return
         }

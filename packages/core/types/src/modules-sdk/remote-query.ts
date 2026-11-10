@@ -67,8 +67,8 @@ export type QuerySearchFunction = {
     [TInput] extends [readonly SearchQuery[]]
       ? Prettify<SearchResultSet<string>>[]
       : TInput extends SearchQuery<infer TEntry>
-      ? Prettify<SearchResultSet<TEntry>>
-      : never
+        ? Prettify<SearchResultSet<TEntry>>
+        : never
   >
 }
 

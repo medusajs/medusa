@@ -44,6 +44,7 @@ import {
 } from "../../../../../hooks/api/returns"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { useOrderPermissions } from "../../../../../hooks/use-resource-permissions"
 import { sdk } from "../../../../../lib/client"
 import { currencies } from "../../../../../lib/data/currencies"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
@@ -68,6 +69,7 @@ export const ReturnCreateForm = ({
 }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { canUpdate: canConfirm } = useOrderPermissions()
 
   const itemsMap = useMemo(
     () => new Map((order.items || []).map((i) => [i.id, i])),
@@ -228,8 +230,7 @@ export const ReturnCreateForm = ({
             quantity: i.detail.return_requested_quantity,
             note: returnItemAction?.internal_note,
             reason_id: returnItemAction?.details?.reason_id as
-              | string
-              | undefined,
+              string | undefined,
           })
         }
       } else {
@@ -435,7 +436,7 @@ export const ReturnCreateForm = ({
               <Heading level="h2">{t("orders.returns.inbound")}</Heading>
               <StackedFocusModal id="items">
                 <StackedFocusModal.Trigger asChild>
-                  <a className="focus-visible:shadow-borders-focus transition-fg txt-compact-small-plus cursor-pointer text-blue-500 outline-none hover:text-blue-400">
+                  <a className="txt-compact-small-plus cursor-pointer text-blue-500 outline-none transition-fg hover:text-blue-400 focus-visible:shadow-borders-focus">
                     {t("actions.addItems")}
                   </a>
                 </StackedFocusModal.Trigger>
@@ -482,7 +483,7 @@ export const ReturnCreateForm = ({
                   background:
                     "repeating-linear-gradient(-45deg, rgb(212, 212, 216, 0.15), rgb(212, 212, 216,.15) 10px, transparent 10px, transparent 20px)",
                 }}
-                className="bg-ui-bg-field mt-4 block h-[56px] w-full rounded-lg border border-dashed"
+                className="mt-4 block h-[56px] w-full rounded-lg border border-dashed bg-ui-bg-field"
               />
             )}
             {items
@@ -585,7 +586,7 @@ export const ReturnCreateForm = ({
                       <Text
                         size="small"
                         leading="compact"
-                        className="text-ui-fg-muted ml-1 inline"
+                        className="ml-1 inline text-ui-fg-muted"
                       >
                         ({t("fields.optional")})
                       </Text>
@@ -644,10 +645,10 @@ export const ReturnCreateForm = ({
 
             {showLevelsWarning && (
               <Alert variant="warning" dismissible className="mt-4 p-5">
-                <div className="text-ui-fg-subtle txt-small pb-2 font-medium leading-[20px]">
+                <div className="txt-small pb-2 font-medium leading-[20px] text-ui-fg-subtle">
                   {t("orders.returns.noInventoryLevel")}
                 </div>
-                <Text className="text-ui-fg-subtle txt-small leading-normal">
+                <Text className="txt-small leading-normal text-ui-fg-subtle">
                   {t("orders.returns.noInventoryLevelDesc")}
                 </Text>
               </Alert>
@@ -671,7 +672,7 @@ export const ReturnCreateForm = ({
                 <span className="txt-small text-ui-fg-subtle">
                   {t("orders.returns.inboundShipping")}
                 </span>
-                <span className="txt-small text-ui-fg-subtle flex items-center">
+                <span className="txt-small flex items-center text-ui-fg-subtle">
                   {!isShippingPriceEdit && (
                     <IconButton
                       onClick={() => setIsShippingPriceEdit(true)}
@@ -738,7 +739,7 @@ export const ReturnCreateForm = ({
             </div>
 
             {/* SEND NOTIFICATION*/}
-            <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
+            <div className="mt-8 rounded-lg border bg-ui-bg-field py-2 pl-2 pr-4">
               <Form.Field
                 control={form.control}
                 name="send_notification"
@@ -782,15 +783,17 @@ export const ReturnCreateForm = ({
                   {t("orders.returns.cancel.title")}
                 </Button>
               </RouteFocusModal.Close>
-              <Button
-                key="submit-button"
-                type="submit"
-                variant="primary"
-                size="small"
-                isLoading={isRequestLoading}
-              >
-                {t("orders.returns.confirm")}
-              </Button>
+              {canConfirm && (
+                <Button
+                  key="submit-button"
+                  type="submit"
+                  variant="primary"
+                  size="small"
+                  isLoading={isRequestLoading}
+                >
+                  {t("orders.returns.confirm")}
+                </Button>
+              )}
             </div>
           </div>
         </RouteFocusModal.Footer>

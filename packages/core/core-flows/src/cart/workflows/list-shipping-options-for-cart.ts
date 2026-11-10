@@ -256,8 +256,8 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
             enabled_in_store: !isDefined(input.enabled_in_store)
               ? "true"
               : input.enabled_in_store
-              ? "true"
-              : "false",
+                ? "true"
+                : "false",
           },
 
           filters: {

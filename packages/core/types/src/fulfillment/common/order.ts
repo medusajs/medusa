@@ -627,8 +627,7 @@ interface FulfillmentOrderLineItemTotalsDTO {
 /**
  * The line item details.
  */
-interface FulfillmentOrderLineItemDTO
-  extends FulfillmentOrderLineItemTotalsDTO {
+interface FulfillmentOrderLineItemDTO extends FulfillmentOrderLineItemTotalsDTO {
   /**
    * The ID of the line item.
    */

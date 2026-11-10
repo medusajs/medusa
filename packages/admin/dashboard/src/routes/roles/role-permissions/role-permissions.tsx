@@ -1,8 +1,8 @@
-import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
-import { RouteDrawer } from "../../../components/modals"
+import { RouteFocusModal } from "../../../components/modals"
+import { VisuallyHidden } from "../../../components/utilities/visually-hidden"
 import { useRbacRole } from "../../../hooks/api/rbac-roles"
 import { EditRolePermissionsForm } from "./components/edit-role-permissions-form"
 
@@ -18,22 +18,22 @@ export const RolePermissions = () => {
   }
 
   return (
-    <RouteDrawer>
+    <RouteFocusModal>
       {!isPending && role && (
         <>
-          <RouteDrawer.Header>
-            <RouteDrawer.Title asChild>
-              <Heading>
+          <RouteFocusModal.Header>
+            <RouteFocusModal.Title asChild>
+              <VisuallyHidden>
                 {t("roles.permissions.header", { name: role.name })}
-              </Heading>
-            </RouteDrawer.Title>
-            <RouteDrawer.Description className="sr-only">
-              {t("roles.permissions.hint")}
-            </RouteDrawer.Description>
-          </RouteDrawer.Header>
+              </VisuallyHidden>
+            </RouteFocusModal.Title>
+            <RouteFocusModal.Description asChild>
+              <VisuallyHidden>{t("roles.permissions.hint")}</VisuallyHidden>
+            </RouteFocusModal.Description>
+          </RouteFocusModal.Header>
           <EditRolePermissionsForm role={role} />
         </>
       )}
-    </RouteDrawer>
+    </RouteFocusModal>
   )
 }

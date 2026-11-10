@@ -1,12 +1,13 @@
 import fs from "fs/promises"
-import { OpenAPIObject, SchemaObject } from "openapi3-ts"
-import { OperationObject } from "openapi3-ts/src/model/OpenApi"
+import { OpenAPIObject, SchemaObject } from "openapi3-ts/oas30"
+import { OperationObject } from "openapi3-ts/oas30"
+import { OpenAPIObject as OpenAPIObject31 } from "openapi3-ts/oas31"
 import path from "path"
-import { v4 as uid } from "uuid"
+import { randomUUID as uid } from "crypto"
 import { getTmpDirectory } from "../utils/fs-utils"
 import { readYaml } from "../utils/yaml-utils"
 import { readJson } from "../utils/json-utils"
-import execa from "execa"
+import { execa } from "execa"
 
 /**
  * OAS output directory
@@ -57,7 +58,7 @@ const listOperations = (oas: OpenAPIObject): OperationObject[] => {
             case "options":
             case "head":
             case "patch":
-              operations.push(path[method])
+              operations.push(path[method]!)
               break
           }
         }
@@ -256,7 +257,7 @@ describe("command oas", () => {
     })
 
     it("should overwrite existing path", async () => {
-      expect(oas.paths["/store/regions"]["get"].operationId).toBe(
+      expect(oas.paths["/store/regions"]["get"]?.operationId).toBe(
         "OverwrittenOperation"
       )
     })
@@ -269,8 +270,7 @@ describe("command oas", () => {
 
     it("should overwrite existing schema", async () => {
       const schema = oas.components?.schemas?.StoreRegionsListRes as
-        | SchemaObject
-        | undefined
+        SchemaObject | undefined
       expect(schema?.properties?.foo).toBeDefined()
     })
   })
@@ -392,7 +392,7 @@ components:
     })
 
     it("should overwrite existing path", async () => {
-      expect(oas.paths["/store/regions"]["get"].operationId).toBe(
+      expect(oas.paths["/store/regions"]["get"]?.operationId).toBe(
         "OverwrittenOperation"
       )
     })
@@ -405,8 +405,7 @@ components:
 
     it("should overwrite existing schema", async () => {
       const schema = oas.components?.schemas?.StoreRegionsListRes as
-        | SchemaObject
-        | undefined
+        SchemaObject | undefined
       expect(schema?.properties?.foo).toBeDefined()
     })
 
@@ -416,7 +415,7 @@ components:
       expect(oas.servers).toEqual([{ url: "https://foobar.com" }])
       expect(oas.security).toEqual([{ api_key: [] }])
       expect(oas.externalDocs).toEqual({ url: "https://docs.com" })
-      expect(oas.webhooks).toEqual({
+      expect((oas as OpenAPIObject31).webhooks).toEqual({
         "foo-hook": { get: { responses: { "200": { description: "OK" } } } },
       })
     })
@@ -604,7 +603,7 @@ components:
     })
 
     it("should overwrite existing path", async () => {
-      expect(oas.paths["/store/regions"]["get"].operationId).toBe(
+      expect(oas.paths["/store/regions"]["get"]?.operationId).toBe(
         "OverwrittenOperation"
       )
     })
@@ -617,8 +616,7 @@ components:
 
     it("should overwrite existing schema", async () => {
       const schema = oas.components?.schemas?.StoreRegionsListRes as
-        | SchemaObject
-        | undefined
+        SchemaObject | undefined
       expect(schema?.properties?.foo).toBeDefined()
     })
 
@@ -628,7 +626,7 @@ components:
       expect(oas.servers).toEqual([{ url: "https://foobar.com" }])
       expect(oas.security).toEqual([{ api_key: [] }])
       expect(oas.externalDocs).toEqual({ url: "https://docs.com" })
-      expect(oas.webhooks).toEqual({
+      expect((oas as OpenAPIObject31).webhooks).toEqual({
         "foo-hook": { get: { responses: { "200": { description: "OK" } } } },
       })
     })

@@ -43,8 +43,8 @@ export async function createOrderSeeder({
   const shippingProfileOverrideArray = !shippingProfileOverride
     ? undefined
     : Array.isArray(shippingProfileOverride)
-    ? shippingProfileOverride
-    : [shippingProfileOverride]
+      ? shippingProfileOverride
+      : [shippingProfileOverride]
 
   const storeHeaders =
     storeHeaderOverride ??

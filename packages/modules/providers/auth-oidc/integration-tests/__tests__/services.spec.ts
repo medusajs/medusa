@@ -39,7 +39,7 @@ const createLogger = (): Logger =>
     warn: jest.fn(),
     info: jest.fn(),
     debug: jest.fn(),
-  } as unknown as Logger)
+  }) as unknown as Logger
 
 const createAuthIdentityService = (): MockAuthIdentityService => ({
   setState: jest.fn().mockResolvedValue(undefined),

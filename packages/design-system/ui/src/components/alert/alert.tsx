@@ -60,7 +60,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       <div
         ref={ref}
         className={clx(
-          "bg-ui-bg-subtle txt-compact-small grid items-start gap-x-2 text-pretty rounded-lg border p-3",
+          "txt-compact-small grid items-start gap-x-2 text-pretty rounded-lg border bg-ui-bg-subtle p-3",
           {
             "grid-cols-[20px_1fr]": !dismissible,
             "grid-cols-[20px_1fr_20px]": dismissible,

@@ -143,6 +143,7 @@
     "reset": "Zurücksetzen",
     "confirm": "Bestätigen",
     "edit": "Bearbeiten",
+    "view": "Ansicht",
     "addItems": "Elemente hinzufügen",
     "download": "Herunterladen",
     "clear": "Klar",
@@ -2273,6 +2274,8 @@
       "method": "Verfahren",
       "allocation": "Zuweisung",
       "allocationTooltip": "\"Jeder\" erzwingt das Mengenlimit pro Artikel, während \"Einmal\" das Mengenlimit über den gesamten Warenkorb hinweg erzwingt",
+      "targetSelectionStrategy": "Rabattierte Artikel",
+      "targetSelectionStrategyTooltip": "Welche berechtigten Artikel im Warenkorb den Rabatt erhalten",
       "addCondition": "Bedingung hinzufügen",
       "clearAll": "Alles löschen",
       "taxInclusive": "Steuerinklusive",
@@ -2423,6 +2426,16 @@
         "once": {
           "title": "Einmal",
           "description": "Wendet den Wert auf eine begrenzte Anzahl von Artikeln an"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Teuerste zuerst",
+          "description": "Rabattiert die teuersten berechtigten Artikel im Warenkorb"
+        },
+        "cheapest_first": {
+          "title": "Günstigste zuerst",
+          "description": "Rabattiert die günstigsten berechtigten Artikel im Warenkorb"
         }
       },
       "code": {
@@ -2787,7 +2800,7 @@
     "editUser": "Benutzer bearbeiten",
     "inviteUser": "Benutzer einladen",
     "inviteUserHint": "Laden Sie einen neuen Benutzer in Ihren Shop ein.",
-    "inviteRolesTooltip": "Wenn keine Rolle ausgewählt ist, wird der Benutzer mit einer Superuser-Rolle eingeladen.",
+    "inviteRolesTooltip": "Wenn keine Rolle ausgewählt ist, wird der Benutzer ohne Berechtigungen eingeladen. Rollen können später zugewiesen werden.",
     "sendInvite": "Einladung senden",
     "pendingInvites": "Ausstehende Einladungen",
     "deleteInviteWarning": "Sie sind dabei, die Einladung für {{email}} zu löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
@@ -2862,7 +2875,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "Benutzer hat diese Rolle bereits.",
-      "unassignableRoleTooltip": "Sie haben keinen Zugriff, um diese Rolle zuzuweisen – Ihre Berechtigungen decken nicht alle zugehörigen Richtlinien ab.",
       "add": {
         "successToast_one": "Benutzer wurde erfolgreich zur Rolle hinzugefügt.",
         "successToast_other": "Benutzer wurden erfolgreich zur Rolle hinzugefügt.",
@@ -2890,6 +2902,9 @@
       "filtered": {
         "heading": "Keine Ergebnisse",
         "description": "Keine Berechtigungen entsprechen den aktuellen Filterkriterien."
+      },
+      "manage": {
+        "successToast": "Berechtigungen wurden erfolgreich aktualisiert."
       }
     },
     "list": {
@@ -2913,6 +2928,7 @@
     },
     "edit": {
       "header": "Richtlinie bearbeiten",
+      "identityHint": "Der Schlüssel, die Ressource und die Operation identifizieren die Richtlinie und können nicht geändert werden. Erstellen Sie stattdessen eine neue Richtlinie.",
       "successToast": "Richtlinie {{key}} aktualisiert"
     },
     "delete": {
@@ -3374,6 +3390,9 @@
     "invalidTokenTitle": "Ihr Einladungstoken ist ungültig",
     "invalidTokenHint": "Versuchen Sie, einen neuen Einladungslink anzufordern.",
     "passwordMismatch": "Passwörter stimmen nicht überein",
+    "signedInTitle": "Sie sind bereits angemeldet",
+    "signedInHint": "Sie sind als {{email}} angemeldet. Melden Sie sich ab, um diese Einladung anzunehmen.",
+    "signOut": "Abmelden",
     "toast": {
       "accepted": "Einladung erfolgreich angenommen"
     }
@@ -3806,6 +3825,10 @@
       "description": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen.",
       "requiredPermission": "Erforderliche Berechtigung: {{permission}}",
       "action": "Sie haben keine Berechtigung, diese Aktion durchzuführen."
+    },
+    "noPermissions": {
+      "title": "Noch keine Berechtigungen",
+      "description": "Ihnen sind noch keine Berechtigungen zugewiesen. Wenden Sie sich an Ihren Administrator, um Zugang zu den benötigten Bereichen anzufordern."
     },
     "requiredPermissions": {
       "title": "Erforderliche Berechtigungen",

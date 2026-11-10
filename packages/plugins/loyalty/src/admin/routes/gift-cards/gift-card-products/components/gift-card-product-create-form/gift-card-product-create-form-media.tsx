@@ -25,6 +25,7 @@ import {
   Trash,
   XMark,
 } from "@medusajs/icons";
+import { PermissionGuard } from "@medusajs/dashboard/hooks";
 import { IconButton, Text } from "@medusajs/ui";
 import { useState } from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
@@ -118,7 +119,9 @@ export const GiftCardProductCreateFormMedia = ({
 
   return (
     <>
-      <UploadMediaFormItem form={form} append={append} showHint={false} />
+      <PermissionGuard permission="file:create">
+        <UploadMediaFormItem form={form} append={append} showHint={false} />
+      </PermissionGuard>
 
       <DndContext
         sensors={sensors}

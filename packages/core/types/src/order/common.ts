@@ -42,11 +42,7 @@ export type ChangeActionType =
  * The order change's status.
  */
 export type OrderChangeStatus =
-  | "confirmed"
-  | "declined"
-  | "requested"
-  | "pending"
-  | "canceled"
+  "confirmed" | "declined" | "requested" | "pending" | "canceled"
 
 /**
  * @interface
@@ -126,8 +122,7 @@ export interface OrderAdjustmentLineDTO {
 /**
  * The shipping method adjustment details.
  */
-export interface OrderShippingMethodAdjustmentDTO
-  extends OrderAdjustmentLineDTO {
+export interface OrderShippingMethodAdjustmentDTO extends OrderAdjustmentLineDTO {
   /**
    * The associated shipping method.
    *
@@ -2511,8 +2506,7 @@ export interface OrderReturnReasonDTO {
 /**
  * The filters to apply on the retrieved orders.
  */
-export interface FilterableOrderProps
-  extends BaseFilterable<FilterableOrderProps> {
+export interface FilterableOrderProps extends BaseFilterable<FilterableOrderProps> {
   /**
    * The IDs to filter the orders by.
    */
@@ -2547,8 +2541,7 @@ export interface FilterableOrderProps
 /**
  * The filters to apply on the retrieved order addresss.
  */
-export interface FilterableOrderAddressProps
-  extends BaseFilterable<FilterableOrderAddressProps> {
+export interface FilterableOrderAddressProps extends BaseFilterable<FilterableOrderAddressProps> {
   /**
    * The IDs to filter the order addresss by.
    */
@@ -2558,8 +2551,7 @@ export interface FilterableOrderAddressProps
 /**
  * The filters to apply on the retrieved order line items.
  */
-export interface FilterableOrderLineItemProps
-  extends BaseFilterable<FilterableOrderLineItemProps> {
+export interface FilterableOrderLineItemProps extends BaseFilterable<FilterableOrderLineItemProps> {
   /**
    * The IDs to filter the order line items by.
    */
@@ -2584,8 +2576,7 @@ export interface FilterableOrderLineItemProps
 /**
  * The filters to apply on the retrieved line item adjustments.
  */
-export interface FilterableOrderLineItemAdjustmentProps
-  extends BaseFilterable<FilterableOrderLineItemAdjustmentProps> {
+export interface FilterableOrderLineItemAdjustmentProps extends BaseFilterable<FilterableOrderLineItemAdjustmentProps> {
   /**
    * The IDs to filter the line item adjustments by.
    */
@@ -2615,8 +2606,7 @@ export interface FilterableOrderLineItemAdjustmentProps
 /**
  * The filters to apply on the retrieved shipping methods.
  */
-export interface FilterableOrderShippingMethodProps
-  extends BaseFilterable<FilterableOrderShippingMethodProps> {
+export interface FilterableOrderShippingMethodProps extends BaseFilterable<FilterableOrderShippingMethodProps> {
   /**
    * The IDs to filter the shipping methods by.
    */
@@ -2636,8 +2626,7 @@ export interface FilterableOrderShippingMethodProps
 /**
  * The filters to apply on the retrieved shipping method adjustments.
  */
-export interface FilterableOrderShippingMethodAdjustmentProps
-  extends BaseFilterable<FilterableOrderShippingMethodAdjustmentProps> {
+export interface FilterableOrderShippingMethodAdjustmentProps extends BaseFilterable<FilterableOrderShippingMethodAdjustmentProps> {
   /**
    * The IDs to filter the shipping method adjustments by.
    */
@@ -2667,8 +2656,7 @@ export interface FilterableOrderShippingMethodAdjustmentProps
 /**
  * The filters to apply on the retrieved line item tax lines.
  */
-export interface FilterableOrderLineItemTaxLineProps
-  extends BaseFilterable<FilterableOrderLineItemTaxLineProps> {
+export interface FilterableOrderLineItemTaxLineProps extends BaseFilterable<FilterableOrderLineItemTaxLineProps> {
   /**
    * The IDs to filter the line item tax lines by.
    */
@@ -2708,8 +2696,7 @@ export interface FilterableOrderLineItemTaxLineProps
 /**
  * The filters to apply on the retrieved shipping method tax lines.
  */
-export interface FilterableOrderShippingMethodTaxLineProps
-  extends BaseFilterable<FilterableOrderShippingMethodTaxLineProps> {
+export interface FilterableOrderShippingMethodTaxLineProps extends BaseFilterable<FilterableOrderShippingMethodTaxLineProps> {
   /**
    * The IDs to filter the order shipping method tax lines by.
    */
@@ -2749,8 +2736,7 @@ export interface FilterableOrderShippingMethodTaxLineProps
 /**
  * The filters to apply on the retrieved order changes.
  */
-export interface FilterableOrderChangeProps
-  extends BaseFilterable<FilterableOrderChangeProps> {
+export interface FilterableOrderChangeProps extends BaseFilterable<FilterableOrderChangeProps> {
   /**
    * The IDs to filter the order changes by.
    */
@@ -2825,8 +2811,7 @@ export interface FilterableOrderChangeProps
 /**
  * The filters to apply on the retrieved order change actions.
  */
-export interface FilterableOrderChangeActionProps
-  extends BaseFilterable<FilterableOrderChangeActionProps> {
+export interface FilterableOrderChangeActionProps extends BaseFilterable<FilterableOrderChangeActionProps> {
   /**
    * The IDs to filter the order change actions by.
    */
@@ -2851,8 +2836,7 @@ export interface FilterableOrderChangeActionProps
 /**
  * The filters to apply on the retrieved transactions.
  */
-export interface FilterableOrderTransactionProps
-  extends BaseFilterable<FilterableOrderTransactionProps> {
+export interface FilterableOrderTransactionProps extends BaseFilterable<FilterableOrderTransactionProps> {
   /**
    * The IDs to filter the transactions by.
    */
@@ -2887,8 +2871,7 @@ export interface FilterableOrderTransactionProps
 /**
  * The filters to apply on the retrieved return reasons.
  */
-export interface FilterableOrderReturnReasonProps
-  extends BaseFilterable<FilterableOrderReturnReasonProps> {
+export interface FilterableOrderReturnReasonProps extends BaseFilterable<FilterableOrderReturnReasonProps> {
   /**
    * Find return reasons  through this search term
    */
@@ -2917,8 +2900,7 @@ export interface FilterableOrderReturnReasonProps
 /**
  * The filters to apply on the retrieved returns.
  */
-export interface FilterableReturnProps
-  extends BaseFilterable<FilterableReturnProps> {
+export interface FilterableReturnProps extends BaseFilterable<FilterableReturnProps> {
   /**
    * The IDs to filter the returns by.
    */
@@ -2953,8 +2935,7 @@ export interface FilterableReturnProps
 /**
  * The filters to apply on the retrieved claims.
  */
-export interface FilterableOrderClaimProps
-  extends BaseFilterable<FilterableOrderClaimProps> {
+export interface FilterableOrderClaimProps extends BaseFilterable<FilterableOrderClaimProps> {
   /**
    * The IDs to filter the claims by.
    */
@@ -2974,8 +2955,7 @@ export interface FilterableOrderClaimProps
 /**
  * The filters to apply on the retrieved exchanges.
  */
-export interface FilterableOrderExchangeProps
-  extends BaseFilterable<FilterableOrderExchangeProps> {
+export interface FilterableOrderExchangeProps extends BaseFilterable<FilterableOrderExchangeProps> {
   /**
    * The IDs to filter the exchanges by.
    */
@@ -3065,8 +3045,10 @@ export interface OrderChangeReturn {
 /**
  * The details of an order after a change is applied on it.
  */
-export interface OrderPreviewDTO
-  extends Omit<OrderDTO, "items" | "shipping_methods"> {
+export interface OrderPreviewDTO extends Omit<
+  OrderDTO,
+  "items" | "shipping_methods"
+> {
   /**
    * The details of the changes made on the order.
    */

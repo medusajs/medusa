@@ -47,7 +47,7 @@ const VERTICAL_KEYS = ["ArrowUp", "ArrowDown"]
 
 export const useDataGridKeydownEvent = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >({
   containerRef,
   matrix,
@@ -110,8 +110,8 @@ export const useDataGridKeydownEvent = <
         direction === "horizontal"
           ? setSingleRange
           : e.shiftKey
-          ? setRangeEnd
-          : setSingleRange
+            ? setRangeEnd
+            : setSingleRange
 
       if (!basis) {
         return

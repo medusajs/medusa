@@ -80,7 +80,7 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.runId).toEqual(expect.any(String))
     expect(transaction.getState()).toBe(TransactionState.DONE)
 
-    expect(mocks.one).toBeCalledWith(
+    expect(mocks.one).toHaveBeenCalledWith(
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
@@ -95,7 +95,7 @@ describe("Transaction Orchestrator", () => {
       })
     )
 
-    expect(mocks.two).toBeCalledWith(
+    expect(mocks.two).toHaveBeenCalledWith(
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
@@ -245,6 +245,82 @@ describe("Transaction Orchestrator", () => {
     )
   })
 
+  it("Should schedule the failure retry of an async step with both retryInterval and retryIntervalAwaiting after it fails while awaiting", async () => {
+    const scheduledRetries: { action: string; interval: number }[] = []
+
+    class BaseInMemoryDistributedTransactionStorage_ extends BaseInMemoryDistributedTransactionStorage {
+      async scheduleRetry(transaction, step, timestamp, interval) {
+        scheduledRetries.push({ action: step.definition.action, interval })
+      }
+      async clearRetry() {}
+    }
+    DistributedTransaction.setStorage(
+      new BaseInMemoryDistributedTransactionStorage_()
+    )
+
+    const mocks = {
+      one: jest.fn(),
+    }
+
+    async function handler(
+      actionId: string,
+      functionHandlerType: TransactionHandlerType
+    ) {
+      if (functionHandlerType === TransactionHandlerType.INVOKE) {
+        mocks[actionId]()
+      }
+    }
+
+    const flow: TransactionStepsDefinition = {
+      next: {
+        action: "one",
+        async: true,
+        maxRetries: 2,
+        retryInterval: 10,
+        retryIntervalAwaiting: 20,
+      },
+    }
+
+    const strategy = new TransactionOrchestrator({
+      id: "transaction-name",
+      definition: flow,
+    })
+
+    const transaction = await strategy.beginTransaction({
+      transactionId: "transaction_id_123",
+      handler,
+    })
+
+    await strategy.resume(transaction)
+
+    expect(mocks.one).toHaveBeenCalledTimes(1)
+    expect(scheduledRetries).toEqual([{ action: "one", interval: 20 }])
+
+    await strategy.registerStepFailure({
+      responseIdempotencyKey: TransactionOrchestrator.getKeyName(
+        "transaction-name",
+        transaction.transactionId,
+        "one",
+        TransactionHandlerType.INVOKE
+      ),
+      error: new Error("Step one failed"),
+      handler,
+      transaction,
+    })
+
+    expect(transaction.getFlow().steps["_root.one"].getStates().status).toBe(
+      TransactionStepStatus.TEMPORARY_FAILURE
+    )
+    expect(scheduledRetries).toEqual([
+      { action: "one", interval: 20 },
+      { action: "one", interval: 10 },
+    ])
+
+    DistributedTransaction.setStorage(
+      new BaseInMemoryDistributedTransactionStorage()
+    )
+  })
+
   it("Should not execute next steps when a step fails", async () => {
     const actionOrder: string[] = []
     async function handler(
@@ -378,10 +454,10 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
-    expect(mocks.one).toBeCalledWith({ prop: 123 })
-    expect(mocks.two).toBeCalledWith({ prop: 123 })
+    expect(mocks.one).toHaveBeenCalledWith({ prop: 123 })
+    expect(mocks.two).toHaveBeenCalledWith({ prop: 123 })
 
-    expect(mocks.three).toBeCalledWith(
+    expect(mocks.three).toHaveBeenCalledWith(
       { prop: 123 },
       {
         payload: {
@@ -473,9 +549,9 @@ describe("Transaction Orchestrator", () => {
     await strategy.resume(transaction)
     const resposes = transaction.getContext()
 
-    expect(mocks.compensateTwo).toBeCalledWith({})
+    expect(mocks.compensateTwo).toHaveBeenCalledWith({})
 
-    expect(mocks.compensateOne).toBeCalledWith({
+    expect(mocks.compensateOne).toHaveBeenCalledWith({
       secondMethod: {
         two: "isCompensated",
       },
@@ -618,7 +694,7 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.getState()).toBe(TransactionState.REVERTED)
     expect(mocks.compensateOne).toHaveBeenCalledTimes(1)
 
-    expect(mocks.two).nthCalledWith(
+    expect(mocks.two).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
         metadata: expect.objectContaining({
@@ -627,7 +703,7 @@ describe("Transaction Orchestrator", () => {
       })
     )
 
-    expect(mocks.two).nthCalledWith(
+    expect(mocks.two).toHaveBeenNthCalledWith(
       4,
       expect.objectContaining({
         metadata: expect.objectContaining({
@@ -728,7 +804,7 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.getState()).toBe(TransactionState.REVERTED)
     expect(mocks.compensateOne).toHaveBeenCalledTimes(1)
 
-    expect(mocks.two).nthCalledWith(
+    expect(mocks.two).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
         metadata: expect.objectContaining({
@@ -737,7 +813,7 @@ describe("Transaction Orchestrator", () => {
       })
     )
 
-    expect(mocks.two).nthCalledWith(
+    expect(mocks.two).toHaveBeenNthCalledWith(
       4,
       expect.objectContaining({
         metadata: expect.objectContaining({

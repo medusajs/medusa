@@ -2,8 +2,7 @@ import { BaseFilterable, OperatorMap } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
 export interface AdminTaxRateListParams
-  extends FindParams,
-    BaseFilterable<AdminTaxRateListParams> {
+  extends FindParams, BaseFilterable<AdminTaxRateListParams> {
   /**
    * Query or keywords to search the tax rate's searchable fields.
    */
