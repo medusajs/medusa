@@ -690,6 +690,71 @@ module.exports = defineConfig({
 })
 ```
 
+#### http.corsOptions
+
+<Note>
+
+This option is available since Medusa [v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+</Note>
+
+The `projectConfig.http.corsOptions` configuration sets additional CORS options for API routes starting with `/admin`, `/store`, and `/auth`. Medusa applies these options on top of the allowed origins you set in the [authCors](#httpauthcors), [storeCors](#httpstorecors), and [adminCors](#httpadmincors) configurations.
+
+For example, set `maxAge` so that browsers cache the responses of preflight requests:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      corsOptions: {
+        maxAge: 7200,
+        exposedHeaders: ["x-request-id"],
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration is an object that accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "maxAge",
+      type: "`number`",
+      description: "How long, in seconds, browsers can cache the response of a preflight request. Medusa sets it in the `Access-Control-Max-Age` header.",
+      optional: true,
+    },
+    {
+      name: "exposedHeaders",
+      type: "`string` \| `string[]`",
+      description: "The response headers to expose to the browser. Medusa sets them in the `Access-Control-Expose-Headers` header.",
+      optional: true,
+    },
+    {
+      name: "allowedHeaders",
+      type: "`string` \| `string[]`",
+      description: "The request headers to allow in cross-origin requests. Medusa sets them in the `Access-Control-Allow-Headers` header.",
+      optional: true,
+    },
+    {
+      name: "methods",
+      type: "`string` \| `string[]`",
+      description: "The HTTP methods to allow in cross-origin requests. Medusa sets them in the `Access-Control-Allow-Methods` header.",
+      optional: true,
+    }
+  ]}
+  sectionTitle="http.corsOptions Properties"
+/>
+
+<Note>
+
+You can't override the `origin` and `credentials` CORS options with this configuration. Use the `authCors`, `storeCors`, and `adminCors` configurations to set the allowed origins.
+
+</Note>
+
 #### http.authVerificationsPerActor
 
 <Note>
