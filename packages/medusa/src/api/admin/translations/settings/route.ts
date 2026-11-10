@@ -11,7 +11,6 @@ import { Modules } from "@medusajs/framework/utils"
 
 /**
  * @since 2.12.3
- * @featureFlag translation
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<

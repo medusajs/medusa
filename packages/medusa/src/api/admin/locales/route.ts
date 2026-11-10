@@ -4,7 +4,6 @@ import { HttpTypes } from "@medusajs/framework/types"
 
 /**
  * @since 2.12.3
- * @featureFlag translation
  */
 export const GET = async (
   req: MedusaRequest<HttpTypes.AdminLocaleListParams>,

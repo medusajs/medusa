@@ -4,7 +4,6 @@ import { HttpTypes } from "@medusajs/types"
 
 /**
  * @since 2.13.0
- * @featureFlag translation
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminBatchTranslationSettings>,
