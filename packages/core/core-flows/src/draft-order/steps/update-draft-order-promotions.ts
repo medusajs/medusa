@@ -106,28 +106,28 @@ export const updateDraftOrderPromotionsStep = createStep(
       await remoteLink.dismiss(linksToDismiss)
     }
 
-    const createdLinks = linksToCreate.length
-      ? await remoteLink.create(linksToCreate)
-      : []
+    if (linksToCreate.length) {
+      await remoteLink.create(linksToCreate)
+    }
 
     return new StepResponse(null, {
-      // @ts-expect-error
-      createdLinkIds: createdLinks.map((link) => link.id),
+      createdLinks: linksToCreate.filter(
+        (link) => !promotionLinkMap.has(link[Modules.PROMOTION].promotion_id)
+      ),
       dismissedLinks: linksToDismiss,
     })
   },
   async function (revertData, { container }) {
-    const { dismissedLinks, createdLinkIds } = revertData ?? {}
+    const { dismissedLinks, createdLinks } = revertData ?? {}
 
     const remoteLink = container.resolve(ContainerRegistrationKeys.LINK)
 
-    if (dismissedLinks?.length) {
-      await remoteLink.create(dismissedLinks)
+    if (createdLinks?.length) {
+      await remoteLink.dismiss(createdLinks)
     }
 
-    if (createdLinkIds?.length) {
-      // @ts-expect-error
-      await remoteLink.delete(createdLinkIds)
+    if (dismissedLinks?.length) {
+      await remoteLink.create(dismissedLinks)
     }
   }
 )

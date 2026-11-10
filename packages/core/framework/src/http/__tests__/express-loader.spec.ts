@@ -3,8 +3,10 @@ import { AddressInfo } from "net"
 import { HttpSecurityHeadersOptions } from "../../config"
 import {
   applySecurityHeaders,
+  isHealthCheck,
   resolveSessionCookieSecurity,
 } from "../express-loader"
+import { MedusaRequest } from "../types"
 
 describe("resolveSessionCookieSecurity", () => {
   it("returns insecure, no SameSite outside of production/staging", () => {
@@ -87,5 +89,29 @@ describe("applySecurityHeaders", () => {
     expect(headers.get("x-content-type-options")).toBeNull()
     expect(headers.get("x-frame-options")).toBeNull()
     expect(headers.get("content-security-policy")).toBeNull()
+  })
+})
+
+describe("isHealthCheck", () => {
+  it("matches the root health endpoint", () => {
+    expect(isHealthCheck({ originalUrl: "/health" } as MedusaRequest)).toBe(
+      true
+    )
+  })
+
+  it("ignores the query string", () => {
+    expect(
+      isHealthCheck({ originalUrl: "/health?foo=bar" } as MedusaRequest)
+    ).toBe(true)
+  })
+
+  it("does not match health paths under a mounted namespace", () => {
+    for (const originalUrl of [
+      "/admin/health",
+      "/store/health",
+      "/auth/health",
+    ]) {
+      expect(isHealthCheck({ originalUrl } as MedusaRequest)).toBe(false)
+    }
   })
 })
