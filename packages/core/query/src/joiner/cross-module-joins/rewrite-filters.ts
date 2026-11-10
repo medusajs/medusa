@@ -36,88 +36,42 @@ export function rewriteRootFilters(params: {
   registry: SpecRegistry
   residual: ResidualCrossModuleFilter[]
 }): void {
-  const { query, serviceConfig, catalog, registry, residual } = params
+  const { query, ...rest } = params
   const rootFilters = getFiltersArg(query.args)?.value
 
   if (!isObject(rootFilters)) {
     return
   }
 
-  for (const [key, value] of Object.entries(rootFilters)) {
-    if (key.startsWith("$") || !isObject(value)) {
-      continue
-    }
-
-    const resolution = resolveChain(
-      { rootConfig: serviceConfig, pathSegments: [key] },
-      catalog
-    )
-
-    // Same-module paths (and plain object-valued filters) are handled
-    // natively by the root module — leave them in place, apart from any
-    // cross-module paths nested below them.
-    if (resolution.outcome === "native") {
-      if (
-        rewriteNestedRootFilters({
-          pathSegments: [key],
-          filters: value as Record<string, unknown>,
-          serviceConfig,
-          catalog,
-          registry,
-        }) &&
-        !Object.keys(value as object).length
-      ) {
-        delete rootFilters[key]
-      }
-      continue
-    }
-
-    // Paths that cross modules but cannot be pushed down are residual.
-    if (resolution.outcome === "residual") {
-      residual.push({
-        path: key,
-        filters: value as Record<string, unknown>,
-      })
-      continue
-    }
-
-    const candidates = collectCandidates(
-      {
-        pathSegments: [key],
-        levels: resolution.levels,
-        filters: value as Record<string, unknown>,
-        rootConfig: serviceConfig,
-      },
-      catalog
-    )
-
-    if (!candidates || !registerCandidates(registry, candidates)) {
-      residual.push({ path: key, filters: value as Record<string, unknown> })
-      continue
-    }
-
-    delete rootFilters[key]
-  }
+  rewriteFiltersAtPath({
+    ...rest,
+    pathSegments: [],
+    filters: rootFilters as Record<string, unknown>,
+  })
 }
 
 /**
- * Cross-module filters nested below module-internal relations on the root
- * filters object, e.g. `{ service_zone: { fulfillment_set: { location: {...} } } }`
- * on `shipping_option`, which toRemoteQuery leaves on the root. Pushable paths
- * are pushed down and pruned along with any filters they leave empty. Anything
- * else stays in place: the residual stage only strips top-level root filters.
+ * Rewrites the cross-module filters found in `filters`, located at
+ * `pathSegments` below the root. Same-module relation filters are walked to
+ * reach cross-module paths nested below them, e.g.
+ * `{ service_zone: { fulfillment_set: { location: {...} } } }` on
+ * `shipping_option`, which toRemoteQuery leaves on the root. Pushed filters are
+ * pruned, along with relation filters they leave empty.
  *
- * Returns whether any filter was pushed down.
+ * Only top-level filters can be residual: the residual stage strips them by
+ * their root key. Nested filters that can't be pushed down stay in place.
  */
-function rewriteNestedRootFilters(params: {
+function rewriteFiltersAtPath(params: {
   pathSegments: string[]
   filters: Record<string, unknown>
   serviceConfig: InternalJoinerServiceConfig
   catalog: GraphCatalog
   registry: SpecRegistry
-}): boolean {
-  const { pathSegments, filters, serviceConfig, catalog, registry } = params
-  let pushed = false
+  residual: ResidualCrossModuleFilter[]
+}): void {
+  const { pathSegments, filters, serviceConfig, catalog, registry, residual } =
+    params
+  const isRoot = !pathSegments.length
 
   for (const [key, value] of Object.entries(filters)) {
     if (key.startsWith("$") || !isObject(value)) {
@@ -125,50 +79,68 @@ function rewriteNestedRootFilters(params: {
     }
 
     const segments = [...pathSegments, key]
+    const nestedFilters = value as Record<string, unknown>
     const resolution = resolveChain(
       { rootConfig: serviceConfig, pathSegments: segments },
       catalog
     )
 
     if (resolution.outcome === "native") {
-      const nestedFilters = value as Record<string, unknown>
+      const hadFilters = Object.keys(nestedFilters).length > 0
 
-      if (
-        rewriteNestedRootFilters({
-          ...params,
-          pathSegments: segments,
-          filters: nestedFilters,
-        })
-      ) {
-        pushed = true
-        if (!Object.keys(nestedFilters).length) {
-          delete filters[key]
-        }
+      rewriteFiltersAtPath({
+        ...params,
+        pathSegments: segments,
+        filters: nestedFilters,
+      })
+
+      if (hadFilters && !Object.keys(nestedFilters).length) {
+        delete filters[key]
       }
       continue
     }
 
+    // Paths that cross modules but cannot be pushed down are residual.
     if (resolution.outcome === "residual") {
+      if (isRoot) {
+        residual.push({ path: key, filters: nestedFilters })
+      }
       continue
     }
 
-    const candidates = collectCandidates(
+    const isPushed = pushDownFilters(
       {
         pathSegments: segments,
         levels: resolution.levels,
-        filters: value as Record<string, unknown>,
+        filters: nestedFilters,
         rootConfig: serviceConfig,
+        registry,
       },
       catalog
     )
 
-    if (candidates && registerCandidates(registry, candidates)) {
+    if (isPushed) {
       delete filters[key]
-      pushed = true
+    } else if (isRoot) {
+      residual.push({ path: key, filters: nestedFilters })
     }
   }
+}
 
-  return pushed
+function pushDownFilters(
+  params: {
+    pathSegments: string[]
+    levels: ChainLevel[]
+    filters: Record<string, unknown>
+    rootConfig: InternalJoinerServiceConfig
+    registry: SpecRegistry
+  },
+  catalog: GraphCatalog
+): boolean {
+  const { registry, ...candidateParams } = params
+  const candidates = collectCandidates(candidateParams, catalog)
+
+  return !!candidates && registerCandidates(registry, candidates)
 }
 
 /**
