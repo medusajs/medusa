@@ -825,6 +825,53 @@ medusaIntegrationTestRunner({
           expect(disjoint).toHaveLength(0)
         })
 
+        it("should match nested hasMany filters and link filters on the same child row", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+
+          const { data: variants } = await query.graph({
+            entity: "variant",
+            fields: ["id", "title", "product_id", "price_set.id"],
+          })
+
+          const p1Variant1 = variants.find((v) => v.title === "P1 Variant 1")!
+          const p1Variant2 = variants.find((v) => v.title === "P1 Variant 2")!
+
+          const { data: matching } = await query.graph({
+            entity: "variant",
+            fields: ["id"],
+            filters: {
+              product: {
+                variants: {
+                  title: "P1 Variant 1",
+                  price_set: { id: p1Variant1.price_set!.id },
+                },
+              },
+            },
+          })
+
+          expect(matching.map((v) => v.id).sort()).toEqual(
+            [p1Variant1.id, p1Variant2.id].sort()
+          )
+
+          // Each condition is met by a different variant of Product 1, so no
+          // single variant satisfies both.
+          const { data: split } = await query.graph({
+            entity: "variant",
+            fields: ["id"],
+            filters: {
+              product: {
+                variants: {
+                  title: "P1 Variant 1",
+                  price_set: { id: p1Variant2.price_set!.id },
+                },
+              },
+            },
+          })
+
+          expect(split).toHaveLength(0)
+        })
+
         it("should return no rows when the linked filter matches nothing", async () => {
           const container = getContainer()
           const query = container.resolve("query")
