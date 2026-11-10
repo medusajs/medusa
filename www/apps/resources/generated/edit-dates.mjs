@@ -279,7 +279,7 @@ export const generatedEditDates = {
   "app/commerce-modules/user/workflows/page.mdx": "2025-01-09T13:41:46.302Z",
   "app/medusa-cli/commands/plugin/page.mdx": "2026-09-11T07:40:12.215Z",
   "app/plugins/guides/wishlist/page.mdx": "2026-07-28T05:55:56.577Z",
-  "app/commerce-modules/payment/account-holder/page.mdx": "2026-06-08T10:33:47.663Z",
+  "app/commerce-modules/payment/account-holder/page.mdx": "2026-11-10T16:56:29.223Z",
   "app/troubleshooting/test-errors/page.mdx": "2025-12-04T14:15:45.524Z",
   "app/commerce-modules/product/variant-inventory/page.mdx": "2026-08-03T20:11:37.791Z",
   "app/examples/guides/custom-item-price/page.mdx": "2026-07-31T12:43:03.287Z",
