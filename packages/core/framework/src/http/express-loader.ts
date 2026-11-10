@@ -9,7 +9,7 @@ import session from "express-session"
 import Redis from "ioredis"
 import morgan from "morgan"
 import path from "path"
-import { configManager } from "../config"
+import { configManager, HttpSecurityHeadersOptions } from "../config"
 import { MedusaRequest, MedusaResponse } from "./types"
 import {
   compressionOptions,
@@ -41,6 +41,29 @@ export function resolveSessionCookieSecurity({
   return { sameSite: false, secure: false }
 }
 
+export function applySecurityHeaders(
+  app: Express,
+  options: HttpSecurityHeadersOptions = {}
+) {
+  app.disable("x-powered-by")
+
+  if (options.enabled === false) {
+    return
+  }
+
+  const frameAncestors = options.frameAncestors ?? ["'self'"]
+  const contentSecurityPolicy = `frame-ancestors ${frameAncestors.join(" ")}`
+
+  app.use((_req, res, next) => {
+    res.setHeader("X-Content-Type-Options", "nosniff")
+    if (!options.frameAncestors) {
+      res.setHeader("X-Frame-Options", "SAMEORIGIN")
+    }
+    res.setHeader("Content-Security-Policy", contentSecurityPolicy)
+    next()
+  })
+}
+
 export async function expressLoader({
   app,
   container,
@@ -51,6 +74,12 @@ export async function expressLoader({
   app: Express
   shutdown: () => Promise<void>
 }> {
+  // Must run before the first await: other loaders register routes on `app` concurrently.
+  applySecurityHeaders(
+    app,
+    configManager.config.projectConfig.http?.securityHeaders
+  )
+
   const baseDir = configManager.baseDir
   const configModule = configManager.config
   const isProduction = configManager.isProduction
