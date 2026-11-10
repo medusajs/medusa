@@ -499,23 +499,49 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
           categoryData.parent_category_id !== productCategory.parent_category_id
         ) {
           // Calculate the new mpath
-          if (categoryData.parent_category_id === null) {
-            categoryData.mpath = ""
-          } else {
-            productCategory = (
-              await this.buildProductCategoriesWithTree(
-                {
-                  descendants: true,
-                },
-                [productCategory],
-                {
-                  where: { id: productCategory.id },
-                  serialize: false,
-                },
-                context
-              )
-            )[0]
+          productCategory = (
+            await this.buildProductCategoriesWithTree(
+              {
+                descendants: true,
+              },
+              [productCategory],
+              {
+                where: { id: productCategory.id },
+                serialize: false,
+              },
+              context
+            )
+          )[0]
 
+          const categoryDataChildren = categoryData.category_children?.flatMap(
+            (child) => child.category_children ?? []
+          )
+
+          const categoryDataChildrenMap = new Map(
+            categoryDataChildren?.map((child) => [child.id, child])
+          )
+
+          function updateMpathRecursively(
+            category: InferEntityType<typeof ProductCategory>,
+            newBaseMpath: string | null
+          ) {
+            const newMpath = newBaseMpath
+              ? `${newBaseMpath}.${category.id}`
+              : category.id
+            category.mpath = newMpath
+            for (let child of category.category_children) {
+              child = manager.getReference(
+                ProductCategory.name,
+                child.id
+              ) as any
+              manager.assign(child, categoryDataChildrenMap.get(child.id) ?? {})
+              updateMpathRecursively(child, newMpath)
+            }
+          }
+
+          if (categoryData.parent_category_id === null) {
+            updateMpathRecursively(productCategory!, null)
+          } else {
             const newParentCategory = await manager.findOne<
               InferEntityType<typeof ProductCategory>
             >(ProductCategory.name, categoryData.parent_category_id)
@@ -525,34 +551,6 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
                 MedusaError.Types.INVALID_ARGUMENT,
                 `Parent category with id: '${categoryData.parent_category_id}' does not exist`
               )
-            }
-
-            const categoryDataChildren =
-              categoryData.category_children?.flatMap(
-                (child) => child.category_children ?? []
-              )
-
-            const categoryDataChildrenMap = new Map(
-              categoryDataChildren?.map((child) => [child.id, child])
-            )
-
-            function updateMpathRecursively(
-              category: InferEntityType<typeof ProductCategory>,
-              newBaseMpath: string
-            ) {
-              const newMpath = `${newBaseMpath}.${category.id}`
-              category.mpath = newMpath
-              for (let child of category.category_children) {
-                child = manager.getReference(
-                  ProductCategory.name,
-                  child.id
-                ) as any
-                manager.assign(
-                  child,
-                  categoryDataChildrenMap.get(child.id) ?? {}
-                )
-                updateMpathRecursively(child, newMpath)
-              }
             }
 
             updateMpathRecursively(
