@@ -5,6 +5,7 @@ import {
   FeatureFlag,
   isPresent,
   QueryContext,
+  TRANSLATION_LIST_CACHE_TAG,
 } from "@medusajs/framework/utils"
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import {
@@ -43,6 +44,8 @@ export const GET = async (
     {
       cache: {
         enable: true,
+        tags: [TRANSLATION_LIST_CACHE_TAG],
+        computeAutomaticTags: true,
       },
       locale: req.locale,
     }

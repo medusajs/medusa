@@ -1,6 +1,9 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  TRANSLATION_LIST_CACHE_TAG,
+} from "@medusajs/framework/utils"
 
 /**
  * @since 2.12.3
@@ -19,7 +22,11 @@ export const GET = async (
       pagination: req.queryConfig.pagination,
     },
     {
-      cache: { enable: true },
+      cache: {
+        enable: true,
+        tags: [TRANSLATION_LIST_CACHE_TAG],
+        computeAutomaticTags: true,
+      },
     }
   )
 
