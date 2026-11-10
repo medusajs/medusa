@@ -1,51 +1,60 @@
-# `@medusajs/instantsearch-adapter`
+<p align="center">
+  <a href="https://www.medusajs.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
+  </a>
+</p>
+<h1 align="center">
+  @medusajs/instantsearch-adapter
+</h1>
 
-An [InstantSearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/) search client for Medusa Search. It translates InstantSearch requests into Medusa `SearchQuery` payloads and maps `SearchResult` responses back into the shape InstantSearch widgets expect.
+<h4 align="center">
+  <a href="https://docs.medusajs.com">Documentation</a> |
+  <a href="https://www.medusajs.com">Website</a>
+</h4>
 
-The adapter does not ship UI widgets. Install InstantSearch (or React / Vue / Angular InstantSearch) in your storefront alongside this package.
+<p align="center">
+  Building blocks for digital commerce
+</p>
+<p align="center">
+  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
+  </a>
+  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
+  </a>
+  <a href="https://discord.gg/xpCwq3Kfn8">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+  </a>
+  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
+    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
+  </a>
+</p>
+
+InstantSearch adapter for Medusa Search: a search client that lets [InstantSearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/) widgets (`instantsearch.js`, `react-instantsearch`, `vue-instantsearch`, `angular-instantsearch`) query a Medusa application's search indexes. Use it in a storefront to build search UIs, such as search boxes, facet filters, and paginated results, on top of the `POST /store/search` API route. It ships no UI widgets, so install an InstantSearch library alongside it.
+
+## At a glance
+
+| | |
+| --- | --- |
+| Package | `@medusajs/instantsearch-adapter` |
+| Type | Core library |
+| Import from | `@medusajs/instantsearch-adapter` |
 
 ## Installation
 
 ```bash
-yarn add @medusajs/instantsearch-adapter instantsearch.js
+npm install @medusajs/instantsearch-adapter react-instantsearch instantsearch.js
 ```
 
-Use a Medusa JS SDK instance so store requests include the publishable API key:
+Replace `react-instantsearch` with the InstantSearch library of your storefront's framework.
 
-```ts
-import { createInstantSearchAdapter } from "@medusajs/instantsearch-adapter"
-import instantsearch from "instantsearch.js"
-import {
-  searchBox,
-  hits,
-  pagination,
-  refinementList,
-} from "instantsearch.js/es/widgets"
-import { sdk } from "./sdk"
+## Usage
 
-const { searchClient } = createInstantSearchAdapter({
-  sdk,
-  path: "/store/search",
-})
-
-const search = instantsearch({
-  indexName: "product",
-  searchClient,
-})
-
-search.addWidgets([
-  searchBox({ container: "#searchbox" }),
-  hits({ container: "#hits" }),
-  refinementList({ container: "#brand", attribute: "brand" }),
-  pagination({ container: "#pagination" }),
-])
-
-search.start()
-```
-
-The same `searchClient` works with `react-instantsearch`, `vue-instantsearch`, and `angular-instantsearch`.
-
-### React InstantSearch
+Pass a Medusa JS SDK instance so requests include the publishable API key and locale headers:
 
 ```tsx
 import {
@@ -75,35 +84,9 @@ export function ProductSearch() {
 }
 ```
 
-## Configuration
+`indexName` is the name of a search index defined with `defineSearchIndex`. Which fields are searchable, facetable, filterable, and sortable comes from that index definition.
 
-```ts
-createInstantSearchAdapter({
-  sdk, // preferred
-  // requester,                     // custom (queries) => results
-  // baseUrl, publishableApiKey,    // native fetch fallback
-  path: "/store/search",
-  batch: true, // POST `{ queries }` in one request
-  placeholderSearch: true, // empty query still searches
-  numericAttributes: ["min_price"], // range widgets: request stats facets
-  distinctAttribute: "handle",
-  primaryKey: "id",
-  cacheSearchResultsForSeconds: 0,
-  additionalSearchParameters: {
-    filters: { status: { $eq: "published" } },
-    search_options: { match_strategy: "last" },
-  },
-  indexSpecificSearchParameters: {
-    product: { fields: ["title", "handle", "thumbnail"] },
-  },
-  transformQuery: (query, request) => query,
-  transformResponse: (response, result, request) => response,
-})
-```
-
-`path` is required when using `sdk` or `baseUrl`. If InstantSearch does not send `hitsPerPage`, the adapter omits `pagination.take` so the backend default applies.
-
-`indexName` is the Search index `name` (the `entity` sent to Medusa). For `sortBy`, encode the sort in the index name:
+To sort, encode the sort in the index name as `<index>/sort/<field>:<asc|desc>`, for example with the `sortBy` widget:
 
 ```ts
 sortBy({
@@ -115,17 +98,62 @@ sortBy({
 })
 ```
 
+### Expose indexes on `/store/search`
+
+`POST /store/search` exposes no index by default. Opt indexes in with the `configureStoreSearch` middleware in `src/api/middlewares.ts`:
+
+```ts
+import { configureStoreSearch, defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/store/search",
+      middlewares: [
+        configureStoreSearch({
+          allowed_indexes: {
+            product: true,
+            product_category: { filters: () => ({ is_active: true }) },
+          },
+        }),
+      ],
+    },
+  ],
+})
+```
+
+`filters` is ANDed onto every query for that index. For a product index whose `status` and `sales_channel_ids` fields are filterable, the route also limits results to published products in the publishable API key's sales channels.
+
+## Configuration
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| `sdk` | Medusa JS SDK instance | Preferred transport. Sends requests with `sdk.client.fetch`. | - |
+| `requester` | `(queries: SearchQuery[]) => Promise<SearchResult[]>` | Custom transport. Must return one result per query, in the same order. | - |
+| `baseUrl` | `string` | Medusa application URL, used with native `fetch` when `sdk` and `requester` aren't set. | - |
+| `path` | `string` | Search route path, or an absolute URL. Required unless `requester` is set. | - |
+| `publishableApiKey` | `string` | Publishable API key sent in the `x-publishable-api-key` header with native `fetch`. Not needed with `sdk`. | - |
+| `headers` | `Record<string, string>` | Extra headers sent with every request. | - |
+| `batch` | `boolean` | Send all queries in one `{ queries }` request. When `false`, sends each query in its own request. | `true` |
+| `numericAttributes` | `string[]` | Fields used by range widgets. Requested as `stats` facets. | - |
+| `distinctAttribute` | `string` | Field used when InstantSearch sends `distinct: true`. | - |
+| `primaryKey` | `string` | Document field used as `objectID` when a hit has no `id`. | `"id"` |
+| `placeholderSearch` | `boolean` | Whether an empty query still searches. When `false`, empty queries return no hits without calling the backend. | `true` |
+| `cacheSearchResultsForSeconds` | `number` | Client-side cache TTL. `0` disables caching. | `0` |
+| `additionalSearchParameters` | `Partial<Omit<SearchQuery, "entity">>` | Defaults merged into every query. Filters are ANDed with the InstantSearch filters; InstantSearch pagination and sort take precedence. | - |
+| `indexSpecificSearchParameters` | `Record<string, Partial<Omit<SearchQuery, "entity">>>` | Same as `additionalSearchParameters`, keyed by index name (without the `/sort/...` suffix). | - |
+| `transformQuery` | `(query, request) => SearchQuery` | Modify a query after it's mapped from InstantSearch params. | - |
+| `transformResponse` | `(response, result, request) => InstantSearchSearchResponse` | Modify a response after it's mapped to the InstantSearch format. | - |
+
+If InstantSearch doesn't send `hitsPerPage`, the adapter omits `pagination.take` so the backend's default page size applies.
+
 ## HTTP contract
 
-The adapter POSTs Medusa `SearchQuery` objects, not Algolia-format params.
+To use a custom route instead of `/store/search`, it must accept the same requests. The adapter POSTs Medusa `SearchQuery` objects, not Algolia-format params.
 
-**Batched (default)**
+With `batch: true` (default), the body is `{ queries: SearchQuery[] }`, and the response must be `{ results: SearchResult[] }` in the same order:
 
-```http
-POST /store/search
-Content-Type: application/json
-x-publishable-api-key: pk_...
-
+```json
 {
   "queries": [
     {
@@ -156,37 +184,18 @@ x-publishable-api-key: pk_...
 }
 ```
 
-InstantSearch sends one request per disjunctive facet in addition to the hits query. The route should run `searchMany` / `query.search` per item and return results in the same order.
-
-When `batch: false`, each `SearchQuery` is POSTed as the body. The response may be a single `SearchResult`, or a `{ results }` wrapping exactly one — both are unwrapped.
-
-The route is responsible for storefront constraints (sales channel, region, which indexes are public). Pass extra filters through `additionalSearchParameters` if the client should send them itself.
-
-### The built-in route
-
-`POST /store/search` implements this contract over every registered index, so `indexName` is the index a query runs against. It hydrates the fields an index doesn't hold onto each hit's `document`, and otherwise runs the queries as posted.
-
-It exposes nothing by default, and narrows a product index to published products in the publishable key's sales channels by. A `configureStoreSearch` middleware applied on the route can specify which indexes are searchable and it can apply
-default filtesr to each index.
-
-```ts
-configureStoreSearch({
-  allowed_indexes: {
-    product_category: { filters: (req) => ({ is_active: true }) },
-  },
-})
-```
+With `batch: false`, each `SearchQuery` is the request body, and the response is a single `SearchResult`, or `{ results }` with exactly one result.
 
 ## Widget support
 
-Supported: `searchBox`, `hits`, `infiniteHits`, `pagination`, `hitsPerPage`, `stats`, `configure`, `index`, `refinementList` (including searchable), `menu`, `menuSelect`, `toggleRefinement`, `currentRefinements`, `clearRefinements`, `sortBy`, `highlight` / `snippet` (if the search provider supports highlighting), `routing`.
+- **Supported**: search box, hits and infinite hits, pagination, hits per page, stats, configure, refinement lists (including searchable ones), menus, toggle refinements, current and clear refinements, sort by, and highlight and snippet.
+- **Range widgets** (`rangeSlider`, `rangeInput`, `numericMenu`, `ratingMenu`): list the fields in `numericAttributes`, and opt them into stats facets on the index with `facetable({ types: ["stats"] })`. The Postgres and `search-medusa` providers both support stats facets.
+- **Highlighting** depends on the search provider. `search-medusa` supports it, Postgres doesn't.
+- **Not supported**: `geoSearch`, Algolia `filters` strings, and Algolia-only features such as Insights, Query Rules, and vector search widgets.
 
-Supported with caveats:
+## Resources
 
-- **Range widgets** (`rangeSlider`, `rangeInput`, `numericMenu`, `ratingMenu`) need stats facets. List those fields in `numericAttributes`, and mark them `facetable({ types: ["stats"] })` (or include `"stats"` alongside `"range"`) on the index — stats are opt-in. Both the Postgres and `search-medusa` providers support stats.
-- **Hierarchical menu / breadcrumb** work if the index stores Algolia-style `categories.lvl0`, `categories.lvl1`, … fields.
-- **Highlighting** is provider-dependent (available on `search-medusa`, not on Postgres).
-
-Not supported: `geoSearch`, Algolia `filters` strings, Insights / Analytics, Query Rules, related-items, autocomplete, vector-search widgets.
-
-Facetable, filterable, and sortable fields come from your `defineSearchIndex` definition, not from this package. The InstantSearch `stats` widget (hit count / timing) is independent of stats facets and works without `numericAttributes`.
+- [InstantSearch adapter guide](https://docs.medusajs.com/resources/instantsearch)
+- [Filtering, sorting, and pagination example](https://docs.medusajs.com/resources/instantsearch/examples/filtering-sorting-pagination)
+- [Search Module](https://docs.medusajs.com/resources/infrastructure-modules/search)
+- [Store search](https://docs.medusajs.com/resources/infrastructure-modules/search/store-search)

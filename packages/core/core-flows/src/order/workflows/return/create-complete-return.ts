@@ -430,6 +430,7 @@ export const createAndCompleteReturnOrderWorkflow = createWorkflow(
       location_id: input.location_id,
       items: input.items,
       shipping_method: shippingMethodData,
+      refund_amount: input.refund_amount,
       created_by: input.created_by,
     })
 

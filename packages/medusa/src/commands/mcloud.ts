@@ -1,4 +1,3 @@
-import confirm from "@inquirer/confirm"
 import { spawn, spawnSync } from "child_process"
 
 type McloudArgs = {
@@ -51,6 +50,7 @@ function getPackageManagerInfo(): {
 async function installMcloud() {
   const packageManager = getPackageManagerInfo()
 
+  const { default: confirm } = await import("@inquirer/confirm")
   const shouldInstall = await confirm({
     message: `The mcloud command requires the mcloud CLI. Install latest ${MCLOUD_PACKAGE} globally with ${packageManager.name}?`,
     default: true,

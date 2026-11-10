@@ -86,6 +86,7 @@ describe("render", () => {
     )
     expect(title).toBeInTheDocument()
     expect(title).toHaveTextContent("Title")
+    expect(title).toHaveAttribute("data-markdown-ignore")
     expect(title).toHaveClass("text-medusa-contrast-fg-secondary")
     expect(title).not.toHaveClass("text-medusa-fg-subtle")
     const codeBlockHeaderWrapperBlockStyle = container.querySelector(

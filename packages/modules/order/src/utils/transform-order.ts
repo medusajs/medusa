@@ -7,6 +7,8 @@ import {
   toMikroORMEntity,
 } from "@medusajs/framework/utils"
 
+const ORDER_ITEM_FIELDS = ["quantity", "unit_price", "compare_at_unit_price"]
+
 // Reshape the order object to match the OrderDTO
 // This function is used to format the order object before returning to the main module methods
 export function formatOrder<T = any>(
@@ -208,7 +210,7 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
     }
 
     return deduplicate(
-      obj[type].sort().map((rel) => {
+      obj[type].sort().flatMap((rel) => {
         if (rel == "summary" && type === "fields") {
           obj.populate.push("summary")
           return "summary.totals"
@@ -226,6 +228,12 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
           return rel.replace("items.detail", "items")
         } else if (rel == "items") {
           return "items.item"
+        } else if (
+          type === "fields" &&
+          ORDER_ITEM_FIELDS.some((field) => rel === `items.${field}`)
+        ) {
+          // These live on the order item (with a line item fallback), not only on the line item
+          return [rel, rel.replace("items.", "items.item.")]
         } else if (rel.includes("items.") && !rel.includes("items.item")) {
           return rel.replace("items.", "items.item.")
         }

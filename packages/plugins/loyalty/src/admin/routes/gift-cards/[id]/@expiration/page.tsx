@@ -167,4 +167,8 @@ const schema = z.object({
   expires_at: z.date().nullish(),
 })
 
+export const handle = {
+  permissions: ["gift_card:read", "gift_card:update"],
+}
+
 export default GiftCardExpiration

@@ -13,6 +13,12 @@ import { useUpdateStore } from "../../../../../hooks/api/store"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
+import {
+  useRegionPermissions,
+  useSalesChannelPermissions,
+  useStockLocationPermissions,
+} from "../../../../../hooks/use-resource-permissions"
+import { PermissionGuard } from "../../../../../components/common/permission-guard"
 
 type EditStoreFormProps = {
   store: HttpTypes.AdminStore
@@ -30,6 +36,9 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const direction = useDocumentDirection()
+  const { canRead: canReadRegions } = useRegionPermissions()
+  const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
   const form = useForm<z.infer<typeof EditStoreSchema>>({
     defaultValues: {
       name: store.name,
@@ -52,6 +61,7 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
     defaultValue: store.default_region_id || undefined,
     getOptions: (data) =>
       data.regions.map((r) => ({ label: r.name, value: r.id })),
+    enabled: canReadRegions,
   })
 
   const salesChannelsCombobox = useComboboxData({
@@ -61,6 +71,7 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
       data.sales_channels.map((sc) => ({ label: sc.name, value: sc.id })),
     queryKey: ["sales_channels", "default_sales_channel_id"],
     defaultValue: store.default_sales_channel_id || undefined,
+    enabled: canReadSalesChannels,
   })
 
   const locationsCombobox = useComboboxData({
@@ -70,6 +81,7 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
       data.stock_locations.map((l) => ({ label: l.name, value: l.id })),
     queryKey: ["stock_locations", "default_location_id"],
     defaultValue: store.default_location_id || undefined,
+    enabled: canReadStockLocations,
   })
 
   const handleSubmit = form.handleSubmit(async (values) => {
@@ -146,72 +158,80 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
                 )
               }}
             />
-            <Form.Field
-              control={form.control}
-              name="default_region_id"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("store.defaultRegion")}</Form.Label>
-                    <Form.Control>
-                      <Combobox
-                        {...field}
-                        options={regionsCombobox.options}
-                        searchValue={regionsCombobox.searchValue}
-                        onSearchValueChange={
-                          regionsCombobox.onSearchValueChange
-                        }
-                        disabled={regionsCombobox.disabled}
-                      />
-                    </Form.Control>
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="default_sales_channel_id"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("store.defaultSalesChannel")}</Form.Label>
-                    <Form.Control>
-                      <Combobox
-                        {...field}
-                        options={salesChannelsCombobox.options}
-                        searchValue={salesChannelsCombobox.searchValue}
-                        onSearchValueChange={
-                          salesChannelsCombobox.onSearchValueChange
-                        }
-                        disabled={salesChannelsCombobox.disabled}
-                      />
-                    </Form.Control>
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="default_location_id"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("store.defaultLocation")}</Form.Label>
-                    <Form.Control>
-                      <Combobox
-                        {...field}
-                        options={locationsCombobox.options}
-                        searchValue={locationsCombobox.searchValue}
-                        onSearchValueChange={
-                          locationsCombobox.onSearchValueChange
-                        }
-                        disabled={locationsCombobox.disabled}
-                      />
-                    </Form.Control>
-                  </Form.Item>
-                )
-              }}
-            />
+            <PermissionGuard permission="region:read">
+              <Form.Field
+                control={form.control}
+                name="default_region_id"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("store.defaultRegion")}</Form.Label>
+                      <Form.Control>
+                        <Combobox
+                          {...field}
+                          options={regionsCombobox.options}
+                          searchValue={regionsCombobox.searchValue}
+                          onSearchValueChange={
+                            regionsCombobox.onSearchValueChange
+                          }
+                          disabled={regionsCombobox.disabled}
+                        />
+                      </Form.Control>
+                    </Form.Item>
+                  )
+                }}
+              />
+            </PermissionGuard>
+
+            <PermissionGuard permission="sales_channel:read">
+              <Form.Field
+                control={form.control}
+                name="default_sales_channel_id"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("store.defaultSalesChannel")}</Form.Label>
+                      <Form.Control>
+                        <Combobox
+                          {...field}
+                          options={salesChannelsCombobox.options}
+                          searchValue={salesChannelsCombobox.searchValue}
+                          onSearchValueChange={
+                            salesChannelsCombobox.onSearchValueChange
+                          }
+                          disabled={salesChannelsCombobox.disabled}
+                        />
+                      </Form.Control>
+                    </Form.Item>
+                  )
+                }}
+              />
+            </PermissionGuard>
+
+            <PermissionGuard permission="stock_location:read">
+              <Form.Field
+                control={form.control}
+                name="default_location_id"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("store.defaultLocation")}</Form.Label>
+                      <Form.Control>
+                        <Combobox
+                          {...field}
+                          options={locationsCombobox.options}
+                          searchValue={locationsCombobox.searchValue}
+                          onSearchValueChange={
+                            locationsCombobox.onSearchValueChange
+                          }
+                          disabled={locationsCombobox.disabled}
+                        />
+                      </Form.Control>
+                    </Form.Item>
+                  )
+                }}
+              />
+            </PermissionGuard>
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>

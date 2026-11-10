@@ -1,0 +1,25 @@
+{
+  "source": [
+    "package.json",
+    "packages/**/package.json",
+    "integration-tests/**/package.json",
+    "!**/node_modules/**"
+  ],
+  "versionGroups": [
+    {
+      "label": "Workspace packages are versioned by changesets",
+      "dependencies": ["@medusajs/**", "medusa-*", "create-medusa-app"],
+      "isIgnored": true
+    },
+    {
+      "label": "The TypeScript 6 npm alias is versioned apart from the published typescript package",
+      "dependencies": ["typescript"],
+      "specifierTypes": ["alias"]
+    },
+    {
+      "label": "Peer ranges, root resolutions, and package versions are managed separately",
+      "dependencyTypes": ["peer", "resolutions", "local"],
+      "isIgnored": true
+    }
+  ]
+}

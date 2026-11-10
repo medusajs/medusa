@@ -8,13 +8,11 @@ export interface AdminProductTagResponse {
   product_tag: AdminProductTag
 }
 
-export interface AdminProductTagListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of product tags.
-     */
-    product_tags: AdminProductTag[]
-  }> {}
+export interface AdminProductTagListResponse extends PaginatedResponse<{
+  /**
+   * The list of product tags.
+   */
+  product_tags: AdminProductTag[]
+}> {}
 
-export interface AdminProductTagDeleteResponse
-  extends DeleteResponse<"product_tag"> {}
+export interface AdminProductTagDeleteResponse extends DeleteResponse<"product_tag"> {}

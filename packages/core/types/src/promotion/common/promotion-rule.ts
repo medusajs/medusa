@@ -5,13 +5,7 @@ import { PromotionRuleValueDTO } from "./promotion-rule-value"
  * The possible operators to use in a promotion rule.
  */
 export type PromotionRuleOperatorValues =
-  | "gt"
-  | "lt"
-  | "eq"
-  | "ne"
-  | "in"
-  | "lte"
-  | "gte"
+  "gt" | "lt" | "eq" | "ne" | "in" | "lte" | "gte"
 
 /**
  * The promotion rule details.
@@ -115,8 +109,7 @@ export interface RemovePromotionRuleDTO {
 /**
  * The filters to apply on the retrieved promotion rules.
  */
-export interface FilterablePromotionRuleProps
-  extends BaseFilterable<FilterablePromotionRuleProps> {
+export interface FilterablePromotionRuleProps extends BaseFilterable<FilterablePromotionRuleProps> {
   /**
    * The IDs to filter the promotion rules by.
    */

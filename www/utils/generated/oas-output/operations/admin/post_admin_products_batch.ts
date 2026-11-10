@@ -101,6 +101,15 @@
  *     $ref: "#/components/responses/500_error"
  * x-workflow: batchProductsWorkflow
  * x-events:
+ *   - name: product-variant.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the product variant
+ *       }
+ *       ```
+ *     description: Emitted when product variants are updated.
+ *     deprecated: false
  *   - name: product-variant.created
  *     payload: |-
  *       ```ts

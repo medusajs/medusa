@@ -264,6 +264,12 @@ export interface BaseRefund {
   note?: string | null
 
   /**
+   * The key that made the refund idempotent at the payment provider. It's only
+   * set when the request supplied one.
+   */
+  idempotency_key?: string | null
+
+  /**
    * The creation date of the refund.
    */
   created_at: Date
@@ -342,8 +348,7 @@ export interface BasePaymentSession {
 /**
  * The filters to apply on the retrieved payment collection.
  */
-export interface BasePaymentCollectionFilters
-  extends BaseFilterable<BasePaymentCollectionFilters> {
+export interface BasePaymentCollectionFilters extends BaseFilterable<BasePaymentCollectionFilters> {
   /**
    * The IDs to filter the payment collection by.
    */
@@ -368,8 +373,7 @@ export interface BasePaymentCollectionFilters
 /**
  * The filters to apply on the retrieved payment sessions.
  */
-export interface BasePaymentSessionFilters
-  extends BaseFilterable<BasePaymentSessionFilters> {
+export interface BasePaymentSessionFilters extends BaseFilterable<BasePaymentSessionFilters> {
   /**
    * The IDs to filter the payment sessions by.
    */
@@ -416,8 +420,7 @@ export interface BasePaymentSessionFilters
   deleted_at?: OperatorMap<string>
 }
 
-export interface BasePaymentProviderFilters
-  extends BaseFilterable<BasePaymentProviderFilters> {
+export interface BasePaymentProviderFilters extends BaseFilterable<BasePaymentProviderFilters> {
   id?: string | string[]
   region_id?: string | string[]
 }

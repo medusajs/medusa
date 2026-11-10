@@ -24,9 +24,13 @@
 #   - <owner/repo> and <changelog_path> come from UNTRUSTED PR content, so they
 #     are strictly validated below before being interpolated into any API path.
 #     This prevents path traversal / request smuggling / SSRF.
+#   - Release notes and changelog text are untrusted too, so both are piped
+#     through sanitize_untrusted.py to strip hidden content.
 #
 
 set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 SLUG="${1:-}"
 CHANGELOG_PATH="${2:-}"
@@ -53,7 +57,7 @@ echo "=== GitHub Releases for $SLUG (most recent $RELEASE_LIMIT) ==="
 if releases=$(gh api "repos/${SLUG}/releases?per_page=${RELEASE_LIMIT}" \
   --jq '.[] | "----------\ntag: \(.tag_name)\ndate: \(.published_at)\n\n\(.body // "(no release body)")\n"' 2>/dev/null) \
   && [[ -n "$releases" ]]; then
-  printf '%s\n' "$releases"
+  printf '%s\n' "$releases" | python3 "$SCRIPT_DIR/sanitize_untrusted.py"
 else
   echo "(no GitHub Releases found, or the repo is not accessible)"
 fi
@@ -73,7 +77,7 @@ if [[ -n "$CHANGELOG_PATH" ]]; then
   # then cap the output so a huge changelog can't blow up the context.
   if changelog=$(gh api "repos/${SLUG}/contents/${CHANGELOG_PATH}" \
     -H "Accept: application/vnd.github.raw" 2>/dev/null) && [[ -n "$changelog" ]]; then
-    printf '%s' "$changelog" | head -c 200000
+    printf '%s' "$changelog" | head -c 200000 | python3 "$SCRIPT_DIR/sanitize_untrusted.py"
   else
     echo "(changelog file not found at that path on the default branch)"
   fi

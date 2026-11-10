@@ -278,6 +278,30 @@ export type HttpCompressionOptions = {
 /**
  * @interface
  *
+ * Additional CORS configurations applied to the `/admin`, `/store`, and `/auth` API Routes.
+ */
+export type HttpCorsOptions = {
+  /**
+   * How long, in seconds, browsers can cache the response of a preflight request, set in the `Access-Control-Max-Age` header.
+   */
+  maxAge?: number
+  /**
+   * The response headers exposed to the browser, set in the `Access-Control-Expose-Headers` header.
+   */
+  exposedHeaders?: string | string[]
+  /**
+   * The request headers allowed in cross-origin requests, set in the `Access-Control-Allow-Headers` header.
+   */
+  allowedHeaders?: string | string[]
+  /**
+   * The HTTP methods allowed in cross-origin requests, set in the `Access-Control-Allow-Methods` header.
+   */
+  methods?: string | string[]
+}
+
+/**
+ * @interface
+ *
  * Medusa Cloud configurations.
  */
 export type MedusaCloudOptions = {
@@ -285,10 +309,6 @@ export type MedusaCloudOptions = {
    * The environment handle of the Medusa Cloud environment.
    */
   environmentHandle?: string
-  /**
-   * The sandbox handle of the Medusa Cloud sandbox.
-   */
-  sandboxHandle?: string
   /**
    * The API key used to access Medusa Cloud services.
    */
@@ -301,6 +321,11 @@ export type MedusaCloudOptions = {
    * The endpoint of the Medusa Cloud payment service.
    */
   paymentsEndpoint?: string
+  /**
+   * The handles of the Medusa Payments accounts available to the environment. A payment
+   * provider is registered for each, with the ID `medusa-payments_{handle}`.
+   */
+  paymentAccounts?: string[]
   /**
    * The endpoint of the Medusa Cloud email service.
    */
@@ -339,6 +364,10 @@ export type MedusaCloudOptions = {
    * @since 2.16.0
    */
   oauthAudience?: string
+  /**
+   * The client secret sent to the Medusa Cloud OAuth token endpoint. If not provided, `apiKey` is used.
+   */
+  oauthClientSecret?: string
 }
 
 /**
@@ -813,6 +842,51 @@ export type ProjectConfigOptions = {
      */
     authCors: string
     /**
+     * The allowed origins for the `/rbac` API Routes. Defaults to `adminCors`, since the Medusa Admin dashboard consumes these routes.
+     *
+     * Set it when another client, such as a custom dashboard for a non-`user` actor type, calls the `/rbac` routes from a different origin.
+     * Accepts the same format as `adminCors`.
+     *
+     * When set, it replaces `adminCors` for the `/rbac` routes rather than extending it. If the Medusa Admin dashboard
+     * also uses the `/rbac` routes, include its origin as well.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       rbacCors: process.env.RBAC_CORS
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    rbacCors?: string
+    /**
+     * Additional CORS configurations applied to the `/admin`, `/store`, and `/auth` API Routes, on top of the
+     * allowed origins set in `adminCors`, `storeCors`, and `authCors`.
+     *
+     * For example, set `maxAge` so browsers cache preflight responses.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       corsOptions: {
+     *         maxAge: 7200,
+     *       }
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    corsOptions?: HttpCorsOptions
+    /**
      *
      * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
      * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
@@ -1007,6 +1081,35 @@ export type ProjectConfigOptions = {
       string,
       { entity_type: string; auth_provider: string }[]
     >
+
+    /**
+     * This configuration specifies the auth providers that only authenticate auth identities already associated with an actor of the
+     * requested actor type. For example, you want to refuse logging in to `/auth/user/emailpass` with a customer's credentials.
+     *
+     * `requireActorAssociation` is a map where the auth provider ID (eg. `emailpass`) is the key, and the value is a boolean indicating whether
+     * the association is required. An auth identity is associated with an actor type when its `app_metadata` has the `{actor_type}_id` property.
+     * This only applies to authentication, so registering a new auth identity still works.
+     *
+     * By default, when the option isn't set for a provider, an auth identity can authenticate as any actor type, for example to allow an admin user
+     * to create a customer account with the same email.
+     *
+     * @example
+     *
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       requireActorAssociation: {
+     *         emailpass: true,
+     *       },
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    requireActorAssociation?: Record<string, boolean>
     /**
      * Specifies the fields that can't be selected in the response unless specified in the allowed query config.
      * This is useful to restrict sensitive fields from being exposed in the API.
@@ -1053,6 +1156,27 @@ export type ProjectConfigOptions = {
      * ```
      */
     storeRelationsLimit?: number
+
+    /**
+     * The actor types that are allowed to authenticate against the `/rbac` API routes.
+     * Requests authenticated as any other actor type are rejected with a 401.
+     *
+     * Defaults to `["user"]`. Pass `["*"]` to allow every authenticated actor type.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       rbacActorTypes: ["user", "custom_actor"],
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    rbacActorTypes?: string[]
   }
 
   /**

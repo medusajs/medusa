@@ -8,6 +8,8 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 if [[ -n "${1:-}" ]]; then
   ISSUE="$1"
 else
@@ -19,4 +21,7 @@ if ! [[ "$ISSUE" =~ ^[0-9]+$ ]]; then
   exit 1
 fi
 
-gh issue view "$ISSUE" --json comments --jq '.comments[] | {author: .author.login, body: .body, createdAt: .createdAt}'
+REPO="${GITHUB_REPOSITORY:-medusajs/medusa}"
+
+gh issue view "$ISSUE" --repo "$REPO" --json comments --jq '.comments[] | {author: .author.login, body: .body, createdAt: .createdAt}' \
+  | python3 "$SCRIPT_DIR/sanitize_untrusted.py" --json

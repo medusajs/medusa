@@ -1,4 +1,6 @@
 import { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { API_REF_SCHEMA_SLUG } from "docs-utils"
 import { apiRefPaths } from "@/utils/api-ref-paths"
 import { apiRefMetadataBase, isArea } from "@/utils/area"
 
@@ -8,11 +10,41 @@ type OperationPageProps = {
   params: Promise<{ area: string; section: string; operation: string }>
 }
 
+const getOperationEntry = (
+  area: string,
+  section: string,
+  operation: string
+) => {
+  if (!isArea(area)) {
+    return undefined
+  }
+
+  const tagEntry = apiRefPaths[area]?.tags?.[section]
+  return tagEntry
+    ? Object.values(tagEntry.operations).find((op) => op.slug === operation)
+    : undefined
+}
+
 // The tag (with all its operations) is rendered by the [section] layout, which
 // stays mounted across tag <-> operation navigation. Scrolling to the active
 // operation is handled client-side (TagOperation reacts to the active path), so
 // this page only exists for the route and its metadata.
-const OperationPage = () => null
+const isSchemaPage = (area: string, section: string, operation: string) =>
+  operation === API_REF_SCHEMA_SLUG &&
+  isArea(area) &&
+  !!apiRefPaths[area]?.tags?.[section]?.schemaPath
+
+const OperationPage = async ({ params }: OperationPageProps) => {
+  const { area, section, operation } = await params
+  if (
+    !isSchemaPage(area, section, operation) &&
+    !getOperationEntry(area, section, operation)
+  ) {
+    notFound()
+  }
+
+  return null
+}
 
 export default OperationPage
 
@@ -20,18 +52,12 @@ export async function generateMetadata({
   params,
 }: OperationPageProps): Promise<Metadata> {
   const { area, section, operation } = await params
-  if (!isArea(area)) {
-    return {}
-  }
-
-  const tagEntry = apiRefPaths[area]?.tags?.[section]
-  const operationEntry = tagEntry
-    ? Object.values(tagEntry.operations).find((op) => op.slug === operation)
-    : undefined
-  const title = operationEntry?.title
+  const title = getOperationEntry(area, section, operation)?.title
 
   return {
-    title: title ? `${title} - Medusa ${area} API Reference` : undefined,
+    title: title
+      ? { absolute: `${title} - Medusa ${area} API Reference` }
+      : undefined,
     metadataBase: apiRefMetadataBase,
   }
 }

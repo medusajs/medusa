@@ -2,6 +2,7 @@ import { Application, ParameterType } from "typedoc"
 import { MarkdownThemeOptionsReader } from "./options-reader.js"
 import { MarkdownTheme } from "./theme.js"
 import { JsonTheme } from "./json-theme.js"
+import { MedusaRouter } from "./router.js"
 
 export function load(app: Application) {
   app.renderer.defineTheme("markdown", MarkdownTheme)
@@ -9,6 +10,7 @@ export function load(app: Application) {
   // MDX, reusing all of `MarkdownTheme`'s URL/helper logic. Select it by
   // setting `theme: "json"` in the merge-phase TypeDoc options.
   app.renderer.defineTheme("json", JsonTheme)
+  app.renderer.defineRouter("medusa", MedusaRouter)
   app.options.addReader(new MarkdownThemeOptionsReader())
 
   app.options.addDeclaration({
@@ -39,7 +41,7 @@ export function load(app: Application) {
   })
 
   app.options.addDeclaration({
-    help: "[Markdown Plugin] Specify module names where property reflections are outputted into seperate files.",
+    help: "[Markdown Plugin] Specify module names where property reflections are outputted into separate files.",
     name: "allPropertyReflectionsHaveOwnDocument",
     type: ParameterType.Array,
     defaultValue: [],
@@ -145,3 +147,4 @@ export function load(app: Application) {
 }
 export { MarkdownTheme }
 export { JsonTheme }
+export { MedusaRouter }

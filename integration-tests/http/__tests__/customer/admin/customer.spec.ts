@@ -610,9 +610,8 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(200)
 
         // The auth identity must be kept since another actor is still associated.
-        const authIdentity = await authModule.retrieveAuthIdentity(
-          auth_identity_id
-        )
+        const authIdentity =
+          await authModule.retrieveAuthIdentity(auth_identity_id)
 
         expect(authIdentity).toEqual(
           expect.objectContaining({

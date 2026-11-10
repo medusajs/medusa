@@ -2,7 +2,10 @@
   "compilerOptions": {
     "lib": ["ES2021"],
     "target": "ES2021",
+    "rootDir": "${configDir}/src",
     "outDir": "${configDir}/dist",
+    "types": ["*"],
+    "strict": false,
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,

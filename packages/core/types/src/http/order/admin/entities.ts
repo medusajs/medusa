@@ -60,11 +60,10 @@ export interface AdminOrder extends Omit<BaseOrder, "items"> {
   credit_lines?: OrderCreditLineDTO[]
 }
 
-export interface AdminOrderChange
-  extends Omit<
-    BaseOrderChange,
-    "order" | "claim" | "return_order" | "exchange" | "actions"
-  > {
+export interface AdminOrderChange extends Omit<
+  BaseOrderChange,
+  "order" | "claim" | "return_order" | "exchange" | "actions"
+> {
   /**
    * The order's details.
    */
@@ -87,8 +86,10 @@ export interface AdminOrderChange
   actions: AdminOrderChangeAction[]
 }
 
-export interface AdminOrderChangeAction
-  extends Omit<BaseOrderChangeAction, "order_change" | "order"> {
+export interface AdminOrderChangeAction extends Omit<
+  BaseOrderChangeAction,
+  "order_change" | "order"
+> {
   /**
    * The order change's details.
    */
@@ -138,8 +139,10 @@ export interface AdminOrderItem {
   item: AdminOrderLineItem
 }
 
-export interface AdminOrderLineItem
-  extends Omit<BaseOrderLineItem, "variant" | "product"> {
+export interface AdminOrderLineItem extends Omit<
+  BaseOrderLineItem,
+  "variant" | "product"
+> {
   /**
    * The associated variant's details.
    */
@@ -164,8 +167,10 @@ export interface AdminOrderLinePreview extends AdminOrderLineItem {
   return_requested_total: number
 }
 
-export interface AdminOrderPreview
-  extends Omit<AdminOrder, "items" | "shipping_methods"> {
+export interface AdminOrderPreview extends Omit<
+  AdminOrder,
+  "items" | "shipping_methods"
+> {
   /**
    * The total amount for the items requested to be returned.
    */

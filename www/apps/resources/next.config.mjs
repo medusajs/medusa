@@ -1,5 +1,6 @@
 import {
   brokenLinkCheckerPlugin,
+  enterpriseNoticeLinkFixerPlugin,
   localLinksRehypePlugin,
   prerequisitesLinkFixerPlugin,
   recmaInjectMdxDataPlugin,
@@ -12,7 +13,7 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 import mdx from "@next/mdx"
 import mdxPluginOptions from "./mdx-options.mjs"
 import path from "node:path"
-import { catchBadRedirects } from "build-scripts"
+import { catchBadRedirects, withMdxWebpackLayers } from "build-scripts"
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
@@ -64,6 +65,12 @@ const withMDX = mdx({
           checkLinksType: "value",
         },
       ],
+      [
+        enterpriseNoticeLinkFixerPlugin,
+        {
+          checkLinksType: "value",
+        },
+      ],
     ],
     remarkPlugins: mdxPluginOptions.options.remarkPlugins,
     recmaPlugins: [[recmaInjectMdxDataPlugin]],
@@ -79,6 +86,19 @@ const nextConfig = {
   transpilePackages: ["docs-ui", "next-mdx-remote"],
 
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/resources",
+  async headers() {
+    const headers = [
+      {
+        key: "Cache-Control",
+        value: "public, max-age=3600, must-revalidate",
+      },
+    ]
+
+    return [
+      { source: "/", headers },
+      { source: "/:path((?!_next/).*)", headers },
+    ]
+  },
   async redirects() {
     return catchBadRedirects([
       {
@@ -399,4 +419,4 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 })
 
-export default withMDX(withBundleAnalyzer(nextConfig))
+export default withMdxWebpackLayers(withMDX(withBundleAnalyzer(nextConfig)))

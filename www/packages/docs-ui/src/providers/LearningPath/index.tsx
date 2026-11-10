@@ -18,7 +18,7 @@ export type LearningPathType = {
 export type LearningPathStepType = {
   title?: string
   description?: string
-  descriptionJSX?: JSX.Element
+  descriptionJSX?: React.JSX.Element
   path?: string
 }
 

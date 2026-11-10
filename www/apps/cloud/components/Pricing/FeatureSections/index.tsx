@@ -1,11 +1,7 @@
 import React from "react"
 import clsx from "clsx"
-import {
-  FeatureTableFields,
-  Block,
-  Span,
-  TooltipBlock,
-} from "../../../utils/types"
+import { FeatureTableFields, Block } from "../../../utils/types"
+import { getBlockLines } from "../../../utils/pricing"
 import { BorderedIcon, H3, MarkdownContent, MDXComponents } from "docs-ui"
 import slugify from "slugify"
 import {
@@ -31,70 +27,6 @@ interface FeatureSectionsProps {
   columns: string[]
 }
 
-const featureLinks: Record<string, string> = {
-  orders: "/resources/commerce-modules/order",
-  products: "/resources/commerce-modules/product",
-  "sales channels": "/resources/commerce-modules/sales-channels",
-  "regions & currencies": "/resources/commerce-modules/region",
-  "github integration":
-    "/cloud/projects#2-create-project-from-an-existing-application",
-  "push-to-deploy flow": "/cloud/deployments#how-are-deployments-created",
-  previews: "/cloud/environments/preview",
-  "auto configuration:":
-    "/cloud/projects#prerequisite-medusa-application-configurations",
-  postgres: "/cloud/database",
-  redis: "/cloud/redis",
-  s3: "/cloud/s3",
-  "environment variables": "/cloud/environments/environment-variables",
-  "data import/export": "/cloud/database#importexport-database-dumps",
-  "advanced logs": "/cloud/logs",
-  "unlimited long-lived environments": "/cloud/environments/long-lived",
-  "long-lived environments (lle)": "/cloud/environments/long-lived",
-  "preview environments (pe)": "/cloud/environments/preview",
-  "cloud seats": "/cloud/organizations#view-organization-members",
-  "object storage": "/cloud/s3",
-  "database storage": "/cloud/database",
-  "key value store": "/cloud/redis",
-  "admin dashboard users": "/user-guide/settings/users",
-  "unlimited deployments": "/cloud/deployments",
-  "traffic load balancing": "/cloud/comparison#auto-scaling",
-  "log retention": "/cloud/logs",
-  "real-time 24/7 monitoring": "/cloud/comparison#high-availability",
-  "zero-downtime deployment": "/cloud/deployments",
-  backups: "/cloud/database#cloud-database-backups",
-  "performance tuning": "/cloud/comparison#performance",
-  "sla-backed uptime": "/cloud/comparison#high-availability",
-  support: "/cloud/comparison#support",
-  "medusa cache": "/cloud/cache",
-  "hosting of monorepos": "/cloud/projects/prerequisites#monorepo-setup",
-  "custom domains": "/cloud/storefront#storefront-custom-domain",
-  "storefront previews": "/cloud/environments/preview",
-  "mcp server": "/learn/introduction/build-with-llms-ai/mcp-server",
-  "development agent": "/cloud/assistant",
-  "medusa cloud cli": "/cloud/cli",
-  "webhook events": "/cloud/webhooks/events",
-  "log drains": "/cloud/projects/log-drains",
-  "use with starters": "/cloud/projects#1-create-project-from-a-starter",
-  "custom backend domain": "/cloud/environments/custom-domains",
-  "pre configured caching": "/cloud/cache",
-  "integrated querying": "/learn/fundamentals/query#cache-query-results",
-  "auto invalidation":
-    "/resources/infrastructure-modules/caching/concepts#automatic-cache-invalidation",
-  "full-text search": "/resources/infrastructure-modules/search",
-  "typo-tolerant": "/cloud/search/settings#typo-tolerance",
-  "faceting and filtering":
-    "/resources/infrastructure-modules/search/index-definitions/modifiers",
-  "auto index sync": "/resources/infrastructure-modules/search/reindexing",
-  "instantsearch-compatible": "/resources/instantsearch",
-  "search analytics": "/cloud/search/analytics",
-  "semantic and hybrid search": "/cloud/search/semantic-search",
-  "managed embeddings": "/cloud/search/semantic-search#index-the-text-to-embed",
-  "built-in emails": "/cloud/emails",
-  "delivery insights": "/cloud/emails#monitor-email-sending-activity-on-cloud",
-  "open tracking": "/cloud/emails#monitor-email-sending-activity-on-cloud",
-  "bounce details": "/cloud/emails#monitor-email-sending-activity-on-cloud",
-}
-
 const featureIcons: Record<string, React.FC> = {
   "Commerce features": Shopping,
   Agents: Robot,
@@ -109,37 +41,8 @@ const featureIcons: Record<string, React.FC> = {
   "Organization & Billing": CurrencyDollar,
 }
 
-// Helper function to render Block content (Sanity rich text)
-const renderBlockContent = (blocks: Block[]) => {
-  if (!blocks || blocks.length === 0) {
-    return ""
-  }
-
-  return blocks
-    .map((block) => {
-      if (block._type === "block" && block.children) {
-        return block.children
-          .map((child: Span | TooltipBlock) => {
-            if (child._type === "span") {
-              const key = child.text.trim().toLowerCase()
-              return featureLinks[key]
-                ? "[" +
-                    child.text +
-                    "](" +
-                    config.baseUrl +
-                    featureLinks[key] +
-                    ")"
-                : child.text
-            }
-            return ""
-          })
-          .join("  \n")
-      }
-      return ""
-    })
-    .join("  \n")
-    .replaceAll("-", "\\-")
-}
+const renderBlockContent = (blocks: Block[]) =>
+  getBlockLines(blocks, config.baseUrl).join("  \n").replaceAll("-", "\\-")
 
 const FeatureSections: React.FC<FeatureSectionsProps> = ({
   featureSections,

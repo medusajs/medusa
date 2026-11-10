@@ -19,8 +19,8 @@ export function tryConvertToBoolean<T>(
     return normalizedValue === "true"
       ? true
       : normalizedValue === "false"
-      ? false
-      : defaultValue ?? undefined
+        ? false
+        : (defaultValue ?? undefined)
   }
   return defaultValue ?? undefined
 }

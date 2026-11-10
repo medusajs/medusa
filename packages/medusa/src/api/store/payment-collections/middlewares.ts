@@ -8,6 +8,7 @@ import {
   StoreCreatePaymentCollection,
   StoreCreatePaymentSession,
   StoreGetPaymentCollectionParams,
+  StoreUpdatePaymentSession,
 } from "./validators"
 
 export const storePaymentCollectionsMiddlewares: MiddlewareRoute[] = [
@@ -27,6 +28,17 @@ export const storePaymentCollectionsMiddlewares: MiddlewareRoute[] = [
     matcher: "/store/payment-collections/:id/payment-sessions",
     middlewares: [
       validateAndTransformBody(StoreCreatePaymentSession),
+      validateAndTransformQuery(
+        StoreGetPaymentCollectionParams,
+        queryConfig.retrievePaymentCollectionTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/store/payment-collections/:id/payment-sessions/:session_id",
+    middlewares: [
+      validateAndTransformBody(StoreUpdatePaymentSession),
       validateAndTransformQuery(
         StoreGetPaymentCollectionParams,
         queryConfig.retrievePaymentCollectionTransformQueryConfig

@@ -8,7 +8,6 @@ import {
   DocumentReflection,
   ParameterReflection,
   ParameterType,
-  ReferenceType,
   ReflectionKind,
   SignatureReflection,
 } from "typedoc"
@@ -109,7 +108,7 @@ class WorkflowsPlugin {
       if (isWorkflow(reflection)) {
         const { initializer } =
           this.helper.getReflectionSymbolAndInitializer({
-            project: context.project,
+            context,
             reflection: reflection.parent,
           }) || {}
 
@@ -351,7 +350,7 @@ class WorkflowsPlugin {
 
         const { initializer: originalInitializer } =
           this.helper.getReflectionSymbolAndInitializer({
-            project: context.project,
+            context,
             reflection: initializerReflection,
           }) || {}
 
@@ -609,8 +608,8 @@ class WorkflowsPlugin {
       workflowReflection.signatures?.length
     parameter.type = isParameterWorkflowInput
       ? getWorkflowInputType(workflowReflection.signatures![0]) ||
-        ReferenceType.createSymbolReference(inputSymbol, context)
-      : ReferenceType.createSymbolReference(inputSymbol, context)
+        context.createSymbolReference(inputSymbol, context)
+      : context.createSymbolReference(inputSymbol, context)
 
     if (parameter.type.type === "reference") {
       if (parameter.type.name === "__object") {
@@ -975,7 +974,7 @@ class WorkflowsPlugin {
   }) {
     const { initializer: workflowInitializer } =
       this.helper.getReflectionSymbolAndInitializer({
-        project: context.project,
+        context,
         reflection: workflowReflection,
       }) || {}
     // check if the workflow acquires a lock

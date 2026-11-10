@@ -8,8 +8,6 @@ import {
 
 jest.setTimeout(100000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Translation API", () => {
@@ -42,10 +40,6 @@ medusaIntegrationTestRunner({
         })
 
         await dbUtils.snapshot()
-      })
-
-      afterAll(async () => {
-        delete process.env.MEDUSA_FF_TRANSLATION
       })
 
       describe("GET /admin/translations", () => {

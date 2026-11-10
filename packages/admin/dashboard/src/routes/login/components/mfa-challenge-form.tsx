@@ -96,7 +96,7 @@ export const MfaChallengeForm = ({
     <div className="flex w-full flex-col items-center">
       <div className="mb-6 flex flex-col items-center">
         <Heading>{t("login.mfa.title")}</Heading>
-        <Text size="small" className="text-ui-fg-subtle text-center">
+        <Text size="small" className="text-center text-ui-fg-subtle">
           {isRecoveryCode
             ? t("login.mfa.recoveryDescription")
             : t("login.mfa.description")}
@@ -139,7 +139,7 @@ export const MfaChallengeForm = ({
         {onBack && (
           <Link
             to="/login"
-            className="txt-small text-ui-fg-muted transition-fg hover:text-ui-fg-subtle focus-visible:text-ui-fg-subtle text-center outline-none"
+            className="txt-small text-center text-ui-fg-muted outline-none transition-fg hover:text-ui-fg-subtle focus-visible:text-ui-fg-subtle"
             onClick={onBack}
           >
             {t("login.mfa.backToLogin")}
@@ -147,13 +147,13 @@ export const MfaChallengeForm = ({
         )}
       </div>
       {canUseRecoveryCode && (
-        <div className="text-ui-fg-muted txt-small mt-6 text-center">
+        <div className="txt-small mt-6 text-center text-ui-fg-muted">
           {isRecoveryCode
             ? t("login.mfa.useAuthenticatorPrompt")
             : t("login.mfa.useRecoveryCodePrompt")}{" "}
           <button
             type="button"
-            className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover font-medium outline-none"
+            className="font-medium text-ui-fg-interactive outline-none transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover"
             onClick={() =>
               handleMethodChange(isRecoveryCode ? "totp" : "recovery_code")
             }

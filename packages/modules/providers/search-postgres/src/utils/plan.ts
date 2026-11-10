@@ -5,12 +5,7 @@ import { MedusaError } from "@medusajs/framework/utils"
 export type PostgresSearchEngine = "native" | "lakebase"
 
 export type PostgresFieldKind =
-  | "text"
-  | "keyword"
-  | "number"
-  | "boolean"
-  | "geo"
-  | "vector"
+  "text" | "keyword" | "number" | "boolean" | "geo" | "vector"
 
 export type PostgresVectorDistance = "cosine" | "l2" | "inner_product"
 

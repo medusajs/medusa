@@ -18,7 +18,14 @@ import { ComponentPropsWithoutRef } from "react"
 import { useTranslation } from "react-i18next"
 
 import { FetchError } from "@medusajs/js-sdk"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
+import {
+  useTaxRatePermissions,
+  useTaxRegionPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useProductTypes } from "../../../../../hooks/api/product-types"
 import { useProducts } from "../../../../../hooks/api/products"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
@@ -33,21 +40,53 @@ interface TaxOverrideCardProps extends ComponentPropsWithoutRef<"div"> {
 
 export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
   const { t } = useTranslation()
+  const { canUpdate: canUpdateTaxRegion, canDelete } = useTaxRegionPermissions()
+  const { canUpdate: canUpdateTaxRates } = useTaxRatePermissions()
+  const canUpdate = canUpdateTaxRegion && canUpdateTaxRates
   const handleDelete = useDeleteTaxRateAction(taxRate)
 
   if (taxRate.is_default) {
     return null
   }
 
-  const groupedRules = taxRate.rules.reduce((acc, rule) => {
-    if (!acc[rule.reference]) {
-      acc[rule.reference] = []
-    }
+  const actionGroups: ActionGroup[] = []
 
-    acc[rule.reference].push(rule.reference_id)
+  if (canUpdate) {
+    actionGroups.push({
+      actions: [
+        {
+          label: t("actions.edit"),
+          icon: <PencilSquare />,
+          to: `overrides/${taxRate.id}/edit`,
+        },
+      ],
+    })
+  }
 
-    return acc
-  }, {} as Record<string, string[]>)
+  if (canDelete) {
+    actionGroups.push({
+      actions: [
+        {
+          label: t("actions.delete"),
+          icon: <Trash />,
+          onClick: handleDelete,
+        },
+      ],
+    })
+  }
+
+  const groupedRules = taxRate.rules.reduce(
+    (acc, rule) => {
+      if (!acc[rule.reference]) {
+        acc[rule.reference] = []
+      }
+
+      acc[rule.reference].push(rule.reference_id)
+
+      return acc
+    },
+    {} as Record<string, string[]>
+  )
 
   const validKeys = Object.values(TaxRateRuleReferenceType)
   const numberOfTargets = Object.keys(groupedRules).map((key) =>
@@ -68,7 +107,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
               {taxRate.name}
             </Text>
             {taxRate.code && (
-              <div className="text-ui-fg-subtle flex items-center gap-x-1.5">
+              <div className="flex items-center gap-x-1.5 text-ui-fg-subtle">
                 <Text size="small" leading="compact">
                   ·
                 </Text>
@@ -85,34 +124,13 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
               count: numberOfTargets,
             })}
           </Text>
-          <div className="bg-ui-border-base h-3 w-px" />
+          <div className="h-3 w-px bg-ui-border-base" />
           <StatusBadge color={taxRate.is_combinable ? "green" : "grey"}>
             {taxRate.is_combinable
               ? t("taxRegions.fields.isCombinable.true")
               : t("taxRegions.fields.isCombinable.false")}
           </StatusBadge>
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.edit"),
-                    icon: <PencilSquare />,
-                    to: `overrides/${taxRate.id}/edit`,
-                  },
-                ],
-              },
-              {
-                actions: [
-                  {
-                    label: t("actions.delete"),
-                    icon: <Trash />,
-                    onClick: handleDelete,
-                  },
-                ],
-              },
-            ]}
-          />
+          {actionGroups.length > 0 && <ActionMenu groups={actionGroups} />}
         </div>
       </div>
       <RadixCollapsible.Content>
@@ -120,7 +138,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
           <Divider variant="dashed" />
           <div className="px-6 py-3">
             <div className="flex items-center gap-x-3">
-              <div className="text-ui-fg-muted flex size-5 items-center justify-center">
+              <div className="flex size-5 items-center justify-center text-ui-fg-muted">
                 <ArrowDownRightMini />
               </div>
               <div className="flex flex-wrap items-center gap-x-1.5 gap-y-2">
@@ -235,7 +253,7 @@ const ReferenceValues = ({
 
   if (isPending) {
     return (
-      <div className="bg-ui-tag-neutral-bg border-ui-tag-neutral-border h-5 w-14 animate-pulse rounded-md" />
+      <div className="h-5 w-14 animate-pulse rounded-md border-ui-tag-neutral-border bg-ui-tag-neutral-bg" />
     )
   }
 

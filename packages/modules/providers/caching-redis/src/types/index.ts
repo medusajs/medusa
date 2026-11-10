@@ -6,8 +6,7 @@ import { RedisOptions } from "ioredis"
  */
 type DeprecatedTopLevelRedisOptions = RedisOptions
 
-export interface RedisCacheModuleOptions
-  extends DeprecatedTopLevelRedisOptions {
+export interface RedisCacheModuleOptions extends DeprecatedTopLevelRedisOptions {
   /**
    * Redis connection string
    */

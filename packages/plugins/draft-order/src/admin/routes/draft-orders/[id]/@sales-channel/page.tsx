@@ -15,6 +15,7 @@ import {
 } from "../../../../hooks/api/draft-orders"
 import { useComboboxData } from "../../../../hooks/common/use-combobox-data"
 import { sdk } from "../../../../lib/queries/sdk"
+import { EDIT_DRAFT_ORDER_SALES_CHANNEL_PERMISSIONS } from "../../../../lib/permissions"
 
 const SalesChannel = () => {
   const { id } = useParams()
@@ -160,5 +161,9 @@ const SalesChannelField = ({ control, order }: SalesChannelFieldProps) => {
 const schema = z.object({
   sales_channel_id: z.string().min(1),
 })
+
+export const handle = {
+  permissions: EDIT_DRAFT_ORDER_SALES_CHANNEL_PERMISSIONS,
+}
 
 export default SalesChannel

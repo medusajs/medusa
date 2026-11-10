@@ -163,7 +163,7 @@ describe("ActiveIndexVersionCache", () => {
 
     await cache.get("product")
     flipTo(2)
-    cache.invalidate()
+    await cache.invalidate()
 
     expect((await cache.get("product")).version).toBe(2)
     expect(fetchAll).toHaveBeenCalledTimes(2)
@@ -183,6 +183,78 @@ describe("ActiveIndexVersionCache", () => {
     breakFetch(true)
 
     await expect(cache.get("product")).rejects.toThrow("db unreachable")
+  })
+
+  describe("with a fetch in flight", () => {
+    // Every fetch stays pending until the test lands it, so a fetch that read
+    // the database before a flip can be made to land after the flip was made.
+    const buildDeferredCache = () => {
+      let now = 1_000_000
+      jest.spyOn(Date, "now").mockImplementation(() => now)
+
+      const pending: ((values: Map<string, unknown>) => void)[] = []
+      const fetchAll = jest.fn(
+        () => new Promise<Map<string, any>>((resolve) => pending.push(resolve))
+      )
+
+      return {
+        cache: new ActiveIndexVersionCache(fetchAll),
+        fetchAll,
+        advance: (ms: number) => {
+          now += ms
+        },
+        land: async (fetch: number, active?: number) => {
+          pending[fetch](new Map(active ? [["product", version(active)]] : []))
+          await new Promise((resolve) => setImmediate(resolve))
+        },
+      }
+    }
+
+    it("keeps a first activation that the fetch did not see", async () => {
+      const { cache, fetchAll, land } = buildDeferredCache()
+
+      // Read the database before the activation, so it answers "no version".
+      const cold = cache.get("product").catch(() => undefined)
+      const set = cache.set("product", version(1))
+      await land(0)
+      await Promise.all([cold, set])
+
+      expect((await cache.get("product")).version).toBe(1)
+      expect(fetchAll).toHaveBeenCalledTimes(1)
+    })
+
+    it("does not roll a flip back to the version the fetch read", async () => {
+      const { cache, advance, land } = buildDeferredCache()
+
+      const initial = cache.get("product")
+      await land(0, 1)
+      await initial
+
+      // Past the soft TTL, so this starts a background fetch that reads the
+      // database before the flip below.
+      advance(SOFT_TTL_MS)
+      await cache.get("product")
+      const set = cache.set("product", version(2))
+      await land(1, 1)
+      await set
+
+      expect((await cache.get("product")).version).toBe(2)
+    })
+
+    it("does not join or keep a fetch that started before invalidate()", async () => {
+      const { cache, fetchAll, land } = buildDeferredCache()
+
+      const before = cache.get("product")
+      const invalidated = cache.invalidate()
+      await land(0, 1)
+      await Promise.all([before, invalidated])
+
+      const after = cache.get("product")
+      await land(1, 2)
+
+      expect((await after).version).toBe(2)
+      expect(fetchAll).toHaveBeenCalledTimes(2)
+    })
   })
 })
 

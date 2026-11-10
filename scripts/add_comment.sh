@@ -4,7 +4,7 @@
 #
 # Usage:
 #   GITHUB_EVENT_NUMBER=123 ./scripts/add_comment.sh \
-#       --workflow <triage|review> \
+#       --workflow <triage|review|fix|guardrails> \
 #       --template <template-id> \
 #       [--params-file <path>]
 #
@@ -20,14 +20,20 @@
 # literal placeholder `{{KEY}}` appears. Keys that don't match the regex
 # (e.g. lowercase keys) are ignored — the caller is responsible for
 # producing uppercase keys that match the placeholders. All values are
-# coerced to string and lightly sanitized: CR + null bytes are removed,
-# backticks are stripped, and `&` / `<` / `>` are HTML-escaped. This
-# blocks inline code spans and raw HTML, but is NOT a full Markdown
-# sanitizer — other constructs (`**bold**`, `_italic_`, `[link](url)`,
-# headings, lists, etc.) still render. Don't rely on this as the only
-# defense against attacker-supplied prose; the upstream schema validator
-# also caps length and constrains the field set. Any placeholder left in
-# the template after substitution is removed.
+# coerced to string and sanitized: everything sanitize_untrusted.py strips
+# (hidden characters, ANSI escapes, HTML comments) is removed, closing
+# keywords referencing issues (`fixes #12`) lose the keyword, links and bare
+# URLs whose host is not github.com/medusajs/*, docs.medusajs.com or
+# medusajs.com lose the URL (link text is kept), @mentions are defused
+# (`@name` -> `name`), CR + null bytes are removed, and `&` / `<` / `>` are
+# HTML-escaped. Fenced code blocks and inline code spans are kept verbatim,
+# since GitHub renders no links, mentions or HTML inside them; stray
+# backticks outside them are stripped. The static template text is never
+# altered. This is NOT a full Markdown sanitizer — other constructs
+# (`**bold**`, `_italic_`, headings, lists, etc.) still render. Don't rely
+# on this as the only defense against attacker-supplied prose; the upstream
+# schema validator also caps length and constrains the field set. Any
+# placeholder left in the template after substitution is removed.
 #
 
 set -euo pipefail
@@ -59,14 +65,14 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$WORKFLOW" || -z "$TEMPLATE" ]]; then
-  echo "Usage: $0 --workflow <triage|review> --template <id> [--params-file <path>]" >&2
+  echo "Usage: $0 --workflow <triage|review|fix|guardrails> --template <id> [--params-file <path>]" >&2
   exit 1
 fi
 
 case "$WORKFLOW" in
-  triage|review) ;;
+  triage|review|fix|guardrails) ;;
   *)
-    echo "Error: --workflow must be 'triage' or 'review'" >&2
+    echo "Error: --workflow must be one of: triage, review, fix, guardrails" >&2
     exit 1
     ;;
 esac
@@ -100,12 +106,16 @@ fi
 
 # Render the template in Python for robust handling of multi-line values
 # and literal-string substitution (no shell-quoting / regex pitfalls).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUT_FILE=$(mktemp)
 trap 'rm -f "$OUT_FILE"' EXIT
 
 TEMPLATE_PATH="$TEMPLATE_PATH" PARAMS_FILE="${PARAMS_FILE:-}" OUT_FILE="$OUT_FILE" \
-  python3 - <<'PY'
-import json, os, re
+  SCRIPT_DIR="$SCRIPT_DIR" python3 - <<'PY'
+import json, os, re, sys
+
+sys.path.insert(0, os.environ["SCRIPT_DIR"])
+from sanitize_untrusted import render_markdown_param
 
 with open(os.environ["TEMPLATE_PATH"], "r", encoding="utf-8") as f:
     body = f.read()
@@ -118,21 +128,12 @@ if params_file:
     if not isinstance(params, dict):
         raise SystemExit("params file must contain a JSON object")
 
-BACKTICK = chr(96)
-
 def sanitize(value):
     if isinstance(value, list):
         return "\n".join("- " + sanitize(v) for v in value)
     if value is None:
         return ""
-    s = str(value)
-    s = s.replace("\r", "").replace("\x00", "")
-    s = s.replace(BACKTICK, "")
-    # Escape `&` first so that pre-existing entities like `&lt;` in the
-    # input remain literal text (`&amp;lt;`) instead of rendering as `<`.
-    s = s.replace("&", "&amp;")
-    s = s.replace("<", "&lt;").replace(">", "&gt;")
-    return s
+    return render_markdown_param(str(value))
 
 for key, value in params.items():
     if not re.fullmatch(r"[A-Z][A-Z0-9_]*", str(key)):

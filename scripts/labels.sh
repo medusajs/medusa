@@ -4,7 +4,7 @@
 #
 # Usage:
 #   GITHUB_EVENT_NUMBER=123 ./scripts/labels.sh \
-#       --workflow <triage|review> \
+#       --workflow <triage|review|fix|guardrails> \
 #       --action <add|remove> \
 #       --label <label>
 #
@@ -41,7 +41,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$WORKFLOW" || -z "$ACTION" || -z "$LABEL" ]]; then
-  echo "Usage: $0 --workflow <triage|review> --action <add|remove> --label <label>" >&2
+  echo "Usage: $0 --workflow <triage|review|fix|guardrails> --action <add|remove> --label <label>" >&2
   exit 1
 fi
 
@@ -60,14 +60,18 @@ if ! [[ "$ISSUE" =~ ^[0-9]+$ ]]; then
 fi
 
 # Hardcoded per-workflow allowlists.
-TRIAGE_LABELS=("type: bug" "requires-more" "requires-team" "help-wanted" "good first issue" "feedback")
-REVIEW_LABELS=("initial-approval" "requires-more" "requires-team")
+TRIAGE_LABELS=("type: bug" "requires-more" "requires-team" "help-wanted" "good first issue" "feedback" "requires-rewrite")
+REVIEW_LABELS=("initial-approval" "requires-more" "requires-team" "requires-rewrite")
+FIX_LABELS=("requires-team")
+GUARDRAILS_LABELS=("requires-linked-issue")
 
 case "$WORKFLOW" in
   triage) ALLOWED=("${TRIAGE_LABELS[@]}") ;;
   review) ALLOWED=("${REVIEW_LABELS[@]}") ;;
+  fix) ALLOWED=("${FIX_LABELS[@]}") ;;
+  guardrails) ALLOWED=("${GUARDRAILS_LABELS[@]}") ;;
   *)
-    echo "Error: --workflow must be 'triage' or 'review'" >&2
+    echo "Error: --workflow must be one of: triage, review, fix, guardrails" >&2
     exit 1
     ;;
 esac

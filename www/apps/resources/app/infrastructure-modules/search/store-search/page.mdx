@@ -233,6 +233,8 @@ curl -X POST "http://localhost:9000/store/search" \
   }'
 ```
 
+Each hit's `document` holds every field of the index that's retrievable. Pass `fields` to narrow the hits to some of those fields. The route rejects a field the index can't return, so a storefront can't retrieve data the index doesn't hold. To keep a field out of the hits, mark it with [`retrievable(false)`](../index-definitions/modifiers/page.mdx#retrievable) in the index definition.
+
 Learn more about the accepted request body and the response in the [Store Search API reference](!api!/store/search/search-indexes).
 
 <Note title="Tip">

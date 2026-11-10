@@ -180,7 +180,15 @@ const generatedgeneratedRecipesSidebarSidebar = {
       "type": "link",
       "path": "/recipes/omnichannel",
       "title": "Omnichannel Store",
-      "children": []
+      "children": [
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/recipes/omnichannel/marketplaces",
+          "title": "Marketplace Integrations",
+          "children": []
+        }
+      ]
     },
     {
       "loaded": true,

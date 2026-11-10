@@ -41,7 +41,6 @@ export interface BatchTranslationSettingsWorkflowInput {
  * to create, update, and delete translation settings in your custom flows.
  *
  * @since 2.13.0
- * @featureFlag translation
  *
  * @example
  * const { result } = await batchTranslationSettingsWorkflow(container)

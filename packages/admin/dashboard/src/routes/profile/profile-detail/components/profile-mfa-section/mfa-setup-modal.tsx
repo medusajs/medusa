@@ -114,8 +114,8 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
                 </Text>
               </div>
               {secret && otpauthUrl ? (
-                <div className="border-ui-border-base flex w-full flex-col items-center gap-y-4 rounded-lg border p-4">
-                  <div className="bg-ui-bg-subtle txt-compact-small text-ui-fg-base border-ui-border-base flex max-w-full items-center gap-x-2 rounded-md border px-3 py-2 font-mono">
+                <div className="flex w-full flex-col items-center gap-y-4 rounded-lg border border-ui-border-base p-4">
+                  <div className="txt-compact-small flex max-w-full items-center gap-x-2 rounded-md border border-ui-border-base bg-ui-bg-subtle px-3 py-2 font-mono text-ui-fg-base">
                     <span className="truncate">{secret}</span>
                     <Copy content={secret} variant="mini" />
                   </div>
@@ -151,7 +151,7 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
                   {t("profile.mfa.recoveryCodesDescription")}
                 </Text>
               </div>
-              <div className="border-ui-border-base bg-ui-bg-subtle grid grid-cols-2 gap-3 rounded-lg border p-4">
+              <div className="grid grid-cols-2 gap-3 rounded-lg border border-ui-border-base bg-ui-bg-subtle p-4">
                 {recoveryCodes.map((recoveryCode) => {
                   return (
                     <Text key={recoveryCode} size="small" className="font-mono">

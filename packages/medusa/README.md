@@ -8,7 +8,7 @@
   </a>
 </p>
 <h1 align="center">
-  Medusa
+  @medusajs/medusa
 </h1>
 
 <h4 align="center">
@@ -23,13 +23,9 @@
   <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
   </a>
-  <a href="https://circleci.com/gh/medusajs/medusa">
-    <img src="https://circleci.com/gh/medusajs/medusa.svg?style=shield" alt="Current CircleCI build status." />
-  </a>
   <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
   </a>
-    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
   <a href="https://discord.gg/xpCwq3Kfn8">
     <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
   </a>
@@ -38,37 +34,77 @@
   </a>
 </p>
 
-## Getting Started
+`@medusajs/medusa` is the core Medusa application package: the commerce server with its Store, Admin, and Auth API routes, the implementations of the `medusa` CLI commands, and all default commerce and infrastructure modules. Every Medusa application depends on it, and modules are registered from it by their `@medusajs/medusa/<module>` path (for example, `@medusajs/medusa/cart`).
 
-Visit the [Quickstart Guide](https://docs.medusajs.com/learn) to set up a server.
+## At a glance
 
-## What is Medusa
+| | |
+| --- | --- |
+| Package | `@medusajs/medusa` |
+| Type | Core library |
+| Import from | `@medusajs/medusa/<module>` for modules and providers, `@medusajs/medusa/core-flows` for workflows |
+| Entry points | `./<module>`, `./core-flows`, `./api/*`, `./commands/*`, `./subscribers/*`, `./jobs/*`, `./loaders/*`, `./feature-flags/*`, `./types`, `./utils` |
 
-Medusa is a set of commerce modules and tools that allow you to build rich, reliable, and performant commerce applications without reinventing core commerce logic. The modules can be customized and used to build advanced ecommerce stores, marketplaces, or any product that needs foundational commerce primitives. All modules are open-source and freely available on npm.
+## Features
 
-Learn more about [Medusa’s architecture](https://docs.medusajs.com/learn/advanced-development/architecture/overview) and [commerce modules](https://docs.medusajs.com/resources/commerce-modules) in the Docs.
+- **Commerce server**: Express-based HTTP server with the Store API (`/store`), Admin API (`/admin`), Auth API (`/auth`), and webhook routes (`/hooks`).
+- **CLI commands**: implementations of `develop`, `start`, `build`, `exec`, `user`, `lint`, `db:*`, and `plugin:*`, run through the `medusa` binary from `@medusajs/cli`.
+- **Default modules**: re-exports every official module and provider (Cart, Product, Order, Payment, Auth, File, Event Bus, Workflow Engine, and more) at `@medusajs/medusa/<name>`, so they need no separate install.
+- **Workflows**: re-exports `@medusajs/core-flows` at `@medusajs/medusa/core-flows`.
 
-## Roadmap & Upgrades
+## Installation
 
-You can view the planned, started and completed features in the [Roadmap discussion](https://github.com/medusajs/medusa/discussions/categories/roadmap).
+Create a new Medusa application, which installs this package along with `@medusajs/framework` and `@medusajs/cli`:
 
-Follow the [Upgrade Guides](https://docs.medusajs.com/learn/update) to keep your Medusa project up-to-date.
+```bash
+npx create-medusa-app@latest my-medusa-store
+```
 
-## Community & Contributions
+Requires Node.js `>=22.22.0`.
 
-The community and core team are available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can ask for support, discuss roadmap, and share ideas.
+## Usage
 
-Our [Contribution Guide](https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md) describes how to contribute to the codebase and Docs.
+Register a module or provider shipped with this package by its `@medusajs/medusa/<name>` path in `medusa-config.ts`:
 
-Join our [Discord server](https://discord.com/invite/medusajs) to meet other community members.
+```ts
+import { defineConfig } from "@medusajs/framework/utils"
 
-## Other channels
+module.exports = defineConfig({
+  projectConfig: {
+    databaseUrl: process.env.DATABASE_URL,
+  },
+  modules: [
+    {
+      resolve: "@medusajs/medusa/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/file-s3",
+            id: "s3",
+            options: {
+              // ...
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
 
-- [GitHub Issues](https://github.com/medusajs/medusa/issues)
-- [Twitter](https://twitter.com/medusajs)
-- [LinkedIn](https://www.linkedin.com/company/medusajs)
-- [Medusa Blog](https://medusajs.com/blog/)
+Run the server with the Medusa CLI:
 
-## License
+```bash
+npx medusa develop
+```
 
-Licensed under the [MIT License](https://github.com/medusajs/medusa/blob/develop/LICENSE).
+## Resources
+
+- [Installation](https://docs.medusajs.com/learn/installation)
+- [Architecture](https://docs.medusajs.com/learn/introduction/architecture)
+- [Medusa configuration](https://docs.medusajs.com/learn/configurations/medusa-config)
+- [Medusa CLI reference](https://docs.medusajs.com/resources/medusa-cli)
+- [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules)
+- [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules)
+- [Workflows reference](https://docs.medusajs.com/resources/medusa-workflows-reference)
+- [Upgrade guides](https://docs.medusajs.com/learn/update)

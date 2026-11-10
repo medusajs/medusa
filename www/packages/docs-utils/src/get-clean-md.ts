@@ -15,16 +15,18 @@ import {
   ComponentParser,
   parseCard,
   parseCardList,
-  parseChangelogList,
   parseChildDocs,
   parseCodeTabs,
   parseColors,
   parseComponentExample,
   parseComponentReference,
   parseDetails,
+  parseEnterpriseNotice,
   parseEventHeader,
+  parsePermissionsBadge,
   parseHookValues,
   parseIconSearch,
+  parseInjectedMarkdown,
   parseNote,
   parsePackageInstall,
   parsePrerequisites,
@@ -49,7 +51,7 @@ import { globalConfig } from "./global-config.js"
 const parsers: Record<string, ComponentParser> = {
   Card: parseCard,
   CardList: parseCardList,
-  ChangelogList: parseChangelogList,
+  ChangelogList: parseInjectedMarkdown,
   ChildDocs: parseChildDocs,
   CodeTabs: parseCodeTabs,
   Details: parseDetails,
@@ -68,12 +70,16 @@ const parsers: Record<string, ComponentParser> = {
   Colors: parseColors,
   SplitList: parseSplitList,
   EventHeader: parseEventHeader,
+  PermissionsBadge: parsePermissionsBadge,
+  EnterpriseNotice: parseEnterpriseNotice,
+  PricingContent: parseInjectedMarkdown,
 }
 
 const asyncParserNames = new Set([
   "ChangelogList",
   "ComponentExample",
   "ComponentReference",
+  "PricingContent",
 ])
 
 const isComponentAllowed = (nodeName: string): boolean => {
@@ -370,6 +376,8 @@ const getDefaultScope = (): EvaluationScope => ({
   config: {
     version: globalConfig.version,
   },
+  // Matches what `getOsShortcut` from `docs-ui` renders on the server.
+  getOsShortcut: () => "⌘",
 })
 
 export const getCleanMd = async ({

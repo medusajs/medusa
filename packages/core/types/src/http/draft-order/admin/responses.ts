@@ -8,13 +8,12 @@ export interface AdminDraftOrderResponse {
   draft_order: AdminDraftOrder
 }
 
-export interface AdminDraftOrderListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of draft orders.
-     */
-    draft_orders: AdminDraftOrder[]
-  }> {}
+export interface AdminDraftOrderListResponse extends PaginatedResponse<{
+  /**
+   * The list of draft orders.
+   */
+  draft_orders: AdminDraftOrder[]
+}> {}
 
 export interface AdminDraftOrderPreviewResponse {
   /**

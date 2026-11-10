@@ -54,8 +54,7 @@ export interface ShippingOptionTypeDTO {
 /**
  * The filters to apply on the retrieved shipping option types.
  */
-export interface FilterableShippingOptionTypeProps
-  extends BaseFilterable<FilterableShippingOptionTypeProps> {
+export interface FilterableShippingOptionTypeProps extends BaseFilterable<FilterableShippingOptionTypeProps> {
   /**
    * The IDs to filter the shipping option types by.
    */

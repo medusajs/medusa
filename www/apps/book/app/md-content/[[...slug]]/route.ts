@@ -65,6 +65,7 @@ export async function GET(req: NextRequest, { params }: Params) {
 
   const cleanMdContent = await getCleanMdCached(content, {
     removeExtra: isOverride,
+    slug,
   })
 
   const acceptHeader = req.headers.get("accept") || ""

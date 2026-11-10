@@ -19,7 +19,7 @@ The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -243,7 +243,7 @@ The command will use the package manager you run it with to create a new Medusa 
       </Table.Cell>
       <Table.Cell>
 
-        Specify the Medusa version to install in the project. The specified version will be used for every `@medusajs/*` package in the Medusa and storefront projects.
+        Specify the Medusa version to install in the project. The specified version will be used for every `@medusajs/*` package in the Medusa and storefront projects. When used with the `--plugin` option, the specified version is used for the plugin's `@medusajs/*` dependencies and peer dependencies.
 
       </Table.Cell>
       <Table.Cell>
@@ -382,6 +382,12 @@ npx create-medusa-app@latest my-medusa-store --version 2.3.0
 ```
 
 This will create a new Medusa project with the `2.3.0` version.
+
+You can also pass the `--version` option when creating a plugin project. The tool then sets the specified version for every `@medusajs/*` package in the plugin's `dependencies`, `devDependencies`, and `peerDependencies`. For example:
+
+```bash npx2yarnExec
+npx create-medusa-app@latest my-plugin --plugin --version 2.3.0
+```
 
 ---
 

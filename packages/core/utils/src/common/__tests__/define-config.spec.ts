@@ -12,7 +12,6 @@ expect.addSnapshotSerializer({
 describe("defineConfig", function () {
   const CLOUD_ENV_VARS = [
     "MEDUSA_CLOUD_ENVIRONMENT_HANDLE",
-    "MEDUSA_CLOUD_SANDBOX_HANDLE",
     "MEDUSA_CLOUD_API_KEY",
     "MEDUSA_CLOUD_WEBHOOK_SECRET",
     "MEDUSA_CLOUD_EMAILS_ENDPOINT",
@@ -24,6 +23,7 @@ describe("defineConfig", function () {
     "MEDUSA_CLOUD_OAUTH_DISABLED",
     "MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_AUDIENCE",
+    "MEDUSA_CLOUD_OAUTH_CLIENT_SECRET",
   ]
   const savedCloudEnv: Record<string, string | undefined> = {}
 
@@ -147,10 +147,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -184,7 +180,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -219,6 +214,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -502,10 +500,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -539,7 +533,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -574,6 +567,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -711,10 +707,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -748,7 +740,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -783,6 +774,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -921,10 +915,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -958,7 +948,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -993,6 +982,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1121,10 +1113,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1158,7 +1146,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1193,6 +1180,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1324,10 +1314,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1361,7 +1347,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1396,6 +1381,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1574,10 +1562,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1611,7 +1595,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1651,6 +1634,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1794,10 +1780,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1831,7 +1813,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1866,6 +1847,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2046,10 +2030,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2083,7 +2063,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2123,6 +2102,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2319,10 +2301,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2356,7 +2334,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2396,6 +2373,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2627,10 +2607,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2664,7 +2640,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2699,6 +2674,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2732,11 +2710,13 @@ describe("defineConfig", function () {
     process.env.MEDUSA_CLOUD_API_KEY = "test-api-key"
     process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT = "test-emails-endpoint"
     process.env.MEDUSA_CLOUD_PAYMENTS_ENDPOINT = "test-payments-endpoint"
+    process.env.MEDUSA_CLOUD_PAYMENT_ACCOUNTS = "default, eu"
     process.env.MEDUSA_CLOUD_WEBHOOK_SECRET = "test-webhook-secret"
     process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT =
       "test-oauth-authorize-endpoint"
     process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT = "test-oauth-token-endpoint"
     process.env.MEDUSA_CLOUD_OAUTH_DISABLED = "true"
+    process.env.MEDUSA_CLOUD_OAUTH_CLIENT_SECRET = "test-oauth-client-secret"
     const config = defineConfig()
     process.env = { ...originalEnv }
 
@@ -2762,9 +2742,9 @@ describe("defineConfig", function () {
                 "environment_handle": "test-environment",
                 "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
+                "oauth_client_secret": "test-oauth-client-secret",
                 "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
-                "sandbox_handle": undefined,
               },
               "mfa": {
                 "encryption_key": undefined,
@@ -2827,7 +2807,6 @@ describe("defineConfig", function () {
                 "api_key": "test-api-key",
                 "endpoint": "test-emails-endpoint",
                 "environment_handle": "test-environment",
-                "sandbox_handle": undefined,
               },
               "providers": [
                 {
@@ -2853,7 +2832,10 @@ describe("defineConfig", function () {
                 "api_key": "test-api-key",
                 "endpoint": "test-payments-endpoint",
                 "environment_handle": "test-environment",
-                "sandbox_handle": undefined,
+                "payment_accounts": [
+                  "default",
+                  "eu",
+                ],
                 "webhook_secret": "test-webhook-secret",
               },
             },
@@ -2867,10 +2849,6 @@ describe("defineConfig", function () {
           },
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
-          },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
           },
           "region": {
             "resolve": "@medusajs/medusa/region",
@@ -2910,7 +2888,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2940,11 +2917,15 @@ describe("defineConfig", function () {
             "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
+            "oauthClientSecret": "test-oauth-client-secret",
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
+            "paymentAccounts": [
+              "default",
+              "eu",
+            ],
             "paymentsEndpoint": "test-payments-endpoint",
-            "sandboxHandle": undefined,
             "searchEndpoint": undefined,
             "webhookSecret": "test-webhook-secret",
           },
@@ -2960,258 +2941,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
-            "restrictedFields": {
-              "store": [
-                "order",
-                "orders",
-              ],
-            },
-            "storeCors": "http://localhost:8000",
-          },
-          "redisOptions": {
-            "retryStrategy": [Function],
-          },
-          "sessionOptions": {},
-        },
-      }
-    `)
-  })
-
-  it("should add cloud options to the project config and relevant modules if the environment variable is set for a sandbox", function () {
-    const originalEnv = { ...process.env }
-    process.env.MEDUSA_BACKEND_URL = "test-backend-url"
-    process.env.MEDUSA_CLOUD_SANDBOX_HANDLE = "test-sandbox"
-    process.env.MEDUSA_CLOUD_API_KEY = "test-api-key"
-    process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT = "test-emails-endpoint"
-    process.env.MEDUSA_CLOUD_PAYMENTS_ENDPOINT = "test-payments-endpoint"
-    process.env.MEDUSA_CLOUD_WEBHOOK_SECRET = "test-webhook-secret"
-    process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT =
-      "test-oauth-authorize-endpoint"
-    process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT = "test-oauth-token-endpoint"
-    process.env.MEDUSA_CLOUD_OAUTH_DISABLED = "true"
-    const config = defineConfig()
-    process.env = { ...originalEnv }
-
-    expect(config).toMatchInlineSnapshot(`
-      {
-        "admin": {
-          "backendUrl": "test-backend-url",
-          "maxUploadFileSize": 1048576,
-          "path": "/app",
-        },
-        "featureFlags": {},
-        "logger": undefined,
-        "modules": {
-          "api_key": {
-            "resolve": "@medusajs/medusa/api-key",
-          },
-          "auth": {
-            "options": {
-              "cloud": {
-                "api_key": "test-api-key",
-                "callback_url": "test-backend-url/app/login?auth_provider=cloud",
-                "disabled": true,
-                "environment_handle": undefined,
-                "oauth_audience": undefined,
-                "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
-                "oauth_jwks_uri": undefined,
-                "oauth_token_endpoint": "test-oauth-token-endpoint",
-                "sandbox_handle": "test-sandbox",
-              },
-              "mfa": {
-                "encryption_key": undefined,
-              },
-              "providers": [
-                {
-                  "id": "emailpass",
-                  "resolve": "@medusajs/medusa/auth-emailpass",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/auth",
-          },
-          "cache": {
-            "resolve": "@medusajs/medusa/cache-inmemory",
-          },
-          "cart": {
-            "resolve": "@medusajs/medusa/cart",
-          },
-          "currency": {
-            "resolve": "@medusajs/medusa/currency",
-          },
-          "customer": {
-            "resolve": "@medusajs/medusa/customer",
-          },
-          "event_bus": {
-            "resolve": "@medusajs/medusa/event-bus-local",
-          },
-          "file": {
-            "options": {
-              "providers": [
-                {
-                  "id": "local",
-                  "resolve": "@medusajs/medusa/file-local",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/file",
-          },
-          "fulfillment": {
-            "options": {
-              "providers": [
-                {
-                  "id": "manual",
-                  "resolve": "@medusajs/medusa/fulfillment-manual",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/fulfillment",
-          },
-          "inventory": {
-            "resolve": "@medusajs/medusa/inventory",
-          },
-          "locking": {
-            "resolve": "@medusajs/medusa/locking",
-          },
-          "notification": {
-            "options": {
-              "cloud": {
-                "api_key": "test-api-key",
-                "endpoint": "test-emails-endpoint",
-                "environment_handle": undefined,
-                "sandbox_handle": "test-sandbox",
-              },
-              "providers": [
-                {
-                  "id": "local",
-                  "options": {
-                    "channels": [
-                      "feed",
-                    ],
-                    "name": "Local Notification Provider",
-                  },
-                  "resolve": "@medusajs/medusa/notification-local",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/notification",
-          },
-          "order": {
-            "resolve": "@medusajs/medusa/order",
-          },
-          "payment": {
-            "options": {
-              "cloud": {
-                "api_key": "test-api-key",
-                "endpoint": "test-payments-endpoint",
-                "environment_handle": undefined,
-                "sandbox_handle": "test-sandbox",
-                "webhook_secret": "test-webhook-secret",
-              },
-            },
-            "resolve": "@medusajs/medusa/payment",
-          },
-          "pricing": {
-            "resolve": "@medusajs/medusa/pricing",
-          },
-          "product": {
-            "resolve": "@medusajs/medusa/product",
-          },
-          "promotion": {
-            "resolve": "@medusajs/medusa/promotion",
-          },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
-          "region": {
-            "resolve": "@medusajs/medusa/region",
-          },
-          "sales_channel": {
-            "resolve": "@medusajs/medusa/sales-channel",
-          },
-          "search": {
-            "options": {
-              "cloud": {
-                "api_key": "test-api-key",
-                "endpoint": undefined,
-                "environment_handle": undefined,
-              },
-              "providers": [
-                {
-                  "id": "postgres",
-                  "options": {
-                    "engine": "native",
-                  },
-                  "resolve": "@medusajs/medusa/search-postgres",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/search",
-          },
-          "settings": {
-            "resolve": "@medusajs/medusa/settings",
-          },
-          "stock_location": {
-            "resolve": "@medusajs/medusa/stock-location",
-          },
-          "store": {
-            "resolve": "@medusajs/medusa/store",
-          },
-          "tax": {
-            "resolve": "@medusajs/medusa/tax",
-          },
-          "translation": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/translation",
-          },
-          "user": {
-            "options": {
-              "jwt_options": undefined,
-              "jwt_public_key": undefined,
-              "jwt_secret": "supersecret",
-              "jwt_verify_options": undefined,
-            },
-            "resolve": "@medusajs/medusa/user",
-          },
-          "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
-          },
-        },
-        "plugins": [
-          {
-            "options": {},
-            "resolve": "@medusajs/draft-order",
-          },
-        ],
-        "projectConfig": {
-          "cloud": {
-            "apiKey": "test-api-key",
-            "emailsEndpoint": "test-emails-endpoint",
-            "environmentHandle": undefined,
-            "oauthAudience": undefined,
-            "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
-            "oauthCallbackUrl": undefined,
-            "oauthDisabled": true,
-            "oauthJwksUri": undefined,
-            "oauthTokenEndpoint": "test-oauth-token-endpoint",
-            "paymentsEndpoint": "test-payments-endpoint",
-            "sandboxHandle": "test-sandbox",
-            "searchEndpoint": undefined,
-            "webhookSecret": "test-webhook-secret",
-          },
-          "databaseUrl": "postgres://localhost/medusa-starter-default",
-          "http": {
-            "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
-            "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
-            "authMethodsPerActor": {
-              "user": [
-                "emailpass",
-              ],
-            },
-            "cookieSecret": "supersecret",
-            "jwtPublicKey": undefined,
-            "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -3275,9 +3007,9 @@ describe("defineConfig", function () {
                 "environment_handle": "overriden-environment",
                 "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "overriden-oauth-authorize-endpoint",
+                "oauth_client_secret": undefined,
                 "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "overriden-oauth-token-endpoint",
-                "sandbox_handle": undefined,
               },
               "mfa": {
                 "encryption_key": undefined,
@@ -3340,7 +3072,6 @@ describe("defineConfig", function () {
                 "api_key": "overriden-api-key",
                 "endpoint": "overriden-emails-endpoint",
                 "environment_handle": "overriden-environment",
-                "sandbox_handle": undefined,
               },
               "providers": [
                 {
@@ -3366,7 +3097,7 @@ describe("defineConfig", function () {
                 "api_key": "overriden-api-key",
                 "endpoint": "overriden-payments-endpoint",
                 "environment_handle": "overriden-environment",
-                "sandbox_handle": undefined,
+                "payment_accounts": undefined,
                 "webhook_secret": "overriden-webhook-secret",
               },
             },
@@ -3380,10 +3111,6 @@ describe("defineConfig", function () {
           },
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
-          },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
           },
           "region": {
             "resolve": "@medusajs/medusa/region",
@@ -3423,7 +3150,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -3453,11 +3179,12 @@ describe("defineConfig", function () {
             "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "overriden-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
+            "oauthClientSecret": undefined,
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "overriden-oauth-token-endpoint",
+            "paymentAccounts": undefined,
             "paymentsEndpoint": "overriden-payments-endpoint",
-            "sandboxHandle": undefined,
             "searchEndpoint": undefined,
             "webhookSecret": "overriden-webhook-secret",
           },
@@ -3473,6 +3200,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",

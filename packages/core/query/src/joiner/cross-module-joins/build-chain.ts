@@ -120,7 +120,7 @@ export function resolvePathHops(
       }
 
       let hopEntity = entity
-        ? catalog.getEntity(entity, realSegment) ?? entity
+        ? (catalog.getEntity(entity, realSegment) ?? entity)
         : entity
 
       const relationship = catalog.getEntityRelationship({
@@ -218,8 +218,8 @@ export function buildChainLevels(params: {
       hop.kind === "internal"
         ? buildInternalRelationStep(hop, next, position, context)
         : hop.serviceConfig.isLink
-        ? buildLinkModuleStep(hop, next, position, context)
-        : buildReadOnlyLinkStep(hop, position, context)
+          ? buildLinkModuleStep(hop, next, position, context)
+          : buildReadOnlyLinkStep(hop, position, context)
 
     if (!step) {
       return undefined

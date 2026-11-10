@@ -1,156 +1,123 @@
-# PostgreSQL search provider
+<p align="center">
+  <a href="https://www.medusajs.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
+  </a>
+</p>
+<h1 align="center">
+  @medusajs/search-postgres
+</h1>
 
-Search provider for Medusa backed by PostgreSQL, with two engines:
+<h4 align="center">
+  <a href="https://docs.medusajs.com">Documentation</a> |
+  <a href="https://www.medusajs.com">Website</a>
+</h4>
 
-| Engine             | When to use                        | Keyword                     | Vector               |
-| ------------------ | ---------------------------------- | --------------------------- | -------------------- |
-| `native` (default) | Local / self-hosted / any Postgres | GIN + `ts_rank` + `pg_trgm` | Not supported        |
-| `lakebase`         | Medusa Cloud / Lakebase Search     | `lakebase_bm25` (BM25)      | `lakebase_ann` (ANN) |
+<p align="center">
+  Building blocks for digital commerce
+</p>
+<p align="center">
+  <a href="https://github.com/medusajs/medusa/blob/develop/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="Medusa is released under the MIT license." />
+  </a>
+  <a href="https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
+  </a>
+  <a href="https://discord.gg/xpCwq3Kfn8">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+  </a>
+  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
+    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
+  </a>
+</p>
 
-## Enable it
+PostgreSQL Search Module Provider for Medusa: full-text search, typo tolerance, filters, and facets over your search indexes, stored in the application's own PostgreSQL database. It's the default search provider, so search works without an external search engine. It ships with `@medusajs/medusa` and is registered through the `@medusajs/medusa/search-postgres` path.
 
-### Native (default, works locally and on Medusa Cloud)
+## At a glance
+
+| | |
+| --- | --- |
+| Package | `@medusajs/search-postgres` |
+| Type | Module Provider (Search Module) |
+| Provider ID | `search-postgres` |
+| Registered by default | Yes, with `id: "postgres"` (`engine: "native"` when self-hosted, `"lakebase"` on Medusa Cloud) |
+| Import from | `@medusajs/medusa/search-postgres` |
+
+## Engines
+
+| Engine | Where | Keyword search | Vector search |
+| --- | --- | --- | --- |
+| `native` (default) | Any PostgreSQL database | PostgreSQL full-text search (`tsvector`) with `pg_trgm` typo tolerance | Not supported |
+| `lakebase` | Medusa Cloud only | BM25 (`lakebase_bm25`) with `pg_trgm` typo tolerance | ANN (`lakebase_ann`), and hybrid keyword + vector search |
+
+## Features
+
+- Free-text search with field weights and `match_strategy` `"all"` (default), `"any"`, or `"last"` (typeahead: the last term matches as a prefix).
+- Filters with `$eq`, `$ne`, `$in`, `$nin`, range operators, and `$and` / `$or` / `$not`. On array fields, a bare value or `$eq` means "contains".
+- Value, range, and stats facets scoped to the query's matches.
+- `distinct` (one hit per value) and `min_score`.
+- Vector and hybrid search on the `lakebase` engine. On `native`, vector fields are dropped from the index with a warning, and vector queries are rejected.
+
+Highlighting, geo fields, cursor pagination, and query-time locales aren't supported and are rejected.
+
+## Installation
+
+No installation needed. The provider is a dependency of `@medusajs/medusa` and is registered by default.
+
+## Usage
+
+Register the provider yourself to pass options:
 
 ```ts
-modules: [
-  {
-    resolve: "@medusajs/medusa/search",
-    options: {
-      providers: [
-        {
-          resolve: "@medusajs/medusa/search-postgres",
-          id: "postgres",
-          options: {
-            // engine: "native", // default
-            // language: "english",
+import { defineConfig } from "@medusajs/framework/utils"
+
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/search",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/search-postgres",
+            id: "postgres",
+            options: {
+              // requires a medusa_search_german text search configuration
+              language: "german",
+            },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-]
+  ],
+})
 ```
 
-### Lakebase (works only on Medusa Cloud)
-
-```ts
-{
-  resolve: "@medusajs/medusa/search-postgres",
-  id: "postgres",
-  options: {
-    engine: "lakebase",
-    // Optional: embed text for search_options.vector.query
-    // embedder: async (text) => { ... return number[] },
-    // vector_distance: "cosine", // or "l2" | "inner_product"
-  },
-}
-```
-
-Then:
+Then run the migrations, which enable the `pg_trgm` and `unaccent` extensions, create the `medusa_search_english` text search configuration, and create your search indexes:
 
 ```bash
 npx medusa db:migrate
-npx medusa db:migrate-search
 ```
 
-The migration enables `pg_trgm` + `unaccent` and creates the catalog. On Medusa Cloud it also enables `lakebase_vector` and `lakebase_text` (`CREATE EXTENSION ... CASCADE`). Those statements soft-fail on engines that do not ship Lakebase Search.
+To create or update only the search indexes, run `npx medusa db:migrate:search`.
 
-## Provider options
+If you set `language` to anything other than `english`, create a matching `medusa_search_<language>` text search configuration yourself.
 
-| Option            | Default     | Description                                                                            |
-| ----------------- | ----------- | -------------------------------------------------------------------------------------- |
-| `engine`          | `"native"`  | `"native"` or `"lakebase"`                                                             |
-| `language`        | `"english"` | Text search config. With `unaccent`, creates `medusa_search_<language>`.               |
-| `embedder`        | —           | `(text) => Promise<number[]>`. Required for `search_options.vector.query` on lakebase. |
-| `vector_distance` | `"cosine"`  | ANN metric: `cosine`, `l2`, or `inner_product`.                                        |
+## Configuration
 
-## Vector fields (lakebase only)
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| `engine` | `"native" \| "lakebase"` | The search backend. `lakebase` works only on Medusa Cloud. | `"native"` |
+| `language` | `string` | The PostgreSQL text search configuration language, such as `english` or `simple`. | `"english"` |
+| `embedder` | `(text: string) => Promise<number[]>` | Turns text into an embedding. Required for vector fields that use `.embed()` and for `search_options.vector.query`. | - |
+| `vector_distance` | `"cosine" \| "l2" \| "inner_product"` | Distance metric for vector indexes. | `"cosine"` |
 
-On the native engine vector fields are not rejected: the provider logs a warning and drops them from the index, so one definition stays portable across providers. A query that asks for `search_options.vector` there is still rejected, since answering it with keyword results would be wrong.
+## Resources
 
-Supply embeddings yourself:
-
-```ts
-defineSearchIndex({
-  name: "product",
-  entity: "product",
-  fields: search.define({
-    id: search.keyword().filterable(),
-    title: search.text().searchable({ weight: 3 }),
-    embedding: search.vector(1536),
-  }),
-  // ...
-})
-```
-
-Documents must include the embedding array on upsert. Query with `search_options.vector.value`.
-
-Or let the provider embed a string on the same field (`.embed()` requires `embedder`):
-
-```ts
-embedding: search.vector(1536).embed()
-
-// documents: { embedding: "title and description to encode" }
-
-await query.search({
-  entity: "product",
-  search_options: {
-    vector: {
-      field: "embedding",
-      query: "red shoes",
-      semantic_ratio: 0.5, // 0 = keyword, 1 = vector, in between = RRF hybrid
-    },
-  },
-})
-```
-
-Query with a client-supplied embedding against either kind of field:
-
-```ts
-await query.search({
-  entity: "product",
-  filters: { q: "red shoes" },
-  search_options: {
-    vector: {
-      field: "embedding",
-      value: embeddingArray,
-      semantic_ratio: 0.5,
-    },
-  },
-})
-```
-
-## What it supports
-
-|                  | native                                                  | lakebase                 |
-| ---------------- | ------------------------------------------------------- | ------------------------ |
-| Free text        | `ts_rank` + weights                                     | BM25 via `lakebase_bm25` |
-| Typo tolerance   | `pg_trgm` (`word_similarity`)                           | `pg_trgm` (same)         |
-| `match_strategy` | `"all"` (default), `"any"`, `"last"`                    | same                     |
-| Filters          | `$eq` `$ne` `$in` `$nin` ranges, `$and`/`$or`/`$not`, … | same                     |
-| Facets           | value, range, stats — scoped to the query matches       | same                     |
-| `distinct`       | one hit per value, count follows                        | same                     |
-| `min_score`      | yes, keeps the requested sort                           | same                     |
-| Vector / hybrid  | fields ignored, queries rejected                        | ANN + RRF                |
-
-Unsupported on both (rejected explicitly): highlighting, geo, cursor pagination, query-time locales.
-
-`"last"` is typeahead: completed terms must match in full and the last term is a prefix, so `"dtc sta"` matches `"Dtc starter"`.
-
-### Filter semantics
-
-- Equality and `$in` compile to jsonb containment (`indexed @> …`), which the
-  `jsonb_path_ops` GIN index accelerates and which compares numbers and
-  booleans natively.
-- On array fields, a bare value or `$eq` means membership — `{ tags: "sale" }`
-  matches documents whose `tags` array contains `"sale"`.
-- Range operators (`$gt`, …), `$prefix` and `$like` are rejected on array
-  fields.
-
-### Hybrid queries (lakebase)
-
-- Results are rank-fused (RRF), so they can only be ordered by `_score`.
-- `min_score` applies to the fused RRF score (per-arm contributions are at most
-  `weight / 61`).
-- `metadata.count` is the exact size of the union of both arms' match sets;
-  the fused hit list itself is a bounded candidate window.
+- [PostgreSQL Search Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/search/providers/postgres)
+- [Search Module](https://docs.medusajs.com/resources/infrastructure-modules/search)
+- [Search Index Definitions](https://docs.medusajs.com/resources/infrastructure-modules/search/index-definitions)
+- [Search with Query](https://docs.medusajs.com/learn/fundamentals/query/search)

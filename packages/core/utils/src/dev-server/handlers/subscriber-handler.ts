@@ -4,9 +4,7 @@ import {
   SubscriberResourceData,
 } from "../types"
 
-export class SubscriberHandler
-  implements ResourceTypeHandler<SubscriberResourceData>
-{
+export class SubscriberHandler implements ResourceTypeHandler<SubscriberResourceData> {
   readonly type = "subscriber"
 
   validate(data: SubscriberResourceData): void {

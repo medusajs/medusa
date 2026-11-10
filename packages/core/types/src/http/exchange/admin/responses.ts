@@ -34,8 +34,7 @@ export interface AdminExchangePreviewResponse {
   exchange: AdminExchange
 }
 
-export interface AdminExchangeRequestResponse
-  extends AdminExchangePreviewResponse {
+export interface AdminExchangeRequestResponse extends AdminExchangePreviewResponse {
   /**
    * The return associated with the exchange.
    */
@@ -53,5 +52,4 @@ export interface AdminExchangeReturnResponse {
   return: AdminReturn
 }
 
-export interface AdminExchangeDeleteResponse
-  extends DeleteResponse<"exchange"> {}
+export interface AdminExchangeDeleteResponse extends DeleteResponse<"exchange"> {}

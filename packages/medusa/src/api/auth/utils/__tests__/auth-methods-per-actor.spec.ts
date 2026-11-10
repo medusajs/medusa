@@ -11,7 +11,7 @@ const buildConfig = (
     projectConfig: {
       http: authMethodsPerActor ? { authMethodsPerActor } : {},
     },
-  } as unknown as ConfigModule)
+  }) as unknown as ConfigModule
 
 describe("getAllowedAuthProvidersForActor", () => {
   it("returns undefined when no allowlist is configured for the actor", () => {

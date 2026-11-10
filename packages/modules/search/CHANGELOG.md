@@ -1,5 +1,81 @@
 # @medusajs/search
 
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- Updated dependencies [[`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/framework@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- Updated dependencies [[`3a0cbbb`](https://github.com/medusajs/medusa/commit/3a0cbbb89ff547928a5a98365a4beab16bd57d6f), [`3d85f84`](https://github.com/medusajs/medusa/commit/3d85f848e2f01422efc1e4a8b37e6441fc3f7cc5)]:
+  - @medusajs/framework@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17618](https://github.com/medusajs/medusa/pull/17618) [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update jest to v30.5.2 and use the `--testPathPatterns` flag in test scripts
+
+- Updated dependencies [[`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`2e0d8ae`](https://github.com/medusajs/medusa/commit/2e0d8ae841c64f6c896886153269fe31a6b5d51d), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`2276c84`](https://github.com/medusajs/medusa/commit/2276c84d47d0d6dc078a6eea2350b9d097a0231b), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8)]:
+  - @medusajs/framework@2.22.3
+
+## 2.22.2
+
+### Patch Changes
+
+- [#17540](https://github.com/medusajs/medusa/pull/17540) [`56ea83b`](https://github.com/medusajs/medusa/commit/56ea83b5ade4683256956316395f6e9f2b74e965) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): return empty results for Cloud indexes with no documents, report rejected queries as invalid data, and keep typo tolerance for queries with short words
+
+- [#17540](https://github.com/medusajs/medusa/pull/17540) [`56ea83b`](https://github.com/medusajs/medusa/commit/56ea83b5ade4683256956316395f6e9f2b74e965) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): page Cloud search results with offset and pack the total count and stats facet aggregations into one query
+
+- Updated dependencies [[`ca881e5`](https://github.com/medusajs/medusa/commit/ca881e5e758c49cfcbac4130d7e626dc06f439a6), [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`26e5807`](https://github.com/medusajs/medusa/commit/26e58070c1661c14aedc02ee6cfb0b2bb28d497b), [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d)]:
+  - @medusajs/framework@2.22.2
+
+## 2.22.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/framework@2.22.1
+
+## 2.22.0
+
+### Minor Changes
+
+- [#17089](https://github.com/medusajs/medusa/pull/17089) [`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: drop Node.js 20 support and require Node.js v22.22.0 or later
+
+### Patch Changes
+
+- [#17102](https://github.com/medusajs/medusa/pull/17102) [`b561a37343f4132d0f3a243e7722260797c3cf85`](https://github.com/medusajs/medusa/commit/b561a37343f4132d0f3a243e7722260797c3cf85) Thanks [@sradevski](https://github.com/sradevski)! - feat(search): allow replacing the transport of the Medusa Cloud search provider
+
+- [#17382](https://github.com/medusajs/medusa/pull/17382) [`1db74006ede40300afe64970024688a1a9c2a936`](https://github.com/medusajs/medusa/commit/1db74006ede40300afe64970024688a1a9c2a936) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: ship AGENTS.md in published packages and add agent discovery fields to package.json
+
+- Updated dependencies [[`d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a`](https://github.com/medusajs/medusa/commit/d249d29ddef76d0bde0b68899b9fe5f9faa1ef6a), [`14499a2e9309d653c0e4ec6aec3f88079751b4d2`](https://github.com/medusajs/medusa/commit/14499a2e9309d653c0e4ec6aec3f88079751b4d2), [`44db0ca6357ab4d4681a8004e869fde339c3117a`](https://github.com/medusajs/medusa/commit/44db0ca6357ab4d4681a8004e869fde339c3117a), [`1db74006ede40300afe64970024688a1a9c2a936`](https://github.com/medusajs/medusa/commit/1db74006ede40300afe64970024688a1a9c2a936)]:
+  - @medusajs/framework@2.22.0
+
+## 2.21.2
+
+### Patch Changes
+
+- [#16928](https://github.com/medusajs/medusa/pull/16928) [`494745b8e6b63024e1b7741fe95caa4d03b464b0`](https://github.com/medusajs/medusa/commit/494745b8e6b63024e1b7741fe95caa4d03b464b0) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): count distinct values instead of documents for deduplicated Medusa Cloud searches, and reject deduplicating by an unknown or array field
+
+- [#16966](https://github.com/medusajs/medusa/pull/16966) [`aff9d3e847f254bfa36c55c9daa4d6261a4b8e23`](https://github.com/medusajs/medusa/commit/aff9d3e847f254bfa36c55c9daa4d6261a4b8e23) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): stop the active version cache from undoing an index flip. Setting or invalidating an entry now waits for a refresh in flight to land first, so a refresh that read the database before the flip can no longer drop or roll it back
+
+- [#16930](https://github.com/medusajs/medusa/pull/16930) [`08f73ec78e17a3a5b6db112290e28f8b3ed79ef6`](https://github.com/medusajs/medusa/commit/08f73ec78e17a3a5b6db112290e28f8b3ed79ef6) Thanks [@sradevski](https://github.com/sradevski)! - fix(search): stop search index versions from piling up. A reindex drops the versions earlier failed or interrupted rebuilds left above the active one, and a swap drops every version below the new active one except its predecessor, instead of leaving them until the next build
+
+- Updated dependencies []:
+  - @medusajs/framework@2.21.2
+
 ## 2.21.1
 
 ### Patch Changes

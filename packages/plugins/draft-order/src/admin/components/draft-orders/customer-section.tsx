@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { ArrowPath, CurrencyDollar, Envelope, FlyingBox } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Avatar, Container, Copy, Heading, Text } from "@medusajs/ui"
@@ -6,6 +7,10 @@ import {
   getFormattedAddress,
   isSameAddress,
 } from "../../lib/utils/address-utils"
+import {
+  EDIT_DRAFT_ORDER_PERMISSIONS,
+  TRANSFER_DRAFT_ORDER_PERMISSIONS,
+} from "../../lib/permissions"
 import { getOrderCustomer } from "../../lib/utils/order-utils"
 import { ActionMenu } from "../common/action-menu"
 
@@ -25,45 +30,59 @@ export const CustomerSection = ({ order }: CustomerSectionProps) => {
 }
 
 const Header = () => {
+  const { hasAllPermissions } = usePermissions()
+  const canTransfer = hasAllPermissions(TRANSFER_DRAFT_ORDER_PERMISSIONS)
+  const canEdit = hasAllPermissions(EDIT_DRAFT_ORDER_PERMISSIONS)
+
   return (
     <div className="flex items-center justify-between px-6 py-4 gap-2">
       <Heading level="h2">Customer</Heading>
-      <ActionMenu
-        groups={[
-          {
-            actions: [
-              {
-                label: "Transfer ownership",
-                to: "transfer-ownership",
-                icon: <ArrowPath />,
-              },
-            ],
-          },
-          {
-            actions: [
-              {
-                label: "Edit shipping address",
-                to: "shipping-address",
-                icon: <FlyingBox />,
-              },
-              {
-                label: "Edit billing address",
-                to: "billing-address",
-                icon: <CurrencyDollar />,
-              },
-            ],
-          },
-          {
-            actions: [
-              {
-                label: "Edit email",
-                to: `email`,
-                icon: <Envelope />,
-              },
-            ],
-          },
-        ]}
-      />
+      {(canTransfer || canEdit) && (
+        <ActionMenu
+          groups={[
+            ...(canTransfer
+              ? [
+                  {
+                    actions: [
+                      {
+                        label: "Transfer ownership",
+                        to: "transfer-ownership",
+                        icon: <ArrowPath />,
+                      },
+                    ],
+                  },
+                ]
+              : []),
+            ...(canEdit
+              ? [
+                  {
+                    actions: [
+                      {
+                        label: "Edit shipping address",
+                        to: "shipping-address",
+                        icon: <FlyingBox />,
+                      },
+                      {
+                        label: "Edit billing address",
+                        to: "billing-address",
+                        icon: <CurrencyDollar />,
+                      },
+                    ],
+                  },
+                  {
+                    actions: [
+                      {
+                        label: "Edit email",
+                        to: `email`,
+                        icon: <Envelope />,
+                      },
+                    ],
+                  },
+                ]
+              : []),
+          ]}
+        />
+      )}
     </div>
   )
 }

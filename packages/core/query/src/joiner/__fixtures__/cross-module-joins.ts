@@ -35,6 +35,13 @@ const productJoinerConfig: ModuleJoinerConfig = {
       __internal: {
         crossjoinable: ["id", "title", "sku"],
         tableName: "product_variant",
+        relations: {
+          product: {
+            entity: "Product",
+            foreignKey: "product_id",
+            foreignKeyOwner: "self",
+          },
+        },
       },
       args: {
         methodSuffix: "ProductVariants",

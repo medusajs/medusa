@@ -10,6 +10,15 @@ export interface StripeOptions {
    */
   webhookSecret: string
   /**
+   * The Stripe API version to send requests with (default is `2024-04-10`).
+   * Versions before `2026-07-29` receive `payment_method_types`, later ones
+   * `allowed_payment_method_types`.
+   *
+   * @see https://docs.stripe.com/upgrades
+   * @example "2026-09-30.endive"
+   */
+  apiVersion?: string
+  /**
    * Use this flag to capture payment immediately (default is false)
    */
   capture?: boolean

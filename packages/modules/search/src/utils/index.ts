@@ -724,7 +724,7 @@ export async function withActiveIndexRetry<T>(
       throw error
     }
 
-    context.activeVersionCache.invalidate()
+    await context.activeVersionCache.invalidate()
 
     return await run()
   }

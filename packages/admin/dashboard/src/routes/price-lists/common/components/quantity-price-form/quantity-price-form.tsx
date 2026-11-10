@@ -49,7 +49,7 @@ interface QuantityPriceFormProps {
 }
 
 const ConditionContainer = ({ children }: { children: ReactNode }) => (
-  <div className="text-ui-fg-subtle txt-small flex flex-wrap items-center gap-1.5">
+  <div className="txt-small flex flex-wrap items-center gap-1.5 text-ui-fg-subtle">
     {children}
   </div>
 )
@@ -189,12 +189,12 @@ const QuantityConditionItem = ({
             label={t("priceLists.quantityPricing.rules.minQuantity")}
             toggleValues={{ active: "", inactive: null }}
             renderInput={({ field: { onChange, ...fieldProps }, value }) => (
-              <div className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-within:bg-ui-bg-field-component-hover shadow-buttons-neutral placeholder-ui-fg-muted text-ui-fg-base transition-fg focus-within:shadow-borders-interactive-with-active relative flex h-8 w-full items-center gap-x-1 overflow-hidden rounded-md">
+              <div className="relative flex h-8 w-full items-center gap-x-1 overflow-hidden rounded-md bg-ui-bg-field-component text-ui-fg-base placeholder-ui-fg-muted shadow-buttons-neutral transition-fg focus-within:bg-ui-bg-field-component-hover focus-within:shadow-borders-interactive-with-active hover:bg-ui-bg-field-component-hover">
                 <span className="flex w-fit min-w-[48px] items-center gap-x-1 border-r px-2 py-[9px]">
                   <Text
                     size="small"
                     leading="compact"
-                    className="text-ui-fg-muted pointer-events-none select-none uppercase"
+                    className="pointer-events-none select-none uppercase text-ui-fg-muted"
                   >
                     {t("priceLists.quantityPricing.rules.qty")}
                   </Text>
@@ -233,12 +233,12 @@ const QuantityConditionItem = ({
             label={t("priceLists.quantityPricing.rules.maxQuantity")}
             toggleValues={{ active: "", inactive: null }}
             renderInput={({ field: { onChange, ...fieldProps }, value }) => (
-              <div className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover focus-within:bg-ui-bg-field-component-hover shadow-buttons-neutral placeholder-ui-fg-muted text-ui-fg-base transition-fg focus-within:shadow-borders-interactive-with-active relative flex h-8 w-full items-center gap-x-1 overflow-hidden rounded-md">
+              <div className="relative flex h-8 w-full items-center gap-x-1 overflow-hidden rounded-md bg-ui-bg-field-component text-ui-fg-base placeholder-ui-fg-muted shadow-buttons-neutral transition-fg focus-within:bg-ui-bg-field-component-hover focus-within:shadow-borders-interactive-with-active hover:bg-ui-bg-field-component-hover">
                 <span className="flex w-fit min-w-[48px] items-center gap-x-1 border-r px-2 py-[9px]">
                   <Text
                     size="small"
                     leading="compact"
-                    className="text-ui-fg-muted pointer-events-none select-none uppercase"
+                    className="pointer-events-none select-none uppercase text-ui-fg-muted"
                   >
                     {t("priceLists.quantityPricing.rules.qty")}
                   </Text>

@@ -1,0 +1,132 @@
+import { InlineIcon, Note, Table } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Connections`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to view and manage the connections that third-party applications, such as AI tools, have to your organization's environments.
+
+## What is a Connection?
+
+A connection is the access that you grant a third-party application to your environments when you approve it on Cloud's OAuth consent page. For example, when you connect an AI tool like Claude, ChatGPT, or Cursor to the [Medusa MCP server](../../medusa-mcp/page.mdx), Cloud creates a connection for that AI tool with the environments you selected.
+
+From your organization's settings, you can view all of these connections, change the environments each connection can access, and revoke connections that you no longer need.
+
+---
+
+## View Connections
+
+To view your organization's connections:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization) whose connections you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Connections** in the sidebar.
+
+The Connections page shows a table of all the authorized connections and the total number of connections. If there are no connections, the page shows an empty state instead.
+
+The table has the following columns:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Column
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        **App**
+      </Table.Cell>
+      <Table.Cell>
+        The connected application's icon and name, along with the resource type or host that it connects to. For example, "Claude" with a "Medusa MCP" subtitle.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        **Access**
+      </Table.Cell>
+      <Table.Cell>
+        The number of environments and organizations that the connection can access.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        **Status**
+      </Table.Cell>
+      <Table.Cell>
+        Shows **Active** for an active connection, or **Expires Soon** if the connection expires within 7 days.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        **Last Used**
+      </Table.Cell>
+      <Table.Cell>
+        How long ago the application last used the connection, or **Never** if it hasn't used it yet.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Manage a Connection
+
+You can view a connection's details and change the environments that the application can access.
+
+To manage a connection:
+
+1. [Go to the Connections page](#view-connections).
+2. Click the connection's row. Alternatively, click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the end of the connection's row and choose **Manage access**.
+
+This opens a side drawer with the connection's details.
+
+### Connection Details
+
+The **Details** section of the drawer shows the following information about the connection:
+
+- **Status**: Whether the connection is active or expires soon.
+- **Connected**: The date that you approved the connection.
+- **Last Used**: How long ago the application last used the connection, or **Never**.
+- **Expires**: The date that the connection expires.
+- **Client ID**: The OAuth client identifier of the application.
+
+### Change Accessible Environments
+
+The **Environments** section of the drawer lists the environments that you can access, grouped by organization and project. Each organization row shows how many of its environments are selected, for example, "2 of 5 selected". You can expand an organization to view its projects and their environments.
+
+To change the environments that the application can access:
+
+1. In the **Environments** section, select or clear the checkboxes of the environments. Selecting a project's checkbox selects all its environments.
+2. Click **Save**.
+
+<Note>
+
+A connection must have access to at least one environment. To remove the application's access to all environments, [revoke the connection](#revoke-a-connection) instead.
+
+</Note>
+
+---
+
+## Revoke a Connection
+
+<Note type="warning">
+
+Once you revoke a connection, the application can no longer access the connection's environments. To restore access, you must connect the application again and approve the connection on the consent page.
+
+</Note>
+
+To revoke a connection:
+
+1. [Go to the Connections page](#view-connections).
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the end of the connection's row.
+3. Choose **Revoke** from the dropdown.
+4. Confirm revoking the connection in the prompt. The prompt shows the application's name and the number of environments it can no longer access.

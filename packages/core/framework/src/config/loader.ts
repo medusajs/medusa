@@ -1,4 +1,8 @@
-import { ContainerRegistrationKeys, getConfigFile } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  getConfigFile,
+  loadLicense,
+} from "@medusajs/utils"
 import { container } from "../container"
 import { asFunction } from "../deps/awilix"
 import { logger as defaultLogger } from "../logger"
@@ -18,6 +22,11 @@ export const configManager = new ConfigManager()
 container.register(
   ContainerRegistrationKeys.CONFIG_MODULE,
   asFunction(() => configManager.config)
+)
+
+container.register(
+  ContainerRegistrationKeys.LICENSE,
+  asFunction(() => loadLicense()).singleton()
 )
 
 /**

@@ -57,12 +57,15 @@ export const CodeBlockHeader = ({
           <div
             className={clsx("text-compact-x-small font-base", titleColor)}
             data-testid="code-block-header-title"
+            data-markdown-ignore
           >
             {title}
           </div>
         )}
       </div>
-      {!hideActions && <CodeBlockActions {...actionsProps} codeBlockStyle={blockStyle} />}
+      {!hideActions && (
+        <CodeBlockActions {...actionsProps} codeBlockStyle={blockStyle} />
+      )}
     </CodeBlockHeaderWrapper>
   )
 }

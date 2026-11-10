@@ -52,11 +52,7 @@ export type FilterOperator =
  * Known computed column categories used for grouping in the UI.
  */
 export type ColumnCategory =
-  | "relationship"
-  | "metadata"
-  | "computed"
-  | "metric"
-  | (string & {})
+  "relationship" | "metadata" | "computed" | "metric" | (string & {})
 
 /**
  * Maps GraphQL scalar types to render modes.

@@ -105,14 +105,14 @@ Medusa Search accepts the following index settings:
           name: "min_word_size_for_one_typo",
           type: "`number`",
           optional: true,
-          description: `The shortest term length that tolerates a single typo.`,
+          description: `The shortest term length that tolerates a single typo. It must be at least \`6\`. Refer to [Typo Tolerance Minimums](#typo-tolerance-minimums) for the error a lower value causes.`,
           defaultValue: "6",
         },
         {
           name: "min_word_size_for_two_typos",
           type: "`number`",
           optional: true,
-          description: `The shortest term length that tolerates two typos. It can't be lower than \`min_word_size_for_one_typo\`.`,
+          description: `The shortest term length that tolerates two typos. It must be at least \`9\`, and it can't be lower than \`min_word_size_for_one_typo\`. Refer to [Typo Tolerance Minimums](#typo-tolerance-minimums) for the error a lower value causes.`,
           defaultValue: "9",
         },
         {
@@ -159,6 +159,27 @@ export const productIndex = defineSearchIndex({
 ```
 
 The example tolerates a typo on a term of six characters or more, two typos from nine characters, and never fuzzy-matches `sku`. Refer to [Index Settings](#index-settings) for every property the setting accepts.
+
+#### Typo Tolerance Minimums
+
+Medusa Search only matches a misspelled term when the term is long enough, so the thresholds have hard minimums:
+
+- `min_word_size_for_one_typo` must be at least `6`.
+- `min_word_size_for_two_typos` must be at least `9`, and it can't be lower than `min_word_size_for_one_typo`.
+
+The defaults already equal these minimums, so you can only raise the thresholds, not lower them.
+
+<Note type="warning">
+
+Medusa validates the thresholds when it runs the index migrations, not when it builds your application. If a threshold is below its minimum, the build succeeds, but the index migration step throws an error that fails the deployment. For example, setting `min_word_size_for_two_typos` to `8` throws the following error:
+
+```bash
+Medusa search requires settings.typo_tolerance.min_word_size_for_two_typos to be at least 9 to tolerate 2 typos, got 8
+```
+
+A `min_word_size_for_one_typo` lower than `6` throws the same error for that setting, and a `min_word_size_for_two_typos` lower than `min_word_size_for_one_typo` also fails the index migration step. To fix the deployment, raise the threshold to at least its minimum, then push and deploy the change.
+
+</Note>
 
 #### Opt a Query Into Typo Tolerance
 

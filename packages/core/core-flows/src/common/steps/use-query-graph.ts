@@ -4,12 +4,16 @@ import {
   RemoteQueryFunction,
   RemoteQueryInput,
 } from "@medusajs/framework/types"
-import { createStep, StepFunction, StepResponse } from "@medusajs/workflows-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import {
+  createStep,
+  StepFunction,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export type UseQueryGraphStepInput<
   TEntry extends string,
-  TIsList extends boolean = boolean
+  TIsList extends boolean = boolean,
 > = RemoteQueryInput<TEntry> & {
   options?: RemoteJoinerOptions & {
     isList?: TIsList
@@ -18,7 +22,7 @@ export type UseQueryGraphStepInput<
 
 export type UseQueryGraphStepOutput<
   TEntry extends string,
-  TIsList extends boolean = boolean
+  TIsList extends boolean = boolean,
 > = ReturnType<
   StepFunction<
     any,
@@ -131,7 +135,7 @@ const step = createStep(
  */
 export const useQueryGraphStep = <
   const TEntry extends string,
-  const TIsList extends boolean = boolean
+  const TIsList extends boolean = boolean,
 >(
   input: UseQueryGraphStepInput<TEntry, TIsList>
 ): UseQueryGraphStepOutput<TEntry, TIsList> =>

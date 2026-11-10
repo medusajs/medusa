@@ -14,6 +14,7 @@ import {
 } from "../../../../hooks/api/draft-orders"
 import { useComboboxData } from "../../../../hooks/common/use-combobox-data"
 import { sdk } from "../../../../lib/queries/sdk"
+import { TRANSFER_DRAFT_ORDER_PERMISSIONS } from "../../../../lib/permissions"
 
 const TransferOwnership = () => {
   const { id } = useParams()
@@ -158,16 +159,20 @@ const CustomerField = ({ control, currentCustomerId }: CustomerFieldProps) => {
     },
     queryKey: ["customers"],
     getOptions: (data) => {
-      return data.customers.map((customer) => {
-        const name = [customer.first_name, customer.last_name]
-          .filter(Boolean)
-          .join(" ")
+      return data.customers
+        .filter(
+          (customer): customer is HttpTypes.AdminCustomer => customer !== null
+        )
+        .map((customer) => {
+          const name = [customer.first_name, customer.last_name]
+            .filter(Boolean)
+            .join(" ")
 
-        return {
-          label: name ? `${name} (${customer.email})` : customer.email,
-          value: customer.id,
-        }
-      })
+          return {
+            label: name ? `${name} (${customer.email})` : customer.email,
+            value: customer.id,
+          }
+        })
     },
   })
 
@@ -476,5 +481,9 @@ const Illustration = () => {
 const schema = z.object({
   customer_id: z.string().min(1),
 })
+
+export const handle = {
+  permissions: TRANSFER_DRAFT_ORDER_PERMISSIONS,
+}
 
 export default TransferOwnership

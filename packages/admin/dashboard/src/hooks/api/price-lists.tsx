@@ -132,11 +132,14 @@ export const useDeletePriceList = (
 export const usePriceListPrices = (
   id: string,
   query?: HttpTypes.AdminPriceListPriceListParams,
-  options?: UseQueryOptions<
-    HttpTypes.AdminPriceListPriceListResponse,
-    FetchError,
-    HttpTypes.AdminPriceListPriceListResponse,
-    QueryKey
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminPriceListPriceListResponse,
+      FetchError,
+      HttpTypes.AdminPriceListPriceListResponse,
+      QueryKey
+    >,
+    "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({

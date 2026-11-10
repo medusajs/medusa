@@ -143,6 +143,7 @@
     "reset": "Reset",
     "confirm": "Confirm",
     "edit": "Edit",
+    "view": "View",
     "addItems": "Add items",
     "download": "Download",
     "clear": "Clear",
@@ -1067,6 +1068,24 @@
       "header": "Create Customer",
       "hint": "Create a new customer and manage their details.",
       "successToast": "Customer {{email}} was successfully created."
+    },
+    "export": {
+      "header": "Export Customer List",
+      "description": "Export the customer list to a file.",
+      "success": {
+        "title": "We are processing your export",
+        "description": "Exporting data may take a few minutes. We will notify you when we are done."
+      },
+      "format": {
+        "label": "Format",
+        "description": "Choose the format of the exported file. JSON captures nested data across modules without loss, which is recommended for data subject access requests.",
+        "json": "JSON",
+        "csv": "CSV"
+      },
+      "filters": {
+        "title": "Filters",
+        "description": "Apply filters in the table overview to adjust this view"
+      }
     },
     "groups": {
       "label": "Customer groups",
@@ -2237,6 +2256,8 @@
       "method": "Method",
       "allocation": "Allocation",
       "allocationTooltip": "Each enforces the quantity limit per item, while Once enforces the quantity limit across the entire cart",
+      "targetSelectionStrategy": "Discounted items",
+      "targetSelectionStrategyTooltip": "Which eligible items in the cart receive the discount",
       "addCondition": "Add condition",
       "clearAll": "Clear all",
       "taxInclusive": "Tax Inclusive",
@@ -2384,6 +2405,16 @@
         "once": {
           "title": "Once",
           "description": "Applies value to a limited number of items"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Most expensive first",
+          "description": "Discounts the most expensive eligible items in the cart"
+        },
+        "cheapest_first": {
+          "title": "Cheapest first",
+          "description": "Discounts the cheapest eligible items in the cart"
         }
       },
       "code": {
@@ -2748,7 +2779,7 @@
     "editUser": "Edit User",
     "inviteUser": "Invite User",
     "inviteUserHint": "Invite a new user to your store.",
-    "inviteRolesTooltip": "If no role is selected, the user will be invited with a superuser role.",
+    "inviteRolesTooltip": "If no role is selected, the user will be invited without any permissions. You can assign roles later.",
     "sendInvite": "Send invite",
     "pendingInvites": "Pending Invites",
     "deleteInviteWarning": "You are about to delete the invite for {{email}}. This action cannot be undone.",
@@ -2823,7 +2854,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "User already has this role.",
-      "unassignableRoleTooltip": "You don't have access to assign this role — your permissions don't cover all of its policies.",
       "add": {
         "successToast_one": "User was successfully added to the role.",
         "successToast_other": "Users were successfully added to the role.",
@@ -2851,6 +2881,9 @@
       "filtered": {
         "heading": "No results",
         "description": "No permissions match the current filter criteria."
+      },
+      "manage": {
+        "successToast": "Permissions were successfully updated."
       }
     },
     "list": {
@@ -2874,6 +2907,7 @@
     },
     "edit": {
       "header": "Edit policy",
+      "identityHint": "The key, resource and operation identify the policy and cannot be changed. Create a new policy instead.",
       "successToast": "Policy {{key}} updated"
     },
     "delete": {
@@ -2932,16 +2966,16 @@
       "mainColumn": "Locale"
     },
     "activeLocales": {
-      "heading": "Languages",
+      "heading": "Locales",
       "subtitle": "Activated translations",
-      "noLocalesTip": "Configure at least one language to start translating your data",
+      "noLocalesTip": "Configure at least one locale to start translating your data",
       "noLocalesTipConfigureAction": "Configure"
     },
     "completion": {
       "heading": "Translated fields",
       "translated": "Translated",
       "toTranslate": "Missing",
-      "footer": "Languages"
+      "footer": "Locales"
     }
   },
   "store": {
@@ -2966,7 +3000,6 @@
     "removeLocaleWarning_one": "You are about to remove {{count}} locale from your store. Any translation using this locale will be removed.",
     "removeLocaleWarning_other": "You are about to remove {{count}} locales from your store. Any translation using these locales will be removed.",
     "currencyAlreadyAdded": "The currency has already been added to your store.",
-    "localeAlreadyAdded": "The locale has already been added to your store.",
     "edit": {
       "header": "Edit Store"
     },
@@ -3334,6 +3367,9 @@
     "invalidTokenTitle": "Your invite token is invalid",
     "invalidTokenHint": "Try requesting a new invite link.",
     "passwordMismatch": "Passwords do not match",
+    "signedInTitle": "You're already signed in",
+    "signedInHint": "You're signed in as {{email}}. Sign out to accept this invite.",
+    "signOut": "Sign out",
     "toast": {
       "accepted": "Invite successfully accepted"
     }
@@ -3766,6 +3802,10 @@
       "description": "You don't have permission to access this page.",
       "requiredPermission": "Required permission: {{permission}}",
       "action": "You don't have permission to perform this action."
+    },
+    "noPermissions": {
+      "title": "No permissions yet",
+      "description": "You don't have any permissions assigned yet. Reach out to your administrator to request access to the areas you need."
     },
     "requiredPermissions": {
       "title": "Required permissions",

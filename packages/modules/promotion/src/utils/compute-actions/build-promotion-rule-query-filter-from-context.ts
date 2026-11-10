@@ -158,7 +158,7 @@ export async function buildPromotionRuleQueryFilterFromContext(
   if (attributeValueMap.size === 0) {
     // If context has no attributes, exclude all promotions that have any rules (promotion rules, target rules, or buy rules)
     return {
-      [raw((alias) => excludePromotionsWithRuleMatching(alias, "TRUE"))]: true,
+      [raw((alias) => excludePromotionsWithRuleMatching(alias, "TRUE"))]: [],
     }
   }
 
@@ -185,7 +185,7 @@ export async function buildPromotionRuleQueryFilterFromContext(
   return {
     [raw((alias) =>
       excludePromotionsWithRuleMatching(alias, unsatisfiableRule)
-    )]: true,
+    )]: [],
   }
 }
 
@@ -203,12 +203,14 @@ const RULE_SOURCES = [
   {
     from: `promotion_application_method am
       JOIN application_method_target_rules amtr ON am.id = amtr.application_method_id
+        AND am.deleted_at IS NULL
       JOIN promotion_rule pr ON amtr.promotion_rule_id = pr.id`,
     promotionId: "am.promotion_id",
   },
   {
     from: `promotion_application_method am
       JOIN application_method_buy_rules ambr ON am.id = ambr.application_method_id
+        AND am.deleted_at IS NULL
       JOIN promotion_rule pr ON ambr.promotion_rule_id = pr.id`,
     promotionId: "am.promotion_id",
   },
@@ -224,6 +226,10 @@ const RULE_SOURCES = [
  * be materialized with the rules of every promotion on each call, making the
  * cost grow with the total number of promotions rather than with the number of
  * candidates (e.g. only the automatic ones in computeActions).
+ *
+ * Use it as `{ [raw(...)]: [] }`: any other value makes MikroORM append
+ * `= <value>`, which binds to the last NOT EXISTS only and keeps Postgres from
+ * turning it into an anti join.
  */
 function excludePromotionsWithRuleMatching(
   alias: string,

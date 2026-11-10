@@ -20,7 +20,13 @@ import {
   useCapturePayment,
   useAuthorizePaymentSession,
 } from "../../../../../hooks/api"
+import {
+  useCapturePermissions,
+  useOrderPermissions,
+  useRefundPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { formatCurrency } from "../../../../../lib/format-currency"
+import { formatProvider } from "../../../../../lib/format-provider"
 import {
   getLocaleAmount,
   getStylizedAmount,
@@ -99,12 +105,12 @@ const Refund = ({
 
   const RefundNoteIndicator = refund.note && (
     <Tooltip content={refund.note}>
-      <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+      <DocumentText className="ml-1 inline text-ui-tag-neutral-icon" />
     </Tooltip>
   )
 
   return (
-    <div className="bg-ui-bg-subtle text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4">
+    <div className="grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 bg-ui-bg-subtle px-6 py-4 text-ui-fg-subtle">
       <div className="flex flex-row">
         <div className="self-center pr-3">
           <ArrowDownRightMini className="text-ui-fg-muted" />
@@ -141,6 +147,12 @@ const Payment = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canCreate: canCapture } = useCapturePermissions()
+  const { canCreate: canRefund } = useRefundPermissions()
+
+  const canCapturePayment = canCapture && canUpdateOrder
+  const canRefundPayment = canRefund && canUpdateOrder
   const { mutateAsync } = useCapturePayment(order.id, payment.id)
 
   const handleCapture = async () => {
@@ -187,11 +199,13 @@ const Payment = ({
 
   const [status, color] = getPaymentStatusAttributes(payment) as [
     string,
-    "green" | "orange" | "red"
+    "green" | "orange" | "red",
   ]
 
   const showCapture =
-    payment.captured_at === null && payment.canceled_at === null
+    canCapturePayment &&
+    payment.captured_at === null &&
+    payment.canceled_at === null
 
   const totalRefunded = (payment.refunds ?? []).reduce(
     (acc, next) => next.amount + acc,
@@ -200,7 +214,7 @@ const Payment = ({
 
   return (
     <div className="divide-y divide-dashed">
-      <div className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4 sm:grid-cols-[1fr_1fr_1fr_1fr_20px]">
+      <div className="grid grid-cols-[1fr_1fr_1fr_20px] items-center gap-x-4 px-6 py-4 text-ui-fg-subtle sm:grid-cols-[1fr_1fr_1fr_1fr_20px]">
         <div className="w-full min-w-[60px] overflow-hidden">
           <Text
             size="small"
@@ -218,8 +232,8 @@ const Payment = ({
           </Text>
         </div>
         <div className="hidden items-center justify-end sm:flex">
-          <Text size="small" leading="compact" className="capitalize">
-            {payment.provider_id}
+          <Text size="small" leading="compact">
+            {formatProvider(payment.provider_id)}
           </Text>
         </div>
         <div className="flex items-center justify-end">
@@ -232,28 +246,30 @@ const Payment = ({
             {getLocaleAmount(payment.amount as number, payment.currency_code)}
           </Text>
         </div>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("orders.payment.refund"),
-                  icon: <XCircle />,
-                  to: `/orders/${order.id}/refund?paymentId=${payment.id}`,
-                  disabled:
-                    !payment.captured_at ||
-                    !!payment.canceled_at ||
-                    totalRefunded >= payment.amount,
-                },
-              ],
-            },
-          ]}
-        />
+        {canRefundPayment && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("orders.payment.refund"),
+                    icon: <XCircle />,
+                    to: `/orders/${order.id}/refund?paymentId=${payment.id}`,
+                    disabled:
+                      !payment.captured_at ||
+                      !!payment.canceled_at ||
+                      totalRefunded >= payment.amount,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       {showCapture && (
-        <div className="bg-ui-bg-subtle flex items-center justify-between px-6 py-4">
+        <div className="flex items-center justify-between bg-ui-bg-subtle px-6 py-4">
           <div className="flex items-center gap-x-2">
-            <ArrowDownRightMini className="text-ui-fg-muted shrink-0" />
+            <ArrowDownRightMini className="shrink-0 text-ui-fg-muted" />
             <Text size="small" leading="compact">
               <Trans
                 i18nKey="orders.payment.isReadyToBeCaptured"
@@ -312,7 +328,7 @@ const CreditLine = ({
 
   return (
     <div className="divide-y divide-dashed">
-      <div className="text-ui-fg-subtle grid grid-cols-[1fr_1fr_20px] items-center gap-x-4 px-6 py-4 sm:grid-cols-[1fr_1fr_1fr_20px]">
+      <div className="grid grid-cols-[1fr_1fr_20px] items-center gap-x-4 px-6 py-4 text-ui-fg-subtle sm:grid-cols-[1fr_1fr_1fr_20px]">
         <div className="w-full min-w-[60px] overflow-hidden">
           <Text
             size="small"
@@ -379,9 +395,9 @@ const PendingAuthorizationBanner = ({
   }
 
   return (
-    <div className="bg-ui-bg-subtle flex items-center justify-between px-6 py-4">
+    <div className="flex items-center justify-between bg-ui-bg-subtle px-6 py-4">
       <div className="flex items-center gap-x-2">
-        <ArrowDownRightMini className="text-ui-fg-muted shrink-0" />
+        <ArrowDownRightMini className="shrink-0 text-ui-fg-muted" />
         <Text size="small" leading="compact">
           {t("orders.payment.pendingAuthorization")}
         </Text>

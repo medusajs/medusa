@@ -12,7 +12,7 @@ import {
 export * from "./data"
 
 async function createEntities<
-  T extends EntityName<Payment | PaymentCollection | PaymentSession>
+  T extends EntityName<Payment | PaymentCollection | PaymentSession>,
 >(manager: SqlEntityManager, entity: T, data: any[]) {
   const created: T[] = []
   for (let record of data) {

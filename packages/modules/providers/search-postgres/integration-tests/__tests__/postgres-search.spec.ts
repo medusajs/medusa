@@ -332,6 +332,32 @@ moduleIntegrationTestRunner<SearchService>({
           })
         })
 
+        it("scopes facet counts to hits above min_score", async () => {
+          const exact = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "running" },
+            search_options: { min_score: 1000, facets: ["brand"] },
+          })
+
+          expect(exact.metadata.count).toBe(0)
+          expect(exact.facets?.brand).toEqual({ type: "value", values: [] })
+
+          const typo = await service.search({
+            entity: "product",
+            fields: ["id"],
+            filters: { q: "runing" },
+            search_options: {
+              typo_tolerance: true,
+              min_score: 1000,
+              facets: ["brand"],
+            },
+          })
+
+          expect(typo.metadata.count).toBe(0)
+          expect(typo.facets?.brand).toEqual({ type: "value", values: [] })
+        })
+
         it("computes range facets alongside filters", async () => {
           const result = await service.search({
             entity: "product",

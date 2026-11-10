@@ -14,8 +14,8 @@ const CommandComponent = ({
   return (
     <div
       className={clx(
-        "bg-ui-contrast-bg-base shadow-elevation-code-block flex items-center rounded-lg px-4 py-1.5",
-        "[&>code]:text-ui-contrast-fg-primary [&>code]:code-body [&>code]:mx-2",
+        "flex items-center rounded-lg bg-ui-contrast-bg-base px-4 py-1.5 shadow-elevation-code-block",
+        "[&>code]:code-body [&>code]:mx-2 [&>code]:text-ui-contrast-fg-primary",
         className
       )}
       {...props}
@@ -32,7 +32,7 @@ const CommandCopy = React.forwardRef<
     <Copy
       {...props}
       ref={ref}
-      className={clx("!text-ui-contrast-fg-secondary ml-auto", className)}
+      className={clx("ml-auto !text-ui-contrast-fg-secondary", className)}
     />
   )
 })

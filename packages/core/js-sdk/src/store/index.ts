@@ -861,7 +861,6 @@ export class Store {
       )
     },
 
-
     /**
      * This method adds promotion codes to a cart. It sends a request to the
      * [Add Promotion Code](https://docs.medusajs.com/api/store/carts/add-promotions) API route.
@@ -939,7 +938,7 @@ export class Store {
         }
       )
     },
-    
+
     /**
      * This method completes a cart and places the order. It's the last step of the checkout flow.
      * The method sends a request to the [Complete Cart](https://docs.medusajs.com/api/store/carts/complete-cart)
@@ -1212,6 +1211,51 @@ export class Store {
 
       return this.client.fetch<HttpTypes.StorePaymentCollectionResponse>(
         `/store/payment-collections/${paymentCollectionId}/payment-sessions`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
+    },
+
+    /**
+     * This method merges client data, such as payment details collected by the provider's
+     * checkout component, into a payment session's `data.client`. It sends a request to the
+     * [Update Payment Session](https://docs.medusajs.com/api/store/payment-collections/update-payment-session)
+     * API route.
+     *
+     * @param paymentCollectionId - The ID of the payment collection that the session belongs to.
+     * @param paymentSessionId - The payment session's ID.
+     * @param body - The client data to merge into the payment session.
+     * @param query - Configure the fields to retrieve in the payment collection.
+     * @param headers - Headers to pass in the request.
+     * @returns The payment collection's details.
+     *
+     * @example
+     * sdk.store.payment.updatePaymentSession(
+     *   "paycol_123",
+     *   "payses_123",
+     *   {
+     *     client_data: {
+     *       // any data relevant for the provider.
+     *     }
+     *   }
+     * )
+     * .then(({ payment_collection }) => {
+     *   console.log(payment_collection)
+     * })
+     */
+    updatePaymentSession: async (
+      paymentCollectionId: string,
+      paymentSessionId: string,
+      body: HttpTypes.StoreUpdatePaymentSession,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<HttpTypes.StorePaymentCollectionResponse>(
+        `/store/payment-collections/${paymentCollectionId}/payment-sessions/${paymentSessionId}`,
         {
           method: "POST",
           headers,
@@ -1852,19 +1896,17 @@ export class Store {
     /**
      * This method retrieves the list of supported locales in the store. It sends a request to the
      * [List Locales](https://docs.medusajs.com/api/store/locales/list-locales) API route.
-     * 
+     *
      * @param headers - Headers to pass in the request.
      * @returns The list of supported locales.
-     * 
+     *
      * @example
      * sdk.store.locale.list()
      * .then(({ locales }) => {
      *   console.log(locales)
      * })
      */
-    list: async (
-      headers?: ClientHeaders
-    ) => {
+    list: async (headers?: ClientHeaders) => {
       return this.client.fetch<HttpTypes.StoreLocaleListResponse>(
         `/store/locales`,
         {

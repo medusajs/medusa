@@ -1,5 +1,3 @@
-import boxen from "boxen"
-
 const defaultConfig = {
   padding: 1,
   borderColor: `blue`,
@@ -15,11 +13,18 @@ const defaultMessage =
 /**
  * Analytics notice for the end-user
  */
-function showAnalyticsNotification(
+async function showAnalyticsNotification(
   config = defaultConfig,
   message = defaultMessage
 ) {
-  console.log(boxen(message, config))
+  // boxen is ESM-only; loading it lazily keeps this package requirable from
+  // Jest (which can't load ESM from node_modules), where we print it unboxed.
+  try {
+    const { default: boxen } = await import("boxen")
+    console.log(boxen(message, config))
+  } catch {
+    console.log(message)
+  }
 }
 
 export default showAnalyticsNotification

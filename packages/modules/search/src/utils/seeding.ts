@@ -238,7 +238,7 @@ async function runSeed(
         selector: { name: definition.name },
         data: { active_version: target.version },
       })
-      context.activeVersionCache?.set(definition.name, {
+      await context.activeVersionCache?.set(definition.name, {
         physical_name: target.physical_name,
         provider: target.provider,
         version: target.version,
@@ -481,7 +481,7 @@ async function reindexOne(
         selector: { id: record.id },
         data: { active_version: target.version },
       })
-      context.activeVersionCache?.set(definition.name, {
+      await context.activeVersionCache?.set(definition.name, {
         physical_name: target.physical_name,
         provider: target.provider,
         version: target.version,
@@ -774,7 +774,10 @@ async function settle(
  * from where this one stopped.
  */
 export class SearchSeedProgressLost extends MedusaError {
-  constructor(message: string, readonly cause?: unknown) {
+  constructor(
+    message: string,
+    readonly cause?: unknown
+  ) {
     super(MedusaError.Types.UNEXPECTED_STATE, message)
     this.name = "SearchSeedProgressLost"
   }
