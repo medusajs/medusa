@@ -81,8 +81,13 @@ So, when you execute the `hello-world` workflow, it continues its execution in t
 A workflow is also considered long-running if:
 
 - One of its steps has its `async` configuration set to `true` and doesn't return a step response.
-- One of its steps has its `retryInterval` option set as explained in the [Retry Failed Steps chapter](../retry-failed-steps/page.mdx).
 - One of its [nested workflows](../execute-another-workflow/page.mdx) is a long-running workflow.
+
+<Note>
+
+Before [Medusa v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0), a step with a `retryInterval` option also made its workflow long-running. Now, executing the workflow waits for the retries. Learn more in the [Retry Failed Steps](../retry-failed-steps/page.mdx#interval-waits-before-returning) chapter.
+
+</Note>
 
 ---
 

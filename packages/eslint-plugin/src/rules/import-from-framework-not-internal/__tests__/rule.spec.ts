@@ -44,11 +44,6 @@ ruleTester.run("import-from-framework-not-internal", rule, {
       output: `import { MedusaModule } from "@medusajs/framework/modules-sdk"`,
       errors: [{ messageId: "useFrameworkEntrypoint" }],
     },
-    {
-      code: `import { TransactionOrchestrator } from "@medusajs/orchestration"`,
-      output: `import { TransactionOrchestrator } from "@medusajs/framework/orchestration"`,
-      errors: [{ messageId: "useFrameworkEntrypoint" }],
-    },
     // Quote style preserved on autofix.
     {
       code: `import { MedusaError } from '@medusajs/utils'`,

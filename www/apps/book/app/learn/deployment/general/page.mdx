@@ -129,7 +129,7 @@ It’s highly recommended to instead use modules and providers suitable for prod
 
 - [Redis Caching Module](!resources!/infrastructure-modules/caching/providers/redis)
 - [Redis Event Bus Module](!resources!/infrastructure-modules/event/redis)
-- [Workflow Engine Redis Module](!resources!/infrastructure-modules/workflow-engine/redis)
+- [Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine) with a Redis notifier, so instances learn about new work without waiting for their next poll.
 - [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis)
 - [PostHog Analytics Module Provider](!resources!/infrastructure-modules/analytics/posthog) (If you're using analytics in your application. You can also use other analytics module providers that are production-ready).
 - [S3 File Module Provider](!resources!/infrastructure-modules/file/s3) (or other file module providers that are production-ready).
@@ -171,12 +171,11 @@ module.exports = defineConfig({
       },
     },
     {
-      resolve: "@medusajs/medusa/workflow-engine-redis",
+      resolve: "@medusajs/medusa/workflows",
       options: {
-        redis: {
-          // Note: This was `url` before v2.12.2
-          // It's now deprecated in favor of `redisUrl`
-          redisUrl: process.env.REDIS_URL,
+        notifier: {
+          type: "redis",
+          url: process.env.REDIS_URL,
         },
       },
     },

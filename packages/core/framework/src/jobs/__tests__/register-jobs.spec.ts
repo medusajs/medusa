@@ -1,88 +1,87 @@
 import {
-  LocalWorkflow,
-  WorkflowManager,
-  WorkflowScheduler,
-} from "@medusajs/orchestration"
-import {
   ContainerRegistrationKeys,
   createMedusaContainer,
-  MedusaContextType,
+  Modules,
 } from "@medusajs/utils"
-import { asValue } from "../../deps/awilix"
+import { getWorkflowDefinition } from "@medusajs/workflows-sdk"
+import { createEngine } from "@medusajs/workflow-engine"
 import { join } from "path"
-import { ulid } from "ulid"
+import { asValue } from "../../deps/awilix"
 import { logger } from "../../logger"
-import { MockSchedulerStorage } from "../__fixtures__/mock-scheduler-storage"
 import { JobLoader } from "../job-loader"
 
-describe("register jobs", () => {
-  WorkflowScheduler.setStorage(new MockSchedulerStorage())
+function setup() {
+  const workflows = new Map<string, any>()
+  const container = createMedusaContainer()
+  container.register(ContainerRegistrationKeys.LOGGER, asValue(logger))
+  container.register(
+    Modules.WORKFLOW_ENGINE,
+    asValue({
+      registerWorkflows: async (registered: any[]) => {
+        for (const workflow of registered) {
+          workflows.set(workflow.getName(), workflow)
+        }
+      },
+    })
+  )
+  return { container, workflows }
+}
 
+describe("register jobs", () => {
   beforeEach(() => {
     global.__medusaScheduledForTest = undefined
   })
 
-  afterEach(() => {
-    WorkflowManager.unregisterAll()
-  })
-
   it("should registers jobs from plugins", async () => {
-    const container = createMedusaContainer()
-    container.register(ContainerRegistrationKeys.LOGGER, asValue(logger))
+    const { container, workflows } = setup()
 
-    const jobLoader: JobLoader = new JobLoader(
+    await new JobLoader(
       join(__dirname, "../__fixtures__/plugin/jobs"),
       container
-    )
-    await jobLoader.load()
-    const workflow = WorkflowManager.getWorkflow("job-summarize-orders")
+    ).load()
+
+    const workflow = workflows.get("job-summarize-orders")
     expect(workflow).toBeDefined()
-    expect(workflow?.options.schedule).toEqual({
-      cron: "* * * * * *",
-      numberOfExecutions: 2,
-    })
+    expect(getWorkflowDefinition(workflow).options.schedule).toEqual(
+      expect.objectContaining({
+        cron: "* * * * * *",
+        numberOfExecutions: 2,
+      })
+    )
   })
 
   it("should pass scheduledFor to the job handler", async () => {
-    const container = createMedusaContainer()
-    container.register(ContainerRegistrationKeys.LOGGER, asValue(logger))
+    const { container, workflows } = setup()
 
-    const jobLoader: JobLoader = new JobLoader(
+    await new JobLoader(
       join(__dirname, "../__fixtures__/plugin/jobs"),
       container
-    )
-    await jobLoader.load()
+    ).load()
 
     const scheduledFor = "2024-06-01T12:00:00.000Z"
-    expect(
-      WorkflowManager.getWorkflow("job-capture-scheduled-for")
-    ).toBeDefined()
+    const workflow = workflows.get("job-capture-scheduled-for")
+    expect(workflow).toBeDefined()
 
-    const workflow = new LocalWorkflow("job-capture-scheduled-for", container)
-    const transaction = await workflow.run(
-      ulid(),
-      {
-        scheduledFor,
-      },
-      {
-        __type: MedusaContextType,
-      }
-    )
+    const engine = createEngine({ autoBoot: false })
+    engine.register(getWorkflowDefinition(workflow))
+    const handle = await engine.start({
+      workflowId: "job-capture-scheduled-for",
+      input: { scheduledFor },
+      locals: { container },
+    })
 
-    expect(transaction.getFlow().state).toBe("done")
+    expect(handle.status).toBe("succeeded")
     expect(global.__medusaScheduledForTest).toEqual(new Date(scheduledFor))
   })
 
   it("should not load non js/ts files", async () => {
-    const container = createMedusaContainer()
-    container.register(ContainerRegistrationKeys.LOGGER, asValue(logger))
+    const { container, workflows } = setup()
 
-    const jobLoader: JobLoader = new JobLoader(
+    await new JobLoader(
       join(__dirname, "../__fixtures__/plugin/jobs-with-other-files"),
       container
-    )
-    await jobLoader.load()
-    const workflow = WorkflowManager.getWorkflow("job-summarize-orders")
-    expect(workflow).toBeUndefined()
+    ).load()
+
+    expect(workflows.get("job-summarize-orders")).toBeUndefined()
   })
 })

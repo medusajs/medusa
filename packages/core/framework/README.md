@@ -34,7 +34,7 @@
   </a>
 </p>
 
-`@medusajs/framework` is the Medusa Framework: the single package Medusa applications, plugins, and custom modules import from to build API routes, workflows, modules, data models, subscribers, scheduled jobs, and configuration. It re-exports the core libraries (`@medusajs/utils`, `@medusajs/types`, `@medusajs/workflows-sdk`, `@medusajs/modules-sdk`, `@medusajs/orchestration`) and pinned third-party dependencies through subpath entry points, so apps should import from `@medusajs/framework/*` instead of those packages directly.
+`@medusajs/framework` is the Medusa Framework: the single package Medusa applications, plugins, and custom modules import from to build API routes, workflows, modules, data models, subscribers, scheduled jobs, and configuration. It re-exports the core libraries (`@medusajs/utils`, `@medusajs/types`, `@medusajs/workflows-sdk`, `@medusajs/modules-sdk`) and pinned third-party dependencies through subpath entry points, so apps should import from `@medusajs/framework/*` instead of those packages directly.
 
 ## At a glance
 
@@ -53,7 +53,6 @@
 | `@medusajs/framework/workflows-sdk` | Re-export of `@medusajs/workflows-sdk`: `createWorkflow`, `createStep`, `StepResponse`, `WorkflowResponse`, `transform`, `when`, `createHook` |
 | `@medusajs/framework/workflows-sdk/composer` | Re-export of `@medusajs/workflows-sdk/composer` |
 | `@medusajs/framework/modules-sdk` | Re-export of `@medusajs/modules-sdk` |
-| `@medusajs/framework/orchestration` | Re-export of `@medusajs/orchestration` |
 | `@medusajs/framework/http` | `MedusaRequest`, `AuthenticatedMedusaRequest`, `MedusaResponse`, `defineMiddlewares`, `authenticate`, `validateAndTransformBody`, `validateAndTransformQuery` |
 | `@medusajs/framework/subscribers` | `SubscriberArgs`, `SubscriberConfig` |
 | `@medusajs/framework/jobs` | Scheduled job loader and types |

@@ -47,6 +47,10 @@ jest.mock("@medusajs/framework/utils", () => ({
   Modules: { SEARCH: "search" },
 }))
 
+jest.mock("../../loaders/helpers/register-core-workflows", () => ({
+  registerCoreWorkflows: jest.fn(),
+}))
+
 jest.mock("../utils", () => ({
   ensureDbExists: jest.fn(),
 }))
@@ -205,7 +209,9 @@ describe("runMigrationScripts", () => {
     it("calls onApplicationPrepareShutdown and onApplicationShutdown in finally block", async () => {
       const container = buildContainer()
 
-      const onApplicationPrepareShutdown = jest.fn().mockResolvedValue(undefined)
+      const onApplicationPrepareShutdown = jest
+        .fn()
+        .mockResolvedValue(undefined)
       const onApplicationShutdown = jest.fn().mockResolvedValue(undefined)
 
       ;(MedusaAppLoader as jest.Mock).mockImplementation(() => ({
@@ -243,10 +249,7 @@ describe("runMigrationScripts", () => {
 
   describe("WorkflowLoader", () => {
     it("instantiates WorkflowLoader with the resolved plugin workflow paths", async () => {
-      const plugins = [
-        { resolve: "/app" },
-        { resolve: "/plugins/my-plugin" },
-      ]
+      const plugins = [{ resolve: "/app" }, { resolve: "/plugins/my-plugin" }]
       ;(getResolvedPlugins as jest.Mock).mockResolvedValue(plugins)
 
       const container = buildContainer()
@@ -287,7 +290,9 @@ describe("runMigrationScripts", () => {
         load: jest.fn().mockImplementation(async () => {
           callOrder.push("MedusaAppLoader.load")
           return {
-            onApplicationPrepareShutdown: jest.fn().mockResolvedValue(undefined),
+            onApplicationPrepareShutdown: jest
+              .fn()
+              .mockResolvedValue(undefined),
             onApplicationShutdown: jest.fn().mockResolvedValue(undefined),
             onApplicationStart: jest.fn().mockImplementation(async () => {
               callOrder.push("onApplicationStart")

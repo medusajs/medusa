@@ -1,6 +1,5 @@
-import { CreateWorkflowComposerContext, WorkflowData } from "./type"
-import { OrchestrationUtils } from "@medusajs/utils"
-
+import { getComposerContext } from "../../compiler/recorder"
+import { WorkflowData } from "./type"
 /**
  * This function is used to run multiple steps in parallel. The result of each step will be returned as part of the result array.
  *
@@ -44,29 +43,13 @@ import { OrchestrationUtils } from "@medusajs/utils"
 export function parallelize<TResult extends (WorkflowData | undefined)[]>(
   ...steps: TResult
 ): TResult {
-  if (!global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]) {
+  const context = getComposerContext()
+  if (!context) {
     throw new Error(
       "parallelize must be used inside a createWorkflow definition"
     )
   }
 
-  const parallelizeBinder = (
-    global[
-      OrchestrationUtils.SymbolMedusaWorkflowComposerContext
-    ] as CreateWorkflowComposerContext
-  ).parallelizeBinder
-
-  const resultSteps = steps.map((step) => step)
-
-  return parallelizeBinder<TResult>(function (
-    this: CreateWorkflowComposerContext
-  ) {
-    const stepOntoMerge = steps.shift()!
-    this.flow.mergeActions(
-      stepOntoMerge.__step__,
-      ...steps.map((step) => step!.__step__)
-    )
-
-    return resultSteps as unknown as TResult
-  })
+  context.parallel(steps)
+  return steps
 }

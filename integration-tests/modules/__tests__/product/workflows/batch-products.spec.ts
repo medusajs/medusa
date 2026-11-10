@@ -1,9 +1,12 @@
 import {
   batchProductsWorkflow,
-  batchProductsWorkflowId,
   batchProductVariantsWorkflow,
-  batchProductVariantsWorkflowId,
 } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   IFulfillmentModuleService,
@@ -39,15 +42,23 @@ medusaIntegrationTestRunner({
       describe("batchProductWorkflow", () => {
         describe("compensation", () => {
           it("should cancel created and deleted products if step throws error", async () => {
-            const workflow = batchProductsWorkflow(appContainer)
-
-            workflow.appendAction("throw", batchProductsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(
-                  `Failed the update product workflow after creating product`
-                )
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(
+                `Failed the update product workflow after creating product`
+              )
             })
+            const failingWorkflow = createWorkflow(
+              "test-batch-products-then-fail-1",
+              (input: any) => {
+                const result = batchProductsWorkflow.runAsStep({ input })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const product1 = await service.createProducts({ title: "test1" })
             const product2 = await service.createProducts({ title: "test2" })
@@ -95,13 +106,21 @@ medusaIntegrationTestRunner({
       describe("batchVariantWorkflow", () => {
         describe("compensation", () => {
           it("should cancel created and deleted variant if step throws error", async () => {
-            const workflow = batchProductVariantsWorkflow(appContainer)
-
-            workflow.appendAction("throw", batchProductVariantsWorkflowId, {
-              invoke: async function failStep() {
-                throw new Error(`Failed the update product variant workflow`)
-              },
+            const failStep = createStep("throw", async () => {
+              throw new Error(`Failed the update product variant workflow`)
             })
+            const failingWorkflow = createWorkflow(
+              "test-batch-products-then-fail-2",
+              (input: any) => {
+                const result = batchProductVariantsWorkflow.runAsStep({ input })
+                failStep(result)
+                return new WorkflowResponse(result)
+              }
+            )
+            await appContainer
+              .resolve(Modules.WORKFLOW_ENGINE)
+              .registerWorkflows([failingWorkflow])
+            const workflow = failingWorkflow(appContainer)
 
             const res = await batchProductsWorkflow(appContainer).run({
               input: {

@@ -26,9 +26,18 @@ export const CONFIG = {
 export interface DevServerGlobals {
   __MEDUSA_HMR_API_LOADER__?: ApiLoader
   __MEDUSA_HMR_INITIAL_STACK_LENGTH__?: number
-  WorkflowManager?: {
-    unregister: (id: string) => void
-  }
+}
+
+/**
+ * Registers and unregisters workflows on the workflow engine module while the
+ * dev server reloads files.
+ */
+export interface DevWorkflowRegistry {
+  unregister(id: string): Promise<void>
+  /**
+   * Registers the workflows a reloaded file exports.
+   */
+  register(fileExports: Record<string, unknown>): Promise<void>
 }
 
 /**

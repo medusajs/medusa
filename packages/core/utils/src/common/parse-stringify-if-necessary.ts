@@ -18,6 +18,16 @@ export function parseStringifyIfNecessary(result: unknown): any {
     return result.map((item) => parseStringifyIfNecessary(item))
   }
 
+  // JSON drops an error's message, name and stack, which are not enumerable.
+  if (result instanceof Error) {
+    return parseStringifyIfNecessary({
+      ...result,
+      name: result.name,
+      message: result.message,
+      stack: result.stack,
+    })
+  }
+
   const isPlainObject =
     result.constructor === Object || result.constructor === undefined
 

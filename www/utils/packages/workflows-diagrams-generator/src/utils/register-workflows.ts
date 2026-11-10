@@ -1,30 +1,45 @@
+import { getWorkflowDefinition, isWorkflow } from "@medusajs/workflows-sdk"
 import { statSync, readFileSync } from "fs"
 import * as glob from "glob"
 import path from "path"
 import { fileURLToPath } from "url"
 
+export type WorkflowDefinition = ReturnType<typeof getWorkflowDefinition>
+
 type FileInfo = {
   workflowId: string
   code: string
+  definition?: WorkflowDefinition
+}
+
+export type RegisteredWorkflow = {
+  code: string
+  definition: WorkflowDefinition
 }
 
 export default async function (
   workflowPath: string
-): Promise<Map<string, string>> {
-  const workflowDefinitions = new Map<string, string>()
+): Promise<Map<string, RegisteredWorkflow>> {
+  const workflowDefinitions = new Map<string, RegisteredWorkflow>()
   const fileStat = statSync(workflowPath)
   if (fileStat.isFile()) {
     const fileInfo = await importFile(workflowPath)
-    if (fileInfo.workflowId.length && fileInfo.code.length) {
-      workflowDefinitions.set(fileInfo.workflowId, fileInfo.code)
+    if (fileInfo.definition && fileInfo.code.length) {
+      workflowDefinitions.set(fileInfo.workflowId, {
+        code: fileInfo.code,
+        definition: fileInfo.definition,
+      })
     }
   } else {
     const files = glob.sync(`${workflowPath}/**/*.{ts,js}`, {})
     await Promise.all(
       files.map(async (file) => {
         const fileInfo = await importFile(file)
-        if (fileInfo.workflowId.length && fileInfo.code.length) {
-          workflowDefinitions.set(fileInfo.workflowId, fileInfo.code)
+        if (fileInfo.definition && fileInfo.code.length) {
+          workflowDefinitions.set(fileInfo.workflowId, {
+            code: fileInfo.code,
+            definition: fileInfo.definition,
+          })
         }
       })
     )
@@ -49,31 +64,21 @@ async function importFile(filePath: string): Promise<FileInfo> {
 
   fileInfo.code = readFileSync(filePath, "utf-8")
 
+  const candidates: unknown[] = []
   if (imported.default) {
-    switch (typeof imported.default) {
-      case "function":
-        fileInfo.workflowId = getWorkflowName(imported.default) || ""
-        break
-      case "object":
-        Object.values(imported.default).find((exportedVariable: unknown) => {
-          fileInfo.workflowId = getWorkflowName(exportedVariable) || ""
-          return fileInfo.workflowId.length !== 0
-        })
+    candidates.push(imported.default)
+    if (typeof imported.default === "object") {
+      candidates.push(...Object.values(imported.default))
     }
   } else if (typeof imported === "object") {
-    Object.values(imported).find((exportedVariable: unknown) => {
-      fileInfo.workflowId = getWorkflowName(exportedVariable) || ""
-      return fileInfo.workflowId.length !== 0
-    })
+    candidates.push(...Object.values(imported))
+  }
+
+  const workflow = candidates.find((candidate) => isWorkflow(candidate))
+  if (workflow) {
+    fileInfo.definition = getWorkflowDefinition(workflow)
+    fileInfo.workflowId = fileInfo.definition.id
   }
 
   return fileInfo
-}
-
-function getWorkflowName(variable: unknown): string | undefined {
-  return typeof variable === "function" &&
-    "getName" in variable &&
-    typeof variable.getName === "function"
-    ? variable.getName()
-    : undefined
 }

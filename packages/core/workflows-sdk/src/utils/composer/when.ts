@@ -1,5 +1,5 @@
 import { isDefined, isObject, OrchestrationUtils } from "@medusajs/utils"
-import { ulid } from "ulid"
+import { getComposerContext } from "../../compiler/recorder"
 import { createStep } from "./create-step"
 import { StepResponse } from "./helpers/step-response"
 import { StepExecutionContext, WorkflowData } from "./type"
@@ -94,39 +94,32 @@ export function when(...args) {
     throw new Error(`"when condition" must be a function`)
   }
 
-  global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition] = {
-    input,
-    condition,
-    steps: [],
+  const context = getComposerContext()
+  if (!context) {
+    throw new Error(`"when" must be used inside a createWorkflow definition`)
   }
 
-  let thenCalled = false
-  process.nextTick(() => {
-    if (!thenCalled) {
-      throw new Error(`".then" is missing after "when" condition`)
-    }
-  })
+  const block = context.beginCondition({ input, condition })
 
   return {
     then: (fn) => {
-      thenCalled = true
-      const ret = fn()
+      let ret
+      try {
+        ret = fn()
+      } catch (error) {
+        context.endCondition(block)
+        throw error
+      }
       let returnStep = ret
-
-      const applyCondition =
-        global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition].steps
 
       if (
         isDefined(ret) &&
         ret?.__type !== OrchestrationUtils.SymbolWorkflowStep
       ) {
         if (!isDefined(name)) {
-          name = "when-then-" + ulid()
-          const context =
-            global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
-
+          name = context.nextUnnamedWhen()
           console.warn(
-            `${context.workflowId}: "when" name should be defined. A random one will be assigned to it, which is not recommended for production.\n`,
+            `${context.workflowId}: "when" name should be defined. "${name}" will be assigned to it, which changes when "when" blocks are added or removed.\n`,
             condition.toString()
           )
         }
@@ -149,11 +142,7 @@ export function when(...args) {
         }
       }
 
-      for (const step of applyCondition) {
-        step.if(input, condition)
-      }
-
-      delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
+      context.endCondition(block)
 
       return returnStep
     },

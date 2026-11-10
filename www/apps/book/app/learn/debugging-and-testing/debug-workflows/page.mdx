@@ -1,4 +1,4 @@
-import { Table, Prerequisites, CodeTabs, CodeTab } from "docs-ui"
+import { Table, CodeTabs, CodeTab } from "docs-ui"
 
 export const metadata = {
   title: `${pageNumber} Debug Workflows`,
@@ -420,15 +420,6 @@ By viewing the workflow executions through the Medusa Admin, you can:
 The Workflows settings page in the Medusa Admin shows you the history of stored workflow executions only. Workflow executions are stored if a workflow is [long-running](../../fundamentals/workflows/long-running-workflow/page.mdx), or if the `store` and `retentionTime` options are set on the workflow.
 
 For example, to store workflow executions:
-
-<Prerequisites
-  items={[
-    {
-      text: "Redis Workflow Engine must be installed and configured.",
-      link: "!resources!/infrastructure-modules/workflow-engine/redis"
-    }
-  ]}
-/>
 
 ```ts highlights={[["22"], ["23"]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { 

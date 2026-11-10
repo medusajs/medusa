@@ -270,27 +270,4 @@ The Search Module has module providers that implement the underlying logic of in
 
 ## Workflow Engine Module
 
-A Workflow Engine Module handles tracking and recording the transactions and statuses of workflows and their steps. Learn more about it in the [Workflow Engine Module documentation](./workflow-engine/page.mdx).
-
-The following Workflow Engine modules are provided by Medusa.
-
-<CardList
-  items={[
-    {
-      title: "In-Memory",
-      href: "/infrastructure-modules/workflow-engine/in-memory",
-      badge: {
-        variant: "neutral",
-        children: "For Development"
-      }
-    },
-    {
-      title: "Redis",
-      href: "/infrastructure-modules/workflow-engine/redis",
-      badge: {
-        variant: "green",
-        children: "For Production"
-      }
-    }
-  ]}
-/>
+The Workflow Engine Module runs your workflows and stores their executions in your application's database. Medusa registers it by default, and it works both in development and in production. Learn more about it in the [Workflow Engine Module documentation](./workflow-engine/page.mdx).

@@ -1,7 +1,9 @@
+import { deleteProductsWorkflow } from "@medusajs/core-flows"
 import {
-  deleteProductsWorkflow,
-  deleteProductsWorkflowId,
-} from "@medusajs/core-flows"
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   IFulfillmentModuleService,
@@ -151,8 +153,6 @@ medusaIntegrationTestRunner({
         })
 
         it("should restore options and product data when a failure step is added at the end", async () => {
-          const workflow = deleteProductsWorkflow(appContainer)
-
           const product = await service.createProducts({
             title: "Test Product",
             shipping_profile_id: shippingProfile.id,
@@ -175,13 +175,22 @@ medusaIntegrationTestRunner({
           const option = product.options[0]
           expect(option.is_exclusive).toBe(true)
 
-          workflow.appendAction("throw", deleteProductsWorkflowId, {
-            invoke: async () => {
-              throw new Error(`Failed after product deletion`)
-            },
+          const failStep = createStep("throw", async () => {
+            throw new Error(`Failed after product deletion`)
           })
+          const failingWorkflow = createWorkflow(
+            "test-delete-products-then-fail",
+            (input: { ids: string[] }) => {
+              const result = deleteProductsWorkflow.runAsStep({ input })
+              failStep(result)
+              return new WorkflowResponse(result)
+            }
+          )
+          await appContainer
+            .resolve(Modules.WORKFLOW_ENGINE)
+            .registerWorkflows([failingWorkflow])
 
-          const { errors } = await workflow.run({
+          const { errors } = await failingWorkflow(appContainer).run({
             input: {
               ids: [product.id],
             },

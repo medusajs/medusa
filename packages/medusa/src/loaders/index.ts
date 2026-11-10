@@ -30,6 +30,7 @@ import requestIp from "request-ip"
 import adminLoader from "./admin"
 import apiLoader from "./api"
 import { loadSearchIndexes } from "./search"
+import { registerCoreWorkflows } from "./helpers/register-core-workflows"
 
 type Options = {
   directory: string
@@ -190,7 +191,7 @@ export default async ({
   // constructed, and the seed on application start only fills indexes it knows
   // about. A no-op unless the module is registered.
   await loadSearchIndexes({ plugins, configModule, logger })
-  
+
   const {
     onApplicationStart,
     onApplicationShutdown,
@@ -198,6 +199,8 @@ export default async ({
     modules,
     gqlSchema,
   } = await new MedusaAppLoader().load()
+
+  await registerCoreWorkflows(container)
 
   const workflowsSourcePaths = plugins.map((p) => join(p.resolve, "workflows"))
   const workflowLoader = new WorkflowLoader(workflowsSourcePaths, container)

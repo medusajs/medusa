@@ -1,8 +1,14 @@
 import { createRegionsWorkflow } from "@medusajs/core-flows"
+import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { MedusaContainer, RegionDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
@@ -102,18 +108,21 @@ medusaIntegrationTestRunner({
           payment_providers: [paymentProviderId],
         }
 
-        const workflow = createRegionsWorkflow(container)
-        workflow.addAction(
-          "throw",
-          {
-            invoke: async function failStep() {
-              throw new Error(`Failed to create region`)
-            },
-          },
-          {
-            noCompensation: true,
+        const failStep = createStep("throw", async () => {
+          throw new Error(`Failed to create region`)
+        })
+        const failingWorkflow = createWorkflow(
+          "test-create-regions-then-fail",
+          (input: any) => {
+            const res = createRegionsWorkflow.runAsStep({ input })
+            failStep(res)
+            return new WorkflowResponse(res)
           }
         )
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([failingWorkflow])
+        const workflow = failingWorkflow(container)
 
         const { errors } = await workflow.run({
           input: {

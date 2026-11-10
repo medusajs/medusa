@@ -4578,6 +4578,9 @@ medusaIntegrationTestRunner({
         const workflow = createWorkflow("test-workflow", () => {
           return new WorkflowResponse(updateOrderShippingMethodsStep([]))
         })
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([workflow])
 
         const { result } = await workflow(container).run()
 

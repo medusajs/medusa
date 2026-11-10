@@ -1,17 +1,15 @@
 import {
-  DistributedTransactionEvents,
-  DistributedTransactionType,
-  LocalWorkflow,
-  TransactionStepError,
-} from "@medusajs/orchestration"
-import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
+  Context,
+  FlowRunOptions as EngineFlowRunOptions,
+  LegacyTransaction,
+  LoadedModule,
+  MedusaContainer,
+  WorkflowRunEvents,
+  WorkflowRunResult,
+} from "@medusajs/types"
 
-type BaseFlowRunOptions = {
-  context?: Context
-  resultFrom?: string | Symbol
-  throwOnError?: boolean
-  logOnError?: boolean
-  events?: DistributedTransactionEvents
+type BaseFlowRunOptions = Omit<EngineFlowRunOptions, "input" | "events"> & {
+  events?: WorkflowRunEvents
   container?: LoadedModule[] | MedusaContainer
 }
 
@@ -37,32 +35,19 @@ export type FlowRegisterStepFailureOptions<TData = unknown> =
   }
 
 export type FlowCancelOptions = {
-  transaction?: DistributedTransactionType
+  transaction?: LegacyTransaction
   transactionId?: string
   context?: Context
   throwOnError?: boolean
   logOnError?: boolean
-  events?: DistributedTransactionEvents
+  events?: WorkflowRunEvents
   container?: LoadedModule[] | MedusaContainer
 }
 
 /**
  * The details of a workflow's execution.
  */
-export type WorkflowResult<TResult = unknown> = {
-  /**
-   * Any errors that occurred in the workflow.
-   */
-  errors: TransactionStepError[]
-  /**
-   * The transaction details of the workflow's execution.
-   */
-  transaction: DistributedTransactionType
-  /**
-   * The result returned by the workflow.
-   */
-  result: TResult
-}
+export type WorkflowResult<TResult = unknown> = WorkflowRunResult<TResult>
 
 export type ExportedWorkflow<
   TData = unknown,
@@ -105,11 +90,7 @@ export type MainExportedWorkflow<TData = unknown, TResult = unknown> = {
   // Main function on the exported workflow
   <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
-  ): Omit<
-    LocalWorkflow,
-    "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
-  > &
-    ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
+  ): ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
 } & {
   /**
    * You can also directly call run, registerStepSuccess, registerStepFailure and cancel on the exported workflow

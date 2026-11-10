@@ -13,7 +13,6 @@ const OLD_PACKAGE_REWRITES: Record<string, string> = {
   "@medusajs/types": "@medusajs/framework/types",
   "@medusajs/workflows-sdk": "@medusajs/framework/workflows-sdk",
   "@medusajs/modules-sdk": "@medusajs/framework/modules-sdk",
-  "@medusajs/orchestration": "@medusajs/framework/orchestration",
 }
 
 /**

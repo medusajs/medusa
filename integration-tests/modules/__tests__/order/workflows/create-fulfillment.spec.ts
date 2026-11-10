@@ -1,4 +1,9 @@
 import {
+  createStep,
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import {
   cancelOrderFulfillmentWorkflow,
   createOrderFulfillmentWorkflow,
   createShippingOptionsWorkflow,
@@ -18,7 +23,12 @@ import {
   ShippingOptionDTO,
   StockLocationDTO,
 } from "@medusajs/types"
-import { BigNumber, ContainerRegistrationKeys, Modules, remoteQueryObjectFromString, } from "@medusajs/utils"
+import {
+  BigNumber,
+  ContainerRegistrationKeys,
+  Modules,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 
 jest.setTimeout(500000)
 
@@ -158,7 +168,9 @@ async function prepareDataFixtures({ container }) {
     },
     {
       [Modules.PRODUCT]: {
-        variant_id: product.variants.find((v) => v.sku === variantSkuWithInventory)!.id,
+        variant_id: product.variants.find(
+          (v) => v.sku === variantSkuWithInventory
+        )!.id,
       },
       [Modules.INVENTORY]: {
         inventory_item_id: inventoryItem.id,
@@ -232,8 +244,12 @@ async function prepareDataFixtures({ container }) {
 async function createOrderFixture({ container, product, location }) {
   const orderService: IOrderModuleService = container.resolve(Modules.ORDER)
 
-  const variantWithInventory = product.variants.find((v) => v.sku === variantSkuWithInventory)!
-  const variantWithoutInventory = product.variants.find((v) => v.sku === "test-variant-no-inventory")!
+  const variantWithInventory = product.variants.find(
+    (v) => v.sku === variantSkuWithInventory
+  )!
+  const variantWithoutInventory = product.variants.find(
+    (v) => v.sku === "test-variant-no-inventory"
+  )!
 
   let order = await orderService.createOrders({
     region_id: "test_region_id",
@@ -421,7 +437,9 @@ medusaIntegrationTestRunner({
 
         expect(orderFulfill.fulfillments).toHaveLength(1)
         expect(
-          normalizeBigNumbers(orderFulfillItemWithInventory.detail.fulfilled_quantity)
+          normalizeBigNumbers(
+            orderFulfillItemWithInventory.detail.fulfilled_quantity
+          )
         ).toEqual(1)
         expect(orderFulfill.fulfillments[0].metadata).toEqual({
           meta_key: "meta_value",
@@ -506,22 +524,28 @@ medusaIntegrationTestRunner({
             location_id: undefined,
           }
 
-        const worflow = createOrderFulfillmentWorkflow(container)
-        worflow.addAction("fail", {
-          invoke: () => {
-            throw new Error("Fulfillment failed")
-          },
+        const failStep = createStep("fail", async () => {
+          throw new Error("Fulfillment failed")
         })
+        const failingWorkflow = createWorkflow(
+          "test-create-order-fulfillment-then-fail",
+          (input: any) => {
+            const result = createOrderFulfillmentWorkflow.runAsStep({ input })
+            failStep(result)
+            return new WorkflowResponse(result)
+          }
+        )
+        await container
+          .resolve(Modules.WORKFLOW_ENGINE)
+          .registerWorkflows([failingWorkflow])
 
-        await worflow
+        await failingWorkflow(container)
           .run({
             input: createOrderFulfillmentData,
           })
           .catch(() => void 0)
 
-        worflow.deleteAction("fail")
-
-        await worflow.run({
+        await createOrderFulfillmentWorkflow(container).run({
           input: createOrderFulfillmentData,
         })
 
@@ -548,9 +572,9 @@ medusaIntegrationTestRunner({
         const fulfilledItem = orderFulfill.items?.find((i) => i.id === itemId)
 
         expect(orderFulfill.fulfillments).toHaveLength(1)
-        expect(normalizeBigNumbers(fulfilledItem?.detail.fulfilled_quantity)).toEqual(
-          1
-        )
+        expect(
+          normalizeBigNumbers(fulfilledItem?.detail.fulfilled_quantity)
+        ).toEqual(1)
 
         const inventoryModule = container.resolve(Modules.INVENTORY)
         const reservation = await inventoryModule.listReservationItems({

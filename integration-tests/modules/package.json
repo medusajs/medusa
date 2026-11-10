@@ -37,7 +37,7 @@
     "@medusajs/test-utils": "workspace:*",
     "@medusajs/user": "workspace:^",
     "@medusajs/utils": "workspace:^",
-    "@medusajs/workflow-engine-inmemory": "workspace:*",
+    "@medusajs/workflows": "workspace:*",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.23.1",
     "scrypt-kdf": "^4.0.0"

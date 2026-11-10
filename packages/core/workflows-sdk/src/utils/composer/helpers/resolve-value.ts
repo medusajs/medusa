@@ -25,13 +25,7 @@ function resolveProperty(property: any, transactionContext: any) {
   ) {
     res = property.__resolver(transactionContext)
   } else if (property.__type === OrchestrationUtils.SymbolWorkflowStep) {
-    const output =
-      invokeRes[property.__step__]?.output ?? invokeRes[property.__step__]
-    if (output?.__type === OrchestrationUtils.SymbolWorkflowStepResponse) {
-      res = output.output
-    } else {
-      res = output
-    }
+    res = invokeRes[property.__step__]
   } else if (
     property.__type === OrchestrationUtils.SymbolWorkflowStepResponse
   ) {

@@ -6,7 +6,7 @@ Pick the lowest layer that reproduces the bug.
 
 | Bug lives in | Test type | Location | Needs DB |
 | --- | --- | --- | --- |
-| Pure logic in `packages/core/*` (utils, workflows-sdk, orchestration, js-sdk) | Unit | `src/**/__tests__/*.spec.ts` next to the code | No |
+| Pure logic in `packages/core/*` (utils, workflows-sdk, workflow-engine, js-sdk) | Unit | `src/**/__tests__/*.spec.ts` next to the code | No |
 | Workflow/step in `core-flows` | Unit if mockable, else HTTP integration | `src/**/__tests__/` or `integration-tests/http/__tests__/` | Maybe |
 | Module service / repository / model | Module integration | `packages/modules/<module>/integration-tests/__tests__/` | Yes |
 | API route, validator, middleware, query config | HTTP integration | `integration-tests/http/__tests__/<domain>/` | Yes |
