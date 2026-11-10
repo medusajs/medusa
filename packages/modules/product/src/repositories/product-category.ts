@@ -499,23 +499,23 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
           categoryData.parent_category_id !== productCategory.parent_category_id
         ) {
           // Calculate the new mpath
-          if (categoryData.parent_category_id === null) {
-            categoryData.mpath = ""
-          } else {
-            productCategory = (
-              await this.buildProductCategoriesWithTree(
-                {
-                  descendants: true,
-                },
-                [productCategory],
-                {
-                  where: { id: productCategory.id },
-                  serialize: false,
-                },
-                context
-              )
-            )[0]
+          productCategory = (
+            await this.buildProductCategoriesWithTree(
+              {
+                descendants: true,
+              },
+              [productCategory],
+              {
+                where: { id: productCategory.id },
+                serialize: false,
+              },
+              context
+            )
+          )[0]
 
+          let newBaseMpath: string | null = null
+
+          if (categoryData.parent_category_id !== null) {
             const newParentCategory = await manager.findOne<
               InferEntityType<typeof ProductCategory>
             >(ProductCategory.name, categoryData.parent_category_id)
@@ -527,40 +527,44 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
               )
             }
 
-            const categoryDataChildren =
-              categoryData.category_children?.flatMap(
-                (child) => child.category_children ?? []
-              )
-
-            const categoryDataChildrenMap = new Map(
-              categoryDataChildren?.map((child) => [child.id, child])
-            )
-
-            function updateMpathRecursively(
-              category: InferEntityType<typeof ProductCategory>,
-              newBaseMpath: string
-            ) {
-              const newMpath = `${newBaseMpath}.${category.id}`
-              category.mpath = newMpath
-              for (let child of category.category_children) {
-                child = manager.getReference(
-                  ProductCategory.name,
-                  child.id
-                ) as any
-                manager.assign(
-                  child,
-                  categoryDataChildrenMap.get(child.id) ?? {}
-                )
-                updateMpathRecursively(child, newMpath)
-              }
-            }
-
-            updateMpathRecursively(
-              productCategory!,
-              (newParentCategory as any).mpath!
-            )
-            // categoryData.mpath = `${newParentCategory.mpath}.${productCategory.id}`
+            newBaseMpath = (newParentCategory as any).mpath!
           }
+
+          const categoryDataChildren =
+            categoryData.category_children?.flatMap(
+              (child) => child.category_children ?? []
+            )
+
+          const categoryDataChildrenMap = new Map(
+            categoryDataChildren?.map((child) => [child.id, child])
+          )
+
+          function updateMpathRecursively(
+            category: InferEntityType<typeof ProductCategory>,
+            newBaseMpath: string | null
+          ) {
+            const newMpath = newBaseMpath
+              ? `${newBaseMpath}.${category.id}`
+              : category.id
+            category.mpath = newMpath
+            for (let child of category.category_children) {
+              child = manager.getReference(
+                ProductCategory.name,
+                child.id
+              ) as any
+              manager.assign(
+                child,
+                categoryDataChildrenMap.get(child.id) ?? {}
+              )
+              updateMpathRecursively(child, newMpath)
+            }
+          }
+
+          updateMpathRecursively(
+            productCategory!,
+            newBaseMpath
+          )
+          categoryData.mpath = productCategory.mpath
 
           // Rerank the siblings in the new parent
           const siblingsCount = await manager.count(ProductCategory.name, {

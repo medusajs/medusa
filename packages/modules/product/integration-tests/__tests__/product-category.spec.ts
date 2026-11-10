@@ -1312,6 +1312,99 @@ moduleIntegrationTestRunner<Service>({
             })
           )
         })
+
+        it("should update the mpath of the category and its children recursively when moving to the top level (root)", async () => {
+          let [productCategory] = await service.list(
+            {
+              id: "laptops",
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          await service.update([
+            {
+              id: productCategory.id,
+              parent_category_id: null,
+            },
+          ])
+          ;[productCategory] = await service.list({
+            id: "laptops",
+            include_descendants_tree: true,
+          })
+
+          expect(productCategory).toEqual(
+            expect.objectContaining({
+              id: "laptops",
+              mpath: "laptops",
+              parent_category_id: null,
+              category_children: [
+                expect.objectContaining({
+                  id: "gaming-laptops",
+                  mpath: "laptops.gaming-laptops",
+                  category_children: [
+                    expect.objectContaining({
+                      id: "budget-gaming",
+                      mpath: "laptops.gaming-laptops.budget-gaming",
+                      parent_category_id: "gaming-laptops",
+                    }),
+                    expect.objectContaining({
+                      id: "high-performance",
+                      parent_category_id: "gaming-laptops",
+                      mpath: "laptops.gaming-laptops.high-performance",
+                      category_children: [
+                        expect.objectContaining({
+                          id: "vr-ready",
+                          mpath:
+                            "laptops.gaming-laptops.high-performance.vr-ready",
+                          parent_category_id: "high-performance",
+                        }),
+                        expect.objectContaining({
+                          id: "4k-gaming",
+                          mpath:
+                            "laptops.gaming-laptops.high-performance.4k-gaming",
+                          parent_category_id: "high-performance",
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+                expect.objectContaining({
+                  id: "ultrabooks",
+                  mpath: "laptops.ultrabooks",
+                  parent_category_id: "laptops",
+                  category_children: [
+                    expect.objectContaining({
+                      id: "thin-light",
+                      mpath: "laptops.ultrabooks.thin-light",
+                      parent_category_id: "ultrabooks",
+                    }),
+                    expect.objectContaining({
+                      id: "convertible-ultrabooks",
+                      mpath: "laptops.ultrabooks.convertible-ultrabooks",
+                      parent_category_id: "ultrabooks",
+                      category_children: [
+                        expect.objectContaining({
+                          id: "touchscreen-ultrabooks",
+                          mpath:
+                            "laptops.ultrabooks.convertible-ultrabooks.touchscreen-ultrabooks",
+                          parent_category_id: "convertible-ultrabooks",
+                        }),
+                        expect.objectContaining({
+                          id: "detachable-ultrabooks",
+                          mpath:
+                            "laptops.ultrabooks.convertible-ultrabooks.detachable-ultrabooks",
+                          parent_category_id: "convertible-ultrabooks",
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
+        })
       })
 
       describe("delete", () => {
