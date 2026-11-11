@@ -38963,6 +38963,51 @@ await cartModuleService.setShippingMethodAdjustments(
 )
 ```
 
+***
+
+## How Medusa Refreshes Adjustments
+
+In the Medusa application, the [updateCartPromotionsWorkflow](undefined/references/medusa-workflows/updateCartPromotionsWorkflow) computes a cart's adjustments whenever the cart's promotions change or the cart is refreshed, such as after adding a line item.
+
+A shipping method's price can depend on the cart's discounted item total, and a shipping method's adjustments depend on its price. So, after computing the adjustments, the workflow re-prices the cart's shipping methods. If any shipping method's price changes or a shipping method becomes invalid and is removed, the workflow recomputes the adjustments once more so they reflect the new shipping prices.
+
+### Recompute Adjustments in Custom Workflows
+
+The `refreshCartPromotionAdjustmentsWorkflow` is available since [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+If you make changes to a cart that affect its adjustments in your customizations, use the [refreshCartPromotionAdjustmentsWorkflow](undefined/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow) to recompute them. The workflow computes the adjustments of the cart's line items and shipping methods from the cart's current state, and replaces the existing adjustments with them.
+
+For example:
+
+```ts
+import {
+  refreshCartPromotionAdjustmentsWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { result } = await refreshCartPromotionAdjustmentsWorkflow(
+  container
+).run({
+  input: {
+    cart_id: "cart_123",
+    promo_codes: ["10OFF"],
+  },
+})
+
+// promotion codes that couldn't be applied
+console.log(result.skipped_promo_codes)
+```
+
+The workflow accepts the following input:
+
+- `cart_id`: The ID of the cart.
+- `promo_codes`: The promotion codes to apply to the cart. They replace the cart's existing promotions.
+- `cart`: (optional) The cart's details, if you've already retrieved them. Otherwise, the workflow retrieves the cart by its ID.
+- `additional_promotion_context`: (optional) Custom context to merge into the cart's context when evaluating promotion rules.
+
+The workflow returns an object with a `skipped_promo_codes` property, which holds the promotion codes that Medusa didn't apply to the cart.
+
 
 # Enforce Sales Channel Availability in Carts
 

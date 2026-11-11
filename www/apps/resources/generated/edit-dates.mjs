@@ -5,7 +5,7 @@ export const generatedEditDates = {
   "app/commerce-modules/auth/module-options/page.mdx": "2026-06-09T08:32:58.240Z",
   "app/commerce-modules/auth/page.mdx": "2026-06-09T08:33:36.509Z",
   "app/commerce-modules/cart/concepts/page.mdx": "2026-09-04T06:48:32.013Z",
-  "app/commerce-modules/cart/promotions/page.mdx": "2024-10-08T07:54:31.120Z",
+  "app/commerce-modules/cart/promotions/page.mdx": "2026-11-11T00:58:11.100Z",
   "app/commerce-modules/cart/tax-lines/page.mdx": "2026-07-16T10:51:03.732Z",
   "app/commerce-modules/cart/page.mdx": "2025-04-17T08:48:27.822Z",
   "app/commerce-modules/currency/page.mdx": "2025-04-17T08:48:30.550Z",
