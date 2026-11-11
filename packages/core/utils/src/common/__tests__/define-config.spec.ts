@@ -1,3 +1,4 @@
+import { generateKeyPairSync, sign } from "crypto"
 import path from "path"
 import { Modules } from "../../modules-sdk"
 import { defineConfig } from "../define-config"
@@ -17,6 +18,7 @@ describe("defineConfig", function () {
     "MEDUSA_CLOUD_EMAILS_ENDPOINT",
     "MEDUSA_CLOUD_PAYMENTS_ENDPOINT",
     "MEDUSA_CLOUD_SEARCH_ENDPOINT",
+    "MEDUSA_CLOUD_AUDIT_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_CALLBACK_URL",
@@ -3102,6 +3104,7 @@ describe("defineConfig", function () {
         "projectConfig": {
           "cloud": {
             "apiKey": "test-api-key",
+            "auditEndpoint": undefined,
             "emailsEndpoint": "test-emails-endpoint",
             "environmentHandle": "test-environment",
             "oauthAudience": undefined,
@@ -3372,6 +3375,7 @@ describe("defineConfig", function () {
         "projectConfig": {
           "cloud": {
             "apiKey": "overriden-api-key",
+            "auditEndpoint": undefined,
             "emailsEndpoint": "overriden-emails-endpoint",
             "environmentHandle": "overriden-environment",
             "oauthAudience": undefined,
@@ -3453,6 +3457,231 @@ describe("defineConfig", function () {
     expect(config.projectConfig.cloud?.searchEndpoint).toBe(
       "https://search.medusa.cloud"
     )
+  })
+
+  describe("audit module defaults", function () {
+    const { publicKey, privateKey } = generateKeyPairSync("ed25519")
+    const AUDIT_ENV_VARS = [
+      "EXECUTION_CONTEXT",
+      "MEDUSA_LICENSE_KEY",
+      "MEDUSA_LICENSE_PUBLIC_KEY",
+    ]
+    const savedEnv: Record<string, string | undefined> = {}
+
+    const toSegment = (value: object) =>
+      Buffer.from(JSON.stringify(value), "utf-8").toString("base64url")
+
+    const setLicense = (features: string[]) => {
+      const header = toSegment({ alg: "EdDSA" })
+      const payload = toSegment({ sub: "org_01", features })
+      const signature = sign(
+        null,
+        Buffer.from(`${header}.${payload}`, "utf-8"),
+        privateKey
+      ).toString("base64url")
+
+      process.env.MEDUSA_LICENSE_KEY = `${header}.${payload}.${signature}`
+      process.env.MEDUSA_LICENSE_PUBLIC_KEY = publicKey
+        .export({ type: "spki", format: "pem" })
+        .toString()
+    }
+
+    const setCloud = ({ endpoint = true } = {}) => {
+      process.env.EXECUTION_CONTEXT = "medusa-cloud"
+      process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE = "test-environment"
+      process.env.MEDUSA_CLOUD_API_KEY = "test-api-key"
+      if (endpoint) {
+        process.env.MEDUSA_CLOUD_AUDIT_ENDPOINT = "https://audit.medusa.cloud"
+      }
+    }
+
+    const cloudOptions = {
+      api_key: "test-api-key",
+      endpoint: "https://audit.medusa.cloud",
+      environment_handle: "test-environment",
+    }
+
+    beforeEach(() => {
+      AUDIT_ENV_VARS.forEach((key) => {
+        savedEnv[key] = process.env[key]
+        delete process.env[key]
+      })
+    })
+
+    afterEach(() => {
+      AUDIT_ENV_VARS.forEach((key) => {
+        if (savedEnv[key] === undefined) {
+          delete process.env[key]
+        } else {
+          process.env[key] = savedEnv[key]
+        }
+      })
+    })
+
+    it("should add the audit module with the Cloud options in cloud when the endpoint is set and the license covers audit", function () {
+      setCloud()
+      setLicense(["audit"])
+
+      const config = defineConfig()
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: { cloud: cloudOptions },
+      })
+      expect(config.projectConfig.cloud?.auditEndpoint).toBe(
+        "https://audit.medusa.cloud"
+      )
+    })
+
+    it("should not add the audit module in cloud without a license", function () {
+      setCloud()
+
+      const config = defineConfig()
+
+      expect(config.modules![Modules.AUDIT]).toBeUndefined()
+      expect(config.projectConfig.cloud?.auditEndpoint).toBe(
+        "https://audit.medusa.cloud"
+      )
+    })
+
+    it("should not add the audit module in cloud when the license does not cover audit", function () {
+      setCloud()
+      setLicense(["rbac"])
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the audit module in cloud when the license is not authentic", function () {
+      setCloud()
+      setLicense(["audit"])
+      process.env.MEDUSA_LICENSE_PUBLIC_KEY = generateKeyPairSync("ed25519")
+        .publicKey.export({ type: "spki", format: "pem" })
+        .toString()
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the audit module in cloud without the audit endpoint", function () {
+      setCloud({ endpoint: false })
+      setLicense(["audit"])
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the audit module in cloud without the API key", function () {
+      setCloud()
+      setLicense(["audit"])
+      delete process.env.MEDUSA_CLOUD_API_KEY
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the audit module outside cloud even with the endpoint and license", function () {
+      setCloud()
+      delete process.env.EXECUTION_CONTEXT
+      setLicense(["audit"])
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should keep a user audit module that turns auditing off in cloud", function () {
+      setCloud()
+      setLicense(["audit"])
+
+      const config = defineConfig({
+        modules: [
+          { resolve: "@medusajs/medusa/audit", options: { enabled: false } },
+        ],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: { cloud: cloudOptions, enabled: false },
+      })
+    })
+
+    it("should keep a user audit module that disables it in cloud", function () {
+      setCloud()
+      setLicense(["audit"])
+
+      const config = defineConfig({
+        modules: [{ resolve: "@medusajs/medusa/audit", disable: true }],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual(
+        expect.objectContaining({
+          resolve: "@medusajs/medusa/audit",
+          disable: true,
+        })
+      )
+      expect(
+        (config.modules![Modules.AUDIT] as any).options?.providers
+      ).toBeUndefined()
+    })
+
+    it("should keep user audit providers and options over the cloud defaults", function () {
+      setCloud()
+      setLicense(["audit"])
+      const providers = [{ resolve: "./my-audit-provider", id: "mine" }]
+
+      const config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/audit",
+            options: {
+              providers,
+              default_provider: "mine",
+              cloud: { endpoint: "https://custom.example" },
+            },
+          },
+        ],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: {
+          providers,
+          default_provider: "mine",
+          cloud: { endpoint: "https://custom.example" },
+        },
+      })
+    })
+
+    it("should not add the audit module when self-hosted", function () {
+      setLicense(["audit"])
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should leave a self-hosted audit module entry as written", function () {
+      const config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/audit",
+            options: { retention_days: 365 },
+          },
+        ],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: { retention_days: 365 },
+      })
+    })
+
+    it("should pass the cloud options when a self-hosted application sets the audit endpoint", function () {
+      setCloud()
+      delete process.env.EXECUTION_CONTEXT
+
+      const config = defineConfig({
+        modules: [{ resolve: "@medusajs/medusa/audit" }],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: { cloud: cloudOptions },
+      })
+    })
   })
 
   describe("secret defaults", function () {

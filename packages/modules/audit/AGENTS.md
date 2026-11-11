@@ -4,7 +4,8 @@ Audit Module: records audit logs (who did what, on which resource, how it ended)
 
 ## Using this package
 
-- Not registered by default: applications add `{ resolve: "@medusajs/medusa/audit" }` to `modules` in `medusa-config.ts`. Without `providers` or a Cloud endpoint, audit logs are stored in the application's database; run `db:migrate` for the table.
+- Self-hosted, it's opt-in: add `{ resolve: "@medusajs/medusa/audit" }` to `modules` in `medusa-config.ts`. Without `providers` or a Cloud endpoint, audit logs are stored in the application's database; run `db:migrate` for the table.
+- On Medusa Cloud, `defineConfig` adds it by default only when `MEDUSA_CLOUD_AUDIT_ENDPOINT` (`projectConfig.cloud.auditEndpoint`), the Cloud API key and environment handle are set and the license covers `audit`; its `cloud` option is filled from `projectConfig.cloud`, so the Cloud provider is the default. A user entry for the module (`enabled: false`, own `providers`, `disable: true`) replaces the default.
 - Once installed, API requests are recorded without further setup: the framework's audit middleware records `POST`/`PUT`/`PATCH`/`DELETE` requests under `/admin`, `/rbac`, and `/auth`, and routes tune it with the `audit` middleware setting (see `@medusajs/framework`'s `AGENTS.md`). `GET /admin/audit-logs` and `GET /admin/audit-logs/:id` (`sdk.admin.auditLog`, guarded by the `audit_log:read` policy) read them back.
 - It is a licensed module: the loader (`packages/core/modules-sdk/src/loaders/utils/load-internal.ts`, `LICENSED_MODULES`) only loads it when the license covers `LicenseFeature.AUDIT` (`"audit"`). There is no feature flag.
 - Options (`AuditModuleOptions` in `packages/core/types/src/audit/options.ts`):
@@ -66,3 +67,4 @@ yarn test:integration   # integration-tests/__tests__/audit-module.spec.ts, load
 - Never pass whole request or response bodies in `request_data` / `response_data`: they hold personal data and secrets. Pass the fields to keep.
 - Writes and reads go to the default provider only.
 - An explicit `default_provider` wins over the Cloud default.
+- `impersonator_id` is always `null` today: Cloud staff impersonation tokens don't carry the impersonator, and the Medusa session token is built from the stored auth identity, not the Cloud id_token claims.

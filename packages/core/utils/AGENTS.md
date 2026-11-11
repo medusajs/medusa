@@ -65,7 +65,7 @@ export default defineLink(ProductModule.linkable.product, {
 
 - `src/modules-sdk/`: `medusa-service.ts` (service factory), `medusa-internal-service.ts` (per-model CRUD service used inside modules), `module.ts` / `module-provider.ts`, `define-link.ts`, `definition.ts` (`Modules`, `MODULE_PACKAGE_NAMES`), `joiner-config-builder.ts`, `decorators/`, `migration-scripts/`.
 - `src/dml/`: `entity-builder.ts` (`model`), `entity.ts` (`DmlEntity`: `.indexes()`, `.checks()`, `.cascades()`), `properties/`, `relations/`, `helpers/create-mikro-orm-entity.ts` (DML -> MikroORM entity).
-- `src/common/define-config.ts`: `defineConfig` and the default module list (local vs. Medusa Cloud via `EXECUTION_CONTEXT=medusa-cloud`).
+- `src/common/define-config.ts`: `defineConfig` and the default module list (local vs. Medusa Cloud via `EXECUTION_CONTEXT=medusa-cloud`). `projectConfig.cloud` is read from `MEDUSA_CLOUD_*` env vars and `applyCloudOptionsToModules` passes it to the notification, payment, search, audit, and auth modules as `options.cloud` (user module options win).
 - `src/core-flows/events.ts`: event name constants emitted by core workflows.
 - `src/dal/`: MikroORM repository factories and PostgreSQL helpers.
 
@@ -90,5 +90,6 @@ yarn test:integration                       # src/**/integration-tests/__tests__
 - Generated service methods are wrapped with `@MedusaContext`, `@EmitEvents`, `@InjectManager` in that exact order (comment in `medusa-service.ts`). If you override one, re-apply `@InjectManager()` and `@MedusaContext()` yourself.
 - `@InjectManager` / `@InjectTransactionManager` throw unless a parameter is flagged with `@MedusaContext()`, and they read the manager from `this.baseRepository_` by default.
 - `MedusaService` wires mutation-event subscribers only into container entries whose key ends in `Service` (internal services are registered as `<lowerCamelModel>Service`).
+- Licensed modules (RBAC, audit) throw at boot without a license that covers them, so `defineConfig` never adds one unconditionally. The Audit Module is a Cloud default only when `EXECUTION_CONTEXT=medusa-cloud`, `MEDUSA_CLOUD_AUDIT_ENDPOINT`, the Cloud API key and environment handle are set, and `loadLicense()` (env-based, it does not see a license registered in the container by `setTestLicense`) covers `audit`. Self-hosted, the module is opt-in and stores audit logs in the application's database by itself.
 - `readOnly: true` links require `linkable` and `field` on the left side and reject `filterable`.
 - Adding a core module requires updating `Modules` and `MODULE_PACKAGE_NAMES` here, the `ModuleImplementations` augmentation in `packages/core/framework/src/types/container.ts`, and the re-export under `packages/medusa/src/modules/`.
