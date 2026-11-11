@@ -549,7 +549,7 @@ export class QueryBuilder {
     aliasPath: string[] = [],
     level = 0,
     aliasMapping: { [path: string]: string } = {}
-  ): string[] {
+  ): Knex.Sql[] {
     const currentAliasPath = [...aliasPath, parentProperty].join(".")
 
     const isSelectableField = this.allSchemaFields.has(parentProperty)
@@ -638,7 +638,7 @@ export class QueryBuilder {
       }
     }
 
-    let queryParts: string[] = []
+    let queryParts: Knex.Sql[] = []
     for (const join of allEntities) {
       const joinBuilder = this.knex.queryBuilder()
       const { alias, entity, parEntity, parAlias } = join
@@ -703,9 +703,11 @@ export class QueryBuilder {
           )
         }
 
-        queryParts.push(
-          joinBuilder.toQuery().replace("select * ", "").replace("where", "and")
-        )
+        const joinSql = joinBuilder.toSQL()
+        queryParts.push({
+          ...joinSql,
+          sql: joinSql.sql.replace("select * ", "").replace("where", "and"),
+        })
       }
     }
 
@@ -939,7 +941,7 @@ export class QueryBuilder {
     )
 
     joinParts.forEach((joinPart) => {
-      innerQueryBuilder.joinRaw(joinPart)
+      innerQueryBuilder.joinRaw(joinPart.sql, [...joinPart.bindings])
     })
 
     if (hasTextSearch) {
@@ -948,7 +950,7 @@ export class QueryBuilder {
           this.#searchVectorColumnName
         } @@ plainto_tsquery('simple', ?)`,
         ...joinParts.flatMap((part) => {
-          const aliases = part
+          const aliases = part.sql
             .split(" as ")
             .flatMap((chunk) => chunk.split(" on "))
             .filter(
@@ -1013,8 +1015,10 @@ export class QueryBuilder {
       )}`
     )
 
+    const innerQuery = innerQueryBuilder.toSQL()
     outerQueryBuilder.joinRaw(
-      `INNER JOIN (${innerQueryBuilder.toQuery()}) AS ${innerQueryAlias} ON ${rootAlias}.id = ${innerQueryAlias}.id`
+      `INNER JOIN (${innerQuery.sql}) AS ${innerQueryAlias} ON ${rootAlias}.id = ${innerQueryAlias}.id`,
+      [...innerQuery.bindings]
     )
 
     this.parseWhere(aliasMapping, filter, outerQueryBuilder)
@@ -1029,7 +1033,7 @@ export class QueryBuilder {
       aliasMapping
     )
     joinPartsOuterQuery.forEach((joinPart) => {
-      outerQueryBuilder.joinRaw(joinPart)
+      outerQueryBuilder.joinRaw(joinPart.sql, [...joinPart.bindings])
     })
 
     const finalSelectParts = this.buildSelectParts(
