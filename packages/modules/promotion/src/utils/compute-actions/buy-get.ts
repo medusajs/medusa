@@ -340,7 +340,8 @@ function applyPromotionToTargetItems(
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   itemsMap: Map<string, ComputeActionItemLine>,
   applicationConfig: PromotionConfig,
-  attributeUsage?: CampaignBudgetUsageDTO
+  attributeUsage?: CampaignBudgetUsageDTO,
+  budgetAllottedAmounts?: Map<string, BigNumberInput>
 ): {
   computedActions: PromotionTypes.ComputeActions[]
   appliedPromotionQuantity: BigNumberInput
@@ -389,7 +390,8 @@ function applyPromotionToTargetItems(
     const budgetExceededAction = computeActionForBudgetExceeded(
       promotion,
       amount,
-      attributeUsage
+      attributeUsage,
+      budgetAllottedAmounts
     )
 
     if (budgetExceededAction) {
@@ -576,7 +578,8 @@ export function getComputedActionsForBuyGet(
   methodIdPromoValueMap: Map<string, BigNumberInput>,
   eligibleBuyItemMap: Map<string, EligibleItem[]>,
   eligibleTargetItemMap: Map<string, EligibleItem[]>,
-  attributeUsage?: CampaignBudgetUsageDTO
+  attributeUsage?: CampaignBudgetUsageDTO,
+  budgetAllottedAmounts?: Map<string, BigNumberInput>
 ): PromotionTypes.ComputeActions[] {
   if (!isValidPromotionContext(promotion, itemsContext)) {
     return []
@@ -682,7 +685,8 @@ export function getComputedActionsForBuyGet(
       promotion,
       itemsMap,
       applicationConfig,
-      attributeUsage
+      attributeUsage,
+      budgetAllottedAmounts
     )
 
     computedActions.push(...application.computedActions)

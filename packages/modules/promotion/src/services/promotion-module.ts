@@ -961,6 +961,7 @@ export default class PromotionModuleService
       string,
       ComputeActionUtils.EligibleItem[]
     >()
+    const budgetAllottedAmounts = new Map<string, BigNumberInput>()
 
     for (const promotionToApply of sortedPromotionsToApply) {
       const promotion = existingPromotionsMap.get(promotionToApply.code!)!
@@ -1051,6 +1052,10 @@ export default class PromotionModuleService
         continue
       }
 
+      const promotionActions: PromotionTypes.ComputeActions[] = []
+      const appliedValuesSnapshot = new Map(methodIdPromoValueMap)
+      const budgetAllottedAmountsSnapshot = new Map(budgetAllottedAmounts)
+
       if (promotion.type === PromotionType.BUYGET) {
         const computedActionsForItems =
           ComputeActionUtils.getComputedActionsForBuyGet(
@@ -1059,10 +1064,11 @@ export default class PromotionModuleService
             methodIdPromoValueMap,
             eligibleBuyItemMap,
             eligibleTargetItemMap,
-            campaignBudgetUsagePerAttribute
+            campaignBudgetUsagePerAttribute,
+            budgetAllottedAmounts
           )
 
-        computedActions.push(...computedActionsForItems)
+        promotionActions.push(...computedActionsForItems)
       } else if (promotion.type === PromotionType.STANDARD) {
         const isTargetOrder =
           applicationMethod.target_type === ApplicationMethodTargetType.ORDER
@@ -1082,10 +1088,11 @@ export default class PromotionModuleService
               applicationContext[ApplicationMethodTargetType.ITEMS],
               methodIdPromoValueMap,
               allocationOverride,
-              campaignBudgetUsagePerAttribute
+              campaignBudgetUsagePerAttribute,
+              budgetAllottedAmounts
             )
 
-          computedActions.push(...computedActionsForItems)
+          promotionActions.push(...computedActionsForItems)
         }
 
         if (isTargetShipping) {
@@ -1094,12 +1101,40 @@ export default class PromotionModuleService
               promotion,
               applicationContext[ApplicationMethodTargetType.SHIPPING_METHODS],
               methodIdPromoValueMap,
-              campaignBudgetUsagePerAttribute
+              campaignBudgetUsagePerAttribute,
+              budgetAllottedAmounts
             )
 
-          computedActions.push(...computedActionsForShippingMethods)
+          promotionActions.push(...computedActionsForShippingMethods)
         }
       }
+
+      const isBudgetExceeded = promotionActions.some(
+        (action) => action.action === ComputedActions.CAMPAIGN_BUDGET_EXCEEDED
+      )
+
+      if (!isBudgetExceeded) {
+        computedActions.push(...promotionActions)
+        continue
+      }
+
+      // The helpers already recorded the adjustments that fit, so undo them
+      // before the next promotion reads these maps.
+      methodIdPromoValueMap.clear()
+      appliedValuesSnapshot.forEach((value, id) =>
+        methodIdPromoValueMap.set(id, value)
+      )
+      budgetAllottedAmounts.clear()
+      budgetAllottedAmountsSnapshot.forEach((value, id) =>
+        budgetAllottedAmounts.set(id, value)
+      )
+      eligibleBuyItemMap.delete(promotion.code!)
+      eligibleTargetItemMap.delete(promotion.code!)
+
+      computedActions.push({
+        action: ComputedActions.CAMPAIGN_BUDGET_EXCEEDED,
+        code: promotion.code!,
+      })
     }
 
     transformPropertiesToBigNumber(computedActions, { include: ["amount"] })
