@@ -17,6 +17,7 @@ import {
   AdminGetSalesChannelsParams,
   AdminUpdateSalesChannel,
 } from "./validators"
+import { createdAuditResource } from "../../utils/audit"
 
 export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -67,6 +68,10 @@ export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/sales-channels",
+    audit: {
+      action: "sales_channel.create",
+      resource: createdAuditResource("sales_channel"),
+    },
     middlewares: [
       authorize([
         {

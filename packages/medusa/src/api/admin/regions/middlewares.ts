@@ -12,6 +12,7 @@ import {
   AdminGetRegionsParams,
   AdminUpdateRegion,
 } from "./validators"
+import { createdAuditResource } from "../../utils/audit"
 
 export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -54,6 +55,10 @@ export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/regions",
+    audit: {
+      action: "region.create",
+      resource: createdAuditResource("region"),
+    },
     middlewares: [
       authorize([
         {

@@ -23,6 +23,7 @@ import {
   AdminTransferOrderToGuest,
   AdminUpdateOrder,
 } from "./validators"
+import { paramAuditResource } from "../../utils/audit"
 
 export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -55,6 +56,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/export",
+    audit: { action: "order.export" },
     middlewares: [
       authorize([
         {
@@ -138,6 +140,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/archive",
+    audit: { action: "order.archive" },
     middlewares: [
       authorize([
         {
@@ -154,6 +157,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/cancel",
+    audit: { action: "order.cancel" },
     middlewares: [
       authorize([
         {
@@ -171,6 +175,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/complete",
+    audit: { action: "order.complete" },
     middlewares: [
       authorize([
         {
@@ -205,6 +210,14 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/credit-lines",
+    audit: {
+      action: "order.credit_line.create",
+      requestData: (req) => ({
+        amount: req.validatedBody?.amount,
+        reference: req.validatedBody?.reference,
+        reference_id: req.validatedBody?.reference_id,
+      }),
+    },
     middlewares: [
       authorize([
         {
@@ -226,6 +239,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/fulfillments",
+    audit: { action: "order.fulfillment.create" },
     middlewares: [
       authorize([
         {
@@ -247,6 +261,11 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/fulfillments/:fulfillment_id/cancel",
+    audit: {
+      action: "fulfillment.cancel",
+      resource: paramAuditResource("fulfillment", "fulfillment_id"),
+      requestData: (req) => ({ order_id: req.params.id }),
+    },
     middlewares: [
       authorize([
         {
@@ -268,6 +287,11 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/fulfillments/:fulfillment_id/shipments",
+    audit: {
+      action: "fulfillment.ship",
+      resource: paramAuditResource("fulfillment", "fulfillment_id"),
+      requestData: (req) => ({ order_id: req.params.id }),
+    },
     middlewares: [
       authorize([
         {
@@ -289,6 +313,11 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/fulfillments/:fulfillment_id/mark-as-delivered",
+    audit: {
+      action: "fulfillment.deliver",
+      resource: paramAuditResource("fulfillment", "fulfillment_id"),
+      requestData: (req) => ({ order_id: req.params.id }),
+    },
     middlewares: [
       authorize([
         {
@@ -310,6 +339,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/transfer",
+    audit: { action: "order.transfer.request" },
     middlewares: [
       authorize([
         {
@@ -344,6 +374,7 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/transfer/cancel",
+    audit: { action: "order.transfer.cancel" },
     middlewares: [
       authorize([
         {

@@ -42,6 +42,7 @@ import {
   CreateProduct,
   CreateProductVariant,
 } from "./validators"
+import { createdAuditResource, paramAuditResource } from "../../utils/audit"
 
 const upload = multer({ storage: multer.memoryStorage() })
 
@@ -175,6 +176,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products",
+    audit: {
+      action: "product.create",
+      resource: createdAuditResource("product"),
+    },
     middlewares: [
       authorize([
         {
@@ -199,6 +204,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
+    audit: { action: "product.batch" },
     middlewares: [
       authorize([
         {
@@ -229,6 +235,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/export",
+    audit: { action: "product.export" },
     middlewares: [
       validateAndTransformQuery(
         AdminGetProductsParams,
@@ -239,6 +246,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/import",
+    audit: { action: "product.import" },
     middlewares: [
       authorize([
         {
@@ -252,6 +260,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/imports",
+    audit: { action: "product.import" },
     middlewares: [
       authorize([
         {
@@ -265,6 +274,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/import/:transaction_id/confirm",
+    audit: {
+      action: "product.import.confirm",
+      resource: paramAuditResource("product_import", "transaction_id"),
+    },
     middlewares: [
       authorize([
         {
@@ -277,6 +290,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/imports/:transaction_id/confirm",
+    audit: {
+      action: "product.import.confirm",
+      resource: paramAuditResource("product_import", "transaction_id"),
+    },
     middlewares: [
       authorize([
         {
@@ -346,6 +363,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/:id/variants",
+    audit: { action: "product_variant.create" },
     middlewares: [
       authorize([
         {
@@ -370,6 +388,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
+    audit: { action: "product_variant.batch" },
     middlewares: [
       authorize([
         {
@@ -448,6 +467,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/:id/variants/:variant_id",
+    audit: {
+      action: "product_variant.update",
+      resource: paramAuditResource("product_variant", "variant_id"),
+    },
     middlewares: [
       authorize([
         {
@@ -469,6 +492,10 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/products/:id/variants/:variant_id",
+    audit: {
+      action: "product_variant.delete",
+      resource: paramAuditResource("product_variant", "variant_id"),
+    },
     middlewares: [
       authorize([
         {

@@ -19,6 +19,7 @@ import {
   AdminUpdatePriceList,
   AdminUpdatePriceListPrice,
 } from "./validators"
+import { createdAuditResource } from "../../utils/audit"
 
 export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -72,6 +73,10 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/price-lists",
+    audit: {
+      action: "price_list.create",
+      resource: createdAuditResource("price_list"),
+    },
     middlewares: [
       authorize([
         {
@@ -148,6 +153,7 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
+    audit: { action: "price_list.prices.batch" },
     middlewares: [
       authorize([
         {

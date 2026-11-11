@@ -15,6 +15,7 @@ import {
   AdminGetRbacPolicyRolesParams,
   AdminUpdateRbacPolicy,
 } from "./validators"
+import { createdAuditResource } from "../../utils/audit"
 
 const RBAC_POLICY_RESOURCE = "rbac_policy"
 const RBAC_ROLE_RESOURCE = "rbac_role"
@@ -76,6 +77,10 @@ export const rbacPolicyRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/rbac/policies",
+    audit: {
+      action: "rbac_policy.create",
+      resource: createdAuditResource("rbac_policy", "policy"),
+    },
     middlewares: [
       authorize([
         { resource: RBAC_POLICY_RESOURCE, operation: PolicyOperation.create },

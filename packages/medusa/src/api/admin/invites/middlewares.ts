@@ -21,6 +21,7 @@ import {
 } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
+import { createdAuditResource } from "../../utils/audit"
 
 export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -42,6 +43,10 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/invites",
+    audit: {
+      action: "invite.create",
+      resource: createdAuditResource("invite"),
+    },
     middlewares: [
       authorize([
         {
@@ -66,6 +71,10 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "POST",
     matcher: "/admin/invites/accept",
+    audit: {
+      action: "invite.accept",
+      resource: createdAuditResource("user"),
+    },
     middlewares: [
       authenticate("user", ["session", "bearer"], {
         allowUnregistered: true,
@@ -108,6 +117,7 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "POST",
     matcher: "/admin/invites/:id/resend",
+    audit: { action: "invite.resend" },
     middlewares: [
       authorize([
         {

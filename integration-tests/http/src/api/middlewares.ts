@@ -17,5 +17,19 @@ export default defineMiddlewares({
         }),
       ],
     },
+    // Overrides of core audit settings, asserted by the audit specs. They only
+    // apply when the Audit Module is installed.
+    {
+      method: ["POST"],
+      matcher: "/admin/sales-channels",
+      audit: false,
+    },
+    {
+      method: ["POST"],
+      matcher: "/admin/regions",
+      audit: {
+        requestData: (req) => ({ name: req.validatedBody?.name }),
+      },
+    },
   ],
 })

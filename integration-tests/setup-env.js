@@ -6,8 +6,8 @@ require("dotenv").config({
 })
 
 // Some of the apps under test configure license gated packages (rbac,
-// auth-oidc), which refuse to boot without a license key.
-require("@medusajs/test-utils").setTestLicense(["rbac", "auth-oidc"])
+// auth-oidc, audit), which refuse to boot without a license key.
+require("@medusajs/test-utils").setTestLicense(["rbac", "auth-oidc", "audit"])
 
 if (typeof process.env.DB_TEMP_NAME === "undefined") {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")

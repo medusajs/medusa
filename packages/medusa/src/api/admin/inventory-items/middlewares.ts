@@ -24,6 +24,7 @@ import {
   AdminUpdateInventoryItem,
   AdminUpdateInventoryLocationLevel,
 } from "./validators"
+import { batchAuditResource, createdAuditResource } from "../../utils/audit"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -91,6 +92,10 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/inventory-items",
+    audit: {
+      action: "inventory_item.create",
+      resource: createdAuditResource("inventory_item"),
+    },
     middlewares: [
       authorize([
         {
@@ -118,6 +123,7 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
+    audit: { action: "inventory_item.batch" },
     middlewares: [
       authorize([
         {
@@ -133,6 +139,10 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/inventory-items/location-levels/batch",
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
+    },
+    audit: {
+      action: "inventory_level.batch",
+      resource: batchAuditResource("inventory_level"),
     },
     middlewares: [
       authorize([

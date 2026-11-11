@@ -5,6 +5,7 @@ Audit Module: records audit logs (who did what, on which resource, how it ended)
 ## Using this package
 
 - Not registered by default: applications add `{ resolve: "@medusajs/medusa/audit" }` to `modules` in `medusa-config.ts`. Without `providers` or a Cloud endpoint, audit logs are stored in the application's database; run `db:migrate` for the table.
+- Once installed, API requests are recorded without further setup: the framework's audit middleware records `POST`/`PUT`/`PATCH`/`DELETE` requests under `/admin`, `/rbac`, and `/auth`, and routes tune it with the `audit` middleware setting (see `@medusajs/framework`'s `AGENTS.md`). `GET /admin/audit-logs` and `GET /admin/audit-logs/:id` (`sdk.admin.auditLog`, guarded by the `audit_log:read` policy) read them back.
 - It is a licensed module: the loader (`packages/core/modules-sdk/src/loaders/utils/load-internal.ts`, `LICENSED_MODULES`) only loads it when the license covers `LicenseFeature.AUDIT` (`"audit"`). There is no feature flag.
 - Options (`AuditModuleOptions` in `packages/core/types/src/audit/options.ts`):
   - `enabled` (default `true`): when `false`, `createAuditLogs()` is a no-op and nothing is buffered. Reads still go to the default provider.

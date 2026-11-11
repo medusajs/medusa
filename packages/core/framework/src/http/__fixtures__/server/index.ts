@@ -27,9 +27,11 @@ function asArray(resolvers) {
 /**
  * Sets up a test server that injects API Routes using the RoutesLoader
  *
- * @param {String} rootDir - The root directory of the project
+ * @param rootDir - The directory to load the API Routes from, or several
+ * directories loaded in order. The first one is the project's base directory.
  */
-export const createServer = async (rootDir) => {
+export const createServer = async (rootDir: string | string[]) => {
+  const sourceDirs = Array.isArray(rootDir) ? rootDir : [rootDir]
   const app = express()
 
   const moduleResolutions = {}
@@ -44,7 +46,7 @@ export const createServer = async (rootDir) => {
 
   configManager.loadConfig({
     projectConfig: config,
-    baseDir: rootDir,
+    baseDir: sourceDirs[0],
   })
 
   container.registerAdd = function (this: MedusaContainer, name, registration) {
@@ -93,7 +95,7 @@ export const createServer = async (rootDir) => {
 
   await new ApiLoader({
     app,
-    sourceDir: rootDir,
+    sourceDir: sourceDirs,
     container,
   }).load()
 

@@ -54,7 +54,7 @@
 | `@medusajs/framework/workflows-sdk/composer` | Re-export of `@medusajs/workflows-sdk/composer` |
 | `@medusajs/framework/modules-sdk` | Re-export of `@medusajs/modules-sdk` |
 | `@medusajs/framework/orchestration` | Re-export of `@medusajs/orchestration` |
-| `@medusajs/framework/http` | `MedusaRequest`, `AuthenticatedMedusaRequest`, `MedusaResponse`, `defineMiddlewares`, `authenticate`, `validateAndTransformBody`, `validateAndTransformQuery` |
+| `@medusajs/framework/http` | `MedusaRequest`, `AuthenticatedMedusaRequest`, `MedusaResponse`, `defineMiddlewares`, `authenticate`, `validateAndTransformBody`, `validateAndTransformQuery`, and the `AuditRouteConfig` type for a middleware route's `audit` setting |
 | `@medusajs/framework/subscribers` | `SubscriberArgs`, `SubscriberConfig` |
 | `@medusajs/framework/jobs` | Scheduled job loader and types |
 | `@medusajs/framework/logger` | The Medusa `logger` |
@@ -94,6 +94,31 @@ export const GET = (
   })
 }
 ```
+
+### Audit settings
+
+When the Audit Module is installed, `POST`, `PUT`, `PATCH`, and `DELETE` requests under `/admin`, `/rbac`, and `/auth` are recorded as audit logs. Set `audit` on a middleware route to change that for the routes it matches:
+
+```ts
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/brands",
+      methods: ["POST"],
+      audit: {
+        action: "brand.create",
+        resource: (req, body) => ({ type: "brand", id: body?.brand?.id }),
+        requestData: (req) => ({ name: req.validatedBody?.name }),
+      },
+    },
+    { matcher: "/admin/brands/sync", methods: ["POST"], audit: false },
+  ],
+})
+```
+
+Request and response bodies are never stored, only what `requestData` and `responseData` return.
 
 ## Resources
 
