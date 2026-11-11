@@ -13,6 +13,7 @@ import {
   generatePublishableKey,
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
+import { createShippingFixtures } from "../../../helpers/create-shipping-fixtures"
 
 jest.setTimeout(50000)
 
@@ -240,30 +241,39 @@ medusaIntegrationTestRunner({
               },
             })
 
+          const { region, salesChannel, shippingOptions, product } =
+            await createShippingFixtures({
+              container: appContainer,
+              shippingOptionNames: ["express", "standard"],
+            })
+
           const cart = await cartModuleService.createCarts({
             currency_code: "usd",
             customer_id: "cus_test",
+            region_id: region.id,
+            sales_channel_id: salesChannel.id,
+            shipping_address: { country_code: "us" },
             items: [
               {
                 unit_price: 2000,
                 quantity: 1,
                 title: "Test item",
-                product_id: "prod_mat",
-              },
+                product_id: product.id,
+                variant_id: product.variants[0].id,
+                requires_shipping: true,
+              } as any,
             ],
           })
 
           const [express, standard] =
-            await cartModuleService.addShippingMethods(cart.id, [
-              {
+            await cartModuleService.addShippingMethods(
+              cart.id,
+              shippingOptions.map((option) => ({
                 amount: 500,
-                name: "express",
-              },
-              {
-                amount: 500,
-                name: "standard",
-              },
-            ])
+                name: option.name,
+                shipping_option_id: option.id,
+              }))
+            )
 
           await cartModuleService.addShippingMethodAdjustments(cart.id, [
             {
