@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   uploadCreate: vi.fn(),
   mutateAsync: vi.fn(),
   setError: vi.fn(),
+  isSubmitting: false,
 }))
 
 vi.mock("react", async (importOriginal) => ({
@@ -21,6 +22,7 @@ vi.mock("react-hook-form", () => ({
     control: {},
     handleSubmit: (fn: unknown) => fn,
     setError: mocks.setError,
+    formState: { isSubmitting: mocks.isSubmitting },
   }),
   useFieldArray: () => ({
     fields: [],
@@ -124,9 +126,48 @@ const submit = async () => {
   await element.props.children.props.onSubmit({ media })
 }
 
+const findSubmitButton = (node: unknown): ReactElement | undefined => {
+  if (Array.isArray(node)) {
+    for (const child of node) {
+      const found = findSubmitButton(child)
+      if (found) {
+        return found
+      }
+    }
+    return undefined
+  }
+
+  if (!node || typeof node !== "object" || !("props" in node)) {
+    return undefined
+  }
+
+  const element = node as ReactElement<{
+    type?: string
+    children?: unknown
+  }>
+
+  if (element.props.type === "submit") {
+    return element
+  }
+
+  return findSubmitButton(element.props.children)
+}
+
 describe("EditProductMediaForm", () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mocks.isSubmitting = false
+  })
+
+  it("should show the save button as loading while the media is uploading", () => {
+    mocks.isSubmitting = true
+
+    const button = findSubmitButton(EditProductMediaForm({ product })) as
+      | ReactElement<{ isLoading?: boolean }>
+      | undefined
+
+    expect(button).toBeDefined()
+    expect(button!.props.isLoading).toBe(true)
   })
 
   it("should not update the product and should show the server's error when the upload fails", async () => {
