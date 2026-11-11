@@ -297,7 +297,11 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isPending}>
+            <Button
+              size="small"
+              type="submit"
+              isLoading={isPending || form.formState.isSubmitting}
+            >
               {t("actions.save")}
             </Button>
           </div>
