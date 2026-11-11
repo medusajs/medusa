@@ -77,25 +77,6 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     })
   }, [users])
 
-  const permissionLabels = useMemo(() => {
-    return (
-      role.policies?.map((policy) => {
-        if (policy.key) {
-          return policy.key
-        }
-
-        const resource = policy.resource ?? ""
-        const operation = policy.operation ?? ""
-
-        if (resource && operation) {
-          return `${resource}:${operation}`
-        }
-
-        return policy.id
-      }) ?? []
-    )
-  }, [role.policies])
-
   const groups: ActionGroup[] = []
 
   if (canUpdate) {
@@ -146,20 +127,6 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
             userLabels.length ? (
               <div className="inline-flex">
                 <ListSummary list={userLabels} />
-              </div>
-            ) : (
-              "-"
-            )
-          }
-        />
-      )}
-      {canReadPolicies && (
-        <SectionRow
-          title={t("roles.fields.permissions")}
-          value={
-            permissionLabels.length ? (
-              <div className="inline-flex">
-                <ListSummary list={permissionLabels} />
               </div>
             ) : (
               "-"

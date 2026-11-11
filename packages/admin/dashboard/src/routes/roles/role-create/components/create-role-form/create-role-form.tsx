@@ -1,9 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes } from "@medusajs/types"
 import {
   Button,
-  createDataTableColumnHelper,
-  DataTableRowSelectionState,
   Heading,
   Input,
   ProgressStatus,
@@ -11,24 +8,32 @@ import {
   Text,
   Textarea,
   toast,
+  usePrompt,
 } from "@medusajs/ui"
-import { keepPreviousData } from "@tanstack/react-query"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
-import { DataTable } from "../../../../../components/data-table"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import { useRbacAssignablePolicies } from "../../../../../hooks/api/rbac-policies"
 import { useCreateRbacRole } from "../../../../../hooks/api/rbac-roles"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
-import { useQueryParams } from "../../../../../hooks/use-query-params"
+import {
+  PermissionsMatrix,
+  PermissionsSummary,
+  PermissionsTemplates,
+} from "../../../common/components"
+import { usePermissionsMatrix } from "../../../common/hooks"
+import {
+  applyTemplate,
+  clearSelection,
+  SelectionTemplate,
+} from "../../../common/utils"
 
 enum Tab {
   DETAILS = "details",
@@ -46,27 +51,20 @@ const CreateRoleSchema = CreateRoleDetailsSchema.extend({
   policies: z.array(z.string()).optional(),
 })
 
-const PAGE_SIZE = 20
-const PREFIX = "rp"
-
-const columnHelper =
-  createDataTableColumnHelper<
-    HttpTypes.AdminRbacAssignablePoliciesListResponse["policies"][number]
-  >()
-
 export const CreateRoleForm = () => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const direction = useDocumentDirection()
+  const prompt = usePrompt()
 
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
   const [tabState, setTabState] = useState<TabState>({
     [Tab.DETAILS]: "in-progress",
     [Tab.PERMISSIONS]: "not-started",
   })
-  const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>(
-    {}
-  )
+  const [selection, setSelection] = useState<Set<string>>(new Set())
+  const [template, setTemplate] = useState<SelectionTemplate | null>(null)
+  const [hasManualChanges, setHasManualChanges] = useState(false)
 
   const form = useForm<z.infer<typeof CreateRoleSchema>>({
     defaultValues: {
@@ -89,48 +87,83 @@ export const CreateRoleForm = () => {
 
   const { mutateAsync: createRole, isPending: isCreating } = useCreateRbacRole()
 
-  const onRowSelectionChange = useCallback(
-    (selection: DataTableRowSelectionState) => {
-      const ids = Object.keys(selection).filter((id) => selection[id])
-
-      form.setValue("policies", ids, {
-        shouldDirty: true,
-        shouldTouch: true,
-      })
-
-      setRowSelection(selection)
-    },
-    [form]
-  )
-
-  const { q, order, offset } = useQueryParams(["q", "order", "offset"], PREFIX)
-
   const {
-    data: pageData,
-    isPending: isPoliciesLoading,
-    isError: isPoliciesError,
-    error: policiesError,
-  } = useRbacAssignablePolicies(
-    {
-      q,
-      order,
-      offset: offset ? parseInt(offset) : 0,
-      limit: PAGE_SIZE,
-      fields: "id,key,resource,operation,description",
-    },
-    {
-      placeholderData: keepPreviousData,
-    }
-  )
+    matrix,
+    wildcardPolicies,
+    isPending: isMatrixLoading,
+    isError: isMatrixError,
+    error: matrixError,
+  } = usePermissionsMatrix()
 
-  if (isPoliciesError) {
-    throw policiesError
+  if (isMatrixError) {
+    throw matrixError
   }
 
-  const visiblePolicies = pageData?.policies ?? []
-  const count = pageData?.count ?? 0
+  const updateSelection = (next: Set<string>) => {
+    setSelection(next)
 
-  const columns = usePolicyColumns()
+    form.setValue("policies", [...next], {
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+  }
+
+  const handleMatrixChange = (next: Set<string>) => {
+    setHasManualChanges(true)
+    setTemplate(null)
+    updateSelection(next)
+  }
+
+  const handleTemplateSelect = async (next: SelectionTemplate) => {
+    if (hasManualChanges && selection.size > 0) {
+      const confirmed = await prompt({
+        title: t("roles.permissions.matrix.confirm.template.title"),
+        description: t(
+          "roles.permissions.matrix.confirm.template.description",
+          {
+            template: t(`roles.permissions.matrix.templates.${next}.label`),
+          }
+        ),
+        confirmText: t("roles.permissions.matrix.confirm.template.confirm"),
+        cancelText: t("actions.cancel"),
+        variant: "confirmation",
+      })
+
+      if (!confirmed) {
+        return
+      }
+    }
+
+    setHasManualChanges(false)
+    setTemplate(next)
+    updateSelection(applyTemplate(matrix, selection, next))
+  }
+
+  const handleClearAll = async () => {
+    if (selection.size === 0) {
+      return
+    }
+
+    if (hasManualChanges) {
+      const confirmed = await prompt({
+        title: t("roles.permissions.matrix.confirm.clear.title"),
+        description: t(
+          "roles.permissions.matrix.confirm.clear.descriptionCreate"
+        ),
+        confirmText: t("roles.permissions.matrix.clearAll"),
+        cancelText: t("actions.cancel"),
+        variant: "confirmation",
+      })
+
+      if (!confirmed) {
+        return
+      }
+    }
+
+    setHasManualChanges(false)
+    setTemplate(null)
+    updateSelection(clearSelection(matrix, selection))
+  }
 
   const onNext = async (currentTab: Tab) => {
     const valid = await form.trigger()
@@ -262,45 +295,62 @@ export const CreateRoleForm = () => {
               className="size-full overflow-y-auto"
               value={Tab.PERMISSIONS}
             >
-              <DataTable
-                data={visiblePolicies}
-                columns={columns}
-                getRowId={(row) => row.id}
-                rowCount={count}
-                pageSize={PAGE_SIZE}
-                isLoading={isPoliciesLoading}
-                prefix={PREFIX}
-                rowSelection={{
-                  state: rowSelection,
-                  onRowSelectionChange: onRowSelectionChange,
-                }}
-                layout="fill"
-                emptyState={{
-                  empty: {
-                    heading: t("roles.create.permissions.empty.heading"),
-                    description: t(
-                      "roles.create.permissions.empty.description"
-                    ),
-                  },
-                  filtered: {
-                    heading: t("roles.create.permissions.filtered.heading"),
-                    description: t(
-                      "roles.create.permissions.filtered.description"
-                    ),
-                  },
-                }}
-              />
+              <div className="flex size-full flex-col overflow-y-auto lg:grid lg:grid-cols-[1fr_360px] lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden">
+                <div className="flex flex-col gap-y-4 p-6 lg:min-h-0 lg:overflow-y-auto lg:p-8 [&>*]:shrink-0">
+                  <div>
+                    <Heading>{t("roles.create.tabs.permissions")}</Heading>
+                    <Text size="small" className="text-ui-fg-subtle">
+                      {t("roles.permissions.hint")}
+                    </Text>
+                  </div>
+                  <PermissionsTemplates
+                    value={template}
+                    onSelect={handleTemplateSelect}
+                  />
+                  <PermissionsMatrix
+                    matrix={matrix}
+                    selection={selection}
+                    onSelectionChange={handleMatrixChange}
+                    onClearAll={handleClearAll}
+                    isLoading={isMatrixLoading}
+                  />
+                </div>
+                <div className="shrink-0 border-t bg-ui-bg-subtle p-6 lg:min-h-0 lg:overflow-y-auto lg:border-s lg:border-t-0">
+                  <PermissionsSummary
+                    name={form.watch("name")}
+                    matrix={matrix}
+                    selection={selection}
+                    wildcardKeys={wildcardPolicies
+                      .filter((policy) => selection.has(policy.id))
+                      .map((policy) => policy.key)}
+                  />
+                </div>
+              </div>
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
         </ProgressTabs>
         <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-x-2">
+            {tab === Tab.PERMISSIONS && selection.size === 0 && (
+              <Text
+                size="small"
+                leading="compact"
+                className="text-ui-fg-subtle"
+              >
+                {t("roles.permissions.matrix.createHint")}
+              </Text>
+            )}
             <RouteFocusModal.Close asChild>
               <Button variant="secondary" size="small">
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <PrimaryButton tab={tab} next={onNext} isLoading={isCreating} />
+            <PrimaryButton
+              tab={tab}
+              next={onNext}
+              isLoading={isCreating}
+              isDisabled={selection.size === 0 || isMatrixLoading}
+            />
           </div>
         </RouteFocusModal.Footer>
       </KeyboundForm>
@@ -308,52 +358,19 @@ export const CreateRoleForm = () => {
   )
 }
 
-const usePolicyColumns = () => {
-  const { t } = useTranslation()
-
-  return useMemo(() => {
-    return [
-      columnHelper.select(),
-      columnHelper.accessor("key", {
-        header: t("fields.key"),
-      }),
-      columnHelper.accessor("resource", {
-        header: t("fields.resource"),
-        cell: ({ row }) => {
-          const resource = row.original.resource
-
-          return t(`permissions.resources.${resource}`, {
-            defaultValue: resource,
-          })
-        },
-      }),
-      columnHelper.accessor("operation", {
-        header: t("fields.operation"),
-        cell: ({ row }) => {
-          const operation = row.original.operation
-
-          return t(`permissions.actions.${operation}`, {
-            defaultValue: operation,
-          })
-        },
-      }),
-      columnHelper.accessor("description", {
-        header: t("fields.description"),
-        cell: ({ row }) => {
-          return row.original.description || "-"
-        },
-      }),
-    ]
-  }, [t])
-}
-
 type PrimaryButtonProps = {
   tab: Tab
   next: (tab: Tab) => void
   isLoading?: boolean
+  isDisabled?: boolean
 }
 
-const PrimaryButton = ({ tab, next, isLoading }: PrimaryButtonProps) => {
+const PrimaryButton = ({
+  tab,
+  next,
+  isLoading,
+  isDisabled,
+}: PrimaryButtonProps) => {
   const { t } = useTranslation()
 
   if (tab === Tab.PERMISSIONS) {
@@ -364,6 +381,7 @@ const PrimaryButton = ({ tab, next, isLoading }: PrimaryButtonProps) => {
         variant="primary"
         size="small"
         isLoading={isLoading}
+        disabled={isDisabled}
       >
         {t("actions.create")}
       </Button>

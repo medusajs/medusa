@@ -10812,42 +10812,9 @@
               },
               "required": ["details", "permissions"],
               "additionalProperties": false
-            },
-            "permissions": {
-              "type": "object",
-              "properties": {
-                "empty": {
-                  "type": "object",
-                  "properties": {
-                    "heading": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["heading", "description"],
-                  "additionalProperties": false
-                },
-                "filtered": {
-                  "type": "object",
-                  "properties": {
-                    "heading": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["heading", "description"],
-                  "additionalProperties": false
-                }
-              },
-              "required": ["empty", "filtered"],
-              "additionalProperties": false
             }
           },
-          "required": ["header", "hint", "successToast", "tabs", "permissions"],
+          "required": ["header", "hint", "successToast", "tabs"],
           "additionalProperties": false
         },
         "edit": {
@@ -10877,16 +10844,6 @@
             }
           },
           "required": ["title", "description", "successToast"],
-          "additionalProperties": false
-        },
-        "fields": {
-          "type": "object",
-          "properties": {
-            "permissions": {
-              "type": "string"
-            }
-          },
-          "required": ["permissions"],
           "additionalProperties": false
         },
         "actions": {
@@ -11006,32 +10963,6 @@
             "hint": {
               "type": "string"
             },
-            "empty": {
-              "type": "object",
-              "properties": {
-                "heading": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                }
-              },
-              "required": ["heading", "description"],
-              "additionalProperties": false
-            },
-            "filtered": {
-              "type": "object",
-              "properties": {
-                "heading": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                }
-              },
-              "required": ["heading", "description"],
-              "additionalProperties": false
-            },
             "manage": {
               "type": "object",
               "properties": {
@@ -11041,9 +10972,518 @@
               },
               "required": ["successToast"],
               "additionalProperties": false
+            },
+            "matrix": {
+              "type": "object",
+              "properties": {
+                "groups": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "payments": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "products": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "inventory": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "customers": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "pricing": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "shipping": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "store": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "team": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "system": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "custom": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "orders",
+                    "payments",
+                    "products",
+                    "inventory",
+                    "customers",
+                    "pricing",
+                    "shipping",
+                    "store",
+                    "team",
+                    "system",
+                    "custom"
+                  ],
+                  "additionalProperties": false
+                },
+                "levels": {
+                  "type": "object",
+                  "properties": {
+                    "none": {
+                      "type": "string"
+                    },
+                    "view": {
+                      "type": "string"
+                    },
+                    "full": {
+                      "type": "string"
+                    },
+                    "mixed": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["none", "view", "full", "mixed"],
+                  "additionalProperties": false
+                },
+                "levelControlLabel": {
+                  "type": "string"
+                },
+                "resourceColumn": {
+                  "type": "string"
+                },
+                "notAvailable": {
+                  "type": "string"
+                },
+                "notAvailableTooltip": {
+                  "type": "string"
+                },
+                "rowToggle": {
+                  "type": "string"
+                },
+                "columnToggle": {
+                  "type": "object",
+                  "properties": {
+                    "on": {
+                      "type": "string"
+                    },
+                    "off": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["on", "off"],
+                  "additionalProperties": false
+                },
+                "search": {
+                  "type": "object",
+                  "properties": {
+                    "placeholder": {
+                      "type": "string"
+                    },
+                    "emptyHeading": {
+                      "type": "string"
+                    },
+                    "emptyDescription": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "placeholder",
+                    "emptyHeading",
+                    "emptyDescription"
+                  ],
+                  "additionalProperties": false
+                },
+                "showKeys": {
+                  "type": "string"
+                },
+                "clearAll": {
+                  "type": "string"
+                },
+                "lockedBadge_zero": {
+                  "type": "string"
+                },
+                "lockedBadge_one": {
+                  "type": "string"
+                },
+                "lockedBadge_two": {
+                  "type": "string"
+                },
+                "lockedBadge_few": {
+                  "type": "string"
+                },
+                "lockedBadge_many": {
+                  "type": "string"
+                },
+                "lockedBadge_other": {
+                  "type": "string"
+                },
+                "lockedNote_zero": {
+                  "type": "string"
+                },
+                "lockedNote_one": {
+                  "type": "string"
+                },
+                "lockedNote_two": {
+                  "type": "string"
+                },
+                "lockedNote_few": {
+                  "type": "string"
+                },
+                "lockedNote_many": {
+                  "type": "string"
+                },
+                "lockedNote_other": {
+                  "type": "string"
+                },
+                "tooltips": {
+                  "type": "object",
+                  "properties": {
+                    "cannotGrant": {
+                      "type": "string"
+                    },
+                    "cannotRemove": {
+                      "type": "string"
+                    },
+                    "viewRequired": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["cannotGrant", "cannotRemove", "viewRequired"],
+                  "additionalProperties": false
+                },
+                "noViewAccess": {
+                  "type": "string"
+                },
+                "templates": {
+                  "type": "object",
+                  "properties": {
+                    "heading": {
+                      "type": "string"
+                    },
+                    "hint": {
+                      "type": "string"
+                    },
+                    "full": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "readonly": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["label", "description"],
+                      "additionalProperties": false
+                    },
+                    "snapshotNote": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "heading",
+                    "hint",
+                    "full",
+                    "readonly",
+                    "snapshotNote"
+                  ],
+                  "additionalProperties": false
+                },
+                "confirm": {
+                  "type": "object",
+                  "properties": {
+                    "template": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "confirm": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["title", "description", "confirm"],
+                      "additionalProperties": false
+                    },
+                    "clear": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "descriptionCreate": {
+                          "type": "string"
+                        },
+                        "descriptionEdit": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "descriptionCreate",
+                        "descriptionEdit"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["template", "clear"],
+                  "additionalProperties": false
+                },
+                "summary": {
+                  "type": "object",
+                  "properties": {
+                    "heading": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "permissions": {
+                      "type": "string"
+                    },
+                    "selectedOfTotal": {
+                      "type": "string"
+                    },
+                    "unsavedChanges": {
+                      "type": "string"
+                    },
+                    "noChanges": {
+                      "type": "string"
+                    },
+                    "changes": {
+                      "type": "string"
+                    },
+                    "footnote": {
+                      "type": "string"
+                    },
+                    "wildcards": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "heading",
+                    "name",
+                    "permissions",
+                    "selectedOfTotal",
+                    "unsavedChanges",
+                    "noChanges",
+                    "changes",
+                    "footnote",
+                    "wildcards"
+                  ],
+                  "additionalProperties": false
+                },
+                "createHint": {
+                  "type": "string"
+                },
+                "custom": {
+                  "type": "object",
+                  "properties": {
+                    "calloutHeading": {
+                      "type": "string"
+                    },
+                    "calloutDescription": {
+                      "type": "string"
+                    },
+                    "calloutAction": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "calloutHeading",
+                    "calloutDescription",
+                    "calloutAction"
+                  ],
+                  "additionalProperties": false
+                },
+                "detail": {
+                  "type": "object",
+                  "properties": {
+                    "heading": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "string"
+                    },
+                    "countOnly_zero": {
+                      "type": "string"
+                    },
+                    "countOnly_one": {
+                      "type": "string"
+                    },
+                    "countOnly_two": {
+                      "type": "string"
+                    },
+                    "countOnly_few": {
+                      "type": "string"
+                    },
+                    "countOnly_many": {
+                      "type": "string"
+                    },
+                    "countOnly_other": {
+                      "type": "string"
+                    },
+                    "noAccessTo": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["heading", "count", "noAccessTo"],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "groups",
+                "levels",
+                "levelControlLabel",
+                "resourceColumn",
+                "notAvailable",
+                "notAvailableTooltip",
+                "rowToggle",
+                "columnToggle",
+                "search",
+                "showKeys",
+                "clearAll",
+                "tooltips",
+                "noViewAccess",
+                "templates",
+                "confirm",
+                "summary",
+                "createHint",
+                "custom",
+                "detail"
+              ],
+              "additionalProperties": false
             }
           },
-          "required": ["header", "hint", "empty", "filtered", "manage"],
+          "required": ["header", "hint", "manage", "matrix"],
           "additionalProperties": false
         },
         "list": {
@@ -11086,7 +11526,6 @@
         "create",
         "edit",
         "delete",
-        "fields",
         "actions",
         "users",
         "permissions",
@@ -14755,6 +15194,129 @@
             },
             "translation": {
               "type": "string"
+            },
+            "customer_address": {
+              "type": "string"
+            },
+            "inventory_item": {
+              "type": "string"
+            },
+            "inventory_level": {
+              "type": "string"
+            },
+            "reservation_item": {
+              "type": "string"
+            },
+            "order_item": {
+              "type": "string"
+            },
+            "order_change": {
+              "type": "string"
+            },
+            "order_address": {
+              "type": "string"
+            },
+            "order_claim": {
+              "type": "string"
+            },
+            "order_claim_item": {
+              "type": "string"
+            },
+            "order_exchange": {
+              "type": "string"
+            },
+            "order_credit_line": {
+              "type": "string"
+            },
+            "return": {
+              "type": "string"
+            },
+            "payment": {
+              "type": "string"
+            },
+            "payment_collection": {
+              "type": "string"
+            },
+            "payment_method": {
+              "type": "string"
+            },
+            "payment_session": {
+              "type": "string"
+            },
+            "refund": {
+              "type": "string"
+            },
+            "capture": {
+              "type": "string"
+            },
+            "price_preference": {
+              "type": "string"
+            },
+            "price": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "product_variant": {
+              "type": "string"
+            },
+            "product_option": {
+              "type": "string"
+            },
+            "product_option_value": {
+              "type": "string"
+            },
+            "property_label": {
+              "type": "string"
+            },
+            "shipping_option_type": {
+              "type": "string"
+            },
+            "fulfillment": {
+              "type": "string"
+            },
+            "fulfillment_provider": {
+              "type": "string"
+            },
+            "fulfillment_set": {
+              "type": "string"
+            },
+            "service_zone": {
+              "type": "string"
+            },
+            "file": {
+              "type": "string"
+            },
+            "notification": {
+              "type": "string"
+            },
+            "workflow_execution": {
+              "type": "string"
+            },
+            "store_locale": {
+              "type": "string"
+            },
+            "tax_provider": {
+              "type": "string"
+            },
+            "tax_rate": {
+              "type": "string"
+            },
+            "translation_setting": {
+              "type": "string"
+            },
+            "invite": {
+              "type": "string"
+            },
+            "rbac_role": {
+              "type": "string"
+            },
+            "rbac_policy": {
+              "type": "string"
+            },
+            "rbac_role_assignment": {
+              "type": "string"
             }
           },
           "required": [
@@ -14785,7 +15347,48 @@
             "return_reason",
             "refund_reason",
             "workflow",
-            "translation"
+            "translation",
+            "customer_address",
+            "inventory_item",
+            "inventory_level",
+            "reservation_item",
+            "order_item",
+            "order_change",
+            "order_address",
+            "order_claim",
+            "order_claim_item",
+            "order_exchange",
+            "order_credit_line",
+            "return",
+            "payment",
+            "payment_collection",
+            "payment_method",
+            "payment_session",
+            "refund",
+            "capture",
+            "price_preference",
+            "price",
+            "currency",
+            "product_variant",
+            "product_option",
+            "product_option_value",
+            "property_label",
+            "shipping_option_type",
+            "fulfillment",
+            "fulfillment_provider",
+            "fulfillment_set",
+            "service_zone",
+            "file",
+            "notification",
+            "workflow_execution",
+            "store_locale",
+            "tax_provider",
+            "tax_rate",
+            "translation_setting",
+            "invite",
+            "rbac_role",
+            "rbac_policy",
+            "rbac_role_assignment"
           ],
           "additionalProperties": false
         },

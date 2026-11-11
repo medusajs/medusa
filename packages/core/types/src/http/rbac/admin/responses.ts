@@ -47,6 +47,21 @@ export interface AdminRbacRolePoliciesResponse {
 
 export interface AdminRbacRolePolicyDeleteResponse extends DeleteResponse<"rbac_role_policy"> {}
 
+export interface AdminRbacRolePoliciesDeleteResponse {
+  /**
+   * The IDs of the policies that were removed from the role.
+   */
+  ids: string[]
+  /**
+   * The type of the removed items.
+   */
+  object: "rbac_role_policy"
+  /**
+   * Whether the policies were removed successfully.
+   */
+  deleted: boolean
+}
+
 export interface AdminRbacRoleUserListResponse extends PaginatedResponse<{
   /**
    * The list of users.

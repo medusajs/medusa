@@ -19,6 +19,7 @@ import {
   AdminGetRoleAssignmentsParams,
   AdminGetRoleUsersParams,
   AdminRemoveRoleAssignments,
+  AdminRemoveRolePolicies,
   AdminRemoveRoleUsers,
   AdminUpdateRbacRole,
 } from "./validators"
@@ -137,6 +138,19 @@ export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetRbacRoleParams,
         QueryConfig.retrieveRolePoliciesTransformQueryConfig
       ),
+    ],
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/rbac/roles/:id/policies",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.rbac_role,
+          operation: PolicyOperation.update,
+        },
+      ]),
+      validateAndTransformBody(AdminRemoveRolePolicies),
     ],
   },
   {
