@@ -155,6 +155,25 @@ Please make sure that the provider is registered in the container and it is conf
     return await providerHandler.update(data, authIdentityProviderService)
   }
 
+  async getCredentialsUpdatedAt(
+    provider: string,
+    providerIdentity: AuthTypes.ProviderIdentityDTO
+  ): Promise<Date | null> {
+    const isRegistered = (
+      this.dependencies[AuthIdentifiersRegistrationName] ?? []
+    ).includes(provider)
+
+    if (!isRegistered) {
+      return null
+    }
+
+    const providerHandler = this.retrieveProviderRegistration(provider)
+    return (
+      (await providerHandler.getCredentialsUpdatedAt?.(providerIdentity)) ??
+      null
+    )
+  }
+
   async validateCallback(
     provider: string,
     auth: AuthenticationInput,

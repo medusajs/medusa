@@ -17,7 +17,7 @@ export interface RestrictedFieldsSet {
 
 export interface MedusaRequest<
   Body = unknown,
-  QueryFields = Record<string, unknown>
+  QueryFields = Record<string, unknown>,
 > extends Request<{ [key: string]: string }, any, Body> {
   validatedBody: Body
   validatedQuery: RequestQueryFields & QueryFields
@@ -130,6 +130,10 @@ export interface AuthContext {
   purpose?: string
   jti?: string
   /**
+   * When the token was issued, in seconds since the epoch.
+   */
+  iat?: number
+  /**
    * Whether the auth identity had an enabled MFA factor when the token was issued.
    */
   mfa_enabled?: boolean
@@ -151,7 +155,7 @@ export interface SecretKeyContext {
 
 export interface AuthenticatedMedusaRequest<
   Body = unknown,
-  QueryFields = Record<string, unknown>
+  QueryFields = Record<string, unknown>,
 > extends MedusaRequest<Body, QueryFields> {
   auth_context: AuthContext
   publishable_key_context?: PublishableKeyContext
@@ -161,7 +165,7 @@ export interface AuthenticatedMedusaRequest<
 
 export interface MedusaStoreRequest<
   Body = unknown,
-  QueryFields = Record<string, unknown>
+  QueryFields = Record<string, unknown>,
 > extends MedusaRequest<Body, QueryFields> {
   auth_context?: AuthContext
   publishable_key_context: PublishableKeyContext

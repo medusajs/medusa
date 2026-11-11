@@ -731,6 +731,72 @@ medusaIntegrationTestRunner({
       expect(decodedOriginalToken.exp).toBeLessThan(decodedRefreshedToken.exp)
     })
 
+    it("should refuse to refresh a token issued before the password was reset", async () => {
+      const email = "stale-token@medusa-commerce.com"
+
+      const signup = await api.post("/auth/user/emailpass/register", {
+        email,
+        password: "secret_password",
+      })
+      const staleHeaders = {
+        headers: { authorization: `Bearer ${signup.data.token}` },
+      }
+
+      const beforeReset = await api.post(
+        "/auth/token/refresh",
+        {},
+        staleHeaders
+      )
+      expect(beforeReset.status).toEqual(200)
+
+      // JWT issue dates have a one second resolution
+      await new Promise((resolve) => setTimeout(resolve, 1100))
+
+      const { result: resetToken } = await generateResetPasswordTokenWorkflow(
+        container
+      ).run({
+        input: {
+          entityId: email,
+          actorType: "user",
+          provider: "emailpass",
+          secret: "test",
+        },
+      })
+
+      await api.post(
+        `/auth/user/emailpass/update`,
+        { password: "new_password" },
+        { headers: { authorization: `Bearer ${resetToken}` } }
+      )
+
+      for (const token of [signup.data.token, beforeReset.data.token]) {
+        const staleRefresh = await api
+          .post(
+            "/auth/token/refresh",
+            {},
+            { headers: { authorization: `Bearer ${token}` } }
+          )
+          .catch((e) => e.response)
+
+        expect(staleRefresh.status).toEqual(401)
+        expect(staleRefresh.data.token).toBeUndefined()
+      }
+
+      const login = await api.post("/auth/user/emailpass", {
+        email,
+        password: "new_password",
+      })
+
+      const freshRefresh = await api.post(
+        "/auth/token/refresh",
+        {},
+        { headers: { authorization: `Bearer ${login.data.token}` } }
+      )
+
+      expect(freshRefresh.status).toEqual(200)
+      expect(freshRefresh.data).toEqual({ token: expect.any(String) })
+    })
+
     it("should preserve custom app_metadata fields on token refresh", async () => {
       // Register a new identity via emailpass
       const signup = await api.post("/auth/user/emailpass/register", {
