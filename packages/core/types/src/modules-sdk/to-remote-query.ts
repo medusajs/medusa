@@ -107,4 +107,17 @@ export type RemoteQueryFilters<
       Exclusion,
       Lim
     >
-  >
+  > &
+  // Only the entry point's module handles `q`, so nested relation filters
+  // (called with a non-empty Exclusion) don't accept it.
+  (Exclusion extends []
+    ? {
+        /**
+         * A free-text term searched in the entry point data model's
+         * searchable properties.
+         *
+         * Prefer using `query.search` with the Search Module for better search capabilities.
+         */
+        q?: string
+      }
+    : {})
