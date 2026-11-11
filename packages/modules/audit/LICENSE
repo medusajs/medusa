@@ -1,0 +1,32 @@
+Medusa Enterprise Edition License
+
+Copyright (c) 2026 MedusaJS, Inc. All rights reserved.
+
+This package is part of the Medusa Enterprise Edition and is proprietary
+software. It is not licensed under the MIT License that applies to Medusa's
+open-source core.
+
+You may use, reproduce, modify, distribute, or otherwise exploit this software
+only under a separate, valid commercial agreement with MedusaJS, Inc. that
+expressly grants those rights. Possession of or access to the source code does
+not grant a license. If you do not have such an agreement, no rights are
+granted except those that cannot lawfully be restricted.
+
+The terms of an applicable commercial agreement control if they conflict with
+this notice. To obtain a commercial license, contact Medusa through
+https://medusajs.com/enterprise/.
+
+This notice applies prospectively and does not withdraw rights already granted
+for earlier versions of this software under the MIT License.
+
+THE SOFTWARE IS PROVIDED "AS IS" TO THE MAXIMUM EXTENT PERMITTED BY LAW,
+UNLESS A COMMERCIAL AGREEMENT EXPRESSLY STATES OTHERWISE. MEDUSAJS, INC.
+DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND
+NON-INFRINGEMENT. TO THE MAXIMUM EXTENT PERMITTED BY LAW, MEDUSAJS, INC. WILL
+NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR
+PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, REVENUE, OR BUSINESS, ARISING
+FROM THE SOFTWARE.
+
+The canonical repository-level notice and complete scope definition are in
+`ENTERPRISE-LICENSE.md` at the root of the Medusa repository.

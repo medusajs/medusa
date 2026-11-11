@@ -3223,6 +3223,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/audit-postgres@npm:2.22.6, @medusajs/audit-postgres@workspace:packages/modules/providers/audit-postgres":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/audit-postgres@workspace:packages/modules/providers/audit-postgres"
+  dependencies:
+    "@medusajs/framework": "npm:2.22.6"
+    "@medusajs/test-utils": "npm:2.22.6"
+  peerDependencies:
+    "@medusajs/framework": 2.22.6
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/audit@npm:2.22.6, @medusajs/audit@workspace:packages/modules/audit":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/audit@workspace:packages/modules/audit"
+  dependencies:
+    "@medusajs/framework": "npm:2.22.6"
+    "@medusajs/test-utils": "npm:2.22.6"
+  peerDependencies:
+    "@medusajs/framework": 2.22.6
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/auth-emailpass@npm:2.22.6, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
@@ -3882,6 +3904,8 @@ __metadata:
     "@medusajs/analytics-local": "npm:2.22.6"
     "@medusajs/analytics-posthog": "npm:2.22.6"
     "@medusajs/api-key": "npm:2.22.6"
+    "@medusajs/audit": "npm:2.22.6"
+    "@medusajs/audit-postgres": "npm:2.22.6"
     "@medusajs/auth": "npm:2.22.6"
     "@medusajs/auth-emailpass": "npm:2.22.6"
     "@medusajs/auth-github": "npm:2.22.6"
