@@ -8,19 +8,19 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type DeleteRbacRolePoliciesStepInput = string[]
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const deleteRbacRolePoliciesStepId = "delete-rbac-role-policies"
 
 /**
  * This step detaches one or more policies from roles. The built-in super admin
  * policy can't be detached from the super admin role.
- * @ignore
+ * @since 2.22.4
  */
 export const deleteRbacRolePoliciesStep = createStep(
   { name: deleteRbacRolePoliciesStepId, noCompensation: true },

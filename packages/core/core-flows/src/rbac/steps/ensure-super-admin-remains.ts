@@ -8,7 +8,7 @@ import {
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type EnsureSuperAdminRemainsStepInput = {
   /**
@@ -18,7 +18,7 @@ export type EnsureSuperAdminRemainsStepInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const ensureSuperAdminRemainsStepId = "ensure-super-admin-remains"
 
@@ -35,7 +35,7 @@ export const SUPER_ADMIN_GUARD_LOCK_KEY = "rbac-super-admin-guard"
  *
  * It's a no-op when RBAC is not installed.
  *
- * @ignore
+ * @since 2.22.4
  */
 export const ensureSuperAdminRemainsStep = createStep(
   ensureSuperAdminRemainsStepId,
