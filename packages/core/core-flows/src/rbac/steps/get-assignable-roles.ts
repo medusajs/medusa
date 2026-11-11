@@ -8,7 +8,6 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
  * @since 2.16.0
  */
 export type GetAssignableRolesStepInput = {
@@ -42,7 +41,6 @@ type AssignableRole = {
 }
 
 /**
- * @ignore
  * @since 2.16.0
  */
 export type GetAssignableRolesStepOutput = {
@@ -51,7 +49,6 @@ export type GetAssignableRolesStepOutput = {
 }
 
 /**
- * @ignore
  * @since 2.16.0
  */
 export const getAssignableRolesStepId = "get-assignable-roles"
@@ -59,7 +56,6 @@ export const getAssignableRolesStepId = "get-assignable-roles"
 /**
  * Resolves the set of roles the actor is allowed to assign.
  *
- * @ignore
  * @since 2.16.0
  */
 export const getAssignableRolesStep = createStep(

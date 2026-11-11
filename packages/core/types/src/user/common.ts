@@ -40,7 +40,7 @@ export interface UserDTO {
   /**
    * The RBAC roles assigned to the user.
    *
-   * @ignore
+   * @since 2.22.4
    */
   roles?: string[] | null
 
@@ -129,7 +129,7 @@ export interface InviteDTO {
   /**
    * The RBAC roles to assign to the user when the invite is accepted.
    *
-   * @ignore
+   * @since 2.22.4
    */
   roles?: string[] | null
 

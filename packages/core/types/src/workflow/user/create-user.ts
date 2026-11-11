@@ -14,7 +14,7 @@ export interface CreateUsersWorkflowInputDTO {
    * The actor creating the users. When provided, it can only create users
    * with roles whose policies it holds itself.
    *
-   * @ignore
+   * @since 2.22.4
    */
   rbac_context?: RbacGrantingContext
 }

@@ -8,12 +8,12 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService, MedusaContainer } from "@medusajs/types"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type DeleteRbacPoliciesStepInput = string[]
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const deleteRbacPoliciesStepId = "delete-rbac-policies"
 
@@ -63,7 +63,7 @@ async function ensurePoliciesNotHeldByRoles(
 /**
  * This step deletes one or more RBAC policies. The built-in super admin policy
  * can't be deleted, and neither can a policy that a role still holds.
- * @ignore
+ * @since 2.22.4
  */
 export const deleteRbacPoliciesStep = createStep(
   { name: deleteRbacPoliciesStepId, noCompensation: true },
