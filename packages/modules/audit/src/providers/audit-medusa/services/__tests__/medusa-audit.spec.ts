@@ -1,11 +1,5 @@
 import { AuditLogDTO } from "@medusajs/framework/types"
-import { MedusaAuditService } from "../../services/medusa-audit"
-import {
-  buildListQuery,
-  MedusaAuditClient,
-  MedusaAuditCloudError,
-  resolveMedusaAuditOptions,
-} from "../client"
+import { MedusaAuditService } from "../medusa-audit"
 
 const options = {
   api_key: "medusa_key",
@@ -38,12 +32,18 @@ const respond = (status: number, body: unknown) => ({
   json: async () => body,
 })
 
-const createFetch = (...responses: ReturnType<typeof respond>[]) => {
+const createProvider = (...responses: ReturnType<typeof respond>[]) => {
   const fetchImpl = jest.fn()
   for (const response of responses) {
     fetchImpl.mockResolvedValueOnce(response)
   }
-  return fetchImpl
+
+  const provider = new MedusaAuditService(undefined, {
+    ...options,
+    fetch: fetchImpl as unknown as typeof fetch,
+  })
+
+  return { provider, fetchImpl }
 }
 
 const call = (fetchImpl: jest.Mock, index = 0) => {
@@ -55,12 +55,11 @@ const call = (fetchImpl: jest.Mock, index = 0) => {
   }
 }
 
-describe("MedusaAuditClient", () => {
+describe("MedusaAuditService", () => {
   it("posts a batch to /records with the Cloud auth headers", async () => {
-    const fetchImpl = createFetch(respond(202, {}))
-    const client = new MedusaAuditClient({ ...options, fetch: fetchImpl })
+    const { provider, fetchImpl } = createProvider(respond(202, {}))
 
-    await client.write([record])
+    await provider.write([record])
 
     const { url, init, headers } = call(fetchImpl)
     expect(url.toString()).toBe("https://audit.medusa.example/records")
@@ -73,19 +72,18 @@ describe("MedusaAuditClient", () => {
   })
 
   it("lists with filters and pagination in the query and parses dates", async () => {
-    const fetchImpl = createFetch(
+    const { provider, fetchImpl } = createProvider(
       respond(200, { records: [wire(record)], count: 7 })
     )
-    const client = new MedusaAuditClient({ ...options, fetch: fetchImpl })
 
-    const result = await client.list(
+    const [records, count] = await provider.listAndCount(
       {
         actor_id: ["user_1", "user_2"],
         outcome: "denied",
         started_at: { $gte: new Date("2026-11-01T00:00:00.000Z") },
         q: "cancel",
       },
-      { skip: 20, take: 10, order: { started_at: "ASC" } }
+      { skip: 20, take: 10, order: { started_at: "ASC" }, select: ["id"] }
     )
 
     const { url, init } = call(fetchImpl)
@@ -100,43 +98,52 @@ describe("MedusaAuditClient", () => {
     expect(url.searchParams.get("offset")).toBe("20")
     expect(url.searchParams.get("limit")).toBe("10")
     expect(url.searchParams.get("order")).toBe("started_at")
+    expect(url.searchParams.get("fields")).toBe("id")
 
-    expect(result.count).toBe(7)
-    expect(result.records).toEqual([record])
-    expect(result.records[0].started_at).toBeInstanceOf(Date)
+    expect(count).toBe(7)
+    expect(records).toEqual([record])
+    expect(records[0].started_at).toBeInstanceOf(Date)
+  })
+
+  it("sends newest first as -started_at", async () => {
+    const { provider, fetchImpl } = createProvider(
+      respond(200, { records: [wire(record)] })
+    )
+
+    await expect(
+      provider.list({}, { order: { started_at: "desc" } })
+    ).resolves.toEqual([record])
+
+    expect(call(fetchImpl).url.searchParams.get("order")).toBe("-started_at")
   })
 
   it("retrieves one record and maps a 404 to null", async () => {
-    const fetchImpl = createFetch(
+    const { provider, fetchImpl } = createProvider(
       respond(200, { record: wire(record) }),
       respond(404, { type: "not_found", message: "Not found" })
     )
-    const client = new MedusaAuditClient({ ...options, fetch: fetchImpl })
 
-    await expect(client.retrieve("audlog_1", {})).resolves.toEqual(record)
-    await expect(client.retrieve("audlog_2", {})).resolves.toBeNull()
+    await expect(provider.retrieve("audlog_1", {})).resolves.toEqual(record)
+    await expect(provider.retrieve("audlog_2", {})).resolves.toBeNull()
 
     expect(call(fetchImpl, 0).url.pathname).toBe("/records/audlog_1")
   })
 
-  it("throws a Cloud error carrying the status for other failures", async () => {
-    const fetchImpl = createFetch(
+  it("throws with the status and message for other failures", async () => {
+    const { provider } = createProvider(
       respond(503, { type: "unavailable", message: "Try again later" })
     )
-    const client = new MedusaAuditClient({ ...options, fetch: fetchImpl })
 
-    const error = await client.write([record]).catch((e) => e)
-
-    expect(error).toBeInstanceOf(MedusaAuditCloudError)
-    expect(error.status).toBe(503)
-    expect(error.message).toBe("Try again later")
+    await expect(provider.write([record])).rejects.toThrow(
+      "Medusa Cloud audit service answered 503: Try again later"
+    )
   })
 
   it("never sends update or delete requests", async () => {
     const fetchImpl = jest.fn().mockResolvedValue(respond(200, {}))
     const provider = new MedusaAuditService(undefined, {
       ...options,
-      fetch: fetchImpl,
+      fetch: fetchImpl as unknown as typeof fetch,
     })
 
     await provider.write([record])
@@ -147,30 +154,14 @@ describe("MedusaAuditClient", () => {
     const methods = fetchImpl.mock.calls.map(([, init]) => init.method)
     expect(new Set(methods)).toEqual(new Set(["POST", "GET"]))
   })
-})
 
-describe("resolveMedusaAuditOptions", () => {
   it.each(["endpoint", "api_key", "environment_handle"])(
     "requires %s",
     (key) => {
-      expect(() =>
-        resolveMedusaAuditOptions({ ...options, [key]: undefined })
+      expect(
+        () =>
+          new MedusaAuditService(undefined, { ...options, [key]: undefined })
       ).toThrow(`"${key}"`)
     }
   )
-})
-
-describe("buildListQuery", () => {
-  it("defaults to newest first only when an order is given", () => {
-    expect(buildListQuery({}, {}).toString()).toBe("")
-    expect(
-      buildListQuery({}, { order: { started_at: "desc" } }).get("order")
-    ).toBe("-started_at")
-  })
-
-  it("sends selected fields", () => {
-    expect(buildListQuery({}, { select: ["id", "action"] }).get("fields")).toBe(
-      "id,action"
-    )
-  })
 })

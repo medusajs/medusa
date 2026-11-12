@@ -1,1 +1,1 @@
-export * from "./audit-medusa"
+export * from "./audit-medusa/services/medusa-audit"

@@ -9,7 +9,7 @@ import {
   AuditProviderRegistrationPrefix,
   MEDUSA_CLOUD_AUDIT_PROVIDER_ID,
 } from "@types"
-import { MedusaAuditService, resolveMedusaAuditOptions } from "../providers"
+import { MedusaAuditService } from "../providers"
 
 function register(
   container: MedusaContainer,
@@ -56,13 +56,16 @@ export default async ({
   const cloud = options?.cloud
 
   if (cloud?.endpoint) {
-    const cloudOptions = resolveMedusaAuditOptions(cloud)
     register(
       container,
       ids,
       MedusaAuditService,
       MEDUSA_CLOUD_AUDIT_PROVIDER_ID,
-      { ...cloudOptions, fetch: cloud.fetch }
+      cloud
+    )
+    // Constructed now so that missing credentials fail the boot.
+    container.resolve(
+      AuditProviderRegistrationPrefix + MEDUSA_CLOUD_AUDIT_PROVIDER_ID
     )
   }
 
