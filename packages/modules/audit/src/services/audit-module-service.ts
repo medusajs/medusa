@@ -19,8 +19,9 @@ type InjectedDependencies = {
 
 export const DEFAULT_LIST_TAKE = 20
 
-// MedusaService is extended only so that the module owns the audit log data
-// model and its migrations; audit logs are read and written through providers.
+// The methods MedusaService generates for the audit log data model are all
+// overridden: audit logs go through the buffer and the provider, and are never
+// updated or deleted.
 export class AuditModuleService
   extends MedusaService({ AuditLog })
   implements IAuditModuleService
@@ -60,7 +61,8 @@ export class AuditModuleService
     },
   }
 
-  record(data: CreateAuditLogDTO | CreateAuditLogDTO[]): void {
+  // @ts-expect-error
+  createAuditLogs(data: CreateAuditLogDTO | CreateAuditLogDTO[]): void {
     if (!this.buffer_) {
       return
     }
@@ -111,21 +113,24 @@ export class AuditModuleService
     }
   }
 
-  async list(
+  // @ts-expect-error
+  async listAuditLogs(
     filters: FilterableAuditLogProps = {},
     config: AuditLogFindConfig = {}
   ): Promise<AuditLogDTO[]> {
     return await this.provider_.list(filters, this.listConfig_(config))
   }
 
-  async listAndCount(
+  // @ts-expect-error
+  async listAndCountAuditLogs(
     filters: FilterableAuditLogProps = {},
     config: AuditLogFindConfig = {}
   ): Promise<[AuditLogDTO[], number]> {
     return await this.provider_.listAndCount(filters, this.listConfig_(config))
   }
 
-  async retrieve(
+  // @ts-expect-error
+  async retrieveAuditLog(
     id: string,
     config: AuditLogFindConfig = {}
   ): Promise<AuditLogDTO> {
@@ -139,6 +144,33 @@ export class AuditModuleService
     }
 
     return auditLog
+  }
+
+  // @ts-expect-error
+  async updateAuditLogs(): Promise<never> {
+    throw this.immutableError_()
+  }
+
+  // @ts-expect-error
+  async deleteAuditLogs(): Promise<never> {
+    throw this.immutableError_()
+  }
+
+  // @ts-expect-error
+  async softDeleteAuditLogs(): Promise<never> {
+    throw this.immutableError_()
+  }
+
+  // @ts-expect-error
+  async restoreAuditLogs(): Promise<never> {
+    throw this.immutableError_()
+  }
+
+  protected immutableError_(): MedusaError {
+    return new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "Audit logs cannot be updated or deleted"
+    )
   }
 
   protected listConfig_(config: AuditLogFindConfig): AuditLogFindConfig {

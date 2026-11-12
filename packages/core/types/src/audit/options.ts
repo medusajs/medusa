@@ -5,7 +5,7 @@ import { ModuleProviderExports } from "../modules-sdk"
  */
 export interface AuditModuleOptions {
   /**
-   * Whether audit logs are recorded. When `false`, `record` does nothing and
+   * Whether audit logs are recorded. When `false`, `createAuditLogs` does nothing and
    * nothing is buffered, so callers need no change. Reading audit logs still works.
    *
    * @defaultValue true

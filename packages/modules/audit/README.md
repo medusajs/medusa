@@ -50,8 +50,8 @@ Audit Module for Medusa: records who did what, on which resource, and how it end
 
 ## Features
 
-- `record()` validates, buffers, and batch-writes audit logs without waiting for storage or throwing.
-- `list()`, `listAndCount()`, and `retrieve()` read audit logs back, filtered by actor, action, resource, outcome, and time.
+- `createAuditLogs()` validates, buffers, and batch-writes audit logs without waiting for storage or throwing.
+- `listAuditLogs()`, `listAndCountAuditLogs()`, and `retrieveAuditLog()` read audit logs back, filtered by actor, action, resource, outcome, and time.
 - Built-in storage: the application's PostgreSQL database by default, with an optional `retention_days`, or Medusa Cloud when the `cloud` option is set. Custom providers can replace both.
 - An `enabled` option turns auditing off for the whole application without changing callers.
 
@@ -87,7 +87,7 @@ import { Modules } from "@medusajs/framework/utils"
 
 const auditModuleService = container.resolve(Modules.AUDIT)
 
-auditModuleService.record({
+auditModuleService.createAuditLogs({
   actor_type: "system",
   action: "inventory.sync",
   resource_type: "inventory_item",

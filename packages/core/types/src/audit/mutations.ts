@@ -46,7 +46,7 @@ export interface CreateAuditLogDTO {
   /**
    * When the action started, as a `Date` or an ISO 8601 string.
    *
-   * @defaultValue The time `record` is called.
+   * @defaultValue The time `createAuditLogs` is called.
    */
   started_at?: Date | string
 

@@ -26,7 +26,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
   },
   testSuite: ({ service }) => {
     const seed = async () => {
-      service.record([
+      service.createAuditLogs([
         {
           action: "POST /admin/orders/:id/cancel",
           actor_type: "user",
@@ -78,7 +78,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
       it("stores flushed records and reads them back newest first", async () => {
         await seed()
 
-        const [records, count] = await service.listAndCount()
+        const [records, count] = await service.listAndCountAuditLogs()
         expect(count).toBe(4)
         expect(records.map((r) => r.action)).toEqual([
           "order.export",
@@ -113,18 +113,20 @@ moduleIntegrationTestRunner<IAuditModuleService>({
           metadata: null,
         })
 
-        await expect(service.retrieve(cancel.id)).resolves.toEqual(cancel)
-        await expect(service.retrieve("audlog_missing")).rejects.toThrow(
-          "was not found"
+        await expect(service.retrieveAuditLog(cancel.id)).resolves.toEqual(
+          cancel
         )
+        await expect(
+          service.retrieveAuditLog("audlog_missing")
+        ).rejects.toThrow("was not found")
       })
 
       it("writes once the buffer reaches max size, without a flush", async () => {
-        service.record([{ action: "a" }, { action: "b" }])
+        service.createAuditLogs([{ action: "a" }, { action: "b" }])
 
         await new Promise((resolve) => setTimeout(resolve, 200))
 
-        const [, count] = await service.listAndCount()
+        const [, count] = await service.listAndCountAuditLogs()
         expect(count).toBe(2)
       })
 
@@ -132,7 +134,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
         await seed()
 
         const actions = async (filters) =>
-          (await service.list(filters)).map((r) => r.action)
+          (await service.listAuditLogs(filters)).map((r) => r.action)
 
         expect(
           await actions({ actor_type: "user", actor_id: "user_1" })
@@ -169,14 +171,14 @@ moduleIntegrationTestRunner<IAuditModuleService>({
       it("paginates, sorts and selects fields", async () => {
         await seed()
 
-        const [page, count] = await service.listAndCount(
+        const [page, count] = await service.listAndCountAuditLogs(
           { resource_type: ["order", "product"] },
           { skip: 1, take: 1, order: { started_at: "ASC" } }
         )
         expect(count).toBe(3)
         expect(page.map((r) => r.action)).toEqual(["POST /admin/products/:id"])
 
-        const [selected] = await service.list(
+        const [selected] = await service.listAuditLogs(
           {},
           { select: ["action"], take: 1 }
         )
@@ -185,7 +187,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
 
       it("prunes only records past retention, also when run concurrently", async () => {
         const now = Date.now()
-        service.record([
+        service.createAuditLogs([
           { action: "old", started_at: new Date(now - 31 * DAY_MS) },
           { action: "older", started_at: new Date(now - 400 * DAY_MS) },
           { action: "recent", started_at: new Date(now - 29 * DAY_MS) },
@@ -198,21 +200,23 @@ moduleIntegrationTestRunner<IAuditModuleService>({
           provider(service).prune(),
         ])
 
-        expect((await service.list()).map((r) => r.action)).toEqual(["recent"])
+        expect((await service.listAuditLogs()).map((r) => r.action)).toEqual([
+          "recent",
+        ])
       })
 
       it("prunes at most once an hour", async () => {
-        service.record([{ action: "a" }, { action: "b" }])
+        service.createAuditLogs([{ action: "a" }, { action: "b" }])
         await service.flush()
 
-        service.record({
+        service.createAuditLogs({
           action: "old",
           started_at: new Date(Date.now() - 400 * DAY_MS),
         })
         await service.flush()
         await new Promise((resolve) => setTimeout(resolve, 200))
 
-        expect(await service.list()).toHaveLength(3)
+        expect(await service.listAuditLogs()).toHaveLength(3)
       })
 
       it("is the default storage and exposes only audit log fields", async () => {
@@ -220,10 +224,10 @@ moduleIntegrationTestRunner<IAuditModuleService>({
           PostgresAuditService.identifier
         )
 
-        service.record({ action: "a" })
+        service.createAuditLogs({ action: "a" })
         await service.flush()
 
-        const [auditLog] = await service.list()
+        const [auditLog] = await service.listAuditLogs()
         expect(Object.keys(auditLog)).not.toEqual(
           expect.arrayContaining(["created_at", "updated_at", "deleted_at"])
         )

@@ -54,7 +54,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
 
     describe("Audit Module", () => {
       it("buffers records until flushed, then lists and retrieves them", async () => {
-        const result = service.record([
+        const result = service.createAuditLogs([
           {
             action: "order.cancel",
             actor_type: "user",
@@ -78,7 +78,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
 
         await service.flush()
 
-        const [records, count] = await service.listAndCount()
+        const [records, count] = await service.listAndCountAuditLogs()
         expect(count).toBe(2)
         expect(records.map((r) => r.action)).toEqual([
           "product.update",
@@ -86,7 +86,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
         ])
         expect(records[0].id).toMatch(/^audlog_/)
 
-        const filtered = await service.list({ resource_type: "order" })
+        const filtered = await service.listAuditLogs({ resource_type: "order" })
         expect(filtered).toHaveLength(1)
         expect(filtered[0]).toEqual(
           expect.objectContaining({
@@ -99,14 +99,14 @@ moduleIntegrationTestRunner<IAuditModuleService>({
           })
         )
 
-        const retrieved = await service.retrieve(filtered[0].id)
+        const retrieved = await service.retrieveAuditLog(filtered[0].id)
         expect(retrieved.id).toBe(filtered[0].id)
       })
 
       it("passes default pagination and newest-first order to the provider", async () => {
         const spy = jest.spyOn(provider(service), "listAndCount")
 
-        await service.listAndCount({ actor_id: "user_1" })
+        await service.listAndCountAuditLogs({ actor_id: "user_1" })
 
         expect(spy).toHaveBeenCalledWith(
           { actor_id: "user_1" },
@@ -115,14 +115,14 @@ moduleIntegrationTestRunner<IAuditModuleService>({
       })
 
       it("throws not found when retrieving an unknown audit log", async () => {
-        await expect(service.retrieve("audlog_missing")).rejects.toThrow(
-          "Audit log with id: audlog_missing was not found"
-        )
+        await expect(
+          service.retrieveAuditLog("audlog_missing")
+        ).rejects.toThrow("Audit log with id: audlog_missing was not found")
       })
 
       it("drops invalid records with a warning and keeps the valid ones", async () => {
         expect(() =>
-          service.record([
+          service.createAuditLogs([
             { action: "" },
             { action: "ok" },
             { action: "bad", outcome: "maybe" as any },
@@ -141,7 +141,9 @@ moduleIntegrationTestRunner<IAuditModuleService>({
         const memory = provider(service)
         memory.failuresLeft = 10
 
-        expect(() => service.record({ action: "order.cancel" })).not.toThrow()
+        expect(() =>
+          service.createAuditLogs({ action: "order.cancel" })
+        ).not.toThrow()
         await expect(service.flush()).resolves.toBeUndefined()
 
         expect(memory.writes).toHaveLength(3)
@@ -155,7 +157,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
         const memory = provider(service)
         memory.failuresLeft = 1
 
-        service.record({ action: "order.cancel" })
+        service.createAuditLogs({ action: "order.cancel" })
         await service.flush()
 
         expect(memory.writes).toHaveLength(2)
@@ -163,8 +165,23 @@ moduleIntegrationTestRunner<IAuditModuleService>({
         expect(logger.error).not.toHaveBeenCalled()
       })
 
+      it("refuses to update or delete audit logs", async () => {
+        const generated = service as any
+
+        for (const method of [
+          "updateAuditLogs",
+          "deleteAuditLogs",
+          "softDeleteAuditLogs",
+          "restoreAuditLogs",
+        ]) {
+          await expect(generated[method]("audlog_1")).rejects.toThrow(
+            "Audit logs cannot be updated or deleted"
+          )
+        }
+      })
+
       it("flushes the buffer on shutdown", async () => {
-        service.record({ action: "order.cancel" })
+        service.createAuditLogs({ action: "order.cancel" })
         expect(provider(service).records).toHaveLength(0)
 
         await hooks(service).onApplicationPrepareShutdown()
@@ -188,12 +205,12 @@ moduleIntegrationTestRunner<IAuditModuleService>({
   testSuite: ({ service }) => {
     describe("Audit Module with enabled: false", () => {
       it("records nothing and buffers nothing", async () => {
-        service.record({ action: "order.cancel" })
+        service.createAuditLogs({ action: "order.cancel" })
         await service.flush()
 
         expect((service as any).buffer_).toBeUndefined()
         expect(provider(service).writes).toHaveLength(0)
-        expect(await service.list()).toEqual([])
+        expect(await service.listAuditLogs()).toEqual([])
       })
     })
   },
@@ -211,10 +228,10 @@ moduleIntegrationTestRunner<IAuditModuleService>({
   testSuite: ({ service }) => {
     describe("Audit Module with enabled: false and the default storage", () => {
       it("loads, and reads return nothing", async () => {
-        service.record({ action: "order.cancel" })
+        service.createAuditLogs({ action: "order.cancel" })
 
-        expect(await service.listAndCount()).toEqual([[], 0])
-        await expect(service.retrieve("audlog_1")).rejects.toThrow(
+        expect(await service.listAndCountAuditLogs()).toEqual([[], 0])
+        await expect(service.retrieveAuditLog("audlog_1")).rejects.toThrow(
           "was not found"
         )
       })
@@ -250,7 +267,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
       })
 
       it("registers the Cloud provider and makes it the default", async () => {
-        service.record({ action: "order.cancel" })
+        service.createAuditLogs({ action: "order.cancel" })
         await service.flush()
 
         expect(cloudFetch).toHaveBeenCalledTimes(1)
@@ -260,7 +277,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
           expect.objectContaining({ action: "order.cancel" }),
         ])
 
-        await service.list()
+        await service.listAuditLogs()
         expect(cloudFetch.mock.calls[1][0]).toContain(
           "https://audit.medusa.example/records?"
         )

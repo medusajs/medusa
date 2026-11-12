@@ -11,8 +11,8 @@ import { CreateAuditLogDTO } from "./mutations"
  */
 export interface IAuditModuleService extends IModuleService {
   /**
-   * This method records one or more audit logs. It never throws and never waits
-   * for storage: the audit logs are validated, given an ID, and buffered, then
+   * This method records one or more audit logs. Unlike other modules' create
+   * methods, it returns nothing, never throws and never waits for storage: the audit logs are validated, given an ID, and buffered, then
    * written in batches by the module's default provider. An invalid audit log is
    * dropped and logged. When the module's `enabled` option is `false`, this
    * method does nothing.
@@ -20,14 +20,14 @@ export interface IAuditModuleService extends IModuleService {
    * @param {CreateAuditLogDTO | CreateAuditLogDTO[]} data - The audit logs to record.
    *
    * @example
-   * auditModuleService.record({
+   * auditModuleService.createAuditLogs({
    *   actor_type: "system",
    *   action: "inventory.sync",
    *   resource_type: "inventory_item",
    *   resource_id: "iitem_123",
    * })
    */
-  record(data: CreateAuditLogDTO | CreateAuditLogDTO[]): void
+  createAuditLogs(data: CreateAuditLogDTO | CreateAuditLogDTO[]): void
 
   /**
    * This method retrieves a paginated list of audit logs, newest first.
@@ -37,12 +37,12 @@ export interface IAuditModuleService extends IModuleService {
    * @returns {Promise<AuditLogDTO[]>} The list of audit logs.
    *
    * @example
-   * const auditLogs = await auditModuleService.list(
+   * const auditLogs = await auditModuleService.listAuditLogs(
    *   { resource_type: "order", resource_id: "order_123" },
    *   { take: 20 }
    * )
    */
-  list(
+  listAuditLogs(
     filters?: FilterableAuditLogProps,
     config?: AuditLogFindConfig
   ): Promise<AuditLogDTO[]>
@@ -56,12 +56,12 @@ export interface IAuditModuleService extends IModuleService {
    * @returns {Promise<[AuditLogDTO[], number]>} The list of audit logs and their total count.
    *
    * @example
-   * const [auditLogs, count] = await auditModuleService.listAndCount(
+   * const [auditLogs, count] = await auditModuleService.listAndCountAuditLogs(
    *   { actor_type: "user", actor_id: "user_123" },
    *   { skip: 0, take: 20 }
    * )
    */
-  listAndCount(
+  listAndCountAuditLogs(
     filters?: FilterableAuditLogProps,
     config?: AuditLogFindConfig
   ): Promise<[AuditLogDTO[], number]>
@@ -75,9 +75,12 @@ export interface IAuditModuleService extends IModuleService {
    * @returns {Promise<AuditLogDTO>} The audit log.
    *
    * @example
-   * const auditLog = await auditModuleService.retrieve("audlog_123")
+   * const auditLog = await auditModuleService.retrieveAuditLog("audlog_123")
    */
-  retrieve(id: string, config?: AuditLogFindConfig): Promise<AuditLogDTO>
+  retrieveAuditLog(
+    id: string,
+    config?: AuditLogFindConfig
+  ): Promise<AuditLogDTO>
 
   /**
    * This method writes every buffered audit log through the default provider and
@@ -86,7 +89,7 @@ export interface IAuditModuleService extends IModuleService {
    * as in a script that exits afterwards.
    *
    * @example
-   * auditModuleService.record({ action: "catalog.import" })
+   * auditModuleService.createAuditLogs({ action: "catalog.import" })
    * await auditModuleService.flush()
    */
   flush(): Promise<void>

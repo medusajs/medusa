@@ -7,7 +7,7 @@ Audit Module: records audit logs (who did what, on which resource, how it ended)
 - Not registered by default: applications add `{ resolve: "@medusajs/medusa/audit" }` to `modules` in `medusa-config.ts`, with at least one provider unless `enabled: false`.
 - It is a licensed module: the loader (`packages/core/modules-sdk/src/loaders/utils/load-internal.ts`, `LICENSED_MODULES`) only loads it when the license covers `LicenseFeature.AUDIT` (`"audit"`). There is no feature flag.
 - Options (`AuditModuleOptions` in `packages/core/types/src/audit/options.ts`):
-  - `enabled` (default `true`): when `false`, `record()` is a no-op and nothing is buffered. Reads still go to the default provider.
+  - `enabled` (default `true`): when `false`, `createAuditLogs()` is a no-op and nothing is buffered. Reads still go to the default provider.
   - `retention_days`: for the built-in Postgres storage only; audit logs older than this are deleted. Unset keeps them forever. Invalid values throw at boot.
   - `providers`: `{ resolve, id, options }[]`, custom providers. When set, the built-in Postgres storage is not registered.
   - `default_provider`: a provider `id`. Defaults to `cloud` when `cloud.endpoint` is set, otherwise to the only provider (the built-in `postgres` one when nothing else is configured). Required with several providers and no Cloud.
@@ -20,20 +20,20 @@ import type { IAuditModuleService } from "@medusajs/framework/types"
 
 const audit: IAuditModuleService = container.resolve(Modules.AUDIT)
 
-audit.record({ actor_type: "system", action: "catalog.import" }) // returns void
-const [logs, count] = await audit.listAndCount(
+audit.createAuditLogs({ actor_type: "system", action: "catalog.import" }) // returns void
+const [logs, count] = await audit.listAndCountAuditLogs(
   { resource_type: "order", resource_id: "order_123" },
   { skip: 0, take: 20 }
 )
-const log = await audit.retrieve("audlog_123") // NOT_FOUND when missing
+const log = await audit.retrieveAuditLog("audlog_123") // NOT_FOUND when missing
 await audit.flush() // only needed when a script must read its own records back
 ```
 
 ### Service (`src/services/audit-module-service.ts`)
 
-- `record(entry | entries): void`: never throws and never awaits storage. Each entry is normalized (`src/utils/normalize.ts`): `action` is required; `actor_type` defaults to `system`, `outcome` to `succeeded`, `started_at` to now, `ended_at` to `started_at`; dates may be ISO strings; an `audlog_` id is always generated. Invalid entries are dropped with one warning that names the reasons, never the contents.
-- `list(filters?, config?)`, `listAndCount(filters?, config?)`: delegate to the default provider with `skip: 0`, `take: 20` and `order: { started_at: "DESC" }` filled in.
-- `retrieve(id, config?)`: the provider returns `null` for a missing id; the module throws `MedusaError.Types.NOT_FOUND`.
+- `createAuditLogs(entry | entries): void`: never throws and never awaits storage. Each entry is normalized (`src/utils/normalize.ts`): `action` is required; `actor_type` defaults to `system`, `outcome` to `succeeded`, `started_at` to now, `ended_at` to `started_at`; dates may be ISO strings; an `audlog_` id is always generated. Invalid entries are dropped with one warning that names the reasons, never the contents.
+- `listAuditLogs(filters?, config?)`, `listAndCountAuditLogs(filters?, config?)`: delegate to the default provider with `skip: 0`, `take: 20` and `order: { started_at: "DESC" }` filled in.
+- `retrieveAuditLog(id, config?)`: the provider returns `null` for a missing id; the module throws `MedusaError.Types.NOT_FOUND`.
 - `flush()`: drains the buffer, never throws.
 - Filters (`FilterableAuditLogProps`): `id`, `actor_type`, `actor_id`, `action`, `resource_type`, `resource_id`, `outcome` (value or array), `started_at` (`$gt`/`$gte`/`$lt`/`$lte`), `q`.
 
@@ -44,7 +44,7 @@ await audit.flush() // only needed when a script must read its own records back
 - `src/loaders/providers.ts`: registers the Cloud provider from `options.cloud`, then `options.providers` through `moduleProviderLoader`, each as `aud_<id>` instantiated with its own options. It registers `audit_default_provider` and `auditProviderService`, and throws at boot for duplicate ids, an unknown `default_provider`, or several providers without a default. With no Cloud endpoint and no `providers`, it registers the built-in Postgres storage.
 - `src/services/audit-provider.ts` (`AuditProviderService`): the only place that knows which provider stores audit logs. The module service calls it and never sees provider ids.
 - `src/providers/audit-medusa`: the built-in Medusa Cloud provider (`MedusaAuditService`, identifier `audit-medusa`). The whole wire contract is in `services/medusa-audit.ts`, with no separate client: `POST {endpoint}/records` with `{ records }`, `GET {endpoint}/records` with filters as query parameters (arrays repeated, `started_at[$gte]=<ISO>`, `q`, `offset`, `limit`, `order=-started_at|started_at`, `fields`) answering `{ records, count }`, and `GET {endpoint}/records/:id` answering `{ record }` or 404. Headers: `Authorization: Basic <api_key>` and `x-medusa-environment-handle`. The contract is provisional until the Cloud audit service exists.
-- `src/models/audit-log.ts`: the `audit_log` data model, with generated migrations (`yarn migration:create`). It carries the implicit `created_at`, `updated_at` and `deleted_at` columns, which are never used or returned. `AuditModuleService` extends `MedusaService({ AuditLog })` only so the module owns the model; do not call the generated `createAuditLogs` / `updateAuditLogs` / `deleteAuditLogs` methods, they bypass the buffer and the provider.
+- `src/models/audit-log.ts`: the `audit_log` data model, with generated migrations (`yarn migration:create`). It carries the implicit `created_at`, `updated_at` and `deleted_at` columns, which are never used or returned. `AuditModuleService` extends `MedusaService({ AuditLog })` and overrides every generated method: `createAuditLogs`, `listAuditLogs`, `listAndCountAuditLogs` and `retrieveAuditLog` go through the buffer and the provider, and `updateAuditLogs`, `deleteAuditLogs`, `softDeleteAuditLogs` and `restoreAuditLogs` throw `NOT_ALLOWED`.
 - `src/providers/audit-postgres` (`PostgresAuditService`, id `postgres`): the default storage. It reads and writes through the generated `auditLogService`, so filters, `q` (over `action`, `actor_id`, `resource_type`, `resource_id`), pagination and field selection are core's. `write` starts `prune()` in the background at most once an hour when `retention_days` is set; there is no timer, so nothing is pruned while nothing is written.
 - Custom providers extend `AbstractAuditProviderService` from `@medusajs/framework/utils` and implement `IAuditProvider` (`write`, `list`, `listAndCount`, `retrieve`). Retention is a provider's own concern.
 
@@ -61,7 +61,7 @@ yarn test:integration   # integration-tests/__tests__/audit-module.spec.ts, load
 
 ## Gotchas
 
-- `record()` returns `void`, not a promise. Audit logs are lost if the process dies before a flush, or if the provider stays down beyond the retries; this is the accepted trade-off for not delaying requests.
+- `createAuditLogs()` returns `void`, not a promise. Audit logs are lost if the process dies before a flush, or if the provider stays down beyond the retries; this is the accepted trade-off for not delaying requests.
 - Never pass whole request or response bodies in `request_data` / `response_data`: they hold personal data and secrets. Pass the fields to keep.
 - Writes and reads go to the default provider only.
 - An explicit `default_provider` wins over the Cloud default.
