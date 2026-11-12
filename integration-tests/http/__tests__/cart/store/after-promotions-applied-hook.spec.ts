@@ -34,13 +34,13 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     // The hook is registered once; each test opts in by setting this handler,
     // which receives the cart as the registered handler retrieved it.
-    let hookHandler:
+    let afterPromotionsAppliedHandler:
       | ((input: any, context: any) => Promise<void> | void)
       | undefined
 
-    refreshCartItemsWorkflow.hooks.beforeRefreshingPaymentCollection(
-      async ({ input: { cart_id } }, context) => {
-        if (!hookHandler) {
+    refreshCartItemsWorkflow.hooks.afterPromotionsApplied(
+      async ({ cart_id }, context) => {
+        if (!afterPromotionsAppliedHandler) {
           return
         }
 
@@ -59,11 +59,11 @@ medusaIntegrationTestRunner({
           filters: { id: cart_id },
         })
 
-        await hookHandler({ cart }, context)
+        await afterPromotionsAppliedHandler({ cart }, context)
       }
     )
 
-    describe("refreshCartItemsWorkflow beforeRefreshingPaymentCollection hook", () => {
+    describe("refreshCartItemsWorkflow afterPromotionsApplied hook", () => {
       let appContainer
       let storeHeaders
       let storeHeadersWithCustomer
@@ -91,7 +91,7 @@ medusaIntegrationTestRunner({
         ).data.cart
 
       const recordCalls = () => {
-        hookHandler = ({ cart }) => {
+        afterPromotionsAppliedHandler = ({ cart }) => {
           hookCalls.push(cart)
         }
       }
@@ -99,7 +99,7 @@ medusaIntegrationTestRunner({
       // Recreates one custom adjustment per line on every refresh and keeps a
       // breakdown on the line metadata, the way a pricing plugin would.
       const applyCustomPricing = () => {
-        hookHandler = async ({ cart }, { container }) => {
+        afterPromotionsAppliedHandler = async ({ cart }, { container }) => {
           const cartModule = container.resolve(Modules.CART)
 
           await cartModule.addLineItemAdjustments(
@@ -199,7 +199,7 @@ medusaIntegrationTestRunner({
       })
 
       afterEach(() => {
-        hookHandler = undefined
+        afterPromotionsAppliedHandler = undefined
       })
 
       it("runs once the cart has its promotion adjustments and tax lines", async () => {
@@ -345,7 +345,7 @@ medusaIntegrationTestRunner({
 
       it("rejects the cart change when the hook throws", async () => {
         const cart = await createCart()
-        hookHandler = () => {
+        afterPromotionsAppliedHandler = () => {
           throw new MedusaError(
             MedusaError.Types.NOT_ALLOWED,
             "No price available for this customer"
@@ -365,7 +365,7 @@ medusaIntegrationTestRunner({
           "No price available for this customer"
         )
 
-        hookHandler = undefined
+        afterPromotionsAppliedHandler = undefined
 
         const unchanged = (
           await api.get(`/store/carts/${cart.id}`, storeHeaders)
