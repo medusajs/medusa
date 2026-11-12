@@ -375,6 +375,28 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it.each([0, 1.5])(
+          "should throw an error if min_quantity is %s",
+          async (minQuantity) => {
+            const { response } = await api
+              .post(
+                `/admin/promotions`,
+                {
+                  ...standardPromotionPayload,
+                  application_method: {
+                    ...standardPromotionPayload.application_method,
+                    min_quantity: minQuantity,
+                  },
+                },
+                adminHeaders
+              )
+              .catch((e) => e)
+
+            expect(response.status).toEqual(400)
+            expect(response.data.message).toContain("min_quantity")
+          }
+        )
+
         it("should throw an error if buy_rules params are not passed", async () => {
           const { response } = await api
             .post(
