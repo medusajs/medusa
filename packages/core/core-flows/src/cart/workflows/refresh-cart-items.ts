@@ -138,8 +138,15 @@ export const refreshCartItemsWorkflowId = "refresh-cart-items"
  * resulting cart total. Tax amounts are calculated from the cart's tax lines when the cart totals are computed, so they reflect
  * the line item prices and adjustments set in this hook.
  *
- * Line item adjustments that have a `code` are removed and recalculated by the promotion step on every refresh, before this hook runs.
- * So, if you persist your pricing as line item adjustments, recreate them in this hook on every refresh.
+ * This hook runs right before the `beforeRefreshingPaymentCollection` hook. A hook accepts a single handler, so use this hook for custom
+ * pricing when `beforeRefreshingPaymentCollection` is already consumed, for example by the loyalty plugin.
+ *
+ * Line item adjustments that have a `code` are removed and recalculated whenever the cart's promotions are computed. That happens before
+ * this hook runs on every refresh, so if you persist your pricing as line item adjustments with a `code`, recreate them in this hook.
+ * It also happens when promotion codes are added to or removed from the cart with `updateCartPromotionsWorkflow`, which doesn't run this
+ * workflow or its hooks. So, adjustments with a `code` created in this hook are removed by that workflow and only recreated on the next refresh.
+ *
+ * The hook runs while the cart is locked for a limited time, so keep the logic in it fast.
  *
  * To reject the cart change, for example when no price can be determined for the customer, throw an error in the hook. The workflow
  * then rolls back and the cart operation fails with that error.

@@ -343,6 +343,39 @@ medusaIntegrationTestRunner({
         })
       })
 
+      it("doesn't run when promotion codes change, which removes the hook's adjustments that have a code", async () => {
+        const cart = await createCart()
+        applyCustomPricing()
+
+        await api.post(
+          `/store/carts/${cart.id}/line-items/${cart.items[0].id}`,
+          { quantity: 2 },
+          storeHeaders
+        )
+
+        const applyPricing = afterPromotionsAppliedHandler!
+        let calls = 0
+        afterPromotionsAppliedHandler = async (input, context) => {
+          calls++
+          await applyPricing(input, context)
+        }
+
+        const updated = (
+          await api.post(
+            `/store/carts/${cart.id}/promotions`,
+            { promo_codes: [promotion.code] },
+            storeHeaders
+          )
+        ).data.cart
+
+        expect(calls).toEqual(0)
+        expect(
+          updated.items[0].adjustments.filter(
+            (adjustment) => adjustment.code === CUSTOM_PRICING_CODE
+          )
+        ).toEqual([])
+      })
+
       it("rejects the cart change when the hook throws", async () => {
         const cart = await createCart()
         afterPromotionsAppliedHandler = () => {
