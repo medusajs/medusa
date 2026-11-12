@@ -1,6 +1,6 @@
 import { Key, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import { Container, Heading, toast } from "@medusajs/ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
@@ -20,6 +20,8 @@ import {
   useRbacRolePermissions,
 } from "../../../../../hooks/use-resource-permissions"
 import { usePermissions } from "../../../../../providers/permissions-provider"
+import { SUPER_ADMIN_ROLE_ID } from "../../../common/constants"
+import { useConfirmDeleteRole } from "../../../common/hooks"
 
 type RoleGeneralSectionProps = {
   role: HttpTypes.AdminRbacRole
@@ -34,7 +36,7 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     "rbac_role_assignment:read",
   ])
   const { canRead: canReadPolicies } = useRbacPolicyPermissions()
-  const prompt = usePrompt()
+  const confirmDelete = useConfirmDeleteRole()
   const navigate = useNavigate()
 
   const canManagePolicies = canUpdate && canReadPolicies
@@ -44,12 +46,7 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
   )
 
   const handleDelete = async () => {
-    const confirmed = await prompt({
-      title: t("roles.delete.title"),
-      description: t("roles.delete.description", { name: role.name }),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
+    const confirmed = await confirmDelete(role)
 
     if (!confirmed) {
       return
@@ -100,7 +97,8 @@ export const RoleGeneralSection = ({ role }: RoleGeneralSectionProps) => {
     })
   }
 
-  if (canDelete) {
+  // The super admin role can't be deleted, the backend rejects it.
+  if (canDelete && role.id !== SUPER_ADMIN_ROLE_ID) {
     groups.push({
       actions: [
         {

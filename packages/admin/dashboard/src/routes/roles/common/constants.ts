@@ -132,3 +132,9 @@ export const LEVEL_COLORS: Record<
   full: "green",
   mixed: "orange",
 }
+
+/**
+ * The ID of the built-in super admin role. Mirrors `RBAC_SUPER_ADMIN_ROLE_ID`
+ * in `@medusajs/utils`; the backend refuses to delete this role.
+ */
+export const SUPER_ADMIN_ROLE_ID = "role_super_admin"

@@ -10839,6 +10839,24 @@
             "description": {
               "type": "string"
             },
+            "descriptionWithUsers_zero": {
+              "type": "string"
+            },
+            "descriptionWithUsers_one": {
+              "type": "string"
+            },
+            "descriptionWithUsers_two": {
+              "type": "string"
+            },
+            "descriptionWithUsers_few": {
+              "type": "string"
+            },
+            "descriptionWithUsers_many": {
+              "type": "string"
+            },
+            "descriptionWithUsers_other": {
+              "type": "string"
+            },
             "successToast": {
               "type": "string"
             }

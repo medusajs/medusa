@@ -1,3 +1,5 @@
+import { HttpTypes } from "@medusajs/types"
+import { usePrompt } from "@medusajs/ui"
 import { useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -5,6 +7,8 @@ import {
   useRbacAssignablePolicies,
   useRbacPolicies,
 } from "../../../hooks/api/rbac-policies"
+import { sdk } from "../../../lib/client"
+import { usePermissions } from "../../../providers/permissions-provider"
 import {
   buildMatrix,
   formatFallbackLabel,
@@ -121,4 +125,51 @@ export const usePermissionsMatrix = (extraPolicies?: MatrixPolicy[]) => {
     isError: isPoliciesError || isAssignableError,
     error: policiesError ?? assignableError,
   }
+}
+
+/**
+ * Returns a function asking the user to confirm deleting a role. When the
+ * user can see who holds the role, the prompt says how many users will lose
+ * the access it grants.
+ */
+export const useConfirmDeleteRole = () => {
+  const { t } = useTranslation()
+  const prompt = usePrompt()
+  const { hasAllPermissions } = usePermissions()
+
+  const canReadUsers = hasAllPermissions([
+    "user:read",
+    "rbac_role_assignment:read",
+  ])
+
+  return useCallback(
+    async (role: Pick<HttpTypes.AdminRbacRole, "id" | "name">) => {
+      let userCount = 0
+
+      if (canReadUsers) {
+        try {
+          const { count } = await sdk.admin.rbacRole.listUsers(role.id, {
+            limit: 1,
+          })
+          userCount = count
+        } catch {
+          // The count is a courtesy, fall back to the plain prompt without it.
+        }
+      }
+
+      return prompt({
+        title: t("roles.delete.title"),
+        description:
+          userCount > 0
+            ? t("roles.delete.descriptionWithUsers", {
+                name: role.name,
+                count: userCount,
+              })
+            : t("roles.delete.description", { name: role.name }),
+        confirmText: t("actions.delete"),
+        cancelText: t("actions.cancel"),
+      })
+    },
+    [t, prompt, canReadUsers]
+  )
 }

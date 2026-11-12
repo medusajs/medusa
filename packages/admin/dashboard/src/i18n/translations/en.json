@@ -2834,6 +2834,8 @@
     "delete": {
       "title": "Delete role",
       "description": "You are about to delete the role {{name}}. This action cannot be undone.",
+      "descriptionWithUsers_one": "You are about to delete the role {{name}}. {{count}} user has this role and will lose the access it grants. This action cannot be undone.",
+      "descriptionWithUsers_other": "You are about to delete the role {{name}}. {{count}} users have this role and will lose the access it grants. This action cannot be undone.",
       "successToast": "Role {{name}} deleted"
     },
     "actions": {
