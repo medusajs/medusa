@@ -8,6 +8,8 @@ import {
   FeatureFlag,
 } from "@medusajs/framework/utils"
 import {
+  getRuleValueFields,
+  getRuleValueLabel,
   ruleQueryConfigurations,
   validateRuleAttribute,
   validateRuleType,
@@ -55,7 +57,7 @@ export const GET = async (
   }
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-  const fields = [queryConfig.labelAttr, queryConfig.valueAttr]
+  const fields = getRuleValueFields(queryConfig)
 
   const { data, metadata } = await query.graph({
     entity: queryConfig.entryPoint,
@@ -65,7 +67,7 @@ export const GET = async (
   })
 
   const values = data.map((r) => ({
-    label: r[queryConfig.labelAttr],
+    label: getRuleValueLabel(queryConfig, r),
     value: r[queryConfig.valueAttr],
   }))
 

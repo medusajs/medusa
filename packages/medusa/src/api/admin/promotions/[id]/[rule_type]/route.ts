@@ -12,6 +12,8 @@ import {
 import {
   getRuleAttributesMap,
   operatorsMap,
+  getRuleValueFields,
+  getRuleValueLabel,
   ruleQueryConfigurations,
   validateRuleType,
 } from "../../utils"
@@ -114,14 +116,14 @@ export const GET = async (
             [queryConfig.valueAttr]: promotionRule.values?.map((v) => v.value),
           },
         },
-        fields: [queryConfig.labelAttr, queryConfig.valueAttr],
+        fields: getRuleValueFields(queryConfig),
       })
     )
 
     const valueLabelMap = new Map<string, string>(
       rows.map((row) => [
         row[queryConfig.valueAttr],
-        row[queryConfig.labelAttr],
+        getRuleValueLabel(queryConfig, row),
       ])
     )
 

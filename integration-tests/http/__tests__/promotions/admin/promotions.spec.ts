@@ -4230,7 +4230,7 @@ medusaIntegrationTestRunner({
           expect(response.status).toEqual(200)
           expect(response.data.values).toEqual([
             {
-              label: "jane@example.com",
+              label: "jane@example.com (no account)",
               value: customer.id,
             },
           ])
