@@ -11,6 +11,7 @@ import {
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures/tax"
+import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-authenticated-customer"
 import { medusaTshirtProduct } from "../../../__fixtures__/product"
 import {
   updateCampaignsWorkflow,
@@ -4234,6 +4235,82 @@ medusaIntegrationTestRunner({
               value: customer.id,
             },
           ])
+
+          const publishableKey = await generatePublishableKey(appContainer)
+          const { customer: registeredCustomer } =
+            await createAuthenticatedCustomer(
+              api,
+              generateStoreHeaders({ publishableKey }),
+              { email: "jane@example.com" }
+            )
+
+          response = await api.get(
+            `/admin/promotions/rule-value-options/rules/customer?q=jane`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.values).toHaveLength(2)
+          expect(response.data.values).toEqual(
+            expect.arrayContaining([
+              {
+                label: "jane@example.com (no account)",
+                value: customer.id,
+              },
+              {
+                label: "jane@example.com",
+                value: registeredCustomer.id,
+              },
+            ])
+          )
+
+          const customerPromotion = (
+            await api.post(
+              `/admin/promotions`,
+              {
+                code: "CUSTOMER_LABELS",
+                type: PromotionType.STANDARD,
+                status: PromotionStatus.ACTIVE,
+                rules: [
+                  {
+                    attribute: "customer.id",
+                    operator: "in",
+                    values: [customer.id, registeredCustomer.id],
+                  },
+                ],
+                application_method: {
+                  type: "percentage",
+                  target_type: "items",
+                  allocation: "across",
+                  value: 10,
+                },
+              },
+              adminHeaders
+            )
+          ).data.promotion
+
+          response = await api.get(
+            `/admin/promotions/${customerPromotion.id}/rules`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(
+            response.data.rules.find(
+              (rule) => rule.attribute === "customer.id"
+            ).values
+          ).toEqual(
+            expect.arrayContaining([
+              {
+                label: "jane@example.com (no account)",
+                value: customer.id,
+              },
+              {
+                label: "jane@example.com",
+                value: registeredCustomer.id,
+              },
+            ])
+          )
 
           const salesChannel = (
             await api.post(
