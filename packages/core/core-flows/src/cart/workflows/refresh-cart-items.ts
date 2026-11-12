@@ -129,17 +129,21 @@ export const refreshCartItemsWorkflowId = "refresh-cart-items"
  *
  * :::
  *
- * @property hooks.afterPromotionsApplied - This hook is executed after the cart's prices, tax lines, and promotion adjustments are
- * up to date, and before the cart's payment collection is refreshed. It receives the cart's ID, so you can retrieve the cart with
- * all its line items and the fields your logic needs. You can consume it to apply custom pricing that depends on the whole cart,
- * such as discounts calculated across several line items.
+ * @property hooks.beforeRefreshingPaymentCollection - This hook is executed after the cart's prices, tax lines, and promotion adjustments are
+ * up to date, and before the cart's payment collection is refreshed. It receives the workflow's input, including the cart's ID, so you can
+ * retrieve the cart with all its line items and the fields your logic needs. You can consume it to apply custom pricing that depends on the
+ * whole cart, such as discounts calculated across several line items.
  *
  * Changes made in this hook are not overwritten by the rest of the refresh, and the payment collection is refreshed with the
  * resulting cart total. Tax amounts are calculated from the cart's tax lines when the cart totals are computed, so they reflect
  * the line item prices and adjustments set in this hook.
  *
- * Line item adjustments that have a `code` are removed and recalculated by the promotion step on every refresh, before this hook runs.
- * So, if you persist your pricing as line item adjustments, recreate them in this hook on every refresh.
+ * Line item adjustments that have a `code` are removed and recalculated whenever the cart's promotions are computed. That happens before
+ * this hook runs on every refresh, so if you persist your pricing as line item adjustments with a `code`, recreate them in this hook.
+ * It also happens when promotion codes are added to or removed from the cart with `updateCartPromotionsWorkflow`, which doesn't run this
+ * workflow or its hooks. So, adjustments with a `code` created in this hook are removed by that workflow and only recreated on the next refresh.
+ *
+ * The hook runs while the cart is locked for a limited time, so keep the logic in it fast.
  *
  * To reject the cart change, for example when no price can be determined for the customer, throw an error in the hook. The workflow
  * then rolls back and the cart operation fails with that error.
@@ -153,15 +157,15 @@ export const refreshCartItemsWorkflowId = "refresh-cart-items"
  *   MedusaError,
  * } from "@medusajs/framework/utils";
  *
- * refreshCartItemsWorkflow.hooks.afterPromotionsApplied(
- *   async ({ cart_id, additional_data }, { container }) => {
+ * refreshCartItemsWorkflow.hooks.beforeRefreshingPaymentCollection(
+ *   async ({ input }, { container }) => {
  *     const query = container.resolve(ContainerRegistrationKeys.QUERY);
  *     const {
  *       data: [cart],
  *     } = await query.graph({
  *       entity: "cart",
  *       fields: ["id", "customer_id", "items.*", "items.adjustments.*"],
- *       filters: { id: cart_id },
+ *       filters: { id: input.cart_id },
  *     });
  *
  *     if (!cart.customer_id) {
@@ -306,11 +310,6 @@ export const refreshCartItemsWorkflow = createWorkflow(
       })
     })
 
-    const afterPromotionsApplied = createHook("afterPromotionsApplied", {
-      cart_id: input.cart_id,
-      additional_data: input.additional_data,
-    })
-
     const beforeRefreshingPaymentCollection = createHook(
       "beforeRefreshingPaymentCollection",
       { input }
@@ -325,11 +324,7 @@ export const refreshCartItemsWorkflow = createWorkflow(
     })
 
     return new WorkflowResponse(refetchedCart, {
-      hooks: [
-        setPricingContext,
-        afterPromotionsApplied,
-        beforeRefreshingPaymentCollection,
-      ] as const,
+      hooks: [setPricingContext, beforeRefreshingPaymentCollection] as const,
     })
   }
 )
