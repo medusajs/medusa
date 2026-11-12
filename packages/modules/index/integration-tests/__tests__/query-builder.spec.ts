@@ -1055,4 +1055,64 @@ describe("IndexModuleService query", function () {
       expect(data).toEqual([{ id: "prod_quote", title: "O'Reilly's Book" }])
     })
   })
+
+  describe("question marks in filter values", () => {
+    beforeEach(async () => {
+      const manager = testBed.forkManager()
+      const indexRepository = manager.getRepository(toMikroORMEntity(IndexData))
+      await manager.persistAndFlush(
+        indexRepository.create({
+          id: "prod_question",
+          name: "Product",
+          data: {
+            id: "prod_question",
+            title: "What? Product",
+          },
+        })
+      )
+    })
+
+    it("matches a title containing a question mark", async () => {
+      const { data } = await module.query({
+        fields: ["product.id", "product.title"],
+        filters: {
+          product: {
+            title: "What? Product",
+          },
+        },
+      })
+
+      expect(data).toEqual([{ id: "prod_question", title: "What? Product" }])
+    })
+
+    it("does not shift other filter values into a question mark", async () => {
+      const { data } = await module.query({
+        fields: ["product.id", "product.title"],
+        filters: {
+          product: {
+            title: "What? Product",
+            id: { $ne: "it's a product" },
+          },
+        },
+      })
+
+      expect(data).toEqual([{ id: "prod_question", title: "What? Product" }])
+    })
+
+    it("keeps a join filter containing a question mark bound", async () => {
+      const { data } = await module.query({
+        fields: ["product.id", "product.variants.id"],
+        joinFilters: {
+          "product.variants.sku": "sku?",
+        },
+        filters: {
+          product: {
+            id: "prod_1",
+          },
+        },
+      })
+
+      expect(data).toEqual([{ id: "prod_1", variants: [] }])
+    })
+  })
 })
