@@ -56,14 +56,4 @@ export interface IAuditProvider {
    * @returns {Promise<AuditLogDTO | null>} The audit log, or `null` if it doesn't exist.
    */
   retrieve(id: string, config: AuditLogFindConfig): Promise<AuditLogDTO | null>
-
-  /**
-   * Deletes the audit logs older than the provider's retention period. The
-   * Audit Module calls it periodically, possibly from several application
-   * instances at once, so it must be safe to run concurrently. Leave it out
-   * when the provider keeps audit logs forever or expires them by itself.
-   *
-   * @returns {Promise<number>} The number of deleted audit logs.
-   */
-  prune?(): Promise<number>
 }

@@ -38,7 +38,6 @@ describe("audit providers loader", () => {
     })
 
     expect(container.resolve("audit_default_provider")).toBe("memory")
-    expect(container.resolve("audit_provider_ids")).toEqual(["memory"])
     expect(container.resolve<MemoryProvider>("aud_memory").options).toEqual({
       a: 1,
     })
@@ -62,7 +61,7 @@ describe("audit providers loader", () => {
       providers: [{ resolve: memory, id: "memory" }],
     })
 
-    expect(container.resolve("audit_provider_ids")).toEqual(["memory"])
+    expect(container.resolve("audit_default_provider")).toBe("memory")
   })
 
   it("rejects Cloud options without credentials", async () => {

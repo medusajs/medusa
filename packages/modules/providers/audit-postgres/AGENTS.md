@@ -34,7 +34,7 @@ module.exports = defineConfig({
 - `src/services/postgres-audit.ts`: `PostgresAuditService extends AbstractAuditProviderService`, `static identifier = "audit-postgres"`. Uses the injected Knex connection (`__pg_connection__`) with query builder SQL only, no MikroORM entities.
   - `write`: one multi-row insert per batch with `on conflict (id) do nothing`, so a retried batch never fails on rows an earlier attempt stored.
   - `list` / `listAndCount` / `retrieve`: filters and pagination built in `src/utils/query.ts`. Order is `started_at` then `id`, newest first by default. `q` is a case-insensitive substring match on `action`, `resource_type`, `resource_id`, `actor_id`. `select` limits columns; `id` is always returned.
-  - `prune`: deletes rows with `started_at` older than `retention_days`, 10,000 rows per statement until none are left. Returns 0 without `retention_days`. Concurrent runs from several instances are safe. The Audit Module calls it on start and hourly.
+  - `prune`: deletes rows with `started_at` older than `retention_days`, 10,000 rows per statement until none are left. Returns 0 without `retention_days`. Safe to run from several instances at once. `write` starts it in the background at most once an hour (`PRUNE_INTERVAL_MS`); there is no timer, so nothing is pruned while nothing is written.
 - `src/migrations/Migration20261111120000.ts`: creates `audit_log` (no `created_at`, `updated_at`, `deleted_at`), with check constraints on `actor_type` and `outcome`, and indexes `(started_at desc, id desc)`, `(actor_id, started_at desc)`, `(resource_type, resource_id, started_at desc)`.
 
 ## Development

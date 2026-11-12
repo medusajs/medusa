@@ -4,49 +4,35 @@ import {
   CreateAuditLogDTO,
   FilterableAuditLogProps,
   IAuditModuleService,
-  IAuditProvider,
   Logger,
 } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
-import {
-  AuditDefaultProviderRegistrationName,
-  AuditModuleOptions,
-  AuditProviderIdsRegistrationName,
-  AuditProviderRegistrationPrefix,
-} from "@types"
+import { AuditModuleOptions } from "@types"
 import { AuditBuffer, normalizeAuditLog } from "@utils"
+import { AuditProviderService } from "./audit-provider"
 
 type InjectedDependencies = {
   logger?: Logger
-  [AuditProviderIdsRegistrationName]?: string[]
-  [AuditDefaultProviderRegistrationName]?: string
+  auditProviderService: AuditProviderService
 }
 
 export const DEFAULT_LIST_TAKE = 20
-export const PRUNE_INTERVAL_MS = 60 * 60 * 1000
 
 export class AuditModuleService implements IAuditModuleService {
-  protected readonly container_: InjectedDependencies
   protected readonly logger_: Logger
-  protected readonly enabled_: boolean
-  protected readonly providerIds_: string[]
-  protected readonly defaultProviderId_?: string
+  protected readonly provider_: AuditProviderService
   protected readonly buffer_?: AuditBuffer
-  protected pruneTimer_?: NodeJS.Timeout
 
   constructor(
     container: InjectedDependencies,
     options: AuditModuleOptions = {}
   ) {
-    this.container_ = container
     this.logger_ = container.logger ?? (console as unknown as Logger)
-    this.enabled_ = options.enabled !== false
-    this.providerIds_ = container[AuditProviderIdsRegistrationName] ?? []
-    this.defaultProviderId_ = container[AuditDefaultProviderRegistrationName]
+    this.provider_ = container.auditProviderService
 
-    if (this.enabled_ && this.defaultProviderId_) {
+    if (options.enabled !== false) {
       this.buffer_ = new AuditBuffer({
-        write: (entries) => this.defaultProvider_()!.write(entries),
+        write: (entries) => this.provider_.write(entries),
         logger: this.logger_,
         maxSize: options.buffer?.max_size,
         flushIntervalMs: options.buffer?.flush_interval_ms,
@@ -56,15 +42,10 @@ export class AuditModuleService implements IAuditModuleService {
   }
 
   __hooks = {
-    onApplicationStart: async () => {
-      this.startPruning_()
-    },
     onApplicationPrepareShutdown: async () => {
-      this.stopPruning_()
       await this.flush()
     },
     onApplicationShutdown: async () => {
-      this.stopPruning_()
       await this.flush()
       this.buffer_?.stop()
     },
@@ -125,33 +106,21 @@ export class AuditModuleService implements IAuditModuleService {
     filters: FilterableAuditLogProps = {},
     config: AuditLogFindConfig = {}
   ): Promise<AuditLogDTO[]> {
-    const provider = this.defaultProvider_()
-    if (!provider) {
-      return []
-    }
-
-    return await provider.list(filters, this.listConfig_(config))
+    return await this.provider_.list(filters, this.listConfig_(config))
   }
 
   async listAndCount(
     filters: FilterableAuditLogProps = {},
     config: AuditLogFindConfig = {}
   ): Promise<[AuditLogDTO[], number]> {
-    const provider = this.defaultProvider_()
-    if (!provider) {
-      return [[], 0]
-    }
-
-    return await provider.listAndCount(filters, this.listConfig_(config))
+    return await this.provider_.listAndCount(filters, this.listConfig_(config))
   }
 
   async retrieve(
     id: string,
     config: AuditLogFindConfig = {}
   ): Promise<AuditLogDTO> {
-    const auditLog = id
-      ? await this.defaultProvider_()?.retrieve(id, config)
-      : null
+    const auditLog = id ? await this.provider_.retrieve(id, config) : null
 
     if (!auditLog) {
       throw new MedusaError(
@@ -169,65 +138,6 @@ export class AuditModuleService implements IAuditModuleService {
       skip: config.skip ?? 0,
       take: config.take ?? DEFAULT_LIST_TAKE,
       order: config.order?.started_at ? config.order : { started_at: "DESC" },
-    }
-  }
-
-  protected defaultProvider_(): IAuditProvider | undefined {
-    return this.defaultProviderId_
-      ? this.provider_(this.defaultProviderId_)
-      : undefined
-  }
-
-  protected provider_(id: string): IAuditProvider {
-    return this.container_[
-      AuditProviderRegistrationPrefix + id
-    ] as IAuditProvider
-  }
-
-  protected startPruning_(): void {
-    if (this.pruneTimer_) {
-      return
-    }
-
-    const prunable = this.providerIds_.filter(
-      (id) => typeof this.provider_(id).prune === "function"
-    )
-    if (!prunable.length) {
-      return
-    }
-
-    const run = () => {
-      for (const id of prunable) {
-        void this.prune_(id)
-      }
-    }
-
-    run()
-    this.pruneTimer_ = setInterval(run, PRUNE_INTERVAL_MS)
-    this.pruneTimer_.unref?.()
-  }
-
-  protected stopPruning_(): void {
-    if (this.pruneTimer_) {
-      clearInterval(this.pruneTimer_)
-      this.pruneTimer_ = undefined
-    }
-  }
-
-  protected async prune_(id: string): Promise<void> {
-    try {
-      const deleted = await this.provider_(id).prune!()
-      if (deleted) {
-        this.logger_.info(
-          `Audit: pruned ${deleted} audit log(s) past retention from the "${id}" provider`
-        )
-      }
-    } catch (error) {
-      this.logger_.warn(
-        `Audit: pruning the "${id}" provider failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`
-      )
     }
   }
 }

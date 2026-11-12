@@ -5,11 +5,11 @@ import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuditDefaultProviderRegistrationName,
   AuditModuleOptions,
-  AuditProviderIdsRegistrationName,
   AuditProviderRegistrationPrefix,
   MEDUSA_CLOUD_AUDIT_PROVIDER_ID,
 } from "@types"
 import { MedusaAuditService } from "../providers"
+import { AuditProviderService } from "../services/audit-provider"
 
 function register(
   container: MedusaContainer,
@@ -83,8 +83,10 @@ export default async ({
   )
 
   container.register({
-    [AuditProviderIdsRegistrationName]: asValue(ids),
     [AuditDefaultProviderRegistrationName]: asValue(defaultProvider),
+    auditProviderService: asFunction(
+      (cradle) => new AuditProviderService(cradle)
+    ).singleton(),
   })
 }
 

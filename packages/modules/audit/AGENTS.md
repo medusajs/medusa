@@ -39,17 +39,18 @@ await audit.flush() // only needed when a script must read its own records back
 ## Architecture
 
 - `src/utils/buffer.ts` (`AuditBuffer`): in-memory queue. Writes when it holds `max_size` entries or `flush_interval_ms` after the first pending one (the timer is `unref`'d). Batches are at most `max_size`. A failed batch is retried 3 times in total with 200 ms then 400 ms backoff, then dropped with an error log carrying the count and the reason. Over `max_buffered`, the oldest entries are dropped with a warning. Concurrent `flush()` calls share one drain, which also picks up entries pushed meanwhile.
-- Hooks: `onApplicationPrepareShutdown` and `onApplicationShutdown` flush. `onApplicationStart` calls `prune()` on every provider that has it, then every hour (`unref`'d interval).
-- `src/loaders/providers.ts`: registers the Cloud provider from `options.cloud`, then `options.providers` through `moduleProviderLoader`, each as `aud_<id>` instantiated with its own options. It registers `audit_provider_ids` and `audit_default_provider`, and throws at boot for duplicate ids, an unknown `default_provider`, several providers without a default, or no provider while enabled.
+- Hooks: `onApplicationPrepareShutdown` and `onApplicationShutdown` flush.
+- `src/loaders/providers.ts`: registers the Cloud provider from `options.cloud`, then `options.providers` through `moduleProviderLoader`, each as `aud_<id>` instantiated with its own options. It registers `audit_default_provider` and `auditProviderService`, and throws at boot for duplicate ids, an unknown `default_provider`, several providers without a default, or no provider while enabled.
+- `src/services/audit-provider.ts` (`AuditProviderService`): the only place that knows which provider stores audit logs. The module service calls it and never sees provider ids.
 - `src/providers/audit-medusa`: the built-in Medusa Cloud provider (`MedusaAuditService`, identifier `audit-medusa`). The whole wire contract is in `services/medusa-audit.ts`, with no separate client: `POST {endpoint}/records` with `{ records }`, `GET {endpoint}/records` with filters as query parameters (arrays repeated, `started_at[$gte]=<ISO>`, `q`, `offset`, `limit`, `order=-started_at|started_at`, `fields`) answering `{ records, count }`, and `GET {endpoint}/records/:id` answering `{ record }` or 404. Headers: `Authorization: Basic <api_key>` and `x-medusa-environment-handle`. The contract is provisional until the Cloud audit service exists.
-- The module has no models or migrations; storage belongs to providers. Custom providers extend `AbstractAuditProviderService` from `@medusajs/framework/utils` and implement `IAuditProvider` (`write`, `list`, `listAndCount`, `retrieve`, optional `prune`).
+- The module has no models or migrations; storage belongs to providers. Custom providers extend `AbstractAuditProviderService` from `@medusajs/framework/utils` and implement `IAuditProvider` (`write`, `list`, `listAndCount`, `retrieve`). Retention is a provider's own concern.
 
 ## Development
 
 ```bash
 cd packages/modules/audit
 yarn build
-yarn test               # buffer, normalization, loader, Cloud client
+yarn test               # buffer, normalization, loader, Cloud provider
 yarn test:integration   # integration-tests/__tests__/audit-module.spec.ts, loads dist: build first
 ```
 
@@ -59,5 +60,5 @@ yarn test:integration   # integration-tests/__tests__/audit-module.spec.ts, load
 
 - `record()` returns `void`, not a promise. Audit logs are lost if the process dies before a flush, or if the provider stays down beyond the retries; this is the accepted trade-off for not delaying requests.
 - Never pass whole request or response bodies in `request_data` / `response_data`: they hold personal data and secrets. Pass the fields to keep.
-- Writes go to the default provider only; other registered providers are only pruned.
+- Writes and reads go to the default provider only.
 - An explicit `default_provider` wins over the Cloud default.

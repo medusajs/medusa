@@ -1,1 +1,2 @@
-export { AuditModuleService } from "./audit-module-service"
+export * from "./audit-module-service"
+export * from "./audit-provider"

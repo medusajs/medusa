@@ -4,7 +4,6 @@ export type { AuditModuleOptions }
 
 // Providers are registered as `aud_{id}`.
 export const AuditProviderRegistrationPrefix = "aud_"
-export const AuditProviderIdsRegistrationName = "audit_provider_ids"
 export const AuditDefaultProviderRegistrationName = "audit_default_provider"
 
 export const MEDUSA_CLOUD_AUDIT_PROVIDER_ID = "cloud"

@@ -52,7 +52,7 @@ PostgreSQL provider for the Medusa Audit Module. It stores audit logs in an `aud
 
 - Batched inserts into one `audit_log` table, indexed for reads by time, by actor, and by resource.
 - Filtered, paginated reads, newest first, with a free-text `q` over the action, resource, and actor.
-- Optional retention: with `retention_days`, older audit logs are deleted periodically. Without it, audit logs are kept forever.
+- Optional retention: with `retention_days`, older audit logs are deleted, at most once an hour, while new audit logs are being written. Without it, audit logs are kept forever.
 
 ## Installation
 

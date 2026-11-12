@@ -22,7 +22,7 @@ const createLogger = () =>
   }) as any
 
 const provider = (service: IAuditModuleService): InMemoryAuditProvider =>
-  (service as any).defaultProvider_()
+  (service as any).provider_.provider_
 
 const hooks = (service: IAuditModuleService) => (service as any).__hooks
 
