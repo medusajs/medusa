@@ -6,7 +6,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { IRbacModuleService, UpdateRbacRoleDTO } from "@medusajs/types"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type UpdateRbacRolesStepInput = {
   selector: Record<string, any>
@@ -14,12 +14,12 @@ export type UpdateRbacRolesStepInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const updateRbacRolesStepId = "update-rbac-roles"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const updateRbacRolesStep = createStep(
   updateRbacRolesStepId,
