@@ -494,6 +494,38 @@ export class RbacRole {
   }
 
   /**
+   * This method removes multiple policies from an RBAC role. It sends a
+   * request to the Remove Role Policies API route.
+   *
+   * @param roleId - The role's ID.
+   * @param body - The policies to remove from the role.
+   * @param headers - Headers to pass in the request.
+   * @returns The removal's details.
+   *
+   * @example
+   * sdk.admin.rbacRole.removePolicies("role_123", {
+   *   policies: ["policy_123", "policy_456"]
+   * })
+   * .then(({ deleted }) => {
+   *   console.log(deleted)
+   * })
+   */
+  async removePolicies(
+    roleId: string,
+    body: HttpTypes.AdminRemoveRolePolicies,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminRbacRolePoliciesDeleteResponse>(
+      `/rbac/roles/${roleId}/policies`,
+      {
+        method: "DELETE",
+        headers,
+        body,
+      }
+    )
+  }
+
+  /**
    * Retrieves the authenticated actor's resolved permission set: a flat list
    * of `resource:operation` strings with wildcards already expanded, along
    * with the actor's assigned roles and the names of the roles the actor's

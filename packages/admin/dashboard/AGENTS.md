@@ -86,4 +86,7 @@ yarn i18n:sync missing
 - Layout preferences are stored per `widgetsZonePrefix`, keyed by widget id and `LayoutComposer.Entry` id. Renaming an entry id drops users' saved placement for it.
 - The `src/exports/*` surface is documented API for extensions. Changing a signature breaks plugins; update the matching page under `www/apps/resources/app/admin-components`.
 - A new virtual module must be added to `external` in `tsup.config.cjs` and to `VIRTUAL_MODULES` in `@medusajs/admin-shared`.
+- The roles permissions UI hardcodes two things from the RBAC module, both in `src/routes/roles/common/constants.ts`:
+  - `PERMISSION_GROUPS` maps every core policy resource to a group (Orders, Products, ...). A resource missing from the map lands in the Custom group, next to plugin permissions. When a module adds a core resource, add it to a group and give it a label under `permissions.resources` in `en.json`; `common/__tests__/utils.spec.ts` fails until every entry of `CORE_POLICY_RESOURCES` (`@medusajs/types`) is in exactly one group.
+  - `SUPER_ADMIN_ROLE_ID` mirrors `RBAC_SUPER_ADMIN_ROLE_ID` from `@medusajs/utils`, which the dashboard can't import. It hides the Delete action on that role; keep the two in sync.
 - `yarn generate:static` writes `src/lib/currencies.ts`, but the app imports `src/lib/data/currencies.ts`. Move the output before relying on it.

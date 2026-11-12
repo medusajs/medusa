@@ -1,31 +1,26 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
-import {
-  Button,
-  createDataTableColumnHelper,
-  DataTableRowSelectionState,
-  toast,
-} from "@medusajs/ui"
-import { keepPreviousData, useMutation } from "@tanstack/react-query"
+import { Button, toast, usePrompt } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { DataTable } from "../../../../../components/data-table"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import { useRbacAssignablePolicies } from "../../../../../hooks/api/rbac-policies"
 import {
-  rbacRolesQueryKeys,
   useAddRbacRolePolicies,
+  useRemoveRbacRolePolicies,
 } from "../../../../../hooks/api/rbac-roles"
-import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { sdk } from "../../../../../lib/client"
-import { queryClient } from "../../../../../lib/query-client"
+import {
+  PermissionsMatrix,
+  PermissionsSummary,
+} from "../../../common/components"
+import { usePermissionsMatrix } from "../../../common/hooks"
+import { clearSelection, diffSelection } from "../../../common/utils"
 
 const EditRolePermissionsSchema = zod.object({
   policies: zod.array(zod.string()).optional(),
@@ -35,108 +30,74 @@ type EditRolePermissionsFormProps = {
   role: HttpTypes.AdminRbacRole
 }
 
-const PAGE_SIZE = 20
-const PREFIX = "rp"
-
 export const EditRolePermissionsForm = ({
   role,
 }: EditRolePermissionsFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const prompt = usePrompt()
+
+  const initialIds = useMemo(
+    () => role.policies?.map((policy) => policy.id) ?? [],
+    [role.policies]
+  )
 
   const form = useForm<zod.infer<typeof EditRolePermissionsSchema>>({
     defaultValues: {
-      policies: role.policies?.map((policy) => policy.id) ?? [],
+      policies: initialIds,
     },
     resolver: zodResolver(EditRolePermissionsSchema),
   })
 
-  const initialState =
-    role.policies?.reduce((acc, policy) => {
-      acc[policy.id] = true
-      return acc
-    }, {} as DataTableRowSelectionState) ?? {}
-
-  const [rowSelection, setRowSelection] =
-    useState<DataTableRowSelectionState>(initialState)
+  const [selection, setSelection] = useState<Set<string>>(
+    () => new Set(initialIds)
+  )
 
   useEffect(() => {
-    const ids = Object.keys(rowSelection).filter((id) => rowSelection[id])
-    form.setValue("policies", ids, {
+    form.setValue("policies", [...selection], {
       shouldDirty: true,
       shouldTouch: true,
     })
-  }, [rowSelection, form])
+  }, [selection, form])
 
-  const { q, order, offset } = useQueryParams(["q", "order", "offset"], PREFIX)
-
-  const {
-    data: pageData,
-    isPending: isLoading,
-    isError,
-    error,
-  } = useRbacAssignablePolicies(
-    {
-      q,
-      order,
-      offset: offset ? parseInt(offset) : 0,
-      limit: PAGE_SIZE,
-      fields: "id,key,resource,operation,description",
-    },
-    {
-      placeholderData: keepPreviousData,
-    }
-  )
-
-  const visiblePolicies = pageData?.policies ?? []
-  const count = pageData?.count ?? 0
-
-  // Unpaginated assignable id set, used only to scope the diff on submit so we
-  // never strip policies the actor cannot see.
-  const { data: allAssignable, isPending: isAssignableSetLoading } =
-    useRbacAssignablePolicies({ limit: 9999 })
-  const assignableIds = useMemo(
-    () => new Set((allAssignable?.policies ?? []).map((p) => p.id)),
-    [allAssignable?.policies]
-  )
-
-  const columns = usePolicyColumns()
+  const { matrix, assignableIds, wildcardPolicies, isPending, isError, error } =
+    usePermissionsMatrix(role.policies)
 
   const { mutateAsync: addPolicies, isPending: isAdding } =
     useAddRbacRolePolicies(role.id)
+  const { mutateAsync: removePolicies, isPending: isRemoving } =
+    useRemoveRbacRolePolicies(role.id)
 
-  const { mutateAsync: removePolicies, isPending: isRemoving } = useMutation({
-    mutationFn: async (policyIds: string[]) => {
-      await Promise.all(
-        policyIds.map((policyId) =>
-          sdk.admin.rbacRole.removePolicy(role.id, policyId)
-        )
-      )
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: rbacRolesQueryKeys.policies(role.id),
-      })
-      queryClient.invalidateQueries({
-        queryKey: rbacRolesQueryKeys.detail(role.id),
-      })
-      queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
-    },
-  })
+  // Policies the actor cannot assign are never part of the removal.
+  const { toAdd, toRemove } = diffSelection(
+    initialIds,
+    selection,
+    assignableIds
+  )
 
-  const handleSubmit = form.handleSubmit(async (data) => {
-    const selectedPolicies = data.policies ?? []
-    const existingPolicies = role.policies?.map((policy) => policy.id) ?? []
+  const handleClearAll = async () => {
+    const cleared = clearSelection(matrix, selection)
 
-    const toAdd = selectedPolicies.filter(
-      (policyId) => !existingPolicies.includes(policyId)
-    )
-    // Only consider policies the actor is allowed to assign — never strip
-    // existing policies that the actor cannot see.
-    const toRemove = existingPolicies
-      .filter((policyId) => assignableIds.has(policyId))
-      .filter((policyId) => !selectedPolicies.includes(policyId))
+    if (cleared.size === selection.size) {
+      return
+    }
 
+    const confirmed = await prompt({
+      title: t("roles.permissions.matrix.confirm.clear.title"),
+      description: t("roles.permissions.matrix.confirm.clear.descriptionEdit"),
+      confirmText: t("roles.permissions.matrix.clearAll"),
+      cancelText: t("actions.cancel"),
+      variant: "confirmation",
+    })
+
+    if (!confirmed) {
+      return
+    }
+
+    setSelection(cleared)
+  }
+
+  const handleSubmit = form.handleSubmit(async () => {
     try {
       if (toAdd.length) {
         await addPolicies({ policies: toAdd })
@@ -166,31 +127,28 @@ export const EditRolePermissionsForm = ({
         onSubmit={handleSubmit}
       >
         <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
-          <DataTable
-            data={visiblePolicies}
-            columns={columns}
-            getRowId={(row) => row.id}
-            rowCount={count}
-            isLoading={isLoading}
-            pageSize={PAGE_SIZE}
-            rowSelection={{
-              state: rowSelection,
-              onRowSelectionChange: setRowSelection,
-            }}
-            autoFocusSearch
-            layout="fill"
-            emptyState={{
-              empty: {
-                heading: t("roles.permissions.empty.heading"),
-                description: t("roles.permissions.empty.description"),
-              },
-              filtered: {
-                heading: t("roles.permissions.filtered.heading"),
-                description: t("roles.permissions.filtered.description"),
-              },
-            }}
-            prefix={PREFIX}
-          />
+          <div className="flex size-full flex-col overflow-y-auto lg:grid lg:grid-cols-[1fr_360px] lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden">
+            <div className="flex flex-col gap-y-4 p-6 lg:min-h-0 lg:overflow-y-auto lg:p-8 [&>*]:shrink-0">
+              <PermissionsMatrix
+                matrix={matrix}
+                selection={selection}
+                onSelectionChange={setSelection}
+                onClearAll={handleClearAll}
+                isLoading={isPending}
+              />
+            </div>
+            <div className="shrink-0 border-t bg-ui-bg-subtle p-6 lg:min-h-0 lg:overflow-y-auto lg:border-s lg:border-t-0">
+              <PermissionsSummary
+                name={role.name}
+                matrix={matrix}
+                selection={selection}
+                changes={{ added: toAdd.length, removed: toRemove.length }}
+                wildcardKeys={wildcardPolicies
+                  .filter((policy) => selection.has(policy.id))
+                  .map((policy) => policy.key)}
+              />
+            </div>
+          </div>
         </RouteFocusModal.Body>
         <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-x-2">
@@ -203,7 +161,7 @@ export const EditRolePermissionsForm = ({
               size="small"
               type="submit"
               isLoading={isAdding || isRemoving}
-              disabled={isAssignableSetLoading}
+              disabled={isPending || toAdd.length + toRemove.length === 0}
             >
               {t("actions.save")}
             </Button>
@@ -212,48 +170,4 @@ export const EditRolePermissionsForm = ({
       </KeyboundForm>
     </RouteFocusModal.Form>
   )
-}
-
-const columnHelper =
-  createDataTableColumnHelper<
-    HttpTypes.AdminRbacAssignablePoliciesListResponse["policies"][number]
-  >()
-
-const usePolicyColumns = () => {
-  const { t } = useTranslation()
-
-  return useMemo(() => {
-    return [
-      columnHelper.select(),
-      columnHelper.accessor("key", {
-        header: t("fields.key"),
-      }),
-      columnHelper.accessor("resource", {
-        header: t("fields.resource"),
-        cell: ({ row }) => {
-          const resource = row.original.resource
-
-          return t(`permissions.resources.${resource}`, {
-            defaultValue: resource,
-          })
-        },
-      }),
-      columnHelper.accessor("operation", {
-        header: t("fields.operation"),
-        cell: ({ row }) => {
-          const operation = row.original.operation
-
-          return t(`permissions.actions.${operation}`, {
-            defaultValue: operation,
-          })
-        },
-      }),
-      columnHelper.accessor("description", {
-        header: t("fields.description"),
-        cell: ({ row }) => {
-          return row.original.description || "-"
-        },
-      }),
-    ]
-  }, [t])
 }
