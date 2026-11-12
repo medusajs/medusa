@@ -1,3 +1,5 @@
+export * from "./rbac"
+
 export type CloudPluginOptions = {
   /**
    * The base URL of the Medusa Cloud API. Defaults to `https://api.prod.medusajs.cloud`.

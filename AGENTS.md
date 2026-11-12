@@ -324,11 +324,23 @@ export const retrieveTransformQueryConfig = {
 }
 ```
 
+**RBAC - Admin Routes and Pages:**
+
+ALWAYS consider RBAC when adding a user-facing feature (an admin API route, admin page, widget, or setting). With the RBAC module installed, a route without a policy is open to every admin user, whatever their role.
+
+- Guard each admin route with `authorize([{ resource, operation }])` in its `middlewares.ts` (`read` for GETs, `create` / `update` / `delete` for writes). It's a no-op when RBAC isn't installed
+- In the dashboard, set `permissions` on the route (e.g. `"product:read"`), and hide or disable actions with `PermissionGuard` / `usePermissions()`
+- A new resource needs its policies created: plugins declare it in `src/types/rbac.ts` and create the policies with `buildPolicies()` in a migration script that's skipped while RBAC isn't installed
+- Cover it in an integration test with `process.env.ENABLE_RBAC_MODULE = "true"`: a role without the policy gets `403`
+
 **Reference Files:**
 
 - `packages/medusa/src/api/admin/orders/route.ts`
 - `packages/medusa/src/api/admin/payment-collections/[id]/route.ts`
 - `packages/medusa/src/api/store/regions/query-config.ts` (store allowed fields)
+- `packages/medusa/src/api/admin/products/middlewares.ts` (RBAC `authorize`)
+- `packages/plugins/loyalty/src/migration-scripts/create-loyalty-rbac-policies.ts` (plugin RBAC policies)
+- `integration-tests/http/__tests__/loyalty/admin/rbac.spec.ts` (RBAC integration test)
 
 #### 5.3 Workflow Pattern
 

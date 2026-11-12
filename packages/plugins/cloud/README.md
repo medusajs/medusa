@@ -23,6 +23,8 @@ It adds a "What's new" button to the Medusa Admin topbar that lists the latest M
 
 Choose the announcements your team sees in **Settings > Announcements**: security updates, feature announcements, and Cloud announcements.
 
+If you use role-based access control (RBAC), add the `cloud_announcement:read` policy to a role to let its users see announcements, and `cloud_announcement:update` to let them change these settings.
+
 ## Options
 
 | Option | Env variable | Description |

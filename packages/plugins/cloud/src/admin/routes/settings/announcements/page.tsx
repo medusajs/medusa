@@ -1,4 +1,5 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { Container, Heading, Label, Switch, Text, toast } from "@medusajs/ui"
 import { CloudAnnouncementCategory } from "../../../../types"
 import {
@@ -31,6 +32,8 @@ const categories: {
 const AnnouncementSettingsPage = () => {
   const { preferences } = useCloudAnnouncementPreferences()
   const { mutate, isPending } = useUpdateCloudAnnouncementPreferences()
+  const { hasPermission } = usePermissions()
+  const canUpdate = hasPermission("cloud_announcement:update")
 
   return (
     <Container className="divide-y p-0">
@@ -56,7 +59,7 @@ const AnnouncementSettingsPage = () => {
           <Switch
             id={id}
             checked={preferences?.[id] ?? false}
-            disabled={!preferences || isPending}
+            disabled={!preferences || isPending || !canUpdate}
             onCheckedChange={(checked) =>
               mutate(
                 { [id]: checked },
@@ -78,6 +81,7 @@ const AnnouncementSettingsPage = () => {
 
 export const config = defineRouteConfig({
   label: "Announcements",
+  permissions: ["cloud_announcement:read"],
 })
 
 export default AnnouncementSettingsPage
