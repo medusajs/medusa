@@ -4,6 +4,7 @@ import {
   ModuleProvider,
   Modules,
 } from "@medusajs/framework/utils"
+import { asValue } from "@medusajs/framework/awilix"
 import providersLoader from "../providers"
 
 class MemoryProvider extends AbstractAuditProviderService {
@@ -27,6 +28,11 @@ const cloud = {
 
 const load = async (options: Record<string, unknown>) => {
   const container = createMedusaContainer()
+  container.register({
+    auditLogService: asValue({}),
+    baseRepository: asValue({}),
+    logger: asValue(console),
+  })
   await providersLoader({ container, options } as any)
   return container
 }
@@ -109,10 +115,22 @@ describe("audit providers loader", () => {
     ).rejects.toThrow("registered twice")
   })
 
-  it("requires a provider unless auditing is disabled", async () => {
-    await expect(load({})).rejects.toThrow("needs a provider")
+  it("falls back to the built-in Postgres storage", async () => {
+    const container = await load({ retention_days: 30 })
 
-    const container = await load({ enabled: false })
-    expect(container.resolve("audit_default_provider")).toBeUndefined()
+    expect(container.resolve("audit_default_provider")).toBe("postgres")
+    expect(container.resolve<MemoryProvider>("aud_postgres").identifier).toBe(
+      "audit-postgres"
+    )
+
+    await expect(load({ retention_days: -1 })).rejects.toThrow("retention_days")
+  })
+
+  it("does not register the Postgres storage beside other providers", async () => {
+    const container = await load({
+      providers: [{ resolve: memory, id: "memory" }],
+    })
+
+    expect(container.hasRegistration("aud_postgres")).toBe(false)
   })
 })

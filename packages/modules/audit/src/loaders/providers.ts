@@ -7,8 +7,9 @@ import {
   AuditModuleOptions,
   AuditProviderRegistrationPrefix,
   MEDUSA_CLOUD_AUDIT_PROVIDER_ID,
+  POSTGRES_AUDIT_PROVIDER_ID,
 } from "@types"
-import { MedusaAuditService } from "../providers"
+import { MedusaAuditService, PostgresAuditService } from "../providers"
 import { AuditProviderService } from "../services/audit-provider"
 
 function register(
@@ -30,7 +31,7 @@ function register(
       MedusaError.Types.INVALID_DATA,
       `The audit provider id "${id}" is registered twice. ${
         id === MEDUSA_CLOUD_AUDIT_PROVIDER_ID
-          ? `"${MEDUSA_CLOUD_AUDIT_PROVIDER_ID}" is reserved for Medusa Cloud audit storage.`
+          ? `"${id}" is reserved for Medusa Cloud audit storage.`
           : "Give each provider its own id."
       }`
     )
@@ -76,6 +77,17 @@ export default async ({
       register(container, ids, klass, id, options),
   })
 
+  // Without other storage, audit logs go to the application's database.
+  if (!ids.length) {
+    register(container, ids, PostgresAuditService, POSTGRES_AUDIT_PROVIDER_ID, {
+      retention_days: options?.retention_days,
+    })
+    // Constructed now so that an invalid retention fails the boot.
+    container.resolve(
+      AuditProviderRegistrationPrefix + POSTGRES_AUDIT_PROVIDER_ID
+    )
+  }
+
   const defaultProvider = resolveDefaultProvider(
     ids,
     options ?? {},
@@ -94,7 +106,7 @@ function resolveDefaultProvider(
   ids: string[],
   options: AuditModuleOptions,
   hasCloud: boolean
-): string | undefined {
+): string {
   if (options.default_provider) {
     if (!ids.includes(options.default_provider)) {
       throw new MedusaError(
@@ -117,21 +129,10 @@ function resolveDefaultProvider(
     return ids[0]
   }
 
-  if (ids.length > 1) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Several audit providers are registered (${ids.join(
-        ", "
-      )}), so "default_provider" must be set`
-    )
-  }
-
-  if (options.enabled !== false) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      'The Audit Module needs a provider to store audit logs, such as "@medusajs/medusa/audit-postgres", or the "cloud" option. Set "enabled: false" to turn auditing off instead.'
-    )
-  }
-
-  return undefined
+  throw new MedusaError(
+    MedusaError.Types.INVALID_DATA,
+    `Several audit providers are registered (${ids.join(
+      ", "
+    )}), so "default_provider" must be set`
+  )
 }

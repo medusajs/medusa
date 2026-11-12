@@ -6,7 +6,8 @@ import {
   IAuditModuleService,
   Logger,
 } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaError, MedusaService } from "@medusajs/framework/utils"
+import { AuditLog } from "@models"
 import { AuditModuleOptions } from "@types"
 import { AuditBuffer, normalizeAuditLog } from "@utils"
 import { AuditProviderService } from "./audit-provider"
@@ -18,7 +19,12 @@ type InjectedDependencies = {
 
 export const DEFAULT_LIST_TAKE = 20
 
-export class AuditModuleService implements IAuditModuleService {
+// MedusaService is extended only so that the module owns the audit log data
+// model and its migrations; audit logs are read and written through providers.
+export class AuditModuleService
+  extends MedusaService({ AuditLog })
+  implements IAuditModuleService
+{
   protected readonly logger_: Logger
   protected readonly provider_: AuditProviderService
   protected readonly buffer_?: AuditBuffer
@@ -27,6 +33,9 @@ export class AuditModuleService implements IAuditModuleService {
     container: InjectedDependencies,
     options: AuditModuleOptions = {}
   ) {
+    // @ts-ignore
+    super(...arguments)
+
     this.logger_ = container.logger ?? (console as unknown as Logger)
     this.provider_ = container.auditProviderService
 

@@ -12,3 +12,4 @@ export default Module(Modules.AUDIT, {
 export type { AuditModuleOptions } from "./types"
 export { MedusaAuditService } from "./providers"
 export type { MedusaAuditProviderOptions } from "./providers"
+export { PostgresAuditService } from "./providers"

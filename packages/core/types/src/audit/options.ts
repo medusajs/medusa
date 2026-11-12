@@ -13,12 +13,20 @@ export interface AuditModuleOptions {
   enabled?: boolean
 
   /**
-   * The providers that store audit logs. Recorded audit logs are written to the
-   * default provider only.
+   * Audit logs older than this many days are deleted from the application's
+   * database. When unset, they are kept forever. It only applies to the
+   * built-in Postgres storage, which is used when neither `providers` nor
+   * `cloud` is set.
+   */
+  retention_days?: number
+
+  /**
+   * Custom providers that store audit logs, replacing the built-in Postgres
+   * storage. Recorded audit logs are written to the default provider only.
    */
   providers?: {
     /**
-     * The provider package or its exports, such as `@medusajs/medusa/audit-postgres`.
+     * The provider package or its exports.
      */
     resolve: string | ModuleProviderExports
     /**

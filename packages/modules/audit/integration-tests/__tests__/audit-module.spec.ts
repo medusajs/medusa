@@ -209,7 +209,7 @@ moduleIntegrationTestRunner<IAuditModuleService>({
     [ContainerRegistrationKeys.LICENSE]: testLicense([LicenseFeature.AUDIT]),
   },
   testSuite: ({ service }) => {
-    describe("Audit Module with enabled: false and no provider", () => {
+    describe("Audit Module with enabled: false and the default storage", () => {
       it("loads, and reads return nothing", async () => {
         service.record({ action: "order.cancel" })
 

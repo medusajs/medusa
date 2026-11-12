@@ -7,9 +7,10 @@ Audit Module: records audit logs (who did what, on which resource, how it ended)
 - Not registered by default: applications add `{ resolve: "@medusajs/medusa/audit" }` to `modules` in `medusa-config.ts`, with at least one provider unless `enabled: false`.
 - It is a licensed module: the loader (`packages/core/modules-sdk/src/loaders/utils/load-internal.ts`, `LICENSED_MODULES`) only loads it when the license covers `LicenseFeature.AUDIT` (`"audit"`). There is no feature flag.
 - Options (`AuditModuleOptions` in `packages/core/types/src/audit/options.ts`):
-  - `enabled` (default `true`): when `false`, `record()` is a no-op and nothing is buffered. Reads still go to the default provider, or return nothing when there is none.
-  - `providers`: `{ resolve, id, options }[]`, e.g. `@medusajs/medusa/audit-postgres` with `{ retention_days }`.
-  - `default_provider`: a provider `id`. Defaults to `cloud` when `cloud.endpoint` is set, otherwise to the only provider. Required with several providers and no Cloud.
+  - `enabled` (default `true`): when `false`, `record()` is a no-op and nothing is buffered. Reads still go to the default provider.
+  - `retention_days`: for the built-in Postgres storage only; audit logs older than this are deleted. Unset keeps them forever. Invalid values throw at boot.
+  - `providers`: `{ resolve, id, options }[]`, custom providers. When set, the built-in Postgres storage is not registered.
+  - `default_provider`: a provider `id`. Defaults to `cloud` when `cloud.endpoint` is set, otherwise to the only provider (the built-in `postgres` one when nothing else is configured). Required with several providers and no Cloud.
   - `cloud`: `{ api_key, endpoint, environment_handle }`. When `endpoint` is set, the built-in Cloud provider is registered with the id `cloud` and becomes the default; the other two are then required.
   - `buffer`: `{ max_size = 100, flush_interval_ms = 1000, max_buffered = 10000 }`.
 
@@ -40,10 +41,12 @@ await audit.flush() // only needed when a script must read its own records back
 
 - `src/utils/buffer.ts` (`AuditBuffer`): in-memory queue. Writes when it holds `max_size` entries or `flush_interval_ms` after the first pending one (the timer is `unref`'d). Batches are at most `max_size`. A failed batch is retried 3 times in total with 200 ms then 400 ms backoff, then dropped with an error log carrying the count and the reason. Over `max_buffered`, the oldest entries are dropped with a warning. Concurrent `flush()` calls share one drain, which also picks up entries pushed meanwhile.
 - Hooks: `onApplicationPrepareShutdown` and `onApplicationShutdown` flush.
-- `src/loaders/providers.ts`: registers the Cloud provider from `options.cloud`, then `options.providers` through `moduleProviderLoader`, each as `aud_<id>` instantiated with its own options. It registers `audit_default_provider` and `auditProviderService`, and throws at boot for duplicate ids, an unknown `default_provider`, several providers without a default, or no provider while enabled.
+- `src/loaders/providers.ts`: registers the Cloud provider from `options.cloud`, then `options.providers` through `moduleProviderLoader`, each as `aud_<id>` instantiated with its own options. It registers `audit_default_provider` and `auditProviderService`, and throws at boot for duplicate ids, an unknown `default_provider`, or several providers without a default. With no Cloud endpoint and no `providers`, it registers the built-in Postgres storage.
 - `src/services/audit-provider.ts` (`AuditProviderService`): the only place that knows which provider stores audit logs. The module service calls it and never sees provider ids.
 - `src/providers/audit-medusa`: the built-in Medusa Cloud provider (`MedusaAuditService`, identifier `audit-medusa`). The whole wire contract is in `services/medusa-audit.ts`, with no separate client: `POST {endpoint}/records` with `{ records }`, `GET {endpoint}/records` with filters as query parameters (arrays repeated, `started_at[$gte]=<ISO>`, `q`, `offset`, `limit`, `order=-started_at|started_at`, `fields`) answering `{ records, count }`, and `GET {endpoint}/records/:id` answering `{ record }` or 404. Headers: `Authorization: Basic <api_key>` and `x-medusa-environment-handle`. The contract is provisional until the Cloud audit service exists.
-- The module has no models or migrations; storage belongs to providers. Custom providers extend `AbstractAuditProviderService` from `@medusajs/framework/utils` and implement `IAuditProvider` (`write`, `list`, `listAndCount`, `retrieve`). Retention is a provider's own concern.
+- `src/models/audit-log.ts`: the `audit_log` data model, with generated migrations (`yarn migration:create`). It carries the implicit `created_at`, `updated_at` and `deleted_at` columns, which are never used or returned. `AuditModuleService` extends `MedusaService({ AuditLog })` only so the module owns the model; do not call the generated `createAuditLogs` / `updateAuditLogs` / `deleteAuditLogs` methods, they bypass the buffer and the provider.
+- `src/providers/audit-postgres` (`PostgresAuditService`, id `postgres`): the default storage. It reads and writes through the generated `auditLogService`, so filters, `q` (over `action`, `actor_id`, `resource_type`, `resource_id`), pagination and field selection are core's. `write` starts `prune()` in the background at most once an hour when `retention_days` is set; there is no timer, so nothing is pruned while nothing is written.
+- Custom providers extend `AbstractAuditProviderService` from `@medusajs/framework/utils` and implement `IAuditProvider` (`write`, `list`, `listAndCount`, `retrieve`). Retention is a provider's own concern.
 
 ## Development
 
@@ -54,7 +57,7 @@ yarn test               # buffer, normalization, loader, Cloud provider
 yarn test:integration   # integration-tests/__tests__/audit-module.spec.ts, loads dist: build first
 ```
 
-- Integration suites inject `testLicense([LicenseFeature.AUDIT])` from `@medusajs/test-utils`, or the module won't load, and use the in-memory provider in `integration-tests/__fixtures__`. Postgres storage is covered in `packages/modules/providers/audit-postgres`.
+- Integration suites inject `testLicense([LicenseFeature.AUDIT])` from `@medusajs/test-utils`, or the module won't load, and use the in-memory provider in `integration-tests/__fixtures__`. Postgres storage is covered in `integration-tests/__tests__/postgres-storage.spec.ts`.
 
 ## Gotchas
 

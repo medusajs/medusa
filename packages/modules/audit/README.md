@@ -35,7 +35,7 @@
 </p>
 
 
-Audit Module for Medusa: records who did what, on which resource, and how it ended, and reads those audit logs back. Audit logs are only inserted and read, never updated or deleted. Recording is buffered and written in batches through a provider, so it never delays or fails the caller. It ships with `@medusajs/medusa`, requires a Medusa license that covers the `audit` feature, and is registered by adding it to the `modules` of your `medusa-config.ts`.
+Audit Module for Medusa: records who did what, on which resource, and how it ended, and reads those audit logs back. Audit logs are only inserted and read, never updated, and only deleted when a retention period is set. Recording is buffered and written in batches through a provider, so it never delays or fails the caller. It ships with `@medusajs/medusa`, requires a Medusa license that covers the `audit` feature, and is registered by adding it to the `modules` of your `medusa-config.ts`.
 
 ## At a glance
 
@@ -52,7 +52,7 @@ Audit Module for Medusa: records who did what, on which resource, and how it end
 
 - `record()` validates, buffers, and batch-writes audit logs without waiting for storage or throwing.
 - `list()`, `listAndCount()`, and `retrieve()` read audit logs back, filtered by actor, action, resource, outcome, and time.
-- Pluggable storage: the PostgreSQL provider (`@medusajs/medusa/audit-postgres`) for self-hosted applications, and a built-in Medusa Cloud provider registered from the `cloud` option.
+- Built-in storage: the application's PostgreSQL database by default, with an optional `retention_days`, or Medusa Cloud when the `cloud` option is set. Custom providers can replace both.
 - An `enabled` option turns auditing off for the whole application without changing callers.
 
 ## Installation
@@ -61,7 +61,7 @@ No installation needed. The module is included in `@medusajs/medusa`. Register i
 
 ## Usage
 
-Register the module with the PostgreSQL provider:
+Register the module. Audit logs are stored in the application's database:
 
 ```ts
 import { defineConfig } from "@medusajs/framework/utils"
@@ -71,15 +71,8 @@ module.exports = defineConfig({
   modules: [
     {
       resolve: "@medusajs/medusa/audit",
-      options: {
-        providers: [
-          {
-            resolve: "@medusajs/medusa/audit-postgres",
-            id: "postgres",
-            options: { retention_days: 365 },
-          },
-        ],
-      },
+      // optional: delete audit logs older than a year
+      options: { retention_days: 365 },
     },
   ],
 })
