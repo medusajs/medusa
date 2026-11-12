@@ -23,12 +23,15 @@ import { Promotion } from "@models"
  *  3. number of times the promotion has been used by a specific attribute value in case of use_by_attribute budget
  *  4. discounted amount in case of spend_by_attribute budget
  * @param attributeUsage - the attribute usage in case of use_by_attribute or spend_by_attribute budget
+ * @param budgetAllottedAmounts - the amounts already given out per budget id by earlier adjustments
+ * in the same computeActions call. Updated with `amount` when a spend or spend_by_attribute adjustment fits.
  * @returns the exceeded action if the budget is exceeded, otherwise undefined
  */
 export function computeActionForBudgetExceeded(
   promotion: PromotionDTO | InferEntityType<typeof Promotion>,
   amount: BigNumberInput,
-  attributeUsage?: CampaignBudgetUsageDTO
+  attributeUsage?: CampaignBudgetUsageDTO,
+  budgetAllottedAmounts?: Map<string, BigNumberInput>
 ): CampaignBudgetExceededAction | void {
   const campaignBudget = promotion.campaign?.budget
 
@@ -54,16 +57,26 @@ export function computeActionForBudgetExceeded(
       ? 0
       : (campaignBudget.used ?? 0)
 
-  const totalUsed =
+  const isSpend =
     campaignBudget.type === CampaignBudgetType.SPEND || isSpendByAttribute
-      ? MathBN.add(campaignBudgetUsed, amount)
-      : MathBN.add(campaignBudgetUsed, 1)
+  const allottedAmount = budgetAllottedAmounts?.get(campaignBudget.id) ?? 0
+
+  const totalUsed = isSpend
+    ? MathBN.add(campaignBudgetUsed, allottedAmount, amount)
+    : MathBN.add(campaignBudgetUsed, 1)
 
   if (campaignBudget.limit && MathBN.gt(totalUsed, campaignBudget.limit)) {
     return {
       action: ComputedActions.CAMPAIGN_BUDGET_EXCEEDED,
       code: promotion.code!,
     }
+  }
+
+  if (isSpend && budgetAllottedAmounts) {
+    budgetAllottedAmounts.set(
+      campaignBudget.id,
+      MathBN.add(allottedAmount, amount)
+    )
   }
 }
 

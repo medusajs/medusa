@@ -39,11 +39,6 @@ export const toolsSidebar = [
           },
         ],
       },
-      {
-        type: "link",
-        path: "/medusa-oas-cli",
-        title: "medusa-oas-cli",
-      },
     ],
   },
   {

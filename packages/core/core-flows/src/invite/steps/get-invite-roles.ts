@@ -7,14 +7,14 @@ import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export interface GetInviteRolesStepInput {
   invite_id: string
 }
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const getInviteRolesStepId = "get-invite-roles-step"
 /**
@@ -26,7 +26,7 @@ export const getInviteRolesStepId = "get-invite-roles-step"
  * const data = getInviteRolesStep({
  *   invite_id: "invite_123"
  * })
- * @ignore
+ * @since 2.22.4
  */
 export const getInviteRolesStep = createStep(
   getInviteRolesStepId,

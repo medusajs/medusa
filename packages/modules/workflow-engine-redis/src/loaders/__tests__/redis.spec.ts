@@ -1,11 +1,13 @@
 import { Logger } from "@medusajs/framework/types"
 import redisLoader from "../redis"
 
+let connectError: Error | undefined
+
 jest.mock("ioredis", () => {
   return jest.fn().mockImplementation(() => ({
     connect: jest.fn((callback) => {
-      if (callback) callback()
-      return Promise.resolve()
+      if (callback) callback(connectError ?? null)
+      return connectError ? Promise.reject(connectError) : Promise.resolve()
     }),
     disconnect: jest.fn(),
   }))
@@ -23,6 +25,7 @@ describe("Redis Loader", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    connectError = undefined
     containerMock = {
       register: jest.fn(),
     }
@@ -318,6 +321,45 @@ describe("Redis Loader", () => {
       ).rejects.toThrow(
         "No `redis.redisUrl` (or deprecated `redis.url`) provided"
       )
+    })
+
+    it("should log the connection error and not raise an unhandled rejection when connect fails", async () => {
+      connectError = new Error("Connection is closed.")
+      const unhandled = jest.fn()
+      process.on("unhandledRejection", unhandled)
+
+      try {
+        await redisLoader(
+          {
+            container: containerMock as any,
+            logger: loggerMock,
+            options: {
+              redis: {
+                redisUrl: "redis://localhost:6379",
+              },
+            },
+          } as any,
+          {} as any
+        )
+        await new Promise((resolve) => setImmediate(resolve))
+      } finally {
+        process.off("unhandledRejection", unhandled)
+      }
+
+      expect(unhandled).not.toHaveBeenCalled()
+      expect(loggerMock.info).not.toHaveBeenCalled()
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        "[Workflow-engine-redis] An error occurred while connecting to Redis in module 'workflow-engine-redis': Error: Connection is closed."
+      )
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        "[Workflow-engine-redis] An error occurred while connecting to Redis PubSub in module 'workflow-engine-redis': Error: Connection is closed."
+      )
+
+      const registerCall = containerMock.register.mock.calls[0][0]
+      expect(registerCall.redisConnection.resolve()).toBeDefined()
+      expect(registerCall.redisWorkerConnection.resolve()).toBeDefined()
+      expect(registerCall.redisPublisher.resolve()).toBeDefined()
+      expect(registerCall.redisSubscriber.resolve()).toBeDefined()
     })
   })
 })

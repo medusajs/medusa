@@ -11471,9 +11471,6 @@
         "currencyAlreadyAdded": {
           "type": "string"
         },
-        "localeAlreadyAdded": {
-          "type": "string"
-        },
         "edit": {
           "type": "object",
           "properties": {
@@ -11535,7 +11532,6 @@
         "enableTaxInclusivePricing",
         "disableTaxInclusivePricing",
         "currencyAlreadyAdded",
-        "localeAlreadyAdded",
         "edit",
         "toast"
       ],

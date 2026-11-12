@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
@@ -79,6 +79,9 @@ export const ProductAttributesForm = ({
       {
         onSuccess: () => {
           handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(error.message)
         },
       }
     )

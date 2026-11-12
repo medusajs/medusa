@@ -12,7 +12,6 @@ export const deleteTranslationsStepId = "delete-translations"
  * This step deletes one or more translations.
  * 
  * @since 2.12.3
- * @featureFlag translation
  *
  * @example
  * const data = deleteTranslationsStep([

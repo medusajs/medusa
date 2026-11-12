@@ -9,8 +9,6 @@ import {
 
 jest.setTimeout(100000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 const shippingAddressData = {
@@ -36,10 +34,6 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-      })
-
-      afterAll(async () => {
-        delete process.env.MEDUSA_FF_TRANSLATION
       })
 
       beforeAll(async () => {

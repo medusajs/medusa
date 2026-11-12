@@ -150,6 +150,78 @@ Then commit the fixes and push to trigger a new deployment.
 
 ---
 
+## Cannot Find Module medusa-config During Build
+
+If your build fails with an error similar to the following, even though `medusa-config.ts` exists at the root of your Medusa application:
+
+```bash
+Error in loading config: Cannot find module '/build/medusa-config'
+Require stack:
+- /build/node_modules/@medusajs/utils/dist/common/dynamic-import.js
+```
+
+The error doesn't mean that the file is missing or that its export syntax is wrong. Both `export default defineConfig(...)` and `module.exports = defineConfig(...)` are valid in `medusa-config.ts`.
+
+### Why this Error Occurs
+
+The Medusa CLI uses [ts-node](https://typestrong.org/ts-node/) to load TypeScript files, such as `medusa-config.ts`, during `medusa build`. If ts-node fails to load, the CLI can't load any `.ts` file, so it reports that it can't find `medusa-config`.
+
+Cloud runs the build with `NODE_ENV` set to `production`, so the Medusa CLI doesn't log the error that caused ts-node to fail. The most common causes are:
+
+- The `tsconfig.json` file enables SWC for ts-node with `"ts-node": { "swc": true }`, but the lock file is missing the native SWC binary for the build machine's platform. This happens when you generate the lock file on a machine with a different operating system or CPU architecture, since the platform binaries of `@swc/core` are optional dependencies.
+- Your project uses TypeScript 7 without the `@typescript/typescript6` package installed. ts-node needs that package to compile TypeScript files with TypeScript 7.
+
+### Diagnose the Error
+
+To find which cause applies to your project:
+
+1. Open your `tsconfig.json` file and check whether it has a `"ts-node": { "swc": true }` property.
+2. If it does, search your lock file for `@swc/core-linux-`. If the lock file doesn't have Linux binaries of `@swc/core`, such as `@swc/core-linux-arm64-gnu` and `@swc/core-linux-x64-gnu`, the build fails because of the missing SWC binary.
+3. Check the version of `typescript` in your `package.json` file. If it's version 7 or later and `@typescript/typescript6` isn't installed, the build fails because of the missing TypeScript 6 compiler.
+
+### Fix a Missing SWC Binary
+
+If ts-node fails with a `Failed to load native binding` error, remove the `ts-node` property from your `tsconfig.json` file:
+
+```json title="tsconfig.json"
+{
+  "ts-node": {
+    "swc": true
+  }
+}
+```
+
+ts-node then compiles your files with TypeScript instead of SWC. This makes the build slightly slower, but it doesn't rely on a native binary.
+
+Alternatively, to keep using SWC, add the Linux binaries of `@swc/core` to the `optionalDependencies` in your `package.json` file, then regenerate your lock file. For example, with npm:
+
+```json title="package.json"
+{
+  "optionalDependencies": {
+    "@swc/core-linux-arm64-gnu": "<same version as @swc/core>",
+    "@swc/core-linux-x64-gnu": "<same version as @swc/core>"
+  }
+}
+```
+
+<Note>
+
+The same lock file issue can cause the admin build to fail with an error like `Cannot find module '@rollup/rollup-linux-arm64-gnu'`. To fix it, add the Linux binaries of `rollup` to `optionalDependencies` as well, using the same version as the installed `rollup` package.
+
+</Note>
+
+### Fix a Missing TypeScript 6 Compiler
+
+If your project uses TypeScript 7, install the `@typescript/typescript6` package as a development dependency:
+
+```bash npm2yarn
+npm install -D @typescript/typescript6
+```
+
+Then, commit and push the change to trigger a new build.
+
+---
+
 ## Out of Memory (OOM) Build Failures
 
 Exit code 137 indicates that your build process was killed by the system due to memory exhaustion. This commonly occurs with TypeScript-heavy monorepos during compilation.

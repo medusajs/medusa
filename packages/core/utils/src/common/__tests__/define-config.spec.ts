@@ -180,7 +180,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -542,7 +541,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -758,7 +756,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -975,7 +972,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1182,7 +1178,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1392,7 +1387,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1649,7 +1643,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1876,7 +1869,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2135,7 +2127,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2415,7 +2406,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2824,7 +2814,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -3081,7 +3070,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -3352,7 +3340,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {

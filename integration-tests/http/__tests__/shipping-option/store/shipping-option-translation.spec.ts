@@ -8,8 +8,6 @@ import { Modules, ProductStatus } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 const env = {}
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
@@ -29,10 +27,6 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-      })
-
-      afterAll(async () => {
-        delete process.env.MEDUSA_FF_TRANSLATION
       })
 
       beforeAll(async () => {

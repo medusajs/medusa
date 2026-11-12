@@ -8,7 +8,6 @@ import {
   InternalModuleDeclaration,
   MedusaCloudOptions,
 } from "@medusajs/types"
-import { FeatureFlag } from "../feature-flags/flag-router"
 import {
   MODULE_PACKAGE_NAMES,
   Modules,
@@ -317,10 +316,7 @@ function resolveModules(
     { resolve: MODULE_PACKAGE_NAMES[Modules.ORDER] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.SETTINGS] },
 
-    {
-      resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION],
-      disable: !FeatureFlag.isFeatureEnabled("translation"),
-    },
+    { resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION] },
 
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.AUTH],

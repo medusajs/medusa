@@ -6,7 +6,7 @@ The main Medusa application package: every built-in Admin/Store/Auth API route, 
 
 ### Entry points (`package.json` `exports`)
 
-- `@medusajs/medusa/<module>`: module/provider wrappers in `src/modules/*.ts`, used as `resolve` in `medusa-config.ts`. These are the defaults in `MODULE_PACKAGE_NAMES` (`packages/core/utils/src/modules-sdk/definition.ts`). Note `@medusajs/medusa/index-module` (Index Module) and `@medusajs/medusa/link-modules`.
+- `@medusajs/medusa/<module>`: module/provider wrappers in `src/modules/*.ts`, used as `resolve` in `medusa-config.ts`. These are the defaults in `MODULE_PACKAGE_NAMES` (`packages/core/utils/src/modules-sdk/definition.ts`). Note `@medusajs/medusa/index-module` (Index Module, deprecated) and `@medusajs/medusa/link-modules`.
 
 ```ts
 modules: [

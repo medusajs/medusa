@@ -45,7 +45,6 @@ export const SettingsLayout = () => {
 }
 
 const useSettingRoutes = (): INavItem[] => {
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { isInstalled: isRbacEnabled } = useIsModuleInstalled(RBAC_MODULE_KEY)
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const { t } = useTranslation()
@@ -175,7 +174,7 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      ...(isTranslationsEnabled && canReadTranslations
+      ...(canReadTranslations
         ? [
             {
               label: t("translations.domain"),
@@ -186,7 +185,6 @@ const useSettingRoutes = (): INavItem[] => {
     ],
     [
       t,
-      isTranslationsEnabled,
       canReadTranslations,
       canReadRoles,
       canReadPolicies,

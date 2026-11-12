@@ -68,9 +68,18 @@ jobs:
               event: 'push',
               per_page: 10,
             })
-            const isRunning = data.workflow_runs.some(
-              run => ['in_progress', 'queued', 'waiting', 'requested', 'pending'].includes(run.status)
-            )
+            // A GitHub outage can leave runs queued forever with no jobs, and they
+            // can't be cancelled or deleted, so stale not-started runs are ignored.
+            const STALE_AFTER_MS = 60 * 60 * 1000
+            const isRunning = data.workflow_runs.some((run) => {
+              if (run.status === 'in_progress') {
+                return true
+              }
+              return (
+                ['queued', 'waiting', 'requested', 'pending'].includes(run.status) &&
+                Date.now() - new Date(run.created_at).getTime() < STALE_AFTER_MS
+              )
+            })
             if (isRunning) {
               core.notice('Latest release is currently running. Skipping preview release to avoid conflicts.')
             }

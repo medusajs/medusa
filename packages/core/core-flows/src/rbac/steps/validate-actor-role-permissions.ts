@@ -6,7 +6,7 @@ import {
 } from "../utils/can-actor-grant-roles"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type ValidateActorRolePermissionsStepInput = Omit<
   CanActorGrantRolesInput,
@@ -14,7 +14,7 @@ export type ValidateActorRolePermissionsStepInput = Omit<
 >
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const validateActorRolePermissionsStepId =
   "validate-actor-role-permissions"
@@ -23,7 +23,7 @@ export const validateActorRolePermissionsStepId =
  * Validates that the actor can grant every role being assigned or unassigned,
  * as decided by `canActorGrantRoles`: an actor can only assign roles whose
  * policies they themselves have, within the scope the assignment targets.
- * @ignore
+ * @since 2.22.4
  */
 export const validateActorRolePermissionsStep = createStep(
   validateActorRolePermissionsStepId,
