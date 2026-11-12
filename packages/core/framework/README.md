@@ -107,13 +107,12 @@ export default defineMiddlewares({
     {
       matcher: "/admin/brands",
       methods: ["POST"],
-      audit: {
-        action: "brand.create",
-        resource: (req, body) => ({ type: "brand", id: body?.brand?.id }),
-        requestData: (req) => ({ name: req.validatedBody?.name }),
-      },
+      // Recorded as `brand.create` with the created brand's ID by default.
+      audit: { requestData: (req) => ({ name: req.validatedBody?.name }) },
     },
     { matcher: "/admin/brands/sync", methods: ["POST"], audit: false },
+    // Routes outside `/admin`, `/rbac`, and `/auth` are recorded once opted in.
+    { matcher: "/vendors*", methods: ["POST", "DELETE"], audit: true },
   ],
 })
 ```

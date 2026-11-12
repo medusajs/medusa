@@ -103,16 +103,19 @@ export type AuditResource = {
  */
 export type AuditRouteConfig<TResponseBody = any> = {
   /**
-   * The action name, such as `order.cancel`.
+   * The action name.
    *
-   * @defaultValue `<METHOD> <route pattern>`, such as `POST /admin/orders/:id/cancel`.
+   * @defaultValue The resource followed by the route segments after it, such
+   * as `order.cancel` for `POST /admin/orders/:id/cancel`, or by `create`,
+   * `update`, or `delete` when there are none, such as `product.create`.
    */
   action?: string
   /**
    * Returns the resource acted on. `body` is the JSON response body, passed
    * only for a successful response. Return `undefined` to fall back to the
-   * default: the singular, snake-cased path segment after `/admin` as the type,
-   * and the first path parameter as the ID.
+   * default: the last path parameter as the ID and the segment before it, in
+   * singular snake case, as the type. A route without path parameters uses its
+   * second segment as the type and the ID of the resource in the response.
    */
   resource?: (
     req: AuditRequest,

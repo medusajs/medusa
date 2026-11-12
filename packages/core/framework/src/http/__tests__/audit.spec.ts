@@ -257,10 +257,13 @@ describe("Audit middleware", () => {
     {
       method: "POST",
       path: "/admin/products",
-      handler: (req, res) =>
-        req.body?.title
-          ? res.json({ product: { id: "prod_new" } })
-          : res.status(400).json({ message: "Invalid request" }),
+      handler: (req, res) => {
+        if (!req.body?.title) {
+          res.status(400).json({ message: "Invalid request" })
+          return
+        }
+        res.json({ product: { id: "prod_new" } })
+      },
       audit: {
         action: "product.create",
         resource: (_req, body) => ({ type: "product", id: body?.product?.id }),
@@ -447,6 +450,23 @@ describe("Audit middleware", () => {
           path: "/admin/products/prod_1",
           status_code: 401,
         }),
+      })
+    )
+  })
+
+  it("deduces nothing from the path of an unknown route", async () => {
+    const res = await request
+      .post("/admin/products/prod_1/unknown")
+      .set("x-user", "user_1")
+    expect(res.status).toBe(404)
+
+    const [entry] = await waitForRecords(1)
+    expect(entry).toEqual(
+      expect.objectContaining({
+        action: "POST /admin/products/prod_1/unknown",
+        resource_type: null,
+        resource_id: null,
+        outcome: "failed",
       })
     )
   })

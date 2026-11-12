@@ -21,6 +21,8 @@ const DEFAULT_AUDITED_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"])
 const DEFAULT_AUDITED_PREFIXES = ["/admin", "/rbac", "/auth"]
 
 const MAX_USER_AGENT_LENGTH = 512
+// The request ID can come from the `x-request-id` header.
+const MAX_REQUEST_ID_LENGTH = 128
 
 /**
  * Keeps one route per matcher and method. A later route replaces an earlier
@@ -312,8 +314,11 @@ export function createAuditMiddleware({
         const body = succeeded ? responseBody : undefined
 
         const matchedRoute = routesFinder.find(path, method as MiddlewareVerb)
-        const route =
-          matchedRoute?.matcher ?? (req.route?.path as string) ?? path
+        // Without a route pattern (an unknown route), nothing is deduced from
+        // the raw path, which the caller controls.
+        const pattern = (matchedRoute?.matcher ?? req.route?.path) as
+          string | undefined
+        const route = pattern ?? path
 
         const params = getRouteParams(route, path)
         if (matchedRoute) {
@@ -325,7 +330,7 @@ export function createAuditMiddleware({
             callSafely("resource", route, () =>
               config.resource!(auditReq, body)
             )) ||
-          getDefaultAuditResource(route, params, body)
+          (pattern ? getDefaultAuditResource(pattern, params, body) : undefined)
 
         const requestData =
           config.requestData &&
@@ -344,7 +349,11 @@ export function createAuditMiddleware({
 
         const userAgent = req.get("user-agent")
         const entry: CreateAuditLogDTO = {
-          action: config.action ?? getDefaultAuditAction(method, route),
+          action:
+            config.action ??
+            (pattern
+              ? getDefaultAuditAction(method, pattern)
+              : `${method} ${path}`),
           actor_type,
           actor_id,
           resource_type: resource?.type ?? null,
@@ -357,7 +366,11 @@ export function createAuditMiddleware({
             route,
             path,
             status_code: statusCode,
-            request_id: (req as { requestId?: string }).requestId ?? null,
+            request_id:
+              (req as { requestId?: string }).requestId?.slice(
+                0,
+                MAX_REQUEST_ID_LENGTH
+              ) ?? null,
             ip_address:
               (req as { request_context?: { ip_address?: string } })
                 .request_context?.ip_address ??
