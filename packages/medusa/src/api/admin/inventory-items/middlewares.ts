@@ -119,7 +119,6 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
-    audit: { action: "inventory_item.batch" },
     middlewares: [
       authorize([
         {

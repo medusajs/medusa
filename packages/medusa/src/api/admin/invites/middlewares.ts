@@ -68,7 +68,6 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
     method: "POST",
     matcher: "/admin/invites/accept",
     audit: {
-      action: "invite.accept",
       resource: createdAuditResource("user"),
     },
     middlewares: [
@@ -113,7 +112,6 @@ export const adminInviteRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "POST",
     matcher: "/admin/invites/:id/resend",
-    audit: { action: "invite.resend" },
     middlewares: [
       authorize([
         {

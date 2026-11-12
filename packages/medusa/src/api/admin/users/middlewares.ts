@@ -118,7 +118,6 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/users/:id/reset-password",
-    audit: { action: "user.reset_password_token.create" },
     middlewares: [
       authorize([
         {
@@ -151,7 +150,6 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/users/:id/roles",
-    audit: { action: "user.roles.assign" },
     middlewares: [
       authorize([
         {
@@ -187,7 +185,6 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/users/:id/roles",
-    audit: { action: "user.roles.remove" },
     middlewares: [
       authorize([
         {

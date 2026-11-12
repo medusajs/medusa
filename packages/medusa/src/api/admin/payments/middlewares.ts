@@ -66,7 +66,6 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/payments/:id/capture",
     audit: {
-      action: "payment.capture",
       requestData: (req) => ({ amount: req.validatedBody?.amount }),
     },
     middlewares: [
@@ -91,7 +90,6 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/payments/:id/refund",
     audit: {
-      action: "payment.refund",
       requestData: (req) => ({
         amount: req.validatedBody?.amount,
         refund_reason_id: req.validatedBody?.refund_reason_id,

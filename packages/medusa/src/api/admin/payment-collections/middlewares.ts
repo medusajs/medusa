@@ -49,7 +49,6 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/payment-collections/:id/mark-as-paid",
-    audit: { action: "payment_collection.mark_as_paid" },
     middlewares: [
       authorize([
         {

@@ -95,19 +95,18 @@ export function getRouteParams(
 
 const isParamSegment = (segment: string) => segment.startsWith(":")
 
+const toSnakeCase = (segment: string) => segment.replace(/-/g, "_")
+
 /**
- * The default resource, deduced from the route pattern alone. With path
- * parameters, the ID is the last one and the type is the segment before it,
- * so nested routes name the nested resource. Without any, the type is the
- * second segment, since the first is usually a namespace such as `/admin`
- * (or the only segment), and the ID is read from the response body, which
- * holds a created resource under its type (`{ product: { id } }`).
+ * Splits a route pattern into the resource it names, the parameter holding
+ * its ID, and what follows. With path parameters, the ID is the last one and
+ * the type is the segment before it, so nested routes name the nested
+ * resource. Without any, the type is the second segment, since the first is
+ * usually a namespace such as `/admin` (or the only segment).
  */
-export function getDefaultAuditResource(
-  pattern: string,
-  params: Record<string, string>,
-  body?: unknown
-): AuditResource | undefined {
+function parseAuditRoute(
+  pattern: string
+): { type: string; idParam: string | undefined; rest: string[] } | undefined {
   const segments = pattern.split("/").filter(Boolean)
 
   let paramIndex = segments.length - 1
@@ -128,21 +127,63 @@ export function getDefaultAuditResource(
 
   const words = typeSegment.split("-")
   words[words.length - 1] = singularize(words[words.length - 1])
-  const type = words.join("_")
+
+  return {
+    type: words.join("_"),
+    idParam: paramIndex >= 0 ? segments[paramIndex].slice(1) : undefined,
+    rest: segments.slice(Math.max(paramIndex, typeIndex) + 1).map(toSnakeCase),
+  }
+}
+
+/**
+ * The default resource, deduced from the route pattern. A route without path
+ * parameters reads the ID from the response body, which holds a created
+ * resource under its type (`{ product: { id } }`).
+ */
+export function getDefaultAuditResource(
+  pattern: string,
+  params: Record<string, string>,
+  body?: unknown
+): AuditResource | undefined {
+  const route = parseAuditRoute(pattern)
+  if (!route) {
+    return
+  }
+
+  if (route.idParam) {
+    return { type: route.type, id: params[route.idParam] ?? null }
+  }
 
   const createdId = isObject(body)
-    ? (body as Record<string, { id?: unknown }>)[type]?.id
+    ? (body as Record<string, { id?: unknown }>)[route.type]?.id
     : undefined
 
   return {
-    type,
-    id:
-      paramIndex >= 0
-        ? (params[segments[paramIndex].slice(1)] ?? null)
-        : typeof createdId === "string"
-          ? createdId
-          : null,
+    type: route.type,
+    id: typeof createdId === "string" ? createdId : null,
   }
+}
+
+/**
+ * The default action: the resource followed by what the route does to it.
+ * Segments after the resource name the operation (`order.cancel`,
+ * `product.batch`); without any, the method does (`product.create`,
+ * `product.update`, `product.delete`).
+ */
+export function getDefaultAuditAction(method: string, pattern: string): string {
+  const route = parseAuditRoute(pattern)
+  if (!route) {
+    return `${method} ${pattern}`
+  }
+
+  const parts = [route.type, ...route.rest]
+  if (method === "DELETE") {
+    parts.push("delete")
+  } else if (!route.rest.length) {
+    parts.push(method === "POST" && !route.idParam ? "create" : "update")
+  }
+
+  return parts.join(".")
 }
 
 export function getAuditOutcome(statusCode: number): AuditOutcome {
@@ -303,7 +344,7 @@ export function createAuditMiddleware({
 
         const userAgent = req.get("user-agent")
         const entry: CreateAuditLogDTO = {
-          action: config.action ?? `${method} ${route}`,
+          action: config.action ?? getDefaultAuditAction(method, route),
           actor_type,
           actor_id,
           resource_type: resource?.type ?? null,

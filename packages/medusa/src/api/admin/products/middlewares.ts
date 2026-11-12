@@ -200,7 +200,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
-    audit: { action: "product.batch" },
     middlewares: [
       authorize([
         {
@@ -231,7 +230,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/export",
-    audit: { action: "product.export" },
     middlewares: [
       validateAndTransformQuery(
         AdminGetProductsParams,
@@ -242,7 +240,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/import",
-    audit: { action: "product.import" },
     middlewares: [
       authorize([
         {
@@ -256,7 +253,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/imports",
-    audit: { action: "product.import" },
     middlewares: [
       authorize([
         {
@@ -359,7 +355,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/products/:id/variants",
-    audit: { action: "product_variant.create" },
     middlewares: [
       authorize([
         {
@@ -384,7 +379,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
-    audit: { action: "product_variant.batch" },
     middlewares: [
       authorize([
         {

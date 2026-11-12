@@ -108,7 +108,6 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/customers/:id/addresses",
-    audit: { action: "customer_address.create" },
     middlewares: [
       authorize([
         {

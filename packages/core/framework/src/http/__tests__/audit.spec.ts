@@ -3,6 +3,7 @@ import supertest from "supertest"
 import {
   createAuditMiddleware,
   getAuditOutcome,
+  getDefaultAuditAction,
   getDefaultAuditResource,
   getRouteParams,
   isAuditedByDefault,
@@ -154,6 +155,31 @@ describe("Audit helpers", () => {
         { product: { id: "prod_other" } }
       )
     ).toEqual({ type: "product", id: "prod_1" })
+  })
+
+  it("derives the action from the route pattern and method", () => {
+    const action = getDefaultAuditAction
+    expect(action("POST", "/admin/products")).toBe("product.create")
+    expect(action("POST", "/admin/products/:id")).toBe("product.update")
+    expect(action("DELETE", "/admin/products/:id")).toBe("product.delete")
+    expect(action("POST", "/admin/orders/:id/complete")).toBe("order.complete")
+    expect(action("POST", "/admin/orders/:id/transfer/cancel")).toBe(
+      "order.transfer.cancel"
+    )
+    expect(
+      action("POST", "/admin/orders/:id/fulfillments/:fulfillment_id/cancel")
+    ).toBe("fulfillment.cancel")
+    expect(action("POST", "/admin/payment-collections/:id/mark-as-paid")).toBe(
+      "payment_collection.mark_as_paid"
+    )
+    expect(action("POST", "/admin/products/batch")).toBe("product.batch")
+    expect(action("POST", "/admin/products/:id/variants")).toBe(
+      "product.variants"
+    )
+    expect(action("DELETE", "/admin/users/:id/roles")).toBe("user.roles.delete")
+    expect(action("POST", "/vendors/products")).toBe("product.create")
+    expect(action("DELETE", "/auth/session")).toBe("session.delete")
+    expect(action("POST", "/:id")).toBe("POST /:id")
   })
 
   it("maps status codes to outcomes", () => {
@@ -410,7 +436,7 @@ describe("Audit middleware", () => {
     const [entry] = await waitForRecords(1)
     expect(entry).toEqual(
       expect.objectContaining({
-        action: "DELETE /admin/products/:id",
+        action: "product.delete",
         actor_type: "anonymous",
         actor_id: null,
         resource_type: "product",
@@ -440,7 +466,7 @@ describe("Audit middleware", () => {
     const [entry] = await waitForRecords(1)
     expect(entry).toEqual(
       expect.objectContaining({
-        action: "POST /store/carts",
+        action: "cart.create",
         actor_type: "anonymous",
         resource_type: "cart",
         resource_id: "cart_new",
@@ -456,7 +482,7 @@ describe("Audit middleware", () => {
     const [entry] = await waitForRecords(1)
     expect(entry).toEqual(
       expect.objectContaining({
-        action: "POST /admin/fail",
+        action: "fail.create",
         resource_type: "fail",
         outcome: "failed",
         response_data: { body: undefined },

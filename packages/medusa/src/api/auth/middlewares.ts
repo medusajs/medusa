@@ -120,6 +120,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider",
+    audit: { action: "auth.authenticate" },
     middlewares: [validateScopeProviderAssociation()],
   },
   {

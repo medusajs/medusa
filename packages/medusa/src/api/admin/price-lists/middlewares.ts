@@ -148,7 +148,6 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
-    audit: { action: "price_list.prices.batch" },
     middlewares: [
       authorize([
         {

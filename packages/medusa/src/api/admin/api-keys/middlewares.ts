@@ -103,7 +103,6 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/api-keys/:id/revoke",
-    audit: { action: "api_key.revoke" },
     middlewares: [
       authorize([
         {
