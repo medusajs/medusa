@@ -4,6 +4,7 @@ import { MedusaError } from "../common/errors"
 export const LicenseFeature = {
   RBAC: "rbac",
   AUTH_OIDC: "auth-oidc",
+  AUDIT: "audit",
 } as const
 
 export type LicenseFeature =

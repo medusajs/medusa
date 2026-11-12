@@ -64,6 +64,7 @@
     "@medusajs/analytics-local": "2.22.6",
     "@medusajs/analytics-posthog": "2.22.6",
     "@medusajs/api-key": "2.22.6",
+    "@medusajs/audit": "2.22.6",
     "@medusajs/auth": "2.22.6",
     "@medusajs/auth-emailpass": "2.22.6",
     "@medusajs/auth-github": "2.22.6",
