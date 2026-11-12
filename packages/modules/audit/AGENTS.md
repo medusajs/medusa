@@ -4,11 +4,11 @@ Audit Module: records audit logs (who did what, on which resource, how it ended)
 
 ## Using this package
 
-- Not registered by default: applications add `{ resolve: "@medusajs/medusa/audit" }` to `modules` in `medusa-config.ts`, with at least one provider unless `enabled: false`.
+- Not registered by default: applications add `{ resolve: "@medusajs/medusa/audit" }` to `modules` in `medusa-config.ts`. Without `providers` or a Cloud endpoint, audit logs are stored in the application's database; run `db:migrate` for the table.
 - It is a licensed module: the loader (`packages/core/modules-sdk/src/loaders/utils/load-internal.ts`, `LICENSED_MODULES`) only loads it when the license covers `LicenseFeature.AUDIT` (`"audit"`). There is no feature flag.
 - Options (`AuditModuleOptions` in `packages/core/types/src/audit/options.ts`):
   - `enabled` (default `true`): when `false`, `createAuditLogs()` is a no-op and nothing is buffered. Reads still go to the default provider.
-  - `retention_days`: for the built-in Postgres storage only; audit logs older than this are deleted. Unset keeps them forever. Invalid values throw at boot.
+  - `retention_days`: for the built-in Postgres storage only; audit logs older than this are deleted. Unset keeps them forever. Invalid values throw at boot. With `providers` or a Cloud endpoint it has no effect, and the loader logs a warning.
   - `providers`: `{ resolve, id, options }[]`, custom providers. When set, the built-in Postgres storage is not registered.
   - `default_provider`: a provider `id`. Defaults to `cloud` when `cloud.endpoint` is set, otherwise to the only provider (the built-in `postgres` one when nothing else is configured). Required with several providers and no Cloud.
   - `cloud`: `{ api_key, endpoint, environment_handle }`. When `endpoint` is set, the built-in Cloud provider is registered with the id `cloud` and becomes the default; the other two are then required.

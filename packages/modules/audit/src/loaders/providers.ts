@@ -1,6 +1,10 @@
 import { asFunction, asValue } from "@medusajs/framework/awilix"
 import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
-import { LoaderOptions, MedusaContainer } from "@medusajs/framework/types"
+import {
+  LoaderOptions,
+  Logger,
+  MedusaContainer,
+} from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuditDefaultProviderRegistrationName,
@@ -86,6 +90,12 @@ export default async ({
     container.resolve(
       AuditProviderRegistrationPrefix + POSTGRES_AUDIT_PROVIDER_ID
     )
+  } else if (options?.retention_days !== undefined) {
+    container
+      .resolve<Logger>("logger")
+      .warn(
+        'Audit: "retention_days" only applies to the built-in Postgres storage and is ignored, because audit logs are stored by another provider.'
+      )
   }
 
   const defaultProvider = resolveDefaultProvider(

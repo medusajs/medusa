@@ -126,6 +126,25 @@ describe("audit providers loader", () => {
     await expect(load({ retention_days: -1 })).rejects.toThrow("retention_days")
   })
 
+  it("warns that retention_days is ignored with another provider", async () => {
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {})
+
+    await load({ retention_days: 30 })
+    expect(warn).not.toHaveBeenCalled()
+
+    await load({
+      retention_days: 30,
+      providers: [{ resolve: memory, id: "memory" }],
+    })
+    await load({ retention_days: 30, cloud })
+    expect(warn).toHaveBeenCalledTimes(2)
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining('"retention_days"')
+    )
+
+    warn.mockRestore()
+  })
+
   it("does not register the Postgres storage beside other providers", async () => {
     const container = await load({
       providers: [{ resolve: memory, id: "memory" }],
