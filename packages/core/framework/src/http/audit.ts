@@ -20,19 +20,6 @@ import type {
 const DEFAULT_AUDITED_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"])
 const DEFAULT_AUDITED_PREFIXES = ["/admin", "/rbac", "/auth"]
 
-/**
- * Namespaces that come before the segment naming the resource, with the prefix
- * given to the resource type. The prefix keeps RBAC types in line with their
- * policy resources (`rbac_role`, `rbac_policy`). `/auth` routes act on no
- * resource.
- */
-const RESOURCE_NAMESPACES: Record<string, string | null> = {
-  admin: "",
-  store: "",
-  rbac: "rbac_",
-  auth: null,
-}
-
 const MAX_USER_AGENT_LENGTH = 512
 
 /**
@@ -109,32 +96,27 @@ export function getRouteParams(
 const isParamSegment = (segment: string) => segment.startsWith(":")
 
 /**
- * The default resource, after skipping a leading namespace such as `/admin`.
- * With path parameters, the ID is the last one and the type is the segment
- * before it, so nested routes name the nested resource. Without any, the type
- * is the first segment and the ID is read from the response body, which holds
- * a created resource under its type (`{ product: { id } }`).
+ * The default resource, deduced from the route pattern alone. With path
+ * parameters, the ID is the last one and the type is the segment before it,
+ * so nested routes name the nested resource. Without any, the type is the
+ * second segment, since the first is usually a namespace such as `/admin`
+ * (or the only segment), and the ID is read from the response body, which
+ * holds a created resource under its type (`{ product: { id } }`).
  */
 export function getDefaultAuditResource(
   pattern: string,
   params: Record<string, string>,
   body?: unknown
 ): AuditResource | undefined {
-  const allSegments = pattern.split("/").filter(Boolean)
-  const namespacePrefix = RESOURCE_NAMESPACES[allSegments[0]]
-  if (namespacePrefix === null) {
-    return
-  }
-
-  const segments =
-    namespacePrefix === undefined ? allSegments : allSegments.slice(1)
+  const segments = pattern.split("/").filter(Boolean)
 
   let paramIndex = segments.length - 1
   while (paramIndex >= 0 && !isParamSegment(segments[paramIndex])) {
     paramIndex--
   }
 
-  let typeIndex = Math.max(paramIndex - 1, 0)
+  let typeIndex =
+    paramIndex >= 0 ? paramIndex - 1 : Math.min(1, segments.length - 1)
   while (typeIndex > 0 && isParamSegment(segments[typeIndex])) {
     typeIndex--
   }
@@ -146,14 +128,14 @@ export function getDefaultAuditResource(
 
   const words = typeSegment.split("-")
   words[words.length - 1] = singularize(words[words.length - 1])
-  const name = words.join("_")
+  const type = words.join("_")
 
   const createdId = isObject(body)
-    ? (body as Record<string, { id?: unknown }>)[name]?.id
+    ? (body as Record<string, { id?: unknown }>)[type]?.id
     : undefined
 
   return {
-    type: `${namespacePrefix ?? ""}${name}`,
+    type,
     id:
       paramIndex >= 0
         ? (params[segments[paramIndex].slice(1)] ?? null)

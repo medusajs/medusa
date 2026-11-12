@@ -76,14 +76,34 @@ describe("Audit helpers", () => {
     })
     expect(
       getDefaultAuditResource("/rbac/policies/:id", { id: "rpol_1" })
-    ).toEqual({ type: "rbac_policy", id: "rpol_1" })
-    expect(getDefaultAuditResource("/auth/user/emailpass", {})).toBeUndefined()
+    ).toEqual({ type: "policy", id: "rpol_1" })
+    expect(
+      getDefaultAuditResource("/auth/:actor_type/:auth_provider", {
+        actor_type: "user",
+        auth_provider: "emailpass",
+      })
+    ).toEqual({ type: "auth", id: "emailpass" })
+    expect(getDefaultAuditResource("/auth/token/refresh", {})).toEqual({
+      type: "token",
+      id: null,
+    })
     expect(getDefaultAuditResource("/store/carts", {})).toEqual({
       type: "cart",
       id: null,
     })
-    expect(getDefaultAuditResource("/myroutes/test", {})).toEqual({
-      type: "myroute",
+    expect(getDefaultAuditResource("/brands", {})).toEqual({
+      type: "brand",
+      id: null,
+    })
+    expect(getDefaultAuditResource("/vendors/products", {})).toEqual({
+      type: "product",
+      id: null,
+    })
+    expect(
+      getDefaultAuditResource("/vendors/products/:id", { id: "prod_1" })
+    ).toEqual({ type: "product", id: "prod_1" })
+    expect(getDefaultAuditResource("/admin/products/batch", {})).toEqual({
+      type: "product",
       id: null,
     })
     expect(
@@ -104,7 +124,7 @@ describe("Audit helpers", () => {
         id: "role_1",
         policy_id: "rpol_1",
       })
-    ).toEqual({ type: "rbac_policy", id: "rpol_1" })
+    ).toEqual({ type: "policy", id: "rpol_1" })
     expect(
       getDefaultAuditResource("/admin/executions/:workflow_id/:run_id", {
         workflow_id: "wf_1",
@@ -123,7 +143,7 @@ describe("Audit helpers", () => {
     ).toEqual({ type: "price_list", id: "plist_1" })
     expect(
       getDefaultAuditResource("/rbac/roles", {}, { role: { id: "role_1" } })
-    ).toEqual({ type: "rbac_role", id: "role_1" })
+    ).toEqual({ type: "role", id: "role_1" })
     expect(
       getDefaultAuditResource("/admin/products", {}, { products: [] })
     ).toEqual({ type: "product", id: null })
