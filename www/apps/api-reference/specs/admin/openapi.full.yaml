@@ -46400,7 +46400,7 @@ paths:
     post:
       operationId: PostProductsId
       summary: Update a Product
-      description: Update a product's details.
+      description: Update a product's details. If you pass `variants` in the request body, they replace the product's full variant list, and existing variants that aren't included are deleted.
       x-authenticated: true
       parameters:
         - name: id
@@ -75809,7 +75809,7 @@ components:
                 description: The tag's ID.
         variants:
           type: array
-          description: The product's variants. You can add new variants or update existing ones, passing their IDs in the object.
+          description: The product's variants. This replaces the product's full variant list, so existing variants that aren't included are deleted. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminCreateProductVariant'
@@ -89935,7 +89935,7 @@ components:
             $ref: '#/components/schemas/AdminUpdateProductOption'
         variants:
           type: array
-          description: The product's variants. You can add new variants or update existing ones, passing their IDs in the object.
+          description: The product's variants. This replaces the product's full variant list, so existing variants that aren't included are deleted. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminCreateProductVariant'
