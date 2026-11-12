@@ -13,7 +13,6 @@ import {
   AdminGetReservationsParams,
   AdminUpdateReservation,
 } from "./validators"
-import { createdAuditResource } from "../../utils/audit"
 
 export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -56,10 +55,6 @@ export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/reservations",
-    audit: {
-      action: "reservation.create",
-      resource: createdAuditResource("reservation"),
-    },
     middlewares: [
       authorize([
         {

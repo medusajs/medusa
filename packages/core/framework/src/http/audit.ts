@@ -106,36 +106,60 @@ export function getRouteParams(
   return params
 }
 
+const isParamSegment = (segment: string) => segment.startsWith(":")
+
 /**
- * The default resource: the first segment, skipping a leading namespace such
- * as `/admin`, is the type in singular snake case, and the first path
- * parameter is the ID.
+ * The default resource, after skipping a leading namespace such as `/admin`.
+ * With path parameters, the ID is the last one and the type is the segment
+ * before it, so nested routes name the nested resource. Without any, the type
+ * is the first segment and the ID is read from the response body, which holds
+ * a created resource under its type (`{ product: { id } }`).
  */
 export function getDefaultAuditResource(
   pattern: string,
-  params: Record<string, string>
+  params: Record<string, string>,
+  body?: unknown
 ): AuditResource | undefined {
-  const segments = pattern.split("/").filter(Boolean)
-  const namespacePrefix = RESOURCE_NAMESPACES[segments[0]]
-  const typePrefix = namespacePrefix ?? ""
-  const typeSegment = namespacePrefix === undefined ? segments[0] : segments[1]
+  const allSegments = pattern.split("/").filter(Boolean)
+  const namespacePrefix = RESOURCE_NAMESPACES[allSegments[0]]
+  if (namespacePrefix === null) {
+    return
+  }
 
-  if (
-    namespacePrefix === null ||
-    !typeSegment ||
-    !/^[\w-]+$/.test(typeSegment)
-  ) {
+  const segments =
+    namespacePrefix === undefined ? allSegments : allSegments.slice(1)
+
+  let paramIndex = segments.length - 1
+  while (paramIndex >= 0 && !isParamSegment(segments[paramIndex])) {
+    paramIndex--
+  }
+
+  let typeIndex = Math.max(paramIndex - 1, 0)
+  while (typeIndex > 0 && isParamSegment(segments[typeIndex])) {
+    typeIndex--
+  }
+
+  const typeSegment = segments[typeIndex]
+  if (!typeSegment || !/^[\w-]+$/.test(typeSegment)) {
     return
   }
 
   const words = typeSegment.split("-")
   words[words.length - 1] = singularize(words[words.length - 1])
+  const name = words.join("_")
 
-  const firstParam = segments.find((segment) => segment.startsWith(":"))
+  const createdId = isObject(body)
+    ? (body as Record<string, { id?: unknown }>)[name]?.id
+    : undefined
 
   return {
-    type: `${typePrefix}${words.join("_")}`,
-    id: firstParam ? (params[firstParam.slice(1)] ?? null) : null,
+    type: `${namespacePrefix ?? ""}${name}`,
+    id:
+      paramIndex >= 0
+        ? (params[segments[paramIndex].slice(1)] ?? null)
+        : typeof createdId === "string"
+          ? createdId
+          : null,
   }
 }
 
@@ -242,14 +266,14 @@ export function createAuditMiddleware({
       : {}
     const startedAt = new Date()
 
+    // Only a reference is kept, for the ID of a created resource and for the
+    // route's own setting functions.
     let responseBody: unknown
-    if (config.resource || config.responseData) {
-      const originalJson = res.json
-      res.json = function auditJson(this: Response, body?: unknown) {
-        responseBody = body
-        return originalJson.call(this, body)
-      } as Response["json"]
-    }
+    const originalJson = res.json
+    res.json = function auditJson(this: Response, body?: unknown) {
+      responseBody = body
+      return originalJson.call(this, body)
+    } as Response["json"]
 
     let recorded = false
     const record = (closedEarly: boolean) => {
@@ -278,7 +302,7 @@ export function createAuditMiddleware({
             callSafely("resource", route, () =>
               config.resource!(auditReq, body)
             )) ||
-          getDefaultAuditResource(route, params)
+          getDefaultAuditResource(route, params, body)
 
         const requestData =
           config.requestData &&

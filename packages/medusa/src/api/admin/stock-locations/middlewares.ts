@@ -18,7 +18,6 @@ import {
   AdminGetStockLocationsParams,
   AdminUpdateStockLocation,
 } from "./validators"
-import { createdAuditResource } from "../../utils/audit"
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -35,10 +34,6 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/stock-locations",
-    audit: {
-      action: "stock_location.create",
-      resource: createdAuditResource("stock_location"),
-    },
     middlewares: [
       authorize([
         {

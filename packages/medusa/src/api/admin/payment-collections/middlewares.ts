@@ -12,7 +12,6 @@ import {
   AdminInitializePaymentSession,
   AdminMarkPaymentCollectionPaid,
 } from "./validators"
-import { createdAuditResource } from "../../utils/audit"
 
 export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
   {
@@ -29,10 +28,6 @@ export const adminPaymentCollectionsMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/payment-collections",
-    audit: {
-      action: "payment_collection.create",
-      resource: createdAuditResource("payment_collection"),
-    },
     middlewares: [
       authorize([
         {

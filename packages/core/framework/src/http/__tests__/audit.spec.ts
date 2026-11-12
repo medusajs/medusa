@@ -92,6 +92,50 @@ describe("Audit helpers", () => {
     expect(getDefaultAuditResource("/:id", { id: "1" })).toBeUndefined()
   })
 
+  it("names the nested resource of a route with several parameters", () => {
+    expect(
+      getDefaultAuditResource(
+        "/admin/orders/:id/fulfillments/:fulfillment_id/cancel",
+        { id: "order_1", fulfillment_id: "ful_1" }
+      )
+    ).toEqual({ type: "fulfillment", id: "ful_1" })
+    expect(
+      getDefaultAuditResource("/rbac/roles/:id/policies/:policy_id", {
+        id: "role_1",
+        policy_id: "rpol_1",
+      })
+    ).toEqual({ type: "rbac_policy", id: "rpol_1" })
+    expect(
+      getDefaultAuditResource("/admin/executions/:workflow_id/:run_id", {
+        workflow_id: "wf_1",
+        run_id: "run_1",
+      })
+    ).toEqual({ type: "execution", id: "run_1" })
+  })
+
+  it("reads the ID of a created resource from the response body", () => {
+    expect(
+      getDefaultAuditResource(
+        "/admin/price-lists",
+        {},
+        { price_list: { id: "plist_1" } }
+      )
+    ).toEqual({ type: "price_list", id: "plist_1" })
+    expect(
+      getDefaultAuditResource("/rbac/roles", {}, { role: { id: "role_1" } })
+    ).toEqual({ type: "rbac_role", id: "role_1" })
+    expect(
+      getDefaultAuditResource("/admin/products", {}, { products: [] })
+    ).toEqual({ type: "product", id: null })
+    expect(
+      getDefaultAuditResource(
+        "/admin/products/:id",
+        { id: "prod_1" },
+        { product: { id: "prod_other" } }
+      )
+    ).toEqual({ type: "product", id: "prod_1" })
+  })
+
   it("maps status codes to outcomes", () => {
     expect(getAuditOutcome(200)).toBe("succeeded")
     expect(getAuditOutcome(302)).toBe("succeeded")

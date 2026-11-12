@@ -13,7 +13,6 @@ import {
   AdminGetCustomerGroupsParams,
   AdminUpdateCustomerGroup,
 } from "./validators"
-import { createdAuditResource } from "../../utils/audit"
 
 export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -56,10 +55,6 @@ export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/customer-groups",
-    audit: {
-      action: "customer_group.create",
-      resource: createdAuditResource("customer_group"),
-    },
     middlewares: [
       authorize([
         {

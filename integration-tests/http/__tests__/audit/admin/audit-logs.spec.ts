@@ -47,7 +47,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("Audit middleware", () => {
-      it("records a mutation with the route's explicit settings", async () => {
+      it("records a create with the ID of the created resource", async () => {
         const created = await api.post(
           "/admin/customers",
           { email: "audited@medusa.js" },
@@ -56,7 +56,7 @@ medusaIntegrationTestRunner({
         const customerId = created.data.customer.id
 
         const { audit_logs, count } = await listAuditLogs({
-          action: "customer.create",
+          action: "POST /admin/customers",
         })
 
         expect(count).toEqual(1)
@@ -67,7 +67,7 @@ medusaIntegrationTestRunner({
           actor_type: "user",
           actor_id: adminId,
           impersonator_id: null,
-          action: "customer.create",
+          action: "POST /admin/customers",
           resource_type: "customer",
           resource_id: customerId,
           outcome: "succeeded",
@@ -108,7 +108,7 @@ medusaIntegrationTestRunner({
 
         expect(audit_logs.map((log) => log.action)).toEqual([
           "POST /admin/customers/:id",
-          "customer.create",
+          "POST /admin/customers",
         ])
       })
 
@@ -142,7 +142,7 @@ medusaIntegrationTestRunner({
 
         expect(audit_logs).toEqual([
           expect.objectContaining({
-            action: "customer.create",
+            action: "POST /admin/customers",
             actor_id: adminId,
             resource_type: "customer",
             resource_id: null,
@@ -185,7 +185,7 @@ medusaIntegrationTestRunner({
 
         expect(audit_logs).toEqual([
           expect.objectContaining({
-            action: "stock_location.create",
+            action: "POST /admin/stock-locations",
             actor_id: apiKey.id,
             metadata: { api_key_created_by: adminId },
           }),
@@ -193,7 +193,7 @@ medusaIntegrationTestRunner({
         expect(JSON.stringify(audit_logs)).not.toContain(apiKey.token)
       })
 
-      it("lets the application override core settings", async () => {
+      it("lets the application change what is recorded", async () => {
         // The application sets `audit: false` on POST /admin/sales-channels and
         // adds `requestData` to POST /admin/regions.
         await api.post(
@@ -211,7 +211,7 @@ medusaIntegrationTestRunner({
 
         expect(audit_logs).toEqual([
           expect.objectContaining({
-            action: "region.create",
+            action: "POST /admin/regions",
             resource_type: "region",
             resource_id: region.data.region.id,
             request_data: { name: "Audited region" },
@@ -247,13 +247,13 @@ medusaIntegrationTestRunner({
         expect(firstPage.limit).toEqual(2)
         expect(firstPage.offset).toEqual(0)
         expect(firstPage.audit_logs).toHaveLength(2)
-        expect(firstPage.audit_logs[0].action).toEqual("customer_group.create")
+        expect(firstPage.audit_logs[0].action).toEqual("POST /admin/customer-groups")
 
         const oldestFirst = await listAuditLogs({ order: "started_at" })
-        expect(oldestFirst.audit_logs[0].action).toEqual("customer.create")
+        expect(oldestFirst.audit_logs[0].action).toEqual("POST /admin/customers")
 
         const filtered = await listAuditLogs({
-          action: ["customer_group.create"],
+          action: ["POST /admin/customer-groups"],
           started_at: { $gte: new Date(Date.now() - 60_000).toISOString() },
         })
         expect(filtered.count).toEqual(1)
@@ -261,7 +261,7 @@ medusaIntegrationTestRunner({
         const selected = await listAuditLogs({ fields: "id,action" })
         expect(selected.audit_logs[0]).toEqual({
           id: expect.any(String),
-          action: "customer_group.create",
+          action: "POST /admin/customer-groups",
         })
 
         const id = firstPage.audit_logs[0].id

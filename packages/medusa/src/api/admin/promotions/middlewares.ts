@@ -25,7 +25,6 @@ import {
   AdminUpdatePromotionType,
   AdminUpdatePromotionRule,
 } from "./validators"
-import { createdAuditResource } from "../../utils/audit"
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -58,10 +57,6 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/promotions",
-    audit: {
-      action: "promotion.create",
-      resource: createdAuditResource("promotion"),
-    },
     middlewares: [
       authorize([
         {

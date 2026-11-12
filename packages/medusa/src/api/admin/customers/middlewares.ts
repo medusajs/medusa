@@ -20,7 +20,6 @@ import {
 import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { createLinkBody } from "../../utils/validators"
-import { createdAuditResource, paramAuditResource } from "../../utils/audit"
 
 export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -53,10 +52,6 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/customers",
-    audit: {
-      action: "customer.create",
-      resource: createdAuditResource("customer"),
-    },
     middlewares: [
       authorize([
         {
@@ -151,10 +146,6 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/customers/:id/addresses/:address_id",
-    audit: {
-      action: "customer_address.update",
-      resource: paramAuditResource("customer_address", "address_id"),
-    },
     middlewares: [
       authorize([
         {
@@ -176,10 +167,6 @@ export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/customers/:id/addresses/:address_id",
-    audit: {
-      action: "customer_address.delete",
-      resource: paramAuditResource("customer_address", "address_id"),
-    },
     middlewares: [
       authorize([
         {

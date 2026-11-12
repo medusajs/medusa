@@ -13,7 +13,6 @@ import {
   AdminGetCampaignsParams,
   AdminUpdateCampaign,
 } from "./validators"
-import { createdAuditResource } from "../../utils/audit"
 
 export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -46,10 +45,6 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/campaigns",
-    audit: {
-      action: "campaign.create",
-      resource: createdAuditResource("campaign"),
-    },
     middlewares: [
       authorize([
         {

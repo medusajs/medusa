@@ -15,7 +15,6 @@ import {
   AdminRevokeApiKey,
   AdminUpdateApiKey,
 } from "./validators"
-import { createdAuditResource } from "../../utils/audit"
 
 export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -58,10 +57,6 @@ export const adminApiKeyRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/api-keys",
-    audit: {
-      action: "api_key.create",
-      resource: createdAuditResource("api_key"),
-    },
     middlewares: [
       authorize([
         {

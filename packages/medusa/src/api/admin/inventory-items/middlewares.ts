@@ -24,7 +24,7 @@ import {
   AdminUpdateInventoryItem,
   AdminUpdateInventoryLocationLevel,
 } from "./validators"
-import { batchAuditResource, createdAuditResource } from "../../utils/audit"
+import { batchAuditResource } from "../../utils/audit"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -92,10 +92,6 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/inventory-items",
-    audit: {
-      action: "inventory_item.create",
-      resource: createdAuditResource("inventory_item"),
-    },
     middlewares: [
       authorize([
         {

@@ -17,7 +17,7 @@ export default defineMiddlewares({
         }),
       ],
     },
-    // Overrides of core audit settings, asserted by the audit specs. They only
+    // Application audit settings, asserted by the audit specs. They only
     // apply when the Audit Module is installed.
     {
       method: ["POST"],

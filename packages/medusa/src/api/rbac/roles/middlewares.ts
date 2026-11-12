@@ -22,7 +22,6 @@ import {
   AdminRemoveRoleUsers,
   AdminUpdateRbacRole,
 } from "./validators"
-import { createdAuditResource } from "../../utils/audit"
 
 export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -76,10 +75,6 @@ export const rbacRoleRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/rbac/roles",
-    audit: {
-      action: "rbac_role.create",
-      resource: createdAuditResource("rbac_role", "role"),
-    },
     middlewares: [
       authorize([
         {
