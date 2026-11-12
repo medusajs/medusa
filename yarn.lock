@@ -3371,11 +3371,6 @@ __metadata:
     ulid: "npm:^3.0.2"
     winston: "npm:^3.9.0"
     yargs: "npm:^18.2.0"
-  peerDependencies:
-    "@typescript/typescript6": ^6.0.2
-  peerDependenciesMeta:
-    "@typescript/typescript6":
-      optional: true
   bin:
     medusa: cli.js
   languageName: unknown

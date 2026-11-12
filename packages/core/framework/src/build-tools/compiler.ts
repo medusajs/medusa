@@ -30,6 +30,8 @@ export class Compiler {
   #backendIgnoreFiles: string[]
   #adminOnlyDistFolder: string
   #tsCompiler?: typeof tsStatic
+  #shouldUseTscBinary?: boolean
+  #usesTypeScriptSync?: boolean
 
   constructor(projectRoot: string, logger: Logger) {
     this.#projectRoot = projectRoot
@@ -71,23 +73,48 @@ export class Compiler {
 
   /**
    * Imports and stores a reference to the TypeScript compiler.
-   * We dynamically import "typescript", since its is a dev
-   * only dependency
+   * We dynamically import "typescript", since it is a dev-only dependency.
+   * TypeScript 7.1 restores its compiler API at "typescript/sync".
    */
   async #loadTSCompiler() {
     if (!this.#tsCompiler) {
-      this.#tsCompiler = await import("typescript")
+      const ts = await import("typescript")
+      const [major, minor] = ts.version
+        .split(".")
+        .map((part) => Number.parseInt(part, 10) || 0)
+      this.#shouldUseTscBinary = major === 7 && minor === 0
+      this.#usesTypeScriptSync = major > 7 || (major === 7 && minor >= 1)
+
+      this.#tsCompiler =
+        this.#usesTypeScriptSync
+          ? (Object.assign(
+              new (require("typescript/sync") as {
+                API: new () => object
+              }).API(),
+              require("typescript/sync")
+            ) as typeof tsStatic)
+          : ts
     }
     return this.#tsCompiler
   }
 
   /**
-   * TypeScript 7 exposes only its version from the "typescript" import and
-   * has no emit API, so its builds run the "tsc" binary instead
+   * TypeScript 7.0 exposes only its version from the "typescript" import and
+   * has no emit API, so its builds run the "tsc" binary instead.
    */
   async #usesTscBinary() {
-    const ts = await this.#loadTSCompiler()
-    return parseInt(ts.version, 10) >= 7
+    await this.#loadTSCompiler()
+    return this.#shouldUseTscBinary
+  }
+
+  #closeTSCompiler() {
+    if (this.#usesTypeScriptSync) {
+      const compiler = this.#tsCompiler as typeof tsStatic & {
+        close?: () => void
+      }
+      compiler?.close?.()
+      this.#tsCompiler = undefined
+    }
   }
 
   /**
@@ -208,7 +235,11 @@ export class Compiler {
       console.error(
         ts.formatDiagnosticsWithColorAndContext(
           diagnostics,
-          ts.createCompilerHost({})
+          {
+            getCanonicalFileName: (fileName) => fileName,
+            getCurrentDirectory: () => this.#projectRoot,
+            getNewLine: () => "\n",
+          }
         )
       )
     }
@@ -245,19 +276,23 @@ export class Compiler {
       },
     })
 
-    const emitResult = program.emit()
-    const diagnostics = ts
-      .getPreEmitDiagnostics(program)
-      .concat(emitResult.diagnostics)
+    try {
+      const emitResult = program.emit()
+      const diagnostics = ts
+        .getPreEmitDiagnostics(program)
+        .concat(emitResult.diagnostics)
 
-    /**
-     * Log errors (if any)
-     */
-    this.#printDiagnostics(ts, diagnostics)
+      /**
+       * Log errors (if any)
+       */
+      this.#printDiagnostics(ts, diagnostics)
 
-    return {
-      emitSkipped: emitResult.emitSkipped,
-      hasErrors: diagnostics.length > 0,
+      return {
+        emitSkipped: emitResult.emitSkipped,
+        hasErrors: diagnostics.length > 0,
+      }
+    } finally {
+      this.#closeTSCompiler()
     }
   }
 
@@ -343,6 +378,23 @@ export class Compiler {
     }
 
     const ts = await this.#loadTSCompiler()
+
+    if (this.#usesTypeScriptSync) {
+      try {
+        const tsConfig = (
+          ts as typeof tsStatic & {
+            parseConfigFile: (
+              configPath: string
+            ) => tsStatic.ParsedCommandLine
+          }
+        ).parseConfigFile(this.#tsConfigPath)
+        this.#printDiagnostics(ts, tsConfig.errors)
+        return tsConfig.errors.length ? undefined : tsConfig
+      } finally {
+        this.#closeTSCompiler()
+      }
+    }
+
     let tsConfigErrors: tsStatic.Diagnostic[] = []
 
     const tsConfig = ts.getParsedCommandLineOfConfigFile(

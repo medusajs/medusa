@@ -61,13 +61,5 @@
     "winston": "^3.9.0",
     "yargs": "^18.2.0"
   },
-  "peerDependencies": {
-    "@typescript/typescript6": "^6.0.2"
-  },
-  "peerDependenciesMeta": {
-    "@typescript/typescript6": {
-      "optional": true
-    }
-  },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
 }

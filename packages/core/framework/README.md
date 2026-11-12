@@ -95,6 +95,10 @@ export const GET = (
 }
 ```
 
+## TypeScript builds
+
+The framework compiler uses the installed project's TypeScript compiler API. TypeScript 5 and 6 use the standard `typescript` entry point. TypeScript 7.1 and later use `typescript/sync`. TypeScript 7.0 builds use the project's `tsc` binary because that release has no JavaScript compiler API.
+
 ## Resources
 
 - [Framework overview](https://docs.medusajs.com/learn/fundamentals/framework)

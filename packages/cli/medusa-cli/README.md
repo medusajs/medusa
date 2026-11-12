@@ -64,6 +64,10 @@ npx medusa user -e admin@example.com -p supersecret
 
 Run `npx medusa --help` or `npx medusa <command> --help` for the full list of options.
 
+### TypeScript versions
+
+The CLI loads TypeScript application files with `ts-node` on TypeScript 5 and 6. TypeScript 7.1 and later use the compiler API provided by `typescript/sync`. TypeScript 7.0 is unsupported; upgrade to TypeScript 7.1 or later.
+
 ## Commands
 
 | Command | Description |
