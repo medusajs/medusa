@@ -10,7 +10,7 @@ import {
 } from "@medusajs/framework/utils"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type CanActorGrantRolesInput = {
   container: MedusaContainer

@@ -12,7 +12,7 @@ import {
 } from "@medusajs/framework/types"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type UpdateRbacPoliciesStepInput = {
   selector: FilterableRbacPolicyProps
@@ -20,12 +20,12 @@ export type UpdateRbacPoliciesStepInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const updateRbacPoliciesStepId = "update-rbac-policies"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const updateRbacPoliciesStep = createStep(
   updateRbacPoliciesStepId,

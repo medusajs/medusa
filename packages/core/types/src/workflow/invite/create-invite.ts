@@ -14,7 +14,7 @@ export interface CreateInvitesWorkflowInputDTO {
    * The actor creating the invites. When provided, it can only invite users
    * to roles whose policies it holds itself.
    *
-   * @ignore
+   * @since 2.22.4
    */
   rbac_context?: RbacGrantingContext
 }
