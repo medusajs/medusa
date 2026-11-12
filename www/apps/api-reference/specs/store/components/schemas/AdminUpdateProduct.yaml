@@ -93,8 +93,9 @@ properties:
   variants:
     type: array
     description: >-
-      The product's variants. You can add new variants or update existing ones,
-      passing their IDs in the object.
+      The product's variants. This replaces the product's full variant list, so
+      existing variants that aren't included are deleted. Pass a variant's `id`
+      to update it, or omit the `id` to create a new variant.
     items:
       oneOf:
         - $ref: ./AdminCreateProductVariant.yaml

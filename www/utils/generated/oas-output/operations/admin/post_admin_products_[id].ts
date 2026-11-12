@@ -2,7 +2,7 @@
  * @oas [post] /admin/products/{id}
  * operationId: PostProductsId
  * summary: Update a Product
- * description: Update a product's details.
+ * description: Update a product's details. If you pass `variants` in the request body, they replace the product's full variant list, and existing variants that aren't included are deleted.
  * x-authenticated: true
  * parameters:
  *   - name: id
