@@ -11451,11 +11451,23 @@
                     "countOnly_other": {
                       "type": "string"
                     },
-                    "noAccessTo": {
+                    "granted": {
+                      "type": "string"
+                    },
+                    "notGranted": {
+                      "type": "string"
+                    },
+                    "wildcards": {
                       "type": "string"
                     }
                   },
-                  "required": ["heading", "count", "noAccessTo"],
+                  "required": [
+                    "heading",
+                    "count",
+                    "granted",
+                    "notGranted",
+                    "wildcards"
+                  ],
                   "additionalProperties": false
                 }
               },

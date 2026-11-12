@@ -13,6 +13,7 @@ import {
   buildMatrix,
   clearSelection,
   diffSelection,
+  expandWildcardPolicies,
   filterMatrix,
   formatFallbackLabel,
   getGroupControlLevel,
@@ -572,6 +573,48 @@ describe("formatFallbackLabel", () => {
   })
 })
 
+describe("expandWildcardPolicies", () => {
+  const all = [
+    ...forResource("product"),
+    policy("order", "read"),
+    policy("order", "update"),
+    policy("report", "export"),
+    policy("*", "*"),
+  ]
+  const keys = (policies: MatrixPolicy[]) => policies.map((p) => p.key).sort()
+
+  it("returns the concrete policies as they are without wildcards", () => {
+    const held = [policy("product", "read")]
+
+    expect(expandWildcardPolicies(held, all)).toEqual(held)
+  })
+
+  it("expands *:* to every concrete policy", () => {
+    const expanded = expandWildcardPolicies([policy("*", "*")], all)
+
+    expect(keys(expanded)).toEqual(keys(all.filter((p) => p.resource !== "*")))
+  })
+
+  it("expands a resource wildcard to that resource only", () => {
+    const expanded = expandWildcardPolicies([policy("order", "*")], all)
+
+    expect(keys(expanded)).toEqual(["order:read", "order:update"])
+  })
+
+  it("expands an operation wildcard across resources and keeps held policies", () => {
+    const expanded = expandWildcardPolicies(
+      [policy("*", "read"), policy("report", "export")],
+      all
+    )
+
+    expect(keys(expanded)).toEqual([
+      "order:read",
+      "product:read",
+      "report:export",
+    ])
+  })
+})
+
 describe("summarizeRolePolicies", () => {
   const inventory = PERMISSION_GROUPS.find((g) => g.id === "inventory")!
   const summaryOf = (policies: MatrixPolicy[], id: string) => {
@@ -681,6 +724,70 @@ describe("summarizeRolePolicies", () => {
     const summaries = summarizeRolePolicies([policy("product", "read")])
 
     expect(summaries.some((g) => g.id === CUSTOM_GROUP_ID)).toBe(false)
+  })
+
+  describe("with the full policy list", () => {
+    const all = [
+      ...forResource("product"),
+      policy("*", "*"),
+      policy("alpha", "read"),
+      policy("alpha", "export"),
+      policy("zebra", "read"),
+    ]
+    const customOf = (policies: MatrixPolicy[]) =>
+      summarizeRolePolicies(policies, all).find(
+        (g) => g.id === CUSTOM_GROUP_ID
+      )!
+
+    it("lists the Custom group with no access when the role holds no custom policy", () => {
+      const custom = customOf([policy("product", "read")])
+
+      expect(custom.level).toBe("none")
+      expect(custom.selected).toBe(0)
+      expect(custom.total).toBe(3)
+      expect(custom.resources).toEqual([])
+      expect(custom.withoutAccess).toEqual(["alpha", "zebra"])
+    })
+
+    it("omits the Custom group when no custom policy exists", () => {
+      const summaries = summarizeRolePolicies(
+        [policy("product", "read")],
+        forResource("product")
+      )
+
+      expect(summaries.some((g) => g.id === CUSTOM_GROUP_ID)).toBe(false)
+    })
+
+    it("reports mixed with the resources the role has no access to", () => {
+      const custom = customOf([policy("alpha", "export")])
+
+      expect(custom.level).toBe("mixed")
+      expect(custom.selected).toBe(1)
+      expect(custom.withoutAccess).toEqual(["zebra"])
+    })
+
+    it("reports view when the role holds exactly every custom read policy", () => {
+      const custom = customOf([
+        policy("alpha", "read"),
+        policy("zebra", "read"),
+      ])
+
+      expect(custom.level).toBe("view")
+    })
+
+    it("reports full when the role holds every custom policy", () => {
+      const custom = customOf(all)
+
+      expect(custom.level).toBe("full")
+      expect(custom.selected).toBe(3)
+    })
+
+    it("counts a custom policy the role holds that is missing from the list", () => {
+      const custom = customOf([policy("gamma", "read")])
+
+      expect(custom.total).toBe(4)
+      expect(custom.resources.map((r) => r.resource)).toEqual(["gamma"])
+    })
   })
 
   it("ignores wildcard policies", () => {

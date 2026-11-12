@@ -502,7 +502,7 @@ export type RoleGroupSummary = {
   level: GroupLevel
   /** Number of the role's non-wildcard policies in this group. */
   selected: number
-  /** Expected size of the group: its mapped resources times the four standard operations. Undefined for the Custom group. */
+  /** Expected size of the group: its mapped resources times the four standard operations. For the Custom group, the number of custom policies that exist, or undefined when the full policy list was not given. */
   total?: number
   /** Resources in this group the role has at least one policy for, in map order (Custom: sorted by name). */
   resources: {
@@ -510,18 +510,56 @@ export type RoleGroupSummary = {
     operations: string[]
     hasViewWarning: boolean
   }[]
-  /** Mapped resources in this group the role has no policy for. Empty for Custom. */
+  /** Resources in this group the role has no policy for. */
   withoutAccess: string[]
 }
 
 /**
- * Summarizes the policies a role holds per group, without needing the full
- * policy list. Group levels are measured against the group's mapped resources
- * times the four standard operations. Wildcard policies are ignored, use
- * `getWildcardPolicies` for those.
+ * The concrete policies a set of policies effectively grants: the non-wildcard
+ * ones as they are, plus every policy in `allPolicies` that one of the
+ * wildcards (`*:*`, `resource:*`, `*:operation`) matches.
+ */
+export const expandWildcardPolicies = (
+  policies: MatrixPolicy[],
+  allPolicies: MatrixPolicy[]
+): MatrixPolicy[] => {
+  const wildcards = getWildcardPolicies(policies)
+  const granted = (policy: MatrixPolicy) =>
+    wildcards.some(
+      (wildcard) =>
+        (wildcard.resource === "*" || wildcard.resource === policy.resource) &&
+        (wildcard.operation === "*" || wildcard.operation === policy.operation)
+    )
+
+  const byId = new Map<string, MatrixPolicy>()
+
+  for (const policy of policies) {
+    if (!isWildcard(policy)) {
+      byId.set(policy.id, policy)
+    }
+  }
+
+  for (const policy of allPolicies) {
+    if (!isWildcard(policy) && granted(policy)) {
+      byId.set(policy.id, policy)
+    }
+  }
+
+  return [...byId.values()]
+}
+
+/**
+ * Summarizes the policies a role holds per group. Group levels are measured
+ * against the group's mapped resources times the four standard operations,
+ * so mapped groups need no more than the role's own policies. The Custom group
+ * has no such map: pass `allPolicies` to measure it against every custom
+ * policy that exists and to list it even when the role holds none of them.
+ * Without it, Custom only covers what the role holds. Wildcard policies are
+ * ignored, use `getWildcardPolicies` for those.
  */
 export const summarizeRolePolicies = (
-  policies: MatrixPolicy[]
+  policies: MatrixPolicy[],
+  allPolicies?: MatrixPolicy[]
 ): RoleGroupSummary[] => {
   const operationsByResource = new Map<string, Set<string>>()
 
@@ -598,19 +636,50 @@ export const summarizeRolePolicies = (
   )
 
   const mapped = new Set(PERMISSION_GROUPS.flatMap((group) => group.resources))
-  const customResources = toResources(
-    [...operationsByResource.keys()]
-      .filter((name) => !mapped.has(name))
-      .sort((a, b) => a.localeCompare(b))
-  )
+  const isCustom = (policy: MatrixPolicy) =>
+    !isWildcard(policy) && !mapped.has(policy.resource)
 
-  if (customResources.length) {
+  // Keyed by resource and operation, so a policy the role holds is not
+  // counted twice when it is also in the full list.
+  const customKeys = new Set(
+    [...policies, ...(allPolicies ?? [])]
+      .filter(isCustom)
+      .map((policy) => `${policy.resource}:${policy.operation}`)
+  )
+  const customNames = [
+    ...new Set([...customKeys].map((key) => key.split(":")[0])),
+  ].sort((a, b) => a.localeCompare(b))
+
+  if (customNames.length) {
+    const resources = toResources(customNames)
+    const selected = countOf(resources)
+    const readTotal = [...customKeys].filter((key) =>
+      key.endsWith(`:${READ}`)
+    ).length
+    const onlyRead = resources.every(
+      ({ operations }) => operations.length === 1 && operations[0] === READ
+    )
+
+    let level: GroupLevel = "mixed"
+    if (allPolicies) {
+      if (selected === 0) {
+        level = "none"
+      } else if (selected === customKeys.size) {
+        level = "full"
+      } else if (onlyRead && selected === readTotal) {
+        level = "view"
+      }
+    }
+
     summaries.push({
       id: CUSTOM_GROUP_ID,
-      level: "mixed",
-      selected: countOf(customResources),
-      resources: customResources,
-      withoutAccess: [],
+      level,
+      selected,
+      total: allPolicies ? customKeys.size : undefined,
+      resources,
+      withoutAccess: customNames.filter(
+        (name) => !operationsByResource.has(name)
+      ),
     })
   }
 

@@ -2990,7 +2990,9 @@
           "count": "{{selected}} of {{total}} permissions",
           "countOnly_one": "{{count}} permission",
           "countOnly_other": "{{count}} permissions",
-          "noAccessTo": "No access to {{resources}}."
+          "granted": "Granted",
+          "notGranted": "Not granted",
+          "wildcards": "This role has wildcard permissions ({{keys}}). They grant every permission they match, including ones added later, and are managed through the API."
         }
       }
     },

@@ -1,11 +1,13 @@
-import { TriangleRightMini } from "@medusajs/icons"
+import { Check, TriangleRightMini } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Badge, Button, Container, Heading, Text } from "@medusajs/ui"
+import { Badge, Button, clx, Container, Heading, Text } from "@medusajs/ui"
 import { Collapsible } from "radix-ui"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
+import { ConditionalTooltip } from "../../../../../components/common/conditional-tooltip"
+import { useRbacPolicies } from "../../../../../hooks/api/rbac-policies"
 import {
   useRbacPolicyPermissions,
   useRbacRolePermissions,
@@ -17,7 +19,12 @@ import {
   useResourceLabel,
 } from "../../../common/hooks"
 import {
+  buildMatrix,
+  expandWildcardPolicies,
   getWildcardPolicies,
+  hasViewWarning,
+  MatrixGroup,
+  MatrixPolicy,
   RoleGroupSummary,
   summarizeRolePolicies,
 } from "../../../common/utils"
@@ -35,10 +42,45 @@ export const RolePermissionsSection = ({
 
   const canManagePolicies = canUpdate && canReadPolicies
 
-  const summaries = useMemo(
-    () => summarizeRolePolicies(role.policies ?? []),
-    [role.policies]
+  // Same query as the permissions matrix, so the two share a cache entry.
+  const { policies: allPolicies } = useRbacPolicies(
+    { limit: 9999, fields: "id,key,resource,operation" },
+    { enabled: canReadPolicies }
   )
+
+  // What the role can do, not only what it stores: its wildcard policies
+  // count as every existing policy they match.
+  const effectivePolicies = useMemo(
+    () =>
+      expandWildcardPolicies(
+        (role.policies ?? []) as MatrixPolicy[],
+        allPolicies ?? []
+      ),
+    [role.policies, allPolicies]
+  )
+
+  const summaries = useMemo(
+    () => summarizeRolePolicies(effectivePolicies, allPolicies),
+    [effectivePolicies, allPolicies]
+  )
+
+  const heldIds = useMemo(
+    () => new Set(effectivePolicies.map((policy) => policy.id)),
+    [effectivePolicies]
+  )
+
+  // Grantability is irrelevant on the detail page, so no assignable ids.
+  const matrix = useMemo(() => {
+    const byId = new Map<string, MatrixPolicy>()
+
+    for (const policy of [...(allPolicies ?? []), ...effectivePolicies]) {
+      if (!byId.has(policy.id)) {
+        byId.set(policy.id, policy)
+      }
+    }
+
+    return buildMatrix([...byId.values()], new Set())
+  }, [allPolicies, effectivePolicies])
 
   const wildcardKeys = useMemo(
     () =>
@@ -72,7 +114,11 @@ export const RolePermissionsSection = ({
       <ul className="divide-y">
         {summaries.map((summary) => (
           <li key={summary.id}>
-            <GroupRow summary={summary} />
+            <GroupRow
+              summary={summary}
+              group={matrix.find((group) => group.id === summary.id)}
+              heldIds={heldIds}
+            />
           </li>
         ))}
       </ul>
@@ -82,7 +128,7 @@ export const RolePermissionsSection = ({
           leading="compact"
           className="px-6 py-4 text-ui-fg-subtle"
         >
-          {t("roles.permissions.matrix.summary.wildcards", {
+          {t("roles.permissions.matrix.detail.wildcards", {
             keys: wildcardKeys.join(", "),
           })}
         </Text>
@@ -91,7 +137,13 @@ export const RolePermissionsSection = ({
   )
 }
 
-const GroupRow = ({ summary }: { summary: RoleGroupSummary }) => {
+type GroupRowProps = {
+  summary: RoleGroupSummary
+  group?: MatrixGroup
+  heldIds: Set<string>
+}
+
+const GroupRow = ({ summary, group, heldIds }: GroupRowProps) => {
   const { t } = useTranslation()
   const groupLabels = useGroupLabels()
   const resourceLabel = useResourceLabel()
@@ -150,44 +202,135 @@ const GroupRow = ({ summary }: { summary: RoleGroupSummary }) => {
         </div>
       </Collapsible.Trigger>
       <Collapsible.Content>
-        <div className="flex flex-col gap-y-3 border-t bg-ui-bg-subtle px-6 py-4 ps-12">
-          {summary.resources.map((resource) => (
-            <div
-              key={resource.resource}
-              className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1"
-            >
-              <div className="flex flex-col">
-                <Text size="small" leading="compact">
-                  {resourceLabel(resource.resource)}
-                </Text>
-                {resource.hasViewWarning && (
-                  <Text
-                    size="xsmall"
-                    leading="compact"
-                    className="text-ui-fg-error"
-                  >
-                    {t("roles.permissions.matrix.noViewAccess")}
-                  </Text>
-                )}
-              </div>
-              <div className="flex flex-wrap items-center gap-1">
-                {resource.operations.map((operation) => (
-                  <Badge key={operation} size="2xsmall" color="grey">
-                    {operationLabel(operation)}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          ))}
-          {summary.withoutAccess.length > 0 && (
-            <Text size="small" leading="compact" className="text-ui-fg-muted">
-              {t("roles.permissions.matrix.detail.noAccessTo", {
-                resources: summary.withoutAccess
-                  .map((resource) => resourceLabel(resource).toLowerCase())
-                  .join(", "),
-              })}
-            </Text>
-          )}
+        <div className="border-t bg-ui-bg-subtle">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="sticky start-0 bg-ui-bg-subtle px-6 py-2 text-start">
+                    <Text
+                      size="xsmall"
+                      leading="compact"
+                      weight="plus"
+                      className="text-ui-fg-subtle"
+                    >
+                      {t("roles.permissions.matrix.resourceColumn")}
+                    </Text>
+                  </th>
+                  {group?.operations.map((operation) => (
+                    <th key={operation} className="px-3 py-2 text-center">
+                      <Text
+                        as="span"
+                        size="xsmall"
+                        leading="compact"
+                        weight="plus"
+                        className="text-ui-fg-subtle"
+                      >
+                        {operationLabel(operation)}
+                      </Text>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {group?.resources.map((resource) => {
+                  const holdsAny = Object.values(resource.cells).some((cell) =>
+                    heldIds.has(cell.policy.id)
+                  )
+
+                  return (
+                    <tr
+                      key={resource.resource}
+                      className="border-b last:border-b-0"
+                    >
+                      <th
+                        scope="row"
+                        className="sticky start-0 bg-ui-bg-subtle px-6 py-2 text-start font-normal"
+                      >
+                        <div className="flex min-w-0 flex-col">
+                          <Text
+                            size="small"
+                            leading="compact"
+                            className={clx({ "text-ui-fg-muted": !holdsAny })}
+                          >
+                            {resourceLabel(resource.resource)}
+                          </Text>
+                          {hasViewWarning(resource, heldIds) && (
+                            <Text
+                              size="xsmall"
+                              leading="compact"
+                              className="text-ui-fg-error"
+                            >
+                              {t("roles.permissions.matrix.noViewAccess")}
+                            </Text>
+                          )}
+                        </div>
+                      </th>
+                      {group.operations.map((operation) => {
+                        const cell = resource.cells[operation]
+
+                        if (!cell) {
+                          return (
+                            <td
+                              key={operation}
+                              className="px-3 py-2 text-center"
+                            >
+                              <ConditionalTooltip
+                                showTooltip
+                                content={t(
+                                  "roles.permissions.matrix.notAvailableTooltip"
+                                )}
+                              >
+                                <Text
+                                  as="span"
+                                  size="small"
+                                  leading="compact"
+                                  className="text-ui-fg-muted"
+                                >
+                                  {t("roles.permissions.matrix.notAvailable")}
+                                </Text>
+                              </ConditionalTooltip>
+                            </td>
+                          )
+                        }
+
+                        return (
+                          <td key={operation} className="px-3 py-2">
+                            <div className="flex items-center justify-center">
+                              {heldIds.has(cell.policy.id) ? (
+                                <>
+                                  <Check className="text-ui-fg-base" />
+                                  <span className="sr-only">
+                                    {t(
+                                      "roles.permissions.matrix.detail.granted"
+                                    )}
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <span
+                                    aria-hidden
+                                    className="text-ui-fg-muted"
+                                  >
+                                    &ndash;
+                                  </span>
+                                  <span className="sr-only">
+                                    {t(
+                                      "roles.permissions.matrix.detail.notGranted"
+                                    )}
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          </td>
+                        )
+                      })}
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </Collapsible.Content>
     </Collapsible.Root>
