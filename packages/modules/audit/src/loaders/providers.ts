@@ -57,6 +57,7 @@ export default async ({
   container,
   options,
 }: LoaderOptions<AuditModuleOptions>): Promise<void> => {
+  const logger = container.resolve<Logger>("logger")
   const ids: string[] = []
   const cloud = options?.cloud
 
@@ -91,11 +92,9 @@ export default async ({
       AuditProviderRegistrationPrefix + POSTGRES_AUDIT_PROVIDER_ID
     )
   } else if (options?.retention_days !== undefined) {
-    container
-      .resolve<Logger>("logger")
-      .warn(
-        'Audit: "retention_days" only applies to the built-in Postgres storage and is ignored, because audit logs are stored by another provider.'
-      )
+    logger.warn(
+      'Audit: "retention_days" only applies to the built-in Postgres storage and is ignored, because audit logs are stored by another provider.'
+    )
   }
 
   const defaultProvider = resolveDefaultProvider(
@@ -103,6 +102,10 @@ export default async ({
     options ?? {},
     !!cloud?.endpoint
   )
+
+  if (!options?.default_provider) {
+    logger.info(`Audit module: Using "${defaultProvider}" as default.`)
+  }
 
   container.register({
     [AuditDefaultProviderRegistrationName]: asValue(defaultProvider),

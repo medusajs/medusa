@@ -68,6 +68,12 @@ describe("normalizeAuditLog", () => {
     expect(entry!.started_at).not.toBe(startedAt)
   })
 
+  it("stores the action without surrounding whitespace", () => {
+    const { entry } = normalizeAuditLog({ action: "  order.cancel " })
+
+    expect(entry!.action).toBe("order.cancel")
+  })
+
   it.each([
     [{}, '"action"'],
     [{ action: "  " }, '"action"'],

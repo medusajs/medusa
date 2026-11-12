@@ -38,16 +38,19 @@ export class AuditBuffer {
   constructor(options: AuditBufferOptions) {
     this.write_ = options.write
     this.logger_ = options.logger
-    this.maxSize_ = positive(options.maxSize, DEFAULT_BUFFER_MAX_SIZE)
-    this.flushIntervalMs_ = positive(
+    this.maxSize_ = AuditBuffer.positive_(
+      options.maxSize,
+      DEFAULT_BUFFER_MAX_SIZE
+    )
+    this.flushIntervalMs_ = AuditBuffer.positive_(
       options.flushIntervalMs,
       DEFAULT_BUFFER_FLUSH_INTERVAL_MS
     )
     this.maxBuffered_ = Math.max(
-      positive(options.maxBuffered, DEFAULT_BUFFER_MAX_BUFFERED),
+      AuditBuffer.positive_(options.maxBuffered, DEFAULT_BUFFER_MAX_BUFFERED),
       this.maxSize_
     )
-    this.writeAttempts_ = positive(
+    this.writeAttempts_ = AuditBuffer.positive_(
       options.writeAttempts,
       DEFAULT_WRITE_ATTEMPTS
     )
@@ -135,7 +138,7 @@ export class AuditBuffer {
       } catch (error) {
         lastError = error
         if (attempt < this.writeAttempts_) {
-          await delay(this.retryDelayMs_ * 2 ** (attempt - 1))
+          await this.delay_(this.retryDelayMs_ * 2 ** (attempt - 1))
         }
       }
     }
@@ -144,26 +147,27 @@ export class AuditBuffer {
     this.logger_.error(
       `Audit: dropped ${batch.length} audit log(s) after ${
         this.writeAttempts_
-      } failed write attempt(s): ${errorMessage(lastError)}`
+      } failed write attempt(s): ${
+        lastError instanceof Error ? lastError.message : String(lastError)
+      }`
     )
   }
-}
 
-function positive(value: number | undefined, fallback: number): number {
-  return typeof value === "number" && Number.isFinite(value) && value > 0
-    ? Math.floor(value)
-    : fallback
-}
-
-function delay(ms: number): Promise<void> {
-  if (ms <= 0) {
-    return Promise.resolve()
+  protected static positive_(
+    value: number | undefined,
+    fallback: number
+  ): number {
+    return typeof value === "number" && Number.isFinite(value) && value > 0
+      ? Math.floor(value)
+      : fallback
   }
 
-  // Not unref'd: a shutdown flush waiting on a retry must keep the process alive.
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
+  protected delay_(ms: number): Promise<void> {
+    if (ms <= 0) {
+      return Promise.resolve()
+    }
 
-function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error)
+    // Not unref'd: a shutdown flush waiting on a retry must keep the process alive.
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
 }

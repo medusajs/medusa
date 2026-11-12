@@ -29,7 +29,7 @@ export type NormalizeResult =
 
 /**
  * Turns caller input into a complete audit log with an ID. Returns the reason
- * instead of throwing, since `record` must never throw.
+ * instead of throwing, since `createAuditLogs` must never throw.
  */
 export function normalizeAuditLog(
   input: CreateAuditLogDTO,
@@ -39,7 +39,8 @@ export function normalizeAuditLog(
     return { error: "an audit log must be an object" }
   }
 
-  if (typeof input.action !== "string" || !input.action.trim()) {
+  const action = typeof input.action === "string" ? input.action.trim() : ""
+  if (!action) {
     return { error: '"action" must be a non-empty string' }
   }
 
@@ -73,7 +74,7 @@ export function normalizeAuditLog(
       actor_type: actorType,
       actor_id: toNullableString(input.actor_id),
       impersonator_id: toNullableString(input.impersonator_id),
-      action: input.action,
+      action,
       resource_type: toNullableString(input.resource_type),
       resource_id: toNullableString(input.resource_id),
       outcome,
