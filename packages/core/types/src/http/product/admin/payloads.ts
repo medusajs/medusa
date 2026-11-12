@@ -500,7 +500,8 @@ export interface AdminUpdateProduct {
    */
   option_ids?: string[]
   /**
-   * The product's variants.
+   * The product's variants. This replaces the product's full variant list, so existing variants
+   * that aren't included are deleted. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
    */
   variants?: (AdminCreateProductVariant | AdminUpdateProductVariant)[]
   /**
