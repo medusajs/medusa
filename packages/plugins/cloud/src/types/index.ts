@@ -8,15 +8,27 @@ export type CloudPluginOptions = {
    * announcements targeted at the organization's plan are included.
    */
   organizationId?: string
+  /**
+   * The Medusa Cloud API key of the project's environment. When set, requests
+   * to the Medusa Cloud API are authenticated, so announcements are filtered
+   * to the organization's plan.
+   */
+  apiKey?: string
+  /**
+   * The handle of the project's Medusa Cloud environment. When set, it's sent
+   * with requests to the Medusa Cloud API.
+   */
+  environmentHandle?: string
+  /**
+   * Whether to disable the plugin. When `true`, `defineConfig` doesn't load
+   * the plugin, so the Medusa Cloud API is never called and its admin widgets
+   * and settings page aren't added.
+   */
+  disabled?: boolean
 }
 
 export type CloudAnnouncementType =
-  | "info"
-  | "feature"
-  | "warning"
-  | "incident"
-  | "release"
-  | "admin"
+  "cloud-feature" | "feature" | "security" | "incident" | "admin"
 
 export type CloudAnnouncement = {
   id: string
@@ -36,6 +48,25 @@ export type CloudAnnouncement = {
   admin_path: string | null
   published_at: string | null
 }
+
+/**
+ * The announcement categories a team can turn on or off. `security` covers
+ * `security` and `incident` announcements, `feature` covers `feature`, and
+ * `cloud` covers `cloud-feature` and `admin`.
+ */
+export type CloudAnnouncementCategory = "security" | "feature" | "cloud"
+
+export type CloudAnnouncementPreferences = Record<
+  CloudAnnouncementCategory,
+  boolean
+>
+
+export type AdminCloudAnnouncementPreferencesResponse = {
+  announcement_preferences: CloudAnnouncementPreferences
+}
+
+export type AdminUpdateCloudAnnouncementPreferences =
+  Partial<CloudAnnouncementPreferences>
 
 export type AdminCloudAnnouncementListResponse = {
   announcements: CloudAnnouncement[]

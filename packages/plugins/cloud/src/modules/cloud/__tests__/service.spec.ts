@@ -2,8 +2,10 @@ import CloudModuleService, {
   ANNOUNCEMENTS_CACHE_TAG,
   ANNOUNCEMENTS_CACHE_TTL,
   CLOUD_DASHBOARD_URL,
+  CLOUD_SIGNUP_URL,
   DEFAULT_CLOUD_API_URL,
 } from "../service"
+import { CloudAnnouncementPreferences } from "../../../types"
 
 const rawAnnouncement = {
   id: "anno_1",
@@ -34,11 +36,19 @@ const createCachingMock = () => {
 
 const createService = (
   caching?: ReturnType<typeof createCachingMock>,
-  options = {}
-) => new CloudModuleService({ logger, caching } as any, options)
+  options = {},
+  preferences?: Partial<CloudAnnouncementPreferences>
+) => {
+  const service = new CloudModuleService({ logger, caching } as any, options)
+  jest
+    .spyOn(service, "listCloudAnnouncementPreferences")
+    .mockResolvedValue((preferences ? [preferences] : []) as any)
+
+  return service
+}
 
 const mockResponse = (body: unknown, ok = true, status = 200) =>
-  ({ ok, status, json: async () => body } as Response)
+  ({ ok, status, json: async () => body }) as Response
 
 describe("CloudModuleService.listAnnouncements", () => {
   let fetchMock: jest.Mock
@@ -65,12 +75,12 @@ describe("CloudModuleService.listAnnouncements", () => {
     expect(url.origin + url.pathname).toEqual(
       `${DEFAULT_CLOUD_API_URL}/v1/announcements`
     )
-    expect(Object.fromEntries(url.searchParams)).toEqual({
-      limit: "50",
-      offset: "0",
-      order: "-published_at",
-    })
+    expect(url.searchParams.get("limit")).toEqual("50")
+    expect(url.searchParams.get("offset")).toEqual("0")
+    expect(url.searchParams.get("order")).toEqual("-published_at")
     expect(init.headers).not.toHaveProperty("x-medusa-organization")
+    expect(init.headers).not.toHaveProperty("authorization")
+    expect(init.headers).not.toHaveProperty("x-medusa-environment-handle")
     expect(announcements).toEqual([
       {
         id: "anno_1",
@@ -84,6 +94,69 @@ describe("CloudModuleService.listAnnouncements", () => {
         published_at: "2026-10-01T00:00:00.000Z",
       },
     ])
+  })
+
+  it("should use the services endpoint and authenticate with the API key when set", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ announcements: [] }))
+
+    await createService(undefined, { apiKey: "cloud_key" }).listAnnouncements()
+
+    const [url, init] = fetchMock.mock.calls[0]
+    expect(new URL(url).pathname).toEqual("/v1/services/announcements")
+    expect(init.headers.authorization).toEqual("Basic cloud_key")
+  })
+
+  it("should request the types of every category when no preferences are set", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ announcements: [] }))
+
+    await service.listAnnouncements()
+
+    const [url] = fetchMock.mock.calls[0]
+    expect(new URL(url).searchParams.getAll("type[]")).toEqual([
+      "security",
+      "incident",
+      "feature",
+      "cloud-feature",
+      "admin",
+    ])
+  })
+
+  it("should only request the types of the enabled categories", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ announcements: [] }))
+
+    await createService(
+      undefined,
+      {},
+      { security: true, feature: false, cloud: false }
+    ).listAnnouncements()
+
+    const [url] = fetchMock.mock.calls[0]
+    expect(new URL(url).searchParams.getAll("type[]")).toEqual([
+      "security",
+      "incident",
+    ])
+  })
+
+  it("should not call the Medusa Cloud API when every category is disabled", async () => {
+    const announcements = await createService(
+      undefined,
+      {},
+      { security: false, feature: false, cloud: false }
+    ).listAnnouncements()
+
+    expect(announcements).toEqual([])
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it("should send the environment handle when set", async () => {
+    fetchMock.mockResolvedValue(mockResponse({ announcements: [] }))
+
+    await createService(undefined, {
+      environmentHandle: "env_handle",
+    }).listAnnouncements()
+
+    const [, init] = fetchMock.mock.calls[0]
+    expect(init.headers["x-medusa-environment-handle"]).toEqual("env_handle")
   })
 
   it("should link paths to the organization's Medusa Cloud dashboard", async () => {
@@ -102,7 +175,7 @@ describe("CloudModuleService.listAnnouncements", () => {
     )
   })
 
-  it("should drop path links without an organization", async () => {
+  it("should link paths to the Medusa Cloud sign-up page without an organization", async () => {
     fetchMock.mockResolvedValue(
       mockResponse({
         announcements: [{ ...rawAnnouncement, link_url: "/settings" }],
@@ -111,7 +184,7 @@ describe("CloudModuleService.listAnnouncements", () => {
 
     const [announcement] = await service.listAnnouncements()
 
-    expect(announcement.link_url).toBeNull()
+    expect(announcement.link_url).toEqual(CLOUD_SIGNUP_URL)
   })
 
   it("should keep the admin path only for admin announcements", async () => {
@@ -160,10 +233,10 @@ describe("CloudModuleService.listAnnouncements", () => {
           {
             id: "anno_published",
             title: "Published",
-            type: "release",
+            type: "security",
             published_at: "2026-11-10T11:00:00.000Z",
           },
-          { id: "anno_no_date", title: "No date", type: "info" },
+          { id: "anno_no_date", title: "No date", type: "cloud-feature" },
         ],
       })
     )

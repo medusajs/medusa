@@ -9,6 +9,7 @@ import { useCloudAnnouncements } from "../hooks/announcements"
 import { getAnnouncementForPath } from "../lib/announcements"
 import {
   addDismissedAnnouncementId,
+  getAnnouncementsSince,
   getDismissedAnnouncementIds,
 } from "../lib/storage"
 
@@ -23,6 +24,7 @@ const CloudAnnouncementCardWidget = () => {
     () =>
       getAnnouncementForPath(pathname, announcements, {
         dismissedIds: getDismissedAnnouncementIds(),
+        since: getAnnouncementsSince(),
       }),
     [pathname, announcements]
   )

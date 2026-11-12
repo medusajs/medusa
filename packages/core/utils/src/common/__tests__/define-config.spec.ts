@@ -201,6 +201,15 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiKey": undefined,
+              "apiUrl": undefined,
+              "environmentHandle": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -555,6 +564,15 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiKey": undefined,
+              "apiUrl": undefined,
+              "environmentHandle": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -762,6 +780,15 @@ describe("defineConfig", function () {
           {
             "options": {},
             "resolve": "@medusajs/draft-order",
+          },
+          {
+            "options": {
+              "apiKey": undefined,
+              "apiUrl": undefined,
+              "environmentHandle": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
           },
         ],
         "projectConfig": {
@@ -972,6 +999,15 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiKey": undefined,
+              "apiUrl": undefined,
+              "environmentHandle": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -1170,6 +1206,15 @@ describe("defineConfig", function () {
           {
             "options": {},
             "resolve": "@medusajs/draft-order",
+          },
+          {
+            "options": {
+              "apiKey": undefined,
+              "apiUrl": undefined,
+              "environmentHandle": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
           },
         ],
         "projectConfig": {
@@ -1372,6 +1417,15 @@ describe("defineConfig", function () {
           {
             "options": {},
             "resolve": "@medusajs/draft-order",
+          },
+          {
+            "options": {
+              "apiKey": undefined,
+              "apiUrl": undefined,
+              "environmentHandle": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
           },
         ],
         "projectConfig": {
@@ -1629,7 +1683,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
+              "apiKey": undefined,
               "apiUrl": undefined,
+              "environmentHandle": undefined,
               "organizationId": undefined,
             },
             "resolve": "@medusajs/cloud",
@@ -1850,7 +1906,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
+              "apiKey": undefined,
               "apiUrl": undefined,
+              "environmentHandle": undefined,
               "organizationId": undefined,
             },
             "resolve": "@medusajs/cloud",
@@ -2113,7 +2171,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
+              "apiKey": undefined,
               "apiUrl": undefined,
+              "environmentHandle": undefined,
               "organizationId": undefined,
             },
             "resolve": "@medusajs/cloud",
@@ -2392,7 +2452,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
+              "apiKey": undefined,
               "apiUrl": undefined,
+              "environmentHandle": undefined,
               "organizationId": undefined,
             },
             "resolve": "@medusajs/cloud",
@@ -2446,6 +2508,15 @@ describe("defineConfig", function () {
     const config = defineConfig()
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          apiKey: undefined,
+          environmentHandle: undefined,
+        },
+      },
     ])
   })
 
@@ -2457,6 +2528,15 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          apiKey: undefined,
+          environmentHandle: undefined,
+        },
+      },
       { resolve: "@medusajs/custom-plugin", options: { key: "value" } },
     ])
   })
@@ -2471,6 +2551,15 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          apiKey: undefined,
+          environmentHandle: undefined,
+        },
+      },
       { resolve: "@medusajs/plugin-one", options: { setting: "a" } },
       { resolve: "@medusajs/plugin-two", options: { setting: "b" } },
       { resolve: "./local-plugin", options: {} },
@@ -2485,26 +2574,35 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: { setting: "a" } },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          apiKey: undefined,
+          environmentHandle: undefined,
+        },
+      },
     ])
   })
 
-  it("should include plugins in cloud environment", function () {
-    const originalEnv = { ...process.env }
-    process.env.EXECUTION_CONTEXT = "medusa-cloud"
-
+  it("should include the cloud plugin by default", function () {
     const config = defineConfig({
       plugins: [
         { resolve: "@medusajs/cloud-plugin", options: { cloud: true } },
       ],
     })
 
-    process.env = { ...originalEnv }
-
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
       {
         resolve: "@medusajs/cloud",
-        options: { apiUrl: undefined, organizationId: undefined },
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          apiKey: undefined,
+          environmentHandle: undefined,
+        },
       },
       { resolve: "@medusajs/cloud-plugin", options: { cloud: true } },
     ])
@@ -2512,9 +2610,10 @@ describe("defineConfig", function () {
 
   it("should pass Medusa Cloud env variables to the cloud plugin", function () {
     const originalEnv = { ...process.env }
-    process.env.EXECUTION_CONTEXT = "medusa-cloud"
     process.env.MEDUSA_CLOUD_API_URL = "https://api.staging.medusajs.cloud"
     process.env.MEDUSA_CLOUD_ORGANIZATION_ID = "org_123"
+    process.env.MEDUSA_CLOUD_API_KEY = "cloud_key"
+    process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE = "env_handle"
 
     const config = defineConfig()
 
@@ -2525,21 +2624,18 @@ describe("defineConfig", function () {
       options: {
         apiUrl: "https://api.staging.medusajs.cloud",
         organizationId: "org_123",
+        apiKey: "cloud_key",
+        environmentHandle: "env_handle",
       },
     })
   })
 
   it("should let the user override the cloud plugin options", function () {
-    const originalEnv = { ...process.env }
-    process.env.EXECUTION_CONTEXT = "medusa-cloud"
-
     const config = defineConfig({
       plugins: [
         { resolve: "@medusajs/cloud", options: { organizationId: "org_1" } },
       ],
     })
-
-    process.env = { ...originalEnv }
 
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
@@ -2547,15 +2643,14 @@ describe("defineConfig", function () {
     ])
   })
 
-  it("should not include the cloud plugin outside of Medusa Cloud", function () {
-    const config = defineConfig()
+  it("should not include the cloud plugin when it's disabled", function () {
+    const config = defineConfig({
+      plugins: [{ resolve: "@medusajs/cloud", options: { disabled: true } }],
+    })
 
-    expect(
-      config.plugins.some(
-        (plugin) =>
-          typeof plugin !== "string" && plugin.resolve === "@medusajs/cloud"
-      )
-    ).toBe(false)
+    expect(config.plugins).toEqual([
+      { resolve: "@medusajs/draft-order", options: {} },
+    ])
   })
 
   it("should handle empty plugins array", function () {
@@ -2564,6 +2659,15 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          apiKey: undefined,
+          environmentHandle: undefined,
+        },
+      },
     ])
   })
 
@@ -2573,6 +2677,15 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          apiKey: undefined,
+          environmentHandle: undefined,
+        },
+      },
     ])
   })
 
@@ -2750,6 +2863,15 @@ describe("defineConfig", function () {
           {
             "options": {},
             "resolve": "@medusajs/draft-order",
+          },
+          {
+            "options": {
+              "apiKey": undefined,
+              "apiUrl": undefined,
+              "environmentHandle": undefined,
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
           },
         ],
         "projectConfig": {
@@ -2999,6 +3121,15 @@ describe("defineConfig", function () {
           {
             "options": {},
             "resolve": "@medusajs/draft-order",
+          },
+          {
+            "options": {
+              "apiKey": "test-api-key",
+              "apiUrl": undefined,
+              "environmentHandle": "test-environment",
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
           },
         ],
         "projectConfig": {
@@ -3262,6 +3393,15 @@ describe("defineConfig", function () {
           {
             "options": {},
             "resolve": "@medusajs/draft-order",
+          },
+          {
+            "options": {
+              "apiKey": "overriden-api-key",
+              "apiUrl": undefined,
+              "environmentHandle": "overriden-environment",
+              "organizationId": undefined,
+            },
+            "resolve": "@medusajs/cloud",
           },
         ],
         "projectConfig": {

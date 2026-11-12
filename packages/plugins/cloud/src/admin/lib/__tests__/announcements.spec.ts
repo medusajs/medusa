@@ -26,7 +26,8 @@ const productsTip = createAnnouncement({
   admin_path: "/products/",
 })
 const feature = createAnnouncement({ id: "anno_feature" })
-const noHistory = { dismissedIds: [] }
+const since = "2026-11-01T00:00:00.000Z"
+const noHistory = { dismissedIds: [], since }
 
 describe("getAnnouncementForPath", () => {
   it("should return the announcement matching the page, ignoring trailing slashes", () => {
@@ -66,6 +67,7 @@ describe("getAnnouncementForPath", () => {
     expect(
       getAnnouncementForPath("/orders", announcements, {
         dismissedIds: ["anno_orders"],
+        since,
       })?.id
     ).toEqual("anno_feature")
   })
@@ -74,7 +76,24 @@ describe("getAnnouncementForPath", () => {
     expect(
       getAnnouncementForPath("/orders", [ordersTip], {
         dismissedIds: ["anno_orders"],
+        since,
       })
     ).toBeUndefined()
+  })
+
+  it("should not return an announcement published on or before the since date", () => {
+    const old = createAnnouncement({
+      id: "anno_old",
+      published_at: "2026-10-31T00:00:00.000Z",
+    })
+    const recent = createAnnouncement({
+      id: "anno_recent",
+      published_at: "2026-11-02T00:00:00.000Z",
+    })
+
+    expect(getAnnouncementForPath("/orders", [old], noHistory)).toBeUndefined()
+    expect(
+      getAnnouncementForPath("/orders", [old, recent], noHistory)?.id
+    ).toEqual("anno_recent")
   })
 })

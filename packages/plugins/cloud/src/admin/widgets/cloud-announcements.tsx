@@ -1,5 +1,5 @@
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { ArrowUpRightOnBox, Medusa, SidebarRight } from "@medusajs/icons"
+import { ArrowUpRightOnBox, Megaphone, SidebarRight } from "@medusajs/icons"
 import { Badge, Drawer, Heading, IconButton, Text } from "@medusajs/ui"
 import { useState } from "react"
 import { CloudAnnouncement } from "../../types"
@@ -59,7 +59,7 @@ const CloudAnnouncementsWidget = () => {
             className="text-ui-fg-muted hover:text-ui-fg-subtle relative"
             aria-label="What's new in Medusa Cloud"
           >
-            <Medusa className="[&_path]:fill-current" />
+            <Megaphone />
             {hasUnread && (
               <span className="bg-ui-tag-blue-icon absolute right-1 top-1 size-1.5 rounded-full" />
             )}

@@ -1,7 +1,7 @@
 {
   "name": "@medusajs/cloud",
   "version": "2.22.6",
-  "description": "A Medusa plugin that adds Medusa Cloud features, such as in-app announcements, to the Medusa Admin of Cloud projects.",
+  "description": "A Medusa plugin that adds Medusa Cloud features, such as in-app announcements, to the Medusa Admin.",
   "author": "Medusa (https://medusajs.com)",
   "license": "MIT",
   "repository": {
