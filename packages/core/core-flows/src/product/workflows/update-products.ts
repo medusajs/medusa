@@ -47,7 +47,8 @@ export type UpdateProductsWorkflowInputSelector = {
      */
     sales_channels?: { id: string }[]
     /**
-     * The variants to update.
+     * The variants to set. This replaces the products' full variant list, so existing variants
+     * that aren't included are deleted. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
      */
     variants?: UpdateProductVariantWorkflowInputDTO[]
     /**
@@ -70,7 +71,8 @@ export type UpdateProductsWorkflowInputProducts = {
      */
     sales_channels?: { id: string }[]
     /**
-     * The variants to update.
+     * The variants to set. This replaces the product's full variant list, so existing variants
+     * that aren't included are deleted. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
      */
     variants?: UpdateProductVariantWorkflowInputDTO[]
     /**
@@ -349,6 +351,14 @@ export const updateProductsWorkflowId = "update-products"
  *
  * Learn more about adding rules to the product variant's prices in the Pricing Module's
  * [Price Rules](https://docs.medusajs.com/resources/commerce-modules/pricing/price-rules) documentation.
+ *
+ * :::
+ *
+ * :::note
+ *
+ * If you pass `variants` for a product, they replace the product's full variant list. Existing variants that aren't in the list are deleted
+ * without executing {@link deleteProductVariantsWorkflow} or its `productVariantsDeleted` hook. So, if you guard variant deletion in that hook,
+ * apply the same guard before executing this workflow, as its `productsUpdated` hook only runs after the products are updated.
  *
  * :::
  *

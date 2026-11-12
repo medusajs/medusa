@@ -1,5 +1,5 @@
 import { generateKeyPairSync, KeyObject, sign } from "crypto"
-import { assertLicensed, loadLicense } from "../index"
+import { assertLicensed, LicenseFeature, loadLicense } from "../index"
 
 const { publicKey, privateKey } = generateKeyPairSync("ed25519")
 const otherKeyPair = generateKeyPairSync("ed25519")
@@ -136,5 +136,17 @@ describe("assertLicensed", () => {
     const license = { token: "token", ...validClaims }
 
     expect(() => assertLicensed(license, "rbac")).not.toThrow()
+  })
+
+  it("checks the audit feature like any other", () => {
+    const license = { token: "token", sub: "org_01", features: ["rbac"] }
+
+    expect(LicenseFeature.AUDIT).toBe("audit")
+    expect(() => assertLicensed(license, LicenseFeature.AUDIT)).toThrow(
+      /does not cover the "audit" feature/
+    )
+    expect(() =>
+      assertLicensed({ ...license, features: ["audit"] }, LicenseFeature.AUDIT)
+    ).not.toThrow()
   })
 })
