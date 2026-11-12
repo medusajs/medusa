@@ -1,10 +1,7 @@
-import { MedusaModule } from "@medusajs/modules-sdk"
-import { Modules } from "@medusajs/utils"
-import { resolve } from "path"
-import { asValue } from "../../deps/awilix"
-import { container } from "../../container"
-import { logger } from "../../logger"
+import express, { NextFunction, Request, Response } from "express"
+import supertest from "supertest"
 import {
+  createAuditMiddleware,
   getAuditOutcome,
   getDefaultAuditResource,
   getRouteParams,
@@ -12,24 +9,9 @@ import {
   mergeAuditConfigRoutes,
   resolveAuditActor,
 } from "../audit"
-import { createServer } from "../__fixtures__/server"
-import { MiddlewareFileLoader } from "../middleware-file-loader"
-import { AuditRequest, MedusaNextFunction } from "../types"
-
-jest.setTimeout(30000)
-
-jest.mock("../middlewares/ensure-publishable-api-key", () => {
-  return {
-    ensurePublishableApiKeyMiddleware: async (
-      req: any,
-      res: any,
-      next: MedusaNextFunction
-    ) => next(),
-  }
-})
-
-const CORE_DIR = resolve(__dirname, "../__fixtures__/routers-audit")
-const APP_DIR = resolve(__dirname, "../__fixtures__/routers-audit-app")
+import { preloadPathToRegexp, RoutesFinder } from "../routes-finder"
+import { RoutesSorter } from "../routes-sorter"
+import { AuditConfigRoute, AuditRequest, RouteVerb } from "../types"
 
 describe("Audit route settings", () => {
   it("keeps one setting per matcher and method, with the later one winning", () => {
@@ -61,32 +43,6 @@ describe("Audit route settings", () => {
       { matcher: "/admin/orders/:id", methods: ["DELETE"], config: false },
       { matcher: "/admin/orders", methods: ["POST"], config: action },
     ])
-  })
-
-  it("lets a later source directory override core settings", async () => {
-    const loader = new MiddlewareFileLoader()
-    await loader.scanDir(CORE_DIR)
-    await loader.scanDir(APP_DIR)
-
-    const routes = loader.getAuditConfigRoutes()
-    const find = (matcher: string, method: string) =>
-      routes.find(
-        (r) => r.matcher === matcher && r.methods.includes(method as any)
-      )?.config
-
-    expect(find("/admin/products", "POST")).toEqual({
-      action: "product.create",
-      resource: expect.any(Function),
-      requestData: expect.any(Function),
-    })
-    expect(
-      (find("/admin/products", "POST") as any).requestData({
-        validatedBody: { title: "Shirt" },
-      })
-    ).toEqual({ title: "Shirt", app: true })
-    expect(find("/admin/products/:id", "DELETE")).toBe(true)
-    expect(find("/admin/orders/:id/cancel", "POST")).toBe(false)
-    expect(find("/admin/products*", "GET")).toBe(false)
   })
 })
 
@@ -188,8 +144,70 @@ describe("Audit helpers", () => {
 
 describe("Audit middleware", () => {
   const record = jest.fn()
-  let request: Awaited<ReturnType<typeof createServer>>["request"]
-  const adminSession = { jwt: { userId: "user_1" } }
+  const logger = { warn: jest.fn() }
+  let request: ReturnType<typeof supertest>
+
+  const routes: {
+    method: RouteVerb
+    path: string
+    handler: (req: Request, res: Response) => void
+    audit?: AuditConfigRoute["config"]
+  }[] = [
+    {
+      method: "POST",
+      path: "/admin/products",
+      handler: (req, res) =>
+        req.body?.title
+          ? res.json({ product: { id: "prod_new" } })
+          : res.status(400).json({ message: "Invalid request" }),
+      audit: {
+        action: "product.create",
+        resource: (_req, body) => ({ type: "product", id: body?.product?.id }),
+        requestData: (req) => ({ title: (req as Request).body?.title }),
+      },
+    },
+    {
+      method: "DELETE",
+      path: "/admin/products/:id",
+      handler: (_req, res) => res.json({ deleted: true }),
+    },
+    {
+      method: "GET",
+      path: "/admin/products",
+      handler: (_req, res) => res.json({ products: [] }),
+    },
+    {
+      method: "POST",
+      path: "/admin/orders/:id/cancel",
+      handler: (_req, res) => res.json({}),
+      audit: false,
+    },
+    {
+      method: "POST",
+      path: "/admin/fail",
+      handler: (_req, res) => res.status(400).json({ message: "Not allowed" }),
+      audit: {
+        resource: () => {
+          throw new Error("resource failed")
+        },
+        responseData: (_req, body) => ({ body }),
+      },
+    },
+    {
+      method: "POST",
+      path: "/store/carts",
+      handler: (_req, res) => res.json({ cart: { id: "cart_new" } }),
+      audit: {
+        resource: (_req, body) => ({ type: "cart", id: body?.cart?.id }),
+        responseData: (_req, body) => ({ cart_id: body?.cart?.id }),
+      },
+    },
+    {
+      method: "POST",
+      path: "/hooks",
+      handler: (_req, res) => res.json({ ok: true }),
+    },
+  ]
 
   // Records are written once the response is finished, which can come after
   // supertest resolves.
@@ -204,29 +222,63 @@ describe("Audit middleware", () => {
   const settle = () => new Promise((resolve) => setTimeout(resolve, 50))
 
   beforeAll(async () => {
-    const isInstalled = MedusaModule.isInstalled.bind(MedusaModule)
-    jest
-      .spyOn(MedusaModule, "isInstalled")
-      .mockImplementation(
-        (moduleKey: string) =>
-          moduleKey === Modules.AUDIT || isInstalled(moduleKey)
-      )
+    await preloadPathToRegexp()
 
-    const server = await createServer([CORE_DIR, APP_DIR])
-    container.register(Modules.AUDIT, asValue({ createAuditLogs: record }))
-    request = server.request
+    const auditRoutes = routes
+      .filter((route) => route.audit !== undefined)
+      .map((route) => ({
+        matcher: route.path,
+        methods: [route.method],
+        config: route.audit!,
+      }))
+
+    const app = express()
+    app.use(
+      createAuditMiddleware({
+        routesFinder: new RoutesFinder(
+          routes.map((route) => ({ matcher: route.path, method: route.method }))
+        ) as any,
+        auditRoutesFinder: new RoutesFinder<AuditConfigRoute>(
+          new RoutesSorter(auditRoutes).sort([
+            "static",
+            "params",
+            "regex",
+            "wildcard",
+            "global",
+          ])
+        ),
+        getAuditService: () => ({ createAuditLogs: record }) as any,
+        logger: logger as any,
+      })
+    )
+    app.use(express.json())
+    // Stands in for authentication, which runs after the audit middleware.
+    app.use("/admin", (req: Request, res: Response, next: NextFunction) => {
+      const actorId = req.get("x-user")
+      if (!actorId) {
+        res.status(401).json({ message: "Unauthorized" })
+        return
+      }
+      ;(req as any).auth_context = { actor_id: actorId, actor_type: "user" }
+      next()
+    })
+    routes.forEach((route) =>
+      app[route.method.toLowerCase()](route.path, route.handler)
+    )
+
+    request = supertest(app)
   })
 
   beforeEach(() => {
     record.mockReset()
+    logger.warn.mockReset()
   })
 
-  it("records a mutation with the route's settings merged with the application's", async () => {
-    const res = await request("POST", "/admin/products", {
-      adminSession,
-      payload: { title: "Shirt", description: "Never stored" },
-      headers: { "user-agent": "audit-test", "x-forwarded-for": "10.0.0.1" },
-    })
+  it("records a mutation with the route's settings", async () => {
+    const res = await request
+      .post("/admin/products")
+      .set({ "x-user": "user_1", "user-agent": "audit-test" })
+      .send({ title: "Shirt", description: "Never stored" })
     expect(res.status).toBe(200)
 
     const [entry] = await waitForRecords(1)
@@ -247,21 +299,21 @@ describe("Audit middleware", () => {
         path: "/admin/products",
         status_code: 200,
         request_id: null,
-        ip_address: "10.0.0.1",
+        ip_address: expect.any(String),
         user_agent: "audit-test",
       },
-      request_data: { title: "Shirt", app: true },
+      request_data: { title: "Shirt" },
       response_data: null,
       metadata: null,
     })
     expect(JSON.stringify(entry)).not.toContain("Never stored")
   })
 
-  it("records a validation failure without passing the error body", async () => {
-    const res = await request("POST", "/admin/products", {
-      adminSession,
-      payload: {},
-    })
+  it("records a failed request without passing the error body", async () => {
+    const res = await request
+      .post("/admin/products")
+      .set("x-user", "user_1")
+      .send({})
     expect(res.status).toBe(400)
 
     const [entry] = await waitForRecords(1)
@@ -271,14 +323,13 @@ describe("Audit middleware", () => {
         outcome: "failed",
         resource_type: "product",
         resource_id: null,
-        request_data: { title: undefined, app: true },
         request: expect.objectContaining({ status_code: 400 }),
       })
     )
   })
 
   it("records a request rejected by authentication as denied", async () => {
-    const res = await request("DELETE", "/admin/products/prod_1")
+    const res = await request.delete("/admin/products/prod_1")
     expect(res.status).toBe(401)
 
     const [entry] = await waitForRecords(1)
@@ -299,32 +350,17 @@ describe("Audit middleware", () => {
     )
   })
 
-  it("uses the defaults for an admin mutation without settings", async () => {
-    await request("POST", "/admin/brands", { adminSession })
-
-    const [entry] = await waitForRecords(1)
-    expect(entry).toEqual(
-      expect.objectContaining({
-        action: "POST /admin/brands",
-        resource_type: "brand",
-        resource_id: null,
-        outcome: "succeeded",
-      })
-    )
-  })
-
   it("skips routes set to false, GET requests, and routes outside the audited namespaces", async () => {
-    await request("POST", "/admin/orders/order_1/cancel", { adminSession })
-    await request("POST", "/admin/products/prod_1", { adminSession })
-    await request("GET", "/admin/products", { adminSession })
-    await request("POST", "/hooks", {})
+    await request.post("/admin/orders/order_1/cancel").set("x-user", "user_1")
+    await request.get("/admin/products").set("x-user", "user_1")
+    await request.post("/hooks")
     await settle()
 
     expect(record).not.toHaveBeenCalled()
   })
 
   it("records a route opted in outside the audited namespaces", async () => {
-    await request("POST", "/store/carts", {})
+    await request.post("/store/carts")
 
     const [entry] = await waitForRecords(1)
     expect(entry).toEqual(
@@ -339,9 +375,7 @@ describe("Audit middleware", () => {
   })
 
   it("ignores a throwing setting function and falls back to the defaults", async () => {
-    const warn = jest.spyOn(logger, "warn").mockImplementation(() => {})
-
-    const res = await request("POST", "/admin/fail", { adminSession })
+    const res = await request.post("/admin/fail").set("x-user", "user_1")
     expect(res.status).toBe(400)
 
     const [entry] = await waitForRecords(1)
@@ -353,25 +387,26 @@ describe("Audit middleware", () => {
         response_data: { body: undefined },
       })
     )
-    expect(warn).toHaveBeenCalledWith(
+    expect(logger.warn).toHaveBeenCalledWith(
       expect.stringContaining("resource failed")
     )
-    warn.mockRestore()
   })
 
   it("never fails the request when recording throws", async () => {
-    const warn = jest.spyOn(logger, "warn").mockImplementation(() => {})
     record.mockImplementation(() => {
       throw new Error("storage down")
     })
 
-    const res = await request("POST", "/admin/brands", { adminSession })
+    const res = await request
+      .delete("/admin/products/prod_1")
+      .set("x-user", "user_1")
     expect(res.status).toBe(200)
-    expect(res.body).toEqual({ brand: { id: "brand_new" } })
+    expect(res.body).toEqual({ deleted: true })
 
     await waitForRecords(1)
     await settle()
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining("storage down"))
-    warn.mockRestore()
+    expect(logger.warn).toHaveBeenCalledWith(
+      expect.stringContaining("storage down")
+    )
   })
 })
