@@ -49099,6 +49099,7 @@ Keep in mind the following about updates:
 - The order of the `images` array sets the order of the product's images. Pass an existing image's `id` along with its `url` to keep that image.
 - Updating `images` doesn't change the `thumbnail`. Pass `thumbnail` to change it.
 - `metadata` is merged with the product's existing metadata.
+- If you pass `variants`, they replace the product's full variant list, so Medusa deletes existing variants that you don't include. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
 - In the same request, you can update the product's `collection_id`, `type_id`, `shipping_profile_id`, `status`, and other scalar fields.
 
 To manage the product's variants and options, use the dedicated methods explained in the next sections.
@@ -170209,6 +170210,8 @@ return new WorkflowResponse({
 ```
 
 You use the `createProductsWorkflow` and `updateProductsWorkflow` to create and update the products returned from the transform function. Since both of these are workflows, you use the `runAsStep` method to run them as steps in the current workflow.
+
+When you pass `variants` to the `updateProductsWorkflow`, they replace the product's full variant list. Medusa deletes existing variants that aren't in the list, so make sure each product to update includes all the variants it should keep.
 
 Finally, a workflow must return a instance of `WorkflowResponse` passing it as a parameter the data to return, which in this case is the products fetched from Odoo.
 

@@ -284,7 +284,7 @@ export const generatedEditDates = {
   "app/commerce-modules/product/variant-inventory/page.mdx": "2026-08-03T20:11:37.791Z",
   "app/examples/guides/custom-item-price/page.mdx": "2026-07-31T12:43:03.287Z",
   "app/recipes/erp/page.mdx": "2026-01-12T12:29:11.928Z",
-  "app/recipes/erp/odoo/page.mdx": "2026-08-21T06:05:37.173Z",
+  "app/recipes/erp/odoo/page.mdx": "2026-11-12T14:22:44.536Z",
   "app/commerce-modules/product/selling-products/page.mdx": "2026-09-11T07:40:12.267Z",
   "app/examples/guides/quote-management/page.mdx": "2026-01-12T12:17:53.304Z",
   "app/how-to-tutorials/page.mdx": "2025-03-10T09:33:49.208Z",
@@ -507,5 +507,6 @@ export const generatedEditDates = {
   "app/commerce-modules/payment/payment-provider/adyen/page.mdx": "2026-10-30T12:26:02.502Z",
   "app/enterprise/page.mdx": "2026-11-11T13:41:22.085Z",
   "app/enterprise/sso/page.mdx": "2026-11-04T14:13:11.080Z",
-  "app/enterprise/rbac/concepts/page.mdx": "2026-11-12T13:13:29.413Z"
+  "app/enterprise/rbac/concepts/page.mdx": "2026-11-12T13:13:29.413Z",
+  "app/commerce-modules/product/guides/manage-with-admin-api/page.mdx": "2026-11-12T14:22:42.894Z"
 }
