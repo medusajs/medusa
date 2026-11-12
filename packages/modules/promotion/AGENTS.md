@@ -21,7 +21,7 @@ const promotionModuleService: IPromotionModuleService =
 ### Data models (`src/models`)
 
 - `Promotion` (`promo_`): `code` (unique among non-deleted), `type` (`standard` | `buyget`), `status` (`draft` | `active` | `inactive`), `is_automatic`, `is_tax_inclusive`, `limit` / `used`, `campaign`, `application_method`, `rules`.
-- `ApplicationMethod` (`proappmet_`): `value`, `currency_code`, `type`, `target_type` (`order` | `items` | `shipping_methods`), `allocation` (`each` | `across` | `once`), `max_quantity`, `apply_to_quantity`, `buy_rules_min_quantity`, `target_selection_strategy` (`most_expensive_first` | `cheapest_first`, default `most_expensive_first`), `target_rules`, `buy_rules`.
+- `ApplicationMethod` (`proappmet_`): `value`, `currency_code`, `type`, `target_type` (`order` | `items` | `shipping_methods`), `allocation` (`each` | `across` | `once`), `max_quantity`, `min_quantity`, `apply_to_quantity`, `buy_rules_min_quantity`, `target_selection_strategy` (`most_expensive_first` | `cheapest_first`, default `most_expensive_first`), `target_rules`, `buy_rules`.
 - `PromotionRule` (`prorul_`) + `PromotionRuleValue` (`prorulval_`): `attribute`, `operator`, `values`. Shared by promotion rules, target rules, and buy rules.
 - `Campaign` (`procamp_`), `CampaignBudget` (`probudg_`, type `spend` | `usage` | `use_by_attribute` | `spend_by_attribute`), `CampaignBudgetUsage` (`probudgus_`, per-attribute-value usage).
 
@@ -70,3 +70,4 @@ yarn migration:create           # after any change in src/models
 - Rule attributes for target rules are prefixed by scope (`items.` / `shipping_methods.`); the prefix is stripped before evaluating against the item or shipping method.
 - `buyget` promotions require `apply_to_quantity`, `buy_rules_min_quantity`, and `max_quantity >= apply_to_quantity`; `max_quantity` is not allowed with `across` allocation; percentage values must be 0-100.
 - `target_selection_strategy` only matters for `buyget` promotions: the buy side always reserves the most expensive eligible units, and `cheapest_first` discounts the cheapest units left over instead of the most expensive ones. Any value other than `most_expensive_first` on a `standard` promotion throws `INVALID_DATA`.
+- `min_quantity` is checked per line item in `getValidItemsForPromotion` (`src/utils/compute-actions/line-items.ts`): a line qualifies only when its own quantity reaches the threshold, and quantities are never summed across lines. It is only allowed on `standard` promotions with `target_type: items` (`buyget` uses `buy_rules_min_quantity`), must be an integer >= 1, and `null` clears it.

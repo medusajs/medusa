@@ -11,6 +11,7 @@ import { DeprecatedPercentageInput } from "../../../../../components/inputs/perc
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
+import { MinQuantityField } from "../../../common/min-quantity-field"
 import {
   currencies,
   getCurrencySymbol,
@@ -446,49 +447,7 @@ export const EditPromotionDetailsForm = ({
                   />
                 )}
                 {showMinQuantity && (
-                  <Form.Field
-                    control={form.control}
-                    name="min_quantity"
-                    render={({ field: { onChange, value, ...field } }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>
-                            {t("promotions.form.min_quantity.title")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Input
-                              type="number"
-                              min={1}
-                              placeholder="3"
-                              value={value ?? ""}
-                              onChange={(e) => {
-                                const value = e.target.value
-
-                                if (value === "") {
-                                  onChange(null)
-                                } else {
-                                  onChange(Number(value))
-                                }
-                              }}
-                              {...field}
-                            />
-                          </Form.Control>
-                          <Text
-                            size="small"
-                            leading="compact"
-                            className="text-ui-fg-subtle"
-                          >
-                            <Trans
-                              t={t}
-                              i18nKey="promotions.form.min_quantity.description"
-                              components={[<br key="break" />]}
-                            />
-                          </Text>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
+                  <MinQuantityField control={form.control} name="min_quantity" />
                 )}
               </>
             )}

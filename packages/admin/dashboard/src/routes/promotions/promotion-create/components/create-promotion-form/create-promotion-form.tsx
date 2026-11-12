@@ -42,6 +42,7 @@ import {
 } from "../../../../../lib/data/currencies"
 import { DEFAULT_CAMPAIGN_VALUES } from "../../../../campaigns/common/constants"
 import { RulesFormField } from "../../../common/edit-rules/components/rules-form-field"
+import { MinQuantityField } from "../../../common/min-quantity-field"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"
 import { Tab } from "./constants"
 import { CreatePromotionSchema } from "./form-schema"
@@ -951,50 +952,10 @@ export const CreatePromotionForm = () => {
                   )}
 
                   {isTypeStandard && isTargetTypeItems && (
-                    <Form.Field
+                    <MinQuantityField
                       control={form.control}
                       name="application_method.min_quantity"
-                      render={({ field: { onChange, value, ...field } }) => {
-                        return (
-                          <Form.Item className="basis-1/2">
-                            <Form.Label optional>
-                              {t("promotions.form.min_quantity.title")}
-                            </Form.Label>
-
-                            <Form.Control>
-                              <Input
-                                type="number"
-                                min={1}
-                                placeholder="3"
-                                value={value ?? ""}
-                                onChange={(e) => {
-                                  const value = e.target.value
-
-                                  if (value === "") {
-                                    onChange(null)
-                                  } else {
-                                    onChange(Number(value))
-                                  }
-                                }}
-                                {...field}
-                              />
-                            </Form.Control>
-
-                            <Text
-                              size="small"
-                              leading="compact"
-                              className="text-ui-fg-subtle"
-                            >
-                              <Trans
-                                t={t}
-                                i18nKey="promotions.form.min_quantity.description"
-                                components={[<br key="break" />]}
-                              />
-                            </Text>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
+                      className="basis-1/2"
                     />
                   )}
 
