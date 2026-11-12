@@ -1,10 +1,9 @@
 import { defineWidgetConfig } from "@medusajs/admin-sdk"
-import { ArrowUpRightOnBox, SidebarRight, Sparkles } from "@medusajs/icons"
+import { ArrowUpRightOnBox, Medusa, SidebarRight } from "@medusajs/icons"
 import { Badge, Drawer, Heading, IconButton, Text } from "@medusajs/ui"
 import { useState } from "react"
 import { CloudAnnouncement } from "../../types"
 import { AnnouncementDetails } from "../components/announcement-details"
-import { useAnnouncementToasts } from "../hooks/announcement-toasts"
 import { useCloudAnnouncements } from "../hooks/announcements"
 import { getLastSeenAt, setLastSeenAt } from "../lib/storage"
 
@@ -24,7 +23,6 @@ const CloudAnnouncementsWidget = () => {
   const { announcements } = useCloudAnnouncements()
   const [open, setOpen] = useState(false)
   const [details, setDetails] = useState<CloudAnnouncement | null>(null)
-  const [detailsFromList, setDetailsFromList] = useState(false)
   // Lags behind storage until the drawer closes, so items opened as unread stay marked while viewed.
   const [lastSeenAt, setLastSeenAtState] = useState(getLastSeenAt)
 
@@ -39,14 +37,6 @@ const CloudAnnouncementsWidget = () => {
       setLastSeenAt(latest.published_at)
     }
   }
-
-  const showDetails = (announcement: CloudAnnouncement, fromList = false) => {
-    setDetails(announcement)
-    setDetailsFromList(fromList)
-    setOpen(true)
-  }
-
-  useAnnouncementToasts(announcements, showDetails)
 
   const handleOpenChange = (shouldOpen: boolean) => {
     setOpen(shouldOpen)
@@ -69,7 +59,7 @@ const CloudAnnouncementsWidget = () => {
             className="text-ui-fg-muted hover:text-ui-fg-subtle relative"
             aria-label="What's new in Medusa Cloud"
           >
-            <Sparkles />
+            <Medusa className="[&_path]:fill-current" />
             {hasUnread && (
               <span className="bg-ui-tag-blue-icon absolute right-1 top-1 size-1.5 rounded-full" />
             )}
@@ -80,7 +70,7 @@ const CloudAnnouncementsWidget = () => {
         {details ? (
           <AnnouncementDetails
             announcement={details}
-            onBack={detailsFromList ? () => setDetails(null) : undefined}
+            onBack={() => setDetails(null)}
           />
         ) : (
           <>
@@ -98,7 +88,7 @@ const CloudAnnouncementsWidget = () => {
                   key={announcement.id}
                   announcement={announcement}
                   unread={isUnread(announcement)}
-                  onViewDetails={() => showDetails(announcement, true)}
+                  onViewDetails={() => setDetails(announcement)}
                 />
               ))}
             </Drawer.Body>

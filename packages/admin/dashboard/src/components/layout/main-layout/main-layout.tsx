@@ -423,9 +423,13 @@ const SidebarRoutes = () => {
 const UtilitySection = () => {
   const location = useLocation()
   const { t } = useTranslation()
+  const { getWidgets } = useExtension()
 
   return (
-    <div className="flex flex-col gap-y-0.5 px-3 py-3">
+    <div className="flex flex-col gap-y-2 px-3 py-3">
+      {getWidgets("sidebar.settings.before").map((Component, i) => {
+        return <Component key={i} />
+      })}
       <NavItem
         label={t("app.nav.settings.header")}
         to="/settings"

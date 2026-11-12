@@ -31,6 +31,7 @@ Medusa apps are customized, not forked. An application (or plugin) extends Medus
 - References: [commerce modules](www/apps/resources/app/commerce-modules/page.mdx), [infrastructure modules](www/apps/resources/app/infrastructure-modules/page.mdx), [workflows reference](www/apps/resources/app/medusa-workflows-reference/page.mdx), [service factory methods](www/apps/resources/app/service-factory-reference/page.mdx), [JS SDK](www/apps/resources/app/js-sdk/page.mdx)
 - Generated references (`/resources/references/...`) have no `page.mdx`; fetch them as Markdown by appending `.md` to the URL, e.g. https://docs.medusajs.com/resources/references/file-provider-module.md. Full index: https://docs.medusajs.com/llms.txt
 - Package `AGENTS.md` files ship to npm, where `www/` doesn't exist, so they link `docs.medusajs.com` URLs in their `.md` form instead.
+- Don't update the documentation under `www/` when you change code in `packages/`. An automation updates the docs after the change is merged. Only edit `www/` when the task is a docs task. Package `README.md` and `AGENTS.md` files aren't covered by the automation, so still update them (see below).
 
 > When working on the API reference documentation (`www/apps/api-reference`), read [`www/apps/api-reference/CLAUDE.md`](www/apps/api-reference/CLAUDE.md) for its path structure and the OAS → public docs flow.
 

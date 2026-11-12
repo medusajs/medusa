@@ -1,31 +1,28 @@
 import { CloudAnnouncement } from "../../types"
 
-export const isAlert = (announcement: CloudAnnouncement) =>
-  announcement.type === "warning" || announcement.type === "incident"
-
 const normalizePath = (path: string) => path.replace(/\/+$/, "") || "/"
 
 /**
- * Returns the announcement to show as a toast on a page, if any. An
+ * Returns the announcement to show in the sidebar card on a page, if any. An
  * announcement whose `admin_path` matches the page wins over one without an
- * `admin_path`, which can be shown on any page. Each announcement is shown
- * once per browser.
+ * `admin_path`, which can be shown on any page. Dismissed announcements are
+ * left out.
  */
 export const getAnnouncementForPath = (
   pathname: string,
   announcements: CloudAnnouncement[],
-  { shownIds }: { shownIds: string[] }
+  { dismissedIds }: { dismissedIds: string[] }
 ): CloudAnnouncement | undefined => {
   const path = normalizePath(pathname)
-  const newAnnouncements = announcements.filter(
-    (announcement) => !shownIds.includes(announcement.id)
+  const pending = announcements.filter(
+    (announcement) => !dismissedIds.includes(announcement.id)
   )
 
   return (
-    newAnnouncements.find(
+    pending.find(
       (announcement) =>
         announcement.admin_path &&
         normalizePath(announcement.admin_path) === path
-    ) ?? newAnnouncements.find((announcement) => !announcement.admin_path)
+    ) ?? pending.find((announcement) => !announcement.admin_path)
   )
 }

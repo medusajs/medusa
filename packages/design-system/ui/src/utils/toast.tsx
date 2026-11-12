@@ -16,11 +16,6 @@ interface BaseToastProps {
 interface ToastProps extends BaseToastProps {
   description?: React.ReactNode
   action?: ToastAction
-  /**
-   * Media shown above the toast's content, such as an image.
-   * An `img` fills the toast's width, up to 132px tall.
-   */
-  media?: React.ReactNode
 }
 
 function create(
@@ -29,7 +24,7 @@ function create(
   props: ToastProps = {}
 ) {
   const external: ExternalToast = {
-    position: props.position ?? DEFAULT_TOAST_POSITION,
+    position: props.position,
     duration: props.duration,
     dismissible: props.dismissable,
   }
@@ -48,7 +43,6 @@ function create(
         variant={variant}
         action={props.action}
         icon={props.icon}
-        media={props.media}
       />
     )
   }, external)

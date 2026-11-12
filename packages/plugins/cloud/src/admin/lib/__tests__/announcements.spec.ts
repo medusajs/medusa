@@ -26,8 +26,7 @@ const productsTip = createAnnouncement({
   admin_path: "/products/",
 })
 const feature = createAnnouncement({ id: "anno_feature" })
-
-const noHistory = { shownIds: [] }
+const noHistory = { dismissedIds: [] }
 
 describe("getAnnouncementForPath", () => {
   it("should return the announcement matching the page, ignoring trailing slashes", () => {
@@ -66,15 +65,15 @@ describe("getAnnouncementForPath", () => {
     ).toEqual("anno_orders")
     expect(
       getAnnouncementForPath("/orders", announcements, {
-        shownIds: ["anno_orders"],
+        dismissedIds: ["anno_orders"],
       })?.id
     ).toEqual("anno_feature")
   })
 
-  it("should not return an announcement that was already shown", () => {
+  it("should not return a dismissed announcement", () => {
     expect(
       getAnnouncementForPath("/orders", [ordersTip], {
-        shownIds: ["anno_orders"],
+        dismissedIds: ["anno_orders"],
       })
     ).toBeUndefined()
   })

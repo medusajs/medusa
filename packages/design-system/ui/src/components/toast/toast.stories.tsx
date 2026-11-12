@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 
-import { ArrowUpRightOnBox, Keyboard } from "@medusajs/icons"
+import { Keyboard } from "@medusajs/icons"
 import { Kbd } from "../kbd"
 import { Toast } from "./toast"
 
@@ -84,27 +84,5 @@ export const NoDescription: Story = {
   args: {
     title: "Label",
     variant: "info",
-  },
-}
-export const WithActionIcon: Story = {
-  args: {
-    title: "Label",
-    description: "The quick brown fox jumps over a lazy dog.",
-    variant: "info",
-    action: {
-      label: "Learn more",
-      altText: "Learn more",
-      onClick: () => {},
-      icon: <ArrowUpRightOnBox />,
-    },
-  },
-}
-
-export const WithMedia: Story = {
-  args: {
-    title: "Label",
-    description: "The quick brown fox jumps over a lazy dog.",
-    variant: "info",
-    media: <img src="https://placehold.co/440x132" alt="" />,
   },
 }

@@ -1,5 +1,5 @@
 const LAST_SEEN_KEY = "medusa_cloud_announcements_last_seen_at"
-const SHOWN_KEY = "medusa_cloud_shown_announcement_ids"
+const DISMISSED_KEY = "medusa_cloud_dismissed_announcement_ids"
 
 const read = (key: string) => {
   try {
@@ -20,13 +20,13 @@ const write = (key: string, value: string) => {
 export const getLastSeenAt = () => read(LAST_SEEN_KEY)
 export const setLastSeenAt = (value: string) => write(LAST_SEEN_KEY, value)
 
-export const getShownAnnouncementIds = (): string[] => {
+export const getDismissedAnnouncementIds = (): string[] => {
   try {
-    const value = JSON.parse(read(SHOWN_KEY) ?? "[]")
+    const value = JSON.parse(read(DISMISSED_KEY) ?? "[]")
     return Array.isArray(value) ? value : []
   } catch {
     return []
   }
 }
-export const addShownAnnouncementId = (id: string) =>
-  write(SHOWN_KEY, JSON.stringify([...getShownAnnouncementIds(), id]))
+export const addDismissedAnnouncementId = (id: string) =>
+  write(DISMISSED_KEY, JSON.stringify([...getDismissedAnnouncementIds(), id]))
