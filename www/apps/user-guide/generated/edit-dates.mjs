@@ -72,5 +72,6 @@ export const generatedEditDates = {
   "app/settings/property-labels/page.mdx": "2026-07-23T12:34:12.839Z",
   "app/tips/table-views/page.mdx": "2026-07-23T12:12:44.850Z",
   "app/inventory/export/page.mdx": "2026-07-28T15:35:53.767Z",
-  "app/settings/search/page.mdx": "2026-09-18T06:39:57.423Z"
+  "app/settings/search/page.mdx": "2026-09-18T06:39:57.423Z",
+  "app/settings/roles/page.mdx": "2026-11-12T17:43:44.092Z"
 }

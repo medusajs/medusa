@@ -508,5 +508,6 @@ export const generatedEditDates = {
   "app/enterprise/page.mdx": "2026-11-11T13:41:22.085Z",
   "app/enterprise/sso/page.mdx": "2026-11-04T14:13:11.080Z",
   "app/enterprise/rbac/concepts/page.mdx": "2026-11-12T13:13:29.413Z",
-  "app/commerce-modules/product/guides/manage-with-admin-api/page.mdx": "2026-11-12T14:22:42.894Z"
+  "app/commerce-modules/product/guides/manage-with-admin-api/page.mdx": "2026-11-12T14:22:42.894Z",
+  "app/enterprise/rbac/api-routes/page.mdx": "2026-11-12T17:43:17.382Z"
 }
