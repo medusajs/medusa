@@ -30,9 +30,8 @@ If you use role-based access control (RBAC), add the `cloud_announcement:read` p
 | Option | Env variable | Description |
 | --- | --- | --- |
 | `apiUrl` | `MEDUSA_CLOUD_API_URL` | Base URL of the Medusa Cloud API. Defaults to `https://api.prod.medusajs.cloud`. |
-| `organizationId` | `MEDUSA_CLOUD_ORGANIZATION_ID` | Medusa Cloud organization ID, used to include announcements targeted at the organization's plan. |
-| `apiKey` | `MEDUSA_CLOUD_API_KEY` | Medusa Cloud API key of the environment, set automatically on Medusa Cloud. Used to show the announcements available to your plan. |
-| `environmentHandle` | `MEDUSA_CLOUD_ENVIRONMENT_HANDLE` | Handle of the Medusa Cloud environment, set automatically on Medusa Cloud. |
+| `organizationId` | `MEDUSA_CLOUD_ORGANIZATION_ID` | Medusa Cloud organization ID, used to link announcements to your organization's Cloud dashboard. |
+| `planHandle` | `MEDUSA_CLOUD_PLAN_HANDLE` | Handle of your Medusa Cloud plan, used to include announcements targeted at the plan. |
 | `disabled` | none | Set to `true` to disable the plugin. It isn't loaded, so no announcements, admin widgets, or settings page are added. |
 
 ## Resources

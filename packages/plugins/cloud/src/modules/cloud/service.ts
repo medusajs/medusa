@@ -152,10 +152,11 @@ export default class CloudModuleService extends MedusaService({
       order: "-published_at",
     })
     types.forEach((type) => query.append("type[]", type))
+    if (this.options_.planHandle) {
+      query.set("plan_handle", this.options_.planHandle)
+    }
 
-    const path = this.options_.apiKey
-      ? "/v1/services/announcements"
-      : "/v1/announcements"
+    const path = "/v1/announcements"
     const caching = this.container_[Modules.CACHING]
     const logger = this.container_[ContainerRegistrationKeys.LOGGER]
     let cacheKey: string | undefined
@@ -211,7 +212,7 @@ export default class CloudModuleService extends MedusaService({
    * Throws when the request times out or the API responds with an error status.
    */
   private async request_<T>(path: string, query?: URLSearchParams): Promise<T> {
-    const { apiUrl, organizationId, apiKey, environmentHandle } = this.options_
+    const { apiUrl, organizationId } = this.options_
     const baseUrl = (apiUrl || DEFAULT_CLOUD_API_URL).replace(/\/+$/, "")
     const url = new URL(`${baseUrl}${path}`)
     query?.forEach((value, key) => url.searchParams.append(key, value))
@@ -220,10 +221,6 @@ export default class CloudModuleService extends MedusaService({
       headers: {
         accept: "application/json",
         ...(organizationId ? { "x-medusa-organization": organizationId } : {}),
-        ...(apiKey ? { authorization: `Basic ${apiKey}` } : {}),
-        ...(environmentHandle
-          ? { "x-medusa-environment-handle": environmentHandle }
-          : {}),
       },
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     })

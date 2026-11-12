@@ -79,8 +79,7 @@ describe("CloudModuleService.listAnnouncements", () => {
     expect(url.searchParams.get("offset")).toEqual("0")
     expect(url.searchParams.get("order")).toEqual("-published_at")
     expect(init.headers).not.toHaveProperty("x-medusa-organization")
-    expect(init.headers).not.toHaveProperty("authorization")
-    expect(init.headers).not.toHaveProperty("x-medusa-environment-handle")
+    expect(url.searchParams.has("plan_handle")).toBe(false)
     expect(announcements).toEqual([
       {
         id: "anno_1",
@@ -96,14 +95,14 @@ describe("CloudModuleService.listAnnouncements", () => {
     ])
   })
 
-  it("should use the services endpoint and authenticate with the API key when set", async () => {
+  it("should filter by the plan when set", async () => {
     fetchMock.mockResolvedValue(mockResponse({ announcements: [] }))
 
-    await createService(undefined, { apiKey: "cloud_key" }).listAnnouncements()
+    await createService(undefined, { planHandle: "pro" }).listAnnouncements()
 
-    const [url, init] = fetchMock.mock.calls[0]
-    expect(new URL(url).pathname).toEqual("/v1/services/announcements")
-    expect(init.headers.authorization).toEqual("Basic cloud_key")
+    const [url] = fetchMock.mock.calls[0]
+    expect(new URL(url).pathname).toEqual("/v1/announcements")
+    expect(new URL(url).searchParams.get("plan_handle")).toEqual("pro")
   })
 
   it("should request the types of every category when no preferences are set", async () => {
@@ -146,17 +145,6 @@ describe("CloudModuleService.listAnnouncements", () => {
 
     expect(announcements).toEqual([])
     expect(fetchMock).not.toHaveBeenCalled()
-  })
-
-  it("should send the environment handle when set", async () => {
-    fetchMock.mockResolvedValue(mockResponse({ announcements: [] }))
-
-    await createService(undefined, {
-      environmentHandle: "env_handle",
-    }).listAnnouncements()
-
-    const [, init] = fetchMock.mock.calls[0]
-    expect(init.headers["x-medusa-environment-handle"]).toEqual("env_handle")
   })
 
   it("should link paths to the organization's Medusa Cloud dashboard", async () => {

@@ -7,20 +7,14 @@ export type CloudPluginOptions = {
   apiUrl?: string
   /**
    * The ID of the Medusa Cloud organization that owns the project. When set,
-   * announcements targeted at the organization's plan are included.
+   * announcement links that are paths lead to the organization's dashboard.
    */
   organizationId?: string
   /**
-   * The Medusa Cloud API key of the project's environment. When set, requests
-   * to the Medusa Cloud API are authenticated, so announcements are filtered
-   * to the organization's plan.
+   * The handle of the Medusa Cloud plan the project's organization is on. When
+   * set, announcements targeted at the plan are included.
    */
-  apiKey?: string
-  /**
-   * The handle of the project's Medusa Cloud environment. When set, it's sent
-   * with requests to the Medusa Cloud API.
-   */
-  environmentHandle?: string
+  planHandle?: string
   /**
    * Whether to disable the plugin. When `true`, `defineConfig` doesn't load
    * the plugin, so the Medusa Cloud API is never called and its admin widgets

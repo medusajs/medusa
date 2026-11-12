@@ -97,7 +97,7 @@ export function defineConfig(config: InputConfig = {}): ConfigModule {
     projectDir
   )
   applyCloudOptionsToModules(modules, projectConfig?.cloud, adminConfig)
-  const plugins = resolvePlugins(config.plugins, projectConfig?.cloud)
+  const plugins = resolvePlugins(config.plugins)
 
   return {
     projectConfig,
@@ -234,8 +234,7 @@ function applyDefaultAuthMfaOptions(
 }
 
 function resolvePlugins(
-  configPlugins: InputConfig["plugins"],
-  cloudOptions?: MedusaCloudOptions
+  configPlugins: InputConfig["plugins"]
 ): ConfigModule["plugins"] {
   const defaultPlugins: Map<string, ConfigModule["plugins"][number]> = new Map([
     [
@@ -249,8 +248,7 @@ function resolvePlugins(
         options: {
           apiUrl: process.env.MEDUSA_CLOUD_API_URL,
           organizationId: process.env.MEDUSA_CLOUD_ORGANIZATION_ID,
-          apiKey: cloudOptions?.apiKey,
-          environmentHandle: cloudOptions?.environmentHandle,
+          planHandle: process.env.MEDUSA_CLOUD_PLAN_HANDLE,
         },
       },
     ],

@@ -203,10 +203,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -566,10 +565,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -783,10 +781,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -1001,10 +998,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -1209,10 +1205,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -1420,10 +1415,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -1683,10 +1677,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -1906,10 +1899,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -2171,10 +2163,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -2452,10 +2443,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -2513,8 +2503,7 @@ describe("defineConfig", function () {
         options: {
           apiUrl: undefined,
           organizationId: undefined,
-          apiKey: undefined,
-          environmentHandle: undefined,
+          planHandle: undefined,
         },
       },
     ])
@@ -2533,8 +2522,7 @@ describe("defineConfig", function () {
         options: {
           apiUrl: undefined,
           organizationId: undefined,
-          apiKey: undefined,
-          environmentHandle: undefined,
+          planHandle: undefined,
         },
       },
       { resolve: "@medusajs/custom-plugin", options: { key: "value" } },
@@ -2556,8 +2544,7 @@ describe("defineConfig", function () {
         options: {
           apiUrl: undefined,
           organizationId: undefined,
-          apiKey: undefined,
-          environmentHandle: undefined,
+          planHandle: undefined,
         },
       },
       { resolve: "@medusajs/plugin-one", options: { setting: "a" } },
@@ -2579,8 +2566,7 @@ describe("defineConfig", function () {
         options: {
           apiUrl: undefined,
           organizationId: undefined,
-          apiKey: undefined,
-          environmentHandle: undefined,
+          planHandle: undefined,
         },
       },
     ])
@@ -2600,8 +2586,7 @@ describe("defineConfig", function () {
         options: {
           apiUrl: undefined,
           organizationId: undefined,
-          apiKey: undefined,
-          environmentHandle: undefined,
+          planHandle: undefined,
         },
       },
       { resolve: "@medusajs/cloud-plugin", options: { cloud: true } },
@@ -2612,8 +2597,7 @@ describe("defineConfig", function () {
     const originalEnv = { ...process.env }
     process.env.MEDUSA_CLOUD_API_URL = "https://api.staging.medusajs.cloud"
     process.env.MEDUSA_CLOUD_ORGANIZATION_ID = "org_123"
-    process.env.MEDUSA_CLOUD_API_KEY = "cloud_key"
-    process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE = "env_handle"
+    process.env.MEDUSA_CLOUD_PLAN_HANDLE = "pro"
 
     const config = defineConfig()
 
@@ -2624,8 +2608,7 @@ describe("defineConfig", function () {
       options: {
         apiUrl: "https://api.staging.medusajs.cloud",
         organizationId: "org_123",
-        apiKey: "cloud_key",
-        environmentHandle: "env_handle",
+        planHandle: "pro",
       },
     })
   })
@@ -2664,8 +2647,7 @@ describe("defineConfig", function () {
         options: {
           apiUrl: undefined,
           organizationId: undefined,
-          apiKey: undefined,
-          environmentHandle: undefined,
+          planHandle: undefined,
         },
       },
     ])
@@ -2682,8 +2664,7 @@ describe("defineConfig", function () {
         options: {
           apiUrl: undefined,
           organizationId: undefined,
-          apiKey: undefined,
-          environmentHandle: undefined,
+          planHandle: undefined,
         },
       },
     ])
@@ -2866,10 +2847,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": undefined,
               "apiUrl": undefined,
-              "environmentHandle": undefined,
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -3124,10 +3104,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": "test-api-key",
               "apiUrl": undefined,
-              "environmentHandle": "test-environment",
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
@@ -3396,10 +3375,9 @@ describe("defineConfig", function () {
           },
           {
             "options": {
-              "apiKey": "overriden-api-key",
               "apiUrl": undefined,
-              "environmentHandle": "overriden-environment",
               "organizationId": undefined,
+              "planHandle": undefined,
             },
             "resolve": "@medusajs/cloud",
           },
