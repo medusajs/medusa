@@ -32,7 +32,7 @@ await audit.flush() // only needed when a script must read its own records back
 
 ### Service (`src/services/audit-module-service.ts`)
 
-- `createAuditLogs(entry | entries): void`: never throws and never awaits storage. Each entry is normalized (`src/utils/normalize.ts`): `action` is required; `actor_type` defaults to `system`, `outcome` to `succeeded`, `started_at` to now, `ended_at` to `started_at`; dates may be ISO strings; an `audlog_` id is always generated. Invalid entries are dropped with one warning that names the reasons, never the contents.
+- `createAuditLogs(entry | entries): void`: never throws and never awaits storage. Each entry is normalized (`src/utils/normalize.ts`): `action` is required; `actor_type` is any non-empty string and defaults to `system`, `outcome` to `succeeded`, `started_at` to now, `ended_at` to `started_at`; dates may be ISO strings; an `audlog_` id is always generated. Invalid entries are dropped with one warning that names the reasons, never the contents.
 - `listAuditLogs(filters?, config?)`, `listAndCountAuditLogs(filters?, config?)`: delegate to the default provider with `skip: 0`, `take: 20` and `order: { started_at: "DESC" }` filled in.
 - `retrieveAuditLog(id, config?)`: the provider returns `null` for a missing id; the module throws `MedusaError.Types.NOT_FOUND`.
 - `flush()`: drains the buffer, never throws.

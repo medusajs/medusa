@@ -12,7 +12,6 @@ const dateRange = z
   })
   .strict()
 
-const actorType = z.enum(["user", "api_key", "customer", "system", "anonymous"])
 const outcome = z.enum(["succeeded", "denied", "failed"])
 
 export type AdminGetAuditLogParamsType = z.infer<typeof AdminGetAuditLogParams>
@@ -34,7 +33,7 @@ export const AdminGetAuditLogsParams = createFindParams({
         .default("-started_at"),
       q: z.string().optional(),
       id: stringOrArray.optional(),
-      actor_type: z.union([actorType, z.array(actorType)]).optional(),
+      actor_type: stringOrArray.optional(),
       actor_id: stringOrArray.optional(),
       action: stringOrArray.optional(),
       resource_type: stringOrArray.optional(),

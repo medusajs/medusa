@@ -1,5 +1,4 @@
 import type {
-  AuditActorType,
   AuditOutcome,
   CreateAuditLogDTO,
   IAuditModuleService,
@@ -22,13 +21,16 @@ const DEFAULT_AUDITED_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"])
 const DEFAULT_AUDITED_PREFIXES = ["/admin", "/rbac", "/auth"]
 
 /**
- * Namespaces whose first path segment names the resource, with the prefix
+ * Namespaces that come before the segment naming the resource, with the prefix
  * given to the resource type. The prefix keeps RBAC types in line with their
- * policy resources (`rbac_role`, `rbac_policy`).
+ * policy resources (`rbac_role`, `rbac_policy`). `/auth` routes act on no
+ * resource.
  */
-const RESOURCE_TYPE_PREFIXES: Record<string, string> = {
+const RESOURCE_NAMESPACES: Record<string, string | null> = {
   admin: "",
+  store: "",
   rbac: "rbac_",
+  auth: null,
 }
 
 const MAX_USER_AGENT_LENGTH = 512
@@ -105,18 +107,24 @@ export function getRouteParams(
 }
 
 /**
- * The default resource: the singular, snake-cased segment after `/admin` (or
- * `/rbac`) is the type, and the first path parameter is the ID.
+ * The default resource: the first segment, skipping a leading namespace such
+ * as `/admin`, is the type in singular snake case, and the first path
+ * parameter is the ID.
  */
 export function getDefaultAuditResource(
   pattern: string,
   params: Record<string, string>
 ): AuditResource | undefined {
   const segments = pattern.split("/").filter(Boolean)
-  const typePrefix = RESOURCE_TYPE_PREFIXES[segments[0]]
-  const typeSegment = segments[1]
+  const namespacePrefix = RESOURCE_NAMESPACES[segments[0]]
+  const typePrefix = namespacePrefix ?? ""
+  const typeSegment = namespacePrefix === undefined ? segments[0] : segments[1]
 
-  if (typePrefix === undefined || !typeSegment || typeSegment.startsWith(":")) {
+  if (
+    namespacePrefix === null ||
+    !typeSegment ||
+    !/^[\w-]+$/.test(typeSegment)
+  ) {
     return
   }
 
@@ -139,14 +147,8 @@ export function getAuditOutcome(statusCode: number): AuditOutcome {
   return statusCode >= 400 ? "failed" : "succeeded"
 }
 
-const ACTOR_TYPES: Record<string, AuditActorType> = {
-  user: "user",
-  customer: "customer",
-  "api-key": "api_key",
-}
-
 export function resolveAuditActor(req: AuditRequest): {
-  actor_type: AuditActorType
+  actor_type: string
   actor_id: string | null
   metadata: Record<string, unknown>
 } {
@@ -161,24 +163,14 @@ export function resolveAuditActor(req: AuditRequest): {
     return { actor_type: "anonymous", actor_id: null, metadata }
   }
 
-  const actorType = ACTOR_TYPES[authContext.actor_type]
-
-  if (actorType === "api_key") {
-    const createdBy = (req as { secret_key_context?: { created_by?: string } })
-      .secret_key_context?.created_by
-    if (createdBy) {
-      metadata.api_key_created_by = createdBy
-    }
-  }
-
-  // Audit actor types are a closed set, so custom actor types are recorded as
-  // users and keep their own type in the metadata.
-  if (!actorType) {
-    metadata.actor_type = authContext.actor_type
+  const createdBy = (req as { secret_key_context?: { created_by?: string } })
+    .secret_key_context?.created_by
+  if (createdBy) {
+    metadata.api_key_created_by = createdBy
   }
 
   return {
-    actor_type: actorType ?? "user",
+    actor_type: authContext.actor_type,
     actor_id: authContext.actor_id,
     metadata,
   }

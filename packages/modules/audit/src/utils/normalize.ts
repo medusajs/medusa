@@ -1,5 +1,4 @@
 import {
-  AuditActorType,
   AuditLogDTO,
   AuditLogRequest,
   AuditOutcome,
@@ -8,14 +7,6 @@ import {
 import { generateEntityId, isObject } from "@medusajs/framework/utils"
 
 export const AUDIT_LOG_ID_PREFIX = "audlog"
-
-export const AUDIT_ACTOR_TYPES: readonly AuditActorType[] = [
-  "user",
-  "api_key",
-  "customer",
-  "system",
-  "anonymous",
-]
 
 export const AUDIT_OUTCOMES: readonly AuditOutcome[] = [
   "succeeded",
@@ -45,10 +36,8 @@ export function normalizeAuditLog(
   }
 
   const actorType = input.actor_type ?? "system"
-  if (!AUDIT_ACTOR_TYPES.includes(actorType)) {
-    return {
-      error: `"actor_type" must be one of ${AUDIT_ACTOR_TYPES.join(", ")}`,
-    }
+  if (typeof actorType !== "string" || !actorType.trim()) {
+    return { error: '"actor_type" must be a non-empty string' }
   }
 
   const outcome = input.outcome ?? "succeeded"
@@ -71,7 +60,7 @@ export function normalizeAuditLog(
       id: generateEntityId(undefined, AUDIT_LOG_ID_PREFIX),
       started_at: startedAt,
       ended_at: endedAt,
-      actor_type: actorType,
+      actor_type: actorType.trim(),
       actor_id: toNullableString(input.actor_id),
       impersonator_id: toNullableString(input.impersonator_id),
       action,

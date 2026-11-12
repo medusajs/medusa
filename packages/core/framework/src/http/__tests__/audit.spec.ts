@@ -78,7 +78,18 @@ describe("Audit helpers", () => {
       getDefaultAuditResource("/rbac/policies/:id", { id: "rpol_1" })
     ).toEqual({ type: "rbac_policy", id: "rpol_1" })
     expect(getDefaultAuditResource("/auth/user/emailpass", {})).toBeUndefined()
-    expect(getDefaultAuditResource("/store/carts", {})).toBeUndefined()
+    expect(getDefaultAuditResource("/store/carts", {})).toEqual({
+      type: "cart",
+      id: null,
+    })
+    expect(getDefaultAuditResource("/myroutes/test", {})).toEqual({
+      type: "myroute",
+      id: null,
+    })
+    expect(
+      getDefaultAuditResource("/brands/:id/products", { id: "brand_1" })
+    ).toEqual({ type: "brand", id: "brand_1" })
+    expect(getDefaultAuditResource("/:id", { id: "1" })).toBeUndefined()
   })
 
   it("maps status codes to outcomes", () => {
@@ -113,7 +124,7 @@ describe("Audit helpers", () => {
         secret_key_context: { created_by: "user_1" },
       })
     ).toEqual({
-      actor_type: "api_key",
+      actor_type: "api-key",
       actor_id: "apk_1",
       metadata: { api_key_created_by: "user_1" },
     })
@@ -122,9 +133,9 @@ describe("Audit helpers", () => {
         auth_context: { actor_id: "ven_1", actor_type: "vendor" } as any,
       })
     ).toEqual({
-      actor_type: "user",
+      actor_type: "vendor",
       actor_id: "ven_1",
-      metadata: { actor_type: "vendor" },
+      metadata: {},
     })
     expect(
       actor({

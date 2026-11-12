@@ -181,7 +181,7 @@ medusaIntegrationTestRunner({
           }
         )
 
-        const { audit_logs } = await listAuditLogs({ actor_type: "api_key" })
+        const { audit_logs } = await listAuditLogs({ actor_type: "api-key" })
 
         expect(audit_logs).toEqual([
           expect.objectContaining({
