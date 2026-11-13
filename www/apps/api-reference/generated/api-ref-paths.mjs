@@ -137,27 +137,6 @@ export const apiRefPaths = {
           }
         }
       },
-      "audit-logs": {
-        "name": "Audit Logs",
-        "path": "/admin/audit-logs",
-        "schemaPath": "/admin/audit-logs/schema",
-        "operations": {
-          "GetAuditLogsId": {
-            "slug": "get-a-audit-log",
-            "path": "/admin/audit-logs/get-a-audit-log",
-            "oldHash": "audit-logs_getauditlogsid",
-            "title": "Get a Audit Log",
-            "method": "get"
-          },
-          "GetAuditLogs": {
-            "slug": "list-audit-logs",
-            "path": "/admin/audit-logs/list-audit-logs",
-            "oldHash": "audit-logs_getauditlogs",
-            "title": "List Audit Logs",
-            "method": "get"
-          }
-        }
-      },
       "auth": {
         "name": "Auth",
         "path": "/admin/auth",
@@ -4213,10 +4192,6 @@ export const apiRefRedirects = {
     "api-keys_deleteapikeysid": "/admin/api-keys/delete-an-api-key",
     "api-keys_apikey_schema": "/admin/api-keys/schema",
     "api-keys": "/admin/api-keys",
-    "audit-logs_getauditlogsid": "/admin/audit-logs/get-a-audit-log",
-    "audit-logs_getauditlogs": "/admin/audit-logs/list-audit-logs",
-    "audit-logs_auditlog_schema": "/admin/audit-logs/schema",
-    "audit-logs": "/admin/audit-logs",
     "auth_getuserproviders": "/admin/auth/list-providers",
     "auth_postactor_typeauth_provider": "/admin/auth/authenticate-user",
     "auth_postactor_typeauth_providerresetpassword": "/admin/auth/generate-reset-password-token",

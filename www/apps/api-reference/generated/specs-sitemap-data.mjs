@@ -13,13 +13,6 @@ export const specsSitemapData = {
       ]
     },
     {
-      "tagSectionId": "audit-logs",
-      "operationSectionIds": [
-        "audit-logs_getauditlogs",
-        "audit-logs_getauditlogsid"
-      ]
-    },
-    {
       "tagSectionId": "auth",
       "operationSectionIds": [
         "auth_deletemfafactorsid",
