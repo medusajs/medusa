@@ -1,5 +1,11 @@
 # @medusajs/icons
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17518](https://github.com/medusajs/medusa/pull/17518) [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(icons): add `src/custom` for icons that are not generated from Figma
+
 ## 2.22.6
 
 ## 2.22.5
