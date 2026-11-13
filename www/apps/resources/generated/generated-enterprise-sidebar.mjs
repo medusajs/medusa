@@ -186,8 +186,78 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "assignRolesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/assignRolesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createInvitesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createInvitesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createRbacPoliciesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacPoliciesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createRbacRolePoliciesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolePoliciesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createRbacRolesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRbacRolesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createUserAccountWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUserAccountWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createUsersWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUsersWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "deleteInvitesWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteInvitesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "deleteRbacPoliciesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacPoliciesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "deleteRbacRolePoliciesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolePoliciesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "deleteRbacRolesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteRbacRolesWorkflow",
                       "children": []
                     },
                     {
@@ -210,6 +280,27 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                       "title": "removeUserAccountWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeUserAccountWorkflow",
                       "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "unassignRolesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/unassignRolesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateRbacPoliciesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRbacPoliciesWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateRbacRolesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRbacRolesWorkflow",
+                      "children": []
                     }
                   ]
                 },
@@ -224,8 +315,106 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "createRbacPoliciesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacPoliciesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createRbacRolePoliciesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRolePoliciesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createRbacRolesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRolesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "createRoleAssignmentsStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRoleAssignmentsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "deleteRbacPoliciesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacPoliciesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "deleteRbacRolePoliciesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacRolePoliciesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "deleteRbacRolesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacRolesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "deleteRoleAssignmentsStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRoleAssignmentsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "ensureSuperAdminRemainsStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/ensureSuperAdminRemainsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "getInviteRolesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getInviteRolesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "getRoleAssignmentsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getRoleAssignmentsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateRbacPoliciesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateRbacPoliciesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateRbacRolesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateRbacRolesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateAssignmentReferencesStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAssignmentReferencesStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateRolesExistStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateRolesExistStep",
                       "children": []
                     }
                   ]
