@@ -2,7 +2,12 @@
 
 import { usePathname } from "next/navigation"
 import React, { createContext, useContext, useMemo } from "react"
-import { MenuItem, NavigationItem, NavigationItemDropdown } from "types"
+import {
+  MenuItem,
+  NavigationItem,
+  NavigationItemDropdown,
+  NavigationMenuItem,
+} from "types"
 import { useSiteConfig } from "../SiteConfig"
 import { useSidebar } from "../Sidebar"
 
@@ -43,49 +48,83 @@ export const MainNavProvider = ({
     return `${config.baseUrl}${config.basePath}${pathname}`.replace(/\/$/, "")
   }, [pathname, config.baseUrl, config.basePath])
 
-  const dropdownHasActiveItem = (
-    items: NavigationItemDropdown["children"]
+  const dropdownHasSidebar = (
+    items: NavigationMenuItem[],
+    sidebarId: string
   ): boolean => {
     return items.some((childItem) => {
       if (childItem.type !== "link" && childItem.type !== "sub-menu") {
         return false
       }
 
-      if (
-        childItem.sidebar_id &&
-        shownSidebar?.sidebar_id === childItem.sidebar_id
-      ) {
+      if (childItem.sidebar_id === sidebarId) {
         return true
       }
 
-      if (childItem.type === "sub-menu") {
-        return dropdownHasActiveItem(childItem.items)
+      return (
+        childItem.type === "sub-menu" &&
+        dropdownHasSidebar(childItem.items, sidebarId)
+      )
+    })
+  }
+
+  const getDropdownLinks = (items: NavigationMenuItem[]): string[] => {
+    return items.flatMap((childItem) => {
+      if (childItem.type === "link") {
+        return [childItem.link]
       }
 
-      return currentUrl.startsWith(childItem.link)
+      if (childItem.type !== "sub-menu") {
+        return []
+      }
+
+      return [
+        ...(childItem.link ? [childItem.link] : []),
+        ...getDropdownLinks(childItem.items),
+      ]
     })
   }
 
   const activeItemIndex = useMemo(() => {
-    const index = navItems.findIndex((item) => {
-      if (item.sidebar_id && shownSidebar?.sidebar_id === item.sidebar_id) {
-        return true
+    // The homepage falls back to showing the first sidebar, which would
+    // otherwise activate that sidebar's item.
+    if (currentUrl === config.baseUrl.replace(/\/$/, "")) {
+      return
+    }
+
+    const sidebarId = shownSidebar?.sidebar_id
+    if (sidebarId) {
+      const index = navItems.findIndex(
+        (item) =>
+          item.sidebar_id === sidebarId ||
+          (item.type === "dropdown" &&
+            dropdownHasSidebar(item.children, sidebarId))
+      )
+
+      if (index !== -1) {
+        return index
       }
+    }
 
-      let isItemActive = false
+    // Items can have overlapping links (for example, `/cloud` and
+    // `/cloud/cli`), so the item with the most specific link is the active one.
+    let activeIndex: number | undefined
+    let activeLinkLength = 0
+    navItems.forEach((item, index) => {
+      const links = [
+        ...(item.link ? [item.link] : []),
+        ...(item.type === "dropdown" ? getDropdownLinks(item.children) : []),
+      ]
 
-      if (item.link) {
-        isItemActive = currentUrl.startsWith(item.link)
-      }
-
-      if (item.type === "dropdown" && !isItemActive) {
-        isItemActive = dropdownHasActiveItem(item.children)
-      }
-
-      return isItemActive
+      links.forEach((link) => {
+        if (currentUrl.startsWith(link) && link.length > activeLinkLength) {
+          activeIndex = index
+          activeLinkLength = link.length
+        }
+      })
     })
 
-    return index !== -1 ? index : undefined
+    return activeIndex
   }, [navItems, pathname, currentUrl, config, shownSidebar])
 
   const activeItem = useMemo(() => {

@@ -1,8 +1,13 @@
+const soonBadge = {
+  variant: "blue",
+  text: "Soon",
+}
+
 /** @type {import('types').Sidebar.RawSidebar[]} */
 export const sidebar = [
   {
-    sidebar_id: "cloud",
-    title: "Cloud",
+    sidebar_id: "get-started",
+    title: "Get Started",
     items: [
       {
         type: "category",
@@ -26,35 +31,38 @@ export const sidebar = [
           },
           {
             type: "link",
+            path: "#",
+            title: "Going Live Checklist",
+            badge: soonBadge,
+          },
+          {
+            type: "link",
             path: "/faq",
             title: "FAQ",
           },
           {
             type: "link",
             path: "/comparison",
-            title: "Cloud vs Self Hosting",
+            title: "Cloud vs Self-Hosted",
           },
           {
             type: "link",
-            title: "Command Palette",
-            path: "/command-palette",
-          },
-          {
-            type: "link",
-            title: "Changelog",
-            path: "/changelog",
+            path: "#",
+            title: "Features",
+            badge: soonBadge,
           },
         ],
       },
       {
         type: "category",
-        title: "AI Tools",
+        title: "AI Toolkit",
         initialOpen: true,
         children: [
           {
             type: "link",
-            title: "Cloud Assistant",
-            path: "/assistant",
+            path: "#",
+            title: "Overview",
+            badge: soonBadge,
           },
           {
             type: "link",
@@ -88,11 +96,72 @@ export const sidebar = [
               },
             ],
           },
+          {
+            type: "link",
+            path: "#",
+            title: "Docs MCP",
+            badge: soonBadge,
+          },
+          {
+            type: "link",
+            path: "#",
+            title: "Skills",
+            badge: soonBadge,
+          },
+          {
+            type: "ref",
+            title: "Cloud CLI",
+            path: "/cli",
+          },
+          {
+            type: "link",
+            path: "#",
+            title: "AI-Friendly Docs",
+            badge: soonBadge,
+          },
+          {
+            type: "link",
+            title: "Cloud Assistant",
+            path: "/assistant",
+          },
         ],
       },
       {
         type: "category",
-        title: "Basics",
+        title: "Building Features",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            path: "#",
+            title: "Setup Locally",
+            badge: soonBadge,
+            children: [
+              {
+                type: "link",
+                path: "#",
+                title: "Setup with Docker",
+                badge: soonBadge,
+              },
+            ],
+          },
+          {
+            type: "link",
+            path: "#",
+            title: "Development Resources",
+            badge: soonBadge,
+          },
+          {
+            type: "link",
+            path: "#",
+            title: "Integrations",
+            badge: soonBadge,
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Management",
         initialOpen: true,
         children: [
           {
@@ -217,6 +286,12 @@ export const sidebar = [
         children: [
           {
             type: "link",
+            path: "#",
+            title: "Admin",
+            badge: soonBadge,
+          },
+          {
+            type: "link",
             title: "Storefront",
             path: "/storefront",
           },
@@ -240,27 +315,28 @@ export const sidebar = [
             title: "Cache",
             path: "/cache",
           },
+        ],
+      },
+      {
+        type: "category",
+        title: "Emails",
+        initialOpen: true,
+        children: [
           {
             type: "link",
-            title: "Emails",
+            title: "Overview",
             path: "/emails",
-            children: [
-              {
-                type: "link",
-                title: "React Email Templates",
-                path: "/emails/react-email",
-              },
-            ],
+          },
+          {
+            type: "link",
+            title: "React Email Templates",
+            path: "/emails/react-email",
           },
         ],
       },
       {
         type: "category",
         title: "Search",
-        badge: {
-          variant: "green",
-          text: "New",
-        },
         children: [
           {
             type: "link",
@@ -330,90 +406,47 @@ export const sidebar = [
       },
       {
         type: "category",
-        title: "CLI",
-        initialOpen: false,
+        title: "Enterprise",
+        initialOpen: true,
         children: [
           {
             type: "link",
-            title: "Installation",
-            path: "/cli",
-            hideFromChildItems: true,
+            path: "#",
+            title: "RBAC",
+            badge: soonBadge,
           },
           {
             type: "link",
-            title: "For Agents",
-            path: "/cli/agents",
+            path: "#",
+            title: "SSO",
+            badge: soonBadge,
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Webhooks",
+        initialOpen: true,
+        children: [
+          {
+            type: "link",
+            title: "Manage Endpoints",
+            path: "/webhooks/endpoints",
+          },
+          {
+            type: "link",
+            title: "Manage Events",
+            path: "/webhooks/events",
+          },
+          {
+            type: "link",
+            title: "Reference",
+            path: "/webhooks/reference",
           },
           {
             type: "link",
             title: "Changelog",
-            path: "/cli/changelog",
-            hideFromChildItems: true,
-          },
-          {
-            type: "link",
-            title: "login",
-            path: "/cli/commands/login",
-          },
-          {
-            type: "link",
-            title: "signup",
-            path: "/cli/commands/signup",
-          },
-          {
-            type: "link",
-            title: "use",
-            path: "/cli/commands/use",
-          },
-          {
-            type: "link",
-            title: "whoami",
-            path: "/cli/commands/whoami",
-          },
-          {
-            type: "link",
-            title: "organizations",
-            path: "/cli/commands/organizations",
-          },
-          {
-            type: "link",
-            title: "projects",
-            path: "/cli/commands/projects",
-          },
-          {
-            type: "link",
-            title: "environments",
-            path: "/cli/commands/environments",
-          },
-          {
-            type: "link",
-            title: "deployments",
-            path: "/cli/commands/deployments",
-          },
-          {
-            type: "link",
-            title: "variables",
-            path: "/cli/commands/variables",
-          },
-          {
-            type: "link",
-            title: "logs",
-            path: "/cli/commands/logs",
-          },
-          {
-            type: "link",
-            title: "local",
-            path: "/cli/commands/local",
-          },
-          {
-            type: "link",
-            title: "version",
-            path: "/cli/commands/version",
-          },
-          {
-            type: "link",
-            title: "logout",
-            path: "/cli/commands/logout",
+            path: "/webhooks/changelog",
           },
         ],
       },
@@ -502,33 +535,6 @@ export const sidebar = [
       },
       {
         type: "category",
-        title: "Webhooks",
-        initialOpen: true,
-        children: [
-          {
-            type: "link",
-            title: "Manage Endpoints",
-            path: "/webhooks/endpoints",
-          },
-          {
-            type: "link",
-            title: "Manage Events",
-            path: "/webhooks/events",
-          },
-          {
-            type: "link",
-            title: "Reference",
-            path: "/webhooks/reference",
-          },
-          {
-            type: "link",
-            title: "Changelog",
-            path: "/webhooks/changelog",
-          },
-        ],
-      },
-      {
-        type: "category",
         title: "Networking",
         initialOpen: true,
         children: [
@@ -556,20 +562,99 @@ export const sidebar = [
           },
         ],
       },
+    ],
+  },
+  {
+    sidebar_id: "cloud-cli",
+    title: "Cloud CLI",
+    items: [
+      {
+        type: "link",
+        title: "Installation",
+        path: "/cli",
+      },
+      {
+        type: "link",
+        title: "For Agents",
+        path: "/cli/agents",
+      },
+      {
+        type: "link",
+        title: "Changelog",
+        path: "/cli/changelog",
+      },
+      {
+        type: "separator",
+      },
       {
         type: "category",
-        title: "Best Practices",
+        title: "Commands",
         initialOpen: true,
         children: [
           {
             type: "link",
-            title: "Update Medusa",
-            path: "/update-medusa",
+            title: "login",
+            path: "/cli/commands/login",
           },
           {
             type: "link",
-            title: "Connect Storefront",
-            path: "/connect-storefront",
+            title: "signup",
+            path: "/cli/commands/signup",
+          },
+          {
+            type: "link",
+            title: "use",
+            path: "/cli/commands/use",
+          },
+          {
+            type: "link",
+            title: "whoami",
+            path: "/cli/commands/whoami",
+          },
+          {
+            type: "link",
+            title: "organizations",
+            path: "/cli/commands/organizations",
+          },
+          {
+            type: "link",
+            title: "projects",
+            path: "/cli/commands/projects",
+          },
+          {
+            type: "link",
+            title: "environments",
+            path: "/cli/commands/environments",
+          },
+          {
+            type: "link",
+            title: "deployments",
+            path: "/cli/commands/deployments",
+          },
+          {
+            type: "link",
+            title: "variables",
+            path: "/cli/commands/variables",
+          },
+          {
+            type: "link",
+            title: "logs",
+            path: "/cli/commands/logs",
+          },
+          {
+            type: "link",
+            title: "local",
+            path: "/cli/commands/local",
+          },
+          {
+            type: "link",
+            title: "version",
+            path: "/cli/commands/version",
+          },
+          {
+            type: "link",
+            title: "logout",
+            path: "/cli/commands/logout",
           },
         ],
       },

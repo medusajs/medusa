@@ -1,7 +1,7 @@
 export const generatedSidebars = [
   {
-    "sidebar_id": "cloud",
-    "title": "Cloud",
+    "sidebar_id": "get-started",
+    "title": "Get Started",
     "items": [
       {
         "loaded": true,
@@ -33,6 +33,17 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "path": "#",
+            "title": "Going Live Checklist",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "path": "/faq",
             "title": "FAQ",
             "children": []
@@ -41,21 +52,18 @@ export const generatedSidebars = [
             "loaded": true,
             "type": "link",
             "path": "/comparison",
-            "title": "Cloud vs Self Hosting",
+            "title": "Cloud vs Self-Hosted",
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
-            "title": "Command Palette",
-            "path": "/command-palette",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Changelog",
-            "path": "/changelog",
+            "path": "#",
+            "title": "Features",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
             "children": []
           }
         ]
@@ -63,14 +71,18 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "AI Tools",
+        "title": "AI Toolkit",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
             "type": "link",
-            "title": "Cloud Assistant",
-            "path": "/assistant",
+            "path": "#",
+            "title": "Overview",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
             "children": []
           },
           {
@@ -115,13 +127,113 @@ export const generatedSidebars = [
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "#",
+            "title": "Docs MCP",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "#",
+            "title": "Skills",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "ref",
+            "title": "Cloud CLI",
+            "path": "/cli",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "#",
+            "title": "AI-Friendly Docs",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Cloud Assistant",
+            "path": "/assistant",
+            "children": []
           }
         ]
       },
       {
         "loaded": true,
         "type": "category",
-        "title": "Basics",
+        "title": "Building Features",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "#",
+            "title": "Setup Locally",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "path": "#",
+                "title": "Setup with Docker",
+                "badge": {
+                  "variant": "blue",
+                  "text": "Soon"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "#",
+            "title": "Development Resources",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "#",
+            "title": "Integrations",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Management",
         "initialOpen": true,
         "children": [
           {
@@ -286,6 +398,17 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "path": "#",
+            "title": "Admin",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Storefront",
             "path": "/storefront",
             "children": []
@@ -317,21 +440,28 @@ export const generatedSidebars = [
             "title": "Cache",
             "path": "/cache",
             "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Emails",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Overview",
+            "path": "/emails",
+            "children": []
           },
           {
             "loaded": true,
             "type": "link",
-            "title": "Emails",
-            "path": "/emails",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "React Email Templates",
-                "path": "/emails/react-email",
-                "children": []
-              }
-            ]
+            "title": "React Email Templates",
+            "path": "/emails/react-email",
+            "children": []
           }
         ]
       },
@@ -339,10 +469,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Search",
-        "badge": {
-          "variant": "green",
-          "text": "New"
-        },
         "children": [
           {
             "loaded": true,
@@ -434,121 +560,65 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "CLI",
-        "initialOpen": false,
+        "title": "Enterprise",
+        "initialOpen": true,
         "children": [
           {
             "loaded": true,
             "type": "link",
-            "title": "Installation",
-            "path": "/cli",
-            "hideFromChildItems": true,
+            "path": "#",
+            "title": "RBAC",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
-            "title": "For Agents",
-            "path": "/cli/agents",
+            "path": "#",
+            "title": "SSO",
+            "badge": {
+              "variant": "blue",
+              "text": "Soon"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Webhooks",
+        "initialOpen": true,
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Endpoints",
+            "path": "/webhooks/endpoints",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Events",
+            "path": "/webhooks/events",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Reference",
+            "path": "/webhooks/reference",
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
             "title": "Changelog",
-            "path": "/cli/changelog",
-            "hideFromChildItems": true,
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "login",
-            "path": "/cli/commands/login",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "signup",
-            "path": "/cli/commands/signup",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "use",
-            "path": "/cli/commands/use",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "whoami",
-            "path": "/cli/commands/whoami",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "organizations",
-            "path": "/cli/commands/organizations",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "projects",
-            "path": "/cli/commands/projects",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "environments",
-            "path": "/cli/commands/environments",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "deployments",
-            "path": "/cli/commands/deployments",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "variables",
-            "path": "/cli/commands/variables",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "logs",
-            "path": "/cli/commands/logs",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "local",
-            "path": "/cli/commands/local",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "version",
-            "path": "/cli/commands/version",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "logout",
-            "path": "/cli/commands/logout",
+            "path": "/webhooks/changelog",
             "children": []
           }
         ]
@@ -665,42 +735,6 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "Webhooks",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Manage Endpoints",
-            "path": "/webhooks/endpoints",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Manage Events",
-            "path": "/webhooks/events",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Reference",
-            "path": "/webhooks/reference",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Changelog",
-            "path": "/webhooks/changelog",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
         "title": "Networking",
         "initialOpen": true,
         "children": [
@@ -734,25 +768,132 @@ export const generatedSidebars = [
             ]
           }
         ]
+      }
+    ]
+  },
+  {
+    "sidebar_id": "cloud-cli",
+    "title": "Cloud CLI",
+    "items": [
+      {
+        "loaded": true,
+        "type": "link",
+        "title": "Installation",
+        "path": "/cli",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "type": "link",
+        "title": "For Agents",
+        "path": "/cli/agents",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "type": "link",
+        "title": "Changelog",
+        "path": "/cli/changelog",
+        "children": []
+      },
+      {
+        "type": "separator"
       },
       {
         "loaded": true,
         "type": "category",
-        "title": "Best Practices",
+        "title": "Commands",
         "initialOpen": true,
         "children": [
           {
             "loaded": true,
             "type": "link",
-            "title": "Update Medusa",
-            "path": "/update-medusa",
+            "title": "login",
+            "path": "/cli/commands/login",
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
-            "title": "Connect Storefront",
-            "path": "/connect-storefront",
+            "title": "signup",
+            "path": "/cli/commands/signup",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "use",
+            "path": "/cli/commands/use",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "whoami",
+            "path": "/cli/commands/whoami",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "organizations",
+            "path": "/cli/commands/organizations",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "projects",
+            "path": "/cli/commands/projects",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "environments",
+            "path": "/cli/commands/environments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "deployments",
+            "path": "/cli/commands/deployments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "variables",
+            "path": "/cli/commands/variables",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "logs",
+            "path": "/cli/commands/logs",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "local",
+            "path": "/cli/commands/local",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "version",
+            "path": "/cli/commands/version",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "logout",
+            "path": "/cli/commands/logout",
             "children": []
           }
         ]

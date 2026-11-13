@@ -46,7 +46,7 @@ export const generatedEditDates = {
   "app/cli/commands/organizations/page.mdx": "2026-07-17T13:54:32.532Z",
   "app/cli/commands/projects/page.mdx": "2026-07-17T13:53:46.402Z",
   "app/cli/commands/signup/page.mdx": "2026-04-24T07:15:31.040Z",
-  "app/cli/page.mdx": "2026-05-05T10:42:00.594Z",
+  "app/cli/page.mdx": "2026-11-13T06:42:29.290Z",
   "app/cli/commands/deployments/page.mdx": "2026-07-28T10:28:51.831Z",
   "app/cli/commands/use/page.mdx": "2026-04-29T08:11:05.829Z",
   "app/cli/commands/variables/page.mdx": "2026-07-15T14:55:03.520Z",
