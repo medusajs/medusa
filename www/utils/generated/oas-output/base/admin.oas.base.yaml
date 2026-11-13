@@ -23,9 +23,6 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/api-key
     x-associatedSchema:
       $ref: "#/components/schemas/AdminApiKey"
-  - name: Audit Logs
-    x-associatedSchema:
-      $ref: "#/components/schemas/AdminAuditLog"
   - name: Auth
     description: |
       Auth API routes allow you to manage an admin user's authentication.

@@ -20,12 +20,6 @@
   "POST /admin/api-keys/{id}/sales-channels": {
     "js-sdk": "sdk.admin.apiKey.batchSalesChannels(\"apk_123\", {\n  add: [\"sc_123\"],\n  remove: [\"sc_321\"]\n})\n.then(({ api_key }) => {\n  console.log(api_key)\n})"
   },
-  "GET /admin/audit-logs": {
-    "js-sdk": "sdk.admin.auditLog.list()\n.then(({ audit_logs, count, limit, offset }) => {\n  console.log(audit_logs)\n})"
-  },
-  "GET /admin/audit-logs/{id}": {
-    "js-sdk": "sdk.admin.auditLog.retrieve(\"audlog_123\")\n.then(({ audit_log }) => {\n  console.log(audit_log)\n})"
-  },
   "GET /admin/campaigns/{id}": {
     "js-sdk": "sdk.admin.campaign.retrieve(\"procamp_123\")\n.then(({ campaign }) => {\n  console.log(campaign)\n})"
   },

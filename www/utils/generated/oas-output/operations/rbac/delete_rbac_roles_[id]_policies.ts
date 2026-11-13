@@ -1,8 +1,8 @@
 /**
  * @oas [delete] /rbac/roles/{id}/policies
  * operationId: DeleteRolesIdPolicies
- * summary: Remove Policy from Role
- * description: Remove a Policy from a role.
+ * summary: Remove Policies from Role
+ * description: Remove one or more policies from a role. You can only remove policies that you have.
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -16,17 +16,17 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The policies to remove from the role.
  *         required:
  *           - policies
  *         properties:
  *           policies:
  *             type: array
- *             description: The role's policies.
+ *             description: The IDs of the policies to remove from the role.
  *             items:
  *               type: string
  *               title: policies
- *               description: The policy's policies.
+ *               description: A policy's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
