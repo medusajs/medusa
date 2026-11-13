@@ -62,7 +62,7 @@ const App = () => <Sun />
 
 ## Contributing
 
-The icon components are generated from Medusa's Figma file with `yarn generate`, which requires a `FIGMA_TOKEN` for the Medusa Figma organization. If you're not a Medusa team member, open an issue for icon problems instead of a PR.
+The icon components in `src/components` are generated from Medusa's Figma file with `yarn generate`, which requires a `FIGMA_TOKEN` for the Medusa Figma organization. Icons that aren't in Figma live in `src/custom`, which `yarn generate` leaves alone. If you're not a Medusa team member, open an issue for icon problems instead of a PR.
 
 ## Resources
 

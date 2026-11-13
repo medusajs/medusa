@@ -2825,16 +2825,6 @@
       "tabs": {
         "details": "Details",
         "permissions": "Permissions"
-      },
-      "permissions": {
-        "empty": {
-          "heading": "No permissions",
-          "description": "There are no permissions to select."
-        },
-        "filtered": {
-          "heading": "No results",
-          "description": "No permissions match the current filter criteria."
-        }
       }
     },
     "edit": {
@@ -2844,10 +2834,9 @@
     "delete": {
       "title": "Delete role",
       "description": "You are about to delete the role {{name}}. This action cannot be undone.",
+      "descriptionWithUsers_one": "You are about to delete the role {{name}}. {{count}} user has this role and will lose the access it grants. This action cannot be undone.",
+      "descriptionWithUsers_other": "You are about to delete the role {{name}}. {{count}} users have this role and will lose the access it grants. This action cannot be undone.",
       "successToast": "Role {{name}} deleted"
-    },
-    "fields": {
-      "permissions": "Permissions"
     },
     "actions": {
       "managePermissions": "Manage permissions"
@@ -2874,16 +2863,139 @@
     "permissions": {
       "header": "Manage permissions",
       "hint": "Select permissions that this role should include.",
-      "empty": {
-        "heading": "No permissions",
-        "description": "There are no permissions to select."
-      },
-      "filtered": {
-        "heading": "No results",
-        "description": "No permissions match the current filter criteria."
-      },
       "manage": {
         "successToast": "Permissions were successfully updated."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Orders",
+            "description": "Orders, order changes, claims, exchanges and returns"
+          },
+          "payments": {
+            "label": "Payments",
+            "description": "Payments, payment collections, refunds and captures"
+          },
+          "products": {
+            "label": "Products",
+            "description": "Products, variants, options, categories, collections, types and tags"
+          },
+          "inventory": {
+            "label": "Inventory",
+            "description": "Inventory items, stock levels, reservations and locations"
+          },
+          "customers": {
+            "label": "Customers",
+            "description": "Customers, addresses and customer groups"
+          },
+          "pricing": {
+            "label": "Pricing and promotions",
+            "description": "Price lists, prices, promotions and campaigns"
+          },
+          "shipping": {
+            "label": "Shipping and fulfillment",
+            "description": "Shipping options and profiles, fulfillments and service zones"
+          },
+          "store": {
+            "label": "Store settings",
+            "description": "Store details, regions, sales channels, currencies, taxes and translations"
+          },
+          "team": {
+            "label": "Team and access",
+            "description": "Users, invites, roles and API keys"
+          },
+          "system": {
+            "label": "System",
+            "description": "Files, notifications and workflow executions"
+          },
+          "custom": {
+            "label": "Custom",
+            "description": "Permissions added by your plugins and custom modules"
+          }
+        },
+        "levels": {
+          "none": "No access",
+          "view": "View only",
+          "full": "Full access",
+          "mixed": "Mixed"
+        },
+        "levelControlLabel": "Access level for {{group}}",
+        "resourceColumn": "Resource",
+        "notAvailable": "n/a",
+        "notAvailableTooltip": "This resource does not define this permission",
+        "rowToggle": "All {{resource}} permissions",
+        "columnToggle": {
+          "on": "Turn on {{operation}} for all {{group}}",
+          "off": "Turn off {{operation}} for all {{group}}"
+        },
+        "search": {
+          "placeholder": "Search permissions",
+          "emptyHeading": "No permissions match your search",
+          "emptyDescription": "Try a resource name like orders or inventory."
+        },
+        "showKeys": "Show permission keys",
+        "clearAll": "Clear all",
+        "lockedBadge_one": "{{count}} locked",
+        "lockedBadge_other": "{{count}} locked",
+        "lockedNote_one": "{{count}} permission in this group can't be changed from your account, because you don't have it yourself. No access, View only and Full access apply to the rest.",
+        "lockedNote_other": "{{count}} permissions in this group can't be changed from your account, because you don't have them yourself. No access, View only and Full access apply to the rest.",
+        "tooltips": {
+          "cannotGrant": "You can't grant this because your account doesn't have it.",
+          "cannotRemove": "This role has this permission. You can't change it because your account doesn't have it.",
+          "viewRequired": "Other permissions on this resource need view. Remove those first."
+        },
+        "noViewAccess": "No view access",
+        "templates": {
+          "heading": "Start from a template",
+          "hint": "Optional. Applying a template replaces the current selection.",
+          "full": {
+            "label": "Full access",
+            "description": "Everything you can grant today, including team settings and custom permissions."
+          },
+          "readonly": {
+            "label": "Read only",
+            "description": "View everything you can grant today. Change nothing."
+          },
+          "snapshotNote": "Templates use the permissions that exist today. Permissions added later, for example by a new plugin, are not included automatically."
+        },
+        "confirm": {
+          "template": {
+            "title": "Replace your selection?",
+            "description": "Applying the {{template}} template replaces the permissions you have selected.",
+            "confirm": "Apply template"
+          },
+          "clear": {
+            "title": "Clear all permissions?",
+            "descriptionCreate": "This removes every permission you have selected.",
+            "descriptionEdit": "This removes every permission you are able to change from this role. Nothing is saved until you select Save."
+          }
+        },
+        "summary": {
+          "heading": "Role summary",
+          "name": "Name",
+          "permissions": "Permissions",
+          "selectedOfTotal": "{{selected}} of {{total}} selected",
+          "unsavedChanges": "Unsaved changes",
+          "noChanges": "No changes yet",
+          "changes": "{{added}} added, {{removed}} removed",
+          "footnote": "Areas set to No access are hidden from members with this role. Full access covers the permissions that exist today. Permissions added later need to be granted here.",
+          "wildcards": "This role also has wildcard permissions ({{keys}}). They are managed through the API and are not shown here."
+        },
+        "createHint": "Select at least one permission to create the role.",
+        "custom": {
+          "calloutHeading": "Add your own permissions",
+          "calloutDescription": "Plugins and custom modules can define their own permissions. Once created, they appear in this group, ready to assign to any role.",
+          "calloutAction": "Read the guide"
+        },
+        "detail": {
+          "heading": "Permissions",
+          "count": "{{selected}} of {{total}} permissions",
+          "countOnly_one": "{{count}} permission",
+          "countOnly_other": "{{count}} permissions",
+          "granted": "Granted",
+          "notGranted": "Not granted",
+          "wildcards": "This role has wildcard permissions ({{keys}}). They grant every permission they match, including ones added later, and are managed through the API."
+        }
       }
     },
     "list": {
@@ -3815,34 +3927,76 @@
       "source": "Source: {{source}}"
     },
     "resources": {
-      "customer": "Customer",
-      "customer_group": "Customer Group",
-      "order": "Order",
-      "product": "Product",
-      "product_category": "Product Category",
-      "product_collection": "Product Collection",
-      "product_tag": "Product Tag",
-      "product_type": "Product Type",
+      "customer": "Customers",
+      "customer_group": "Customer groups",
+      "order": "Orders",
+      "product": "Products",
+      "product_category": "Product categories",
+      "product_collection": "Product collections",
+      "product_tag": "Product tags",
+      "product_type": "Product types",
       "inventory": "Inventory",
       "reservation": "Reservation",
-      "promotion": "Promotion",
-      "campaign": "Campaign",
-      "price_list": "Price List",
-      "region": "Region",
-      "store": "Store",
-      "user": "User",
+      "promotion": "Promotions",
+      "campaign": "Campaigns",
+      "price_list": "Price lists",
+      "region": "Regions",
+      "store": "Store details",
+      "user": "Users",
       "role": "Role",
       "permission": "Permission",
-      "sales_channel": "Sales Channel",
-      "stock_location": "Stock Location",
-      "shipping_profile": "Shipping Profile",
-      "shipping_option": "Shipping Option",
-      "tax_region": "Tax Region",
-      "api_key": "API Key",
-      "return_reason": "Return Reason",
-      "refund_reason": "Refund Reason",
+      "sales_channel": "Sales channels",
+      "stock_location": "Stock locations",
+      "shipping_profile": "Shipping profiles",
+      "shipping_option": "Shipping options",
+      "tax_region": "Tax regions",
+      "api_key": "API keys",
+      "return_reason": "Return reasons",
+      "refund_reason": "Refund reasons",
       "workflow": "Workflow",
-      "translation": "Translation"
+      "translation": "Translations",
+      "customer_address": "Customer addresses",
+      "inventory_item": "Inventory items",
+      "inventory_level": "Inventory levels",
+      "reservation_item": "Reservations",
+      "order_item": "Order items",
+      "order_change": "Order changes",
+      "order_address": "Order addresses",
+      "order_claim": "Claims",
+      "order_claim_item": "Claim items",
+      "order_exchange": "Exchanges",
+      "order_credit_line": "Order credit lines",
+      "return": "Returns",
+      "payment": "Payments",
+      "payment_collection": "Payment collections",
+      "payment_method": "Payment methods",
+      "payment_session": "Payment sessions",
+      "refund": "Refunds",
+      "capture": "Captures",
+      "price_preference": "Price preferences",
+      "price": "Prices",
+      "currency": "Currencies",
+      "product_variant": "Product variants",
+      "product_option": "Product options",
+      "product_option_value": "Product option values",
+      "property_label": "Property labels",
+      "shipping_option_type": "Shipping option types",
+      "fulfillment": "Fulfillments",
+      "fulfillment_provider": "Fulfillment providers",
+      "fulfillment_set": "Fulfillment sets",
+      "service_zone": "Service zones",
+      "file": "Files",
+      "audit_log": "Audit logs",
+      "notification": "Notifications",
+      "workflow_execution": "Workflow executions",
+      "store_locale": "Store locales",
+      "tax_provider": "Tax providers",
+      "tax_rate": "Tax rates",
+      "translation_setting": "Translation settings",
+      "invite": "Invites",
+      "rbac_role": "Roles",
+      "rbac_policy": "Permissions",
+      "rbac_role_assignment": "Role assignments"
     },
     "actions": {
       "read": "View",

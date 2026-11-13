@@ -2923,6 +2923,10 @@
     "delete": {
       "title": "Smazat roli",
       "description": "Chystáte se smazat roli {{name}}. Tuto akci nelze vrátit zpět.",
+      "descriptionWithUsers_one": "Chystáte se smazat roli {{name}}. {{count}} uživatel má tuto roli a ztratí přístup, který uděluje. Tuto akci nelze vrátit zpět.",
+      "descriptionWithUsers_few": "Chystáte se smazat roli {{name}}. {{count}} uživatelé mají tuto roli a ztratí přístup, který uděluje. Tuto akci nelze vrátit zpět.",
+      "descriptionWithUsers_many": "Chystáte se smazat roli {{name}}. {{count}} uživatelů má tuto roli a ztratí přístup, který uděluje. Tuto akci nelze vrátit zpět.",
+      "descriptionWithUsers_other": "Chystáte se smazat roli {{name}}. {{count}} uživatelů má tuto roli a ztratí přístup, který uděluje. Tuto akci nelze vrátit zpět.",
       "successToast": "Role {{name}} smazána"
     },
     "fields": {
@@ -2969,6 +2973,143 @@
       },
       "manage": {
         "successToast": "Oprávnění byla úspěšně aktualizována."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Objednávky",
+            "description": "Objednávky, změny objednávek, reklamace, výměny a vrácení"
+          },
+          "payments": {
+            "label": "Platby",
+            "description": "Platby, kolekce plateb, refundace a zachycení"
+          },
+          "products": {
+            "label": "Produkty",
+            "description": "Produkty, varianty, možnosti, kategorie, kolekce, typy a štítky"
+          },
+          "inventory": {
+            "label": "Inventář",
+            "description": "Položky inventáře, skladové zásoby, rezervace a umístění"
+          },
+          "customers": {
+            "label": "Zákazníci",
+            "description": "Zákazníci, adresy a skupiny zákazníků"
+          },
+          "pricing": {
+            "label": "Ceník a propagace",
+            "description": "Ceníky, ceny, propagace a kampaně"
+          },
+          "shipping": {
+            "label": "Doprava a plnění",
+            "description": "Možnosti a profily dopravy, plnění a servisní zóny"
+          },
+          "store": {
+            "label": "Nastavení obchodu",
+            "description": "Detaily obchodu, regiony, prodejní kanály, měny, daně a překlady"
+          },
+          "team": {
+            "label": "Tým a přístup",
+            "description": "Uživatelé, pozvánky, role a klíče API"
+          },
+          "system": {
+            "label": "Systém",
+            "description": "Soubory, oznámení a spuštění pracovních postupů"
+          },
+          "custom": {
+            "label": "Vlastní",
+            "description": "Oprávnění přidaná vašimi pluginy a vlastními moduly"
+          }
+        },
+        "levels": {
+          "none": "Bez přístupu",
+          "view": "Pouze zobrazení",
+          "full": "Plný přístup",
+          "mixed": "Smíšený"
+        },
+        "levelControlLabel": "Úroveň přístupu pro {{group}}",
+        "resourceColumn": "Zdroj",
+        "notAvailable": "n/a",
+        "notAvailableTooltip": "Tento zdroj nedefinuje toto oprávnění",
+        "rowToggle": "Všechna oprávnění {{resource}}",
+        "columnToggle": {
+          "on": "Zapnout {{operation}} pro všechna {{group}}",
+          "off": "Vypnout {{operation}} pro všechna {{group}}"
+        },
+        "search": {
+          "placeholder": "Hledat oprávnění",
+          "emptyHeading": "Žádná oprávnění neodpovídají vašemu hledání",
+          "emptyDescription": "Zkuste název zdroje jako objednávky nebo inventář."
+        },
+        "showKeys": "Zobrazit klíče oprávnění",
+        "clearAll": "Vymazat vše",
+        "lockedBadge_one": "{{count}} zamčeno",
+        "lockedBadge_few": "{{count}} zamčeny",
+        "lockedBadge_many": "{{count}} zamčeno",
+        "lockedBadge_other": "{{count}} zamčeno",
+        "lockedNote_one": "{{count}} oprávnění v této skupině nelze z vašeho účtu změnit, protože ho sami nemáte. Bez přístupu, Pouze zobrazení a Plný přístup platí pro zbytek.",
+        "lockedNote_few": "{{count}} oprávnění v této skupině nelze z vašeho účtu změnit, protože je sami nemáte. Bez přístupu, Pouze zobrazení a Plný přístup platí pro zbytek.",
+        "lockedNote_many": "{{count}} oprávnění v této skupině nelze z vašeho účtu změnit, protože je sami nemáte. Bez přístupu, Pouze zobrazení a Plný přístup platí pro zbytek.",
+        "lockedNote_other": "{{count}} oprávnění v této skupině nelze z vašeho účtu změnit, protože je sami nemáte. Bez přístupu, Pouze zobrazení a Plný přístup platí pro zbytek.",
+        "tooltips": {
+          "cannotGrant": "Toto nemůžete udělit, protože váš účet to nemá.",
+          "cannotRemove": "Tato role má toto oprávnění. Nemůžete ho změnit, protože váš účet ho nemá.",
+          "viewRequired": "Ostatní oprávnění na tomto zdroji vyžadují zobrazení. Nejprve je odeberte."
+        },
+        "noViewAccess": "Bez přístupu k zobrazení",
+        "templates": {
+          "heading": "Začít od šablony",
+          "hint": "Volitelné. Použití šablony nahradí aktuální výběr.",
+          "full": {
+            "label": "Plný přístup",
+            "description": "Vše, co dnes můžete udělit, včetně nastavení týmu a vlastních oprávnění."
+          },
+          "readonly": {
+            "label": "Pouze čtení",
+            "description": "Zobrazit vše, co dnes můžete udělit. Nic nezměnit."
+          },
+          "snapshotNote": "Šablony používají oprávnění, která existují dnes. Oprávnění přidaná později, například novým pluginem, nejsou zahrnuta automaticky."
+        },
+        "confirm": {
+          "template": {
+            "title": "Nahradit váš výběr?",
+            "description": "Použitím šablony {{template}} se nahradí oprávnění, která jste vybrali.",
+            "confirm": "Použít šablonu"
+          },
+          "clear": {
+            "title": "Vymazat všechna oprávnění?",
+            "descriptionCreate": "Tím se odebere každé oprávnění, které jste vybrali.",
+            "descriptionEdit": "Tím se odebere každé oprávnění, které můžete z této role změnit. Nic se neuloží, dokud nevyberete Uložit."
+          }
+        },
+        "summary": {
+          "heading": "Souhrn role",
+          "name": "Název",
+          "permissions": "Oprávnění",
+          "selectedOfTotal": "{{selected}} z {{total}} vybráno",
+          "unsavedChanges": "Neuložené změny",
+          "noChanges": "Zatím žádné změny",
+          "changes": "{{added}} přidáno, {{removed}} odebráno",
+          "footnote": "Oblasti nastavené na Bez přístupu jsou skryty pro členy s touto rolí. Plný přístup zahrnuje oprávnění, která existují dnes. Oprávnění přidaná později musí být udělena zde.",
+          "wildcards": "Tato role má také zástupná oprávnění ({{keys}}). Jsou spravována přes API a nejsou zde zobrazena."
+        },
+        "createHint": "Vyberte alespoň jedno oprávnění pro vytvoření role.",
+        "custom": {
+          "calloutHeading": "Přidejte vlastní oprávnění",
+          "calloutDescription": "Pluginy a vlastní moduly mohou definovat vlastní oprávnění. Po vytvoření se zobrazí v této skupině, připravena k přiřazení k libovolné roli.",
+          "calloutAction": "Přečíst průvodce"
+        },
+        "detail": {
+          "heading": "Oprávnění",
+          "count": "{{selected}} z {{total}} oprávnění",
+          "countOnly_one": "{{count}} oprávnění",
+          "countOnly_few": "{{count}} oprávnění",
+          "countOnly_many": "{{count}} oprávnění",
+          "countOnly_other": "{{count}} oprávnění",
+          "granted": "Uděleno",
+          "notGranted": "Neuděleno",
+          "wildcards": "Tato role má zástupná oprávnění ({{keys}}). Udělují každé oprávnění, které odpovídají, včetně těch přidaných později, a jsou spravována přes API."
+        }
       }
     },
     "list": {
@@ -3960,7 +4101,48 @@
       "return_reason": "Důvod vrácení",
       "refund_reason": "Důvod vrácení platby",
       "workflow": "Pracovní postup",
-      "translation": "Překlad"
+      "translation": "Překlad",
+      "customer_address": "Adresy zákazníka",
+      "inventory_item": "Položky inventáře",
+      "inventory_level": "Úrovně inventáře",
+      "reservation_item": "Rezervace",
+      "order_item": "Položky objednávky",
+      "order_change": "Změny objednávky",
+      "order_address": "Adresy objednávky",
+      "order_claim": "Reklamace",
+      "order_claim_item": "Položky reklamace",
+      "order_exchange": "Výměny",
+      "order_credit_line": "Kreditní linky objednávky",
+      "return": "Vrácení",
+      "payment": "Platby",
+      "payment_collection": "Kolekce plateb",
+      "payment_method": "Platební metody",
+      "payment_session": "Platební relace",
+      "refund": "Refundace",
+      "capture": "Zachycení",
+      "price_preference": "Cenové preference",
+      "price": "Ceny",
+      "currency": "Měny",
+      "product_variant": "Varianty produktu",
+      "product_option": "Možnosti produktu",
+      "product_option_value": "Hodnoty možností produktu",
+      "property_label": "Štítky vlastností",
+      "shipping_option_type": "Typy možností dopravy",
+      "fulfillment": "Plnění",
+      "fulfillment_provider": "Poskytovatelé plnění",
+      "fulfillment_set": "Sady plnění",
+      "service_zone": "Servisní zóny",
+      "file": "Soubory",
+      "notification": "Oznámení",
+      "workflow_execution": "Spuštění pracovního postupu",
+      "store_locale": "Jazykové nastavení obchodu",
+      "tax_provider": "Poskytovatelé daní",
+      "tax_rate": "Daňové sazby",
+      "translation_setting": "Nastavení překladu",
+      "invite": "Pozvánky",
+      "rbac_role": "Role",
+      "rbac_policy": "Oprávnění",
+      "rbac_role_assignment": "Přiřazení rolí"
     },
     "actions": {
       "read": "Zobrazit",

@@ -221,6 +221,7 @@ Keep in mind the following about updates:
 - The order of the `images` array sets the order of the product's images. Pass an existing image's `id` along with its `url` to keep that image.
 - Updating `images` doesn't change the `thumbnail`. Pass `thumbnail` to change it.
 - `metadata` is merged with the product's existing metadata.
+- If you pass `variants`, they replace the product's full variant list, so Medusa deletes existing variants that you don't include. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
 - In the same request, you can update the product's `collection_id`, `type_id`, `shipping_profile_id`, `status`, and other scalar fields.
 
 To manage the product's variants and options, use the dedicated methods explained in the next sections.

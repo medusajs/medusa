@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.6
+  version: 2.22.7
   title: Medusa Storefront API
   license:
     name: MIT
@@ -8781,7 +8781,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /store/orders:
     get:
       operationId: GetOrders
@@ -21173,6 +21172,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminClaimOrderResponse:
       type: object
       description: The created claim's details.
@@ -21385,6 +21385,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCollectionResponse:
       type: object
       description: The collection's details.
@@ -23652,6 +23653,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCurrencyResponse:
       type: object
       description: The currency's details.
@@ -24846,6 +24848,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminDraftOrderParams:
       type: object
       description: The parameters for retrieving draft orders.
@@ -25963,6 +25966,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentProviderOption:
       type: object
       description: The fulfillment option's details.
@@ -26011,6 +26015,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentResponse:
       type: object
       description: A fulfillment's details.
@@ -26296,6 +26301,7 @@ components:
           title: estimate_count
           description: The gift card's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminImportProductRequest:
       type: object
       description: The import's details.
@@ -26895,6 +26901,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         locales:
           type: array
           description: The list of locales.
@@ -27055,6 +27062,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminNotificationResponse:
       type: object
       description: The notification's details.
@@ -29593,6 +29601,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPriceListPrice:
       type: object
       description: The details of a price list's price.
@@ -29693,6 +29702,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         prices:
           type: array
           description: The list of prices associated with the price list.
@@ -29807,6 +29817,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPricePreferenceResponse:
       type: object
       description: The price preference's details.
@@ -30133,6 +30144,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -30489,6 +30501,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTagResponse:
       type: object
       description: The product tag's details.
@@ -30600,6 +30613,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTypeResponse:
       type: object
       description: The product type's details.
@@ -31965,6 +31979,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminReturnReasonResponse:
       type: object
       description: The return reason's details.
@@ -32835,6 +32850,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         shipping_option_types:
           type: array
           description: The list of shipping option types.
@@ -33082,6 +33098,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStockLocationResponse:
       type: object
       description: The stock location's details.
@@ -33256,6 +33273,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreCurrency:
       type: object
       description: The details of a store's currency.
@@ -33336,6 +33354,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreLocale:
       type: object
       description: The details of a store's locale.
@@ -33743,6 +33762,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminTransferOrderToGuest:
       type: object
       description: The details of the order transfer to a guest.
@@ -35964,6 +35984,13 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
+        roles:
+          type: array
+          description: The user's roles.
+          items:
+            type: string
+            title: roles
+            description: The role's roles.
     AdminUserAuthProvidersResponse:
       type: object
       description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
@@ -36035,6 +36062,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminUserResetPasswordTokenResponse:
       type: object
       description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
@@ -36088,6 +36116,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         roles:
           type: array
           description: The list of roles.
@@ -41433,6 +41462,7 @@ components:
         - is_discountable
         - is_giftcard
         - is_tax_inclusive
+        - is_custom_price
         - unit_price
         - quantity
         - detail
@@ -41632,6 +41662,10 @@ components:
         line_item_metadata:
           type: object
           description: Custom key-value pairs on the order's line items.
+        is_custom_price:
+          type: boolean
+          title: is_custom_price
+          description: Indicates whether the line item's unit price is a custom price.
     OrderLineItemAdjustment:
       type: object
       description: The line item adjustment's details.
@@ -43970,6 +44004,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCurrencyResponse:
       type: object
       description: The currency's details.
@@ -44189,6 +44224,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCustomerAddressResponse:
       type: object
       description: The address's details.
@@ -45742,6 +45778,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -46026,6 +46063,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTagResponse:
       type: object
       description: The product tag's details.
@@ -46110,6 +46148,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTypeResponse:
       type: object
       description: The product type's details.
@@ -46864,6 +46903,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     StoreUpdateCustomer:
       type: object
       description: The details to update in the customer.

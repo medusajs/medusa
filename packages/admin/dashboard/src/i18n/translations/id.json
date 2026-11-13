@@ -2859,6 +2859,7 @@
     "delete": {
       "title": "Hapus peran",
       "description": "Anda akan menghapus peran {{name}}. Tindakan ini tidak dapat dibatalkan.",
+      "descriptionWithUsers_other": "Anda akan menghapus peran {{name}}. {{count}} pengguna memiliki peran ini dan akan kehilangan akses yang diberikannya. Tindakan ini tidak dapat dibatalkan.",
       "successToast": "Peran {{name}} dihapus"
     },
     "fields": {
@@ -2896,6 +2897,134 @@
       },
       "manage": {
         "successToast": "Izin berhasil diperbarui."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Pesanan",
+            "description": "Pesanan, perubahan pesanan, klaim, penukaran, dan pengembalian"
+          },
+          "payments": {
+            "label": "Pembayaran",
+            "description": "Pembayaran, koleksi pembayaran, pengembalian dana, dan penangkapan"
+          },
+          "products": {
+            "label": "Produk",
+            "description": "Produk, varian, opsi, kategori, koleksi, jenis, dan tag"
+          },
+          "inventory": {
+            "label": "Inventaris",
+            "description": "Item inventaris, level stok, reservasi, dan lokasi"
+          },
+          "customers": {
+            "label": "Pelanggan",
+            "description": "Pelanggan, alamat, dan grup pelanggan"
+          },
+          "pricing": {
+            "label": "Harga dan promosi",
+            "description": "Daftar harga, harga, promosi, dan kampanye"
+          },
+          "shipping": {
+            "label": "Pengiriman dan pemenuhan",
+            "description": "Opsi dan profil pengiriman, pemenuhan, dan zona layanan"
+          },
+          "store": {
+            "label": "Pengaturan toko",
+            "description": "Detail toko, wilayah, saluran penjualan, mata uang, pajak, dan terjemahan"
+          },
+          "team": {
+            "label": "Tim dan akses",
+            "description": "Pengguna, undangan, peran, dan kunci API"
+          },
+          "system": {
+            "label": "Sistem",
+            "description": "File, notifikasi, dan eksekusi alur kerja"
+          },
+          "custom": {
+            "label": "Kustom",
+            "description": "Izin yang ditambahkan oleh plugin dan modul kustom Anda"
+          }
+        },
+        "levels": {
+          "none": "Tidak ada akses",
+          "view": "Hanya lihat",
+          "full": "Akses penuh",
+          "mixed": "Campuran"
+        },
+        "levelControlLabel": "Tingkat akses untuk {{group}}",
+        "resourceColumn": "Sumber daya",
+        "notAvailable": "t/a",
+        "notAvailableTooltip": "Sumber daya ini tidak mendefinisikan izin ini",
+        "rowToggle": "Semua izin {{resource}}",
+        "columnToggle": {
+          "on": "Aktifkan {{operation}} untuk semua {{group}}",
+          "off": "Nonaktifkan {{operation}} untuk semua {{group}}"
+        },
+        "search": {
+          "placeholder": "Cari izin",
+          "emptyHeading": "Tidak ada izin yang cocok dengan pencarian Anda",
+          "emptyDescription": "Coba nama sumber daya seperti pesanan atau inventaris."
+        },
+        "showKeys": "Tampilkan kunci izin",
+        "clearAll": "Hapus semua",
+        "lockedBadge_other": "{{count}} terkunci",
+        "lockedNote_other": "{{count}} izin dalam grup ini tidak dapat diubah dari akun Anda, karena Anda tidak memilikinya sendiri. Tidak ada akses, Hanya lihat, dan Akses penuh berlaku untuk sisanya.",
+        "tooltips": {
+          "cannotGrant": "Anda tidak dapat memberikan ini karena akun Anda tidak memilikinya.",
+          "cannotRemove": "Peran ini memiliki izin ini. Anda tidak dapat mengubahnya karena akun Anda tidak memilikinya.",
+          "viewRequired": "Izin lain pada sumber daya ini memerlukan tampilan. Hapus terlebih dahulu."
+        },
+        "noViewAccess": "Tidak ada akses tampilan",
+        "templates": {
+          "heading": "Mulai dari templat",
+          "hint": "Opsional. Menerapkan templat menggantikan pilihan saat ini.",
+          "full": {
+            "label": "Akses penuh",
+            "description": "Semua yang dapat Anda berikan hari ini, termasuk pengaturan tim dan izin kustom."
+          },
+          "readonly": {
+            "label": "Hanya baca",
+            "description": "Lihat semua yang dapat Anda berikan hari ini. Tidak mengubah apa pun."
+          },
+          "snapshotNote": "Templat menggunakan izin yang ada hari ini. Izin yang ditambahkan nanti, misalnya oleh plugin baru, tidak disertakan secara otomatis."
+        },
+        "confirm": {
+          "template": {
+            "title": "Ganti pilihan Anda?",
+            "description": "Menerapkan templat {{template}} menggantikan izin yang telah Anda pilih.",
+            "confirm": "Terapkan templat"
+          },
+          "clear": {
+            "title": "Hapus semua izin?",
+            "descriptionCreate": "Ini menghapus setiap izin yang telah Anda pilih.",
+            "descriptionEdit": "Ini menghapus setiap izin yang dapat Anda ubah dari peran ini. Tidak ada yang disimpan hingga Anda memilih Simpan."
+          }
+        },
+        "summary": {
+          "heading": "Ringkasan peran",
+          "name": "Nama",
+          "permissions": "Izin",
+          "selectedOfTotal": "{{selected}} dari {{total}} dipilih",
+          "unsavedChanges": "Perubahan yang belum disimpan",
+          "noChanges": "Belum ada perubahan",
+          "changes": "{{added}} ditambahkan, {{removed}} dihapus",
+          "footnote": "Area yang disetel ke Tidak ada akses disembunyikan dari anggota dengan peran ini. Akses penuh mencakup izin yang ada hari ini. Izin yang ditambahkan nanti perlu diberikan di sini.",
+          "wildcards": "Peran ini juga memiliki izin wildcard ({{keys}}). Izin tersebut dikelola melalui API dan tidak ditampilkan di sini."
+        },
+        "createHint": "Pilih setidaknya satu izin untuk membuat peran.",
+        "custom": {
+          "calloutHeading": "Tambahkan izin Anda sendiri",
+          "calloutDescription": "Plugin dan modul kustom dapat mendefinisikan izin mereka sendiri. Setelah dibuat, izin tersebut muncul di grup ini, siap untuk ditetapkan ke peran apa pun.",
+          "calloutAction": "Baca panduan"
+        },
+        "detail": {
+          "heading": "Izin",
+          "count": "{{selected}} dari {{total}} izin",
+          "countOnly_other": "{{count}} izin",
+          "granted": "Diberikan",
+          "notGranted": "Tidak diberikan",
+          "wildcards": "Peran ini memiliki izin wildcard ({{keys}}). Izin tersebut memberikan setiap izin yang cocok, termasuk yang ditambahkan nanti, dan dikelola melalui API."
+        }
       }
     },
     "list": {
@@ -3854,7 +3983,48 @@
       "return_reason": "Alasan Pengembalian",
       "refund_reason": "Alasan Pengembalian Dana",
       "workflow": "Alur Kerja",
-      "translation": "Terjemahan"
+      "translation": "Terjemahan",
+      "customer_address": "Alamat pelanggan",
+      "inventory_item": "Item inventaris",
+      "inventory_level": "Level inventaris",
+      "reservation_item": "Reservasi",
+      "order_item": "Item pesanan",
+      "order_change": "Perubahan pesanan",
+      "order_address": "Alamat pesanan",
+      "order_claim": "Klaim",
+      "order_claim_item": "Item klaim",
+      "order_exchange": "Penukaran",
+      "order_credit_line": "Lini kredit pesanan",
+      "return": "Pengembalian",
+      "payment": "Pembayaran",
+      "payment_collection": "Koleksi pembayaran",
+      "payment_method": "Metode pembayaran",
+      "payment_session": "Sesi pembayaran",
+      "refund": "Pengembalian dana",
+      "capture": "Penangkapan",
+      "price_preference": "Preferensi harga",
+      "price": "Harga",
+      "currency": "Mata uang",
+      "product_variant": "Varian produk",
+      "product_option": "Opsi produk",
+      "product_option_value": "Nilai opsi produk",
+      "property_label": "Label properti",
+      "shipping_option_type": "Jenis opsi pengiriman",
+      "fulfillment": "Pemenuhan",
+      "fulfillment_provider": "Penyedia pemenuhan",
+      "fulfillment_set": "Set pemenuhan",
+      "service_zone": "Zona layanan",
+      "file": "File",
+      "notification": "Notifikasi",
+      "workflow_execution": "Eksekusi alur kerja",
+      "store_locale": "Lokal toko",
+      "tax_provider": "Penyedia pajak",
+      "tax_rate": "Tarif pajak",
+      "translation_setting": "Pengaturan terjemahan",
+      "invite": "Undangan",
+      "rbac_role": "Peran",
+      "rbac_policy": "Izin",
+      "rbac_role_assignment": "Penetapan peran"
     },
     "actions": {
       "read": "Lihat",

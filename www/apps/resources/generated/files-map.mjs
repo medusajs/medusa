@@ -4288,6 +4288,10 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/refreshCartItemsWorkflow"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.refreshCartPromotionAdjustmentsWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.refreshCartShippingMethodsWorkflow/page.json",
     "pathname": "/references/medusa-workflows/refreshCartShippingMethodsWorkflow"
   },
@@ -4310,6 +4314,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.transferCartCustomerWorkflow/page.json",
     "pathname": "/references/medusa-workflows/transferCartCustomerWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.updateCartPromotionsValidateInput/page.json",
+    "pathname": "/references/medusa-workflows/updateCartPromotionsValidateInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/functions/core_flows.Cart.Workflows_Cart.updateCartPromotionsWorkflow/page.json",
@@ -4406,6 +4414,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.refreshCartItemsWorkflowId/page.json",
     "pathname": "/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.refreshCartItemsWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.refreshCartPromotionAdjustmentsWorkflowId/page.json",
+    "pathname": "/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.refreshCartPromotionAdjustmentsWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Workflows_Cart/variables/core_flows.Cart.Workflows_Cart.refreshCartShippingMethodsWorkflowId/page.json",
@@ -5672,6 +5684,10 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/steps/deleteInvitesStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Invite/Steps_Invite/functions/core_flows.Invite.Steps_Invite.getInviteRolesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/getInviteRolesStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Invite/Steps_Invite/functions/core_flows.Invite.Steps_Invite.refreshInviteTokensStep/page.json",
     "pathname": "/references/medusa-workflows/steps/refreshInviteTokensStep"
   },
@@ -5686,6 +5702,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Invite/Steps_Invite/variables/core_flows.Invite.Steps_Invite.deleteInvitesStepId/page.json",
     "pathname": "/references/core_flows/Invite/Steps_Invite/variables/core_flows.Invite.Steps_Invite.deleteInvitesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Invite/Steps_Invite/variables/core_flows.Invite.Steps_Invite.getInviteRolesStepId/page.json",
+    "pathname": "/references/core_flows/Invite/Steps_Invite/variables/core_flows.Invite.Steps_Invite.getInviteRolesStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Invite/Steps_Invite/variables/core_flows.Invite.Steps_Invite.refreshInviteTokensStepId/page.json",
@@ -6544,6 +6564,10 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/orderFulfillmentDeliverablilityValidationStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.prepareInventoryUpdate/page.json",
+    "pathname": "/references/medusa-workflows/prepareInventoryUpdate"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.receiveAndCompleteReturnOrderWorkflow/page.json",
     "pathname": "/references/medusa-workflows/receiveAndCompleteReturnOrderWorkflow"
   },
@@ -7316,6 +7340,14 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/steps/deleteRefundReasonsStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.replacePaymentAccountHolderStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/replacePaymentAccountHolderStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.tryCreatePaymentSessionStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/tryCreatePaymentSessionStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentCollectionStep/page.json",
     "pathname": "/references/medusa-workflows/steps/updatePaymentCollectionStep"
   },
@@ -7362,6 +7394,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.deleteRefundReasonsStepId/page.json",
     "pathname": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.deleteRefundReasonsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.replacePaymentAccountHolderStepId/page.json",
+    "pathname": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.replacePaymentAccountHolderStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.tryCreatePaymentSessionStepId/page.json",
+    "pathname": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.tryCreatePaymentSessionStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/variables/core_flows.Payment_Collection.Steps_Payment_Collection.updatePaymentCollectionStepId/page.json",
@@ -8520,20 +8560,152 @@ export const filesMap = [
     "pathname": "/references/core_flows/Promotion/core_flows.Promotion.Workflows_Promotion"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.createRbacPoliciesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/createRbacPoliciesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.createRbacRolePoliciesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/createRbacRolePoliciesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.createRbacRolesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/createRbacRolesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.createRoleAssignmentsStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/createRoleAssignmentsStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.deleteRbacPoliciesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/deleteRbacPoliciesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.deleteRbacRolePoliciesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/deleteRbacRolePoliciesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.deleteRbacRolesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/deleteRbacRolesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.deleteRoleAssignmentsStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/deleteRoleAssignmentsStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.ensureSuperAdminRemainsStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/ensureSuperAdminRemainsStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.getAssignablePoliciesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/getAssignablePoliciesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.getAssignableRolesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/getAssignableRolesStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStep/page.json",
     "pathname": "/references/medusa-workflows/steps/getRoleAssignmentsStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.updateRbacPoliciesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/updateRbacPoliciesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.updateRbacRolesStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/updateRbacRolesStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateActorPermissionsStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/validateActorPermissionsStep"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateActorRolePermissionsStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/validateActorRolePermissionsStep"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStep/page.json",
     "pathname": "/references/medusa-workflows/steps/validateAssignmentReferencesStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/functions/core_flows.Rbac.Steps_Rbac.validateRolesExistStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/validateRolesExistStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.SUPER_ADMIN_GUARD_LOCK_KEY/page.json",
     "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.SUPER_ADMIN_GUARD_LOCK_KEY"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.createRbacPoliciesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.createRbacPoliciesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.createRbacRolePoliciesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.createRbacRolePoliciesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.createRbacRolesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.createRbacRolesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.createRoleAssignmentsStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.createRoleAssignmentsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.deleteRbacPoliciesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.deleteRbacPoliciesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.deleteRbacRolePoliciesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.deleteRbacRolePoliciesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.deleteRbacRolesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.deleteRbacRolesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.deleteRoleAssignmentsStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.deleteRoleAssignmentsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.ensureSuperAdminRemainsStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.ensureSuperAdminRemainsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getAssignablePoliciesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getAssignablePoliciesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getAssignableRolesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getAssignableRolesStepId"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStepId/page.json",
     "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.getRoleAssignmentsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.updateRbacPoliciesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.updateRbacPoliciesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.updateRbacRolesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.updateRbacRolesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.validateActorPermissionsStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.validateActorPermissionsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.validateActorRolePermissionsStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.validateActorRolePermissionsStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.validateAssignmentReferencesStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.validateRolesExistStepId/page.json",
+    "pathname": "/references/core_flows/Rbac/Steps_Rbac/variables/core_flows.Rbac.Steps_Rbac.validateRolesExistStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Rbac/Workflows_Rbac/functions/core_flows.Rbac.Workflows_Rbac.assignRolesWorkflow/page.json",
@@ -10036,6 +10208,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.GetActionsToComputeFromPromotionsStepInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.GetInviteRolesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.GetInviteRolesStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.GetItemTaxLinesStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.GetItemTaxLinesStepInput"
   },
@@ -10170,6 +10346,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ShippingOptionsPriceCurrencyCode/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ShippingOptionsPriceCurrencyCode"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.TryCreatePaymentSessionStepOutput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.TryCreatePaymentSessionStepOutput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.UpdateCartItemsTranslationsStepInput/page.json",
@@ -10390,6 +10570,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CalculateShippingOptionsPriceStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CalculateShippingOptionsPriceStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CanActorGrantPoliciesInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CanActorGrantPoliciesInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CanActorGrantRolesInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CanActorGrantRolesInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CanDeleteSalesChannelsOrThrowStepInput/page.json",
@@ -10776,12 +10964,28 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreatePromotionsWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacPoliciesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacPoliciesStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacPoliciesWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacPoliciesWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRoleDTO/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRoleDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolePoliciesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolePoliciesStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolePoliciesWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolePoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolesStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRbacRolesWorkflowInput/page.json",
@@ -10814,6 +11018,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateReturnShippingMethodWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateReturnShippingMethodWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRoleAssignmentsStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateRoleAssignmentsStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.CreateSalesChannelsWorkflowInput/page.json",
@@ -11136,12 +11344,24 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeletePromotionsWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacPoliciesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacPoliciesStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacPoliciesWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacPoliciesWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolePoliciesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolePoliciesStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolePoliciesWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolePoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolesStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRbacRolesWorkflowInput/page.json",
@@ -11186,6 +11406,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteReturnStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteReturnStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRoleAssignmentsStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteRoleAssignmentsStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DeleteSalesChannelsStepInput/page.json",
@@ -11296,6 +11520,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.DismissRemoteLinksStepInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.EnsureSuperAdminRemainsStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.EnsureSuperAdminRemainsStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ExchangeAddNewItemValidationStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ExchangeAddNewItemValidationStepInput"
   },
@@ -11360,12 +11588,28 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAllProductsStepInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesStepOutput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesStepOutput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowOutput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignablePoliciesWorkflowOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesStepOutput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesStepOutput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.GetAssignableRolesWorkflowInput/page.json",
@@ -11546,6 +11790,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.RefreshCartItemsWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.RefreshCartItemsWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.RefreshCartPromotionAdjustmentsWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.RefreshCartPromotionAdjustmentsWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.RefreshCartShippingMethodsWorkflowInput/page.json",
@@ -11754,6 +12002,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateCampaignsWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateCampaignsWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateCartPromotionsValidateInputStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateCartPromotionsValidateInputStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateCartPromotionsWorkflowInput/page.json",
@@ -11968,8 +12220,16 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdatePromotionsWorkflowInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacPoliciesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacPoliciesStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacPoliciesWorkflowInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacPoliciesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacRolesStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacRolesStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UpdateRbacRolesWorkflowInput/page.json",
@@ -12150,6 +12410,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UseQueryGraphStepOutput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.UseQueryGraphStepOutput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateActorPermissionsStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateActorPermissionsStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateActorRolePermissionsStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateActorRolePermissionsStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateCartShippingOptionsPriceInput/page.json",
@@ -13312,6 +13580,14 @@ export const filesMap = [
     "pathname": "/references/events/Product/variables/events.Product.ProductWorkflowEvents"
   },
   {
+    "filePath": "/www/apps/resources/references/events/Promotion/variables/events.Promotion.CampaignWorkflowEvents/page.json",
+    "pathname": "/references/events/Promotion/variables/events.Promotion.CampaignWorkflowEvents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/events/Promotion/variables/events.Promotion.PromotionWorkflowEvents/page.json",
+    "pathname": "/references/events/Promotion/variables/events.Promotion.PromotionWorkflowEvents"
+  },
+  {
     "filePath": "/www/apps/resources/references/events/Region/variables/events.Region.RegionWorkflowEvents/page.json",
     "pathname": "/references/events/Region/variables/events.Region.RegionWorkflowEvents"
   },
@@ -13366,6 +13642,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/events/events.Product/page.json",
     "pathname": "/references/events/events.Product"
+  },
+  {
+    "filePath": "/www/apps/resources/references/events/events.Promotion/page.json",
+    "pathname": "/references/events/events.Promotion"
   },
   {
     "filePath": "/www/apps/resources/references/events/events.Region/page.json",
@@ -14868,6 +15148,10 @@ export const filesMap = [
     "pathname": "/references/js-sdk/admin/apiKey"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.auditLog/page.json",
+    "pathname": "/references/js-sdk/admin/auditLog"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Admin/properties/js_sdk.admin.Admin.campaign/page.json",
     "pathname": "/references/js-sdk/admin/campaign"
   },
@@ -15114,6 +15398,18 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/ApiKey/properties/js_sdk.admin.ApiKey.client/page.json",
     "pathname": "/references/js_sdk/admin/ApiKey/properties/js_sdk.admin.ApiKey.client"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/AuditLog/methods/js_sdk.admin.AuditLog.list/page.json",
+    "pathname": "/references/js_sdk/admin/AuditLog/methods/js_sdk.admin.AuditLog.list"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/AuditLog/methods/js_sdk.admin.AuditLog.retrieve/page.json",
+    "pathname": "/references/js_sdk/admin/AuditLog/methods/js_sdk.admin.AuditLog.retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/AuditLog/properties/js_sdk.admin.AuditLog.client/page.json",
+    "pathname": "/references/js_sdk/admin/AuditLog/properties/js_sdk.admin.AuditLog.client"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/Campaign/methods/js_sdk.admin.Campaign.batchPromotions/page.json",
@@ -16408,6 +16704,10 @@ export const filesMap = [
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removeAssignments"
   },
   {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicies/page.json",
+    "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicies"
+  },
+  {
     "filePath": "/www/apps/resources/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy/page.json",
     "pathname": "/references/js_sdk/admin/RbacRole/methods/js_sdk.admin.RbacRole.removePolicy"
   },
@@ -17030,6 +17330,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.ApiKey/page.json",
     "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.ApiKey"
+  },
+  {
+    "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.AuditLog/page.json",
+    "pathname": "/references/js_sdk/admin/classes/js_sdk.admin.AuditLog"
   },
   {
     "filePath": "/www/apps/resources/references/js_sdk/admin/classes/js_sdk.admin.Campaign/page.json",
@@ -17708,6 +18012,10 @@ export const filesMap = [
     "pathname": "/references/loyalty/models/GiftCard"
   },
   {
+    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.AuthContext/page.json",
+    "pathname": "/references/medusa/interfaces/medusa.AuthContext"
+  },
+  {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FindConfig/page.json",
     "pathname": "/references/medusa/interfaces/medusa.FindConfig"
   },
@@ -17730,6 +18038,22 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.SubscriberContext/page.json",
     "pathname": "/references/medusa/interfaces/medusa.SubscriberContext"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.AuditRequest/page.json",
+    "pathname": "/references/medusa/types/medusa.AuditRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.AuditResource/page.json",
+    "pathname": "/references/medusa/types/medusa.AuditResource"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.AuditRouteConfig/page.json",
+    "pathname": "/references/medusa/types/medusa.AuditRouteConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.AuditRouteSetting/page.json",
+    "pathname": "/references/medusa/types/medusa.AuditRouteSetting"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.ClassConstructor/page.json",
@@ -17922,6 +18246,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/module_events/module_events.Product/page.json",
     "pathname": "/references/product/events"
+  },
+  {
+    "filePath": "/www/apps/resources/references/module_events/module_events.Promotion/page.json",
+    "pathname": "/references/promotion/events"
   },
   {
     "filePath": "/www/apps/resources/references/module_events/module_events.Region/page.json",
@@ -19708,6 +20036,10 @@ export const filesMap = [
     "pathname": "/references/payment/refundPayment"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.replaceAccountHolder/page.json",
+    "pathname": "/references/payment/replaceAccountHolder"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.restorePaymentCollections/page.json",
     "pathname": "/references/payment/restorePaymentCollections"
   },
@@ -19914,6 +20246,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.RefundReasonDTO/page.json",
     "pathname": "/references/payment/interfaces/payment.RefundReasonDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/interfaces/payment.ReplaceAccountHolderDTO/page.json",
+    "pathname": "/references/payment/interfaces/payment.ReplaceAccountHolderDTO"
   },
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.RestoreReturn/page.json",
@@ -24888,6 +25224,14 @@ export const filesMap = [
     "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.HttpCompressionOptions"
   },
   {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.HttpCorsOptions/page.json",
+    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.HttpCorsOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.HttpSecurityHeadersOptions/page.json",
+    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.HttpSecurityHeadersOptions"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.MedusaCloudOptions/page.json",
     "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.MedusaCloudOptions"
   },
@@ -25422,6 +25766,30 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAssignUserRoles/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAssignUserRoles"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLog/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLog"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogDateRange/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogDateRange"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogListParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogParams/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogRequest/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuditLogResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminAuthorizeOrderPaymentSession/page.json",
@@ -27008,6 +27376,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRoleParams"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePoliciesDeleteResponse/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePoliciesDeleteResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePoliciesResponse/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRbacRolePoliciesResponse"
   },
@@ -27110,6 +27482,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleAssignments/page.json",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleAssignments"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRolePolicies/page.json",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRolePolicies"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminRemoveRoleUsers/page.json",
@@ -28478,6 +28854,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminApiKeyListResponse/page.json",
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminApiKeyListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminAuditLogListResponse/page.json",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminAuditLogListResponse"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminCampaignDeleteResponse/page.json",
@@ -30248,6 +30628,26 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.AdminUpsertGeoZone"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AuditLogDTO/page.json",
+    "pathname": "/references/types/interfaces/types.AuditLogDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AuditLogDateRange/page.json",
+    "pathname": "/references/types/interfaces/types.AuditLogDateRange"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AuditLogFindConfig/page.json",
+    "pathname": "/references/types/interfaces/types.AuditLogFindConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AuditLogRequest/page.json",
+    "pathname": "/references/types/interfaces/types.AuditLogRequest"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AuditModuleOptions/page.json",
+    "pathname": "/references/types/interfaces/types.AuditModuleOptions"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.AuthContext/page.json",
     "pathname": "/references/types/interfaces/types.AuthContext"
   },
@@ -30704,6 +31104,10 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.CreateAccountHolderOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.CreateAuditLogDTO/page.json",
+    "pathname": "/references/types/interfaces/types.CreateAuditLogDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.CreateCartAddressDTO/page.json",
     "pathname": "/references/types/interfaces/types.CreateCartAddressDTO"
   },
@@ -30808,6 +31212,10 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.FileServiceUploadResult"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.FilterableAuditLogProps/page.json",
+    "pathname": "/references/types/interfaces/types.FilterableAuditLogProps"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.FixtureEntryPoints/page.json",
     "pathname": "/references/types/interfaces/types.FixtureEntryPoints"
   },
@@ -30830,6 +31238,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.IAnalyticsProvider/page.json",
     "pathname": "/references/types/interfaces/types.IAnalyticsProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.IAuditModuleService/page.json",
+    "pathname": "/references/types/interfaces/types.IAuditModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.IAuditProvider/page.json",
+    "pathname": "/references/types/interfaces/types.IAuditProvider"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.IAuthProvider/page.json",
@@ -31122,6 +31538,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.AdminUpsertFulfillmentSetServiceZoneGeoZone/page.json",
     "pathname": "/references/types/types/types.AdminUpsertFulfillmentSetServiceZoneGeoZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.AuditActorType/page.json",
+    "pathname": "/references/types/types/types.AuditActorType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.AuditOutcome/page.json",
+    "pathname": "/references/types/types/types.AuditOutcome"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.BasePaymentCollectionStatus/page.json",
@@ -31646,6 +32070,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types.AnalyticsTypes/page.json",
     "pathname": "/references/types/types.AnalyticsTypes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types.AuditTypes/page.json",
+    "pathname": "/references/types/types.AuditTypes"
   },
   {
     "filePath": "/www/apps/resources/references/types/types.CacheTypes/page.json",
@@ -32180,6 +32608,14 @@ export const filesMap = [
     "pathname": "/references/utils/ProductUtils/utils.ProductUtils.productValidators"
   },
   {
+    "filePath": "/www/apps/resources/references/utils/Promotion/variables/utils.Promotion.CampaignWorkflowEvents/page.json",
+    "pathname": "/references/utils/Promotion/variables/utils.Promotion.CampaignWorkflowEvents"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/Promotion/variables/utils.Promotion.PromotionWorkflowEvents/page.json",
+    "pathname": "/references/utils/Promotion/variables/utils.Promotion.PromotionWorkflowEvents"
+  },
+  {
     "filePath": "/www/apps/resources/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodAllocation/page.json",
     "pathname": "/references/utils/PromotionUtils/enums/utils.PromotionUtils.ApplicationMethodAllocation"
   },
@@ -32506,6 +32942,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/utils.ProductUtils/page.json",
     "pathname": "/references/utils/utils.ProductUtils"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/utils.Promotion/page.json",
+    "pathname": "/references/utils/utils.Promotion"
   },
   {
     "filePath": "/www/apps/resources/references/utils/utils.PromotionUtils/page.json",

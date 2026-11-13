@@ -18,6 +18,17 @@ function createFileContentHash(path: string, files: string): string {
   return path + files
 }
 
+function resolveFrom(id: string, directory: string): string | undefined {
+  try {
+    return require.resolve(id, { paths: [directory] })
+  } catch (error) {
+    if (error.code === "MODULE_NOT_FOUND") {
+      return undefined
+    }
+    throw error
+  }
+}
+
 /**
  * Returns the absolute path to the package.json file for a
  * given plugin identifier.
@@ -25,20 +36,43 @@ function createFileContentHash(path: string, files: string): string {
 async function resolvePluginPkgFile(
   rootDirectory: string,
   pluginPath: string
-): Promise<{ path: string; contents: any }> {
+): Promise<{ path: string; contents: any; isProjectDependency: boolean }> {
+  const pkgJSONSpecifier = path.join(pluginPath, "package.json")
+  const unresolvedError = new Error(
+    `Unable to resolve plugin "${pluginPath}". Make sure the plugin directory has a package.json file`
+  )
+
+  let pkgJSONPath = resolveFrom(pkgJSONSpecifier, rootDirectory)
+  const isProjectDependency = !!pkgJSONPath
+
+  if (!pkgJSONPath) {
+    // Default plugins are dependencies of "@medusajs/medusa", so strict
+    // package managers (e.g. pnpm) don't expose them to the project.
+    const medusaPkgJSONPath = resolveFrom(
+      "@medusajs/medusa/package.json",
+      rootDirectory
+    )
+    pkgJSONPath =
+      medusaPkgJSONPath &&
+      resolveFrom(pkgJSONSpecifier, path.dirname(medusaPkgJSONPath))
+  }
+
+  if (!pkgJSONPath) {
+    throw unresolvedError
+  }
+
   try {
-    const pkgJSONPath = require.resolve(path.join(pluginPath, "package.json"), {
-      paths: [rootDirectory],
-    })
     const packageJSONContents = JSON.parse(
       await fs.readFile(pkgJSONPath, "utf-8")
     )
-    return { path: pkgJSONPath, contents: packageJSONContents }
+    return {
+      path: pkgJSONPath,
+      contents: packageJSONContents,
+      isProjectDependency,
+    }
   } catch (error) {
-    if (error.code === "MODULE_NOT_FOUND" || error.code === "ENOENT") {
-      throw new Error(
-        `Unable to resolve plugin "${pluginPath}". Make sure the plugin directory has a package.json file`
-      )
+    if (error.code === "ENOENT") {
+      throw unresolvedError
     }
     throw error
   }
@@ -89,6 +123,9 @@ async function resolvePlugin(
     ignoreMissing: true,
   })
   const pluginOptions = options ?? {}
+  const modulesImportPath = pkgJSON.isProjectDependency
+    ? pluginPath
+    : resolvedPath
 
   const hasAdmin =
     !!pkgJSON.contents.exports?.["./admin"] || !!pluginStaticOptions.srcDir
@@ -113,7 +150,7 @@ async function resolvePlugin(
     admin: adminConfig,
     modules: modules.map((mod) => {
       return {
-        resolve: `${pluginPath}/${MEDUSA_PLUGIN_SOURCE_PATH}/modules/${mod.name}`,
+        resolve: `${modulesImportPath}/${MEDUSA_PLUGIN_SOURCE_PATH}/modules/${mod.name}`,
         options: pluginOptions,
       }
     }),

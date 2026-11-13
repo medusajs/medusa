@@ -65,6 +65,9 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/payments/:id/capture",
+    audit: {
+      requestData: (req) => ({ amount: req.validatedBody?.amount }),
+    },
     middlewares: [
       authorize([
         {
@@ -86,6 +89,12 @@ export const adminPaymentRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/payments/:id/refund",
+    audit: {
+      requestData: (req) => ({
+        amount: req.validatedBody?.amount,
+        refund_reason_id: req.validatedBody?.refund_reason_id,
+      }),
+    },
     middlewares: [
       authorize([
         {

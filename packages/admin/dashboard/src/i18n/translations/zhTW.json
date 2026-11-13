@@ -2857,6 +2857,7 @@
     "delete": {
       "title": "刪除角色",
       "description": "您即將刪除角色 {{name}}。此操作無法復原。",
+      "descriptionWithUsers_other": "您即將刪除角色 {{name}}。{{count}} 位使用者擁有此角色，將失去此角色授予的存取權限。此操作無法復原。",
       "successToast": "角色 {{name}} 已刪除"
     },
     "fields": {
@@ -2894,6 +2895,134 @@
       },
       "manage": {
         "successToast": "權限已成功更新。"
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "訂單",
+            "description": "訂單、訂單變更、索賠、換貨及退貨"
+          },
+          "payments": {
+            "label": "付款",
+            "description": "付款、付款集合、退款及收款"
+          },
+          "products": {
+            "label": "商品",
+            "description": "商品、變體、選項、分類、系列、類型及標籤"
+          },
+          "inventory": {
+            "label": "庫存",
+            "description": "庫存項目、庫存水準、預留及地點"
+          },
+          "customers": {
+            "label": "顧客",
+            "description": "顧客、地址及顧客群組"
+          },
+          "pricing": {
+            "label": "定價與促銷活動",
+            "description": "價格清單、價格、促銷活動及行銷活動"
+          },
+          "shipping": {
+            "label": "運送與出貨",
+            "description": "運送選項與配置檔、出貨及服務區域"
+          },
+          "store": {
+            "label": "商店設定",
+            "description": "商店詳情、區域、銷售管道、貨幣、稅務及翻譯"
+          },
+          "team": {
+            "label": "團隊與存取",
+            "description": "使用者、邀請、角色及 API 金鑰"
+          },
+          "system": {
+            "label": "系統",
+            "description": "檔案、通知及工作流程執行"
+          },
+          "custom": {
+            "label": "自訂",
+            "description": "由您的插件和自訂模組新增的權限"
+          }
+        },
+        "levels": {
+          "none": "無存取權限",
+          "view": "僅檢視",
+          "full": "完整存取權限",
+          "mixed": "混合"
+        },
+        "levelControlLabel": "{{group}} 的存取層級",
+        "resourceColumn": "資源",
+        "notAvailable": "無",
+        "notAvailableTooltip": "此資源未定義此權限",
+        "rowToggle": "所有 {{resource}} 權限",
+        "columnToggle": {
+          "on": "為所有 {{group}} 開啟 {{operation}}",
+          "off": "為所有 {{group}} 關閉 {{operation}}"
+        },
+        "search": {
+          "placeholder": "搜尋權限",
+          "emptyHeading": "沒有符合搜尋條件的權限",
+          "emptyDescription": "試試資源名稱，例如訂單或庫存。"
+        },
+        "showKeys": "顯示權限金鑰",
+        "clearAll": "全部清除",
+        "lockedBadge_other": "{{count}} 個已鎖定",
+        "lockedNote_other": "此群組中有 {{count}} 個權限無法從您的帳號變更，因為您自己沒有這些權限。無存取權限、僅檢視和完整存取權限適用於其餘權限。",
+        "tooltips": {
+          "cannotGrant": "您無法授予此權限，因為您的帳號沒有此權限。",
+          "cannotRemove": "此角色具有此權限。您無法更改它，因為您的帳號沒有此權限。",
+          "viewRequired": "此資源的其他權限需要檢視存取。請先移除這些權限。"
+        },
+        "noViewAccess": "無檢視存取權限",
+        "templates": {
+          "heading": "從範本開始",
+          "hint": "選填。套用範本將取代目前的選項。",
+          "full": {
+            "label": "完整存取權限",
+            "description": "您今日可以授予的所有權限，包括團隊設定和自訂權限。"
+          },
+          "readonly": {
+            "label": "唯讀",
+            "description": "檢視您今日可以授予的所有內容。不進行任何變更。"
+          },
+          "snapshotNote": "範本使用今日存在的權限。之後新增的權限（例如由新插件新增的權限）不會自動包含在內。"
+        },
+        "confirm": {
+          "template": {
+            "title": "取代您的選項？",
+            "description": "套用 {{template}} 範本將取代您已選擇的權限。",
+            "confirm": "套用範本"
+          },
+          "clear": {
+            "title": "清除所有權限？",
+            "descriptionCreate": "這將移除您已選擇的所有權限。",
+            "descriptionEdit": "這將移除您在此角色中可以變更的所有權限。在您選擇儲存之前，不會儲存任何內容。"
+          }
+        },
+        "summary": {
+          "heading": "角色摘要",
+          "name": "名稱",
+          "permissions": "權限",
+          "selectedOfTotal": "已選取 {{total}} 中的 {{selected}}",
+          "unsavedChanges": "未儲存的變更",
+          "noChanges": "尚無變更",
+          "changes": "新增 {{added}} 個，移除 {{removed}} 個",
+          "footnote": "設定為無存取權限的區域對具有此角色的成員隱藏。完整存取權限涵蓋今日存在的權限。之後新增的權限需要在此處授予。",
+          "wildcards": "此角色還具有萬用字元權限 ({{keys}})。它們通過 API 管理，不在此處顯示。"
+        },
+        "createHint": "請至少選擇一個權限以建立角色。",
+        "custom": {
+          "calloutHeading": "新增您自己的權限",
+          "calloutDescription": "插件和自訂模組可以定義自己的權限。一旦建立，它們就會出現在此群組中，可隨時指派給任何角色。",
+          "calloutAction": "閱讀指南"
+        },
+        "detail": {
+          "heading": "權限",
+          "count": "{{total}} 個權限中的 {{selected}} 個",
+          "countOnly_other": "{{count}} 個權限",
+          "granted": "已授予",
+          "notGranted": "未授予",
+          "wildcards": "此角色具有萬用字元權限 ({{keys}})。它們授予所有匹配的權限，包括之後新增的權限，並通過 API 管理。"
+        }
       }
     },
     "list": {
@@ -3853,7 +3982,48 @@
       "return_reason": "退貨原因",
       "refund_reason": "退款原因",
       "workflow": "工作流程",
-      "translation": "翻譯"
+      "translation": "翻譯",
+      "customer_address": "顧客地址",
+      "inventory_item": "庫存項目",
+      "inventory_level": "庫存水準",
+      "reservation_item": "預留",
+      "order_item": "訂單項目",
+      "order_change": "訂單變更",
+      "order_address": "訂單地址",
+      "order_claim": "索賠",
+      "order_claim_item": "索賠項目",
+      "order_exchange": "換貨",
+      "order_credit_line": "訂單貸項",
+      "return": "退貨",
+      "payment": "付款",
+      "payment_collection": "付款集合",
+      "payment_method": "付款方式",
+      "payment_session": "付款工作階段",
+      "refund": "退款",
+      "capture": "收款",
+      "price_preference": "價格偏好",
+      "price": "價格",
+      "currency": "貨幣",
+      "product_variant": "商品變體",
+      "product_option": "商品選項",
+      "product_option_value": "商品選項值",
+      "property_label": "屬性標籤",
+      "shipping_option_type": "運送選項類型",
+      "fulfillment": "出貨",
+      "fulfillment_provider": "出貨提供者",
+      "fulfillment_set": "出貨集合",
+      "service_zone": "服務區域",
+      "file": "檔案",
+      "notification": "通知",
+      "workflow_execution": "工作流程執行",
+      "store_locale": "商店語言設定",
+      "tax_provider": "稅務提供者",
+      "tax_rate": "稅率",
+      "translation_setting": "翻譯設定",
+      "invite": "邀請",
+      "rbac_role": "角色",
+      "rbac_policy": "權限",
+      "rbac_role_assignment": "角色指派"
     },
     "actions": {
       "read": "檢視",

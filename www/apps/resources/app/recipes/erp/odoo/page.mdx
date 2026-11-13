@@ -807,6 +807,12 @@ return new WorkflowResponse({
 
 You use the `createProductsWorkflow` and `updateProductsWorkflow` to create and update the products returned from the transform function. Since both of these are workflows, you use the `runAsStep` method to run them as steps in the current workflow.
 
+<Note>
+
+When you pass `variants` to the `updateProductsWorkflow`, they replace the product's full variant list. Medusa deletes existing variants that aren't in the list, so make sure each product to update includes all the variants it should keep.
+
+</Note>
+
 Finally, a workflow must return a instance of `WorkflowResponse` passing it as a parameter the data to return, which in this case is the products fetched from Odoo.
 
 You can now execute this workflow in other customizations, such as a scheduled job.

@@ -129,7 +129,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-since: 2.12.4
- * x-featureFlag: translation
  * 
 */
 

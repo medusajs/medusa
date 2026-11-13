@@ -690,6 +690,71 @@ module.exports = defineConfig({
 })
 ```
 
+#### http.corsOptions
+
+<Note>
+
+This option is available since Medusa [v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+</Note>
+
+The `projectConfig.http.corsOptions` configuration sets additional CORS options for API routes starting with `/admin`, `/store`, and `/auth`. Medusa applies these options on top of the allowed origins you set in the [authCors](#httpauthcors), [storeCors](#httpstorecors), and [adminCors](#httpadmincors) configurations.
+
+For example, set `maxAge` so that browsers cache the responses of preflight requests:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      corsOptions: {
+        maxAge: 7200,
+        exposedHeaders: ["x-request-id"],
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration is an object that accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "maxAge",
+      type: "`number`",
+      description: "How long, in seconds, browsers can cache the response of a preflight request. Medusa sets it in the `Access-Control-Max-Age` header.",
+      optional: true,
+    },
+    {
+      name: "exposedHeaders",
+      type: "`string` \| `string[]`",
+      description: "The response headers to expose to the browser. Medusa sets them in the `Access-Control-Expose-Headers` header.",
+      optional: true,
+    },
+    {
+      name: "allowedHeaders",
+      type: "`string` \| `string[]`",
+      description: "The request headers to allow in cross-origin requests. Medusa sets them in the `Access-Control-Allow-Headers` header.",
+      optional: true,
+    },
+    {
+      name: "methods",
+      type: "`string` \| `string[]`",
+      description: "The HTTP methods to allow in cross-origin requests. Medusa sets them in the `Access-Control-Allow-Methods` header.",
+      optional: true,
+    }
+  ]}
+  sectionTitle="http.corsOptions Properties"
+/>
+
+<Note>
+
+You can't override the `origin` and `credentials` CORS options with this configuration. Use the `authCors`, `storeCors`, and `adminCors` configurations to set the allowed origins.
+
+</Note>
+
 #### http.authVerificationsPerActor
 
 <Note>
@@ -797,6 +862,61 @@ This configuration is an object that accepts the following properties:
   sectionTitle="http.compression Properties"
 />
 
+#### http.securityHeaders
+
+<Note>
+
+This option is available since Medusa [v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+</Note>
+
+The `projectConfig.http.securityHeaders` configuration modifies the security headers that Medusa sets on every HTTP response, including responses of the Medusa Admin. By default, Medusa sets the following headers:
+
+- `X-Content-Type-Options: nosniff`: Prevents browsers from guessing a response's content type.
+- `X-Frame-Options: SAMEORIGIN`: Allows only pages on the same origin to embed the Medusa application in an iframe.
+- `Content-Security-Policy: frame-ancestors 'self'`: Specifies the sources allowed to embed the Medusa application in an iframe.
+
+Medusa also removes the `X-Powered-By` header from all responses, regardless of this configuration.
+
+For example, to allow a dashboard on another domain to embed the Medusa Admin in an iframe:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      securityHeaders: {
+        frameAncestors: [
+          "'self'",
+          "https://dashboard.example.com",
+        ],
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration is an object that accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "enabled",
+      type: "`boolean`",
+      description: `Whether to set the security headers on responses. Set it to \`false\` if you set these headers at another layer, such as a reverse proxy.`,
+      defaultValue: `true`
+    },
+    {
+      name: "frameAncestors",
+      type: "`string[]`",
+      description: `The sources allowed to embed the Medusa application in an iframe. Medusa sets them in the \`Content-Security-Policy: frame-ancestors\` header. When you set this property, Medusa doesn't send the \`X-Frame-Options\` header, since it can't allow other origins.`,
+      defaultValue: `["'self'"]`
+    }
+  ]}
+  sectionTitle="http.securityHeaders Properties"
+/>
+
 #### http.authMethodsPerActor
 
 The `projectConfig.http.authMethodsPerActor` configuration specifies the supported authentication providers per actor type (such as `user`, `customer`, or any custom actor).
@@ -831,6 +951,12 @@ module.exports = defineConfig({
 ```
 
 This configuration allows admin users to log in with an email and password, and customers to log in with an email and password or with Google.
+
+<Note title="Warning" type="warning">
+
+Don't allow the `user` actor type to use an auth provider that anyone can sign up with, such as Google or GitHub. Medusa creates an admin user for an account that logs in to the Medusa Admin with the provider for the first time, so anyone with an account at that provider can become an admin user of your store. Learn more in the [Auth Module Provider documentation](!resources!/commerce-modules/auth/auth-providers#public-auth-providers-for-admin-users).
+
+</Note>
 
 #### http.requireActorAssociation
 
@@ -1338,6 +1464,35 @@ module.exports = {
 ```
 
 The above configuration registers two plugins: `medusa-my-plugin-1` and `medusa-my-plugin`. The latter plugin requires an API key option, which is passed in the `options` object.
+
+### Default Plugins
+
+The `defineConfig` function registers the following plugins in every Medusa application, so you don't need to install or register them:
+
+- `@medusajs/draft-order`: Adds draft order management to the Medusa Admin.
+- `@medusajs/cloud`: Adds Medusa Cloud features to the Medusa Admin, whether your application runs on Cloud or is self-hosted. It shows in-app announcements in a "What's new" button in the admin's top bar and in a card at the bottom of the sidebar. Admin users choose the announcement categories they see in **Settings > Announcements**. This plugin is registered since [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+If you add an entry with the same `resolve` value to the `plugins` configuration, your entry replaces the default one.
+
+#### Disable the Cloud Plugin
+
+To disable the `@medusajs/cloud` plugin, add it to the `plugins` configuration with the `disabled` option set to `true`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  plugins: [
+    {
+      resolve: "@medusajs/cloud",
+      options: {
+        disabled: true,
+      },
+    },
+  ],
+  // ...
+})
+```
+
+When you disable the plugin, `defineConfig` removes it from the registered plugins. So, the Medusa application doesn't fetch announcements, and the Medusa Admin doesn't show the announcement widgets or the **Settings > Announcements** page.
 
 ### Register Modules in Plugins
 

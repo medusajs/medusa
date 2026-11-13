@@ -43,7 +43,7 @@ RBAC (role-based access control) Module for Medusa: manages roles, policies, rol
 | Package | `@medusajs/rbac` |
 | Type | Commerce Module |
 | Module key | `Modules.RBAC` (`"rbac"`) |
-| Registered by default | No |
+| Registered by default | No. On Medusa Cloud, yes when the license covers `rbac` |
 | Import from | `@medusajs/medusa/rbac` |
 
 ## Features

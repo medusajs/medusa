@@ -378,7 +378,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createPromotionsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: promotion.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the promotion
+ *       }
+ *       ```
+ *     description: Emitted when promotions are created.
+ *     deprecated: false
+ *     since: 2.22.7
  * 
 */
 

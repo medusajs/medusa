@@ -1004,6 +1004,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/js-sdk/admin/auditLog",
+                  "title": "auditLog",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/js-sdk/admin/campaign",
                   "title": "campaign",
                   "description": "",

@@ -173,7 +173,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updatePromotionsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: promotion.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the promotion
+ *       }
+ *       ```
+ *     description: Emitted when promotions are updated, including their status.
+ *     deprecated: false
+ *     since: 2.22.7
  * 
 */
 
