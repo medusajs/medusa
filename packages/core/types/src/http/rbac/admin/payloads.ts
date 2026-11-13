@@ -43,6 +43,13 @@ export interface AdminAddRolePolicies {
   policies: string[]
 }
 
+export interface AdminRemoveRolePolicies {
+  /**
+   * The IDs of the policies to remove from the role.
+   */
+  policies: string[]
+}
+
 export interface AdminAssignRoleUsers {
   /**
    * The IDs of the users to add to the role.

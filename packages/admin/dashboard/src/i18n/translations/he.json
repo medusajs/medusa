@@ -2925,6 +2925,10 @@
     "delete": {
       "title": "מחק תפקיד",
       "description": "אתה עומד למחוק את התפקיד {{name}}. פעולה זו אינה ניתנת לביטול.",
+      "descriptionWithUsers_one": "אתה עומד למחוק את התפקיד {{name}}. ל-{{count}} משתמש יש תפקיד זה והוא יאבד את הגישה שהוא מעניק. פעולה זו אינה ניתנת לביטול.",
+      "descriptionWithUsers_two": "אתה עומד למחוק את התפקיד {{name}}. ל-{{count}} משתמשים יש תפקיד זה והם יאבדו את הגישה שהוא מעניק. פעולה זו אינה ניתנת לביטול.",
+      "descriptionWithUsers_many": "אתה עומד למחוק את התפקיד {{name}}. ל-{{count}} משתמשים יש תפקיד זה והם יאבדו את הגישה שהוא מעניק. פעולה זו אינה ניתנת לביטול.",
+      "descriptionWithUsers_other": "אתה עומד למחוק את התפקיד {{name}}. ל-{{count}} משתמשים יש תפקיד זה והם יאבדו את הגישה שהוא מעניק. פעולה זו אינה ניתנת לביטול.",
       "successToast": "התפקיד {{name}} נמחק"
     },
     "fields": {
@@ -2971,6 +2975,143 @@
       },
       "manage": {
         "successToast": "ההרשאות עודכנו בהצלחה."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "הזמנות",
+            "description": "הזמנות, שינויי הזמנה, תביעות, החלפות והחזרות"
+          },
+          "payments": {
+            "label": "תשלומים",
+            "description": "תשלומים, אוספי תשלומים, החזרים ולכידות"
+          },
+          "products": {
+            "label": "מוצרים",
+            "description": "מוצרים, וריאנטים, אפשרויות, קטגוריות, קולקציות, סוגים ותגיות"
+          },
+          "inventory": {
+            "label": "מלאי",
+            "description": "פריטי מלאי, רמות מלאי, שמירות ומיקומים"
+          },
+          "customers": {
+            "label": "לקוחות",
+            "description": "לקוחות, כתובות וקבוצות לקוחות"
+          },
+          "pricing": {
+            "label": "תמחור ומבצעים",
+            "description": "רשימות מחירים, מחירים, מבצעים וקמפיינים"
+          },
+          "shipping": {
+            "label": "משלוח ואספקה",
+            "description": "אפשרויות ופרופילי משלוח, אספקות ואזורי שירות"
+          },
+          "store": {
+            "label": "הגדרות חנות",
+            "description": "פרטי חנות, אזורים, ערוצי מכירה, מטבעות, מסים ותרגומים"
+          },
+          "team": {
+            "label": "צוות וגישה",
+            "description": "משתמשים, הזמנות, תפקידים ומפתחות API"
+          },
+          "system": {
+            "label": "מערכת",
+            "description": "קבצים, התראות ורצי עבודה"
+          },
+          "custom": {
+            "label": "מותאם אישית",
+            "description": "הרשאות שנוספו על ידי הפלאגינים והמודולים המותאמים שלך"
+          }
+        },
+        "levels": {
+          "none": "ללא גישה",
+          "view": "צפייה בלבד",
+          "full": "גישה מלאה",
+          "mixed": "מעורב"
+        },
+        "levelControlLabel": "רמת גישה עבור {{group}}",
+        "resourceColumn": "משאב",
+        "notAvailable": "לא זמין",
+        "notAvailableTooltip": "משאב זה אינו מגדיר הרשאה זו",
+        "rowToggle": "כל הרשאות {{resource}}",
+        "columnToggle": {
+          "on": "הפעל {{operation}} עבור כל {{group}}",
+          "off": "כבה {{operation}} עבור כל {{group}}"
+        },
+        "search": {
+          "placeholder": "חפש הרשאות",
+          "emptyHeading": "אין הרשאות התואמות את החיפוש",
+          "emptyDescription": "נסה שם משאב כמו הזמנות או מלאי."
+        },
+        "showKeys": "הצג מפתחות הרשאות",
+        "clearAll": "נקה הכל",
+        "lockedBadge_one": "{{count}} נעול",
+        "lockedBadge_two": "{{count}} נעולים",
+        "lockedBadge_many": "{{count}} נעולים",
+        "lockedBadge_other": "{{count}} נעולים",
+        "lockedNote_one": "{{count}} הרשאה בקבוצה זו לא ניתנת לשינוי מחשבונך, מכיוון שאין לך אותה. ללא גישה, צפייה בלבד וגישה מלאה חלות על השאר.",
+        "lockedNote_two": "{{count}} הרשאות בקבוצה זו אינן ניתנות לשינוי מחשבונך, מכיוון שאין לך אותן. ללא גישה, צפייה בלבד וגישה מלאה חלות על השאר.",
+        "lockedNote_many": "{{count}} הרשאות בקבוצה זו אינן ניתנות לשינוי מחשבונך, מכיוון שאין לך אותן. ללא גישה, צפייה בלבד וגישה מלאה חלות על השאר.",
+        "lockedNote_other": "{{count}} הרשאות בקבוצה זו אינן ניתנות לשינוי מחשבונך, מכיוון שאין לך אותן. ללא גישה, צפייה בלבד וגישה מלאה חלות על השאר.",
+        "tooltips": {
+          "cannotGrant": "אינך יכול להעניק זאת מכיוון שאין לחשבונך הרשאה זו.",
+          "cannotRemove": "לתפקיד זה יש הרשאה זו. אינך יכול לשנות זאת מכיוון שאין לחשבונך אותה.",
+          "viewRequired": "הרשאות אחרות במשאב זה דורשות צפייה. הסר אותן תחילה."
+        },
+        "noViewAccess": "אין גישת צפייה",
+        "templates": {
+          "heading": "התחל מתבנית",
+          "hint": "אופציונלי. החלת תבנית מחליפה את הבחירה הנוכחית.",
+          "full": {
+            "label": "גישה מלאה",
+            "description": "הכל שניתן להעניק כיום, כולל הגדרות צוות והרשאות מותאמות אישית."
+          },
+          "readonly": {
+            "label": "קריאה בלבד",
+            "description": "צפה בהכל שניתן להעניק כיום. ללא שינויים."
+          },
+          "snapshotNote": "תבניות משתמשות בהרשאות הקיימות כיום. הרשאות שנוספות מאוחר יותר, למשל על ידי פלאגין חדש, אינן נכללות באופן אוטומטי."
+        },
+        "confirm": {
+          "template": {
+            "title": "להחליף את הבחירה שלך?",
+            "description": "החלת תבנית {{template}} מחליפה את ההרשאות שבחרת.",
+            "confirm": "החל תבנית"
+          },
+          "clear": {
+            "title": "לנקות את כל ההרשאות?",
+            "descriptionCreate": "פעולה זו מסירה את כל ההרשאות שבחרת.",
+            "descriptionEdit": "פעולה זו מסירה את כל ההרשאות שניתן לשנות מתפקיד זה. שום דבר לא נשמר עד שתלחץ על שמור."
+          }
+        },
+        "summary": {
+          "heading": "סיכום תפקיד",
+          "name": "שם",
+          "permissions": "הרשאות",
+          "selectedOfTotal": "{{selected}} מתוך {{total}} נבחרו",
+          "unsavedChanges": "שינויים שלא נשמרו",
+          "noChanges": "אין שינויים עדיין",
+          "changes": "{{added}} נוספו, {{removed}} הוסרו",
+          "footnote": "אזורים שהוגדרו ללא גישה מוסתרים מחברים בעלי תפקיד זה. גישה מלאה כוללת את ההרשאות הקיימות כיום. הרשאות שנוספות מאוחר יותר צריכות להינתן כאן.",
+          "wildcards": "לתפקיד זה יש הרשאות כלליות ({{keys}}). הן מנוהלות דרך ה-API ואינן מוצגות כאן."
+        },
+        "createHint": "בחר לפחות הרשאה אחת כדי ליצור את התפקיד.",
+        "custom": {
+          "calloutHeading": "הוסף הרשאות משלך",
+          "calloutDescription": "פלאגינים ומודולים מותאמים אישית יכולים להגדיר הרשאות משלהם. לאחר יצירתן, הן מופיעות בקבוצה זו, מוכנות להקצאה לכל תפקיד.",
+          "calloutAction": "קרא את המדריך"
+        },
+        "detail": {
+          "heading": "הרשאות",
+          "count": "{{selected}} מתוך {{total}} הרשאות",
+          "countOnly_one": "{{count}} הרשאה",
+          "countOnly_two": "{{count}} הרשאות",
+          "countOnly_many": "{{count}} הרשאות",
+          "countOnly_other": "{{count}} הרשאות",
+          "granted": "ניתנה",
+          "notGranted": "לא ניתנה",
+          "wildcards": "לתפקיד זה יש הרשאות כלליות ({{keys}}). הן מעניקות כל הרשאה שהן תואמות, כולל כאלו שנוספות מאוחר יותר, ומנוהלות דרך ה-API."
+        }
       }
     },
     "list": {
@@ -3962,7 +4103,48 @@
       "return_reason": "סיבת החזרה",
       "refund_reason": "סיבת החזר",
       "workflow": "תהליך עבודה",
-      "translation": "תרגום"
+      "translation": "תרגום",
+      "customer_address": "כתובות לקוח",
+      "inventory_item": "פריטי מלאי",
+      "inventory_level": "רמות מלאי",
+      "reservation_item": "שמירות מלאי",
+      "order_item": "פריטי הזמנה",
+      "order_change": "שינויי הזמנה",
+      "order_address": "כתובות הזמנה",
+      "order_claim": "תביעות",
+      "order_claim_item": "פריטי תביעה",
+      "order_exchange": "החלפות",
+      "order_credit_line": "קווי אשראי להזמנה",
+      "return": "החזרות",
+      "payment": "תשלומים",
+      "payment_collection": "אוספי תשלומים",
+      "payment_method": "שיטות תשלום",
+      "payment_session": "סשני תשלום",
+      "refund": "החזרים",
+      "capture": "גביות",
+      "price_preference": "העדפות מחיר",
+      "price": "מחירים",
+      "currency": "מטבעות",
+      "product_variant": "וריאנטים של מוצר",
+      "product_option": "אפשרויות מוצר",
+      "product_option_value": "ערכי אפשרויות מוצר",
+      "property_label": "תוויות מאפיין",
+      "shipping_option_type": "סוגי אפשרויות משלוח",
+      "fulfillment": "אספקות",
+      "fulfillment_provider": "ספקי אספקה",
+      "fulfillment_set": "ערכות אספקה",
+      "service_zone": "אזורי שירות",
+      "file": "קבצים",
+      "notification": "התראות",
+      "workflow_execution": "ביצועי תהליכי עבודה",
+      "store_locale": "שפות חנות",
+      "tax_provider": "ספקי מס",
+      "tax_rate": "שיעורי מס",
+      "translation_setting": "הגדרות תרגום",
+      "invite": "הזמנות",
+      "rbac_role": "תפקידים",
+      "rbac_policy": "מדיניות",
+      "rbac_role_assignment": "הקצאות תפקיד"
     },
     "actions": {
       "read": "צפייה",

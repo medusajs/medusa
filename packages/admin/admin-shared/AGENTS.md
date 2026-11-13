@@ -51,7 +51,7 @@ No tests in this package. Behavior is covered by `@medusajs/admin-vite-plugin` s
 - Adding a zone to a core dashboard page:
   - Add the non-suffixed zone(s) to the entity's `*_INJECTION_ZONES` array and make sure that array is spread into `INJECTION_ZONES`.
   - Update the zone docs under `www/apps/resources/app/commerce-modules/*/admin-widget-zones/`.
-- Never add new `.before` / `.after` zones. The layout composer ignores them (`login.before` / `login.after` are the only exception).
+- Never add new `.before` / `.after` zones. The layout composer ignores them (`login.before` / `login.after` and `sidebar.settings.before` are the only exceptions: the dashboard renders them directly with `getWidgets`).
 - `isValidInjectionZone` returns `true` for unknown strings and only logs a warning, so custom zones work but typos are not rejected at build time.
 - Adding a virtual module means updating `VIRTUAL_MODULES` here, `vmod.ts` in `@medusajs/admin-vite-plugin`, and the `external` list in the dashboard's `tsup.config.cjs`.
 - Any change to an exported union type is a public API change for `@medusajs/admin-sdk` users.

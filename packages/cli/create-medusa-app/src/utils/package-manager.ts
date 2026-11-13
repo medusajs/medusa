@@ -4,6 +4,7 @@ import logMessage from "./log-message.js"
 import ProcessManager from "./process-manager.js"
 import { existsSync, readFileSync, rmSync, writeFileSync } from "fs"
 import { parse as parseYaml } from "yaml"
+import { getBackendDirectory } from "./project-paths.js"
 
 export type PackageManagerType = "npm" | "yarn" | "pnpm" | "nub"
 
@@ -175,7 +176,40 @@ export default class PackageManager {
     })
   }
 
-  private applyYarnWorkspaceChanges(directory: string): void {
+  private isYarnClassic(): boolean {
+    return (
+      this.packageManager === "yarn" &&
+      !!this.packageManagerVersion?.startsWith("1.")
+    )
+  }
+
+  private applyYarnWorkspaceChanges(
+    directory: string,
+    packageJson: Record<string, unknown>
+  ): void {
+    if (this.isYarnClassic()) {
+      const backendPackageJson = JSON.parse(
+        readFileSync(
+          path.join(getBackendDirectory(directory), "package.json"),
+          "utf-8"
+        )
+      )
+      const nodeTypesVersion =
+        backendPackageJson.devDependencies?.["@types/node"] ??
+        backendPackageJson.dependencies?.["@types/node"]
+
+      // Yarn v1 keeps a package next to its peer dependencies. A second
+      // @types/node version pins ts-node inside the backend, where the
+      // root-hoisted @medusajs/cli can't resolve it.
+      if (nodeTypesVersion) {
+        packageJson.resolutions = {
+          ...(packageJson.resolutions as Record<string, unknown>),
+          "@types/node": nodeTypesVersion,
+        }
+      }
+      return
+    }
+
     writeFileSync(path.join(directory, "yarn.lock"), "")
     writeFileSync(
       path.join(directory, ".yarnrc.yml"),
@@ -247,7 +281,7 @@ export default class PackageManager {
     }
 
     if (this.packageManager === "yarn") {
-      this.applyYarnWorkspaceChanges(directory)
+      this.applyYarnWorkspaceChanges(directory, packageJson)
     } else if (this.packageManager === "npm") {
       this.applyNpmWorkspaceChanges(packageJson)
     }

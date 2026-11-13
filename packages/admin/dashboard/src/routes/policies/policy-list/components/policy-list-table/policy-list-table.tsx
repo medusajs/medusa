@@ -49,7 +49,8 @@ export const PolicyListTable = () => {
   const { policies, count, isPending, isError, error } = useRbacPolicies(
     {
       q,
-      order,
+      // Sorted by key by default, so a resource's policies sit together.
+      order: order ?? "key",
       offset: offset ? parseInt(offset) : undefined,
       limit: PAGE_SIZE,
       created_at: parseFilterParam(created_at),

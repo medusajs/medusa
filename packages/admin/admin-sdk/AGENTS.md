@@ -52,7 +52,7 @@ export default BrandsPage
 
 Widget zones:
 - The full list is `INJECTION_ZONES` in `@medusajs/admin-shared` (`packages/admin/admin-shared/src/extensions/widgets/constants.ts`).
-- Current zones are `<entity>.details`, `<entity>.details.side`, `<entity>.list`, plus `login.before`, `login.after`, `topbar`, `search.list`.
+- Current zones are `<entity>.details`, `<entity>.details.side`, `<entity>.list`, plus `login.before`, `login.after`, `topbar`, `sidebar.settings.before`, `search.list`.
 - `.before` / `.after` variants of other zones are legacy since v2.17.2. Users now reorder widgets with the layout customizer.
 - Plugins can add zones by augmenting `InjectionZoneRegistry` from `@medusajs/admin-shared`.
 

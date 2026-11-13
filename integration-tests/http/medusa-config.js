@@ -183,5 +183,12 @@ module.exports = defineConfig({
       resolve: "@medusajs/loyalty-plugin",
       options: {},
     },
+    {
+      resolve: "@medusajs/cloud",
+      options: {
+        apiUrl: "http://cloud-api.test",
+        organizationId: "org_test",
+      },
+    },
   ],
 })

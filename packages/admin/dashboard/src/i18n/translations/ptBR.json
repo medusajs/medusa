@@ -2859,6 +2859,8 @@
     "delete": {
       "title": "Excluir função",
       "description": "Você está prestes a excluir a função {{name}}. Esta ação não pode ser desfeita.",
+      "descriptionWithUsers_one": "Você está prestes a excluir a função {{name}}. {{count}} usuário possui esta função e perderá o acesso concedido por ela. Esta ação não pode ser desfeita.",
+      "descriptionWithUsers_other": "Você está prestes a excluir a função {{name}}. {{count}} usuários possuem esta função e perderão o acesso concedido por ela. Esta ação não pode ser desfeita.",
       "successToast": "Função {{name}} excluída"
     },
     "fields": {
@@ -2899,6 +2901,137 @@
       },
       "manage": {
         "successToast": "As permissões foram atualizadas com sucesso."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Pedidos",
+            "description": "Pedidos, alterações de pedido, reclamações, trocas e devoluções"
+          },
+          "payments": {
+            "label": "Pagamentos",
+            "description": "Pagamentos, coleções de pagamento, reembolsos e capturas"
+          },
+          "products": {
+            "label": "Produtos",
+            "description": "Produtos, variantes, opções, categorias, coleções, tipos e tags"
+          },
+          "inventory": {
+            "label": "Inventário",
+            "description": "Itens de inventário, níveis de estoque, reservas e localizações"
+          },
+          "customers": {
+            "label": "Clientes",
+            "description": "Clientes, endereços e grupos de clientes"
+          },
+          "pricing": {
+            "label": "Preços e promoções",
+            "description": "Listas de preços, preços, promoções e campanhas"
+          },
+          "shipping": {
+            "label": "Frete e atendimento",
+            "description": "Opções e perfis de frete, atendimentos e zonas de serviço"
+          },
+          "store": {
+            "label": "Configurações da loja",
+            "description": "Detalhes da loja, regiões, canais de vendas, moedas, impostos e traduções"
+          },
+          "team": {
+            "label": "Equipe e acesso",
+            "description": "Usuários, convites, funções e chaves de API"
+          },
+          "system": {
+            "label": "Sistema",
+            "description": "Arquivos, notificações e execuções de fluxos de trabalho"
+          },
+          "custom": {
+            "label": "Personalizado",
+            "description": "Permissões adicionadas pelos seus plugins e módulos personalizados"
+          }
+        },
+        "levels": {
+          "none": "Sem acesso",
+          "view": "Somente visualização",
+          "full": "Acesso total",
+          "mixed": "Misto"
+        },
+        "levelControlLabel": "Nível de acesso para {{group}}",
+        "resourceColumn": "Recurso",
+        "notAvailable": "n/d",
+        "notAvailableTooltip": "Este recurso não define esta permissão",
+        "rowToggle": "Todas as permissões de {{resource}}",
+        "columnToggle": {
+          "on": "Ativar {{operation}} para todos {{group}}",
+          "off": "Desativar {{operation}} para todos {{group}}"
+        },
+        "search": {
+          "placeholder": "Pesquisar permissões",
+          "emptyHeading": "Nenhuma permissão corresponde à sua pesquisa",
+          "emptyDescription": "Tente um nome de recurso como pedidos ou inventário."
+        },
+        "showKeys": "Exibir chaves de permissão",
+        "clearAll": "Limpar tudo",
+        "lockedBadge_one": "{{count}} bloqueado",
+        "lockedBadge_other": "{{count}} bloqueados",
+        "lockedNote_one": "{{count}} permissão neste grupo não pode ser alterada pela sua conta, pois você não a possui. Sem acesso, Somente visualização e Acesso total se aplicam às demais.",
+        "lockedNote_other": "{{count}} permissões neste grupo não podem ser alteradas pela sua conta, pois você não as possui. Sem acesso, Somente visualização e Acesso total se aplicam às demais.",
+        "tooltips": {
+          "cannotGrant": "Você não pode conceder isso porque sua conta não possui esta permissão.",
+          "cannotRemove": "Esta função tem esta permissão. Você não pode alterá-la porque sua conta não a possui.",
+          "viewRequired": "Outras permissões neste recurso precisam de visualização. Remova-as primeiro."
+        },
+        "noViewAccess": "Sem acesso de visualização",
+        "templates": {
+          "heading": "Começar a partir de um modelo",
+          "hint": "Opcional. Aplicar um modelo substitui a seleção atual.",
+          "full": {
+            "label": "Acesso total",
+            "description": "Tudo que você pode conceder hoje, incluindo configurações de equipe e permissões personalizadas."
+          },
+          "readonly": {
+            "label": "Somente leitura",
+            "description": "Visualize tudo que você pode conceder hoje. Não altere nada."
+          },
+          "snapshotNote": "Os modelos usam as permissões que existem hoje. As permissões adicionadas posteriormente, por exemplo por um novo plugin, não são incluídas automaticamente."
+        },
+        "confirm": {
+          "template": {
+            "title": "Substituir sua seleção?",
+            "description": "Aplicar o modelo {{template}} substitui as permissões que você selecionou.",
+            "confirm": "Aplicar modelo"
+          },
+          "clear": {
+            "title": "Limpar todas as permissões?",
+            "descriptionCreate": "Isso remove todas as permissões que você selecionou.",
+            "descriptionEdit": "Isso remove todas as permissões que você pode alterar nesta função. Nada é salvo até você selecionar Salvar."
+          }
+        },
+        "summary": {
+          "heading": "Resumo da função",
+          "name": "Nome",
+          "permissions": "Permissões",
+          "selectedOfTotal": "{{selected}} de {{total}} selecionados",
+          "unsavedChanges": "Alterações não salvas",
+          "noChanges": "Nenhuma alteração ainda",
+          "changes": "{{added}} adicionados, {{removed}} removidos",
+          "footnote": "As áreas definidas como Sem acesso ficam ocultas para os membros com esta função. Acesso total abrange as permissões que existem hoje. As permissões adicionadas posteriormente precisam ser concedidas aqui.",
+          "wildcards": "Esta função também possui permissões curinga ({{keys}}). Elas são gerenciadas por meio da API e não são exibidas aqui."
+        },
+        "createHint": "Selecione pelo menos uma permissão para criar a função.",
+        "custom": {
+          "calloutHeading": "Adicione suas próprias permissões",
+          "calloutDescription": "Plugins e módulos personalizados podem definir suas próprias permissões. Após criadas, elas aparecem neste grupo, prontas para serem atribuídas a qualquer função.",
+          "calloutAction": "Ler o guia"
+        },
+        "detail": {
+          "heading": "Permissões",
+          "count": "{{selected}} de {{total}} permissões",
+          "countOnly_one": "{{count}} permissão",
+          "countOnly_other": "{{count}} permissões",
+          "granted": "Concedido",
+          "notGranted": "Não concedido",
+          "wildcards": "Esta função possui permissões curinga ({{keys}}). Elas concedem todas as permissões que correspondem, incluindo as adicionadas posteriormente, e são gerenciadas por meio da API."
+        }
       }
     },
     "list": {
@@ -3858,7 +3991,48 @@
       "return_reason": "Motivo de devolução",
       "refund_reason": "Motivo de reembolso",
       "workflow": "Workflow",
-      "translation": "Tradução"
+      "translation": "Tradução",
+      "customer_address": "Endereços de clientes",
+      "inventory_item": "Itens de inventário",
+      "inventory_level": "Níveis de inventário",
+      "reservation_item": "Reservas",
+      "order_item": "Itens do pedido",
+      "order_change": "Alterações do pedido",
+      "order_address": "Endereços do pedido",
+      "order_claim": "Reclamações",
+      "order_claim_item": "Itens de reclamação",
+      "order_exchange": "Trocas",
+      "order_credit_line": "Linhas de crédito do pedido",
+      "return": "Devoluções",
+      "payment": "Pagamentos",
+      "payment_collection": "Coleções de pagamento",
+      "payment_method": "Métodos de pagamento",
+      "payment_session": "Sessões de pagamento",
+      "refund": "Reembolsos",
+      "capture": "Capturas",
+      "price_preference": "Preferências de preço",
+      "price": "Preços",
+      "currency": "Moedas",
+      "product_variant": "Variantes de produto",
+      "product_option": "Opções de produto",
+      "product_option_value": "Valores de opção de produto",
+      "property_label": "Rótulos de propriedade",
+      "shipping_option_type": "Tipos de opção de frete",
+      "fulfillment": "Atendimentos",
+      "fulfillment_provider": "Provedores de atendimento",
+      "fulfillment_set": "Conjuntos de atendimento",
+      "service_zone": "Zonas de serviço",
+      "file": "Arquivos",
+      "notification": "Notificações",
+      "workflow_execution": "Execuções de fluxo de trabalho",
+      "store_locale": "Idiomas da loja",
+      "tax_provider": "Provedores de imposto",
+      "tax_rate": "Alíquotas de imposto",
+      "translation_setting": "Configurações de tradução",
+      "invite": "Convites",
+      "rbac_role": "Funções",
+      "rbac_policy": "Permissões",
+      "rbac_role_assignment": "Atribuições de função"
     },
     "actions": {
       "read": "Visualizar",

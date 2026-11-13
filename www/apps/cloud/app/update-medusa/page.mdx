@@ -63,6 +63,12 @@ To update your Medusa application deployed on Cloud:
     - If you're using a long-lived environment, Medusa will automatically deploy the changes to the branch's environment.
     - If you're using a new branch to create a pull request, open the pull request to the production branch. This will create a preview environment that you can use to test the update before merging it into the production branch.
 
+<Note title="Local migrations prompt for link changes?">
+
+If `medusa db:migrate` shows a "Select tables to act upon" prompt locally after the update, the new version removed or changed links. Cloud deployments don't show this prompt. Medusa applies all link changes automatically, including deleting the tables of removed links. Learn more in the [Database](../database/page.mdx#how-cloud-applies-link-changes) guide.
+
+</Note>
+
 Then, you can access the environment's [live deployment](../deployments/access/page.mdx) to test the update. You can also use the [build](../logs/page.mdx#view-build-logs-on-cloud) and [runtime](../logs/page.mdx#view-runtime-logs-on-cloud) logs of the environment to debug any issues that occur during the update process or testing.
 
 ### Push Update to Production

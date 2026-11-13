@@ -134,3 +134,19 @@ export const rejectsUnknownPropertiesOnNullableToManyRelations: OrganizationFilt
       unknown_property: true,
     },
   }
+
+/**
+ * The `q` free-text filter is accepted at the top level, where the entry
+ * point's module handles it, but not on nested relation filters.
+ */
+export const freeTextSearch: OrganizationFilters = {
+  q: "acme",
+  status: "active",
+}
+
+export const rejectsFreeTextSearchOnRelations: OrganizationFilters = {
+  subscription: {
+    // @ts-expect-error - q is only handled at the top level
+    q: "pro",
+  },
+}

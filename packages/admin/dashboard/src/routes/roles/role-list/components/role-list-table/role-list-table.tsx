@@ -1,13 +1,8 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import {
-  Container,
-  createDataTableColumnHelper,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, createDataTableColumnHelper, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { useCallback, useMemo } from "react"
+import { ReactNode, useCallback, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
@@ -23,6 +18,8 @@ import {
   useRbacPolicyPermissions,
   useRbacRolePermissions,
 } from "../../../../../hooks/use-resource-permissions"
+import { SUPER_ADMIN_ROLE_ID } from "../../../common/constants"
+import { useConfirmDeleteRole } from "../../../common/hooks"
 
 const PAGE_SIZE = 20
 
@@ -112,7 +109,7 @@ const useColumns = ({
 }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const prompt = usePrompt()
+  const confirmDelete = useConfirmDeleteRole()
   const { getFullDate } = useDate()
 
   const { mutateAsync: deleteRole } = useDeleteRbacRoleLazy()
@@ -126,12 +123,7 @@ const useColumns = ({
 
   const handleDelete = useCallback(
     async (role: HttpTypes.AdminRbacRole) => {
-      const confirmed = await prompt({
-        title: t("roles.delete.title"),
-        description: t("roles.delete.description", { name: role.name }),
-        confirmText: t("actions.delete"),
-        cancelText: t("actions.cancel"),
-      })
+      const confirmed = await confirmDelete(role)
 
       if (!confirmed) {
         return
@@ -144,7 +136,7 @@ const useColumns = ({
         toast.error((error as Error).message)
       }
     },
-    [prompt, deleteRole, t]
+    [confirmDelete, deleteRole, t]
   )
 
   return useMemo(() => {
@@ -176,36 +168,41 @@ const useColumns = ({
       return baseColumns
     }
 
-    const groups: {
+    type RoleAction = {
       label: string
-      icon: React.ReactNode
+      icon: ReactNode
       onClick: (ctx: { row: { original: HttpTypes.AdminRbacRole } }) => void
-    }[][] = []
-
-    if (canUpdate) {
-      groups.push([
-        {
-          label: t("actions.edit"),
-          icon: <PencilSquare />,
-          onClick: (ctx) => handleEdit(ctx.row.original),
-        },
-      ])
-    }
-
-    if (canDelete) {
-      groups.push([
-        {
-          label: t("actions.delete"),
-          icon: <Trash />,
-          onClick: (ctx) => handleDelete(ctx.row.original),
-        },
-      ])
     }
 
     return [
       ...baseColumns,
       columnHelper.action({
-        actions: groups,
+        actions: (ctx) => {
+          const groups: RoleAction[][] = []
+
+          if (canUpdate) {
+            groups.push([
+              {
+                label: t("actions.edit"),
+                icon: <PencilSquare />,
+                onClick: (ctx) => handleEdit(ctx.row.original),
+              },
+            ])
+          }
+
+          // The super admin role can't be deleted, the backend rejects it.
+          if (canDelete && ctx.row.original.id !== SUPER_ADMIN_ROLE_ID) {
+            groups.push([
+              {
+                label: t("actions.delete"),
+                icon: <Trash />,
+                onClick: (ctx) => handleDelete(ctx.row.original),
+              },
+            ])
+          }
+
+          return groups
+        },
       }),
     ]
   }, [t, getFullDate, handleEdit, handleDelete, canUpdate, canDelete])

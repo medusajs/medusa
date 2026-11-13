@@ -10,7 +10,8 @@ export const RolePermissions = () => {
   const { id } = useParams()
   const { t } = useTranslation()
   const { role, isPending, isError, error } = useRbacRole(id!, {
-    fields: "id,name,policies.id",
+    fields:
+      "id,name,policies.id,policies.key,policies.resource,policies.operation",
   })
 
   if (isError) {
