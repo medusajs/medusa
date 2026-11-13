@@ -85,6 +85,15 @@ export const prepareCartToUpdateStep = createStep(
         ...shippingAddress,
         country_code: country.iso_2,
       }
+    } else if (
+      shippingAddress &&
+      !("id" in shippingAddress) &&
+      data.region?.countries?.length === 1
+    ) {
+      data_.shipping_address = {
+        ...shippingAddress,
+        country_code: data.region.countries[0].iso_2,
+      }
     }
 
     if (regionIsNew) {
