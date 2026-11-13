@@ -10097,6 +10097,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/references/payment/replaceAccountHolder",
+                      "title": "replaceAccountHolder",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/references/payment/restorePaymentCollections",
                       "title": "restorePaymentCollections",
                       "description": "",
