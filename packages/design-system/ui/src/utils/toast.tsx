@@ -11,6 +11,8 @@ interface BaseToastProps {
   duration?: number
   dismissable?: boolean
   icon?: React.ReactNode
+  onDismiss?: ExternalToast["onDismiss"]
+  onAutoClose?: ExternalToast["onAutoClose"]
 }
 
 interface ToastProps extends BaseToastProps {
@@ -27,6 +29,8 @@ function create(
     position: props.position,
     duration: props.duration,
     dismissible: props.dismissable,
+    onDismiss: props.onDismiss,
+    onAutoClose: props.onAutoClose,
   }
 
   if (props.id) {
@@ -184,6 +188,8 @@ async function promise<TData>(
           : props.loading.description,
       duration: Infinity,
       dismissable: false,
+      onDismiss: props.onDismiss,
+      onAutoClose: props.onAutoClose,
     }
   )
 
@@ -201,6 +207,8 @@ async function promise<TData>(
           typeof props.success === "string"
             ? undefined
             : props.success.description,
+        onDismiss: props.onDismiss,
+        onAutoClose: props.onAutoClose,
       }
     )
   })
@@ -216,6 +224,8 @@ async function promise<TData>(
             typeof props.error === "string"
               ? undefined
               : props.error.description,
+          onDismiss: props.onDismiss,
+          onAutoClose: props.onAutoClose,
         }
       )
     })
