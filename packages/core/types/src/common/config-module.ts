@@ -353,6 +353,11 @@ export type MedusaCloudOptions = {
    */
   searchEndpoint?: string
   /**
+   * The endpoint of the Medusa Cloud audit log service. In Medusa Cloud, the Audit Module
+   * is added by default when this is set and the license covers the `audit` feature.
+   */
+  auditEndpoint?: string
+  /**
    * The authorization endpoint of the Medusa Cloud OAuth service.
    */
   oauthAuthorizeEndpoint?: string
