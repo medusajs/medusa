@@ -1,5 +1,40 @@
 # @medusajs/core-flows
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17136](https://github.com/medusajs/medusa/pull/17136) [`75d8121`](https://github.com/medusajs/medusa/commit/75d81218810f5c8a60951a917d2f899bf3967d2f) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows,utils): emit events for promotion, promotion rule, and campaign changes
+
+- [#17058](https://github.com/medusajs/medusa/pull/17058) [`6721eb4`](https://github.com/medusajs/medusa/commit/6721eb4684f4063369373909cf11de846a4c12bc) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows): include metadata in the order passed to createOrderWorkflow's orderCreated hook
+
+- [#17066](https://github.com/medusajs/medusa/pull/17066) [`7b6acee`](https://github.com/medusajs/medusa/commit/7b6acee3c6a96f295c65c1eaae79b0f73a675f9b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): dismiss cart and draft order promotion links created by a failed promotions update
+
+- [#17062](https://github.com/medusajs/medusa/pull/17062) [`0e9a222`](https://github.com/medusajs/medusa/commit/0e9a2222227eb923640a77c5f375cb0404405a34) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): restore updated prices when rolling back the update price list prices step
+
+- [#17389](https://github.com/medusajs/medusa/pull/17389) [`fd943bf`](https://github.com/medusajs/medusa/commit/fd943bf0ab1079947dd63758933b8adc5b22c114) Thanks [@sradevski](https://github.com/sradevski)! - fix(core-flows): Replace account holders that the payment provider no longer has when creating payment sessions
+
+- [#16960](https://github.com/medusajs/medusa/pull/16960) [`ea7bc2e`](https://github.com/medusajs/medusa/commit/ea7bc2e2068f1cb295dbf4a1c4f0553b4d364eca) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows, types): add is_custom_price to order mutation types, and set the property on cart completion
+
+- [#17792](https://github.com/medusajs/medusa/pull/17792) [`1fbc0f2`](https://github.com/medusajs/medusa/commit/1fbc0f2bd117a4629d195c774b36e474248cbb14) Thanks [@shahednasser](https://github.com/shahednasser)! - docs(core-flows, types): document that updating a product's variants replaces its full variant list
+
+- [#17767](https://github.com/medusajs/medusa/pull/17767) [`6ee524e`](https://github.com/medusajs/medusa/commit/6ee524ef2ee81c93f6096695342ff1ced232d990) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): only guard the last super admin when a removal takes the super admin role from a user
+
+- [#17782](https://github.com/medusajs/medusa/pull/17782) [`45046df`](https://github.com/medusajs/medusa/commit/45046df18aecd14dd2717d23bc78ee4e19610a04) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): assign the super admin role to created users when no super admin exists, so users provisioned through SSO on a new RBAC deployment aren't locked out
+
+- [#17748](https://github.com/medusajs/medusa/pull/17748) [`28e20dd`](https://github.com/medusajs/medusa/commit/28e20ddbde369f606348041b4e0af709fd531d0b) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): don't record order refund transactions for refunds the payment provider rejected in `refundPaymentsWorkflow`
+
+- [#17741](https://github.com/medusajs/medusa/pull/17741) [`9db3748`](https://github.com/medusajs/medusa/commit/9db37488d4be757b0139aac1e15fb79ed395fc6c) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore: remove the translation feature flag and enable the Translation Module by default
+
+- [#17070](https://github.com/medusajs/medusa/pull/17070) [`63a9811`](https://github.com/medusajs/medusa/commit/63a9811a38b8b3a7b5ee4d6d31c25c1cfc77940e) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): re-price cart shipping methods after promotions are recomputed
+
+- [#17722](https://github.com/medusajs/medusa/pull/17722) [`e0795ed`](https://github.com/medusajs/medusa/commit/e0795ed4cdbe63c0387c12635a306ebcd4ff575c) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): restore product metadata and type when rolling back a product update
+
+- [#16902](https://github.com/medusajs/medusa/pull/16902) [`08c9355`](https://github.com/medusajs/medusa/commit/08c9355d2008a9d04bd885a89d18a602a9d5e37c) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils,core-flows): invoke the deepFlatMap callback for an empty terminal array, fixing inventory check for carts and returns
+
+- Updated dependencies [[`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa), [`b810334`](https://github.com/medusajs/medusa/commit/b810334cbf0c0ba3a401d82182ef06f2432e2716), [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af), [`48b6d2d`](https://github.com/medusajs/medusa/commit/48b6d2d42089f8f4ba846a30a84f2031eca34b0f), [`db78b61`](https://github.com/medusajs/medusa/commit/db78b61eb2e74218436fe96222f01b93d23dc895), [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af), [`afd2820`](https://github.com/medusajs/medusa/commit/afd2820e0ff11193144a8de0e8ee7959784d157c)]:
+  - @medusajs/framework@2.22.7
+
 ## 2.22.6
 
 ### Patch Changes

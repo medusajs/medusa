@@ -1,5 +1,35 @@
 # @medusajs/dashboard
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17795](https://github.com/medusajs/medusa/pull/17795) [`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa) Thanks [@sradevski](https://github.com/sradevski)! - feat(framework,medusa,types,js-sdk,audit): record admin, RBAC, and auth mutations as audit logs, add the `audit` middleware route setting, and add the `GET /admin/audit-logs` API routes
+
+- [#17518](https://github.com/medusajs/medusa/pull/17518) [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(cloud,utils,medusa,admin-shared,dashboard): add Medusa Cloud plugin that shows Cloud announcements in the admin, and a `sidebar.settings.before` injection zone
+
+- [#17778](https://github.com/medusajs/medusa/pull/17778) [`33af8f3`](https://github.com/medusajs/medusa/commit/33af8f3b4b581aabb4e655307b3055b7263908ef) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(dashboard): manage role permissions in a grouped matrix and show a per-group summary on the role page
+
+- [#17759](https://github.com/medusajs/medusa/pull/17759) [`4380483`](https://github.com/medusajs/medusa/commit/438048300ad25f741789ba06e03883c90233b6c5) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(ui,dashboard): stop DatePicker from calling onChange when its value prop changes and setSearchParams being called twice
+
+- [#17769](https://github.com/medusajs/medusa/pull/17769) [`1dd67d9`](https://github.com/medusajs/medusa/commit/1dd67d91267f97f7ca3185166dda12eb28291276) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): disable the product media Save button while media is uploading
+
+- [#17747](https://github.com/medusajs/medusa/pull/17747) [`17fca1a`](https://github.com/medusajs/medusa/commit/17fca1ab50bb4488496aecff52b5ac9f4421917d) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): allow removing locales from the locales modal and label translation languages as locales
+
+- [#17756](https://github.com/medusajs/medusa/pull/17756) [`1711c4c`](https://github.com/medusajs/medusa/commit/1711c4c5ce1b654e03a05202851737d6c4f754d3) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show an error toast when updating a user fails
+
+- [#17045](https://github.com/medusajs/medusa/pull/17045) [`b6f9805`](https://github.com/medusajs/medusa/commit/b6f980509a365319d14ddb4fcbde81b7c5db2aff) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard): add accessible title and description to the order edit modals
+
+- [#17772](https://github.com/medusajs/medusa/pull/17772) [`6cb4ea1`](https://github.com/medusajs/medusa/commit/6cb4ea13764237ea1ab85a6b6d864def45e9883b) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show an error toast when updating product attributes fails
+
+- [#17741](https://github.com/medusajs/medusa/pull/17741) [`9db3748`](https://github.com/medusajs/medusa/commit/9db37488d4be757b0139aac1e15fb79ed395fc6c) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore: remove the translation feature flag and enable the Translation Module by default
+
+- Updated dependencies [[`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa), [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc), [`4380483`](https://github.com/medusajs/medusa/commit/438048300ad25f741789ba06e03883c90233b6c5), [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc), [`33af8f3`](https://github.com/medusajs/medusa/commit/33af8f3b4b581aabb4e655307b3055b7263908ef)]:
+  - @medusajs/js-sdk@2.22.7
+  - @medusajs/admin-shared@2.22.7
+  - @medusajs/ui@4.2.14
+  - @medusajs/icons@2.22.7
+
 ## 2.22.6
 
 ### Patch Changes
