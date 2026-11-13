@@ -1,5 +1,20 @@
 # @medusajs/promotion
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17443](https://github.com/medusajs/medusa/pull/17443) [`6e82fd9`](https://github.com/medusajs/medusa/commit/6e82fd9e45b385bd533d73056ac470772063ccaf) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(promotion): don't apply buyget discounts to items that are not discountable
+
+- [#17134](https://github.com/medusajs/medusa/pull/17134) [`cd22648`](https://github.com/medusajs/medusa/commit/cd226486af5c2e6ed4ed37a58f2186f6c9b173e2) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(promotion): prevent overlapping buy-get promotions from reusing units consumed by another promotion
+
+- [#17773](https://github.com/medusajs/medusa/pull/17773) [`41e9e46`](https://github.com/medusajs/medusa/commit/41e9e46d5064fe2d27b340f2b27310803e9a487b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(index,promotion,product): handle `?` characters in filter and context values
+
+- [#17599](https://github.com/medusajs/medusa/pull/17599) [`81992a4`](https://github.com/medusajs/medusa/commit/81992a451685bb7e5cca99315a7196d7db906bf3) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(promotion): check spend campaign budgets against all adjustments in a cart and skip promotions that don't fully fit
+
+- Updated dependencies [[`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa), [`b810334`](https://github.com/medusajs/medusa/commit/b810334cbf0c0ba3a401d82182ef06f2432e2716), [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af), [`48b6d2d`](https://github.com/medusajs/medusa/commit/48b6d2d42089f8f4ba846a30a84f2031eca34b0f), [`db78b61`](https://github.com/medusajs/medusa/commit/db78b61eb2e74218436fe96222f01b93d23dc895), [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af), [`afd2820`](https://github.com/medusajs/medusa/commit/afd2820e0ff11193144a8de0e8ee7959784d157c)]:
+  - @medusajs/framework@2.22.7
+
 ## 2.22.6
 
 ### Patch Changes
