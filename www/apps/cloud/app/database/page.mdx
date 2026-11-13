@@ -335,6 +335,28 @@ So, if you define new database migrations in your module, define new links, or a
 
 You don't need to add a `predeploy` script to your `package.json`, or run `medusa db:migrate` in your `start` script, to apply migrations on Cloud. If you're moving a self-hosted application that runs migrations this way, remove the `medusa db:migrate` command from your `start` script.
 
+### How Cloud Applies Link Changes
+
+When you run `medusa db:migrate` locally and Medusa detects that a link was removed or changed, the command pauses with a "Select tables to act upon" prompt. The prompt asks you to choose which link tables to delete or update, since those actions can remove data.
+
+Deployments on Cloud are non-interactive, so Medusa never shows this prompt and the deployment doesn't wait for input. Instead, Medusa runs the migrations with the [--execute-all-links](!resources!/medusa-cli/commands/db#dbmigrate) option, which applies all link changes:
+
+- Creates the tables of new links.
+- Updates the tables of changed links.
+- Deletes the tables of removed links, including the data stored in them.
+
+This is equivalent to selecting all tables in the local prompt. To apply the same changes locally without the prompt, run:
+
+```bash
+npx medusa db:migrate --execute-all-links
+```
+
+<Note type="warning">
+
+Deleting a link's table removes the records that associate the two data models. Before you deploy a change that removes or changes a link, review the tables that the local prompt lists, and test the deployment in a [long-lived](../environments/long-lived/page.mdx) or [preview](../environments/preview/page.mdx) environment first.
+
+</Note>
+
 ### How Data Migration Scripts Run on Cloud
 
 Each environment has its own database, so Medusa runs a data migration script once per environment. So:
