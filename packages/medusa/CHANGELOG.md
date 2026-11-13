@@ -1,5 +1,70 @@
 # Change Log
 
+## 2.22.8
+
+### Patch Changes
+
+- Updated dependencies [[`182cf74`](https://github.com/medusajs/medusa/commit/182cf748cb162ec177df8d9e912319a77ee83111)]:
+  - @medusajs/audit@2.22.8
+  - @medusajs/rbac@2.22.8
+  - @medusajs/framework@2.22.8
+  - @medusajs/event-bus-redis@2.22.8
+  - @medusajs/admin-bundler@2.22.8
+  - @medusajs/cloud@2.22.8
+  - @medusajs/draft-order@2.22.8
+  - @medusajs/core-flows@2.22.8
+  - @medusajs/analytics@2.22.8
+  - @medusajs/api-key@2.22.8
+  - @medusajs/auth@2.22.8
+  - @medusajs/cache-inmemory@2.22.8
+  - @medusajs/cache-redis@2.22.8
+  - @medusajs/caching@2.22.8
+  - @medusajs/cart@2.22.8
+  - @medusajs/currency@2.22.8
+  - @medusajs/customer@2.22.8
+  - @medusajs/event-bus-local@2.22.8
+  - @medusajs/file@2.22.8
+  - @medusajs/fulfillment@2.22.8
+  - @medusajs/index@2.22.8
+  - @medusajs/inventory@2.22.8
+  - @medusajs/link-modules@2.22.8
+  - @medusajs/locking@2.22.8
+  - @medusajs/notification@2.22.8
+  - @medusajs/order@2.22.8
+  - @medusajs/payment@2.22.8
+  - @medusajs/pricing@2.22.8
+  - @medusajs/product@2.22.8
+  - @medusajs/promotion@2.22.8
+  - @medusajs/analytics-local@2.22.8
+  - @medusajs/analytics-posthog@2.22.8
+  - @medusajs/auth-emailpass@2.22.8
+  - @medusajs/auth-github@2.22.8
+  - @medusajs/auth-google@2.22.8
+  - @medusajs/auth-oidc@2.22.8
+  - @medusajs/caching-redis@2.22.8
+  - @medusajs/file-local@2.22.8
+  - @medusajs/file-s3@2.22.8
+  - @medusajs/fulfillment-manual@2.22.8
+  - @medusajs/locking-postgres@2.22.8
+  - @medusajs/locking-redis@2.22.8
+  - @medusajs/notification-local@2.22.8
+  - @medusajs/notification-sendgrid@2.22.8
+  - @medusajs/payment-adyen@2.22.8
+  - @medusajs/payment-stripe@2.22.8
+  - @medusajs/search-postgres@2.22.8
+  - @medusajs/region@2.22.8
+  - @medusajs/sales-channel@2.22.8
+  - @medusajs/search@2.22.8
+  - @medusajs/settings@2.22.8
+  - @medusajs/stock-location@2.22.8
+  - @medusajs/store@2.22.8
+  - @medusajs/tax@2.22.8
+  - @medusajs/translation@2.22.8
+  - @medusajs/user@2.22.8
+  - @medusajs/workflow-engine-inmemory@2.22.8
+  - @medusajs/workflow-engine-redis@2.22.8
+  - @medusajs/telemetry@2.22.8
+
 ## 2.22.7
 
 ### Patch Changes

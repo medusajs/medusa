@@ -1,5 +1,14 @@
 # @medusajs/utils
 
+## 2.22.8
+
+### Patch Changes
+
+- [#17823](https://github.com/medusajs/medusa/pull/17823) [`182cf74`](https://github.com/medusajs/medusa/commit/182cf748cb162ec177df8d9e912319a77ee83111) Thanks [@sradevski](https://github.com/sradevski)! - feat(utils,types,audit,rbac): add `MEDUSA_CLOUD_AUDIT_ENDPOINT`, register the Audit and RBAC Modules by default on Medusa Cloud when the license covers `audit` and `rbac`
+
+- Updated dependencies []:
+  - @medusajs/deps@2.22.8
+
 ## 2.22.7
 
 ### Patch Changes
