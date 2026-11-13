@@ -40,7 +40,7 @@ Each entry is:
   title: "Medusa MCP",
   tag: "Medusa Cloud",
   earlyAccess: true,                // no date, has a link to its docs page
-  link: "https://docs.medusajs.com/cloud/medusa-mcp",
+  link: "https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp",
 }
 ```
 
@@ -69,6 +69,12 @@ Rules:
 - `tag` should reuse an existing label where one fits — currently `Medusa Cloud`
   and `Guide`. Other reasonable labels: `Medusa OS`, `Admin`, `Storefront`.
 - Keep `title` under ~48 characters so the row does not wrap on desktop.
+
+## Features page
+
+When you document a new feature anywhere in the docs, also add it to the
+Features page in `www/apps/cloud/app/features/page.mdx`, under the section it
+belongs to (Cloud, Commerce, or Framework), with a link to its docs page.
 
 ## Homepage structure
 

@@ -53,3 +53,10 @@ When a Cloud feature or notable guide ships, also add it to the docs-wide What's
 New list in `www/apps/book/components/Homepage/WhatsNewSection/data.ts` with the
 `Medusa Cloud` tag. See [`www/apps/book/CLAUDE.md`](../book/CLAUDE.md) for the
 entry format.
+
+## Features page
+
+When you document a new feature, in this app or any other docs app, also add it
+to the Features page in `app/features/page.mdx`. Add it as a bullet under the
+section it belongs to (Cloud, Commerce, or Framework), with a link to its docs
+page.

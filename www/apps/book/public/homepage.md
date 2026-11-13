@@ -43,7 +43,7 @@ Ask anything about Medusa...
 
 - [Explore storefront starter](https://docs.medusajs.com/resources/nextjs-starter): Next.js storefront starter template.
 - [Build custom storefront](https://docs.medusajs.com/resources/storefront-development): Build storefronts with Medusa.
-- [Use agent skills](https://docs.medusajs.com/learn/introduction/build-with-llms-ai#ecommerce-storefront-best-practices): Best practices for storefront development with AI agents.
+- [Use agent skills](https://docs.medusajs.com/cloud/ai-toolkit/agent-skills#ecommerce-storefront-best-practices): Best practices for storefront development with AI agents.
 
 ## Medusa Cloud
 
@@ -54,8 +54,8 @@ Ask anything about Medusa...
 ## Agentic Development
 
 - [Build with Bloom](https://bloom.chat): Build Medusa projects with Bloom, an AI coding assistant.
-- [Agent Skills](https://docs.medusajs.com/learn/introduction/build-with-llms-ai): Learn how to build with AI assistants and LLMs.
-- [Medusa Docs MCP](https://docs.medusajs.com/learn/introduction/build-with-llms-ai#mcp-remote-server): Use the Medusa Docs MCP server.
+- [Agent Skills](https://docs.medusajs.com/cloud/ai-toolkit/agent-skills): Learn how to build with AI assistants and LLMs.
+- [Medusa Docs MCP](https://docs.medusajs.com/cloud/ai-toolkit/docs-mcp): Use the Medusa Docs MCP server.
 
 ## Framework
 
