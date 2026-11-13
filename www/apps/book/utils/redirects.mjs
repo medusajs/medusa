@@ -487,14 +487,13 @@ const redirects = async () => {
     },
     {
       source: "/learn/introduction/build-with-llms-ai/bloom",
-      destination: "/learn/introduction/build-with-llms-ai",
+      destination: "/cloud/ai-toolkit",
       permanent: true,
     },
     {
       source:
         "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms",
-      destination:
-        "/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-shopify",
+      destination: "/cloud/ai-toolkit/docs-mcp/migrate-from-shopify",
       permanent: true,
     },
     {
@@ -514,13 +513,37 @@ const redirects = async () => {
     },
     {
       source: "/learn/introduction/build-with-llms-ai/mcp-server",
-      destination: "/learn/introduction/build-with-llms-ai/docs-mcp-server",
+      destination: "/cloud/ai-toolkit/docs-mcp",
       permanent: true,
     },
     {
       source: "/learn/introduction/build-with-llms-ai/mcp-server/:path*",
-      destination:
-        "/learn/introduction/build-with-llms-ai/docs-mcp-server/:path*",
+      destination: "/cloud/ai-toolkit/docs-mcp/:path*",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai",
+      destination: "/cloud/ai-toolkit",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/docs-mcp-server",
+      destination: "/cloud/ai-toolkit/docs-mcp",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/docs-mcp-server/:path*",
+      destination: "/cloud/ai-toolkit/docs-mcp/:path*",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/agentic-skills",
+      destination: "/cloud/ai-toolkit/agent-skills",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
+      destination: "/cloud/ai-toolkit/ai-friendly-docs",
       permanent: true,
     },
   ]

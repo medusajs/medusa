@@ -33,12 +33,8 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/going-live",
             "title": "Going Live Checklist",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": []
           },
           {
@@ -58,12 +54,8 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/features",
             "title": "Features",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": []
           }
         ]
@@ -77,53 +69,49 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/ai-toolkit",
             "title": "Overview",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
             "title": "Medusa MCP",
-            "path": "/medusa-mcp",
+            "path": "/ai-toolkit/medusa-mcp",
             "children": [
               {
                 "loaded": true,
                 "type": "link",
                 "title": "Claude Connector",
-                "path": "/medusa-mcp/claude",
+                "path": "/ai-toolkit/medusa-mcp/claude",
                 "children": []
               },
               {
                 "loaded": true,
                 "type": "link",
                 "title": "ChatGPT App",
-                "path": "/medusa-mcp/chatgpt",
+                "path": "/ai-toolkit/medusa-mcp/chatgpt",
                 "children": []
               },
               {
                 "loaded": true,
                 "type": "link",
                 "title": "n8n",
-                "path": "/medusa-mcp/n8n",
+                "path": "/ai-toolkit/medusa-mcp/n8n",
                 "children": []
               },
               {
                 "loaded": true,
                 "type": "link",
                 "title": "Custom Agents",
-                "path": "/medusa-mcp/custom-agents",
+                "path": "/ai-toolkit/medusa-mcp/custom-agents",
                 "children": []
               },
               {
                 "loaded": true,
                 "type": "link",
                 "title": "Retrieve Custom Data",
-                "path": "/medusa-mcp/custom-data",
+                "path": "/ai-toolkit/medusa-mcp/custom-data",
                 "children": []
               }
             ]
@@ -131,23 +119,87 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/ai-toolkit/docs-mcp",
             "title": "Docs MCP",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Ask Medusa Questions",
+                "path": "/ai-toolkit/docs-mcp/ask-medusa-question",
+                "description": "Answer Medusa questions from the official documentation.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Shopify",
+                "path": "/ai-toolkit/docs-mcp/migrate-from-shopify",
+                "description": "Migrate your store's data from Shopify to Medusa.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from WooCommerce",
+                "path": "/ai-toolkit/docs-mcp/migrate-from-woocommerce",
+                "description": "Migrate your store's data from WooCommerce to Medusa.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Magento",
+                "path": "/ai-toolkit/docs-mcp/migrate-from-magento",
+                "description": "Migrate your store's data from Magento to Medusa.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Integrate Providers",
+                "path": "/ai-toolkit/docs-mcp/integrate-providers",
+                "description": "Build payment and fulfillment module providers for third-party services.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Extend Products",
+                "path": "/ai-toolkit/docs-mcp/extend-products",
+                "description": "Attach custom data and features to products, variants, and options.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Upgrade Medusa",
+                "path": "/ai-toolkit/docs-mcp/upgrade-instructions",
+                "description": "Upgrade a Medusa project to a newer version, breaking changes included.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Submit Feedback",
+                "path": "/ai-toolkit/docs-mcp/submit-feedback",
+                "description": "Send documentation, bug, and feedback to the Medusa team.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Cloud Assistant",
+            "path": "/ai-toolkit/assistant",
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/ai-toolkit/agent-skills",
             "title": "Skills",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": []
           },
           {
@@ -160,19 +212,8 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/ai-toolkit/ai-friendly-docs",
             "title": "AI-Friendly Docs",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Cloud Assistant",
-            "path": "/assistant",
             "children": []
           }
         ]

@@ -3,6 +3,10 @@
 > **Shipping something new?** Add it to the docs homepage's What's New list in
 > `www/apps/book/components/Homepage/WhatsNewSection/data.ts`. See
 > [`www/apps/book/CLAUDE.md`](../book/CLAUDE.md) for the entry format and rules.
+>
+> **Documenting a new feature?** Also add it to the Features page in
+> `www/apps/cloud/app/features/page.mdx`, under the section it belongs to
+> (Cloud, Commerce, or Framework), with a link to its docs page.
 
 Next.js (App Router) site that renders the Medusa **Store** and **Admin** REST API references. Deployed to Cloudflare via OpenNext, served under the `basePath` `/api` (e.g. `https://docs.medusajs.com/api/store`).
 

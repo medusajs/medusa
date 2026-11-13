@@ -3,6 +3,10 @@
 > **Shipping something new?** Add it to the docs homepage's What's New list in
 > `www/apps/book/components/Homepage/WhatsNewSection/data.ts`. See
 > [`www/apps/book/CLAUDE.md`](../book/CLAUDE.md) for the entry format and rules.
+>
+> **Documenting a new feature?** Also add it to the Features page in
+> `www/apps/cloud/app/features/page.mdx`, under the section it belongs to
+> (Cloud, Commerce, or Framework), with a link to its docs page.
 
 This documents how the API **references** (`/references/...`) are generated and
 served. Non-reference pages in this app are ordinary MDX under `app/`; this file

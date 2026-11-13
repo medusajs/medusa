@@ -23,16 +23,13 @@ export const AiAssistantSuggestions = (props: AiAssistantSuggestionsProps) => {
         <span className="text-medusa-fg-muted text-compact-small px-docs_0.5 py-docs_0.75 block">
           For assistance in your development, use{" "}
           <Link
-            href={`${baseUrl}/learn/introduction/build-with-llms-ai#claude-code-plugins`}
+            href={`${baseUrl}/cloud/ai-toolkit/agent-skills`}
             variant="content"
           >
             Claude Code Plugins
           </Link>{" "}
           or{" "}
-          <Link
-            href={`${baseUrl}/learn/introduction/build-with-llms-ai/docs-mcp-server`}
-            variant="content"
-          >
+          <Link href={`${baseUrl}/cloud/ai-toolkit/docs-mcp`} variant="content">
             Docs MCP server
           </Link>{" "}
           in Cursor, VSCode, etc...

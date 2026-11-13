@@ -1,0 +1,84 @@
+export const metadata = {
+  title: `Medusa Features`,
+}
+
+# {metadata.title}
+
+In this guide, you'll find the features that Medusa provides, from its infrastructure and commerce features to its Framework.
+
+## Infrastructure Features
+
+Medusa hosts and operates your projects on its managed infrastructure, so you can go live without setting up or maintaining servers.
+
+### Hosting and Deployments
+
+- **Zero configuration**: Get started in minutes without worrying about server configurations, resource management, or scaling. Learn more in the [Create First Project](../first-project/page.mdx) guide.
+- **Backend, admin, and storefront hosting**: Host your Medusa backend, admin, and [storefront](../storefront/page.mdx) with automatic environment setup.
+- **Deployments from GitHub**: Medusa [deploys your project](../deployments/page.mdx) from your GitHub repository on every push to the environment's branch.
+- **Multiple environments**: Create [long-lived environments](../environments/long-lived/page.mdx), such as production and staging, to test changes before going live.
+- **Preview environments**: Medusa creates an isolated [preview environment](../environments/preview/page.mdx) for every pull request in your repository.
+- **Zero downtime deployments**: Medusa rolls out changes to production without interrupting your customers.
+- **Autoscaling**: Environments scale to meet traffic demands.
+- **Custom domains**: Serve your backend and storefront from [your own domains](../environments/custom-domains/page.mdx).
+
+### Managed Resources and Services
+
+- **Managed resources**: Medusa manages your project's [Postgres database](../database/page.mdx), [Redis server](../redis/page.mdx), and [S3 bucket](../s3/page.mdx).
+- **Medusa Cache**: Improve the performance of business-critical APIs with [Medusa Cache](../cache/page.mdx), available out of the box at no additional cost.
+- **Medusa Emails**: Send transactional emails, such as order confirmations and password resets, with [Medusa Emails](../emails/page.mdx). Available for all plans.
+- **Medusa Search**: Power your storefront's search with full-text and vector search using [Medusa Search](../search/page.mdx). Full-text search is available for all plans, and vector search for the Scale and Enterprise plans.
+- **Medusa Security**: Protect your projects with [Medusa Security](../security/page.mdx), including a Medusa-specific ruleset, a web application firewall (WAF), DDoS protection, and bot detection. Available for all plans.
+
+### Monitoring and Operations
+
+- **Logs**: Monitor your project's runtime and build [logs](../logs/page.mdx), and send them to third-party services with [log drains](../projects/log-drains/page.mdx).
+- **Performance monitoring**: Track the [performance](../monitoring/page.mdx) of your servers, workers, and HTTP requests.
+- **Notifications**: Receive [notifications](../notifications/page.mdx) about your deployments, payments, and database operations.
+- **Webhooks**: Listen to Cloud events, such as deployment updates, with [webhooks](../webhooks/endpoints/page.mdx).
+- **Dedicated support**: Receive support from the Medusa team for any issues you encounter.
+
+### AI Tools
+
+- **Medusa MCP server**: Connect AI tools like Claude and ChatGPT to your stores with the [Medusa MCP server](../ai-toolkit/medusa-mcp/page.mdx) to ask about your commerce and Cloud data.
+- **Docs MCP server**: Give your AI agents access to the Medusa documentation and implementation guides with the [Docs MCP server](../ai-toolkit/docs-mcp/page.mdx).
+- **Cloud CLI**: Manage your Cloud resources and debug issues with AI agents using the [Cloud CLI](../cli/agents/page.mdx).
+- **Cloud Assistant**: Ask the [Cloud Assistant](../ai-toolkit/assistant/page.mdx) about Medusa or your projects from anywhere in the dashboard.
+- **Fix with AI**: Troubleshoot build and deployment issues with the [Fix with AI](../deployments/fix-with-ai/page.mdx) feature.
+
+Learn about all AI tools in the [AI Toolkit](../ai-toolkit/page.mdx) guide.
+
+---
+
+## Commerce Features
+
+Every Medusa project comes with Commerce Modules that provide commerce features out of the box. Merchants manage them from the Medusa Admin, and storefronts access them through the Store API routes.
+
+- **Products and catalog**: Manage [products](!resources!/commerce-modules/product) with variants, options, categories, and collections.
+- **Pricing and promotions**: Set prices per currency, region, and customer group with the [Pricing Module](!resources!/commerce-modules/pricing), and create discounts and campaigns with the [Promotion Module](!resources!/commerce-modules/promotion).
+- **Carts and checkout**: Build checkout flows with the [Cart Module](!resources!/commerce-modules/cart), and accept payments from multiple providers with the [Payment Module](!resources!/commerce-modules/payment).
+- **Orders**: Manage [orders](!resources!/commerce-modules/order), returns, exchanges, claims, order edits, and draft orders.
+- **Inventory and fulfillment**: Track [inventory](!resources!/commerce-modules/inventory) across [stock locations](!resources!/commerce-modules/stock-location), and ship orders with the [Fulfillment Module](!resources!/commerce-modules/fulfillment).
+- **Customers**: Manage [customers](!resources!/commerce-modules/customer), customer groups, and their [authentication](!resources!/commerce-modules/auth).
+- **Multi-region selling**: Sell in multiple [regions](!resources!/commerce-modules/region), [currencies](!resources!/commerce-modules/currency), and [sales channels](!resources!/commerce-modules/sales-channel), with [tax](!resources!/commerce-modules/tax) calculation per region.
+- **Loyalty and store credit**: Reward customers with the [Loyalty](!resources!/commerce-modules/loyalty) and [Store Credit](!resources!/commerce-modules/store-credit) modules.
+- **Translations**: Translate your store's content with the [Translation Module](!resources!/commerce-modules/translation).
+- **Enterprise**: Control access with [role-based access control (RBAC)](!resources!/enterprise/rbac) and [single sign-on (SSO)](!resources!/enterprise/sso).
+
+Find all commerce features in the [Commerce Modules](!resources!/commerce-modules) documentation. To learn how to manage them as a merchant, refer to the [Merchant Guide](!user-guide!).
+
+---
+
+## Framework Features
+
+The Framework is the set of tools you use to customize Medusa and build features specific to your business. You build customizations in your project's codebase, then deploy them to Cloud.
+
+- **Custom modules and data models**: Build [modules](!docs!/learn/fundamentals/modules) with their own [data models](!docs!/learn/fundamentals/data-models), and connect them to existing ones with [module links](!docs!/learn/fundamentals/module-links).
+- **Workflows**: Build reliable business logic and agentic flows with [workflows](!docs!/learn/fundamentals/workflows) that support retries and rollbacks.
+- **API routes**: Expose your custom features to storefronts, the admin, and AI agents with [API routes](!docs!/learn/fundamentals/api-routes).
+- **Events and scheduled jobs**: Automate tasks with [subscribers](!docs!/learn/fundamentals/events-and-subscribers) and [scheduled jobs](!docs!/learn/fundamentals/scheduled-jobs).
+- **Admin customizations**: Extend the Medusa Admin with [widgets and UI routes](!docs!/learn/fundamentals/admin).
+- **Integrations**: Integrate third-party services for payments, fulfillment, notifications, and more. Find available [integrations](!resources!/integrations) and [Infrastructure Modules](!resources!/infrastructure-modules).
+- **Plugins**: Package and reuse customizations across projects with [plugins](!docs!/learn/fundamentals/plugins).
+- **Storefront development**: Build a storefront with the [Next.js Starter Storefront](!resources!/nextjs-starter) or your own framework using the [storefront development guides](!resources!/storefront-development) and the [JS SDK](!resources!/js-sdk).
+
+Learn how to use the Framework in the [Framework](!docs!/learn) documentation.

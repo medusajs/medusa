@@ -38,7 +38,7 @@ export const whatsNewItems: WhatsNewItem[] = [
     title: "Medusa MCP",
     tag: "Medusa Cloud",
     date: "2026-10-20",
-    link: "https://docs.medusajs.com/cloud/medusa-mcp",
+    link: "https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp",
   },
   {
     title: "Medusa Security",
@@ -67,7 +67,7 @@ export const whatsNewItems: WhatsNewItem[] = [
   {
     title: "AI Assistant in Dashboard",
     date: "2026-08-19",
-    link: "https://docs.medusajs.com/cloud/assistant",
+    link: "https://docs.medusajs.com/cloud/ai-toolkit/assistant",
     tag: "Medusa Cloud",
   },
 ]

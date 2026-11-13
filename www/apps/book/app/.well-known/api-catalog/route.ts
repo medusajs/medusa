@@ -41,7 +41,7 @@ const getCatalog = () => {
         anchor: `${baseUrl}/mcp`,
         "service-doc": [
           {
-            href: `${baseUrl}/learn/introduction/build-with-llms-ai/docs-mcp-server`,
+            href: `${baseUrl}/cloud/ai-toolkit/docs-mcp`,
             type: "text/html",
           },
         ],
