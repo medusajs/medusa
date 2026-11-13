@@ -629,6 +629,13 @@ export const generatedSidebars = [
             "title": "Search Indexes",
             "path": "/settings/search",
             "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Announcements",
+            "path": "/settings/announcements",
+            "children": []
           }
         ]
       }

@@ -345,7 +345,6 @@ import CustomerModule from "@medusajs/medusa/customer"
 export default defineLink(
   {
     linkable: TierModule.linkable.tier,
-    filterable: ["id"],
   },
   {
     linkable: CustomerModule.linkable.customer,
@@ -356,7 +355,7 @@ export default defineLink(
 
 You define a link using the `defineLink` function from the Modules SDK. It accepts two parameters:
 
-1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module. You also specify the `id` property as filterable, allowing you to filter customers by their tier later using the [Index Module](!docs!/learn/fundamentals/query/index-module).
+1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module.
 2. An object indicating the second data model in the link. You pass the linkable configurations of the Customer Module's `Customer` data model. You set `isList` to `true` because a tier can have multiple customers.
 
 This link allows you to retrieve and manage customers associated with a tier, and vice versa.
@@ -1868,7 +1867,7 @@ export async function GET(
   const { id } = req.params
 
   // Query customers linked to this tier
-  const { data: customers, metadata } = await query.index({
+  const { data: customers, metadata } = await query.graph({
     entity: "customer",
     filters: {
       tier: {
@@ -1880,7 +1879,7 @@ export async function GET(
 
   res.json({
     customers,
-    count: metadata?.estimate_count || 0,
+    count: metadata?.count || 0,
     offset: metadata?.skip || 0,
     limit: metadata?.take || 15,
   })
@@ -1891,7 +1890,7 @@ You export a `GET` function, which exposes a `GET` API route at `/admin/tiers/:i
 
 In the route handler, you resolve Query from the Medusa container and use it to retrieve customers linked to the tier with the given ID.
 
-Notice that you use the `query.index` method. This method is similar to `query.graph` but allows you to filter by linked records using the [Index Module](!docs!/learn/fundamentals/query/index-module).
+Notice that you filter customers by the `tier` linked data model. Query's `graph` method [filters by linked data models](!docs!/learn/fundamentals/query#filter-by-linked-data-models-property) in the database, so it only retrieves the customers linked to the tier.
 
 You return the customers in the response.
 
@@ -1928,50 +1927,7 @@ You set the following configurations:
 - `isList`: Set to `true` to indicate that the API route returns a list of records.
 - `defaults`: An array of fields to return by default if the client doesn't specify any fields in the request.
 
-### c. Install Index Module
-
-The [Index Module](!docs!/learn/fundamentals/query/index-module) is a tool for performing high-performance queries across modules, such as filtering linked modules.
-
-The Index Module is currently experimental, so you need to install and configure it manually.
-
-To install the Index Module, run the following command in the `apps/backend` directory:
-
-```bash npm2yarn
-npm install @medusajs/index
-```
-
-Then, add the following to your Medusa application's configuration file:
-
-```ts title="medusa-config.ts"
-export default config({
-  modules: [
-    // ...
-    {
-      resolve: "@medusajs/index",
-    },
-  ],
-})
-```
-
-Next, run the migrations to create the necessary tables for the Index Module in your database:
-
-```bash npm2yarn
-npx medusa db:migrate
-```
-
-Lastly, start the Medusa application to ingest the data into the Index Module:
-
-```bash npx2yarn
-npm run dev
-```
-
-You can now use the Index Module to filter customers by their tier. You'll test out the API route when you customize the Medusa Admin dashboard in the next step.
-
-<Note>
-
-Refer to the [Index Module](!docs!/learn/fundamentals/query/index-module) documentation to learn more.
-
-</Note>
+You'll test out the API route when you customize the Medusa Admin dashboard in the next step.
 
 ---
 
