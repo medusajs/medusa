@@ -1,0 +1,99 @@
+import { CloudAnnouncement } from "../../../types"
+import { getAnnouncementForPath } from "../announcements"
+
+const createAnnouncement = (
+  data: Pick<CloudAnnouncement, "id"> & Partial<CloudAnnouncement>
+): CloudAnnouncement => ({
+  title: "Announcement",
+  subtitle: null,
+  content: null,
+  image_url: null,
+  type: "feature",
+  link_url: null,
+  admin_path: null,
+  published_at: null,
+  ...data,
+})
+
+const ordersTip = createAnnouncement({
+  id: "anno_orders",
+  type: "admin",
+  admin_path: "/orders",
+})
+const productsTip = createAnnouncement({
+  id: "anno_products",
+  type: "admin",
+  admin_path: "/products/",
+})
+const feature = createAnnouncement({ id: "anno_feature" })
+const since = "2026-11-01T00:00:00.000Z"
+const noHistory = { dismissedIds: [], since }
+
+describe("getAnnouncementForPath", () => {
+  it("should return the announcement matching the page, ignoring trailing slashes", () => {
+    const announcements = [ordersTip, productsTip]
+
+    expect(
+      getAnnouncementForPath("/orders/", announcements, noHistory)?.id
+    ).toEqual("anno_orders")
+    expect(
+      getAnnouncementForPath("/products", announcements, noHistory)?.id
+    ).toEqual("anno_products")
+  })
+
+  it("should not return an announcement for another page", () => {
+    const announcements = [ordersTip, productsTip]
+
+    expect(
+      getAnnouncementForPath("/orders/order_123", announcements, noHistory)
+    ).toBeUndefined()
+    expect(
+      getAnnouncementForPath("/settings", announcements, noHistory)
+    ).toBeUndefined()
+  })
+
+  it("should return an announcement without an admin path on any page", () => {
+    expect(
+      getAnnouncementForPath("/settings", [ordersTip, feature], noHistory)?.id
+    ).toEqual("anno_feature")
+  })
+
+  it("should prefer the announcement matching the page over one without an admin path", () => {
+    const announcements = [feature, ordersTip]
+
+    expect(
+      getAnnouncementForPath("/orders", announcements, noHistory)?.id
+    ).toEqual("anno_orders")
+    expect(
+      getAnnouncementForPath("/orders", announcements, {
+        dismissedIds: ["anno_orders"],
+        since,
+      })?.id
+    ).toEqual("anno_feature")
+  })
+
+  it("should not return a dismissed announcement", () => {
+    expect(
+      getAnnouncementForPath("/orders", [ordersTip], {
+        dismissedIds: ["anno_orders"],
+        since,
+      })
+    ).toBeUndefined()
+  })
+
+  it("should not return an announcement published on or before the since date", () => {
+    const old = createAnnouncement({
+      id: "anno_old",
+      published_at: "2026-10-31T00:00:00.000Z",
+    })
+    const recent = createAnnouncement({
+      id: "anno_recent",
+      published_at: "2026-11-02T00:00:00.000Z",
+    })
+
+    expect(getAnnouncementForPath("/orders", [old], noHistory)).toBeUndefined()
+    expect(
+      getAnnouncementForPath("/orders", [old, recent], noHistory)?.id
+    ).toEqual("anno_recent")
+  })
+})

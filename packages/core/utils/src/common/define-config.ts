@@ -96,7 +96,7 @@ export function defineConfig(config: InputConfig = {}): ConfigModule {
     projectDir
   )
   applyCloudOptionsToModules(modules, projectConfig?.cloud, adminConfig)
-  const plugins = resolvePlugins(config.plugins, options)
+  const plugins = resolvePlugins(config.plugins)
 
   return {
     projectConfig,
@@ -233,13 +233,23 @@ function applyDefaultAuthMfaOptions(
 }
 
 function resolvePlugins(
-  configPlugins: InputConfig["plugins"],
-  { isCloud }: { isCloud: boolean }
+  configPlugins: InputConfig["plugins"]
 ): ConfigModule["plugins"] {
   const defaultPlugins: Map<string, ConfigModule["plugins"][number]> = new Map([
     [
       "@medusajs/draft-order",
       { resolve: "@medusajs/draft-order", options: {} },
+    ],
+    [
+      "@medusajs/cloud",
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: process.env.MEDUSA_CLOUD_API_URL,
+          organizationId: process.env.MEDUSA_CLOUD_ORGANIZATION_ID,
+          planHandle: process.env.MEDUSA_CLOUD_PLAN_HANDLE,
+        },
+      },
     ],
   ])
 
@@ -253,10 +263,13 @@ function resolvePlugins(
     })
   }
 
-  // We don't have any cloud plugins yet, but we might in the future
-  const cloudPlugins = [...Array.from(defaultPlugins.values())]
+  // The plugin's admin widgets and settings page can only be hidden by not loading it.
+  const cloudPlugin = defaultPlugins.get("@medusajs/cloud")
+  if (typeof cloudPlugin === "object" && cloudPlugin.options?.disabled) {
+    defaultPlugins.delete("@medusajs/cloud")
+  }
 
-  return isCloud ? cloudPlugins : Array.from(defaultPlugins.values())
+  return Array.from(defaultPlugins.values())
 }
 
 /**

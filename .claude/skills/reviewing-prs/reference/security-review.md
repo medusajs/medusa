@@ -281,6 +281,16 @@ Check for:
   customer routes `authenticate("customer", …)`, and anything scoped to a
   customer must filter by `req.auth_context.actor_id`, not an ID from the
   request.
+- **Missing RBAC on a user-facing feature:** a new admin route, admin page,
+  widget, or setting must account for RBAC. Admin routes need
+  `authorize([{ resource, operation }])` in `middlewares.ts` (`read` for
+  GETs, `create` / `update` / `delete` for writes); without it, every admin
+  user can call the route whatever their role. Dashboard routes need
+  `permissions`, and actions must be hidden or disabled with
+  `PermissionGuard` / `usePermissions()`. A new resource also needs its
+  policies created (plugins: `buildPolicies()` in a migration script). See
+  `packages/medusa/src/api/admin/products/middlewares.ts` and
+  `packages/plugins/loyalty/src/migration-scripts/create-loyalty-rbac-policies.ts`.
 - **Unvalidated bodies and queries:** a new route without
   `validateAndTransformBody()` / `validateAndTransformQuery()` and a Zod
   schema in `middlewares.ts`, or one that reads `req.body` instead of
@@ -307,4 +317,5 @@ Security issues are always **blocking** — include `"requires-more"` in
 - [ ] Assuming a configured prefix/base dir contains the final path — it does not stop `..` from climbing out
 - [ ] Treating DB injection as raw-SQL-only — unvalidated `req.body`/`req.query` passed into a service `.list*()`/repository/`query.graph({ filters })` allows operator injection and reading unscoped data
 - [ ] Missing unescaped JSON/HTML — `JSON.stringify(userData)` interpolated into an HTML/`<script>` context is XSS; user input reflected into any markup response must be escaped
+- [ ] Not checking RBAC on a new admin route, page, widget, or setting — `authenticate` alone lets every admin user through, whatever their role
 - [ ] Overlooking prototype pollution — a parsed JSON body merged via `Object.assign`/spread/deep-merge without guarding `__proto__`

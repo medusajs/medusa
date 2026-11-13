@@ -25,7 +25,7 @@ const plugins = (pkg, minify, esbuildOptions = {}) =>
 const packageName = pkg.name
 const outputFileName = "medusa-icons"
 const outputDir = "dist"
-const inputs = ["src/components/index.ts"]
+const inputs = ["src/index.ts"]
 
 const bundles = [
   {

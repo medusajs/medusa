@@ -36,6 +36,7 @@ vi.mock("../../../../hooks/use-resource-permissions", () => {
 vi.mock("../../../../providers/extension-provider", () => ({
   useExtension: () => ({
     getMenu: () => mocks.menuItems,
+    getWidgets: () => [],
   }),
 }))
 
