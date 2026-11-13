@@ -32,7 +32,7 @@
     "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/icons": "2.22.6",
+    "@medusajs/icons": "2.22.7",
     "@types/node": "^20.11.20",
     "rimraf": "^5.0.5",
     "tsconfig": "*",
