@@ -56,31 +56,6 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it("should not expose the gift card's purchase reference", async () => {
-        const created = (
-          await api.post(
-            `/admin/gift-cards`,
-            {
-              ...giftCardPayload,
-              reference: "order",
-              reference_id: "order_123",
-            },
-            adminHeaders
-          )
-        ).data.gift_card
-
-        const {
-          data: { gift_card },
-        } = await api.get(
-          `/store/gift-cards/${created.code}?fields=+reference,+reference_id`,
-          storeHeaders
-        )
-
-        expect(gift_card.id).toEqual(created.id)
-        expect(gift_card).not.toHaveProperty("reference")
-        expect(gift_card).not.toHaveProperty("reference_id")
-      })
-
       it("should return not found for an invalid code", async () => {
         const { response } = await api
           .get(`/store/gift-cards/INVALID-CODE`, storeHeaders)

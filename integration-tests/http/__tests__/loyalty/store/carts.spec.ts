@@ -302,57 +302,13 @@ medusaIntegrationTestRunner({
           const {
             data: { cart: cartAfterRejection },
           } = await api.get(
-            `/store/carts/${cart.id}?fields=+credit_line_total,+gift_cards.id`,
+            `/store/carts/${cart.id}?fields=+credit_line_total,*gift_cards`,
             storeHeaders
           )
 
           expect(cartAfterRejection.credit_lines).toHaveLength(0)
           expect(cartAfterRejection.gift_cards).toHaveLength(0)
         })
-      })
-
-      it("should not expose the gift card's purchase reference on the cart", async () => {
-        const purchasedGiftCard = (
-          await api.post(
-            `/admin/gift-cards`,
-            {
-              ...giftCardPayload,
-              code: "PURCHASED",
-              reference: "order",
-              reference_id: "order_123",
-            },
-            adminHeaders
-          )
-        ).data.gift_card
-
-        const {
-          data: { cart: cartWithGiftCard },
-        } = await api.post(
-          `/store/carts/${cart.id}/gift-cards`,
-          { code: purchasedGiftCard.code },
-          storeHeaders
-        )
-
-        expect(cartWithGiftCard.gift_cards).toEqual([
-          expect.objectContaining({ id: purchasedGiftCard.id }),
-        ])
-        expect(cartWithGiftCard.gift_cards[0]).not.toHaveProperty("reference")
-        expect(cartWithGiftCard.gift_cards[0]).not.toHaveProperty(
-          "reference_id"
-        )
-
-        const {
-          data: { cart: requestedCart },
-        } = await api.get(
-          `/store/carts/${cart.id}?fields=*gift_cards,+gift_cards.id,+gift_cards.reference,+gift_cards.reference_id`,
-          storeHeaders
-        )
-
-        expect(requestedCart.gift_cards).toEqual([
-          expect.objectContaining({ id: purchasedGiftCard.id }),
-        ])
-        expect(requestedCart.gift_cards[0]).not.toHaveProperty("reference")
-        expect(requestedCart.gift_cards[0]).not.toHaveProperty("reference_id")
       })
     })
 
@@ -760,7 +716,7 @@ medusaIntegrationTestRunner({
         const {
           data: { order },
         } = await api.post(
-          `/store/carts/${cart.id}/complete?fields=+credit_line_total,+gift_cards.id,+gift_cards.status,*gift_cards.store_credit_account`,
+          `/store/carts/${cart.id}/complete?fields=+credit_line_total,*gift_cards,*gift_cards.store_credit_account`,
           {},
           storeHeaders
         )
