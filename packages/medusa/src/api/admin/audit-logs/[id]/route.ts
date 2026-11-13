@@ -10,6 +10,10 @@ import {
 } from "@medusajs/framework/types"
 import { defineFileConfig, Modules } from "@medusajs/framework/utils"
 
+/**
+ * @ignore
+ * TODO: remove the ignore tag and add a `@since` tag when the audit feature is fully released
+ */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminAuditLogResponse>

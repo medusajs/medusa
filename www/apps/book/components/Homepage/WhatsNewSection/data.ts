@@ -29,6 +29,12 @@ export type WhatsNewItem = {
 
 export const whatsNewItems: WhatsNewItem[] = [
   {
+    title: "Migrate from self-hosting to Cloud",
+    tag: "Medusa Cloud",
+    date: "2026-11-13",
+    link: "https://docs.medusajs.com/cloud/migrate-self-hosted",
+  },
+  {
     title: "RBAC & SSO",
     tag: "Enterprise",
     date: "2026-11-04",
