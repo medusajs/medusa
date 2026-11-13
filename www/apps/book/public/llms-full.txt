@@ -2991,8 +2991,6 @@ module.exports = defineConfig({
 
 When you disable the plugin, `defineConfig` removes it from the registered plugins. So, the Medusa application doesn't fetch announcements, and the Medusa Admin doesn't show the announcement widgets or the **Settings > Announcements** page.
 
-The `disabled` option only works when you create the configurations with `defineConfig`.
-
 ### Register Modules in Plugins
 
 When you register a plugin, its modules are automatically registered in the Medusa application. You don't have to register them manually in the `modules` configuration.
@@ -39006,7 +39004,7 @@ A shipping method's price can depend on the cart's discounted item total, and a 
 
 The `refreshCartPromotionAdjustmentsWorkflow` is available since [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
 
-If you make changes to a cart that affect its adjustments in your customizations, use the [refreshCartPromotionAdjustmentsWorkflow](undefined/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow) to recompute them. The workflow computes the adjustments of the cart's line items and shipping methods from the cart's current state, and replaces the existing adjustments with them.
+If you make changes to a cart that affect its adjustments in your customizations, use the `refreshCartPromotionAdjustmentsWorkflow` to recompute them. The workflow computes the adjustments of the cart's line items and shipping methods from the cart's current state, and replaces the existing adjustments with them.
 
 For example:
 
