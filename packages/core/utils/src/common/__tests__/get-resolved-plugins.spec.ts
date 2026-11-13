@@ -1,3 +1,4 @@
+import { mkdir, realpath, symlink } from "fs/promises"
 import path from "path"
 import { defineConfig } from "../define-config"
 import { FileSystem } from "../file-system"
@@ -374,5 +375,59 @@ describe("getResolvedPlugins | package reference", () => {
     await expect(resolvePlugins()).rejects.toThrow(
       `Unable to resolve plugin "@plugins/dummy". Make sure the plugin directory has a package.json file`
     )
+  })
+
+  test("resolve a plugin installed as a dependency of @medusajs/medusa", async () => {
+    const storeDir = "store/node_modules/@medusajs"
+    await fs.createJson(`${storeDir}/medusa/package.json`, {
+      name: "@medusajs/medusa",
+    })
+    await fs.createJson(`${storeDir}/transitive-plugin/package.json`, {
+      name: "@medusajs/transitive-plugin",
+      version: "1.0.0",
+    })
+    await fs.create(
+      `${storeDir}/transitive-plugin/.medusa/server/src/modules/module-1/index.js`,
+      ""
+    )
+
+    await fs.createJson("project/package.json", {})
+    await mkdir(path.join(fs.basePath, "project/node_modules/@medusajs"), {
+      recursive: true,
+    })
+    await symlink(
+      path.join(fs.basePath, storeDir, "medusa"),
+      path.join(fs.basePath, "project/node_modules/@medusajs/medusa"),
+      "dir"
+    )
+
+    const pluginDir = await realpath(
+      path.join(fs.basePath, storeDir, "transitive-plugin")
+    )
+
+    const plugins = await getResolvedPlugins(
+      path.join(fs.basePath, "project"),
+      {
+        plugins: [{ resolve: "@medusajs/transitive-plugin", options: {} }],
+      } as any,
+      false
+    )
+
+    expect(plugins).toEqual([
+      {
+        id: "@medusajs/transitive-plugin",
+        admin: undefined,
+        modules: [
+          {
+            options: {},
+            resolve: `${pluginDir}/.medusa/server/src/modules/module-1`,
+          },
+        ],
+        name: "@medusajs/transitive-plugin",
+        options: {},
+        resolve: path.join(pluginDir, ".medusa/server/src"),
+        version: "1.0.0",
+      },
+    ])
   })
 })
