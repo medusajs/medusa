@@ -95,7 +95,7 @@ interface DataTableOptions<TData>
    */
   onRowClick?: (
     event: React.MouseEvent<HTMLTableRowElement, MouseEvent>,
-    row: TData
+    row: DataTableRow<TData>
   ) => void
   /**
    * The total count of rows. When working with pagination, this will be the total
@@ -162,7 +162,7 @@ interface UseDataTableReturn<TData>
   getRowSelection: () => DataTableRowSelectionState
   onRowClick?: (
     event: React.MouseEvent<HTMLTableRowElement, MouseEvent>,
-    row: TData
+    row: DataTableRow<TData>
   ) => void
   emptyState: DataTableEmptyState
   isLoading: boolean

@@ -208,12 +208,15 @@ export const DataTable = <TData,>({
   const navigate = useNavigate();
 
   const onRowClick = useCallback(
-    (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>, row: TData) => {
+    (
+      event: React.MouseEvent<HTMLTableRowElement, MouseEvent>,
+      row: DataTableRow<TData>
+    ) => {
       if (!rowHref) {
         return;
       }
 
-      const href = rowHref(row);
+      const href = rowHref(row.original);
 
       if (event.metaKey || event.ctrlKey || event.button === 1) {
         window.open(href, "_blank", "noreferrer");
