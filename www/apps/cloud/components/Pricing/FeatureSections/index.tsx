@@ -70,9 +70,7 @@ const FeatureSections: React.FC<FeatureSectionsProps> = ({
       >
         {/* Features label column */}
         <div className="flex items-center justify-start p-0.5 sm:px-1.5 sm:py-1 border-solid border-r border-medusa-border-base">
-          <p className="txt-medium sm:txt-large text-medusa-fg-subtle">
-            Features
-          </p>
+          <p className="txt-small-plus text-medusa-fg-subtle">Features</p>
         </div>
 
         {/* Column headers */}
@@ -85,7 +83,7 @@ const FeatureSections: React.FC<FeatureSectionsProps> = ({
                 "border-solid border-r border-medusa-border-base"
             )}
           >
-            <p className="txt-medium sm:txt-large text-medusa-fg-base text-left w-full">
+            <p className="txt-small-plus text-medusa-fg-base text-left w-full">
               {column}
             </p>
           </div>
@@ -129,7 +127,7 @@ const FeatureSections: React.FC<FeatureSectionsProps> = ({
                 >
                   {/* Feature name column */}
                   <div className="p-0.25 sm:p-1 flex items-center justify-start border-solid border-r border-medusa-border-base">
-                    <p className="txt-medium-plus text-medusa-fg-base">
+                    <p className="txt-small-plus text-medusa-fg-base">
                       <MarkdownContent
                         allowedElements={["br", "a"]}
                         unwrapDisallowed
@@ -155,7 +153,7 @@ const FeatureSections: React.FC<FeatureSectionsProps> = ({
                             "border-solid border-r border-medusa-border-base"
                         )}
                       >
-                        <p className="txt-medium text-medusa-fg-base text-left w-full">
+                        <p className="txt-small text-medusa-fg-base text-left w-full">
                           <MarkdownContent
                             allowedElements={["br", "a"]}
                             unwrapDisallowed
