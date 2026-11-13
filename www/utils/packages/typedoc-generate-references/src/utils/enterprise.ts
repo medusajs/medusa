@@ -16,7 +16,7 @@ export function getEnterpriseNotice(featureName: string): string {
     return ""
   }
 
-  return `<EnterpriseNotice beta featureName="${getEnterpriseFeatureName(
+  return `<EnterpriseNotice featureName="${getEnterpriseFeatureName(
     featureName
   )}" />\n\n`
 }
