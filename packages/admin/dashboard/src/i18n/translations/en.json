@@ -3986,6 +3986,7 @@
       "fulfillment_set": "Fulfillment sets",
       "service_zone": "Service zones",
       "file": "Files",
+      "audit_log": "Audit logs",
       "notification": "Notifications",
       "workflow_execution": "Workflow executions",
       "store_locale": "Store locales",

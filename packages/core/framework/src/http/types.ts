@@ -6,6 +6,7 @@ import type {
 } from "@medusajs/deps/zod"
 
 import type {
+  AuthContext,
   MedusaNextFunction,
   MedusaRequest,
   MedusaRequestHandler,
@@ -72,6 +73,77 @@ export type ParserConfigArgs = {
 
 export type ParserConfig = false | ParserConfigArgs
 
+/**
+ * The request passed to the functions of an {@link AuditRouteConfig}. The
+ * request may have been rejected before authentication, so `auth_context` can
+ * be missing.
+ */
+export type AuditRequest = MedusaRequest<any> & {
+  auth_context?: AuthContext
+}
+
+/**
+ * The resource an audited request acted on.
+ */
+export type AuditResource = {
+  /**
+   * The resource type, such as `order`.
+   */
+  type: string
+  /**
+   * The resource ID. Omit it, or pass `null`, when the request acts on several
+   * resources.
+   */
+  id?: string | null
+}
+
+/**
+ * How a route is recorded in the audit logs. Every function runs after the
+ * response is sent, and an error thrown by one is logged and ignored.
+ */
+export type AuditRouteConfig<TResponseBody = any> = {
+  /**
+   * The action name.
+   *
+   * @defaultValue The resource followed by the route segments after it, such
+   * as `order.cancel` for `POST /admin/orders/:id/cancel`, or by `create`,
+   * `update`, or `delete` when there are none, such as `product.create`.
+   */
+  action?: string
+  /**
+   * Returns the resource acted on. `body` is the JSON response body, passed
+   * only for a successful response. Return `undefined` to fall back to the
+   * default: the last path parameter as the ID and the segment before it, in
+   * singular snake case, as the type. A route without path parameters uses its
+   * second segment as the type and the ID of the resource in the response.
+   */
+  resource?: (
+    req: AuditRequest,
+    body: TResponseBody | undefined
+  ) => AuditResource | undefined
+  /**
+   * Returns the request fields to keep. Request bodies are never stored, so pick
+   * only the fields worth keeping.
+   */
+  requestData?: (req: AuditRequest) => Record<string, unknown> | undefined
+  /**
+   * Returns the response fields to keep. Response bodies are never stored, so
+   * pick only the fields worth keeping. `body` is the JSON response body, passed
+   * only for a successful response.
+   */
+  responseData?: (
+    req: AuditRequest,
+    body: TResponseBody | undefined
+  ) => Record<string, unknown> | undefined
+}
+
+/**
+ * Whether and how a route is recorded in the audit logs: `false` never records
+ * it, `true` records it with the defaults, and an object records it with the
+ * defaults it doesn't override.
+ */
+export type AuditRouteSetting = boolean | AuditRouteConfig
+
 export type MiddlewareRoute = {
   /**
    * @deprecated. Instead use {@link MiddlewareRoute.methods}
@@ -81,6 +153,12 @@ export type MiddlewareRoute = {
   matcher: string | RegExp
   bodyParser?: ParserConfig
   additionalDataValidator?: ZodRawShape
+  /**
+   * Whether and how matching requests are recorded in the audit logs, when the
+   * Audit Module is installed. By default, `POST`, `PUT`, `PATCH`, and `DELETE`
+   * requests under `/admin`, `/rbac`, and `/auth` are recorded.
+   */
+  audit?: AuditRouteSetting
   middlewares?: MiddlewareFunction[]
 }
 
@@ -129,6 +207,12 @@ export type AdditionalDataValidatorRoute = {
   methods: MiddlewareVerb | MiddlewareVerb[]
   schema: ZodRawShape
   validator: ZodOptional<ZodNullable<ZodObject<any, any>>>
+}
+
+export type AuditConfigRoute = {
+  matcher: string | RegExp
+  methods: MiddlewareVerb[]
+  config: AuditRouteSetting
 }
 
 export type GlobalMiddlewareDescriptor = {

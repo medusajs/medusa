@@ -205,6 +205,13 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/orders/:id/credit-lines",
+    audit: {
+      requestData: (req) => ({
+        amount: req.validatedBody?.amount,
+        reference: req.validatedBody?.reference,
+        reference_id: req.validatedBody?.reference_id,
+      }),
+    },
     middlewares: [
       authorize([
         {

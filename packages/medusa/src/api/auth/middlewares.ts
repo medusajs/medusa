@@ -20,6 +20,8 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/session",
+    // The login itself is recorded; exchanging its token for a session is not.
+    audit: false,
     middlewares: [
       authenticate("*", "bearer", {
         allowUnregistered: true,
@@ -40,6 +42,8 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/token/refresh",
+    // Frequent, and not a change worth an audit log.
+    audit: false,
     middlewares: [
       authenticate("*", ["session", "bearer"], {
         allowUnregistered: true,
@@ -120,6 +124,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider",
+    audit: { action: "auth.authenticate" },
     middlewares: [validateScopeProviderAssociation()],
   },
   {

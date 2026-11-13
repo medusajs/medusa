@@ -246,6 +246,7 @@ export const CORE_POLICY_RESOURCES = [
   "service_zone",
 
   // System
+  "audit_log",
   "file",
   "notification",
   "workflow_execution",

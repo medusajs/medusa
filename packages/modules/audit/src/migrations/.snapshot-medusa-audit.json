@@ -1,5 +1,7 @@
 {
-  "namespaces": ["public"],
+  "namespaces": [
+    "public"
+  ],
   "name": "public",
   "tables": [
     {
@@ -65,8 +67,8 @@
           "scale": null,
           "default": null,
           "comment": null,
-          "enumItems": ["user", "api_key", "customer", "system", "anonymous"],
-          "mappedType": "enum"
+          "enumItems": [],
+          "mappedType": "text"
         },
         "actor_id": {
           "name": "actor_id",
@@ -161,7 +163,11 @@
           "scale": null,
           "default": null,
           "comment": null,
-          "enumItems": ["succeeded", "denied", "failed"],
+          "enumItems": [
+            "succeeded",
+            "denied",
+            "failed"
+          ],
           "mappedType": "enum"
         },
         "request": {
@@ -318,7 +324,9 @@
         },
         {
           "keyName": "audit_log_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": true,
           "primary": true,
