@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.6
+  version: 2.22.7
   title: Medusa Storefront API
   license:
     name: MIT
@@ -8781,7 +8781,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /store/orders:
     get:
       operationId: GetOrders
@@ -19930,6 +19929,132 @@ components:
                 type: string
                 title: scope_id
                 description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
+    AdminAuditLog:
+      type: object
+      description: 'An audit log: one action, who performed it, on which resource, and how it ended.'
+      x-schemaName: AdminAuditLog
+      required:
+        - id
+        - started_at
+        - ended_at
+        - actor_type
+        - actor_id
+        - impersonator_id
+        - action
+        - resource_type
+        - resource_id
+        - outcome
+        - request
+        - request_data
+        - response_data
+        - metadata
+      properties:
+        id:
+          type: string
+          title: id
+          description: The audit log's ID.
+        started_at:
+          type: string
+          title: started_at
+          description: When the action started, such as when the request arrived.
+        ended_at:
+          type: string
+          title: ended_at
+          description: When the action ended, such as when the response was sent.
+        actor_type:
+          type: string
+          title: actor_type
+          description: The type of actor that performed the action.
+        actor_id:
+          type: string
+          title: actor_id
+          description: The audit log's actor id.
+        impersonator_id:
+          type: string
+          title: impersonator_id
+          description: The audit log's impersonator id.
+        action:
+          type: string
+          title: action
+          description: The name of the action, such as `order.cancel` or `POST /admin/orders/:id/cancel`.
+        resource_type:
+          type: string
+          title: resource_type
+          description: The audit log's resource type.
+        resource_id:
+          type: string
+          title: resource_id
+          description: The audit log's resource id.
+        outcome:
+          type: string
+          description: |-
+            How the action ended: `denied` for a 401 or 403 response, `failed` for any
+            other 4xx or 5xx response.
+          enum:
+            - succeeded
+            - denied
+            - failed
+        request:
+          $ref: '#/components/schemas/AdminAuditLogRequest'
+        request_data:
+          type: object
+          description: The audit log's request data.
+        response_data:
+          type: object
+          description: The audit log's response data.
+        metadata:
+          type: object
+          description: The audit log's metadata.
+    AdminAuditLogRequest:
+      type: object
+      description: The HTTP details of an audit log written for an API request.
+      x-schemaName: AdminAuditLogRequest
+      required:
+        - method
+        - route
+        - path
+        - status_code
+        - request_id
+        - ip_address
+        - user_agent
+      properties:
+        method:
+          type: string
+          title: method
+          description: The HTTP method, such as `POST`.
+        route:
+          type: string
+          title: route
+          description: The route pattern, such as `/admin/orders/:id/cancel`.
+        path:
+          type: string
+          title: path
+          description: The request path without the query string.
+        status_code:
+          type: number
+          title: status_code
+          description: The response status code.
+        request_id:
+          type: string
+          title: request_id
+          description: The request's request id.
+        ip_address:
+          type: string
+          title: ip_address
+          description: The request's ip address.
+        user_agent:
+          type: string
+          title: user_agent
+          description: The request's user agent.
+    AdminAuditLogResponse:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminAuditLogResponse
+      required:
+        - audit_log
+      properties:
+        audit_log:
+          $ref: '#/components/schemas/AdminAuditLog'
     AdminAuthorizeOrderPaymentSession:
       type: object
       description: The details for authorizing a payment session for an order.
@@ -21173,6 +21298,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminClaimOrderResponse:
       type: object
       description: The created claim's details.
@@ -21385,6 +21511,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCollectionResponse:
       type: object
       description: The collection's details.
@@ -23652,6 +23779,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCurrencyResponse:
       type: object
       description: The currency's details.
@@ -24846,6 +24974,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminDraftOrderParams:
       type: object
       description: The parameters for retrieving draft orders.
@@ -25963,6 +26092,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentProviderOption:
       type: object
       description: The fulfillment option's details.
@@ -26011,6 +26141,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentResponse:
       type: object
       description: A fulfillment's details.
@@ -26296,6 +26427,7 @@ components:
           title: estimate_count
           description: The gift card's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminImportProductRequest:
       type: object
       description: The import's details.
@@ -26895,6 +27027,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         locales:
           type: array
           description: The list of locales.
@@ -27055,6 +27188,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminNotificationResponse:
       type: object
       description: The notification's details.
@@ -29593,6 +29727,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPriceListPrice:
       type: object
       description: The details of a price list's price.
@@ -29693,6 +29828,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         prices:
           type: array
           description: The list of prices associated with the price list.
@@ -29807,6 +29943,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPricePreferenceResponse:
       type: object
       description: The price preference's details.
@@ -30133,6 +30270,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -30489,6 +30627,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTagResponse:
       type: object
       description: The product tag's details.
@@ -30600,6 +30739,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTypeResponse:
       type: object
       description: The product type's details.
@@ -31261,7 +31401,7 @@ components:
               description: The ID of the scope's entity, such as `org_123`.
     AdminRbacRoleAssignment:
       type: object
-      description: The assignment of an RBAC role to an entity, such as a user.
+      description: The assignment's assignments.
       x-schemaName: AdminRbacRoleAssignment
       required:
         - id
@@ -31294,11 +31434,11 @@ components:
         scope:
           type: string
           title: scope
-          description: The type of the scope's entity that the assignment is constrained to, such as `organization`.
+          description: The assignment's scope.
         scope_id:
           type: string
           title: scope_id
-          description: The ID of the scope's entity that the assignment is constrained to, such as `org_123`.
+          description: The assignment's scope id.
         metadata:
           type: object
           description: The assignment's metadata.
@@ -31965,6 +32105,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminReturnReasonResponse:
       type: object
       description: The return reason's details.
@@ -32835,6 +32976,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         shipping_option_types:
           type: array
           description: The list of shipping option types.
@@ -33082,6 +33224,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStockLocationResponse:
       type: object
       description: The stock location's details.
@@ -33256,6 +33399,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreCurrency:
       type: object
       description: The details of a store's currency.
@@ -33336,6 +33480,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreLocale:
       type: object
       description: The details of a store's locale.
@@ -33743,6 +33888,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminTransferOrderToGuest:
       type: object
       description: The details of the order transfer to a guest.
@@ -35964,6 +36110,13 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
+        roles:
+          type: array
+          description: The user's roles.
+          items:
+            type: string
+            title: roles
+            description: The role's roles.
     AdminUserAuthProvidersResponse:
       type: object
       description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
@@ -36035,6 +36188,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminUserResetPasswordTokenResponse:
       type: object
       description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
@@ -36088,6 +36242,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         roles:
           type: array
           description: The list of roles.
@@ -36366,6 +36521,31 @@ components:
           type: string
           title: revoked_at
           description: The date the API key was revoked.
+          format: date-time
+    AuditLogDateRange:
+      type: object
+      description: A date range filter. Dates can be passed as `Date` objects or ISO 8601 strings.
+      x-schemaName: AuditLogDateRange
+      properties:
+        $gt:
+          type: string
+          title: $gt
+          description: Filter by values greater than this parameter. Useful for numbers and dates only.
+          format: date-time
+        $gte:
+          type: string
+          title: $gte
+          description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+          format: date-time
+        $lt:
+          type: string
+          title: $lt
+          description: Filter by values less than this parameter. Useful for numbers and dates only.
+          format: date-time
+        $lte:
+          type: string
+          title: $lte
+          description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
           format: date-time
     AuthAdminSessionResponse:
       type: object
@@ -41433,6 +41613,7 @@ components:
         - is_discountable
         - is_giftcard
         - is_tax_inclusive
+        - is_custom_price
         - unit_price
         - quantity
         - detail
@@ -41632,6 +41813,10 @@ components:
         line_item_metadata:
           type: object
           description: Custom key-value pairs on the order's line items.
+        is_custom_price:
+          type: boolean
+          title: is_custom_price
+          description: Indicates whether the line item's unit price is a custom price.
     OrderLineItemAdjustment:
       type: object
       description: The line item adjustment's details.
@@ -43970,6 +44155,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCurrencyResponse:
       type: object
       description: The currency's details.
@@ -44189,6 +44375,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCustomerAddressResponse:
       type: object
       description: The address's details.
@@ -45742,6 +45929,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -46026,6 +46214,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTagResponse:
       type: object
       description: The product tag's details.
@@ -46110,6 +46299,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTypeResponse:
       type: object
       description: The product type's details.
@@ -46864,6 +47054,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     StoreUpdateCustomer:
       type: object
       description: The details to update in the customer.

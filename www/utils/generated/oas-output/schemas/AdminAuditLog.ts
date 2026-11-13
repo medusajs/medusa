@@ -1,0 +1,80 @@
+/**
+ * @schema AdminAuditLog
+ * type: object
+ * description: "An audit log: one action, who performed it, on which resource, and how it ended."
+ * x-schemaName: AdminAuditLog
+ * required:
+ *   - id
+ *   - started_at
+ *   - ended_at
+ *   - actor_type
+ *   - actor_id
+ *   - impersonator_id
+ *   - action
+ *   - resource_type
+ *   - resource_id
+ *   - outcome
+ *   - request
+ *   - request_data
+ *   - response_data
+ *   - metadata
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The audit log's ID.
+ *   started_at:
+ *     type: string
+ *     title: started_at
+ *     description: When the action started, such as when the request arrived.
+ *   ended_at:
+ *     type: string
+ *     title: ended_at
+ *     description: When the action ended, such as when the response was sent.
+ *   actor_type:
+ *     type: string
+ *     title: actor_type
+ *     description: The type of actor that performed the action.
+ *   actor_id:
+ *     type: string
+ *     title: actor_id
+ *     description: The audit log's actor id.
+ *   impersonator_id:
+ *     type: string
+ *     title: impersonator_id
+ *     description: The audit log's impersonator id.
+ *   action:
+ *     type: string
+ *     title: action
+ *     description: The name of the action, such as `order.cancel` or `POST /admin/orders/:id/cancel`.
+ *   resource_type:
+ *     type: string
+ *     title: resource_type
+ *     description: The audit log's resource type.
+ *   resource_id:
+ *     type: string
+ *     title: resource_id
+ *     description: The audit log's resource id.
+ *   outcome:
+ *     type: string
+ *     description: |-
+ *       How the action ended: `denied` for a 401 or 403 response, `failed` for any
+ *       other 4xx or 5xx response.
+ *     enum:
+ *       - succeeded
+ *       - denied
+ *       - failed
+ *   request:
+ *     $ref: "#/components/schemas/AdminAuditLogRequest"
+ *   request_data:
+ *     type: object
+ *     description: The audit log's request data.
+ *   response_data:
+ *     type: object
+ *     description: The audit log's response data.
+ *   metadata:
+ *     type: object
+ *     description: The audit log's metadata.
+ * 
+*/
+

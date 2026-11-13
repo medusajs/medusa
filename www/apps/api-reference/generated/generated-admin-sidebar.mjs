@@ -143,6 +143,44 @@ const generatedgeneratedAdminSidebarSidebar = {
     },
     {
       "type": "category",
+      "title": "Audit Logs",
+      "path": "/admin/audit-logs",
+      "loaded": true,
+      "children": [
+        {
+          "type": "link",
+          "path": "/admin/audit-logs/schema",
+          "title": "AuditLog Object",
+          "loaded": true,
+          "badge": {
+            "variant": "neutral",
+            "text": "Schema"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/audit-logs/get-a-audit-log",
+          "title": "Get a Audit Log",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        },
+        {
+          "type": "link",
+          "path": "/admin/audit-logs/list-audit-logs",
+          "title": "List Audit Logs",
+          "loaded": true,
+          "badge": {
+            "variant": "green",
+            "text": "Get"
+          }
+        }
+      ]
+    },
+    {
+      "type": "category",
       "title": "Auth",
       "path": "/admin/auth",
       "loaded": true,

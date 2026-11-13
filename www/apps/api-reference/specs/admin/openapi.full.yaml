@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.6
+  version: 2.22.7
   title: Medusa Admin API
   license:
     name: MIT
@@ -21,6 +21,9 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/api-key
     x-associatedSchema:
       $ref: '#/components/schemas/AdminApiKey'
+  - name: Audit Logs
+    x-associatedSchema:
+      $ref: '#/components/schemas/AdminAuditLog'
   - name: Auth
     description: |
       Auth API routes allow you to manage an admin user's authentication.
@@ -2213,6 +2216,302 @@ paths:
           $ref: '#/components/responses/500_error'
       x-workflow: linkSalesChannelsToApiKeyWorkflow
       x-events: []
+  /admin/audit-logs:
+    get:
+      operationId: GetAuditLogs
+      summary: List Audit Logs
+      description: Retrieve a list of audit logs. The audit logs can be filtered by fields such as `id`. The audit logs can also be sorted or paginated.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: id
+                description: The audit log's ID.
+              - type: array
+                description: The audit log's ID.
+                items:
+                  type: string
+                  title: id
+                  description: The id's ID.
+        - name: actor_type
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: actor_type
+                description: The audit log's actor type.
+              - type: array
+                description: The audit log's actor type.
+                items:
+                  type: string
+                  title: actor_type
+                  description: The actor type's details.
+        - name: actor_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: actor_id
+                description: The audit log's actor id.
+              - type: array
+                description: The audit log's actor id.
+                items:
+                  type: string
+                  title: actor_id
+                  description: The actor id's details.
+        - name: action
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: action
+                description: The audit log's action.
+              - type: array
+                description: The audit log's action.
+                items:
+                  type: string
+                  title: action
+                  description: The action's details.
+        - name: resource_type
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: resource_type
+                description: The audit log's resource type.
+              - type: array
+                description: The audit log's resource type.
+                items:
+                  type: string
+                  title: resource_type
+                  description: The resource type's details.
+        - name: resource_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: resource_id
+                description: The audit log's resource id.
+              - type: array
+                description: The audit log's resource id.
+                items:
+                  type: string
+                  title: resource_id
+                  description: The resource id's details.
+        - name: outcome
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: outcome
+                description: The audit log's outcome.
+              - type: string
+                title: outcome
+                description: The audit log's outcome.
+              - type: string
+                title: outcome
+                description: The audit log's outcome.
+              - type: array
+                description: The audit log's outcome.
+                items:
+                  type: string
+                  description: The outcome's details.
+                  enum:
+                    - succeeded
+                    - denied
+                    - failed
+        - name: q
+          in: query
+          description: The audit log's q.
+          required: false
+          schema:
+            type: string
+            title: q
+            description: The audit log's q.
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.auditLog.list()
+            .then(({ audit_logs, count, limit, offset }) => {
+              console.log(audit_logs)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/audit-logs' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Audit Logs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    description: SUMMARY
+                    required:
+                      - limit
+                      - offset
+                      - count
+                    properties:
+                      limit:
+                        type: number
+                        title: limit
+                        description: The maximum number of items retrieved.
+                      offset:
+                        type: number
+                        title: offset
+                        description: The number of items to skip before retrieving the returned items.
+                      count:
+                        type: number
+                        title: count
+                        description: The total number of items.
+                      estimate_count:
+                        type: number
+                        title: estimate_count
+                        description: The audit log's estimate count.
+                        deprecated: true
+                        x-featureFlag: index_engine
+                  - type: object
+                    description: SUMMARY
+                    required:
+                      - audit_logs
+                    properties:
+                      audit_logs:
+                        type: array
+                        description: The list of audit logs.
+                        items:
+                          $ref: '#/components/schemas/AdminAuditLog'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-allowed:
+        - id
+        - started_at
+        - ended_at
+        - actor_type
+        - actor_id
+        - impersonator_id
+        - action
+        - resource_type
+        - resource_id
+        - outcome
+        - request
+        - request_data
+        - response_data
+        - metadata
+  /admin/audit-logs/{id}:
+    get:
+      operationId: GetAuditLogsId
+      summary: Get a Audit Log
+      description: Retrieve a audit log by its ID. You can expand the audit log's relations or select the fields that should be returned.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The audit log's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.auditLog.retrieve("audlog_123")
+            .then(({ audit_log }) => {
+              console.log(audit_log)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/audit-logs/{id}' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Audit Logs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminAuditLogResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-allowed:
+        - id
+        - started_at
+        - ended_at
+        - actor_type
+        - actor_id
+        - impersonator_id
+        - action
+        - resource_type
+        - resource_id
+        - outcome
+        - request
+        - request_data
+        - response_data
+        - metadata
   /admin/campaigns:
     get:
       operationId: GetCampaigns
@@ -2548,7 +2847,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createCampaignsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+            }
+            ```
+          description: Emitted when campaigns are created.
+          deprecated: false
+          since: 2.22.7
   /admin/campaigns/{id}:
     get:
       operationId: GetCampaignsId
@@ -2763,7 +3072,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateCampaignsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+            }
+            ```
+          description: Emitted when campaigns are updated.
+          deprecated: false
+          since: 2.22.7
     delete:
       operationId: DeleteCampaignsId
       summary: Delete a Campaign
@@ -2845,7 +3164,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteCampaignsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+            }
+            ```
+          description: Emitted when campaigns are deleted.
+          deprecated: false
+          since: 2.22.7
   /admin/campaigns/{id}/promotions:
     post:
       operationId: PostCampaignsIdPromotions
@@ -2927,7 +3256,19 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: addOrRemoveCampaignPromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.promotions_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+              added_promotion_ids, // The IDs of the promotions added to the campaign
+              removed_promotion_ids, // The IDs of the promotions removed from the campaign
+            }
+            ```
+          description: Emitted when promotions are added to or removed from a campaign.
+          deprecated: false
+          since: 2.22.7
   /admin/claims:
     get:
       operationId: GetClaims
@@ -24333,6 +24674,8 @@ paths:
           $ref: '#/components/responses/500_error'
       x-since: 2.11.2
       x-featureFlag: index
+      deprecated: true
+      x-deprecated_message: 'The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property'
   /admin/index/sync:
     post:
       operationId: PostIndexSync
@@ -24384,6 +24727,8 @@ paths:
           $ref: '#/components/responses/500_error'
       x-since: 2.11.2
       x-featureFlag: index
+      deprecated: true
+      x-deprecated_message: 'The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property'
   /admin/inventory-items:
     get:
       operationId: GetInventoryItems
@@ -28156,7 +28501,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/locales/{code}:
     get:
       operationId: GetLocalesCode
@@ -28231,7 +28575,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/modules:
     get:
       operationId: GetModules
@@ -49626,7 +49969,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createPromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+            }
+            ```
+          description: Emitted when promotions are created.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/rule-attribute-options/{rule_type}:
     get:
       operationId: GetPromotionsRuleAttributeOptionsRule_type
@@ -50162,7 +50515,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updatePromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+            }
+            ```
+          description: Emitted when promotions are updated, including their status.
+          deprecated: false
+          since: 2.22.7
     delete:
       operationId: DeletePromotionsId
       summary: Delete a Promotion
@@ -50243,7 +50606,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deletePromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+            }
+            ```
+          description: Emitted when promotions are deleted.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/buy-rules/batch:
     post:
       operationId: PostPromotionsIdBuyRulesBatch
@@ -50385,7 +50758,23 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchPromotionRulesWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.rules_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+              rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+              created, // The IDs of the created rules
+              updated, // The IDs of the updated rules
+              deleted, // The IDs of the deleted rules
+            }
+            ```
+          description: |-
+            Emitted when a promotion's rules, target rules, or buy rules
+            are created, updated, or deleted in a batch.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/rules/batch:
     post:
       operationId: PostPromotionsIdRulesBatch
@@ -50527,7 +50916,23 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchPromotionRulesWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.rules_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+              rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+              created, // The IDs of the created rules
+              updated, // The IDs of the updated rules
+              deleted, // The IDs of the deleted rules
+            }
+            ```
+          description: |-
+            Emitted when a promotion's rules, target rules, or buy rules
+            are created, updated, or deleted in a batch.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/target-rules/batch:
     post:
       operationId: PostPromotionsIdTargetRulesBatch
@@ -50669,7 +51074,23 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchPromotionRulesWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.rules_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+              rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+              created, // The IDs of the created rules
+              updated, // The IDs of the updated rules
+              deleted, // The IDs of the deleted rules
+            }
+            ```
+          description: |-
+            Emitted when a promotion's rules, target rules, or buy rules
+            are created, updated, or deleted in a batch.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/{rule_type}:
     get:
       operationId: GetPromotionsIdRule_type
@@ -69402,7 +69823,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/translations/batch:
     post:
       operationId: PostTranslationsBatch
@@ -69544,7 +69964,6 @@ paths:
           deprecated: false
           since: 2.12.3
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/translations/entities:
     get:
       operationId: GetTranslationsEntities
@@ -69674,7 +70093,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.4
-      x-featureFlag: translation
   /admin/translations/settings:
     get:
       operationId: GetTranslationsSettings
@@ -69751,7 +70169,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/translations/settings/batch:
     post:
       operationId: PostTranslationsSettingsBatch
@@ -69830,7 +70247,6 @@ paths:
       x-workflow: batchTranslationSettingsWorkflow
       x-events: []
       x-since: 2.13.0
-      x-featureFlag: translation
   /admin/translations/statistics:
     get:
       operationId: GetTranslationsStatistics
@@ -69920,7 +70336,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/uploads:
     post:
       operationId: PostUploads
@@ -75129,6 +75544,132 @@ components:
                 type: string
                 title: scope_id
                 description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
+    AdminAuditLog:
+      type: object
+      description: 'An audit log: one action, who performed it, on which resource, and how it ended.'
+      x-schemaName: AdminAuditLog
+      required:
+        - id
+        - started_at
+        - ended_at
+        - actor_type
+        - actor_id
+        - impersonator_id
+        - action
+        - resource_type
+        - resource_id
+        - outcome
+        - request
+        - request_data
+        - response_data
+        - metadata
+      properties:
+        id:
+          type: string
+          title: id
+          description: The audit log's ID.
+        started_at:
+          type: string
+          title: started_at
+          description: When the action started, such as when the request arrived.
+        ended_at:
+          type: string
+          title: ended_at
+          description: When the action ended, such as when the response was sent.
+        actor_type:
+          type: string
+          title: actor_type
+          description: The type of actor that performed the action.
+        actor_id:
+          type: string
+          title: actor_id
+          description: The audit log's actor id.
+        impersonator_id:
+          type: string
+          title: impersonator_id
+          description: The audit log's impersonator id.
+        action:
+          type: string
+          title: action
+          description: The name of the action, such as `order.cancel` or `POST /admin/orders/:id/cancel`.
+        resource_type:
+          type: string
+          title: resource_type
+          description: The audit log's resource type.
+        resource_id:
+          type: string
+          title: resource_id
+          description: The audit log's resource id.
+        outcome:
+          type: string
+          description: |-
+            How the action ended: `denied` for a 401 or 403 response, `failed` for any
+            other 4xx or 5xx response.
+          enum:
+            - succeeded
+            - denied
+            - failed
+        request:
+          $ref: '#/components/schemas/AdminAuditLogRequest'
+        request_data:
+          type: object
+          description: The audit log's request data.
+        response_data:
+          type: object
+          description: The audit log's response data.
+        metadata:
+          type: object
+          description: The audit log's metadata.
+    AdminAuditLogRequest:
+      type: object
+      description: The HTTP details of an audit log written for an API request.
+      x-schemaName: AdminAuditLogRequest
+      required:
+        - method
+        - route
+        - path
+        - status_code
+        - request_id
+        - ip_address
+        - user_agent
+      properties:
+        method:
+          type: string
+          title: method
+          description: The HTTP method, such as `POST`.
+        route:
+          type: string
+          title: route
+          description: The route pattern, such as `/admin/orders/:id/cancel`.
+        path:
+          type: string
+          title: path
+          description: The request path without the query string.
+        status_code:
+          type: number
+          title: status_code
+          description: The response status code.
+        request_id:
+          type: string
+          title: request_id
+          description: The request's request id.
+        ip_address:
+          type: string
+          title: ip_address
+          description: The request's ip address.
+        user_agent:
+          type: string
+          title: user_agent
+          description: The request's user agent.
+    AdminAuditLogResponse:
+      type: object
+      description: SUMMARY
+      x-schemaName: AdminAuditLogResponse
+      required:
+        - audit_log
+      properties:
+        audit_log:
+          $ref: '#/components/schemas/AdminAuditLog'
     AdminAuthorizeOrderPaymentSession:
       type: object
       description: The details for authorizing a payment session for an order.
@@ -76372,6 +76913,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminClaimOrderResponse:
       type: object
       description: The created claim's details.
@@ -76584,6 +77126,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCollectionResponse:
       type: object
       description: The collection's details.
@@ -78851,6 +79394,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCurrencyResponse:
       type: object
       description: The currency's details.
@@ -80045,6 +80589,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminDraftOrderParams:
       type: object
       description: The parameters for retrieving draft orders.
@@ -81162,6 +81707,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentProviderOption:
       type: object
       description: The fulfillment option's details.
@@ -81210,6 +81756,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentResponse:
       type: object
       description: A fulfillment's details.
@@ -81495,6 +82042,7 @@ components:
           title: estimate_count
           description: The gift card's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminImportProductRequest:
       type: object
       description: The import's details.
@@ -82094,6 +82642,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         locales:
           type: array
           description: The list of locales.
@@ -82254,6 +82803,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminNotificationResponse:
       type: object
       description: The notification's details.
@@ -84792,6 +85342,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPriceListPrice:
       type: object
       description: The details of a price list's price.
@@ -84892,6 +85443,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         prices:
           type: array
           description: The list of prices associated with the price list.
@@ -85006,6 +85558,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPricePreferenceResponse:
       type: object
       description: The price preference's details.
@@ -85332,6 +85885,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -85688,6 +86242,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTagResponse:
       type: object
       description: The product tag's details.
@@ -85799,6 +86354,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTypeResponse:
       type: object
       description: The product type's details.
@@ -86460,7 +87016,7 @@ components:
               description: The ID of the scope's entity, such as `org_123`.
     AdminRbacRoleAssignment:
       type: object
-      description: The assignment of an RBAC role to an entity, such as a user.
+      description: The assignment's assignments.
       x-schemaName: AdminRbacRoleAssignment
       required:
         - id
@@ -86493,11 +87049,11 @@ components:
         scope:
           type: string
           title: scope
-          description: The type of the scope's entity that the assignment is constrained to, such as `organization`.
+          description: The assignment's scope.
         scope_id:
           type: string
           title: scope_id
-          description: The ID of the scope's entity that the assignment is constrained to, such as `org_123`.
+          description: The assignment's scope id.
         metadata:
           type: object
           description: The assignment's metadata.
@@ -87164,6 +87720,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminReturnReasonResponse:
       type: object
       description: The return reason's details.
@@ -88034,6 +88591,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         shipping_option_types:
           type: array
           description: The list of shipping option types.
@@ -88281,6 +88839,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStockLocationResponse:
       type: object
       description: The stock location's details.
@@ -88455,6 +89014,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreCurrency:
       type: object
       description: The details of a store's currency.
@@ -88535,6 +89095,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreLocale:
       type: object
       description: The details of a store's locale.
@@ -88942,6 +89503,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminTransferOrderToGuest:
       type: object
       description: The details of the order transfer to a guest.
@@ -91163,6 +91725,13 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
+        roles:
+          type: array
+          description: The user's roles.
+          items:
+            type: string
+            title: roles
+            description: The role's roles.
     AdminUserAuthProvidersResponse:
       type: object
       description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
@@ -91234,6 +91803,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminUserResetPasswordTokenResponse:
       type: object
       description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
@@ -91287,6 +91857,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         roles:
           type: array
           description: The list of roles.
@@ -91565,6 +92136,31 @@ components:
           type: string
           title: revoked_at
           description: The date the API key was revoked.
+          format: date-time
+    AuditLogDateRange:
+      type: object
+      description: A date range filter. Dates can be passed as `Date` objects or ISO 8601 strings.
+      x-schemaName: AuditLogDateRange
+      properties:
+        $gt:
+          type: string
+          title: $gt
+          description: Filter by values greater than this parameter. Useful for numbers and dates only.
+          format: date-time
+        $gte:
+          type: string
+          title: $gte
+          description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+          format: date-time
+        $lt:
+          type: string
+          title: $lt
+          description: Filter by values less than this parameter. Useful for numbers and dates only.
+          format: date-time
+        $lte:
+          type: string
+          title: $lte
+          description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
           format: date-time
     AuthAdminSessionResponse:
       type: object
@@ -96632,6 +97228,7 @@ components:
         - is_discountable
         - is_giftcard
         - is_tax_inclusive
+        - is_custom_price
         - unit_price
         - quantity
         - detail
@@ -96831,6 +97428,10 @@ components:
         line_item_metadata:
           type: object
           description: Custom key-value pairs on the order's line items.
+        is_custom_price:
+          type: boolean
+          title: is_custom_price
+          description: Indicates whether the line item's unit price is a custom price.
     OrderLineItemAdjustment:
       type: object
       description: The line item adjustment's details.
@@ -99169,6 +99770,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCurrencyResponse:
       type: object
       description: The currency's details.
@@ -99388,6 +99990,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCustomerAddressResponse:
       type: object
       description: The address's details.
@@ -100941,6 +101544,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -101225,6 +101829,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTagResponse:
       type: object
       description: The product tag's details.
@@ -101309,6 +101914,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTypeResponse:
       type: object
       description: The product type's details.
@@ -102063,6 +102669,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     StoreUpdateCustomer:
       type: object
       description: The details to update in the customer.

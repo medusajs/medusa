@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.6
+  version: 2.22.7
   title: Medusa Admin API
   license:
     name: MIT
@@ -26,6 +26,9 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/api-key
     x-associatedSchema:
       $ref: ./components/schemas/AdminApiKey.yaml
+  - name: Audit Logs
+    x-associatedSchema:
+      $ref: ./components/schemas/AdminAuditLog.yaml
   - name: Auth
     description: |
       Auth API routes allow you to manage an admin user's authentication.
@@ -824,6 +827,10 @@ paths:
     $ref: paths/admin_api-keys_{id}_revoke.yaml
   /admin/api-keys/{id}/sales-channels:
     $ref: paths/admin_api-keys_{id}_sales-channels.yaml
+  /admin/audit-logs:
+    $ref: paths/admin_audit-logs.yaml
+  /admin/audit-logs/{id}:
+    $ref: paths/admin_audit-logs_{id}.yaml
   /admin/campaigns:
     $ref: paths/admin_campaigns.yaml
   /admin/campaigns/{id}:
