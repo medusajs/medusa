@@ -505,9 +505,10 @@ export const generatedEditDates = {
   "app/infrastructure-modules/search/product-index-examples/page.mdx": "2026-09-22T14:47:38.498Z",
   "app/troubleshooting/query/not-assignable-type/page.mdx": "2026-10-09T07:56:42.960Z",
   "app/commerce-modules/payment/payment-provider/adyen/page.mdx": "2026-10-30T12:26:02.502Z",
-  "app/enterprise/page.mdx": "2026-11-11T13:41:22.085Z",
+  "app/enterprise/page.mdx": "2026-11-13T13:43:28.893Z",
   "app/enterprise/sso/page.mdx": "2026-11-04T14:13:11.080Z",
   "app/enterprise/rbac/concepts/page.mdx": "2026-11-12T13:13:29.413Z",
   "app/commerce-modules/product/guides/manage-with-admin-api/page.mdx": "2026-11-12T14:22:42.894Z",
-  "app/enterprise/rbac/api-routes/page.mdx": "2026-11-12T17:43:17.382Z"
+  "app/enterprise/rbac/api-routes/page.mdx": "2026-11-12T17:43:17.382Z",
+  "app/enterprise/rbac/page.mdx": "2026-11-13T13:43:21.284Z"
 }
