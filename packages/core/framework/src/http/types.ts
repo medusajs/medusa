@@ -127,8 +127,9 @@ export type AuditRouteConfig<TResponseBody = any> = {
    */
   requestData?: (req: AuditRequest) => Record<string, unknown> | undefined
   /**
-   * Returns the response fields to keep. `body` is the JSON response body,
-   * passed only for a successful response.
+   * Returns the response fields to keep. Response bodies are never stored, so
+   * pick only the fields worth keeping. `body` is the JSON response body, passed
+   * only for a successful response.
    */
   responseData?: (
     req: AuditRequest,

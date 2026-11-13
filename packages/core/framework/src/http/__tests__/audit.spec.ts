@@ -471,6 +471,14 @@ describe("Audit middleware", () => {
     )
   })
 
+  it("caps the stored path", async () => {
+    await request.post(`/admin/${"a".repeat(5000)}`).set("x-user", "user_1")
+
+    const [entry] = await waitForRecords(1)
+    expect(entry.request.path).toHaveLength(2048)
+    expect(entry.action).toHaveLength("POST ".length + 2048)
+  })
+
   it("skips routes set to false, GET requests, and routes outside the audited namespaces", async () => {
     await request.post("/admin/orders/order_1/cancel").set("x-user", "user_1")
     await request.get("/admin/products").set("x-user", "user_1")

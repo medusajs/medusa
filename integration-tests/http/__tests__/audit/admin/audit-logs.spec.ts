@@ -150,6 +150,40 @@ medusaIntegrationTestRunner({
         ])
       })
 
+      it("records who logged in, and a failed login as anonymous", async () => {
+        await api.post("/auth/user/emailpass", {
+          email: "admin@medusa.js",
+          password: "somepassword",
+        })
+        await api
+          .post("/auth/user/emailpass", {
+            email: "admin@medusa.js",
+            password: "wrong",
+          })
+          .catch((e) => e)
+
+        const { audit_logs } = await listAuditLogs({
+          action: "auth.authenticate",
+          order: "started_at",
+        })
+
+        expect(audit_logs).toEqual([
+          expect.objectContaining({
+            actor_type: "user",
+            actor_id: adminId,
+            outcome: "succeeded",
+            resource_type: "auth",
+            resource_id: "emailpass",
+          }),
+          expect.objectContaining({
+            actor_type: "anonymous",
+            actor_id: null,
+            outcome: "denied",
+          }),
+        ])
+        expect(JSON.stringify(audit_logs)).not.toContain("admin@medusa.js")
+      })
+
       it("records a secret API key as the actor", async () => {
         const created = await api.post(
           "/admin/api-keys",

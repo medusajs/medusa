@@ -4,7 +4,7 @@ import type {
   IAuditModuleService,
   Logger,
 } from "@medusajs/types"
-import { isObject, singularize } from "@medusajs/utils"
+import { isObject, singularize, toSnakeCase } from "@medusajs/utils"
 import type { NextFunction, Request, Response } from "express"
 import type { RoutesFinder } from "./routes-finder"
 import type {
@@ -21,6 +21,7 @@ const DEFAULT_AUDITED_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"])
 const DEFAULT_AUDITED_PREFIXES = ["/admin", "/rbac", "/auth"]
 
 const MAX_USER_AGENT_LENGTH = 512
+const MAX_PATH_LENGTH = 2048
 // The request ID can come from the `x-request-id` header.
 const MAX_REQUEST_ID_LENGTH = 128
 
@@ -97,8 +98,6 @@ export function getRouteParams(
 
 const isParamSegment = (segment: string) => segment.startsWith(":")
 
-const toSnakeCase = (segment: string) => segment.replace(/-/g, "_")
-
 /**
  * Splits a route pattern into the resource it names, the parameter holding
  * its ID, and what follows. With path parameters, the ID is the last one and
@@ -133,7 +132,9 @@ function parseAuditRoute(
   return {
     type: words.join("_"),
     idParam: paramIndex >= 0 ? segments[paramIndex].slice(1) : undefined,
-    rest: segments.slice(Math.max(paramIndex, typeIndex) + 1).map(toSnakeCase),
+    rest: segments
+      .slice(Math.max(paramIndex, typeIndex) + 1)
+      .map((segment) => toSnakeCase(segment)),
   }
 }
 
@@ -272,7 +273,7 @@ export function createAuditMiddleware({
 
   const startRecording = (req: Request, res: Response) => {
     const method = req.method
-    const path = req.path
+    const path = req.path.slice(0, MAX_PATH_LENGTH)
 
     const setting = auditRoutesFinder?.find(
       path,
