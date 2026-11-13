@@ -3392,6 +3392,58 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/cloud@npm:2.22.6, @medusajs/cloud@workspace:^, @medusajs/cloud@workspace:packages/plugins/cloud":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/cloud@workspace:packages/plugins/cloud"
+  dependencies:
+    "@medusajs/admin-sdk": "npm:2.22.6"
+    "@medusajs/cli": "npm:2.22.6"
+    "@medusajs/dashboard": "npm:2.22.6"
+    "@medusajs/framework": "npm:2.22.6"
+    "@medusajs/icons": "npm:2.22.6"
+    "@medusajs/js-sdk": "npm:2.22.6"
+    "@medusajs/types": "npm:2.22.6"
+    "@medusajs/ui": "npm:4.2.13"
+    "@medusajs/ui-preset": "npm:2.22.6"
+    "@swc/core": "npm:^1.16.20"
+    "@tanstack/react-query": "npm:5.64.2"
+    "@types/node": "npm:^22.20.5"
+    cross-env: "npm:^10.1.0"
+    dompurify: "npm:3.4.17"
+    typescript: "npm:@typescript/typescript6@^6.0.2"
+  peerDependencies:
+    "@medusajs/admin-sdk": 2.22.6
+    "@medusajs/cli": 2.22.6
+    "@medusajs/dashboard": 2.22.6
+    "@medusajs/framework": 2.22.6
+    "@medusajs/icons": 2.22.6
+    "@medusajs/test-utils": 2.22.6
+    "@medusajs/ui": 4.2.13
+    react: ^18.3.1
+    react-dom: ^18.3.1
+    react-router-dom: ^6.30.4 || ^7.0.0
+  peerDependenciesMeta:
+    "@medusajs/admin-sdk":
+      optional: true
+    "@medusajs/cli":
+      optional: true
+    "@medusajs/dashboard":
+      optional: true
+    "@medusajs/icons":
+      optional: true
+    "@medusajs/test-utils":
+      optional: true
+    "@medusajs/ui":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+    react-router-dom:
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/core-flows@npm:2.22.6, @medusajs/core-flows@workspace:*, @medusajs/core-flows@workspace:^, @medusajs/core-flows@workspace:packages/core/core-flows":
   version: 0.0.0-use.local
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
@@ -3904,6 +3956,7 @@ __metadata:
     "@medusajs/caching": "npm:2.22.6"
     "@medusajs/caching-redis": "npm:2.22.6"
     "@medusajs/cart": "npm:2.22.6"
+    "@medusajs/cloud": "npm:2.22.6"
     "@medusajs/core-flows": "npm:2.22.6"
     "@medusajs/currency": "npm:2.22.6"
     "@medusajs/customer": "npm:2.22.6"
@@ -9290,6 +9343,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/trusted-types@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@types/trusted-types@npm:2.0.7"
+  checksum: 10c0/4c4855f10de7c6c135e0d32ce462419d8abbbc33713b31d294596c0cc34ae1fa6112a2f9da729c8f7a20707782b0d69da3b1f8df6645b0366d08825ca1522e0c
+  languageName: node
+  linkType: hard
+
 "@types/wait-on@npm:^5.3.1":
   version: 5.3.4
   resolution: "@types/wait-on@npm:5.3.4"
@@ -12407,6 +12467,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dompurify@npm:3.4.17":
+  version: 3.4.17
+  resolution: "dompurify@npm:3.4.17"
+  dependencies:
+    "@types/trusted-types": "npm:^2.0.7"
+  dependenciesMeta:
+    "@types/trusted-types":
+      optional: true
+  checksum: 10c0/6a12251ef5e700fc91b6d96d33e9f8b5fd590c55276f632cf42d182c5808e9f48d5bef435ab26eac235dfcc05ed8fe95e1c8308dcc502bf1050e561f14d0361a
+  languageName: node
+  linkType: hard
+
 "domutils@npm:^3.0.1":
   version: 3.2.2
   resolution: "domutils@npm:3.2.2"
@@ -14551,6 +14623,7 @@ __metadata:
     "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/cloud": "workspace:^"
     "@medusajs/core-flows": "workspace:*"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"

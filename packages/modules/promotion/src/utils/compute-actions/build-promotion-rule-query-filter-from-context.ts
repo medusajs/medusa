@@ -96,13 +96,12 @@ export async function buildPromotionRuleQueryFilterFromContext(
   }
 
   const sqlConditions: string[] = []
+  const conditionBindings: string[] = []
 
   // For each attribute, check if the values don't satisfy the rules
   attributeValueMap.forEach((valueSet, attribute) => {
-    const values = Array.from(valueSet)
-    const stringValues = values
-      .map((v) => `'${v.toString().replace(/'/g, "''")}'`)
-      .join(",")
+    const values = Array.from(valueSet).map((v) => v.toString())
+    const stringValues = values.map(() => "?").join(",")
 
     const numericValues = values
       .map((v) => {
@@ -111,13 +110,12 @@ export async function buildPromotionRuleQueryFilterFromContext(
       })
       .filter((v) => v !== null) as number[]
 
-    const escapedAttribute = `'${attribute.replace(/'/g, "''")}'`
-
     // For 'in' and 'eq' operators - rule is unsatisfiable if NO rule values overlap with context
     // This requires checking that ALL rule values for a given rule are not in context
     if (stringValues.length) {
+      conditionBindings.push(attribute, ...values)
       sqlConditions.push(
-        `(pr.attribute = ${escapedAttribute} AND pr.operator IN ('in', 'eq') AND NOT EXISTS (
+        `(pr.attribute = ? AND pr.operator IN ('in', 'eq') AND NOT EXISTS (
         SELECT 1
         FROM promotion_rule_value prv_inner
         WHERE prv_inner.promotion_rule_id = pr.id
@@ -132,23 +130,27 @@ export async function buildPromotionRuleQueryFilterFromContext(
       const maxValue = Math.max(...numericValues)
 
       // For gt - rule is unsatisfiable if rule_value >= context_max_value
+      conditionBindings.push(attribute)
       sqlConditions.push(
-        `(pr.attribute = ${escapedAttribute} AND pr.operator = 'gt' AND CAST(prv.value AS DECIMAL) >= ${maxValue})`
+        `(pr.attribute = ? AND pr.operator = 'gt' AND CAST(prv.value AS DECIMAL) >= ${maxValue})`
       )
 
       // For gte - rule is unsatisfiable if rule_value > context_max_value
+      conditionBindings.push(attribute, ...values)
       sqlConditions.push(
-        `(pr.attribute = ${escapedAttribute} AND pr.operator = 'gte' AND prv.value NOT IN (${stringValues}) AND CAST(prv.value AS DECIMAL) > ${maxValue})`
+        `(pr.attribute = ? AND pr.operator = 'gte' AND prv.value NOT IN (${stringValues}) AND CAST(prv.value AS DECIMAL) > ${maxValue})`
       )
 
       // For lt - rule is unsatisfiable if rule_value <= context_min_value
+      conditionBindings.push(attribute)
       sqlConditions.push(
-        `(pr.attribute = ${escapedAttribute} AND pr.operator = 'lt' AND CAST(prv.value AS DECIMAL) <= ${minValue})`
+        `(pr.attribute = ? AND pr.operator = 'lt' AND CAST(prv.value AS DECIMAL) <= ${minValue})`
       )
 
       // For lte - rule is unsatisfiable if rule_value < context_min_value
+      conditionBindings.push(attribute, ...values)
       sqlConditions.push(
-        `(pr.attribute = ${escapedAttribute} AND pr.operator = 'lte' AND prv.value NOT IN (${stringValues}) AND CAST(prv.value AS DECIMAL) < ${minValue})`
+        `(pr.attribute = ? AND pr.operator = 'lte' AND prv.value NOT IN (${stringValues}) AND CAST(prv.value AS DECIMAL) < ${minValue})`
       )
     }
   })
@@ -171,9 +173,8 @@ export async function buildPromotionRuleQueryFilterFromContext(
     return null
   }
 
-  const attributeKeys = Array.from(attributeValueMap.keys())
-    .map((attr) => `'${attr.replace(/'/g, "''")}'`)
-    .join(",")
+  const attributes = Array.from(attributeValueMap.keys())
+  const attributeKeys = attributes.map(() => "?").join(",")
 
   // A promotion is excluded if any of its rules targets an attribute missing
   // from the context, or targets a context attribute with an unsatisfiable value
@@ -182,9 +183,12 @@ export async function buildPromotionRuleQueryFilterFromContext(
     OR (pr.attribute IN (${attributeKeys}) AND (${joinedConditions}))
   )`
 
+  const ruleBindings = [...attributes, ...attributes, ...conditionBindings]
+
   return {
-    [raw((alias) =>
-      excludePromotionsWithRuleMatching(alias, unsatisfiableRule)
+    [raw(
+      (alias) => excludePromotionsWithRuleMatching(alias, unsatisfiableRule),
+      RULE_SOURCES.flatMap(() => ruleBindings)
     )]: [],
   }
 }

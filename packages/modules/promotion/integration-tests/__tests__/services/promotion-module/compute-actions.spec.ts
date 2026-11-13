@@ -224,6 +224,55 @@ moduleIntegrationTestRunner({
         expect(actions).toHaveLength(0) // No items to apply to
       })
 
+      it("should prefilter automatic promotions when context values contain question marks", async () => {
+        await createDefaultPromotion(service, {
+          code: "QUESTION_MARK_PROMO",
+          is_automatic: true,
+          rules: [
+            {
+              attribute: "customer.id",
+              operator: "eq",
+              values: ["cus_?1"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            value: 10,
+            max_quantity: 1,
+            target_rules: [],
+          } as any,
+        })
+
+        const result = await service.computeActions([], {
+          currency_code: "usd",
+          customer: {
+            id: "cus_?1",
+            email: "o'brien??@example.com",
+          },
+          items: [
+            {
+              id: "item_1",
+              quantity: 1,
+              subtotal: 100,
+              original_total: 100,
+              is_discountable: true,
+            },
+          ],
+        } as any)
+
+        expect(JSON.parse(JSON.stringify(result))).toEqual([
+          {
+            action: "addItemAdjustment",
+            item_id: "item_1",
+            amount: 10,
+            code: "QUESTION_MARK_PROMO",
+            is_tax_inclusive: false,
+          },
+        ])
+      })
+
       it("should prefilter promotions by applicable rules", async () => {
         await service.updateCampaigns({
           id: "campaign-id-1",

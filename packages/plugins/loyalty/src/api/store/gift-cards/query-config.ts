@@ -15,8 +15,6 @@ export const giftCardFields = [
 
 export const giftCardScalarFields = [
   ...giftCardFields,
-  "reference",
-  "reference_id",
   "line_item_id",
   "metadata",
 ];
@@ -66,10 +64,15 @@ export const giftCardAllowedFields = buildAllowedFields(
   lineItemRelationFields
 );
 
-export const giftCardRelationAllowedFields = [
-  "gift_cards",
-  ...giftCardAllowedFields.map((field) => `gift_cards.${field}`),
-];
+export const giftCardRelationDefaultFields = giftCardFields.map(
+  (field) => `gift_cards.${field}`
+);
+
+// No bare "gift_cards" entry: allowing it would let `*gift_cards` select every
+// column, including the purchasing order's id in `reference_id`.
+export const giftCardRelationAllowedFields = giftCardAllowedFields.map(
+  (field) => `gift_cards.${field}`
+);
 
 export const retrieveGiftCardTransformQueryConfig = {
   defaults: giftCardFields,

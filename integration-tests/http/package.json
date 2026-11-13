@@ -13,6 +13,7 @@
     "@medusajs/api-key": "workspace:^",
     "@medusajs/auth": "workspace:*",
     "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/cloud": "workspace:^",
     "@medusajs/core-flows": "workspace:*",
     "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
