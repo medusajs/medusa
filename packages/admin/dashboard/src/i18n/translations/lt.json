@@ -2928,6 +2928,10 @@
     "delete": {
       "title": "Pašalinti rolę",
       "description": "Ketinate pašalinti rolę {{name}}. Šis veiksmas neatstatomas.",
+      "descriptionWithUsers_one": "Jūs ketinate pašalinti rolę {{name}}. {{count}} naudotojas turi šią rolę ir praras prieigą, kurią ji suteikia. Šis veiksmas neatstatomas.",
+      "descriptionWithUsers_few": "Jūs ketinate pašalinti rolę {{name}}. {{count}} naudotojai turi šią rolę ir praras prieigą, kurią ji suteikia. Šis veiksmas neatstatomas.",
+      "descriptionWithUsers_many": "Jūs ketinate pašalinti rolę {{name}}. {{count}} naudotojų turi šią rolę ir praras prieigą, kurią ji suteikia. Šis veiksmas neatstatomas.",
+      "descriptionWithUsers_other": "Jūs ketinate pašalinti rolę {{name}}. {{count}} naudotojų turi šią rolę ir praras prieigą, kurią ji suteikia. Šis veiksmas neatstatomas.",
       "successToast": "Rolė {{name}} pašalinta"
     },
     "fields": {
@@ -2974,6 +2978,143 @@
       },
       "manage": {
         "successToast": "Leidimai sėkmingai atnaujinti."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Užsakymai",
+            "description": "Užsakymai, užsakymų pakeitimai, pretenzijos, keitimai ir grąžinimai"
+          },
+          "payments": {
+            "label": "Mokėjimai",
+            "description": "Mokėjimai, mokėjimų kolekcijos, grąžinimai ir nuskaitymai"
+          },
+          "products": {
+            "label": "Prekės",
+            "description": "Prekės, variantai, parinktys, kategorijos, kolekcijos, tipai ir žymos"
+          },
+          "inventory": {
+            "label": "Atsargos",
+            "description": "Atsargų elementai, atsargų lygiai, rezervavimai ir vietos"
+          },
+          "customers": {
+            "label": "Klientai",
+            "description": "Klientai, adresai ir klientų grupės"
+          },
+          "pricing": {
+            "label": "Kainodara ir akcijos",
+            "description": "Kainų sąrašai, kainos, akcijos ir kampanijos"
+          },
+          "shipping": {
+            "label": "Siuntimas ir vykdymas",
+            "description": "Siuntimo parinktys ir profiliai, vykdymai ir aptarnavimo zonos"
+          },
+          "store": {
+            "label": "Parduotuvės nustatymai",
+            "description": "Parduotuvės informacija, regionai, pardavimo kanalai, valiutos, mokesčiai ir vertimai"
+          },
+          "team": {
+            "label": "Komanda ir prieiga",
+            "description": "Naudotojai, pakvietimai, rolės ir API raktai"
+          },
+          "system": {
+            "label": "Sistema",
+            "description": "Failai, pranešimai ir darbo eigos vykdymai"
+          },
+          "custom": {
+            "label": "Pasirinktiniai",
+            "description": "Leidimai, pridėti jūsų papildinių ir pasirinktinių modulių"
+          }
+        },
+        "levels": {
+          "none": "Nėra prieigos",
+          "view": "Tik peržiūra",
+          "full": "Pilna prieiga",
+          "mixed": "Mišrus"
+        },
+        "levelControlLabel": "Prieigos lygis grupei {{group}}",
+        "resourceColumn": "Išteklius",
+        "notAvailable": "n/a",
+        "notAvailableTooltip": "Šis išteklius nenurodo šio leidimo",
+        "rowToggle": "Visi {{resource}} leidimai",
+        "columnToggle": {
+          "on": "Įjungti {{operation}} visiems {{group}}",
+          "off": "Išjungti {{operation}} visiems {{group}}"
+        },
+        "search": {
+          "placeholder": "Ieškoti leidimų",
+          "emptyHeading": "Nė vienas leidimas neatitinka jūsų paieškos",
+          "emptyDescription": "Pabandykite išteklių pavadinimą, pvz., užsakymai arba atsargos."
+        },
+        "showKeys": "Rodyti leidimų raktus",
+        "clearAll": "Išvalyti viską",
+        "lockedBadge_one": "{{count}} užrakintas",
+        "lockedBadge_few": "{{count}} užrakinti",
+        "lockedBadge_many": "{{count}} užrakintų",
+        "lockedBadge_other": "{{count}} užrakintų",
+        "lockedNote_one": "{{count}} leidimas šioje grupėje negali būti pakeistas iš jūsų paskyros, nes jūs pats jo neturite. Nėra prieigos, Tik peržiūra ir Pilna prieiga taikoma likusiai daliai.",
+        "lockedNote_few": "{{count}} leidimai šioje grupėje negali būti pakeisti iš jūsų paskyros, nes jūs pats jų neturite. Nėra prieigos, Tik peržiūra ir Pilna prieiga taikoma likusiai daliai.",
+        "lockedNote_many": "{{count}} leidimų šioje grupėje negali būti pakeista iš jūsų paskyros, nes jūs pats jų neturite. Nėra prieigos, Tik peržiūra ir Pilna prieiga taikoma likusiai daliai.",
+        "lockedNote_other": "{{count}} leidimų šioje grupėje negali būti pakeista iš jūsų paskyros, nes jūs pats jų neturite. Nėra prieigos, Tik peržiūra ir Pilna prieiga taikoma likusiai daliai.",
+        "tooltips": {
+          "cannotGrant": "Negalite suteikti šio leidimo, nes jūsų paskyra jo neturi.",
+          "cannotRemove": "Ši rolė turi šį leidimą. Negalite jo pakeisti, nes jūsų paskyra jo neturi.",
+          "viewRequired": "Kiti šio ištekliaus leidimai reikalauja peržiūros prieigos. Pirmiausia pašalinkite juos."
+        },
+        "noViewAccess": "Nėra peržiūros prieigos",
+        "templates": {
+          "heading": "Pradėti nuo šablono",
+          "hint": "Neprivaloma. Šablono taikymas pakeičia dabartinį pasirinkimą.",
+          "full": {
+            "label": "Pilna prieiga",
+            "description": "Viskas, ką šiandien galite suteikti, įskaitant komandos nustatymus ir pasirinktiniai leidimai."
+          },
+          "readonly": {
+            "label": "Tik skaitymas",
+            "description": "Peržiūrėti viską, ką šiandien galite suteikti. Nekeisti nieko."
+          },
+          "snapshotNote": "Šablonai naudoja šiandien esamus leidimus. Leidimų, pridėtų vėliau, pavyzdžiui, naujo papildinio, nėra įtraukta automatiškai."
+        },
+        "confirm": {
+          "template": {
+            "title": "Pakeisti pasirinkimą?",
+            "description": "Pritaikius šabloną {{template}} pakeičiami jūsų pasirinkti leidimai.",
+            "confirm": "Taikyti šabloną"
+          },
+          "clear": {
+            "title": "Išvalyti visus leidimus?",
+            "descriptionCreate": "Tai panaikina kiekvieną jūsų pasirinktą leidimą.",
+            "descriptionEdit": "Tai panaikina kiekvieną leidimą, kurį galite pakeisti šioje rolėje. Nieko neišsaugoma, kol nepasirinksite Išsaugoti."
+          }
+        },
+        "summary": {
+          "heading": "Rolės santrauka",
+          "name": "Pavadinimas",
+          "permissions": "Leidimai",
+          "selectedOfTotal": "{{selected}} iš {{total}} pasirinkta",
+          "unsavedChanges": "Neišsaugoti pakeitimai",
+          "noChanges": "Kol kas nėra pakeitimų",
+          "changes": "{{added}} pridėta, {{removed}} pašalinta",
+          "footnote": "Sritys, nustatytos kaip Nėra prieigos, yra paslėptos nuo narių, turinčių šią rolę. Pilna prieiga apima šiandien esamus leidimus. Leidimų, pridėtų vėliau, reikia suteikti čia.",
+          "wildcards": "Ši rolė taip pat turi pakaitos simbolių leidimus ({{keys}}). Jie valdomi per API ir čia nerodomi."
+        },
+        "createHint": "Pasirinkite bent vieną leidimą, kad sukurtumėte rolę.",
+        "custom": {
+          "calloutHeading": "Pridėkite savo leidimus",
+          "calloutDescription": "Papildiniai ir pasirinktiniai moduliai gali apibrėžti savo leidimus. Sukūrus, jie pasirodo šioje grupėje, paruošti priskirti bet kuriai rolei.",
+          "calloutAction": "Skaityti vadovą"
+        },
+        "detail": {
+          "heading": "Leidimai",
+          "count": "{{selected}} iš {{total}} leidimų",
+          "countOnly_one": "{{count}} leidimas",
+          "countOnly_few": "{{count}} leidimai",
+          "countOnly_many": "{{count}} leidimų",
+          "countOnly_other": "{{count}} leidimų",
+          "granted": "Suteiktas",
+          "notGranted": "Nesuteiktas",
+          "wildcards": "Ši rolė turi pakaitos simbolių leidimus ({{keys}}). Jie suteikia kiekvieną leidimą, kurį atitinka, įskaitant pridėtus vėliau, ir yra valdomi per API."
+        }
       }
     },
     "list": {
@@ -3966,7 +4107,48 @@
       "return_reason": "Grąžinimo priežastis",
       "refund_reason": "Grąžinimo priežastis",
       "workflow": "Darbo eiga",
-      "translation": "Vertimas"
+      "translation": "Vertimas",
+      "customer_address": "Klientų adresai",
+      "inventory_item": "Atsargų elementai",
+      "inventory_level": "Atsargų lygiai",
+      "reservation_item": "Rezervavimai",
+      "order_item": "Užsakymo elementai",
+      "order_change": "Užsakymų pakeitimai",
+      "order_address": "Užsakymų adresai",
+      "order_claim": "Pretenzijos",
+      "order_claim_item": "Pretenzijų elementai",
+      "order_exchange": "Keitimai",
+      "order_credit_line": "Užsakymų kreditų eilutės",
+      "return": "Grąžinimai",
+      "payment": "Mokėjimai",
+      "payment_collection": "Mokėjimų kolekcijos",
+      "payment_method": "Mokėjimo metodai",
+      "payment_session": "Mokėjimo sesijos",
+      "refund": "Pinigų grąžinimai",
+      "capture": "Nuskaitymai",
+      "price_preference": "Kainų nuostatos",
+      "price": "Kainos",
+      "currency": "Valiutos",
+      "product_variant": "Prekių variantai",
+      "product_option": "Prekių parinktys",
+      "product_option_value": "Prekių parinkčių reikšmės",
+      "property_label": "Savybių etiketės",
+      "shipping_option_type": "Siuntimo parinkčių tipai",
+      "fulfillment": "Vykdymai",
+      "fulfillment_provider": "Vykdymo teikėjai",
+      "fulfillment_set": "Vykdymų rinkiniai",
+      "service_zone": "Aptarnavimo zonos",
+      "file": "Failai",
+      "notification": "Pranešimai",
+      "workflow_execution": "Darbo eigos vykdymai",
+      "store_locale": "Parduotuvės lokalės",
+      "tax_provider": "Mokesčių teikėjai",
+      "tax_rate": "Mokesčių tarifai",
+      "translation_setting": "Vertimo nustatymai",
+      "invite": "Pakvietimai",
+      "rbac_role": "Rolės",
+      "rbac_policy": "Leidimai",
+      "rbac_role_assignment": "Rolių priskyrimai"
     },
     "actions": {
       "read": "Peržiūrėti",

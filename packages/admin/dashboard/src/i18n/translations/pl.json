@@ -1264,6 +1264,10 @@
     "delete": {
       "title": "Usuń rolę",
       "description": "Zamierzasz usunąć rolę {{name}}. Tej akcji nie można cofnąć.",
+      "descriptionWithUsers_one": "Zamierzasz usunąć rolę {{name}}. {{count}} użytkownik ma tę rolę i straci przyznany przez nią dostęp. Tej akcji nie można cofnąć.",
+      "descriptionWithUsers_few": "Zamierzasz usunąć rolę {{name}}. {{count}} użytkowników ma tę rolę i straci przyznany przez nią dostęp. Tej akcji nie można cofnąć.",
+      "descriptionWithUsers_many": "Zamierzasz usunąć rolę {{name}}. {{count}} użytkowników ma tę rolę i straci przyznany przez nią dostęp. Tej akcji nie można cofnąć.",
+      "descriptionWithUsers_other": "Zamierzasz usunąć rolę {{name}}. {{count}} użytkowników ma tę rolę i straci przyznany przez nią dostęp. Tej akcji nie można cofnąć.",
       "successToast": "Rola {{name}} została usunięta"
     },
     "fields": {
@@ -1310,6 +1314,143 @@
       },
       "manage": {
         "successToast": "Uprawnienia zostały pomyślnie zaktualizowane."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Zamówienia",
+            "description": "Zamówienia, zmiany zamówień, reklamacje, wymiany i zwroty"
+          },
+          "payments": {
+            "label": "Płatności",
+            "description": "Płatności, kolekcje płatności, zwroty środków i przechwycenia"
+          },
+          "products": {
+            "label": "Produkty",
+            "description": "Produkty, warianty, opcje, kategorie, kolekcje, typy i tagi"
+          },
+          "inventory": {
+            "label": "Magazyn",
+            "description": "Elementy magazynowe, poziomy zapasów, rezerwacje i lokalizacje"
+          },
+          "customers": {
+            "label": "Klienci",
+            "description": "Klienci, adresy i grupy klientów"
+          },
+          "pricing": {
+            "label": "Ceny i promocje",
+            "description": "Cenniki, ceny, promocje i kampanie"
+          },
+          "shipping": {
+            "label": "Wysyłka i realizacja",
+            "description": "Opcje i profile wysyłki, realizacje i strefy serwisowe"
+          },
+          "store": {
+            "label": "Ustawienia sklepu",
+            "description": "Dane sklepu, regiony, kanały sprzedaży, waluty, podatki i tłumaczenia"
+          },
+          "team": {
+            "label": "Zespół i dostęp",
+            "description": "Użytkownicy, zaproszenia, role i klucze API"
+          },
+          "system": {
+            "label": "System",
+            "description": "Pliki, powiadomienia i wykonania przepływów pracy"
+          },
+          "custom": {
+            "label": "Niestandardowe",
+            "description": "Uprawnienia dodane przez Twoje wtyczki i niestandardowe moduły"
+          }
+        },
+        "levels": {
+          "none": "Brak dostępu",
+          "view": "Tylko podgląd",
+          "full": "Pełny dostęp",
+          "mixed": "Mieszany"
+        },
+        "levelControlLabel": "Poziom dostępu dla {{group}}",
+        "resourceColumn": "Zasób",
+        "notAvailable": "n/d",
+        "notAvailableTooltip": "Ten zasób nie definiuje tego uprawnienia",
+        "rowToggle": "Wszystkie uprawnienia {{resource}}",
+        "columnToggle": {
+          "on": "Włącz {{operation}} dla wszystkich {{group}}",
+          "off": "Wyłącz {{operation}} dla wszystkich {{group}}"
+        },
+        "search": {
+          "placeholder": "Szukaj uprawnień",
+          "emptyHeading": "Brak uprawnień pasujących do wyszukiwania",
+          "emptyDescription": "Spróbuj wyszukać nazwę zasobu, np. zamówienia lub magazyn."
+        },
+        "showKeys": "Pokaż klucze uprawnień",
+        "clearAll": "Wyczyść wszystko",
+        "lockedBadge_one": "{{count}} zablokowane",
+        "lockedBadge_few": "{{count}} zablokowane",
+        "lockedBadge_many": "{{count}} zablokowanych",
+        "lockedBadge_other": "{{count}} zablokowanych",
+        "lockedNote_one": "{{count}} uprawnienie w tej grupie nie może zostać zmienione z Twojego konta, ponieważ Twoje konto go nie posiada. Brak dostępu, Tylko podgląd i Pełny dostęp dotyczą pozostałych.",
+        "lockedNote_few": "{{count}} uprawnienia w tej grupie nie mogą zostać zmienione z Twojego konta, ponieważ Twoje konto ich nie posiada. Brak dostępu, Tylko podgląd i Pełny dostęp dotyczą pozostałych.",
+        "lockedNote_many": "{{count}} uprawnień w tej grupie nie może zostać zmienione z Twojego konta, ponieważ Twoje konto ich nie posiada. Brak dostępu, Tylko podgląd i Pełny dostęp dotyczą pozostałych.",
+        "lockedNote_other": "{{count}} uprawnień w tej grupie nie może zostać zmienione z Twojego konta, ponieważ Twoje konto ich nie posiada. Brak dostępu, Tylko podgląd i Pełny dostęp dotyczą pozostałych.",
+        "tooltips": {
+          "cannotGrant": "Nie możesz przyznać tego uprawnienia, ponieważ Twoje konto go nie posiada.",
+          "cannotRemove": "Ta rola ma to uprawnienie. Nie możesz go zmienić, ponieważ Twoje konto go nie posiada.",
+          "viewRequired": "Inne uprawnienia do tego zasobu wymagają podglądu. Najpierw je usuń."
+        },
+        "noViewAccess": "Brak dostępu do podglądu",
+        "templates": {
+          "heading": "Zacznij od szablonu",
+          "hint": "Opcjonalnie. Zastosowanie szablonu zastępuje bieżący wybór.",
+          "full": {
+            "label": "Pełny dostęp",
+            "description": "Wszystko, co możesz przyznać dzisiaj, w tym ustawienia zespołu i niestandardowe uprawnienia."
+          },
+          "readonly": {
+            "label": "Tylko do odczytu",
+            "description": "Wyświetl wszystko, co możesz przyznać dzisiaj. Niczego nie zmieniaj."
+          },
+          "snapshotNote": "Szablony używają uprawnień istniejących dzisiaj. Uprawnienia dodane później, np. przez nową wtyczkę, nie są automatycznie uwzględniane."
+        },
+        "confirm": {
+          "template": {
+            "title": "Zastąpić bieżący wybór?",
+            "description": "Zastosowanie szablonu {{template}} zastępuje wybrane uprawnienia.",
+            "confirm": "Zastosuj szablon"
+          },
+          "clear": {
+            "title": "Wyczyścić wszystkie uprawnienia?",
+            "descriptionCreate": "Spowoduje to usunięcie każdego wybranego uprawnienia.",
+            "descriptionEdit": "Spowoduje to usunięcie każdego uprawnienia, które możesz zmienić w tej roli. Żadna zmiana nie zostanie zapisana, dopóki nie klikniesz Zapisz."
+          }
+        },
+        "summary": {
+          "heading": "Podsumowanie roli",
+          "name": "Nazwa",
+          "permissions": "Uprawnienia",
+          "selectedOfTotal": "{{selected}} z {{total}} wybranych",
+          "unsavedChanges": "Niezapisane zmiany",
+          "noChanges": "Brak zmian",
+          "changes": "Dodano {{added}}, usunięto {{removed}}",
+          "footnote": "Obszary ustawione na Brak dostępu są ukryte dla członków z tą rolą. Pełny dostęp obejmuje uprawnienia istniejące dzisiaj. Uprawnienia dodane później muszą zostać tu przyznane.",
+          "wildcards": "Ta rola ma również uprawnienia wieloznaczne ({{keys}}). Są one zarządzane za pośrednictwem API i nie są tu wyświetlane."
+        },
+        "createHint": "Wybierz co najmniej jedno uprawnienie, aby utworzyć rolę.",
+        "custom": {
+          "calloutHeading": "Dodaj własne uprawnienia",
+          "calloutDescription": "Wtyczki i niestandardowe moduły mogą definiować własne uprawnienia. Po ich utworzeniu pojawiają się w tej grupie, gotowe do przypisania do dowolnej roli.",
+          "calloutAction": "Przeczytaj przewodnik"
+        },
+        "detail": {
+          "heading": "Uprawnienia",
+          "count": "{{selected}} z {{total}} uprawnień",
+          "countOnly_one": "{{count}} uprawnienie",
+          "countOnly_few": "{{count}} uprawnienia",
+          "countOnly_many": "{{count}} uprawnień",
+          "countOnly_other": "{{count}} uprawnień",
+          "granted": "Przyznane",
+          "notGranted": "Nieprzyznane",
+          "wildcards": "Ta rola ma uprawnienia wieloznaczne ({{keys}}). Przyznają każde uprawnienie pasujące do wzorca, w tym te dodane później, i są zarządzane za pośrednictwem API."
+        }
       }
     },
     "list": {
@@ -3945,7 +4086,48 @@
       "return_reason": "Powód zwrotu",
       "refund_reason": "Powód zwrotu środków",
       "workflow": "Przepływ pracy",
-      "translation": "Tłumaczenie"
+      "translation": "Tłumaczenie",
+      "customer_address": "Adresy klientów",
+      "inventory_item": "Elementy magazynowe",
+      "inventory_level": "Poziomy zapasów",
+      "reservation_item": "Rezerwacje",
+      "order_item": "Pozycje zamówień",
+      "order_change": "Zmiany zamówień",
+      "order_address": "Adresy zamówień",
+      "order_claim": "Reklamacje",
+      "order_claim_item": "Pozycje reklamacji",
+      "order_exchange": "Wymiany",
+      "order_credit_line": "Linie kredytowe zamówień",
+      "return": "Zwroty",
+      "payment": "Płatności",
+      "payment_collection": "Kolekcje płatności",
+      "payment_method": "Metody płatności",
+      "payment_session": "Sesje płatności",
+      "refund": "Zwroty środków",
+      "capture": "Przechwycenia",
+      "price_preference": "Preferencje cenowe",
+      "price": "Ceny",
+      "currency": "Waluty",
+      "product_variant": "Warianty produktów",
+      "product_option": "Opcje produktów",
+      "product_option_value": "Wartości opcji produktów",
+      "property_label": "Etykiety właściwości",
+      "shipping_option_type": "Typy opcji wysyłki",
+      "fulfillment": "Realizacje",
+      "fulfillment_provider": "Dostawcy realizacji",
+      "fulfillment_set": "Zestawy realizacji",
+      "service_zone": "Strefy serwisowe",
+      "file": "Pliki",
+      "notification": "Powiadomienia",
+      "workflow_execution": "Wykonania przepływów pracy",
+      "store_locale": "Lokalizacje sklepu",
+      "tax_provider": "Dostawcy podatków",
+      "tax_rate": "Stawki podatku",
+      "translation_setting": "Ustawienia tłumaczeń",
+      "invite": "Zaproszenia",
+      "rbac_role": "Role",
+      "rbac_policy": "Uprawnienia",
+      "rbac_role_assignment": "Przypisania ról"
     },
     "actions": {
       "read": "Wyświetlanie",

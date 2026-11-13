@@ -2865,6 +2865,8 @@
     "delete": {
       "title": "Elimina ruolo",
       "description": "Stai per eliminare il ruolo {{name}}. Questa azione non può essere annullata.",
+      "descriptionWithUsers_one": "Stai per eliminare il ruolo {{name}}. {{count}} utente ha questo ruolo e perderà l'accesso che esso garantisce. Questa azione non può essere annullata.",
+      "descriptionWithUsers_other": "Stai per eliminare il ruolo {{name}}. {{count}} utenti hanno questo ruolo e perderanno l'accesso che esso garantisce. Questa azione non può essere annullata.",
       "successToast": "Ruolo {{name}} eliminato"
     },
     "fields": {
@@ -2905,6 +2907,137 @@
       },
       "manage": {
         "successToast": "I permessi sono stati aggiornati con successo."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Ordini",
+            "description": "Ordini, modifiche ordine, reclami, scambi e resi"
+          },
+          "payments": {
+            "label": "Pagamenti",
+            "description": "Pagamenti, collezioni pagamenti, rimborsi e acquisizioni"
+          },
+          "products": {
+            "label": "Prodotti",
+            "description": "Prodotti, varianti, opzioni, categorie, collezioni, tipi e tag"
+          },
+          "inventory": {
+            "label": "Inventario",
+            "description": "Articoli di inventario, livelli di stock, prenotazioni e posizioni"
+          },
+          "customers": {
+            "label": "Clienti",
+            "description": "Clienti, indirizzi e gruppi clienti"
+          },
+          "pricing": {
+            "label": "Prezzi e promozioni",
+            "description": "Listini prezzi, prezzi, promozioni e campagne"
+          },
+          "shipping": {
+            "label": "Spedizione ed evasione",
+            "description": "Opzioni e profili di spedizione, evasioni e zone di servizio"
+          },
+          "store": {
+            "label": "Impostazioni negozio",
+            "description": "Dettagli negozio, regioni, canali di vendita, valute, tasse e traduzioni"
+          },
+          "team": {
+            "label": "Team e accesso",
+            "description": "Utenti, inviti, ruoli e chiavi API"
+          },
+          "system": {
+            "label": "Sistema",
+            "description": "File, notifiche ed esecuzioni workflow"
+          },
+          "custom": {
+            "label": "Personalizzato",
+            "description": "Permessi aggiunti dai tuoi plugin e moduli personalizzati"
+          }
+        },
+        "levels": {
+          "none": "Nessun accesso",
+          "view": "Solo visualizzazione",
+          "full": "Accesso completo",
+          "mixed": "Misto"
+        },
+        "levelControlLabel": "Livello di accesso per {{group}}",
+        "resourceColumn": "Risorsa",
+        "notAvailable": "n/d",
+        "notAvailableTooltip": "Questa risorsa non definisce questo permesso",
+        "rowToggle": "Tutti i permessi {{resource}}",
+        "columnToggle": {
+          "on": "Attiva {{operation}} per tutti i {{group}}",
+          "off": "Disattiva {{operation}} per tutti i {{group}}"
+        },
+        "search": {
+          "placeholder": "Cerca permessi",
+          "emptyHeading": "Nessun permesso corrisponde alla ricerca",
+          "emptyDescription": "Prova un nome di risorsa come ordini o inventario."
+        },
+        "showKeys": "Mostra chiavi permessi",
+        "clearAll": "Cancella tutto",
+        "lockedBadge_one": "{{count}} bloccato",
+        "lockedBadge_other": "{{count}} bloccati",
+        "lockedNote_one": "{{count}} permesso in questo gruppo non può essere modificato dal tuo account, perché tu stesso non lo possiedi. Nessun accesso, Solo visualizzazione e Accesso completo si applicano ai restanti.",
+        "lockedNote_other": "{{count}} permessi in questo gruppo non possono essere modificati dal tuo account, perché tu stesso non li possiedi. Nessun accesso, Solo visualizzazione e Accesso completo si applicano ai restanti.",
+        "tooltips": {
+          "cannotGrant": "Non puoi concedere questo perché il tuo account non lo possiede.",
+          "cannotRemove": "Questo ruolo ha questo permesso. Non puoi modificarlo perché il tuo account non lo possiede.",
+          "viewRequired": "Altri permessi su questa risorsa richiedono la visualizzazione. Rimuovi prima quelli."
+        },
+        "noViewAccess": "Nessun accesso in visualizzazione",
+        "templates": {
+          "heading": "Inizia da un modello",
+          "hint": "Opzionale. L'applicazione di un modello sostituisce la selezione corrente.",
+          "full": {
+            "label": "Accesso completo",
+            "description": "Tutto ciò che puoi concedere oggi, incluse le impostazioni del team e i permessi personalizzati."
+          },
+          "readonly": {
+            "label": "Solo lettura",
+            "description": "Visualizza tutto ciò che puoi concedere oggi. Non modificare nulla."
+          },
+          "snapshotNote": "I modelli utilizzano i permessi esistenti oggi. I permessi aggiunti in seguito, ad esempio da un nuovo plugin, non vengono inclusi automaticamente."
+        },
+        "confirm": {
+          "template": {
+            "title": "Sostituire la selezione?",
+            "description": "Applicando il modello {{template}} i permessi selezionati vengono sostituiti.",
+            "confirm": "Applica modello"
+          },
+          "clear": {
+            "title": "Cancellare tutti i permessi?",
+            "descriptionCreate": "Questo rimuove ogni permesso selezionato.",
+            "descriptionEdit": "Questo rimuove ogni permesso che puoi modificare da questo ruolo. Nulla viene salvato finché non selezioni Salva."
+          }
+        },
+        "summary": {
+          "heading": "Riepilogo ruolo",
+          "name": "Nome",
+          "permissions": "Permessi",
+          "selectedOfTotal": "{{selected}} di {{total}} selezionati",
+          "unsavedChanges": "Modifiche non salvate",
+          "noChanges": "Nessuna modifica ancora",
+          "changes": "{{added}} aggiunti, {{removed}} rimossi",
+          "footnote": "Le aree impostate su Nessun accesso sono nascoste ai membri con questo ruolo. L'accesso completo copre i permessi esistenti oggi. I permessi aggiunti successivamente devono essere concessi qui.",
+          "wildcards": "Questo ruolo ha anche permessi con caratteri jolly ({{keys}}). Sono gestiti tramite le API e non sono mostrati qui."
+        },
+        "createHint": "Seleziona almeno un permesso per creare il ruolo.",
+        "custom": {
+          "calloutHeading": "Aggiungi i tuoi permessi",
+          "calloutDescription": "Plugin e moduli personalizzati possono definire i propri permessi. Una volta creati, compaiono in questo gruppo, pronti per essere assegnati a qualsiasi ruolo.",
+          "calloutAction": "Leggi la guida"
+        },
+        "detail": {
+          "heading": "Permessi",
+          "count": "{{selected}} di {{total}} permessi",
+          "countOnly_one": "{{count}} permesso",
+          "countOnly_other": "{{count}} permessi",
+          "granted": "Concesso",
+          "notGranted": "Non concesso",
+          "wildcards": "Questo ruolo ha permessi con caratteri jolly ({{keys}}). Concedono ogni permesso corrispondente, inclusi quelli aggiunti in seguito, e sono gestiti tramite le API."
+        }
       }
     },
     "list": {
@@ -3865,7 +3998,48 @@
       "return_reason": "Motivo di reso",
       "refund_reason": "Motivo di rimborso",
       "workflow": "Workflow",
-      "translation": "Traduzione"
+      "translation": "Traduzione",
+      "customer_address": "Indirizzi clienti",
+      "inventory_item": "Articoli di inventario",
+      "inventory_level": "Livelli di inventario",
+      "reservation_item": "Prenotazioni",
+      "order_item": "Articoli ordine",
+      "order_change": "Modifiche ordine",
+      "order_address": "Indirizzi ordine",
+      "order_claim": "Reclami",
+      "order_claim_item": "Articoli reclamo",
+      "order_exchange": "Scambi",
+      "order_credit_line": "Linee di credito ordine",
+      "return": "Resi",
+      "payment": "Pagamenti",
+      "payment_collection": "Collezioni pagamenti",
+      "payment_method": "Metodi di pagamento",
+      "payment_session": "Sessioni di pagamento",
+      "refund": "Rimborsi",
+      "capture": "Acquisizioni",
+      "price_preference": "Preferenze di prezzo",
+      "price": "Prezzi",
+      "currency": "Valute",
+      "product_variant": "Varianti prodotto",
+      "product_option": "Opzioni prodotto",
+      "product_option_value": "Valori opzioni prodotto",
+      "property_label": "Etichette proprietà",
+      "shipping_option_type": "Tipi opzione di spedizione",
+      "fulfillment": "Evasioni",
+      "fulfillment_provider": "Fornitori di evasione",
+      "fulfillment_set": "Set di evasione",
+      "service_zone": "Zone di servizio",
+      "file": "File",
+      "notification": "Notifiche",
+      "workflow_execution": "Esecuzioni workflow",
+      "store_locale": "Impostazioni locali negozio",
+      "tax_provider": "Fornitori fiscali",
+      "tax_rate": "Aliquote fiscali",
+      "translation_setting": "Impostazioni di traduzione",
+      "invite": "Inviti",
+      "rbac_role": "Ruoli",
+      "rbac_policy": "Permessi",
+      "rbac_role_assignment": "Assegnazioni ruolo"
     },
     "actions": {
       "read": "Visualizza",

@@ -2859,6 +2859,7 @@
     "delete": {
       "title": "删除角色",
       "description": "您即将删除角色 {{name}}。此操作无法撤消。",
+      "descriptionWithUsers_other": "您即将删除角色 {{name}}。{{count}} 个用户拥有此角色，将失去其授予的访问权限。此操作无法撤消。",
       "successToast": "角色 {{name}} 已删除"
     },
     "fields": {
@@ -2896,6 +2897,134 @@
       },
       "manage": {
         "successToast": "权限已成功更新。"
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "订单",
+            "description": "订单、订单变更、索赔、换货和退货"
+          },
+          "payments": {
+            "label": "支付",
+            "description": "支付、支付集合、退款和收款"
+          },
+          "products": {
+            "label": "产品",
+            "description": "产品、变体、选项、分类、系列、类型和标签"
+          },
+          "inventory": {
+            "label": "库存",
+            "description": "库存项目、库存水平、预留和位置"
+          },
+          "customers": {
+            "label": "客户",
+            "description": "客户、地址和客户组"
+          },
+          "pricing": {
+            "label": "定价与促销",
+            "description": "价格列表、价格、促销和营销活动"
+          },
+          "shipping": {
+            "label": "配送与履约",
+            "description": "配送选项和配置文件、履约和服务区域"
+          },
+          "store": {
+            "label": "店铺设置",
+            "description": "店铺详情、地区、销售渠道、货币、税收和翻译"
+          },
+          "team": {
+            "label": "团队与访问",
+            "description": "用户、邀请、角色和 API 密钥"
+          },
+          "system": {
+            "label": "系统",
+            "description": "文件、通知和工作流执行"
+          },
+          "custom": {
+            "label": "自定义",
+            "description": "由插件和自定义模块添加的权限"
+          }
+        },
+        "levels": {
+          "none": "无访问权限",
+          "view": "仅查看",
+          "full": "完全访问",
+          "mixed": "混合"
+        },
+        "levelControlLabel": "{{group}} 的访问级别",
+        "resourceColumn": "资源",
+        "notAvailable": "不适用",
+        "notAvailableTooltip": "此资源未定义该权限",
+        "rowToggle": "所有 {{resource}} 权限",
+        "columnToggle": {
+          "on": "为所有 {{group}} 开启 {{operation}}",
+          "off": "为所有 {{group}} 关闭 {{operation}}"
+        },
+        "search": {
+          "placeholder": "搜索权限",
+          "emptyHeading": "没有符合搜索条件的权限",
+          "emptyDescription": "请尝试输入资源名称，如订单或库存。"
+        },
+        "showKeys": "显示权限密钥",
+        "clearAll": "清除全部",
+        "lockedBadge_other": "{{count}} 个已锁定",
+        "lockedNote_other": "此组中 {{count}} 个权限无法从您的账户更改，因为您自己没有这些权限。无访问权限、仅查看和完全访问适用于其余权限。",
+        "tooltips": {
+          "cannotGrant": "您无法授予此权限，因为您的账户没有该权限。",
+          "cannotRemove": "此角色拥有此权限。由于您的账户没有该权限，您无法更改它。",
+          "viewRequired": "此资源的其他权限需要查看权限，请先移除那些权限。"
+        },
+        "noViewAccess": "无查看权限",
+        "templates": {
+          "heading": "从模板开始",
+          "hint": "可选。应用模板将替换当前选择。",
+          "full": {
+            "label": "完全访问",
+            "description": "您今天可以授予的所有权限，包括团队设置和自定义权限。"
+          },
+          "readonly": {
+            "label": "只读",
+            "description": "查看您今天可以授予的所有内容，不做任何更改。"
+          },
+          "snapshotNote": "模板使用当前存在的权限。之后添加的权限（例如由新插件添加的）不会自动包含在内。"
+        },
+        "confirm": {
+          "template": {
+            "title": "替换您的选择？",
+            "description": "应用 {{template}} 模板将替换您已选择的权限。",
+            "confirm": "应用模板"
+          },
+          "clear": {
+            "title": "清除所有权限？",
+            "descriptionCreate": "这将移除您已选择的所有权限。",
+            "descriptionEdit": "这将移除您能够从此角色更改的所有权限。在您选择保存之前，不会保存任何内容。"
+          }
+        },
+        "summary": {
+          "heading": "角色摘要",
+          "name": "名称",
+          "permissions": "权限",
+          "selectedOfTotal": "已选 {{selected}}/{{total}}",
+          "unsavedChanges": "未保存的更改",
+          "noChanges": "暂无更改",
+          "changes": "已添加 {{added}} 个，已移除 {{removed}} 个",
+          "footnote": "设置为无访问权限的区域对拥有此角色的成员隐藏。完全访问涵盖今天存在的权限，之后添加的权限需要在此处授予。",
+          "wildcards": "此角色还拥有通配符权限（{{keys}}）。这些权限通过 API 管理，此处不显示。"
+        },
+        "createHint": "至少选择一个权限才能创建角色。",
+        "custom": {
+          "calloutHeading": "添加您自己的权限",
+          "calloutDescription": "插件和自定义模块可以定义自己的权限。创建后，它们会出现在此组中，可以分配给任何角色。",
+          "calloutAction": "阅读指南"
+        },
+        "detail": {
+          "heading": "权限",
+          "count": "{{selected}}/{{total}} 个权限",
+          "countOnly_other": "{{count}} 个权限",
+          "granted": "已授予",
+          "notGranted": "未授予",
+          "wildcards": "此角色拥有通配符权限（{{keys}}）。这些权限授予其匹配的所有权限（包括之后添加的），通过 API 管理。"
+        }
       }
     },
     "list": {
@@ -3854,7 +3983,48 @@
       "return_reason": "退货原因",
       "refund_reason": "退款原因",
       "workflow": "工作流",
-      "translation": "翻译"
+      "translation": "翻译",
+      "customer_address": "客户地址",
+      "inventory_item": "库存项目",
+      "inventory_level": "库存水平",
+      "reservation_item": "预留",
+      "order_item": "订单项目",
+      "order_change": "订单变更",
+      "order_address": "订单地址",
+      "order_claim": "索赔",
+      "order_claim_item": "索赔项目",
+      "order_exchange": "换货",
+      "order_credit_line": "订单信用行",
+      "return": "退货",
+      "payment": "支付",
+      "payment_collection": "支付集合",
+      "payment_method": "支付方式",
+      "payment_session": "支付会话",
+      "refund": "退款",
+      "capture": "收款",
+      "price_preference": "价格偏好",
+      "price": "价格",
+      "currency": "货币",
+      "product_variant": "产品变体",
+      "product_option": "产品选项",
+      "product_option_value": "产品选项值",
+      "property_label": "属性标签",
+      "shipping_option_type": "配送选项类型",
+      "fulfillment": "履约",
+      "fulfillment_provider": "履约提供商",
+      "fulfillment_set": "履约集合",
+      "service_zone": "服务区域",
+      "file": "文件",
+      "notification": "通知",
+      "workflow_execution": "工作流执行",
+      "store_locale": "店铺语言环境",
+      "tax_provider": "税务提供商",
+      "tax_rate": "税率",
+      "translation_setting": "翻译设置",
+      "invite": "邀请",
+      "rbac_role": "角色",
+      "rbac_policy": "权限",
+      "rbac_role_assignment": "角色分配"
     },
     "actions": {
       "read": "查看",
