@@ -952,6 +952,12 @@ module.exports = defineConfig({
 
 This configuration allows admin users to log in with an email and password, and customers to log in with an email and password or with Google.
 
+<Note title="Warning" type="warning">
+
+Don't allow the `user` actor type to use an auth provider that anyone can sign up with, such as Google or GitHub. Medusa creates an admin user for an account that logs in to the Medusa Admin with the provider for the first time, so anyone with an account at that provider can become an admin user of your store. Learn more in the [Auth Module Provider documentation](!resources!/commerce-modules/auth/auth-providers#public-auth-providers-for-admin-users).
+
+</Note>
+
 #### http.requireActorAssociation
 
 <Note>

@@ -1,6 +1,6 @@
 export const generatedEditDates = {
   "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2026-09-11T07:40:12.255Z",
-  "app/commerce-modules/auth/auth-providers/page.mdx": "2026-11-03T15:43:57.311Z",
+  "app/commerce-modules/auth/auth-providers/page.mdx": "2026-11-13T14:27:35.766Z",
   "app/commerce-modules/auth/authentication-route/page.mdx": "2026-07-16T11:13:16.231Z",
   "app/commerce-modules/auth/module-options/page.mdx": "2026-06-09T08:32:58.240Z",
   "app/commerce-modules/auth/page.mdx": "2026-06-09T08:33:36.509Z",
@@ -184,8 +184,8 @@ export const generatedEditDates = {
   "app/test-tools-reference/medusaIntegrationTestRunner/page.mdx": "2026-09-16T14:09:26.274Z",
   "app/test-tools-reference/moduleIntegrationTestRunner/page.mdx": "2026-09-16T14:09:19.076Z",
   "app/test-tools-reference/page.mdx": "2024-12-09T16:23:04.825Z",
-  "app/commerce-modules/auth/auth-providers/github/page.mdx": "2026-09-11T07:40:12.255Z",
-  "app/commerce-modules/auth/auth-providers/google/page.mdx": "2026-09-11T07:40:12.254Z",
+  "app/commerce-modules/auth/auth-providers/github/page.mdx": "2026-11-13T14:27:36.151Z",
+  "app/commerce-modules/auth/auth-providers/google/page.mdx": "2026-11-13T14:27:36.057Z",
   "app/storefront-development/customers/third-party-login/page.mdx": "2025-11-26T10:42:33.123Z",
   "app/storefront-development/products/inventory/page.mdx": "2025-10-13T10:18:19.391Z",
   "app/storefront-development/publishable-api-keys/page.mdx": "2025-12-09T13:26:27.641Z",
