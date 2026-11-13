@@ -734,6 +734,102 @@
     "deprecated": false
   },
   {
+    "name": "promotion.created",
+    "parentName": "PromotionWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the promotion\n}\n```",
+    "description": "Emitted when promotions are created.",
+    "workflows": [
+      "createPromotionsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "promotion.updated",
+    "parentName": "PromotionWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the promotion\n}\n```",
+    "description": "Emitted when promotions are updated, including their status.",
+    "workflows": [
+      "updatePromotionsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "promotion.deleted",
+    "parentName": "PromotionWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the promotion\n}\n```",
+    "description": "Emitted when promotions are deleted.",
+    "workflows": [
+      "deletePromotionsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "promotion.rules_updated",
+    "parentName": "PromotionWorkflowEvents",
+    "propertyName": "RULES_UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the promotion\n  rule_type, // The type of rules changed: \"rules\", \"target_rules\", or \"buy_rules\"\n  created, // The IDs of the created rules\n  updated, // The IDs of the updated rules\n  deleted, // The IDs of the deleted rules\n}\n```",
+    "description": "Emitted when a promotion's rules, target rules, or buy rules\nare created, updated, or deleted in a batch.",
+    "workflows": [
+      "batchPromotionRulesWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "campaign.created",
+    "parentName": "CampaignWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the campaign\n}\n```",
+    "description": "Emitted when campaigns are created.",
+    "workflows": [
+      "createCampaignsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "campaign.updated",
+    "parentName": "CampaignWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the campaign\n}\n```",
+    "description": "Emitted when campaigns are updated.",
+    "workflows": [
+      "updateCampaignsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "campaign.deleted",
+    "parentName": "CampaignWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the campaign\n}\n```",
+    "description": "Emitted when campaigns are deleted.",
+    "workflows": [
+      "deleteCampaignsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "campaign.promotions_updated",
+    "parentName": "CampaignWorkflowEvents",
+    "propertyName": "PROMOTIONS_UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the campaign\n  added_promotion_ids, // The IDs of the promotions added to the campaign\n  removed_promotion_ids, // The IDs of the promotions removed from the campaign\n}\n```",
+    "description": "Emitted when promotions are added to or removed from a campaign.",
+    "workflows": [
+      "addOrRemoveCampaignPromotionsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
     "name": "invite.accepted",
     "parentName": "InviteWorkflowEvents",
     "propertyName": "ACCEPTED",
@@ -1074,8 +1170,8 @@
       "cancelOrderFulfillmentWorkflow",
       "convertDraftOrderWorkflow",
       "completeCartWorkflow",
-      "confirmExchangeRequestWorkflow",
       "confirmOrderEditRequestWorkflow",
+      "confirmExchangeRequestWorkflow",
       "confirmClaimRequestWorkflow"
     ],
     "since": "2.18.0",

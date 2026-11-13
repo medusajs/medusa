@@ -37,6 +37,9 @@
  *     $ref: "#/components/responses/500_error"
  * x-since: 2.11.2
  * x-featureFlag: index
+ * deprecated: true
+ * x-deprecated_message: "The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules:
+ *   https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property"
  * 
 */
 

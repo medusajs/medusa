@@ -81,7 +81,19 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: addOrRemoveCampaignPromotionsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: campaign.promotions_updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the campaign
+ *         added_promotion_ids, // The IDs of the promotions added to the campaign
+ *         removed_promotion_ids, // The IDs of the promotions removed from the campaign
+ *       }
+ *       ```
+ *     description: Emitted when promotions are added to or removed from a campaign.
+ *     deprecated: false
+ *     since: 2.22.7
  * 
 */
 

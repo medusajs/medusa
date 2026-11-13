@@ -242,8 +242,8 @@ tags:
   - name: Modules
     description: >
       A module is a package of reusable commerce or architectural functionality
-      installed in a Medusa application, such as the Product Module or a
-      custom module.
+      installed in a Medusa application, such as the Product Module or a custom
+      module.
 
       These API routes allow admin users to retrieve the installed modules, for
       example to check whether a module, such as the RBAC Module, is installed.

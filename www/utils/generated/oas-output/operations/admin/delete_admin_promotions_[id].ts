@@ -79,7 +79,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deletePromotionsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: promotion.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the promotion
+ *       }
+ *       ```
+ *     description: Emitted when promotions are deleted.
+ *     deprecated: false
+ *     since: 2.22.7
  * 
 */
 
