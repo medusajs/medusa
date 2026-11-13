@@ -5,6 +5,7 @@ import {
   AuthIdentityProviderService,
   EmailPassAuthProviderOptions,
   Logger,
+  ProviderIdentityDTO,
 } from "@medusajs/framework/types"
 import {
   AbstractAuthModuleProvider,
@@ -39,6 +40,7 @@ type AuthIdentityParams = {
 
 type ProviderMetadata = {
   password?: unknown
+  password_updated_at?: unknown
 }
 
 interface LocalServiceConfig extends EmailPassAuthProviderOptions {}
@@ -97,6 +99,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         provider_metadata: {
           ...providerMetadata,
           password: passwordHash,
+          password_updated_at: new Date().toISOString(),
         },
       })
     } catch (error) {
@@ -107,6 +110,12 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       success: true,
       authIdentity: this.sanitizeAuthIdentity_(authIdentity),
     }
+  }
+
+  getCredentialsUpdatedAt(providerIdentity: ProviderIdentityDTO): Date | null {
+    const updatedAt = providerIdentity.provider_metadata?.password_updated_at
+
+    return isString(updatedAt) ? new Date(updatedAt) : null
   }
 
   async authenticate(

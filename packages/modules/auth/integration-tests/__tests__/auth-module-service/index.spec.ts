@@ -90,6 +90,44 @@ Please make sure that the provider is registered in the container and it is conf
         })
       })
 
+      describe("getCredentialsUpdatedAt", () => {
+        const passwordUpdatedAt = "2026-01-01T00:00:00.000Z"
+
+        it("returns the date the provider reports", async () => {
+          const result = await service.getCredentialsUpdatedAt(
+            "plaintextpass",
+            {
+              provider: "plaintextpass",
+              provider_metadata: { password_updated_at: passwordUpdatedAt },
+            } as any
+          )
+
+          expect(result).toEqual(new Date(passwordUpdatedAt))
+        })
+
+        it("returns null when the provider has no update date", async () => {
+          const [providerIdentity] = await service.listProviderIdentities({
+            entity_id: "test@admin.com",
+          })
+
+          const result = await service.getCredentialsUpdatedAt(
+            "plaintextpass",
+            providerIdentity
+          )
+
+          expect(result).toBeNull()
+        })
+
+        it("returns null when the provider is not registered", async () => {
+          const result = await service.getCredentialsUpdatedAt("facebook", {
+            provider: "facebook",
+            provider_metadata: { password_updated_at: passwordUpdatedAt },
+          } as any)
+
+          expect(result).toBeNull()
+        })
+      })
+
       it("successfully calls the provider for authentication if correct password", async () => {
         const result = await service.authenticate("plaintextpass", {
           body: {

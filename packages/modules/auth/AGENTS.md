@@ -48,6 +48,7 @@ module.exports = defineConfig({
 ### Custom service methods (`src/services/auth-module.ts`)
 
 - Provider flow: `register`, `authenticate`, `validateCallback`, `updateProvider`, `validateAuthIdentity`, `listAuthProviders`. These catch errors and return `{ success: false, error }` instead of throwing.
+- `getCredentialsUpdatedAt(provider, providerIdentity)`: calls the provider's optional `getCredentialsUpdatedAt` and returns `null` when it isn't implemented or the provider isn't registered. The refresh and MFA challenge verify routes use it to reject tokens issued before a credentials update.
 - MFA: `startAuthMfa`, `verifyAuthMfa`, `createAuthMfaChallenge`, `verifyAuthMfaChallenge`, `disableAuthMfa`, `retrieveAuthMfa`, `listAuthMfa`, `generateAuthMfaRecoveryCodes`, `useAuthMfaRecoveryCode`.
 - Verification: `requestAuthVerification` (requires `code_provider`), `confirmAuthVerification` (defaults to `"token"`).
 - Password reset: `createPasswordResetToken`, `consumePasswordResetToken`.

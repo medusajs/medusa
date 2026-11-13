@@ -287,6 +287,16 @@ export default class AuthModuleService
     }
   }
 
+  async getCredentialsUpdatedAt(
+    provider: string,
+    providerIdentity: AuthTypes.ProviderIdentityDTO
+  ): Promise<Date | null> {
+    return await this.authProviderService_.getCredentialsUpdatedAt(
+      provider,
+      providerIdentity
+    )
+  }
+
   async authenticate(
     provider: string,
     authenticationData: AuthenticationInput
