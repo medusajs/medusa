@@ -2,6 +2,7 @@ import { VIRTUAL_MODULES } from "@medusajs/admin-shared"
 import path from "path"
 import type { HmrOptions, InlineConfig } from "vite"
 import { injectTailwindCSS } from "../plugins/inject-tailwindcss"
+import { resolvePlugins } from "../plugins/resolve-plugins"
 import { writeStaticFiles } from "../plugins/write-static-files"
 import { BundlerOptions } from "../types"
 
@@ -86,6 +87,9 @@ export async function getViteConfig(
       injectTailwindCSS({
         entry: root,
         sources: options.sources,
+        plugins: options.plugins,
+      }),
+      resolvePlugins({
         plugins: options.plugins,
       }),
       react(),
