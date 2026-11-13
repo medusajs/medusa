@@ -84,6 +84,19 @@ System variables are useful to understand what variables Medusa sets for you so 
 
 ---
 
+## View Secret Environment Variable Values
+
+The environment variables table masks the values of sensitive variables. To view a sensitive variable's value:
+
+1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click **Environment variables** in the sidebar.
+2. In the "Environment variables" section, find the sensitive variable you want to view.
+3. Click the reveal (eye) icon next to the variable's value.
+4. In the confirmation prompt, confirm that you want to reveal the value.
+
+The table then shows the variable's value, and Cloud logs the reveal. To hide the value again, click the eye icon once more. If you cancel the confirmation prompt, the value stays hidden.
+
+---
+
 ## Add Environment Variables on Cloud
 
 To add environment variables to an environment:
@@ -139,6 +152,8 @@ You can also navigate to an environment's variables from the [command palette](.
    - **Runtime**: Whether the variable is available during runtime
 7. Once you're done, click the "Save" button.
 
+If you're editing a sensitive variable, the value field is empty. Leave it empty to keep the variable's current value, for example, when you only want to change its key or settings. Enter a new value only if you want to replace the current one.
+
 <Note title="Important">
 
 After editing the environment variable, you must [redeploy the environment](../long-lived/page.mdx#redeploy-environment) for the changes to take effect.
@@ -186,6 +201,9 @@ You can also navigate to an environment's variables from the [command palette](.
 1. In the [environment's dashboard](../long-lived/page.mdx#open-environment-dashboard), click **Environment variables** in the sidebar.
 2. If you deployed both the Medusa backend and storefront in the environment, use the **Backend** or **Storefront** tabs to switch between managing the backend and storefront environment variables.
 3. In the "Environment variables" section, click on the "Export .env" button at the top right of the section.
+4. If the environment has sensitive variables, a confirmation prompt asks you to reveal their values. Confirm to include them in the export. If you cancel the prompt, the export doesn't proceed.
+
+The button shows a loading state while Cloud retrieves the sensitive values. The exported file includes the actual values of sensitive variables, so store it securely.
 
 A file download will start with the name `env.txt`, which contains the environment variables in `.env` format.
 
