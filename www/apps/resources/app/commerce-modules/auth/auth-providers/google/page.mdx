@@ -150,6 +150,38 @@ GOOGLE_CALLBACK_URL=<YOUR_GOOGLE_CALLBACK_URL>
 
 ---
 
+## Allow the Google Provider for Customers
+
+By default, customers and other custom actor types can authenticate with any registered Auth Module Provider, whereas admin users can only authenticate with the `emailpass` provider. If you deploy your application to Cloud, admin users can also authenticate with their Cloud account.
+
+To specify the actor types that can use the Google Auth Module Provider, set the [authMethodsPerActor configuration](!docs!/learn/configurations/medusa-config#httpauthMethodsPerActor) in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      authMethodsPerActor: {
+        user: ["emailpass"],
+        customer: ["emailpass", "google"],
+      },
+      // ...
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration allows customers to authenticate with their email and password or with Google, and admin users to authenticate with their email and password only.
+
+<Note title="Warning" type="warning">
+
+Don't add `google` to the `user` actor type. Any Google account can authenticate with this provider, and it doesn't have an option to restrict the accounts that can authenticate. So, if you allow the `user` actor type to use it, anyone with a Google account can become an admin user of your store. Learn more in the [Auth Module Provider](../page.mdx#public-auth-providers-for-admin-users) guide.
+
+</Note>
+
+---
+
 ## Override Callback URL During Authentication
 
 In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
