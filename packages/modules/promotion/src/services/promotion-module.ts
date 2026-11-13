@@ -411,6 +411,25 @@ export default class PromotionModuleService
       InferEntityType<typeof Promotion>
     >(existingPromotions.map((promotion) => [promotion.code!, promotion]))
 
+    const unresolvedCodes = promotionCodes.filter(
+      (code) => !existingPromotionsMap.has(code)
+    )
+
+    if (unresolvedCodes.length) {
+      const [inactivePromotion] = await this.promotionService_.list(
+        { code: unresolvedCodes },
+        { select: ["code"], take: 1, withDeleted: true },
+        sharedContext
+      )
+
+      if (inactivePromotion) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Promotion ${inactivePromotion.code} is no longer active.`
+        )
+      }
+    }
+
     for (let computedAction of computedActions) {
       const promotion = existingPromotionsMap.get(computedAction.code)
 
