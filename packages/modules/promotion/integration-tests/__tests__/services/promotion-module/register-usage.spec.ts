@@ -1,5 +1,9 @@
 import { IPromotionModuleService } from "@medusajs/framework/types"
-import { CampaignBudgetType, Modules } from "@medusajs/framework/utils"
+import {
+  CampaignBudgetType,
+  Modules,
+  PromotionStatus,
+} from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "@medusajs/test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createDefaultPromotion } from "../../../__fixtures__/promotion"
@@ -223,6 +227,80 @@ moduleIntegrationTestRunner({
             .catch((e) => e)
 
           expect(response).toEqual(undefined)
+        })
+
+        it("should throw and not register usage when the promotion is no longer active", async () => {
+          const createdPromotion = await createDefaultPromotion(service, {
+            limit: 1,
+          })
+
+          await service.updatePromotions({
+            id: createdPromotion.id,
+            status: PromotionStatus.INACTIVE,
+          })
+
+          const error = await service
+            .registerUsage([{ amount: 200, code: createdPromotion.code! }], {
+              customer_email: null,
+              customer_id: null,
+            })
+            .catch((e) => e)
+
+          expect(error.type).toEqual("not_allowed")
+          expect(error.message).toEqual(
+            `Promotion ${createdPromotion.code} is no longer active.`
+          )
+
+          const [promotion, campaign] = await Promise.all([
+            service.retrievePromotion(createdPromotion.id),
+            service.retrieveCampaign("campaign-id-1", {
+              relations: ["budget"],
+            }),
+          ])
+
+          expect(promotion.used).toEqual(0)
+          expect(campaign.budget).toEqual(
+            expect.objectContaining({ used: 0 })
+          )
+        })
+
+        it("should throw when the promotion's campaign has ended", async () => {
+          const createdPromotion = await createDefaultPromotion(service, {})
+
+          await service.updateCampaigns({
+            id: "campaign-id-1",
+            ends_at: new Date(Date.now() - 1000),
+          })
+
+          const error = await service
+            .registerUsage([{ amount: 200, code: createdPromotion.code! }], {
+              customer_email: null,
+              customer_id: null,
+            })
+            .catch((e) => e)
+
+          expect(error.type).toEqual("not_allowed")
+          expect(error.message).toEqual(
+            `Promotion ${createdPromotion.code} is no longer active.`
+          )
+        })
+
+        it("should throw when the promotion has been deleted", async () => {
+          const createdPromotion = await createDefaultPromotion(service, {})
+
+          await service.softDeletePromotions([createdPromotion.id])
+
+          const error = await service
+            .registerUsage([{ amount: 200, code: createdPromotion.code! }], {
+              customer_email: null,
+              customer_id: null,
+            })
+            .catch((e) => e)
+
+          expect(error.type).toEqual("not_allowed")
+          expect(error.message).toEqual(
+            `Promotion ${createdPromotion.code} is no longer active.`
+          )
         })
 
         it("should throw if limit is exceeded for type usage", async () => {
