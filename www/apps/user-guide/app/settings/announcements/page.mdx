@@ -1,0 +1,114 @@
+---
+sidebar_label: "Manage Announcements"
+tags:
+    - user guide
+products:
+    - settings
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Manage Announcements in Medusa Admin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to choose the announcements that your team sees in the Medusa Admin.
+
+<Note>
+
+Announcements are available from [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7). If you don't see the Announcements settings in your Medusa Admin, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
+
+</Note>
+
+## Overview
+
+Medusa shares announcements in the Medusa Admin, such as security updates, new features, and tips for the page you're on. You find them in two places:
+
+- **What's new**: Click the megaphone icon at the top of the dashboard to open a side window that lists the latest announcements. A dot on the icon and a **New** badge indicate announcements you haven't seen yet.
+- **Sidebar card**: A card above the **Settings** item in the sidebar shows a new announcement until you dismiss it.
+
+To read more about an announcement, click **View details** or **Learn more**.
+
+In the Announcements settings, you choose which categories of announcements appear in both places.
+
+---
+
+## View Announcement Settings
+
+<PermissionsBadge permissions={["cloud_announcement:read"]} />
+
+To view the announcement settings, go to Settings → Announcements. You find it under the **Extensions** section of the settings sidebar.
+
+The page lists the announcement categories, each with a toggle that shows whether it's enabled:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Category
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Security updates
+      </Table.Cell>
+      <Table.Cell>
+        Security advisories and incidents that affect your store.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Feature announcements
+      </Table.Cell>
+      <Table.Cell>
+        New Medusa features and releases.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Cloud announcements
+      </Table.Cell>
+      <Table.Cell>
+        Cloud features, and tips that appear on specific pages of the Medusa Admin.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+All categories are enabled by default.
+
+---
+
+## Enable or Disable an Announcement Category
+
+<PermissionsBadge permissions={["cloud_announcement:update"]} />
+
+To enable or disable an announcement category:
+
+1. Go to Settings → Announcements.
+2. Click the toggle next to the category.
+
+The dashboard saves the change right away and shows a confirmation message. If you can't click the toggles, you don't have the permission to change the announcement settings.
+
+<Note title="Warning" type="warning">
+
+Announcement settings apply to your entire team, not only to your account. When you disable a category, no one on your team sees its announcements.
+
+</Note>
+
+After you disable a category, its announcements may still appear for a few minutes.
+
+If you disable all categories, the megaphone icon and the sidebar card no longer appear in the dashboard.
+
+<Note title="Tip">
+
+Keep **Security updates** enabled so that your team learns about security advisories and incidents as soon as Medusa announces them.
+
+</Note>

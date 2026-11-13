@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.6
+  version: 2.22.7
   title: Medusa Admin API
   license:
     name: MIT
@@ -2548,7 +2548,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createCampaignsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+            }
+            ```
+          description: Emitted when campaigns are created.
+          deprecated: false
+          since: 2.22.7
   /admin/campaigns/{id}:
     get:
       operationId: GetCampaignsId
@@ -2763,7 +2773,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateCampaignsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+            }
+            ```
+          description: Emitted when campaigns are updated.
+          deprecated: false
+          since: 2.22.7
     delete:
       operationId: DeleteCampaignsId
       summary: Delete a Campaign
@@ -2845,7 +2865,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteCampaignsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+            }
+            ```
+          description: Emitted when campaigns are deleted.
+          deprecated: false
+          since: 2.22.7
   /admin/campaigns/{id}/promotions:
     post:
       operationId: PostCampaignsIdPromotions
@@ -2927,7 +2957,19 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: addOrRemoveCampaignPromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.promotions_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+              added_promotion_ids, // The IDs of the promotions added to the campaign
+              removed_promotion_ids, // The IDs of the promotions removed from the campaign
+            }
+            ```
+          description: Emitted when promotions are added to or removed from a campaign.
+          deprecated: false
+          since: 2.22.7
   /admin/claims:
     get:
       operationId: GetClaims
@@ -24333,6 +24375,8 @@ paths:
           $ref: '#/components/responses/500_error'
       x-since: 2.11.2
       x-featureFlag: index
+      deprecated: true
+      x-deprecated_message: 'The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property'
   /admin/index/sync:
     post:
       operationId: PostIndexSync
@@ -24384,6 +24428,8 @@ paths:
           $ref: '#/components/responses/500_error'
       x-since: 2.11.2
       x-featureFlag: index
+      deprecated: true
+      x-deprecated_message: 'The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property'
   /admin/inventory-items:
     get:
       operationId: GetInventoryItems
@@ -28156,7 +28202,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/locales/{code}:
     get:
       operationId: GetLocalesCode
@@ -28231,7 +28276,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/modules:
     get:
       operationId: GetModules
@@ -49626,7 +49670,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createPromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+            }
+            ```
+          description: Emitted when promotions are created.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/rule-attribute-options/{rule_type}:
     get:
       operationId: GetPromotionsRuleAttributeOptionsRule_type
@@ -50162,7 +50216,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updatePromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+            }
+            ```
+          description: Emitted when promotions are updated, including their status.
+          deprecated: false
+          since: 2.22.7
     delete:
       operationId: DeletePromotionsId
       summary: Delete a Promotion
@@ -50243,7 +50307,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deletePromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+            }
+            ```
+          description: Emitted when promotions are deleted.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/buy-rules/batch:
     post:
       operationId: PostPromotionsIdBuyRulesBatch
@@ -50385,7 +50459,23 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchPromotionRulesWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.rules_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+              rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+              created, // The IDs of the created rules
+              updated, // The IDs of the updated rules
+              deleted, // The IDs of the deleted rules
+            }
+            ```
+          description: |-
+            Emitted when a promotion's rules, target rules, or buy rules
+            are created, updated, or deleted in a batch.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/rules/batch:
     post:
       operationId: PostPromotionsIdRulesBatch
@@ -50527,7 +50617,23 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchPromotionRulesWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.rules_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+              rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+              created, // The IDs of the created rules
+              updated, // The IDs of the updated rules
+              deleted, // The IDs of the deleted rules
+            }
+            ```
+          description: |-
+            Emitted when a promotion's rules, target rules, or buy rules
+            are created, updated, or deleted in a batch.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/target-rules/batch:
     post:
       operationId: PostPromotionsIdTargetRulesBatch
@@ -50669,7 +50775,23 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchPromotionRulesWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.rules_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+              rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+              created, // The IDs of the created rules
+              updated, // The IDs of the updated rules
+              deleted, // The IDs of the deleted rules
+            }
+            ```
+          description: |-
+            Emitted when a promotion's rules, target rules, or buy rules
+            are created, updated, or deleted in a batch.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/{rule_type}:
     get:
       operationId: GetPromotionsIdRule_type
@@ -69402,7 +69524,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/translations/batch:
     post:
       operationId: PostTranslationsBatch
@@ -69544,7 +69665,6 @@ paths:
           deprecated: false
           since: 2.12.3
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/translations/entities:
     get:
       operationId: GetTranslationsEntities
@@ -69674,7 +69794,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.4
-      x-featureFlag: translation
   /admin/translations/settings:
     get:
       operationId: GetTranslationsSettings
@@ -69751,7 +69870,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/translations/settings/batch:
     post:
       operationId: PostTranslationsSettingsBatch
@@ -69830,7 +69948,6 @@ paths:
       x-workflow: batchTranslationSettingsWorkflow
       x-events: []
       x-since: 2.13.0
-      x-featureFlag: translation
   /admin/translations/statistics:
     get:
       operationId: GetTranslationsStatistics
@@ -69920,7 +70037,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/uploads:
     post:
       operationId: PostUploads
@@ -76372,6 +76488,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminClaimOrderResponse:
       type: object
       description: The created claim's details.
@@ -76584,6 +76701,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCollectionResponse:
       type: object
       description: The collection's details.
@@ -78851,6 +78969,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCurrencyResponse:
       type: object
       description: The currency's details.
@@ -80045,6 +80164,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminDraftOrderParams:
       type: object
       description: The parameters for retrieving draft orders.
@@ -81162,6 +81282,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentProviderOption:
       type: object
       description: The fulfillment option's details.
@@ -81210,6 +81331,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentResponse:
       type: object
       description: A fulfillment's details.
@@ -81495,6 +81617,7 @@ components:
           title: estimate_count
           description: The gift card's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminImportProductRequest:
       type: object
       description: The import's details.
@@ -82094,6 +82217,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         locales:
           type: array
           description: The list of locales.
@@ -82254,6 +82378,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminNotificationResponse:
       type: object
       description: The notification's details.
@@ -84792,6 +84917,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPriceListPrice:
       type: object
       description: The details of a price list's price.
@@ -84892,6 +85018,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         prices:
           type: array
           description: The list of prices associated with the price list.
@@ -85006,6 +85133,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPricePreferenceResponse:
       type: object
       description: The price preference's details.
@@ -85332,6 +85460,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -85688,6 +85817,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTagResponse:
       type: object
       description: The product tag's details.
@@ -85799,6 +85929,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTypeResponse:
       type: object
       description: The product type's details.
@@ -87164,6 +87295,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminReturnReasonResponse:
       type: object
       description: The return reason's details.
@@ -88034,6 +88166,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         shipping_option_types:
           type: array
           description: The list of shipping option types.
@@ -88281,6 +88414,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStockLocationResponse:
       type: object
       description: The stock location's details.
@@ -88455,6 +88589,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreCurrency:
       type: object
       description: The details of a store's currency.
@@ -88535,6 +88670,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreLocale:
       type: object
       description: The details of a store's locale.
@@ -88942,6 +89078,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminTransferOrderToGuest:
       type: object
       description: The details of the order transfer to a guest.
@@ -91163,6 +91300,13 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
+        roles:
+          type: array
+          description: The user's roles.
+          items:
+            type: string
+            title: roles
+            description: The role's roles.
     AdminUserAuthProvidersResponse:
       type: object
       description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
@@ -91234,6 +91378,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminUserResetPasswordTokenResponse:
       type: object
       description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
@@ -91287,6 +91432,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         roles:
           type: array
           description: The list of roles.
@@ -96632,6 +96778,7 @@ components:
         - is_discountable
         - is_giftcard
         - is_tax_inclusive
+        - is_custom_price
         - unit_price
         - quantity
         - detail
@@ -96831,6 +96978,10 @@ components:
         line_item_metadata:
           type: object
           description: Custom key-value pairs on the order's line items.
+        is_custom_price:
+          type: boolean
+          title: is_custom_price
+          description: Indicates whether the line item's unit price is a custom price.
     OrderLineItemAdjustment:
       type: object
       description: The line item adjustment's details.
@@ -99169,6 +99320,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCurrencyResponse:
       type: object
       description: The currency's details.
@@ -99388,6 +99540,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCustomerAddressResponse:
       type: object
       description: The address's details.
@@ -100941,6 +101094,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -101225,6 +101379,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTagResponse:
       type: object
       description: The product tag's details.
@@ -101309,6 +101464,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTypeResponse:
       type: object
       description: The product type's details.
@@ -102063,6 +102219,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     StoreUpdateCustomer:
       type: object
       description: The details to update in the customer.
