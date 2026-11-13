@@ -4119,6 +4119,132 @@ medusaIntegrationTestRunner({
           )
         })
 
+        describe("shipping country required for taxes", () => {
+          const setupTaxedCart = async (countries: string[]) => {
+            const taxService = appContainer.resolve(Modules.TAX)
+            await taxService.createTaxRegions(
+              countries.map((country_code) => ({
+                country_code,
+                provider_id: "tp_system",
+                default_tax_rate: {
+                  name: "Standard Rate",
+                  rate: 20,
+                  code: "STD",
+                },
+              }))
+            )
+
+            const taxedRegion = (
+              await api.post(
+                "/admin/regions",
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "Taxed Region",
+                  currency_code: "eur",
+                  countries,
+                },
+                adminHeaders
+              )
+            ).data.region
+
+            const taxedProduct = (
+              await api.post(
+                "/admin/products",
+                {
+                  title: "Taxed Product",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["S"] }],
+                  variants: [
+                    {
+                      title: "S",
+                      manage_inventory: false,
+                      options: { Size: "S" },
+                      prices: [{ amount: 1000, currency_code: "eur" }],
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            const taxedCart = (
+              await api.post(
+                "/store/carts",
+                {
+                  currency_code: "eur",
+                  region_id: taxedRegion.id,
+                  sales_channel_id: salesChannel.id,
+                  items: [
+                    { variant_id: taxedProduct.variants[0].id, quantity: 1 },
+                  ],
+                },
+                storeHeaders
+              )
+            ).data.cart
+
+            const paymentCollection = (
+              await api.post(
+                "/store/payment-collections",
+                { cart_id: taxedCart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            return taxedCart
+          }
+
+          it("should keep the country and taxes of a single-country region cart when the shipping address is updated without a country code", async () => {
+            const taxedCart = await setupTaxedCart(["gb"])
+
+            const updated = (
+              await api.post(
+                `/store/carts/${taxedCart.id}`,
+                { shipping_address: { first_name: "Test" } },
+                storeHeaders
+              )
+            ).data.cart
+
+            expect(updated.shipping_address.country_code).toEqual("gb")
+            expect(updated.items[0].tax_lines).toEqual([
+              expect.objectContaining({ code: "STD", rate: 20 }),
+            ])
+
+            const response = await api.post(
+              `/store/carts/${taxedCart.id}/complete`,
+              {},
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.order.tax_total).toEqual(200)
+          })
+
+          it("should fail to complete a cart with automatic taxes when the shipping address has no country code", async () => {
+            const taxedCart = await setupTaxedCart(["fr", "es"])
+
+            await api.post(
+              `/store/carts/${taxedCart.id}`,
+              { shipping_address: { first_name: "Test" } },
+              storeHeaders
+            )
+
+            const response = await api
+              .post(`/store/carts/${taxedCart.id}/complete`, {}, storeHeaders)
+              .catch((e) => e.response)
+
+            expect(response.status).toEqual(400)
+            expect(response.data.message).toEqual(
+              "Cannot complete a cart whose shipping address has no country, as it's required to calculate taxes"
+            )
+          })
+        })
+
         describe("empty cart validation", () => {
           it("should fail to complete an empty cart via the store endpoint", async () => {
             const emptyCart = (
