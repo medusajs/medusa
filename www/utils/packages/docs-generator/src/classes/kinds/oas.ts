@@ -2529,6 +2529,16 @@ class OasKindGenerator extends FunctionKindGenerator {
         oldSchemaKeys.length === 1 &&
         newSchemaObj !== undefined &&
         oldSchemaKeys[0] === "description"
+      if (!useOldSchema && hasNewSchemaObj && newSchemaObj.properties) {
+        // the new schema replaces the old one, but its nested named schemas
+        // may have existing output whose manual changes must be kept.
+        Object.entries(newSchemaObj.properties).forEach(([key, property]) => {
+          newSchemaObj.properties![key] = this.mergeWithExistingSchema({
+            schema: property,
+            level: maybeIncrementLevel(level, "object"),
+          }).schema
+        })
+      }
       return {
         schema: hasNewSchemaObj
           ? newSchemaObj

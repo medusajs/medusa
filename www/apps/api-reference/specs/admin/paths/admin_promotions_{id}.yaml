@@ -246,7 +246,17 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: updatePromotionsWorkflow
-  x-events: []
+  x-events:
+    - name: promotion.updated
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the promotion
+        }
+        ```
+      description: Emitted when promotions are updated, including their status.
+      deprecated: false
+      since: 2.22.7
 delete:
   operationId: DeletePromotionsId
   summary: Delete a Promotion
@@ -313,4 +323,14 @@ delete:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: deletePromotionsWorkflow
-  x-events: []
+  x-events:
+    - name: promotion.deleted
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the promotion
+        }
+        ```
+      description: Emitted when promotions are deleted.
+      deprecated: false
+      since: 2.22.7
