@@ -3684,6 +3684,8 @@
     "delete": {
       "title": "Rolü sil",
       "description": "{{name}} rolü silinmek üzere. Bu işlem geri alınamaz.",
+      "descriptionWithUsers_one": "{{name}} rolünü silmek üzeresiniz. {{count}} kullanıcı bu role sahip ve bu rolün sağladığı erişimi kaybedecek. Bu işlem geri alınamaz.",
+      "descriptionWithUsers_other": "{{name}} rolünü silmek üzeresiniz. {{count}} kullanıcı bu role sahip ve bu rolün sağladığı erişimi kaybedecekler. Bu işlem geri alınamaz.",
       "successToast": "{{name}} rolü silindi"
     },
     "fields": {
@@ -3724,6 +3726,137 @@
       },
       "manage": {
         "successToast": "İzinler başarıyla güncellendi."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Siparişler",
+            "description": "Siparişler, sipariş değişiklikleri, talepler, değişimler ve iadeler"
+          },
+          "payments": {
+            "label": "Ödemeler",
+            "description": "Ödemeler, ödeme koleksiyonları, para iadeleri ve tahsilatlar"
+          },
+          "products": {
+            "label": "Ürünler",
+            "description": "Ürünler, varyantlar, seçenekler, kategoriler, koleksiyonlar, tipler ve etiketler"
+          },
+          "inventory": {
+            "label": "Envanter",
+            "description": "Envanter kalemleri, stok seviyeleri, rezervasyonlar ve konumlar"
+          },
+          "customers": {
+            "label": "Müşteriler",
+            "description": "Müşteriler, adresler ve müşteri grupları"
+          },
+          "pricing": {
+            "label": "Fiyatlandırma ve promosyonlar",
+            "description": "Fiyat listeleri, fiyatlar, promosyonlar ve kampanyalar"
+          },
+          "shipping": {
+            "label": "Kargo ve teslimat",
+            "description": "Kargo seçenekleri ve profilleri, teslimatlar ve hizmet bölgeleri"
+          },
+          "store": {
+            "label": "Mağaza ayarları",
+            "description": "Mağaza detayları, bölgeler, satış kanalları, para birimleri, vergiler ve çeviriler"
+          },
+          "team": {
+            "label": "Ekip ve erişim",
+            "description": "Kullanıcılar, davetler, roller ve API anahtarları"
+          },
+          "system": {
+            "label": "Sistem",
+            "description": "Dosyalar, bildirimler ve iş akışı yürütmeleri"
+          },
+          "custom": {
+            "label": "Özel",
+            "description": "Eklentileriniz ve özel modülleriniz tarafından eklenen izinler"
+          }
+        },
+        "levels": {
+          "none": "Erişim yok",
+          "view": "Yalnızca görüntüleme",
+          "full": "Tam erişim",
+          "mixed": "Karma"
+        },
+        "levelControlLabel": "{{group}} için erişim düzeyi",
+        "resourceColumn": "Kaynak",
+        "notAvailable": "yok",
+        "notAvailableTooltip": "Bu kaynak bu izni tanımlamıyor",
+        "rowToggle": "Tüm {{resource}} izinleri",
+        "columnToggle": {
+          "on": "{{group}} için tüm {{operation}} izinlerini aç",
+          "off": "{{group}} için tüm {{operation}} izinlerini kapat"
+        },
+        "search": {
+          "placeholder": "İzin ara",
+          "emptyHeading": "Aramanızla eşleşen izin yok",
+          "emptyDescription": "Siparişler veya envanter gibi bir kaynak adı deneyin."
+        },
+        "showKeys": "İzin anahtarlarını göster",
+        "clearAll": "Tümünü temizle",
+        "lockedBadge_one": "{{count}} kilitli",
+        "lockedBadge_other": "{{count}} kilitli",
+        "lockedNote_one": "Bu gruptaki {{count}} izin hesabınızdan değiştirilemez, çünkü siz buna sahip değilsiniz. Erişim yok, Yalnızca görüntüleme ve Tam erişim geri kalanına uygulanır.",
+        "lockedNote_other": "Bu gruptaki {{count}} izin hesabınızdan değiştirilemez, çünkü siz bunlara sahip değilsiniz. Erişim yok, Yalnızca görüntüleme ve Tam erişim geri kalanına uygulanır.",
+        "tooltips": {
+          "cannotGrant": "Hesabınızda bu izin olmadığı için veremezsiniz.",
+          "cannotRemove": "Bu rolün bu izni var. Hesabınızda bu izin olmadığı için değiştiremezsiniz.",
+          "viewRequired": "Bu kaynaktaki diğer izinler görüntüleme gerektirir. Önce onları kaldırın."
+        },
+        "noViewAccess": "Görüntüleme erişimi yok",
+        "templates": {
+          "heading": "Şablondan başla",
+          "hint": "İsteğe bağlı. Şablon uygulamak mevcut seçimi değiştirir.",
+          "full": {
+            "label": "Tam erişim",
+            "description": "Ekip ayarları ve özel izinler dahil bugün verebileceğiniz her şey."
+          },
+          "readonly": {
+            "label": "Yalnızca okuma",
+            "description": "Bugün verebileceğiniz her şeyi görüntüleyin. Hiçbir şeyi değiştirmeyin."
+          },
+          "snapshotNote": "Şablonlar bugün mevcut olan izinleri kullanır. Daha sonra eklenen izinler, örneğin yeni bir eklenti tarafından, otomatik olarak dahil edilmez."
+        },
+        "confirm": {
+          "template": {
+            "title": "Seçiminizi değiştir?",
+            "description": "{{template}} şablonu uygulanması seçtiğiniz izinlerin yerini alır.",
+            "confirm": "Şablonu uygula"
+          },
+          "clear": {
+            "title": "Tüm izinleri temizle?",
+            "descriptionCreate": "Bu, seçtiğiniz her izni kaldırır.",
+            "descriptionEdit": "Bu, bu rolden değiştirebileceğiniz her izni kaldırır. Kaydet'i seçene kadar hiçbir şey kaydedilmez."
+          }
+        },
+        "summary": {
+          "heading": "Rol özeti",
+          "name": "Ad",
+          "permissions": "İzinler",
+          "selectedOfTotal": "{{total}} içinden {{selected}} seçili",
+          "unsavedChanges": "Kaydedilmemiş değişiklikler",
+          "noChanges": "Henüz değişiklik yok",
+          "changes": "{{added}} eklendi, {{removed}} kaldırıldı",
+          "footnote": "Erişim yok olarak ayarlanan alanlar bu role sahip üyelerden gizlenir. Tam erişim bugün mevcut olan izinleri kapsar. Daha sonra eklenen izinlerin burada verilmesi gerekir.",
+          "wildcards": "Bu rolün ayrıca joker izinleri ({{keys}}) vardır. Bunlar API aracılığıyla yönetilir ve burada gösterilmez."
+        },
+        "createHint": "Rolü oluşturmak için en az bir izin seçin.",
+        "custom": {
+          "calloutHeading": "Kendi izinlerinizi ekleyin",
+          "calloutDescription": "Eklentiler ve özel modüller kendi izinlerini tanımlayabilir. Oluşturulduktan sonra bu grupta görünür ve herhangi bir role atanmaya hazır hale gelir.",
+          "calloutAction": "Kılavuzu oku"
+        },
+        "detail": {
+          "heading": "İzinler",
+          "count": "{{total}} izinden {{selected}}",
+          "countOnly_one": "{{count}} izin",
+          "countOnly_other": "{{count}} izin",
+          "granted": "Verildi",
+          "notGranted": "Verilmedi",
+          "wildcards": "Bu rolün joker izinleri ({{keys}}) vardır. Bunlar eşleştirdikleri her izni verir, daha sonra eklenenler dahil, ve API aracılığıyla yönetilir."
+        }
       }
     },
     "list": {
@@ -3863,7 +3996,48 @@
       "return_reason": "İade Sebebi",
       "refund_reason": "Geri Ödeme Sebebi",
       "workflow": "İş Akışı",
-      "translation": "Çeviri"
+      "translation": "Çeviri",
+      "customer_address": "Müşteri adresleri",
+      "inventory_item": "Envanter kalemleri",
+      "inventory_level": "Envanter seviyeleri",
+      "reservation_item": "Rezervasyonlar",
+      "order_item": "Sipariş kalemleri",
+      "order_change": "Sipariş değişiklikleri",
+      "order_address": "Sipariş adresleri",
+      "order_claim": "Talepler",
+      "order_claim_item": "Talep kalemleri",
+      "order_exchange": "Değişimler",
+      "order_credit_line": "Sipariş kredi satırları",
+      "return": "İadeler",
+      "payment": "Ödemeler",
+      "payment_collection": "Ödeme koleksiyonları",
+      "payment_method": "Ödeme yöntemleri",
+      "payment_session": "Ödeme oturumları",
+      "refund": "Para iadeleri",
+      "capture": "Tahsilatlar",
+      "price_preference": "Fiyat tercihleri",
+      "price": "Fiyatlar",
+      "currency": "Para birimleri",
+      "product_variant": "Ürün varyantları",
+      "product_option": "Ürün seçenekleri",
+      "product_option_value": "Ürün seçenek değerleri",
+      "property_label": "Özellik etiketleri",
+      "shipping_option_type": "Kargo seçenek tipleri",
+      "fulfillment": "Teslimatlar",
+      "fulfillment_provider": "Teslimat sağlayıcıları",
+      "fulfillment_set": "Teslimat setleri",
+      "service_zone": "Hizmet bölgeleri",
+      "file": "Dosyalar",
+      "notification": "Bildirimler",
+      "workflow_execution": "İş akışı yürütmeleri",
+      "store_locale": "Mağaza yerel ayarları",
+      "tax_provider": "Vergi sağlayıcıları",
+      "tax_rate": "Vergi oranları",
+      "translation_setting": "Çeviri ayarları",
+      "invite": "Davetler",
+      "rbac_role": "Roller",
+      "rbac_policy": "İzinler",
+      "rbac_role_assignment": "Rol atamaları"
     },
     "actions": {
       "read": "Görüntüle",

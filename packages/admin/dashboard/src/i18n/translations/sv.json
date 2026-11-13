@@ -2844,6 +2844,8 @@
     "delete": {
       "title": "Ta bort roll",
       "description": "Du håller på att ta bort rollen {{name}}. Den här åtgärden kan inte ångras.",
+      "descriptionWithUsers_one": "Du håller på att ta bort rollen {{name}}. {{count}} användare har den här rollen och kommer att förlora den åtkomst den ger. Den här åtgärden kan inte ångras.",
+      "descriptionWithUsers_other": "Du håller på att ta bort rollen {{name}}. {{count}} användare har den här rollen och kommer att förlora den åtkomst den ger. Den här åtgärden kan inte ångras.",
       "successToast": "Rollen {{name}} har tagits bort"
     },
     "fields": {
@@ -2884,6 +2886,137 @@
       },
       "manage": {
         "successToast": "Behörigheterna uppdaterades."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Beställningar",
+            "description": "Beställningar, orderändringar, krav, byten och returer"
+          },
+          "payments": {
+            "label": "Betalningar",
+            "description": "Betalningar, betalningssamlingar, återbetalningar och debiteringar"
+          },
+          "products": {
+            "label": "Produkter",
+            "description": "Produkter, varianter, alternativ, kategorier, samlingar, typer och taggar"
+          },
+          "inventory": {
+            "label": "Lager",
+            "description": "Lagerartiklar, lagernivåer, reservationer och platser"
+          },
+          "customers": {
+            "label": "Kunder",
+            "description": "Kunder, adresser och kundgrupper"
+          },
+          "pricing": {
+            "label": "Prissättning och kampanjer",
+            "description": "Prislistor, priser, kampanjer och kampanjgrupper"
+          },
+          "shipping": {
+            "label": "Frakt och leverans",
+            "description": "Fraktalternativ och profiler, leveranser och servicezoner"
+          },
+          "store": {
+            "label": "Butiksinställningar",
+            "description": "Butiksdetaljer, regioner, försäljningskanaler, valutor, moms och översättningar"
+          },
+          "team": {
+            "label": "Team och åtkomst",
+            "description": "Användare, inbjudningar, roller och API-nycklar"
+          },
+          "system": {
+            "label": "System",
+            "description": "Filer, aviseringar och arbetsflödeskörningar"
+          },
+          "custom": {
+            "label": "Anpassad",
+            "description": "Behörigheter som lagts till av dina plugins och anpassade moduler"
+          }
+        },
+        "levels": {
+          "none": "Ingen åtkomst",
+          "view": "Visa enbart",
+          "full": "Full åtkomst",
+          "mixed": "Blandad"
+        },
+        "levelControlLabel": "Åtkomstnivå för {{group}}",
+        "resourceColumn": "Resurs",
+        "notAvailable": "n/a",
+        "notAvailableTooltip": "Den här resursen definierar inte den här behörigheten",
+        "rowToggle": "Alla {{resource}}-behörigheter",
+        "columnToggle": {
+          "on": "Aktivera {{operation}} för alla {{group}}",
+          "off": "Inaktivera {{operation}} för alla {{group}}"
+        },
+        "search": {
+          "placeholder": "Sök behörigheter",
+          "emptyHeading": "Inga behörigheter matchar din sökning",
+          "emptyDescription": "Prova ett resursnamn som beställningar eller lager."
+        },
+        "showKeys": "Visa behörighetsnycklar",
+        "clearAll": "Rensa alla",
+        "lockedBadge_one": "{{count}} låst",
+        "lockedBadge_other": "{{count}} låsta",
+        "lockedNote_one": "{{count}} behörighet i den här gruppen kan inte ändras från ditt konto, eftersom du inte har den själv. Ingen åtkomst, Visa enbart och Full åtkomst gäller för övriga.",
+        "lockedNote_other": "{{count}} behörigheter i den här gruppen kan inte ändras från ditt konto, eftersom du inte har dem själv. Ingen åtkomst, Visa enbart och Full åtkomst gäller för övriga.",
+        "tooltips": {
+          "cannotGrant": "Du kan inte bevilja det här eftersom ditt konto inte har den behörigheten.",
+          "cannotRemove": "Den här rollen har den här behörigheten. Du kan inte ändra den eftersom ditt konto inte har den.",
+          "viewRequired": "Andra behörigheter för den här resursen kräver visningsåtkomst. Ta bort dem först."
+        },
+        "noViewAccess": "Ingen visningsåtkomst",
+        "templates": {
+          "heading": "Börja från en mall",
+          "hint": "Valfritt. Att tillämpa en mall ersätter det aktuella urvalet.",
+          "full": {
+            "label": "Full åtkomst",
+            "description": "Allt du kan bevilja idag, inklusive teaminställningar och anpassade behörigheter."
+          },
+          "readonly": {
+            "label": "Skrivskyddad",
+            "description": "Visa allt du kan bevilja idag. Ändra ingenting."
+          },
+          "snapshotNote": "Mallar använder de behörigheter som finns idag. Behörigheter som läggs till senare, till exempel av ett nytt plugin, inkluderas inte automatiskt."
+        },
+        "confirm": {
+          "template": {
+            "title": "Ersätta ditt urval?",
+            "description": "Att tillämpa mallen {{template}} ersätter de behörigheter du har valt.",
+            "confirm": "Tillämpa mall"
+          },
+          "clear": {
+            "title": "Rensa alla behörigheter?",
+            "descriptionCreate": "Detta tar bort varje behörighet du har valt.",
+            "descriptionEdit": "Detta tar bort varje behörighet du kan ändra från den här rollen. Ingenting sparas förrän du väljer Spara."
+          }
+        },
+        "summary": {
+          "heading": "Rollsammanfattning",
+          "name": "Namn",
+          "permissions": "Behörigheter",
+          "selectedOfTotal": "{{selected}} av {{total}} valda",
+          "unsavedChanges": "Osparade ändringar",
+          "noChanges": "Inga ändringar ännu",
+          "changes": "{{added}} tillagda, {{removed}} borttagna",
+          "footnote": "Områden inställda på Ingen åtkomst är dolda för medlemmar med den här rollen. Full åtkomst täcker de behörigheter som finns idag. Behörigheter som läggs till senare måste beviljas här.",
+          "wildcards": "Den här rollen har även jokerteckenbehörigheter ({{keys}}). De hanteras via API och visas inte här."
+        },
+        "createHint": "Välj minst en behörighet för att skapa rollen.",
+        "custom": {
+          "calloutHeading": "Lägg till egna behörigheter",
+          "calloutDescription": "Plugins och anpassade moduler kan definiera egna behörigheter. När de väl skapats visas de i den här gruppen, redo att tilldelas vilken roll som helst.",
+          "calloutAction": "Läs guiden"
+        },
+        "detail": {
+          "heading": "Behörigheter",
+          "count": "{{selected}} av {{total}} behörigheter",
+          "countOnly_one": "{{count}} behörighet",
+          "countOnly_other": "{{count}} behörigheter",
+          "granted": "Beviljad",
+          "notGranted": "Inte beviljad",
+          "wildcards": "Den här rollen har jokerteckenbehörigheter ({{keys}}). De beviljar varje behörighet de matchar, inklusive sådana som läggs till senare, och hanteras via API."
+        }
       }
     },
     "list": {
@@ -3843,7 +3976,48 @@
       "return_reason": "Returorsak",
       "refund_reason": "Återbetalningsorsak",
       "workflow": "Arbetsflöde",
-      "translation": "Översättning"
+      "translation": "Översättning",
+      "customer_address": "Kundadresser",
+      "inventory_item": "Lagerartiklar",
+      "inventory_level": "Lagernivåer",
+      "reservation_item": "Reservationer",
+      "order_item": "Orderartiklar",
+      "order_change": "Orderändringar",
+      "order_address": "Orderadresser",
+      "order_claim": "Krav",
+      "order_claim_item": "Kravartiklar",
+      "order_exchange": "Byten",
+      "order_credit_line": "Orderkreditlinjer",
+      "return": "Returer",
+      "payment": "Betalningar",
+      "payment_collection": "Betalningssamlingar",
+      "payment_method": "Betalningsmetoder",
+      "payment_session": "Betalningssessioner",
+      "refund": "Återbetalningar",
+      "capture": "Debiteringar",
+      "price_preference": "Prisinställningar",
+      "price": "Priser",
+      "currency": "Valutor",
+      "product_variant": "Produktvarianter",
+      "product_option": "Produktalternativ",
+      "product_option_value": "Produktalternativvärden",
+      "property_label": "Egenskapsetiketter",
+      "shipping_option_type": "Fraktalternativtyper",
+      "fulfillment": "Leveranser",
+      "fulfillment_provider": "Leveransleverantörer",
+      "fulfillment_set": "Leveransuppsättningar",
+      "service_zone": "Servicezoner",
+      "file": "Filer",
+      "notification": "Aviseringar",
+      "workflow_execution": "Arbetsflödeskörningar",
+      "store_locale": "Butikslokaler",
+      "tax_provider": "Momsleverantörer",
+      "tax_rate": "Momssatser",
+      "translation_setting": "Översättningsinställningar",
+      "invite": "Inbjudningar",
+      "rbac_role": "Roller",
+      "rbac_policy": "Behörigheter",
+      "rbac_role_assignment": "Rolltilldelningar"
     },
     "actions": {
       "read": "Visa",
