@@ -3459,7 +3459,7 @@ describe("defineConfig", function () {
     )
   })
 
-  describe("audit module defaults", function () {
+  describe("licensed module defaults", function () {
     const { publicKey, privateKey } = generateKeyPairSync("ed25519")
     const AUDIT_ENV_VARS = [
       "EXECUTION_CONTEXT",
@@ -3681,6 +3681,70 @@ describe("defineConfig", function () {
         resolve: "@medusajs/medusa/audit",
         options: { cloud: cloudOptions },
       })
+    })
+
+    it("should add the rbac module in cloud when the license covers rbac", function () {
+      setCloud({ endpoint: false })
+      setLicense(["rbac"])
+
+      const config = defineConfig()
+
+      expect(config.modules![Modules.RBAC]).toEqual({
+        resolve: "@medusajs/medusa/rbac",
+      })
+      expect(config.modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the rbac module in cloud without a license", function () {
+      setCloud()
+
+      expect(defineConfig().modules![Modules.RBAC]).toBeUndefined()
+    })
+
+    it("should not add the rbac module in cloud when the license does not cover rbac", function () {
+      setCloud()
+      setLicense(["audit"])
+
+      expect(defineConfig().modules![Modules.RBAC]).toBeUndefined()
+    })
+
+    it("should not add the rbac module when self-hosted", function () {
+      setLicense(["rbac"])
+
+      expect(defineConfig().modules![Modules.RBAC]).toBeUndefined()
+    })
+
+    it("should keep a user rbac module entry over the cloud default", function () {
+      setCloud()
+      setLicense(["rbac"])
+      const options = {
+        actors: { user: { grantees: [{ entity: "team", path: "teams.id" }] } },
+      }
+
+      const config = defineConfig({
+        modules: [{ resolve: "@medusajs/medusa/rbac", options }],
+      })
+
+      expect(config.modules![Modules.RBAC]).toEqual({
+        resolve: "@medusajs/medusa/rbac",
+        options,
+      })
+    })
+
+    it("should keep a user rbac module that disables it in cloud", function () {
+      setCloud()
+      setLicense(["rbac"])
+
+      const config = defineConfig({
+        modules: [{ resolve: "@medusajs/medusa/rbac", disable: true }],
+      })
+
+      expect(config.modules![Modules.RBAC]).toEqual(
+        expect.objectContaining({
+          resolve: "@medusajs/medusa/rbac",
+          disable: true,
+        })
+      )
     })
   })
 

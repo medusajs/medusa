@@ -476,6 +476,10 @@ function resolveModules(
     )
   }
 
+  if (isLicensed(LicenseFeature.RBAC)) {
+    cloudModules.push({ resolve: MODULE_PACKAGE_NAMES[Modules.RBAC] })
+  }
+
   if (shouldAddCloudAuditModule(cloudOptions)) {
     cloudModules.push({ resolve: MODULE_PACKAGE_NAMES[Modules.AUDIT] })
   }
@@ -759,15 +763,21 @@ function applyCloudOptionsToModules(
 }
 
 /**
- * The Audit Module is licensed and refuses to boot without the "audit" feature,
- * so on Cloud it's only a default when the license covers it. The Cloud
- * provider throws without the API key and environment handle, so those are
- * required too.
+ * Licensed modules refuse to boot without their feature, so on Cloud they're
+ * only a default when the license covers it.
+ */
+function isLicensed(feature: LicenseFeature): boolean {
+  return !!loadLicense()?.features.includes(feature)
+}
+
+/**
+ * The Cloud provider throws without the API key and environment handle, so
+ * those are required on top of the license.
  */
 function shouldAddCloudAuditModule(cloud?: MedusaCloudOptions): boolean {
   if (!cloud?.auditEndpoint || !cloud.apiKey || !cloud.environmentHandle) {
     return false
   }
 
-  return !!loadLicense()?.features.includes(LicenseFeature.AUDIT)
+  return isLicensed(LicenseFeature.AUDIT)
 }
