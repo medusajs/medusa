@@ -2859,6 +2859,7 @@
     "delete": {
       "title": "역할 삭제",
       "description": "역할 {{name}}을(를) 삭제하려고 합니다. 이 작업은 취소할 수 없습니다.",
+      "descriptionWithUsers_other": "역할 {{name}}을(를) 삭제하려고 합니다. {{count}}명의 사용자가 이 역할을 보유하고 있으며, 해당 역할이 부여하는 접근 권한을 잃게 됩니다. 이 작업은 취소할 수 없습니다.",
       "successToast": "역할 {{name}}이(가) 삭제되었습니다."
     },
     "fields": {
@@ -2896,6 +2897,134 @@
       },
       "manage": {
         "successToast": "권한이 성공적으로 업데이트되었습니다."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "주문",
+            "description": "주문, 주문 변경, 클레임, 교환 및 반품"
+          },
+          "payments": {
+            "label": "결제",
+            "description": "결제, 결제 컬렉션, 환불 및 청구"
+          },
+          "products": {
+            "label": "제품",
+            "description": "제품, 변형, 옵션, 카테고리, 컬렉션, 유형 및 태그"
+          },
+          "inventory": {
+            "label": "재고",
+            "description": "재고 항목, 재고 수준, 예약 및 위치"
+          },
+          "customers": {
+            "label": "고객",
+            "description": "고객, 주소 및 고객 그룹"
+          },
+          "pricing": {
+            "label": "가격 및 프로모션",
+            "description": "가격 목록, 가격, 프로모션 및 캠페인"
+          },
+          "shipping": {
+            "label": "배송 및 이행",
+            "description": "배송 옵션 및 프로필, 이행 및 서비스 영역"
+          },
+          "store": {
+            "label": "스토어 설정",
+            "description": "스토어 세부 정보, 지역, 판매 채널, 통화, 세금 및 번역"
+          },
+          "team": {
+            "label": "팀 및 접근 권한",
+            "description": "사용자, 초대, 역할 및 API 키"
+          },
+          "system": {
+            "label": "시스템",
+            "description": "파일, 알림 및 워크플로우 실행"
+          },
+          "custom": {
+            "label": "사용자 정의",
+            "description": "플러그인 및 사용자 정의 모듈에 의해 추가된 권한"
+          }
+        },
+        "levels": {
+          "none": "접근 없음",
+          "view": "보기 전용",
+          "full": "전체 접근",
+          "mixed": "혼합"
+        },
+        "levelControlLabel": "{{group}}의 접근 수준",
+        "resourceColumn": "리소스",
+        "notAvailable": "해당 없음",
+        "notAvailableTooltip": "이 리소스는 이 권한을 정의하지 않습니다.",
+        "rowToggle": "모든 {{resource}} 권한",
+        "columnToggle": {
+          "on": "모든 {{group}}의 {{operation}} 켜기",
+          "off": "모든 {{group}}의 {{operation}} 끄기"
+        },
+        "search": {
+          "placeholder": "권한 검색",
+          "emptyHeading": "검색에 일치하는 권한이 없습니다.",
+          "emptyDescription": "주문이나 재고 같은 리소스 이름으로 검색해 보세요."
+        },
+        "showKeys": "권한 키 표시",
+        "clearAll": "모두 지우기",
+        "lockedBadge_other": "{{count}}개 잠김",
+        "lockedNote_other": "{{count}}개의 권한은 본인 계정에 없어 이 그룹에서 변경할 수 없습니다. 접근 없음, 보기 전용 및 전체 접근은 나머지에 적용됩니다.",
+        "tooltips": {
+          "cannotGrant": "본인 계정에 이 권한이 없으므로 부여할 수 없습니다.",
+          "cannotRemove": "이 역할은 이 권한을 보유합니다. 본인 계정에 없으므로 변경할 수 없습니다.",
+          "viewRequired": "이 리소스의 다른 권한에는 보기 권한이 필요합니다. 먼저 해당 권한을 제거하세요."
+        },
+        "noViewAccess": "보기 접근 없음",
+        "templates": {
+          "heading": "템플릿에서 시작",
+          "hint": "선택 사항입니다. 템플릿을 적용하면 현재 선택 항목이 교체됩니다.",
+          "full": {
+            "label": "전체 접근",
+            "description": "팀 설정 및 사용자 정의 권한을 포함하여 오늘 부여할 수 있는 모든 권한입니다."
+          },
+          "readonly": {
+            "label": "읽기 전용",
+            "description": "오늘 부여할 수 있는 모든 항목을 볼 수 있습니다. 변경은 되지 않습니다."
+          },
+          "snapshotNote": "템플릿은 현재 존재하는 권한을 사용합니다. 나중에 추가된 권한(예: 새 플러그인)은 자동으로 포함되지 않습니다."
+        },
+        "confirm": {
+          "template": {
+            "title": "선택 항목을 교체하시겠습니까?",
+            "description": "{{template}} 템플릿을 적용하면 선택한 권한이 교체됩니다.",
+            "confirm": "템플릿 적용"
+          },
+          "clear": {
+            "title": "모든 권한을 지우시겠습니까?",
+            "descriptionCreate": "선택한 모든 권한이 제거됩니다.",
+            "descriptionEdit": "이 역할에서 변경할 수 있는 모든 권한이 제거됩니다. 저장을 선택할 때까지 아무것도 저장되지 않습니다."
+          }
+        },
+        "summary": {
+          "heading": "역할 요약",
+          "name": "이름",
+          "permissions": "권한",
+          "selectedOfTotal": "{{total}} 중 {{selected}} 선택됨",
+          "unsavedChanges": "저장되지 않은 변경 사항",
+          "noChanges": "변경 사항 없음",
+          "changes": "{{added}}개 추가됨, {{removed}}개 제거됨",
+          "footnote": "접근 없음으로 설정된 영역은 이 역할의 구성원에게 숨겨집니다. 전체 접근은 현재 존재하는 권한을 포함합니다. 나중에 추가된 권한은 여기서 부여해야 합니다.",
+          "wildcards": "이 역할에는 와일드카드 권한({{keys}})도 있습니다. API를 통해 관리되며 여기에는 표시되지 않습니다."
+        },
+        "createHint": "역할을 생성하려면 최소 하나의 권한을 선택하세요.",
+        "custom": {
+          "calloutHeading": "사용자 정의 권한 추가",
+          "calloutDescription": "플러그인 및 사용자 정의 모듈은 자체 권한을 정의할 수 있습니다. 생성되면 이 그룹에 표시되어 모든 역할에 할당할 수 있습니다.",
+          "calloutAction": "가이드 읽기"
+        },
+        "detail": {
+          "heading": "권한",
+          "count": "{{total}} 중 {{selected}} 권한",
+          "countOnly_other": "권한 {{count}}개",
+          "granted": "부여됨",
+          "notGranted": "부여되지 않음",
+          "wildcards": "이 역할에는 와일드카드 권한({{keys}})이 있습니다. 나중에 추가된 권한을 포함하여 일치하는 모든 권한을 부여하며 API를 통해 관리됩니다."
+        }
       }
     },
     "list": {
@@ -3854,7 +3983,48 @@
       "return_reason": "반품 이유",
       "refund_reason": "환불 이유",
       "workflow": "워크플로우",
-      "translation": "번역"
+      "translation": "번역",
+      "customer_address": "고객 주소",
+      "inventory_item": "재고 항목",
+      "inventory_level": "재고 수준",
+      "reservation_item": "예약",
+      "order_item": "주문 항목",
+      "order_change": "주문 변경",
+      "order_address": "주문 주소",
+      "order_claim": "클레임",
+      "order_claim_item": "클레임 항목",
+      "order_exchange": "교환",
+      "order_credit_line": "주문 크레딧 라인",
+      "return": "반품",
+      "payment": "결제",
+      "payment_collection": "결제 컬렉션",
+      "payment_method": "결제 방법",
+      "payment_session": "결제 세션",
+      "refund": "환불",
+      "capture": "청구",
+      "price_preference": "가격 기본 설정",
+      "price": "가격",
+      "currency": "통화",
+      "product_variant": "제품 변형",
+      "product_option": "제품 옵션",
+      "product_option_value": "제품 옵션 값",
+      "property_label": "속성 레이블",
+      "shipping_option_type": "배송 옵션 유형",
+      "fulfillment": "이행",
+      "fulfillment_provider": "이행 공급자",
+      "fulfillment_set": "이행 세트",
+      "service_zone": "서비스 영역",
+      "file": "파일",
+      "notification": "알림",
+      "workflow_execution": "워크플로우 실행",
+      "store_locale": "스토어 로케일",
+      "tax_provider": "세금 공급자",
+      "tax_rate": "세율",
+      "translation_setting": "번역 설정",
+      "invite": "초대",
+      "rbac_role": "역할",
+      "rbac_policy": "권한",
+      "rbac_role_assignment": "역할 할당"
     },
     "actions": {
       "read": "보기",

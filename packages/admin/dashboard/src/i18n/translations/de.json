@@ -2865,6 +2865,8 @@
     "delete": {
       "title": "Rolle löschen",
       "description": "Sie sind dabei, die Rolle {{name}} zu löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "descriptionWithUsers_one": "Sie sind dabei, die Rolle {{name}} zu löschen. {{count}} Benutzer hat diese Rolle und verliert den damit gewährten Zugriff. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "descriptionWithUsers_other": "Sie sind dabei, die Rolle {{name}} zu löschen. {{count}} Benutzer haben diese Rolle und verlieren den damit gewährten Zugriff. Diese Aktion kann nicht rückgängig gemacht werden.",
       "successToast": "Rolle {{name}} gelöscht"
     },
     "fields": {
@@ -2905,6 +2907,137 @@
       },
       "manage": {
         "successToast": "Berechtigungen wurden erfolgreich aktualisiert."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Bestellungen",
+            "description": "Bestellungen, Bestellungsänderungen, Reklamationen, Umtausch und Rücksendungen"
+          },
+          "payments": {
+            "label": "Zahlungen",
+            "description": "Zahlungen, Zahlungssammlungen, Erstattungen und Zahlungserfassungen"
+          },
+          "products": {
+            "label": "Produkte",
+            "description": "Produkte, Varianten, Optionen, Kategorien, Sammlungen, Typen und Tags"
+          },
+          "inventory": {
+            "label": "Inventar",
+            "description": "Inventarartikel, Lagerbestände, Reservierungen und Standorte"
+          },
+          "customers": {
+            "label": "Kunden",
+            "description": "Kunden, Adressen und Kundengruppen"
+          },
+          "pricing": {
+            "label": "Preise und Aktionen",
+            "description": "Preislisten, Preise, Aktionen und Kampagnen"
+          },
+          "shipping": {
+            "label": "Versand und Fulfillment",
+            "description": "Versandoptionen und -profile, Fulfillments und Servicezonen"
+          },
+          "store": {
+            "label": "Shop-Einstellungen",
+            "description": "Shop-Details, Regionen, Vertriebskanäle, Währungen, Steuern und Übersetzungen"
+          },
+          "team": {
+            "label": "Team und Zugriff",
+            "description": "Benutzer, Einladungen, Rollen und API-Schlüssel"
+          },
+          "system": {
+            "label": "System",
+            "description": "Dateien, Benachrichtigungen und Workflow-Ausführungen"
+          },
+          "custom": {
+            "label": "Benutzerdefiniert",
+            "description": "Berechtigungen, die durch Ihre Plugins und benutzerdefinierten Module hinzugefügt wurden"
+          }
+        },
+        "levels": {
+          "none": "Kein Zugriff",
+          "view": "Nur anzeigen",
+          "full": "Vollzugriff",
+          "mixed": "Gemischt"
+        },
+        "levelControlLabel": "Zugriffsebene für {{group}}",
+        "resourceColumn": "Ressource",
+        "notAvailable": "k. A.",
+        "notAvailableTooltip": "Diese Ressource definiert diese Berechtigung nicht",
+        "rowToggle": "Alle {{resource}}-Berechtigungen",
+        "columnToggle": {
+          "on": "{{operation}} für alle {{group}} aktivieren",
+          "off": "{{operation}} für alle {{group}} deaktivieren"
+        },
+        "search": {
+          "placeholder": "Berechtigungen suchen",
+          "emptyHeading": "Keine Berechtigungen entsprechen Ihrer Suche",
+          "emptyDescription": "Versuchen Sie einen Ressourcennamen wie Bestellungen oder Inventar."
+        },
+        "showKeys": "Berechtigungsschlüssel anzeigen",
+        "clearAll": "Alle löschen",
+        "lockedBadge_one": "{{count}} gesperrt",
+        "lockedBadge_other": "{{count}} gesperrt",
+        "lockedNote_one": "{{count}} Berechtigung in dieser Gruppe kann von Ihrem Konto nicht geändert werden, da Sie sie selbst nicht besitzen. Kein Zugriff, Nur anzeigen und Vollzugriff gelten für die übrigen.",
+        "lockedNote_other": "{{count}} Berechtigungen in dieser Gruppe können von Ihrem Konto nicht geändert werden, da Sie sie selbst nicht besitzen. Kein Zugriff, Nur anzeigen und Vollzugriff gelten für die übrigen.",
+        "tooltips": {
+          "cannotGrant": "Sie können dies nicht gewähren, da Ihr Konto diese Berechtigung nicht besitzt.",
+          "cannotRemove": "Diese Rolle hat diese Berechtigung. Sie können sie nicht ändern, da Ihr Konto sie nicht besitzt.",
+          "viewRequired": "Andere Berechtigungen dieser Ressource erfordern Anzeigerecht. Entfernen Sie diese zuerst."
+        },
+        "noViewAccess": "Kein Anzeigerecht",
+        "templates": {
+          "heading": "Von einer Vorlage starten",
+          "hint": "Optional. Das Anwenden einer Vorlage ersetzt die aktuelle Auswahl.",
+          "full": {
+            "label": "Vollzugriff",
+            "description": "Alles, was Sie heute gewähren können, einschließlich Teameinstellungen und benutzerdefinierter Berechtigungen."
+          },
+          "readonly": {
+            "label": "Nur Lesen",
+            "description": "Alles anzeigen, was Sie heute gewähren können. Nichts ändern."
+          },
+          "snapshotNote": "Vorlagen verwenden die heute vorhandenen Berechtigungen. Später hinzugefügte Berechtigungen, z. B. durch ein neues Plugin, sind nicht automatisch enthalten."
+        },
+        "confirm": {
+          "template": {
+            "title": "Auswahl ersetzen?",
+            "description": "Das Anwenden der Vorlage {{template}} ersetzt die ausgewählten Berechtigungen.",
+            "confirm": "Vorlage anwenden"
+          },
+          "clear": {
+            "title": "Alle Berechtigungen löschen?",
+            "descriptionCreate": "Dadurch werden alle ausgewählten Berechtigungen entfernt.",
+            "descriptionEdit": "Dadurch werden alle Berechtigungen entfernt, die Sie in dieser Rolle ändern können. Nichts wird gespeichert, bis Sie auf Speichern klicken."
+          }
+        },
+        "summary": {
+          "heading": "Rollenzusammenfassung",
+          "name": "Name",
+          "permissions": "Berechtigungen",
+          "selectedOfTotal": "{{selected}} von {{total}} ausgewählt",
+          "unsavedChanges": "Nicht gespeicherte Änderungen",
+          "noChanges": "Noch keine Änderungen",
+          "changes": "{{added}} hinzugefügt, {{removed}} entfernt",
+          "footnote": "Bereiche, die auf Kein Zugriff gesetzt sind, werden für Mitglieder mit dieser Rolle ausgeblendet. Vollzugriff umfasst die heute vorhandenen Berechtigungen. Später hinzugefügte Berechtigungen müssen hier gewährt werden.",
+          "wildcards": "Diese Rolle hat auch Platzhalterberechtigungen ({{keys}}). Sie werden über die API verwaltet und hier nicht angezeigt."
+        },
+        "createHint": "Wählen Sie mindestens eine Berechtigung aus, um die Rolle zu erstellen.",
+        "custom": {
+          "calloutHeading": "Eigene Berechtigungen hinzufügen",
+          "calloutDescription": "Plugins und benutzerdefinierte Module können eigene Berechtigungen definieren. Nach der Erstellung erscheinen sie in dieser Gruppe und können jeder Rolle zugewiesen werden.",
+          "calloutAction": "Anleitung lesen"
+        },
+        "detail": {
+          "heading": "Berechtigungen",
+          "count": "{{selected}} von {{total}} Berechtigungen",
+          "countOnly_one": "{{count}} Berechtigung",
+          "countOnly_other": "{{count}} Berechtigungen",
+          "granted": "Gewährt",
+          "notGranted": "Nicht gewährt",
+          "wildcards": "Diese Rolle hat Platzhalterberechtigungen ({{keys}}). Diese gewähren alle übereinstimmenden Berechtigungen, einschließlich später hinzugefügter, und werden über die API verwaltet."
+        }
       }
     },
     "list": {
@@ -3865,7 +3998,48 @@
       "return_reason": "Rückgabegrund",
       "refund_reason": "Erstattungsgrund",
       "workflow": "Workflow",
-      "translation": "Übersetzung"
+      "translation": "Übersetzung",
+      "customer_address": "Kundenadressen",
+      "inventory_item": "Inventarartikel",
+      "inventory_level": "Lagerbestände",
+      "reservation_item": "Reservierungen",
+      "order_item": "Bestellartikel",
+      "order_change": "Bestellungsänderungen",
+      "order_address": "Bestelladressen",
+      "order_claim": "Reklamationen",
+      "order_claim_item": "Reklamationsartikel",
+      "order_exchange": "Umtausch",
+      "order_credit_line": "Bestellkreditlinien",
+      "return": "Rücksendungen",
+      "payment": "Zahlungen",
+      "payment_collection": "Zahlungssammlungen",
+      "payment_method": "Zahlungsmethoden",
+      "payment_session": "Zahlungssitzungen",
+      "refund": "Erstattungen",
+      "capture": "Zahlungserfassungen",
+      "price_preference": "Preiseinstellungen",
+      "price": "Preise",
+      "currency": "Währungen",
+      "product_variant": "Produktvarianten",
+      "product_option": "Produktoptionen",
+      "product_option_value": "Produktoptionswerte",
+      "property_label": "Eigenschaftsbezeichnungen",
+      "shipping_option_type": "Versandoptionstypen",
+      "fulfillment": "Fulfillments",
+      "fulfillment_provider": "Fulfillment-Anbieter",
+      "fulfillment_set": "Fulfillment-Sets",
+      "service_zone": "Servicezonen",
+      "file": "Dateien",
+      "notification": "Benachrichtigungen",
+      "workflow_execution": "Workflow-Ausführungen",
+      "store_locale": "Shop-Sprachregionen",
+      "tax_provider": "Steueranbieter",
+      "tax_rate": "Steuersätze",
+      "translation_setting": "Übersetzungseinstellungen",
+      "invite": "Einladungen",
+      "rbac_role": "Rollen",
+      "rbac_policy": "Berechtigungen",
+      "rbac_role_assignment": "Rollenzuweisungen"
     },
     "actions": {
       "read": "Anzeigen",

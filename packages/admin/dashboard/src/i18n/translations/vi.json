@@ -3537,6 +3537,47 @@
       "store": "Cửa hàng",
       "tax_region": "Khu vực thuế",
       "translation": "Bản dịch",
+      "customer_address": "Địa chỉ khách hàng",
+      "inventory_item": "Mặt hàng tồn kho",
+      "inventory_level": "Mức tồn kho",
+      "reservation_item": "Đặt trước",
+      "order_item": "Mặt hàng đơn hàng",
+      "order_change": "Thay đổi đơn hàng",
+      "order_address": "Địa chỉ đơn hàng",
+      "order_claim": "Khiếu nại",
+      "order_claim_item": "Mặt hàng khiếu nại",
+      "order_exchange": "Đổi hàng",
+      "order_credit_line": "Dòng tín dụng đơn hàng",
+      "return": "Trả hàng",
+      "payment": "Thanh toán",
+      "payment_collection": "Bộ thanh toán",
+      "payment_method": "Phương thức thanh toán",
+      "payment_session": "Phiên thanh toán",
+      "refund": "Hoàn tiền",
+      "capture": "Ghi nhận",
+      "price_preference": "Tùy chọn giá",
+      "price": "Giá",
+      "currency": "Tiền tệ",
+      "product_variant": "Biến thể sản phẩm",
+      "product_option": "Tùy chọn sản phẩm",
+      "product_option_value": "Giá trị tùy chọn sản phẩm",
+      "property_label": "Nhãn thuộc tính",
+      "shipping_option_type": "Loại tùy chọn vận chuyển",
+      "fulfillment": "Xử lý giao hàng",
+      "fulfillment_provider": "Nhà cung cấp xử lý giao hàng",
+      "fulfillment_set": "Bộ xử lý giao hàng",
+      "service_zone": "Khu vực dịch vụ",
+      "file": "Tệp",
+      "notification": "Thông báo",
+      "workflow_execution": "Lần thực thi luồng công việc",
+      "store_locale": "Ngôn ngữ cửa hàng",
+      "tax_provider": "Nhà cung cấp thuế",
+      "tax_rate": "Thuế suất",
+      "translation_setting": "Cài đặt bản dịch",
+      "invite": "Lời mời",
+      "rbac_role": "Vai trò",
+      "rbac_policy": "Quyền",
+      "rbac_role_assignment": "Phân công vai trò",
       "user": "Người dùng",
       "workflow": "Luồng công việc"
     }
@@ -3704,6 +3745,7 @@
     },
     "delete": {
       "description": "Bạn sắp xóa vai trò {{name}}. Hành động này không thể hoàn tác.",
+      "descriptionWithUsers_other": "Bạn sắp xóa vai trò {{name}}. {{count}} người dùng có vai trò này và sẽ mất quyền truy cập mà nó cấp. Hành động này không thể hoàn tác.",
       "successToast": "Vai trò {{name}} đã được xóa",
       "title": "Xóa vai trò"
     },
@@ -3736,6 +3778,134 @@
       },
       "manage": {
         "successToast": "Quyền đã được cập nhật thành công."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Đơn hàng",
+            "description": "Đơn hàng, thay đổi đơn hàng, khiếu nại, đổi hàng và trả hàng"
+          },
+          "payments": {
+            "label": "Thanh toán",
+            "description": "Thanh toán, bộ thanh toán, hoàn tiền và ghi nhận"
+          },
+          "products": {
+            "label": "Sản phẩm",
+            "description": "Sản phẩm, biến thể, tùy chọn, danh mục, bộ sưu tập, loại và thẻ"
+          },
+          "inventory": {
+            "label": "Kho hàng",
+            "description": "Mặt hàng tồn kho, mức tồn kho, đặt trước và vị trí"
+          },
+          "customers": {
+            "label": "Khách hàng",
+            "description": "Khách hàng, địa chỉ và nhóm khách hàng"
+          },
+          "pricing": {
+            "label": "Giá cả và khuyến mãi",
+            "description": "Bảng giá, giá, khuyến mãi và chiến dịch"
+          },
+          "shipping": {
+            "label": "Vận chuyển và xử lý giao hàng",
+            "description": "Tùy chọn vận chuyển và hồ sơ, xử lý giao hàng và khu vực dịch vụ"
+          },
+          "store": {
+            "label": "Cài đặt cửa hàng",
+            "description": "Chi tiết cửa hàng, khu vực, kênh bán hàng, tiền tệ, thuế và bản dịch"
+          },
+          "team": {
+            "label": "Nhóm và quyền truy cập",
+            "description": "Người dùng, lời mời, vai trò và khóa API"
+          },
+          "system": {
+            "label": "Hệ thống",
+            "description": "Tệp, thông báo và lần thực thi luồng công việc"
+          },
+          "custom": {
+            "label": "Tùy chỉnh",
+            "description": "Quyền được thêm bởi plugin và module tùy chỉnh của bạn"
+          }
+        },
+        "levels": {
+          "none": "Không có quyền truy cập",
+          "view": "Chỉ xem",
+          "full": "Toàn quyền truy cập",
+          "mixed": "Hỗn hợp"
+        },
+        "levelControlLabel": "Mức độ truy cập cho {{group}}",
+        "resourceColumn": "Tài nguyên",
+        "notAvailable": "n/a",
+        "notAvailableTooltip": "Tài nguyên này không xác định quyền này",
+        "rowToggle": "Tất cả quyền {{resource}}",
+        "columnToggle": {
+          "on": "Bật {{operation}} cho tất cả {{group}}",
+          "off": "Tắt {{operation}} cho tất cả {{group}}"
+        },
+        "search": {
+          "placeholder": "Tìm kiếm quyền",
+          "emptyHeading": "Không có quyền nào khớp với tìm kiếm của bạn",
+          "emptyDescription": "Thử tên tài nguyên như đơn hàng hoặc kho hàng."
+        },
+        "showKeys": "Hiển thị khóa quyền",
+        "clearAll": "Xóa tất cả",
+        "lockedBadge_other": "{{count}} đã bị khóa",
+        "lockedNote_other": "{{count}} quyền trong nhóm này không thể thay đổi từ tài khoản của bạn, vì bạn không có chúng. Không có quyền truy cập, Chỉ xem và Toàn quyền truy cập áp dụng cho phần còn lại.",
+        "tooltips": {
+          "cannotGrant": "Bạn không thể cấp quyền này vì tài khoản của bạn không có nó.",
+          "cannotRemove": "Vai trò này có quyền này. Bạn không thể thay đổi nó vì tài khoản của bạn không có nó.",
+          "viewRequired": "Các quyền khác trên tài nguyên này cần quyền xem. Hãy xóa những quyền đó trước."
+        },
+        "noViewAccess": "Không có quyền xem",
+        "templates": {
+          "heading": "Bắt đầu từ một mẫu",
+          "hint": "Tùy chọn. Áp dụng mẫu sẽ thay thế lựa chọn hiện tại.",
+          "full": {
+            "label": "Toàn quyền truy cập",
+            "description": "Tất cả những gì bạn có thể cấp ngay hôm nay, bao gồm cài đặt nhóm và quyền tùy chỉnh."
+          },
+          "readonly": {
+            "label": "Chỉ đọc",
+            "description": "Xem tất cả những gì bạn có thể cấp ngay hôm nay. Không thay đổi bất cứ điều gì."
+          },
+          "snapshotNote": "Mẫu sử dụng các quyền tồn tại ngày hôm nay. Các quyền được thêm sau, ví dụ bởi một plugin mới, không được bao gồm tự động."
+        },
+        "confirm": {
+          "template": {
+            "title": "Thay thế lựa chọn của bạn?",
+            "description": "Áp dụng mẫu {{template}} sẽ thay thế các quyền bạn đã chọn.",
+            "confirm": "Áp dụng mẫu"
+          },
+          "clear": {
+            "title": "Xóa tất cả quyền?",
+            "descriptionCreate": "Thao tác này sẽ xóa mọi quyền bạn đã chọn.",
+            "descriptionEdit": "Thao tác này sẽ xóa mọi quyền bạn có thể thay đổi từ vai trò này. Không có gì được lưu cho đến khi bạn chọn Lưu."
+          }
+        },
+        "summary": {
+          "heading": "Tóm tắt vai trò",
+          "name": "Tên",
+          "permissions": "Quyền",
+          "selectedOfTotal": "{{selected}} trong số {{total}} đã chọn",
+          "unsavedChanges": "Thay đổi chưa lưu",
+          "noChanges": "Chưa có thay đổi",
+          "changes": "{{added}} đã thêm, {{removed}} đã xóa",
+          "footnote": "Các khu vực được đặt thành Không có quyền truy cập sẽ bị ẩn với các thành viên có vai trò này. Toàn quyền truy cập bao gồm các quyền tồn tại ngày hôm nay. Các quyền được thêm sau cần được cấp ở đây.",
+          "wildcards": "Vai trò này cũng có quyền ký tự đại diện ({{keys}}). Chúng được quản lý thông qua API và không được hiển thị ở đây."
+        },
+        "createHint": "Chọn ít nhất một quyền để tạo vai trò.",
+        "custom": {
+          "calloutHeading": "Thêm quyền của riêng bạn",
+          "calloutDescription": "Plugin và module tùy chỉnh có thể xác định quyền riêng của chúng. Sau khi được tạo, chúng xuất hiện trong nhóm này, sẵn sàng để gán cho bất kỳ vai trò nào.",
+          "calloutAction": "Đọc hướng dẫn"
+        },
+        "detail": {
+          "heading": "Quyền",
+          "count": "{{selected}} trong số {{total}} quyền",
+          "countOnly_other": "{{count}} quyền",
+          "granted": "Đã cấp",
+          "notGranted": "Chưa cấp",
+          "wildcards": "Vai trò này có quyền ký tự đại diện ({{keys}}). Chúng cấp mọi quyền mà chúng khớp, bao gồm cả những quyền được thêm sau, và được quản lý thông qua API."
+        }
       },
       "header": "Quản lý quyền",
       "hint": "Chọn các quyền mà vai trò này nên bao gồm."

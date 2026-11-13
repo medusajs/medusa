@@ -2896,6 +2896,9 @@
     "delete": {
       "title": "Ștergeți rolul",
       "description": "Urmați să ștergeți rolul {{name}}. Această acțiune nu poate fi anulată.",
+      "descriptionWithUsers_one": "Sunteți pe cale să ștergeți rolul {{name}}. {{count}} utilizator are acest rol și va pierde accesul pe care îl acordă. Această acțiune nu poate fi anulată.",
+      "descriptionWithUsers_few": "Sunteți pe cale să ștergeți rolul {{name}}. {{count}} utilizatori au acest rol și vor pierde accesul pe care îl acordă. Această acțiune nu poate fi anulată.",
+      "descriptionWithUsers_other": "Sunteți pe cale să ștergeți rolul {{name}}. {{count}} de utilizatori au acest rol și vor pierde accesul pe care îl acordă. Această acțiune nu poate fi anulată.",
       "successToast": "Rolul {{name}} șters"
     },
     "fields": {
@@ -2939,6 +2942,140 @@
       },
       "manage": {
         "successToast": "Permisiunile au fost actualizate cu succes."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Comenzi",
+            "description": "Comenzi, modificări de comenzi, reclamații, schimburi și returnări"
+          },
+          "payments": {
+            "label": "Plăți",
+            "description": "Plăți, colecții de plăți, rambursări și captări"
+          },
+          "products": {
+            "label": "Produse",
+            "description": "Produse, variante, opțiuni, categorii, colecții, tipuri și etichete"
+          },
+          "inventory": {
+            "label": "Inventar",
+            "description": "Articole de inventar, niveluri de stoc, rezervări și locații"
+          },
+          "customers": {
+            "label": "Clienți",
+            "description": "Clienți, adrese și grupuri de clienți"
+          },
+          "pricing": {
+            "label": "Prețuri și promoții",
+            "description": "Liste de prețuri, prețuri, promoții și campanii"
+          },
+          "shipping": {
+            "label": "Expediere și îndeplinire",
+            "description": "Opțiuni și profiluri de expediere, îndepliniri și zone de servicii"
+          },
+          "store": {
+            "label": "Setări magazin",
+            "description": "Detalii magazin, regiuni, canale de vânzare, valute, taxe și traduceri"
+          },
+          "team": {
+            "label": "Echipă și acces",
+            "description": "Utilizatori, invitații, roluri și chei API"
+          },
+          "system": {
+            "label": "Sistem",
+            "description": "Fișiere, notificări și execuții de flux de lucru"
+          },
+          "custom": {
+            "label": "Personalizat",
+            "description": "Permisiuni adăugate de plugin-urile și modulele dvs. personalizate"
+          }
+        },
+        "levels": {
+          "none": "Fără acces",
+          "view": "Doar vizualizare",
+          "full": "Acces complet",
+          "mixed": "Mixt"
+        },
+        "levelControlLabel": "Nivel de acces pentru {{group}}",
+        "resourceColumn": "Resursă",
+        "notAvailable": "n/a",
+        "notAvailableTooltip": "Această resursă nu definește această permisiune",
+        "rowToggle": "Toate permisiunile {{resource}}",
+        "columnToggle": {
+          "on": "Activați {{operation}} pentru toate {{group}}",
+          "off": "Dezactivați {{operation}} pentru toate {{group}}"
+        },
+        "search": {
+          "placeholder": "Căutați permisiuni",
+          "emptyHeading": "Nicio permisiune nu corespunde căutării dvs.",
+          "emptyDescription": "Încercați un nume de resursă precum comenzi sau inventar."
+        },
+        "showKeys": "Afișați cheile de permisiuni",
+        "clearAll": "Ștergeți toate",
+        "lockedBadge_one": "{{count}} blocat",
+        "lockedBadge_few": "{{count}} blocate",
+        "lockedBadge_other": "{{count}} blocate",
+        "lockedNote_one": "{{count}} permisiune din acest grup nu poate fi modificată din contul dvs., deoarece nu o aveți dvs. înșivă. Fără acces, Doar vizualizare și Acces complet se aplică restului.",
+        "lockedNote_few": "{{count}} permisiuni din acest grup nu pot fi modificate din contul dvs., deoarece nu le aveți dvs. înșivă. Fără acces, Doar vizualizare și Acces complet se aplică restului.",
+        "lockedNote_other": "{{count}} de permisiuni din acest grup nu pot fi modificate din contul dvs., deoarece nu le aveți dvs. înșivă. Fără acces, Doar vizualizare și Acces complet se aplică restului.",
+        "tooltips": {
+          "cannotGrant": "Nu puteți acorda aceasta deoarece contul dvs. nu o are.",
+          "cannotRemove": "Acest rol are această permisiune. Nu o puteți modifica deoarece contul dvs. nu o are.",
+          "viewRequired": "Alte permisiuni pentru această resursă necesită vizualizare. Eliminați-le mai întâi."
+        },
+        "noViewAccess": "Fără acces de vizualizare",
+        "templates": {
+          "heading": "Începeți de la un șablon",
+          "hint": "Opțional. Aplicarea unui șablon înlocuiește selecția curentă.",
+          "full": {
+            "label": "Acces complet",
+            "description": "Tot ce puteți acorda astăzi, inclusiv setările echipei și permisiunile personalizate."
+          },
+          "readonly": {
+            "label": "Doar citire",
+            "description": "Vizualizați tot ce puteți acorda astăzi. Nu modificați nimic."
+          },
+          "snapshotNote": "Șabloanele utilizează permisiunile care există astăzi. Permisiunile adăugate ulterior, de exemplu de un nou plugin, nu sunt incluse automat."
+        },
+        "confirm": {
+          "template": {
+            "title": "Înlocuiți selecția dvs.?",
+            "description": "Aplicarea șablonului {{template}} înlocuiește permisiunile pe care le-ați selectat.",
+            "confirm": "Aplicați șablonul"
+          },
+          "clear": {
+            "title": "Ștergeți toate permisiunile?",
+            "descriptionCreate": "Aceasta elimină fiecare permisiune pe care ați selectat-o.",
+            "descriptionEdit": "Aceasta elimină fiecare permisiune pe care o puteți modifica din acest rol. Nimic nu este salvat până când nu selectați Salvare."
+          }
+        },
+        "summary": {
+          "heading": "Rezumatul rolului",
+          "name": "Nume",
+          "permissions": "Permisiuni",
+          "selectedOfTotal": "{{selected}} din {{total}} selectate",
+          "unsavedChanges": "Modificări nesalvate",
+          "noChanges": "Fără modificări încă",
+          "changes": "{{added}} adăugate, {{removed}} eliminate",
+          "footnote": "Zonele setate pe Fără acces sunt ascunse de membrii cu acest rol. Accesul complet acoperă permisiunile care există astăzi. Permisiunile adăugate ulterior trebuie acordate aici.",
+          "wildcards": "Acest rol are și permisiuni wildcard ({{keys}}). Acestea sunt gestionate prin API și nu sunt afișate aici."
+        },
+        "createHint": "Selectați cel puțin o permisiune pentru a crea rolul.",
+        "custom": {
+          "calloutHeading": "Adăugați propriile permisiuni",
+          "calloutDescription": "Plugin-urile și modulele personalizate pot defini propriile permisiuni. Odată create, acestea apar în acest grup, gata de atribuit oricărui rol.",
+          "calloutAction": "Citiți ghidul"
+        },
+        "detail": {
+          "heading": "Permisiuni",
+          "count": "{{selected}} din {{total}} permisiuni",
+          "countOnly_one": "{{count}} permisiune",
+          "countOnly_few": "{{count}} permisiuni",
+          "countOnly_other": "{{count}} de permisiuni",
+          "granted": "Acordată",
+          "notGranted": "Neacordată",
+          "wildcards": "Acest rol are permisiuni wildcard ({{keys}}). Acestea acordă fiecare permisiune pe care o corespund, inclusiv cele adăugate ulterior, și sunt gestionate prin API."
+        }
       }
     },
     "list": {
@@ -3915,7 +4052,48 @@
       "return_reason": "Motiv de retur",
       "refund_reason": "Motiv de rambursare",
       "workflow": "Flux de lucru",
-      "translation": "Traducere"
+      "translation": "Traducere",
+      "customer_address": "Adrese clienți",
+      "inventory_item": "Articole de inventar",
+      "inventory_level": "Niveluri de inventar",
+      "reservation_item": "Rezervări",
+      "order_item": "Articole de comandă",
+      "order_change": "Modificări de comandă",
+      "order_address": "Adrese de comandă",
+      "order_claim": "Reclamații",
+      "order_claim_item": "Articole de reclamație",
+      "order_exchange": "Schimburi",
+      "order_credit_line": "Linii de credit ale comenzii",
+      "return": "Returnări",
+      "payment": "Plăți",
+      "payment_collection": "Colecții de plăți",
+      "payment_method": "Metode de plată",
+      "payment_session": "Sesiuni de plată",
+      "refund": "Rambursări",
+      "capture": "Captări",
+      "price_preference": "Preferințe de preț",
+      "price": "Prețuri",
+      "currency": "Valute",
+      "product_variant": "Variante de produs",
+      "product_option": "Opțiuni de produs",
+      "product_option_value": "Valori de opțiuni de produs",
+      "property_label": "Etichete de proprietate",
+      "shipping_option_type": "Tipuri de opțiuni de expediere",
+      "fulfillment": "Livrări",
+      "fulfillment_provider": "Furnizori de livrare",
+      "fulfillment_set": "Seturi de livrare",
+      "service_zone": "Zone de servicii",
+      "file": "Fișiere",
+      "notification": "Notificări",
+      "workflow_execution": "Execuții de flux de lucru",
+      "store_locale": "Locale ale magazinului",
+      "tax_provider": "Furnizori fiscali",
+      "tax_rate": "Cote de taxă",
+      "translation_setting": "Setări de traducere",
+      "invite": "Invitații",
+      "rbac_role": "Roluri",
+      "rbac_policy": "Permisiuni",
+      "rbac_role_assignment": "Atribuiri de rol"
     },
     "actions": {
       "read": "Vizualizare",

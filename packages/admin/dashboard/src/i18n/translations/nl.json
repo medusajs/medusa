@@ -2863,6 +2863,8 @@
     "delete": {
       "title": "Rol verwijderen",
       "description": "U staat op het punt de rol {{name}} te verwijderen. Deze actie kan niet ongedaan worden gemaakt.",
+      "descriptionWithUsers_one": "U staat op het punt de rol {{name}} te verwijderen. {{count}} gebruiker heeft deze rol en verliest de toegang die deze verleent. Deze actie kan niet ongedaan worden gemaakt.",
+      "descriptionWithUsers_other": "U staat op het punt de rol {{name}} te verwijderen. {{count}} gebruikers hebben deze rol en verliezen de toegang die deze verleent. Deze actie kan niet ongedaan worden gemaakt.",
       "successToast": "Rol {{name}} verwijderd"
     },
     "fields": {
@@ -2903,6 +2905,137 @@
       },
       "manage": {
         "successToast": "Machtigingen zijn succesvol bijgewerkt."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Bestellingen",
+            "description": "Bestellingen, orderwijzigingen, claims, ruilen en retouren"
+          },
+          "payments": {
+            "label": "Betalingen",
+            "description": "Betalingen, betalingsverzamelingen, terugbetalingen en incasso's"
+          },
+          "products": {
+            "label": "Producten",
+            "description": "Producten, varianten, opties, categorieën, collecties, typen en tags"
+          },
+          "inventory": {
+            "label": "Voorraad",
+            "description": "Voorraadartikelen, voorraadniveaus, reserveringen en locaties"
+          },
+          "customers": {
+            "label": "Klanten",
+            "description": "Klanten, adressen en klantengroepen"
+          },
+          "pricing": {
+            "label": "Prijzen en promoties",
+            "description": "Prijslijsten, prijzen, promoties en campagnes"
+          },
+          "shipping": {
+            "label": "Verzending en fulfillment",
+            "description": "Verzendopties en -profielen, fulfillments en servicezones"
+          },
+          "store": {
+            "label": "Winkelinstellingen",
+            "description": "Winkelgegevens, regio's, verkoopkanalen, valuta's, belastingen en vertalingen"
+          },
+          "team": {
+            "label": "Team en toegang",
+            "description": "Gebruikers, uitnodigingen, rollen en API-sleutels"
+          },
+          "system": {
+            "label": "Systeem",
+            "description": "Bestanden, meldingen en workflow-uitvoeringen"
+          },
+          "custom": {
+            "label": "Aangepast",
+            "description": "Machtigingen toegevoegd door uw plugins en aangepaste modules"
+          }
+        },
+        "levels": {
+          "none": "Geen toegang",
+          "view": "Alleen bekijken",
+          "full": "Volledige toegang",
+          "mixed": "Gemengd"
+        },
+        "levelControlLabel": "Toegangsniveau voor {{group}}",
+        "resourceColumn": "Resource",
+        "notAvailable": "n.v.t.",
+        "notAvailableTooltip": "Deze resource definieert deze machtiging niet",
+        "rowToggle": "Alle {{resource}}-machtigingen",
+        "columnToggle": {
+          "on": "{{operation}} inschakelen voor alle {{group}}",
+          "off": "{{operation}} uitschakelen voor alle {{group}}"
+        },
+        "search": {
+          "placeholder": "Machtigingen zoeken",
+          "emptyHeading": "Geen machtigingen gevonden",
+          "emptyDescription": "Probeer een resourcenaam zoals bestellingen of voorraad."
+        },
+        "showKeys": "Machtigingssleutels weergeven",
+        "clearAll": "Alles wissen",
+        "lockedBadge_one": "{{count}} vergrendeld",
+        "lockedBadge_other": "{{count}} vergrendeld",
+        "lockedNote_one": "{{count}} machtiging in deze groep kan niet worden gewijzigd vanuit uw account, omdat u deze zelf niet heeft. Geen toegang, Alleen bekijken en Volledige toegang zijn van toepassing op de rest.",
+        "lockedNote_other": "{{count}} machtigingen in deze groep kunnen niet worden gewijzigd vanuit uw account, omdat u deze zelf niet heeft. Geen toegang, Alleen bekijken en Volledige toegang zijn van toepassing op de rest.",
+        "tooltips": {
+          "cannotGrant": "U kunt dit niet verlenen omdat uw account dit niet heeft.",
+          "cannotRemove": "Deze rol heeft deze machtiging. U kunt dit niet wijzigen omdat uw account dit niet heeft.",
+          "viewRequired": "Andere machtigingen op deze resource vereisen bekijktoegang. Verwijder die eerst."
+        },
+        "noViewAccess": "Geen bekijktoegang",
+        "templates": {
+          "heading": "Begin vanuit een sjabloon",
+          "hint": "Optioneel. Het toepassen van een sjabloon vervangt de huidige selectie.",
+          "full": {
+            "label": "Volledige toegang",
+            "description": "Alles wat u vandaag kunt verlenen, inclusief teaminstellingen en aangepaste machtigingen."
+          },
+          "readonly": {
+            "label": "Alleen lezen",
+            "description": "Bekijk alles wat u vandaag kunt verlenen. Wijzig niets."
+          },
+          "snapshotNote": "Sjablonen gebruiken de machtigingen die vandaag bestaan. Machtigingen die later worden toegevoegd, bijvoorbeeld door een nieuwe plugin, worden niet automatisch opgenomen."
+        },
+        "confirm": {
+          "template": {
+            "title": "Uw selectie vervangen?",
+            "description": "Het toepassen van het sjabloon {{template}} vervangt de machtigingen die u heeft geselecteerd.",
+            "confirm": "Sjabloon toepassen"
+          },
+          "clear": {
+            "title": "Alle machtigingen wissen?",
+            "descriptionCreate": "Dit verwijdert elke machtiging die u heeft geselecteerd.",
+            "descriptionEdit": "Dit verwijdert elke machtiging die u kunt wijzigen uit deze rol. Er wordt niets opgeslagen totdat u op Opslaan klikt."
+          }
+        },
+        "summary": {
+          "heading": "Roloverzicht",
+          "name": "Naam",
+          "permissions": "Machtigingen",
+          "selectedOfTotal": "{{selected}} van {{total}} geselecteerd",
+          "unsavedChanges": "Niet-opgeslagen wijzigingen",
+          "noChanges": "Nog geen wijzigingen",
+          "changes": "{{added}} toegevoegd, {{removed}} verwijderd",
+          "footnote": "Gebieden die zijn ingesteld op Geen toegang zijn verborgen voor leden met deze rol. Volledige toegang omvat de machtigingen die vandaag bestaan. Machtigingen die later worden toegevoegd, moeten hier worden verleend.",
+          "wildcards": "Deze rol heeft ook wildcard-machtigingen ({{keys}}). Ze worden beheerd via de API en worden hier niet weergegeven."
+        },
+        "createHint": "Selecteer ten minste één machtiging om de rol aan te maken.",
+        "custom": {
+          "calloutHeading": "Voeg uw eigen machtigingen toe",
+          "calloutDescription": "Plugins en aangepaste modules kunnen hun eigen machtigingen definiëren. Eenmaal aangemaakt, verschijnen ze in deze groep, klaar om aan elke rol toe te wijzen.",
+          "calloutAction": "Lees de handleiding"
+        },
+        "detail": {
+          "heading": "Machtigingen",
+          "count": "{{selected}} van {{total}} machtigingen",
+          "countOnly_one": "{{count}} machtiging",
+          "countOnly_other": "{{count}} machtigingen",
+          "granted": "Verleend",
+          "notGranted": "Niet verleend",
+          "wildcards": "Deze rol heeft wildcard-machtigingen ({{keys}}). Ze verlenen elke machtiging die ze overeenkomen, inclusief machtigingen die later worden toegevoegd, en worden beheerd via de API."
+        }
       }
     },
     "list": {
@@ -3863,7 +3996,48 @@
       "return_reason": "Retourreden",
       "refund_reason": "Terugbetalingsreden",
       "workflow": "Workflow",
-      "translation": "Vertaling"
+      "translation": "Vertaling",
+      "customer_address": "Klantadressen",
+      "inventory_item": "Voorraadartikelen",
+      "inventory_level": "Voorraadniveaus",
+      "reservation_item": "Reserveringen",
+      "order_item": "Orderregels",
+      "order_change": "Orderwijzigingen",
+      "order_address": "Orderadressen",
+      "order_claim": "Claims",
+      "order_claim_item": "Claimartikelen",
+      "order_exchange": "Ruilen",
+      "order_credit_line": "Orderkredietregels",
+      "return": "Retouren",
+      "payment": "Betalingen",
+      "payment_collection": "Betalingsverzamelingen",
+      "payment_method": "Betaalmethoden",
+      "payment_session": "Betaalsessies",
+      "refund": "Terugbetalingen",
+      "capture": "Incasso's",
+      "price_preference": "Prijsvoorkeuren",
+      "price": "Prijzen",
+      "currency": "Valuta's",
+      "product_variant": "Productvarianten",
+      "product_option": "Productopties",
+      "product_option_value": "Productoptiewaarden",
+      "property_label": "Eigenschapslabels",
+      "shipping_option_type": "Verzendoptietypen",
+      "fulfillment": "Fulfillments",
+      "fulfillment_provider": "Fulfillmentproviders",
+      "fulfillment_set": "Fulfillmentsets",
+      "service_zone": "Servicezones",
+      "file": "Bestanden",
+      "notification": "Meldingen",
+      "workflow_execution": "Workflow-uitvoeringen",
+      "store_locale": "Winkellocales",
+      "tax_provider": "Belastingproviders",
+      "tax_rate": "Belastingtarieven",
+      "translation_setting": "Vertaalinstellingen",
+      "invite": "Uitnodigingen",
+      "rbac_role": "Rollen",
+      "rbac_policy": "Machtigingen",
+      "rbac_role_assignment": "Roltoewijzingen"
     },
     "actions": {
       "read": "Bekijken",
