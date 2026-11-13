@@ -1,13 +1,13 @@
 {
 	"schemaVersion": "2.0",
-	"id": 20500,
+	"id": 20514,
 	"name": "user-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 20509,
+			"id": 20523,
 			"name": "Invite",
 			"variant": "declaration",
 			"kind": 32,
@@ -19,7 +19,7 @@
 					"fileName": "invite.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/invite.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/invite.ts#L3"
 				}
 			],
 			"type": {
@@ -41,14 +41,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 20510,
+									"id": 20524,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 20511,
+											"id": 20525,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -66,7 +66,7 @@
 													"fileName": "invite.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/invite.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/invite.ts#L5"
 												}
 											],
 											"type": {
@@ -94,7 +94,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20512,
+											"id": 20526,
 											"name": "email",
 											"variant": "declaration",
 											"kind": 1024,
@@ -112,7 +112,7 @@
 													"fileName": "invite.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/invite.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/invite.ts#L6"
 												}
 											],
 											"type": {
@@ -128,7 +128,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20513,
+											"id": 20527,
 											"name": "accepted",
 											"variant": "declaration",
 											"kind": 1024,
@@ -146,7 +146,7 @@
 													"fileName": "invite.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/invite.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/invite.ts#L7"
 												}
 											],
 											"type": {
@@ -162,7 +162,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20514,
+											"id": 20528,
 											"name": "token",
 											"variant": "declaration",
 											"kind": 1024,
@@ -180,7 +180,7 @@
 													"fileName": "invite.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/invite.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/invite.ts#L8"
 												}
 											],
 											"type": {
@@ -196,7 +196,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20515,
+											"id": 20529,
 											"name": "expires_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -214,7 +214,7 @@
 													"fileName": "invite.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/invite.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/invite.ts#L9"
 												}
 											],
 											"type": {
@@ -230,7 +230,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20516,
+											"id": 20530,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -250,7 +250,7 @@
 													"fileName": "invite.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/invite.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/invite.ts#L10"
 												}
 											],
 											"type": {
@@ -304,12 +304,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												20511,
-												20512,
-												20513,
-												20514,
-												20515,
-												20516
+												20525,
+												20526,
+												20527,
+												20528,
+												20529,
+												20530
 											]
 										}
 									]
@@ -330,7 +330,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 20501,
+			"id": 20515,
 			"name": "User",
 			"variant": "declaration",
 			"kind": 32,
@@ -342,7 +342,7 @@
 					"fileName": "user.ts",
 					"line": 3,
 					"character": 13,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/user.ts#L3"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/user.ts#L3"
 				}
 			],
 			"type": {
@@ -364,14 +364,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 20502,
+									"id": 20516,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 20503,
+											"id": 20517,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -389,7 +389,7 @@
 													"fileName": "user.ts",
 													"line": 5,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/user.ts#L5"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/user.ts#L5"
 												}
 											],
 											"type": {
@@ -417,7 +417,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20504,
+											"id": 20518,
 											"name": "first_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -437,7 +437,7 @@
 													"fileName": "user.ts",
 													"line": 6,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/user.ts#L6"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/user.ts#L6"
 												}
 											],
 											"type": {
@@ -453,7 +453,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20505,
+											"id": 20519,
 											"name": "last_name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -473,7 +473,7 @@
 													"fileName": "user.ts",
 													"line": 7,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/user.ts#L7"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/user.ts#L7"
 												}
 											],
 											"type": {
@@ -489,7 +489,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20506,
+											"id": 20520,
 											"name": "email",
 											"variant": "declaration",
 											"kind": 1024,
@@ -507,7 +507,7 @@
 													"fileName": "user.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/user.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/user.ts#L8"
 												}
 											],
 											"type": {
@@ -523,7 +523,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20507,
+											"id": 20521,
 											"name": "avatar_url",
 											"variant": "declaration",
 											"kind": 1024,
@@ -543,7 +543,7 @@
 													"fileName": "user.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/user.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/user.ts#L9"
 												}
 											],
 											"type": {
@@ -559,7 +559,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 20508,
+											"id": 20522,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -579,7 +579,7 @@
 													"fileName": "user.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/user/src/models/user.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/user/src/models/user.ts#L10"
 												}
 											],
 											"type": {
@@ -633,12 +633,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												20503,
-												20504,
-												20505,
-												20506,
-												20507,
-												20508
+												20517,
+												20518,
+												20519,
+												20520,
+												20521,
+												20522
 											]
 										}
 									]
@@ -663,94 +663,94 @@
 		{
 			"title": "Variables",
 			"children": [
-				20509,
-				20501
+				20523,
+				20515
 			]
 		}
 	],
 	"packageName": "@medusajs/user",
 	"symbolIdMap": {
-		"20500": {
+		"20514": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"20501": {
+		"20515": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/user.ts",
 			"qualifiedName": "User"
 		},
-		"20502": {
+		"20516": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object"
 		},
-		"20503": {
+		"20517": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.id"
 		},
-		"20504": {
+		"20518": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.first_name"
 		},
-		"20505": {
+		"20519": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.last_name"
 		},
-		"20506": {
+		"20520": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.email"
 		},
-		"20507": {
+		"20521": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.avatar_url"
 		},
-		"20508": {
+		"20522": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/user.ts",
 			"qualifiedName": "__object.metadata"
 		},
-		"20509": {
+		"20523": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "Invite"
 		},
-		"20510": {
+		"20524": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object"
 		},
-		"20511": {
+		"20525": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.id"
 		},
-		"20512": {
+		"20526": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.email"
 		},
-		"20513": {
+		"20527": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.accepted"
 		},
-		"20514": {
+		"20528": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.token"
 		},
-		"20515": {
+		"20529": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.expires_at"
 		},
-		"20516": {
+		"20530": {
 			"packageName": "@medusajs/user",
 			"packagePath": "src/models/invite.ts",
 			"qualifiedName": "__object.metadata"
@@ -761,7 +761,7 @@
 			"1": "../../../../packages/modules/user/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 20500
+			"1": 20514
 		}
 	}
 }

@@ -1,6 +1,6 @@
 {
 	"schemaVersion": "2.0",
-	"id": 15543,
+	"id": 15557,
 	"name": "promotion-models",
 	"variant": "project",
 	"kind": 1,
@@ -19,7 +19,7 @@
 	},
 	"children": [
 		{
-			"id": 15544,
+			"id": 15558,
 			"name": "ApplicationMethod",
 			"variant": "declaration",
 			"kind": 32,
@@ -31,7 +31,7 @@
 					"fileName": "application-method.ts",
 					"line": 5,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L5"
 				}
 			],
 			"type": {
@@ -53,14 +53,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 15545,
+									"id": 15559,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 15546,
+											"id": 15560,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -78,7 +78,7 @@
 													"fileName": "application-method.ts",
 													"line": 9,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L9"
 												}
 											],
 											"type": {
@@ -106,7 +106,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15547,
+											"id": 15561,
 											"name": "value",
 											"variant": "declaration",
 											"kind": 1024,
@@ -126,7 +126,7 @@
 													"fileName": "application-method.ts",
 													"line": 10,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L10"
 												}
 											],
 											"type": {
@@ -142,7 +142,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15548,
+											"id": 15562,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -173,7 +173,7 @@
 													"fileName": "application-method.ts",
 													"line": 11,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L11"
 												}
 											],
 											"type": {
@@ -189,7 +189,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15549,
+											"id": 15563,
 											"name": "max_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -209,7 +209,7 @@
 													"fileName": "application-method.ts",
 													"line": 12,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L12"
 												}
 											],
 											"type": {
@@ -225,7 +225,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15550,
+											"id": 15564,
 											"name": "apply_to_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -245,7 +245,7 @@
 													"fileName": "application-method.ts",
 													"line": 13,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L13"
 												}
 											],
 											"type": {
@@ -261,7 +261,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15551,
+											"id": 15565,
 											"name": "buy_rules_min_quantity",
 											"variant": "declaration",
 											"kind": 1024,
@@ -281,7 +281,7 @@
 													"fileName": "application-method.ts",
 													"line": 14,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L14"
 												}
 											],
 											"type": {
@@ -297,7 +297,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15552,
+											"id": 15566,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -315,7 +315,7 @@
 													"fileName": "application-method.ts",
 													"line": 15,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L15"
 												}
 											],
 											"type": {
@@ -347,7 +347,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15553,
+											"id": 15567,
 											"name": "target_type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -365,7 +365,7 @@
 													"fileName": "application-method.ts",
 													"line": 18,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L18"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L18"
 												}
 											],
 											"type": {
@@ -397,7 +397,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15554,
+											"id": 15568,
 											"name": "allocation",
 											"variant": "declaration",
 											"kind": 1024,
@@ -417,7 +417,7 @@
 													"fileName": "application-method.ts",
 													"line": 21,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L21"
 												}
 											],
 											"type": {
@@ -449,7 +449,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15555,
+											"id": 15569,
 											"name": "target_selection_strategy",
 											"variant": "declaration",
 											"kind": 1024,
@@ -467,7 +467,7 @@
 													"fileName": "application-method.ts",
 													"line": 25,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L25"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L25"
 												}
 											],
 											"type": {
@@ -499,7 +499,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15556,
+											"id": 15570,
 											"name": "promotion",
 											"variant": "declaration",
 											"kind": 1024,
@@ -520,7 +520,7 @@
 													"fileName": "application-method.ts",
 													"line": 31,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L31"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L31"
 												}
 											],
 											"type": {
@@ -533,7 +533,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15750,
+														"target": 15764,
 														"name": "Promotion"
 													}
 												],
@@ -543,7 +543,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15582,
+											"id": 15596,
 											"name": "target_rules",
 											"variant": "declaration",
 											"kind": 1024,
@@ -564,7 +564,7 @@
 													"fileName": "application-method.ts",
 													"line": 34,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L34"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L34"
 												}
 											],
 											"type": {
@@ -577,7 +577,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15874,
+														"target": 15888,
 														"name": "PromotionRule"
 													}
 												],
@@ -587,7 +587,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15605,
+											"id": 15619,
 											"name": "buy_rules",
 											"variant": "declaration",
 											"kind": 1024,
@@ -608,7 +608,7 @@
 													"fileName": "application-method.ts",
 													"line": 38,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L38"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L38"
 												}
 											],
 											"type": {
@@ -621,7 +621,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15874,
+														"target": 15888,
 														"name": "PromotionRule"
 													}
 												],
@@ -635,19 +635,19 @@
 										{
 											"title": "Properties",
 											"children": [
-												15546,
-												15547,
-												15548,
-												15549,
-												15550,
-												15551,
-												15552,
-												15553,
-												15554,
-												15555,
-												15556,
-												15582,
-												15605
+												15560,
+												15561,
+												15562,
+												15563,
+												15564,
+												15565,
+												15566,
+												15567,
+												15568,
+												15569,
+												15570,
+												15596,
+												15619
 											]
 										}
 									]
@@ -660,14 +660,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 15628,
+							"id": 15642,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 15629,
+									"id": 15643,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -679,7 +679,7 @@
 											"fileName": "application-method.ts",
 											"line": 7,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L7"
 										}
 									],
 									"type": {
@@ -689,7 +689,7 @@
 									"defaultValue": "\"ApplicationMethod\""
 								},
 								{
-									"id": 15630,
+									"id": 15644,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -701,7 +701,7 @@
 											"fileName": "application-method.ts",
 											"line": 7,
 											"character": 33,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/application-method.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/application-method.ts#L7"
 										}
 									],
 									"type": {
@@ -715,8 +715,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										15629,
-										15630
+										15643,
+										15644
 									]
 								}
 							]
@@ -729,7 +729,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 16003,
+			"id": 16017,
 			"name": "CampaignBudgetUsage",
 			"variant": "declaration",
 			"kind": 32,
@@ -764,7 +764,7 @@
 					"fileName": "campaign-budget-usage.ts",
 					"line": 7,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget-usage.ts#L7"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget-usage.ts#L7"
 				}
 			],
 			"type": {
@@ -786,14 +786,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 16004,
+									"id": 16018,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 16005,
+											"id": 16019,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -811,7 +811,7 @@
 													"fileName": "campaign-budget-usage.ts",
 													"line": 14,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget-usage.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget-usage.ts#L14"
 												}
 											],
 											"type": {
@@ -839,7 +839,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16006,
+											"id": 16020,
 											"name": "attribute_value",
 											"variant": "declaration",
 											"kind": 1024,
@@ -857,7 +857,7 @@
 													"fileName": "campaign-budget-usage.ts",
 													"line": 15,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget-usage.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget-usage.ts#L15"
 												}
 											],
 											"type": {
@@ -873,7 +873,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16007,
+											"id": 16021,
 											"name": "used",
 											"variant": "declaration",
 											"kind": 1024,
@@ -891,7 +891,7 @@
 													"fileName": "campaign-budget-usage.ts",
 													"line": 16,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget-usage.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget-usage.ts#L16"
 												}
 											],
 											"type": {
@@ -907,7 +907,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 16008,
+											"id": 16022,
 											"name": "budget",
 											"variant": "declaration",
 											"kind": 1024,
@@ -928,7 +928,7 @@
 													"fileName": "campaign-budget-usage.ts",
 													"line": 17,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget-usage.ts#L17"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget-usage.ts#L17"
 												}
 											],
 											"type": {
@@ -941,7 +941,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15705,
+														"target": 15719,
 														"name": "CampaignBudget"
 													}
 												],
@@ -955,10 +955,10 @@
 										{
 											"title": "Properties",
 											"children": [
-												16005,
-												16006,
-												16007,
-												16008
+												16019,
+												16020,
+												16021,
+												16022
 											]
 										}
 									]
@@ -971,14 +971,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 16027,
+							"id": 16041,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 16028,
+									"id": 16042,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -990,7 +990,7 @@
 											"fileName": "campaign-budget-usage.ts",
 											"line": 10,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget-usage.ts#L10"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget-usage.ts#L10"
 										}
 									],
 									"type": {
@@ -1000,7 +1000,7 @@
 									"defaultValue": "\"CampaignBudgetUsage\""
 								},
 								{
-									"id": 16029,
+									"id": 16043,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1012,7 +1012,7 @@
 											"fileName": "campaign-budget-usage.ts",
 											"line": 11,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget-usage.ts#L11"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget-usage.ts#L11"
 										}
 									],
 									"type": {
@@ -1026,8 +1026,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										16028,
-										16029
+										16042,
+										16043
 									]
 								}
 							]
@@ -1040,7 +1040,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 15705,
+			"id": 15719,
 			"name": "CampaignBudget",
 			"variant": "declaration",
 			"kind": 32,
@@ -1052,7 +1052,7 @@
 					"fileName": "campaign-budget.ts",
 					"line": 5,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L5"
 				}
 			],
 			"type": {
@@ -1074,14 +1074,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 15706,
+									"id": 15720,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 15707,
+											"id": 15721,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1099,7 +1099,7 @@
 													"fileName": "campaign-budget.ts",
 													"line": 9,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L9"
 												}
 											],
 											"type": {
@@ -1127,7 +1127,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15708,
+											"id": 15722,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1145,7 +1145,7 @@
 													"fileName": "campaign-budget.ts",
 													"line": 10,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L10"
 												}
 											],
 											"type": {
@@ -1177,7 +1177,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15709,
+											"id": 15723,
 											"name": "currency_code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1208,7 +1208,7 @@
 													"fileName": "campaign-budget.ts",
 													"line": 13,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L13"
 												}
 											],
 											"type": {
@@ -1224,7 +1224,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15710,
+											"id": 15724,
 											"name": "limit",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1244,7 +1244,7 @@
 													"fileName": "campaign-budget.ts",
 													"line": 14,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L14"
 												}
 											],
 											"type": {
@@ -1260,7 +1260,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15711,
+											"id": 15725,
 											"name": "used",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1278,7 +1278,7 @@
 													"fileName": "campaign-budget.ts",
 													"line": 15,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L15"
 												}
 											],
 											"type": {
@@ -1294,7 +1294,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15712,
+											"id": 15726,
 											"name": "campaign",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1315,7 +1315,7 @@
 													"fileName": "campaign-budget.ts",
 													"line": 16,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L16"
 												}
 											],
 											"type": {
@@ -1328,7 +1328,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15631,
+														"target": 15645,
 														"name": "Campaign"
 													}
 												],
@@ -1338,7 +1338,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15733,
+											"id": 15747,
 											"name": "attribute",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1378,7 +1378,7 @@
 													"fileName": "campaign-budget.ts",
 													"line": 23,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L23"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L23"
 												}
 											],
 											"type": {
@@ -1394,7 +1394,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15734,
+											"id": 15748,
 											"name": "usages",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1435,7 +1435,7 @@
 													"fileName": "campaign-budget.ts",
 													"line": 29,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L29"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L29"
 												}
 											],
 											"type": {
@@ -1448,7 +1448,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 16003,
+														"target": 16017,
 														"name": "CampaignBudgetUsage"
 													}
 												],
@@ -1462,14 +1462,14 @@
 										{
 											"title": "Properties",
 											"children": [
-												15707,
-												15708,
-												15709,
-												15710,
-												15711,
-												15712,
-												15733,
-												15734
+												15721,
+												15722,
+												15723,
+												15724,
+												15725,
+												15726,
+												15747,
+												15748
 											]
 										}
 									]
@@ -1482,14 +1482,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 15747,
+							"id": 15761,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 15748,
+									"id": 15762,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1501,7 +1501,7 @@
 											"fileName": "campaign-budget.ts",
 											"line": 7,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L7"
 										}
 									],
 									"type": {
@@ -1511,7 +1511,7 @@
 									"defaultValue": "\"CampaignBudget\""
 								},
 								{
-									"id": 15749,
+									"id": 15763,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1523,7 +1523,7 @@
 											"fileName": "campaign-budget.ts",
 											"line": 7,
 											"character": 30,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign-budget.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign-budget.ts#L7"
 										}
 									],
 									"type": {
@@ -1537,8 +1537,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										15748,
-										15749
+										15762,
+										15763
 									]
 								}
 							]
@@ -1551,7 +1551,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 15631,
+			"id": 15645,
 			"name": "Campaign",
 			"variant": "declaration",
 			"kind": 32,
@@ -1563,7 +1563,7 @@
 					"fileName": "campaign.ts",
 					"line": 5,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L5"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L5"
 				}
 			],
 			"type": {
@@ -1585,14 +1585,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 15632,
+									"id": 15646,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 15633,
+											"id": 15647,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1610,7 +1610,7 @@
 													"fileName": "campaign.ts",
 													"line": 9,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L9"
 												}
 											],
 											"type": {
@@ -1638,7 +1638,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15634,
+											"id": 15648,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1656,7 +1656,7 @@
 													"fileName": "campaign.ts",
 													"line": 10,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L10"
 												}
 											],
 											"type": {
@@ -1672,7 +1672,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15635,
+											"id": 15649,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1692,7 +1692,7 @@
 													"fileName": "campaign.ts",
 													"line": 11,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L11"
 												}
 											],
 											"type": {
@@ -1708,7 +1708,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15636,
+											"id": 15650,
 											"name": "campaign_identifier",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1726,7 +1726,7 @@
 													"fileName": "campaign.ts",
 													"line": 12,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L12"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L12"
 												}
 											],
 											"type": {
@@ -1742,7 +1742,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15637,
+											"id": 15651,
 											"name": "starts_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1762,7 +1762,7 @@
 													"fileName": "campaign.ts",
 													"line": 13,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L13"
 												}
 											],
 											"type": {
@@ -1778,7 +1778,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15638,
+											"id": 15652,
 											"name": "ends_at",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1798,7 +1798,7 @@
 													"fileName": "campaign.ts",
 													"line": 14,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L14"
 												}
 											],
 											"type": {
@@ -1814,7 +1814,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15639,
+											"id": 15653,
 											"name": "budget",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1837,7 +1837,7 @@
 													"fileName": "campaign.ts",
 													"line": 15,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L15"
 												}
 											],
 											"type": {
@@ -1850,7 +1850,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15705,
+														"target": 15719,
 														"name": "CampaignBudget"
 													}
 												],
@@ -1860,7 +1860,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15676,
+											"id": 15690,
 											"name": "promotions",
 											"variant": "declaration",
 											"kind": 1024,
@@ -1881,7 +1881,7 @@
 													"fileName": "campaign.ts",
 													"line": 20,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L20"
 												}
 											],
 											"type": {
@@ -1894,7 +1894,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15750,
+														"target": 15764,
 														"name": "Promotion"
 													}
 												],
@@ -1908,14 +1908,14 @@
 										{
 											"title": "Properties",
 											"children": [
-												15633,
-												15634,
-												15635,
-												15636,
-												15637,
-												15638,
-												15639,
-												15676
+												15647,
+												15648,
+												15649,
+												15650,
+												15651,
+												15652,
+												15653,
+												15690
 											]
 										}
 									]
@@ -1928,14 +1928,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 15702,
+							"id": 15716,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 15703,
+									"id": 15717,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1947,7 +1947,7 @@
 											"fileName": "campaign.ts",
 											"line": 7,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L7"
 										}
 									],
 									"type": {
@@ -1957,7 +1957,7 @@
 									"defaultValue": "\"Campaign\""
 								},
 								{
-									"id": 15704,
+									"id": 15718,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1969,7 +1969,7 @@
 											"fileName": "campaign.ts",
 											"line": 7,
 											"character": 24,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/campaign.ts#L7"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/campaign.ts#L7"
 										}
 									],
 									"type": {
@@ -1983,8 +1983,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										15703,
-										15704
+										15717,
+										15718
 									]
 								}
 							]
@@ -1997,7 +1997,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 15973,
+			"id": 15987,
 			"name": "PromotionRuleValue",
 			"variant": "declaration",
 			"kind": 32,
@@ -2009,7 +2009,7 @@
 					"fileName": "promotion-rule-value.ts",
 					"line": 4,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule-value.ts#L4"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule-value.ts#L4"
 				}
 			],
 			"type": {
@@ -2031,14 +2031,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 15974,
+									"id": 15988,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 15975,
+											"id": 15989,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2056,7 +2056,7 @@
 													"fileName": "promotion-rule-value.ts",
 													"line": 8,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule-value.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule-value.ts#L8"
 												}
 											],
 											"type": {
@@ -2084,7 +2084,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15976,
+											"id": 15990,
 											"name": "value",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2102,7 +2102,7 @@
 													"fileName": "promotion-rule-value.ts",
 													"line": 9,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule-value.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule-value.ts#L9"
 												}
 											],
 											"type": {
@@ -2118,7 +2118,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15977,
+											"id": 15991,
 											"name": "promotion_rule",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2139,7 +2139,7 @@
 													"fileName": "promotion-rule-value.ts",
 													"line": 10,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule-value.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule-value.ts#L10"
 												}
 											],
 											"type": {
@@ -2152,7 +2152,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15874,
+														"target": 15888,
 														"name": "PromotionRule"
 													}
 												],
@@ -2166,9 +2166,9 @@
 										{
 											"title": "Properties",
 											"children": [
-												15975,
-												15976,
-												15977
+												15989,
+												15990,
+												15991
 											]
 										}
 									]
@@ -2181,14 +2181,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 16000,
+							"id": 16014,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 16001,
+									"id": 16015,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2200,7 +2200,7 @@
 											"fileName": "promotion-rule-value.ts",
 											"line": 6,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule-value.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule-value.ts#L6"
 										}
 									],
 									"type": {
@@ -2210,7 +2210,7 @@
 									"defaultValue": "\"PromotionRuleValue\""
 								},
 								{
-									"id": 16002,
+									"id": 16016,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2222,7 +2222,7 @@
 											"fileName": "promotion-rule-value.ts",
 											"line": 6,
 											"character": 34,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule-value.ts#L6"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule-value.ts#L6"
 										}
 									],
 									"type": {
@@ -2236,8 +2236,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										16001,
-										16002
+										16015,
+										16016
 									]
 								}
 							]
@@ -2250,7 +2250,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 15874,
+			"id": 15888,
 			"name": "PromotionRule",
 			"variant": "declaration",
 			"kind": 32,
@@ -2262,7 +2262,7 @@
 					"fileName": "promotion-rule.ts",
 					"line": 6,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L6"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L6"
 				}
 			],
 			"type": {
@@ -2284,14 +2284,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 15875,
+									"id": 15889,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 15876,
+											"id": 15890,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2309,7 +2309,7 @@
 													"fileName": "promotion-rule.ts",
 													"line": 13,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L13"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L13"
 												}
 											],
 											"type": {
@@ -2337,7 +2337,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15877,
+											"id": 15891,
 											"name": "description",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2357,7 +2357,7 @@
 													"fileName": "promotion-rule.ts",
 													"line": 14,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L14"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L14"
 												}
 											],
 											"type": {
@@ -2373,7 +2373,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15878,
+											"id": 15892,
 											"name": "attribute",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2402,7 +2402,7 @@
 													"fileName": "promotion-rule.ts",
 													"line": 15,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L15"
 												}
 											],
 											"type": {
@@ -2418,7 +2418,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15879,
+											"id": 15893,
 											"name": "operator",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2447,7 +2447,7 @@
 													"fileName": "promotion-rule.ts",
 													"line": 16,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L16"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L16"
 												}
 											],
 											"type": {
@@ -2479,7 +2479,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15880,
+											"id": 15894,
 											"name": "values",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2500,7 +2500,7 @@
 													"fileName": "promotion-rule.ts",
 													"line": 19,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L19"
 												}
 											],
 											"type": {
@@ -2513,7 +2513,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15973,
+														"target": 15987,
 														"name": "PromotionRuleValue"
 													}
 												],
@@ -2523,7 +2523,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15892,
+											"id": 15906,
 											"name": "promotions",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2544,7 +2544,7 @@
 													"fileName": "promotion-rule.ts",
 													"line": 22,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L22"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L22"
 												}
 											],
 											"type": {
@@ -2557,7 +2557,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15750,
+														"target": 15764,
 														"name": "Promotion"
 													}
 												],
@@ -2567,7 +2567,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15918,
+											"id": 15932,
 											"name": "method_target_rules",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2588,7 +2588,7 @@
 													"fileName": "promotion-rule.ts",
 													"line": 25,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L25"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L25"
 												}
 											],
 											"type": {
@@ -2601,7 +2601,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15544,
+														"target": 15558,
 														"name": "ApplicationMethod"
 													}
 												],
@@ -2611,7 +2611,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15944,
+											"id": 15958,
 											"name": "method_buy_rules",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2632,7 +2632,7 @@
 													"fileName": "promotion-rule.ts",
 													"line": 28,
 													"character": 6,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L28"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L28"
 												}
 											],
 											"type": {
@@ -2645,7 +2645,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15544,
+														"target": 15558,
 														"name": "ApplicationMethod"
 													}
 												],
@@ -2659,14 +2659,14 @@
 										{
 											"title": "Properties",
 											"children": [
-												15876,
-												15877,
-												15878,
-												15879,
-												15880,
+												15890,
+												15891,
 												15892,
-												15918,
-												15944
+												15893,
+												15894,
+												15906,
+												15932,
+												15958
 											]
 										}
 									]
@@ -2679,14 +2679,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 15970,
+							"id": 15984,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 15971,
+									"id": 15985,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2698,7 +2698,7 @@
 											"fileName": "promotion-rule.ts",
 											"line": 9,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L9"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L9"
 										}
 									],
 									"type": {
@@ -2708,7 +2708,7 @@
 									"defaultValue": "\"PromotionRule\""
 								},
 								{
-									"id": 15972,
+									"id": 15986,
 									"name": "tableName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2720,7 +2720,7 @@
 											"fileName": "promotion-rule.ts",
 											"line": 10,
 											"character": 6,
-											"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion-rule.ts#L10"
+											"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion-rule.ts#L10"
 										}
 									],
 									"type": {
@@ -2734,8 +2734,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										15971,
-										15972
+										15985,
+										15986
 									]
 								}
 							]
@@ -2748,7 +2748,7 @@
 			"defaultValue": "..."
 		},
 		{
-			"id": 15750,
+			"id": 15764,
 			"name": "Promotion",
 			"variant": "declaration",
 			"kind": 32,
@@ -2760,7 +2760,7 @@
 					"fileName": "promotion.ts",
 					"line": 6,
 					"character": 6,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L6"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L6"
 				}
 			],
 			"type": {
@@ -2782,14 +2782,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 15751,
+									"id": 15765,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 15752,
+											"id": 15766,
 											"name": "id",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2807,7 +2807,7 @@
 													"fileName": "promotion.ts",
 													"line": 8,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L8"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L8"
 												}
 											],
 											"type": {
@@ -2835,7 +2835,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15753,
+											"id": 15767,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2853,7 +2853,7 @@
 													"fileName": "promotion.ts",
 													"line": 9,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L9"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L9"
 												}
 											],
 											"type": {
@@ -2869,7 +2869,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15754,
+											"id": 15768,
 											"name": "is_automatic",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2887,7 +2887,7 @@
 													"fileName": "promotion.ts",
 													"line": 10,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L10"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L10"
 												}
 											],
 											"type": {
@@ -2903,7 +2903,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15755,
+											"id": 15769,
 											"name": "is_tax_inclusive",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2921,7 +2921,7 @@
 													"fileName": "promotion.ts",
 													"line": 11,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L11"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L11"
 												}
 											],
 											"type": {
@@ -2937,7 +2937,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15756,
+											"id": 15770,
 											"name": "limit",
 											"variant": "declaration",
 											"kind": 1024,
@@ -2968,7 +2968,7 @@
 													"fileName": "promotion.ts",
 													"line": 15,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L15"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L15"
 												}
 											],
 											"type": {
@@ -2984,7 +2984,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15757,
+											"id": 15771,
 											"name": "used",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3013,7 +3013,7 @@
 													"fileName": "promotion.ts",
 													"line": 19,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L19"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L19"
 												}
 											],
 											"type": {
@@ -3029,7 +3029,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15758,
+											"id": 15772,
 											"name": "type",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3047,7 +3047,7 @@
 													"fileName": "promotion.ts",
 													"line": 20,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L20"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L20"
 												}
 											],
 											"type": {
@@ -3079,7 +3079,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15759,
+											"id": 15773,
 											"name": "status",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3097,7 +3097,7 @@
 													"fileName": "promotion.ts",
 													"line": 21,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L21"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L21"
 												}
 											],
 											"type": {
@@ -3129,7 +3129,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15760,
+											"id": 15774,
 											"name": "campaign",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3152,7 +3152,7 @@
 													"fileName": "promotion.ts",
 													"line": 25,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L25"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L25"
 												}
 											],
 											"type": {
@@ -3165,7 +3165,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15631,
+														"target": 15645,
 														"name": "Campaign"
 													}
 												],
@@ -3175,7 +3175,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15799,
+											"id": 15813,
 											"name": "application_method",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3198,7 +3198,7 @@
 													"fileName": "promotion.ts",
 													"line": 30,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L30"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L30"
 												}
 											],
 											"type": {
@@ -3211,7 +3211,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15544,
+														"target": 15558,
 														"name": "ApplicationMethod"
 													}
 												],
@@ -3221,7 +3221,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15850,
+											"id": 15864,
 											"name": "rules",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3242,7 +3242,7 @@
 													"fileName": "promotion.ts",
 													"line": 35,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L35"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L35"
 												}
 											],
 											"type": {
@@ -3255,7 +3255,7 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 15874,
+														"target": 15888,
 														"name": "PromotionRule"
 													}
 												],
@@ -3265,7 +3265,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 15873,
+											"id": 15887,
 											"name": "metadata",
 											"variant": "declaration",
 											"kind": 1024,
@@ -3296,7 +3296,7 @@
 													"fileName": "promotion.ts",
 													"line": 42,
 													"character": 4,
-													"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/modules/promotion/src/models/promotion.ts#L42"
+													"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/modules/promotion/src/models/promotion.ts#L42"
 												}
 											],
 											"type": {
@@ -3350,18 +3350,18 @@
 										{
 											"title": "Properties",
 											"children": [
-												15752,
-												15753,
-												15754,
-												15755,
-												15756,
-												15757,
-												15758,
-												15759,
-												15760,
-												15799,
-												15850,
-												15873
+												15766,
+												15767,
+												15768,
+												15769,
+												15770,
+												15771,
+												15772,
+												15773,
+												15774,
+												15813,
+												15864,
+												15887
 											]
 										}
 									]
@@ -3386,372 +3386,302 @@
 		{
 			"title": "Variables",
 			"children": [
-				15544,
-				16003,
-				15705,
-				15631,
-				15973,
-				15874,
-				15750
+				15558,
+				16017,
+				15719,
+				15645,
+				15987,
+				15888,
+				15764
 			]
 		}
 	],
 	"packageName": "@medusajs/promotion",
 	"symbolIdMap": {
-		"15543": {
+		"15557": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"15544": {
+		"15558": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "ApplicationMethod"
 		},
-		"15545": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
-		},
-		"15546": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.id"
-		},
-		"15547": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.value"
-		},
-		"15548": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"15549": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.max_quantity"
-		},
-		"15550": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.apply_to_quantity"
-		},
-		"15551": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.buy_rules_min_quantity"
-		},
-		"15552": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.type"
-		},
-		"15553": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_type"
-		},
-		"15554": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.allocation"
-		},
-		"15555": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_selection_strategy"
-		},
-		"15556": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.promotion"
-		},
-		"15557": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
-		},
-		"15558": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
-		},
 		"15559": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object"
 		},
 		"15560": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.id"
 		},
 		"15561": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.code"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.value"
 		},
 		"15562": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.is_automatic"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.currency_code"
 		},
 		"15563": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.is_tax_inclusive"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.max_quantity"
 		},
 		"15564": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.limit"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.apply_to_quantity"
 		},
 		"15565": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.used"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.buy_rules_min_quantity"
 		},
 		"15566": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.type"
 		},
 		"15567": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.status"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.target_type"
 		},
 		"15568": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.campaign"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.allocation"
 		},
 		"15569": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.target_selection_strategy"
 		},
 		"15570": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.promotion"
 		},
 		"15571": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
 		"15572": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
 		"15573": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.application_method"
+			"qualifiedName": "__object"
 		},
 		"15574": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.id"
 		},
 		"15575": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.code"
 		},
 		"15576": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.is_automatic"
 		},
 		"15577": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.is_tax_inclusive"
 		},
 		"15578": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.rules"
+			"qualifiedName": "__object.limit"
 		},
 		"15579": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.used"
 		},
 		"15580": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.type"
 		},
 		"15581": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.status"
 		},
 		"15582": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_rules"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.campaign"
 		},
 		"15583": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
+			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__function"
 		},
 		"15584": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
+			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__function"
 		},
 		"15585": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15586": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15587": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.description"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.application_method"
 		},
 		"15588": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.attribute"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15589": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.operator"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15590": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.values"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15591": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15592": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.rules"
 		},
 		"15593": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.promotions"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15594": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15595": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"15596": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_target_rules"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.target_rules"
 		},
 		"15597": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
 		"15598": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
 		"15599": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_buy_rules"
+			"qualifiedName": "__object"
 		},
 		"15600": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.id"
 		},
 		"15601": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.description"
 		},
 		"15602": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.attribute"
 		},
 		"15603": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.operator"
 		},
 		"15604": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.values"
 		},
 		"15605": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.buy_rules"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15606": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"15607": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.promotions"
 		},
 		"15608": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__function"
 		},
 		"15609": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__function"
 		},
 		"15610": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.description"
+			"qualifiedName": "__object.method_target_rules"
 		},
 		"15611": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.attribute"
+			"qualifiedName": "__function"
 		},
 		"15612": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.operator"
+			"qualifiedName": "__function"
 		},
 		"15613": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.values"
+			"qualifiedName": "__object.method_buy_rules"
 		},
 		"15614": {
 			"packageName": "@medusajs/promotion",
@@ -3766,257 +3696,257 @@
 		"15616": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.promotions"
+			"qualifiedName": "__object"
 		},
 		"15617": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.name"
 		},
 		"15618": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.tableName"
 		},
 		"15619": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_target_rules"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.buy_rules"
 		},
 		"15620": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
 		"15621": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
 		"15622": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_buy_rules"
+			"qualifiedName": "__object"
 		},
 		"15623": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.id"
 		},
 		"15624": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.description"
 		},
 		"15625": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.attribute"
 		},
 		"15626": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.operator"
 		},
 		"15627": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.values"
 		},
 		"15628": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15629": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.name"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15630": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.tableName"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.promotions"
 		},
 		"15631": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "Campaign"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15632": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15633": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.method_target_rules"
 		},
 		"15634": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.name"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15635": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.description"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15636": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.campaign_identifier"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.method_buy_rules"
 		},
 		"15637": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.starts_at"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15638": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.ends_at"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15639": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.budget"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object"
 		},
 		"15640": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.name"
 		},
 		"15641": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.tableName"
 		},
 		"15642": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object"
 		},
 		"15643": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.name"
 		},
 		"15644": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.type"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.tableName"
 		},
 		"15645": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.currency_code"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "Campaign"
 		},
 		"15646": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.limit"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object"
 		},
 		"15647": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.used"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.id"
 		},
 		"15648": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.campaign"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.name"
 		},
 		"15649": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.description"
 		},
 		"15650": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.campaign_identifier"
 		},
 		"15651": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.attribute"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.starts_at"
 		},
 		"15652": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.usages"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.ends_at"
 		},
 		"15653": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.budget"
 		},
 		"15654": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
 		},
 		"15655": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
 		},
 		"15656": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object"
 		},
 		"15657": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.tableName"
-		},
-		"15658": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
-		},
-		"15659": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
-		},
-		"15660": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object"
-		},
-		"15661": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
 			"qualifiedName": "__object.id"
 		},
-		"15662": {
+		"15658": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
 			"qualifiedName": "__object.type"
 		},
-		"15663": {
+		"15659": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
 			"qualifiedName": "__object.currency_code"
 		},
-		"15664": {
+		"15660": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
 			"qualifiedName": "__object.limit"
 		},
-		"15665": {
+		"15661": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
 			"qualifiedName": "__object.used"
 		},
-		"15666": {
+		"15662": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
 			"qualifiedName": "__object.campaign"
+		},
+		"15663": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"15664": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"15665": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.attribute"
+		},
+		"15666": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.usages"
 		},
 		"15667": {
 			"packageName": "@medusajs/promotion",
@@ -4031,242 +3961,242 @@
 		"15669": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.attribute"
+			"qualifiedName": "__object"
 		},
 		"15670": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.usages"
+			"qualifiedName": "__object.name"
 		},
 		"15671": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.tableName"
 		},
 		"15672": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
 		},
 		"15673": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
 		},
 		"15674": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object"
 		},
 		"15675": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.id"
 		},
 		"15676": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.type"
+		},
+		"15677": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"15678": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.limit"
+		},
+		"15679": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.used"
+		},
+		"15680": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.campaign"
+		},
+		"15681": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"15682": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"15683": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.attribute"
+		},
+		"15684": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.usages"
+		},
+		"15685": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"15686": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"15687": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object"
+		},
+		"15688": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.name"
+		},
+		"15689": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"15690": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__object.promotions"
 		},
-		"15677": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__function"
-		},
-		"15678": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__function"
-		},
-		"15679": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object"
-		},
-		"15680": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.id"
-		},
-		"15681": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.code"
-		},
-		"15682": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.is_automatic"
-		},
-		"15683": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.is_tax_inclusive"
-		},
-		"15684": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.limit"
-		},
-		"15685": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.used"
-		},
-		"15686": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.type"
-		},
-		"15687": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.status"
-		},
-		"15688": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.campaign"
-		},
-		"15689": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
-		},
-		"15690": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
-		},
 		"15691": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__function"
 		},
 		"15692": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__function"
 		},
 		"15693": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.application_method"
+			"qualifiedName": "__object"
 		},
 		"15694": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.id"
 		},
 		"15695": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.code"
 		},
 		"15696": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.is_automatic"
 		},
 		"15697": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.is_tax_inclusive"
 		},
 		"15698": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.rules"
+			"qualifiedName": "__object.limit"
 		},
 		"15699": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.used"
 		},
 		"15700": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.type"
 		},
 		"15701": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.status"
 		},
 		"15702": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.campaign"
 		},
 		"15703": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.name"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15704": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.tableName"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15705": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "CampaignBudget"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15706": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15707": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.application_method"
 		},
 		"15708": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.type"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15709": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.currency_code"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15710": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.limit"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15711": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.used"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15712": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.campaign"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.rules"
 		},
 		"15713": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15714": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15715": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"15716": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__object"
 		},
 		"15717": {
 			"packageName": "@medusajs/promotion",
@@ -4276,67 +4206,67 @@
 		"15718": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.description"
+			"qualifiedName": "__object.tableName"
 		},
 		"15719": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.campaign_identifier"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "CampaignBudget"
 		},
 		"15720": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.starts_at"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object"
 		},
 		"15721": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.ends_at"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.id"
 		},
 		"15722": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.budget"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.type"
 		},
 		"15723": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.currency_code"
 		},
 		"15724": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.limit"
 		},
 		"15725": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.used"
 		},
 		"15726": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.campaign"
 		},
 		"15727": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.promotions"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
 		},
 		"15728": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
+			"packagePath": "src/models/campaign-budget.ts",
 			"qualifiedName": "__function"
 		},
 		"15729": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object"
 		},
 		"15730": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.id"
 		},
 		"15731": {
 			"packageName": "@medusajs/promotion",
@@ -4346,237 +4276,237 @@
 		"15732": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.description"
 		},
 		"15733": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.attribute"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.campaign_identifier"
 		},
 		"15734": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.usages"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.starts_at"
 		},
 		"15735": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.ends_at"
 		},
 		"15736": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.budget"
 		},
 		"15737": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
 		},
 		"15738": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
 		},
 		"15739": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object.attribute_value"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
 		},
 		"15740": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object.used"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
 		},
 		"15741": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object.budget"
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.promotions"
 		},
 		"15742": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
+			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__function"
 		},
 		"15743": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
+			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__function"
 		},
 		"15744": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
+			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__object"
 		},
 		"15745": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
+			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__object.name"
 		},
 		"15746": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
+			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__object.tableName"
 		},
 		"15747": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.attribute"
 		},
 		"15748": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.usages"
 		},
 		"15749": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__function"
 		},
 		"15750": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "Promotion"
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
 		},
 		"15751": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/campaign-budget-usage.ts",
 			"qualifiedName": "__object"
 		},
 		"15752": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/campaign-budget-usage.ts",
 			"qualifiedName": "__object.id"
 		},
 		"15753": {
 			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object.attribute_value"
+		},
+		"15754": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object.used"
+		},
+		"15755": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object.budget"
+		},
+		"15756": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__function"
+		},
+		"15757": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__function"
+		},
+		"15758": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object"
+		},
+		"15759": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object.name"
+		},
+		"15760": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"15761": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object"
+		},
+		"15762": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.name"
+		},
+		"15763": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"15764": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "Promotion"
+		},
+		"15765": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object"
+		},
+		"15766": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.id"
+		},
+		"15767": {
+			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__object.code"
 		},
-		"15754": {
+		"15768": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__object.is_automatic"
 		},
-		"15755": {
+		"15769": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__object.is_tax_inclusive"
 		},
-		"15756": {
+		"15770": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__object.limit"
 		},
-		"15757": {
+		"15771": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__object.used"
 		},
-		"15758": {
+		"15772": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__object.type"
 		},
-		"15759": {
+		"15773": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__object.status"
 		},
-		"15760": {
+		"15774": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__object.campaign"
 		},
-		"15761": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
-		},
-		"15762": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
-		},
-		"15763": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object"
-		},
-		"15764": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.id"
-		},
-		"15765": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.name"
-		},
-		"15766": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.description"
-		},
-		"15767": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.campaign_identifier"
-		},
-		"15768": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.starts_at"
-		},
-		"15769": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.ends_at"
-		},
-		"15770": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.budget"
-		},
-		"15771": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
-		},
-		"15772": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
-		},
-		"15773": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
-		},
-		"15774": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
-		},
 		"15775": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.promotions"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15776": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
+			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__function"
 		},
 		"15777": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object"
 		},
 		"15778": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.id"
 		},
 		"15779": {
 			"packageName": "@medusajs/promotion",
@@ -4586,512 +4516,512 @@
 		"15780": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.tableName"
-		},
-		"15781": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
-		},
-		"15782": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
-		},
-		"15783": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object"
-		},
-		"15784": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.id"
-		},
-		"15785": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.name"
-		},
-		"15786": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__object.description"
 		},
-		"15787": {
+		"15781": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__object.campaign_identifier"
 		},
-		"15788": {
+		"15782": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__object.starts_at"
 		},
-		"15789": {
+		"15783": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__object.ends_at"
 		},
-		"15790": {
+		"15784": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__object.budget"
 		},
-		"15791": {
+		"15785": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
 			"qualifiedName": "__type"
+		},
+		"15786": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
+		},
+		"15787": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
+		},
+		"15788": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
+		},
+		"15789": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.promotions"
+		},
+		"15790": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__function"
+		},
+		"15791": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__function"
 		},
 		"15792": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object"
 		},
 		"15793": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.promotions"
+			"qualifiedName": "__object.name"
 		},
 		"15794": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.tableName"
 		},
 		"15795": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
+			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__function"
 		},
 		"15796": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15797": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object"
 		},
 		"15798": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.id"
 		},
 		"15799": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.name"
+		},
+		"15800": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.description"
+		},
+		"15801": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.campaign_identifier"
+		},
+		"15802": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.starts_at"
+		},
+		"15803": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.ends_at"
+		},
+		"15804": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.budget"
+		},
+		"15805": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
+		},
+		"15806": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__type"
+		},
+		"15807": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.promotions"
+		},
+		"15808": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__function"
+		},
+		"15809": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__function"
+		},
+		"15810": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object"
+		},
+		"15811": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.name"
+		},
+		"15812": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"15813": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__object.application_method"
 		},
-		"15800": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
-		},
-		"15801": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
-		},
-		"15802": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
-		},
-		"15803": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.id"
-		},
-		"15804": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.value"
-		},
-		"15805": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"15806": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.max_quantity"
-		},
-		"15807": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.apply_to_quantity"
-		},
-		"15808": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.buy_rules_min_quantity"
-		},
-		"15809": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.type"
-		},
-		"15810": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_type"
-		},
-		"15811": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.allocation"
-		},
-		"15812": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_selection_strategy"
-		},
-		"15813": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.promotion"
-		},
 		"15814": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15815": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15816": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_rules"
+			"qualifiedName": "__object"
 		},
 		"15817": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.id"
 		},
 		"15818": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.value"
 		},
 		"15819": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.buy_rules"
+			"qualifiedName": "__object.currency_code"
 		},
 		"15820": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.max_quantity"
 		},
 		"15821": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.apply_to_quantity"
 		},
 		"15822": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.buy_rules_min_quantity"
 		},
 		"15823": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.type"
 		},
 		"15824": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.tableName"
-		},
-		"15825": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
-		},
-		"15826": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
-		},
-		"15827": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
-		},
-		"15828": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.id"
-		},
-		"15829": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.value"
-		},
-		"15830": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"15831": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.max_quantity"
-		},
-		"15832": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.apply_to_quantity"
-		},
-		"15833": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.buy_rules_min_quantity"
-		},
-		"15834": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.type"
-		},
-		"15835": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.target_type"
 		},
-		"15836": {
+		"15825": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.allocation"
 		},
-		"15837": {
+		"15826": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.target_selection_strategy"
 		},
-		"15838": {
+		"15827": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.promotion"
 		},
-		"15839": {
+		"15828": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
-		"15840": {
+		"15829": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
-		"15841": {
+		"15830": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.target_rules"
 		},
-		"15842": {
+		"15831": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
-		"15843": {
+		"15832": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
-		"15844": {
+		"15833": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.buy_rules"
 		},
-		"15845": {
+		"15834": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
+		},
+		"15835": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
+		},
+		"15836": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object"
+		},
+		"15837": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.name"
+		},
+		"15838": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"15839": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
+		},
+		"15840": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
+		},
+		"15841": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object"
+		},
+		"15842": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.id"
+		},
+		"15843": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.value"
+		},
+		"15844": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"15845": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.max_quantity"
 		},
 		"15846": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.apply_to_quantity"
 		},
 		"15847": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.buy_rules_min_quantity"
 		},
 		"15848": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.type"
 		},
 		"15849": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.target_type"
 		},
 		"15850": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.rules"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.allocation"
 		},
 		"15851": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.target_selection_strategy"
 		},
 		"15852": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.promotion"
 		},
 		"15853": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
 		},
 		"15854": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
 		},
 		"15855": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.description"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.target_rules"
 		},
 		"15856": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.attribute"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
 		},
 		"15857": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.operator"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
 		},
 		"15858": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.values"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.buy_rules"
 		},
 		"15859": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
 		"15860": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
 		"15861": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.promotions"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object"
 		},
 		"15862": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.name"
 		},
 		"15863": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.tableName"
 		},
 		"15864": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_target_rules"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.rules"
 		},
 		"15865": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15866": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15867": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_buy_rules"
+			"qualifiedName": "__object"
 		},
 		"15868": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.id"
 		},
 		"15869": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.description"
 		},
 		"15870": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.attribute"
 		},
 		"15871": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.operator"
 		},
 		"15872": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.values"
 		},
 		"15873": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.metadata"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15874": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "PromotionRule"
+			"qualifiedName": "__function"
 		},
 		"15875": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.promotions"
 		},
 		"15876": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.id"
+			"qualifiedName": "__function"
 		},
 		"15877": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.description"
+			"qualifiedName": "__function"
 		},
 		"15878": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.attribute"
+			"qualifiedName": "__object.method_target_rules"
 		},
 		"15879": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.operator"
+			"qualifiedName": "__function"
 		},
 		"15880": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.values"
+			"qualifiedName": "__function"
 		},
 		"15881": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.method_buy_rules"
 		},
 		"15882": {
 			"packageName": "@medusajs/promotion",
@@ -5100,735 +5030,805 @@
 		},
 		"15883": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15884": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object"
 		},
 		"15885": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.value"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.name"
 		},
 		"15886": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.promotion_rule"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.tableName"
 		},
 		"15887": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"15888": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "PromotionRule"
 		},
 		"15889": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__object"
 		},
 		"15890": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.name"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.id"
 		},
 		"15891": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.tableName"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.description"
 		},
 		"15892": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.promotions"
+			"qualifiedName": "__object.attribute"
 		},
 		"15893": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.operator"
 		},
 		"15894": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.values"
 		},
 		"15895": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15896": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"15897": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.code"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object"
 		},
 		"15898": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.is_automatic"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.id"
 		},
 		"15899": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.is_tax_inclusive"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.value"
 		},
 		"15900": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.limit"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.promotion_rule"
 		},
 		"15901": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.used"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__function"
 		},
 		"15902": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.type"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__function"
 		},
 		"15903": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.status"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object"
 		},
 		"15904": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.campaign"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.name"
 		},
 		"15905": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.tableName"
 		},
 		"15906": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.promotions"
 		},
 		"15907": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"15908": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion.ts",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"15909": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.application_method"
+			"qualifiedName": "__object"
 		},
 		"15910": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.id"
 		},
 		"15911": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.code"
 		},
 		"15912": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.is_automatic"
 		},
 		"15913": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.is_tax_inclusive"
 		},
 		"15914": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.rules"
+			"qualifiedName": "__object.limit"
 		},
 		"15915": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.used"
 		},
 		"15916": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__object.type"
 		},
 		"15917": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion.ts",
-			"qualifiedName": "__object.metadata"
+			"qualifiedName": "__object.status"
 		},
 		"15918": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_target_rules"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.campaign"
 		},
 		"15919": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__function"
 		},
 		"15920": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/promotion.ts",
 			"qualifiedName": "__function"
 		},
 		"15921": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15922": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__function"
 		},
 		"15923": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.value"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.application_method"
 		},
 		"15924": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.currency_code"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15925": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.max_quantity"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15926": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.apply_to_quantity"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15927": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.buy_rules_min_quantity"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15928": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.type"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.rules"
 		},
 		"15929": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_type"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15930": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.allocation"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__type"
 		},
 		"15931": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_selection_strategy"
+			"packagePath": "src/models/promotion.ts",
+			"qualifiedName": "__object.metadata"
 		},
 		"15932": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.promotion"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.method_target_rules"
 		},
 		"15933": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"15934": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"15935": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_rules"
+			"qualifiedName": "__object"
 		},
 		"15936": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.id"
 		},
 		"15937": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.value"
 		},
 		"15938": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.buy_rules"
+			"qualifiedName": "__object.currency_code"
 		},
 		"15939": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.max_quantity"
 		},
 		"15940": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.apply_to_quantity"
 		},
 		"15941": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.buy_rules_min_quantity"
 		},
 		"15942": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.type"
 		},
 		"15943": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.tableName"
-		},
-		"15944": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_buy_rules"
-		},
-		"15945": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
-		},
-		"15946": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
-		},
-		"15947": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
-		},
-		"15948": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.id"
-		},
-		"15949": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.value"
-		},
-		"15950": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.currency_code"
-		},
-		"15951": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.max_quantity"
-		},
-		"15952": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.apply_to_quantity"
-		},
-		"15953": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.buy_rules_min_quantity"
-		},
-		"15954": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.type"
-		},
-		"15955": {
-			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.target_type"
 		},
-		"15956": {
+		"15944": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.allocation"
 		},
-		"15957": {
+		"15945": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.target_selection_strategy"
 		},
-		"15958": {
+		"15946": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__object.promotion"
 		},
-		"15959": {
+		"15947": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
-		"15960": {
+		"15948": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
+		},
+		"15949": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.target_rules"
+		},
+		"15950": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
+		},
+		"15951": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
+		},
+		"15952": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.buy_rules"
+		},
+		"15953": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
+		},
+		"15954": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
+		},
+		"15955": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object"
+		},
+		"15956": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.name"
+		},
+		"15957": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"15958": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.method_buy_rules"
+		},
+		"15959": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
+		},
+		"15960": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"15961": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.target_rules"
+			"qualifiedName": "__object"
 		},
 		"15962": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.id"
 		},
 		"15963": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.value"
 		},
 		"15964": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.buy_rules"
+			"qualifiedName": "__object.currency_code"
 		},
 		"15965": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.max_quantity"
 		},
 		"15966": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.apply_to_quantity"
 		},
 		"15967": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.buy_rules_min_quantity"
 		},
 		"15968": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.type"
 		},
 		"15969": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/application-method.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.target_type"
 		},
 		"15970": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.allocation"
 		},
 		"15971": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.name"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.target_selection_strategy"
 		},
 		"15972": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.tableName"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.promotion"
 		},
 		"15973": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "PromotionRuleValue"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
 		},
 		"15974": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
 		},
 		"15975": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.target_rules"
 		},
 		"15976": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.value"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
 		},
 		"15977": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.promotion_rule"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
 		},
 		"15978": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.buy_rules"
 		},
 		"15979": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
+			"packagePath": "src/models/application-method.ts",
 			"qualifiedName": "__function"
 		},
 		"15980": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__function"
 		},
 		"15981": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object"
 		},
 		"15982": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.description"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.name"
 		},
 		"15983": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.attribute"
+			"packagePath": "src/models/application-method.ts",
+			"qualifiedName": "__object.tableName"
 		},
 		"15984": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.operator"
+			"qualifiedName": "__object"
 		},
 		"15985": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.values"
+			"qualifiedName": "__object.name"
 		},
 		"15986": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.tableName"
 		},
 		"15987": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "PromotionRuleValue"
 		},
 		"15988": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.promotions"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object"
 		},
 		"15989": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.id"
 		},
 		"15990": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.value"
 		},
 		"15991": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_target_rules"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.promotion_rule"
 		},
 		"15992": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/promotion-rule-value.ts",
 			"qualifiedName": "__function"
 		},
 		"15993": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule.ts",
+			"packagePath": "src/models/promotion-rule-value.ts",
 			"qualifiedName": "__function"
 		},
 		"15994": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.method_buy_rules"
+			"qualifiedName": "__object"
 		},
 		"15995": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.id"
 		},
 		"15996": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__function"
+			"qualifiedName": "__object.description"
 		},
 		"15997": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.attribute"
 		},
 		"15998": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object.operator"
 		},
 		"15999": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/promotion-rule.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.values"
 		},
 		"16000": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"16001": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.name"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"16002": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/promotion-rule-value.ts",
-			"qualifiedName": "__object.tableName"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.promotions"
 		},
 		"16003": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "CampaignBudgetUsage"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"16004": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"16005": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.method_target_rules"
 		},
 		"16006": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object.attribute_value"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"16007": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object.used"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__function"
 		},
 		"16008": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
-			"qualifiedName": "__object.budget"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.method_buy_rules"
 		},
 		"16009": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"16010": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget-usage.ts",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__function"
 		},
 		"16011": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
+			"packagePath": "src/models/promotion-rule.ts",
 			"qualifiedName": "__object"
 		},
 		"16012": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.id"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.name"
 		},
 		"16013": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.type"
+			"packagePath": "src/models/promotion-rule.ts",
+			"qualifiedName": "__object.tableName"
 		},
 		"16014": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.currency_code"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object"
 		},
 		"16015": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.limit"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.name"
 		},
 		"16016": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.used"
+			"packagePath": "src/models/promotion-rule-value.ts",
+			"qualifiedName": "__object.tableName"
 		},
 		"16017": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.campaign"
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "CampaignBudgetUsage"
 		},
 		"16018": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object"
 		},
 		"16019": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object.id"
 		},
 		"16020": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.attribute"
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object.attribute_value"
 		},
 		"16021": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.usages"
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object.used"
 		},
 		"16022": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__function"
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__object.budget"
 		},
 		"16023": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
+			"packagePath": "src/models/campaign-budget-usage.ts",
 			"qualifiedName": "__function"
 		},
 		"16024": {
 			"packageName": "@medusajs/promotion",
-			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object"
+			"packagePath": "src/models/campaign-budget-usage.ts",
+			"qualifiedName": "__function"
 		},
 		"16025": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.name"
+			"qualifiedName": "__object"
 		},
 		"16026": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget.ts",
-			"qualifiedName": "__object.tableName"
+			"qualifiedName": "__object.id"
 		},
 		"16027": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.type"
+		},
+		"16028": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"16029": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.limit"
+		},
+		"16030": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.used"
+		},
+		"16031": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.campaign"
+		},
+		"16032": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"16033": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"16034": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.attribute"
+		},
+		"16035": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.usages"
+		},
+		"16036": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"16037": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__function"
+		},
+		"16038": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object"
+		},
+		"16039": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.name"
+		},
+		"16040": {
+			"packageName": "@medusajs/promotion",
+			"packagePath": "src/models/campaign-budget.ts",
+			"qualifiedName": "__object.tableName"
+		},
+		"16041": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget-usage.ts",
 			"qualifiedName": "__object"
 		},
-		"16028": {
+		"16042": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget-usage.ts",
 			"qualifiedName": "__object.name"
 		},
-		"16029": {
+		"16043": {
 			"packageName": "@medusajs/promotion",
 			"packagePath": "src/models/campaign-budget-usage.ts",
 			"qualifiedName": "__object.tableName"
@@ -5839,7 +5839,7 @@
 			"1": "../../../../packages/modules/promotion/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 15543
+			"1": 15557
 		}
 	}
 }
