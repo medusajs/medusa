@@ -3,13 +3,16 @@ import { dynamicImport, FileSystem, isFileSkipped } from "@medusajs/utils"
 import { join } from "path"
 
 import { logger } from "../logger"
+import { mergeAuditConfigRoutes } from "./audit"
 import {
   type AdditionalDataValidatorRoute,
+  type AuditConfigRoute,
   type BodyParserConfigRoute,
   HTTP_METHODS,
   type MedusaErrorHandlerFunction,
   type MiddlewareDescriptor,
   type MiddlewaresConfig,
+  type MiddlewareVerb,
 } from "./types"
 
 /**
@@ -45,6 +48,12 @@ export class MiddlewareFileLoader {
   #bodyParserConfigRoutes: BodyParserConfigRoute[] = []
 
   /**
+   * Route matchers on which an audit setting is defined, in the order the
+   * source directories were scanned
+   */
+  #auditConfigRoutes: AuditConfigRoute[] = []
+
+  /**
    * Processes the middleware file and returns the middleware and the
    * routes config exported by it.
    */
@@ -74,6 +83,7 @@ export class MiddlewareFileLoader {
     const result = routes.reduce<{
       bodyParserConfigRoutes: BodyParserConfigRoute[]
       additionalDataValidatorRoutes: AdditionalDataValidatorRoute[]
+      auditConfigRoutes: AuditConfigRoute[]
       middleware: MiddlewareDescriptor[]
     }>(
       (result, route) => {
@@ -135,6 +145,19 @@ export class MiddlewareFileLoader {
           })
         }
 
+        if (route.audit !== undefined) {
+          let methods: MiddlewareVerb[] = route.methods || [...HTTP_METHODS]
+          if (methods.includes("ALL") || methods.includes("USE")) {
+            methods = [...HTTP_METHODS]
+          }
+
+          result.auditConfigRoutes.push({
+            matcher: matcher,
+            methods,
+            config: route.audit,
+          })
+        }
+
         route.middlewares?.forEach((middleware) => {
           result.middleware.push({
             handler: middleware,
@@ -148,6 +171,7 @@ export class MiddlewareFileLoader {
       {
         bodyParserConfigRoutes: [],
         additionalDataValidatorRoutes: [],
+        auditConfigRoutes: [],
         middleware: [],
       }
     )
@@ -166,6 +190,9 @@ export class MiddlewareFileLoader {
       this.#additionalDataValidatorRoutes.concat(
         result.additionalDataValidatorRoutes
       )
+    this.#auditConfigRoutes = this.#auditConfigRoutes.concat(
+      result.auditConfigRoutes
+    )
   }
 
   /**
@@ -213,5 +240,14 @@ export class MiddlewareFileLoader {
    */
   getAdditionalDataValidatorRoutes() {
     return this.#additionalDataValidatorRoutes
+  }
+
+  /**
+   * Returns one route per matcher and method that has an audit setting. When
+   * several source directories set the same matcher and method, the one scanned
+   * last wins, and two objects are shallow-merged.
+   */
+  getAuditConfigRoutes() {
+    return mergeAuditConfigRoutes(this.#auditConfigRoutes)
   }
 }

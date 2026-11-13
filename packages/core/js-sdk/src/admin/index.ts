@@ -1,5 +1,6 @@
 import { Client } from "../client.js"
 import { ApiKey } from "./api-key.js"
+import { AuditLog } from "./audit-log.js"
 import { Campaign } from "./campaign.js"
 import { Claim } from "./claim.js"
 import { Currency } from "./currency.js"
@@ -222,6 +223,10 @@ export class Admin {
    */
   public apiKey: ApiKey
   /**
+   * @tags audit
+   */
+  public auditLog: AuditLog
+  /**
    * @tags workflow
    */
   public workflowExecution: WorkflowExecution
@@ -328,6 +333,7 @@ export class Admin {
     this.exchange = new Exchange(client)
     this.paymentCollection = new PaymentCollection(client)
     this.apiKey = new ApiKey(client)
+    this.auditLog = new AuditLog(client)
     this.workflowExecution = new WorkflowExecution(client)
     this.reservation = new Reservation(client)
     this.customerGroup = new CustomerGroup(client)

@@ -5,6 +5,7 @@ Audit Module: records audit logs (who did what, on which resource, how it ended)
 ## Using this package
 
 - Not registered by default: applications add `{ resolve: "@medusajs/medusa/audit" }` to `modules` in `medusa-config.ts`. Without `providers` or a Cloud endpoint, audit logs are stored in the application's database; run `db:migrate` for the table.
+- Once installed, API requests are recorded without further setup: the framework's audit middleware records `POST`/`PUT`/`PATCH`/`DELETE` requests under `/admin`, `/rbac`, and `/auth`, and routes tune it with the `audit` middleware setting (see `@medusajs/framework`'s `AGENTS.md`). `GET /admin/audit-logs` and `GET /admin/audit-logs/:id` (`sdk.admin.auditLog`, guarded by the `audit_log:read` policy) read them back.
 - It is a licensed module: the loader (`packages/core/modules-sdk/src/loaders/utils/load-internal.ts`, `LICENSED_MODULES`) only loads it when the license covers `LicenseFeature.AUDIT` (`"audit"`). There is no feature flag.
 - Options (`AuditModuleOptions` in `packages/core/types/src/audit/options.ts`):
   - `enabled` (default `true`): when `false`, `createAuditLogs()` is a no-op and nothing is buffered. Reads still go to the default provider.
@@ -31,7 +32,7 @@ await audit.flush() // only needed when a script must read its own records back
 
 ### Service (`src/services/audit-module-service.ts`)
 
-- `createAuditLogs(entry | entries): void`: never throws and never awaits storage. Each entry is normalized (`src/utils/normalize.ts`): `action` is required; `actor_type` defaults to `system`, `outcome` to `succeeded`, `started_at` to now, `ended_at` to `started_at`; dates may be ISO strings; an `audlog_` id is always generated. Invalid entries are dropped with one warning that names the reasons, never the contents.
+- `createAuditLogs(entry | entries): void`: never throws and never awaits storage. Each entry is normalized (`src/utils/normalize.ts`): `action` is required; `actor_type` is any non-empty string and defaults to `system`, `outcome` to `succeeded`, `started_at` to now, `ended_at` to `started_at`; dates may be ISO strings; an `audlog_` id is always generated. Invalid entries are dropped with one warning that names the reasons, never the contents.
 - `listAuditLogs(filters?, config?)`, `listAndCountAuditLogs(filters?, config?)`: delegate to the default provider with `skip: 0`, `take: 20` and `order: { started_at: "DESC" }` filled in.
 - `retrieveAuditLog(id, config?)`: the provider returns `null` for a missing id; the module throws `MedusaError.Types.NOT_FOUND`.
 - `flush()`: drains the buffer, never throws.

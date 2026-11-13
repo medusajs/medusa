@@ -1,4 +1,5 @@
 import {
+  AuditRouteSetting,
   MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
@@ -23,6 +24,7 @@ export function defineMiddlewares<
     matcher: string | RegExp
     bodyParser?: ParserConfig
     additionalDataValidator?: ZodRawShape
+    audit?: AuditRouteSetting
     // eslint-disable-next-line space-before-function-paren
     middlewares?: (<Req extends MedusaRequest>(
       req: Req,

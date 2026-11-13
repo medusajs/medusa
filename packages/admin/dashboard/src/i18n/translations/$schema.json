@@ -15318,6 +15318,9 @@
             "file": {
               "type": "string"
             },
+            "audit_log": {
+              "type": "string"
+            },
             "notification": {
               "type": "string"
             },
@@ -15409,6 +15412,7 @@
             "fulfillment_set",
             "service_zone",
             "file",
+            "audit_log",
             "notification",
             "workflow_execution",
             "store_locale",

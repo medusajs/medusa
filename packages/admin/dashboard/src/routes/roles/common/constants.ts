@@ -108,7 +108,7 @@ export const PERMISSION_GROUPS: { id: string; resources: string[] }[] = [
   },
   {
     id: "system",
-    resources: ["file", "notification", "workflow_execution"],
+    resources: ["audit_log", "file", "notification", "workflow_execution"],
   },
 ]
 
