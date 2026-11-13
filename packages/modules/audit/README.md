@@ -44,7 +44,7 @@ Audit Module for Medusa: records who did what, on which resource, and how it end
 | Package | `@medusajs/audit` |
 | Type | Infrastructure Module |
 | Module key | `Modules.AUDIT` (`"audit"`) |
-| Registered by default | No |
+| Registered by default | No. On Medusa Cloud, yes when the audit endpoint is set and the license covers `audit` |
 | Import from | `@medusajs/medusa/audit` |
 | License | Medusa Enterprise (`audit` license feature) |
 
