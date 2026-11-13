@@ -1,5 +1,7 @@
 # @medusajs/icons
 
+## 2.22.8
+
 ## 2.22.7
 
 ### Patch Changes

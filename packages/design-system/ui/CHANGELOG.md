@@ -1,5 +1,16 @@
 # @medusajs/ui
 
+## 4.2.15
+
+### Patch Changes
+
+- [#17819](https://github.com/medusajs/medusa/pull/17819) [`cc31b24`](https://github.com/medusajs/medusa/commit/cc31b247bce8640a634aadf7ece469cbda020c8c) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(ui): give the toast dismiss button an accessible name
+
+- [#17818](https://github.com/medusajs/medusa/pull/17818) [`19a7e08`](https://github.com/medusajs/medusa/commit/19a7e083dcb8727cfe3e1c0a1cfdfb4b86595d33) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(ui): forward onDismiss and onAutoClose callbacks from toast utilities
+
+- Updated dependencies []:
+  - @medusajs/icons@2.22.8
+
 ## 4.2.14
 
 ### Patch Changes
