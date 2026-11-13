@@ -2580,7 +2580,48 @@
       "return_reason": "Razón de devolución",
       "refund_reason": "Razón de reembolso",
       "workflow": "Flujo de trabajo",
-      "translation": "Traducción"
+      "translation": "Traducción",
+      "customer_address": "Direcciones de clientes",
+      "inventory_item": "Artículos de inventario",
+      "inventory_level": "Niveles de inventario",
+      "reservation_item": "Reservas",
+      "order_item": "Artículos de pedido",
+      "order_change": "Cambios de pedido",
+      "order_address": "Direcciones de pedido",
+      "order_claim": "Reclamaciones",
+      "order_claim_item": "Artículos de reclamación",
+      "order_exchange": "Intercambios",
+      "order_credit_line": "Líneas de crédito de pedido",
+      "return": "Devoluciones",
+      "payment": "Pagos",
+      "payment_collection": "Colecciones de pago",
+      "payment_method": "Métodos de pago",
+      "payment_session": "Sesiones de pago",
+      "refund": "Reembolsos",
+      "capture": "Capturas",
+      "price_preference": "Preferencias de precio",
+      "price": "Precios",
+      "currency": "Monedas",
+      "product_variant": "Variantes de producto",
+      "product_option": "Opciones de producto",
+      "product_option_value": "Valores de opciones de producto",
+      "property_label": "Etiquetas de propiedad",
+      "shipping_option_type": "Tipos de opciones de envío",
+      "fulfillment": "Cumplimientos",
+      "fulfillment_provider": "Proveedores de cumplimiento",
+      "fulfillment_set": "Conjuntos de cumplimiento",
+      "service_zone": "Zonas de servicio",
+      "file": "Archivos",
+      "notification": "Notificaciones",
+      "workflow_execution": "Ejecuciones de flujo de trabajo",
+      "store_locale": "Configuraciones regionales de tienda",
+      "tax_provider": "Proveedores de impuestos",
+      "tax_rate": "Tasas de impuestos",
+      "translation_setting": "Configuración de traducciones",
+      "invite": "Invitaciones",
+      "rbac_role": "Roles",
+      "rbac_policy": "Permisos",
+      "rbac_role_assignment": "Asignaciones de roles"
     },
     "actions": {
       "read": "Ver",
@@ -2957,6 +2998,8 @@
     "delete": {
       "title": "Eliminar rol",
       "description": "Estás a punto de eliminar el rol {{name}}. Esta acción no se puede deshacer.",
+      "descriptionWithUsers_one": "Estás a punto de eliminar el rol {{name}}. {{count}} usuario tiene este rol y perderá el acceso que otorga. Esta acción no puede deshacerse.",
+      "descriptionWithUsers_other": "Estás a punto de eliminar el rol {{name}}. {{count}} usuarios tienen este rol y perderán el acceso que otorga. Esta acción no puede deshacerse.",
       "successToast": "Rol {{name}} eliminado"
     },
     "fields": {
@@ -2997,6 +3040,137 @@
       },
       "manage": {
         "successToast": "Los permisos se actualizaron correctamente."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Pedidos",
+            "description": "Pedidos, cambios de pedido, reclamaciones, intercambios y devoluciones"
+          },
+          "payments": {
+            "label": "Pagos",
+            "description": "Pagos, colecciones de pago, reembolsos y capturas"
+          },
+          "products": {
+            "label": "Productos",
+            "description": "Productos, variantes, opciones, categorías, colecciones, tipos y etiquetas"
+          },
+          "inventory": {
+            "label": "Inventario",
+            "description": "Artículos de inventario, niveles de stock, reservas y ubicaciones"
+          },
+          "customers": {
+            "label": "Clientes",
+            "description": "Clientes, direcciones y grupos de clientes"
+          },
+          "pricing": {
+            "label": "Precios y promociones",
+            "description": "Listas de precios, precios, promociones y campañas"
+          },
+          "shipping": {
+            "label": "Envío y cumplimiento",
+            "description": "Opciones y perfiles de envío, cumplimientos y zonas de servicio"
+          },
+          "store": {
+            "label": "Configuración de tienda",
+            "description": "Detalles de tienda, regiones, canales de venta, monedas, impuestos y traducciones"
+          },
+          "team": {
+            "label": "Equipo y acceso",
+            "description": "Usuarios, invitaciones, roles y claves de API"
+          },
+          "system": {
+            "label": "Sistema",
+            "description": "Archivos, notificaciones y ejecuciones de flujo de trabajo"
+          },
+          "custom": {
+            "label": "Personalizado",
+            "description": "Permisos añadidos por tus plugins y módulos personalizados"
+          }
+        },
+        "levels": {
+          "none": "Sin acceso",
+          "view": "Solo visualización",
+          "full": "Acceso completo",
+          "mixed": "Mixto"
+        },
+        "levelControlLabel": "Nivel de acceso para {{group}}",
+        "resourceColumn": "Recurso",
+        "notAvailable": "N/D",
+        "notAvailableTooltip": "Este recurso no define este permiso",
+        "rowToggle": "Todos los permisos de {{resource}}",
+        "columnToggle": {
+          "on": "Activar {{operation}} para todos los {{group}}",
+          "off": "Desactivar {{operation}} para todos los {{group}}"
+        },
+        "search": {
+          "placeholder": "Buscar permisos",
+          "emptyHeading": "Ningún permiso coincide con tu búsqueda",
+          "emptyDescription": "Prueba con un nombre de recurso como pedidos o inventario."
+        },
+        "showKeys": "Mostrar claves de permisos",
+        "clearAll": "Borrar todo",
+        "lockedBadge_one": "{{count}} bloqueado",
+        "lockedBadge_other": "{{count}} bloqueados",
+        "lockedNote_one": "{{count}} permiso en este grupo no puede modificarse desde tu cuenta, porque tú mismo no lo tienes. Sin acceso, Solo visualización y Acceso completo se aplican al resto.",
+        "lockedNote_other": "{{count}} permisos en este grupo no pueden modificarse desde tu cuenta, porque tú mismo no los tienes. Sin acceso, Solo visualización y Acceso completo se aplican al resto.",
+        "tooltips": {
+          "cannotGrant": "No puedes otorgar esto porque tu cuenta no lo tiene.",
+          "cannotRemove": "Este rol tiene este permiso. No puedes cambiarlo porque tu cuenta no lo tiene.",
+          "viewRequired": "Otros permisos en este recurso requieren visualización. Elimínalos primero."
+        },
+        "noViewAccess": "Sin acceso de visualización",
+        "templates": {
+          "heading": "Comenzar desde una plantilla",
+          "hint": "Opcional. Aplicar una plantilla reemplaza la selección actual.",
+          "full": {
+            "label": "Acceso completo",
+            "description": "Todo lo que puedes otorgar hoy, incluyendo configuración del equipo y permisos personalizados."
+          },
+          "readonly": {
+            "label": "Solo lectura",
+            "description": "Ve todo lo que puedes otorgar hoy. No cambia nada."
+          },
+          "snapshotNote": "Las plantillas usan los permisos que existen hoy. Los permisos añadidos posteriormente, por ejemplo por un nuevo plugin, no se incluyen automáticamente."
+        },
+        "confirm": {
+          "template": {
+            "title": "¿Reemplazar tu selección?",
+            "description": "Aplicar la plantilla {{template}} reemplaza los permisos que has seleccionado.",
+            "confirm": "Aplicar plantilla"
+          },
+          "clear": {
+            "title": "¿Borrar todos los permisos?",
+            "descriptionCreate": "Esto elimina todos los permisos que has seleccionado.",
+            "descriptionEdit": "Esto elimina todos los permisos que puedes cambiar en este rol. Nada se guarda hasta que selecciones Guardar."
+          }
+        },
+        "summary": {
+          "heading": "Resumen del rol",
+          "name": "Nombre",
+          "permissions": "Permisos",
+          "selectedOfTotal": "{{selected}} de {{total}} seleccionados",
+          "unsavedChanges": "Cambios sin guardar",
+          "noChanges": "Sin cambios aún",
+          "changes": "{{added}} añadidos, {{removed}} eliminados",
+          "footnote": "Las áreas configuradas como Sin acceso se ocultan a los miembros con este rol. El acceso completo abarca los permisos que existen hoy. Los permisos añadidos posteriormente deben otorgarse aquí.",
+          "wildcards": "Este rol también tiene permisos comodín ({{keys}}). Se gestionan a través de la API y no se muestran aquí."
+        },
+        "createHint": "Selecciona al menos un permiso para crear el rol.",
+        "custom": {
+          "calloutHeading": "Añade tus propios permisos",
+          "calloutDescription": "Los plugins y módulos personalizados pueden definir sus propios permisos. Una vez creados, aparecen en este grupo, listos para asignarse a cualquier rol.",
+          "calloutAction": "Leer la guía"
+        },
+        "detail": {
+          "heading": "Permisos",
+          "count": "{{selected}} de {{total}} permisos",
+          "countOnly_one": "{{count}} permiso",
+          "countOnly_other": "{{count}} permisos",
+          "granted": "Otorgado",
+          "notGranted": "No otorgado",
+          "wildcards": "Este rol tiene permisos comodín ({{keys}}). Otorgan todos los permisos que coincidan, incluidos los añadidos posteriormente, y se gestionan a través de la API."
+        }
       }
     },
     "list": {

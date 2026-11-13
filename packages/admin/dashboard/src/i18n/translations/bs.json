@@ -2895,6 +2895,9 @@
     "delete": {
       "title": "Obriši ulogu",
       "description": "Uskoro ćete obrisati ulogu {{name}}. Ova radnja se ne može poništiti.",
+      "descriptionWithUsers_one": "Uskoro ćete obrisati ulogu {{name}}. {{count}} korisnik ima ovu ulogu i izgubit će pristup koji ona dodjeljuje. Ova radnja se ne može poništiti.",
+      "descriptionWithUsers_few": "Uskoro ćete obrisati ulogu {{name}}. {{count}} korisnika ima ovu ulogu i izgubit će pristup koji ona dodjeljuje. Ova radnja se ne može poništiti.",
+      "descriptionWithUsers_other": "Uskoro ćete obrisati ulogu {{name}}. {{count}} korisnika ima ovu ulogu i izgubit će pristup koji ona dodjeljuje. Ova radnja se ne može poništiti.",
       "successToast": "Uloga {{name}} obrisana"
     },
     "fields": {
@@ -2938,6 +2941,140 @@
       },
       "manage": {
         "successToast": "Dozvole su uspješno ažurirane."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Narudžbe",
+            "description": "Narudžbe, promjene narudžbi, zahtjevi, zamjene i povrati"
+          },
+          "payments": {
+            "label": "Plaćanja",
+            "description": "Plaćanja, kolekcije plaćanja, povrati i naplate"
+          },
+          "products": {
+            "label": "Proizvodi",
+            "description": "Proizvodi, varijante, opcije, kategorije, kolekcije, tipovi i oznake"
+          },
+          "inventory": {
+            "label": "Inventar",
+            "description": "Artikli inventara, nivoi zaliha, rezervacije i lokacije"
+          },
+          "customers": {
+            "label": "Kupci",
+            "description": "Kupci, adrese i grupe kupaca"
+          },
+          "pricing": {
+            "label": "Cijene i promocije",
+            "description": "Cjenovne liste, cijene, promocije i kampanje"
+          },
+          "shipping": {
+            "label": "Dostava i ispunjenje",
+            "description": "Opcije dostave i profili, ispunjenja i servisne zone"
+          },
+          "store": {
+            "label": "Postavke prodavnice",
+            "description": "Detalji prodavnice, regije, prodajni kanali, valute, porezi i prijevodi"
+          },
+          "team": {
+            "label": "Tim i pristup",
+            "description": "Korisnici, pozivnice, uloge i API ključevi"
+          },
+          "system": {
+            "label": "Sistem",
+            "description": "Datoteke, obavijesti i izvršavanja radnih tokova"
+          },
+          "custom": {
+            "label": "Prilagođeno",
+            "description": "Dozvole dodane vašim priključcima i prilagođenim modulima"
+          }
+        },
+        "levels": {
+          "none": "Bez pristupa",
+          "view": "Samo pregled",
+          "full": "Potpuni pristup",
+          "mixed": "Mješovito"
+        },
+        "levelControlLabel": "Nivo pristupa za {{group}}",
+        "resourceColumn": "Resurs",
+        "notAvailable": "n/a",
+        "notAvailableTooltip": "Ovaj resurs ne definira ovu dozvolu",
+        "rowToggle": "Sve dozvole za {{resource}}",
+        "columnToggle": {
+          "on": "Uključi {{operation}} za sve {{group}}",
+          "off": "Isključi {{operation}} za sve {{group}}"
+        },
+        "search": {
+          "placeholder": "Pretraži dozvole",
+          "emptyHeading": "Nijedna dozvola ne odgovara vašem pretraživanju",
+          "emptyDescription": "Pokušajte s imenom resursa kao što su narudžbe ili inventar."
+        },
+        "showKeys": "Prikaži ključeve dozvola",
+        "clearAll": "Obriši sve",
+        "lockedBadge_one": "{{count}} zaključana",
+        "lockedBadge_few": "{{count}} zaključane",
+        "lockedBadge_other": "{{count}} zaključanih",
+        "lockedNote_one": "{{count}} dozvola u ovoj grupi ne može se promijeniti s vašeg računa jer je nemate sami. Bez pristupa, Samo pregled i Potpuni pristup primjenjuju se na ostale.",
+        "lockedNote_few": "{{count}} dozvole u ovoj grupi ne mogu se promijeniti s vašeg računa jer ih nemate sami. Bez pristupa, Samo pregled i Potpuni pristup primjenjuju se na ostale.",
+        "lockedNote_other": "{{count}} dozvola u ovoj grupi ne može se promijeniti s vašeg računa jer ih nemate sami. Bez pristupa, Samo pregled i Potpuni pristup primjenjuju se na ostale.",
+        "tooltips": {
+          "cannotGrant": "Ne možete dodijeliti ovo jer vaš račun to nema.",
+          "cannotRemove": "Ova uloga ima ovu dozvolu. Ne možete je promijeniti jer je vaš račun nema.",
+          "viewRequired": "Ostale dozvole na ovom resursu zahtijevaju pregled. Prvo uklonite te dozvole."
+        },
+        "noViewAccess": "Bez pristupa pregledu",
+        "templates": {
+          "heading": "Počni od predloška",
+          "hint": "Neobavezno. Primjena predloška zamjenjuje trenutni odabir.",
+          "full": {
+            "label": "Potpuni pristup",
+            "description": "Sve što možete dodijeliti danas, uključujući postavke tima i prilagođene dozvole."
+          },
+          "readonly": {
+            "label": "Samo pregled",
+            "description": "Pregledajte sve što možete dodijeliti danas. Ne mijenjajte ništa."
+          },
+          "snapshotNote": "Predlošci koriste dozvole koje postoje danas. Dozvole dodane kasnije, na primjer novim priključkom, nisu automatski uključene."
+        },
+        "confirm": {
+          "template": {
+            "title": "Zamijeniti vaš odabir?",
+            "description": "Primjena predloška {{template}} zamjenjuje odabrane dozvole.",
+            "confirm": "Primijeni predložak"
+          },
+          "clear": {
+            "title": "Obrisati sve dozvole?",
+            "descriptionCreate": "Ovo uklanja svaku dozvolu koju ste odabrali.",
+            "descriptionEdit": "Ovo uklanja svaku dozvolu koju možete promijeniti iz ove uloge. Ništa se ne sprema dok ne odaberete Spremi."
+          }
+        },
+        "summary": {
+          "heading": "Sažetak uloge",
+          "name": "Naziv",
+          "permissions": "Dozvole",
+          "selectedOfTotal": "{{selected}} od {{total}} odabrano",
+          "unsavedChanges": "Nespremljene promjene",
+          "noChanges": "Još nema promjena",
+          "changes": "{{added}} dodano, {{removed}} uklonjeno",
+          "footnote": "Područja postavljena na Bez pristupa skrivena su od članova s ovom ulogom. Potpuni pristup pokriva dozvole koje postoje danas. Dozvole dodane kasnije moraju biti dodijeljene ovdje.",
+          "wildcards": "Ova uloga također ima džoker dozvole ({{keys}}). Upravljaju se putem API-ja i nisu prikazane ovdje."
+        },
+        "createHint": "Odaberite najmanje jednu dozvolu za kreiranje uloge.",
+        "custom": {
+          "calloutHeading": "Dodajte vlastite dozvole",
+          "calloutDescription": "Priključci i prilagođeni moduli mogu definirati vlastite dozvole. Nakon kreiranja, pojavljuju se u ovoj grupi, spremi za dodjelu bilo kojoj ulozi.",
+          "calloutAction": "Pročitajte vodič"
+        },
+        "detail": {
+          "heading": "Dozvole",
+          "count": "{{selected}} od {{total}} dozvola",
+          "countOnly_one": "{{count}} dozvola",
+          "countOnly_few": "{{count}} dozvole",
+          "countOnly_other": "{{count}} dozvola",
+          "granted": "Dodijeljeno",
+          "notGranted": "Nije dodijeljeno",
+          "wildcards": "Ova uloga ima džoker dozvole ({{keys}}). One dodjeljuju svaku dozvolu s kojom se podudaraju, uključujući one dodane kasnije, i upravljaju se putem API-ja."
+        }
       }
     },
     "list": {
@@ -3913,7 +4050,48 @@
       "return_reason": "Razlog povrata",
       "refund_reason": "Razlog refundacije",
       "workflow": "Radni tok",
-      "translation": "Prijevod"
+      "translation": "Prijevod",
+      "customer_address": "Adrese kupaca",
+      "inventory_item": "Artikli inventara",
+      "inventory_level": "Nivoi inventara",
+      "reservation_item": "Rezervacije",
+      "order_item": "Artikli narudžbe",
+      "order_change": "Promjene narudžbe",
+      "order_address": "Adrese narudžbe",
+      "order_claim": "Zahtjevi",
+      "order_claim_item": "Artikli zahtjeva",
+      "order_exchange": "Zamjene",
+      "order_credit_line": "Kreditne linije narudžbe",
+      "return": "Povrati",
+      "payment": "Plaćanja",
+      "payment_collection": "Kolekcije plaćanja",
+      "payment_method": "Načini plaćanja",
+      "payment_session": "Sesije plaćanja",
+      "refund": "Refundacije",
+      "capture": "Naplate",
+      "price_preference": "Preferencije cijena",
+      "price": "Cijene",
+      "currency": "Valute",
+      "product_variant": "Varijante proizvoda",
+      "product_option": "Opcije proizvoda",
+      "product_option_value": "Vrijednosti opcija proizvoda",
+      "property_label": "Oznake svojstava",
+      "shipping_option_type": "Tipovi opcija dostave",
+      "fulfillment": "Ispunjenja",
+      "fulfillment_provider": "Pružatelji ispunjenja",
+      "fulfillment_set": "Setovi ispunjenja",
+      "service_zone": "Servisne zone",
+      "file": "Datoteke",
+      "notification": "Obavijesti",
+      "workflow_execution": "Izvršavanja radnih tokova",
+      "store_locale": "Lokalizacije prodavnice",
+      "tax_provider": "Poreski pružatelji",
+      "tax_rate": "Poreske stope",
+      "translation_setting": "Postavke prijevoda",
+      "invite": "Pozivnice",
+      "rbac_role": "Uloge",
+      "rbac_policy": "Politike",
+      "rbac_role_assignment": "Dodjele uloga"
     },
     "actions": {
       "read": "Pregled",

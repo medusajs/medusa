@@ -2863,6 +2863,8 @@
     "delete": {
       "title": "Szerepkör törlése",
       "description": "A(z) {{name}} szerepkör törlése következik. Ez a művelet nem vonható vissza.",
+      "descriptionWithUsers_one": "A(z) {{name}} szerepkör törlése következik. {{count}} felhasználó rendelkezik ezzel a szerepkörrel, és elveszíti az általa biztosított hozzáférést. Ez a művelet nem vonható vissza.",
+      "descriptionWithUsers_other": "A(z) {{name}} szerepkör törlése következik. {{count}} felhasználó rendelkezik ezzel a szerepkörrel, és elveszítik az általa biztosított hozzáférést. Ez a művelet nem vonható vissza.",
       "successToast": "{{name}} szerepkör törölve"
     },
     "fields": {
@@ -2903,6 +2905,137 @@
       },
       "manage": {
         "successToast": "A jogosultságok sikeresen frissítve."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Rendelések",
+            "description": "Rendelések, rendelésmódosítások, igények, cserék és visszáruk"
+          },
+          "payments": {
+            "label": "Fizetések",
+            "description": "Fizetések, fizetési gyűjtemények, visszatérítések és behajtások"
+          },
+          "products": {
+            "label": "Termékek",
+            "description": "Termékek, változatok, opciók, kategóriák, gyűjtemények, típusok és címkék"
+          },
+          "inventory": {
+            "label": "Készlet",
+            "description": "Készletelemek, készletszintek, foglalások és helyszínek"
+          },
+          "customers": {
+            "label": "Vásárlók",
+            "description": "Vásárlók, címek és vásárlói csoportok"
+          },
+          "pricing": {
+            "label": "Árazás és promóciók",
+            "description": "Árlisták, árak, promóciók és kampányok"
+          },
+          "shipping": {
+            "label": "Szállítás és teljesítés",
+            "description": "Szállítási opciók és profilok, teljesítések és szolgáltatási zónák"
+          },
+          "store": {
+            "label": "Áruház beállítások",
+            "description": "Áruház részletek, régiók, értékesítési csatornák, pénznemek, adók és fordítások"
+          },
+          "team": {
+            "label": "Csapat és hozzáférés",
+            "description": "Felhasználók, meghívók, szerepkörök és API kulcsok"
+          },
+          "system": {
+            "label": "Rendszer",
+            "description": "Fájlok, értesítések és munkafolyamat-végrehajtások"
+          },
+          "custom": {
+            "label": "Egyéni",
+            "description": "Bővítményei és egyéni moduljai által hozzáadott jogosultságok"
+          }
+        },
+        "levels": {
+          "none": "Nincs hozzáférés",
+          "view": "Csak megtekintés",
+          "full": "Teljes hozzáférés",
+          "mixed": "Vegyes"
+        },
+        "levelControlLabel": "Hozzáférési szint ehhez: {{group}}",
+        "resourceColumn": "Erőforrás",
+        "notAvailable": "n/a",
+        "notAvailableTooltip": "Ez az erőforrás nem definiálja ezt a jogosultságot",
+        "rowToggle": "Összes {{resource}} jogosultság",
+        "columnToggle": {
+          "on": "{{operation}} engedélyezése az összes {{group}} számára",
+          "off": "{{operation}} letiltása az összes {{group}} számára"
+        },
+        "search": {
+          "placeholder": "Jogosultságok keresése",
+          "emptyHeading": "Nincs a keresésnek megfelelő jogosultság",
+          "emptyDescription": "Próbáljon egy erőforrás nevével, például rendelések vagy készlet."
+        },
+        "showKeys": "Jogosultsági kulcsok megjelenítése",
+        "clearAll": "Az összes törlése",
+        "lockedBadge_one": "{{count}} zárolt",
+        "lockedBadge_other": "{{count}} zárolt",
+        "lockedNote_one": "{{count}} jogosultság ebben a csoportban nem módosítható a fiókjából, mert ön maga sem rendelkezik vele. A többi esetére a Nincs hozzáférés, a Csak megtekintés és a Teljes hozzáférés érvényes.",
+        "lockedNote_other": "{{count}} jogosultság ebben a csoportban nem módosítható a fiókjából, mert ön maga sem rendelkezik velük. A többi esetére a Nincs hozzáférés, a Csak megtekintés és a Teljes hozzáférés érvényes.",
+        "tooltips": {
+          "cannotGrant": "Ezt nem engedélyezheti, mert a fiókja nem rendelkezik ezzel a jogosultsággal.",
+          "cannotRemove": "Ez a szerepkör rendelkezik ezzel a jogosultsággal. Nem módosítható, mert a fiókja nem rendelkezik ezzel.",
+          "viewRequired": "Az erőforrás más jogosultságaihoz szükséges a megtekintés. Először távolítsa el azokat."
+        },
+        "noViewAccess": "Nincs megtekintési hozzáférés",
+        "templates": {
+          "heading": "Kezdés sablonból",
+          "hint": "Nem kötelező. Egy sablon alkalmazása felváltja az aktuális kiválasztást.",
+          "full": {
+            "label": "Teljes hozzáférés",
+            "description": "Minden, amit ma engedélyezhet, beleértve a csapat beállításait és az egyéni jogosultságokat."
+          },
+          "readonly": {
+            "label": "Csak olvasás",
+            "description": "Megtekintheti mindazt, amit ma engedélyezhet. Semmit sem módosít."
+          },
+          "snapshotNote": "A sablonok a ma létező jogosultságokat használják. A később hozzáadott jogosultságok, például egy új bővítmény által, nem kerülnek automatikusan bele."
+        },
+        "confirm": {
+          "template": {
+            "title": "Felülírja a kiválasztást?",
+            "description": "A(z) {{template}} sablon alkalmazása felülírja a kiválasztott jogosultságokat.",
+            "confirm": "Sablon alkalmazása"
+          },
+          "clear": {
+            "title": "Töröl minden jogosultságot?",
+            "descriptionCreate": "Ez eltávolítja az összes kiválasztott jogosultságot.",
+            "descriptionEdit": "Ez eltávolítja az összes olyan jogosultságot, amelyet módosíthat ebből a szerepkörből. Semmi sem lesz mentve, amíg nem kattint a Mentés gombra."
+          }
+        },
+        "summary": {
+          "heading": "Szerepkör összegzése",
+          "name": "Név",
+          "permissions": "Jogosultságok",
+          "selectedOfTotal": "{{selected}} / {{total}} kiválasztva",
+          "unsavedChanges": "Nem mentett változtatások",
+          "noChanges": "Még nincsenek változtatások",
+          "changes": "{{added}} hozzáadva, {{removed}} eltávolítva",
+          "footnote": "A Nincs hozzáférés értékre beállított területek rejtve maradnak az ezzel a szerepkörrel rendelkező tagok számára. A Teljes hozzáférés a ma létező jogosultságokat fedi le. A később hozzáadott jogosultságokat itt kell megadni.",
+          "wildcards": "Ez a szerepkör helyettesítő jogosultságokkal is rendelkezik ({{keys}}). Azokat az API-n keresztül kell kezelni, és itt nem jelennek meg."
+        },
+        "createHint": "Válasszon ki legalább egy jogosultságot a szerepkör létrehozásához.",
+        "custom": {
+          "calloutHeading": "Adjon hozzá saját jogosultságokat",
+          "calloutDescription": "A bővítmények és az egyéni modulok saját jogosultságokat definiálhatnak. Létrehozásuk után ebben a csoportban jelennek meg, készen bármely szerepkörhöz való hozzárendelésre.",
+          "calloutAction": "Olvassa el az útmutatót"
+        },
+        "detail": {
+          "heading": "Jogosultságok",
+          "count": "{{selected}} / {{total}} jogosultság",
+          "countOnly_one": "{{count}} jogosultság",
+          "countOnly_other": "{{count}} jogosultság",
+          "granted": "Engedélyezett",
+          "notGranted": "Nem engedélyezett",
+          "wildcards": "Ez a szerepkör helyettesítő jogosultságokkal rendelkezik ({{keys}}). Ezek minden egyező jogosultságot megadnak, beleértve a később hozzáadottakat is, és az API-n keresztül kezelhetők."
+        }
       }
     },
     "list": {
@@ -3863,7 +3996,48 @@
       "return_reason": "Visszáru ok",
       "refund_reason": "Visszatérítési ok",
       "workflow": "Munkafolyamat",
-      "translation": "Fordítás"
+      "translation": "Fordítás",
+      "customer_address": "Vásárlói címek",
+      "inventory_item": "Készletelemek",
+      "inventory_level": "Készletszintek",
+      "reservation_item": "Foglalások",
+      "order_item": "Rendelési tételek",
+      "order_change": "Rendelésmódosítások",
+      "order_address": "Rendelési címek",
+      "order_claim": "Igények",
+      "order_claim_item": "Igénytételek",
+      "order_exchange": "Cserék",
+      "order_credit_line": "Rendelési hitelvonalak",
+      "return": "Visszáruk",
+      "payment": "Fizetések",
+      "payment_collection": "Fizetési gyűjtemények",
+      "payment_method": "Fizetési módok",
+      "payment_session": "Fizetési munkamenetek",
+      "refund": "Visszatérítések",
+      "capture": "Behajtások",
+      "price_preference": "Árbeállítások",
+      "price": "Árak",
+      "currency": "Pénznemek",
+      "product_variant": "Termékváltozatok",
+      "product_option": "Termékopciók",
+      "product_option_value": "Termékopció-értékek",
+      "property_label": "Tulajdonságcímkék",
+      "shipping_option_type": "Szállítási opció típusok",
+      "fulfillment": "Teljesítések",
+      "fulfillment_provider": "Teljesítési szolgáltatók",
+      "fulfillment_set": "Teljesítési készletek",
+      "service_zone": "Szolgáltatási zónák",
+      "file": "Fájlok",
+      "notification": "Értesítések",
+      "workflow_execution": "Munkafolyamat-végrehajtások",
+      "store_locale": "Áruházi területi beállítások",
+      "tax_provider": "Adószolgáltatók",
+      "tax_rate": "Adókulcsok",
+      "translation_setting": "Fordítási beállítások",
+      "invite": "Meghívók",
+      "rbac_role": "Szerepkörök",
+      "rbac_policy": "Jogosultságok",
+      "rbac_role_assignment": "Szerepkör-hozzárendelések"
     },
     "actions": {
       "read": "Megtekintés",

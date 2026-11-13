@@ -2844,6 +2844,8 @@
     "delete": {
       "title": "Poista rooli",
       "description": "Olet poistamassa roolin {{name}}. Tätä toimintoa ei voi peruuttaa.",
+      "descriptionWithUsers_one": "Olet poistamassa roolin {{name}}. {{count}} käyttäjällä on tämä rooli ja hän menettää sen myöntämän pääsyn. Tätä toimintoa ei voi peruuttaa.",
+      "descriptionWithUsers_other": "Olet poistamassa roolin {{name}}. {{count}} käyttäjällä on tämä rooli ja he menettävät sen myöntämän pääsyn. Tätä toimintoa ei voi peruuttaa.",
       "successToast": "Rooli {{name}} poistettu"
     },
     "fields": {
@@ -2884,6 +2886,137 @@
       },
       "manage": {
         "successToast": "Luvat päivitettiin onnistuneesti."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Tilaukset",
+            "description": "Tilaukset, tilausmuutokset, reklamaatiot, vaihdot ja palautukset"
+          },
+          "payments": {
+            "label": "Maksut",
+            "description": "Maksut, maksukokoelmat, hyvitykset ja veloitukset"
+          },
+          "products": {
+            "label": "Tuotteet",
+            "description": "Tuotteet, variantit, valinnat, kategoriat, kokoelmat, tyypit ja tunnisteet"
+          },
+          "inventory": {
+            "label": "Varasto",
+            "description": "Varastonimikkeet, varastotasot, varaukset ja sijainnit"
+          },
+          "customers": {
+            "label": "Asiakkaat",
+            "description": "Asiakkaat, osoitteet ja asiakasryhmät"
+          },
+          "pricing": {
+            "label": "Hinnoittelu ja kampanjat",
+            "description": "Hinnastot, hinnat, kampanjat ja kampanjajaksot"
+          },
+          "shipping": {
+            "label": "Toimitus ja täyttäminen",
+            "description": "Toimitusvaihtoehdot ja -profiilit, toimitukset ja palveluvyöhykkeet"
+          },
+          "store": {
+            "label": "Kaupan asetukset",
+            "description": "Kaupan tiedot, alueet, myyntikanavat, valuutat, verot ja käännökset"
+          },
+          "team": {
+            "label": "Tiimi ja pääsy",
+            "description": "Käyttäjät, kutsut, roolit ja API-avaimet"
+          },
+          "system": {
+            "label": "Järjestelmä",
+            "description": "Tiedostot, ilmoitukset ja työnkulun suoritukset"
+          },
+          "custom": {
+            "label": "Mukautettu",
+            "description": "Liitännäistesi ja mukautettujen moduuliesi lisäämät luvat"
+          }
+        },
+        "levels": {
+          "none": "Ei pääsyä",
+          "view": "Vain luku",
+          "full": "Täysi pääsy",
+          "mixed": "Yhdistetty"
+        },
+        "levelControlLabel": "Pääsytaso kohteelle {{group}}",
+        "resourceColumn": "Resurssi",
+        "notAvailable": "ei sov.",
+        "notAvailableTooltip": "Tämä resurssi ei määritä tätä lupaa",
+        "rowToggle": "Kaikki {{resource}} -luvat",
+        "columnToggle": {
+          "on": "Ota käyttöön {{operation}} kaikille {{group}}",
+          "off": "Poista käytöstä {{operation}} kaikille {{group}}"
+        },
+        "search": {
+          "placeholder": "Hae lupia",
+          "emptyHeading": "Hakuasi vastaavia lupia ei löydy",
+          "emptyDescription": "Kokeile resurssin nimeä, kuten tilaukset tai varasto."
+        },
+        "showKeys": "Näytä luvan avaimet",
+        "clearAll": "Tyhjennä kaikki",
+        "lockedBadge_one": "{{count}} lukittu",
+        "lockedBadge_other": "{{count}} lukittu",
+        "lockedNote_one": "{{count}} lupa tässä ryhmässä ei ole muutettavissa tililläsi, koska sinulla itsellä ei ole sitä. Ei pääsyä, Vain luku ja Täysi pääsy koskevat loppuja.",
+        "lockedNote_other": "{{count}} lupaa tässä ryhmässä ei ole muutettavissa tililläsi, koska sinulla itsellä ei ole niitä. Ei pääsyä, Vain luku ja Täysi pääsy koskevat loppuja.",
+        "tooltips": {
+          "cannotGrant": "Et voi myöntää tätä, koska tililläsi ei ole sitä.",
+          "cannotRemove": "Tällä roolilla on tämä lupa. Et voi muuttaa sitä, koska tililläsi ei ole sitä.",
+          "viewRequired": "Muut tämän resurssin luvat edellyttävät katselupääsyä. Poista ne ensin."
+        },
+        "noViewAccess": "Ei katselupääsyä",
+        "templates": {
+          "heading": "Aloita mallista",
+          "hint": "Valinnainen. Mallin käyttäminen korvaa nykyisen valinnan.",
+          "full": {
+            "label": "Täysi pääsy",
+            "description": "Kaikki, mitä voit myöntää tänään, mukaan lukien tiimiasetukset ja mukautetut luvat."
+          },
+          "readonly": {
+            "label": "Vain luku",
+            "description": "Katso kaikkea, mitä voit myöntää tänään. Älä muuta mitään."
+          },
+          "snapshotNote": "Mallit käyttävät tänään olemassa olevia lupia. Myöhemmin lisättyjä lupia, esimerkiksi uuden liitännäisen kautta, ei sisällytetä automaattisesti."
+        },
+        "confirm": {
+          "template": {
+            "title": "Korvata valintasi?",
+            "description": "Mallin {{template}} käyttäminen korvaa valitsemasi luvat.",
+            "confirm": "Käytä mallia"
+          },
+          "clear": {
+            "title": "Tyhjentää kaikki luvat?",
+            "descriptionCreate": "Tämä poistaa kaikki valitsemasi luvat.",
+            "descriptionEdit": "Tämä poistaa kaikki luvat, joita voit muuttaa tästä roolista. Mitään ei tallenneta ennen kuin valitset Tallenna."
+          }
+        },
+        "summary": {
+          "heading": "Roolin yhteenveto",
+          "name": "Nimi",
+          "permissions": "Luvat",
+          "selectedOfTotal": "{{selected}} / {{total}} valittu",
+          "unsavedChanges": "Tallentamattomat muutokset",
+          "noChanges": "Ei muutoksia vielä",
+          "changes": "{{added}} lisätty, {{removed}} poistettu",
+          "footnote": "Ei pääsyä -tilassa olevat alueet on piilotettu tämän roolin jäseniltä. Täysi pääsy kattaa tänään olemassa olevat luvat. Myöhemmin lisätyt luvat on myönnettävä täällä.",
+          "wildcards": "Tällä roolilla on myös yleismerkkiset luvat ({{keys}}). Niitä hallitaan API:n kautta eikä niitä näytetä täällä."
+        },
+        "createHint": "Valitse vähintään yksi lupa luodaksesi roolin.",
+        "custom": {
+          "calloutHeading": "Lisää omat lupasi",
+          "calloutDescription": "Liitännäiset ja mukautetut moduulit voivat määrittää omat lupansa. Luotaessa ne näkyvät tässä ryhmässä, valmiina liitettäväksi mihin tahansa rooliin.",
+          "calloutAction": "Lue ohjeet"
+        },
+        "detail": {
+          "heading": "Luvat",
+          "count": "{{selected}} / {{total}} lupaa",
+          "countOnly_one": "{{count}} lupa",
+          "countOnly_other": "{{count}} lupaa",
+          "granted": "Myönnetty",
+          "notGranted": "Ei myönnetty",
+          "wildcards": "Tällä roolilla on yleismerkkiset luvat ({{keys}}). Ne myöntävät kaikki vastaavat luvat, myös myöhemmin lisätyt, ja niitä hallitaan API:n kautta."
+        }
       }
     },
     "list": {
@@ -3843,7 +3976,48 @@
       "return_reason": "Palautussyy",
       "refund_reason": "Hyvityssyy",
       "workflow": "Työnkulku",
-      "translation": "Käännös"
+      "translation": "Käännös",
+      "customer_address": "Asiakkaan osoitteet",
+      "inventory_item": "Varastonimikkeet",
+      "inventory_level": "Varastotasot",
+      "reservation_item": "Varaukset",
+      "order_item": "Tilauksen nimikkeet",
+      "order_change": "Tilausmuutokset",
+      "order_address": "Tilausosoitteet",
+      "order_claim": "Reklamaatiot",
+      "order_claim_item": "Reklamaatioiden nimikkeet",
+      "order_exchange": "Vaihdot",
+      "order_credit_line": "Tilauksen hyvitysrivit",
+      "return": "Palautukset",
+      "payment": "Maksut",
+      "payment_collection": "Maksukokoelmat",
+      "payment_method": "Maksutavat",
+      "payment_session": "Maksuistunnot",
+      "refund": "Hyvitykset",
+      "capture": "Veloitukset",
+      "price_preference": "Hintamieltymykset",
+      "price": "Hinnat",
+      "currency": "Valuutat",
+      "product_variant": "Tuotevariantit",
+      "product_option": "Tuotevalinnat",
+      "product_option_value": "Tuotevalinta-arvot",
+      "property_label": "Ominaisuustunnisteet",
+      "shipping_option_type": "Toimitusvaihtoehtotyypit",
+      "fulfillment": "Toimitukset",
+      "fulfillment_provider": "Toimituspalveluntarjoajat",
+      "fulfillment_set": "Toimitusjoukot",
+      "service_zone": "Palveluvyöhykkeet",
+      "file": "Tiedostot",
+      "notification": "Ilmoitukset",
+      "workflow_execution": "Työnkulun suoritukset",
+      "store_locale": "Kaupan kielet",
+      "tax_provider": "Veropalveluntarjoajat",
+      "tax_rate": "Verokannat",
+      "translation_setting": "Käännösasetukset",
+      "invite": "Kutsut",
+      "rbac_role": "Roolit",
+      "rbac_policy": "Luvat",
+      "rbac_role_assignment": "Roolimääritykset"
     },
     "actions": {
       "read": "Näytä",
