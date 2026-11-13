@@ -47,6 +47,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "path": "/migrate-self-hosted",
+            "title": "Migrate from Self Hosting",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Command Palette",
             "path": "/command-palette",
             "children": []

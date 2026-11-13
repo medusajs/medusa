@@ -20,7 +20,7 @@ export const generatedEditDates = {
   "app/billing/manage/page.mdx": "2026-05-27T00:37:24.600Z",
   "app/pricing/page.mdx": "2026-09-25T08:17:41.958Z",
   "app/sign-up/page.mdx": "2026-10-07T16:01:19.125Z",
-  "app/comparison/page.mdx": "2026-08-18T10:36:02.526Z",
+  "app/comparison/page.mdx": "2026-11-13T11:04:29.317Z",
   "app/billing/plans/page.mdx": "2026-09-30T09:50:01.826Z",
   "app/cache/page.mdx": "2026-07-28T05:58:03.886Z",
   "app/deployments/troubleshooting/page.mdx": "2026-11-11T15:06:43.922Z",
@@ -87,5 +87,6 @@ export const generatedEditDates = {
   "app/medusa-mcp/custom-data/page.mdx": "2026-10-20T12:53:55.860Z",
   "app/medusa-mcp/n8n/page.mdx": "2026-10-08T08:58:01.127Z",
   "app/usage/compute/page.mdx": "2026-10-19T11:11:24.460Z",
-  "app/security/data-protection/page.mdx": "2026-11-06T12:26:30.453Z"
+  "app/security/data-protection/page.mdx": "2026-11-06T12:26:30.453Z",
+  "app/migrate-self-hosted/page.mdx": "2026-11-13T11:04:19.082Z"
 }

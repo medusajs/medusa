@@ -49,6 +49,7 @@ export const sitemapUrls = [
   "/medusa-mcp/n8n",
   "/medusa-mcp",
   "/mermaid-icon-test",
+  "/migrate-self-hosted",
   "/monitoring/http",
   "/monitoring",
   "/monitoring/servers",
