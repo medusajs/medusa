@@ -8,270 +8,32 @@ export const CLOUD_STATUS_PAGE_URL = "https://status.medusajs.com"
 export const navDropdownItems: NavigationItem[] = [
   {
     type: "link",
-    link: `/learn`,
+    link: `/cloud`,
     title: "Get Started",
-    sidebar_id: "docs",
+    sidebar_id: "get-started",
   },
   {
-    type: "dropdown",
-    title: "Product",
-    children: [
-      {
-        type: "sub-menu",
-        title: "Framework",
-        link: "/learn/fundamentals/framework",
-        items: [
-          {
-            type: "link",
-            title: "API Routes",
-            link: "/learn/fundamentals/api-routes",
-          },
-          {
-            type: "link",
-            title: "Data Models",
-            link: "/learn/fundamentals/data-models",
-          },
-          {
-            type: "link",
-            title: "Events and Subscribers",
-            link: "/learn/fundamentals/events-and-subscribers",
-          },
-          {
-            type: "link",
-            title: "Index Module",
-            link: "/learn/fundamentals/query/index-module",
-          },
-          {
-            type: "link",
-            title: "Medusa Container",
-            link: "/learn/fundamentals/medusa-container",
-          },
-          {
-            type: "link",
-            title: "Modules",
-            link: "/learn/fundamentals/modules",
-          },
-          {
-            type: "link",
-            title: "Module Links",
-            link: "/learn/fundamentals/module-links",
-          },
-          {
-            type: "link",
-            title: "Plugins",
-            link: "/learn/fundamentals/plugins",
-          },
-          {
-            type: "link",
-            title: "Query",
-            link: "/learn/fundamentals/query",
-          },
-          {
-            type: "link",
-            title: "Scheduled Jobs",
-            link: "/learn/fundamentals/scheduled-jobs",
-          },
-          {
-            type: "link",
-            title: "Workflows",
-            link: "/learn/fundamentals/workflows",
-          },
-        ],
-      },
-      {
-        type: "link",
-        title: "Admin Extensions",
-        link: "/learn/fundamentals/admin",
-      },
-      {
-        type: "sub-menu",
-        title: "Commerce Modules",
-        link: "/resources/commerce-modules",
-        items: [
-          {
-            type: "link",
-            title: "API Key",
-            link: "/resources/commerce-modules/api-key",
-          },
-          {
-            type: "link",
-            title: "Auth",
-            link: "/resources/commerce-modules/auth",
-          },
-          {
-            type: "link",
-            title: "Cart",
-            link: "/resources/commerce-modules/cart",
-          },
-          {
-            type: "link",
-            title: "Currency",
-            link: "/resources/commerce-modules/currency",
-          },
-          {
-            type: "link",
-            title: "Customer",
-            link: "/resources/commerce-modules/customer",
-          },
-          {
-            type: "link",
-            title: "Fulfillment",
-            link: "/resources/commerce-modules/fulfillment",
-          },
-          {
-            type: "link",
-            title: "Inventory",
-            link: "/resources/commerce-modules/inventory",
-          },
-          {
-            type: "link",
-            title: "Loyalty",
-            link: "/resources/commerce-modules/loyalty",
-          },
-          {
-            type: "link",
-            title: "Order",
-            link: "/resources/commerce-modules/order",
-          },
-          {
-            type: "link",
-            title: "Payment",
-            link: "/resources/commerce-modules/payment",
-          },
-          {
-            type: "link",
-            title: "Pricing",
-            link: "/resources/commerce-modules/pricing",
-          },
-          {
-            type: "link",
-            title: "Product",
-            link: "/resources/commerce-modules/product",
-          },
-          {
-            type: "link",
-            title: "Promotion",
-            link: "/resources/commerce-modules/promotion",
-          },
-          {
-            type: "link",
-            title: "Region",
-            link: "/resources/commerce-modules/region",
-          },
-          {
-            type: "link",
-            title: "Sales Channel",
-            link: "/resources/commerce-modules/sales-channel",
-          },
-          {
-            type: "link",
-            title: "Settings",
-            link: "/resources/commerce-modules/settings",
-          },
-          {
-            type: "link",
-            title: "Stock Location",
-            link: "/resources/commerce-modules/stock-location",
-          },
-          {
-            type: "link",
-            title: "Store",
-            link: "/resources/commerce-modules/store",
-          },
-          {
-            type: "link",
-            title: "Store Credit",
-            link: "/resources/commerce-modules/store-credit",
-          },
-          {
-            type: "link",
-            title: "Tax",
-            link: "/resources/commerce-modules/tax",
-          },
-          {
-            type: "link",
-            title: "Translation",
-            link: "/resources/commerce-modules/translation",
-          },
-          {
-            type: "link",
-            title: "User",
-            link: "/resources/commerce-modules/user",
-          },
-        ],
-      },
-      {
-        type: "sub-menu",
-        title: "Infrastructure Modules",
-        link: "/resources/infrastructure-modules",
-        sidebar_id: "infrastructure-modules",
-        items: [
-          {
-            type: "link",
-            title: "Analytics",
-            link: "/resources/infrastructure-modules/analytics",
-          },
-          {
-            type: "link",
-            title: "Caching",
-            link: "/resources/infrastructure-modules/caching",
-          },
-          {
-            type: "link",
-            title: "Event",
-            link: "/resources/infrastructure-modules/event",
-          },
-          {
-            type: "link",
-            title: "File",
-            link: "/resources/infrastructure-modules/file",
-          },
-          {
-            type: "link",
-            title: "Locking",
-            link: "/resources/infrastructure-modules/locking",
-          },
-          {
-            type: "link",
-            title: "Notification",
-            link: "/resources/infrastructure-modules/notification",
-          },
-          {
-            type: "link",
-            title: "Search",
-            link: "/resources/infrastructure-modules/search",
-          },
-          {
-            type: "link",
-            title: "Workflow Engine",
-            link: "/resources/infrastructure-modules/workflow-engine",
-          },
-        ],
-      },
-      {
-        type: "sub-menu",
-        title: "Enterprise",
-        link: "/resources/enterprise",
-        sidebar_id: "enterprise",
-        items: [
-          {
-            type: "link",
-            title: "RBAC",
-            link: "/resources/enterprise/rbac",
-          },
-          {
-            type: "link",
-            title: "SSO",
-            link: "/resources/enterprise/sso",
-          },
-        ],
-      },
-    ],
+    type: "link",
+    link: "/resources/commerce-modules",
+    title: "Commerce",
+    sidebar_id: "commerce-modules",
   },
   {
     type: "dropdown",
     title: "Build",
     children: [
+      {
+        type: "link",
+        title: "Framework",
+        link: "/learn",
+        sidebar_id: "framework",
+      },
+      {
+        type: "link",
+        title: "Storefront Development",
+        link: "/resources/storefront-development",
+        sidebar_id: "storefront-development",
+      },
       {
         type: "link",
         title: "Recipes",
@@ -280,177 +42,156 @@ export const navDropdownItems: NavigationItem[] = [
       },
       {
         type: "link",
-        title: "How-to & Tutorials",
+        title: "How to & Tutorials",
         link: "/resources/how-to-tutorials",
         sidebar_id: "how-to-tutorials",
-      },
-      {
-        type: "link",
-        title: "Integrations",
-        link: "/resources/integrations",
-        sidebar_id: "integrations",
-      },
-      {
-        type: "link",
-        title: "Storefront",
-        link: "/resources/storefront-development",
-        sidebar_id: "storefront-development",
       },
     ],
   },
   {
+    type: "link",
+    title: "Merchant Guide",
+    link: "/user-guide",
+    sidebar_id: "user-guide",
+  },
+  {
     type: "dropdown",
-    title: "Tools",
-    link: "/resources/tools",
+    title: "Developer Resources",
     children: [
       {
         type: "sub-menu",
-        title: "CLI Tools",
+        title: "Tools",
+        link: "/resources/tools",
         items: [
           {
             type: "link",
-            title: "create-medusa-app",
-            link: "/resources/create-medusa-app",
+            title: "Cloud CLI",
+            link: "/cloud/cli",
+            sidebar_id: "cloud-cli",
           },
           {
             type: "link",
             title: "Medusa CLI",
             link: "/resources/medusa-cli",
+            sidebar_id: "medusa-cli",
           },
           {
             type: "link",
-            title: "Medusa Cloud CLI",
-            link: "/cloud/cli",
+            title: "InstantSearch Adapter",
+            link: "/resources/instantsearch",
+          },
+          {
+            type: "link",
+            title: "JS SDK",
+            link: "/resources/js-sdk",
+            sidebar_id: "js-sdk",
+          },
+          {
+            type: "link",
+            title: "ESLint Plugin",
+            link: "/resources/lint",
+            sidebar_id: "lint",
+          },
+          {
+            type: "link",
+            title: "Admin Components",
+            link: "/resources/admin-components",
+            sidebar_id: "admin-components",
+          },
+          {
+            type: "link",
+            title: "Next.js Starter",
+            link: "/resources/nextjs-starter",
+            sidebar_id: "nextjs-starter",
+          },
+          {
+            type: "link",
+            title: "Medusa UI",
+            link: "/ui",
+            sidebar_id: "ui",
           },
         ],
       },
       {
-        type: "link",
-        title: "InstantSearch Adapter",
-        link: "/resources/instantsearch",
-      },
-      {
-        type: "link",
-        title: "JS SDK",
-        link: "/resources/js-sdk",
-        sidebar_id: "js-sdk",
-      },
-      {
-        type: "link",
-        title: "Admin Components",
-        link: "/resources/admin-components",
-        sidebar_id: "admin-components",
-      },
-      {
-        type: "link",
-        title: "Next.js Starter",
-        link: "/resources/nextjs-starter",
-        sidebar_id: "nextjs-starter",
-      },
-      {
-        type: "link",
-        title: "Medusa UI",
-        link: "/ui",
-        sidebar_id: "ui",
-      },
-      {
-        type: "link",
-        title: "ESLint Plugin",
-        link: "/resources/lint",
-        sidebar_id: "lint",
-      },
-    ],
-  },
-  {
-    type: "dropdown",
-    title: "Reference",
-    link: "/resources/references-overview",
-    children: [
-      {
-        type: "link",
-        title: "Admin API",
-        link: "/api/admin",
-        sidebar_id: "admin",
-      },
-      {
-        type: "link",
-        title: "Store API",
-        link: "/api/store",
-        sidebar_id: "store",
-      },
-      {
-        type: "divider",
-      },
-      {
-        type: "link",
-        title: "Admin Injection Zones",
-        link: "/resources/admin-widget-injection-zones",
-      },
-      {
-        type: "link",
-        title: "Container Resources",
-        link: "/resources/medusa-container-resources",
-      },
-      {
-        type: "link",
-        title: "Core Workflows",
-        link: "/resources/medusa-workflows-reference",
-        sidebar_id: "core-flows",
-      },
-      {
-        type: "link",
-        title: "Data Model Language",
-        link: "/resources/references/data-model",
-        sidebar_id: "dml-reference",
-      },
-      {
-        type: "link",
-        title: "Data Model Repository",
-        link: "/resources/data-model-repository-reference",
-        sidebar_id: "data-model-repository-reference",
-      },
-      {
-        type: "link",
-        title: "Events Reference",
-        link: "/resources/references/events",
-      },
-      {
-        type: "link",
-        title: "Helper Steps",
-        link: "/resources/references/helper-steps",
-        sidebar_id: "helper-steps-reference",
-      },
-      {
-        type: "link",
-        title: "Service Factory",
-        link: "/resources/service-factory-reference",
-        sidebar_id: "service-factory-reference",
-      },
-      {
-        type: "link",
-        title: "Testing Framework",
-        link: "/resources/test-tools-reference",
-        sidebar_id: "test-tools-reference",
-      },
-      {
-        type: "link",
-        title: "Workflows SDK",
-        link: "/resources/references/workflows",
-        sidebar_id: "workflows-sdk-reference",
+        type: "sub-menu",
+        title: "References",
+        link: "/resources/references-overview",
+        items: [
+          {
+            type: "link",
+            title: "Admin API",
+            link: "/api/admin",
+            sidebar_id: "admin",
+          },
+          {
+            type: "link",
+            title: "Store API",
+            link: "/api/store",
+            sidebar_id: "store",
+          },
+          {
+            type: "divider",
+          },
+          {
+            type: "link",
+            title: "Admin Injection Zones",
+            link: "/resources/admin-widget-injection-zones",
+          },
+          {
+            type: "link",
+            title: "Container Resources",
+            link: "/resources/medusa-container-resources",
+          },
+          {
+            type: "link",
+            title: "Core Workflows",
+            link: "/resources/medusa-workflows-reference",
+            sidebar_id: "core-flows",
+          },
+          {
+            type: "link",
+            title: "Data Model Language",
+            link: "/resources/references/data-model",
+            sidebar_id: "dml-reference",
+          },
+          {
+            type: "link",
+            title: "Data Model Repository",
+            link: "/resources/data-model-repository-reference",
+            sidebar_id: "data-model-repository-reference",
+          },
+          {
+            type: "link",
+            title: "Events Reference",
+            link: "/resources/references/events",
+          },
+          {
+            type: "link",
+            title: "Helper Steps",
+            link: "/resources/references/helper-steps",
+            sidebar_id: "helper-steps-reference",
+          },
+          {
+            type: "link",
+            title: "Service Factory",
+            link: "/resources/service-factory-reference",
+            sidebar_id: "service-factory-reference",
+          },
+          {
+            type: "link",
+            title: "Testing Framework",
+            link: "/resources/test-tools-reference",
+            sidebar_id: "test-tools-reference",
+          },
+          {
+            type: "link",
+            title: "Workflows SDK",
+            link: "/resources/references/workflows",
+            sidebar_id: "workflows-sdk-reference",
+          },
+        ],
       },
     ],
-  },
-  {
-    type: "link",
-    title: "User Guide",
-    link: "/user-guide",
-    sidebar_id: "user-guide",
-  },
-  {
-    type: "link",
-    title: "Cloud",
-    link: "/cloud",
-    sidebar_id: "cloud",
   },
 ]
 

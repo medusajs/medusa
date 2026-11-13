@@ -510,3 +510,105 @@ describe("sidebar_id matching", () => {
     expect(getByTestId("active-item")).toHaveTextContent("Docs")
   })
 })
+
+describe("overlapping links", () => {
+  const navItems: NavigationItem[] = [
+    {
+      type: "link",
+      title: "Get Started",
+      link: "/cloud",
+      sidebar_id: "get-started",
+    },
+    {
+      type: "dropdown",
+      title: "Build",
+      children: [
+        {
+          type: "link",
+          title: "Framework",
+          link: "/learn",
+          sidebar_id: "framework",
+        },
+      ],
+    },
+    {
+      type: "dropdown",
+      title: "Developer Resources",
+      children: [
+        {
+          type: "sub-menu",
+          title: "Tools",
+          items: [
+            {
+              type: "link",
+              title: "Cloud CLI",
+              link: "/cloud/cli",
+              sidebar_id: "cloud-cli",
+            },
+          ],
+        },
+      ],
+    },
+  ]
+
+  test("prefers the item with the most specific link", () => {
+    mockUsePathname.mockReturnValue("/cloud/cli/commands/login")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-item")).toHaveTextContent("Developer Resources")
+  })
+
+  test("matches a later item's less specific link", () => {
+    mockUsePathname.mockReturnValue("/learn/fundamentals/modules")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-item")).toHaveTextContent("Build")
+  })
+
+  test("prefers a later item's sidebar_id over an earlier item's link", () => {
+    mockShownSidebar.mockReturnValue({ sidebar_id: "cloud-cli" })
+    mockUsePathname.mockReturnValue("/cloud")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-item")).toHaveTextContent("Developer Resources")
+  })
+})
+
+describe("homepage", () => {
+  test("has no active item even when a sidebar is shown", () => {
+    const navItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Framework",
+        link: "/learn",
+        sidebar_id: "framework",
+      },
+    ]
+
+    mockShownSidebar.mockReturnValue({ sidebar_id: "framework" })
+    mockUsePathname.mockReturnValue("/")
+
+    const { getByTestId } = render(
+      <MainNavProvider navItems={navItems}>
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-index")).toHaveTextContent("none")
+  })
+})

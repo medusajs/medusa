@@ -2,7 +2,7 @@
 export const sidebar = [
   {
     sidebar_id: "user-guide",
-    title: "User Guide",
+    title: "Merchant Guide",
     items: [
       {
         type: "link",

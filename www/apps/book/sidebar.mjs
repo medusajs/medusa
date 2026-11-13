@@ -1,8 +1,8 @@
 /** @type {import("types").Sidebar.Sidebar[]} */
 export const sidebars = [
   {
-    sidebar_id: "docs",
-    title: "Get Started",
+    sidebar_id: "framework",
+    title: "Framework",
     items: [
       {
         type: "category",
@@ -15,114 +15,8 @@ export const sidebars = [
           },
           {
             type: "link",
-            path: "/learn/installation",
-            title: "Installation",
-            children: [
-              {
-                type: "link",
-                path: "/learn/installation/docker",
-                title: "Install with Docker",
-              },
-            ],
-          },
-          {
-            type: "link",
             title: "Architecture",
             path: "/learn/introduction/architecture",
-          },
-        ],
-      },
-      {
-        type: "category",
-        title: "Agentic Development",
-        children: [
-          {
-            type: "link",
-            title: "Overview",
-            path: "/learn/introduction/build-with-llms-ai",
-          },
-          {
-            type: "link",
-            title: "Cloud CLI",
-            path: "/learn/introduction/build-with-llms-ai/cloud-cli",
-          },
-          {
-            type: "link",
-            title: "Manage Store with Agents",
-            path: "/learn/introduction/build-with-llms-ai/manage-store-with-agents",
-          },
-          {
-            type: "link",
-            title: "Docs MCP Server",
-            path: "/learn/introduction/build-with-llms-ai/docs-mcp-server",
-            children: [
-              {
-                type: "link",
-                title: "Ask Medusa Questions",
-                path: "/learn/introduction/build-with-llms-ai/docs-mcp-server/ask-medusa-question",
-                description:
-                  "Answer Medusa questions from the official documentation.",
-              },
-              {
-                type: "link",
-                title: "Migrate from Shopify",
-                path: "/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-shopify",
-                description:
-                  "Migrate your store's data from Shopify to Medusa.",
-              },
-              {
-                type: "link",
-                title: "Migrate from WooCommerce",
-                path: "/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-woocommerce",
-                description:
-                  "Migrate your store's data from WooCommerce to Medusa.",
-              },
-              {
-                type: "link",
-                title: "Migrate from Magento",
-                path: "/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-magento",
-                description:
-                  "Migrate your store's data from Magento to Medusa.",
-              },
-              {
-                type: "link",
-                title: "Integrate Providers",
-                path: "/learn/introduction/build-with-llms-ai/docs-mcp-server/integrate-providers",
-                description:
-                  "Build payment and fulfillment module providers for third-party services.",
-              },
-              {
-                type: "link",
-                title: "Extend Products",
-                path: "/learn/introduction/build-with-llms-ai/docs-mcp-server/extend-products",
-                description:
-                  "Attach custom data and features to products, variants, and options.",
-              },
-              {
-                type: "link",
-                title: "Upgrade Medusa",
-                path: "/learn/introduction/build-with-llms-ai/docs-mcp-server/upgrade-instructions",
-                description:
-                  "Upgrade a Medusa project to a newer version, breaking changes included.",
-              },
-              {
-                type: "link",
-                title: "Submit Feedback",
-                path: "/learn/introduction/build-with-llms-ai/docs-mcp-server/submit-feedback",
-                description:
-                  "Send documentation, bug, and feedback to the Medusa team.",
-              },
-            ],
-          },
-          {
-            type: "link",
-            title: "Agentic Skills",
-            path: "/learn/introduction/build-with-llms-ai/agentic-skills",
-          },
-          {
-            type: "link",
-            title: "AI-Friendly Docs",
-            path: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
           },
         ],
       },
@@ -227,7 +121,7 @@ export const sidebars = [
       },
       {
         type: "category",
-        title: "Framework",
+        title: "Basics",
         children: [
           {
             type: "link",
@@ -696,12 +590,6 @@ export const sidebars = [
             title: "Tips",
           },
         ],
-      },
-      {
-        type: "link",
-        path: "/learn/storefront-development",
-        title: "Storefront Development",
-        chapterTitle: "Storefront",
       },
       {
         type: "category",
