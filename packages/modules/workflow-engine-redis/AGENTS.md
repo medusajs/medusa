@@ -63,6 +63,7 @@ yarn migration:create           # after any change in src/models
 ## Gotchas
 
 - Workers, the job queue, and the cleaner queue only exist when `worker_mode` is not `"server"`. On a server-only instance, retries and timeouts are enqueued but processed elsewhere, and `schedule()` is a no-op (`jobQueue` is undefined).
+- Scheduled workflows with `concurrency: "forbid"` (the default) hold a `schedule:<workflowId>:running` Redis lock (30s TTL, refreshed while running) for the duration of `run`. A tick that fires while the lock is held is skipped, not delayed. `concurrency: "allow"` takes no lock.
 - The loader throws when no `redisUrl` / `url` is set, but connection errors are only logged.
 - Shutdown: workers close in `onApplicationPrepareShutdown` (waits for running jobs), queues and Redis connections close in `onApplicationShutdown`.
 - On start it removes repeatable jobs left on the main queue by pre-2.6 versions, which scheduled jobs on that queue.

@@ -32,6 +32,7 @@ import {
   WorkerOptions,
 } from "bullmq"
 import Redis from "ioredis"
+import { randomUUID } from "crypto"
 
 enum JobType {
   SCHEDULE = "schedule",
@@ -42,6 +43,8 @@ enum JobType {
 
 const THIRTY_MINUTES_IN_MS = 1000 * 60 * 30
 const REPEATABLE_CLEARER_JOB_ID = "clear-expired-executions"
+const SCHEDULED_JOB_LOCK_TTL_MS = 30000
+const RELEASE_LOCK_SCRIPT = `if redis.call("get", KEYS[1]) == ARGV[1] then return redis.call("del", KEYS[1]) else return 0 end`
 
 const doneStates = new Set([
   TransactionStepState.DONE,
@@ -439,9 +442,35 @@ export class RedisDistributedTransactionStorage
     schedulerOptions: SchedulerOptions,
     scheduledFor: Date
   ) {
+    const lockKey = `${JobType.SCHEDULE}:${jobId}:running`
+    const lockToken = randomUUID()
+    let lockRefresh: NodeJS.Timeout | undefined
+
+    if (schedulerOptions?.concurrency !== "allow") {
+      const acquired = await this.redisClient.set(
+        lockKey,
+        lockToken,
+        "PX",
+        SCHEDULED_JOB_LOCK_TTL_MS,
+        "NX"
+      )
+
+      if (acquired !== "OK") {
+        this.logger_?.debug(
+          `Skipping scheduled workflow ${jobId} because its previous execution is still running.`
+        )
+        return
+      }
+
+      lockRefresh = setInterval(() => {
+        void this.redisClient
+          .pexpire(lockKey, SCHEDULED_JOB_LOCK_TTL_MS)
+          .catch(() => {})
+      }, SCHEDULED_JOB_LOCK_TTL_MS / 3)
+      lockRefresh.unref()
+    }
+
     try {
-      // TODO: In the case of concurrency being forbidden, we want to generate a predictable transaction ID and rely on the idempotency
-      // of the transaction to ensure that the transaction is only executed once.
       await this.workflowOrchestratorService_.run(jobId, {
         logOnError: true,
         input: {
@@ -459,6 +488,13 @@ export class RedisDistributedTransactionStorage
       }
 
       throw e
+    } finally {
+      if (lockRefresh) {
+        clearInterval(lockRefresh)
+        await this.redisClient
+          .eval(RELEASE_LOCK_SCRIPT, 1, lockKey, lockToken)
+          .catch(() => {})
+      }
     }
   }
 
