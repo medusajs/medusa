@@ -4139,6 +4139,7 @@
       "fulfillment_set": "Набори виконання",
       "service_zone": "Зони обслуговування",
       "file": "Файли",
+      "audit_log": "Журнали аудиту",
       "notification": "Сповіщення",
       "workflow_execution": "Виконання робочих процесів",
       "store_locale": "Локалі магазину",

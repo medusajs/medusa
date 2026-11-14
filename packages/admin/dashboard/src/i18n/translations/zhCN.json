@@ -4015,6 +4015,7 @@
       "fulfillment_set": "履约集合",
       "service_zone": "服务区域",
       "file": "文件",
+      "audit_log": "审计日志",
       "notification": "通知",
       "workflow_execution": "工作流执行",
       "store_locale": "店铺语言环境",

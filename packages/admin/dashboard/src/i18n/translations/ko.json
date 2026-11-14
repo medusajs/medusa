@@ -4015,6 +4015,7 @@
       "fulfillment_set": "이행 세트",
       "service_zone": "서비스 영역",
       "file": "파일",
+      "audit_log": "감사 로그",
       "notification": "알림",
       "workflow_execution": "워크플로우 실행",
       "store_locale": "스토어 로케일",

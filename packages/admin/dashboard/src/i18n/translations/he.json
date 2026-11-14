@@ -4135,6 +4135,7 @@
       "fulfillment_set": "ערכות אספקה",
       "service_zone": "אזורי שירות",
       "file": "קבצים",
+      "audit_log": "יומני ביקורת",
       "notification": "התראות",
       "workflow_execution": "ביצועי תהליכי עבודה",
       "store_locale": "שפות חנות",

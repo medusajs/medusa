@@ -4028,6 +4028,7 @@
       "fulfillment_set": "Teljesítési készletek",
       "service_zone": "Szolgáltatási zónák",
       "file": "Fájlok",
+      "audit_log": "Auditnaplók",
       "notification": "Értesítések",
       "workflow_execution": "Munkafolyamat-végrehajtások",
       "store_locale": "Áruházi területi beállítások",

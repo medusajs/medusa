@@ -4030,6 +4030,7 @@
       "fulfillment_set": "Ensembles d'exécution",
       "service_zone": "Zones de service",
       "file": "Fichiers",
+      "audit_log": "Journaux d'audit",
       "notification": "Notifications",
       "workflow_execution": "Exécutions de workflow",
       "store_locale": "Paramètres régionaux de la boutique",

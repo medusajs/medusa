@@ -4118,6 +4118,7 @@
       "fulfillment_set": "Zestawy realizacji",
       "service_zone": "Strefy serwisowe",
       "file": "Pliki",
+      "audit_log": "Dzienniki audytu",
       "notification": "Powiadomienia",
       "workflow_execution": "Wykonania przepływów pracy",
       "store_locale": "Lokalizacje sklepu",
