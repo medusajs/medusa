@@ -1,3 +1,5 @@
+import { ESLint, Linter } from "eslint"
+import path from "path"
 import plugin from "../index"
 
 describe("@medusajs/eslint-plugin", () => {
@@ -91,5 +93,45 @@ describe("@medusajs/eslint-plugin", () => {
         (block.languageOptions as Record<string, unknown> | undefined)?.parser
     )
     expect(parserBlock).toBeDefined()
+  })
+
+  describe("recommended preset scopes job and subscriber rules like the loaders", () => {
+    const cwd = "/project"
+    const eslint = new ESLint({
+      cwd,
+      overrideConfigFile: true,
+      overrideConfig: plugin.configs.recommended as Linter.Config[],
+    })
+
+    const hasRule = async (file: string, rule: string) => {
+      const config = await eslint.calculateConfigForFile(path.join(cwd, file))
+      return Object.keys(config?.rules ?? {}).includes(rule)
+    }
+
+    it.each([
+      ["src/jobs/sync.ts", true],
+      ["src/jobs/utils/paging.ts", true],
+      ["src/jobs/nested/deep/sync.js", true],
+      ["src/jobs/index.ts", false],
+      ["src/jobs/utils/index.ts", false],
+      ["src/jobs/_paging.ts", false],
+      ["src/jobs/utils/_paging.ts", false],
+      ["src/jobs/types.d.ts", false],
+    ])("applies scheduled job rules to %s: %s", async (file, expected) => {
+      expect(
+        await hasRule(file, "@medusajs/scheduled-job-config-required")
+      ).toBe(expected)
+    })
+
+    it.each([
+      ["src/subscribers/order-placed.ts", true],
+      ["src/subscribers/orders/order-placed.ts", true],
+      ["src/subscribers/index.ts", false],
+      ["src/subscribers/orders/_helpers.ts", false],
+    ])("applies subscriber rules to %s: %s", async (file, expected) => {
+      expect(
+        await hasRule(file, "@medusajs/subscriber-config-export-required")
+      ).toBe(expected)
+    })
   })
 })

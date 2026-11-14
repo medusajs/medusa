@@ -66,6 +66,7 @@ export default defineMiddlewares({
 - Route files must be named `route.ts`/`route.js`; dynamic segments use `[param]` directories. Export `AUTHENTICATE = false` or `CORS = false` from a route file to opt out of the defaults (both default to `true`).
 - Subscribers export a default handler plus `config: SubscriberConfig` with `event`; a subscriber missing `config` or `config.event` is skipped with a warning, not an error.
 - Scheduled jobs export `config` with `name` and `schedule`; missing either throws at load.
+- `src/jobs` and `src/subscribers` are scanned recursively: every `.ts`/`.js` file at any depth is loaded, except `index` files, `_`-prefixed files, `.d.ts`, `.spec`/`.test` files, and anything under `__tests__/`. Put helpers shared by several jobs in a `_`-prefixed file or outside the directory.
 - Docs: https://docs.medusajs.com/learn/fundamentals/framework.md, https://docs.medusajs.com/learn/configurations/medusa-config.md, https://docs.medusajs.com/learn/fundamentals/api-routes/middlewares.md, https://docs.medusajs.com/learn/fundamentals/api-routes/validation.md, https://docs.medusajs.com/learn/fundamentals/medusa-container.md
 
 ## Architecture
