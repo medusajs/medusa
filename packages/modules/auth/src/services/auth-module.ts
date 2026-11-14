@@ -491,6 +491,15 @@ export default class AuthModuleService
 
     this.assertMfaChallengeCanBeVerified_(challenge, data.method)
 
+    const attempts = await this.incrementMfaChallengeAttempts_(challenge)
+
+    if (attempts > challenge.max_attempts) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "MFA challenge has too many failed attempts"
+      )
+    }
+
     const valid = await this.authMfaProviderService_.verify(
       data.method,
       {
@@ -501,8 +510,6 @@ export default class AuthModuleService
     )
 
     if (!valid) {
-      const attempts = challenge.attempts + 1
-
       await this.setMfaChallenge_({
         ...challenge,
         attempts,
@@ -1077,6 +1084,28 @@ export default class AuthModuleService
     await this.getCache_().set(
       this.getMfaChallengeCacheKey_(challenge.id),
       challenge,
+      ttl
+    )
+  }
+
+  protected async incrementMfaChallengeAttempts_(
+    challenge: AuthTypes.AuthMfaChallengeDTO
+  ): Promise<number> {
+    const cache = this.getCache_()
+
+    if (!cache.increment) {
+      const attempts = challenge.attempts + 1
+      await this.setMfaChallenge_({ ...challenge, attempts })
+      return attempts
+    }
+
+    const ttl = Math.max(
+      1,
+      Math.ceil((new Date(challenge.expires_at).getTime() - Date.now()) / 1000)
+    )
+
+    return await cache.increment(
+      `${this.getMfaChallengeCacheKey_(challenge.id)}:attempts`,
       ttl
     )
   }

@@ -19,7 +19,7 @@ module.exports = defineConfig({
 
 - Options (`InMemoryCacheModuleOptions`): `ttl` in seconds, default `30`.
 - Resolve: `container.resolve(Modules.CACHE)` (`ICacheService`). Still used internally by the Auth Module (MFA challenges, OAuth state).
-- Methods: `get(key)`, `set(key, data, ttl?)`, `invalidate(key)` (supports `*`), `clear()` (in-memory only, not on `ICacheService`).
+- Methods: `get(key)`, `set(key, data, ttl?)`, `invalidate(key)` (supports `*`), `increment(key, ttl?)` (atomic counter, returns the new value), `clear()` (in-memory only, not on `ICacheService`).
 - No data models, events, links, or providers.
 - Docs: https://docs.medusajs.com/resources/infrastructure-modules/cache/in-memory.md, https://docs.medusajs.com/resources/infrastructure-modules/caching.md
 

@@ -29,4 +29,16 @@ export interface ICacheService {
    * await cacheModuleService.invalidate("my-key")
    */
   invalidate(key: string): Promise<void>
+  /**
+   * This method atomically increments a numeric counter in the cache. If the
+   * counter doesn't exist, it's created with the value `1`.
+   *
+   * @param key - The key of the counter to increment.
+   * @param ttl - The time-to-live (TTL) value in seconds of the counter.
+   * @returns The value of the counter after the increment.
+   *
+   * @example
+   * const attempts = await cacheModuleService.increment("my-counter", 60)
+   */
+  increment?(key: string, ttl?: number): Promise<number>
 }

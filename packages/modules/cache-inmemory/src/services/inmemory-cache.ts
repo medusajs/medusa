@@ -69,6 +69,23 @@ class InMemoryCacheService implements ICacheService {
   }
 
   /**
+   * Atomically increment a numeric counter, creating it if it doesn't exist.
+   * @param key - cache key of the counter
+   * @param ttl - expiration time in seconds
+   */
+  async increment(key: string, ttl: number = this.TTL): Promise<number> {
+    const record: CacheRecord<number> | undefined = this.store.get(key)
+    const current =
+      record && (record.expire ?? Infinity) >= Date.now() ? record.data : 0
+    const value = Number(current) + 1
+
+    // Not awaited so that the read and the write happen without yielding
+    void this.set(key, value, ttl)
+
+    return value
+  }
+
+  /**
    * Delete data from the cache.
    * Could use wildcard (*) matcher e.g. `invalidate("ps:*")` to delete all keys that start with "ps:"
    *
