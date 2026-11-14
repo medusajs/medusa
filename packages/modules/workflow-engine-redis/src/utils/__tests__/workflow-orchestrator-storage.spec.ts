@@ -318,4 +318,106 @@ describe("RedisDistributedTransactionStorage", () => {
       expect(Worker).not.toHaveBeenCalled()
     })
   })
+
+  describe("executeScheduledJob - concurrency", () => {
+    const createStorage = () => {
+      const locks = new Map<string, string>()
+      const redisClient = {
+        ...redisMock,
+        set: jest.fn(async (key: string, value: string, ...args: any[]) => {
+          if (args.includes("NX") && locks.has(key)) {
+            return null
+          }
+          locks.set(key, value)
+          return "OK"
+        }),
+        pexpire: jest.fn().mockResolvedValue(1),
+        eval: jest.fn(async (_script: string, _n: number, key: string, value) => {
+          if (locks.get(key) === value) {
+            locks.delete(key)
+            return 1
+          }
+          return 0
+        }),
+      }
+
+      const storage = new RedisDistributedTransactionStorage({
+        ...baseModuleDeps,
+        redisConnection: redisClient as unknown as Redis,
+        redisMainQueueOptions: {},
+        redisMainWorkerOptions: {},
+        redisJobQueueOptions: {},
+        redisJobWorkerOptions: {},
+        redisCleanerQueueOptions: {},
+        redisCleanerWorkerOptions: {},
+      })
+
+      const pendingRuns: (() => void)[] = []
+      const run = jest.fn(
+        () => new Promise<void>((resolve) => pendingRuns.push(resolve))
+      )
+      storage.setWorkflowOrchestratorService({ run })
+
+      const execute = (schedulerOptions: object) =>
+        (storage as any).executeScheduledJob(
+          "scheduled-workflow",
+          { cron: "* * * * *", ...schedulerOptions },
+          new Date()
+        )
+
+      const flush = () => new Promise((resolve) => setImmediate(resolve))
+
+      const finishRuns = async (executions: Promise<unknown>[]) => {
+        pendingRuns.splice(0).forEach((resolve) => resolve())
+        await Promise.all(executions)
+      }
+
+      return { run, execute, flush, finishRuns }
+    }
+
+    it("should skip a scheduled run while the previous run is still in progress when concurrency is forbid", async () => {
+      const { run, execute, flush, finishRuns } = createStorage()
+
+      const first = execute({ concurrency: "forbid" })
+      await flush()
+      const second = execute({ concurrency: "forbid" })
+      await flush()
+
+      expect(run).toHaveBeenCalledTimes(1)
+
+      await finishRuns([first, second])
+
+      const third = execute({ concurrency: "forbid" })
+      await flush()
+      await finishRuns([third])
+
+      expect(run).toHaveBeenCalledTimes(2)
+    })
+
+    it("should skip overlapping scheduled runs when concurrency is not set", async () => {
+      const { run, execute, flush, finishRuns } = createStorage()
+
+      const first = execute({})
+      await flush()
+      const second = execute({})
+      await flush()
+
+      expect(run).toHaveBeenCalledTimes(1)
+
+      await finishRuns([first, second])
+    })
+
+    it("should allow overlapping scheduled runs when concurrency is allow", async () => {
+      const { run, execute, flush, finishRuns } = createStorage()
+
+      const first = execute({ concurrency: "allow" })
+      await flush()
+      const second = execute({ concurrency: "allow" })
+      await flush()
+
+      expect(run).toHaveBeenCalledTimes(2)
+
+      await finishRuns([first, second])
+    })
+  })
 })
