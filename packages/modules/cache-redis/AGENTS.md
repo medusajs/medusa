@@ -22,7 +22,7 @@ module.exports = defineConfig({
   - `ttl`: seconds, default `30`
   - `redisOptions`: ioredis `RedisOptions`, spread over `{ lazyConnect: true }`
   - `namespace`: key prefix, default `"medusa"` (keys stored as `medusa:<key>`)
-- Resolve: `container.resolve(Modules.CACHE)` (`ICacheService`): `get`, `set`, `invalidate`.
+- Resolve: `container.resolve(Modules.CACHE)` (`ICacheService`): `get`, `set`, `invalidate`, `increment` (atomic `INCR` + `EXPIRE` in a `MULTI`, returns the new value).
 - No data models, events, links, or providers.
 - Docs: https://docs.medusajs.com/resources/infrastructure-modules/cache/redis.md, https://docs.medusajs.com/resources/infrastructure-modules/caching/providers/redis.md
 

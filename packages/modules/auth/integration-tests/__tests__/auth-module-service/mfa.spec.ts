@@ -16,6 +16,11 @@ const inMemoryCache = {
   invalidate: async (key: string) => {
     mockCache.delete(key)
   },
+  increment: async (key: string) => {
+    const value = (mockCache.get(key) ?? 0) + 1
+    mockCache.set(key, value)
+    return value
+  },
 }
 
 class TestMfaProvider {
@@ -492,6 +497,51 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             code: "000000",
           })
         ).rejects.toThrow("MFA challenge has too many failed attempts")
+
+        await expect(
+          service.verifyAuthMfaChallenge({
+            id: challenge.id,
+            method: "totp",
+            code,
+          })
+        ).rejects.toThrow("MFA challenge has too many failed attempts")
+      })
+
+      it("enforces max attempts across concurrent MFA challenge verifications", async () => {
+        const setup = await service.startAuthMfa({
+          auth_identity_id: "test-id",
+          provider: "totp",
+        })
+        const code = generateTotpCode({
+          secret: setup.secret,
+          timestamp: Date.now(),
+        })
+
+        await service.verifyAuthMfa({
+          id: setup.mfa.id,
+          code,
+        })
+        const challenge = await service.createAuthMfaChallenge({
+          auth_identity_id: "test-id",
+        })
+
+        const guesses = ["000000", "000001", "000002", "000003", code]
+        const results = await Promise.allSettled(
+          guesses.map((guess) =>
+            service.verifyAuthMfaChallenge({
+              id: challenge.id,
+              method: "totp",
+              code: guess,
+            })
+          )
+        )
+
+        expect(results.map((result) => result.status)).toEqual(
+          guesses.map(() => "rejected")
+        )
+        expect(
+          (results[guesses.length - 1] as PromiseRejectedResult).reason.message
+        ).toEqual("MFA challenge has too many failed attempts")
 
         await expect(
           service.verifyAuthMfaChallenge({

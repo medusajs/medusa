@@ -61,6 +61,17 @@ describe("InMemoryCacheService", () => {
     })
   })
 
+  it("Increments counters atomically across concurrent calls", async () => {
+    inMemoryCache = new InMemoryCacheService({}, {})
+
+    const values = await Promise.all(
+      Array.from({ length: 5 }, () => inMemoryCache.increment("counter", 10))
+    )
+
+    expect(values.sort()).toEqual([1, 2, 3, 4, 5])
+    expect(await inMemoryCache.get("counter")).toEqual(5)
+  })
+
   it("Removes data after TTL", async () => {
     inMemoryCache = new InMemoryCacheService({}, {})
 

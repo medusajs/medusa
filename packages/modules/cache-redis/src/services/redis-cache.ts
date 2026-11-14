@@ -72,6 +72,27 @@ class RedisCacheService implements ICacheService {
   }
 
   /**
+   * Atomically increment a numeric counter, creating it if it doesn't exist.
+   * @param key
+   * @param ttl
+   */
+  async increment(key: string, ttl: number = this.TTL): Promise<number> {
+    const cacheKey = this.getCacheKey(key)
+    const results = await this.redis
+      .multi()
+      .incr(cacheKey)
+      .expire(cacheKey, ttl)
+      .exec()
+
+    const [error, value] = results?.[0] ?? []
+    if (error || !results) {
+      throw error ?? new Error(`Failed to increment cache key ${key}`)
+    }
+
+    return Number(value)
+  }
+
+  /**
    * Invalidate cache for a specific key. a key can be either a specific key or more global such as "ps:*".
    * @param key
    */
