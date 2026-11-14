@@ -4026,6 +4026,7 @@
       "fulfillment_set": "フルフィルメントセット",
       "service_zone": "サービスゾーン",
       "file": "ファイル",
+      "audit_log": "監査ログ",
       "notification": "通知",
       "workflow_execution": "ワークフロー実行",
       "store_locale": "ストアロケール",

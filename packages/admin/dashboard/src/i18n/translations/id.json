@@ -4015,6 +4015,7 @@
       "fulfillment_set": "Set pemenuhan",
       "service_zone": "Zona layanan",
       "file": "File",
+      "audit_log": "Log Audit",
       "notification": "Notifikasi",
       "workflow_execution": "Eksekusi alur kerja",
       "store_locale": "Lokal toko",

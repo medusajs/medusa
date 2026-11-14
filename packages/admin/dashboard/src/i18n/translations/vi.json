@@ -3568,6 +3568,7 @@
       "fulfillment_set": "Bộ xử lý giao hàng",
       "service_zone": "Khu vực dịch vụ",
       "file": "Tệp",
+      "audit_log": "Nhật ký kiểm tra",
       "notification": "Thông báo",
       "workflow_execution": "Lần thực thi luồng công việc",
       "store_locale": "Ngôn ngữ cửa hàng",

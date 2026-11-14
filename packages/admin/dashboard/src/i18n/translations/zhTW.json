@@ -4014,6 +4014,7 @@
       "fulfillment_set": "出貨集合",
       "service_zone": "服務區域",
       "file": "檔案",
+      "audit_log": "稽核日誌",
       "notification": "通知",
       "workflow_execution": "工作流程執行",
       "store_locale": "商店語言設定",

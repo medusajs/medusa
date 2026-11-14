@@ -4023,6 +4023,7 @@
       "fulfillment_set": "Conjuntos de atendimento",
       "service_zone": "Zonas de serviço",
       "file": "Arquivos",
+      "audit_log": "Registros de auditoria",
       "notification": "Notificações",
       "workflow_execution": "Execuções de fluxo de trabalho",
       "store_locale": "Idiomas da loja",

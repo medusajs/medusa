@@ -4139,6 +4139,7 @@
       "fulfillment_set": "Vykdymų rinkiniai",
       "service_zone": "Aptarnavimo zonos",
       "file": "Failai",
+      "audit_log": "Audito žurnalai",
       "notification": "Pranešimai",
       "workflow_execution": "Darbo eigos vykdymai",
       "store_locale": "Parduotuvės lokalės",

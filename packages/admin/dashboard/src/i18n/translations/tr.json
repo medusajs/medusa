@@ -4028,6 +4028,7 @@
       "fulfillment_set": "Teslimat setleri",
       "service_zone": "Hizmet bölgeleri",
       "file": "Dosyalar",
+      "audit_log": "Denetim Günlükleri",
       "notification": "Bildirimler",
       "workflow_execution": "İş akışı yürütmeleri",
       "store_locale": "Mağaza yerel ayarları",

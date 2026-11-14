@@ -4030,6 +4030,7 @@
       "fulfillment_set": "Set di evasione",
       "service_zone": "Zone di servizio",
       "file": "File",
+      "audit_log": "Log di audit",
       "notification": "Notifiche",
       "workflow_execution": "Esecuzioni workflow",
       "store_locale": "Impostazioni locali negozio",

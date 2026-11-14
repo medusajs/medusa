@@ -4063,6 +4063,7 @@
       "fulfillment_set": "Skupovi otpreme",
       "service_zone": "Zone usluga",
       "file": "Datoteke",
+      "audit_log": "Zapisnici revizije",
       "notification": "Obavijesti",
       "workflow_execution": "Pokretanja Workflowa",
       "store_locale": "Lokalizacije trgovine",
