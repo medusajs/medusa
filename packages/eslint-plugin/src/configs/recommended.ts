@@ -2,6 +2,13 @@ import type { Linter } from "eslint"
 import { ruleId } from "../constants"
 import { ignoresBlock, pluginBlock, tsParserBlock } from "./shared"
 
+/**
+ * Files the framework's `ResourceLoader` skips when it loads jobs and
+ * subscribers, so they can hold code shared by several jobs or subscribers.
+ * Test files and `__tests__/` are already ignored by `ignoresBlock`.
+ */
+const loadedResourceIgnores = ["**/index.{ts,js}", "**/_*", "**/*.d.ts"]
+
 export function buildRecommended(plugin: unknown): Linter.Config[] {
   return [
     ignoresBlock,
@@ -178,11 +185,13 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      // Direct descendants of `subscribers/` only — Medusa loads a subscriber
-      // from each file directly under this directory. Files in nested
-      // subdirectories are treated as utilities, not subscribers, so they are
-      // not subject to these rules.
-      files: ["src/subscribers/*.{ts,js}", "**/src/subscribers/*.{ts,js}"],
+      // Medusa loads a subscriber from every file under `subscribers/`, at any
+      // depth, except the ones in `loadedResourceIgnores`.
+      files: [
+        "src/subscribers/**/*.{ts,js}",
+        "**/src/subscribers/**/*.{ts,js}",
+      ],
+      ignores: loadedResourceIgnores,
       rules: {
         [ruleId("subscriber-config-export-required")]: "error",
         [ruleId("subscriber-default-export-must-be-async")]: "error",
@@ -191,11 +200,10 @@ export function buildRecommended(plugin: unknown): Linter.Config[] {
       },
     },
     {
-      // Direct descendants of `jobs/` only — Medusa loads a scheduled job from
-      // each file directly under this directory. Files in nested subdirectories
-      // are treated as utilities, not jobs, so they are not subject to these
-      // rules.
-      files: ["src/jobs/*.{ts,js}", "**/src/jobs/*.{ts,js}"],
+      // Medusa loads a scheduled job from every file under `jobs/`, at any
+      // depth, except the ones in `loadedResourceIgnores`.
+      files: ["src/jobs/**/*.{ts,js}", "**/src/jobs/**/*.{ts,js}"],
+      ignores: loadedResourceIgnores,
       rules: {
         [ruleId("scheduled-job-config-required")]: "error",
         [ruleId("scheduled-job-default-export-async")]: "error",
