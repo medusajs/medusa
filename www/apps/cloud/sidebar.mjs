@@ -185,29 +185,25 @@ export const sidebar = [
         children: [
           {
             type: "link",
-            path: "#",
+            path: "/setup-locally",
             title: "Setup Locally",
-            badge: soonBadge,
             children: [
               {
                 type: "link",
-                path: "#",
+                path: "/setup-locally/docker",
                 title: "Setup with Docker",
-                badge: soonBadge,
               },
             ],
           },
           {
             type: "link",
-            path: "#",
+            path: "/development-resources",
             title: "Development Resources",
-            badge: soonBadge,
           },
           {
             type: "link",
-            path: "#",
+            path: "/integrations",
             title: "Integrations",
-            badge: soonBadge,
           },
         ],
       },
@@ -237,11 +233,6 @@ export const sidebar = [
                 type: "link",
                 title: "Prerequisites",
                 path: "/projects/prerequisites",
-              },
-              {
-                type: "link",
-                title: "Clone Project Locally",
-                path: "/projects/clone-locally",
               },
               {
                 type: "link",
@@ -462,16 +453,14 @@ export const sidebar = [
         initialOpen: true,
         children: [
           {
-            type: "link",
-            path: "#",
+            type: "external",
+            path: "https://docs.medusajs.com/resources/enterprise/rbac",
             title: "RBAC",
-            badge: soonBadge,
           },
           {
-            type: "link",
-            path: "#",
+            type: "external",
+            path: "https://docs.medusajs.com/resources/enterprise/sso",
             title: "SSO",
-            badge: soonBadge,
           },
         ],
       },

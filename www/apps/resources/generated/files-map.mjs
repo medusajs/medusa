@@ -1496,10 +1496,6 @@ export const filesMap = [
     "pathname": "/integrations/guides/strapi"
   },
   {
-    "filePath": "/www/apps/resources/app/integrations/page.mdx",
-    "pathname": "/integrations"
-  },
-  {
     "filePath": "/www/apps/resources/app/js-sdk/auth/overview/page.mdx",
     "pathname": "/js-sdk/auth/overview"
   },

@@ -95,7 +95,7 @@ const redirects = async () => {
     },
     {
       source: "/learn/basics/project-directories-files",
-      destination: "/learn/installation#project-files",
+      destination: "/cloud/setup-locally#project-files",
       permanent: true,
     },
     {
@@ -221,7 +221,7 @@ const redirects = async () => {
     },
     {
       source: "/v1/plugins/payment",
-      destination: "/resources/integrations",
+      destination: "/cloud/integrations",
       permanent: true,
     },
     {
@@ -271,7 +271,7 @@ const redirects = async () => {
     },
     {
       source: "/v1/development/fundamentals/local-development",
-      destination: "/learn/installation",
+      destination: "/cloud/setup-locally",
       permanent: true,
     },
     {
@@ -281,7 +281,7 @@ const redirects = async () => {
     },
     {
       source: "/v1/plugins/overview",
-      destination: "/resources/integrations",
+      destination: "/cloud/integrations",
       permanent: true,
     },
     {
@@ -386,7 +386,7 @@ const redirects = async () => {
     },
     {
       source: "/usage/create-medusa-app",
-      destination: "/learn/installation",
+      destination: "/cloud/setup-locally",
       permanent: true,
     },
     {
@@ -456,7 +456,7 @@ const redirects = async () => {
     },
     {
       source: "/quickstart/quick-start",
-      destination: "/learn/installation",
+      destination: "/cloud/setup-locally",
       permanent: true,
     },
     {
@@ -544,6 +544,16 @@ const redirects = async () => {
     {
       source: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
       destination: "/cloud/ai-toolkit/ai-friendly-docs",
+      permanent: true,
+    },
+    {
+      source: "/learn/installation",
+      destination: "/cloud/setup-locally",
+      permanent: true,
+    },
+    {
+      source: "/learn/installation/docker",
+      destination: "/cloud/setup-locally/docker",
       permanent: true,
     },
   ]

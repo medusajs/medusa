@@ -575,6 +575,26 @@ describe("overlapping links", () => {
     expect(getByTestId("active-item")).toHaveTextContent("Build")
   })
 
+  test("matches an item's additional links", () => {
+    mockUsePathname.mockReturnValue("/resources/integrations/guides/sentry")
+
+    const { getByTestId } = render(
+      <MainNavProvider
+        navItems={[
+          {
+            ...navItems[0],
+            additional_links: ["/resources/integrations"],
+          } as NavigationItem,
+          ...navItems.slice(1),
+        ]}
+      >
+        <TestComponent />
+      </MainNavProvider>
+    )
+
+    expect(getByTestId("active-item")).toHaveTextContent("Get Started")
+  })
+
   test("prefers a later item's sidebar_id over an earlier item's link", () => {
     mockShownSidebar.mockReturnValue({ sidebar_id: "cloud-cli" })
     mockUsePathname.mockReturnValue("/cloud")

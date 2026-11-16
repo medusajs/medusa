@@ -373,7 +373,6 @@ export const sitemapUrls = [
   "/integrations/guides/shipstation",
   "/integrations/guides/slack",
   "/integrations/guides/strapi",
-  "/integrations",
   "/js-sdk/auth/overview",
   "/js-sdk",
   "/lint",

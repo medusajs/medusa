@@ -126,8 +126,6 @@ export const sitemapUrls = [
   "/learn/fundamentals/workflows/variable-manipulation",
   "/learn/fundamentals/workflows/workflow-hooks",
   "/learn/fundamentals/workflows/workflow-timeout",
-  "/learn/installation/docker",
-  "/learn/installation",
   "/learn/introduction/architecture",
   "/learn/introduction/build-with-llms-ai/cloud-cli",
   "/learn/introduction/build-with-llms-ai/manage-store-with-agents",

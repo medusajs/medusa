@@ -362,7 +362,6 @@
 - [Redis Workflow Engine Module](http://localhost:3000/resources/infrastructure-modules/workflow-engine/redis)
 - [InstantSearch Adapter](http://localhost:3000/resources/instantsearch)
 - [Filtering, Sorting, and Pagination](http://localhost:3000/resources/instantsearch/examples/filtering-sorting-pagination)
-- [Integrations](http://localhost:3000/resources/integrations)
 - [Integrate Algolia (Search) with Medusa](http://localhost:3000/resources/integrations/guides/algolia)
 - [Integrate Avalara (AvaTax) for Tax Calculation](http://localhost:3000/resources/integrations/guides/avalara)
 - [Implement Localization in Medusa by Integrating Contentful](http://localhost:3000/resources/integrations/guides/contentful)

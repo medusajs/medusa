@@ -9,6 +9,7 @@ export const navDropdownItems: NavigationItem[] = [
   {
     type: "link",
     link: `/cloud`,
+    additional_links: ["/resources/integrations", "/resources/enterprise"],
     title: "Get Started",
     sidebar_id: "get-started",
   },
