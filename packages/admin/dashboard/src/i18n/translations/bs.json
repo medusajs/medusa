@@ -4082,6 +4082,7 @@
       "fulfillment_set": "Setovi ispunjenja",
       "service_zone": "Servisne zone",
       "file": "Datoteke",
+      "audit_log": "Revizijski zapisi",
       "notification": "Obavijesti",
       "workflow_execution": "Izvršavanja radnih tokova",
       "store_locale": "Lokalizacije prodavnice",

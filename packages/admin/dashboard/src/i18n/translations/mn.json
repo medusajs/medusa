@@ -4029,6 +4029,7 @@
       "fulfillment_set": "Биелэлтийн багцууд",
       "service_zone": "Үйлчилгээний бүсүүд",
       "file": "Файлууд",
+      "audit_log": "Аудитын бүртгэл",
       "notification": "Мэдэгдлүүд",
       "workflow_execution": "Ажлын урсгалын гүйцэтгэлүүд",
       "store_locale": "Дэлгүүрийн локальууд",

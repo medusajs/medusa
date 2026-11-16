@@ -4019,6 +4019,7 @@
       "fulfillment_set": "ชุดการดำเนินการสั่งซื้อ",
       "service_zone": "เขตบริการ",
       "file": "ไฟล์",
+      "audit_log": "บันทึกการตรวจสอบ",
       "notification": "การแจ้งเตือน",
       "workflow_execution": "การประมวลผลเวิร์กโฟลว์",
       "store_locale": "ภาษาท้องถิ่นของร้านค้า",
