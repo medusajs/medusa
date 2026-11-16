@@ -4,75 +4,89 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll find answers to frequently asked questions about Cloud.
+In this guide, you'll find answers to frequently asked questions about getting started with Medusa.
 
-## Can I try Cloud for free?
+## Can I deploy a Medusa store for free?
 
-Yes, when you [sign up for Cloud](../sign-up/page.mdx), Medusa starts a free trial for your organization. You don't need to enter payment details to start the trial.
+Medusa provides a free trial for select regions. If you're eligible for a free trial, you can start it when you [sign up for Medusa](../sign-up/page.mdx). During the trial, you can deploy your Medusa store, including its backend, admin, and storefront, at no cost. You enter your payment details when you sign up, but Medusa doesn't charge you until the trial ends.
 
-The free trial is available only in select regions. If it isn't available in your region, Medusa creates your organization without a free trial.
+While your organization is on a free trial, the Cloud dashboard shows a banner with the time left in your trial and the date billing starts. Learn how to view your trial's status in the [Manage Plans](../billing/plans/page.mdx#view-trial-status) guide.
 
-While your organization is on a free trial, the Cloud dashboard shows a banner with the number of days left in your trial. Learn how to view your trial's status in the [Manage Plans](../billing/plans/page.mdx#view-trial-status) guide.
+Medusa is also open source, so you can use it for free on your own infrastructure. Learn more in the [next question](#is-medusa-open-source).
+
+---
+
+## Is Medusa open source?
+
+Yes, Medusa's commerce features and Framework are open source and available under the MIT license in the [Medusa GitHub repository](https://github.com/medusajs/medusa). You can use them for free, and you own your project's code and data.
+
+You pay for Medusa when you deploy your store with its managed infrastructure, which gives you hosting, managed resources, and services like emails and search without setting them up yourself. To learn how that compares to hosting Medusa yourself, refer to the [Cloud vs Self-Hosted](../comparison/page.mdx) guide.
+
+Some features, such as role-based access control (RBAC) and single sign-on (SSO), aren't part of the open source license. They're available with the Enterprise plan or an Enterprise license.
 
 ---
 
 ## What happens when my free trial ends?
 
-To keep your projects after the trial ends, add your billing details before the trial ends. Click the **Add your billing details to keep your projects** link in the dashboard's trial banner, or [add a payment method](../billing/manage/page.mdx#add-payment-method-to-organization) from the organization's billing settings.
+When your trial ends, billing starts automatically. Medusa charges the payment method you added during sign-up for your plan, and your projects keep running without interruption.
 
-If your trial already ended, you can still keep your plan from the billing settings. Learn more in the [Resume your Organization's Plan](../billing/plans/page.mdx#resume-your-organizations-plan) guide.
+If you don't want to continue after the trial, you can [cancel your organization's plan](../billing/plans/page.mdx#cancelling-your-organizations-plan).
 
----
+If your organization doesn't have a payment method, for example, because you removed it, the trial banner shows an **Add your billing details to keep your projects** link. Click it to [add a payment method](../billing/manage/page.mdx#add-payment-method-to-organization) before the trial ends.
 
-## Do I need to learn about Medusa to use Cloud?
-
-Since you deploy Medusa projects on Cloud, you need a developer who is familiar with Medusa to set up your project and add customizations for your business needs. Learn about Medusa in the [Getting Started](!docs!/learn) guide.
-
-You can also contact a [Medusa Expert](https://medusajs.com/experts/) to help you with building your Medusa project and deploying it on Cloud.
+If your trial already ended without a payment method, you can still keep your plan from the billing settings. Learn more in the [Resume your Organization's Plan](../billing/plans/page.mdx#resume-your-organizations-plan) guide.
 
 ---
 
-## Does Medusa support hosting storefronts on Cloud?
+## Do I need to be a developer to use Medusa?
 
-Yes, Medusa Cloud supports hosting storefronts alongside your Medusa backend and admin dashboard in a monorepo structure. Cloud supports storefronts built with Next.js, SvelteKit, and Tanstack Start, with automatic configuration and deployment for each environment.
+You can create and deploy a store from a starter without writing code. To add customizations for your business needs, you need a developer who is familiar with Medusa, or an AI agent with the [AI Toolkit](../ai-toolkit/page.mdx). Learn about Medusa in the [Getting Started](!docs!/learn) guide.
+
+You can also contact a [Medusa Expert](https://medusajs.com/experts/) to help you with building and deploying your Medusa project.
+
+---
+
+## Does Medusa host storefronts?
+
+Yes, Medusa hosts storefronts alongside your Medusa backend and admin dashboard in a monorepo structure. Medusa supports storefronts built with Next.js, SvelteKit, and Tanstack Start, with automatic configuration and deployment for each environment.
 
 Refer to the [Create Project](../projects/page.mdx) to learn more.
 
 ---
 
-## What resources does Medusa provide in Cloud?
+## What resources does Medusa manage for my project?
 
-Medusa fully-manages your [PostgreSQL databases](../database/page.mdx), [Redis instances](../redis/page.mdx), and [S3 buckets](../s3/page.mdx) on Cloud. You don't need to configure or maintain them.
-
----
-
-## Do I own my code and data for my Medusa project on Cloud?
-
-Yes, your code is hosted on your GitHub repository. You can also export a dump of your Cloud database at any time.
+Medusa fully-manages your [PostgreSQL databases](../database/page.mdx), [Redis instances](../redis/page.mdx), and [S3 buckets](../s3/page.mdx). You don't need to configure or maintain them.
 
 ---
 
-## Can I deploy multiple projects on Cloud?
+## Do I own my Medusa project's code and data?
+
+Yes, your code is hosted on your GitHub repository. You can also export a dump of your project's database at any time.
+
+---
+
+## Can I deploy multiple Medusa projects?
 
 Yes, if your plan supports multiple projects. Learn more in the [Plans & Pricing](../pricing/page.mdx) guide.
 
 ---
 
-## Can I use my custom plugins and modules on Cloud?
+## Can I use my custom plugins and modules?
 
-Yes, you can use any custom and out-of-the-box plugins and modules in your Medusa project deployed on Cloud. You retain the same flexibility as you would with a self-hosted Medusa project.
+Yes, you can use any custom and out-of-the-box plugins and modules in your deployed Medusa project. You retain the same flexibility as you would with a self-hosted Medusa project.
 
-You can deploy projects like marketplaces, B2B, subscription-based stores, and more on Cloud.
+You can deploy projects like marketplaces, B2B, subscription-based stores, and more.
 
 ---
 
-## Does Medusa create new Medusa projects for each deployment on Cloud?
+## Does Medusa create a new project for each deployment?
 
 No, Medusa does not create new Medusa projects for your deployments. Instead, it deploys your existing Medusa project from your GitHub repository.
 
 ---
 
-## Can I use a static IP address for my Medusa project on Cloud?
+## Can I use a static IP address for my Medusa project?
 
 Medusa uses static IP addresses for outgoing requests from your Medusa backend to external services, and dynamic IP addresses for incoming requests to your Medusa backend. You can use the static outgoing IP addresses to whitelist them in your firewall or allowlist them in external services.
 
@@ -82,13 +96,13 @@ You can find the list of static outgoing IP addresses in the [IP Addresses](../i
 
 ## Can I password-protect my deployment or preview URLs?
 
-No, Cloud doesn't have a built-in option to password-protect or otherwise restrict access to the URLs of long-lived or preview environments. The Medusa Admin and admin API routes already require authentication, but the storefront is publicly accessible.
+No, Medusa doesn't have a built-in option to password-protect or otherwise restrict access to the URLs of long-lived or preview environments. The Medusa Admin and admin API routes already require authentication, but the storefront is publicly accessible.
 
 To keep a storefront private while you test it, you can add HTTP basic authentication in your storefront's code. Learn how in the [Restrict Access to a Deployment](../deployments/access/page.mdx#restrict-access-to-a-deployment) guide.
 
 ---
 
-## How do I know if Cloud has an ongoing issue?
+## How do I know if Medusa has an ongoing issue?
 
 Check the [Cloud status page](https://status.medusajs.com) for the current health of Cloud's services and a history of past incidents. You can also subscribe to incident updates by email, Slack, Microsoft Teams, or RSS.
 

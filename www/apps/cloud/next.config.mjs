@@ -170,6 +170,16 @@ const nextConfig = {
       permanent: true,
     },
     {
+      source: "/medusa-mcp/:path*",
+      destination: "/ai-toolkit/medusa-mcp/:path*",
+      permanent: true,
+    },
+    {
+      source: "/assistant",
+      destination: "/ai-toolkit/assistant",
+      permanent: true,
+    },
+    {
       source: "/cloud/draft-order-plugin",
       destination: "/resources/commerce-modules/order/draft-orders",
       basePath: false,

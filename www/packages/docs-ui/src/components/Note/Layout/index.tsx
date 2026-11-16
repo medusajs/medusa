@@ -114,7 +114,7 @@ export const NoteLayout = ({
         )}
         data-testid="note-layout-indicator"
       ></span>
-      <div className="flex-1">
+      <div className="flex-1 min-w-0">
         <div className="text-small text-medusa-fg-subtle [&_ol]:!mb-0 [&_ul]:!mb-0">
           <span
             className={clsx("text-small-plus text-medusa-fg-base")}

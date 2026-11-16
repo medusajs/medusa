@@ -31,9 +31,8 @@ export const sidebar = [
           },
           {
             type: "link",
-            path: "#",
+            path: "/going-live",
             title: "Going Live Checklist",
-            badge: soonBadge,
           },
           {
             type: "link",
@@ -47,9 +46,8 @@ export const sidebar = [
           },
           {
             type: "link",
-            path: "#",
+            path: "/features",
             title: "Features",
-            badge: soonBadge,
           },
         ],
       },
@@ -60,53 +58,113 @@ export const sidebar = [
         children: [
           {
             type: "link",
-            path: "#",
+            path: "/ai-toolkit",
             title: "Overview",
-            badge: soonBadge,
           },
           {
             type: "link",
             title: "Medusa MCP",
-            path: "/medusa-mcp",
+            path: "/ai-toolkit/medusa-mcp",
             children: [
               {
                 type: "link",
                 title: "Claude Connector",
-                path: "/medusa-mcp/claude",
+                path: "/ai-toolkit/medusa-mcp/claude",
               },
               {
                 type: "link",
                 title: "ChatGPT App",
-                path: "/medusa-mcp/chatgpt",
+                path: "/ai-toolkit/medusa-mcp/chatgpt",
               },
               {
                 type: "link",
                 title: "n8n",
-                path: "/medusa-mcp/n8n",
+                path: "/ai-toolkit/medusa-mcp/n8n",
               },
               {
                 type: "link",
                 title: "Custom Agents",
-                path: "/medusa-mcp/custom-agents",
+                path: "/ai-toolkit/medusa-mcp/custom-agents",
               },
               {
                 type: "link",
                 title: "Retrieve Custom Data",
-                path: "/medusa-mcp/custom-data",
+                path: "/ai-toolkit/medusa-mcp/custom-data",
               },
             ],
           },
           {
             type: "link",
-            path: "#",
+            path: "/ai-toolkit/docs-mcp",
             title: "Docs MCP",
-            badge: soonBadge,
+            children: [
+              {
+                type: "link",
+                title: "Ask Medusa Questions",
+                path: "/ai-toolkit/docs-mcp/ask-medusa-question",
+                description:
+                  "Answer Medusa questions from the official documentation.",
+              },
+              {
+                type: "link",
+                title: "Migrate from Shopify",
+                path: "/ai-toolkit/docs-mcp/migrate-from-shopify",
+                description:
+                  "Migrate your store's data from Shopify to Medusa.",
+              },
+              {
+                type: "link",
+                title: "Migrate from WooCommerce",
+                path: "/ai-toolkit/docs-mcp/migrate-from-woocommerce",
+                description:
+                  "Migrate your store's data from WooCommerce to Medusa.",
+              },
+              {
+                type: "link",
+                title: "Migrate from Magento",
+                path: "/ai-toolkit/docs-mcp/migrate-from-magento",
+                description:
+                  "Migrate your store's data from Magento to Medusa.",
+              },
+              {
+                type: "link",
+                title: "Integrate Providers",
+                path: "/ai-toolkit/docs-mcp/integrate-providers",
+                description:
+                  "Build payment and fulfillment module providers for third-party services.",
+              },
+              {
+                type: "link",
+                title: "Extend Products",
+                path: "/ai-toolkit/docs-mcp/extend-products",
+                description:
+                  "Attach custom data and features to products, variants, and options.",
+              },
+              {
+                type: "link",
+                title: "Upgrade Medusa",
+                path: "/ai-toolkit/docs-mcp/upgrade-instructions",
+                description:
+                  "Upgrade a Medusa project to a newer version, breaking changes included.",
+              },
+              {
+                type: "link",
+                title: "Submit Feedback",
+                path: "/ai-toolkit/docs-mcp/submit-feedback",
+                description:
+                  "Send documentation, bug, and feedback to the Medusa team.",
+              },
+            ],
           },
           {
             type: "link",
-            path: "#",
+            title: "Cloud Assistant",
+            path: "/ai-toolkit/assistant",
+          },
+          {
+            type: "link",
+            path: "/ai-toolkit/agent-skills",
             title: "Skills",
-            badge: soonBadge,
           },
           {
             type: "ref",
@@ -115,14 +173,8 @@ export const sidebar = [
           },
           {
             type: "link",
-            path: "#",
+            path: "/ai-toolkit/ai-friendly-docs",
             title: "AI-Friendly Docs",
-            badge: soonBadge,
-          },
-          {
-            type: "link",
-            title: "Cloud Assistant",
-            path: "/assistant",
           },
         ],
       },

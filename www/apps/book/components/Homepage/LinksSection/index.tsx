@@ -57,7 +57,7 @@ const HomepageLinksSection = () => {
           text: "Build custom storefront",
         },
         {
-          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai#ecommerce-storefront-best-practices",
+          link: "https://docs.medusajs.com/cloud/ai-toolkit/agent-skills#ecommerce-storefront-best-practices",
           text: "Use agent skills",
         },
       ],
@@ -87,11 +87,11 @@ const HomepageLinksSection = () => {
           text: "Agentic Deployments",
         },
         {
-          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai",
+          link: "https://docs.medusajs.com/cloud/ai-toolkit/agent-skills",
           text: "Agent Skills",
         },
         {
-          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai/docs-mcp-server",
+          link: "https://docs.medusajs.com/cloud/ai-toolkit/docs-mcp",
           text: "Docs MCP",
         },
       ],
