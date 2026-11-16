@@ -34087,8 +34087,6 @@ npm install
 
 This will update all Medusa packages to the latest version.
 
-If you're also upgrading your application to TypeScript 6 or 7, update your `tsconfig.json` as explained in the [TypeScript 6 and 7](undefined/learn/configurations/typescript) chapter.
-
 ### Running Migrations
 
 Releases may include changes to the database, such as new tables, updates to existing tables, updates after adding links, or data migration scripts.

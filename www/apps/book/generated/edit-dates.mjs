@@ -142,5 +142,5 @@ export const generatedEditDates = {
   "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z",
   "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z",
   "app/learn/introduction/build-with-llms-ai/manage-store-with-agents/page.mdx": "2026-10-08T07:46:41.587Z",
-  "app/learn/configurations/typescript/page.mdx": "2026-11-16T13:29:33.547Z"
+  "app/learn/configurations/typescript/page.mdx": "2026-11-16T13:55:02.008Z"
 }

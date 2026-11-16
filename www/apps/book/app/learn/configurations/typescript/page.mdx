@@ -60,7 +60,7 @@ TypeScript 6 changed the defaults of these options:
 TypeScript 6 deprecates the `baseUrl` option, and TypeScript 7 removes it. If your `tsconfig.json` or `src/admin/tsconfig.json` sets `baseUrl`, remove it and make sure the paths in `paths` are relative to the `tsconfig.json` file:
 
 export const baseUrlHighlights = [
-  ["3", "\"@/*\"", "Start the path with `./`."]
+  ["4", "\"./src/*\"", "Start the path with `./`."]
 ]
 
 ```json title="tsconfig.json" highlights={baseUrlHighlights}
