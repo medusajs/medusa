@@ -25,7 +25,7 @@ export const navDropdownItems: NavigationItem[] = [
     children: [
       {
         type: "link",
-        title: "Framework",
+        title: "Customize Medusa",
         link: "/learn",
         sidebar_id: "framework",
       },

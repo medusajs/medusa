@@ -2,7 +2,7 @@
 export const sidebars = [
   {
     sidebar_id: "framework",
-    title: "Framework",
+    title: "Customize Medusa",
     items: [
       {
         type: "category",
