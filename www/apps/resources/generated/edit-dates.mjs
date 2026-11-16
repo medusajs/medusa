@@ -510,5 +510,13 @@ export const generatedEditDates = {
   "app/enterprise/rbac/concepts/page.mdx": "2026-11-12T13:13:29.413Z",
   "app/commerce-modules/product/guides/manage-with-admin-api/page.mdx": "2026-11-12T14:22:42.894Z",
   "app/enterprise/rbac/api-routes/page.mdx": "2026-11-12T17:43:17.382Z",
-  "app/enterprise/rbac/page.mdx": "2026-11-13T13:43:21.284Z"
+  "app/enterprise/rbac/page.mdx": "2026-11-13T13:43:21.284Z",
+  "app/lint/rules/prefer-workflow-event-over-module-event/page.mdx": "2026-11-16T12:05:05.621Z",
+  "app/lint/rules/scheduled-job-config-required/page.mdx": "2026-11-16T12:04:55.774Z",
+  "app/lint/rules/scheduled-job-default-export-async/page.mdx": "2026-11-16T12:05:00.072Z",
+  "app/lint/rules/scheduled-job-default-export-required/page.mdx": "2026-11-16T12:04:57.169Z",
+  "app/lint/rules/scheduled-job-schedule-valid-cron/page.mdx": "2026-11-16T12:04:58.670Z",
+  "app/lint/rules/subscriber-config-export-required/page.mdx": "2026-11-16T12:05:02.918Z",
+  "app/lint/rules/subscriber-default-export-must-be-async/page.mdx": "2026-11-16T12:05:04.369Z",
+  "app/lint/rules/subscriber-default-export-required/page.mdx": "2026-11-16T12:05:01.520Z"
 }

@@ -16,7 +16,7 @@ This rule requires subscriber files to export a `config` object with at least an
 
 ## What it Targets
 
-This rule targets files in your project's `src/subscribers` directory. It reports a subscriber file that's missing the named `config` export, or whose `config` object doesn't declare an `event` property.
+This rule targets files at any depth in your project's `src/subscribers` directory, except `index` files, files whose names start with `_`, and `.d.ts` files, which Medusa doesn't load as subscribers. It reports a subscriber file that's missing the named `config` export, or whose `config` object doesn't declare an `event` property.
 
 The following code is reported by the rule:
 

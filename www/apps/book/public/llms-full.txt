@@ -2542,6 +2542,8 @@ module.exports = defineConfig({
 
 This configuration allows admin users to log in with an email and password, and customers to log in with an email and password or with Google.
 
+Don't allow the `user` actor type to use an auth provider that anyone can sign up with, such as Google or GitHub. Medusa creates an admin user for an account that logs in to the Medusa Admin with the provider for the first time, so anyone with an account at that provider can become an admin user of your store. Learn more in the [Auth Module Provider documentation](undefined/resources/commerce-modules/auth/auth-providers#public-auth-providers-for-admin-users).
+
 #### http.requireActorAssociation
 
 This option is available since Medusa [v2.22.0](https://github.com/medusajs/medusa/releases/tag/v2.22.0).
@@ -34879,6 +34881,34 @@ GITHUB_CALLBACK_URL=<YOUR_GITHUB_CALLBACK_URL>
 
 ***
 
+## Allow the GitHub Provider for Customers
+
+By default, customers and other custom actor types can authenticate with any registered Auth Module Provider, whereas admin users can only authenticate with the `emailpass` provider. If you deploy your application to Cloud, admin users can also authenticate with their Cloud account.
+
+To specify the actor types that can use the GitHub Auth Module Provider, set the [authMethodsPerActor configuration](undefined/docs/learn/configurations/medusa-config#httpauthMethodsPerActor) in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      authMethodsPerActor: {
+        user: ["emailpass"],
+        customer: ["emailpass", "github"],
+      },
+      // ...
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration allows customers to authenticate with their email and password or with GitHub, and admin users to authenticate with their email and password only.
+
+Don't add `github` to the `user` actor type. Any GitHub account can authenticate with this provider, and it doesn't have an option to restrict the accounts that can authenticate. So, if you allow the `user` actor type to use it, anyone with a GitHub account can become an admin user of your store. Learn more in the [Auth Module Provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers#public-auth-providers-for-admin-users) guide.
+
+***
+
 ## Override Callback URL During Authentication
 
 In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
@@ -34965,6 +34995,34 @@ GOOGLE_CALLBACK_URL=<YOUR_GOOGLE_CALLBACK_URL>
 
 ***
 
+## Allow the Google Provider for Customers
+
+By default, customers and other custom actor types can authenticate with any registered Auth Module Provider, whereas admin users can only authenticate with the `emailpass` provider. If you deploy your application to Cloud, admin users can also authenticate with their Cloud account.
+
+To specify the actor types that can use the Google Auth Module Provider, set the [authMethodsPerActor configuration](undefined/docs/learn/configurations/medusa-config#httpauthMethodsPerActor) in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      authMethodsPerActor: {
+        user: ["emailpass"],
+        customer: ["emailpass", "google"],
+      },
+      // ...
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration allows customers to authenticate with their email and password or with Google, and admin users to authenticate with their email and password only.
+
+Don't add `google` to the `user` actor type. Any Google account can authenticate with this provider, and it doesn't have an option to restrict the accounts that can authenticate. So, if you allow the `user` actor type to use it, anyone with a Google account can become an admin user of your store. Learn more in the [Auth Module Provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers#public-auth-providers-for-admin-users) guide.
+
+***
+
 ## Override Callback URL During Authentication
 
 In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
@@ -35018,8 +35076,8 @@ module.exports = defineConfig({
   projectConfig: {
     http: {
       authMethodsPerActor: {
-        user: ["emailpass", "google"],
-        customer: ["emailpass"],
+        user: ["emailpass"],
+        customer: ["emailpass", "google"],
       },
       // ...
     },
@@ -35029,6 +35087,19 @@ module.exports = defineConfig({
 ```
 
 When you specify the `authMethodsPerActor` configuration, it overrides the default. So, if you don't specify any providers for an actor type, users of that actor type can't authenticate with any provider.
+
+### Public Auth Providers for Admin Users
+
+When an admin logs in to the Medusa Admin with a third-party provider for the first time, Medusa creates an admin user for their account without an invite. The Google and GitHub Auth Module Providers accept any Google or GitHub account, and they don't have an option to restrict the accounts that can authenticate.
+
+So, if you allow the `user` actor type to use them, anyone with a Google or GitHub account can become an admin user of your store.
+
+To let admin users log in with a third-party service, use one of the following instead:
+
+- The [OIDC Auth Module Provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/enterprise/sso) with its [allowed\_email\_domains option](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/enterprise/sso/provider-options#allowed_email_domains), which restricts authentication to your organization's email domains.
+- An identity provider that only authenticates the members of your organization, such as Okta or Microsoft Entra ID.
+
+If you already allow the `user` actor type to use a public auth provider, remove the provider from the `user` array, then review the admin users in your store and delete the ones you don't recognize.
 
 ***
 
