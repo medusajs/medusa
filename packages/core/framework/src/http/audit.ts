@@ -343,7 +343,16 @@ export function createAuditMiddleware({
             config.responseData!(auditReq, body)
           )
 
-        const { actor_type, actor_id, metadata } = resolveAuditActor(auditReq)
+        const routeMetadata =
+          config.metadata &&
+          callSafely("metadata", route, () => config.metadata!(auditReq, body))
+
+        const {
+          actor_type,
+          actor_id,
+          metadata: actorMetadata,
+        } = resolveAuditActor(auditReq)
+        const metadata = { ...toDataObject(routeMetadata), ...actorMetadata }
         if (closedEarly) {
           metadata.connection_closed = true
         }
