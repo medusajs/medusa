@@ -4028,6 +4028,7 @@
       "fulfillment_set": "Σύνολα εκπλήρωσης",
       "service_zone": "Ζώνες υπηρεσιών",
       "file": "Αρχεία",
+      "audit_log": "Αρχείο ελέγχου",
       "notification": "Ειδοποιήσεις",
       "workflow_execution": "Εκτελέσεις ροής εργασίας",
       "store_locale": "Τοπικές ρυθμίσεις καταστήματος",

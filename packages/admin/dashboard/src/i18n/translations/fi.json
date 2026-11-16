@@ -4008,6 +4008,7 @@
       "fulfillment_set": "Toimitusjoukot",
       "service_zone": "Palveluvyöhykkeet",
       "file": "Tiedostot",
+      "audit_log": "Auditointilokit",
       "notification": "Ilmoitukset",
       "workflow_execution": "Työnkulun suoritukset",
       "store_locale": "Kaupan kielet",
