@@ -311,6 +311,18 @@ describe("Audit middleware", () => {
       path: "/hooks",
       handler: (_req, res) => res.json({ ok: true }),
     },
+    {
+      method: "POST",
+      path: "/admin/projects/:id",
+      handler: (_req, res) => res.json({ project: { region: "eu" } }),
+      audit: {
+        metadata: (req, body) => ({
+          organization_id: (req as Request).get("x-organization"),
+          region: body?.project?.region,
+          api_key_created_by: "spoofed",
+        }),
+      },
+    },
   ]
 
   // Records are written once the response is finished, which can come after
@@ -364,6 +376,10 @@ describe("Audit middleware", () => {
         return
       }
       ;(req as any).auth_context = { actor_id: actorId, actor_type: "user" }
+      const keyCreator = req.get("x-key-creator")
+      if (keyCreator) {
+        ;(req as any).secret_key_context = { created_by: keyCreator }
+      }
       next()
     })
     routes.forEach((route) =>
@@ -501,6 +517,42 @@ describe("Audit middleware", () => {
         response_data: { cart_id: "cart_new" },
       })
     )
+  })
+
+  it("adds the route's metadata to the record, below the framework's own values", async () => {
+    const res = await request.post("/admin/projects/proj_1").set({
+      "x-user": "user_1",
+      "x-organization": "org_1",
+      "x-key-creator": "user_9",
+    })
+    expect(res.status).toBe(200)
+
+    const [entry] = await waitForRecords(1)
+    expect(entry).toEqual(
+      expect.objectContaining({
+        resource_type: "project",
+        resource_id: "proj_1",
+        metadata: {
+          organization_id: "org_1",
+          region: "eu",
+          api_key_created_by: "user_9",
+        },
+      })
+    )
+  })
+
+  it("passes no body to the metadata function of a failed request", async () => {
+    const res = await request
+      .post("/admin/projects/proj_1")
+      .set("x-organization", "org_1")
+    expect(res.status).toBe(401)
+
+    const [entry] = await waitForRecords(1)
+    expect(entry.metadata).toEqual({
+      organization_id: "org_1",
+      region: undefined,
+      api_key_created_by: "spoofed",
+    })
   })
 
   it("ignores a throwing setting function and falls back to the defaults", async () => {

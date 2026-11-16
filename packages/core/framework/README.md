@@ -112,12 +112,16 @@ export default defineMiddlewares({
     },
     { matcher: "/admin/brands/sync", methods: ["POST"], audit: false },
     // Routes outside `/admin`, `/rbac`, and `/auth` are recorded once opted in.
-    { matcher: "/vendors*", methods: ["POST", "DELETE"], audit: true },
+    {
+      matcher: "/vendors*",
+      methods: ["POST", "DELETE"],
+      audit: { metadata: (req) => ({ vendor_id: req.get("x-vendor-id") }) },
+    },
   ],
 })
 ```
 
-Request and response bodies are never stored, only what `requestData` and `responseData` return.
+Request and response bodies are never stored, only what `requestData` and `responseData` return. `metadata` adds values to the record's `metadata`.
 
 ## Resources
 
