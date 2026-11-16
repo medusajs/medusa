@@ -14,11 +14,15 @@ export const POST = async (
   req: MedusaRequest<HttpTypes.StoreCreateReturn>,
   res: MedusaResponse<HttpTypes.StoreReturnResponse>
 ) => {
-  const input = req.validatedBody as HttpTypes.StoreCreateReturn
+  const { receive_now: _receiveNow, return_shipping, ...input } =
+    req.validatedBody as HttpTypes.StoreCreateReturn
 
   const workflow = createAndCompleteReturnOrderWorkflow(req.scope)
   const { result } = await workflow.run({
-    input,
+    input: {
+      ...input,
+      return_shipping: { option_id: return_shipping.option_id },
+    },
   })
 
   res.status(200).json({ return: result as HttpTypes.StoreReturn })

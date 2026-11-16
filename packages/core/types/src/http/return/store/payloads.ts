@@ -7,6 +7,9 @@ interface StoreCreateReturnItem {
 
 interface StoreCreateReturnShipping {
   option_id: string
+  /**
+   * @deprecated Ignored by the Store API. The shipping option's price is used.
+   */
   price?: number
 }
 
@@ -15,6 +18,9 @@ export interface StoreCreateReturn {
   items: StoreCreateReturnItem[]
   return_shipping: StoreCreateReturnShipping
   note?: string | null
+  /**
+   * @deprecated Ignored by the Store API. Returns are received by the merchant.
+   */
   receive_now?: boolean
   location_id?: string | null
 }

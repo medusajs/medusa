@@ -237,7 +237,60 @@ medusaIntegrationTestRunner({
             shipping_methods: [
               expect.objectContaining({
                 shipping_option_id: returnShippingOption.id,
-                amount: 100,
+                amount: 15,
+              }),
+            ],
+          })
+        )
+      })
+
+      it("should not let the store caller receive the return or set the return shipping price", async () => {
+        await api.post(
+          `/admin/orders/${order.id}/fulfillments`,
+          {
+            location_id: location.id,
+            items: [{ id: item.id, quantity: item.quantity }],
+          },
+          adminHeaders
+        )
+
+        const returnResponse = (
+          await api.post(
+            "/store/returns",
+            {
+              order_id: order.id,
+              items: [{ id: item.id, quantity: 1 }],
+              return_shipping: {
+                option_id: returnShippingOption.id,
+                price: 0,
+              },
+              receive_now: true,
+            },
+            storeHeaders
+          )
+        ).data.return
+
+        const persistedReturn = (
+          await api.get(
+            `/admin/returns/${returnResponse.id}?fields=*items,*shipping_methods`,
+            adminHeaders
+          )
+        ).data.return
+
+        expect(persistedReturn).toEqual(
+          expect.objectContaining({
+            status: "requested",
+            received_at: null,
+            items: [
+              expect.objectContaining({
+                quantity: 1,
+                received_quantity: 0,
+              }),
+            ],
+            shipping_methods: [
+              expect.objectContaining({
+                shipping_option_id: returnShippingOption.id,
+                amount: 15,
               }),
             ],
           })
