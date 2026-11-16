@@ -88,5 +88,6 @@ export const generatedEditDates = {
   "app/medusa-mcp/n8n/page.mdx": "2026-10-08T08:58:01.127Z",
   "app/usage/compute/page.mdx": "2026-10-19T11:11:24.460Z",
   "app/security/data-protection/page.mdx": "2026-11-06T12:26:30.453Z",
-  "app/migrate-self-hosted/page.mdx": "2026-11-13T11:04:19.082Z"
+  "app/migrate-self-hosted/page.mdx": "2026-11-13T11:04:19.082Z",
+  "app/security/page.mdx": "2026-11-13T15:30:43.727Z"
 }
