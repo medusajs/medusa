@@ -119,6 +119,11 @@ const redirects = async () => {
       permanent: true,
     },
     {
+      source: "/learn/storefront-development",
+      destination: "/resources/storefront-development",
+      permanent: true,
+    },
+    {
       source: "/learn/fundamentals/module-links/remote-link",
       destination: "/learn/fundamentals/module-links/link",
       permanent: true,
@@ -544,6 +549,16 @@ const redirects = async () => {
     {
       source: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
       destination: "/cloud/ai-toolkit/ai-friendly-docs",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/manage-store-with-agents",
+      destination: "/cloud/ai-toolkit/medusa-mcp",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/cloud-cli",
+      destination: "/cloud/cli/agents",
       permanent: true,
     },
     {

@@ -1,8 +1,3 @@
-const soonBadge = {
-  variant: "blue",
-  text: "Soon",
-}
-
 /** @type {import('types').Sidebar.RawSidebar[]} */
 export const sidebar = [
   {
@@ -214,6 +209,11 @@ export const sidebar = [
         children: [
           {
             type: "link",
+            path: "/command-palette",
+            title: "Command Palette",
+          },
+          {
+            type: "link",
             title: "Organizations",
             path: "/organizations",
             children: [
@@ -329,9 +329,8 @@ export const sidebar = [
         children: [
           {
             type: "link",
-            path: "#",
+            path: "/admin",
             title: "Admin",
-            badge: soonBadge,
           },
           {
             type: "link",
@@ -357,6 +356,11 @@ export const sidebar = [
             type: "link",
             title: "Cache",
             path: "/cache",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/changelog",
           },
         ],
       },
@@ -452,6 +456,11 @@ export const sidebar = [
         title: "Enterprise",
         initialOpen: true,
         children: [
+          {
+            type: "link",
+            path: "/enterprise",
+            title: "Overview",
+          },
           {
             type: "external",
             path: "https://docs.medusajs.com/resources/enterprise/rbac",

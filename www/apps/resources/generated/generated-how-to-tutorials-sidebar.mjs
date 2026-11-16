@@ -619,19 +619,10 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
         },
         {
           "loaded": true,
-          "type": "sub-category",
-          "title": "Next.js Starter",
-          "autogenerate_path": "/deployment/storefront",
-          "children": [
-            {
-              "loaded": true,
-              "type": "link",
-              "path": "/deployment/storefront/vercel",
-              "title": "Vercel",
-              "description": "",
-              "children": []
-            }
-          ]
+          "type": "link",
+          "title": "Storefront",
+          "path": "https://docs.medusajs.com/cloud/storefront",
+          "children": []
         }
       ]
     }

@@ -1,5 +1,6 @@
 export const sitemapUrls = [
   "/access-keys",
+  "/admin",
   "/ai-toolkit/agent-skills",
   "/ai-toolkit/ai-friendly-docs",
   "/ai-toolkit/assistant",
@@ -42,7 +43,6 @@ export const sitemapUrls = [
   "/cli",
   "/command-palette",
   "/comparison",
-  "/connect-storefront",
   "/database",
   "/deployments/access",
   "/deployments/fix-with-ai",
@@ -51,6 +51,7 @@ export const sitemapUrls = [
   "/development-resources",
   "/emails",
   "/emails/react-email",
+  "/enterprise",
   "/environments/custom-domains",
   "/environments/environment-variables",
   "/environments/long-lived",

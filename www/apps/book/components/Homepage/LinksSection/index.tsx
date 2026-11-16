@@ -83,7 +83,7 @@ const HomepageLinksSection = () => {
       tag: "Agentic Development",
       links: [
         {
-          link: "https://docs.medusajs.com/learn/introduction/build-with-llms-ai/cloud-cli",
+          link: "https://docs.medusajs.com/cloud/cli/agents",
           text: "Agentic Deployments",
         },
         {

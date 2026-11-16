@@ -6,9 +6,14 @@ export const metadata = {
 
 # {metadata.title}
 
-In this section of the documentation, you'll find guides and references related to Medusa's enterprise features.
+In this guide, you'll learn about Medusa's enterprise features available to Cloud users and how to use them.
 
-An enterprise feature is a Medusa module, provider, or capability that requires a valid enterprise license. Medusa distributes these features in the same packages as the rest of the application, but they only load when you configure a license key that covers them.
+As your business grows, more people and systems need access to your store. Enterprise features help you manage that access securely and at scale. Cloud users can use these features in their Medusa applications, such as:
+
+- **Role-based access control (RBAC)**: Give each admin user only the permissions their role needs. This limits the impact of mistakes and compromised accounts, and helps you meet compliance requirements.
+- **Single sign-on (SSO)**: Let your team log in to the Medusa Admin with your organization's identity provider. You manage access from one place, so onboarding and offboarding team members is consistent and immediate.
+
+An enterprise feature is a Medusa module, provider, or capability that requires an enterprise license. Medusa distributes these features in the same packages as the rest of the application, but they only load when you configure a license key that covers them.
 
 ## Enterprise Features
 
@@ -16,11 +21,11 @@ An enterprise feature is a Medusa module, provider, or capability that requires 
   items={[
     {
       title: "RBAC Module",
-      href: "/enterprise/rbac",
+      href: "!resources!/enterprise/rbac",
     },
     {
       title: "SSO with OIDC",
-      href: "/enterprise/sso",
+      href: "!resources!/enterprise/sso",
     },
   ]}
 />
@@ -37,7 +42,7 @@ An enterprise feature is a Medusa module, provider, or capability that requires 
     },
     {
       text: "Cloud user",
-      link: "!cloud!"
+      link: "/sign-up"
     }
   ]}
 />
@@ -48,7 +53,7 @@ Contact the Medusa team at [support@medusajs.com](mailto:support@medusajs.com) t
 
 ### 2. Configure the License Key (Optional)
 
-In your [Cloud](!cloud!) deployments, the license key is injected for you automatically. However, if you're running Medusa locally or outside of Cloud, you need to manually configure the license key in your environment.
+In your Cloud deployments, the license key is injected for you automatically. However, if you're running Medusa locally or outside of Cloud, you need to manually configure the license key in your environment.
 
 Set the license key as an environment variable in your Medusa project:
 
@@ -64,7 +69,7 @@ Medusa verifies the license key with Medusa's public key by default. You only ne
 
 Medusa doesn't register enterprise modules and providers by default. Add the feature's module or provider to `medusa-config.ts`. Refer to the documentation of the feature you're using for its configuration steps.
 
-For example, you register the [RBAC Module](./rbac/page.mdx#how-to-use-the-rbac-module) in the `modules` array, and the [OIDC Auth Module Provider](./sso/page.mdx#how-to-use-the-oidc-auth-module-provider) in the providers of the Auth Module.
+For example, you register the [RBAC Module](!resources!/enterprise/rbac#how-to-use-the-rbac-module) in the `modules` array, and the [OIDC Auth Module Provider](!resources!/enterprise/sso#how-to-use-the-oidc-auth-module-provider) in the providers of the Auth Module.
 
 ### 4. Run Migrations
 
