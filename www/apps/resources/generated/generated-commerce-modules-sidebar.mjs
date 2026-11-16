@@ -1550,6 +1550,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "refreshCartPromotionAdjustmentsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "refreshCartShippingMethodsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartShippingMethodsWorkflow",
                       "children": []
@@ -3669,6 +3676,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "createCartWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createCartWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "createClaimShippingMethodWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createClaimShippingMethodWorkflow",
                       "children": []
@@ -3888,6 +3902,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "transferCartCustomerWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferCartCustomerWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateCartPromotionsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartPromotionsWorkflow",
                       "children": []
                     },
                     {
@@ -9709,13 +9730,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
-                      "title": "createPaymentSessionStep",
-                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPaymentSessionStep",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "ref",
                       "title": "createRefundReasonStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRefundReasonStep",
                       "children": []
@@ -9751,8 +9765,22 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "replacePaymentAccountHolderStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/replacePaymentAccountHolderStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "setRegionsPaymentProvidersStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setRegionsPaymentProvidersStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "tryCreatePaymentSessionStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/tryCreatePaymentSessionStep",
                       "children": []
                     },
                     {
@@ -13486,6 +13514,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "refreshCartItemsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartItemsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "refreshCartPromotionAdjustmentsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow",
                       "children": []
                     },
                     {
