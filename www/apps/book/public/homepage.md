@@ -29,9 +29,9 @@ Ask anything about Medusa...
 
 ## Customize Medusa Application
 
-- [Install Medusa](https://docs.medusajs.com/learn/installation): Install a digital commerce application with Medusa.
+- [Set Up Medusa Locally](https://docs.medusajs.com/cloud/setup-locally): Set up your Cloud project on your machine to build custom features.
 - [Deploy to Cloud](https://docs.medusajs.com/cloud/sign-up): Deploy Medusa to Medusa Cloud.
-- [Browse integrations](https://docs.medusajs.com/resources/integrations): Integrate third-party services with Medusa.
+- [Browse integrations](https://docs.medusajs.com/cloud/integrations): Integrate third-party services with Medusa.
 
 ## Admin Development
 

@@ -113,6 +113,7 @@ export const MainNavProvider = ({
     navItems.forEach((item, index) => {
       const links = [
         ...(item.link ? [item.link] : []),
+        ...(item.additional_links ?? []),
         ...(item.type === "dropdown" ? getDropdownLinks(item.children) : []),
       ]
 

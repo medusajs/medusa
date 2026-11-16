@@ -15,15 +15,15 @@ const HomepageLinksSection = () => {
       tag: "Customize Medusa Application",
       links: [
         {
-          link: "/learn/installation",
-          text: "Install Medusa",
+          link: "https://docs.medusajs.com/cloud/setup-locally",
+          text: "Set Up Medusa Locally",
         },
         {
           link: "https://docs.medusajs.com/cloud/sign-up",
           text: "Deploy to Cloud",
         },
         {
-          link: "https://docs.medusajs.com/resources/integrations",
+          link: "https://docs.medusajs.com/cloud/integrations",
           text: "Browse integrations",
         },
       ],

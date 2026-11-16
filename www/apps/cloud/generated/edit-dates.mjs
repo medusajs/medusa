@@ -1,6 +1,6 @@
 export const generatedEditDates = {
-  "app/page.mdx": "2026-11-13T13:28:06.444Z",
-  "app/projects/page.mdx": "2026-11-09T13:14:15.872Z",
+  "app/page.mdx": "2026-11-16T08:09:02.025Z",
+  "app/projects/page.mdx": "2026-11-16T08:09:02.026Z",
   "app/environments/page.mdx": "2026-05-27T17:17:14.724Z",
   "app/deployments/page.mdx": "2026-11-13T13:33:45.600Z",
   "app/organizations/page.mdx": "2026-10-07T16:01:20.015Z",
@@ -55,10 +55,9 @@ export const generatedEditDates = {
   "app/access-keys/page.mdx": "2026-04-29T09:09:42.629Z",
   "app/cli/agents/page.mdx": "2026-07-15T14:47:29.910Z",
   "app/deployments/fix-with-ai/page.mdx": "2026-11-13T13:33:45.602Z",
-  "app/first-project/page.mdx": "2026-11-13T13:20:57.424Z",
+  "app/first-project/page.mdx": "2026-11-16T08:09:02.025Z",
   "app/cli/commands/local/page.mdx": "2026-07-28T10:28:59.437Z",
   "app/cli/changelog/page.mdx": "2026-07-28T10:28:43.318Z",
-  "app/projects/clone-locally/page.mdx": "2026-07-30T08:15:00.643Z",
   "app/webhooks/endpoints/page.mdx": "2026-09-17T06:08:01.627Z",
   "app/webhooks/events/page.mdx": "2026-09-17T06:07:59.627Z",
   "app/webhooks/changelog/page.mdx": "2026-10-23T16:10:25.872Z",
@@ -81,7 +80,7 @@ export const generatedEditDates = {
   "app/organizations/connections/page.mdx": "2026-11-13T13:33:45.552Z",
   "app/usage/compute/page.mdx": "2026-10-19T11:11:24.460Z",
   "app/security/data-protection/page.mdx": "2026-11-06T12:26:30.453Z",
-  "app/features/page.mdx": "2026-11-13T13:33:45.575Z",
+  "app/features/page.mdx": "2026-11-16T09:12:13.718Z",
   "app/going-live/page.mdx": "2026-11-13T13:33:45.574Z",
   "app/ai-toolkit/page.mdx": "2026-11-13T13:35:30.628Z",
   "app/ai-toolkit/agent-skills/page.mdx": "2026-11-13T13:33:45.562Z",
@@ -101,5 +100,9 @@ export const generatedEditDates = {
   "app/ai-toolkit/medusa-mcp/custom-data/page.mdx": "2026-11-13T13:33:45.558Z",
   "app/ai-toolkit/medusa-mcp/n8n/page.mdx": "2026-11-13T13:33:45.557Z",
   "app/ai-toolkit/medusa-mcp/page.mdx": "2026-11-13T13:33:45.555Z",
-  "app/ai-toolkit/assistant/page.mdx": "2026-11-13T12:08:13.100Z"
+  "app/ai-toolkit/assistant/page.mdx": "2026-11-13T12:08:13.100Z",
+  "app/development-resources/page.mdx": "2026-11-16T09:12:13.718Z",
+  "app/setup-locally/docker/page.mdx": "2026-11-16T09:01:14.667Z",
+  "app/setup-locally/page.mdx": "2026-11-16T08:58:07.674Z",
+  "app/integrations/page.mdx": "2026-11-16T09:12:13.717Z"
 }

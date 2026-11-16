@@ -180,6 +180,11 @@ const nextConfig = {
       permanent: true,
     },
     {
+      source: "/projects/clone-locally",
+      destination: "/setup-locally",
+      permanent: true,
+    },
+    {
       source: "/cloud/draft-order-plugin",
       destination: "/resources/commerce-modules/order/draft-orders",
       basePath: false,

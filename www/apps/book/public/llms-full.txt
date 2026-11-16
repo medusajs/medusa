@@ -3476,7 +3476,7 @@ curl -X POST 'http://localhost:9000/auth/user/emailpass' \
 
 Make sure to replace the email and password with your admin user's credentials.
 
-Don't have an admin user? Refer to [this guide](https://docs.medusajs.com/learn/installation#create-medusa-admin-user/index.html.md).
+Don't have an admin user? Refer to [this guide](https://docs.medusajs.com/cloud/setup-locally#5-create-medusa-admin-user/index.html.md).
 
 Then, send a `POST` request to `/admin/brands`, passing the token received from the previous request in the `Authorization` header:
 
@@ -5123,7 +5123,7 @@ curl -X POST 'http://localhost:9000/auth/user/emailpass' \
 
 Make sure to replace the email and password with your admin user's credentials.
 
-Don't have an admin user? Refer to [this guide](https://docs.medusajs.com/learn/installation#create-medusa-admin-user/index.html.md).
+Don't have an admin user? Refer to [this guide](https://docs.medusajs.com/cloud/setup-locally#5-create-medusa-admin-user/index.html.md).
 
 Then, send a `POST` request to `/admin/brands`, passing the token received from the previous request in the `Authorization` header:
 
@@ -8535,7 +8535,7 @@ module.exports = defineConfig({
 })
 ```
 
-Check out the [Integrations](https://docs.medusajs.com/resources/integrations/index.html.md) and [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules/index.html.md) documentation for other modules and providers to use.
+Check out the [Integrations](https://docs.medusajs.com/cloud/integrations/index.html.md) and [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules/index.html.md) documentation for other modules and providers to use.
 
 ***
 
@@ -9245,7 +9245,7 @@ To explore the Medusa Admin's commerce features, check out the [User Guide](http
 
 The Medusa Admin is an intuitive dashboard that allows merchants to manage their ecommerce store. It provides management features related to products, orders, customers, and more.
 
-The Medusa Admin is built with [Vite v7](https://v7.vite.dev/). When you [install the Medusa application](https://docs.medusajs.com/learn/installation/index.html.md), you also install the Medusa Admin. Then, when you start the Medusa application, you can access the Medusa Admin at `http://localhost:9000/app`.
+The Medusa Admin is built with [Vite v7](https://v7.vite.dev/). When you [set up the Medusa application](https://docs.medusajs.com/cloud/setup-locally/index.html.md), you also install the Medusa Admin. Then, when you start the Medusa application, you can access the Medusa Admin at `http://localhost:9000/app`.
 
 If you don't have an admin user, use the [Medusa CLI](https://docs.medusajs.com/resources/medusa-cli/commands/user/index.html.md) to create one.
 
@@ -10090,7 +10090,7 @@ You can create a UI route directly in your Medusa application, or in a [plugin](
 
 ### Prerequisites
 
-- [Medusa application installed](https://docs.medusajs.com/learn/installation/index.html.md)
+- [Medusa application installed](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 You create a UI route in a `page.tsx` file under a sub-directory of `src/admin/routes` directory. The file's path relative to `src/admin/routes` determines its path in the dashboard. The file’s default export must be the UI route’s React component.
 
@@ -10610,7 +10610,7 @@ You can create an admin widget directly in your Medusa application, or in a [plu
 
 ### Prerequisites
 
-- [Medusa application installed](https://docs.medusajs.com/learn/installation/index.html.md)
+- [Medusa application installed](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 You create a widget in a `.tsx` file under the `src/admin/widgets` directory. The file must export:
 
@@ -17231,7 +17231,7 @@ export const POST = async (
 The following tutorials are step-by-step guides that show you how to orchestrate operations across third-party services using the Medusa Framework.
 
 - [Migrate Data from Magento](https://docs.medusajs.com/resources/integrations/guides/magento/index.html.md): Migrate data from Magento to your Medusa application.
-- [Integrate Third-Party Services](https://docs.medusajs.com/resources/integrations/index.html.md): Integrate CMS, Fulfillment, Payment, and other third-party services.
+- [Integrate Third-Party Services](https://docs.medusajs.com/cloud/integrations/index.html.md): Integrate CMS, Fulfillment, Payment, and other third-party services.
 
 #### Start Learning
 
@@ -21739,7 +21739,7 @@ Medusa's CLI tool provides commands to simplify developing and testing your plug
 
 ### Prerequisites
 
-- [Medusa application installed.](https://docs.medusajs.com/learn/installation/index.html.md)
+- [Medusa application installed.](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 The first time you create your plugin, you need to publish the package into a local package registry, then install it in your Medusa application. This is a one-time only process.
 
@@ -29320,965 +29320,6 @@ This step's executions fail if they run longer than two seconds.
 A step’s timeout error is returned in the `errors` property of the workflow’s execution, as explained in [this chapter](https://docs.medusajs.com/learn/fundamentals/workflows/errors/index.html.md). The error’s name is `TransactionStepTimeoutError`.
 
 
-# Install Medusa with Docker
-
-In this chapter, you'll learn how to install and run a Medusa application using Docker.
-
-The main supported installation method is [create-medusa-app](https://docs.medusajs.com/learn/installation/index.html.md). However, it requires you to install prerequisites like PostgreSQL on your machine. If you'd rather not install them, use this guide to set up a Medusa application with Docker instead.
-
-You can follow this guide on any operating system that supports Docker, including Windows, macOS, and Linux.
-
-### Prerequisites
-
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- [Git CLI tool](https://git-scm.com/downloads)
-
-## 1. Clone the DTC Starter Repository
-
-To get started, clone the DTC Starter repository:
-
-```bash
-git clone https://github.com/medusajs/dtc-starter.git --depth=1 my-medusa-store
-cd my-medusa-store
-```
-
-This command clones the repository into a directory named `my-medusa-store`.
-
-The rest of the steps are performed inside this directory.
-
-### Change Package Manager
-
-The project uses pnpm as the package manager in a monorepo workspace setup, as declared in `package.json`.
-
-To use a different package manager:
-
-1. Change the `packageManager` field in `package.json` to your preferred package manager, such as `npm@{version}` or `yarn@{version}`, where `{version}` is the version of the package manager you have installed.
-2. Add a `workspaces` field in `package.json` with the following content:
-
-```json title="package.json"
-{
-  "workspaces": [
-    "apps/*"
-  ]
-}
-```
-
-3. Remove the `node_modules` directory and the `pnpm-lock.yaml` and `pnpm-workspace.yaml` files.
-4. If you're using `yarn`, add a `.yarnrc.yml` file with the following content:
-
-```yaml title=".yarnrc.yml"
-nodeLinker: node-modules
-```
-
-5. If you're using `npm`, add an `overrides` field in `package.json`:
-
-```json title="package.json"
-{
-  "overrides": {
-    "ajv": "^8.0.0"
-  }
-}
-```
-
-6. Install dependencies with your preferred package manager to generate the appropriate lock file (`package-lock.json` for npm or `yarn.lock` for Yarn).
-
-***
-
-## 2. Create `docker-compose.yml`
-
-In the cloned repository, create a file named `docker-compose.yml` with the following content:
-
-```yaml title="docker-compose.yml"
-services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
-    container_name: medusa_postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: medusa-store
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - medusa_network
-
-  # Redis
-  redis:
-    image: redis:7-alpine
-    container_name: medusa_redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    networks:
-      - medusa_network
-
-  # Medusa Server
-  # This service runs the Medusa backend application
-  # and the admin dashboard.
-  medusa:
-    build: .
-    container_name: medusa_backend
-    restart: unless-stopped
-    depends_on:
-      - postgres
-      - redis
-    ports:
-      - "9000:9000"
-      - "5173:5173"
-    environment:
-      - NODE_ENV=development
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/medusa-store
-      - REDIS_URL=redis://redis:6379
-    env_file:
-      - apps/backend/.env
-    volumes:
-      - .:/server
-      - /server/node_modules
-      - /server/apps/backend/node_modules
-    networks:
-      - medusa_network
-
-  # Storefront
-  # This service runs the Next.js Starter Storefront
-  storefront:
-    build: .
-    container_name: medusa_storefront
-    restart: unless-stopped
-    depends_on:
-      - medusa
-    ports:
-      - "8000:8000"
-    environment:
-      - NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://medusa:9000
-    env_file:
-      - apps/storefront/.env
-    volumes:
-      - .:/server
-      - /server/node_modules
-      - /server/apps/backend/node_modules
-      - /server/apps/storefront/node_modules
-      - /server/apps/storefront/.next
-    entrypoint: ["./start-storefront.sh"]
-    networks:
-      - medusa_network
-
-volumes:
-  postgres_data:
-
-networks:
-  medusa_network:
-    driver: bridge
-```
-
-You define four services in this file:
-
-- `postgres`: The PostgreSQL database service that stores your Medusa application's data.
-- `redis`: The Redis service that stores session data.
-- `medusa`: The Medusa service that runs the server and the admin dashboard. It connects to the PostgreSQL and Redis services.
-- `storefront`: The Next.js Starter Storefront service. It connects to the Medusa service.
-  - If you don't want to use the storefront, you can remove the `apps/storefront` directory and the `storefront` service from the `docker-compose.yml` file.
-
-The `env_file` paths are relative to the project root: `apps/backend/.env` for the backend and `apps/storefront/.env` for the storefront.
-
-The anonymous volumes for `node_modules` directories are required because pnpm workspaces create per-package `node_modules` directories with symlinks. Without these volumes, the Docker bind mount overwrites the installed dependencies. This configuration is essential for pnpm to work correctly in a monorepo Docker setup.
-
-### Port Configuration Explained
-
-The ports configuration maps container ports to host ports using the format `"host_port:container_port"`:
-
-- `"5432:5432"`: PostgreSQL database accessible at `localhost:5432`
-- `"6379:6379"`: Redis accessible at `localhost:6379`
-- `"9000:9000"`: Medusa backend server accessible at `localhost:9000`
-- `"5173:5173"`: Medusa Admin development server with Hot Module Replacement (HMR)
-- `"8000:8000"`: Storefront accessible at `localhost:8000`
-
-If these ports conflict with other services on your host machine, change the host port (left side). For example, use `"9001:9000"` to access the Medusa backend at `localhost:9001` instead.
-
-### Recommendations for Multiple Local Projects
-
-If this isn't the first Medusa project you're setting up with Docker on your machine, make sure to:
-
-- Change the `container_name` for each service to avoid conflicts.
-  - For example, use `medusa_postgres_myproject`, `medusa_redis_myproject`, `medusa_backend_myproject`, and `medusa_storefront_myproject` instead of the current names.
-- Change the volume names to avoid conflicts.
-  - For example, use `postgres_data_myproject` instead of `postgres_data`.
-- Change the network name to avoid conflicts.
-  - For example, use `medusa_network_myproject` instead of `medusa_network`.
-- Change the ports to avoid conflicts with other projects. For example:
-  - Use `"5433:5432"` for PostgreSQL.
-  - Use `"6380:6379"` for Redis.
-  - Use `"9001:9000"` for the Medusa server.
-  - Use `"5174:5173"` for the Medusa Admin dashboard.
-  - Use `"8001:8000"` for the storefront.
-- Update the `DATABASE_URL` and `REDIS_URL` environment variables accordingly.
-
-***
-
-## 3. Create `start.sh`
-
-Create a script file that [runs database migrations](https://docs.medusajs.com/learn/fundamentals/data-models/write-migration/index.html.md) and starts the Medusa development server.
-
-Create the file `start.sh` with the following content:
-
-### pnpm
-
-```shell title="start.sh"
-#!/bin/sh
-cd /server/apps/backend
-
-echo "Running database migrations..."
-pnpm medusa db:migrate
-
-echo "Seeding database..."
-pnpm seed || echo "Seeding failed, continuing..."
-
-echo "Starting Medusa development server..."
-pnpm dev
-```
-
-### yarn
-
-```shell title="start.sh"
-#!/bin/sh
-cd /server/apps/backend
-
-echo "Running database migrations..."
-yarn medusa db:migrate
-
-echo "Seeding database..."
-yarn seed || echo "Seeding failed, continuing..."
-
-echo "Starting Medusa development server..."
-yarn dev
-```
-
-### npm
-
-```shell title="start.sh"
-#!/bin/sh
-cd /server/apps/backend
-
-echo "Running database migrations..."
-npx medusa db:migrate
-
-echo "Seeding database..."
-npm run seed || echo "Seeding failed, continuing..."
-
-echo "Starting Medusa development server..."
-npm run dev
-```
-
-Ensure that the `start.sh` file uses LF line endings instead of CRLF. Git on Windows can sometimes automatically convert line endings, which causes errors when running the script inside the Linux-based Docker container. Learn how to configure your environment to maintain LF line endings in [this guide from GitHub](https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings).
-
-***
-
-## 4. Create `start-storefront.sh`
-
-Create a separate script for the storefront service:
-
-### pnpm
-
-```shell title="start-storefront.sh"
-#!/bin/sh
-cd /server/apps/storefront
-
-echo "Starting Next.js Starter Storefront development server..."
-pnpm dev
-```
-
-### yarn
-
-```shell title="start-storefront.sh"
-#!/bin/sh
-cd /server/apps/storefront
-
-echo "Starting Next.js Starter Storefront development server..."
-yarn dev
-```
-
-### npm
-
-```shell title="start-storefront.sh"
-#!/bin/sh
-cd /server/apps/storefront
-
-echo "Starting Next.js Starter Storefront development server..."
-npm run dev
-```
-
-Make sure this file also uses LF line endings, as described in the previous step.
-
-On Unix-based systems like macOS and Linux, give both scripts executable permissions:
-
-```bash
-chmod +x start.sh start-storefront.sh
-```
-
-This command isn't needed on Windows.
-
-***
-
-## 5. Create `Dockerfile`
-
-The `Dockerfile` defines how the Docker image is built. Both the `medusa` and `storefront` services reuse the same image — the storefront overrides the entrypoint in `docker-compose.yml`.
-
-Create a file named `Dockerfile` with the following content:
-
-### pnpm
-
-```dockerfile title="Dockerfile"
-FROM node:22-alpine
-
-WORKDIR /server
-
-RUN npm install pnpm@10.11.1 -g
-
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json .npmrc ./
-COPY apps/backend/package.json ./apps/backend/
-COPY apps/storefront/package.json ./apps/storefront/
-
-RUN pnpm install --frozen-lockfile
-
-COPY . .
-
-EXPOSE 9000 5173 8000
-
-ENTRYPOINT ["./start.sh"]
-```
-
-### yarn
-
-```dockerfile title="Dockerfile"
-FROM node:22-alpine
-
-WORKDIR /server
-
-COPY package.json yarn.lock .yarnrc.yml turbo.json ./
-COPY .yarn/releases .yarn/releases
-COPY apps/backend/package.json ./apps/backend/
-COPY apps/storefront/package.json ./apps/storefront/
-
-RUN yarn install
-
-COPY . .
-
-EXPOSE 9000 5173 8000
-
-ENTRYPOINT ["./start.sh"]
-```
-
-### npm
-
-```dockerfile title="Dockerfile"
-FROM node:22-alpine
-
-WORKDIR /server
-
-COPY package.json package-lock.json turbo.json ./
-COPY apps/backend/package.json ./apps/backend/
-COPY apps/storefront/package.json ./apps/storefront/
-
-RUN npm install --legacy-peer-deps
-
-COPY . .
-
-EXPOSE 9000 5173 8000
-
-ENTRYPOINT ["./start.sh"]
-```
-
-In the `Dockerfile`, you use the `node:22-alpine` image as the base since Medusa requires Node.js v22.22.0 or later.
-
-The workspace configuration files and all apps' `package.json` files are copied before installing dependencies so that the workspace dependency graph is resolved correctly. After installing dependencies, the rest of the source code is copied.
-
-While `/app` is a more common working directory, use `/server` for the Medusa service to avoid conflicts with Medusa Admin customizations. Learn more in [this troubleshooting guide](https://docs.medusajs.com/resources/troubleshooting/medusa-admin/no-widget-route#errors-in-docker/index.html.md).
-
-***
-
-## 6. Update Scripts in `package.json`
-
-Update the `scripts` section in the root `package.json` file to start and stop the Docker services.
-
-Add the following scripts:
-
-```json title="package.json"
-{
-  "scripts": {
-    // Other scripts...
-    "docker:up": "docker compose up --build -d",
-    "docker:down": "docker compose down"
-  }
-}
-```
-
-Where:
-
-- `docker:up` starts the development server in a Docker container as a background process.
-- `docker:down` stops and removes the Docker containers.
-
-***
-
-## 7. Update Medusa Configuration
-
-### Disable SSL for PostgreSQL Connection
-
-If you try to run the Medusa application now with Docker, you'll encounter an SSL error as the server tries to connect to the PostgreSQL database.
-
-To resolve the error, add the following configurations in `apps/backend/medusa-config.ts`:
-
-```ts title="apps/backend/medusa-config.ts"
-import { loadEnv, defineConfig } from "@medusajs/framework/utils"
-
-loadEnv(process.env.NODE_ENV || "development", process.cwd())
-
-module.exports = defineConfig({
-  projectConfig: {
-    // ...
-    databaseDriverOptions: {
-      ssl: false,
-      sslmode: "disable",
-    },
-  },
-})
-```
-
-You add the [projectConfig.databaseDriverOptions](https://docs.medusajs.com/learn/configurations/medusa-config#databasedriveroptions/index.html.md) to disable SSL for the PostgreSQL database connection.
-
-### Add Vite Configuration for Medusa Admin
-
-To ensure that the Medusa Admin dashboard works correctly when running inside Docker, connects to the Medusa server, and reloads properly with Hot Module Replacement (HMR), add the following Vite configuration in `apps/backend/medusa-config.ts`:
-
-```ts title="apps/backend/medusa-config.ts"
-module.exports = defineConfig({
-  // ...
-  admin: {
-    vite: (config) => {
-      return {
-        server: {
-          host: "0.0.0.0",
-          // Allow all hosts when running in Docker (development mode)
-          // In production, this should be more restrictive
-          allowedHosts: [
-            "localhost",
-            ".localhost",
-            "127.0.0.1",
-          ],
-          hmr: {
-            // HMR websocket port inside container
-            port: 5173,
-            // Port browser connects to (exposed in docker-compose.yml)
-            clientPort: 5173,
-          },
-        },
-      }
-    },
-  },
-})
-```
-
-You configure the Vite development server to listen on all network interfaces (`0.0.0.0`) and set up HMR to work correctly within the Docker environment.
-
-### Redis Configuration
-
-If you encounter Redis connection issues, you may need to explicitly configure the Redis URL in your `medusa-config.ts` file:
-
-```ts title="apps/backend/medusa-config.ts"
-module.exports = defineConfig({
-  projectConfig: {
-    // ...
-    redisUrl: process.env.REDIS_URL,
-  },
-})
-```
-
-This ensures the Redis URL from the environment variable is properly used by Medusa.
-
-***
-
-## 8. Add `.dockerignore`
-
-To ensure only the necessary files are copied into the Docker image, create a `.dockerignore` file with the following content:
-
-```dockerignore title=".dockerignore"
-node_modules
-apps/backend/node_modules
-apps/storefront/node_modules
-apps/backend/.medusa
-apps/storefront/.next
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.git
-.gitignore
-README.md
-.env.test
-.nyc_output
-coverage
-.DS_Store
-*.log
-dist
-build
-```
-
-***
-
-## 9. Create `.env` Files
-
-Create environment files for both the backend and storefront by copying from their templates.
-
-Copy the backend template:
-
-```bash
-cp apps/backend/.env.template apps/backend/.env
-```
-
-Copy the storefront template:
-
-```bash
-cp apps/storefront/.env.template apps/storefront/.env
-```
-
-Update the values in each file as needed.
-
-***
-
-## 10. Start the Medusa Application with Docker
-
-All configurations are now ready. Start the Medusa application using Docker by running the following command:
-
-```bash
-npm run docker:up
-```
-
-Docker pulls the necessary images, starts the PostgreSQL and Redis services, builds the Medusa and storefront services, and runs them in Docker containers.
-
-Check the logs to ensure everything is running smoothly:
-
-```bash
-docker compose logs -f
-```
-
-Once you see the following message, the Medusa server and admin are ready:
-
-```shell
-✔ Server is ready on port: 9000 - 3ms
-info:    Admin URL → http://localhost:9000/app
-```
-
-You can now access the Medusa server at `http://localhost:9000` and the Medusa Admin dashboard at `http://localhost:9000/app`.
-
-***
-
-## Create Admin User and Configure Storefront
-
-### Create Admin User
-
-To create an admin user, run the following command:
-
-### pnpm
-
-```bash
-docker compose exec medusa sh -c "cd /server/apps/backend && pnpm medusa user -e admin@example.com -p supersecret"
-```
-
-### yarn
-
-```bash
-docker compose exec medusa sh -c "cd /server/apps/backend && yarn medusa user -e admin@example.com -p supersecret"
-```
-
-### npm
-
-```bash
-docker compose exec medusa sh -c "cd /server/apps/backend && npx medusa user -e admin@example.com -p supersecret"
-```
-
-Replace `admin@example.com` and `supersecret` with your desired email and password.
-
-You can now log in to the Medusa Admin dashboard at `http://localhost:9000/app`.
-
-### Set Publishable API Key for the Storefront
-
-The storefront requires a publishable API key to connect to the Medusa backend:
-
-1. Log in to the admin dashboard at `http://localhost:9000/app`.
-2. Go to **Settings** > **Publishable API Keys** and create a new publishable API key.
-3. Add the key to `apps/storefront/.env`:
-
-```bash
-NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_...
-```
-
-4. Restart the storefront service:
-
-```bash
-docker compose up storefront -d
-```
-
-The storefront requires this key at startup and exits with an error if it's missing.
-
-***
-
-## Stop the Medusa Application Running in Docker
-
-To stop the Medusa application running in Docker, run the following command:
-
-```bash
-npm run docker:down
-```
-
-This command stops and removes the Docker containers created by the `docker-compose.yml` file.
-
-This doesn't delete any data in your application or its database. Start the server again using the `docker:up` command.
-
-***
-
-## Check Logs
-
-Check the logs of the Medusa backend running in Docker:
-
-```bash
-docker compose logs -f medusa
-```
-
-Check the logs of the storefront:
-
-```bash
-docker compose logs -f storefront
-```
-
-***
-
-## Troubleshooting
-
-### start.sh Not Found Error
-
-If you get the following error when starting the Medusa application with Docker:
-
-```bash
-medusa_backend exited with code 127 (restarting)
-medusa_backend   | /usr/local/bin/docker-entrypoint.sh: exec: line 11: ./start.sh: not found
-```
-
-This is a common error for Windows users. It usually occurs when the `start.sh` file uses CRLF line endings instead of LF.
-
-To fix this, ensure that the `start.sh` file uses LF line endings. You can configure Git to maintain LF line endings by following [this guide from GitHub](https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings).
-
-### Couldn't Find X File or Directory Errors
-
-If you encounter errors indicating that certain files or directories couldn't be found, make sure you're running the commands from the root directory of your Medusa application (the same directory where the `docker-compose.yml` file is located).
-
-For example, if you run the `docker:up` command and see an error like this:
-
-```bash
-error Couldn't find a package.json file in "/"
-```
-
-Ensure that your terminal's current working directory is the root of your Medusa application, then try running the command again.
-
-### Container Name Conflicts
-
-If you're running multiple Medusa projects with Docker or have previously run this guide, you may encounter container name conflicts.
-
-To resolve this, ensure that the `container_name` values in your `docker-compose.yml` file are unique for each project. You can modify them by appending a unique identifier to each name.
-
-For example, change:
-
-```yaml title="docker-compose.yml"
-container_name: medusa_postgres
-```
-
-to
-
-```yaml title="docker-compose.yml"
-container_name: medusa_postgres_myproject
-```
-
-### Medusa Backend Returns "Cannot GET /" Error
-
-If you access `http://localhost:9000` and see a "Cannot GET /" error, this usually means the Medusa backend started successfully but there's no route handler for the root path.
-
-This is expected behavior. The Medusa backend API endpoints are available at paths like `/admin` and `/store`. To verify your installation:
-
-1. Access the Medusa Admin dashboard at `http://localhost:9000/app`
-2. Check the backend health at `http://localhost:9000/health`
-3. Access the storefront at `http://localhost:8000` (if you kept the storefront service)
-
-The "Cannot GET /" message doesn't indicate a problem. It means there's no content at the root URL.
-
-***
-
-## Learn More About Your Medusa Application
-
-You can learn more about your Medusa application and its setup in the [Installation chapter](https://docs.medusajs.com/learn/installation/index.html.md).
-
-
-# Install Medusa
-
-In this chapter, you'll learn how to install and run a Medusa application.
-
-## Get Started with AI Agents
-
-If you're an AI agent, or a human who wants to get started quickly with an AI agent, run the following prompt in your agent:
-
-```bash title="Prompt"
-Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
-```
-
-The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
-
-***
-
-## Get Started with Cloud
-
-[Cloud](https://docs.medusajs.com/cloud/index.html.md) is the quickest way to get started with Medusa. With Cloud, you can deploy your ecommerce applications in minutes. Benefit from features like:
-
-- Zero-configuration deployments
-- Automatic scaling
-- Storefront hosting
-- GitHub integration
-
-And [more features](https://docs.medusajs.com/cloud#features/index.html.md).
-
-[Sign up for Cloud](http://cloud.medusajs.com/signup?utm_source=docs\&utm_medium=website\&utm_campaign=cloud_signup_guide) to start a free trial and create your first Medusa project in minutes. You don't need to enter payment details to start the trial.
-
-***
-
-## Create Medusa Application Locally
-
-Medusa is open-source, so you can also install and run it locally on your machine. This is a great option if you want more control over your development environment.
-
-A Medusa application is made up of a Node.js server and a Vite admin dashboard. You can optionally install the [Next.js Starter Storefront](https://docs.medusajs.com/resources/nextjs-starter/index.html.md) either while installing the Medusa application or at a later point.
-
-### Prerequisites
-
-- [Node.js v22.22.0+ (LTS versions only). If you choose to install the Next.js Starter Storefront, make sure to use Node v24 LTS or lower.](https://nodejs.org/en/download)
-- [Git CLI tool](https://git-scm.com/downloads)
-- [PostgreSQL installed and running](https://www.postgresql.org/download/)
-
-To create a Medusa application, use the `create-medusa-app` command:
-
-### yarn
-
-```bash
-yarn dlx create-medusa-app@latest my-medusa-store
-# npx create-medusa-app@latest my-medusa-store --use-yarn
-```
-
-### pnpm
-
-```bash
-pnpm dlx create-medusa-app@latest my-medusa-store
-# npx create-medusa-app@latest my-medusa-store --use-pnpm
-```
-
-### npm
-
-```bash
-npx create-medusa-app@latest my-medusa-store
-```
-
-`my-medusa-store` is the name of the project's directory. The command also creates a PostgreSQL database for the project named `medusa-my-medusa-store`. While the command runs, it asks whether you want to install the Next.js Starter Storefront.
-
-Consider using `yarn` or `pnpm` instead of `npm` for faster installations.
-
-To customize the default installation behavior, such as specifying a database URL, refer to the [create-medusa-app reference](https://docs.medusajs.com/resources/create-medusa-app/index.html.md).
-
-After answering the prompts, the command installs the Medusa application in a monorepository. The backend (with the admin dashboard) is installed in the `apps/backend` directory of the monorepository.
-
-If you chose to install the storefront with the Medusa application, the storefront is installed in the monorepository under the `apps/storefront` directory.
-
-![Directory structure overview after Medusa installation showing the main project folder containing the Medusa backend application and admin dashboard, alongside the separate storefront directory for the customer-facing Next.js application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755371/Medusa%20Book/installation-dirs_h2sqhy.jpg)
-
-### Successful Installation Result
-
-Once the installation finishes successfully, the Medusa application runs at `http://localhost:9000`.
-
-The Medusa Admin dashboard also runs at `http://localhost:9000/app`. The installation process opens the Medusa Admin dashboard in your default browser so you can create an admin user. Use that user to log in later.
-
-If you also installed the Next.js Starter Storefront, it'll be running at `http://localhost:8000`.
-
-You can stop the servers for the Medusa application and Next.js Starter Storefront by exiting the installation command. To run the server for the Medusa application again, refer to the [Run Medusa Application in Development](#run-medusa-application-in-development) section.
-
-![Post-installation running services overview: Medusa backend server and admin dashboard running on localhost:9000, Next.js Starter Storefront running on localhost:8000, with PostgreSQL database and other essential services active and ready for development](https://res.cloudinary.com/dza7lstvk/image/upload/v1745856706/Medusa%20Resources/success-overview_bj4pbt.jpg)
-
-### Troubleshooting Installation Errors
-
-If you run into an error during installation, refer to the following troubleshooting guides for help:
-
-1. [create-medusa-app troubleshooting guides](https://docs.medusajs.com/resources/troubleshooting/create-medusa-app-errors/index.html.md).
-2. [CORS errors](https://docs.medusajs.com/resources/troubleshooting/cors-errors/index.html.md).
-3. [Errors with pnpm](https://docs.medusajs.com/resources/troubleshooting/pnpm/index.html.md).
-4. [All troubleshooting guides](https://docs.medusajs.com/resources/troubleshooting/index.html.md).
-
-If you can't find your error reported anywhere, please open a [GitHub issue](https://github.com/medusajs/medusa/issues/new/choose).
-
-***
-
-## Run Medusa Application in Development
-
-To run the Medusa application in development, change to the backend application's directory (`apps/backend`) and run the following command:
-
-```bash
-npm run dev
-```
-
-This runs your Medusa server at `http://localhost:9000`, and the Medusa Admin dashboard at `http://localhost:9000/app`.
-
-![Diagram showcasing the server and application running when you start the Medusa application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755500/Medusa%20Book/start-overview_hqjexd.jpg)
-
-For details on starting and configuring the Next.js Starter Storefront, refer to [the Next.js Starter Storefront documentation](https://docs.medusajs.com/resources/nextjs-starter/index.html.md).
-
-The application restarts when you change code under the `src` directory. Admin customizations are hot-reloaded instead, so you see your changes without refreshing the browser.
-
-***
-
-## Start Building with AI Agents
-
-Medusa provides [agentic skills](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa using AI agents like Claude Code.
-
-### Build Features with AI Agents
-
-Medusa provides a set of skills to help you build features with AI agents. You can build features like product reviews, wishlists, quote requests, and more with AI agents.
-
-These skills are ideal for developers and non-technical users who want to build features with the help of AI agents.
-
-### Claude Code
-
-```bash
-claude # start claude code
-/plugin marketplace add medusajs/medusa-agent-skills
-/plugin install medusa-dev@medusa
-
-# Ask Claude Code to build features with the medusa-dev plugin. For example:
-Help me implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
-```
-
-### Other AI Agents
-
-```bash
-npx skills add medusajs/medusa-agent-skills
-# choose the following skills:
-# - building-with-medusa
-# - building-admin-dashboard-customizations
-# - building-storefronts
-# - db-generate
-# - db-migrate
-# - new-user
-
-# Ask your AI agent to build features with the installed skills. For example:
-Help me implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
-```
-
-By following this flow, you can quickly bring your business ideas to life with the help of AI agents, without having to worry about the underlying code or technical details.
-
-### Learn Medusa Development with AI Agents
-
-If you're a Medusa beginner and you want to learn Medusa development with the help of an AI agent, install the `learn-medusa` plugin in Claude Code or the `learning-medusa` skill in other AI agents:
-
-### Claude Code
-
-```bash
-claude # start claude code
-/plugin marketplace add medusajs/medusa-agent-skills
-/plugin install learn-medusa@medusa
-
-# then use the following prompt to start learning:
-I want to learn Medusa.
-```
-
-### Other AI Agents
-
-```bash
-npx skills add medusajs/medusa-agent-skills
-# choose the following skill:
-# - learning-medusa
-
-# then use the following prompt in your AI agent to start learning:
-I want to learn Medusa.
-```
-
-This starts the interactive learning experience where you'll learn Medusa concepts step by step by building a brands feature, similar to the [Brands tutorial](https://docs.medusajs.com/learn/customization/custom-features/index.html.md). You will:
-
-1. Create a Brand Module with API routes to manage brands.
-2. Link brands to products to associate products with brands.
-3. Customize the Medusa Admin dashboard to allow admin users to manage brands.
-
-By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
-
-***
-
-## Create Medusa Admin User
-
-Besides creating an admin user in the admin dashboard, you can also create one with Medusa's CLI tool.
-
-Run the following command in your Medusa application's directory (`apps/backend`) to create a new admin user:
-
-```bash
-npx medusa user -e admin@medusajs.com -p supersecret
-```
-
-Replace `admin@medusajs.com` and `supersecret` with the user's email and password respectively.
-
-You can then use the user's credentials to log in to the Medusa Admin dashboard.
-
-***
-
-## Project Files
-
-Your Medusa application's project (`apps/backend`) will have the following files and directories:
-
-![Diagram of the files and directories in a Medusa application project](https://res.cloudinary.com/dza7lstvk/image/upload/v1732803813/Medusa%20Book/medusa-dir-overview_v7ks0j.jpg)
-
-### src
-
-This directory is the central place for your custom development. It includes the following subdirectories:
-
-- `admin`: Holds your admin dashboard's custom [widgets](https://docs.medusajs.com/learn/fundamentals/admin/widgets/index.html.md) and [UI routes](https://docs.medusajs.com/learn/fundamentals/admin/ui-routes/index.html.md).
-- `api`: Holds your custom [API routes](https://docs.medusajs.com/learn/fundamentals/api-routes/index.html.md) that are added as endpoints in your Medusa application.
-- `jobs`: Holds your [scheduled jobs](https://docs.medusajs.com/learn/fundamentals/scheduled-jobs/index.html.md) that run at a specified interval during your Medusa application's runtime.
-- `links`: Holds your [module links](https://docs.medusajs.com/learn/fundamentals/module-links/index.html.md) that build associations between data models of different modules.
-- `modules`: Holds your custom [modules](https://docs.medusajs.com/learn/fundamentals/modules/index.html.md) that implement custom business logic.
-- `scripts`: Holds your custom [scripts](https://docs.medusajs.com/learn/fundamentals/custom-cli-scripts/index.html.md) to be executed using Medusa's CLI tool.
-- `subscribers`: Holds your [event listeners](https://docs.medusajs.com/learn/fundamentals/events-and-subscribers/index.html.md) that are executed asynchronously whenever an event is emitted.
-- `workflows`: Holds your custom [workflows](https://docs.medusajs.com/learn/fundamentals/workflows/index.html.md) that can be executed from anywhere in your application.
-
-### medusa-config.ts
-
-This file holds your [Medusa configurations](https://docs.medusajs.com/learn/configurations/medusa-config/index.html.md), such as your PostgreSQL database configurations.
-
-### .medusa
-
-The `.medusa` directory holds types and other files that are generated by Medusa when you run the `build` command. Don't modify any files or commit them to your repository.
-
-See [Automatically Generated Types](https://docs.medusajs.com/learn/fundamentals/generated-types/index.html.md) for more information on generated types.
-
-***
-
-## Configure Medusa Application
-
-By default, your Medusa application is equipped with the basic configuration to start your development.
-
-If you run into issues with configurations, such as CORS configurations, or need to make changes to the default configuration, refer to the [Medusa Configuration](https://docs.medusajs.com/learn/configurations/medusa-config/index.html.md) guide.
-
-***
-
-## Update Medusa Application
-
-Refer to the [Update Medusa](https://docs.medusajs.com/learn/update/index.html.md) guide to learn how to update your Medusa project.
-
-***
-
-## Next Steps
-
-In the next chapters, you'll learn about the architecture of your Medusa application, then learn how to customize your application to build custom features.
-
-
 # Medusa's Architecture
 
 In this chapter, you'll learn about the architectural layers in Medusa.
@@ -30566,7 +29607,7 @@ For other data types, you'll probably need to migrate them manually through cust
 
 In this section, you'll learn how to upgrade your Medusa project from v1 to v2.
 
-To create a fresh new Medusa v2 project, check out the [Installation chapter](https://docs.medusajs.com/learn/installation/index.html.md).
+To create a fresh new Medusa v2 project, check out the [Set Up Medusa Locally guide](https://docs.medusajs.com/cloud/setup-locally/index.html.md).
 
 It's highly recommended to fully go through this chapter before you actually update your application, as some v1 features may have been removed or heavily changed in v2. By doing so, you'll formulate a clearer plan for your migration process and its feasibility.
 
@@ -31950,13 +30991,13 @@ This documentation is split into the following sections:
 |[Main Documentation](https://docs.medusajs.com/learn/index.html.md)|The documentation you're currently reading. Follow the chapters in this documentation to understand Medusa's core concepts and how to use them before you jump into the other sections.|
 |[Cloud](https://docs.medusajs.com/cloud/index.html.md)|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
 |Product|Documentation for the [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md), [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules/index.html.md), and [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules/index.html.md). These sections include concepts, guides, and references for each of those products.|
-|Build|[Recipes](https://docs.medusajs.com/resources/recipes/index.html.md), [How-To & Tutorials](https://docs.medusajs.com/resources/how-to-tutorials/index.html.md), [Integrations](https://docs.medusajs.com/resources/integrations/index.html.md), and [Storefront Development](https://docs.medusajs.com/resources/storefront-development/index.html.md) guides. You can follow these guides after you've learned Medusa's core concepts.|
+|Build|[Recipes](https://docs.medusajs.com/resources/recipes/index.html.md), [How-To & Tutorials](https://docs.medusajs.com/resources/how-to-tutorials/index.html.md), [Integrations](https://docs.medusajs.com/cloud/integrations/index.html.md), and [Storefront Development](https://docs.medusajs.com/resources/storefront-development/index.html.md) guides. You can follow these guides after you've learned Medusa's core concepts.|
 |[Tools](https://docs.medusajs.com/resources/tools/index.html.md)|Guides on how to set up and use Medusa's CLI tools, [JS SDK](https://docs.medusajs.com/resources/js-sdk/index.html.md), [Next.js Starter](https://docs.medusajs.com/resources/nextjs-starter/index.html.md), and [Medusa UI](https://docs.medusajs.com/ui/index.html.md)|
 |API Routes References|References of the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API routes in Medusa. They also include instructions related to authentication, parameter types in requests, and more.|
 |[References](https://docs.medusajs.com/resources/references-overview/index.html.md)|Useful during your development with Medusa to learn about different APIs and how to use them. These include the [Events Reference](https://docs.medusajs.com/resources/references/events/index.html.md), [Core Workflows Reference](https://docs.medusajs.com/resources/medusa-workflows-reference/index.html.md), and more.|
 |[User Guide](https://docs.medusajs.com/user-guide/index.html.md)|Guides that introduce merchants and store managers to the Medusa Admin dashboard and help them understand how to use the dashboard to manage their store.|
 
-To get started, check out the [Installation chapter](https://docs.medusajs.com/learn/installation/index.html.md).
+To get started, check out the [Set Up Medusa Locally guide](https://docs.medusajs.com/cloud/setup-locally/index.html.md).
 
 
 # Worker Mode of Medusa Instance
@@ -32204,7 +31245,7 @@ Before writing code, make sure there's an [issue](https://github.com/medusajs/me
 ### Prerequisites
 
 - [Forked Medusa repository cloned locally.](https://github.com/medusajs/medusa)
-- [A local Medusa application for testing.](https://docs.medusajs.com/learn/installation/index.html.md)
+- [A local Medusa application for testing.](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 The snippets below assume your forked Medusa project and your test project are sibling directories:
 
@@ -32284,7 +31325,7 @@ The workspace has the following two directories:
 
 - `apps`: this directory holds the different documentation websites and projects. All projects are built with [Next.js 15](https://nextjs.org/).
   - `book`: includes the codebase and content for the [main Medusa documentation](https://docs.medusajs.com/learn/index.html.md).
-  - `resources`: includes the codebase and content for the resources documentation, which powers different sections of the docs such as the [Integrations](https://docs.medusajs.com/resources/integrations/index.html.md) or [How-to & Tutorials](https://docs.medusajs.com/resources/how-to-tutorials/index.html.md) sections.
+  - `resources`: includes the codebase and content for the resources documentation, which powers different sections of the docs such as the [Recipes](https://docs.medusajs.com/resources/recipes/index.html.md) or [How-to & Tutorials](https://docs.medusajs.com/resources/how-to-tutorials/index.html.md) sections.
   - `api-reference`: includes the codebase and content for the [API reference](https://docs.medusajs.com/api/store).
   - `ui`: includes the codebase and content for the [Medusa UI documentation](https://docs.medusajs.com/ui/index.html.md).
   - `user-guide`: includes the codebase and content for the [user guide documentation](https://docs.medusajs.com/user-guide/index.html.md).
@@ -37709,7 +36750,7 @@ In this guide, you'll learn how to reject product variants whose product isn't a
 
 ### Prerequisites
 
-- [Medusa application set up](https://docs.medusajs.com/docs/learn/installation/index.html.md)
+- [Medusa application set up](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 ## Why Medusa Doesn't Enforce This by Default
 
@@ -41619,7 +40660,7 @@ For earlier versions, you can install the plugin manually.
 
 ### Prerequisites
 
-- [Medusa application >= v2.4.0](https://docs.medusajs.com/docs/learn/installation/index.html.md)
+- [Medusa application >= v2.4.0](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 To install the Draft Orders Plugin:
 
@@ -96625,7 +95666,7 @@ In the subscriber, you retrieve the details of the order and pre-order variants.
 
 Notice that the `createNotifications` method receives a `channel` property for a notification. This indicates which [Notification Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification#what-is-a-notification-module-provider/index.html.md) to send the notification with.
 
-The `feed` channel is useful for debugging, as it logs the notification in the terminal. To send an email, you can instead [set up a provider like SendGrid](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/integrations#notification/index.html.md) and change the channel to `email`.
+The `feed` channel is useful for debugging, as it logs the notification in the terminal. To send an email, you can instead [set up a provider like SendGrid](https://docs.medusajs.com/cloud/integrations#notification/index.html.md) and change the channel to `email`.
 
 To test the subscriber, [perform the steps to test fulfilling pre-orders](#test-scheduled-job). Once a pre-order is fulfilled, you'll see the following message logged in your terminal:
 
@@ -137767,136 +136808,6 @@ If you encounter issues not covered in the troubleshooting guides:
 2. Join the [Medusa Discord community](https://discord.gg/medusajs) for real-time support from community members.
 
 
-# Integrations
-
-You can integrate any third-party service to Medusa, including storage services, notification systems, Content-Management Systems (CMS), etc… By integrating third-party services, you build flows and synchronize data around these integrations, making Medusa not only your commerce application, but a middleware layer between your data sources and operations.
-
-Medusa provides integrations out-of-the-box that are listed here, but you can also create your own integrations, such as integrating ERP systems, as explained in [this guide](https://docs.medusajs.com/docs/learn/customization/integrate-systems/index.html.md).
-
-This section holds guides to help technical teams add integrations to a Medusa application. If you're not a technical user, refer your technical team to this documentation instead.
-
-## Analytics
-
-An Analytics Module Provider tracks events and user behavior in your Medusa application using a third-party service.
-
-- [PostHog](https://docs.medusajs.com/infrastructure-modules/analytics/posthog/index.html.md)
-- [Segment](https://docs.medusajs.com/integrations/guides/segment/index.html.md)
-
-Learn how to integrate a custom third-party analytics provider in the [Create Analytics Module Provider](https://docs.medusajs.com/references/analytics/provider/index.html.md) documentation.
-
-***
-
-## Auth
-
-An Auth Module Provider authenticates users with their account on a third-party service.
-
-- [Google](https://docs.medusajs.com/commerce-modules/auth/auth-providers/google/index.html.md)
-- [GitHub](https://docs.medusajs.com/commerce-modules/auth/auth-providers/github/index.html.md)
-- [Okta](https://docs.medusajs.com/integrations/guides/okta/index.html.md)
-
-Learn how to integrate a custom third-party authentication provider in the [Create Auth Module Provider](https://docs.medusajs.com/references/auth/provider/index.html.md) documentation.
-
-***
-
-## CMS
-
-Integrate a third-party Content-Management System (CMS) to utilize rich content-related features.
-
-- [Contentful (Localization)](https://docs.medusajs.com/integrations/guides/contentful/index.html.md)
-- [Payload CMS](https://docs.medusajs.com/integrations/guides/payload/index.html.md)
-- [Sanity](https://docs.medusajs.com/integrations/guides/sanity/index.html.md)
-- [Strapi](https://docs.medusajs.com/integrations/guides/strapi/index.html.md)
-
-***
-
-## ERP
-
-Integrate your business's Enterprise Resource Planning (ERP) system with Medusa to sync products and orders, restrict purchase with custom rules, and more.
-
-To learn about the general approach of integrating an ERP with Medusa and the different use cases you can implement, refer to the [ERP Recipe](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/recipes/erp/index.html.md).
-
-- [Odoo](https://docs.medusajs.com/recipes/erp/odoo/index.html.md)
-
-***
-
-## File
-
-A File Module Provider uploads and manages assets, such as product images, on a third-party service.
-
-- [AWS S3 (and Compatible APIs)](https://docs.medusajs.com/infrastructure-modules/file/s3/index.html.md)
-
-Learn how to integrate a custom third-party file or storage provider in the [Create File Module Provider](https://docs.medusajs.com/references/file-provider-module/index.html.md) documentation.
-
-***
-
-## Fulfillment
-
-A Fulfillment Module Provider provides fulfillment options during checkout, calculates shipping rates, and processes an order's fulfillments.
-
-- [ShipStation](https://docs.medusajs.com/integrations/guides/shipstation/index.html.md)
-
-Learn how to integrate a third-party fulfillment provider in the [Create Fulfillment Module Provider](https://docs.medusajs.com/references/fulfillment/provider/index.html.md) documentation.
-
-***
-
-## Instrumentation
-
-Integrate a third-party service to monitor performance, errors, and other metrics in your Medusa application.
-
-- [Sentry](https://docs.medusajs.com/integrations/guides/sentry/index.html.md)
-
-***
-
-## Migration
-
-Migrate data from another ecommerce platform to Medusa.
-
-- [Magento](https://docs.medusajs.com/integrations/guides/magento/index.html.md)
-
-***
-
-## Notification
-
-A Notification Module Provider sends messages to users and customers in your Medusa application using a third-party service.
-
-- [SendGrid](https://docs.medusajs.com/infrastructure-modules/notification/sendgrid/index.html.md)
-- [Mailchimp](https://docs.medusajs.com/integrations/guides/mailchimp/index.html.md)
-- [Resend](https://docs.medusajs.com/integrations/guides/resend/index.html.md)
-- [Slack](https://docs.medusajs.com/integrations/guides/slack/index.html.md)
-- [Twilio SMS](https://docs.medusajs.com/how-to-tutorials/tutorials/phone-auth#step-3-integrate-twilio-sms/index.html.md)
-
-Learn how to integrate a third-party notification provider in the [Create Notification Module Provider](https://docs.medusajs.com/references/notification-provider-module/index.html.md) documentation.
-
-***
-
-## Payment
-
-A Payment Module Provider processes payments made in your Medusa store using a third-party service.
-
-- [Stripe](https://docs.medusajs.com/commerce-modules/payment/payment-provider/stripe/index.html.md)
-- [Adyen](https://docs.medusajs.com/commerce-modules/payment/payment-provider/adyen/index.html.md)
-- [PayPal](https://docs.medusajs.com/integrations/guides/paypal/index.html.md)
-
-Learn how to integrate a third-party payment provider in the [Create Payment Module Provider](https://docs.medusajs.com/references/payment/provider/index.html.md) documentation.
-
-***
-
-## Search
-
-Integrate a search engine to index and search products or other types of data in your Medusa application.
-
-- [Algolia](https://docs.medusajs.com/integrations/guides/algolia/index.html.md)
-- [Meilisearch](https://docs.medusajs.com/integrations/guides/meilisearch/index.html.md)
-
-***
-
-## Tax
-
-Integrate a third-party tax calculation service to handle tax rates and rules in your Medusa application.
-
-- [Avalara](https://docs.medusajs.com/integrations/guides/avalara/index.html.md)
-
-
 # How to Build a Wishlist Plugin
 
 In this guide, you'll learn how to build a wishlist [plugin](https://docs.medusajs.com/docs/learn/fundamentals/plugins/index.html.md) in Medusa.
@@ -167156,7 +166067,7 @@ In the workflow, you:
 
 In the `sendDigitalOrderNotificationStep`, you use a notification provider configured for the `email` channel to send the notification.
 
-Check out the [Integrations page](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/integrations/index.html.md) to find Notification Module Providers.
+Check out the [Integrations page](https://docs.medusajs.com/cloud/integrations/index.html.md) to find Notification Module Providers.
 
 For testing purposes, add to `medusa-config.ts` the following to use the Local Notification Module Provider:
 
@@ -168106,7 +167017,7 @@ You can integrate third-party services and tools, customizing the architecture a
 
 For example, you can integrate [Stripe](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe/index.html.md) to accept payments, or [SendGrid](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/notification/sendgrid/index.html.md) to send emails to customers.
 
-[Integrations](https://docs.medusajs.com/integrations/index.html.md): Check out available integrations for your Medusa application.
+[Integrations](https://docs.medusajs.com/cloud/integrations/index.html.md): Check out available integrations for your Medusa application.
 
 ***
 
@@ -174841,7 +173752,7 @@ Medusa provides official module providers for payment and fulfillment. You can a
 
 - [Manage Payment Providers in Medusa Admin](https://docs.medusajs.com/user-guide/settings/regions/index.html.md): Learn how to manage providers in a region.
 - [Manage Fulfillment Providers in Medusa Admin](https://docs.medusajs.com/user-guide/settings/locations-and-shipping/locations#manage-fulfillment-providers/index.html.md): Learn how to manage providers in a location.
-- [Integrations](https://docs.medusajs.com/integrations/index.html.md): Check out available integrations, including payment module providers.
+- [Integrations](https://docs.medusajs.com/cloud/integrations/index.html.md): Check out available integrations, including payment module providers.
 - [Create Fulfillment Module Provider](https://docs.medusajs.com/references/fulfillment/provider/index.html.md): Learn how to create a fulfillment module provider.
 
 ***

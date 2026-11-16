@@ -227,22 +227,14 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/setup-locally",
             "title": "Setup Locally",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": [
               {
                 "loaded": true,
                 "type": "link",
-                "path": "#",
+                "path": "/setup-locally/docker",
                 "title": "Setup with Docker",
-                "badge": {
-                  "variant": "blue",
-                  "text": "Soon"
-                },
                 "children": []
               }
             ]
@@ -250,23 +242,15 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/development-resources",
             "title": "Development Resources",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/integrations",
             "title": "Integrations",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": []
           }
         ]
@@ -303,13 +287,6 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Prerequisites",
                 "path": "/projects/prerequisites",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Clone Project Locally",
-                "path": "/projects/clone-locally",
                 "children": []
               },
               {
@@ -606,24 +583,16 @@ export const generatedSidebars = [
         "children": [
           {
             "loaded": true,
-            "type": "link",
-            "path": "#",
+            "type": "external",
+            "path": "https://docs.medusajs.com/resources/enterprise/rbac",
             "title": "RBAC",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": []
           },
           {
             "loaded": true,
-            "type": "link",
-            "path": "#",
+            "type": "external",
+            "path": "https://docs.medusajs.com/resources/enterprise/sso",
             "title": "SSO",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": []
           }
         ]

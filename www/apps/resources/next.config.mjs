@@ -223,7 +223,12 @@ const nextConfig = {
       },
       {
         source: "/plugins",
-        destination: "/integrations",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/integrations`,
+        permanent: true,
+      },
+      {
+        source: "/integrations",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/integrations`,
         permanent: true,
       },
       {
