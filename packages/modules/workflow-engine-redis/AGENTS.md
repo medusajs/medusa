@@ -58,7 +58,7 @@ yarn test:integration integration-tests/__tests__/race.spec.ts
 yarn migration:create           # after any change in src/models
 ```
 
-- Integration tests: `index.spec.ts`, `race.spec.ts`, `retry-interval.spec.ts`; fixtures in `integration-tests/__fixtures__/`. `integration-tests/utils/database.ts` deletes `bull:*` and `dtrx:*` keys in Redis at `REDIS_URL` (default `redis://localhost:6379`), and `index.spec.ts` hardcodes `redisUrl: "localhost:6379"`.
+- Integration tests: `index.spec.ts`, `race.spec.ts`, `retry-interval.spec.ts`, `scheduled-concurrency.spec.ts`; fixtures in `integration-tests/__fixtures__/`. `integration-tests/utils/database.ts` deletes `bull:*` and `dtrx:*` keys in Redis at `REDIS_URL` (default `redis://localhost:6379`), and `index.spec.ts` hardcodes `redisUrl: "localhost:6379"`. They load the built `dist`, so run `yarn build` after changing `src`.
 
 ## Gotchas
 
