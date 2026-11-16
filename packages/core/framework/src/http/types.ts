@@ -135,6 +135,16 @@ export type AuditRouteConfig<TResponseBody = any> = {
     req: AuditRequest,
     body: TResponseBody | undefined
   ) => Record<string, unknown> | undefined
+  /**
+   * Returns values to add to the record's `metadata`, such as the tenant the
+   * request belongs to. The values the framework sets itself, such as
+   * `auth_identity_id`, take precedence. `body` is the JSON response body,
+   * passed only for a successful response.
+   */
+  metadata?: (
+    req: AuditRequest,
+    body: TResponseBody | undefined
+  ) => Record<string, unknown> | undefined
 }
 
 /**
