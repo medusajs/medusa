@@ -734,6 +734,11 @@ export const sidebars = [
             title: "Type Aliases",
             path: "/learn/configurations/ts-aliases",
           },
+          {
+            type: "link",
+            title: "TypeScript 6 and 7",
+            path: "/learn/configurations/typescript",
+          },
         ],
       },
       {
