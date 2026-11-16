@@ -49,7 +49,6 @@ export const sidebar = [
       {
         type: "category",
         title: "AI Toolkit",
-        initialOpen: true,
         children: [
           {
             type: "link",
@@ -176,7 +175,6 @@ export const sidebar = [
       {
         type: "category",
         title: "Building Features",
-        initialOpen: true,
         children: [
           {
             type: "link",
@@ -205,7 +203,6 @@ export const sidebar = [
       {
         type: "category",
         title: "Management",
-        initialOpen: true,
         children: [
           {
             type: "link",
@@ -325,7 +322,6 @@ export const sidebar = [
       {
         type: "category",
         title: "Resources",
-        initialOpen: true,
         children: [
           {
             type: "link",
@@ -367,7 +363,6 @@ export const sidebar = [
       {
         type: "category",
         title: "Emails",
-        initialOpen: true,
         children: [
           {
             type: "link",
@@ -454,7 +449,6 @@ export const sidebar = [
       {
         type: "category",
         title: "Enterprise",
-        initialOpen: true,
         children: [
           {
             type: "link",
@@ -476,7 +470,6 @@ export const sidebar = [
       {
         type: "category",
         title: "Webhooks",
-        initialOpen: true,
         children: [
           {
             type: "link",
@@ -503,7 +496,6 @@ export const sidebar = [
       {
         type: "category",
         title: "Billing",
-        initialOpen: true,
         children: [
           {
             type: "link",
@@ -530,7 +522,6 @@ export const sidebar = [
       {
         type: "category",
         title: "Monitoring",
-        initialOpen: true,
         children: [
           {
             type: "link",
@@ -586,7 +577,6 @@ export const sidebar = [
       {
         type: "category",
         title: "Networking",
-        initialOpen: true,
         children: [
           {
             type: "link",
