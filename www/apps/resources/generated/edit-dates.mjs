@@ -67,8 +67,7 @@ export const generatedEditDates = {
   "app/commerce-modules/user/page.mdx": "2026-06-09T08:34:10.480Z",
   "app/commerce-modules/page.mdx": "2026-04-20T10:41:32.836Z",
   "app/create-medusa-app/page.mdx": "2026-11-09T14:19:42.482Z",
-  "app/deployment/storefront/vercel/page.mdx": "2026-01-08T09:19:27.493Z",
-  "app/deployment/page.mdx": "2026-01-08T09:19:58.734Z",
+  "app/deployment/page.mdx": "2026-11-16T12:58:04.782Z",
   "app/medusa-cli/page.mdx": "2026-10-05T08:39:17.952Z",
   "app/medusa-container-resources/page.mdx": "2026-08-21T06:05:37.097Z",
   "app/medusa-workflows-reference/page.mdx": "2025-01-20T08:21:29.962Z",
@@ -136,7 +135,7 @@ export const generatedEditDates = {
   "app/storefront-development/regions/store-retrieve-region/page.mdx": "2025-03-27T13:29:54.041Z",
   "app/storefront-development/regions/page.mdx": "2024-06-09T15:19:09+02:00",
   "app/storefront-development/tips/page.mdx": "2026-08-31T14:21:34.360Z",
-  "app/storefront-development/page.mdx": "2026-02-02T12:34:41.022Z",
+  "app/storefront-development/page.mdx": "2026-11-16T13:15:38.783Z",
   "app/troubleshooting/cors-errors/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/troubleshooting/create-medusa-app-errors/page.mdx": "2026-01-14T08:32:33.242Z",
   "app/troubleshooting/database-errors/page.mdx": "2026-07-17T12:43:21.308Z",
@@ -382,8 +381,8 @@ export const generatedEditDates = {
   "app/commerce-modules/translation/js-sdk/page.mdx": "2025-12-10T15:24:57.155Z",
   "app/commerce-modules/translation/workflows/page.mdx": "2025-12-10T15:24:45.190Z",
   "app/commerce-modules/translation/links-to-other-modules/page.mdx": "2025-12-16T06:36:50.848Z",
-  "app/how-to-tutorials/how-to/admin/auth/page.mdx": "2026-02-02T07:29:06.067Z",
-  "app/integrations/guides/okta/page.mdx": "2026-01-12T12:02:36.772Z",
+  "app/how-to-tutorials/how-to/admin/auth/page.mdx": "2026-11-16T13:21:36.770Z",
+  "app/integrations/guides/okta/page.mdx": "2026-11-16T13:21:36.773Z",
   "app/nextjs-starter/guides/remove-country-code/page.mdx": "2025-12-30T10:28:10.072Z",
   "app/commerce-modules/translation/custom-data-models/page.mdx": "2026-08-21T06:05:37.109Z",
   "app/commerce-modules/order/custom-display-id/page.mdx": "2026-01-12T12:16:58.730Z",
@@ -504,6 +503,6 @@ export const generatedEditDates = {
   "app/infrastructure-modules/search/product-index-examples/page.mdx": "2026-09-22T14:47:38.498Z",
   "app/troubleshooting/query/not-assignable-type/page.mdx": "2026-10-09T07:56:42.960Z",
   "app/commerce-modules/payment/payment-provider/adyen/page.mdx": "2026-10-30T12:26:02.502Z",
-  "app/enterprise/page.mdx": "2026-11-11T13:41:22.085Z",
-  "app/enterprise/sso/page.mdx": "2026-11-04T14:13:11.080Z"
+  "app/enterprise/sso/page.mdx": "2026-11-16T13:21:36.767Z",
+  "app/enterprise/rbac/page.mdx": "2026-11-16T13:21:36.767Z"
 }

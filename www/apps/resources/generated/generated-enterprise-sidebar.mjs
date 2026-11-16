@@ -5,7 +5,7 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
     {
       "loaded": true,
       "type": "link",
-      "path": "/enterprise",
+      "path": "https://docs.medusajs.com/cloud/enterprise",
       "title": "Overview",
       "children": []
     },

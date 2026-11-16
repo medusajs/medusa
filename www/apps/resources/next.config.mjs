@@ -341,6 +341,16 @@ const nextConfig = {
         destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/comparison`,
         permanent: true,
       },
+      {
+        source: "/deployment/storefront/vercel",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/storefront`,
+        permanent: true,
+      },
+      {
+        source: "/enterprise",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/enterprise`,
+        permanent: true,
+      },
     ])
   },
   outputFileTracingRoot: new URL("../../", import.meta.url).pathname,

@@ -29398,173 +29398,6 @@ The following diagram illustrates Medusa's architecture including all its layers
 ![Complete Medusa architecture overview showing the full technology stack: client applications (storefront and admin) connecting through HTTP layer to workflows, which coordinate with commerce and Infrastructure Modules to manage data operations, third-party integrations, and database persistence](https://res.cloudinary.com/dza7lstvk/image/upload/v1759762329/Medusa%20Book/diagram-full-new_znssjy.jpg)
 
 
-# Agentic Deployment with Cloud CLI
-
-In this guide, you'll learn how the [Cloud CLI](https://docs.medusajs.com/cloud/cli/index.html.md) supports deployment and debugging through AI agents.
-
-## What is the Cloud CLI?
-
-The Cloud CLI is a command-line interface tool that allows you to manage resources in your applications deployed on [Cloud](https://docs.medusajs.com/cloud/index.html.md). You can view logs, manage deployments, and perform various operations to ensure your application runs smoothly.
-
-***
-
-## Using the Cloud CLI with AI Agents
-
-The Cloud CLI is designed to optimize your agentic development. By combining the Cloud CLI with AI agents, you can automate deployment processes and debug issues more efficiently. AI agents can analyze logs, identify potential issues, and even suggest fixes, making it easier for you to maintain your application.
-
-The Cloud CLI optimizes your agentic development workflow by:
-
-- Providing a scriptable interface to manage your Cloud resources.
-- Allowing AI agents to interact with your Cloud environment for tasks like fetching logs, managing deployments, and more.
-- Enabling automation of routine tasks in CI/CD pipelines.
-- Integrating with AI agents to enhance debugging and deployment processes.
-
-***
-
-## Get Started with the Cloud CLI
-
-To get started with the Cloud CLI with AI agents, copy the following prompt to your agent to get started:
-
-```markdown title="Prompt"
-Fetch https://docs.medusajs.com/cloud/cli/agents and set up the Medusa Cloud CLI.
-```
-
-You can also install the instructions in that document as a skill in your agent:
-
-### Claude Code
-
-```bash
-claude # start claude code
-/plugin marketplace add medusajs/medusa-agent-skills
-/plugin install medusa-cloud@medusa
-```
-
-### Other AI Agents
-
-```bash
-npx skills add medusajs/medusa-agent-skills
-# choose the following skill:
-# - using-medusa-cloud
-```
-
-See the [Agentic Deployment with Cloud CLI](https://docs.medusajs.com/cloud/cli/agents/index.html.md) guide for more details.
-
-
-# Medusa MCP: Manage Store with Agents
-
-In this chapter, you'll learn how to connect AI agents like Claude and ChatGPT to your stores deployed on [Cloud](https://docs.medusajs.com/cloud/index.html.md), so you can ask them about your store's commerce data.
-
-## What Can AI Agents Do with Your Store?
-
-Medusa allows AI agents to read data from your Cloud stores, so you can ask questions about your store in natural language. For example:
-
-- "Show me the 5 most recent orders in my store, with each order's total and status."
-- "How many orders are waiting to be fulfilled?"
-- "What products are available to shoppers in my B2B sales channel?"
-
-Your AI agent then retrieves the relevant data from your store and presents it to you in a human-readable format.
-
-The agent's access is read-only. It can retrieve data from your store, but it can't create, update, or delete data.
-
-Store access for AI agents is in beta access. Before you connect AI agents to your store, rebuild the environments that you want to connect, as explained in the [Medusa MCP](https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp#step-1-rebuild-environments/index.html.md) guide.
-
-### How to Connect AI Agents to Your Store
-
-You can connect AI agents to your store in the following ways:
-
-- [Claude Connector](#claude-connector): Add the Claude Connector to Claude.
-- [ChatGPT App](#chatgpt-app): Add the ChatGPT app to ChatGPT.
-- [Medusa MCP Server](#medusa-mcp-server): Connect the Medusa MCP server to any AI agent that supports MCP servers, such as Claude Code, Codex, or Cursor.
-
-***
-
-## Claude Connector
-
-The Claude Connector is Medusa's listing in [Claude's connectors directory](https://claude.ai/directory/medusa). It connects Claude to your stores, so you can ask Claude about your stores in any chat.
-
-You can add the Claude Connector to Claude at any time, but you can only connect to your stores after your organization has access to the Medusa MCP server.
-
-Refer to the [Claude Connector](https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp/claude/index.html.md) guide in the Cloud documentation to learn how to add and use it.
-
-***
-
-## ChatGPT App
-
-The ChatGPT app is under review by OpenAI and isn't available in ChatGPT yet. In the meantime, you can add the Medusa MCP server to ChatGPT as a [custom plugin](https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp/chatgpt#add-medusa-mcp-as-a-custom-plugin-in-chatgpt/index.html.md) in developer mode.
-
-The ChatGPT app connects ChatGPT to your stores, so you can ask ChatGPT about your stores in any chat.
-
-Refer to the [ChatGPT app](https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp/chatgpt/index.html.md) guide in the Cloud documentation to learn more.
-
-***
-
-## Medusa MCP Server
-
-The Medusa MCP server is a remote Model Context Protocol (MCP) server that powers the Claude Connector and the ChatGPT app. You can also connect it to any AI agent that supports MCP servers.
-
-The Medusa MCP server is different from the [Docs MCP server](https://docs.medusajs.com/cloud/ai-toolkit/docs-mcp/index.html.md). The Docs MCP server helps you build with Medusa using the documentation and implementation guides, while the Medusa MCP server reads data from your stores.
-
-The Medusa MCP server is a Streamable HTTP server at `https://cloud.medusajs.com/mcp`. To add it to your AI agent:
-
-### Claude Code
-
-```bash
-claude mcp add --transport http medusa-commerce \
-  https://cloud.medusajs.com/mcp
-```
-
-### Codex
-
-```bash
-codex mcp add medusa-commerce \
-  --url https://cloud.medusajs.com/mcp
-codex mcp login medusa-commerce
-```
-
-### Cursor
-
-```json title=".cursor/mcp.json"
-{
-  "mcpServers": {
-    "medusa-commerce": {
-      "url": "https://cloud.medusajs.com/mcp"
-    }
-  }
-}
-```
-
-### VS Code
-
-```json title=".vscode/mcp.json"
-{
-  "servers": {
-    "medusa-commerce": {
-      "type": "http",
-      "url": "https://cloud.medusajs.com/mcp"
-    }
-  }
-}
-```
-
-### OpenCode
-
-```json title="~/.config/opencode/opencode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "medusa-commerce": {
-      "type": "remote",
-      "url": "https://cloud.medusajs.com/mcp"
-    }
-  }
-}
-```
-
-When you connect, you log in with your Cloud account and choose the environments that the AI agent can access.
-
-Refer to the [Medusa MCP](https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp/index.html.md) guide in the Cloud documentation for setup instructions, the available tools, and troubleshooting steps.
-
-
 # From Medusa v1 to v2: Conceptual Differences
 
 In this chapter, you'll learn about the differences and changes between concepts in Medusa v1 to v2.
@@ -31676,34 +31509,6 @@ To opt out of analytics collection in the Medusa Admin, set the following enviro
 ```bash
 MEDUSA_FF_ANALYTICS=false
 ```
-
-
-# Storefront Development
-
-In this chapter, you'll learn about storefronts and how to build one.
-
-## Storefronts in Medusa
-
-The Medusa application includes a Node.js server and an admin dashboard. Storefronts are separate applications that you install, build, and host independently from Medusa. This gives you the flexibility to choose your preferred frontend tech stack and implement unique designs and user experiences.
-
-In your storefront, you can retrieve data and perform commerce operations by sending requests to the Medusa application's [Store API routes](https://docs.medusajs.com/api/store) and your custom API routes.
-
-You can build your storefront from scratch with your preferred tech stack, or start with our Next.js Starter storefront. The Next.js Starter storefront provides rich commerce features and a modern design. You can use it as-is or customize it to match your business needs, design requirements, and customer experience goals.
-
-- [Install Next.js Starter Storefront](https://docs.medusajs.com/resources/nextjs-starter/index.html.md)
-- [Build Custom Storefront](https://docs.medusajs.com/resources/storefront-development/index.html.md)
-
-***
-
-## Using a Publishable API Key in Storefront Requests
-
-When sending requests to API routes that start with `/store`, you must include a publishable API key in the request header.
-
-A publishable API key sets the scope of your request to one or more sales channels.
-
-When you retrieve products, only products from those sales channels are returned. This also ensures you get correct inventory data and associate created orders with the right sales channel.
-
-Learn more about using the publishable API key in the [Storefront Development guide](https://docs.medusajs.com/resources/storefront-development/publishable-api-keys/index.html.md).
 
 
 # Updating Medusa
@@ -74058,7 +73863,7 @@ const user = await userModuleService.createUsers({
 
 # How to Add Custom Authentication in Medusa Admin
 
-If your organization uses an identity provider that implements OpenID Connect, such as Okta or Microsoft Entra ID, use the [OIDC Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/sso/index.html.md) instead. It handles the authentication, and the Medusa Admin dashboard renders its login button and creates the admin user for you. It's an [enterprise feature](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/index.html.md), so it requires a license key.
+If your organization uses an identity provider that implements OpenID Connect, such as Okta or Microsoft Entra ID, use the [OIDC Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/sso/index.html.md) instead. It handles the authentication, and the Medusa Admin dashboard renders its login button and creates the admin user for you. It's an [enterprise feature](https://docs.medusajs.com/cloud/enterprise/index.html.md), so it requires a license key.
 
 Follow this guide if you integrate a provider that doesn't implement OpenID Connect, or if you want to build and own the integration yourself.
 
@@ -119570,7 +119375,7 @@ If you encounter issues not covered in the troubleshooting guides:
 
 # Authenticate Admin Users with Okta
 
-Medusa has an [OIDC Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/sso/index.html.md) that authenticates users with Okta, and any other identity provider that implements OpenID Connect, without writing a custom provider. The Medusa Admin dashboard also renders its login button for you. It's an [enterprise feature](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/index.html.md), so it requires a license key.
+Medusa has an [OIDC Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/sso/index.html.md) that authenticates users with Okta, and any other identity provider that implements OpenID Connect, without writing a custom provider. The Medusa Admin dashboard also renders its login button for you. It's an [enterprise feature](https://docs.medusajs.com/cloud/enterprise/index.html.md), so it requires a license key.
 
 Follow this tutorial instead if you want to build and own the integration yourself.
 

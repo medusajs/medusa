@@ -7,7 +7,6 @@ export const generatedEditDates = {
   "app/learn/fundamentals/workflows/retry-failed-steps/page.mdx": "2026-10-26T09:28:41.655Z",
   "app/learn/fundamentals/workflows/workflow-hooks/page.mdx": "2026-06-12T06:14:13.449Z",
   "app/learn/debugging-and-testing/logging/page.mdx": "2025-08-28T15:31:57.879Z",
-  "app/learn/storefront-development/page.mdx": "2025-09-16T15:57:42.189Z",
   "app/learn/fundamentals/workflows/workflow-timeout/page.mdx": "2025-04-24T13:15:14.472Z",
   "app/learn/fundamentals/workflows/parallel-steps/page.mdx": "2025-03-24T06:53:36.918Z",
   "app/learn/fundamentals/medusa-container/page.mdx": "2026-08-21T06:05:37.194Z",
@@ -126,7 +125,6 @@ export const generatedEditDates = {
   "app/learn/configurations/pnpm/page.mdx": "2026-06-16T11:01:54.704Z",
   "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-01-20T08:32:57.574Z",
   "app/learn/fundamentals/data-models/indexes/page.mdx": "2025-04-22T11:23:04.671Z",
-  "app/learn/introduction/build-with-llms-ai/cloud-cli/page.mdx": "2026-05-05T11:18:36.186Z",
   "app/learn/fundamentals/admin/custom-injection-zones/page.mdx": "2026-07-28T05:43:48.904Z",
   "app/learn/fundamentals/data-models/big-numbers/page.mdx": "2026-08-21T06:05:37.196Z",
   "app/learn/fundamentals/query/search/page.mdx": "2026-09-25T12:33:45.770Z",
@@ -136,6 +134,5 @@ export const generatedEditDates = {
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-11T10:06:19.798Z",
   "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z",
   "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z",
-  "app/learn/introduction/build-with-llms-ai/manage-store-with-agents/page.mdx": "2026-11-13T13:33:55.512Z",
   "app/learn/resources/contribution-guidelines/code/page.mdx": "2026-11-16T08:09:02.031Z"
 }

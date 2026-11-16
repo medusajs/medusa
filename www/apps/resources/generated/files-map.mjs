@@ -1088,14 +1088,6 @@ export const filesMap = [
     "pathname": "/deployment"
   },
   {
-    "filePath": "/www/apps/resources/app/deployment/storefront/vercel/page.mdx",
-    "pathname": "/deployment/storefront/vercel"
-  },
-  {
-    "filePath": "/www/apps/resources/app/enterprise/page.mdx",
-    "pathname": "/enterprise"
-  },
-  {
     "filePath": "/www/apps/resources/app/enterprise/rbac/admin-customizations/page.mdx",
     "pathname": "/enterprise/rbac/admin-customizations"
   },

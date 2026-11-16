@@ -10,7 +10,6 @@ export const generatedEditDates = {
   "app/s3/page.mdx": "2026-11-09T13:14:17.502Z",
   "app/logs/page.mdx": "2026-09-22T15:58:02.008Z",
   "app/update-medusa/page.mdx": "2026-11-13T06:19:01.242Z",
-  "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",
   "app/environments/environment-variables/page.mdx": "2026-08-24T08:30:03.756Z",
   "app/environments/long-lived/page.mdx": "2026-11-13T13:33:45.567Z",
   "app/environments/preview/page.mdx": "2026-10-29T09:05:57.764Z",
@@ -29,7 +28,7 @@ export const generatedEditDates = {
   "app/user/page.mdx": "2026-06-08T13:04:35.724Z",
   "app/deployments/access/page.mdx": "2026-10-05T11:18:39.432Z",
   "app/projects/prerequisites/page.mdx": "2026-10-29T10:28:19.290Z",
-  "app/storefront/page.mdx": "2026-11-09T16:03:03.195Z",
+  "app/storefront/page.mdx": "2026-11-16T12:24:58.336Z",
   "app/projects/rename-repo-branch/page.mdx": "2026-03-18T09:23:58.584Z",
   "app/environments/custom-domains/page.mdx": "2026-10-28T16:14:23.597Z",
   "app/command-palette/page.mdx": "2026-04-10T10:20:57.642Z",
@@ -104,5 +103,7 @@ export const generatedEditDates = {
   "app/development-resources/page.mdx": "2026-11-16T09:12:13.718Z",
   "app/setup-locally/docker/page.mdx": "2026-11-16T09:01:14.667Z",
   "app/setup-locally/page.mdx": "2026-11-16T08:58:07.674Z",
-  "app/integrations/page.mdx": "2026-11-16T09:12:13.717Z"
+  "app/integrations/page.mdx": "2026-11-16T09:12:13.717Z",
+  "app/admin/page.mdx": "2026-11-16T12:22:19.079Z",
+  "app/enterprise/page.mdx": "2026-11-16T13:26:56.908Z"
 }

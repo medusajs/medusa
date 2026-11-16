@@ -264,6 +264,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "path": "/command-palette",
+            "title": "Command Palette",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Organizations",
             "path": "/organizations",
             "children": [
@@ -416,12 +423,8 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "#",
+            "path": "/admin",
             "title": "Admin",
-            "badge": {
-              "variant": "blue",
-              "text": "Soon"
-            },
             "children": []
           },
           {
@@ -457,6 +460,13 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Cache",
             "path": "/cache",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/changelog",
             "children": []
           }
         ]
@@ -581,6 +591,13 @@ export const generatedSidebars = [
         "title": "Enterprise",
         "initialOpen": true,
         "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/enterprise",
+            "title": "Overview",
+            "children": []
+          },
           {
             "loaded": true,
             "type": "external",

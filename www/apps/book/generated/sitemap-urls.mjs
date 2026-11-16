@@ -127,8 +127,6 @@ export const sitemapUrls = [
   "/learn/fundamentals/workflows/workflow-hooks",
   "/learn/fundamentals/workflows/workflow-timeout",
   "/learn/introduction/architecture",
-  "/learn/introduction/build-with-llms-ai/cloud-cli",
-  "/learn/introduction/build-with-llms-ai/manage-store-with-agents",
   "/learn/introduction/from-v1-to-v2",
   "/learn",
   "/learn/production/worker-mode",
@@ -136,7 +134,6 @@ export const sitemapUrls = [
   "/learn/resources/contribution-guidelines/code",
   "/learn/resources/contribution-guidelines/docs",
   "/learn/resources/usage",
-  "/learn/storefront-development",
   "/learn/update",
   "/start"
 ]

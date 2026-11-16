@@ -276,8 +276,6 @@
 - [upsertWithReplace Method - Data Model Repository Reference](http://localhost:3000/resources/data-model-repository-reference/methods/upsertWithReplace)
 - [Filter Records - Data Model Repository Reference](http://localhost:3000/resources/data-model-repository-reference/tips/filtering)
 - [Deployments](http://localhost:3000/resources/deployment)
-- [Deploy Next.js Starter Storefront to Vercel](http://localhost:3000/resources/deployment/storefront/vercel)
-- [Enterprise Features](http://localhost:3000/resources/enterprise)
 - [RBAC Module](http://localhost:3000/resources/enterprise/rbac)
 - [Check Permissions in Admin Customizations](http://localhost:3000/resources/enterprise/rbac/admin-customizations)
 - [How to Use RBAC API Routes](http://localhost:3000/resources/enterprise/rbac/api-routes)

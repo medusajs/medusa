@@ -185,6 +185,11 @@ const nextConfig = {
       permanent: true,
     },
     {
+      source: "/connect-storefront",
+      destination: "/storefront",
+      permanent: true,
+    },
+    {
       source: "/cloud/draft-order-plugin",
       destination: "/resources/commerce-modules/order/draft-orders",
       basePath: false,

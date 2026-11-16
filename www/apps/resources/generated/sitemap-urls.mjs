@@ -271,8 +271,6 @@ export const sitemapUrls = [
   "/data-model-repository-reference",
   "/data-model-repository-reference/tips/filtering",
   "/deployment",
-  "/deployment/storefront/vercel",
-  "/enterprise",
   "/enterprise/rbac/admin-customizations",
   "/enterprise/rbac/api-routes",
   "/enterprise/rbac/concepts",
