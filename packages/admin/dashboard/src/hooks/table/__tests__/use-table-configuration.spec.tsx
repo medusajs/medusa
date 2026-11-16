@@ -59,7 +59,11 @@ const savedView = {
   },
 }
 
-const renderOnUrl = (url: string, defaultFilters?: Record<string, any>) => {
+const renderOnUrl = (
+  url: string,
+  defaultFilters?: Record<string, any>,
+  reactStrictMode = false
+) => {
   const wrapper = ({ children }: { children: ReactNode }) => (
     <MemoryRouter initialEntries={[url]}>{children}</MemoryRouter>
   )
@@ -73,7 +77,7 @@ const renderOnUrl = (url: string, defaultFilters?: Record<string, any>) => {
       })
       return new URLSearchParams(useLocation().search)
     },
-    { wrapper }
+    { wrapper, reactStrictMode }
   )
 }
 
@@ -107,6 +111,30 @@ describe("useTableConfiguration", () => {
     expect(result.current.get("p_order")).toBe("-created_at")
     expect(result.current.get("p_q")).toBe("shirt")
     expect(result.current.get("p_status")).toBe('["draft"]')
+  })
+
+  it("should keep the URL state when returning to the list in strict mode", async () => {
+    mocks.activeView = { ...savedView, isLoading: false }
+
+    const { result } = renderOnUrl(returningUrl, undefined, true)
+
+    await new Promise((resolve) => setTimeout(resolve, 20))
+
+    expect(result.current.get("p_offset")).toBe("40")
+    expect(result.current.get("p_order")).toBe("-created_at")
+    expect(result.current.get("p_q")).toBe("shirt")
+    expect(result.current.get("p_status")).toBe('["draft"]')
+  })
+
+  it("should apply the saved view on a fresh visit in strict mode", async () => {
+    mocks.activeView = { ...savedView, isLoading: false }
+
+    const { result } = renderOnUrl("/products", undefined, true)
+
+    await waitFor(() => {
+      expect(result.current.get("p_status")).toBe('["published"]')
+    })
+    expect(result.current.get("p_order")).toBe("title")
   })
 
   it("should keep the URL state when the active view loads after the columns", async () => {

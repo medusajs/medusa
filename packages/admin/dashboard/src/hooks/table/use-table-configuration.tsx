@@ -172,11 +172,21 @@ export function useTableConfiguration({
         .join(",")
     : ""
 
+  const syncedSignatureRef = useRef<string | null>(null)
+
   // Sync view configuration with URL and column state
   useEffect(() => {
     if (!columnsToRender || isActiveViewLoading) {
       return
     }
+    // StrictMode re-runs this effect on mount; without this check the re-run
+    // would wipe the URL state kept on the first run.
+    const syncSignature = `${activeViewSignature}|${columnsSignature}`
+    if (syncedSignatureRef.current === syncSignature) {
+      return
+    }
+    syncedSignatureRef.current = syncSignature
+
     originalHandleViewChange(currentActiveView, columnsToRender)
     if (keepUrlStateOnMountRef.current) {
       keepUrlStateOnMountRef.current = false
