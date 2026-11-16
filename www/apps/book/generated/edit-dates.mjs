@@ -2,7 +2,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/scheduled-jobs/page.mdx": "2026-06-24T17:14:15.092Z",
   "app/learn/fundamentals/workflows/page.mdx": "2024-12-09T14:45:17.837Z",
   "app/learn/deployment/page.mdx": "2026-01-08T09:18:35.778Z",
-  "app/learn/page.mdx": "2026-11-16T09:12:13.724Z",
+  "app/learn/page.mdx": "2026-11-16T15:05:58.122Z",
   "app/learn/fundamentals/modules/commerce-modules/page.mdx": "2025-04-17T08:51:32.723Z",
   "app/learn/fundamentals/workflows/retry-failed-steps/page.mdx": "2026-10-26T09:28:41.655Z",
   "app/learn/fundamentals/workflows/workflow-hooks/page.mdx": "2026-06-12T06:14:13.449Z",
@@ -64,7 +64,7 @@ export const generatedEditDates = {
   "app/learn/customization/custom-features/module/page.mdx": "2025-12-22T13:56:57.561Z",
   "app/learn/customization/custom-features/workflow/page.mdx": "2024-12-09T14:36:29.482Z",
   "app/learn/customization/extend-features/extend-create-product/page.mdx": "2025-12-22T13:05:12.452Z",
-  "app/learn/customization/custom-features/page.mdx": "2026-01-26T07:07:52.966Z",
+  "app/learn/customization/custom-features/page.mdx": "2026-11-16T14:30:47.005Z",
   "app/learn/customization/customize-admin/page.mdx": "2025-07-21T08:19:07.699Z",
   "app/learn/customization/customize-admin/route/page.mdx": "2026-08-21T06:05:37.198Z",
   "app/learn/customization/customize-admin/widget/page.mdx": "2026-07-28T05:43:32.465Z",
@@ -102,7 +102,6 @@ export const generatedEditDates = {
   "app/learn/production/worker-mode/page.mdx": "2025-10-13T10:33:27.403Z",
   "app/learn/fundamentals/module-links/read-only/page.mdx": "2026-08-21T06:06:02.827Z",
   "app/learn/fundamentals/data-models/properties/page.mdx": "2026-11-06T12:14:46.893Z",
-  "app/learn/fundamentals/framework/page.mdx": "2026-11-16T09:12:13.724Z",
   "app/learn/fundamentals/api-routes/retrieve-custom-links/page.mdx": "2026-09-03T14:04:01.809Z",
   "app/learn/fundamentals/workflows/errors/page.mdx": "2025-04-25T14:26:25.000Z",
   "app/learn/fundamentals/api-routes/override/page.mdx": "2025-12-22T12:56:06.558Z",
@@ -134,5 +133,6 @@ export const generatedEditDates = {
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-11T10:06:19.798Z",
   "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z",
   "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z",
-  "app/learn/resources/contribution-guidelines/code/page.mdx": "2026-11-16T08:09:02.031Z"
+  "app/learn/resources/contribution-guidelines/code/page.mdx": "2026-11-16T08:09:02.031Z",
+  "app/learn/fundamentals/framework/page.mdx": "2026-11-16T14:59:04.132Z"
 }

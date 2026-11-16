@@ -1,7 +1,7 @@
 export const generatedSidebars = [
   {
     "sidebar_id": "framework",
-    "title": "Framework",
+    "title": "Customize Medusa",
     "items": [
       {
         "loaded": true,

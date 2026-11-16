@@ -64,7 +64,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "AI Toolkit",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -222,7 +221,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Building Features",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -259,7 +257,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Management",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -418,7 +415,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Resources",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -475,7 +471,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Emails",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -589,7 +584,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Enterprise",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -618,7 +612,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Webhooks",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -654,7 +647,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Billing",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -690,7 +682,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Monitoring",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
@@ -763,7 +754,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Networking",
-        "initialOpen": true,
         "children": [
           {
             "loaded": true,
