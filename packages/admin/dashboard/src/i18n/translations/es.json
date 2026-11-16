@@ -2612,6 +2612,7 @@
       "fulfillment_set": "Conjuntos de cumplimiento",
       "service_zone": "Zonas de servicio",
       "file": "Archivos",
+      "audit_log": "Registros de auditoría",
       "notification": "Notificaciones",
       "workflow_execution": "Ejecuciones de flujo de trabajo",
       "store_locale": "Configuraciones regionales de tienda",

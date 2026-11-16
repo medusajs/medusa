@@ -4084,6 +4084,7 @@
       "fulfillment_set": "Seturi de livrare",
       "service_zone": "Zone de servicii",
       "file": "Fișiere",
+      "audit_log": "Jurnale de audit",
       "notification": "Notificări",
       "workflow_execution": "Execuții de flux de lucru",
       "store_locale": "Locale ale magazinului",

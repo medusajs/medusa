@@ -4008,6 +4008,7 @@
       "fulfillment_set": "Leveransuppsättningar",
       "service_zone": "Servicezoner",
       "file": "Filer",
+      "audit_log": "Granskningsloggar",
       "notification": "Aviseringar",
       "workflow_execution": "Arbetsflödeskörningar",
       "store_locale": "Butikslokaler",

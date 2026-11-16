@@ -4030,6 +4030,7 @@
       "fulfillment_set": "Fulfillment-Sets",
       "service_zone": "Servicezonen",
       "file": "Dateien",
+      "audit_log": "Audit-Protokolle",
       "notification": "Benachrichtigungen",
       "workflow_execution": "Workflow-Ausführungen",
       "store_locale": "Shop-Sprachregionen",

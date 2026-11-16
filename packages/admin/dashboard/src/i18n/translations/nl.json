@@ -4028,6 +4028,7 @@
       "fulfillment_set": "Fulfillmentsets",
       "service_zone": "Servicezones",
       "file": "Bestanden",
+      "audit_log": "Auditlogboeken",
       "notification": "Meldingen",
       "workflow_execution": "Workflow-uitvoeringen",
       "store_locale": "Winkellocales",
