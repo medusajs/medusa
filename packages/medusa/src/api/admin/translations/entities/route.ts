@@ -23,6 +23,7 @@ export const GET = async (
       fields: ["*"],
       filters: {
         entity_type: type,
+        is_active: true,
       },
     },
     {
@@ -30,7 +31,11 @@ export const GET = async (
     }
   )
 
-  const translatableFields = translationSettings?.fields ?? []
+  if (!translationSettings) {
+    return res.json({ data: [], count: 0, offset: 0, limit: 0 })
+  }
+
+  const translatableFields = translationSettings.fields ?? []
 
   const filters: Record<string, unknown> = {}
   if (id) {
