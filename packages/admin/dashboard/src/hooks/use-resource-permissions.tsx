@@ -298,6 +298,13 @@ export const useSearchIndexPermissions = () =>
   useResourcePermissions("search_index")
 
 /**
+ * Hook for checking search index sync-specific permissions. Reindexing creates
+ * a sync.
+ */
+export const useSearchIndexSyncPermissions = () =>
+  useResourcePermissions("search_index_sync")
+
+/**
  * Hook for checking permissions on system default view configurations. A
  * user's own views need no permission.
  */

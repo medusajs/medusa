@@ -114,6 +114,7 @@ export const PERMISSION_GROUPS: { id: string; resources: string[] }[] = [
       "notification",
       "workflow_execution",
       "search_index",
+      "search_index_sync",
       "index_engine",
       "view_configuration",
       "layout_configuration",

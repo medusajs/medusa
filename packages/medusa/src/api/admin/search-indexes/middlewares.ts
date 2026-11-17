@@ -30,8 +30,8 @@ export const adminSearchIndexRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       authenticate("user", ["session", "bearer", "api-key"]),
       authorize({
-        resource: "search_index",
-        operation: PolicyOperation.update,
+        resource: "search_index_sync",
+        operation: PolicyOperation.create,
       }),
       validateAndTransformBody(AdminReindexSearchIndex),
     ],
