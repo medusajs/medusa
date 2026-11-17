@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Local Notification Module Provider`,
@@ -8,9 +8,26 @@ export const metadata = {
 
 The Local Notification Module Provider simulates sending a notification, but only logs the notification's details in the terminal. This is useful for development.
 
+On Cloud, Medusa configures [Medusa Emails](!cloud!/emails), a managed email service, for the `email` channel by default, which is more suitable for production.
+
+<Note title="Development Only">
+
+Use the Local Notification Module Provider for the `email` channel only in local development, as explained in the [Medusa Emails](!cloud!/emails#local-development-email-setup) Cloud guide.
+
+</Note>
+
 ---
 
 ## Register the Local Notification Module
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
+  ]}
+/>
 
 <Note>
 

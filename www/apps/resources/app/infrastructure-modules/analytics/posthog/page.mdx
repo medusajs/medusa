@@ -25,6 +25,10 @@ The Analytics Module and its providers are available starting [Medusa v2.8.3](ht
 <Prerequisites
   items={[
     {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
+    {
       text: "PostHog account",
       link: "https://app.posthog.com/signup",
     },
@@ -35,7 +39,7 @@ The Analytics Module and its providers are available starting [Medusa v2.8.3](ht
   ]}
 />
 
-Add the module into the `provider` object of the Analytics Module:
+Add the module into the `provider` object of the Analytics Module in `medusa-config.ts`:
 
 <Note>
 
@@ -68,12 +72,21 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variables:
+Set the `POSTHOG_EVENTS_API_KEY` and `POSTHOG_HOST` environment variables:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud). Mark `POSTHOG_EVENTS_API_KEY` as **Sensitive**, and enable the **Build** toggle for both variables, since `medusa-config.ts` reads them during the build.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 POSTHOG_EVENTS_API_KEY=<YOUR_POSTHOG_EVENTS_API_KEY>
 POSTHOG_HOST=<YOUR_POSTHOG_HOST>
 ```
+
+### Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that uses the PostHog Analytics Module Provider.
+
+Add the environment variables in Cloud before you push, so the deployment uses them.
 
 ### PostHog Analytics Module Options
 
@@ -221,7 +234,23 @@ export const config: SubscriberConfig = {
 
 This subscriber listens to the `order.placed` event and executes the `trackOrderPlacedWorkflow` workflow, passing the order ID as input.
 
-You'll now track the order placement event whenever an order is placed in your Medusa application. You can test this out by placing an order and checking your PostHog dashboard for the tracked event.
+You'll now track the order placement event whenever an order is placed in your Medusa application.
+
+### Test Locally
+
+Start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, place an order and check your PostHog dashboard for the tracked event.
+
+### Test on Cloud
+
+To test the module in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) with your changes.
+
+Once the deployment finishes, place an order in the environment's storefront, then check your PostHog dashboard for the tracked event.
 
 ---
 
