@@ -35,7 +35,7 @@ export const CodeBlockAskAiAction = ({
 
   return (
     <Tooltip
-      text="Ask Bloom"
+      text="Ask Docs Assistant"
       tooltipClassName="font-base"
       className={clsx("group")}
       innerClassName={clsx(
