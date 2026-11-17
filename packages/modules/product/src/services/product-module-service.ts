@@ -1858,7 +1858,10 @@ export default class ProductModuleService
     const pairs = Array.isArray(data) ? data : [data]
     const productOptionsProducts = await this.productProductOptionService_.list(
       {
-        $or: pairs,
+        $or: pairs.map(({ product_id, product_option_id }) => ({
+          product_id,
+          product_option_id,
+        })),
       },
       {},
       sharedContext
