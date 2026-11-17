@@ -16789,9 +16789,9 @@ In this chapter, you'll learn about the Medusa Framework and how it facilitates 
 
 ## What is the Medusa Framework?
 
-All commerce application require some degree of customization. So, it's important to choose a platform that facilitates building those customizations.
+All commerce applications require some degree of customization. So, it's important to choose a platform that facilitates building those customizations.
 
-When you build customizations with other ecommerce platforms, they require you to pull data through HTTP APIs, run custom logic that span across systems in a separate application, and manually ensure data consistency across systems. This adds significant overhead and slows down development as you spend time managing complex distributed systems.
+When you build customizations with other ecommerce platforms, they require you to pull data through HTTP APIs, run custom logic that spans across systems in a separate application, and manually ensure data consistency across systems. This adds significant overhead and slows down development as you spend time managing complex distributed systems.
 
 The Medusa Framework eliminates this overhead by providing powerful low-level APIs and tools that let you build any type of customization directly within your Medusa project. You can build custom features, orchestrate operations and query data seamlessly across systems, extend core functionality, and automate tasks in your Medusa application.
 
@@ -16940,7 +16940,7 @@ export const POST = async (
 ) => {
   const { result } = await createPostWorkflow(req.scope)
     .run({
-      input: result.validatedBody,
+      input: req.validatedBody,
     })
 
   return res.json(result)
@@ -17217,7 +17217,7 @@ export const config = {
 
 ```ts
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
-import { sendOrderConfirmationWorkflow } from "../workflows/send-order-confirmation"
+import { syncFromErpWorkflow } from "../workflows/sync-from-erp"
 
 export default async function productsCreatedHandler({
   event: { data },
@@ -30784,77 +30784,41 @@ Medusa also provides [Cloud](https://medusajs.com/cloud/), a managed services of
 Refer to the [Deployment](https://docs.medusajs.com/resources/deployment/index.html.md) documentation to learn about the deployment process for Medusa applications and Next.js Starter Storefront.
 
 
-# Introduction
+# Introduction to Medusa Customizations
 
-Learn what Medusa is, who it's for, and how this documentation is organized.
+This section of the documentation introduces Medusa's open-source core and its Framework in a series of chapters. By the end of the chapters, you will have a solid understanding of how to build and customize commerce features using Medusa.
 
-## Get Started with AI Agents
+Learn how to [sign up](https://docs.medusajs.com/cloud/sign-up/index.html.md) and [create your first project](https://docs.medusajs.com/cloud/first-project/index.html.md).
 
-If you're an AI agent, or a human who wants to get started quickly with an AI agent, run the following prompt in your agent:
+## What is the Medusa Core?
 
-```bash title="Prompt"
-Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
-```
+Medusa's open-source core is an AI-native commerce platform with a Framework to build custom commerce features.
 
-The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features.
-
-***
-
-## What is Medusa
-
-Medusa is an AI-native commerce platform with a Framework to build custom commerce features.
-
-Medusa ships with three main tools:
+The Medusa core ships with three main tools:
 
 1. A suite of [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules/index.html.md) with core commerce functionalities, such as tracking inventory, calculating cart totals, accepting payments, managing orders, and much more.
 2. A [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) for building agentic flows and custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
-3. A customizable admin dashboard for merchants to configure and operate their store.
+3. A customizable [admin dashboard](https://docs.medusajs.com/learn/fundamentals/admin/index.html.md) for merchants to configure and operate their store.
 
-When you install Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. And unlike other platforms, Medusa doesn't require hacky workarounds that are difficult to maintain and scale.
+When you set up Medusa, you get a fully fledged commerce platform with all the features you need to get off the ground. And unlike other platforms, Medusa doesn't require hacky workarounds that are difficult to maintain and scale.
 
-Medusa is built with customization in mind. Build features that bring your business's vision to life, with native support for AI agents to automate your operations and customer interactions.
-
-***
-
-## Who should use Medusa
-
-Medusa is for businesses and teams looking for a cutting-edge commerce platform for their unique requirements, visions, and automated workflows, which other platforms aren't built to support.
-
-Businesses of all sizes can use Medusa, from small startups building with agentic flows to large enterprises building complex commerce features. Medusa is also for developers who want to build with the latest technologies and tools, and have the freedom to implement unique features without being limited by the platform's architecture.
-
-Here are some stories from companies that use Medusa:
-
-- [Use Case: Advanced Fulfillment](https://medusajs.com/blog/eight-sleep/): How Eight Sleep built their fulfillment setup with Medusa
-- [Use Case: D2C](https://medusajs.com/blog/matt-sleeps/): How Matt Sleeps built a unique D2C experience with Medusa
-- [Use Case: Marketplace](https://medusajs.com/blog/foraged/): How Foraged built a custom marketplace with Medusa
-- [Use Case: Distributor Platform](https://medusajs.com/blog/redington): How Redington built a B2B distributor platform with Medusa
-- [Use Case: Quick to Market](https://medusajs.com/blog/partbase): How Partbase built their distributor platform with Medusa
-- [Use Case: Complex Products & Pricing](https://medusajs.com/blog/eki/): How EKI built a B2B platform with complex products and pricing
+Since Medusa is open source, you can read the source code of any Commerce Module or Framework tool, [contribute fixes and features](https://docs.medusajs.com/learn/resources/contribution-guidelines/code/index.html.md), and run your Medusa application on any infrastructure. The recommended way to run it is on [Cloud](https://docs.medusajs.com/cloud/index.html.md), which deploys your Medusa application and manages its infrastructure.
 
 ***
 
-## How to learn Medusa
+## Who is This Documentation For?
 
-This documentation introduces you to Medusa's concepts and how they help you build your business use case. The documentation is structured to gradually introduce Medusa's concepts, with easy-to-follow examples along the way.
+The chapters in this documentation are for developers who build, customize, and maintain Medusa applications. They assume you're familiar with JavaScript or TypeScript and Node.js.
 
-You can also jump right into building your store with the help of our [agentic skills, MCP server, and other AI-friendly tools](https://docs.medusajs.com/cloud/ai-toolkit/index.html.md).
+AI agents can build your customizations with the Framework. Learn how to give your agent Medusa's skills and docs in the [AI Toolkit](https://docs.medusajs.com/cloud/ai-toolkit/index.html.md).
 
-### How to use the documentation
+Depending on what you're working on, start with the chapters that fit your needs:
 
-This documentation is split into the following sections:
-
-|Section|Description|
-|---|---|
-|[Main Documentation](https://docs.medusajs.com/learn/index.html.md)|The documentation you're currently reading. Follow the chapters in this documentation to understand Medusa's core concepts and how to use them before you jump into the other sections.|
-|[Cloud](https://docs.medusajs.com/cloud/index.html.md)|Learn about Cloud, our managed services offering for Medusa applications. Find guides on how to deploy your Medusa application, manage organizations, and more.|
-|Product|Documentation for the [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md), [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules/index.html.md), and [Infrastructure Modules](https://docs.medusajs.com/resources/infrastructure-modules/index.html.md). These sections include concepts, guides, and references for each of those products.|
-|Build|[Recipes](https://docs.medusajs.com/resources/recipes/index.html.md), [How-To & Tutorials](https://docs.medusajs.com/resources/how-to-tutorials/index.html.md), [Integrations](https://docs.medusajs.com/cloud/integrations/index.html.md), and [Storefront Development](https://docs.medusajs.com/resources/storefront-development/index.html.md) guides. You can follow these guides after you've learned Medusa's core concepts.|
-|[Tools](https://docs.medusajs.com/resources/tools/index.html.md)|Guides on how to set up and use Medusa's CLI tools, [JS SDK](https://docs.medusajs.com/resources/js-sdk/index.html.md), [Next.js Starter](https://docs.medusajs.com/resources/nextjs-starter/index.html.md), and [Medusa UI](https://docs.medusajs.com/ui/index.html.md)|
-|API Routes References|References of the [Store](https://docs.medusajs.com/api/store) and [Admin](https://docs.medusajs.com/api/admin) API routes in Medusa. They also include instructions related to authentication, parameter types in requests, and more.|
-|[References](https://docs.medusajs.com/resources/references-overview/index.html.md)|Useful during your development with Medusa to learn about different APIs and how to use them. These include the [Events Reference](https://docs.medusajs.com/resources/references/events/index.html.md), [Core Workflows Reference](https://docs.medusajs.com/resources/medusa-workflows-reference/index.html.md), and more.|
-|[User Guide](https://docs.medusajs.com/user-guide/index.html.md)|Guides that introduce merchants and store managers to the Medusa Admin dashboard and help them understand how to use the dashboard to manage their store.|
-
-To get started, check out the [Set Up Medusa Locally guide](https://docs.medusajs.com/cloud/setup-locally/index.html.md).
+- **New to Medusa:** Follow the Getting Started and [Customization Tutorial](https://docs.medusajs.com/learn/customization/custom-features/index.html.md) chapters to learn Medusa's architecture and build your first customizations.
+- **Building custom features:** The [Basics](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) chapter explains the Framework's concepts, such as modules, workflows, and API routes, in depth.
+- **Customizing the Medusa Admin:** The [Admin Development](https://docs.medusajs.com/learn/fundamentals/admin/index.html.md) chapter shows you how to add widgets and UI routes to the admin dashboard.
+- **Configuring and maintaining your application:** The [Configurations](https://docs.medusajs.com/learn/configurations/medusa-config/index.html.md), [Debugging & Testing](https://docs.medusajs.com/learn/debugging-and-testing/testing-tools/index.html.md), and [Best Practices](https://docs.medusajs.com/learn/best-practices/third-party-sync/index.html.md) chapters help you configure, test, and debug your Medusa application.
+- **Production and upgrading:** The [Production](https://docs.medusajs.com/learn/build/index.html.md) and [Upgrade](https://docs.medusajs.com/learn/update/index.html.md) chapters cover building your application for production and updating Medusa.
 
 
 # Worker Mode of Medusa Instance
