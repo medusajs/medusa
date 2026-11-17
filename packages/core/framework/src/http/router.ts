@@ -128,6 +128,7 @@ export class ApiLoader {
       additionalDataValidatorRoutes:
         middlewareLoader.getAdditionalDataValidatorRoutes(),
       auditConfigRoutes: middlewareLoader.getAuditConfigRoutes(),
+      auditNamespaces: middlewareLoader.getAuditNamespaces(),
     }
   }
 
@@ -487,7 +488,8 @@ export class ApiLoader {
    */
   #applyAuditMiddleware(
     routesFinder: RoutesFinder<RouteDescriptor>,
-    auditConfigRoutes: AuditConfigRoute[]
+    auditConfigRoutes: AuditConfigRoute[],
+    auditNamespaces: string[]
   ) {
     if (!MedusaModule.isInstalled(Modules.AUDIT)) {
       return
@@ -498,6 +500,7 @@ export class ApiLoader {
     let auditService: IAuditModuleService | undefined
     const auditMiddleware = createAuditMiddleware({
       routesFinder,
+      auditNamespaces,
       auditRoutesFinder: auditConfigRoutes.length
         ? new RoutesFinder<AuditConfigRoute>(
             new RoutesSorter(auditConfigRoutes).sort([
@@ -540,9 +543,10 @@ export class ApiLoader {
       bodyParserConfigRoutes,
       additionalDataValidatorRoutes,
       auditConfigRoutes,
+      auditNamespaces,
     } = await this.#loadHttpResources()
 
-    this.#applyAuditMiddleware(routesFinder, auditConfigRoutes)
+    this.#applyAuditMiddleware(routesFinder, auditConfigRoutes, auditNamespaces)
 
     this.#assignRestrictedFields(
       this.#baseRestrictedFields,

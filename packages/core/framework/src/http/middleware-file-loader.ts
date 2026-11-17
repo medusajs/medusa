@@ -54,6 +54,11 @@ export class MiddlewareFileLoader {
   #auditConfigRoutes: AuditConfigRoute[] = []
 
   /**
+   * Path prefixes that audit logs leave out when naming a route's resource
+   */
+  #auditNamespaces: string[] = []
+
+  /**
    * Processes the middleware file and returns the middleware and the
    * routes config exported by it.
    */
@@ -193,6 +198,21 @@ export class MiddlewareFileLoader {
     this.#auditConfigRoutes = this.#auditConfigRoutes.concat(
       result.auditConfigRoutes
     )
+
+    const auditNamespaces = (
+      middlewareConfig.audit as MiddlewaresConfig["audit"]
+    )?.namespaces
+    if (auditNamespaces !== undefined) {
+      if (
+        !Array.isArray(auditNamespaces) ||
+        auditNamespaces.some((namespace) => typeof namespace !== "string")
+      ) {
+        throw new Error(
+          `Invalid audit namespaces in ${absolutePath}. "audit.namespaces" must be an array of paths, such as ["/v1"].`
+        )
+      }
+      this.#auditNamespaces = this.#auditNamespaces.concat(auditNamespaces)
+    }
   }
 
   /**
@@ -249,5 +269,13 @@ export class MiddlewareFileLoader {
    */
   getAuditConfigRoutes() {
     return mergeAuditConfigRoutes(this.#auditConfigRoutes)
+  }
+
+  /**
+   * Returns the path prefixes declared by every middleware file in
+   * `audit.namespaces`
+   */
+  getAuditNamespaces() {
+    return [...new Set(this.#auditNamespaces)]
   }
 }

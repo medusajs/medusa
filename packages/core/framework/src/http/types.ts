@@ -172,9 +172,24 @@ export type MiddlewareRoute = {
   middlewares?: MiddlewareFunction[]
 }
 
+/**
+ * Audit settings that apply to every route.
+ */
+export type AuditMiddlewaresConfig = {
+  /**
+   * Path prefixes that name an API rather than a resource, such as `/v1` or
+   * `/v1/admin`. Audit logs name the resource of a route from the segments
+   * after the longest prefix it starts with, so `/v1/admin/credits` is
+   * `credit.create`. A route that starts with none of them is named after the
+   * segments after its first one, as with `/admin/products`.
+   */
+  namespaces?: string[]
+}
+
 export type MiddlewaresConfig = {
   errorHandler?: false | MedusaErrorHandlerFunction
   routes?: MiddlewareRoute[]
+  audit?: AuditMiddlewaresConfig
 }
 
 /**
