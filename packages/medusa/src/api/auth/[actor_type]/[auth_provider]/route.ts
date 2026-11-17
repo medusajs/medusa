@@ -1,8 +1,4 @@
-import {
-  AuthenticatedMedusaRequest,
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/framework/http"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import {
   AuthenticationInput,
   ConfigModule,
@@ -49,17 +45,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     (!requiresActorAssociation ||
       !!authIdentity.app_metadata?.[`${actor_type}_id`])
   ) {
-    // This route has no authentication middleware, so the audit log reads who
-    // logged in from here.
-    ;(req as AuthenticatedMedusaRequest).auth_context = {
-      actor_id:
-        (authIdentity.app_metadata?.[`${actor_type}_id`] as string) ?? "",
-      actor_type,
-      auth_identity_id: authIdentity.id,
-      app_metadata: {},
-      user_metadata: {},
-    }
-
     const result = await generateJwtTokenWithChecks(req.scope, {
       authIdentity,
       mfaChallenge,
