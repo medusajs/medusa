@@ -100,7 +100,7 @@ jobs:
           echo "tag=$PREVIOUS_TAG" >> "$GITHUB_OUTPUT"
           echo "Previous release tag: $PREVIOUS_TAG"
 
-      # Draft notes carry a `release-notes-sha` marker with the commit they were
+      # Release notes carry a `release-notes-sha` marker with the commit they were
       # written up to, so a later run only feeds Claude the commits merged since.
       - name: Find existing release notes
         id: existing
@@ -487,9 +487,7 @@ jobs:
           fi
           echo "Release title: $RELEASE_TITLE"
 
-          if [ "$DRAFT" = "true" ]; then
-            printf '\n<!-- release-notes-sha: %s -->\n' "$NOTES_SHA" >> /tmp/release-notes.md
-          fi
+          printf '\n<!-- release-notes-sha: %s -->\n' "$NOTES_SHA" >> /tmp/release-notes.md
 
           PAYLOAD=$(jq -n \
             --arg tag "$TAG" \
@@ -524,6 +522,7 @@ jobs:
       # medusa-mcp writes the version's upgrade prompt from these notes. A failed
       # dispatch only warns, since the release itself is already saved.
       - name: Dispatch medusa-release-drafted to medusa-mcp
+        id: dispatch
         if: steps.mcp-token.outputs.token != ''
         continue-on-error: true
         env:
@@ -545,3 +544,12 @@ jobs:
             | gh api "repos/$TARGET_REPO/dispatches" --method POST --input -
 
           echo "Dispatched medusa-release-drafted (v$VERSION, release $RELEASE_ID) to $TARGET_REPO"
+
+      # A re-run with no new commits skips the dispatch, so a failed one is retried by hand.
+      - name: Warn about failed medusa-mcp dispatch
+        if: steps.mcp-token.outcome == 'failure' || steps.dispatch.outcome == 'failure'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          RELEASE_ID: ${{ steps.release.outputs.id }}
+        run: |
+          echo "::warning::Couldn't dispatch medusa-release-drafted to medusa-mcp. Retry with: gh workflow run write-upgrade-prompt.yml --repo ${{ github.repository_owner }}/medusa-mcp -f version=$VERSION -f release_id=$RELEASE_ID"
