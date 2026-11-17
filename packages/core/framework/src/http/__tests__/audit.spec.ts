@@ -242,16 +242,27 @@ describe("Audit helpers", () => {
     expect(actor({})).toEqual({
       actor_type: "anonymous",
       actor_id: null,
+      impersonator_id: null,
       metadata: {},
     })
     expect(
       actor({ auth_context: { actor_id: "user_1", actor_type: "user" } as any })
-    ).toEqual({ actor_type: "user", actor_id: "user_1", metadata: {} })
+    ).toEqual({
+      actor_type: "user",
+      actor_id: "user_1",
+      impersonator_id: null,
+      metadata: {},
+    })
     expect(
       actor({
         auth_context: { actor_id: "cus_1", actor_type: "customer" } as any,
       })
-    ).toEqual({ actor_type: "customer", actor_id: "cus_1", metadata: {} })
+    ).toEqual({
+      actor_type: "customer",
+      actor_id: "cus_1",
+      impersonator_id: null,
+      metadata: {},
+    })
     expect(
       actor({
         auth_context: { actor_id: "apk_1", actor_type: "api-key" } as any,
@@ -260,6 +271,7 @@ describe("Audit helpers", () => {
     ).toEqual({
       actor_type: "api-key",
       actor_id: "apk_1",
+      impersonator_id: null,
       metadata: { api_key_created_by: "user_1" },
     })
     expect(
@@ -269,6 +281,7 @@ describe("Audit helpers", () => {
     ).toEqual({
       actor_type: "vendor",
       actor_id: "ven_1",
+      impersonator_id: null,
       metadata: {},
     })
     expect(
@@ -282,7 +295,22 @@ describe("Audit helpers", () => {
     ).toEqual({
       actor_type: "anonymous",
       actor_id: null,
+      impersonator_id: null,
       metadata: { auth_identity_id: "authid_1" },
+    })
+    expect(
+      actor({
+        auth_context: {
+          actor_id: "endusr_1",
+          actor_type: "end_user",
+          impersonator_id: "user_staff",
+        } as any,
+      })
+    ).toEqual({
+      actor_type: "end_user",
+      actor_id: "endusr_1",
+      impersonator_id: "user_staff",
+      metadata: {},
     })
   })
 })
@@ -472,6 +500,7 @@ describe("Audit middleware", () => {
       action: "product.create",
       actor_type: "user",
       actor_id: "user_1",
+      impersonator_id: null,
       resource_type: "product",
       resource_id: "prod_new",
       outcome: "succeeded",

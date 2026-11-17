@@ -67,4 +67,4 @@ yarn test:integration   # integration-tests/__tests__/audit-module.spec.ts, load
 - Never pass whole request or response bodies in `request_data` / `response_data`: they hold personal data and secrets. Pass the fields to keep.
 - Writes and reads go to the default provider only.
 - An explicit `default_provider` wins over the Cloud default.
-- `impersonator_id` is always `null` today: Cloud staff impersonation tokens don't carry the impersonator, and the Medusa session token is built from the stored auth identity, not the Cloud id_token claims.
+- `impersonator_id` is set from an `impersonator_id` claim on the request's token (`auth_context.impersonator_id`), which the issuer of an impersonation token adds. Medusa's own session tokens never carry it.

@@ -234,6 +234,7 @@ export function getAuditOutcome(statusCode: number): AuditOutcome {
 export function resolveAuditActor(req: AuditRequest): {
   actor_type: string
   actor_id: string | null
+  impersonator_id: string | null
   metadata: Record<string, unknown>
 } {
   const authContext = req.auth_context
@@ -244,7 +245,12 @@ export function resolveAuditActor(req: AuditRequest): {
       metadata.auth_identity_id = authContext.auth_identity_id
     }
 
-    return { actor_type: "anonymous", actor_id: null, metadata }
+    return {
+      actor_type: "anonymous",
+      actor_id: null,
+      impersonator_id: null,
+      metadata,
+    }
   }
 
   const createdBy = (req as { secret_key_context?: { created_by?: string } })
@@ -256,6 +262,11 @@ export function resolveAuditActor(req: AuditRequest): {
   return {
     actor_type: authContext.actor_type,
     actor_id: authContext.actor_id,
+    impersonator_id:
+      typeof authContext.impersonator_id === "string" &&
+      authContext.impersonator_id
+        ? authContext.impersonator_id
+        : null,
     metadata,
   }
 }
@@ -391,6 +402,7 @@ export function createAuditMiddleware({
         const {
           actor_type,
           actor_id,
+          impersonator_id,
           metadata: actorMetadata,
         } = resolveAuditActor(auditReq)
         const metadata = { ...toDataObject(routeMetadata), ...actorMetadata }
@@ -407,6 +419,7 @@ export function createAuditMiddleware({
               : `${method} ${path}`),
           actor_type,
           actor_id,
+          impersonator_id,
           resource_type: resource?.type ?? null,
           resource_id: resource?.id ?? null,
           outcome: getAuditOutcome(statusCode),
