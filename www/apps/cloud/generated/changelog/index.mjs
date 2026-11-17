@@ -4,6 +4,7 @@
 
 /** @type {{ date: string, load: () => Promise<{ default: import("../../utils/changelog").ChangelogEntry }> }[]} */
 export const changelogEntries = [
+  { date: "2026-11-17", load: () => import("./2026-11-17.mjs") },
   { date: "2026-11-13", load: () => import("./2026-11-13.mjs") },
   { date: "2026-11-10", load: () => import("./2026-11-10.mjs") },
   { date: "2026-11-09", load: () => import("./2026-11-09.mjs") },
