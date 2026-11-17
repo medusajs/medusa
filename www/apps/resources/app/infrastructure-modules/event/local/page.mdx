@@ -1,3 +1,5 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `Local Event Module`,
 }
@@ -8,11 +10,26 @@ The Local Event Module uses Node EventEmitter to implement Medusa's pub/sub even
 
 This module is useful for development and testing, but it’s not recommended to be used in production.
 
-For production, it’s recommended to use modules like [Redis Event Bus Module](../redis/page.mdx).
+On Cloud, Medusa configures the [Redis Event Module](../redis/page.mdx) with a managed [Redis](!cloud!/redis) instance by default, which is more suitable for production.
+
+<Note title="Development Only">
+
+Use the Local Event Module only in local development.
+
+</Note>
 
 ---
 
 ## Register the Local Event Module
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
+  ]}
+/>
 
 <Note>
 

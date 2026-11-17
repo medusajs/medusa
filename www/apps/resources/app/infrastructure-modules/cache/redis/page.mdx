@@ -16,11 +16,21 @@ However, if you use OAuth-based authentication providers such as Google or GitHu
 
 </Note>
 
+<Note title="Using Cloud?">
+
+Cloud doesn't configure the deprecated Cache Module. Instead, it provides [Medusa Cache](!cloud!/cache), which configures the [Caching Module](../../caching/page.mdx) with a managed [Redis](!cloud!/redis) instance. So, remove the Redis Cache Module from `medusa-config.ts` before you deploy to Cloud, and [migrate to the Caching Module](../../caching/migrate-cache/page.mdx).
+
+</Note>
+
 ---
 
 ## Register the Redis Cache Module
 
 <Prerequisites items={[
+  {
+    text: "Medusa application set up locally",
+    link: "!cloud!/setup-locally",
+  },
   {
     text: "Redis installed and Redis server running",
     link: "https://redis.io/docs/getting-started/installation/"
@@ -49,9 +59,9 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variables:
+Add the `CACHE_REDIS_URL` environment variable to your `.env` file with your Redis server's URL:
 
-```bash
+```bash title=".env"
 CACHE_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
