@@ -172,9 +172,22 @@ export type MiddlewareRoute = {
   middlewares?: MiddlewareFunction[]
 }
 
+/**
+ * Audit settings for every route.
+ */
+export type AuditMiddlewaresConfig = {
+  /**
+   * Path prefixes that are never the resource, such as `/v1/admin`. With it,
+   * `POST /v1/admin/credits` is recorded as `credit.create`. By default, only
+   * the first segment is skipped (`/admin`).
+   */
+  namespaces?: string[]
+}
+
 export type MiddlewaresConfig = {
   errorHandler?: false | MedusaErrorHandlerFunction
   routes?: MiddlewareRoute[]
+  audit?: AuditMiddlewaresConfig
 }
 
 /**
