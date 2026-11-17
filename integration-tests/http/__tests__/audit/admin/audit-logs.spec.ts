@@ -150,7 +150,7 @@ medusaIntegrationTestRunner({
         ])
       })
 
-      it("records who logged in, and a failed login as anonymous", async () => {
+      it("records who logged in in the metadata of an anonymous login, and a failed login as anonymous", async () => {
         await api.post("/auth/user/emailpass", {
           email: "admin@medusa.js",
           password: "somepassword",
@@ -169,11 +169,16 @@ medusaIntegrationTestRunner({
 
         expect(audit_logs).toEqual([
           expect.objectContaining({
-            actor_type: "user",
-            actor_id: adminId,
+            actor_type: "anonymous",
+            actor_id: null,
             outcome: "succeeded",
             resource_type: "auth",
             resource_id: "emailpass",
+            metadata: expect.objectContaining({
+              logged_in_actor_type: "user",
+              logged_in_actor_id: adminId,
+              auth_identity_id: expect.any(String),
+            }),
           }),
           expect.objectContaining({
             actor_type: "anonymous",
