@@ -28,6 +28,7 @@ import {
   useResourcePermissions,
   useReturnReasonPermissions,
   useSalesChannelPermissions,
+  useSearchIndexPermissions,
   useStockLocationPermissions,
   useStorePermissions,
   useTaxRegionPermissions,
@@ -206,7 +207,10 @@ const useSettingRoutes = (): INavItem[] => {
 
 const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
-  const { enabled: isSearchEnabled } = useSearchIndexes()
+  const { canRead: canReadSearchIndexes } = useSearchIndexPermissions()
+  const { enabled: isSearchEnabled } = useSearchIndexes({
+    enabled: canReadSearchIndexes,
+  })
 
   const { canRead: canReadApiKeys } = useApiKeyPermissions()
   const { canRead: canReadWorkflows } = useWorkflowExecutionPermissions()
