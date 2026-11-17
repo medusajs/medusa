@@ -12,6 +12,7 @@ export const POST = async (
   const input = {
     select: req.queryConfig.fields ?? [],
     filter: req.filterableFields,
+    to: req.auth_context.actor_id,
   }
 
   const { transaction } = await exportInventoryItemsWorkflow(req.scope).run({
