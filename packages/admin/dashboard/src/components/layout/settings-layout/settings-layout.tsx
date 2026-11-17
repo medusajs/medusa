@@ -11,6 +11,7 @@ import {
 } from "../../../hooks/api/modules"
 import { useSearchIndexes } from "../../../hooks/api/search-indexes"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { usePermissions } from "../../../providers/permissions-provider"
 import { useExtension } from "../../../providers/extension-provider"
 import { LayoutComposer } from "../../layout-composer"
 import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
@@ -206,7 +207,10 @@ const useSettingRoutes = (): INavItem[] => {
 
 const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
-  const { enabled: isSearchEnabled } = useSearchIndexes()
+  const { isSuperAdmin } = usePermissions()
+  const { enabled: isSearchEnabled } = useSearchIndexes({
+    enabled: isSuperAdmin,
+  })
 
   const { canRead: canReadApiKeys } = useApiKeyPermissions()
   const { canRead: canReadWorkflows } = useWorkflowExecutionPermissions()

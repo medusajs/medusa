@@ -7,7 +7,11 @@ export const adminSearchIndexRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/admin/search-indexes",
-    middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
+    middlewares: [
+      authenticate("user", ["session", "bearer", "api-key"]),
+      // Infrastructure operation, reserved to super admins.
+      authorize({ resource: "*", operation: "*" }),
+    ],
   },
   {
     method: ["DELETE"],

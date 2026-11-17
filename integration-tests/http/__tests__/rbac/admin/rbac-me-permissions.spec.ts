@@ -165,6 +165,25 @@ medusaIntegrationTestRunner({
         }
       })
 
+      it("flags an actor holding `*:*` as a super admin", async () => {
+        const response = await api.get("/rbac/me/permissions", adminHeaders)
+
+        expect(response.data.is_super_admin).toEqual(true)
+      })
+
+      it.each([
+        ["`resource:*`", productManagerHeaders],
+        ["`*:op`", universalReaderHeaders],
+        ["no roles", noRolesUserHeaders],
+      ])(
+        "doesn't flag an actor with %s as a super admin",
+        async (_, headers) => {
+          const response = await api.get("/rbac/me/permissions", headers)
+
+          expect(response.data.is_super_admin).toEqual(false)
+        }
+      )
+
       it("returns sorted output for deterministic ordering", async () => {
         const response = await api.get("/rbac/me/permissions", adminHeaders)
 

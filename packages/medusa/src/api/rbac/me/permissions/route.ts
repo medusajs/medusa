@@ -1,5 +1,6 @@
 import {
   grantedKeys,
+  hasPermission,
   RBAC_CACHE_TTL,
   resolvePermissions,
   toPermissionSet,
@@ -16,6 +17,7 @@ import {
   defineFileConfig,
   Modules,
   permissionKey,
+  promiseAll,
   RBAC_CACHE_TAGS,
   WILDCARD,
 } from "@medusajs/framework/utils"
@@ -39,6 +41,9 @@ import {
  * for role-based UI guards: a super admin (`*:*`) covers every role without
  * being assigned any. Assigned roles are always covered.
  *
+ * `is_super_admin` tells whether the actor holds `*:*`, which the expanded
+ * `permissions` can't express.
+ *
  * @since 2.22.3
  */
 export const GET = async (
@@ -51,7 +56,12 @@ export const GET = async (
   const { actor_id, actor_type } = req.auth_context
 
   if (!actor_id || !actor_type) {
-    res.status(200).json({ permissions: [], roles: [], covered_roles: [] })
+    res.status(200).json({
+      permissions: [],
+      roles: [],
+      covered_roles: [],
+      is_super_admin: false,
+    })
     return
   }
 
@@ -109,11 +119,18 @@ export const GET = async (
     scope,
   })
 
-  const granted = await resolvePermissions({
-    roles: roleIds,
-    universe,
-    container: req.scope,
-  })
+  const [granted, isSuperAdmin] = await promiseAll([
+    resolvePermissions({
+      roles: roleIds,
+      universe,
+      container: req.scope,
+    }),
+    hasPermission({
+      roles: roleIds,
+      actions: { resource: WILDCARD, operation: WILDCARD },
+      container: req.scope,
+    }),
+  ])
 
   let roles: Array<{ id: string; name: string }> = []
   if (roleIds.length) {
@@ -174,6 +191,7 @@ export const GET = async (
     permissions: Array.from(granted).sort(),
     roles,
     covered_roles: coveredRoles,
+    is_super_admin: isSuperAdmin,
   })
 }
 

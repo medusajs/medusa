@@ -8,6 +8,7 @@ import { SaveViewDropdown } from "./save-view-dropdown"
 import { useTableConfiguration } from "../../../hooks/table/use-table-configuration"
 import { useConfigurableTableColumns } from "../../../hooks/table/columns/use-configurable-table-columns"
 import { expandDottedKeys, parseFilterParam } from "../../../hooks/table/query"
+import { usePermissions } from "../../../providers/permissions-provider"
 import {
   createActionsColumn,
   createSelectColumn,
@@ -46,6 +47,7 @@ export function ConfigurableDataTable<TData>({
   actions,
 }: ConfigurableDataTableProps<TData>) {
   const { t } = useTranslation()
+  const { isSuperAdmin } = usePermissions()
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
   const [editingView, setEditingView] = useState<any>(null)
   const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>(
@@ -211,7 +213,7 @@ export function ConfigurableDataTable<TData>({
         isDefaultView={activeView?.is_system_default || !activeView}
         currentViewId={activeView?.id}
         currentViewName={activeView?.name}
-        onSaveAsDefault={handleSaveAsDefault}
+        onSaveAsDefault={isSuperAdmin ? handleSaveAsDefault : undefined}
         onUpdateExisting={handleUpdateExisting}
         onSaveAsNew={handleSaveAsNew}
       />

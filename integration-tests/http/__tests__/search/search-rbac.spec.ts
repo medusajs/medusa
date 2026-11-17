@@ -160,5 +160,25 @@ medusaIntegrationTestRunner({
         ).toEqual(["product"])
       })
     })
+
+    describe("GET /admin/search-indexes", () => {
+      it("lists the indexes for a super admin", async () => {
+        const response = await api.get("/admin/search-indexes", adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.enabled).toEqual(true)
+      })
+
+      it.each([
+        ["a role without the super admin policy", productReaderHeaders],
+        ["an actor with no roles", noRolesHeaders],
+      ])("returns a 403 to %s", async (_, headers) => {
+        const error = await api
+          .get("/admin/search-indexes", headers)
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(403)
+      })
+    })
   },
 })

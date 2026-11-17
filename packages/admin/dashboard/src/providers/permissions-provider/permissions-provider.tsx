@@ -87,6 +87,8 @@ export const PermissionsProvider = ({
     [isRbacEnabled, permissionsMap]
   )
 
+  const isSuperAdmin = !isRbacEnabled || !!policy?.is_super_admin
+
   const roles: ActorRole[] = useMemo(() => policy?.roles ?? [], [policy])
 
   const assignedRoleNames = useMemo(
@@ -146,6 +148,7 @@ export const PermissionsProvider = ({
       hasAnyPermission,
       hasAllPermissions,
       can,
+      isSuperAdmin,
       roles,
       hasRole,
       hasAnyRole,
@@ -158,6 +161,7 @@ export const PermissionsProvider = ({
       hasAnyPermission,
       hasAllPermissions,
       can,
+      isSuperAdmin,
       roles,
       hasRole,
       hasAnyRole,
