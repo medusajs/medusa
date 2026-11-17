@@ -1,3 +1,5 @@
+import { Table } from "docs-ui"
+
 export const metadata = {
   title: `RBAC Concepts`,
 }
@@ -89,10 +91,106 @@ Medusa's workflows and API routes also protect the Super Admin role:
 
 Calling the RBAC Module's service directly skips these checks.
 
-Some operations affect the whole application, so they require the `*:*` wildcard policy that the Super Admin role has:
+### Policies for Application-Wide Operations
 
-- Running a workflow with the [Execute Workflow API route](!api!/admin/workflows-executions/execute-a-workflow) (`POST /admin/workflows-executions/:workflow_id/run`).
-- Creating, updating, or deleting a system default view configuration, and setting the default layout configuration, in the Medusa Admin.
+Some operations affect the whole application rather than a single commerce resource. Medusa guards each of them with a dedicated core policy, so you can grant them to a role without granting the `*:*` wildcard policy:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Operation</Table.HeaderCell>
+      <Table.HeaderCell>Required Policy</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+Running a workflow with the [Execute Workflow API route](!api!/admin/workflows-executions/execute-a-workflow) (`POST /admin/workflows-executions/:workflow_id/run`).
+
+      </Table.Cell>
+      <Table.Cell>
+
+`workflow_execution:create`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Listing search indexes (`GET /admin/search-indexes`).
+
+      </Table.Cell>
+      <Table.Cell>
+
+`search_index:read`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Deleting a search index (`DELETE /admin/search-indexes/:id`).
+
+      </Table.Cell>
+      <Table.Cell>
+
+`search_index:delete`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Reindexing a search index (`POST /admin/search-indexes/:id/reindex`).
+
+      </Table.Cell>
+      <Table.Cell>
+
+`search_index_sync:create`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Syncing the [Index Module](!docs!/learn/fundamentals/query/index-module) (`POST /admin/index/sync`).
+
+      </Table.Cell>
+      <Table.Cell>
+
+`index_engine:update`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Creating, updating, or deleting a system default [view configuration](../../../commerce-modules/settings/view-configurations/page.mdx), or promoting a view configuration to the system default.
+
+      </Table.Cell>
+      <Table.Cell>
+
+`view_configuration:create`, `view_configuration:update`, or `view_configuration:delete`, matching the operation.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+Setting the default [layout configuration](../../../commerce-modules/settings/layout-configurations/page.mdx).
+
+      </Table.Cell>
+      <Table.Cell>
+
+`layout_configuration:update`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+The `view_configuration` and `layout_configuration` policies only guard the system defaults that apply to every user. Admin users can manage their own personal view and layout configurations without them.
 
 <Note type="warning">
 

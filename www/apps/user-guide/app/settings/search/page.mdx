@@ -34,6 +34,8 @@ Your technical team decides which data each index holds. In the Medusa Admin, yo
 
 ## View Search Indexes
 
+<PermissionsBadge permissions={["search_index:read"]} />
+
 To view your store’s search indexes, go to Settings → Search.
 
 Each index shows in its own card with the following details:
@@ -100,6 +102,8 @@ Most Medusa stores have a product index that your technical team set up. They ca
 ---
 
 ## Reindex a Search Index
+
+<PermissionsBadge permissions={["search_index:read", "search_index_sync:create"]} />
 
 Medusa keeps an index up to date as your data changes, so you rarely need to rebuild one. Rebuild an index, which is also called reindexing, in the following cases:
 

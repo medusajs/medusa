@@ -68,11 +68,11 @@ export const generatedEditDates = {
   "app/loyalty/store-credits/manage/page.mdx": "2026-09-17T11:25:03.695Z",
   "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z",
   "app/products/options/page.mdx": "2026-06-04T06:35:45.837Z",
-  "app/tips/layout-configurations/page.mdx": "2026-07-23T12:50:25.531Z",
+  "app/tips/layout-configurations/page.mdx": "2026-11-17T14:55:36.165Z",
   "app/settings/property-labels/page.mdx": "2026-07-23T12:34:12.839Z",
-  "app/tips/table-views/page.mdx": "2026-07-23T12:12:44.850Z",
+  "app/tips/table-views/page.mdx": "2026-11-17T14:55:29.968Z",
   "app/inventory/export/page.mdx": "2026-07-28T15:35:53.767Z",
-  "app/settings/search/page.mdx": "2026-09-18T06:39:57.423Z",
+  "app/settings/search/page.mdx": "2026-11-17T14:55:25.784Z",
   "app/settings/roles/page.mdx": "2026-11-12T17:43:44.092Z",
   "app/settings/announcements/page.mdx": "2026-11-13T07:37:39.112Z"
 }
