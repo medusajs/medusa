@@ -12,36 +12,70 @@ const HomepageLinksSection = () => {
     }[]
   }[] = [
     {
-      tag: "Customize Medusa Application",
+      tag: "Get Started",
       links: [
         {
-          link: "https://docs.medusajs.com/cloud/setup-locally",
-          text: "Set Up Medusa Locally",
-        },
-        {
           link: "https://docs.medusajs.com/cloud/sign-up",
-          text: "Deploy to Cloud",
+          text: "Sign up",
         },
         {
-          link: "https://docs.medusajs.com/cloud/integrations",
-          text: "Browse integrations",
+          link: "https://docs.medusajs.com/cloud/first-project",
+          text: "Create your first project",
+        },
+        {
+          link: "https://docs.medusajs.com/cloud/going-live",
+          text: "Go live",
         },
       ],
     },
     {
-      tag: "Admin Development",
+      tag: "Medusa Cloud Resources",
       links: [
         {
-          link: "/learn/fundamentals/admin/widgets",
-          text: "Build a UI widget",
+          link: "https://docs.medusajs.com/cloud/storefront",
+          text: "Storefront",
         },
         {
-          link: "/learn/fundamentals/admin/ui-routes",
-          text: "Add a UI route",
+          link: "https://docs.medusajs.com/cloud/search",
+          text: "Search",
         },
         {
-          link: "https://docs.medusajs.com/ui",
-          text: "Browse the UI library",
+          link: "https://docs.medusajs.com/cloud/emails",
+          text: "Emails",
+        },
+      ],
+    },
+    {
+      tag: "Build with Agents",
+      links: [
+        {
+          link: "https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp",
+          text: "Medusa MCP",
+        },
+        {
+          link: "https://docs.medusajs.com/cloud/ai-toolkit/agent-skills",
+          text: "Agent Skills",
+        },
+        {
+          link: "https://docs.medusajs.com/cloud/cli",
+          text: "Cloud CLI",
+        },
+      ],
+    },
+    {
+      tag: "Customize Medusa",
+      links: [
+        {
+          link: "/learn",
+          text: "Learn the Framework",
+        },
+        {
+          link: "https://docs.medusajs.com/cloud/integrations",
+          text: "Add integrations",
+        },
+        {
+          link: "/learn/fundamentals/admin",
+          text: "Extend the Admin",
         },
       ],
     },
@@ -59,40 +93,6 @@ const HomepageLinksSection = () => {
         {
           link: "https://docs.medusajs.com/cloud/ai-toolkit/agent-skills#ecommerce-storefront-best-practices",
           text: "Use agent skills",
-        },
-      ],
-    },
-    {
-      tag: "Medusa Cloud",
-      links: [
-        {
-          link: "https://docs.medusajs.com/cloud/projects",
-          text: "Deploy from GitHub",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/environments/preview",
-          text: "Preview environments",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/emails",
-          text: "Medusa Emails",
-        },
-      ],
-    },
-    {
-      tag: "Agentic Development",
-      links: [
-        {
-          link: "https://docs.medusajs.com/cloud/cli/agents",
-          text: "Agentic Deployments",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/ai-toolkit/agent-skills",
-          text: "Agent Skills",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/ai-toolkit/docs-mcp",
-          text: "Docs MCP",
         },
       ],
     },

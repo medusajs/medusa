@@ -14,16 +14,18 @@ const HomepageTopSection = () => {
       />
       <div className="flex-col gap-0.75 justify-center items-center hidden md:flex">
         <h2 className="text-display text-center">
-          Learn how to build Medusa projects.
+          Get Started with Medusa, the
         </h2>
         <div className="flex gap-1 w-full items-center">
           <ShadedBlock className="w-full min-h-[44px]" />
-          <h2 className="text-display min-w-max">Explore our guides.</h2>
+          <h2 className="text-display min-w-max">
+            Agent-Native Commerce Platform.
+          </h2>
         </div>
       </div>
       <div className="flex flex-col gap-0.75 justify-center items-center md:hidden">
         <h2 className="text-display text-center">
-          Learn how to build Medusa projects. Explore our guides.
+          Get Started with Medusa, the Agent-Native Commerce Platform.
         </h2>
         <ShadedBlock className="w-full min-h-[44px]" />
       </div>

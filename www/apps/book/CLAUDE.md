@@ -80,7 +80,7 @@ belongs to (Cloud, Commerce, or Framework), with a link to its docs page.
 
 `app/page.tsx` composes the homepage from the section components in
 `components/Homepage/*`, with `<HomepageSectionsSeparator />` between sections.
-Current order: Top → Start Prompt → Bloom → **What's New** → Links → Framework →
+Current order: Top → Start Prompt → Docs Assistant → **What's New** → Links → Cloud → Framework →
 Code Tabs → Recipes → Commerce Modules → Footer.
 
 Section conventions:
