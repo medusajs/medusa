@@ -25,6 +25,7 @@ medusaIntegrationTestRunner({
     const priceListReaderHeaders = { headers: { ...adminHeaders.headers } }
     const apiKeyReaderHeaders = { headers: { ...adminHeaders.headers } }
     const noRolesHeaders = { headers: { ...adminHeaders.headers } }
+    const searchIndexManagerHeaders = { headers: { ...adminHeaders.headers } }
 
     const ENTITIES_QUERY =
       "entity[]=order&entity[]=customer&entity[]=product&entity[]=price_list"
@@ -46,14 +47,17 @@ medusaIntegrationTestRunner({
 
       const rbacModule = container.resolve(Modules.RBAC)
 
-      const ensurePolicy = async (resource: string) => {
-        const key = `${resource}:${PolicyOperation.read}`
+      const ensurePolicy = async (
+        resource: string,
+        operation: string = PolicyOperation.read
+      ) => {
+        const key = `${resource}:${operation}`
         const [existing] = await rbacModule.listRbacPolicies({ key })
         if (existing) {
           return existing
         }
         const [created] = await rbacModule.createRbacPolicies([
-          { key, resource, operation: PolicyOperation.read, name: key },
+          { key, resource, operation, name: key },
         ])
         return created
       }
@@ -76,6 +80,31 @@ medusaIntegrationTestRunner({
           roles: [role.id],
         })
       }
+
+      const searchIndexManager = await rbacModule.createRbacRoles({
+        name: "search-index-manager",
+      })
+      await rbacModule.createRbacRolePolicies(
+        await Promise.all(
+          [
+            PolicyOperation.read,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ].map(async (operation) => ({
+            role_id: searchIndexManager.id,
+            policy_id: (await ensurePolicy("search_index", operation)).id,
+          }))
+        )
+      )
+      await createAdminUser(
+        dbConnection,
+        searchIndexManagerHeaders,
+        container,
+        {
+          email: "search-index-manager@medusa.js",
+          roles: [searchIndexManager.id],
+        }
+      )
 
       await createAdminUser(dbConnection, noRolesHeaders, container, {
         email: "search-no-roles@medusa.js",
@@ -161,23 +190,32 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("GET /admin/search-indexes", () => {
-      it("lists the indexes for a super admin", async () => {
-        const response = await api.get("/admin/search-indexes", adminHeaders)
+    describe("/admin/search-indexes", () => {
+      const statusOf = (request: Promise<{ status: number }>) =>
+        request
+          .then((response) => response.status)
+          .catch((error) => error.response.status)
 
-        expect(response.status).toEqual(200)
-        expect(response.data.enabled).toEqual(true)
+      const statuses = async (headers: typeof adminHeaders) => [
+        await statusOf(api.get("/admin/search-indexes", headers)),
+        await statusOf(
+          api.post("/admin/search-indexes/nope/reindex", {}, headers)
+        ),
+        await statusOf(api.delete("/admin/search-indexes/nope", headers)),
+      ]
+
+      it("lets a role holding the search_index policies list, reindex and delete", async () => {
+        // Reindex and delete get past the policy check: the index isn't registered.
+        expect(await statuses(searchIndexManagerHeaders)).toEqual([
+          200, 404, 404,
+        ])
       })
 
       it.each([
-        ["a role without the super admin policy", productReaderHeaders],
+        ["a role without the search_index policies", productReaderHeaders],
         ["an actor with no roles", noRolesHeaders],
       ])("returns a 403 to %s", async (_, headers) => {
-        const error = await api
-          .get("/admin/search-indexes", headers)
-          .catch((e) => e)
-
-        expect(error.response.status).toEqual(403)
+        expect(await statuses(headers)).toEqual([403, 403, 403])
       })
     })
   },

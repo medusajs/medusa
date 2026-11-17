@@ -6,7 +6,7 @@ import {
   useViewConfiguration,
 } from "../../../hooks/use-view-configurations"
 import type { ViewConfiguration } from "../../../hooks/use-view-configurations"
-import { usePermissions } from "../../../providers/permissions-provider"
+import { useViewConfigurationPermissions } from "../../../hooks/use-resource-permissions"
 import { SaveViewDialog } from "../save-view-dialog"
 
 interface ViewPillsProps {
@@ -29,7 +29,7 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
 }) => {
   const { listViews, activeView, setActiveView, isDefaultViewActive } =
     useViewConfigurations(entity)
-  const { isSuperAdmin } = usePermissions()
+  const { canDelete: canResetSystemDefault } = useViewConfigurationPermissions()
 
   const views = listViews?.view_configurations || []
 
@@ -132,7 +132,7 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
             onClick={() => handleViewSelect(null)}
             onContextMenu={(e) => {
               e.preventDefault()
-              if (systemDefaultView && isSuperAdmin) {
+              if (systemDefaultView && canResetSystemDefault) {
                 setContextMenuPosition({ x: e.clientX, y: e.clientY })
                 setContextMenuOpen("default")
               }

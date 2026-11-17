@@ -92,9 +92,6 @@ export const ensureViewEntityReadable = async (
   return next()
 }
 
-export const SYSTEM_DEFAULT_VIEW_CONFIGURATION_MESSAGE =
-  "Only super admins can manage system default view configurations"
-
 /**
  * Whether the view configuration targeted by `req.params.id` is a system
  * default, which applies to every user. A missing configuration is not one;

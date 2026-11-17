@@ -11,7 +11,6 @@ import {
 } from "../../../hooks/api/modules"
 import { useSearchIndexes } from "../../../hooks/api/search-indexes"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { usePermissions } from "../../../providers/permissions-provider"
 import { useExtension } from "../../../providers/extension-provider"
 import { LayoutComposer } from "../../layout-composer"
 import { CUSTOMIZE_IDS } from "../../layout-composer/constants"
@@ -29,6 +28,7 @@ import {
   useResourcePermissions,
   useReturnReasonPermissions,
   useSalesChannelPermissions,
+  useSearchIndexPermissions,
   useStockLocationPermissions,
   useStorePermissions,
   useTaxRegionPermissions,
@@ -207,9 +207,9 @@ const useSettingRoutes = (): INavItem[] => {
 
 const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
-  const { isSuperAdmin } = usePermissions()
+  const { canRead: canReadSearchIndexes } = useSearchIndexPermissions()
   const { enabled: isSearchEnabled } = useSearchIndexes({
-    enabled: isSuperAdmin,
+    enabled: canReadSearchIndexes,
   })
 
   const { canRead: canReadApiKeys } = useApiKeyPermissions()

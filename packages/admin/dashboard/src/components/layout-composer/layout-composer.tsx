@@ -14,7 +14,7 @@ import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next"
 import { Outlet } from "react-router-dom"
 import { useExtension } from "../../providers/extension-provider/use-extension"
-import { usePermissions } from "../../providers/permissions-provider"
+import { useLayoutConfigurationPermissions } from "../../hooks/use-resource-permissions"
 import {
   useLayoutCustomizerActiveEditor,
   useLayoutCustomizerTriggerHost,
@@ -150,7 +150,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   const editorId = useId()
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { isSuperAdmin } = usePermissions()
+  const { canUpdate: canEditDefault } = useLayoutConfigurationPermissions()
 
   // Another composer is mid-edit; lock this one's trigger so the two don't both
   // try to drive the shared top-bar controls slot at once.
@@ -379,7 +379,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
     if (locked) {
       return
     }
-    setEditScope(isSuperAdmin ? activeScope : "personal")
+    setEditScope(canEditDefault ? activeScope : "personal")
     setDraft(preferenceForScope(activeScope))
     setEditMode(true)
     setActiveEditor(editorId)
@@ -470,7 +470,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   // composer renders no controls — the central `CustomizerMenu` is the trigger.
   const editControls = (
     <div className="flex items-center gap-x-2">
-      {isSuperAdmin && (
+      {canEditDefault && (
         <div className="flex items-center gap-x-1">
           <Badge
             size="xsmall"

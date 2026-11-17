@@ -177,9 +177,4 @@ export interface AdminRbacMePermissionsResponse {
    * no one.
    */
   covered_roles: string[]
-  /**
-   * Whether the actor holds the `*:*` wildcard permission, required by
-   * super-admin-only operations such as managing search indexes.
-   */
-  is_super_admin: boolean
 }

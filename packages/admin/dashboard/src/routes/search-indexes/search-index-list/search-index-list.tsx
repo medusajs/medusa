@@ -21,6 +21,7 @@ import {
   useDeleteSearchIndex,
   useSearchIndexes,
 } from "../../../hooks/api/search-indexes"
+import { useSearchIndexPermissions } from "../../../hooks/use-resource-permissions"
 import { SearchIndexReindexModal } from "./components/search-index-reindex-modal"
 
 const statusColor = (
@@ -53,6 +54,7 @@ const fieldTooltip = (field: HttpTypes.AdminSearchIndexField) => {
 const SearchIndexCard = ({ index }: { index: HttpTypes.AdminSearchIndex }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate, canDelete } = useSearchIndexPermissions()
   const [isReindexModalOpen, setIsReindexModalOpen] = useState(false)
   const { mutateAsync: deleteIndex, isPending: isDeleting } =
     useDeleteSearchIndex()
@@ -92,23 +94,27 @@ const SearchIndexCard = ({ index }: { index: HttpTypes.AdminSearchIndex }) => {
           <StatusBadge color={statusColor(index.status)}>
             {t(`searchIndexes.status.${index.status}`)}
           </StatusBadge>
-          <Button
-            size="small"
-            variant="secondary"
-            onClick={() => setIsReindexModalOpen(true)}
-            disabled={index.status === "building"}
-          >
-            {t("searchIndexes.reindex")}
-          </Button>
-          <Button
-            size="small"
-            variant="danger"
-            onClick={handleDelete}
-            isLoading={isDeleting}
-            disabled={index.status === "building"}
-          >
-            {t("searchIndexes.delete")}
-          </Button>
+          {canUpdate && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => setIsReindexModalOpen(true)}
+              disabled={index.status === "building"}
+            >
+              {t("searchIndexes.reindex")}
+            </Button>
+          )}
+          {canDelete && (
+            <Button
+              size="small"
+              variant="danger"
+              onClick={handleDelete}
+              isLoading={isDeleting}
+              disabled={index.status === "building"}
+            >
+              {t("searchIndexes.delete")}
+            </Button>
+          )}
           {isReindexModalOpen && (
             <SearchIndexReindexModal
               index={index}

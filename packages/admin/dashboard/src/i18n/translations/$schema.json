@@ -15327,6 +15327,18 @@
             "workflow_execution": {
               "type": "string"
             },
+            "search_index": {
+              "type": "string"
+            },
+            "index_engine": {
+              "type": "string"
+            },
+            "view_configuration": {
+              "type": "string"
+            },
+            "layout_configuration": {
+              "type": "string"
+            },
             "store_locale": {
               "type": "string"
             },
@@ -15415,6 +15427,10 @@
             "audit_log",
             "notification",
             "workflow_execution",
+            "search_index",
+            "index_engine",
+            "view_configuration",
+            "layout_configuration",
             "store_locale",
             "tax_provider",
             "tax_rate",

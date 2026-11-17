@@ -4,4 +4,4 @@
 "@medusajs/dashboard": patch
 ---
 
-fix(medusa,types,dashboard): restrict listing search indexes to super admins, and hide super-admin-only actions in the dashboard from other users
+fix(medusa,types,dashboard): guard admin-wide operations with dedicated RBAC policies instead of `*:*`, and require `search_index:read` to list search indexes

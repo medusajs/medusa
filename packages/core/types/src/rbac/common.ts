@@ -252,6 +252,11 @@ export const CORE_POLICY_RESOURCES = [
   "workflow_execution",
   "store",
   "store_locale",
+  "search_index",
+  "index_engine",
+  // Only guard the system defaults, which apply to every user.
+  "view_configuration",
+  "layout_configuration",
 
   // Tax
   "tax_provider",

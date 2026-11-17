@@ -73,10 +73,6 @@ export interface ActorPolicy {
    * the actor's effective permissions. Assigned roles are always covered.
    */
   covered_roles?: string[]
-  /**
-   * Whether the actor holds the `*:*` wildcard permission.
-   */
-  is_super_admin?: boolean
 }
 
 /**
@@ -125,11 +121,6 @@ export interface PermissionsContextValue {
    * Check if actor can perform an operation on a resource.
    */
   can: (resource: PermissionResource, operation: PermissionOperation) => boolean
-  /**
-   * Whether the actor holds the `*:*` wildcard permission, required by
-   * super-admin-only operations. Always `true` when RBAC is disabled.
-   */
-  isSuperAdmin: boolean
   /**
    * The actor's assigned roles.
    */
