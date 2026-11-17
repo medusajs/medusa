@@ -186,11 +186,20 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Publish to Cloud",
+            "path": "/learn/customization/publish",
+            "children": [],
+            "chapterTitle": "2.6. Publish to Cloud",
+            "number": "2.6."
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Next Steps",
             "path": "/learn/customization/next-steps",
             "children": [],
-            "chapterTitle": "2.6. Next Steps",
-            "number": "2.6."
+            "chapterTitle": "2.7. Next Steps",
+            "number": "2.7."
           }
         ],
         "chapterTitle": "2. Customization Tutorial",

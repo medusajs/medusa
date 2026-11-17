@@ -166,11 +166,16 @@ module.exports = defineConfig({
 
 The object passed in `modules` accept an `options` property, whose value is an object of options to pass to the module. These are the options you receive in the `CmsModuleService`'s constructor.
 
-You can add the `CMS_API_KEY` environment variable to `.env`:
+Then, set the `CMS_API_KEY` environment variable:
+
+1. In Cloud, add `CMS_API_KEY` in your environment's [Environment variables settings](!cloud!/environments/environment-variables). Enable its **Build** toggle, since `medusa-config.ts` reads it during the build.
+2. For local development, add the variable to your `.env` file:
 
 ```bash
 CMS_API_KEY=123
 ```
+
+You'll deploy the module and use the variable in Cloud when you [publish your customizations](../../publish/page.mdx) later in this tutorial.
 
 ---
 

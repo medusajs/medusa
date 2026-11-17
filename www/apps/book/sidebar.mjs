@@ -114,6 +114,11 @@ export const sidebars = [
           },
           {
             type: "link",
+            title: "Publish to Cloud",
+            path: "/learn/customization/publish",
+          },
+          {
+            type: "link",
             title: "Next Steps",
             path: "/learn/customization/next-steps",
           },

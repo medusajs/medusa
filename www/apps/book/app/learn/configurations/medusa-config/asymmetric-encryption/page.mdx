@@ -173,9 +173,13 @@ private-key.pem
 
 ### Step 4: Set Environment Variables
 
-Finally, set the following environment variables using the generated keys:
+Finally, set the following environment variables using the generated keys.
 
-```bash
+In Cloud, add them in your environment's [Environment variables settings](!cloud!/environments/environment-variables), then redeploy the environment. Mark `JWT_SECRET_KEY` as **Sensitive**, and enable the **Build** toggle for all of them, since `medusa-config.ts` reads them during the build.
+
+For local development, add them to your `.env` file:
+
+```bash title=".env"
 # JWT Configuration
 JWT_SECRET_KEY="-----BEGIN RSA PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC...
