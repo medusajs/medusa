@@ -81,6 +81,7 @@ describe("MedusaAuditService", () => {
         actor_id: ["user_1", "user_2"],
         outcome: "denied",
         started_at: { $gte: new Date("2026-11-01T00:00:00.000Z") },
+        metadata: { organization_id: "org_1", project_id: "proj_1" },
         q: "cancel",
       },
       { skip: 20, take: 10, order: { started_at: "ASC" }, select: ["id"] }
@@ -94,6 +95,8 @@ describe("MedusaAuditService", () => {
     expect(url.searchParams.get("started_at[$gte]")).toBe(
       "2026-11-01T00:00:00.000Z"
     )
+    expect(url.searchParams.get("metadata[organization_id]")).toBe("org_1")
+    expect(url.searchParams.get("metadata[project_id]")).toBe("proj_1")
     expect(url.searchParams.get("q")).toBe("cancel")
     expect(url.searchParams.get("offset")).toBe("20")
     expect(url.searchParams.get("limit")).toBe("10")

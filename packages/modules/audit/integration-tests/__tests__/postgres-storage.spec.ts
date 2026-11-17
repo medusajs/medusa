@@ -168,6 +168,36 @@ moduleIntegrationTestRunner<IAuditModuleService>({
         ])
       })
 
+      it("filters by metadata values", async () => {
+        service.createAuditLogs([
+          {
+            action: "org_1.project",
+            metadata: { organization_id: "org_1", project_id: "proj_1" },
+          },
+          {
+            action: "org_1.other_project",
+            metadata: { organization_id: "org_1", project_id: "proj_2" },
+          },
+          { action: "org_2", metadata: { organization_id: "org_2" } },
+          { action: "no_metadata" },
+        ])
+        await service.flush()
+
+        const actions = async (metadata: Record<string, string>) =>
+          (await service.listAuditLogs({ metadata }))
+            .map((r) => r.action)
+            .sort()
+
+        expect(await actions({ organization_id: "org_1" })).toEqual([
+          "org_1.other_project",
+          "org_1.project",
+        ])
+        expect(
+          await actions({ organization_id: "org_1", project_id: "proj_2" })
+        ).toEqual(["org_1.other_project"])
+        expect(await actions({ organization_id: "org_3" })).toEqual([])
+      })
+
       it("paginates, sorts and selects fields", async () => {
         await seed()
 
