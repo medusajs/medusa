@@ -173,15 +173,13 @@ export type MiddlewareRoute = {
 }
 
 /**
- * Audit settings that apply to every route.
+ * Audit settings for every route.
  */
 export type AuditMiddlewaresConfig = {
   /**
-   * Path prefixes that name an API rather than a resource, such as `/v1` or
-   * `/v1/admin`. Audit logs name the resource of a route from the segments
-   * after the longest prefix it starts with, so `/v1/admin/credits` is
-   * `credit.create`. A route that starts with none of them is named after the
-   * segments after its first one, as with `/admin/products`.
+   * Path prefixes that are never the resource, such as `/v1/admin`. With it,
+   * `POST /v1/admin/credits` is recorded as `credit.create`. By default, only
+   * the first segment is skipped (`/admin`).
    */
   namespaces?: string[]
 }

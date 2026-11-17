@@ -101,8 +101,7 @@ const isParamSegment = (segment: string) => segment.startsWith(":")
 const toSegments = (path: string) => path.split("/").filter(Boolean)
 
 /**
- * The number of leading segments that belong to the longest namespace the
- * route starts with, or `undefined` when it starts with none.
+ * How many segments of the longest matching namespace the route starts with.
  */
 function getNamespaceLength(
   segments: string[],
@@ -128,12 +127,9 @@ function getNamespaceLength(
 
 /**
  * Splits a route pattern into the resource it names, the parameter holding
- * its ID, and what follows. The route's namespace, the longest of
- * `namespaces` it starts with, is never the resource. With path parameters,
- * the ID is the last one and the type is the segment before it, so nested
- * routes name the nested resource. Without any, the type is the first segment
- * after the namespace. A route outside every namespace is treated as having
- * its first segment as one, such as `/admin`.
+ * its ID, and what follows. With path parameters, the type is the segment
+ * before the last one. Without any, it's the first segment after the
+ * namespace, which defaults to the first segment (`/admin`).
  */
 function parseAuditRoute(
   pattern: string,
@@ -280,8 +276,7 @@ export type AuditMiddlewareOptions = {
   routesFinder: RoutesFinder<RouteDescriptor>
   auditRoutesFinder?: RoutesFinder<AuditConfigRoute>
   /**
-   * Path prefixes left out when naming a route's resource, from the
-   * `audit.namespaces` of every middleware file.
+   * Path prefixes that are never the resource, such as `/v1/admin`.
    */
   auditNamespaces?: string[]
   getAuditService: () => IAuditModuleService

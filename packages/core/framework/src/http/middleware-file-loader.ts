@@ -54,7 +54,7 @@ export class MiddlewareFileLoader {
   #auditConfigRoutes: AuditConfigRoute[] = []
 
   /**
-   * Path prefixes that audit logs leave out when naming a route's resource
+   * The `audit.namespaces` of every middleware file
    */
   #auditNamespaces: string[] = []
 
@@ -272,8 +272,7 @@ export class MiddlewareFileLoader {
   }
 
   /**
-   * Returns the path prefixes declared by every middleware file in
-   * `audit.namespaces`
+   * Returns the `audit.namespaces` of every middleware file
    */
   getAuditNamespaces() {
     return [...new Set(this.#auditNamespaces)]
