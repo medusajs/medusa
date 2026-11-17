@@ -51,7 +51,7 @@ Audit Module for Medusa: records who did what, on which resource, and how it end
 ## Features
 
 - `createAuditLogs()` validates, buffers, and batch-writes audit logs without waiting for storage or throwing.
-- `listAuditLogs()`, `listAndCountAuditLogs()`, and `retrieveAuditLog()` read audit logs back, filtered by actor, action, resource, outcome, and time.
+- `listAuditLogs()`, `listAndCountAuditLogs()`, and `retrieveAuditLog()` read audit logs back, filtered by actor, action, resource, outcome, time, and `metadata` values.
 - Built-in storage: the application's PostgreSQL database by default, with an optional `retention_days`, or Medusa Cloud when the `cloud` option is set. Custom providers can replace both.
 - An `enabled` option turns auditing off for the whole application without changing callers.
 - Once registered, admin, RBAC, and auth mutations made through the API are recorded automatically, and `GET /admin/audit-logs` (`sdk.admin.auditLog`) reads them back. Routes tune what is recorded with the `audit` setting of `defineMiddlewares`.

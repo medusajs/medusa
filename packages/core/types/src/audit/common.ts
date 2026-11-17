@@ -199,6 +199,12 @@ export interface FilterableAuditLogProps {
   started_at?: AuditLogDateRange
 
   /**
+   * Filter by `metadata` values. An audit log matches when its `metadata` has
+   * every given top-level key set to exactly the given value.
+   */
+  metadata?: Record<string, string>
+
+  /**
    * Search the action, resource type, resource ID, and actor ID for this text.
    * Providers are not required to support it.
    */
