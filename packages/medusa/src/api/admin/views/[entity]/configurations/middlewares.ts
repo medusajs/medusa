@@ -2,19 +2,20 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorizeIfNecessary, MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import {
   AdminCreateViewConfiguration,
+  AdminCreateViewConfigurationType,
   AdminUpdateViewConfiguration,
+  AdminUpdateViewConfigurationType,
   AdminSetActiveViewConfiguration,
   AdminGetViewConfigurationParams,
   AdminGetActiveViewConfigurationParams,
   AdminGetViewConfigurationsParams,
 } from "./validators"
-import { requireSuperAdmin } from "../../../utils/require-super-admin"
 import {
-  SYSTEM_DEFAULT_VIEW_CONFIGURATION_MESSAGE,
   ensureViewConfigurationsEnabled,
   ensureViewEntityReadable,
   isSystemDefaultViewConfiguration,
@@ -49,9 +50,12 @@ export const viewConfigurationRoutesMiddlewares: MiddlewareRoute[] = [
       ),
       validateAndTransformBody(AdminCreateViewConfiguration),
       // A system default applies to every user.
-      requireSuperAdmin(
+      authorizeIfNecessary<AdminCreateViewConfigurationType>(
         (req) => !!req.validatedBody.is_system_default,
-        SYSTEM_DEFAULT_VIEW_CONFIGURATION_MESSAGE
+        {
+          resource: "view_configuration",
+          operation: PolicyOperation.create,
+        }
       ),
     ],
   },
@@ -77,11 +81,11 @@ export const viewConfigurationRoutesMiddlewares: MiddlewareRoute[] = [
       ),
       validateAndTransformBody(AdminUpdateViewConfiguration),
       // Changing a system default, or promoting a view to one, affects every user.
-      requireSuperAdmin(
+      authorizeIfNecessary<AdminUpdateViewConfigurationType>(
         async (req) =>
           !!req.validatedBody.is_system_default ||
           (await isSystemDefaultViewConfiguration(req)),
-        SYSTEM_DEFAULT_VIEW_CONFIGURATION_MESSAGE
+        { resource: "view_configuration", operation: PolicyOperation.update }
       ),
     ],
   },
@@ -109,10 +113,10 @@ export const viewConfigurationRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/views/:entity/configurations/:id",
     middlewares: [
       ensureViewEntityReadable,
-      requireSuperAdmin(
-        isSystemDefaultViewConfiguration,
-        SYSTEM_DEFAULT_VIEW_CONFIGURATION_MESSAGE
-      ),
+      authorizeIfNecessary(isSystemDefaultViewConfiguration, {
+        resource: "view_configuration",
+        operation: PolicyOperation.delete,
+      }),
     ],
   },
 ]
