@@ -98,30 +98,59 @@ export function getRouteParams(
 
 const isParamSegment = (segment: string) => segment.startsWith(":")
 
+const toSegments = (path: string) => path.split("/").filter(Boolean)
+
+/**
+ * How many segments of the longest matching namespace the route starts with.
+ */
+function getNamespaceLength(
+  segments: string[],
+  namespaces: string[]
+): number | undefined {
+  let longest: number | undefined
+
+  for (const namespace of namespaces) {
+    const namespaceSegments = toSegments(namespace.toLowerCase())
+    const matches =
+      namespaceSegments.length > 0 &&
+      namespaceSegments.every(
+        (segment, index) => segments[index]?.toLowerCase() === segment
+      )
+
+    if (matches && namespaceSegments.length > (longest ?? 0)) {
+      longest = namespaceSegments.length
+    }
+  }
+
+  return longest
+}
+
 /**
  * Splits a route pattern into the resource it names, the parameter holding
- * its ID, and what follows. With path parameters, the ID is the last one and
- * the type is the segment before it, so nested routes name the nested
- * resource. Without any, the type is the second segment, since the first is
- * usually a namespace such as `/admin` (or the only segment).
+ * its ID, and what follows. With path parameters, the type is the segment
+ * before the last one. Without any, it's the first segment after the
+ * namespace, which defaults to the first segment (`/admin`).
  */
 function parseAuditRoute(
-  pattern: string
+  pattern: string,
+  namespaces: string[] = []
 ): { type: string; idParam: string | undefined; rest: string[] } | undefined {
-  const segments = pattern.split("/").filter(Boolean)
+  const segments = toSegments(pattern)
+  const namespaceLength = getNamespaceLength(segments, namespaces)
+  const firstIndex = namespaceLength ?? Math.min(1, segments.length - 1)
 
   let paramIndex = segments.length - 1
   while (paramIndex >= 0 && !isParamSegment(segments[paramIndex])) {
     paramIndex--
   }
 
-  let typeIndex =
-    paramIndex >= 0 ? paramIndex - 1 : Math.min(1, segments.length - 1)
-  while (typeIndex > 0 && isParamSegment(segments[typeIndex])) {
+  const lowestIndex = namespaceLength ?? 0
+  let typeIndex = paramIndex >= 0 ? paramIndex - 1 : firstIndex
+  while (typeIndex > lowestIndex && isParamSegment(segments[typeIndex])) {
     typeIndex--
   }
 
-  const typeSegment = segments[typeIndex]
+  const typeSegment = typeIndex >= lowestIndex ? segments[typeIndex] : undefined
   if (!typeSegment || !/^[\w-]+$/.test(typeSegment)) {
     return
   }
@@ -146,9 +175,10 @@ function parseAuditRoute(
 export function getDefaultAuditResource(
   pattern: string,
   params: Record<string, string>,
-  body?: unknown
+  body?: unknown,
+  namespaces?: string[]
 ): AuditResource | undefined {
-  const route = parseAuditRoute(pattern)
+  const route = parseAuditRoute(pattern, namespaces)
   if (!route) {
     return
   }
@@ -173,8 +203,12 @@ export function getDefaultAuditResource(
  * `product.batch`); without any, the method does (`product.create`,
  * `product.update`, `product.delete`).
  */
-export function getDefaultAuditAction(method: string, pattern: string): string {
-  const route = parseAuditRoute(pattern)
+export function getDefaultAuditAction(
+  method: string,
+  pattern: string,
+  namespaces?: string[]
+): string {
+  const route = parseAuditRoute(pattern, namespaces)
   if (!route) {
     return `${method} ${pattern}`
   }
@@ -200,6 +234,7 @@ export function getAuditOutcome(statusCode: number): AuditOutcome {
 export function resolveAuditActor(req: AuditRequest): {
   actor_type: string
   actor_id: string | null
+  impersonator_id: string | null
   metadata: Record<string, unknown>
 } {
   const authContext = req.auth_context
@@ -210,7 +245,12 @@ export function resolveAuditActor(req: AuditRequest): {
       metadata.auth_identity_id = authContext.auth_identity_id
     }
 
-    return { actor_type: "anonymous", actor_id: null, metadata }
+    return {
+      actor_type: "anonymous",
+      actor_id: null,
+      impersonator_id: null,
+      metadata,
+    }
   }
 
   const createdBy = (req as { secret_key_context?: { created_by?: string } })
@@ -222,6 +262,11 @@ export function resolveAuditActor(req: AuditRequest): {
   return {
     actor_type: authContext.actor_type,
     actor_id: authContext.actor_id,
+    impersonator_id:
+      typeof authContext.impersonator_id === "string" &&
+      authContext.impersonator_id
+        ? authContext.impersonator_id
+        : null,
     metadata,
   }
 }
@@ -241,6 +286,10 @@ function toDataObject(value: unknown): Record<string, unknown> | null {
 export type AuditMiddlewareOptions = {
   routesFinder: RoutesFinder<RouteDescriptor>
   auditRoutesFinder?: RoutesFinder<AuditConfigRoute>
+  /**
+   * Path prefixes that are never the resource, such as `/v1/admin`.
+   */
+  auditNamespaces?: string[]
   getAuditService: () => IAuditModuleService
   logger: Logger
 }
@@ -253,6 +302,7 @@ export type AuditMiddlewareOptions = {
 export function createAuditMiddleware({
   routesFinder,
   auditRoutesFinder,
+  auditNamespaces = [],
   getAuditService,
   logger,
 }: AuditMiddlewareOptions) {
@@ -331,7 +381,9 @@ export function createAuditMiddleware({
             callSafely("resource", route, () =>
               config.resource!(auditReq, body)
             )) ||
-          (pattern ? getDefaultAuditResource(pattern, params, body) : undefined)
+          (pattern
+            ? getDefaultAuditResource(pattern, params, body, auditNamespaces)
+            : undefined)
 
         const requestData =
           config.requestData &&
@@ -350,6 +402,7 @@ export function createAuditMiddleware({
         const {
           actor_type,
           actor_id,
+          impersonator_id,
           metadata: actorMetadata,
         } = resolveAuditActor(auditReq)
         const metadata = { ...toDataObject(routeMetadata), ...actorMetadata }
@@ -362,10 +415,11 @@ export function createAuditMiddleware({
           action:
             config.action ??
             (pattern
-              ? getDefaultAuditAction(method, pattern)
+              ? getDefaultAuditAction(method, pattern, auditNamespaces)
               : `${method} ${path}`),
           actor_type,
           actor_id,
+          impersonator_id,
           resource_type: resource?.type ?? null,
           resource_id: resource?.id ?? null,
           outcome: getAuditOutcome(statusCode),

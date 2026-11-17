@@ -182,6 +182,50 @@ describe("Audit helpers", () => {
     expect(action("POST", "/:id")).toBe("POST /:id")
   })
 
+  it("leaves the longest declared namespace out of the resource", () => {
+    const namespaces = ["/v1", "/v1/admin"]
+    const action = (method: string, pattern: string) =>
+      getDefaultAuditAction(method, pattern, namespaces)
+
+    expect(action("POST", "/v1/admin/credits")).toBe("credit.create")
+    expect(action("POST", "/v1/admin/organizations/deprovision")).toBe(
+      "organization.deprovision"
+    )
+    expect(action("POST", "/v1/admin/auth/impersonate")).toBe(
+      "auth.impersonate"
+    )
+    expect(action("POST", "/v1/projects")).toBe("project.create")
+    expect(action("POST", "/v1/projects/:id/environments/:env_id")).toBe(
+      "environment.update"
+    )
+    expect(action("DELETE", "/v1/admin/organizations/:id")).toBe(
+      "organization.delete"
+    )
+    expect(action("POST", "/V1/ADMIN/credits")).toBe("credit.create")
+    expect(action("POST", "/v1/:id")).toBe("POST /v1/:id")
+    expect(action("POST", "/v1/admin")).toBe("POST /v1/admin")
+    expect(action("POST", "/v10/credits")).toBe("credit.create")
+    expect(action("POST", "/admin/products")).toBe("product.create")
+    expect(action("POST", "/admin/products/batch")).toBe("product.batch")
+
+    expect(
+      getDefaultAuditResource(
+        "/v1/admin/credits",
+        {},
+        { credit: { id: "credit_1" } },
+        namespaces
+      )
+    ).toEqual({ type: "credit", id: "credit_1" })
+    expect(
+      getDefaultAuditResource(
+        "/v1/admin/organizations/:id",
+        { id: "org_1" },
+        undefined,
+        namespaces
+      )
+    ).toEqual({ type: "organization", id: "org_1" })
+  })
+
   it("maps status codes to outcomes", () => {
     expect(getAuditOutcome(200)).toBe("succeeded")
     expect(getAuditOutcome(302)).toBe("succeeded")
@@ -198,16 +242,27 @@ describe("Audit helpers", () => {
     expect(actor({})).toEqual({
       actor_type: "anonymous",
       actor_id: null,
+      impersonator_id: null,
       metadata: {},
     })
     expect(
       actor({ auth_context: { actor_id: "user_1", actor_type: "user" } as any })
-    ).toEqual({ actor_type: "user", actor_id: "user_1", metadata: {} })
+    ).toEqual({
+      actor_type: "user",
+      actor_id: "user_1",
+      impersonator_id: null,
+      metadata: {},
+    })
     expect(
       actor({
         auth_context: { actor_id: "cus_1", actor_type: "customer" } as any,
       })
-    ).toEqual({ actor_type: "customer", actor_id: "cus_1", metadata: {} })
+    ).toEqual({
+      actor_type: "customer",
+      actor_id: "cus_1",
+      impersonator_id: null,
+      metadata: {},
+    })
     expect(
       actor({
         auth_context: { actor_id: "apk_1", actor_type: "api-key" } as any,
@@ -216,6 +271,7 @@ describe("Audit helpers", () => {
     ).toEqual({
       actor_type: "api-key",
       actor_id: "apk_1",
+      impersonator_id: null,
       metadata: { api_key_created_by: "user_1" },
     })
     expect(
@@ -225,6 +281,7 @@ describe("Audit helpers", () => {
     ).toEqual({
       actor_type: "vendor",
       actor_id: "ven_1",
+      impersonator_id: null,
       metadata: {},
     })
     expect(
@@ -238,7 +295,22 @@ describe("Audit helpers", () => {
     ).toEqual({
       actor_type: "anonymous",
       actor_id: null,
+      impersonator_id: null,
       metadata: { auth_identity_id: "authid_1" },
+    })
+    expect(
+      actor({
+        auth_context: {
+          actor_id: "endusr_1",
+          actor_type: "end_user",
+          impersonator_id: "user_staff",
+        } as any,
+      })
+    ).toEqual({
+      actor_type: "end_user",
+      actor_id: "endusr_1",
+      impersonator_id: "user_staff",
+      metadata: {},
     })
   })
 })
@@ -323,6 +395,12 @@ describe("Audit middleware", () => {
         }),
       },
     },
+    {
+      method: "POST",
+      path: "/v1/admin/credits",
+      handler: (_req, res) => res.json({ credit: { id: "credit_1" } }),
+      audit: true,
+    },
   ]
 
   // Records are written once the response is finished, which can come after
@@ -363,6 +441,7 @@ describe("Audit middleware", () => {
             "global",
           ])
         ),
+        auditNamespaces: ["/v1/admin"],
         getAuditService: () => ({ createAuditLogs: record }) as any,
         logger: logger as any,
       })
@@ -394,6 +473,19 @@ describe("Audit middleware", () => {
     logger.warn.mockReset()
   })
 
+  it("names a route's resource after its namespace", async () => {
+    await request.post("/v1/admin/credits").expect(200)
+
+    const [entry] = await waitForRecords(1)
+    expect(entry).toEqual(
+      expect.objectContaining({
+        action: "credit.create",
+        resource_type: "credit",
+        resource_id: "credit_1",
+      })
+    )
+  })
+
   it("records a mutation with the route's settings", async () => {
     const res = await request
       .post("/admin/products")
@@ -408,6 +500,7 @@ describe("Audit middleware", () => {
       action: "product.create",
       actor_type: "user",
       actor_id: "user_1",
+      impersonator_id: null,
       resource_type: "product",
       resource_id: "prod_new",
       outcome: "succeeded",

@@ -123,6 +123,16 @@ export default defineMiddlewares({
 
 Request and response bodies are never stored, only what `requestData` and `responseData` return. `metadata` adds values to the record's `metadata`.
 
+Audit logs name a route's resource after the path's first segment, such as `product` for `/admin/products`. When an API lives under a longer prefix, declare it so it isn't mistaken for the resource:
+
+```ts
+export default defineMiddlewares({
+  // `POST /v1/admin/credits` is recorded as `credit.create`
+  audit: { namespaces: ["/v1", "/v1/admin"] },
+  routes: [],
+})
+```
+
 ## Resources
 
 - [Framework overview](https://docs.medusajs.com/learn/fundamentals/framework)

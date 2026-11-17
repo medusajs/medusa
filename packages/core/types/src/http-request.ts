@@ -138,6 +138,11 @@ export interface AuthContext {
    * can require a recent completion to gate elevated actions.
    */
   mfa_challenge_completed_at?: string | null
+  /**
+   * The ID of the person acting as the actor, such as a support agent, when
+   * the token was issued for impersonation.
+   */
+  impersonator_id?: string
 }
 
 export interface PublishableKeyContext {

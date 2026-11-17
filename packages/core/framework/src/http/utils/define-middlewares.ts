@@ -35,13 +35,19 @@ export function defineMiddlewares<
 >(
   config:
     | Route[]
-    | { routes?: Route[]; errorHandler?: MiddlewaresConfig["errorHandler"] }
+    | {
+        routes?: Route[]
+        errorHandler?: MiddlewaresConfig["errorHandler"]
+        audit?: MiddlewaresConfig["audit"]
+      }
 ): MiddlewaresConfig {
   const routes = Array.isArray(config) ? config : config.routes || []
   const errorHandler = Array.isArray(config) ? undefined : config.errorHandler
+  const audit = Array.isArray(config) ? undefined : config.audit
 
   return {
     errorHandler,
+    audit,
     routes: routes.map((route) => {
       let { middlewares, method, methods, ...rest } = route
       if (!methods) {
