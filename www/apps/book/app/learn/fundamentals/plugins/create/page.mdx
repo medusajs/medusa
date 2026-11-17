@@ -18,7 +18,7 @@ Plugins are available starting from [Medusa v2.3.0](https://github.com/medusajs/
 
 ## 1. Create a Plugin Project
 
-Plugins are created in a separate Medusa project. This makes the development and publishing of the plugin easier. Later, you'll install that plugin in your Medusa application to test it out and use it.
+Plugins are created in a separate Medusa project. This makes the development and publishing of the plugin easier. Later, you'll install that plugin in your Medusa application to test it out and use it. To test the plugin, use a Medusa application that you [set up locally from your Cloud project](!cloud!/setup-locally).
 
 Medusa's `create-medusa-app` CLI tool provides the option to create a plugin project. Run the following command to create a new plugin project:
 
@@ -606,6 +606,14 @@ npm install @myorg/plugin-name
 Where `@myorg/plugin-name` is the name of your plugin as published on NPM.
 
 Then, register the plugin in your Medusa application's configurations as explained in [this section](#register-plugin-in-medusa-application).
+
+To use the plugin in Cloud, push these changes to your Cloud project's repository. Cloud then deploys them. If the plugin requires environment variables, [add them to the Cloud environment](!cloud!/environments/environment-variables) before you push. Learn more in the [Publish Local Changes to Cloud](!cloud!/setup-locally#publish-local-changes-to-cloud) section.
+
+<Note type="warning">
+
+Cloud can't install a plugin that you only published to the local package registry with `plugin:publish`. Publish the plugin to npm, or to a private registry that your Cloud project can access, before deploying.
+
+</Note>
 
 ---
 

@@ -54,11 +54,35 @@ You can also star the [Medusa repository on GitHub](https://github.com/medusajs/
 
 ---
 
+## Ensure Custom Migrations Have Rollback Methods
+
+When you create custom migrations, include both `up` and `down` methods. The `up` method applies the changes to the database schema, and the `down` method reverses them. This lets you roll back database changes if you need to revert an update.
+
+If you use the [db\:generate](!resources!/medusa-cli/commands/db#dbgenerate) command to generate migrations, it creates both methods for you. If you write migrations manually, learn more in the [Migrations](../fundamentals/data-models/write-migration/page.mdx) chapter.
+
+---
+
 ## Update Medusa Application
+
+<Note title="Agent Hand-off">
+
+Your AI agent can perform the steps in this section. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/learn/update.md and update my Medusa application to the latest version
+```
+
+</Note>
+
+You update your Medusa application [locally](!cloud!/setup-locally), then push the update to your [Cloud](!cloud!) project's repository. Cloud deploys it and migrates the environment's database.
 
 Before updating a Medusa application, make sure to check the [release notes](https://github.com/medusajs/medusa/releases) for any breaking changes that require actions from your side.
 
-Then, to update your Medusa application, bump the version of all `@medusajs/*` dependencies in your `package.json`. Then, re-install dependencies:
+### 1. Update Dependencies Locally
+
+In your [local Medusa application](!cloud!/setup-locally), create a new branch for the update, or check out the branch of a [long-lived environment](!cloud!/environments/long-lived) such as Staging. You'll test the update on this branch before it reaches production.
+
+Then, bump the version of all `@medusajs/*` dependencies in your `package.json`, and re-install dependencies:
 
 ```bash npm2yarn
 npm install
@@ -66,11 +90,11 @@ npm install
 
 This will update all Medusa packages to the latest version.
 
-### Running Migrations
+### 2. Run Migrations Locally
 
 Releases may include changes to the database, such as new tables, updates to existing tables, updates after adding links, or data migration scripts.
 
-So, after updating Medusa, run the following command to migrate the latest changes to your database:
+So, after updating Medusa, run the following command to migrate the latest changes to your local database:
 
 ```bash npx2yarn
 npx medusa db:migrate
@@ -78,7 +102,60 @@ npx medusa db:migrate
 
 This will run all pending migrations, sync links, and run data migration scripts.
 
-### Reverting an Update
+<Note title="Prompt for link changes?">
+
+If `medusa db:migrate` shows a "Select tables to act upon" prompt locally, the new version removed or changed links. Cloud deployments don't show this prompt. Cloud applies all link changes automatically, including deleting the tables of removed links. Learn more in the [Database](!cloud!/database#how-cloud-applies-link-changes) guide.
+
+</Note>
+
+### 3. Test the Update Locally
+
+Start your Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, check that the application and your customizations work with the new version:
+
+- Check the terminal for errors or warnings while the application starts, such as deprecation warnings for APIs your customizations use.
+- Open the Medusa Admin at `http://localhost:9000/app`, and check that your admin widgets and UI routes load.
+- Send requests to your custom API routes, and test the flows that your workflows, subscribers, and scheduled jobs handle.
+- If you have a storefront, run it against the local Medusa application and test the main flows, such as adding to the cart and checking out.
+- If you have [integration tests](../debugging-and-testing/testing-tools/page.mdx), run them.
+
+Fix any issues before you push the update.
+
+### 4. Push and Test the Update in Cloud
+
+Don't push an update directly to your production branch. While Medusa updates are generally safe and stable, test the update in a separate environment first to make sure your customizations and configurations work with the new version. Each environment has its own database, so testing in other environments doesn't affect your production data.
+
+Push the changes in `package.json`, the lock file, and any other affected files to your branch:
+
+- If you're on a long-lived environment's branch, such as Staging, Cloud deploys the changes to that environment.
+- If you're on a new branch, open a pull request to the production branch. Cloud creates a [preview environment](!cloud!/environments/preview) for the pull request, and Medusa posts a comment on it with links to the preview.
+
+![Diagram showcasing process of deploying to staging then production](https://res.cloudinary.com/dza7lstvk/image/upload/v1750334010/Cloud/deploy-to-staging_d4oyys.jpg)
+
+If you deployed a storefront alongside your Medusa application, Cloud redeploys both the backend and storefront. Cloud also runs the migrations on the environment's database during the deployment.
+
+Then, [access the environment's deployment](!cloud!/deployments/access) to test the update. Use the environment's [build and runtime logs](!cloud!/logs) to debug any issues.
+
+### 5. Push the Update to Production
+
+Once you've tested the update in a staging or preview environment, merge the changes into your production branch. Cloud deploys them to the production environment, which updates the production's code and database.
+
+---
+
+## Revert an Update
+
+### Revert an Update in Cloud
+
+If you encounter issues after deploying an update, [redeploy a previous deployment](!cloud!/deployments#redeploy-a-deployment) to roll back the code changes.
+
+Redeploying a previous deployment doesn't roll back the database changes made by the update. If you need to roll back the database changes, contact support for assistance.
+
+### Revert an Update Locally
 
 Before reverting an update, if you already ran the migrations, you have to first identify the modules that had migrations. Then, before reverting, run the `db:rollback` command for each of those modules.
 

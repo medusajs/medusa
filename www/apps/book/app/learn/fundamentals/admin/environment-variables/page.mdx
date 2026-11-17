@@ -24,9 +24,11 @@ This only applies to customizations in a Medusa project. For plugins, refer to t
 
 The Medusa Admin is built on top of [Vite](https://vite.dev/). To set an environment variable that you want to use in a widget or UI route, prefix the environment variable with `VITE_`.
 
-For example:
+In Cloud, add the variable in your environment's [Environment variables settings](!cloud!/environments/environment-variables) and enable its **Build** toggle. Vite embeds the variable in the admin's code when it builds the admin, so the variable must be available at build time. Then, redeploy the environment.
 
-```plain
+For local development, add the variable to your `.env` file. For example:
+
+```plain title=".env"
 VITE_MY_API_KEY=sk_123
 ```
 
@@ -92,7 +94,7 @@ Learn more about other Vite environment variables in the [Vite documentation](ht
 
 ## Predefined Environment Variables
 
-You can further customize the Medusa Admin behavior using the following predefined environment variables. You can set the environment variables in your `.env` file or in your deployment platform.
+You can further customize the Medusa Admin behavior using the following predefined environment variables. Set them in your [Cloud environment's variables](!cloud!/environments/environment-variables) with the **Build** toggle enabled, then in your `.env` file for local development.
 
 <Note>
 

@@ -16,6 +16,10 @@ However, how you implement third-party syncing can significantly impact performa
 
 This chapter covers best practices to avoid these issues when syncing data between Medusa and third-party systems. These best practices are general programming patterns that aren't Medusa-specific, but they're essential for building robust third-party syncs.
 
+In Cloud, the data that your Medusa application sends to and receives from external services counts toward your plan's [Data Transfer](https://docs.medusajs.com/cloud/usage/index.html.md) usage. So, every request a sync sends to a third-party system, and every response it receives, adds to that usage. Usage beyond your plan's limits is billed as Flex Usage.
+
+Practices in this chapter, such as [retrieving only necessary fields](#retrieve-only-necessary-fields) and syncing only changed records, also reduce your data transfer. Track your usage in the Usage settings of your Cloud organization.
+
 ***
 
 ## How to Sync Data Between Systems
@@ -896,7 +900,7 @@ In this chapter, you'll learn how to create a production build of your Medusa ap
 
 The next chapter explains how to deploy your Medusa application.
 
-The below instructions are useful for self-hosting your Medusa application. You can also use [Cloud](https://docs.medusajs.com/cloud/index.html.md) to deploy and manage your Medusa application without worrying about infrastructure. Medusa will handle the configurations, deployment, and scaling for you.
+The below instructions are useful for self-hosting your Medusa application. You can also use [Cloud](https://docs.medusajs.com/cloud/index.html.md) to deploy and manage your Medusa application without worrying about infrastructure. Cloud builds your application on every deployment and loads the environment variables you set in the [environment's settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md), so you don't run these steps yourself.
 
 ## build Command
 
@@ -927,7 +931,7 @@ You need to run these steps every time you run the `build` command, since the `.
 cd .medusa/server && npm install
 ```
 
-2. When running the application locally, make sure to copy the `.env` file from the root project's directory. In production, use system environment variables instead.
+2. When running the application locally, make sure to copy the `.env` file from the root project's directory. In production, set system environment variables through your hosting provider instead.
 
 ```bash title=".medusa/server"
 cp ../../.env .env.production
@@ -1510,9 +1514,13 @@ private-key.pem
 
 ### Step 4: Set Environment Variables
 
-Finally, set the following environment variables using the generated keys:
+Finally, set the following environment variables using the generated keys.
 
-```bash
+In Cloud, add them in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md), then redeploy the environment. Mark `JWT_SECRET_KEY` as **Sensitive**, and enable the **Build** toggle for all of them, since `medusa-config.ts` reads them during the build.
+
+For local development, add them to your `.env` file:
+
+```bash title=".env"
 # JWT Configuration
 JWT_SECRET_KEY="-----BEGIN RSA PRIVATE KEY-----
 MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC...
@@ -1879,25 +1887,34 @@ Notice that you use the `loadEnv` utility to load environment variables. Learn m
 
 By using this utility, you can use environment variables as the values of your configurations. It's highly recommended that you use environment variables for secret values, such as API keys and database credentials, or for values that change based on the environment, such as the application's Cross Origin Resource Sharing (CORS) configurations.
 
-Since `medusa-config.ts` is evaluated during the build phase, any environment variable referenced in it must have the **Build** flag enabled in the [Cloud environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md). If a variable is only available at runtime, the configuration will read it as `undefined` during build and your module providers may fail to load.
-
-For example, you can set the `DATABASE_URL` environment variable in your `.env` file:
-
-```bash
-DATABASE_URL=postgres://postgres@localhost/medusa-store
-```
-
-Then, use the value in `medusa-config.ts`:
+For example, to pass an API key to a module, use an environment variable in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
-  projectConfig: {
-    databaseUrl: process.env.DATABASE_URL,
-    // ...
-  },
   // ...
+  modules: [
+    {
+      resolve: "./src/modules/cms",
+      options: {
+        apiKey: process.env.CMS_API_KEY,
+      },
+    },
+  ],
 })
 ```
+
+Then, set the environment variable in Cloud and locally:
+
+1. In Cloud, add `CMS_API_KEY` in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md), then redeploy the environment.
+2. For local development, add the variable to your `.env` file:
+
+```bash
+CMS_API_KEY=123
+```
+
+Since `medusa-config.ts` is evaluated during the build phase, any environment variable referenced in it must have the **Build** toggle enabled in the [Cloud environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md). If a variable is only available at runtime, the configuration reads it as `undefined` during the build and your module providers may fail to load.
+
+Cloud sets `DATABASE_URL` and `REDIS_URL` for you, so you only set them in your local `.env` file.
 
 ***
 
@@ -2985,11 +3002,7 @@ To use `pnpm` with Medusa, you need to add some configuration to your project. T
 
 ### Who is This Guide For?
 
-As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), new Medusa projects support `pnpm`. You can create a new Medusa project with `pnpm` using the following command:
-
-```bash
-pnpm dlx create-medusa-app@latest
-```
+As of [Medusa v2.13.0](https://github.com/medusajs/medusa/releases/tag/v2.13.0), new Medusa projects support `pnpm`. When you [create a Cloud project](https://docs.medusajs.com/cloud/first-project/index.html.md) from a starter, the starter uses `pnpm` by default. Learn how to clone and run it in the [Set Up Medusa Locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md) guide.
 
 This guide is intended for developers who want to switch an existing Medusa project from `npm` or `yarn` to `pnpm`. Choose the section that matches your project's setup:
 
@@ -3529,7 +3542,7 @@ In the next chapters, you'll learn how to build associations between data models
 
 # Guide: Implement Brand Module
 
-In this chapter, you'll build a Brand Module that adds a `brand` table to the database and provides data-management features for it.
+In this chapter, you'll build a Brand Module in your Medusa application that adds a `brand` table to the database and provides data-management features for it.
 
 A [module](https://docs.medusajs.com/learn/fundamentals/modules/index.html.md) is a reusable package of functionalities related to a single domain or integration. Medusa comes with multiple pre-built modules for core commerce needs, such as the [Cart Module](https://docs.medusajs.com/resources/commerce-modules/cart/index.html.md) that holds the data models and business logic for cart operations.
 
@@ -3679,7 +3692,7 @@ In the next chapter, you'll implement the functionality to create a brand in a w
 
 # Build Custom Features
 
-In the upcoming chapters, you'll follow step-by-step guides to build custom features in Medusa. These guides gradually introduce Medusa's concepts to help you understand what they are and how to use them.
+In the upcoming chapters, you'll follow step-by-step guides to build custom features in the Medusa application. These guides gradually introduce Medusa's concepts to help you understand what they are and how to use them.
 
 ## Interactive Learning with Claude Code
 
@@ -5642,11 +5655,16 @@ module.exports = defineConfig({
 
 The object passed in `modules` accept an `options` property, whose value is an object of options to pass to the module. These are the options you receive in the `CmsModuleService`'s constructor.
 
-You can add the `CMS_API_KEY` environment variable to `.env`:
+Then, set the `CMS_API_KEY` environment variable:
+
+1. In Cloud, add `CMS_API_KEY` in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md). Enable its **Build** toggle, since `medusa-config.ts` reads it during the build.
+2. For local development, add the variable to your `.env` file:
 
 ```bash
 CMS_API_KEY=123
 ```
+
+You'll deploy the module and use the variable in Cloud when you [publish your customizations](https://docs.medusajs.com/learn/customization/publish/index.html.md) later in this tutorial.
 
 ***
 
@@ -5659,7 +5677,9 @@ In the next chapter, you'll learn how to emit an event when a brand is created, 
 
 # Customizations Next Steps: Learn the Fundamentals
 
-The previous guides introduced Medusa's different concepts and how you can use them to customize Medusa for a realistic use case, You added brands to your application, linked them to products, customized the admin dashboard, and integrated a third-party CMS.
+The previous guides introduced Medusa's different concepts and how you can use them to customize Medusa for a realistic use case. You added brands to your application, linked them to products, customized the admin dashboard, integrated a third-party CMS, and [published your customizations to Cloud](https://docs.medusajs.com/learn/customization/publish/index.html.md).
+
+As you build more customizations, follow the same flow from the [Publish to Cloud](https://docs.medusajs.com/learn/customization/publish/index.html.md) chapter: test your changes locally, then in a preview environment, before merging them to production.
 
 The next chapters will cover each of these concepts in depth, with the different ways you can use them, their options or configurations, and more advanced features that weren't covered in the previous guides. While you can start building with Medusa, it's highly recommended to follow the next chapters for a better understanding of Medusa's fundamentals.
 
@@ -5677,6 +5697,72 @@ The following guides and references are useful for your development journey:
 ## More Examples in Recipes
 
 In the [Recipes](https://docs.medusajs.com/resources/recipes/index.html.md) documentation, you'll also find step-by-step guides for different use cases, such as building a marketplace, digital products, and more.
+
+
+# Publish Customizations to Cloud
+
+In the previous chapters, you added a brands feature to your Medusa application and tested it locally. In this chapter, you'll publish your customizations to [Cloud](https://docs.medusajs.com/cloud/index.html.md), so that you can use them in your deployed Medusa application.
+
+### Prerequisites
+
+- [A Cloud project that you set up locally.](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
+
+## How Publishing to Cloud Works
+
+Your Cloud project is connected to a GitHub repository. When you push changes to the branch of an environment, Cloud builds and deploys them to that environment. During the deployment, Cloud also runs your migrations on the environment's database, such as the migrations of the Brand Module.
+
+To avoid breaking your production store, test your changes in a [preview environment](https://docs.medusajs.com/cloud/environments/preview/index.html.md) first. Cloud creates a preview environment when you open a pull request to the production branch. Each preview environment has its own database, so testing in it doesn't affect your production data.
+
+***
+
+## Step 1: Add Environment Variables to Cloud
+
+The CMS Module that you created in the [Integrate Systems](https://docs.medusajs.com/learn/customization/integrate-systems/service/index.html.md) chapter uses the `CMS_API_KEY` environment variable. Since your `.env` file isn't pushed to the repository, you must add the variable to your Cloud environment before you deploy.
+
+Add the variable in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variable in the environment variables section. Preview environments created afterward inherit it. Learn more in the [Preview Environments](https://docs.medusajs.com/cloud/environments/preview#manage-shared-previews-settings/index.html.md) guide.
+2. **Production environment**: In the Production environment's dashboard, click **Environment variables** in the sidebar, then add the variable and click **Save**.
+
+In both places, enable the variable's **Build** toggle, since `medusa-config.ts` reads it during the build. Learn more in the [Environment Variables](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md) Cloud guide.
+
+***
+
+## Step 2: Push Changes and Open a Pull Request
+
+Next, create a new branch in your local Medusa application and commit your changes:
+
+```bash
+git checkout -b feat/brands
+git add .
+git commit -m "Add brands feature"
+git push origin feat/brands
+```
+
+Then, open a pull request from the `feat/brands` branch to your production branch on GitHub.
+
+Cloud creates a preview environment for the pull request and deploys your changes to it. You can follow the deployment's progress in the [Deployments](https://docs.medusajs.com/cloud/deployments/index.html.md) page of your project's dashboard.
+
+Check the deployment's build and runtime logs to find the cause. Learn more in the [Troubleshooting Failed Deployments](https://docs.medusajs.com/cloud/deployments#troubleshooting-failed-deployments/index.html.md) guide.
+
+***
+
+## Step 3: Test Changes in the Preview Environment
+
+Once the deployment is live, test the brands feature in the preview environment:
+
+1. Open the preview environment's Medusa Admin. Learn how to find its URL in the [Preview Environments](https://docs.medusajs.com/cloud/environments/preview#access-deployed-preview-environment/index.html.md) guide.
+2. Log in with the **Log in with Medusa Cloud** button.
+3. Click **Brands** in the sidebar to open the UI route you created in the [Customize Admin](https://docs.medusajs.com/learn/customization/customize-admin/route/index.html.md) chapter, and check that it lists brands.
+4. Open a product's details page, and check that the brand widget you created in the [Customize Admin](https://docs.medusajs.com/learn/customization/customize-admin/widget/index.html.md) chapter shows the product's brand.
+
+***
+
+## Step 4: Merge Changes to Production
+
+After you test your changes, merge the pull request into your production branch. Cloud deploys the changes to the Production environment and runs the migrations on its database.
+
+Your production store now includes the brands feature. Learn more about how Cloud deploys your changes in the [Deployments](https://docs.medusajs.com/cloud/deployments/index.html.md) guide.
 
 
 # Re-Use Customizations with Plugins
@@ -6788,7 +6874,7 @@ LOG_LEVEL=error
 
 This logs `error` messages only.
 
-The environment variable must be set as a system environment variable and not in `.env`.
+The environment variable must be set as a system environment variable and not in `.env`. In Cloud, add it in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md), then redeploy the environment. Locally, set it in your shell before starting the application.
 
 ### Save Logs in a File
 
@@ -6803,6 +6889,8 @@ LOG_FILE=all.log
 Your logs are now saved in the `all.log` file at the root of your Medusa application.
 
 The environment variable must be set as a system environment variable and not in `.env`.
+
+In Cloud, you don't need `LOG_FILE`. Cloud stores your application's logs, and you can view them in the [Logs](https://docs.medusajs.com/cloud/logs/index.html.md) page of the Cloud dashboard.
 
 ***
 
@@ -9085,9 +9173,11 @@ This only applies to customizations in a Medusa project. For plugins, refer to t
 
 The Medusa Admin is built on top of [Vite](https://vite.dev/). To set an environment variable that you want to use in a widget or UI route, prefix the environment variable with `VITE_`.
 
-For example:
+In Cloud, add the variable in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md) and enable its **Build** toggle. Vite embeds the variable in the admin's code when it builds the admin, so the variable must be available at build time. Then, redeploy the environment.
 
-```plain
+For local development, add the variable to your `.env` file. For example:
+
+```plain title=".env"
 VITE_MY_API_KEY=sk_123
 ```
 
@@ -9153,7 +9243,7 @@ Learn more about other Vite environment variables in the [Vite documentation](ht
 
 ## Predefined Environment Variables
 
-You can further customize the Medusa Admin behavior using the following predefined environment variables. You can set the environment variables in your `.env` file or in your deployment platform.
+You can further customize the Medusa Admin behavior using the following predefined environment variables. Set them in your [Cloud environment's variables](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md) with the **Build** toggle enabled, then in your `.env` file for local development.
 
 The following pre-defined environment variables are available starting [Medusa v2.12.0](https://github.com/medusajs/medusa/releases/tag/v2.12.0).
 
@@ -16253,7 +16343,7 @@ In this migration, the `up` method drops the index on the `headline` column of t
 
 # Environment Variables
 
-In this chapter, you'll learn how environment variables are loaded in Medusa.
+In this chapter, you'll learn how to set environment variables in Cloud and locally, and how Medusa loads them.
 
 ## System Environment Variables
 
@@ -16265,9 +16355,28 @@ In production, you should always use system environment variables that you set t
 
 ***
 
+## Set Environment Variables in Cloud
+
+When you deploy your Medusa application to [Cloud](https://docs.medusajs.com/cloud/index.html.md), you set its environment variables in the environment's **Environment variables** settings in the Cloud dashboard. Cloud passes them to your application as system environment variables.
+
+To add environment variables to a Cloud environment:
+
+1. Open the environment's dashboard in Cloud.
+2. Click **Environment variables** in the sidebar.
+3. Add the variables, then click **Save**.
+4. [Redeploy the environment](https://docs.medusajs.com/cloud/environments/long-lived#redeploy-environment/index.html.md) for the changes to take effect.
+
+Each environment, such as Production or a staging environment, has its own variables. Learn more in the [Environment Variables](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md) Cloud guide.
+
+Cloud sets some variables for you, such as `DATABASE_URL`, `REDIS_URL`, and `PORT`, so you don't add them yourself. Refer to the [Restricted Environment Variable Names](https://docs.medusajs.com/cloud/environments/environment-variables#restricted-environment-variable-names/index.html.md) section for the full list.
+
+Medusa evaluates `medusa-config.ts` during the build. So, enable the **Build** toggle for any variable that `medusa-config.ts` reads. Otherwise, the variable is `undefined` during the build.
+
+***
+
 ## Environment Variables in .env Files
 
-During development, it's easier to set environment variables in a `.env` file in your repository.
+During local development, set environment variables in a `.env` file in your repository. To use the same values that your Cloud environment uses, [export the environment's variables](https://docs.medusajs.com/cloud/environments/environment-variables#export-environment-variables-on-cloud/index.html.md) as a `.env` file.
 
 Based on your `NODE_ENV` system environment variable, Medusa will try to load environment variables from the following `.env` files:
 
@@ -16300,7 +16409,7 @@ Learn more in the [Admin Environment Variables](https://docs.medusajs.com/learn/
 
 ## Predefined Medusa Environment Variables
 
-You can further customize the Medusa application behavior using the following predefined environment variables. You can set the environment variables in your `.env` file or in your deployment platform.
+You can further customize the Medusa application behavior using the following predefined environment variables. Set them in your [Cloud environment's variables](#set-environment-variables-in-cloud), then in your `.env` file for local development.
 
 You should opt for setting configurations in `medusa-config.ts` where possible. For a full list of Medusa configurations, refer to the [Medusa Configurations chapter](https://docs.medusajs.com/learn/configurations/medusa-config/index.html.md).
 
@@ -21613,7 +21722,7 @@ Plugins are available starting from [Medusa v2.3.0](https://github.com/medusajs/
 
 ## 1. Create a Plugin Project
 
-Plugins are created in a separate Medusa project. This makes the development and publishing of the plugin easier. Later, you'll install that plugin in your Medusa application to test it out and use it.
+Plugins are created in a separate Medusa project. This makes the development and publishing of the plugin easier. Later, you'll install that plugin in your Medusa application to test it out and use it. To test the plugin, use a Medusa application that you [set up locally from your Cloud project](https://docs.medusajs.com/cloud/setup-locally/index.html.md).
 
 Medusa's `create-medusa-app` CLI tool provides the option to create a plugin project. Run the following command to create a new plugin project:
 
@@ -22011,6 +22120,10 @@ Where `@myorg/plugin-name` is the name of your plugin as published on NPM.
 
 Then, register the plugin in your Medusa application's configurations as explained in [this section](#register-plugin-in-medusa-application).
 
+To use the plugin in Cloud, push these changes to your Cloud project's repository. Cloud then deploys them. If the plugin requires environment variables, [add them to the Cloud environment](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md) before you push. Learn more in the [Publish Local Changes to Cloud](https://docs.medusajs.com/cloud/setup-locally#publish-local-changes-to-cloud/index.html.md) section.
+
+Cloud can't install a plugin that you only published to the local package registry with `plugin:publish`. Publish the plugin to npm, or to a private registry that your Cloud project can access, before deploying.
+
 ***
 
 ## Update a Published Plugin
@@ -22175,9 +22288,12 @@ For example, if you create a new product, the Index Module will ingest it into i
 
 Since the Index Module is still experimental, the `/store/products` and `/admin/products` API routes will use the Index Module to retrieve products only if the Index Module's feature flag is enabled. By enabling the feature flag, you can filter products by their linked data models in these API routes.
 
-To enable the Index Module's feature flag, add the following line to your `.env` file:
+To enable the Index Module's feature flag, set the `MEDUSA_FF_INDEX_ENGINE` environment variable to `true`:
 
-```env
+1. In Cloud, add the variable in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md), then redeploy the environment.
+2. For local development, add the following line to your `.env` file:
+
+```env title=".env"
 MEDUSA_FF_INDEX_ENGINE=true
 ```
 
@@ -29346,13 +29462,13 @@ A step’s timeout error is returned in the `errors` property of the workflow’
 
 # Medusa's Architecture
 
-In this chapter, you'll learn about the architectural layers in Medusa.
+In this chapter, you'll learn about the architectural layers in the Medusa application.
 
 Find the full architectural diagram at the [end of this chapter](#full-diagram-of-medusas-architecture).
 
 ## HTTP, Workflow, and Module Layers
 
-Medusa is a headless commerce platform. So, storefronts, admin dashboards, and other clients consume Medusa's functionalities through its API routes.
+The Medusa application is a headless commerce platform. So, storefronts, admin dashboards, and other clients consume its functionalities through its API routes.
 
 In a common Medusa application, requests go through four layers in the stack. In order of entry, those are:
 
@@ -30786,15 +30902,15 @@ Refer to the [Deployment](https://docs.medusajs.com/resources/deployment/index.h
 
 # Introduction to Medusa Customizations
 
-This section of the documentation introduces Medusa's open-source core and its Framework in a series of chapters. By the end of the chapters, you will have a solid understanding of how to build and customize commerce features using Medusa.
+This section of the documentation introduces Medusa's open-source application and its Framework in a series of chapters. By the end of the chapters, you will have a solid understanding of how to build and customize commerce features using Medusa.
 
 Learn how to [sign up](https://docs.medusajs.com/cloud/sign-up/index.html.md) and [create your first project](https://docs.medusajs.com/cloud/first-project/index.html.md).
 
-## What is the Medusa Core?
+## What is the Medusa Application?
 
-Medusa's open-source core is an AI-native commerce platform with a Framework to build custom commerce features.
+The Medusa application is an open-source AI-native commerce platform with a Framework to build custom commerce features.
 
-The Medusa core ships with three main tools:
+The Medusa application ships with three main tools:
 
 1. A suite of [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules/index.html.md) with core commerce functionalities, such as tracking inventory, calculating cart totals, accepting payments, managing orders, and much more.
 2. A [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) for building agentic flows and custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
@@ -30833,6 +30949,10 @@ By default, the Medusa application runs in `shared` mode, which runs:
 - `worker`: the worker that processes background tasks. This includes scheduled jobs and subscribers.
 
 While this setup is suitable for development, it is not optimal for production environments where background tasks can be long-running or resource-intensive.
+
+If you deploy your Medusa application to [Cloud](https://docs.medusajs.com/cloud/index.html.md), you don't need to configure worker mode. Cloud runs separate [server and worker instances](https://docs.medusajs.com/cloud/environments/long-lived/index.html.md) for each environment, and sets the `MEDUSA_WORKER_MODE` environment variable of each instance for you.
+
+You can monitor these instances in the [Servers](https://docs.medusajs.com/cloud/monitoring/servers/index.html.md) and [Workers](https://docs.medusajs.com/cloud/monitoring/workers/index.html.md) dashboards. The rest of this chapter applies when you self-host your application.
 
 ### Worker Mode in Production
 
@@ -31503,7 +31623,7 @@ MEDUSA_FF_ANALYTICS=false
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.22.6. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.6).
+Medusa's current version is v2.22.7. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
 
 ## Medusa Versioning
 
@@ -31541,9 +31661,28 @@ You can also star the [Medusa repository on GitHub](https://github.com/medusajs/
 
 ## Update Medusa Application
 
+You update your Medusa application locally, then push the update to your [Cloud](https://docs.medusajs.com/cloud/index.html.md) project's repository. Cloud deploys it and migrates the environment's database.
+
 Before updating a Medusa application, make sure to check the [release notes](https://github.com/medusajs/medusa/releases) for any breaking changes that require actions from your side.
 
-Then, to update your Medusa application, bump the version of all `@medusajs/*` dependencies in your `package.json`. Then, re-install dependencies:
+### 1. Test the Update Outside Production
+
+Don't push an update directly to your production branch. While Medusa updates are generally safe and stable, test the update in a separate environment first to make sure your customizations and configurations work with the new version.
+
+Use one of the following environments to test the update:
+
+- A [long-lived environment](https://docs.medusajs.com/cloud/environments/long-lived/index.html.md), such as Staging. Push the update to its branch, and test it in a production-like environment.
+- A [preview environment](https://docs.medusajs.com/cloud/environments/preview/index.html.md). Push the update to a new branch, then open a pull request to the production branch. Cloud creates a preview environment for the pull request.
+
+Each environment has its own database, so updating and testing in other environments doesn't affect your production data.
+
+![Diagram showcasing process of deploying to staging then production](https://res.cloudinary.com/dza7lstvk/image/upload/v1750334010/Cloud/deploy-to-staging_d4oyys.jpg)
+
+So, before you start, check out the long-lived environment's branch, or create a new branch for the pull request.
+
+### 2. Update Dependencies Locally
+
+In your [local Medusa application](https://docs.medusajs.com/cloud/setup-locally/index.html.md), bump the version of all `@medusajs/*` dependencies in your `package.json`. Then, re-install dependencies:
 
 ```bash
 npm install
@@ -31551,11 +31690,11 @@ npm install
 
 This will update all Medusa packages to the latest version.
 
-### Running Migrations
+### 3. Run Migrations Locally
 
 Releases may include changes to the database, such as new tables, updates to existing tables, updates after adding links, or data migration scripts.
 
-So, after updating Medusa, run the following command to migrate the latest changes to your database:
+So, after updating Medusa, run the following command to migrate the latest changes to your local database:
 
 ```bash
 npx medusa db:migrate
@@ -31563,7 +31702,42 @@ npx medusa db:migrate
 
 This will run all pending migrations, sync links, and run data migration scripts.
 
-### Reverting an Update
+If `medusa db:migrate` shows a "Select tables to act upon" prompt locally, the new version removed or changed links. Cloud deployments don't show this prompt. Cloud applies all link changes automatically, including deleting the tables of removed links. Learn more in the [Database](https://docs.medusajs.com/cloud/database#how-cloud-applies-link-changes/index.html.md) guide.
+
+Then, start your application and test your customizations locally.
+
+### 4. Push and Test the Update in Cloud
+
+Push the changes in `package.json`, the lock file, and any other affected files to the branch:
+
+- If you use a long-lived environment, Cloud deploys the changes to that environment.
+- If you use a new branch, open a pull request to the production branch. Cloud creates a preview environment for it.
+
+If you deployed a storefront alongside your Medusa application, Cloud redeploys both the backend and storefront. Cloud also runs the migrations on the environment's database during the deployment.
+
+Then, [access the environment's deployment](https://docs.medusajs.com/cloud/deployments/access/index.html.md) to test the update. Use the environment's [build and runtime logs](https://docs.medusajs.com/cloud/logs/index.html.md) to debug any issues.
+
+### 5. Push the Update to Production
+
+Once you've tested the update, merge the changes into your production branch. Cloud deploys them to the production environment, which updates the production's code and database.
+
+### Ensure Custom Migrations Have Rollback Methods
+
+When you create custom migrations, include both `up` and `down` methods. The `up` method applies the changes to the database schema, and the `down` method reverses them. This lets you roll back database changes if you need to revert an update.
+
+If you use the [db:generate](https://docs.medusajs.com/resources/medusa-cli/commands/db#dbgenerate/index.html.md) command to generate migrations, it creates both methods for you. If you write migrations manually, learn more in the [Migrations](https://docs.medusajs.com/learn/fundamentals/data-models/write-migration/index.html.md) chapter.
+
+***
+
+## Revert an Update
+
+### Revert an Update in Cloud
+
+If you encounter issues after deploying an update, [redeploy a previous deployment](https://docs.medusajs.com/cloud/deployments#redeploy-a-deployment/index.html.md) to roll back the code changes.
+
+Redeploying a previous deployment doesn't roll back the database changes made by the update. If you need to roll back the database changes, contact support for assistance.
+
+### Revert an Update Locally
 
 Before reverting an update, if you already ran the migrations, you have to first identify the modules that had migrations. Then, before reverting, run the `db:rollback` command for each of those modules.
 

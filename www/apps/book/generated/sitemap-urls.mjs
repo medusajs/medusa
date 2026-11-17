@@ -24,6 +24,7 @@ export const sitemapUrls = [
   "/learn/customization/integrate-systems/schedule-task",
   "/learn/customization/integrate-systems/service",
   "/learn/customization/next-steps",
+  "/learn/customization/publish",
   "/learn/customization/reuse-customizations",
   "/learn/debugging-and-testing/debug-workflows",
   "/learn/debugging-and-testing/feature-flags/create",

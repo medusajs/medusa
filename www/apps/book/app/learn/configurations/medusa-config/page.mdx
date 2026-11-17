@@ -47,29 +47,42 @@ Notice that you use the `loadEnv` utility to load environment variables. Learn m
 
 By using this utility, you can use environment variables as the values of your configurations. It's highly recommended that you use environment variables for secret values, such as API keys and database credentials, or for values that change based on the environment, such as the application's Cross Origin Resource Sharing (CORS) configurations.
 
-<Note title="Cloud users">
-
-Since `medusa-config.ts` is evaluated during the build phase, any environment variable referenced in it must have the **Build** flag enabled in the [Cloud environment variables settings](!cloud!/environments/environment-variables). If a variable is only available at runtime, the configuration will read it as `undefined` during build and your module providers may fail to load.
-
-</Note>
-
-For example, you can set the `DATABASE_URL` environment variable in your `.env` file:
-
-```bash
-DATABASE_URL=postgres://postgres@localhost/medusa-store
-```
-
-Then, use the value in `medusa-config.ts`:
+For example, to pass an API key to a module, use an environment variable in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
-  projectConfig: {
-    databaseUrl: process.env.DATABASE_URL,
-    // ...
-  },
   // ...
+  modules: [
+    {
+      resolve: "./src/modules/cms",
+      options: {
+        apiKey: process.env.CMS_API_KEY,
+      },
+    },
+  ],
 })
 ```
+
+Then, set the environment variable in Cloud and locally:
+
+1. In Cloud, add `CMS_API_KEY` in your environment's [Environment variables settings](!cloud!/environments/environment-variables), then redeploy the environment.
+2. For local development, add the variable to your `.env` file:
+
+```bash
+CMS_API_KEY=123
+```
+
+<Note title="Enable the Build toggle in Cloud">
+
+Since `medusa-config.ts` is evaluated during the build phase, any environment variable referenced in it must have the **Build** toggle enabled in the [Cloud environment variables settings](!cloud!/environments/environment-variables). If a variable is only available at runtime, the configuration reads it as `undefined` during the build and your module providers may fail to load.
+
+</Note>
+
+<Note title="Variables that Cloud manages">
+
+Cloud sets `DATABASE_URL` and `REDIS_URL` for you, so you only set them in your local `.env` file.
+
+</Note>
 
 ---
 
