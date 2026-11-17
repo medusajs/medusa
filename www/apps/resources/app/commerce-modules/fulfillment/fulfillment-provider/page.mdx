@@ -64,6 +64,14 @@ When the Medusa application starts, it registers the Fulfillment Module Provider
 
 For each Fulfillment Module Provider, the Medusa application finds all fulfillment provider services defined in them to register.
 
+### Register Fulfillment Providers on Cloud
+
+On Cloud, Medusa registers the Manual Fulfillment Provider by default, the same as locally. To use another fulfillment provider in a deployed environment:
+
+1. Add the provider to the `providers` option of the Fulfillment Module in `medusa-config.ts`.
+2. Add the environment variables that the provider's options use in your Cloud environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud). Mark secrets, such as API keys, as **Sensitive**, and enable the **Build** toggle, since `medusa-config.ts` reads them during the build. For local development, add the same variables to your `.env` file.
+3. Commit the changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created), and the Medusa application registers the provider when it starts.
+
 ### FulfillmentProvider Data Model
 
 A registered fulfillment provider is represented by the [FulfillmentProvider data model](/references/fulfillment/models/FulfillmentProvider) in the Medusa application.
