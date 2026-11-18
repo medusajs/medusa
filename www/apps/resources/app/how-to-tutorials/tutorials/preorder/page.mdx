@@ -3464,7 +3464,7 @@ In the subscriber, you retrieve the details of the order and pre-order variants.
 
 Notice that the `createNotifications` method receives a `channel` property for a notification. This indicates which [Notification Module Provider](../../../infrastructure-modules/notification/page.mdx#what-is-a-notification-module-provider) to send the notification with.
 
-The `feed` channel is useful for debugging, as it logs the notification in the terminal. To send an email, you can instead [set up a provider like SendGrid](!cloud!/integrations#notification) and change the channel to `email`.
+The `feed` channel is useful for debugging, as it logs the notification in the terminal. To send an email, change the channel to `email` and pass the email's `subject` and `html` in the notification's `content` property. Cloud projects send `email` notifications with [Medusa Emails](!cloud!/emails), Cloud's built-in email service, without any configuration. Learn how to build the email's HTML in the [Set Up React Email Templates](!cloud!/emails/react-email) guide.
 
 To test the subscriber, [perform the steps to test fulfilling pre-orders](#test-scheduled-job). Once a pre-order is fulfilled, you'll see the following message logged in your terminal:
 

@@ -43,17 +43,23 @@ After adding the subscriber, you will have a complete reset password flow you ca
 
 ---
 
-## Prerequisites: Notification Module Provider
+## Prerequisites: Email Sending
 
-To send an email or notification to the user, you must have a Notification Module Provider set up.
+To send an email to the user, you need a Notification Module Provider registered for the `email` channel.
 
-Medusa provides providers like [SendGrid](../../../infrastructure-modules/notification/sendgrid/page.mdx) and [Resend](../../../integrations/guides/resend/page.mdx), and you can also [create your own custom provider](/references/notification-provider-module).
+Cloud projects send notifications of the `email` channel with [Medusa Emails](!cloud!/emails), Cloud's built-in email service. Medusa Emails is enabled by default, so you don't need to configure a Notification Module Provider or add API keys.
 
-Refer to the [Notification Module](../../../infrastructure-modules/notification/page.mdx#what-is-a-notification-module-provider) documentation for a list of available providers and how to set them up.
+<Note>
+
+Without a verified sender domain, Medusa Emails only sends emails to addresses of users in your Cloud organization. To send reset password emails to other email addresses, [add an email sender domain](!cloud!/emails#add-email-sender-domain-to-cloud) to your Cloud project.
+
+</Note>
+
+If you're not using Cloud, you can use another [Notification Module Provider](../../../infrastructure-modules/notification/page.mdx#what-is-a-notification-module-provider) for the `email` channel, or [create your own custom provider](/references/notification-provider-module).
 
 ### Testing with the Local Notification Module Provider
 
-For testing purposes, you can use the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) by adding this to your `medusa-config.ts`:
+Medusa Emails isn't available when you run the Medusa application locally. So, register the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) for the `email` channel during development by adding this to your `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -68,7 +74,11 @@ module.exports = defineConfig({
             resolve: "@medusajs/medusa/notification-local",
             id: "local",
             options: {
-              channels: ["email"],
+              channels: [
+                process.env.NODE_ENV === "development"
+                  ? "email"
+                  : "feed",
+              ],
             },
           },
         ],
@@ -78,7 +88,7 @@ module.exports = defineConfig({
 })
 ```
 
-The Local provider logs email details to your terminal instead of sending actual emails, which is useful for development and testing.
+The Local provider logs email details to your terminal instead of sending actual emails, which is useful for development and testing. It handles the `email` channel only in development, so Medusa Emails sends the emails in your Cloud environments.
 
 ---
 
@@ -92,11 +102,10 @@ export const highlights=[
   ["13", "token", "The password reset token."],
   ["14", "actor_type", "The user's actor type."],
   ["25", "urlPrefix", "Set the page's URL based on the user's actor type."],
-  ["36", "createNotifications", "Send a notification to the user."],
-  ["38", `"email"`, "The channel to send the notification through."],
-  ["40", "template", "The template defined in the third-party provider."],
-  ["41", "data", "The data to pass to the template in the third-party provider."],
-  ["43", "reset_url", "The frontend URL to redirect the user to reset their password."]
+  ["36", "resetUrl", "The frontend URL to redirect the user to reset their password."],
+  ["39", "createNotifications", "Send a notification to the user."],
+  ["41", `"email"`, "The channel to send the notification through."],
+  ["42", "content", "The email's subject and HTML content."]
 ]
 
 ```ts title="src/subscribers/handle-reset.ts" highlights={highlights} collapsibleLines="1-9" expandMoreLabel="Show Imports"
@@ -135,14 +144,15 @@ export default async function resetPasswordTokenHandler({
     urlPrefix = `${backendUrl}${adminPath}`
   }
 
+  const resetUrl = `${urlPrefix}/reset-password` +
+    `?token=${token}&email=${email}`
+
   await notificationModuleService.createNotifications({
     to: email,
     channel: "email",
-    // TODO replace with template ID in notification provider
-    template: "password-reset",
-    data: {
-      // a URL to a frontend application
-      reset_url: `${urlPrefix}/reset-password?token=${token}&email=${email}`,
+    content: {
+      subject: "Reset your password",
+      html: `<p>Click <a href="${resetUrl}">here</a> to reset your password.</p>`,
     },
   })
 }
@@ -179,13 +189,12 @@ For the notification, you can configure the following fields:
 
 - `to`: The identifier to send the notification to, which in this case is the email.
 - `channel`: The channel to send the notification through, which in this case is email.
-- `template`: The template ID of the email to send. This ID depends on the Notification Module provider you use. For example, if you use SendGrid, this would be the ID of the SendGrid template.
-    - Refer to the [Example Notification Templates](#example-notification-templates) section below for examples of notification templates to use.
-- `data`: The data payload to pass to the template. You can pass additional fields, if necessary.
+- `content`: The email's subject and HTML content, which includes the link to reset the password. On Cloud, Medusa Emails sends this content to the user.
+    - Refer to the [Use a React Email Template](#use-a-react-email-template) section below to build a richer email template.
 
 ### Test It Out
 
-After you set up the Notification Module Provider, create a template in the provider, and create the subscriber, you can test the reset password flow.
+After you set up the Local Notification Module Provider and create the subscriber, you can test the reset password flow.
 
 Start the Medusa application with the following command:
 
@@ -201,9 +210,7 @@ Once you reset the password, you should see that the `auth.password_reset` event
 info:    Processing auth.password_reset which has 1 subscribers
 ```
 
-If you're using an email Notification Module Provider, check the user's email inbox for the reset password email with the link to reset their password.
-
-If you're using the Local provider, check your terminal for the logged email details.
+The Local provider logs the email details in your terminal. After you deploy the subscriber to Cloud, Medusa Emails sends the reset password email to the user's inbox. You can track its delivery on the [Email Activity page](!cloud!/emails#monitor-email-sending-activity-on-cloud) of your Cloud project.
 
 ---
 
@@ -221,297 +228,8 @@ The Medusa Admin already has a reset password page at `/reset-password?token={to
 
 ---
 
-## Example Notification Templates
+## Use a React Email Template
 
-The following section provides example notification templates for some Notification Module Providers.
+The subscriber sends a basic HTML email. To build a richer email template, use [React Email](https://react.email) to create the template as a React component, then render it to an HTML string in the subscriber.
 
-### SendGrid
-
-<Note>
-
-Refer to the [SendGrid Notification Module Provider](../../../infrastructure-modules/notification/sendgrid/page.mdx) documentation for more details on how to set up SendGrid.
-
-</Note>
-
-The following HTML template can be used with SendGrid to send a reset password email:
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Your Password</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 465px;
-            margin: 40px auto;
-            border: 1px solid #eaeaea;
-            border-radius: 5px;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .title {
-            color: #000000;
-            font-size: 24px;
-            font-weight: normal;
-            margin: 0;
-        }
-        .content {
-            margin: 32px 0;
-        }
-        .text {
-            color: #000000;
-            font-size: 14px;
-            line-height: 24px;
-            margin: 0 0 16px 0;
-        }
-        .button-container {
-            text-align: center;
-            margin: 32px 0;
-        }
-        .reset-button {
-            background-color: #000000;
-            border-radius: 3px;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-            padding: 12px 20px;
-            display: inline-block;
-        }
-        .reset-button:hover {
-            background-color: #333333;
-        }
-        .url-section {
-            margin: 32px 0;
-        }
-        .url-link {
-            color: #2563eb;
-            text-decoration: none;
-            font-size: 14px;
-            line-height: 24px;
-            word-break: break-all;
-        }
-        .disclaimer {
-            margin: 32px 0;
-        }
-        .disclaimer-text {
-            color: #666666;
-            font-size: 12px;
-            line-height: 24px;
-            margin: 0 0 8px 0;
-        }
-        .security-footer {
-            margin-top: 32px;
-            padding-top: 20px;
-            border-top: 1px solid #eaeaea;
-        }
-        .security-text {
-            color: #666666;
-            font-size: 12px;
-            line-height: 24px;
-            margin: 0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1 class="title">Reset Your Password</h1>
-        </div>
-
-        <div class="content">
-            <p class="text">
-                Hello{{#if email}} {{email}}{{/if}},
-            </p>
-            <p class="text">
-                We received a request to reset your password. Click the button below to create a new password for your account.
-            </p>
-        </div>
-
-        <div class="button-container">
-            <a href="{{reset_url}}" class="reset-button">
-                Reset Password
-            </a>
-        </div>
-
-        <div class="url-section">
-            <p class="text">
-                Or copy and paste this URL into your browser:
-            </p>
-            <a href="{{reset_url}}" class="url-link">
-                {{reset_url}}
-            </a>
-        </div>
-
-        <div class="disclaimer">
-            <p class="disclaimer-text">
-                This password reset link will expire soon for security reasons.
-            </p>
-            <p class="disclaimer-text">
-                If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
-            </p>
-        </div>
-
-        <div class="security-footer">
-            <p class="security-text">
-                For security reasons, never share this reset link with anyone. If you're having trouble with the button above, copy and paste the URL into your web browser.
-            </p>
-        </div>
-    </div>
-</body>
-</html>
-```
-
-Make sure to pass the `reset_url` variable to the template, which contains the URL to reset the password.
-
-You can also customize the template further to show other information.
-
-### Resend
-
-If you've integrated Resend as explained in the [Resend Integration Guide](../../../integrations/guides/resend/page.mdx), you can add a new template for password reset emails at `src/modules/resend/emails/password-reset.tsx`:
-
-```tsx title="src/modules/resend/emails/password-reset.tsx"
-import { 
-  Text, 
-  Container, 
-  Heading, 
-  Html, 
-  Section, 
-  Tailwind, 
-  Head, 
-  Preview, 
-  Body, 
-  Link,
-  Button, 
-} from "@react-email/components"
-
-type PasswordResetEmailProps = {
-  reset_url: string
-  email?: string
-}
-
-function PasswordResetEmailComponent({ reset_url, email }: PasswordResetEmailProps) {
-  return (
-    <Html>
-      <Head />
-      <Preview>Reset your password</Preview>
-      <Tailwind>
-        <Body className="bg-white my-auto mx-auto font-sans px-2">
-          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
-            <Section className="mt-[32px]">
-              <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-                Reset Your Password
-              </Heading>
-            </Section>
-
-            <Section className="my-[32px]">
-              <Text className="text-black text-[14px] leading-[24px]">
-                Hello{email ? ` ${email}` : ""},
-              </Text>
-              <Text className="text-black text-[14px] leading-[24px]">
-                We received a request to reset your password. Click the button below to create a new password for your account.
-              </Text>
-            </Section>
-
-            <Section className="text-center mt-[32px] mb-[32px]">
-              <Button
-                className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
-                href={reset_url}
-              >
-                Reset Password
-              </Button>
-            </Section>
-
-            <Section className="my-[32px]">
-              <Text className="text-black text-[14px] leading-[24px]">
-                Or copy and paste this URL into your browser:
-              </Text>
-              <Link
-                href={reset_url}
-                className="text-blue-600 no-underline text-[14px] leading-[24px] break-all"
-              >
-                {reset_url}
-              </Link>
-            </Section>
-
-            <Section className="my-[32px]">
-              <Text className="text-[#666666] text-[12px] leading-[24px]">
-                This password reset link will expire soon for security reasons.
-              </Text>
-              <Text className="text-[#666666] text-[12px] leading-[24px] mt-2">
-                If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
-              </Text>
-            </Section>
-
-            <Section className="mt-[32px] pt-[20px] border-t border-solid border-[#eaeaea]">
-              <Text className="text-[#666666] text-[12px] leading-[24px]">
-                For security reasons, never share this reset link with anyone. If you're having trouble with the button above, copy and paste the URL into your web browser.
-              </Text>
-            </Section>
-          </Container>
-        </Body>
-      </Tailwind>
-    </Html>
-  )
-}
-
-export const passwordResetEmail = (props: PasswordResetEmailProps) => (
-  <PasswordResetEmailComponent {...props} />
-)
-
-// Mock data for preview/development
-const mockPasswordReset: PasswordResetEmailProps = {
-  reset_url: "https://your-app.com/reset-password?token=sample-reset-token-123",
-  email: "user@example.com",
-}
-
-export default () => <PasswordResetEmailComponent {...mockPasswordReset} />
-```
-
-Feel free to customize the email template further to match your branding and style, or to add additional information.
-
-Then, in the Resend Module's service at `src/modules/resend/service.ts`, add the new template to the `templates` object and `Templates` type:
-
-```ts title="src/modules/resend/service.ts"
-// other imports...
-import { passwordResetEmail } from "./emails/password-reset"
-
-enum Templates {
-  // ...
-  PASSWORD_RESET = "password-reset",
-}
-
-const templates: {[key in Templates]?: (props: unknown) => React.ReactNode} = {
-  // ...
-  [Templates.PASSWORD_RESET]: passwordResetEmail,
-}
-```
-
-Finally, find the `getTemplateSubject` function in the `ResendNotificationProviderService` and add a case for the `USER_INVITED` template:
-
-```ts title="src/modules/resend/service.ts"
-class ResendNotificationProviderService extends AbstractNotificationProviderService {
-  // ...
-
-  private getTemplateSubject(template: Templates) {
-    // ...
-    switch (template) {
-      // ...
-      case Templates.PASSWORD_RESET:
-        return "Reset Your Password"
-    }
-  }
-}
-```
+The [Set Up React Email Templates](!cloud!/emails/react-email) guide explains how to install React Email in your Medusa project. It also includes a [reset password email template](!cloud!/emails/react-email#reset-password-email-template) with a subscriber that sends it.

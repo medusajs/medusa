@@ -2388,9 +2388,12 @@ export default async function orderPlacedHandler({
 
   await notificationModuleService.createNotifications({
     to: order.email || "",
-    template: "order-placed",
     channel: "email",
-    data: order,
+    content: {
+      subject: `Order #${order.display_id} confirmed`,
+      html: `<h1>Thank you for your order!</h1>
+<p>Your invoice for order #${order.display_id} is attached.</p>`,
+    },
     attachments: [
       {
         content: binaryString,
@@ -2414,32 +2417,57 @@ A subscriber file must export:
 
 In the subscriber, you:
 
-- Use Query to retrieve the order details. These details are useful to pass to the notification template.
+- Use Query to retrieve the order details. These details are useful to show in the email's content.
 - Generate the invoice PDF using the `generateInvoicePdfWorkflow`.
 - Convert the PDF buffer to a binary string, which is required for the email attachment.
 - Send an email using the [Notification Module](../../../infrastructure-modules/notification/page.mdx) with the order details and the invoice PDF attached.
 
-#### Notification Module Provider to Use
+#### Send Emails with Medusa Emails
 
-Since the notification's channel is `email`, you need a Notification Module Provider that supports sending emails, such as [SendGrid](../../../infrastructure-modules/notification/sendgrid/page.mdx) or [Resend](../../../integrations/guides/resend/page.mdx).
+Cloud projects send notifications of the `email` channel with [Medusa Emails](!cloud!/emails), Cloud's built-in email service. Medusa Emails is enabled by default, so you don't need to configure a Notification Module Provider. It sends the HTML in the notification's `content` with the invoice PDF attached.
 
-After setting up the Notification Module provider, make sure to replace the `template` of the notification with the template ID from the provider:
+<Note>
 
-```ts title="src/subscribers/order-placed.ts"
-await notificationModuleService.createNotifications({
-  template: "your-template-id", // Replace with your actual template ID
+Without a verified sender domain, Medusa Emails only sends emails to addresses of users in your Cloud organization. To send order confirmation emails to your customers, [add an email sender domain](!cloud!/emails#add-email-sender-domain-to-cloud) to your Cloud project.
+
+</Note>
+
+The subscriber sends a basic HTML email. To build richer email templates that show the order's details, use [React Email](!cloud!/emails/react-email). The React Email guide includes an [order placed email template](!cloud!/emails/react-email#order-placed-email-template) that you can use.
+
+#### Log Emails During Local Development
+
+Medusa Emails isn't available when you run the Medusa application locally. So, register the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) for the `email` channel during development. It logs the emails' details in the terminal instead of sending them.
+
+Add the following to `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
   // ...
+  modules: [
+    // ...
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/notification-local",
+            id: "local",
+            options: {
+              channels: [
+                process.env.NODE_ENV === "development"
+                  ? "email"
+                  : "feed",
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
 })
 ```
 
-Alternatively, for testing purposes, you can change the channel to `feed`. This will only log the notification to the console instead of sending an email:
-
-```ts title="src/subscribers/order-placed.ts"
-await notificationModuleService.createNotifications({
-  channel: "feed", // Change for testing
-  // ...
-})
-```
+The Local Notification Module Provider handles the `email` channel only in development. In your Cloud environments, it handles the `feed` channel, so Medusa Emails sends the `email` notifications.
 
 ### Test Order Confirmation Email with Invoice
 
@@ -2451,7 +2479,7 @@ Then, place an order in the storefront. You'll see the following message in the 
 info:    Processing order.placed which has 1 subscribers
 ```
 
-The notification will either be sent to the customer's email address, or logged to the console if you set the channel to `feed`.
+The Local Notification Module Provider logs the email's details in the terminal. After you publish the customizations to Cloud, Medusa Emails sends the email with the invoice attached to the customer.
 
 ---
 

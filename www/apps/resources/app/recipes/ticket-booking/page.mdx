@@ -203,7 +203,7 @@ For example, you can consume the `validate` hook in the `addToCartWorkflow` to c
 
 When an order is placed, Medusa emits an `order.placed` event. You can listen to this event in a subscriber, which is an asynchronous function executed in the background when its associated event is emitted.
 
-In the subscriber, you can send an email using the Notification Module. You can register a Notification Module Provider, such as [SendGrid](../../infrastructure-modules/notification/sendgrid/page.mdx) or [Resend](../../integrations/guides/resend/page.mdx), that sends the email.
+In the subscriber, you can send an email using the Notification Module. Cloud projects send emails with [Medusa Emails](!cloud!/emails), Cloud's built-in email service, without any configuration.
 
 You can include a QR code representing the ticket in the email, which you can generate using a library like `qrcode`.
 
