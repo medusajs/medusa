@@ -77,6 +77,8 @@ export class ApiLoader {
 
   #isRouterMounted = false
 
+  #errorHandler: ErrorRequestHandler = errorHandler()
+
   /**
    * Path from where to load the routes from
    * @private
@@ -559,6 +561,13 @@ export class ApiLoader {
 
     if (!this.#isRouterMounted) {
       this.#app.use(this.#router)
+
+      // Kept on the app: Express skips mounted routers when passing errors on,
+      // so errors from middlewares registered before the router would miss it
+      const handleError: ErrorRequestHandler = (err, req, res, next) =>
+        this.#errorHandler(err, req, res, next)
+      this.#app.use(handleError)
+
       this.#isRouterMounted = true
     }
 
@@ -692,10 +701,7 @@ export class ApiLoader {
       this.#registerExpressHandler(route)
     })
 
-    /**
-     * Registering error handler as the final handler
-     */
-    this.#router.use(sourceErrorHandler ?? errorHandler())
+    this.#errorHandler = sourceErrorHandler ?? errorHandler()
   }
 
   /**
