@@ -65,7 +65,7 @@
 | `@medusajs/framework/zod` | Re-export of the `zod` version Medusa uses |
 | `@medusajs/framework/awilix`, `/pg` | Re-exports of `awilix` and `pg` |
 | `@medusajs/framework/mikro-orm/{core,knex,postgresql,migrations,cli}` | Re-exports of the pinned MikroORM packages |
-| `@medusajs/framework/opentelemetry/{api,resources,sdk-node,sdk-trace-node,instrumentation-pg}` | Re-exports of the pinned OpenTelemetry packages |
+| `@medusajs/framework/opentelemetry/{api,resources,sdk-node,sdk-trace,instrumentation-pg}` | Re-exports of the pinned OpenTelemetry packages |
 
 The package also ships a `medusa-mikro-orm` binary that wraps the MikroORM CLI.
 

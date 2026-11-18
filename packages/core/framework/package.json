@@ -49,7 +49,7 @@
     "./mikro-orm/postgresql": "./dist/deps/mikro-orm-postgresql.js",
     "./opentelemetry/instrumentation-pg": "./dist/deps/opentelemetry-instrumentation-pg.js",
     "./opentelemetry/sdk-node": "./dist/deps/opentelemetry-sdk-node.js",
-    "./opentelemetry/sdk-trace-node": "./dist/deps/opentelemetry-sdk-trace-node.js",
+    "./opentelemetry/sdk-trace": "./dist/deps/opentelemetry-sdk-trace.js",
     "./opentelemetry/resources": "./dist/deps/opentelemetry-resources.js",
     "./opentelemetry/api": "./dist/deps/opentelemetry-api.js",
     "./awilix": "./dist/deps/awilix.js",
