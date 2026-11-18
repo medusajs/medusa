@@ -16,12 +16,9 @@ jest.mock("../middlewares/ensure-publishable-api-key", () => ({
 }))
 
 describe("ApiLoader.clearAllResources", () => {
-  afterEach(() => {
-    delete (global as any).__MEDUSA_HMR_INITIAL_STACK_LENGTH__
-  })
+  const rootDir = resolve(__dirname, "../__fixtures__/routers-hmr")
 
-  it("should register the restricted fields middlewares again when reloading", async () => {
-    const rootDir = resolve(__dirname, "../__fixtures__/routers-hmr")
+  const createApp = () => {
     configManager.loadConfig({ projectConfig: config, baseDir: rootDir })
 
     const app = express()
@@ -36,9 +33,36 @@ describe("ApiLoader.clearAllResources", () => {
       ;(req as any).scope = container.createScope()
       next()
     })
-    ;(global as any).__MEDUSA_HMR_INITIAL_STACK_LENGTH__ = (
-      app as any
-    )._router.stack.length
+
+    return { app, container }
+  }
+
+  it("should keep middlewares registered on the app while the API was loading", async () => {
+    const { app, container } = createApp()
+
+    const apiLoader = new ApiLoader({
+      app,
+      sourceDir: rootDir,
+      container,
+    })
+    const loading = apiLoader.load()
+
+    app.use((_req, res, next) => {
+      res.setHeader("x-session", "true")
+      next()
+    })
+    await loading
+
+    apiLoader.clearAllResources()
+    await apiLoader.load()
+
+    const res = await supertest(app).get("/store/restricted").expect(200)
+
+    expect(res.headers["x-session"]).toBe("true")
+  })
+
+  it("should register the restricted fields middlewares again when reloading", async () => {
+    const { app, container } = createApp()
 
     const apiLoader = new ApiLoader({
       app,
