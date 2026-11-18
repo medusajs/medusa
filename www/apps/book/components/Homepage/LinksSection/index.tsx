@@ -1,7 +1,6 @@
 import clsx from "clsx"
 import { HeadlineTags, ShadedBlock } from "docs-ui"
 import Link from "next/link"
-import { LinksSectionBloomIcon } from "./Icon"
 
 const HomepageLinksSection = () => {
   const links: {
@@ -62,52 +61,17 @@ const HomepageLinksSection = () => {
         },
       ],
     },
-    {
-      tag: "Customize Medusa",
-      links: [
-        {
-          link: "/learn",
-          text: "Learn the Framework",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/integrations",
-          text: "Add integrations",
-        },
-        {
-          link: "/learn/fundamentals/admin",
-          text: "Extend the Admin",
-        },
-      ],
-    },
-    {
-      tag: "Storefront Development",
-      links: [
-        {
-          link: "https://docs.medusajs.com/resources/nextjs-starter",
-          text: "Explore storefront starter",
-        },
-        {
-          link: "https://docs.medusajs.com/resources/storefront-development",
-          text: "Build custom storefront",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/ai-toolkit/agent-skills#ecommerce-storefront-best-practices",
-          text: "Use agent skills",
-        },
-      ],
-    },
   ]
 
   return (
-    <div className="w-full flex gap-0 flex-col md:flex-row flex-wrap border-b border-medusa-border-base">
+    <div className="w-full flex gap-0 flex-col md:flex-row border-b border-medusa-border-base">
       {links.map((section, index) => (
         <div
           key={index}
           className={clsx(
             "p-2 flex justify-between flex-col w-full md:w-1/3 gap-2 md:min-h-[320px]",
-            "border-b border-medusa-border-base md:border-b-0",
-            index !== 2 && "md:border-r",
-            index > 2 && "md:border-t"
+            "border-medusa-border-base",
+            index !== links.length - 1 && "border-b md:border-b-0 md:border-r"
           )}
         >
           <HeadlineTags tags={[section.tag]} className="!justify-start" />
@@ -128,14 +92,6 @@ const HomepageLinksSection = () => {
           </div>
         </div>
       ))}
-      <div
-        className={clsx(
-          "p-2 flex justify-center items-center w-full md:w-1/3 gap-2 md:min-h-[320px]",
-          "border-medusa-border-base md:border-t bg-medusa-bg-component"
-        )}
-      >
-        <LinksSectionBloomIcon />
-      </div>
     </div>
   )
 }
