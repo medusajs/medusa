@@ -9,11 +9,14 @@ import {
   SignatureReflection,
 } from "typedoc"
 import {
+  allChildrenHaveOwnDocument,
   getDmlProperties,
+  getReflectionUrl,
   getTypeChildren,
   isDmlEntity,
   isWorkflow,
   isWorkflowStep,
+  reflectionHasOwnDocument,
 } from "utils"
 import type { DocBlock, DocPage, DocTypeListItem } from "types"
 import { MarkdownTheme } from "../theme.js"
@@ -131,7 +134,7 @@ export function buildDocPage({
   dedupeHeadingIds(blocks)
 
   return {
-    slug: theme.getRelativeUrl(model.url || location),
+    slug: theme.getRelativeUrl(getReflectionUrl(model) || location),
     title,
     frontmatter,
     toc: buildToc(blocks),
@@ -221,7 +224,7 @@ function isTocVisible(
     )
   return (
     isNamespaceVisible ||
-    groups.some((group) => group.allChildrenHaveOwnDocument())
+    groups.some((group) => allChildrenHaveOwnDocument(group))
   )
 }
 
@@ -243,12 +246,12 @@ function buildTocBlocks(
     theme.getFormattingOptionsForLocation()
 
   const blocks: DocBlock[] = []
-  const linkItems = (children: { name: string; url?: string }[]) =>
+  const linkItems = (children: Reflection[]) =>
     [...children]
       .sort((a, b) => a.name.localeCompare(b.name))
       .map((child) => ({
         title: child.name,
-        href: theme.getRelativeUrl(child.url || ""),
+        href: theme.getRelativeUrl(getReflectionUrl(child) || ""),
       }))
 
   const sortedGroups = [...groups].sort((a, b) =>
@@ -314,7 +317,7 @@ function buildMembersBlocks(
     : model.groups || []
 
   for (const group of groups) {
-    if (group.allChildrenHaveOwnDocument()) {
+    if (allChildrenHaveOwnDocument(group)) {
       continue
     }
 
@@ -324,7 +327,9 @@ function buildMembersBlocks(
     let inline = (
       Handlebars.helpers.getAllChildren.call(group) as DeclarationReflection[]
     ).filter(
-      (child) => !child.hasOwnDocument && child instanceof DeclarationReflection
+      (child) =>
+        !reflectionHasOwnDocument(child) &&
+        child instanceof DeclarationReflection
     )
     if (sorted) {
       inline = [...inline].sort((a, b) => a.name.localeCompare(b.name))
@@ -401,9 +406,9 @@ function buildMemberInline(
 
   // `ifMemberShowTitle`: inline members (no own document) show their name.
   const showTitle =
-    !child.hasOwnDocument ||
+    !reflectionHasOwnDocument(child) ||
     (Boolean(Handlebars.helpers.sectionEnabled("member_force_title")) &&
-      theme.location !== child.url)
+      theme.location !== getReflectionUrl(child))
 
   const previousLevel = theme.currentTitleLevel
   if (showTitle && child.name) {

@@ -19,6 +19,13 @@ export type ApplicationMethodTargetTypeValues =
 export type ApplicationMethodAllocationValues = "each" | "across" | "once"
 
 /**
+ * The application method's possible target selection strategies.
+ */
+export type ApplicationMethodTargetSelectionStrategyValues =
+  | "most_expensive_first"
+  | "cheapest_first"
+
+/**
  * The application method details.
  */
 export interface ApplicationMethodDTO {
@@ -67,6 +74,13 @@ export interface ApplicationMethodDTO {
    * value of this attribute is `2`.
    */
   buy_rules_min_quantity?: number | null
+
+  /**
+   * How a `buyget` promotion picks the items it discounts. With
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   */
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 
   /**
    * The quantity that results from matching the `buyget` promotion's condition.
@@ -135,6 +149,13 @@ export interface CreateApplicationMethodDTO {
    * value of this attribute is `2`.
    */
   buy_rules_min_quantity?: number | null
+
+  /**
+   * How a `buyget` promotion picks the items it discounts. With
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   */
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 
   /**
    * The quantity that results from matching the `buyget` promotion's condition.
@@ -208,6 +229,13 @@ export interface UpdateApplicationMethodDTO {
    * value of this attribute is `2`.
    */
   buy_rules_min_quantity?: number | null
+
+  /**
+   * How a `buyget` promotion picks the items it discounts. With
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   */
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 
   /**
    * The quantity that results from matching the `buyget` promotion's condition.

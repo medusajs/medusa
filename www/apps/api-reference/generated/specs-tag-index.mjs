@@ -43,6 +43,7 @@ export const specsTagIndex = {
     ],
     "customers": [
       "admin_customers.yaml",
+      "admin_customers_export.yaml",
       "admin_customers_{id}.yaml",
       "admin_customers_{id}_addresses.yaml",
       "admin_customers_{id}_addresses_{address_id}.yaml",
@@ -125,6 +126,9 @@ export const specsTagIndex = {
     "locales": [
       "admin_locales.yaml",
       "admin_locales_{code}.yaml"
+    ],
+    "modules": [
+      "admin_modules.yaml"
     ],
     "notifications": [
       "admin_notifications.yaml",
@@ -356,7 +360,9 @@ export const specsTagIndex = {
       "admin_users_me.yaml",
       "admin_users_{id}.yaml",
       "admin_users_{id}_auth-providers.yaml",
-      "admin_users_{id}_reset-password.yaml"
+      "admin_users_{id}_reset-password.yaml",
+      "admin_users_{id}_roles.yaml",
+      "admin_users_{id}_roles_{role_id}.yaml"
     ],
     "views": [
       "admin_views_entities.yaml",
@@ -460,7 +466,8 @@ export const specsTagIndex = {
     ],
     "payment-collections": [
       "store_payment-collections.yaml",
-      "store_payment-collections_{id}_payment-sessions.yaml"
+      "store_payment-collections_{id}_payment-sessions.yaml",
+      "store_payment-collections_{id}_payment-sessions_{session_id}.yaml"
     ],
     "payment-providers": [
       "store_payment-providers.yaml"

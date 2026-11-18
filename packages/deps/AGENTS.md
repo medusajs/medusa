@@ -20,7 +20,7 @@ import { asValue } from "@medusajs/framework/awilix"
 - `src/<name>.ts` is a one-line `export * from "<upstream>"`. There is no `src/index.ts`; consumers must use a subpath.
 - Subpath map (in `package.json` `exports`):
   - `./mikro-orm/{cli,core,knex,migrations,postgresql}` -> `src/mikro-orm-*.ts`
-  - `./opentelemetry/{api,instrumentation-pg,resources,sdk-node,sdk-trace-node}` -> `src/opentelemetry-*.ts`
+  - `./opentelemetry/{api,instrumentation-pg,resources,sdk-node,sdk-trace}` -> `src/opentelemetry-*.ts`
   - `./awilix`, `./pg`, `./zod`
 - `packages/core/framework/src/deps/*.ts` re-exports each of these (`export * from "@medusajs/deps/zod"`), and `packages/core/framework/package.json` exposes them as `@medusajs/framework/<same subpath>`.
 
@@ -36,6 +36,6 @@ import { asValue } from "@medusajs/framework/awilix"
 
 ## Gotchas
 
-- MikroORM packages and `zod` are pinned to exact versions (`6.6.14`, `4.2.0`); keep all `@mikro-orm/*` entries on the same version. The root `package.json` and some admin packages (`packages/admin/dashboard`, `packages/admin/admin-sdk`) also pin `zod` and must move in lockstep.
+- MikroORM packages and `zod` are pinned to exact versions (`6.6.17`, `4.6.6`); keep all `@mikro-orm/*` entries on the same version. The root `package.json` and some admin packages (`packages/admin/dashboard`, `packages/admin/admin-sdk`) also pin `zod` and must move in lockstep.
 - `main` / the `.` export point to `dist/index.js`, which is never built. Importing the bare `@medusajs/deps` fails.
 - OpenTelemetry SDK upgrades can change runtime behavior for users (see the 2.18.0 `CHANGELOG.md` entry on strict `OTEL_RESOURCE_ATTRIBUTES` parsing); call these out in the changeset.

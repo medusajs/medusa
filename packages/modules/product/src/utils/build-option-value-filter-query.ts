@@ -42,9 +42,8 @@ export async function buildOptionValueFilterQuery(
     .map((row: { option_value_ids: string[] }) => row.option_value_ids)
     .flat()
 
-  const escapeValue = (value: string) => `'${value.replace(/'/g, "''")}'`
-  const valueIdsSql = allValueIds.map(escapeValue).join(",")
-  const optionIdsSql = optionIds.map(escapeValue).join(",")
+  const valueIdsSql = allValueIds.map(() => "?").join(",")
+  const optionIdsSql = optionIds.map(() => "?").join(",")
 
   const subquery = (alias: string) =>
     `
@@ -64,6 +63,6 @@ export async function buildOptionValueFilterQuery(
   `.trim()
 
   return {
-    [raw((alias) => subquery(alias))]: true,
+    [raw((alias) => subquery(alias), [...allValueIds, ...optionIds])]: true,
   }
 }

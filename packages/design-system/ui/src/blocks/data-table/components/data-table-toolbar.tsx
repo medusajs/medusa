@@ -48,7 +48,7 @@ interface DataTableToolbarProps {
  */
 const DataTableToolbar = (props: DataTableToolbarProps) => {
   return (
-    <div className="flex flex-col divide-y">
+    <div className="flex flex-col [&>*+*]:border-t">
       <div className={clx("flex items-center px-6 py-4", props.className)}>
         {props.children}
       </div>

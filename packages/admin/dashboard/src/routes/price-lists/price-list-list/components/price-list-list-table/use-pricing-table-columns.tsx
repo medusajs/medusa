@@ -8,11 +8,13 @@ import { TextHeader } from "../../../../../components/table/table-cells/common/t
 import { getPriceListStatus } from "../../../common/utils"
 import { PriceListListTableActions } from "./price-list-list-table-actions"
 import { PriceCountCell } from "./price-count-cell"
+import { usePricePermissions } from "../../../../../hooks/use-resource-permissions"
 
 const columnHelper = createColumnHelper<HttpTypes.AdminPriceList>()
 
 export const usePricingTableColumns = () => {
   const { t } = useTranslation()
+  const { canRead: canReadPrices } = usePricePermissions()
 
   return useMemo(
     () => [
@@ -28,11 +30,17 @@ export const usePricingTableColumns = () => {
           return <StatusCell color={color}>{text}</StatusCell>
         },
       }),
-      columnHelper.display({
-        id: "price_overrides",
-        header: t("priceLists.fields.priceOverrides.header"),
-        cell: ({ row }) => <PriceCountCell priceListId={row.original.id} />,
-      }),
+      ...(canReadPrices
+        ? [
+            columnHelper.display({
+              id: "price_overrides",
+              header: t("priceLists.fields.priceOverrides.header"),
+              cell: ({ row }) => (
+                <PriceCountCell priceListId={row.original.id} />
+              ),
+            }),
+          ]
+        : []),
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => (

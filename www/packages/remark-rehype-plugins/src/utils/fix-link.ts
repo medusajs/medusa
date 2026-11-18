@@ -27,7 +27,8 @@ export async function fixLinkUtil({
     if (r2BaseUrl) {
       const res = await fetch(`${r2BaseUrl}${linkedFilePath}`)
       if (res.ok) {
-        linkedFileSlug = (await getFrontMatterFromString(await res.text()))?.slug
+        linkedFileSlug = (await getFrontMatterFromString(await res.text()))
+          ?.slug
       }
     } else {
       linkedFileSlug = getFileSlugSync(fullLinkedFilePath)
@@ -41,7 +42,8 @@ export async function fixLinkUtil({
     linkedFilePath.substring(
       0,
       linkedFilePath.indexOf(`/${path.basename(linkedFilePath)}`)
-    )
+    ) ||
+    "/"
 
   return `${newLink}${hash}`
 }

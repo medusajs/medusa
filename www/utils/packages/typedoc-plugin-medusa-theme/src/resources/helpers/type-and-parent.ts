@@ -1,7 +1,7 @@
 import Handlebars from "handlebars"
 import { SignatureReflection } from "typedoc"
 import { ArrayType, ReferenceType } from "typedoc"
-import { escapeChars } from "utils"
+import { escapeChars, getReflectionUrl } from "utils"
 
 export default function () {
   Handlebars.registerHelper(
@@ -16,32 +16,25 @@ export default function () {
           if (this.reflection) {
             const md: string[] = []
             if (this.reflection instanceof SignatureReflection) {
-              if (this.reflection.parent?.parent?.url) {
+              const grandparentUrl = getReflectionUrl(
+                this.reflection.parent?.parent
+              )
+              if (grandparentUrl) {
                 md.push(
-                  getUrl(
-                    this.reflection.parent.parent.name,
-                    this.reflection.parent.parent.url
-                  )
+                  getUrl(this.reflection.parent.parent!.name, grandparentUrl)
                 )
-                if (this.reflection.parent.url) {
-                  md.push(
-                    getUrl(
-                      this.reflection.parent.name,
-                      this.reflection.parent.url
-                    )
-                  )
+                const parentUrl = getReflectionUrl(this.reflection.parent)
+                if (parentUrl) {
+                  md.push(getUrl(this.reflection.parent.name, parentUrl))
                 }
               }
             } else {
-              if (this.reflection.parent?.url) {
-                md.push(
-                  getUrl(
-                    this.reflection.parent.name,
-                    this.reflection.parent.url
-                  )
-                )
-                if (this.reflection.url) {
-                  md.push(getUrl(this.reflection.name, this.reflection.url))
+              const parentUrl = getReflectionUrl(this.reflection.parent)
+              if (parentUrl) {
+                md.push(getUrl(this.reflection.parent!.name, parentUrl))
+                const reflectionUrl = getReflectionUrl(this.reflection)
+                if (reflectionUrl) {
+                  md.push(getUrl(this.reflection.name, reflectionUrl))
                 }
               }
             }

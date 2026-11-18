@@ -5,10 +5,11 @@ import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
-import { ActionMenu } from "../../../components/common/action-menu"
+import { ActionGroup, ActionMenu } from "../../../components/common/action-menu"
 import { stockLocationsQueryKeys } from "../../../hooks/api/stock-locations"
 import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
+import { useStockLocationPermissions } from "../../../hooks/use-resource-permissions"
 
 export const LocationListTableActions = ({
   location,
@@ -18,6 +19,7 @@ export const LocationListTableActions = ({
   const { t } = useTranslation()
   const navigate = useNavigate()
   const prompt = usePrompt()
+  const { canUpdate, canDelete } = useStockLocationPermissions()
 
   const handleDelete = async () => {
     const result = await prompt({
@@ -49,29 +51,37 @@ export const LocationListTableActions = ({
     }
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              onClick: () =>
-                navigate(`/settings/locations/${location.id}/edit`),
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          onClick: () => {
+            navigate(`/settings/locations/${location.id}/edit`)
+          },
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: () => handleDelete(),
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

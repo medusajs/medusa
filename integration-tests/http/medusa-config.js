@@ -128,7 +128,11 @@ const modules = {
   },
   [Modules.RBAC]: {
     resolve: "@medusajs/rbac",
-    disable: process.env.MEDUSA_FF_RBAC !== "true",
+    disable: process.env.ENABLE_RBAC_MODULE !== "true",
+  },
+  [Modules.AUDIT]: {
+    resolve: "@medusajs/audit",
+    disable: process.env.ENABLE_AUDIT_MODULE !== "true",
   },
   [Modules.AUTH]: {
     options: {
@@ -145,9 +149,14 @@ const modules = {
   },
 }
 
-if (process.env.MEDUSA_FF_TRANSLATION === "true") {
-  modules[Modules.TRANSLATION] = {
-    resolve: "@medusajs/translation",
+// The Caching Module isn't a default module, so specs
+// enabling the caching feature flag get it with the built-in memory provider.
+if (process.env.MEDUSA_FF_CACHING === "true") {
+  modules[Modules.CACHING] = {
+    resolve: "@medusajs/caching",
+    options: {
+      in_memory: { enable: true },
+    },
   }
 }
 
@@ -167,14 +176,19 @@ module.exports = defineConfig({
   },
   featureFlags: {
     index_engine: process.env.ENABLE_INDEX_MODULE === "true",
-    translation: process.env.MEDUSA_FF_TRANSLATION === "true",
-    rbac: process.env.MEDUSA_FF_RBAC === "true",
   },
   modules,
   plugins: [
     {
       resolve: "@medusajs/loyalty-plugin",
       options: {},
+    },
+    {
+      resolve: "@medusajs/cloud",
+      options: {
+        apiUrl: "http://cloud-api.test",
+        organizationId: "org_test",
+      },
     },
   ],
 })

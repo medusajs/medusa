@@ -143,6 +143,7 @@
     "reset": "リセット",
     "confirm": "確認",
     "edit": "編集",
+    "view": "表示",
     "addItems": "項目を追加",
     "download": "ダウンロード",
     "clear": "クリア",
@@ -2273,6 +2274,8 @@
       "method": "方法",
       "allocation": "配分",
       "allocationTooltip": "「各」はアイテムごとに数量制限を適用し、「一度」はカート全体にわたって数量制限を適用します",
+      "targetSelectionStrategy": "割引対象アイテム",
+      "targetSelectionStrategyTooltip": "カート内のどの対象アイテムに割引が適用されるか",
       "addCondition": "条件を追加",
       "clearAll": "すべてクリア",
       "taxInclusive": "税込み",
@@ -2423,6 +2426,16 @@
         "once": {
           "title": "一度",
           "description": "限られた数のアイテムに値を適用します"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "最も高価なアイテムから",
+          "description": "カート内の最も高価な対象アイテムに割引を適用します"
+        },
+        "cheapest_first": {
+          "title": "最も安いアイテムから",
+          "description": "カート内の最も安い対象アイテムに割引を適用します"
         }
       },
       "code": {
@@ -2787,7 +2800,7 @@
     "editUser": "ユーザーを編集",
     "inviteUser": "ユーザーを招待",
     "inviteUserHint": "新しいユーザーをストアに招待します。",
-    "inviteRolesTooltip": "ロールが選択されていない場合、ユーザーはスーパーユーザーロールで招待されます。",
+    "inviteRolesTooltip": "ロールが選択されていない場合、ユーザーは権限なしで招待されます。後でロールを割り当てることができます。",
     "sendInvite": "招待を送信",
     "pendingInvites": "保留中の招待",
     "deleteInviteWarning": "{{email}}への招待を削除しようとしています 。この操作は取り消せません。",
@@ -2852,6 +2865,7 @@
     "delete": {
       "title": "ロールを削除",
       "description": "ロール{{name}}を削除しようとしています。この操作は元に戻せません。",
+      "descriptionWithUsers_other": "ロール{{name}}を削除しようとしています。{{count}}人のユーザーがこのロールを持っており、このロールが付与するアクセス権を失います。この操作は元に戻せません。",
       "successToast": "ロール{{name}}が削除されました"
     },
     "fields": {
@@ -2862,7 +2876,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "ユーザーはすでにこのロールを持っています。",
-      "unassignableRoleTooltip": "このロールを割り当てるアクセス権がありません。あなたの権限では、このロールのすべてのポリシーをカバーできません。",
       "add": {
         "successToast_one": "ユーザーが正常にロールに追加されました。",
         "successToast_other": "ユーザーが正常にロールに追加されました。",
@@ -2890,6 +2903,137 @@
       "filtered": {
         "heading": "結果がありません",
         "description": "現在のフィルター条件に一致する権限はありません。"
+      },
+      "manage": {
+        "successToast": "権限が正常に更新されました。"
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "注文",
+            "description": "注文、注文変更、クレーム、交換および返品"
+          },
+          "payments": {
+            "label": "支払い",
+            "description": "支払い、支払いコレクション、返金およびキャプチャ"
+          },
+          "products": {
+            "label": "商品",
+            "description": "商品、バリアント、オプション、カテゴリ、コレクション、タイプおよびタグ"
+          },
+          "inventory": {
+            "label": "在庫",
+            "description": "在庫アイテム、在庫レベル、予約およびロケーション"
+          },
+          "customers": {
+            "label": "顧客",
+            "description": "顧客、住所および顧客グループ"
+          },
+          "pricing": {
+            "label": "価格とプロモーション",
+            "description": "価格リスト、価格、プロモーションおよびキャンペーン"
+          },
+          "shipping": {
+            "label": "配送とフルフィルメント",
+            "description": "配送オプションとプロファイル、フルフィルメントおよびサービスゾーン"
+          },
+          "store": {
+            "label": "ストア設定",
+            "description": "ストアの詳細、地域、販売チャネル、通貨、税金および翻訳"
+          },
+          "team": {
+            "label": "チームとアクセス",
+            "description": "ユーザー、招待、ロールおよびAPIキー"
+          },
+          "system": {
+            "label": "システム",
+            "description": "ファイル、通知およびワークフロー実行"
+          },
+          "custom": {
+            "label": "カスタム",
+            "description": "プラグインとカスタムモジュールによって追加された権限"
+          }
+        },
+        "levels": {
+          "none": "アクセスなし",
+          "view": "閲覧のみ",
+          "full": "フルアクセス",
+          "mixed": "混合"
+        },
+        "levelControlLabel": "{{group}}のアクセスレベル",
+        "resourceColumn": "リソース",
+        "notAvailable": "該当なし",
+        "notAvailableTooltip": "このリソースはこの権限を定義していません",
+        "rowToggle": "すべての{{resource}}権限",
+        "columnToggle": {
+          "on": "すべての{{group}}に対して{{operation}}をオンにする",
+          "off": "すべての{{group}}に対して{{operation}}をオフにする"
+        },
+        "search": {
+          "placeholder": "権限を検索",
+          "emptyHeading": "検索に一致する権限がありません",
+          "emptyDescription": "注文や在庫などのリソース名を試してください。"
+        },
+        "showKeys": "権限キーを表示",
+        "clearAll": "すべてクリア",
+        "lockedBadge_other": "{{count}}個ロック済み",
+        "lockedNote_other": "このグループの{{count}}個の権限は、ご自身がお持ちでないため、アカウントから変更できません。残りの権限には「アクセスなし」「閲覧のみ」「フルアクセス」が適用されます。",
+        "tooltips": {
+          "cannotGrant": "ご自身のアカウントがこの権限を持っていないため、付与できません。",
+          "cannotRemove": "このロールはこの権限を持っています。ご自身のアカウントがこの権限を持っていないため、変更できません。",
+          "viewRequired": "このリソースの他の権限には閲覧権限が必要です。先にそれらを削除してください。"
+        },
+        "noViewAccess": "閲覧アクセスなし",
+        "templates": {
+          "heading": "テンプレートから開始",
+          "hint": "オプション。テンプレートを適用すると現在の選択が置き換えられます。",
+          "full": {
+            "label": "フルアクセス",
+            "description": "チーム設定とカスタム権限を含む、現在付与可能なすべての権限。"
+          },
+          "readonly": {
+            "label": "読み取り専用",
+            "description": "現在付与可能なすべてを閲覧できます。変更はできません。"
+          },
+          "snapshotNote": "テンプレートは現時点で存在する権限を使用します。新しいプラグインなどによって後で追加された権限は自動的に含まれません。"
+        },
+        "confirm": {
+          "template": {
+            "title": "選択内容を置き換えますか？",
+            "description": "{{template}}テンプレートを適用すると、選択した権限が置き換えられます。",
+            "confirm": "テンプレートを適用"
+          },
+          "clear": {
+            "title": "すべての権限をクリアしますか？",
+            "descriptionCreate": "選択したすべての権限が削除されます。",
+            "descriptionEdit": "このロールから変更可能なすべての権限が削除されます。「保存」を選択するまで保存されません。"
+          }
+        },
+        "summary": {
+          "heading": "ロールの概要",
+          "name": "名前",
+          "permissions": "権限",
+          "selectedOfTotal": "{{total}}件中{{selected}}件選択済み",
+          "unsavedChanges": "未保存の変更",
+          "noChanges": "まだ変更はありません",
+          "changes": "{{added}}件追加、{{removed}}件削除",
+          "footnote": "「アクセスなし」に設定されたエリアは、このロールを持つメンバーには非表示になります。フルアクセスは現時点で存在する権限をカバーします。後で追加された権限はここで付与する必要があります。",
+          "wildcards": "このロールにはワイルドカード権限（{{keys}}）もあります。これらはAPIを通じて管理されており、ここには表示されません。"
+        },
+        "createHint": "ロールを作成するには、少なくとも1つの権限を選択してください。",
+        "custom": {
+          "calloutHeading": "独自の権限を追加",
+          "calloutDescription": "プラグインとカスタムモジュールは独自の権限を定義できます。作成されると、このグループに表示され、任意のロールに割り当てる準備ができます。",
+          "calloutAction": "ガイドを読む"
+        },
+        "detail": {
+          "heading": "権限",
+          "count": "{{total}}件中{{selected}}件の権限",
+          "countOnly_other": "{{count}}件の権限",
+          "granted": "付与済み",
+          "notGranted": "未付与",
+          "wildcards": "このロールにはワイルドカード権限（{{keys}}）があります。これらは後で追加されたものを含む一致するすべての権限を付与し、APIを通じて管理されます。"
+        }
       }
     },
     "list": {
@@ -2913,6 +3057,7 @@
     },
     "edit": {
       "header": "ポリシーを編集",
+      "identityHint": "キー、リソース、および操作はポリシーを識別するものであり、変更できません。代わりに新しいポリシーを作成してください。",
       "successToast": "ポリシー{{key}}が更新されました"
     },
     "delete": {
@@ -3374,6 +3519,9 @@
     "invalidTokenTitle": "招待トークンが無効です",
     "invalidTokenHint": "新しい招待リンクをリクエストしてみてください。",
     "passwordMismatch": "パスワードが一致しません",
+    "signedInTitle": "すでにサインインしています",
+    "signedInHint": "{{email}}としてサインインしています。この招待を受け入れるにはサインアウトしてください。",
+    "signOut": "サインアウト",
     "toast": {
       "accepted": "招待が正常に受け入れられました"
     }
@@ -3807,6 +3955,10 @@
       "requiredPermission": "必要な権限: {{permission}}",
       "action": "この操作を実行する権限がありません。"
     },
+    "noPermissions": {
+      "title": "権限がまだありません",
+      "description": "まだ権限が割り当てられていません。必要なエリアへのアクセスをリクエストするには、管理者にお問い合わせください。"
+    },
     "requiredPermissions": {
       "title": "必要な権限",
       "none": "このビューには権限が宣言されていません。",
@@ -3842,7 +3994,54 @@
       "return_reason": "返品理由",
       "refund_reason": "返金理由",
       "workflow": "ワークフロー",
-      "translation": "翻訳"
+      "translation": "翻訳",
+      "customer_address": "顧客住所",
+      "inventory_item": "在庫アイテム",
+      "inventory_level": "在庫レベル",
+      "reservation_item": "予約",
+      "order_item": "注文アイテム",
+      "order_change": "注文変更",
+      "order_address": "注文住所",
+      "order_claim": "クレーム",
+      "order_claim_item": "クレームアイテム",
+      "order_exchange": "交換",
+      "order_credit_line": "注文クレジットライン",
+      "return": "返品",
+      "payment": "支払い",
+      "payment_collection": "支払いコレクション",
+      "payment_method": "支払い方法",
+      "payment_session": "支払いセッション",
+      "refund": "返金",
+      "capture": "キャプチャ",
+      "price_preference": "価格設定",
+      "price": "価格",
+      "currency": "通貨",
+      "product_variant": "商品バリアント",
+      "product_option": "商品オプション",
+      "product_option_value": "商品オプション値",
+      "property_label": "プロパティラベル",
+      "shipping_option_type": "配送オプションタイプ",
+      "fulfillment": "フルフィルメント",
+      "fulfillment_provider": "フルフィルメントプロバイダー",
+      "fulfillment_set": "フルフィルメントセット",
+      "service_zone": "サービスゾーン",
+      "file": "ファイル",
+      "audit_log": "監査ログ",
+      "notification": "通知",
+      "workflow_execution": "ワークフロー実行",
+      "search_index": "検索インデックス",
+      "search_index_sync": "検索インデックス同期",
+      "index_engine": "インデックスモジュール",
+      "view_configuration": "デフォルトテーブルビュー",
+      "layout_configuration": "デフォルトページレイアウト",
+      "store_locale": "ストアロケール",
+      "tax_provider": "税プロバイダー",
+      "tax_rate": "税率",
+      "translation_setting": "翻訳設定",
+      "invite": "招待",
+      "rbac_role": "ロール",
+      "rbac_policy": "権限",
+      "rbac_role_assignment": "ロール割り当て"
     },
     "actions": {
       "read": "表示",

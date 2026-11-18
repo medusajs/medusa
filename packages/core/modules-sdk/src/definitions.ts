@@ -318,6 +318,17 @@ export const ModulesDefinition: {
       scope: MODULE_SCOPE.INTERNAL,
     },
   },
+  [Modules.AUDIT]: {
+    key: Modules.AUDIT,
+    defaultPackage: false,
+    label: upperCaseFirst(Modules.AUDIT),
+    isRequired: false,
+    isQueryable: false,
+    dependencies: [ContainerRegistrationKeys.LOGGER],
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+    },
+  },
   [Modules.LOCKING]: {
     key: Modules.LOCKING,
     defaultPackage: false,

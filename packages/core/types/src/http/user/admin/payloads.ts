@@ -25,28 +25,46 @@ export interface AdminUpdateUser {
 }
 
 /**
- * @featureFlag rbac
+ * The RBAC roles to assign to a user.
  */
 export interface AdminAssignUserRoles {
-  /**
-   * The IDs of the roles to assign to the user.
-   */
-  roles: string[]
+  assignments: {
+    /**
+     * The ID of the role to assign to the user.
+     */
+    role_id: string
+    /**
+     * The scope of the role assignment.
+     */
+    scope?: string
+    /**
+     * The ID of the scope of the role assignment.
+     */
+    scope_id?: string
+  }[]
 }
 
 /**
- * @featureFlag rbac
+ * The RBAC roles to unassign from a user.
  */
-export interface AdminRemoveUserRoles {
-  /**
-   * The IDs of the roles to remove from the user.
-   */
-  roles: string[]
+export interface AdminUnassignUserRoles {
+  assignments: {
+    /**
+     * The ID of the role to unassign from the user.
+     */
+    role_id: string
+    /**
+     * The scope of the role unassignment.
+     */
+    scope?: string
+    /**
+     * The ID of the scope of the role unassignment.
+     */
+    scope_id?: string
+  }[]
 }
 
-/**
- * @featureFlag rbac
- */
-export interface AdminAssignUserRoles {
-  roles: string[]
+export interface AdminUnassignUserRole {
+  scope?: string
+  scope_id?: string
 }

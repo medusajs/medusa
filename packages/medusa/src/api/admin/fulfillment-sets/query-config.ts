@@ -1,6 +1,7 @@
 export enum Entities {
   fulfillment_set = "fulfillment_set",
   service_zone = "service_zone",
+  stock_location = "stock_location",
 }
 
 export const defaultAdminFulfillmentSetsFields = [

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { DataTableStatusCell } from "../../../components/data-table/components/data-table-status-cell/data-table-status-cell"
 import { PencilSquare } from "@medusajs/icons"
 import { useNavigate, useSearchParams } from "react-router-dom"
+import { usePermissions } from "../../../providers/permissions-provider"
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminEntityInfo>()
 
@@ -12,6 +13,12 @@ export const usePropertyLabelsTableColumns = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { hasAllPermissions } = usePermissions()
+  const canEdit = hasAllPermissions([
+    "property_label:create",
+    "property_label:update",
+    "property_label:delete",
+  ])
 
   return useMemo(
     () => [
@@ -43,22 +50,26 @@ export const usePropertyLabelsTableColumns = () => {
           )
         },
       }),
-      columnHelper.action({
-        actions: (ctx) => [
-          {
-            label: t("actions.edit"),
-            icon: <PencilSquare />,
-            onClick: () => {
-              const params = searchParams.toString()
-              navigate(
-                `/settings/property-labels/${ctx.row.original.name}/edit`,
-                params ? { state: { restore_params: params } } : undefined
-              )
-            },
-          },
-        ],
-      }),
+      ...(canEdit
+        ? [
+            columnHelper.action({
+              actions: (ctx) => [
+                {
+                  label: t("actions.edit"),
+                  icon: <PencilSquare />,
+                  onClick: () => {
+                    const params = searchParams.toString()
+                    navigate(
+                      `/settings/property-labels/${ctx.row.original.name}/edit`,
+                      params ? { state: { restore_params: params } } : undefined
+                    )
+                  },
+                },
+              ],
+            }),
+          ]
+        : []),
     ],
-    [t, navigate, searchParams]
+    [t, navigate, searchParams, canEdit]
   )
 }

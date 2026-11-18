@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Container, Text } from "@medusajs/ui";
 import { CreditCard, MinusMini } from "@medusajs/icons";
 
@@ -11,6 +12,9 @@ const StoreCreditAccountDetailsSection = ({
 }: {
   storeCreditAccount: AdminStoreCreditAccount;
 }) => {
+  const { hasPermission } = usePermissions();
+  const canUpdate = hasPermission("store_credit_account:update");
+
   if (
     !storeCreditAccount ||
     typeof storeCreditAccount.balance === "undefined"
@@ -44,27 +48,29 @@ const StoreCreditAccountDetailsSection = ({
         </div>
       </Text>
 
-      <div className="flex items-center gap-x-4">
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <CreditCard />,
-                  label: "Credit the account",
-                  to: "credit",
-                },
-                {
-                  icon: <MinusMini />,
-                  label: "Debit the account",
-                  to: "debit",
-                  disabled: !Number(storeCreditAccount.balance),
-                },
-              ],
-            },
-          ]}
-        />
-      </div>
+      {canUpdate && (
+        <div className="flex items-center gap-x-4">
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <CreditCard />,
+                    label: "Credit the account",
+                    to: "credit",
+                  },
+                  {
+                    icon: <MinusMini />,
+                    label: "Debit the account",
+                    to: "debit",
+                    disabled: !Number(storeCreditAccount.balance),
+                  },
+                ],
+              },
+            ]}
+          />
+        </div>
+      )}
     </Container>
   );
 };

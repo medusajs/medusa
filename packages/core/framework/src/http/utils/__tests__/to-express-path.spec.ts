@@ -1,10 +1,17 @@
-import { pathToRegexp } from "path-to-regexp"
 import { toExpressPath } from "../to-express-path"
+
+let pathToRegexp: typeof import("path-to-regexp", {
+  with: { "resolution-mode": "import" },
+}).pathToRegexp
 
 const matches = (matcher: string, url: string) =>
   pathToRegexp(toExpressPath(matcher), { end: false }).regexp.test(url)
 
 describe("toExpressPath", () => {
+  beforeAll(async () => {
+    ;({ pathToRegexp } = await import("path-to-regexp"))
+  })
+
   it("should convert each bare wildcard to a uniquely named optional wildcard", () => {
     expect(toExpressPath("/admin/products/*/variants/*")).toBe(
       "/admin/products/{*splat0}/variants/{*splat1}"

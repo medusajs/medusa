@@ -160,7 +160,8 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
         },
         body: new URLSearchParams({
           client_id: clientId,
-          client_secret: this.config_.api_key,
+          client_secret:
+            this.config_.oauth_client_secret || this.config_.api_key,
           code,
           redirect_uri: state.callback_url as string,
           grant_type: "authorization_code",
@@ -280,6 +281,6 @@ export class MedusaCloudAuthService extends AbstractAuthModuleProvider {
   }
 
   private getClientId() {
-    return this.config_.environment_handle || this.config_.sandbox_handle
+    return this.config_.environment_handle
   }
 }

@@ -1,7 +1,8 @@
 import { MedusaContainer, RemoteQueryFunction } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "../common/container"
 import { isObject } from "../common/is-object"
-import { FeatureFlag } from "../feature-flags/flag-router"
+
+export const TRANSLATION_LIST_CACHE_TAG = "Translation:list:*"
 
 const excludedKeys = [
   "id",
@@ -82,12 +83,6 @@ export async function applyTranslations({
   objects: Record<string, any>[]
   container: MedusaContainer
 }) {
-  const isTranslationEnabled = FeatureFlag.isFeatureEnabled("translation")
-
-  if (!isTranslationEnabled) {
-    return
-  }
-
   const locale = localeCode
 
   if (!locale) {
@@ -123,7 +118,7 @@ export async function applyTranslations({
     const { data: translations } = await query.graph(
       {
         entity: "translations",
-        fields: ["translations", "reference_id"],
+        fields: ["translations", "reference_id", "id"],
         filters: {
           reference_id: queryBatch,
           locale_code: locale,
@@ -133,7 +128,11 @@ export async function applyTranslations({
         },
       },
       {
-        cache: { enable: true },
+        cache: {
+          enable: true,
+          tags: [TRANSLATION_LIST_CACHE_TAG],
+          computeAutomaticTags: true,
+        },
       }
     )
 

@@ -1,3 +1,4 @@
+import { PermissionGuard } from "@medusajs/dashboard/hooks"
 import {
   defaultDropAnimationSideEffects,
   DndContext,
@@ -248,7 +249,9 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
               </div>
             </DndContext>
             <div className="bg-ui-bg-base overflow-auto border-b px-6 py-4 lg:border-b-0 lg:border-l">
-              <UploadMediaFormItem form={form} append={append} />
+              <PermissionGuard permission="file:create">
+                <UploadMediaFormItem form={form} append={append} />
+              </PermissionGuard>
             </div>
           </div>
         </RouteFocusModal.Body>

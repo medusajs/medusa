@@ -67,7 +67,7 @@ export const useCreateRegion = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.region.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.lists() })
 
       queryClient.invalidateQueries({
@@ -77,7 +77,7 @@ export const useCreateRegion = (
         queryKey: pricePreferencesQueryKeys.details(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -93,7 +93,7 @@ export const useUpdateRegion = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.region.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.details() })
 
@@ -104,7 +104,7 @@ export const useUpdateRegion = (
         queryKey: pricePreferencesQueryKeys.details(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -120,11 +120,11 @@ export const useDeleteRegion = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.region.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.detail(id) })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

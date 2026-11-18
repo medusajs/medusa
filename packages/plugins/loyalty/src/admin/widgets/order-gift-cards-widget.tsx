@@ -1,4 +1,5 @@
 import { defineWidgetConfig } from "@medusajs/admin-sdk";
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Gift, TriangleRightMini } from "@medusajs/icons";
 import { Container, StatusBadge } from "@medusajs/ui";
 import { useParams } from "react-router-dom";
@@ -11,12 +12,18 @@ import { formatAmount } from "../utils/format-amount";
 
 const OrderGiftCardsWidget = () => {
   const params = useParams();
+  const { hasPermission } = usePermissions();
+  const canRead = hasPermission("gift_card:read");
 
-  const { order } = useOrder(params.id!, {
-    fields: "+*gift_cards",
-  });
+  const { order } = useOrder(
+    params.id!,
+    {
+      fields: "+gift_cards",
+    },
+    { enabled: canRead }
+  );
 
-  if (!order?.gift_cards?.length) {
+  if (!canRead || !order?.gift_cards?.length) {
     return;
   }
 

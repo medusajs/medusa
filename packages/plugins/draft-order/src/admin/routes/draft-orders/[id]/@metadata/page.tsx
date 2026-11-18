@@ -26,6 +26,7 @@ import { KeyboundForm } from "../../../../components/common/keybound-form"
 import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import { useUpdateDraftOrder } from "../../../../hooks/api/draft-orders"
 import { useOrder } from "../../../../hooks/api/orders"
+import { EDIT_DRAFT_ORDER_PERMISSIONS } from "../../../../lib/permissions"
 
 const MetadataFieldSchema = z.object({
   key: z.string(),
@@ -415,6 +416,10 @@ function getHasUneditableRows(metadata?: Record<string, any> | null) {
   return Object.values(metadata).some(
     (value) => !EDITABLE_TYPES.includes(typeof value)
   )
+}
+
+export const handle = {
+  permissions: EDIT_DRAFT_ORDER_PERMISSIONS,
 }
 
 export default Metadata

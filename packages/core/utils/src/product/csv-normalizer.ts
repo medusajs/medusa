@@ -273,7 +273,7 @@ const productWildcardColumns: {
  */
 const variantStaticColumns: {
   [columnName: string]: ColumnProcessor<{
-    [K in keyof AdminCreateProductVariant | "id"]?: any
+    [K in keyof AdminCreateProductVariant | "id" | "thumbnail"]?: any
   }>
 } = {
   "variant id": processAsString("variant id", "id"),
@@ -306,6 +306,7 @@ const variantStaticColumns: {
   ),
   "variant width": processAsNumber("variant width", "width"),
   "variant weight": processAsNumber("variant weight", "weight"),
+  "variant thumbnail": processAsString("variant thumbnail", "thumbnail"),
   // System-generated timestamp fields that should be ignored during import
   "variant created at": processAsIgnored(),
   "variant deleted at": processAsIgnored(),
@@ -369,6 +370,9 @@ const variantWildcardColumns: {
       })
     })
   },
+  // Variant images are linked to product images through a separate workflow,
+  // so the "Variant Image N" columns written by the product export are ignored
+  "variant image": processAsIgnored(),
 }
 
 /**

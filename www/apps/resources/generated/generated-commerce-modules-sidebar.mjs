@@ -596,6 +596,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Login Options",
+              "path": "https://docs.medusajs.com/user-guide/tips/login-options",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Reset Password",
               "path": "https://docs.medusajs.com/user-guide/reset-password",
               "children": []
@@ -1538,6 +1545,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "refreshCartItemsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartItemsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "refreshCartPromotionAdjustmentsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow",
                       "children": []
                     },
                     {
@@ -3662,6 +3676,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "createCartWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createCartWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "createClaimShippingMethodWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createClaimShippingMethodWorkflow",
                       "children": []
@@ -3881,6 +3902,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "transferCartCustomerWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferCartCustomerWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateCartPromotionsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartPromotionsWorkflow",
                       "children": []
                     },
                     {
@@ -6148,6 +6176,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/loyalty/deleteGiftCards",
                       "title": "deleteGiftCards",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/loyalty/getOptions",
+                      "title": "getOptions",
                       "description": "",
                       "children": []
                     },
@@ -9694,13 +9730,6 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
-                      "title": "createPaymentSessionStep",
-                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPaymentSessionStep",
-                      "children": []
-                    },
-                    {
-                      "loaded": true,
-                      "type": "ref",
                       "title": "createRefundReasonStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRefundReasonStep",
                       "children": []
@@ -9736,8 +9765,22 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "replacePaymentAccountHolderStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/replacePaymentAccountHolderStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "setRegionsPaymentProvidersStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setRegionsPaymentProvidersStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "tryCreatePaymentSessionStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/tryCreatePaymentSessionStep",
                       "children": []
                     },
                     {
@@ -10076,6 +10119,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/payment/refundPayment",
                       "title": "refundPayment",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/payment/replaceAccountHolder",
+                      "title": "replaceAccountHolder",
                       "description": "",
                       "children": []
                     },
@@ -13468,6 +13519,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "ref",
+                      "title": "refreshCartPromotionAdjustmentsWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
                       "title": "removeDraftOrderActionItemWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeDraftOrderActionItemWorkflow",
                       "children": []
@@ -14112,6 +14170,17 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           ]
         }
       ]
+    },
+    {
+      "loaded": true,
+      "type": "ref",
+      "path": "/enterprise/rbac",
+      "title": "RBAC Module",
+      "badge": {
+        "variant": "purple",
+        "text": "Enterprise"
+      },
+      "children": []
     },
     {
       "loaded": true,
@@ -18093,6 +18162,20 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
+          "title": "Concepts",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/commerce-modules/user/links-to-other-modules",
+              "title": "Link to Modules",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
           "title": "Server Guides",
           "autogenerate_tags": "server+user",
           "autogenerate_as_ref": true,
@@ -18134,6 +18217,20 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Common Roles",
+              "path": "https://docs.medusajs.com/user-guide/settings/roles/common-roles",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Login Options",
+              "path": "https://docs.medusajs.com/user-guide/tips/login-options",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Manage Invites",
               "path": "https://docs.medusajs.com/user-guide/settings/users/invites",
               "children": []
@@ -18148,6 +18245,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Manage Roles",
+              "path": "https://docs.medusajs.com/user-guide/settings/roles",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Manage Users",
               "path": "https://docs.medusajs.com/user-guide/settings/users",
               "children": []
@@ -18157,6 +18261,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "type": "ref",
               "title": "Reset Password",
               "path": "https://docs.medusajs.com/user-guide/reset-password",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "View Policies",
+              "path": "https://docs.medusajs.com/user-guide/settings/policies",
               "children": []
             }
           ]

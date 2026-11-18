@@ -2,6 +2,7 @@
   "compilerOptions": {
     "lib": ["es2021"],
     "target": "es2021",
+    "rootDir": "./src",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declarationMap": true,
@@ -17,9 +18,8 @@
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true,
-    // to use ES5 specific tooling
-    "baseUrl": ".",
+    "strict": false,
+    "types": ["*"],
     "resolveJsonModule": true,
     "paths": {
       "@models": ["./src/models"],

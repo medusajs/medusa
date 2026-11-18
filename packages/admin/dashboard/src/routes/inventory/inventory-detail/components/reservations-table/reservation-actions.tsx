@@ -3,8 +3,12 @@ import { toast, usePrompt } from "@medusajs/ui"
 
 import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
+import { useReservationItemPermissions } from "../../../../../hooks/use-resource-permissions"
 
 export const ReservationActions = ({
   reservation,
@@ -13,6 +17,7 @@ export const ReservationActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate, canDelete } = useReservationItemPermissions()
   const { mutateAsync } = useDeleteReservationItem(reservation.id)
 
   const handleDelete = async () => {
@@ -37,28 +42,35 @@ export const ReservationActions = ({
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/reservations/${reservation.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/reservations/${reservation.id}/edit`,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@medusajs/framework/zod";
 
 export const GiftCardCreateSchema = z.object({
   value: z.coerce.number().positive({

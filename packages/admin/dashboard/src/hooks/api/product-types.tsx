@@ -69,7 +69,6 @@ export const useInfiniteProductTypes = (
       HttpTypes.AdminProductTypeListResponse,
       FetchError,
       InfiniteData<HttpTypes.AdminProductTypeListResponse, number>,
-      HttpTypes.AdminProductTypeListResponse,
       QueryKey,
       number
     >,
@@ -98,10 +97,10 @@ export const useCreateProductType = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.productType.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: productTypesQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -117,13 +116,13 @@ export const useUpdateProductType = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.productType.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: productTypesQueryKeys.detail(id),
       })
       queryClient.invalidateQueries({ queryKey: productTypesQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -139,13 +138,13 @@ export const useDeleteProductType = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.productType.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: productTypesQueryKeys.detail(id),
       })
       queryClient.invalidateQueries({ queryKey: productTypesQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

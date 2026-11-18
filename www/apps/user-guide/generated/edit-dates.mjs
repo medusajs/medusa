@@ -5,7 +5,7 @@ export const generatedEditDates = {
   "app/settings/sales-channels/page.mdx": "2026-07-31T12:45:34.271Z",
   "app/settings/users/page.mdx": "2026-08-20T07:43:17.621Z",
   "app/page.mdx": "2025-02-26T14:18:27.755Z",
-  "app/settings/page.mdx": "2026-08-26T09:35:07.035Z",
+  "app/settings/page.mdx": "2026-11-13T07:37:39.406Z",
   "app/products/export/page.mdx": "2026-04-10T09:45:36.841Z",
   "app/settings/return-reasons/page.mdx": "2025-05-30T13:31:05.596Z",
   "app/settings/regions/page.mdx": "2025-05-30T13:30:59.228Z",
@@ -37,8 +37,8 @@ export const generatedEditDates = {
   "app/products/create/bundle/page.mdx": "2025-05-30T13:29:15.958Z",
   "app/products/create/multi-part/page.mdx": "2025-11-27T08:28:54.245Z",
   "app/promotions/campaigns/page.mdx": "2025-10-13T10:14:17.948Z",
-  "app/promotions/create/page.mdx": "2025-12-01T09:31:05.267Z",
-  "app/promotions/manage/page.mdx": "2026-09-08T19:33:22.816Z",
+  "app/promotions/create/page.mdx": "2026-11-06T14:02:52.165Z",
+  "app/promotions/manage/page.mdx": "2026-11-06T14:02:54.110Z",
   "app/promotions/page.mdx": "2025-05-30T13:30:08.538Z",
   "app/price-lists/create/page.mdx": "2026-06-30T22:37:23.258Z",
   "app/price-lists/manage/page.mdx": "2026-06-30T22:37:34.229Z",
@@ -72,5 +72,7 @@ export const generatedEditDates = {
   "app/settings/property-labels/page.mdx": "2026-07-23T12:34:12.839Z",
   "app/tips/table-views/page.mdx": "2026-07-23T12:12:44.850Z",
   "app/inventory/export/page.mdx": "2026-07-28T15:35:53.767Z",
-  "app/settings/search/page.mdx": "2026-09-18T06:39:57.423Z"
+  "app/settings/search/page.mdx": "2026-09-18T06:39:57.423Z",
+  "app/settings/roles/page.mdx": "2026-11-12T17:43:44.092Z",
+  "app/settings/announcements/page.mdx": "2026-11-13T07:37:39.112Z"
 }

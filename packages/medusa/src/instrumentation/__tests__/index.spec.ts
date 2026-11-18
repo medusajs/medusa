@@ -3,12 +3,12 @@ import { createServer } from "../__fixtures__/server"
 import { instrumentHttpLayer } from "../index"
 import { MedusaError } from "@medusajs/framework/utils"
 import { ApiLoader } from "@medusajs/framework/http"
-import { SpanStatusCode } from "@medusajs/framework/opentelemetry/api"
+import { SpanStatusCode, trace } from "@medusajs/framework/opentelemetry/api"
 import {
   InMemorySpanExporter,
-  NodeTracerProvider,
   SimpleSpanProcessor,
-} from "@medusajs/framework/opentelemetry/sdk-trace-node"
+  TracerProvider,
+} from "@medusajs/framework/opentelemetry/sdk-trace"
 import { EventEmitter } from "events"
 
 jest.setTimeout(30000)
@@ -48,9 +48,11 @@ describe("HTTP Instrumentation", () => {
   })
 
   beforeAll(async function () {
-    new NodeTracerProvider({
-      spanProcessors: [new SimpleSpanProcessor(exporter)],
-    }).register()
+    trace.setGlobalTracerProvider(
+      new TracerProvider({
+        spanProcessors: [new SimpleSpanProcessor({ exporter })],
+      })
+    )
 
     instrumentHttpLayer()
 

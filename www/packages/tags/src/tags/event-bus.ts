@@ -216,8 +216,52 @@ export const eventBus = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refundPaymentWorkflow"
   },
   {
+    "title": "batchPriceListPricesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchPriceListPricesWorkflow"
+  },
+  {
+    "title": "createPriceListPricesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createPriceListPricesWorkflow"
+  },
+  {
+    "title": "createPriceListsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createPriceListsWorkflow"
+  },
+  {
+    "title": "deletePriceListsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deletePriceListsWorkflow"
+  },
+  {
+    "title": "removePriceListPricesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removePriceListPricesWorkflow"
+  },
+  {
+    "title": "updatePriceListPricesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePriceListPricesWorkflow"
+  },
+  {
+    "title": "updatePriceListsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePriceListsWorkflow"
+  },
+  {
+    "title": "batchImageVariantsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchImageVariantsWorkflow"
+  },
+  {
+    "title": "batchLinkProductsToCategoryWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchLinkProductsToCategoryWorkflow"
+  },
+  {
+    "title": "batchLinkProductsToCollectionWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchLinkProductsToCollectionWorkflow"
+  },
+  {
     "title": "batchProductVariantsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchProductVariantsWorkflow"
+  },
+  {
+    "title": "batchVariantImagesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchVariantImagesWorkflow"
   },
   {
     "title": "createAndLinkProductOptionsToProductWorkflow",
@@ -304,6 +348,10 @@ export const eventBus = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductsWorkflow"
   },
   {
+    "title": "upsertVariantPricesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/upsertVariantPricesWorkflow"
+  },
+  {
     "title": "createProductCategoriesWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createProductCategoriesWorkflow"
   },
@@ -350,6 +398,10 @@ export const eventBus = [
   {
     "title": "deleteSalesChannelsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteSalesChannelsWorkflow"
+  },
+  {
+    "title": "linkProductsToSalesChannelWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/linkProductsToSalesChannelWorkflow"
   },
   {
     "title": "updateSalesChannelsWorkflow",

@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { HttpTypes } from "@medusajs/types";
 import { Container, Heading } from "@medusajs/ui";
 import { Link } from "react-router-dom";
@@ -15,6 +16,8 @@ export const ProductSalesChannelSection = ({
   product,
 }: ProductSalesChannelSectionProps) => {
   const { count } = useSalesChannels();
+  const { hasPermission } = usePermissions();
+  const canUpdate = hasPermission("product:update");
 
   const availableInSalesChannels =
     product.sales_channels?.map((sc) => ({
@@ -27,12 +30,14 @@ export const ProductSalesChannelSection = ({
       <div className="flex items-center justify-between px-3 py-3">
         <Heading level="h2">Sales Channels</Heading>
 
-        <Link
-          to={`sales-channels`}
-          className="text-ui-fg-muted text-sm  txt-compact-medium-plus"
-        >
-          Edit
-        </Link>
+        {canUpdate && (
+          <Link
+            to={`sales-channels`}
+            className="text-ui-fg-muted text-sm  txt-compact-medium-plus"
+          >
+            Edit
+          </Link>
+        )}
       </div>
 
       <Listicle

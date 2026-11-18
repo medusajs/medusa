@@ -30,6 +30,10 @@ export type MenuItemExtension = {
   nested?: NestedRoutePosition
   rank?: number
   translationNs?: string
+  /**
+   * The permissions the user must all hold for the item to show in the sidebar.
+   */
+  permissions?: string | string[]
 }
 
 export type WidgetExtension = {

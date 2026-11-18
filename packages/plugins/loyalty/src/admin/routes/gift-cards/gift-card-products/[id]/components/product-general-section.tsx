@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { PencilSquare, Trash } from "@medusajs/icons";
 import { HttpTypes } from "@medusajs/types";
 import { Container, Heading, StatusBadge, usePrompt } from "@medusajs/ui";
@@ -30,6 +31,9 @@ export const ProductGeneralSection = ({
 }: ProductGeneralSectionProps) => {
   const prompt = usePrompt();
   const navigate = useNavigate();
+  const { hasPermission } = usePermissions();
+  const canUpdate = hasPermission("product:update");
+  const canDelete = hasPermission("product:delete");
 
   const { mutateAsync } = useDeleteProduct(product.id);
 
@@ -64,28 +68,34 @@ export const ProductGeneralSection = ({
             {product.status}
           </StatusBadge>
 
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: "Edit",
-                    to: "edit",
-                    icon: <PencilSquare />,
-                  },
-                ],
-              },
-              {
-                actions: [
-                  {
-                    label: "Delete",
-                    onClick: handleDelete,
-                    icon: <Trash />,
-                  },
-                ],
-              },
-            ]}
-          />
+          {(canUpdate || canDelete) && (
+            <ActionMenu
+              groups={[
+                {
+                  actions: canUpdate
+                    ? [
+                        {
+                          label: "Edit",
+                          to: "edit",
+                          icon: <PencilSquare />,
+                        },
+                      ]
+                    : [],
+                },
+                {
+                  actions: canDelete
+                    ? [
+                        {
+                          label: "Delete",
+                          onClick: handleDelete,
+                          icon: <Trash />,
+                        },
+                      ]
+                    : [],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
 

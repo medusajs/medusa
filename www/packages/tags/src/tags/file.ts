@@ -1,5 +1,13 @@
 export const file = [
   {
+    "title": "exportCustomersStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/exportCustomersStep"
+  },
+  {
+    "title": "exportCustomersWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/exportCustomersWorkflow"
+  },
+  {
     "title": "deleteFilesStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteFilesStep"
   },

@@ -11,6 +11,7 @@ import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import { useUpdateDraftOrder } from "../../../../hooks/api/draft-orders"
 import { useOrder } from "../../../../hooks/api/orders"
 import { addressSchema } from "../../../../lib/schemas/address"
+import { EDIT_DRAFT_ORDER_PERMISSIONS } from "../../../../lib/permissions"
 
 const BillingAddress = () => {
   const { id } = useParams()
@@ -242,5 +243,9 @@ const BillingAddressForm = ({ order }: BillingAddressFormProps) => {
 }
 
 const schema = addressSchema
+
+export const handle = {
+  permissions: EDIT_DRAFT_ORDER_PERMISSIONS,
+}
 
 export default BillingAddress

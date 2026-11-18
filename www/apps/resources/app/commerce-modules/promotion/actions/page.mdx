@@ -49,6 +49,12 @@ If you apply a `$100` fixed discount on the order, Medusa distributes it proport
 
 If another order-level promotion applies afterward, Medusa recalculates each item's share using its remaining amount (`$187.5` and `$112.5`).
 
+### Multiple Buy X Get Y Promotions
+
+When you apply more than one `buyget` promotion, each item unit can only count toward one of them. Once a promotion uses a unit, either to meet its "buy X" condition or to receive its "get Y" discount, Medusa doesn't use that unit for the other `buyget` promotions in either role.
+
+For example, consider a cart with two shirts and two promotions that each require buying one shirt to get one shirt free. The first promotion uses one shirt as its "buy X" item and discounts the other shirt. No shirts remain for the second promotion, so Medusa doesn't apply it unless the customer adds more shirts to the cart.
+
 ---
 
 ## Action Types

@@ -11,8 +11,21 @@ import {
   isString,
   MedusaError,
 } from "@medusajs/framework/utils"
-import Scrypt from "scrypt-kdf"
 import { isPresent } from "@medusajs/utils"
+
+type ScryptKdf = typeof import("scrypt-kdf", {
+  with: { "resolution-mode": "import" },
+})
+
+let scryptKdf: ScryptKdf | undefined
+
+// scrypt-kdf is ESM-only, and Jest run with --experimental-vm-modules rejects require() of ESM
+async function loadScrypt(): Promise<ScryptKdf> {
+  scryptKdf ??= (
+    (await import("scrypt-kdf")) as unknown as { default: ScryptKdf }
+  ).default
+  return scryptKdf
+}
 
 type InjectedDependencies = {
   logger: Logger
@@ -49,8 +62,9 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
   protected async hashPassword(password: string) {
     const hashConfig = this.config_.hashConfig ?? { logN: 15, r: 8, p: 1 }
+    const Scrypt = await loadScrypt()
     const passwordHash = await Scrypt.kdf(password, hashConfig)
-    return passwordHash.toString("base64")
+    return Buffer.from(passwordHash).toString("base64")
   }
 
   async update(
@@ -228,6 +242,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       return false
     }
 
+    const Scrypt = await loadScrypt()
     return await Scrypt.verify(Buffer.from(passwordHash, "base64"), password)
   }
 

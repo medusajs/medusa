@@ -7,7 +7,7 @@
     "declarationMap": true,
     "inlineSources": false,
     "isolatedModules": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
@@ -15,10 +15,10 @@
     "strict": true,
     "allowJs": true,
     "checkJs": false,
-    "baseUrl": ".",
+    "types": ["*"],
     "resolveJsonModule": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"]

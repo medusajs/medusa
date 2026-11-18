@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { RouteFocusModal } from "../../../../../components/modals";
+import { EDIT_GIFT_CARD_PRICES_PERMISSIONS } from "../../../../../lib/permissions";
 import { useProduct } from "../../../../../hooks/api/products";
 import { PricingEdit } from "./components/prices-edit";
 
@@ -19,6 +20,10 @@ export const ProductPrices = () => {
       )}
     </RouteFocusModal>
   );
+};
+
+export const handle = {
+  permissions: EDIT_GIFT_CARD_PRICES_PERMISSIONS,
 };
 
 export default ProductPrices;

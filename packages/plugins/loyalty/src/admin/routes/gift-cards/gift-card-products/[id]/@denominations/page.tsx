@@ -1,6 +1,7 @@
 import { Heading } from "@medusajs/ui";
 import { useParams } from "react-router-dom";
 import { RouteDrawer } from "../../../../../components/modals";
+import { EDIT_GIFT_CARD_DENOMINATIONS_PERMISSIONS } from "../../../../../lib/permissions";
 import { useProduct } from "../../../../../hooks/api/products";
 import { GiftCardProductEditDenominationsForm } from "./components/gift-card-product-edit-denominations-form";
 
@@ -30,6 +31,10 @@ export const GiftCardProductEdit = () => {
       )}
     </RouteDrawer>
   );
+};
+
+export const handle = {
+  permissions: EDIT_GIFT_CARD_DENOMINATIONS_PERMISSIONS,
 };
 
 export default GiftCardProductEdit;

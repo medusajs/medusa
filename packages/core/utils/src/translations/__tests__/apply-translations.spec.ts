@@ -1,14 +1,4 @@
-import { FeatureFlag } from "../../feature-flags"
 import { applyTranslations } from "../apply-translations"
-
-jest.mock("../../feature-flags/flag-router", () => ({
-  ...jest.requireActual("../../feature-flags/flag-router"),
-  FeatureFlag: {
-    isFeatureEnabled: jest.fn(),
-  },
-}))
-
-const mockFeatureFlagIsEnabled = FeatureFlag.isFeatureEnabled as jest.Mock
 
 describe("applyTranslations", () => {
   let mockQuery: { graph: jest.Mock }
@@ -26,10 +16,6 @@ describe("applyTranslations", () => {
     mockReq = {
       locale: "en-US",
     }
-  })
-
-  beforeEach(() => {
-    mockFeatureFlagIsEnabled.mockReturnValue(true)
   })
 
   it("should apply translations to a simple object", async () => {
@@ -262,12 +248,11 @@ describe("applyTranslations", () => {
     expect(inputObjects[0].title).toBe("Original")
   })
 
-  it("should return early when feature flag is disabled", async () => {
-    mockFeatureFlagIsEnabled.mockReturnValue(false)
+  it("should return early when no locale is provided", async () => {
     const inputObjects = [{ id: "prod_1", title: "Original" }]
 
     await applyTranslations({
-      localeCode: mockReq.locale as string,
+      localeCode: undefined,
       objects: inputObjects,
       container: mockContainer as any,
     })
@@ -277,7 +262,6 @@ describe("applyTranslations", () => {
   })
 
   it("should not modify objects when no translations are found", async () => {
-    mockFeatureFlagIsEnabled.mockReturnValue(true)
     const inputObjects = [{ id: "prod_1", title: "Original Title" }]
 
     mockQuery.graph.mockResolvedValue({ data: [] })
@@ -292,7 +276,6 @@ describe("applyTranslations", () => {
   })
 
   it("should handle empty input array without errors", async () => {
-    mockFeatureFlagIsEnabled.mockReturnValue(true)
     const inputObjects: Record<string, any>[] = []
 
     await expect(
@@ -305,7 +288,6 @@ describe("applyTranslations", () => {
   })
 
   it("should not modify properties that do not exist in the object", async () => {
-    mockFeatureFlagIsEnabled.mockReturnValue(true)
     const inputObjects = [{ id: "prod_1", title: "Original" }]
 
     mockQuery.graph.mockResolvedValue({
@@ -328,7 +310,6 @@ describe("applyTranslations", () => {
   })
 
   it("should handle objects with undefined id gracefully", async () => {
-    mockFeatureFlagIsEnabled.mockReturnValue(true)
     const inputObjects = [{ id: undefined, title: "Original" }]
 
     mockQuery.graph.mockResolvedValue({ data: [] })
@@ -343,7 +324,6 @@ describe("applyTranslations", () => {
   })
 
   it("should only apply translations to matching keys", async () => {
-    mockFeatureFlagIsEnabled.mockReturnValue(true)
     const inputObjects = [
       { id: "prod_1", title: "Original Title", handle: "original-handle" },
     ]
@@ -368,7 +348,6 @@ describe("applyTranslations", () => {
   })
 
   it("should handle deeply nested structures", async () => {
-    mockFeatureFlagIsEnabled.mockReturnValue(true)
     const inputObjects = [
       {
         id: "prod_1",

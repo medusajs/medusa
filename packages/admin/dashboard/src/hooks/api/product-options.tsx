@@ -95,12 +95,12 @@ export const useCreateProductOption = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.productOption.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: productOptionsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -116,10 +116,10 @@ export const useUpdateProductOption = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.productOption.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       invalidateProductOptionQueries(id)
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -135,10 +135,10 @@ export const useDeleteProductOption = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.productOption.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       invalidateProductOptionQueries(id)
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -153,10 +153,10 @@ export const useDeleteProductOptionLazy = (
 ) => {
   return useMutation({
     mutationFn: (id: string) => sdk.admin.productOption.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       invalidateProductOptionQueries()
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -220,10 +220,10 @@ export const useUpdateProductOptionValue = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.productOption.updateValue(optionId, valueId, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       invalidateProductOptionQueries(optionId)
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -240,10 +240,10 @@ export const useDeleteProductOptionValue = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.productOption.deleteValue(optionId, valueId),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       invalidateProductOptionQueries(optionId)
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -260,10 +260,10 @@ export const useDeleteProductOptionValueLazy = (
   return useMutation({
     mutationFn: (valueId: string) =>
       sdk.admin.productOption.deleteValue(optionId, valueId),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       invalidateProductOptionQueries(optionId)
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

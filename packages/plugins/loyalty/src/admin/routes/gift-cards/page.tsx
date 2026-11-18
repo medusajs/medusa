@@ -1,5 +1,6 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { LayoutComposer } from "@medusajs/dashboard/components"
+import { PermissionGuard } from "@medusajs/dashboard/hooks"
 import { Toaster } from "@medusajs/ui"
 import GiftCardIcon from "../../components/icons/gift-card-icon"
 import GiftCardProductsSection from "./components/gift-card-products-section"
@@ -19,7 +20,9 @@ const GiftCardsPage = () => {
           ),
           side: (
             <LayoutComposer.Entry id="GiftCardProductsSection">
-              <GiftCardProductsSection />
+              <PermissionGuard permission="product:read">
+                <GiftCardProductsSection />
+              </PermissionGuard>
             </LayoutComposer.Entry>
           ),
         }}
@@ -33,6 +36,7 @@ const GiftCardsPage = () => {
 export const config = defineRouteConfig({
   label: "Gift Cards",
   icon: GiftCardIcon,
+  permissions: ["gift_card:read"],
 })
 
 export default GiftCardsPage

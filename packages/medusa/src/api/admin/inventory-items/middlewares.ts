@@ -2,7 +2,11 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  authorize,
+  authorizeIfNecessary,
+  MiddlewareRoute,
+} from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT } from "../../../utils/middlewares"
 import * as QueryConfig from "./query-config"
@@ -11,6 +15,7 @@ import {
   AdminBatchInventoryItemLevels,
   AdminBatchInventoryItemLocationsLevel,
   AdminCreateInventoryItem,
+  AdminCreateInventoryItemType,
   AdminCreateInventoryLocationLevel,
   AdminGetInventoryItemParams,
   AdminGetInventoryItemsParams,
@@ -19,40 +24,45 @@ import {
   AdminUpdateInventoryItem,
   AdminUpdateInventoryLocationLevel,
 } from "./validators"
+import { batchAuditResource } from "../../utils/audit"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/inventory-items/{*splat}",
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     matcher: "/admin/inventory-items/{*splat}/location-levels/{*splat}",
-    policies: [
-      {
-        resource: Entities.inventory_level,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_level,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/inventory-items",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetInventoryItemsParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -63,12 +73,10 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetInventoryItemsParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
+      authorize({
         resource: Entities.inventory_item,
         operation: PolicyOperation.read,
-      },
+      }),
     ],
   },
   {
@@ -85,17 +93,24 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/inventory-items",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateInventoryItem),
+      authorizeIfNecessary<AdminCreateInventoryItemType>(
+        (req) => !!req.validatedBody?.location_levels?.length,
+        {
+          resource: Entities.inventory_level,
+          operation: PolicyOperation.create,
+        }
+      ),
       validateAndTransformQuery(
         AdminGetInventoryItemParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.create,
-      },
     ],
   },
   {
@@ -104,12 +119,14 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
-    middlewares: [validateAndTransformBody(AdminBatchInventoryItemLevels)],
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.ALL,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.ALL,
+        },
+      ]),
+      validateAndTransformBody(AdminBatchInventoryItemLevels),
     ],
   },
   {
@@ -118,29 +135,51 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
-    middlewares: [validateAndTransformBody(AdminBatchInventoryItemLevels)],
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.ALL,
-      },
+    audit: {
+      action: "inventory_level.batch",
+      resource: batchAuditResource("inventory_level"),
+    },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_level,
+          operation: [
+            PolicyOperation.create,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ],
+        },
+      ]),
+      validateAndTransformBody(AdminBatchInventoryItemLevels),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/inventory-items/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateInventoryItem),
       validateAndTransformQuery(
         AdminGetInventoryItemParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.inventory_item,
-        operation: PolicyOperation.update,
-      },
+  },
+  {
+    method: ["DELETE"],
+    matcher: "/admin/inventory-items/:id",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_item,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
   {
@@ -157,17 +196,17 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/inventory-items/:id/location-levels",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_level,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateInventoryLocationLevel),
       validateAndTransformQuery(
         AdminGetInventoryItemParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.inventory_level,
-        operation: PolicyOperation.create,
-      },
     ],
   },
   {
@@ -177,50 +216,54 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_level,
+          operation: [
+            PolicyOperation.create,
+            PolicyOperation.update,
+            PolicyOperation.delete,
+          ],
+        },
+      ]),
       validateAndTransformBody(AdminBatchInventoryItemLocationsLevel),
       validateAndTransformQuery(
         AdminGetInventoryLocationLevelParams,
         QueryConfig.retrieveLocationLevelsTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.inventory_level,
-        operation: PolicyOperation.ALL,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/inventory-items/:id/location-levels/:location_id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_level,
+          operation: PolicyOperation.delete,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetInventoryItemParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.inventory_level,
-        operation: PolicyOperation.delete,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/inventory-items/:id/location-levels/:location_id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.inventory_level,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateInventoryLocationLevel),
       validateAndTransformQuery(
         AdminGetInventoryItemParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.inventory_level,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 ]

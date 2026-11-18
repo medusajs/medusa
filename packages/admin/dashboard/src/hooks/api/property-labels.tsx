@@ -70,13 +70,13 @@ export const useCreatePropertyLabel = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.propertyLabel.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: propertyLabelsQueryKeys.all })
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.columns(data.property_label.entity),
       })
       queryClient.invalidateQueries({ queryKey: viewsQueryKeys.entities() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -92,12 +92,12 @@ export const useUpdatePropertyLabel = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.propertyLabel.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: propertyLabelsQueryKeys.all })
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.columns(data.property_label.entity),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -113,13 +113,13 @@ export const useDeletePropertyLabel = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.propertyLabel.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: propertyLabelsQueryKeys.all })
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.columns(),
       })
       queryClient.invalidateQueries({ queryKey: viewsQueryKeys.entities() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -134,13 +134,13 @@ export const useBatchPropertyLabels = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.propertyLabel.batch(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: propertyLabelsQueryKeys.all })
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.columns(),
       })
       queryClient.invalidateQueries({ queryKey: viewsQueryKeys.entities() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
