@@ -1112,13 +1112,19 @@ The workflow has the following steps:
 
 The `useQueryGraphStep` is from Medusa's workflows. So, you'll only implement the other steps.
 
-### Optional Prerequisite: Notification Module Provider
+### Prerequisite: Email Sending Setup
 
 Within this workflow, you'll use Medusa's [Notification Module](../../../infrastructure-modules/notification/page.mdx) to send an email to the customer.
 
-The module delegates the email sending to a module provider, such as [SendGrid](../../../infrastructure-modules/notification/sendgrid/page.mdx) or [Resend](../../../integrations/guides/resend/page.mdx). You can refer to their linked guides to set up either module providers.
+Cloud projects send notifications of the `email` channel with [Medusa Emails](!cloud!/emails), Cloud's built-in email service. Medusa Emails is enabled by default, so you don't need to configure a Notification Module Provider or add API keys.
 
-Alternatively, for development and debugging purposes, you can use the default Notification Module Provider that only logs a message in the terminal instead of sending an email. To do that, add the following to the `modules` array in `medusa-config.ts`:
+<Note>
+
+Without a verified sender domain, Medusa Emails only sends emails to addresses of users in your Cloud organization. To send restock emails to your customers, [add an email sender domain](!cloud!/emails#add-email-sender-domain-to-cloud) to your Cloud project.
+
+</Note>
+
+Medusa Emails isn't available when you run the Medusa application locally. So, register the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) for the `email` channel during development. It logs a message in the terminal instead of sending an email. Add the following to the `modules` array in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -1133,7 +1139,11 @@ module.exports = defineConfig({
             resolve: "@medusajs/medusa/notification-local",
             id: "local",
             options: {
-              channels: ["email", "feed"],
+              channels: [
+                process.env.NODE_ENV === "development"
+                  ? "email"
+                  : "feed",
+              ],
             },
           },
         ],
@@ -1141,8 +1151,9 @@ module.exports = defineConfig({
     },
   ],
 })
-
 ```
+
+The Local Notification Module Provider handles the `email` channel only in development. In your Cloud environments, it handles the `feed` channel, so Medusa Emails sends the `email` notifications.
 
 ## getDistinctSubscriptionsStep
 
@@ -1282,9 +1293,9 @@ export const sendRestockNotificationStep = createStep(
     const notificationData = input.map((subscription) => ({
       to: subscription.email,
       channel: "email",
-      template: "variant-restock",
-      data: {
-        variant: subscription.product_variant,
+      content: {
+        subject: "Back in stock!",
+        html: `<p>${subscription.product_variant?.title} is back in stock.</p>`,
       },
     }))
 
@@ -1299,8 +1310,9 @@ To send a notification, you use the `createNotifications` method of the Notifica
 
 - `to`: The email to send the notification to.
 - `channel`: The channel to send the notification through, which is `email` for sending an email.
-- `template`: The email template to use for this notification.
-- `data`: Data to pass to the template relevant for the notification. Since the email will probably include details about the variant, you pass the variant's details.
+- `content`: The email's subject and HTML content. On Cloud, Medusa Emails sends this content to the subscriber.
+
+The email's HTML is basic, for simplicity. To build richer email templates, such as one that shows the variant's image and a link to its product page, use React Email as explained in the [Set Up React Email Templates](!cloud!/emails/react-email) guide.
 
 ### deleteRestockSubscriptionStep
 
@@ -1508,10 +1520,10 @@ export const config = {
 }
 ```
 
-After the application restarts, wait for the scheduled job to execute. If you're using the default Notification Module Provider that logs notifications in the terminal, you'll see a message similar to the following:
+After the application restarts, wait for the scheduled job to execute. The Local Notification Module Provider logs a message similar to the following in the terminal:
 
 ```bash
-Attempting to send a notification to: 'customer@gmail.com' on the channel: 'email' with template: 'variant-restock' and data: '{"variant":{"id":"variant_01JE3H6WHFMJ2WS64RM2MV1CJ6",...}}'
+Attempting to send a notification to: 'customer@gmail.com' on the channel: 'email' ...
 ```
 
 ---
@@ -1529,8 +1541,6 @@ export const config = {
 }
 ```
 
-On Cloud, Medusa configures [Medusa Emails](!cloud!/emails) to send notifications on the `email` channel. So, create the `variant-restock` email template as explained in the [Set Up React Email Templates](!cloud!/emails/react-email) guide.
-
 Create a new branch, commit your changes, and push them to the project's repository:
 
 ```bash
@@ -1541,6 +1551,8 @@ git push origin feat/restock-notifications
 ```
 
 Then, on GitHub, open a pull request from the `feat/restock-notifications` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After the changes are deployed, Medusa Emails sends the restock emails. You can track their delivery on the [Email Activity page](!cloud!/emails#monitor-email-sending-activity-on-cloud) of your Cloud project.
 
 Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
