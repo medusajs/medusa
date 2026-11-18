@@ -103,6 +103,7 @@ In production, register a Stripe webhook pointing to `{server_url}/hooks/payment
 | Option | Type | Description | Default |
 | --- | --- | --- | --- |
 | `apiKey` | `string` | Required. Your Stripe secret API key. | - |
+| `apiVersion` | `string` | The Stripe API version requests use. From `2026-07-29`, payment method types are sent as `allowed_payment_method_types` instead of `payment_method_types`. | `2024-04-10` |
 | `webhookSecret` | `string` | The Stripe webhook signing secret. A warning is logged if it's missing. | - |
 | `capture` | `boolean` | Capture payments immediately instead of only authorizing them. | `false` |
 | `automaticPaymentMethods` | `boolean` | Set `automatic_payment_methods: { enabled: true }` on Payment Intents. | `false` |

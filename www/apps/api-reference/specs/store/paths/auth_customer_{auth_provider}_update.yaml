@@ -8,8 +8,7 @@ post:
     route](https://docs.medusajs.com/api/store#auth_postactor_typeauth_providerresetpassword).
     You pass the token as a bearer token in the request's Authorization header.
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/storefront-development/customers/reset-password#2-reset-password-page
+    url: https://docs.medusajs.com/resources/storefront-development/customers/reset-password#2-reset-password-page
     description: 'Storefront development: How to create the reset password page.'
   x-authenticated: true
   parameters:
@@ -37,8 +36,7 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/auth_customer_{auth_provider}_update/post.js
+        $ref: ../code_samples/JavaScript/auth_customer_{auth_provider}_update/post.js
     - lang: Shell
       label: cURL
       source:

@@ -2,8 +2,7 @@ import { BaseFilterable, OperatorMap } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
 export interface AdminSalesChannelListParams
-  extends FindParams,
-    BaseFilterable<AdminSalesChannelListParams> {
+  extends FindParams, BaseFilterable<AdminSalesChannelListParams> {
   /**
    * Filter by sales channel ID(s).
    */

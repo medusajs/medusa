@@ -8,8 +8,10 @@ import { SearchResult } from "./result"
  * The caller's query plus the resolved definition. `attributes_to_retrieve` is
  * already narrowed to what the index can serve, so project it as given.
  */
-export interface ProviderSearchQuery
-  extends Omit<SearchQuery, "entity" | "fields"> {
+export interface ProviderSearchQuery extends Omit<
+  SearchQuery,
+  "entity" | "fields"
+> {
   /**
    * The resolved definition of the index to query. Use its `physical_name` as
    * the index to query, since it differs from the index's name under an index

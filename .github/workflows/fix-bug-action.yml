@@ -188,7 +188,7 @@ jobs:
       status: ${{ steps.result.outputs.status }}
     steps:
       # Sudo must stay disabled, or the agent's test code could flush the egress rules.
-      # harden-runner always allows the Actions cache/artifact hosts, so they aren't listed.
+      # harden-runner allows the Actions cache/artifact storage hosts by default, so they aren't listed.
       - name: Harden runner
         uses: step-security/harden-runner@351661ca32ac09a36dc5ee2d536e3128f2a3c8ed # v2.22.0
         with:
@@ -202,6 +202,7 @@ jobs:
             api.github.com:443
             objects.githubusercontent.com:443
             release-assets.githubusercontent.com:443
+            results-receiver.actions.githubusercontent.com:443
             registry.yarnpkg.com:443
             registry.npmjs.org:443
             repo.yarnpkg.com:443
@@ -259,6 +260,8 @@ jobs:
           CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"
           DB_HOST: localhost
           DB_USERNAME: postgres
+          # The action runs its own setup-node, defaulting to 18.x
+          NODE_VERSION: 22
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           settings: |
@@ -266,17 +269,11 @@ jobs:
               "permissions": {
                 "deny": [
                   "Read(//proc/**)",
-                  "Write(//**/.claude/**)",
                   "Edit(//**/.claude/**)",
-                  "Write(//**/.github/**)",
                   "Edit(//**/.github/**)",
-                  "Write(//**/.mcp.json)",
                   "Edit(//**/.mcp.json)",
-                  "Write(//**/scripts/**)",
                   "Edit(//**/scripts/**)",
-                  "Write(//**/migrations/**)",
                   "Edit(//**/migrations/**)",
-                  "Write(//**/package.json)",
                   "Edit(//**/package.json)"
                 ]
               }

@@ -9,13 +9,12 @@ export interface AdminUserResponse {
   user: AdminUser
 }
 
-export interface AdminUserListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of users.
-     */
-    users: AdminUser[]
-  }> {}
+export interface AdminUserListResponse extends PaginatedResponse<{
+  /**
+   * The list of users.
+   */
+  users: AdminUser[]
+}> {}
 
 export interface AdminUserDeleteResponse extends DeleteResponse<"user"> {}
 
@@ -39,13 +38,12 @@ export interface AdminUserResetPasswordTokenResponse {
   token: string
 }
 
-export interface AdminUserRoleListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of roles.
-     */
-    roles: AdminRbacRole[]
-  }> {}
+export interface AdminUserRoleListResponse extends PaginatedResponse<{
+  /**
+   * The list of roles.
+   */
+  roles: AdminRbacRole[]
+}> {}
 
 export interface AdminUserRolesResponse {
   /**
@@ -54,8 +52,7 @@ export interface AdminUserRolesResponse {
   roles: AdminRbacRole[]
 }
 
-export interface AdminUserRoleDeleteResponse
-  extends DeleteResponse<"user_role"> {}
+export interface AdminUserRoleDeleteResponse extends DeleteResponse<"user_role"> {}
 
 export interface AdminUserRolesDeleteResponse {
   /**

@@ -38,7 +38,7 @@ export const ListSummary = ({
   return (
     <div
       className={clx(
-        "text-ui-fg-subtle gap-x-1 overflow-hidden",
+        "gap-x-1 overflow-hidden text-ui-fg-subtle",
         {
           "inline-flex": inline,
           flex: !inline,

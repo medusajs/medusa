@@ -44,6 +44,15 @@ export const commerceModulesSidebar = [
   ...pricingSidebar,
   ...productSidebar,
   ...promotionSidebar,
+  {
+    type: "ref",
+    path: "/enterprise/rbac",
+    title: "RBAC Module",
+    badge: {
+      variant: "purple",
+      text: "Enterprise",
+    },
+  },
   ...regionSidebar,
   ...salesChannelSidebar,
   ...settingsSidebar,

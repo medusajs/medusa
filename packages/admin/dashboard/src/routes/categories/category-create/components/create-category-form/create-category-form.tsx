@@ -168,7 +168,7 @@ export const CreateCategoryForm = ({
             </ProgressTabs.Content>
             <ProgressTabs.Content
               value={Tab.ORGANIZE}
-              className="bg-ui-bg-subtle flex-1"
+              className="flex-1 bg-ui-bg-subtle"
             >
               <CreateCategoryNesting form={form} shouldFreeze={shouldFreeze} />
             </ProgressTabs.Content>

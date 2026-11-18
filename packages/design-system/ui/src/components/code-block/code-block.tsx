@@ -73,7 +73,7 @@ const Root = ({
     <CodeBlockContext.Provider value={{ snippets, active, setActive }}>
       <div
         className={clx(
-          "bg-ui-contrast-bg-base shadow-elevation-code-block flex flex-col overflow-hidden rounded-xl",
+          "flex flex-col overflow-hidden rounded-xl bg-ui-contrast-bg-base shadow-elevation-code-block",
           className
         )}
         {...props}
@@ -139,9 +139,9 @@ const HeaderComponent = ({
           snippets.map((snippet, idx) => (
             <div
               className={clx(
-                "text-ui-contrast-fg-secondary txt-compact-small-plus transition-fg relative cursor-pointer pb-[9px] pr-3",
+                "txt-compact-small-plus relative cursor-pointer pb-[9px] pr-3 text-ui-contrast-fg-secondary transition-fg",
                 {
-                  "text-ui-contrast-fg-primary cursor-default":
+                  "cursor-default text-ui-contrast-fg-primary":
                     active.label === snippet.label,
                 }
               )}
@@ -162,7 +162,7 @@ const HeaderComponent = ({
         {children}
       </div>
       <div className="w-full px-0.5">
-        <div className="bg-ui-contrast-border-top relative h-px w-full">
+        <div className="relative h-px w-full bg-ui-contrast-border-top">
           <div
             ref={tabIndicatorRef}
             className={clx(
@@ -170,7 +170,7 @@ const HeaderComponent = ({
               "duration-150 ease-linear"
             )}
           >
-            <div className="bg-ui-contrast-fg-primary h-px rounded-full" />
+            <div className="h-px rounded-full bg-ui-contrast-fg-primary" />
           </div>
         </div>
       </div>
@@ -189,7 +189,7 @@ const Meta = ({
   return (
     <div
       className={clx(
-        "txt-compact-small text-ui-contrast-fg-secondary ml-auto",
+        "txt-compact-small ml-auto text-ui-contrast-fg-secondary",
         className
       )}
       {...props}
@@ -215,8 +215,8 @@ const Body = ({
   return (
     <div>
       {showToolbar && (
-        <div className="border-ui-contrast-border-bot flex min-h-10 items-center gap-x-3 border-t px-4 py-2">
-          <div className="code-body text-ui-contrast-fg-secondary flex-1">
+        <div className="flex min-h-10 items-center gap-x-3 border-t border-ui-contrast-border-bot px-4 py-2">
+          <div className="code-body flex-1 text-ui-contrast-fg-secondary">
             {children}
           </div>
           {!active.hideCopy && (
@@ -230,7 +230,7 @@ const Body = ({
       <div className="flex h-full flex-col overflow-hidden px-[5px] pb-[5px]">
         <div
           className={clx(
-            "bg-ui-contrast-bg-subtle border-ui-contrast-border-bot relative h-full overflow-y-auto rounded-lg border p-4",
+            "relative h-full overflow-y-auto rounded-lg border border-ui-contrast-border-bot bg-ui-contrast-bg-subtle p-4",
             className
           )}
           {...props}
@@ -331,7 +331,7 @@ const Body = ({
                       {tokens.map((_, i) => (
                         <span
                           key={i}
-                          className="text-ui-contrast-fg-secondary tabular-nums"
+                          className="tabular-nums text-ui-contrast-fg-secondary"
                         >
                           {i + 1}
                         </span>

@@ -3,6 +3,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Badge, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useResourcePermissions } from "../../../../../hooks/use-resource-permissions"
 import { useDeleteProductOptionAction } from "../../../common/hooks/use-delete-product-option-action.tsx"
 
 export const ProductOptionGeneralSection = ({
@@ -13,38 +14,49 @@ export const ProductOptionGeneralSection = ({
   const { t } = useTranslation()
 
   const handleDelete = useDeleteProductOptionAction(productOption)
+  const { canUpdate, canDelete } = useResourcePermissions("product_option")
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{productOption.title}</Heading>
         <div className="flex items-center">
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.edit"),
-                    icon: <PencilSquare />,
-                    to: "edit",
-                  },
-                ],
-              },
-              {
-                actions: [
-                  {
-                    label: t("actions.delete"),
-                    icon: <Trash />,
-                    onClick: handleDelete,
-                  },
-                ],
-              },
-            ]}
-          />
+          {(canUpdate || canDelete) && (
+            <ActionMenu
+              groups={[
+                ...(canUpdate
+                  ? [
+                      {
+                        actions: [
+                          {
+                            label: t("actions.edit"),
+                            icon: <PencilSquare />,
+                            to: "edit",
+                          },
+                        ],
+                      },
+                    ]
+                  : []),
+                ...(canDelete
+                  ? [
+                      {
+                        actions: [
+                          {
+                            label: t("actions.delete"),
+                            icon: <Trash />,
+                            onClick: handleDelete,
+                          },
+                        ],
+                      },
+                    ]
+                  : []),
+              ]}
+            />
+          )}
         </div>
       </div>
       <div className="px-6 py-4">
-        <div className="text-ui-fg-subtle grid grid-cols-2 items-center">
+        <div className="grid grid-cols-2 items-center text-ui-fg-subtle">
           <Text size="small" leading="compact" weight="plus">
             {t("fields.type")}
           </Text>

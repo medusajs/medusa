@@ -129,9 +129,8 @@ export function isMedusaService(
  */
 export function MedusaService<
   const ModelsConfig extends ModelsConfigTemplate = { __empty: any },
-  const TModels extends ModelEntries<
-    ExtractKeysFromConfig<ModelsConfig>
-  > = ModelEntries<ExtractKeysFromConfig<ModelsConfig>>
+  const TModels extends ModelEntries<ExtractKeysFromConfig<ModelsConfig>> =
+    ModelEntries<ExtractKeysFromConfig<ModelsConfig>>,
 >(
   models: TModels
 ): MedusaServiceReturnType<
@@ -551,7 +550,7 @@ export function MedusaService<
   const modelsMethods: [
     string, // model name
     TModels[keyof TModels], // configuration (dml, conf, entity)
-    Record<string, string> // method names
+    Record<string, string>, // method names
   ][] = Object.entries(models as {}).map(([name, config]) => [
     DmlEntity.isDmlEntity(config) ? config.name : name,
     config as TModels[keyof TModels],

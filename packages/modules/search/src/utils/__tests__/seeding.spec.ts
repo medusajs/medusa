@@ -30,7 +30,7 @@ const definition = (
     fields: { id: { type: "keyword", filterable: true } },
     settings: {},
     seed,
-  } as unknown as SearchTypes.ResolvedSearchIndexDefinition)
+  }) as unknown as SearchTypes.ResolvedSearchIndexDefinition
 
 /**
  * A context over in-memory records, close enough to the real services for the

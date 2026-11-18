@@ -14,6 +14,7 @@ import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next"
 import { Outlet } from "react-router-dom"
 import { useExtension } from "../../providers/extension-provider/use-extension"
+import { useLayoutConfigurationPermissions } from "../../hooks/use-resource-permissions"
 import {
   useLayoutCustomizerActiveEditor,
   useLayoutCustomizerTriggerHost,
@@ -149,6 +150,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   const editorId = useId()
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate: canEditDefault } = useLayoutConfigurationPermissions()
 
   // Another composer is mid-edit; lock this one's trigger so the two don't both
   // try to drive the shared top-bar controls slot at once.
@@ -377,7 +379,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
     if (locked) {
       return
     }
-    setEditScope(activeScope)
+    setEditScope(canEditDefault ? activeScope : "personal")
     setDraft(preferenceForScope(activeScope))
     setEditMode(true)
     setActiveEditor(editorId)
@@ -468,24 +470,26 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
   // composer renders no controls — the central `CustomizerMenu` is the trigger.
   const editControls = (
     <div className="flex items-center gap-x-2">
-      <div className="flex items-center gap-x-1">
-        <Badge
-          size="xsmall"
-          color={editScope === "personal" ? "blue" : "grey"}
-          className="cursor-pointer"
-          onClick={() => switchScope("personal")}
-        >
-          {t("layout.personalView")}
-        </Badge>
-        <Badge
-          size="xsmall"
-          color={editScope === "default" ? "blue" : "grey"}
-          className="cursor-pointer"
-          onClick={() => switchScope("default")}
-        >
-          {t("layout.defaultView")}
-        </Badge>
-      </div>
+      {canEditDefault && (
+        <div className="flex items-center gap-x-1">
+          <Badge
+            size="xsmall"
+            color={editScope === "personal" ? "blue" : "grey"}
+            className="cursor-pointer"
+            onClick={() => switchScope("personal")}
+          >
+            {t("layout.personalView")}
+          </Badge>
+          <Badge
+            size="xsmall"
+            color={editScope === "default" ? "blue" : "grey"}
+            className="cursor-pointer"
+            onClick={() => switchScope("default")}
+          >
+            {t("layout.defaultView")}
+          </Badge>
+        </div>
+      )}
       <Button
         size="small"
         variant="secondary"
@@ -529,7 +533,7 @@ const LayoutComposerRoot = <TLayoutId extends Layouts, TData>({
           {layoutNode}
           <DragOverlay>
             {activeEntry ? (
-              <div className="bg-ui-bg-base shadow-elevation-flyout ring-ui-border-base min-w-0 rounded-lg ring-1">
+              <div className="min-w-0 rounded-lg bg-ui-bg-base shadow-elevation-flyout ring-1 ring-ui-border-base">
                 <EntryContent>{activeEntry.render(data)}</EntryContent>
               </div>
             ) : null}

@@ -29,19 +29,16 @@ post:
     content:
       application/json:
         schema:
-          $ref: >-
-            ../components/schemas/AdminPostOrderEditsUpdateItemQuantityReqSchema.yaml
+          $ref: ../components/schemas/AdminPostOrderEditsUpdateItemQuantityReqSchema.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_order-edits_{id}_items_item_{item_id}/post.js
+        $ref: ../code_samples/JavaScript/admin_order-edits_{id}_items_item_{item_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_order-edits_{id}_items_item_{item_id}/post.sh
+        $ref: ../code_samples/Shell/admin_order-edits_{id}_items_item_{item_id}/post.sh
   tags:
     - Order Edits
   responses:

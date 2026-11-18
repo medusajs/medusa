@@ -3,8 +3,7 @@ import { SelectParams } from "../../common"
 import { BaseProductTagListParams } from "../common"
 
 export interface AdminProductTagListParams
-  extends BaseProductTagListParams,
-    BaseFilterable<AdminProductTagListParams> {
+  extends BaseProductTagListParams, BaseFilterable<AdminProductTagListParams> {
   /**
    * Apply filters on the tag's deletion date.
    */

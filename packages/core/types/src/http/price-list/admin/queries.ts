@@ -3,8 +3,7 @@ import { PriceListStatus } from "../../../pricing"
 import { FindParams, SelectParams } from "../../common"
 
 export interface AdminPriceListListParams
-  extends FindParams,
-    BaseFilterable<AdminPriceListListParams> {
+  extends FindParams, BaseFilterable<AdminPriceListListParams> {
   /**
    * Query or keyword to filter the price list's searchable fields.
    */
@@ -34,7 +33,6 @@ export interface AdminPriceListListParams
 export interface AdminPriceListParams extends SelectParams {}
 
 export interface AdminPriceListPriceListParams
-  extends FindParams,
-    BaseFilterable<AdminPriceListPriceListParams> {}
+  extends FindParams, BaseFilterable<AdminPriceListPriceListParams> {}
 
 export interface AdminGetPriceListPriceParams extends SelectParams {}

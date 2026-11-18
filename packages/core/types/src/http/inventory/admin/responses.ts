@@ -61,8 +61,7 @@ export interface AdminBatchInventoryItemLocationLevelsResponse {
 /**
  * The result of creating, updating or deleting inventory levels.
  */
-export interface AdminBatchInventoryItemsLocationLevelsResponse
-  extends AdminBatchInventoryItemLocationLevelsResponse {}
+export interface AdminBatchInventoryItemsLocationLevelsResponse extends AdminBatchInventoryItemLocationLevelsResponse {}
 
 export interface AdminExportInventoryItemResponse {
   /**

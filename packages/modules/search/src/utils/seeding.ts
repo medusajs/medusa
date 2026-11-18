@@ -774,7 +774,10 @@ async function settle(
  * from where this one stopped.
  */
 export class SearchSeedProgressLost extends MedusaError {
-  constructor(message: string, readonly cause?: unknown) {
+  constructor(
+    message: string,
+    readonly cause?: unknown
+  ) {
     super(MedusaError.Types.UNEXPECTED_STATE, message)
     this.name = "SearchSeedProgressLost"
   }

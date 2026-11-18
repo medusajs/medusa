@@ -4,8 +4,7 @@ import { FindParams, SelectParams } from "../../common"
 export interface AdminDraftOrderParams extends SelectParams {}
 
 export interface AdminDraftOrderListParams
-  extends FindParams,
-    BaseFilterable<AdminDraftOrderListParams> {
+  extends FindParams, BaseFilterable<AdminDraftOrderListParams> {
   /**
    * Filter by draft order ID(s).
    */

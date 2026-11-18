@@ -260,7 +260,7 @@ export const TranslationsCompletionSection = ({
                     <Text
                       size="xsmall"
                       weight="plus"
-                      className="text-ui-fg-subtle min-w-2 whitespace-normal break-words text-center leading-tight"
+                      className="min-w-2 whitespace-normal break-words text-center leading-tight text-ui-fg-subtle"
                     >
                       {localeStatsCount < 6 ? locale.name : locale.code}
                     </Text>
@@ -272,7 +272,7 @@ export const TranslationsCompletionSection = ({
               <Text
                 weight="plus"
                 size="xsmall"
-                className="text-ui-fg-subtle text-center"
+                className="text-center text-ui-fg-subtle"
               >
                 {t("translations.completion.footer")}
               </Text>

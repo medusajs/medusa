@@ -1,5 +1,4 @@
-/* eslint-disable @medusajs/widget-must-have-default-export */
-/* eslint-disable @medusajs/widget-must-export-config */
+/* eslint-disable @medusajs/widget-must-have-default-export, @medusajs/widget-must-export-config */
 import { HttpTypes } from "@medusajs/types";
 import { useQueryParams } from "../../hooks/common/use-query-params";
 

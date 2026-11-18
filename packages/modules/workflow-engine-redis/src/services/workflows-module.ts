@@ -37,9 +37,8 @@ type InjectedDependencies = {
 }
 
 export class WorkflowsModuleService<
-  TWorkflowExecution extends InferEntityType<
-    typeof WorkflowExecution
-  > = InferEntityType<typeof WorkflowExecution>
+  TWorkflowExecution extends InferEntityType<typeof WorkflowExecution> =
+    InferEntityType<typeof WorkflowExecution>,
 > extends ModulesSdkUtils.MedusaService<{
   WorkflowExecution: { dto: InferEntityType<typeof WorkflowExecution> }
 }>({ WorkflowExecution }) {

@@ -7,6 +7,8 @@ import { DateRangeDisplay } from "../../../../../components/common/date-range-di
 import { ListSummary } from "../../../../../components/common/list-summary"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
+import { usePriceListPermissions } from "../../../../../hooks/use-resource-permissions"
+import { PermissionGuard } from "../../../../../components/common/permission-guard"
 
 type PriceListConfigurationSectionProps = {
   priceList: HttpTypes.AdminPriceList
@@ -16,27 +18,32 @@ export const PriceListConfigurationSection = ({
   priceList,
 }: PriceListConfigurationSectionProps) => {
   const { t } = useTranslation()
+  const { canUpdate } = usePriceListPermissions()
 
   return (
     <Container className="flex flex-col gap-y-4">
       <div className="flex items-center justify-between">
         <div>
           <Heading level="h2">{t("priceLists.configuration.header")}</Heading>
-          <CustomerGroupDisplay priceList={priceList} />
+          <PermissionGuard permission="customer_group:read">
+            <CustomerGroupDisplay priceList={priceList} />
+          </PermissionGuard>
         </div>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  to: "configuration",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.edit"),
+                    to: "configuration",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
 
       <DateRangeDisplay
@@ -56,8 +63,7 @@ const CustomerGroupDisplay = ({
   const { t } = useTranslation()
 
   const customerGroupIds = priceList.rules["customer.groups.id"] as
-    | string[]
-    | undefined
+    string[] | undefined
 
   const { customer_groups, isPending, isError, error } = useCustomerGroups(
     {
@@ -81,7 +87,7 @@ const CustomerGroupDisplay = ({
   }
 
   return (
-    <div className="txt-small-plus text-ui-fg-muted flex items-center gap-x-1.5">
+    <div className="txt-small-plus flex items-center gap-x-1.5 text-ui-fg-muted">
       <span className="text-ui-fg-subtle">
         {t("priceLists.fields.customerAvailability.attribute")}
       </span>

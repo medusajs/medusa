@@ -15,7 +15,7 @@ export type ItemWithShippingProfile = {
  * returns `[]` rather than the full list to fail closed.
  */
 export const filterCartItemsByShippingProfile = <
-  T extends ItemWithShippingProfile
+  T extends ItemWithShippingProfile,
 >(
   items: T[] | undefined | null,
   shippingProfileId: string | undefined | null

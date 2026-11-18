@@ -36,6 +36,6 @@ import { asValue } from "@medusajs/framework/awilix"
 
 ## Gotchas
 
-- MikroORM packages and `zod` are pinned to exact versions (`6.6.14`, `4.2.0`); keep all `@mikro-orm/*` entries on the same version. The root `package.json` and some admin packages (`packages/admin/dashboard`, `packages/admin/admin-sdk`) also pin `zod` and must move in lockstep.
+- MikroORM packages and `zod` are pinned to exact versions (`6.6.17`, `4.6.6`); keep all `@mikro-orm/*` entries on the same version. The root `package.json` and some admin packages (`packages/admin/dashboard`, `packages/admin/admin-sdk`) also pin `zod` and must move in lockstep.
 - `main` / the `.` export point to `dist/index.js`, which is never built. Importing the bare `@medusajs/deps` fails.
 - OpenTelemetry SDK upgrades can change runtime behavior for users (see the 2.18.0 `CHANGELOG.md` entry on strict `OTEL_RESOURCE_ATTRIBUTES` parsing); call these out in the changeset.

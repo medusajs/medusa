@@ -33,9 +33,9 @@ export const seo = (match: UIMatch<HttpTypes.AdminReservationResponse>) => {
 
   return {
     title: reservation
-      ? reservation.inventory_item?.title ??
+      ? (reservation.inventory_item?.title ??
         reservation.inventory_item?.sku ??
-        reservation.id
+        reservation.id)
       : undefined,
   }
 }

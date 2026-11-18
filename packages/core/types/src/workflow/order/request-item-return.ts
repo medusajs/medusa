@@ -139,8 +139,6 @@ export interface DeleteRequestItemReturnWorkflowInput {
  * You can find an action with the name `RECEIVE_RETURN_ITEM` using its `action` property,
  * and use the value of its `id` property.
  */
-export interface DeleteRequestItemReceiveReturnWorkflowInput
-  extends DeleteRequestItemReturnWorkflowInput {}
+export interface DeleteRequestItemReceiveReturnWorkflowInput extends DeleteRequestItemReturnWorkflowInput {}
 
-export interface DeleteOrderClaimRequestItemReturnWorkflowInput
-  extends DeleteRequestItemReturnWorkflowInput {}
+export interface DeleteOrderClaimRequestItemReturnWorkflowInput extends DeleteRequestItemReturnWorkflowInput {}

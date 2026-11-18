@@ -32,5 +32,4 @@ export type UpdateProductCategoriesWorkflowInput = {
 /**
  * The products to manage of a category.
  */
-export interface BatchUpdateProductsOnCategoryWorkflowInput
-  extends LinkWorkflowInput {}
+export interface BatchUpdateProductsOnCategoryWorkflowInput extends LinkWorkflowInput {}

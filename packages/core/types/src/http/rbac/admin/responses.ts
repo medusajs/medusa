@@ -1,5 +1,9 @@
 import { DeleteResponse, PaginatedResponse } from "../../common"
-import { AdminRbacPolicy, AdminRbacRole } from "./entities"
+import {
+  AdminRbacPolicy,
+  AdminRbacRole,
+  AdminRbacRoleAssignment,
+} from "./entities"
 import { AdminUser } from "../../user"
 
 export interface AdminRbacRoleResponse {
@@ -9,16 +13,14 @@ export interface AdminRbacRoleResponse {
   role: AdminRbacRole
 }
 
-export interface AdminRbacRoleListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of roles.
-     */
-    roles: AdminRbacRole[]
-  }> {}
+export interface AdminRbacRoleListResponse extends PaginatedResponse<{
+  /**
+   * The list of roles.
+   */
+  roles: AdminRbacRole[]
+}> {}
 
-export interface AdminRbacRoleDeleteResponse
-  extends DeleteResponse<"rbac_role"> {}
+export interface AdminRbacRoleDeleteResponse extends DeleteResponse<"rbac_role"> {}
 
 export interface AdminRbacPolicyResponse {
   /**
@@ -27,24 +29,45 @@ export interface AdminRbacPolicyResponse {
   policy: AdminRbacPolicy
 }
 
-export interface AdminRbacPolicyListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of policies.
-     */
-    policies: AdminRbacPolicy[]
-  }> {}
+export interface AdminRbacPolicyListResponse extends PaginatedResponse<{
+  /**
+   * The list of policies.
+   */
+  policies: AdminRbacPolicy[]
+}> {}
 
-export interface AdminRbacPolicyDeleteResponse
-  extends DeleteResponse<"rbac_policy"> {}
+export interface AdminRbacPolicyDeleteResponse extends DeleteResponse<"rbac_policy"> {}
 
-export interface AdminRbacRoleUserListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of users.
-     */
-    users: AdminUser[]
-  }> {}
+export interface AdminRbacRolePoliciesResponse {
+  /**
+   * The policies assigned to the role.
+   */
+  policies: AdminRbacPolicy[]
+}
+
+export interface AdminRbacRolePolicyDeleteResponse extends DeleteResponse<"rbac_role_policy"> {}
+
+export interface AdminRbacRolePoliciesDeleteResponse {
+  /**
+   * The IDs of the policies that were removed from the role.
+   */
+  ids: string[]
+  /**
+   * The type of the removed items.
+   */
+  object: "rbac_role_policy"
+  /**
+   * Whether the policies were removed successfully.
+   */
+  deleted: boolean
+}
+
+export interface AdminRbacRoleUserListResponse extends PaginatedResponse<{
+  /**
+   * The list of users.
+   */
+  users: AdminUser[]
+}> {}
 
 export interface AdminRbacRoleUsersResponse {
   /**
@@ -68,13 +91,41 @@ export interface AdminRbacRoleUsersDeleteResponse {
   deleted: boolean
 }
 
-export interface AdminRbacPolicyRolesListResponse
-  extends PaginatedResponse<{
-    /**
-     * The roles that include this policy.
-     */
-    roles: AdminRbacRole[]
-  }> {}
+export interface AdminRbacRoleAssignmentListResponse extends PaginatedResponse<{
+  /**
+   * The list of role assignments.
+   */
+  assignments: AdminRbacRoleAssignment[]
+}> {}
+
+export interface AdminRbacRoleAssignmentsResponse {
+  /**
+   * The list of role assignments.
+   */
+  assignments: AdminRbacRoleAssignment[]
+}
+
+export interface AdminRbacRoleAssignmentsDeleteResponse {
+  /**
+   * The IDs of the entities that were unassigned from the role.
+   */
+  ids: string[]
+  /**
+   * The type of the removed items.
+   */
+  object: "role_assignment"
+  /**
+   * Whether the assignments were removed successfully.
+   */
+  deleted: boolean
+}
+
+export interface AdminRbacPolicyRolesListResponse extends PaginatedResponse<{
+  /**
+   * The roles that include this policy.
+   */
+  roles: AdminRbacRole[]
+}> {}
 
 export interface AdminRbacAssignableRolesListResponse {
   /**
@@ -101,12 +152,29 @@ export interface AdminRbacAssignablePoliciesListResponse {
   count: number
 }
 
-export interface AdminRbacPolicyDeleteResponse
-  extends DeleteResponse<"rbac_policy"> {}
-
 export interface AdminRbacMePermissionsResponse {
   /**
    * The actor's effective `resource:operation` permissions, with wildcards already expanded.
    */
   permissions: string[]
+  /**
+   * The actor's directly assigned roles, considering the resolved scope.
+   */
+  roles: {
+    /**
+     * The role's ID.
+     */
+    id: string
+    /**
+     * The role's unique name.
+     */
+    name: string
+  }[]
+  /**
+   * Names of the roles the actor covers: roles whose grants are a subset of
+   * the actor's effective permissions. Assigned roles are always covered, and
+   * a super admin covers every role. Roles without policies are covered by
+   * no one.
+   */
+  covered_roles: string[]
 }

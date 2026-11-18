@@ -30,6 +30,7 @@ type PreparePluginOptions = {
   abortController?: AbortController
   verbose?: boolean
   packageManager: PackageManager
+  version?: string
 }
 
 type PrepareProjectOptions = {
@@ -57,7 +58,7 @@ type PrepareOptions = PreparePluginOptions | PrepareProjectOptions
 
 export default async <
   T extends PrepareOptions,
-  Output = T extends { isPlugin: true } ? void : string | undefined
+  Output = T extends { isPlugin: true } ? void : string | undefined,
 >(
   prepareOptions: T
 ): Promise<Output> => {
@@ -76,6 +77,7 @@ async function preparePlugin({
   abortController,
   verbose = false,
   packageManager,
+  version,
 }: PreparePluginOptions) {
   // initialize execution options
   const execOptions = {
@@ -103,6 +105,11 @@ async function preparePlugin({
   const packageManagerString = await packageManager.getPackageManagerString()
   if (packageManagerString) {
     packageJson.packageManager = packageManagerString
+  }
+
+  // Update medusa dependencies versions
+  if (version) {
+    updatePackageVersions(packageJson, version)
   }
 
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2))

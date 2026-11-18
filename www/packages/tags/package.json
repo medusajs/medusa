@@ -23,10 +23,10 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "yarn clean && yarn generate:tags && tsc",
+    "build": "yarn clean && yarn generate:tags && yarn run -T tsc",
     "generate:tags": "node --loader ts-node/esm src/scripts/generate-tags.ts",
     "clean": "rimraf dist",
-    "watch": "tsc --watch"
+    "watch": "yarn run -T tsc --watch"
   },
   "dependencies": {
     "docs-utils": "*"
@@ -37,7 +37,7 @@
     "ts-node": "^10.9.1",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5.3.3"
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">=18.17.0"

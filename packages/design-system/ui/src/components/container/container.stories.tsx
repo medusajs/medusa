@@ -26,7 +26,7 @@ export const Default: Story = {
 export const InLayout: Story = {
   render: () => (
     <div className="flex h-screen w-screen">
-      <div className="border-ui-border-base w-full max-w-[216px] border-r p-4">
+      <div className="w-full max-w-[216px] border-r border-ui-border-base p-4">
         <Heading level="h3">Menubar</Heading>
       </div>
       <div className="flex w-full flex-col gap-y-3 px-8 pb-8 pt-6">

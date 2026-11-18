@@ -42,13 +42,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_stock-locations_{id}_fulfillment-sets/post.js
+        $ref: ../code_samples/JavaScript/admin_stock-locations_{id}_fulfillment-sets/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_stock-locations_{id}_fulfillment-sets/post.sh
+        $ref: ../code_samples/Shell/admin_stock-locations_{id}_fulfillment-sets/post.sh
   tags:
     - Stock Locations
   responses:

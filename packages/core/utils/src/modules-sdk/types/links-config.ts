@@ -30,9 +30,10 @@ type PopUnion<U> = UnionToOvlds<U> extends (a: infer A) => void ? A : never
 
 type IsUnion<T> = [T] extends [UnionToIntersection<T>] ? false : true
 
-type UnionToArray<T, A extends unknown[] = []> = IsUnion<T> extends true
-  ? UnionToArray<Exclude<T, PopUnion<T>>, [PopUnion<T>, ...A]>
-  : [T, ...A]
+type UnionToArray<T, A extends unknown[] = []> =
+  IsUnion<T> extends true
+    ? UnionToArray<Exclude<T, PopUnion<T>>, [PopUnion<T>, ...A]>
+    : [T, ...A]
 
 /**
  * End of utils
@@ -42,25 +43,22 @@ type UnionToArray<T, A extends unknown[] = []> = IsUnion<T> extends true
  * Linkable keys
  */
 
-type InferLinkableKeyName<
-  Key,
-  Property,
-  DmlConfig extends IDmlEntityConfig
-> = Property extends PrimaryKeyModifier<any, any>
-  ? `${Lowercase<SnakeCase<InferDmlEntityNameFromConfig<DmlConfig>>>}_${Key &
-      string}`
-  : never
+type InferLinkableKeyName<Key, Property, DmlConfig extends IDmlEntityConfig> =
+  Property extends PrimaryKeyModifier<any, any>
+    ? `${Lowercase<SnakeCase<InferDmlEntityNameFromConfig<DmlConfig>>>}_${Key &
+        string}`
+    : never
 
-type InferSchemaLinkableKeys<T> = T extends IDmlEntity<
-  infer Schema,
-  infer Config
->
-  ? {
-      [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
-        ? InferLinkableKeyName<K, Schema[K], Config>
-        : never]: Capitalize<InferDmlEntityNameFromConfig<Config>>
-    }
-  : {}
+type InferSchemaLinkableKeys<T> =
+  T extends IDmlEntity<infer Schema, infer Config>
+    ? {
+        [
+          K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
+            ? InferLinkableKeyName<K, Schema[K], Config>
+            : never
+        ]: Capitalize<InferDmlEntityNameFromConfig<Config>>
+      }
+    : {}
 
 type InferSchemasLinkableKeys<T extends IDmlEntity<any, any>[]> = {
   [K in keyof T]: InferSchemaLinkableKeys<T[K]>
@@ -103,53 +101,48 @@ export type InferLinkableKeys<T extends IDmlEntity<any, any>[]> =
 /**
  * From a union infer an Array and return the last element
  */
-type InferLastLink<ServiceName extends string, DmlEntity> = UnionToArray<
-  | InferSchemaLinksConfig<ServiceName, DmlEntity>[keyof InferSchemaLinksConfig<
+type InferLastLink<ServiceName extends string, DmlEntity> =
+  UnionToArray<
+    InferSchemaLinksConfig<ServiceName, DmlEntity>[keyof InferSchemaLinksConfig<
       ServiceName,
       DmlEntity
     >]
-> extends [...any, infer V]
-  ? V
-  : never
+  > extends [...any, infer V]
+    ? V
+    : never
 
-type InferLastPrimaryKey<ServiceName extends string, DmlEntity> = InferLastLink<
-  ServiceName,
-  DmlEntity
-> extends {
-  primaryKey: infer PrimaryKey
-}
-  ? PrimaryKey
-  : string
+type InferLastPrimaryKey<ServiceName extends string, DmlEntity> =
+  InferLastLink<ServiceName, DmlEntity> extends {
+    primaryKey: infer PrimaryKey
+  }
+    ? PrimaryKey
+    : string
 
-type InferLastLinkable<ServiceName extends string, DmlEntity> = InferLastLink<
-  ServiceName,
-  DmlEntity
-> extends {
-  linkable: infer Linkable
-}
-  ? Linkable
-  : string
+type InferLastLinkable<ServiceName extends string, DmlEntity> =
+  InferLastLink<ServiceName, DmlEntity> extends {
+    linkable: infer Linkable
+  }
+    ? Linkable
+    : string
 
 type InferPrimaryKeyNameOrNever<
   Schema extends DMLSchema,
-  Key extends keyof Schema
+  Key extends keyof Schema,
 > = Schema[Key] extends PrimaryKeyModifier<any, any> ? Key : never
 
-type InferSchemaLinksConfig<
-  ServiceName extends string,
-  T
-> = T extends IDmlEntity<infer Schema, infer Config>
-  ? {
-      [K in keyof Schema as InferPrimaryKeyNameOrNever<Schema, K>]: {
-        serviceName: ServiceName
-        field: T extends IDmlEntity<any, infer Config>
-          ? InferDmlEntityNameFromConfig<Config>
-          : string
-        linkable: InferLinkableKeyName<K, Schema[K], Config>
-        primaryKey: K
+type InferSchemaLinksConfig<ServiceName extends string, T> =
+  T extends IDmlEntity<infer Schema, infer Config>
+    ? {
+        [K in keyof Schema as InferPrimaryKeyNameOrNever<Schema, K>]: {
+          serviceName: ServiceName
+          field: T extends IDmlEntity<any, infer Config>
+            ? InferDmlEntityNameFromConfig<Config>
+            : string
+          linkable: InferLinkableKeyName<K, Schema[K], Config>
+          primaryKey: K
+        }
       }
-    }
-  : {}
+    : {}
 
 /**
  * From an array of DmlEntity, returns a formatted links object.
@@ -195,11 +188,13 @@ type InferSchemaLinksConfig<
  */
 export type InfersLinksConfig<
   ServiceName extends string,
-  T extends Record<string, IDmlEntity<any, any>>
+  T extends Record<string, IDmlEntity<any, any>>,
 > = Prettify<{
-  [K in keyof T as T[K] extends IDmlEntity<any, infer Config>
-    ? InferDmlEntityNameFromConfig<Config>
-    : never]: Prettify<
+  [
+    K in keyof T as T[K] extends IDmlEntity<any, infer Config>
+      ? InferDmlEntityNameFromConfig<Config>
+      : never
+  ]: Prettify<
     InferSchemaLinksConfig<ServiceName, T[K]> & {
       toJSON: () => {
         serviceName: ServiceName

@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, UIMatch, useParams } from "react-router-dom"
 
 import { LayoutComposer } from "@medusajs/dashboard/components"
+import { PermissionGuard } from "@medusajs/dashboard/hooks"
 import { HttpTypes } from "@medusajs/types"
 import { PageSkeleton } from "../../../components/common/page-skeleton"
 import { ActiveOrderChange } from "../../../components/draft-orders/active-order-changes"
@@ -12,6 +13,7 @@ import { MetadataSection } from "../../../components/draft-orders/metadata-secti
 import { ShippingSection } from "../../../components/draft-orders/shipping-section"
 import { SummarySection } from "../../../components/draft-orders/summary-section"
 import { useOrder, useOrderChanges } from "../../../hooks/api/orders"
+import { VIEW_DRAFT_ORDER_PERMISSIONS } from "../../../lib/permissions"
 import { sdk } from "../../../lib/queries/sdk"
 
 type AdminDraftOrderSummary = HttpTypes.AdminOrder & {
@@ -31,6 +33,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export const handle = {
   breadcrumb: (match: UIMatch<HttpTypes.AdminOrderResponse>) =>
     `#${match.loaderData.order.display_id}`,
+  permissions: VIEW_DRAFT_ORDER_PERMISSIONS,
 }
 
 const ID = () => {
@@ -90,7 +93,9 @@ const ID = () => {
               <SummarySection order={order as AdminDraftOrderSummary} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ShippingSection">
-              <ShippingSection order={order} />
+              <PermissionGuard permission="shipping_option:read">
+                <ShippingSection order={order} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="MetadataSection">
               <MetadataSection order={order} />

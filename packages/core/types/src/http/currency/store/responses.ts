@@ -5,5 +5,6 @@ export interface StoreCurrencyResponse {
   currency: StoreCurrency
 }
 
-export interface StoreCurrencyListResponse
-  extends PaginatedResponse<{ currencies: StoreCurrency[] }> {}
+export interface StoreCurrencyListResponse extends PaginatedResponse<{
+  currencies: StoreCurrency[]
+}> {}

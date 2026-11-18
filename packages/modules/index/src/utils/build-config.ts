@@ -221,10 +221,10 @@ function retrieveLinkModuleAndAlias({
   for (const linkModuleJoinerConfig of moduleJoinerConfigs.filter(
     (config) => config.isLink && !config.isReadOnlyLink
   )) {
-    const linkPrimary =
-      linkModuleJoinerConfig.relationships![0] as ModuleJoinerRelationship
-    const linkForeign =
-      linkModuleJoinerConfig.relationships![1] as ModuleJoinerRelationship
+    const linkPrimary = linkModuleJoinerConfig
+      .relationships![0] as ModuleJoinerRelationship
+    const linkForeign = linkModuleJoinerConfig
+      .relationships![1] as ModuleJoinerRelationship
 
     const isDirectMatch =
       linkPrimary.serviceName === primaryModuleConfig.serviceName &&

@@ -120,7 +120,7 @@ export default class InventoryModuleService
       ({ id }) => !!id
     ) as [
       { id: string }[],
-      { location_id: string; inventory_item_id: string }[]
+      { location_id: string; inventory_item_id: string }[],
     ]
 
     const inventoryLevels = await this.inventoryLevelService_.list(

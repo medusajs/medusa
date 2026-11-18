@@ -122,7 +122,7 @@ const Event = ({
     >
       <div className="grid h-full grid-rows-[20px_1fr] items-center justify-center gap-y-0.5">
         <div className="flex size-5 items-center justify-center">
-          <div className="bg-ui-bg-base shadow-borders-base flex size-2.5 items-center justify-center rounded-full">
+          <div className="flex size-2.5 items-center justify-center rounded-full bg-ui-bg-base shadow-borders-base">
             <div
               className={clx("size-1.5 rounded-full", {
                 "bg-ui-tag-neutral-bg": STEP_SKIPPED_STATES.includes(
@@ -149,7 +149,7 @@ const Event = ({
             aria-hidden
             role="presentation"
             className={clx({
-              "bg-ui-border-base h-full min-h-[14px] w-px": !isLast,
+              "h-full min-h-[14px] w-px bg-ui-border-base": !isLast,
             })}
           />
         </div>
@@ -174,7 +174,7 @@ const Event = ({
         </RadixCollapsible.Trigger>
         <RadixCollapsible.Content ref={ref}>
           <div className="flex flex-col gap-y-2 pb-4 pt-2">
-            <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
               <Text size="small" leading="compact">
                 {t("workflowExecutions.history.definitionLabel")}
               </Text>
@@ -192,7 +192,7 @@ const Event = ({
               </CodeBlock>
             </div>
             {stepInvokeContext && (
-              <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+              <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
                 <Text size="small" leading="compact">
                   {t("workflowExecutions.history.outputLabel")}
                 </Text>
@@ -217,7 +217,7 @@ const Event = ({
             )}
             {!!stepInvokeContext?.output?.compensateInput &&
               step.compensate.state === TransactionStepState.REVERTED && (
-                <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+                <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
                   <Text size="small" leading="compact">
                     {t("workflowExecutions.history.compensateInputLabel")}
                   </Text>
@@ -243,7 +243,7 @@ const Event = ({
                 </div>
               )}
             {stepError && (
-              <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+              <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
                 <Text size="small" leading="compact">
                   {t("workflowExecutions.history.errorLabel")}
                 </Text>
@@ -301,7 +301,7 @@ const StepState = ({
         <Text size="small" leading="compact" className="text-ui-fg-subtle">
           {t("workflowExecutions.history.runningState")}
         </Text>
-        <Spinner className="text-ui-fg-interactive animate-spin" />
+        <Spinner className="animate-spin text-ui-fg-interactive" />
       </div>
     )
   }

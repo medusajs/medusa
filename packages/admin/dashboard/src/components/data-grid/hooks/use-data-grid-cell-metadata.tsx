@@ -10,7 +10,7 @@ type UseDataGridCellMetadataOptions<TData, TFieldValues extends FieldValues> = {
 
 export const useDataGridCellMetadata = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >({
   matrix,
 }: UseDataGridCellMetadataOptions<TData, TFieldValues>) => {

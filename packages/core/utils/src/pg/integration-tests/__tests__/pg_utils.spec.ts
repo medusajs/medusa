@@ -118,3 +118,26 @@ describe("Pg | dbExists", () => {
     expect(exists).toBe(true)
   })
 })
+
+describe("Pg | special characters in db name", () => {
+  const databaseName = `foo"'; DROP DATABASE bar; --`
+
+  afterAll(async () => {
+    const client = createClient(pgGodCredentials)
+    await client.connect()
+    await client.query(
+      `DROP DATABASE IF EXISTS ${client.escapeIdentifier(databaseName)}`
+    )
+    await client.end()
+  })
+
+  test("treat the db name as a literal identifier", async () => {
+    const client = createClient(pgGodCredentials)
+
+    await client.connect()
+    expect(await dbExists(client, databaseName)).toBe(false)
+    await createDb(client, databaseName)
+    expect(await dbExists(client, databaseName)).toBe(true)
+    await client.end()
+  })
+})

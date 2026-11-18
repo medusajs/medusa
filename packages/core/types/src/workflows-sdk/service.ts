@@ -23,8 +23,9 @@ export type Acknowledgement = {
   hasFailed: boolean
 }
 
-export interface WorkflowOrchestratorRunDTO<T = unknown>
-  extends FlowRunOptions<T> {
+export interface WorkflowOrchestratorRunDTO<
+  T = unknown,
+> extends FlowRunOptions<T> {
   transactionId?: string
 }
 

@@ -8,7 +8,7 @@ const buildConfig = (
     projectConfig: {
       http: requireActorAssociation ? { requireActorAssociation } : {},
     },
-  } as unknown as ConfigModule)
+  }) as unknown as ConfigModule
 
 describe("isActorAssociationRequired", () => {
   it("returns false when not configured", () => {

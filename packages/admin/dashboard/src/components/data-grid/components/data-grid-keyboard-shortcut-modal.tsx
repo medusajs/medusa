@@ -186,11 +186,11 @@ export const DataGridKeyboardShortcutModal = ({
       <RadixDialog.Portal>
         <RadixDialog.Overlay
           className={clx(
-            "bg-ui-bg-overlay fixed inset-0",
+            "fixed inset-0 bg-ui-bg-overlay",
             "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
           )}
         />
-        <RadixDialog.Content className="bg-ui-bg-subtle shadow-elevation-modal fixed left-[50%] top-[50%] flex h-full max-h-[612px] w-full max-w-[560px] translate-x-[-50%] translate-y-[-50%] flex-col divide-y overflow-hidden rounded-lg outline-none">
+        <RadixDialog.Content className="fixed left-[50%] top-[50%] flex h-full max-h-[612px] w-full max-w-[560px] translate-x-[-50%] translate-y-[-50%] flex-col divide-y overflow-hidden rounded-lg bg-ui-bg-subtle shadow-elevation-modal outline-none">
           <div className="flex flex-col gap-y-3 px-6 py-4">
             <div className="flex items-center justify-between">
               <div>
@@ -222,7 +222,7 @@ export const DataGridKeyboardShortcutModal = ({
               return (
                 <div
                   key={index}
-                  className="text-ui-fg-subtle flex items-center justify-between px-6 py-3"
+                  className="flex items-center justify-between px-6 py-3 text-ui-fg-subtle"
                 >
                   <Text size="small">{shortcut.label}</Text>
                   <div className="flex items-center gap-x-1">

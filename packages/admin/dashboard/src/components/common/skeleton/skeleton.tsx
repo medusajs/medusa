@@ -11,7 +11,7 @@ export const Skeleton = ({ className, style }: SkeletonProps) => {
     <div
       aria-hidden
       className={clx(
-        "bg-ui-bg-component h-3 w-3 animate-pulse rounded-[4px]",
+        "h-3 w-3 animate-pulse rounded-[4px] bg-ui-bg-component",
         className
       )}
       style={style}

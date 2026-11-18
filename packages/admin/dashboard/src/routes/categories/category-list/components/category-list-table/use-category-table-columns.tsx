@@ -38,7 +38,7 @@ export const useCategoryTableColumns = () => {
                   <div
                     key={chip.id}
                     className={clx("overflow-hidden", {
-                      "text-ui-fg-muted flex items-center gap-x-1":
+                      "flex items-center gap-x-1 text-ui-fg-muted":
                         index !== path.length - 1,
                     })}
                   >

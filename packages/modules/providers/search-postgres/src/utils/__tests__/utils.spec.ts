@@ -50,7 +50,7 @@ const baseDefinition = (
       },
     },
     ...overrides,
-  } as SearchTypes.ResolvedSearchIndexDefinition)
+  }) as SearchTypes.ResolvedSearchIndexDefinition
 
 describe("postgres search utils", () => {
   describe("buildIndexPlan", () => {

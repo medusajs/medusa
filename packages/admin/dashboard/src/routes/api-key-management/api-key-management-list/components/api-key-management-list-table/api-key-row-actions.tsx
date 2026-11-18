@@ -2,11 +2,15 @@ import { PencilSquare, SquareTwoStack, Trash, XCircle } from "@medusajs/icons"
 import { AdminApiKeyResponse } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import {
   useDeleteApiKey,
   useRevokeApiKey,
 } from "../../../../../hooks/api/api-keys"
+import { useApiKeyPermissions } from "../../../../../hooks/use-resource-permissions"
 
 export const ApiKeyRowActions = ({
   apiKey,
@@ -15,6 +19,7 @@ export const ApiKeyRowActions = ({
 }) => {
   const { mutateAsync: revokeAsync } = useRevokeApiKey(apiKey.id)
   const { mutateAsync: deleteAsync } = useDeleteApiKey(apiKey.id)
+  const { canUpdate, canDelete } = useApiKeyPermissions()
 
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -80,44 +85,61 @@ export const ApiKeyRowActions = ({
     toast.success(t("apiKeyManagement.actions.copySuccessToast"))
   }
 
-  return (
-    <ActionMenu
-      groups={[
-        {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `${apiKey.id}/edit`,
-            },
-            ...(apiKey.type !== "secret"
-              ? [
-                  {
-                    label: t("apiKeyManagement.actions.copy"),
-                    onClick: handleCopyToken,
-                    icon: <SquareTwoStack />,
-                  },
-                ]
-              : []),
-          ],
-        },
-        {
-          actions: [
-            {
-              icon: <XCircle />,
-              label: t("apiKeyManagement.actions.revoke"),
-              onClick: handleRevoke,
-              disabled: !!apiKey.revoked_at,
-            },
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-              disabled: !apiKey.revoked_at,
-            },
-          ],
-        },
-      ]}
-    />
-  )
+  const firstGroupActions = [
+    ...(canUpdate
+      ? [
+          {
+            icon: <PencilSquare />,
+            label: t("actions.edit"),
+            to: `${apiKey.id}/edit`,
+          },
+        ]
+      : []),
+    ...(apiKey.type !== "secret"
+      ? [
+          {
+            label: t("apiKeyManagement.actions.copy"),
+            onClick: handleCopyToken,
+            icon: <SquareTwoStack />,
+          },
+        ]
+      : []),
+  ]
+
+  const dangerousActions = [
+    ...(canUpdate
+      ? [
+          {
+            icon: <XCircle />,
+            label: t("apiKeyManagement.actions.revoke"),
+            onClick: handleRevoke,
+            disabled: !!apiKey.revoked_at,
+          },
+        ]
+      : []),
+    ...(canDelete
+      ? [
+          {
+            icon: <Trash />,
+            label: t("actions.delete"),
+            onClick: handleDelete,
+            disabled: !apiKey.revoked_at,
+          },
+        ]
+      : []),
+  ]
+
+  const groups: ActionGroup[] = []
+  if (firstGroupActions.length) {
+    groups.push({ actions: firstGroupActions })
+  }
+  if (dangerousActions.length) {
+    groups.push({ actions: dangerousActions })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

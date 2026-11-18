@@ -70,8 +70,7 @@ export interface CreateTaxProviderDTO {
 /**
  * The filters to apply on the retrieved tax providers.
  */
-export interface FilterableTaxProviderProps
-  extends BaseFilterable<TaxProviderDTO> {
+export interface FilterableTaxProviderProps extends BaseFilterable<TaxProviderDTO> {
   /**
    * The IDs to filter the tax provider by.
    */

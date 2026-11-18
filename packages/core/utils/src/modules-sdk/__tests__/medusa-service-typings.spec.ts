@@ -86,7 +86,7 @@ describe("Medusa Service typings", () => {
               tags: string[] | undefined
               description: string | null | undefined
             }>,
-            ...rest: any[]
+            ...rest: any[],
           ]
         | [
             Partial<{
@@ -96,7 +96,7 @@ describe("Medusa Service typings", () => {
               tags: string[] | undefined
               description: string | null | undefined
             }>[],
-            ...rest: any[]
+            ...rest: any[],
           ]
       >()
       expectTypeOf(blogService.createBlogs).returns.toEqualTypeOf<
@@ -113,7 +113,7 @@ describe("Medusa Service typings", () => {
               author_id: string | undefined
               description: string | null | undefined
             }>,
-            ...rest: any[]
+            ...rest: any[],
           ]
         | [
             Partial<{
@@ -124,7 +124,7 @@ describe("Medusa Service typings", () => {
               author_id: string | undefined
               description: string | null | undefined
             }>[],
-            ...rest: any[]
+            ...rest: any[],
           ]
       >()
       expectTypeOf(blogService.createBlogs).returns.toEqualTypeOf<
@@ -198,7 +198,7 @@ describe("Medusa Service typings", () => {
               tags: string[] | undefined
               description: string | null | undefined
             }>,
-            ...rest: any[]
+            ...rest: any[],
           ]
         | [
             Partial<{
@@ -208,7 +208,7 @@ describe("Medusa Service typings", () => {
               tags: string[] | undefined
               description: string | null | undefined
             }>[],
-            ...rest: any[]
+            ...rest: any[],
           ]
         | [
             (
@@ -256,7 +256,7 @@ describe("Medusa Service typings", () => {
                       }>[]
                 }[]
             ),
-            ...rest: any[]
+            ...rest: any[],
           ]
       >()
       expectTypeOf(blogService.updateBlogs).returns.toEqualTypeOf<
@@ -285,7 +285,7 @@ describe("Medusa Service typings", () => {
                   data: Partial<BlogDTO> | Partial<BlogDTO>[]
                 }[]
             ),
-            ...rest: any[]
+            ...rest: any[],
           ]
       >()
       expectTypeOf(blogService.updateBlogs).returns.toEqualTypeOf<
@@ -373,7 +373,7 @@ describe("Medusa Service typings", () => {
                     | Partial<{ title: string | undefined }>[]
                 }[]
             ),
-            ...rest: any[]
+            ...rest: any[],
           ]
       >()
       expectTypeOf(blogService.createBlogs).returns.toEqualTypeOf<

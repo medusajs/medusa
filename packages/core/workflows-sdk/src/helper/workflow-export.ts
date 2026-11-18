@@ -50,7 +50,7 @@ function createContextualWorkflowRunner<
   TData = unknown,
   TResult = unknown,
   TDataOverride = undefined,
-  TResultOverride = undefined
+  TResultOverride = undefined,
 >({
   workflowId,
   defaultResult,
@@ -420,7 +420,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 ): MainExportedWorkflow<TData, TResult> => {
   function exportedWorkflow<
     TDataOverride = undefined,
-    TResultOverride = undefined
+    TResultOverride = undefined,
   >(
     // TODO: rm when all usage have been migrated
     container?: LoadedModule[] | MedusaContainer
@@ -454,7 +454,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       | "cancel"
       | "retryStep",
     TDataOverride,
-    TResultOverride
+    TResultOverride,
   >(
     action:
       | "run"
@@ -486,7 +486,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
   exportedWorkflow.run = async <
     TDataOverride = undefined,
-    TResultOverride = undefined
+    TResultOverride = undefined,
   >(
     args?: FlowRunOptions<
       TDataOverride extends undefined ? TData : TDataOverride
@@ -507,7 +507,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
   exportedWorkflow.registerStepSuccess = async <
     TDataOverride = undefined,
-    TResultOverride = undefined
+    TResultOverride = undefined,
   >(
     args?: FlowRegisterStepSuccessOptions<
       TDataOverride extends undefined ? TData : TDataOverride
@@ -532,7 +532,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
   exportedWorkflow.registerStepFailure = async <
     TDataOverride = undefined,
-    TResultOverride = undefined
+    TResultOverride = undefined,
   >(
     args?: FlowRegisterStepFailureOptions<
       TDataOverride extends undefined ? TData : TDataOverride
@@ -557,7 +557,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
   exportedWorkflow.retryStep = async <
     TDataOverride = undefined,
-    TResultOverride = undefined
+    TResultOverride = undefined,
   >(
     args?: FlowRetryStepOptions
   ): Promise<WorkflowResult> => {

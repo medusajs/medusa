@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "fs"
 import path from "path"
-import chalk from "chalk"
+import { styleText } from "util"
 import { FsHelpers } from "./fs-helpers"
 import { Formatter } from "./formatter"
 import { Config } from "../config"
@@ -46,11 +46,11 @@ export class IndexManager {
     if (areaChanged) {
       if (dryRun) {
         console.log(
-          chalk.cyan(`  [dry-run] ${relArea}`) +
-            chalk.gray(` ← add export * from "./${writtenLabel}"`)
+          styleText("cyan", `  [dry-run] ${relArea}`) +
+            styleText("gray", ` ← add export * from "./${writtenLabel}"`)
         )
       } else {
-        console.log(chalk.green(`  Update  ${relArea}`))
+        console.log(styleText("green", `  Update  ${relArea}`))
       }
     }
 
@@ -62,11 +62,11 @@ export class IndexManager {
     if (domainChanged) {
       if (dryRun) {
         console.log(
-          chalk.cyan(`  [dry-run] ${relDomain}`) +
-            chalk.gray(` ← add export * from "./${area}"`)
+          styleText("cyan", `  [dry-run] ${relDomain}`) +
+            styleText("gray", ` ← add export * from "./${area}"`)
         )
       } else {
-        console.log(chalk.green(`  Update  ${relDomain}`))
+        console.log(styleText("green", `  Update  ${relDomain}`))
       }
     }
 
@@ -78,11 +78,11 @@ export class IndexManager {
     if (rootChanged) {
       if (dryRun) {
         console.log(
-          chalk.cyan(`  [dry-run] ${relRoot}`) +
-            chalk.gray(` ← add export * from "./${domain}"`)
+          styleText("cyan", `  [dry-run] ${relRoot}`) +
+            styleText("gray", ` ← add export * from "./${domain}"`)
         )
       } else {
-        console.log(chalk.green(`  Update  ${relRoot}`))
+        console.log(styleText("green", `  Update  ${relRoot}`))
       }
     }
   }

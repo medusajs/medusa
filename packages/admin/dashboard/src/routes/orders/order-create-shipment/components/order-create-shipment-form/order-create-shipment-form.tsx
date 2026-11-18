@@ -184,7 +184,7 @@ export function OrderCreateShipmentForm({
                         <IconButton
                           type="button"
                           variant="transparent"
-                          className="text-ui-fg-muted mb-2 self-end justify-self-end"
+                          className="mb-2 self-end justify-self-end text-ui-fg-muted"
                           aria-label={t("actions.remove")}
                           onClick={() => remove(index)}
                         >
@@ -210,7 +210,7 @@ export function OrderCreateShipmentForm({
                   </Button>
                 </div>
 
-                <div className="mt-8 pt-8 ">
+                <div className="mt-8 pt-8">
                   <Form.Field
                     control={form.control}
                     name="send_notification"

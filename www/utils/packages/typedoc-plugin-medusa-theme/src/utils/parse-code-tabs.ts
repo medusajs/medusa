@@ -57,7 +57,10 @@ function extractBraceExpression(
 }
 
 /** Parses a `prop={<json>}` value from a component's attribute string span. */
-function parseJsonProp<T>(source: string, prop: string): { value: T; end: number } | null {
+function parseJsonProp<T>(
+  source: string,
+  prop: string
+): { value: T; end: number } | null {
   const marker = `${prop}={`
   const markerIdx = source.indexOf(marker)
   if (markerIdx === -1) {
@@ -155,12 +158,14 @@ function buildConstructs(): Construct[] {
           return null
         }
         const tag = content.slice(idx, tagEnd)
-        const parsed = parseJsonProp<{ name: string; steps: DocWorkflowStep[] }>(
-          tag,
-          "workflow"
-        )
+        const parsed = parseJsonProp<{
+          name: string
+          steps: DocWorkflowStep[]
+        }>(tag, "workflow")
         return {
-          block: parsed ? { kind: "workflowDiagram", workflow: parsed.value } : null,
+          block: parsed
+            ? { kind: "workflowDiagram", workflow: parsed.value }
+            : null,
           end: tagEnd,
         }
       },
@@ -177,6 +182,27 @@ function buildConstructs(): Construct[] {
         const link = getAttr(tag, "link")
         return {
           block: link ? { kind: "sourceCodeLink", link } : null,
+          end: tagEnd,
+        }
+      },
+    },
+    {
+      name: "enterpriseNotice",
+      re: /<EnterpriseNotice\b/g,
+      build: (content, idx) => {
+        const tagEnd = findTagEnd(content, idx)
+        if (tagEnd === -1) {
+          return null
+        }
+        const tag = content.slice(idx, tagEnd)
+        return {
+          block: {
+            kind: "enterpriseNotice",
+            featureName: getAttr(tag, "featureName"),
+            featureFlag: getAttr(tag, "featureFlag"),
+            featureFlagHref: getAttr(tag, "featureFlagHref"),
+            beta: /\sbeta(?![\w-])(?!\s*=)/.test(tag),
+          },
           end: tagEnd,
         }
       },

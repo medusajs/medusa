@@ -81,7 +81,7 @@ export async function plugin(options: PluginOptions) {
 
             return Boolean(
               (name && external.has(name)) ||
-                (name && builtinModulesWithNodePrefix.includes(name))
+              (name && builtinModulesWithNodePrefix.includes(name))
             )
           }
 

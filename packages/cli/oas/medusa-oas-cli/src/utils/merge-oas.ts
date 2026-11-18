@@ -1,8 +1,12 @@
-import { OpenAPIObject, TagObject } from "openapi3-ts"
+import { OpenAPIObject, TagObject } from "openapi3-ts/oas30"
+import { OpenAPIObject as OpenAPIObject31 } from "openapi3-ts/oas31"
+
+type OpenAPIObjectWithWebhooks = OpenAPIObject &
+  Pick<OpenAPIObject31, "webhooks">
 
 export function mergeBaseIntoOAS(
-  targetOAS: OpenAPIObject,
-  sourceOAS: OpenAPIObject
+  targetOAS: OpenAPIObjectWithWebhooks,
+  sourceOAS: OpenAPIObjectWithWebhooks
 ): void {
   /**
    * replace strategy for OpenAPIObject properties
@@ -18,20 +22,13 @@ export function mergeBaseIntoOAS(
    */
   const targetTags = targetOAS.tags ?? []
   const sourceTags = sourceOAS.tags ?? []
-  const combinedTags: TagObject[] = []
-  const sourceIndexes: number[] = []
-  for (const targetTag of targetTags) {
-    for (const [sourceTagIndex, sourceTag] of sourceTags.entries()) {
-      if (targetTag.name === sourceTag.name) {
-        combinedTags.push(sourceTag)
-        sourceIndexes.push(sourceTagIndex)
-        continue
-      }
-      combinedTags.push(targetTag)
-    }
-  }
-  for (const [sourceTagIndex, sourceTag] of sourceTags.entries()) {
-    if (!sourceIndexes.includes(sourceTagIndex)) {
+  const sourceTagsByName = new Map(sourceTags.map((tag) => [tag.name, tag]))
+  const targetTagNames = new Set(targetTags.map((tag) => tag.name))
+  const combinedTags: TagObject[] = targetTags.map(
+    (targetTag) => sourceTagsByName.get(targetTag.name) ?? targetTag
+  )
+  for (const sourceTag of sourceTags) {
+    if (!targetTagNames.has(sourceTag.name)) {
       combinedTags.push(sourceTag)
     }
   }

@@ -64,8 +64,7 @@ export interface ServiceZoneDTO {
 /**
  * The filters to apply on the retrieved service zones.
  */
-export interface FilterableServiceZoneProps
-  extends BaseFilterable<FilterableServiceZoneProps> {
+export interface FilterableServiceZoneProps extends BaseFilterable<FilterableServiceZoneProps> {
   /**
    * The IDs to filter the service zones by.
    */

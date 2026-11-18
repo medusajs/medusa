@@ -138,7 +138,7 @@ After adding a custom domain, a status badge next to the domain name helps you t
 - **Configured** (blue clock icon): DNS records are detected but verification is in progress
 - **Finalizing** (blue clock icon): All DNS records are verified on your end but the platform has not yet confirmed the domain as active
 - **Verified** (green checkmark icon): Domain is fully configured and active
-- **Failed**: DNS verification failed. Use the **Restart Verification** button on the DNS detail page to retry.
+- **Failed**: DNS verification failed. Use the **Restart Verification** button on the DNS detail page to retry, or [troubleshoot the domain with AI](#troubleshoot-with-ai).
 - **Provisioning failed**: The domain could not be provisioned by the platform. The DNS detail page shows an alert explaining the failure instead of the DNS configuration instructions. Contact support if you see this status.
 
 Domain activation typically completes within a few minutes to 48 hours, depending on DNS propagation times.
@@ -225,6 +225,10 @@ On the DNS records detail page, you can click the <InlineIcon Icon={TriangleRigh
 - A link to [Google's Dig tool](https://toolbox.googleapps.com/apps/dig/) to check the record in your browser.
 
 The same expandable troubleshooting panel is available during the domain setup flow when you're configuring DNS records for a new domain.
+
+### Troubleshoot with AI
+
+When a domain's verification is failing, the DNS configuration detail page shows a **Troubleshoot with AI** button next to the button that re-checks the DNS records. Click it to start an AI-powered troubleshooting flow that helps you diagnose and resolve the domain's verification issues.
 
 ### Domain Verification
 

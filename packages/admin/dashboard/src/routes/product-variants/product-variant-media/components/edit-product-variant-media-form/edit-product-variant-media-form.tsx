@@ -194,7 +194,7 @@ export const EditProductVariantMediaForm = ({
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-col overflow-hidden">
           <div className="relative flex size-full">
-            <div className="bg-ui-bg-subtle flex-1 overflow-auto">
+            <div className="flex-1 overflow-auto bg-ui-bg-subtle">
               <div className="flex items-center justify-between p-4 lg:hidden">
                 <h3 className="text-sm font-medium">
                   {t("products.media.variantImages")}
@@ -224,13 +224,13 @@ export const EditProductVariantMediaForm = ({
             </div>
 
             {/* Desktop sidebar - always visible */}
-            <div className="border-ui-border-base bg-ui-bg-base hidden w-80 border-l lg:block">
-              <div className="border-ui-border-base border-b p-4">
+            <div className="hidden w-80 border-l border-ui-border-base bg-ui-bg-base lg:block">
+              <div className="border-b border-ui-border-base p-4">
                 <div>
-                  <h3 className="ui-fg-base ">
+                  <h3 className="ui-fg-base">
                     {t("products.media.availableImages")}
                   </h3>
-                  <p className="text-ui-fg-muted mt-1 text-sm">
+                  <p className="mt-1 text-sm text-ui-fg-muted">
                     {t("products.media.selectToAdd")}
                   </p>
                 </div>
@@ -255,16 +255,16 @@ export const EditProductVariantMediaForm = ({
                 onClick={() => setIsSidebarOpen(false)}
               >
                 <div
-                  className="bg-ui-bg-base border-ui-border-base absolute right-0 top-0 h-full w-80 border-l"
+                  className="absolute right-0 top-0 h-full w-80 border-l border-ui-border-base bg-ui-bg-base"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="border-ui-border-base border-b p-4">
+                  <div className="border-b border-ui-border-base p-4">
                     <div className="flex items-center justify-between">
                       <div>
                         <h3 className="ui-fg-base text-sm font-medium">
                           {t("products.media.availableImages")}
                         </h3>
-                        <p className="text-ui-fg-muted mt-1 pr-2 text-xs">
+                        <p className="mt-1 pr-2 text-xs text-ui-fg-muted">
                           {t("products.media.selectToAdd")}
                         </p>
                       </div>
@@ -368,7 +368,7 @@ const MediaGridItem = ({
   return (
     <div
       className={clx(
-        "shadow-elevation-card-rest hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus bg-ui-bg-subtle-hover group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg outline-none"
+        "group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
       )}
     >
       {isThumbnail && (
@@ -379,7 +379,7 @@ const MediaGridItem = ({
         </div>
       )}
       <div
-        className={clx("transition-fg absolute right-2 top-2 opacity-0", {
+        className={clx("absolute right-2 top-2 opacity-0 transition-fg", {
           "group-focus-within:opacity-100 group-hover:opacity-100 group-focus:opacity-100":
             !checked,
           "opacity-100": checked,
@@ -410,20 +410,19 @@ const UnassociatedImageItem = ({
   return (
     <div
       className={clx(
-        "shadow-elevation-card-rest hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus bg-ui-bg-subtle-hover group relative aspect-square h-auto max-w-full cursor-pointer overflow-hidden rounded-lg outline-none"
+        "group relative aspect-square h-auto max-w-full cursor-pointer overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
       )}
       onClick={onAdd}
     >
       <div
         className={clx(
-          "transition-fg absolute inset-0 flex items-center justify-center bg-black/30 opacity-0",
+          "absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-fg",
           {
-            "group-focus-within:opacity-100 group-hover:opacity-100 group-focus:opacity-100":
-              true,
+            "group-focus-within:opacity-100 group-hover:opacity-100 group-focus:opacity-100": true,
           }
         )}
       >
-        <div className="bg-ui-bg-base border-ui-border-base flex h-12 w-12 items-center justify-center rounded-full border shadow-lg">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-ui-border-base bg-ui-bg-base shadow-lg">
           <Plus />
         </div>
       </div>

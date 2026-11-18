@@ -58,10 +58,13 @@ export function OrderCreateFulfillmentForm({
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: fulfillableItems.reduce((acc, item) => {
-        acc[item.id] = getFulfillableQuantity(item)
-        return acc
-      }, {} as Record<string, number>),
+      quantity: fulfillableItems.reduce(
+        (acc, item) => {
+          acc[item.id] = getFulfillableQuantity(item)
+          return acc
+        },
+        {} as Record<string, number>
+      ),
       send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
@@ -217,10 +220,13 @@ export function OrderCreateFulfillmentForm({
       })
     }
 
-    const quantityMap = itemsToFulfill.reduce((acc, item) => {
-      acc[item.id] = getFulfillableQuantity(item)
-      return acc
-    }, {} as Record<string, number>)
+    const quantityMap = itemsToFulfill.reduce(
+      (acc, item) => {
+        acc[item.id] = getFulfillableQuantity(item)
+        return acc
+      },
+      {} as Record<string, number>
+    )
 
     form.setValue("quantity", quantityMap)
   }, [...fulfilledQuantityArray, requiresShipping])
@@ -366,7 +372,7 @@ export function OrderCreateFulfillmentForm({
                   )}
                 </div>
 
-                <div className="mt-8 pt-8 ">
+                <div className="mt-8 pt-8">
                   <Form.Field
                     control={form.control}
                     name="send_notification"

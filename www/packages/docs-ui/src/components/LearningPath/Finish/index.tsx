@@ -12,7 +12,7 @@ export type LearningPathFinishType =
   | {
       type: "custom"
       step: LearningPathStepType & {
-        descriptionJSX: JSX.Element
+        descriptionJSX: React.JSX.Element
       }
     }
 

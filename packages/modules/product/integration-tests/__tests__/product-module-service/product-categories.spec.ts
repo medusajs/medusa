@@ -9,6 +9,7 @@ import {
   moduleIntegrationTestRunner,
 } from "@medusajs/test-utils"
 import { productCategoriesRankData } from "../../__fixtures__/product-category/data"
+import { trackOverlappingQueries } from "../../__fixtures__/track-overlapping-queries"
 
 jest.setTimeout(30000)
 
@@ -487,6 +488,56 @@ moduleIntegrationTestRunner<IProductModuleService>({
               name: "New Category 2.1",
               parent_category_id: productCategoryNew.id,
               rank: 0,
+            })
+          )
+        })
+
+        it("should create sibling categories without running overlapping queries on the transaction client", async () => {
+          await service.createProductCategories({
+            name: "Existing child",
+            parent_category_id: productCategoryOne.id,
+          })
+
+          const tracker = trackOverlappingQueries()
+          try {
+            await service.createProductCategories([
+              { name: "Child A", parent_category_id: productCategoryOne.id },
+              { name: "Child B", parent_category_id: productCategoryOne.id },
+            ])
+          } finally {
+            tracker.restore()
+          }
+
+          expect(tracker.overlapping).toEqual([])
+
+          const children = await service.listProductCategories(
+            { parent_category_id: productCategoryOne.id },
+            { select: ["name", "rank"], order: { rank: "ASC" } }
+          )
+
+          expect(children.map(({ name, rank }) => ({ name, rank }))).toEqual([
+            { name: "Existing child", rank: 0 },
+            { name: "Child A", rank: 1 },
+            { name: "Child B", rank: 2 },
+          ])
+        })
+
+        it("should rank categories per parent when creating under different parents", async () => {
+          const [childOne, childTwo] = await service.createProductCategories([
+            { name: "Child of one", parent_category_id: productCategoryOne.id },
+            { name: "Child of two", parent_category_id: productCategoryTwo.id },
+          ])
+
+          expect(childOne).toEqual(
+            expect.objectContaining({
+              rank: 0,
+              mpath: `${productCategoryOne.mpath}.${childOne.id}`,
+            })
+          )
+          expect(childTwo).toEqual(
+            expect.objectContaining({
+              rank: 0,
+              mpath: `${productCategoryTwo.mpath}.${childTwo.id}`,
             })
           )
         })

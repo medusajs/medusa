@@ -21,7 +21,7 @@ const DataTableSortingIcon = (props: SortingIconProps) => {
   // When unsorted, preview the direction the first click would apply.
   const effectiveDirection = isSorted
     ? props.direction
-    : props.firstDirection ?? "asc"
+    : (props.firstDirection ?? "asc")
 
   const Icon = effectiveDirection === "desc" ? ArrowDownMini : ArrowUpMini
 

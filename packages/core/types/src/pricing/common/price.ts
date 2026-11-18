@@ -121,8 +121,7 @@ export interface CreatePriceDTO {
  *
  * Filters to apply on prices.
  */
-export interface FilterablePriceProps
-  extends BaseFilterable<FilterablePriceProps> {
+export interface FilterablePriceProps extends BaseFilterable<FilterablePriceProps> {
   /**
    * The IDs to filter the prices by.
    */

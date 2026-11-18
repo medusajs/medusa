@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import {
   Action,
+  ActionGroup,
   ActionMenu,
 } from "../../../../../components/common/action-menu"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
@@ -22,6 +23,10 @@ import {
   getProvinceByIso2,
   isProvinceInCountry,
 } from "../../../../../lib/data/country-states"
+import {
+  useTaxRatePermissions,
+  useTaxRegionPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useDeleteTaxRegionAction } from "../../hooks"
 
 interface TaxRegionCardProps extends ComponentPropsWithoutRef<"div"> {
@@ -40,6 +45,8 @@ export const TaxRegionCard = ({
   badge,
 }: TaxRegionCardProps) => {
   const { t } = useTranslation()
+  const { canCreate: canCreateTaxRates } = useTaxRatePermissions()
+
   const { id, country_code, province_code } = taxRegion
 
   const country = getCountryByIso2(country_code)
@@ -71,12 +78,13 @@ export const TaxRegionCard = ({
 
   const showCreateDefaultTaxRate =
     !taxRegion.tax_rates.filter((tr) => tr.is_default).length &&
-    type === "header"
+    type === "header" &&
+    canCreateTaxRates
 
   const Component = (
     <div
       className={clx(
-        "group-data-[link=true]:hover:bg-ui-bg-base-hover transition-fg flex flex-col justify-between gap-y-4 px-6 md:flex-row md:items-center md:gap-y-0",
+        "flex flex-col justify-between gap-y-4 px-6 transition-fg group-data-[link=true]:hover:bg-ui-bg-base-hover md:flex-row md:items-center md:gap-y-0",
         {
           "py-4": type === "header",
           "py-3": type === "list",
@@ -174,6 +182,7 @@ const TaxRegionCardActions = ({
   showCreateDefaultTaxRate?: boolean
 }) => {
   const { t } = useTranslation()
+  const { canUpdate, canDelete } = useTaxRegionPermissions()
 
   const hasParent = !!taxRegion.parent_id
 
@@ -182,37 +191,44 @@ const TaxRegionCardActions = ({
     : undefined
   const handleDelete = useDeleteTaxRegionAction({ taxRegion, to })
 
-  return (
-    <ActionMenu
-      groups={[
-        ...(showCreateDefaultTaxRate
-          ? [
-              {
-                actions: [
-                  {
-                    icon: <Plus />,
-                    label: t("taxRegions.fields.defaultTaxRate.action"),
-                    to: `tax-rates/create`,
-                  },
-                ],
-              },
-            ]
-          : []),
+  const groups: ActionGroup[] = []
+
+  if (canUpdate && showCreateDefaultTaxRate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            !hasParent && {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/settings/tax-regions/${taxRegion.id}/edit`,
-            },
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ].filter(Boolean) as unknown as Action[],
+          icon: <Plus />,
+          label: t("taxRegions.fields.defaultTaxRate.action"),
+          to: `tax-rates/create`,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  const mutationActions = [
+    canUpdate && !hasParent
+      ? {
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/settings/tax-regions/${taxRegion.id}/edit`,
+        }
+      : null,
+    canDelete
+      ? {
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
+        }
+      : null,
+  ].filter(Boolean) as unknown as Action[]
+
+  if (mutationActions.length) {
+    groups.push({ actions: mutationActions })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

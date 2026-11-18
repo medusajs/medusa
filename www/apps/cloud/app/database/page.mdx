@@ -1,4 +1,4 @@
-import { getOsShortcut, Kbd, InlineIcon, Table } from "docs-ui"
+import { getOsShortcut, Kbd, InlineIcon, Note, Table } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
@@ -335,12 +335,48 @@ So, if you define new database migrations in your module, define new links, or a
 
 You don't need to add a `predeploy` script to your `package.json`, or run `medusa db:migrate` in your `start` script, to apply migrations on Cloud. If you're moving a self-hosted application that runs migrations this way, remove the `medusa db:migrate` command from your `start` script.
 
+### How Cloud Applies Link Changes
+
+When you run `medusa db:migrate` locally and Medusa detects that a link was removed or changed, the command pauses with a "Select tables to act upon" prompt. The prompt asks you to choose which link tables to delete or update, since those actions can remove data.
+
+Deployments on Cloud are non-interactive, so Medusa never shows this prompt and the deployment doesn't wait for input. Instead, Medusa runs the migrations with the [--execute-all-links](!resources!/medusa-cli/commands/db#dbmigrate) option, which applies all link changes:
+
+- Creates the tables of new links.
+- Updates the tables of changed links.
+- Deletes the tables of removed links, including the data stored in them.
+
+This is equivalent to selecting all tables in the local prompt. To apply the same changes locally without the prompt, run:
+
+```bash
+npx medusa db:migrate --execute-all-links
+```
+
+<Note type="warning">
+
+Deleting a link's table removes the records that associate the two data models. Before you deploy a change that removes or changes a link, review the tables that the local prompt lists, and test the deployment in a [long-lived](../environments/long-lived/page.mdx) or [preview](../environments/preview/page.mdx) environment first.
+
+</Note>
+
 ### How Data Migration Scripts Run on Cloud
 
 Each environment has its own database, so Medusa runs a data migration script once per environment. So:
 
 - A script that completed in a previous deployment doesn't run again in later deployments.
 - A script that throws an error, or that was interrupted, runs again in the next deployment until it completes successfully.
+
+### Failed Data Migration Scripts
+
+Starting from Medusa v2.22.0, a data migration script that throws an error fails the deployment. The deployment's status becomes "Deploy failed", and the previous deployment remains live. Any database migrations and link changes that ran before the script in the same deployment remain applied.
+
+To fix the failure, check the [runtime logs](../logs/page.mdx) for the script's error, fix the script, and deploy the changes again. The script then runs again in the new deployment.
+
+In earlier versions, the deployment goes live even if a data migration script throws an error, and the script runs again in the next deployment.
+
+<Note>
+
+If your data migration script throws an error on purpose so that it runs again in a later deployment, it fails every deployment until it completes successfully. Instead, return from the script without throwing, and move the retry logic into the script itself or into a [scheduled job](!docs!/learn/fundamentals/scheduled-jobs).
+
+</Note>
 
 ### Run One-Off Data Scripts on Cloud
 

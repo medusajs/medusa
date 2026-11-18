@@ -1,10 +1,14 @@
 import { MedusaContainer } from "@medusajs/types"
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   ContainerRegistrationKeys,
+  deduplicate,
+  Modules,
+  permissionKey,
+  RBAC_CACHE_TAGS,
   useCache,
   WILDCARD,
 } from "@medusajs/utils"
-import { FlagRouter } from "../feature-flags/flag-router"
 
 export type PermissionAction = {
   resource: string
@@ -35,29 +39,69 @@ export type ResolvePermissionsInput = {
   container: MedusaContainer
 }
 
-type RolePoliciesCache = Map<string, Map<string, Set<string>>>
+export type ListRolePermissionsInput = {
+  roles: string | string[]
+  container: MedusaContainer
+}
+
+type Policy = { resource: string; operation: string }
 
 /**
- * Applies wildcard-aware matching to decide whether any of the
- * supplied roles grants `(resource, operation)`. This is the single source of
- * truth for wildcard semantics used by both {@link hasPermission} and
- * {@link resolvePermissions}.
+ * The permissions a set of policies grants, as `resource:operation` keys.
+ * Wildcards are kept as stored (e.g. `product:*`, `*:read`, `*:*`).
  */
-function policyAllows(
-  rolePoliciesMap: RolePoliciesCache,
+export type PermissionSet = Set<string>
+
+export const RBAC_CACHE_TTL = 60
+
+/**
+ * Keys the policies by `resource:operation`.
+ */
+export function toPermissionSet(policies: Iterable<Policy>): PermissionSet {
+  const permissions: PermissionSet = new Set()
+
+  for (const { resource, operation } of policies) {
+    permissions.add(permissionKey(resource, operation))
+  }
+
+  return permissions
+}
+
+/**
+ * Whether `permissions` grant `(resource, operation)`. This is the single
+ * source of truth for wildcard semantics: `*` matches as the resource, the
+ * operation, or both.
+ */
+export function isGranted(
+  permissions: PermissionSet,
   resource: string,
   operation: string
 ): boolean {
-  for (const resourceMap of rolePoliciesMap.values()) {
-    const allowedOps = new Set([
-      ...(resourceMap.get(resource) || []),
-      ...(resourceMap.get(WILDCARD) || []),
-    ])
-    if (allowedOps.has(operation) || allowedOps.has(WILDCARD)) {
-      return true
+  return (
+    permissions.has(permissionKey(resource, operation)) ||
+    permissions.has(permissionKey(resource, WILDCARD)) ||
+    permissions.has(permissionKey(WILDCARD, operation)) ||
+    permissions.has(permissionKey(WILDCARD, WILDCARD))
+  )
+}
+
+/**
+ * The keys of the `candidates` that `permissions` grant, with the permissions'
+ * wildcards matched against each concrete candidate.
+ */
+export function grantedKeys(
+  permissions: PermissionSet,
+  candidates: Policy[]
+): Set<string> {
+  const granted = new Set<string>()
+
+  for (const { resource, operation } of candidates) {
+    if (isGranted(permissions, resource, operation)) {
+      granted.add(permissionKey(resource, operation))
     }
   }
-  return false
+
+  return granted
 }
 
 /**
@@ -88,16 +132,16 @@ export async function hasPermission(
 
   const roleIds = Array.isArray(roles) ? roles : [roles]
   const actionList = Array.isArray(actions) ? actions : [actions]
-  const ffRouter = container.resolve(
-    ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
-  ) as FlagRouter
-
-  const isDisabled = !ffRouter.isFeatureEnabled("rbac")
-  if (isDisabled || !roleIds?.length || !actionList?.length) {
+  const isDisabled = !MedusaModule.isInstalled(Modules.RBAC)
+  if (isDisabled || !actionList?.length) {
     return true
   }
 
-  const rolePoliciesMap = await fetchRolePolicies(roleIds, container)
+  if (!roleIds?.length) {
+    return false
+  }
+
+  const permissions = await fetchRolePermissions(roleIds, container)
 
   for (const action of actionList) {
     const operations = Array.isArray(action.operation)
@@ -105,7 +149,7 @@ export async function hasPermission(
       : [action.operation]
 
     for (const op of operations) {
-      if (!policyAllows(rolePoliciesMap, action.resource, op)) {
+      if (!isGranted(permissions, action.resource, op)) {
         return false
       }
     }
@@ -141,96 +185,142 @@ export async function resolvePermissions(
   const { roles, universe, container } = input
 
   const roleIds = Array.isArray(roles) ? roles : [roles]
-  const ffRouter = container.resolve(
-    ContainerRegistrationKeys.FEATURE_FLAG_ROUTER
-  ) as FlagRouter
-
-  if (!ffRouter.isFeatureEnabled("rbac")) {
-    return new Set(
-      universe.map(({ resource, operation }) => `${resource}:${operation}`)
-    )
+  if (!MedusaModule.isInstalled(Modules.RBAC)) {
+    return toPermissionSet(universe)
   }
 
   if (!roleIds.length) {
     return new Set()
   }
 
-  const rolePoliciesMap = await fetchRolePolicies(roleIds, container)
-  const granted = new Set<string>()
+  const permissions = await fetchRolePermissions(roleIds, container)
 
-  for (const { resource, operation } of universe) {
-    if (policyAllows(rolePoliciesMap, resource, operation)) {
-      granted.add(`${resource}:${operation}`)
-    }
-  }
-
-  return granted
+  return grantedKeys(permissions, universe)
 }
 
 /**
- * Fetches a single role's policies from cache or database.
+ * Lists the permissions the given roles grant, as `resource:operation` strings.
+ *
+ * Wildcards are listed as they are stored (e.g. `product:*`, `*:*`), because
+ * expanding them requires the universe of persisted policies. Use
+ * {@link resolvePermissions} when the expanded set is needed.
+ *
+ * @example
+ * ```ts
+ * const permissions = await listRolePermissions({
+ *   roles: ["role_123"],
+ *   container,
+ * })
+ * // permissions = ["product:delete", "product:read"]
+ * ```
  */
-async function fetchSingleRolePolicies(
-  roleId: string,
-  container: MedusaContainer
-): Promise<Map<string, Set<string>>> {
-  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+export async function listRolePermissions(
+  input: ListRolePermissionsInput
+): Promise<string[]> {
+  const { roles, container } = input
 
-  const tags: string[] = []
-  return await useCache<Map<string, Set<string>>>(
+  const roleIds = Array.isArray(roles) ? roles : [roles]
+
+  if (!roleIds.length) {
+    return []
+  }
+
+  const permissions = await fetchRolePermissions(roleIds, container)
+
+  return [...permissions].sort()
+}
+
+/**
+ * Fetches the policies of a set of roles from cache or database.
+ */
+async function fetchRolesPolicies(
+  roleIds: string[],
+  container: MedusaContainer
+): Promise<Policy[]> {
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+  const sortedRoleIds = [...new Set(roleIds)].sort()
+
+  // Cleared by the caching module on the RBAC module's mutation events. The
+  // policy tags are added as the policies are read, before the entry is set.
+  const tags: string[] = [
+    ...sortedRoleIds.map((roleId) => RBAC_CACHE_TAGS.role(roleId)),
+    RBAC_CACHE_TAGS.ROLE_POLICY_LIST,
+  ]
+
+  return await useCache<Policy[]>(
     async () => {
       const { data: roles } = await query.graph({
         entity: "rbac_role",
         fields: ["id", "policies.*"],
-        filters: { id: roleId },
+        filters: { id: sortedRoleIds },
       })
 
-      const role = roles[0]
-      const resourceMap = new Map<string, Set<string>>()
+      const policies: Policy[] = []
 
-      tags.push(`rbac_role:${roleId}`)
-      if (role?.policies && Array.isArray(role.policies)) {
-        const policyIds: string[] = []
-
-        for (const policy of role.policies) {
-          policyIds.push(policy.id)
-
-          if (!resourceMap.has(policy.resource)) {
-            resourceMap.set(policy.resource, new Set())
-          }
-          resourceMap.get(policy.resource)!.add(policy.operation)
-
-          tags.push(`rbac_policy:${policy.id}`)
+      for (const role of roles ?? []) {
+        for (const policy of role.policies ?? []) {
+          policies.push({
+            resource: policy.resource,
+            operation: policy.operation,
+          })
+          tags.push(RBAC_CACHE_TAGS.policy(policy.id))
         }
       }
 
-      return resourceMap
+      return policies
     },
     {
       container,
-      key: roleId,
+      key: `rbac-role-permissions:${sortedRoleIds.join(",")}`,
       tags,
-      ttl: 60 * 60 * 24 * 7,
-      providers: ["cache-memory"],
+      enable: true,
+      ttl: RBAC_CACHE_TTL,
     }
   )
 }
 
 /**
- * Fetches policies for multiple roles by composing individually cached role queries.
+ * Fetches the set of governed resources: every distinct `rbac_policy.resource`
+ * from cache or database.
  */
-async function fetchRolePolicies(
-  roleIds: string[],
+export async function fetchPolicyResources(
   container: MedusaContainer
-): Promise<RolePoliciesCache> {
-  const rolePoliciesMap: RolePoliciesCache = new Map()
+): Promise<Set<string>> {
+  if (!MedusaModule.isInstalled(Modules.RBAC)) {
+    return new Set()
+  }
 
-  await Promise.all(
-    roleIds.map(async (roleId) => {
-      const resourceMap = await fetchSingleRolePolicies(roleId, container)
-      rolePoliciesMap.set(roleId, resourceMap)
-    })
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
+
+  const resources = await useCache<string[]>(
+    async () => {
+      const { data: policies } = await query.graph({
+        entity: "rbac_policy",
+        fields: ["resource"],
+      })
+
+      return deduplicate(
+        (policies ?? []).map((policy) => policy.resource as string)
+      )
+    },
+    {
+      container,
+      key: "rbac-policy-resources",
+      tags: [RBAC_CACHE_TAGS.POLICY_LIST],
+      enable: true,
+      ttl: RBAC_CACHE_TTL,
+    }
   )
 
-  return rolePoliciesMap
+  return new Set(resources)
+}
+
+/**
+ * The permissions of all the given roles, merged.
+ */
+async function fetchRolePermissions(
+  roleIds: string[],
+  container: MedusaContainer
+): Promise<PermissionSet> {
+  return toPermissionSet(await fetchRolesPolicies(roleIds, container))
 }

@@ -46,7 +46,7 @@ const DataGridRowErrorLine = ({
       <button
         type="button"
         onClick={error.to}
-        className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
+        className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover"
       >
         {t("dataGrid.errors.fixError")}
       </button>

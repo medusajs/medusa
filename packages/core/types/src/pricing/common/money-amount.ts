@@ -141,8 +141,7 @@ export interface UpsertMoneyAmountDTO {
  *
  * Filters to apply on a money amount.
  */
-export interface FilterableMoneyAmountProps
-  extends BaseFilterable<FilterableMoneyAmountProps> {
+export interface FilterableMoneyAmountProps extends BaseFilterable<FilterableMoneyAmountProps> {
   /**
    * IDs to filter money amounts by.
    */

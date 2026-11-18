@@ -76,7 +76,7 @@ const Chip = ({ index, className, children }: ChipProps) => {
   return (
     <li
       className={clx(
-        "bg-ui-bg-component shadow-borders-base flex items-stretch divide-x overflow-hidden rounded-md",
+        "flex items-stretch divide-x overflow-hidden rounded-md bg-ui-bg-component shadow-borders-base",
         {
           "bg-ui-bg-component": variant === "component",
           "bg-ui-bg-base-": variant === "base",
@@ -84,7 +84,7 @@ const Chip = ({ index, className, children }: ChipProps) => {
         className
       )}
     >
-      <span className="txt-compact-small-plus text-ui-fg-subtle flex items-center justify-center px-2 py-1">
+      <span className="txt-compact-small-plus flex items-center justify-center px-2 py-1 text-ui-fg-subtle">
         {children}
       </span>
       {!!onRemove && (
@@ -92,7 +92,7 @@ const Chip = ({ index, className, children }: ChipProps) => {
           onClick={() => onRemove(index)}
           type="button"
           className={clx(
-            "text-ui-fg-muted active:text-ui-fg-subtle transition-fg flex items-center justify-center p-1",
+            "flex items-center justify-center p-1 text-ui-fg-muted transition-fg active:text-ui-fg-subtle",
             {
               "hover:bg-ui-bg-component-hover active:bg-ui-bg-component-pressed":
                 variant === "component",

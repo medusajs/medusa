@@ -21,8 +21,7 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_draft-orders_{id}_convert-to-order/post.js
+        $ref: ../code_samples/JavaScript/admin_draft-orders_{id}_convert-to-order/post.js
     - lang: Shell
       label: cURL
       source:

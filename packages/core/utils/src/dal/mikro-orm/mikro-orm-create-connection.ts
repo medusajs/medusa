@@ -97,9 +97,8 @@ export async function mikroOrmCreateConnection(
     schema = database.connection.context?.client?.config?.searchPath
   }
 
-  const { MikroORM, defineConfig } = await import(
-    "@medusajs/deps/mikro-orm/postgresql"
-  )
+  const { MikroORM, defineConfig } =
+    await import("@medusajs/deps/mikro-orm/postgresql")
   const mikroOrmConfig = defineConfig({
     discovery: { disableDynamicFileAccess: true, warnWhenNoEntities: false },
     entities,

@@ -71,8 +71,7 @@ export interface SearchArrayMarker {
  * @since 2.19.0
  */
 export type InferSearchPropertyValue<P extends SearchPropertyType<any>> =
-  | (P extends SearchArrayMarker ? P["$dataType"][] : P["$dataType"])
-  | null
+  (P extends SearchArrayMarker ? P["$dataType"][] : P["$dataType"]) | null
 
 /**
  * The value of an object field: declared sub-fields are type-checked, extra
@@ -122,7 +121,7 @@ export type SearchIndexSeedMutation<Fields extends SearchIndexFieldsInput> =
  * `search.define(...)` schema.
  */
 export type SearchIndexDefinitionInput<
-  Fields extends SearchIndexFieldsInput = SearchIndexFieldsInput
+  Fields extends SearchIndexFieldsInput = SearchIndexFieldsInput,
 > = Omit<SearchIndexDefinition, "fields" | "seed" | "consume"> & {
   fields: Fields
   // Ran when there is no data in the index, on reindex, and for the

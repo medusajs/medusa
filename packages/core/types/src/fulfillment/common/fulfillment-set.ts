@@ -49,8 +49,7 @@ export interface FulfillmentSetDTO {
 /**
  * The filters to apply on the retrieved fulfillment sets.
  */
-export interface FilterableFulfillmentSetProps
-  extends BaseFilterable<FilterableFulfillmentSetProps> {
+export interface FilterableFulfillmentSetProps extends BaseFilterable<FilterableFulfillmentSetProps> {
   /**
    * The IDs to filter the fulfillment sets by.
    */

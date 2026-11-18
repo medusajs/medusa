@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { HttpTypes } from "@medusajs/types"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 const OptionActions = ({
   option,
@@ -11,6 +12,11 @@ const OptionActions = ({
   option: HttpTypes.AdminProductOption
 }) => {
   const { t } = useTranslation()
+  const { hasPermission } = usePermissions()
+
+  if (!hasPermission("product_option:read")) {
+    return null
+  }
 
   return (
     <ActionMenu
@@ -37,24 +43,35 @@ export const ProductOptionSection = ({
   product,
 }: ProductOptionSectionProps) => {
   const { t } = useTranslation()
+  const { hasAllPermissions } = usePermissions()
+
+  const canManage = hasAllPermissions([
+    "product:update",
+    "product_option:read",
+    "product_option:create",
+    "product_option:update",
+    "product_option:delete",
+  ])
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.options.header")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.manage"),
-                  to: "options/manage",
-                  icon: <PencilSquare />,
-                },
-              ],
-            },
-          ]}
-        />
+        {canManage && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.manage"),
+                    to: "options/manage",
+                    icon: <PencilSquare />,
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
 
       {product.options?.map((option) => {
@@ -81,9 +98,9 @@ export const ProductOptionSection = ({
                     key={val.value}
                     size="2xsmall"
                     title={val.value}
-                    className="flex min-w-[20px] items-center justify-center max-w-full min-w-0 overflow-hidden"
+                    className="flex min-w-0 min-w-[20px] max-w-full items-center justify-center overflow-hidden"
                   >
-                    <span className="truncate min-w-0">{val.value}</span>
+                    <span className="min-w-0 truncate">{val.value}</span>
                   </Badge>
                 )
               })}

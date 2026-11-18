@@ -2,9 +2,8 @@ import { logger } from "@medusajs/framework/logger"
 import { MedusaContainer } from "@medusajs/framework/types"
 import { GracefulShutdownServer, promiseAll } from "@medusajs/framework/utils"
 import express from "express"
-import getPort from "get-port"
 import { resolve } from "path"
-import { applyEnvVarsToProcess, execOrTimeout } from "./utils"
+import { applyEnvVarsToProcess, execOrTimeout, getFreePort } from "./utils"
 
 async function bootstrapApp({
   cwd,
@@ -26,7 +25,7 @@ async function bootstrapApp({
       expressApp: app,
     })
 
-    const PORT = process.env.PORT ? parseInt(process.env.PORT) : await getPort()
+    const PORT = process.env.PORT ? parseInt(process.env.PORT) : await getFreePort()
 
     return {
       shutdown,

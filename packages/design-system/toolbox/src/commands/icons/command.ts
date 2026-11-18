@@ -41,29 +41,32 @@ export async function generateIcons({ output }: GenerateIconsArgs) {
 
   logger.info("Fetching URLs for SVGs")
 
-  const iconNodes = fileComponents.meta?.components.reduce((acc, component) => {
-    const frameInfo = component.containing_frame
+  const iconNodes = fileComponents.meta?.components.reduce(
+    (acc, component) => {
+      const frameInfo = component.containing_frame
 
-    if (!frameInfo) {
+      if (!frameInfo) {
+        return acc
+      }
+
+      if (BANNED_FRAMES.includes(frameInfo.name)) {
+        return acc
+      }
+
+      if (frameInfo.pageId !== FIGMA_ICONS_NODE_ID) {
+        return acc
+      }
+
+      acc.push({
+        node_id: component.node_id,
+        name: component.name,
+        frame_name: frameInfo.name,
+      })
+
       return acc
-    }
-
-    if (BANNED_FRAMES.includes(frameInfo.name)) {
-      return acc
-    }
-
-    if (frameInfo.pageId !== FIGMA_ICONS_NODE_ID) {
-      return acc
-    }
-
-    acc.push({
-      node_id: component.node_id,
-      name: component.name,
-      frame_name: frameInfo.name,
-    })
-
-    return acc
-  }, [] as { node_id: string; name: string; frame_name: string }[])
+    },
+    [] as { node_id: string; name: string; frame_name: string }[]
+  )
 
   if (!iconNodes) {
     logger.error(

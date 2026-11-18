@@ -8,10 +8,9 @@ export interface AdminLocaleResponse {
   locale: AdminLocale
 }
 
-export interface AdminLocaleListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of locales.
-     */
-    locales: AdminLocale[]
-  }> {}
+export interface AdminLocaleListResponse extends PaginatedResponse<{
+  /**
+   * The list of locales.
+   */
+  locales: AdminLocale[]
+}> {}

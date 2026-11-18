@@ -57,8 +57,8 @@ export const OrganizeCategoryForm = () => {
 
       // Snapshot the previous value
       const previousValue:
-        | HttpTypes.AdminProductCategoryListResponse
-        | undefined = queryClient.getQueryData(categoriesQueryKeys.list(QUERY))
+        HttpTypes.AdminProductCategoryListResponse | undefined =
+        queryClient.getQueryData(categoriesQueryKeys.list(QUERY))
 
       const nextValue = {
         ...previousValue,
@@ -119,7 +119,7 @@ export const OrganizeCategoryForm = () => {
           {loading && <Spinner className="animate-spin" />}
         </div>
       </RouteFocusModal.Header>
-      <RouteFocusModal.Body className="bg-ui-bg-subtle flex flex-1 flex-col overflow-y-auto">
+      <RouteFocusModal.Body className="flex flex-1 flex-col overflow-y-auto bg-ui-bg-subtle">
         <CategoryTree
           renderValue={(item) => item.name}
           value={loading ? snapshot : product_categories || []}

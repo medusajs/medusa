@@ -42,13 +42,11 @@ get:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_product-options_{id}_values_{value_id}/get.js
+        $ref: ../code_samples/JavaScript/admin_product-options_{id}_values_{value_id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_product-options_{id}_values_{value_id}/get.sh
+        $ref: ../code_samples/Shell/admin_product-options_{id}_values_{value_id}/get.sh
   tags:
     - Product Options
   responses:
@@ -102,13 +100,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_product-options_{id}_values_{value_id}/post.js
+        $ref: ../code_samples/JavaScript/admin_product-options_{id}_values_{value_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_product-options_{id}_values_{value_id}/post.sh
+        $ref: ../code_samples/Shell/admin_product-options_{id}_values_{value_id}/post.sh
   tags:
     - Product Options
   responses:
@@ -169,13 +165,11 @@ delete:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_product-options_{id}_values_{value_id}/delete.js
+        $ref: ../code_samples/JavaScript/admin_product-options_{id}_values_{value_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_product-options_{id}_values_{value_id}/delete.sh
+        $ref: ../code_samples/Shell/admin_product-options_{id}_values_{value_id}/delete.sh
   tags:
     - Product Options
   responses:

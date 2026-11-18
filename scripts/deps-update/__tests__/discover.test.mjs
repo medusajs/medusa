@@ -46,6 +46,7 @@ function plan({
   openBranches,
   includeMajors = true,
   only,
+  config: planConfig = config,
 }) {
   return buildPlan({
     declarations: declarations.map((d) => ({
@@ -56,7 +57,7 @@ function plan({
     })),
     locked: new Map(Object.entries(locked)),
     ...registry(entries),
-    config,
+    config: planConfig,
     state,
     openBranches: new Set(openBranches ?? []),
     includeMajors,
@@ -336,6 +337,32 @@ describe("buildPlan", () => {
     assert.equal(result.groups[0].packages.length, 2)
   })
 
+  it("holds config majors but still plans same-major updates of exact pins", () => {
+    const result = plan({
+      declarations: [{ name: "@mikro-orm/core", spec: "6.6.17" }],
+      locked: { "@mikro-orm/core@npm:6.6.17": "6.6.17" },
+      entries: [
+        ["@mikro-orm/core", { "6.6.17": {}, "6.7.0": {}, "7.0.0": {} }],
+      ],
+      config: { ...config, holdMajors: { "@mikro-orm/*": "manual" } },
+    })
+    assert.deepEqual(
+      result.groups.map((g) => g.key),
+      ["major-mikro-orm-core"]
+    )
+    assert.deepEqual(
+      result.groups[0].packages[0].changes.map((c) => c.to),
+      ["6.7.0"]
+    )
+    assert.deepEqual(result.skipped, [
+      {
+        name: "@mikro-orm/core",
+        workspace: "packages/a",
+        reason: "held: manual",
+      },
+    ])
+  })
+
   it("respects state, open PRs, and the majors switch", () => {
     const base = {
       declarations: [
@@ -386,6 +413,22 @@ describe("buildPlan", () => {
       open.pending.map((p) => p.key),
       ["major-express", "patch"]
     )
+
+    const configHeld = plan({
+      ...base,
+      config: { ...config, holdMajors: { "express*": "needs Node 22" } },
+    })
+    assert.deepEqual(
+      configHeld.groups.map((g) => g.key),
+      ["major-awilix", "patch"]
+    )
+    assert.deepEqual(configHeld.skipped, [
+      {
+        name: "express",
+        workspace: "packages/a",
+        reason: "held: needs Node 22",
+      },
+    ])
 
     const noMajors = plan({ ...base, includeMajors: false })
     assert.deepEqual(

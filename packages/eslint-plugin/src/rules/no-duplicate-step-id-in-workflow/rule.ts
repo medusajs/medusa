@@ -87,9 +87,9 @@ const extractConfigName = (
       prop.key.type === AST_NODE_TYPES.Identifier
         ? prop.key.name
         : prop.key.type === AST_NODE_TYPES.Literal &&
-          typeof prop.key.value === "string"
-        ? prop.key.value
-        : null
+            typeof prop.key.value === "string"
+          ? prop.key.value
+          : null
     if (keyName !== "name") {
       continue
     }
@@ -194,8 +194,8 @@ export const rule = createRule<[], MessageIds>({
           configuredName === DYNAMIC_CONFIG_NAME
             ? `DYNAMIC:${node.range[0]}`
             : configuredName !== null
-            ? `NAMED:${configuredName}`
-            : `BARE:${calleeName}`
+              ? `NAMED:${configuredName}`
+              : `BARE:${calleeName}`
 
         const bucket = callsByWorkflow.get(fn) ?? []
         bucket.push({

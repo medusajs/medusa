@@ -78,8 +78,8 @@ async function getEntitiesForModule(path: string) {
       (potentialEntity) => {
         return (
           DmlEntity.isDmlEntity(potentialEntity) ||
-          Object.hasOwn(
-            potentialEntity as object,
+          Object.prototype.hasOwnProperty.call(
+            potentialEntity,
             MetadataStorage.PATH_SYMBOL
           )
         )

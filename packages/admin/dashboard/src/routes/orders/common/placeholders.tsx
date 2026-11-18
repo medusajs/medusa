@@ -6,7 +6,7 @@ export const ReturnShippingPlaceholder = () => {
 
   return (
     <div className="flex h-[120px] flex-col items-center justify-center gap-2 p-2 text-center">
-      <span className="txt-small text-ui-fg-subtle font-medium">
+      <span className="txt-small font-medium text-ui-fg-subtle">
         {t("orders.returns.placeholders.noReturnShippingOptions.title")}
       </span>
 
@@ -29,7 +29,7 @@ export const OutboundShippingPlaceholder = () => {
 
   return (
     <div className="flex h-[120px] flex-col items-center justify-center gap-2 p-2 text-center">
-      <span className="txt-small text-ui-fg-subtle font-medium">
+      <span className="txt-small font-medium text-ui-fg-subtle">
         {t("orders.returns.placeholders.outboundShippingOptions.title")}
       </span>
 

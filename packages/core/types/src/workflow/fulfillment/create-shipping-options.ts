@@ -115,8 +115,7 @@ type CreateCalculatedShippingOptionInput = CreateFlatShippingOptionInputBase & {
  * The data to create a flat rate or calculated shipping option.
  */
 export type CreateShippingOptionsWorkflowInput =
-  | CreateFlatRateShippingOptionInput
-  | CreateCalculatedShippingOptionInput
+  CreateFlatRateShippingOptionInput | CreateCalculatedShippingOptionInput
 
 /**
  * The created shipping options.

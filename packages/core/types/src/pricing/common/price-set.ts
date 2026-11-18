@@ -222,8 +222,10 @@ export interface RuleWithOperator {
  * Each key of the object is a the attribute, and its value
  * is the values of the rule.
  */
-export interface CreatePriceSetPriceRules
-  extends Record<string, string | RuleWithOperator[]> {}
+export interface CreatePriceSetPriceRules extends Record<
+  string,
+  string | RuleWithOperator[]
+> {}
 
 /**
  * @interface
@@ -308,8 +310,7 @@ export interface UpdatePriceSetDTO {
  * Filters to apply on price sets.
  */
 export interface FilterablePriceSetProps
-  extends BaseFilterable<FilterablePriceSetProps>,
-    PricingContext {
+  extends BaseFilterable<FilterablePriceSetProps>, PricingContext {
   /**
    * IDs to filter price sets by.
    */

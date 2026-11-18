@@ -67,7 +67,10 @@ get:
 post:
   operationId: PostProductsId
   summary: Update a Product
-  description: Update a product's details.
+  description: >-
+    Update a product's details. If you pass `variants` in the request body, they
+    replace the product's full variant list, and existing variants that aren't
+    included are deleted.
   x-authenticated: true
   parameters:
     - name: id
@@ -146,6 +149,15 @@ post:
       $ref: ../components/responses/500_error.yaml
   x-workflow: updateProductsWorkflow
   x-events:
+    - name: product-variant.updated
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the product variant
+        }
+        ```
+      description: Emitted when product variants are updated.
+      deprecated: false
     - name: product.updated
       payload: |-
         ```ts

@@ -27,7 +27,7 @@ export function Module<
     : {},
   Linkable = keyof ModelObjects extends never
     ? Record<string, any>
-    : InfersLinksConfig<ServiceName, ModelObjects>
+    : InfersLinksConfig<ServiceName, ModelObjects>,
 >(
   serviceName: ServiceName,
   { service, loaders }: ModuleExports<Service>

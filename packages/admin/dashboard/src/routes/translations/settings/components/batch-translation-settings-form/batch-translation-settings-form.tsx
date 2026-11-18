@@ -219,7 +219,7 @@ export const BatchTranslationSettingsForm = ({
             />
           </div>
           <Divider />
-          <div className="bg-ui-bg-component h-full px-6 pb-6 pt-4">
+          <div className="h-full bg-ui-bg-component px-6 pb-6 pt-4">
             <EntitySelectorTree
               ref={treeRef}
               entities={entities}

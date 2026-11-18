@@ -512,6 +512,35 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("Sales channels with stock locations", () => {
+      it("list sales channels filtered by location_id", async () => {
+        const location = (
+          await api.post(
+            "/admin/stock-locations",
+            { name: "Test location" },
+            adminHeaders
+          )
+        ).data.stock_location
+
+        await api.post(
+          `/admin/stock-locations/${location.id}/sales-channels`,
+          { add: [salesChannel2.id] },
+          adminHeaders
+        )
+
+        const response = await api.get(
+          `/admin/sales-channels?location_id=${location.id}`,
+          adminHeaders
+        )
+
+        expect(response.status).toBe(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.sales_channels).toEqual([
+          expect.objectContaining({ id: salesChannel2.id }),
+        ])
+      })
+    })
+
     // BREAKING: DELETED TESTS:
     // - POST /admin/products/:id
     //    - Mutation sales channels on products

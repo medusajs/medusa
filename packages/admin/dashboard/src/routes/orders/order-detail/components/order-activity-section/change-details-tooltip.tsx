@@ -44,7 +44,7 @@ function ChangeDetailsTooltip(props: ChangeDetailsTooltipProps) {
       <Popover.Content
         align="center"
         side="top"
-        className="bg-ui-bg-component max-w-[200px] p-0 focus-visible:outline-none"
+        className="max-w-[200px] bg-ui-bg-component p-0 focus-visible:outline-none"
       >
         <div className="flex flex-col">
           {!!previous && (

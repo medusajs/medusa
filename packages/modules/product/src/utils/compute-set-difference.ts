@@ -20,7 +20,7 @@ export function computeSetDifference(
 ): { toRemove: string[]; toAdd: string[] } {
   const normalized: { id: string }[] = Array.isArray(currentValues)
     ? currentValues
-    : (currentValues as any)?.toArray?.() ?? []
+    : ((currentValues as any)?.toArray?.() ?? [])
 
   const currentSet = new Set<string>(normalized.map((v) => v.id))
   const newSet = new Set<string>(newValueIds)

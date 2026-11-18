@@ -19,8 +19,7 @@ export type AdminShippingOptionListResponse = PaginatedResponse<{
   shipping_options: AdminShippingOption[]
 }>
 
-export interface AdminShippingOptionDeleteResponse
-  extends DeleteResponse<"shipping_option"> {}
+export interface AdminShippingOptionDeleteResponse extends DeleteResponse<"shipping_option"> {}
 
 export type AdminUpdateShippingOptionRulesResponse =
   BatchResponse<AdminShippingOptionRule>
@@ -32,13 +31,11 @@ export interface AdminShippingOptionTypeResponse {
   shipping_option_type: AdminShippingOptionType
 }
 
-export interface AdminShippingOptionTypeListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of shipping option types.
-     */
-    shipping_option_types: AdminShippingOptionType[]
-  }> {}
+export interface AdminShippingOptionTypeListResponse extends PaginatedResponse<{
+  /**
+   * The list of shipping option types.
+   */
+  shipping_option_types: AdminShippingOptionType[]
+}> {}
 
-export interface AdminShippingOptionTypeDeleteResponse
-  extends DeleteResponse<"shipping_option_type"> {}
+export interface AdminShippingOptionTypeDeleteResponse extends DeleteResponse<"shipping_option_type"> {}

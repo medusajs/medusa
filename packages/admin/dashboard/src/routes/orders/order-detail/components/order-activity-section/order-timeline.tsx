@@ -29,6 +29,16 @@ import {
   useExchanges,
 } from "../../../../../hooks/api/exchanges"
 import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
+import {
+  useFulfillmentPermissions,
+  useOrderChangePermissions,
+  useOrderClaimPermissions,
+  useOrderExchangePermissions,
+  useOrderPermissions,
+  usePaymentPermissions,
+  useRefundPermissions,
+  useReturnPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 import { useDate } from "../../../../../hooks/use-date"
 import { getFormattedAddress } from "../../../../../lib/addresses"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
@@ -117,14 +127,21 @@ type Activity = {
   timestamp: string | Date | null
   children?: ReactNode
   itemsToSend?:
-    | AdminClaim["additional_items"]
-    | AdminExchange["additional_items"]
+    AdminClaim["additional_items"] | AdminExchange["additional_items"]
   itemsToReturn?: AdminReturn["items"]
   itemsMap?: Map<string, AdminOrderLineItem>
 }
 
 const useActivityItems = (order: ExtendedOrder): Activity[] => {
   const { t } = useTranslation()
+
+  const { canRead: canReadOrderChanges } = useOrderChangePermissions()
+  const { canRead: canReadReturns } = useReturnPermissions()
+  const { canRead: canReadClaims } = useOrderClaimPermissions()
+  const { canRead: canReadExchanges } = useOrderExchangePermissions()
+  const { canRead: canReadPayments } = usePaymentPermissions()
+  const { canRead: canReadFulfillments } = useFulfillmentPermissions()
+  const { canRead: canReadRefunds } = useRefundPermissions()
 
   const { order: initialOrder = order } = useOrder(
     order.id,
@@ -135,16 +152,20 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
     { enabled: order.version !== 1 }
   )
 
-  const { order_changes: orderChanges = [] } = useOrderChanges(order.id, {
-    change_type: [
-      "edit",
-      "claim",
-      "exchange",
-      "return",
-      "transfer",
-      "update_order",
-    ],
-  })
+  const { order_changes: orderChanges = [] } = useOrderChanges(
+    order.id,
+    {
+      change_type: [
+        "edit",
+        "claim",
+        "exchange",
+        "return",
+        "transfer",
+        "update_order",
+      ],
+    },
+    { enabled: canReadOrderChanges }
+  )
 
   const rmaChanges = orderChanges.filter(
     (oc) => !NON_RMA_CHANGE_TYPES.includes(oc.change_type!)
@@ -177,22 +198,31 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
     return _itemsMap
   }, [order.items, removedLineItems, missingLineItemIds])
 
-  const { returns = [] } = useReturns({
-    order_id: order.id,
-    fields: "+received_at,*items",
-  })
+  const { returns = [] } = useReturns(
+    {
+      order_id: order.id,
+      fields: "+received_at,*items",
+    },
+    { enabled: canReadReturns }
+  )
 
-  const { claims = [] } = useClaims({
-    order_id: order.id,
-    fields: "*additional_items",
-  })
+  const { claims = [] } = useClaims(
+    {
+      order_id: order.id,
+      fields: "*additional_items",
+    },
+    { enabled: canReadClaims }
+  )
 
-  const { exchanges = [] } = useExchanges({
-    order_id: order.id,
-    fields: "*additional_items",
-  })
+  const { exchanges = [] } = useExchanges(
+    {
+      order_id: order.id,
+      fields: "*additional_items",
+    },
+    { enabled: canReadExchanges }
+  )
 
-  const payments = getPaymentsFromOrder(order)
+  const payments = canReadPayments ? getPaymentsFromOrder(order) : []
 
   // This isn't set anywhere
   const notes: any[] = []
@@ -256,12 +286,13 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
         })
       }
 
-      for (const refund of payment.refunds || []) {
+      const refunds = canReadRefunds ? payment.refunds : []
+      for (const refund of refunds || []) {
         items.push({
           title: t("orders.activity.events.payment.refunded"),
           timestamp: refund.created_at,
           children: (
-            <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
               <Text size="small">
                 {getStylizedAmount(
                   refund.amount as number,
@@ -279,12 +310,13 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
       }
     }
 
-    for (const fulfillment of order.fulfillments || []) {
+    const fulfillments = canReadFulfillments ? order.fulfillments : []
+    for (const fulfillment of fulfillments || []) {
       items.push({
         title: t("orders.activity.events.fulfillment.created"),
         timestamp: fulfillment.created_at,
         children: (
-          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
             <FulfillmentCreatedBody fulfillment={fulfillment} />
             {fulfillment.created_by && (
               <div className="flex items-center gap-x-2 text-sm">
@@ -308,7 +340,7 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
           title: t("orders.activity.events.fulfillment.shipped"),
           timestamp: fulfillment.shipped_at,
           children: (
-            <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+            <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
               <FulfillmentCreatedBody fulfillment={fulfillment} />
               {fulfillment.marked_shipped_by && (
                 <div className="flex items-center gap-x-2 text-sm">
@@ -346,7 +378,7 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
         itemsToReturn: ret?.items,
         itemsMap,
         children: (
-          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
             <ReturnBody
               orderReturn={ret}
               isCreated={!ret.canceled_at}
@@ -402,7 +434,7 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
         itemsToReturn: claimReturn?.items,
         itemsMap,
         children: (
-          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
             <ClaimBody claim={claim} claimReturn={claimReturn} />
             {claim.created_by && !claim.canceled_at && (
               <div className="flex items-center gap-x-2 text-sm">
@@ -431,7 +463,7 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
         itemsToReturn: exchangeReturn?.items,
         itemsMap,
         children: (
-          <div className="text-ui-fg-subtle flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-2 text-ui-fg-subtle">
             <ExchangeBody exchange={exchange} exchangeReturn={exchangeReturn} />
             {exchange.created_by && !exchange.canceled_at && (
               <div className="flex items-center gap-x-2 text-sm">
@@ -459,12 +491,12 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
           edit.status === "requested"
             ? edit.requested_at
             : edit.status === "confirmed"
-            ? edit.confirmed_at
-            : edit.status === "declined"
-            ? edit.declined_at
-            : edit.status === "canceled"
-            ? edit.canceled_at
-            : edit.created_at,
+              ? edit.confirmed_at
+              : edit.status === "declined"
+                ? edit.declined_at
+                : edit.status === "canceled"
+                  ? edit.canceled_at
+                  : edit.created_at,
         children: isConfirmed ? <OrderEditBody edit={edit} /> : null,
       })
     }
@@ -530,7 +562,7 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
           ),
           timestamp: update.created_at,
           children: (
-            <div className="text-ui-fg-subtle mt-2 flex gap-x-2 text-sm">
+            <div className="mt-2 flex gap-x-2 text-sm text-ui-fg-subtle">
               {t("fields.by")} <By id={update.created_by || "-"} />
             </div>
           ),
@@ -562,7 +594,7 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
           ),
           timestamp: update.created_at,
           children: (
-            <div className="text-ui-fg-subtle mt-2 flex gap-x-2 text-sm">
+            <div className="mt-2 flex gap-x-2 text-sm text-ui-fg-subtle">
               {t("fields.by")} <By id={update.created_by || "-"} />
             </div>
           ),
@@ -588,7 +620,7 @@ const useActivityItems = (order: ExtendedOrder): Activity[] => {
           ),
           timestamp: update.created_at,
           children: (
-            <div className="text-ui-fg-subtle mt-2 flex gap-x-2 text-sm">
+            <div className="mt-2 flex gap-x-2 text-sm text-ui-fg-subtle">
               {t("fields.by")} <By id={update.created_by || "-"} />
             </div>
           ),
@@ -650,8 +682,7 @@ type OrderActivityItemProps = PropsWithChildren<{
   timestamp: string | Date | null
   isFirst?: boolean
   itemsToSend?:
-    | AdminClaim["additional_items"]
-    | AdminExchange["additional_items"]
+    AdminClaim["additional_items"] | AdminExchange["additional_items"]
   itemsToReturn?: AdminReturn["items"]
   itemsMap?: Map<string, AdminOrderLineItem>
 }>
@@ -671,11 +702,11 @@ const OrderActivityItem = ({
     <div className="grid grid-cols-[20px_1fr] items-start gap-2">
       <div className="flex size-full flex-col items-center gap-y-0.5">
         <div className="flex size-5 items-center justify-center">
-          <div className="bg-ui-bg-base shadow-borders-base flex size-2.5 items-center justify-center rounded-full">
-            <div className="bg-ui-tag-neutral-icon size-1.5 rounded-full" />
+          <div className="flex size-2.5 items-center justify-center rounded-full bg-ui-bg-base shadow-borders-base">
+            <div className="size-1.5 rounded-full bg-ui-tag-neutral-icon" />
           </div>
         </div>
-        {!isFirst && <div className="bg-ui-border-base w-px flex-1" />}
+        {!isFirst && <div className="w-px flex-1 bg-ui-border-base" />}
       </div>
       <div
         className={clx({
@@ -705,7 +736,7 @@ const OrderActivityItem = ({
               <Text
                 size="small"
                 leading="compact"
-                className="text-ui-fg-subtle text-right"
+                className="text-right text-ui-fg-subtle"
               >
                 {getRelativeDate(timestamp)}
               </Text>
@@ -736,7 +767,7 @@ const OrderActivityCollapsible = ({
       {!open && (
         <div className="grid grid-cols-[20px_1fr] items-start gap-2">
           <div className="flex size-full flex-col items-center">
-            <div className="border-ui-border-strong w-px flex-1 bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-right bg-repeat-y" />
+            <div className="w-px flex-1 border-ui-border-strong bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-right bg-repeat-y" />
           </div>
           <div className="pb-4">
             <RadixCollapsible.Trigger className="text-left">
@@ -871,7 +902,9 @@ const ReturnBody = ({
 }) => {
   const prompt = usePrompt()
   const { t } = useTranslation()
-
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateReturn } = useReturnPermissions()
+  const canManage = canUpdateReturn && canUpdateOrder
   const { mutateAsync: cancelReturnRequest } = useCancelReturn(
     orderReturn.id,
     orderReturn.order_id
@@ -905,12 +938,12 @@ const ReturnBody = ({
           count: numberOfItems,
         })}
       </Text>
-      {isCreated && (
+      {isCreated && canManage && (
         <>
           <div className="mt-[2px] flex items-center leading-none">⋅</div>
           <Button
             onClick={onCancel}
-            className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+            className="h-auto px-0 leading-none text-ui-fg-subtle hover:bg-transparent"
             variant="transparent"
             size="small"
           >
@@ -934,6 +967,9 @@ const ClaimBody = ({
 
   const isCanceled = !!claim.created_at
 
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateClaim } = useOrderClaimPermissions()
+  const canManage = canUpdateClaim && canUpdateOrder
   const { mutateAsync: cancelClaim } = useCancelClaim(claim.id, claim.order_id)
 
   const onCancel = async () => {
@@ -981,10 +1017,10 @@ const ClaimBody = ({
         </Text>
       )}
 
-      {!isCanceled && (
+      {canManage && !isCanceled && (
         <Button
           onClick={onCancel}
-          className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+          className="h-auto px-0 leading-none text-ui-fg-subtle hover:bg-transparent"
           variant="transparent"
           size="small"
         >
@@ -1007,6 +1043,9 @@ const ExchangeBody = ({
 
   const isCanceled = !!exchange.canceled_at
 
+  const { canUpdate: canUpdateOrder } = useOrderPermissions()
+  const { canUpdate: canUpdateExchange } = useOrderExchangePermissions()
+  const canManage = canUpdateExchange && canUpdateOrder
   const { mutateAsync: cancelExchange } = useCancelExchange(
     exchange.id,
     exchange.order_id
@@ -1057,10 +1096,10 @@ const ExchangeBody = ({
         </Text>
       )}
 
-      {!isCanceled && (
+      {canManage && !isCanceled && (
         <Button
           onClick={onCancel}
-          className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+          className="h-auto px-0 leading-none text-ui-fg-subtle hover:bg-transparent"
           variant="transparent"
           size="small"
         >
@@ -1081,10 +1120,10 @@ const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
   const userId = isConfirmed
     ? edit.confirmed_by
     : isDeclined
-    ? edit.declined_by
-    : isCanceled
-    ? edit.canceled_by
-    : edit.requested_by
+      ? edit.declined_by
+      : isCanceled
+        ? edit.canceled_by
+        : edit.requested_by
 
   const [itemsAdded, itemsRemoved] = useMemo(
     () => countItemsChange(edit.actions),
@@ -1148,7 +1187,7 @@ const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
     }
 
     return (
-      <div className="text-ui-fg-subtle flex flex-col divide-y divide-dashed">
+      <div className="flex flex-col divide-y divide-dashed text-ui-fg-subtle">
         {lineItems.map((orderItem) => {
           const itemChangeItem = itemChange.detail.find(
             (item) => item.lineItemId === orderItem.item_id
@@ -1188,7 +1227,7 @@ const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
   }
 
   return (
-    <div className="text-ui-fg-subtle flex flex-col items-start gap-y-2">
+    <div className="flex flex-col items-start gap-y-2 text-ui-fg-subtle">
       {itemsAdded.totalCount > 0 && (
         <ChangeDetailsTooltip
           title={`${t("labels.added")}: ${itemsAdded.totalCount}`}
@@ -1210,7 +1249,7 @@ const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
         />
       )}
       {edit.internal_note && (
-        <div className="bg-ui-bg-component shadow-borders-base mt-2 w-fit rounded-r-2xl rounded-bl-md rounded-tl-xl px-3 py-1.5">
+        <div className="mt-2 w-fit rounded-r-2xl rounded-bl-md rounded-tl-xl bg-ui-bg-component px-3 py-1.5 shadow-borders-base">
           <Text size="xsmall" className="text-ui-fg-subtle">
             {edit.internal_note}
           </Text>
@@ -1238,6 +1277,7 @@ const TransferOrderRequestBody = ({
 
   const isCompleted = !!transfer.confirmed_at
 
+  const { canUpdate } = useOrderPermissions()
   const { mutateAsync: cancelTransfer } = useCancelOrderTransfer(
     transfer.order_id
   )
@@ -1276,10 +1316,10 @@ const TransferOrderRequestBody = ({
           ? `${customer?.first_name} ${customer?.last_name}`
           : customer?.email}
       </Text>
-      {!isCompleted && (
+      {canUpdate && !isCompleted && (
         <Button
           onClick={handleDelete}
-          className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+          className="h-auto px-0 leading-none text-ui-fg-subtle hover:bg-transparent"
           variant="transparent"
           size="small"
         >

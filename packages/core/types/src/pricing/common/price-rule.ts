@@ -118,8 +118,7 @@ export interface UpdatePriceRuleDTO {
  * @interface
  * Filters to apply on price rules.
  */
-export interface FilterablePriceRuleProps
-  extends BaseFilterable<FilterablePriceRuleProps> {
+export interface FilterablePriceRuleProps extends BaseFilterable<FilterablePriceRuleProps> {
   /**
    * The IDs to filter price rules by.
    */

@@ -14,6 +14,7 @@ import {
 } from "../../../../hooks/api/draft-orders"
 import { useComboboxData } from "../../../../hooks/common/use-combobox-data"
 import { sdk } from "../../../../lib/queries/sdk"
+import { TRANSFER_DRAFT_ORDER_PERMISSIONS } from "../../../../lib/permissions"
 
 const TransferOwnership = () => {
   const { id } = useParams()
@@ -480,5 +481,9 @@ const Illustration = () => {
 const schema = z.object({
   customer_id: z.string().min(1),
 })
+
+export const handle = {
+  permissions: TRANSFER_DRAFT_ORDER_PERMISSIONS,
+}
 
 export default TransferOwnership

@@ -5,5 +5,4 @@ import {
 
 export interface AdminFulfillmentProvider extends BaseFulfillmentProvider {}
 
-export interface AdminFulfillmentProviderOption
-  extends BaseFulfillmentProviderOption {}
+export interface AdminFulfillmentProviderOption extends BaseFulfillmentProviderOption {}

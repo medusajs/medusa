@@ -177,22 +177,19 @@ export interface LayoutConfigurationFilterableFields {
 /**
  * The filters to apply on the retrieved layout configurations.
  */
-export interface FilterableLayoutConfigurationProps
-  extends LayoutConfigurationFilterableFields {
+export interface FilterableLayoutConfigurationProps extends LayoutConfigurationFilterableFields {
   /**
    * An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
    */
   $and?: (
-    | LayoutConfigurationFilterableFields
-    | FilterableLayoutConfigurationProps
+    LayoutConfigurationFilterableFields | FilterableLayoutConfigurationProps
   )[]
 
   /**
    * An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
    */
   $or?: (
-    | LayoutConfigurationFilterableFields
-    | FilterableLayoutConfigurationProps
+    LayoutConfigurationFilterableFields | FilterableLayoutConfigurationProps
   )[]
 }
 
@@ -264,14 +261,12 @@ export interface ViewConfigurationFilterableFields {
 /**
  * The filters to apply on the retrieved view configurations.
  */
-export interface FilterableViewConfigurationProps
-  extends ViewConfigurationFilterableFields {
+export interface FilterableViewConfigurationProps extends ViewConfigurationFilterableFields {
   /**
    * An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
    */
   $and?: (
-    | ViewConfigurationFilterableFields
-    | FilterableViewConfigurationProps
+    ViewConfigurationFilterableFields | FilterableViewConfigurationProps
   )[]
 
   /**
@@ -283,8 +278,7 @@ export interface FilterableViewConfigurationProps
 /**
  * The filters to apply on the retrieved user preferences.
  */
-export interface FilterableUserPreferenceProps
-  extends BaseFilterable<UserPreferenceDTO> {
+export interface FilterableUserPreferenceProps extends BaseFilterable<UserPreferenceDTO> {
   /**
    * The IDs to filter by.
    */
@@ -346,8 +340,7 @@ export interface PropertyLabelDTO {
 /**
  * Partial filters for property label fields.
  */
-export interface PropertyLabelFilterableFields
-  extends BaseFilterable<PropertyLabelFilterableFields> {
+export interface PropertyLabelFilterableFields extends BaseFilterable<PropertyLabelFilterableFields> {
   /**
    * The IDs to filter by.
    */

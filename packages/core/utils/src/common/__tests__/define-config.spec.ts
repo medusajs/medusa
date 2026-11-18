@@ -1,3 +1,4 @@
+import { generateKeyPairSync, sign } from "crypto"
 import path from "path"
 import { Modules } from "../../modules-sdk"
 import { defineConfig } from "../define-config"
@@ -12,18 +13,19 @@ expect.addSnapshotSerializer({
 describe("defineConfig", function () {
   const CLOUD_ENV_VARS = [
     "MEDUSA_CLOUD_ENVIRONMENT_HANDLE",
-    "MEDUSA_CLOUD_SANDBOX_HANDLE",
     "MEDUSA_CLOUD_API_KEY",
     "MEDUSA_CLOUD_WEBHOOK_SECRET",
     "MEDUSA_CLOUD_EMAILS_ENDPOINT",
     "MEDUSA_CLOUD_PAYMENTS_ENDPOINT",
     "MEDUSA_CLOUD_SEARCH_ENDPOINT",
+    "MEDUSA_CLOUD_AUDIT_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_CALLBACK_URL",
     "MEDUSA_CLOUD_OAUTH_DISABLED",
     "MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT",
     "MEDUSA_CLOUD_OAUTH_AUDIENCE",
+    "MEDUSA_CLOUD_OAUTH_CLIENT_SECRET",
   ]
   const savedCloudEnv: Record<string, string | undefined> = {}
 
@@ -147,10 +149,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -184,7 +182,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -205,6 +202,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -219,6 +224,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -502,10 +510,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -539,7 +543,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -560,6 +563,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -574,6 +585,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -711,10 +725,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -748,7 +758,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -769,6 +778,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -783,6 +800,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -921,10 +941,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -958,7 +974,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -979,6 +994,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -993,6 +1016,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1121,10 +1147,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1158,7 +1180,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1179,6 +1200,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -1193,6 +1222,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1324,10 +1356,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1361,7 +1389,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1382,6 +1409,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -1396,6 +1431,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1574,10 +1612,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1611,7 +1645,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1637,6 +1670,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -1651,6 +1692,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -1794,10 +1838,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -1831,7 +1871,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -1852,6 +1891,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -1866,6 +1913,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2046,10 +2096,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2083,7 +2129,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2109,6 +2154,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -2123,6 +2176,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2319,10 +2375,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2356,7 +2408,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2382,6 +2433,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -2396,6 +2455,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2428,6 +2490,14 @@ describe("defineConfig", function () {
     const config = defineConfig()
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          planHandle: undefined,
+        },
+      },
     ])
   })
 
@@ -2439,6 +2509,14 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          planHandle: undefined,
+        },
+      },
       { resolve: "@medusajs/custom-plugin", options: { key: "value" } },
     ])
   })
@@ -2453,6 +2531,14 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          planHandle: undefined,
+        },
+      },
       { resolve: "@medusajs/plugin-one", options: { setting: "a" } },
       { resolve: "@medusajs/plugin-two", options: { setting: "b" } },
       { resolve: "./local-plugin", options: {} },
@@ -2467,24 +2553,78 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: { setting: "a" } },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          planHandle: undefined,
+        },
+      },
     ])
   })
 
-  it("should include plugins in cloud environment", function () {
-    const originalEnv = { ...process.env }
-    process.env.EXECUTION_CONTEXT = "medusa-cloud"
-
+  it("should include the cloud plugin by default", function () {
     const config = defineConfig({
       plugins: [
         { resolve: "@medusajs/cloud-plugin", options: { cloud: true } },
       ],
     })
 
+    expect(config.plugins).toEqual([
+      { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          planHandle: undefined,
+        },
+      },
+      { resolve: "@medusajs/cloud-plugin", options: { cloud: true } },
+    ])
+  })
+
+  it("should pass Medusa Cloud env variables to the cloud plugin", function () {
+    const originalEnv = { ...process.env }
+    process.env.MEDUSA_CLOUD_API_URL = "https://api.staging.medusajs.cloud"
+    process.env.MEDUSA_CLOUD_ORGANIZATION_ID = "org_123"
+    process.env.MEDUSA_CLOUD_PLAN_HANDLE = "pro"
+
+    const config = defineConfig()
+
     process.env = { ...originalEnv }
+
+    expect(config.plugins).toContainEqual({
+      resolve: "@medusajs/cloud",
+      options: {
+        apiUrl: "https://api.staging.medusajs.cloud",
+        organizationId: "org_123",
+        planHandle: "pro",
+      },
+    })
+  })
+
+  it("should let the user override the cloud plugin options", function () {
+    const config = defineConfig({
+      plugins: [
+        { resolve: "@medusajs/cloud", options: { organizationId: "org_1" } },
+      ],
+    })
 
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
-      { resolve: "@medusajs/cloud-plugin", options: { cloud: true } },
+      { resolve: "@medusajs/cloud", options: { organizationId: "org_1" } },
+    ])
+  })
+
+  it("should not include the cloud plugin when it's disabled", function () {
+    const config = defineConfig({
+      plugins: [{ resolve: "@medusajs/cloud", options: { disabled: true } }],
+    })
+
+    expect(config.plugins).toEqual([
+      { resolve: "@medusajs/draft-order", options: {} },
     ])
   })
 
@@ -2494,6 +2634,14 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          planHandle: undefined,
+        },
+      },
     ])
   })
 
@@ -2503,6 +2651,14 @@ describe("defineConfig", function () {
     })
     expect(config.plugins).toEqual([
       { resolve: "@medusajs/draft-order", options: {} },
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: undefined,
+          organizationId: undefined,
+          planHandle: undefined,
+        },
+      },
     ])
   })
 
@@ -2627,10 +2783,6 @@ describe("defineConfig", function () {
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
           },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
           "region": {
             "resolve": "@medusajs/medusa/region",
           },
@@ -2664,7 +2816,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2685,6 +2836,14 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "databaseUrl": "postgres://localhost/medusa-starter-default",
@@ -2699,6 +2858,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -2738,6 +2900,7 @@ describe("defineConfig", function () {
       "test-oauth-authorize-endpoint"
     process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT = "test-oauth-token-endpoint"
     process.env.MEDUSA_CLOUD_OAUTH_DISABLED = "true"
+    process.env.MEDUSA_CLOUD_OAUTH_CLIENT_SECRET = "test-oauth-client-secret"
     const config = defineConfig()
     process.env = { ...originalEnv }
 
@@ -2763,9 +2926,9 @@ describe("defineConfig", function () {
                 "environment_handle": "test-environment",
                 "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
+                "oauth_client_secret": "test-oauth-client-secret",
                 "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "test-oauth-token-endpoint",
-                "sandbox_handle": undefined,
               },
               "mfa": {
                 "encryption_key": undefined,
@@ -2828,7 +2991,6 @@ describe("defineConfig", function () {
                 "api_key": "test-api-key",
                 "endpoint": "test-emails-endpoint",
                 "environment_handle": "test-environment",
-                "sandbox_handle": undefined,
               },
               "providers": [
                 {
@@ -2858,7 +3020,6 @@ describe("defineConfig", function () {
                   "default",
                   "eu",
                 ],
-                "sandbox_handle": undefined,
                 "webhook_secret": "test-webhook-secret",
               },
             },
@@ -2872,10 +3033,6 @@ describe("defineConfig", function () {
           },
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
-          },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
           },
           "region": {
             "resolve": "@medusajs/medusa/region",
@@ -2915,7 +3072,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -2936,15 +3092,25 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "cloud": {
             "apiKey": "test-api-key",
+            "auditEndpoint": undefined,
             "emailsEndpoint": "test-emails-endpoint",
             "environmentHandle": "test-environment",
             "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
+            "oauthClientSecret": "test-oauth-client-secret",
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "test-oauth-token-endpoint",
@@ -2953,7 +3119,6 @@ describe("defineConfig", function () {
               "eu",
             ],
             "paymentsEndpoint": "test-payments-endpoint",
-            "sandboxHandle": undefined,
             "searchEndpoint": undefined,
             "webhookSecret": "test-webhook-secret",
           },
@@ -2969,260 +3134,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
-            "restrictedFields": {
-              "store": [
-                "order",
-                "orders",
-              ],
-            },
-            "storeCors": "http://localhost:8000",
-          },
-          "redisOptions": {
-            "retryStrategy": [Function],
-          },
-          "sessionOptions": {},
-        },
-      }
-    `)
-  })
-
-  it("should add cloud options to the project config and relevant modules if the environment variable is set for a sandbox", function () {
-    const originalEnv = { ...process.env }
-    process.env.MEDUSA_BACKEND_URL = "test-backend-url"
-    process.env.MEDUSA_CLOUD_SANDBOX_HANDLE = "test-sandbox"
-    process.env.MEDUSA_CLOUD_API_KEY = "test-api-key"
-    process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT = "test-emails-endpoint"
-    process.env.MEDUSA_CLOUD_PAYMENTS_ENDPOINT = "test-payments-endpoint"
-    process.env.MEDUSA_CLOUD_WEBHOOK_SECRET = "test-webhook-secret"
-    process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT =
-      "test-oauth-authorize-endpoint"
-    process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT = "test-oauth-token-endpoint"
-    process.env.MEDUSA_CLOUD_OAUTH_DISABLED = "true"
-    const config = defineConfig()
-    process.env = { ...originalEnv }
-
-    expect(config).toMatchInlineSnapshot(`
-      {
-        "admin": {
-          "backendUrl": "test-backend-url",
-          "maxUploadFileSize": 1048576,
-          "path": "/app",
-        },
-        "featureFlags": {},
-        "logger": undefined,
-        "modules": {
-          "api_key": {
-            "resolve": "@medusajs/medusa/api-key",
-          },
-          "auth": {
-            "options": {
-              "cloud": {
-                "api_key": "test-api-key",
-                "callback_url": "test-backend-url/app/login?auth_provider=cloud",
-                "disabled": true,
-                "environment_handle": undefined,
-                "oauth_audience": undefined,
-                "oauth_authorize_endpoint": "test-oauth-authorize-endpoint",
-                "oauth_jwks_uri": undefined,
-                "oauth_token_endpoint": "test-oauth-token-endpoint",
-                "sandbox_handle": "test-sandbox",
-              },
-              "mfa": {
-                "encryption_key": undefined,
-              },
-              "providers": [
-                {
-                  "id": "emailpass",
-                  "resolve": "@medusajs/medusa/auth-emailpass",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/auth",
-          },
-          "cache": {
-            "resolve": "@medusajs/medusa/cache-inmemory",
-          },
-          "cart": {
-            "resolve": "@medusajs/medusa/cart",
-          },
-          "currency": {
-            "resolve": "@medusajs/medusa/currency",
-          },
-          "customer": {
-            "resolve": "@medusajs/medusa/customer",
-          },
-          "event_bus": {
-            "resolve": "@medusajs/medusa/event-bus-local",
-          },
-          "file": {
-            "options": {
-              "providers": [
-                {
-                  "id": "local",
-                  "resolve": "@medusajs/medusa/file-local",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/file",
-          },
-          "fulfillment": {
-            "options": {
-              "providers": [
-                {
-                  "id": "manual",
-                  "resolve": "@medusajs/medusa/fulfillment-manual",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/fulfillment",
-          },
-          "inventory": {
-            "resolve": "@medusajs/medusa/inventory",
-          },
-          "locking": {
-            "resolve": "@medusajs/medusa/locking",
-          },
-          "notification": {
-            "options": {
-              "cloud": {
-                "api_key": "test-api-key",
-                "endpoint": "test-emails-endpoint",
-                "environment_handle": undefined,
-                "sandbox_handle": "test-sandbox",
-              },
-              "providers": [
-                {
-                  "id": "local",
-                  "options": {
-                    "channels": [
-                      "feed",
-                    ],
-                    "name": "Local Notification Provider",
-                  },
-                  "resolve": "@medusajs/medusa/notification-local",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/notification",
-          },
-          "order": {
-            "resolve": "@medusajs/medusa/order",
-          },
-          "payment": {
-            "options": {
-              "cloud": {
-                "api_key": "test-api-key",
-                "endpoint": "test-payments-endpoint",
-                "environment_handle": undefined,
-                "payment_accounts": undefined,
-                "sandbox_handle": "test-sandbox",
-                "webhook_secret": "test-webhook-secret",
-              },
-            },
-            "resolve": "@medusajs/medusa/payment",
-          },
-          "pricing": {
-            "resolve": "@medusajs/medusa/pricing",
-          },
-          "product": {
-            "resolve": "@medusajs/medusa/product",
-          },
-          "promotion": {
-            "resolve": "@medusajs/medusa/promotion",
-          },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
-          },
-          "region": {
-            "resolve": "@medusajs/medusa/region",
-          },
-          "sales_channel": {
-            "resolve": "@medusajs/medusa/sales-channel",
-          },
-          "search": {
-            "options": {
-              "cloud": {
-                "api_key": "test-api-key",
-                "endpoint": undefined,
-                "environment_handle": undefined,
-              },
-              "providers": [
-                {
-                  "id": "postgres",
-                  "options": {
-                    "engine": "native",
-                  },
-                  "resolve": "@medusajs/medusa/search-postgres",
-                },
-              ],
-            },
-            "resolve": "@medusajs/medusa/search",
-          },
-          "settings": {
-            "resolve": "@medusajs/medusa/settings",
-          },
-          "stock_location": {
-            "resolve": "@medusajs/medusa/stock-location",
-          },
-          "store": {
-            "resolve": "@medusajs/medusa/store",
-          },
-          "tax": {
-            "resolve": "@medusajs/medusa/tax",
-          },
-          "translation": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/translation",
-          },
-          "user": {
-            "options": {
-              "jwt_options": undefined,
-              "jwt_public_key": undefined,
-              "jwt_secret": "supersecret",
-              "jwt_verify_options": undefined,
-            },
-            "resolve": "@medusajs/medusa/user",
-          },
-          "workflows": {
-            "resolve": "@medusajs/medusa/workflow-engine-inmemory",
-          },
-        },
-        "plugins": [
-          {
-            "options": {},
-            "resolve": "@medusajs/draft-order",
-          },
-        ],
-        "projectConfig": {
-          "cloud": {
-            "apiKey": "test-api-key",
-            "emailsEndpoint": "test-emails-endpoint",
-            "environmentHandle": undefined,
-            "oauthAudience": undefined,
-            "oauthAuthorizeEndpoint": "test-oauth-authorize-endpoint",
-            "oauthCallbackUrl": undefined,
-            "oauthDisabled": true,
-            "oauthJwksUri": undefined,
-            "oauthTokenEndpoint": "test-oauth-token-endpoint",
-            "paymentAccounts": undefined,
-            "paymentsEndpoint": "test-payments-endpoint",
-            "sandboxHandle": "test-sandbox",
-            "searchEndpoint": undefined,
-            "webhookSecret": "test-webhook-secret",
-          },
-          "databaseUrl": "postgres://localhost/medusa-starter-default",
-          "http": {
-            "adminCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
-            "authCors": "http://localhost:7000,http://localhost:7001,http://localhost:5173",
-            "authMethodsPerActor": {
-              "user": [
-                "emailpass",
-              ],
-            },
-            "cookieSecret": "supersecret",
-            "jwtPublicKey": undefined,
-            "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -3286,9 +3200,9 @@ describe("defineConfig", function () {
                 "environment_handle": "overriden-environment",
                 "oauth_audience": undefined,
                 "oauth_authorize_endpoint": "overriden-oauth-authorize-endpoint",
+                "oauth_client_secret": undefined,
                 "oauth_jwks_uri": undefined,
                 "oauth_token_endpoint": "overriden-oauth-token-endpoint",
-                "sandbox_handle": undefined,
               },
               "mfa": {
                 "encryption_key": undefined,
@@ -3351,7 +3265,6 @@ describe("defineConfig", function () {
                 "api_key": "overriden-api-key",
                 "endpoint": "overriden-emails-endpoint",
                 "environment_handle": "overriden-environment",
-                "sandbox_handle": undefined,
               },
               "providers": [
                 {
@@ -3378,7 +3291,6 @@ describe("defineConfig", function () {
                 "endpoint": "overriden-payments-endpoint",
                 "environment_handle": "overriden-environment",
                 "payment_accounts": undefined,
-                "sandbox_handle": undefined,
                 "webhook_secret": "overriden-webhook-secret",
               },
             },
@@ -3392,10 +3304,6 @@ describe("defineConfig", function () {
           },
           "promotion": {
             "resolve": "@medusajs/medusa/promotion",
-          },
-          "rbac": {
-            "disable": true,
-            "resolve": "@medusajs/medusa/rbac",
           },
           "region": {
             "resolve": "@medusajs/medusa/region",
@@ -3435,7 +3343,6 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/medusa/tax",
           },
           "translation": {
-            "disable": true,
             "resolve": "@medusajs/medusa/translation",
           },
           "user": {
@@ -3456,21 +3363,30 @@ describe("defineConfig", function () {
             "options": {},
             "resolve": "@medusajs/draft-order",
           },
+          {
+            "options": {
+              "apiUrl": undefined,
+              "organizationId": undefined,
+              "planHandle": undefined,
+            },
+            "resolve": "@medusajs/cloud",
+          },
         ],
         "projectConfig": {
           "cloud": {
             "apiKey": "overriden-api-key",
+            "auditEndpoint": undefined,
             "emailsEndpoint": "overriden-emails-endpoint",
             "environmentHandle": "overriden-environment",
             "oauthAudience": undefined,
             "oauthAuthorizeEndpoint": "overriden-oauth-authorize-endpoint",
             "oauthCallbackUrl": undefined,
+            "oauthClientSecret": undefined,
             "oauthDisabled": true,
             "oauthJwksUri": undefined,
             "oauthTokenEndpoint": "overriden-oauth-token-endpoint",
             "paymentAccounts": undefined,
             "paymentsEndpoint": "overriden-payments-endpoint",
-            "sandboxHandle": undefined,
             "searchEndpoint": undefined,
             "webhookSecret": "overriden-webhook-secret",
           },
@@ -3486,6 +3402,9 @@ describe("defineConfig", function () {
             "cookieSecret": "supersecret",
             "jwtPublicKey": undefined,
             "jwtSecret": "supersecret",
+            "rbacActorTypes": [
+              "user",
+            ],
             "restrictedFields": {
               "store": [
                 "order",
@@ -3538,6 +3457,295 @@ describe("defineConfig", function () {
     expect(config.projectConfig.cloud?.searchEndpoint).toBe(
       "https://search.medusa.cloud"
     )
+  })
+
+  describe("licensed module defaults", function () {
+    const { publicKey, privateKey } = generateKeyPairSync("ed25519")
+    const AUDIT_ENV_VARS = [
+      "EXECUTION_CONTEXT",
+      "MEDUSA_LICENSE_KEY",
+      "MEDUSA_LICENSE_PUBLIC_KEY",
+    ]
+    const savedEnv: Record<string, string | undefined> = {}
+
+    const toSegment = (value: object) =>
+      Buffer.from(JSON.stringify(value), "utf-8").toString("base64url")
+
+    const setLicense = (features: string[]) => {
+      const header = toSegment({ alg: "EdDSA" })
+      const payload = toSegment({ sub: "org_01", features })
+      const signature = sign(
+        null,
+        Buffer.from(`${header}.${payload}`, "utf-8"),
+        privateKey
+      ).toString("base64url")
+
+      process.env.MEDUSA_LICENSE_KEY = `${header}.${payload}.${signature}`
+      process.env.MEDUSA_LICENSE_PUBLIC_KEY = publicKey
+        .export({ type: "spki", format: "pem" })
+        .toString()
+    }
+
+    const setCloud = ({ endpoint = true } = {}) => {
+      process.env.EXECUTION_CONTEXT = "medusa-cloud"
+      process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE = "test-environment"
+      process.env.MEDUSA_CLOUD_API_KEY = "test-api-key"
+      if (endpoint) {
+        process.env.MEDUSA_CLOUD_AUDIT_ENDPOINT = "https://audit.medusa.cloud"
+      }
+    }
+
+    const cloudOptions = {
+      api_key: "test-api-key",
+      endpoint: "https://audit.medusa.cloud",
+      environment_handle: "test-environment",
+    }
+
+    beforeEach(() => {
+      AUDIT_ENV_VARS.forEach((key) => {
+        savedEnv[key] = process.env[key]
+        delete process.env[key]
+      })
+    })
+
+    afterEach(() => {
+      AUDIT_ENV_VARS.forEach((key) => {
+        if (savedEnv[key] === undefined) {
+          delete process.env[key]
+        } else {
+          process.env[key] = savedEnv[key]
+        }
+      })
+    })
+
+    it("should add the audit module with the Cloud options in cloud when the endpoint is set and the license covers audit", function () {
+      setCloud()
+      setLicense(["audit"])
+
+      const config = defineConfig()
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: { cloud: cloudOptions },
+      })
+      expect(config.projectConfig.cloud?.auditEndpoint).toBe(
+        "https://audit.medusa.cloud"
+      )
+    })
+
+    it("should not add the audit module in cloud without a license", function () {
+      setCloud()
+
+      const config = defineConfig()
+
+      expect(config.modules![Modules.AUDIT]).toBeUndefined()
+      expect(config.projectConfig.cloud?.auditEndpoint).toBe(
+        "https://audit.medusa.cloud"
+      )
+    })
+
+    it("should not add the audit module in cloud when the license does not cover audit", function () {
+      setCloud()
+      setLicense(["rbac"])
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the audit module in cloud when the license is not authentic", function () {
+      setCloud()
+      setLicense(["audit"])
+      process.env.MEDUSA_LICENSE_PUBLIC_KEY = generateKeyPairSync("ed25519")
+        .publicKey.export({ type: "spki", format: "pem" })
+        .toString()
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the audit module in cloud without the audit endpoint", function () {
+      setCloud({ endpoint: false })
+      setLicense(["audit"])
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the audit module in cloud without the API key", function () {
+      setCloud()
+      setLicense(["audit"])
+      delete process.env.MEDUSA_CLOUD_API_KEY
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the audit module outside cloud even with the endpoint and license", function () {
+      setCloud()
+      delete process.env.EXECUTION_CONTEXT
+      setLicense(["audit"])
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should keep a user audit module that turns auditing off in cloud", function () {
+      setCloud()
+      setLicense(["audit"])
+
+      const config = defineConfig({
+        modules: [
+          { resolve: "@medusajs/medusa/audit", options: { enabled: false } },
+        ],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: { cloud: cloudOptions, enabled: false },
+      })
+    })
+
+    it("should keep a user audit module that disables it in cloud", function () {
+      setCloud()
+      setLicense(["audit"])
+
+      const config = defineConfig({
+        modules: [{ resolve: "@medusajs/medusa/audit", disable: true }],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual(
+        expect.objectContaining({
+          resolve: "@medusajs/medusa/audit",
+          disable: true,
+        })
+      )
+      expect(
+        (config.modules![Modules.AUDIT] as any).options?.providers
+      ).toBeUndefined()
+    })
+
+    it("should keep user audit providers and options over the cloud defaults", function () {
+      setCloud()
+      setLicense(["audit"])
+      const providers = [{ resolve: "./my-audit-provider", id: "mine" }]
+
+      const config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/audit",
+            options: {
+              providers,
+              default_provider: "mine",
+              cloud: { endpoint: "https://custom.example" },
+            },
+          },
+        ],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: {
+          providers,
+          default_provider: "mine",
+          cloud: { endpoint: "https://custom.example" },
+        },
+      })
+    })
+
+    it("should not add the audit module when self-hosted", function () {
+      setLicense(["audit"])
+
+      expect(defineConfig().modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should leave a self-hosted audit module entry as written", function () {
+      const config = defineConfig({
+        modules: [
+          {
+            resolve: "@medusajs/medusa/audit",
+            options: { retention_days: 365 },
+          },
+        ],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: { retention_days: 365 },
+      })
+    })
+
+    it("should pass the cloud options when a self-hosted application sets the audit endpoint", function () {
+      setCloud()
+      delete process.env.EXECUTION_CONTEXT
+
+      const config = defineConfig({
+        modules: [{ resolve: "@medusajs/medusa/audit" }],
+      })
+
+      expect(config.modules![Modules.AUDIT]).toEqual({
+        resolve: "@medusajs/medusa/audit",
+        options: { cloud: cloudOptions },
+      })
+    })
+
+    it("should add the rbac module in cloud when the license covers rbac", function () {
+      setCloud({ endpoint: false })
+      setLicense(["rbac"])
+
+      const config = defineConfig()
+
+      expect(config.modules![Modules.RBAC]).toEqual({
+        resolve: "@medusajs/medusa/rbac",
+      })
+      expect(config.modules![Modules.AUDIT]).toBeUndefined()
+    })
+
+    it("should not add the rbac module in cloud without a license", function () {
+      setCloud()
+
+      expect(defineConfig().modules![Modules.RBAC]).toBeUndefined()
+    })
+
+    it("should not add the rbac module in cloud when the license does not cover rbac", function () {
+      setCloud()
+      setLicense(["audit"])
+
+      expect(defineConfig().modules![Modules.RBAC]).toBeUndefined()
+    })
+
+    it("should not add the rbac module when self-hosted", function () {
+      setLicense(["rbac"])
+
+      expect(defineConfig().modules![Modules.RBAC]).toBeUndefined()
+    })
+
+    it("should keep a user rbac module entry over the cloud default", function () {
+      setCloud()
+      setLicense(["rbac"])
+      const options = {
+        actors: { user: { grantees: [{ entity: "team", path: "teams.id" }] } },
+      }
+
+      const config = defineConfig({
+        modules: [{ resolve: "@medusajs/medusa/rbac", options }],
+      })
+
+      expect(config.modules![Modules.RBAC]).toEqual({
+        resolve: "@medusajs/medusa/rbac",
+        options,
+      })
+    })
+
+    it("should keep a user rbac module that disables it in cloud", function () {
+      setCloud()
+      setLicense(["rbac"])
+
+      const config = defineConfig({
+        modules: [{ resolve: "@medusajs/medusa/rbac", disable: true }],
+      })
+
+      expect(config.modules![Modules.RBAC]).toEqual(
+        expect.objectContaining({
+          resolve: "@medusajs/medusa/rbac",
+          disable: true,
+        })
+      )
+    })
   })
 
   describe("secret defaults", function () {

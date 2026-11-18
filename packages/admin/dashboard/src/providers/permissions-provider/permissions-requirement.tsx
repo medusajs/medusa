@@ -18,8 +18,7 @@ interface BasePermissionsRequirementProps extends PropsWithChildren {
   enabled?: boolean
 }
 
-interface PermissionsRequirementWithPermission
-  extends BasePermissionsRequirementProps {
+interface PermissionsRequirementWithPermission extends BasePermissionsRequirementProps {
   permission: Permission
   permissions?: never
   resource?: never
@@ -27,8 +26,7 @@ interface PermissionsRequirementWithPermission
   requireAll?: never
 }
 
-interface PermissionsRequirementWithPermissions
-  extends BasePermissionsRequirementProps {
+interface PermissionsRequirementWithPermissions extends BasePermissionsRequirementProps {
   permissions: Permission[]
   requireAll?: boolean
   permission?: never
@@ -36,8 +34,7 @@ interface PermissionsRequirementWithPermissions
   operation?: never
 }
 
-interface PermissionsRequirementWithResourceOperation
-  extends BasePermissionsRequirementProps {
+interface PermissionsRequirementWithResourceOperation extends BasePermissionsRequirementProps {
   resource: PermissionResource
   operation: PermissionOperation
   permission?: never

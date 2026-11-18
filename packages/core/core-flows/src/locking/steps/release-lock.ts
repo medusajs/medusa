@@ -41,8 +41,8 @@ export const releaseLockStep = createStep(
     const keys = Array.isArray(data.key)
       ? data.key
       : isDefined(data.key)
-      ? [data.key]
-      : []
+        ? [data.key]
+        : []
 
     if (!keys.length) {
       return new StepResponse(true)

@@ -266,11 +266,11 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
         (data) => {
           const shippingMethods = data.isFullOrder
             ? data.order.shipping_methods
-            : data.shippingMethods ?? []
+            : (data.shippingMethods ?? [])
 
           const lineItems = data.isFullOrder
             ? data.order.items
-            : data.items ?? []
+            : (data.items ?? [])
 
           return {
             orderOrCart: data.order,

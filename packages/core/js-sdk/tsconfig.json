@@ -1,3 +1,9 @@
 {
-  "extends": "../../../_tsconfig.base.json"
+  "extends": "../../../_tsconfig.base.json",
+  "exclude": [
+    "dist",
+    "node_modules",
+    "./src/**/__tests__",
+    "./src/**/__mocks__"
+  ]
 }

@@ -7,7 +7,7 @@ import { VisibilitySnapshot } from "../types"
 
 export const useDataGridErrorHighlighting = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >(
   matrix: DataGridMatrix<TData, TFieldValues>,
   grid: Table<TData>,

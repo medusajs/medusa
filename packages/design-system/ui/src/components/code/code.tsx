@@ -12,7 +12,7 @@ const Code = React.forwardRef<
     <code
       ref={ref}
       className={clx(
-        "border-ui-tag-neutral-border bg-ui-tag-neutral-bg text-ui-tag-neutral-text txt-compact-small inline-flex rounded-md border px-[6px] font-mono",
+        "txt-compact-small inline-flex rounded-md border border-ui-tag-neutral-border bg-ui-tag-neutral-bg px-[6px] font-mono text-ui-tag-neutral-text",
         className
       )}
       {...props}

@@ -21,11 +21,10 @@ import { processProductOptionsForImportStep } from "../steps/process-product-opt
 /**
  * The products to manage.
  */
-export interface BatchProductWorkflowInput
-  extends BatchWorkflowInput<
-    CreateProductWorkflowInputDTO,
-    UpdateProductWorkflowInputDTO
-  > {}
+export interface BatchProductWorkflowInput extends BatchWorkflowInput<
+  CreateProductWorkflowInputDTO,
+  UpdateProductWorkflowInputDTO
+> {}
 
 export const batchProductsWorkflowId = "batch-products"
 /**

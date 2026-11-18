@@ -20,14 +20,17 @@ type Optional<T> = { [K in keyof T]: T[K] | undefined }
 
 export function transformNullableFormData<
   T extends Record<string, unknown>,
-  K extends boolean = true
+  K extends boolean = true,
 >(data: T, nullify: K = true as K): K extends true ? Nullable<T> : Optional<T> {
-  return Object.entries(data).reduce((acc, [key, value]) => {
-    return {
-      ...acc,
-      [key]: transformNullableFormValue(value, nullify),
-    }
-  }, {} as K extends true ? Nullable<T> : Optional<T>)
+  return Object.entries(data).reduce(
+    (acc, [key, value]) => {
+      return {
+        ...acc,
+        [key]: transformNullableFormValue(value, nullify),
+      }
+    },
+    {} as K extends true ? Nullable<T> : Optional<T>
+  )
 }
 
 export function transformNullableFormNumber<K extends boolean = true>(
@@ -55,15 +58,18 @@ type OptionalNumbers = Record<string, number | undefined>
 
 export function transformNullableFormNumbers<
   T extends Record<string, string | number | undefined>,
-  K extends boolean = true
+  K extends boolean = true,
 >(
   data: T,
   nullify: K = true as K
 ): K extends true ? NullableNumbers : OptionalNumbers {
-  return Object.entries(data).reduce((acc, [key, value]) => {
-    return {
-      ...acc,
-      [key]: transformNullableFormNumber(value, nullify),
-    }
-  }, {} as K extends true ? NullableNumbers : OptionalNumbers)
+  return Object.entries(data).reduce(
+    (acc, [key, value]) => {
+      return {
+        ...acc,
+        [key]: transformNullableFormNumber(value, nullify),
+      }
+    },
+    {} as K extends true ? NullableNumbers : OptionalNumbers
+  )
 }

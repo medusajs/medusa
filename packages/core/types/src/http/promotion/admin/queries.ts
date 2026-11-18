@@ -9,8 +9,7 @@ import { FindParams, SelectParams } from "../../common"
 export interface AdminGetPromotionParams extends SelectParams {}
 
 export interface AdminGetPromotionsParams
-  extends FindParams,
-    BaseFilterable<AdminGetPromotionsParams> {
+  extends FindParams, BaseFilterable<AdminGetPromotionsParams> {
   /**
    * Search for a promotion by its searchable
    */

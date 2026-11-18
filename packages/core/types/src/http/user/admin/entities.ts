@@ -26,7 +26,7 @@ export interface AdminUser {
   /**
    * The RBAC roles assigned to the user.
    *
-   * @ignore
+   * @since 2.22.4
    */
   roles?: string[] | null
   /**

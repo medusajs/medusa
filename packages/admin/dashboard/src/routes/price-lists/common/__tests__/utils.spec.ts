@@ -19,7 +19,7 @@ const makePrice = (
   ({
     rules: {},
     ...overrides,
-  } as unknown as HttpTypes.AdminPriceListPrice)
+  }) as unknown as HttpTypes.AdminPriceListPrice
 
 const makeProduct = (
   id: string,
@@ -28,13 +28,13 @@ const makeProduct = (
   ({
     id,
     variants: variantIds.map((vid) => ({ id: vid, product_id: id })),
-  } as unknown as HttpTypes.AdminProduct)
+  }) as unknown as HttpTypes.AdminProduct
 
 const makeRegion = (id: string, currencyCode: string): HttpTypes.AdminRegion =>
   ({
     id,
     currency_code: currencyCode,
-  } as unknown as HttpTypes.AdminRegion)
+  }) as unknown as HttpTypes.AdminRegion
 
 describe("initRecord", () => {
   it("should place a simple currency price in currency_prices", () => {

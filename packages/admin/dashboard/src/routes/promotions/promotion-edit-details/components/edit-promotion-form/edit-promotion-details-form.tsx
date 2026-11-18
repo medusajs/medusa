@@ -32,6 +32,9 @@ const EditPromotionSchema = zod.object({
   allocation: zod.enum(["each", "across", "once"]),
   target_type: zod.enum(["order", "shipping_methods", "items"]),
   max_quantity: zod.number().min(1).optional().nullable(),
+  target_selection_strategy: zod
+    .enum(["most_expensive_first", "cheapest_first"])
+    .optional(),
 })
 
 export const EditPromotionDetailsForm = ({
@@ -51,6 +54,8 @@ export const EditPromotionDetailsForm = ({
       value_type: promotion.application_method!.type,
       target_type: promotion.application_method!.target_type,
       max_quantity: promotion.application_method!.max_quantity,
+      target_selection_strategy:
+        promotion.application_method!.target_selection_strategy,
     },
     resolver: zodResolver(EditPromotionSchema),
   })
@@ -89,6 +94,9 @@ export const EditPromotionDetailsForm = ({
           type: data.value_type as any,
           allocation: data.allocation as any,
           max_quantity: data.max_quantity,
+          ...(promotion.type === "buyget" && {
+            target_selection_strategy: data.target_selection_strategy,
+          }),
         },
       },
       {
@@ -432,6 +440,54 @@ export const EditPromotionDetailsForm = ({
                   />
                 )}
               </>
+            )}
+
+            {promotion.type === "buyget" && (
+              <Form.Field
+                control={form.control}
+                name="target_selection_strategy"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label
+                        tooltip={t(
+                          "promotions.fields.targetSelectionStrategyTooltip"
+                        )}
+                      >
+                        {t("promotions.fields.targetSelectionStrategy")}
+                      </Form.Label>
+                      <Form.Control>
+                        <RadioGroup
+                          dir={direction}
+                          className="flex-col gap-y-3"
+                          {...field}
+                          onValueChange={field.onChange}
+                        >
+                          <RadioGroup.ChoiceBox
+                            value={"most_expensive_first"}
+                            label={t(
+                              "promotions.form.target_selection_strategy.most_expensive_first.title"
+                            )}
+                            description={t(
+                              "promotions.form.target_selection_strategy.most_expensive_first.description"
+                            )}
+                          />
+                          <RadioGroup.ChoiceBox
+                            value={"cheapest_first"}
+                            label={t(
+                              "promotions.form.target_selection_strategy.cheapest_first.title"
+                            )}
+                            description={t(
+                              "promotions.form.target_selection_strategy.cheapest_first.description"
+                            )}
+                          />
+                        </RadioGroup>
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
             )}
           </div>
         </RouteDrawer.Body>

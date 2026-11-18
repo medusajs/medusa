@@ -57,8 +57,7 @@ export interface BaseCollectionParams extends SelectParams {}
  * The filters to apply when retrieving a list of collections.
  */
 export interface BaseCollectionListParams
-  extends FindParams,
-    BaseFilterable<BaseCollectionListParams> {
+  extends FindParams, BaseFilterable<BaseCollectionListParams> {
   /**
    * A query or keywords to search the collection's searchable fields by.
    */

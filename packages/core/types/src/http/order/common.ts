@@ -56,8 +56,7 @@ export interface BaseOrderAdjustmentLine {
   updated_at: Date | string
 }
 
-export interface BaseOrderShippingMethodAdjustment
-  extends BaseOrderAdjustmentLine {
+export interface BaseOrderShippingMethodAdjustment extends BaseOrderAdjustmentLine {
   /**
    * The associated shipping method's details.
    */
@@ -911,8 +910,7 @@ export interface BaseOrder {
 }
 
 export interface BaseOrderFilters
-  extends FindParams,
-    BaseFilterable<BaseOrderFilters> {
+  extends FindParams, BaseFilterable<BaseOrderFilters> {
   /**
    * Filter by order ID(s).
    */
@@ -921,13 +919,10 @@ export interface BaseOrderFilters
    * Filter by status(es).
    */
   status?:
-    | OrderStatus[]
-    | OrderStatus
-    | OperatorMap<OrderStatus | OrderStatus[]>
+    OrderStatus[] | OrderStatus | OperatorMap<OrderStatus | OrderStatus[]>
 }
 
-export interface BaseOrderChangesFilters
-  extends BaseFilterable<BaseOrderChangesFilters> {
+export interface BaseOrderChangesFilters extends BaseFilterable<BaseOrderChangesFilters> {
   /**
    * Filter by order change ID(s).
    */

@@ -13,34 +13,38 @@ type ExtractFiltersOperators<
   MaybeT,
   Lim extends number = Depth[2],
   Exclusion extends string[] = [],
-  T = TypeOnly<MaybeT>
+  T = TypeOnly<MaybeT>,
 > = {
   [Key in keyof T]?: Key extends Exclusion[number]
     ? never
     : Key extends ExcludedProps
-    ? never
-    : TypeOnly<T[Key]> extends string | number | boolean | Date | null
-    ?
-        | TypeOnly<T[Key]>
-        | TypeOnly<T[Key]>[]
-        | OperatorMap<TypeOnly<T[Key]> | TypeOnly<T[Key]>[] | null>
-        | null
-    : TypeOnly<T[Key]> extends Array<infer R>
-    ? TypeOnly<R> extends { __typename: any }
-      ? IndexFilters<Key & string, T, [Key & string, ...Exclusion], Depth[Lim]>
-      : TypeOnly<R> extends object
-      ? CleanupObject<TypeOnly<R>>
-      : never
-    : TypeOnly<T[Key]> extends { __typename: any }
-    ? IndexFilters<
-        Key & string,
-        T[Key],
-        [Key & string, ...Exclusion],
-        Depth[Lim]
-      >
-    : TypeOnly<T[Key]> extends object
-    ? CleanupObject<TypeOnly<T[Key]>>
-    : never
+      ? never
+      : TypeOnly<T[Key]> extends string | number | boolean | Date | null
+        ? | TypeOnly<T[Key]>
+          | TypeOnly<T[Key]>[]
+          | OperatorMap<TypeOnly<T[Key]> | TypeOnly<T[Key]>[] | null>
+          | null
+        : TypeOnly<T[Key]> extends Array<infer R>
+          ? TypeOnly<R> extends { __typename: any }
+            ? IndexFilters<
+                Key & string,
+                T,
+                [Key & string, ...Exclusion],
+                Depth[Lim]
+              >
+            : TypeOnly<R> extends object
+              ? CleanupObject<TypeOnly<R>>
+              : never
+          : TypeOnly<T[Key]> extends { __typename: any }
+            ? IndexFilters<
+                Key & string,
+                T[Key],
+                [Key & string, ...Exclusion],
+                Depth[Lim]
+              >
+            : TypeOnly<T[Key]> extends object
+              ? CleanupObject<TypeOnly<T[Key]>>
+              : never
 }
 
 /**
@@ -50,7 +54,7 @@ export type IndexFilters<
   TEntry extends string,
   IndexEntryPointsLevel = IndexServiceEntryPoints,
   Exclusion extends string[] = [],
-  Lim extends number = Depth[3]
+  Lim extends number = Depth[3],
 > = Lim extends number
   ? TEntry extends keyof IndexEntryPointsLevel
     ? TypeOnly<IndexEntryPointsLevel[TEntry]> extends Array<infer V>

@@ -463,7 +463,7 @@ export const TaxRegionTaxOverrideEditForm = ({
                   type="button"
                   size="small"
                   variant="transparent"
-                  className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover flex-shrink-0"
+                  className="flex-shrink-0 text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
                 >
                   {t("taxRegions.fields.targets.action")}
                 </Button>
@@ -506,13 +506,13 @@ export const TaxRegionTaxOverrideEditForm = ({
                             <Form.Label className="sr-only">{label}</Form.Label>
                             <div
                               className={clx(
-                                "bg-ui-bg-component shadow-elevation-card-rest transition-fg grid gap-1.5 rounded-xl py-1.5",
+                                "grid gap-1.5 rounded-xl bg-ui-bg-component py-1.5 shadow-elevation-card-rest transition-fg",
                                 "aria-[invalid='true']:shadow-borders-error"
                               )}
                               role="application"
                               {...field}
                             >
-                              <div className="text-ui-fg-subtle grid gap-1.5 px-1.5 md:grid-cols-2">
+                              <div className="grid gap-1.5 px-1.5 text-ui-fg-subtle md:grid-cols-2">
                                 {isLast ? (
                                   <Select
                                     dir={direction}
@@ -536,11 +536,11 @@ export const TaxRegionTaxOverrideEditForm = ({
                                     </Select.Content>
                                   </Select>
                                 ) : (
-                                  <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
+                                  <div className="txt-compact-small rounded-md bg-ui-bg-field px-2 py-1.5 shadow-borders-base">
                                     {label}
                                   </div>
                                 )}
-                                <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
+                                <div className="txt-compact-small rounded-md bg-ui-bg-field px-2 py-1.5 shadow-borders-base">
                                   {t("taxRegions.fields.targets.operators.in")}
                                 </div>
                               </div>
@@ -549,7 +549,7 @@ export const TaxRegionTaxOverrideEditForm = ({
                                   <StackedDrawer.Trigger asChild>
                                     <button
                                       type="button"
-                                      className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover shadow-borders-base txt-compact-small text-ui-fg-muted transition-fg focus-visible:shadow-borders-interactive-with-active flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5 outline-none"
+                                      className="txt-compact-small flex flex-1 items-center gap-x-2 rounded-md bg-ui-bg-field-component px-2 py-1.5 text-ui-fg-muted shadow-borders-base outline-none transition-fg hover:bg-ui-bg-field-component-hover focus-visible:shadow-borders-interactive-with-active"
                                     >
                                       <MagnifyingGlass />
                                       {searchPlaceholder}
@@ -611,7 +611,7 @@ export const TaxRegionTaxOverrideEditForm = ({
                                     DISPLAY_OVERRIDE_ITEMS_LIMIT && (
                                     <div className="flex flex-col gap-y-1.5 px-1.5">
                                       {/* <Divider variant="dashed" /> */}
-                                      <div className="text-ui-fg-muted txt-small flex flex-col gap-y-1.5 px-1.5">
+                                      <div className="txt-small flex flex-col gap-y-1.5 px-1.5 text-ui-fg-muted">
                                         {t("general.plusCountMore", {
                                           count:
                                             fields.length -

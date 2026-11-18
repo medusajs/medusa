@@ -36,3 +36,7 @@ properties:
     type: object
   refund_reason:
     $ref: ./BaseRefundReason.yaml
+  idempotency_key:
+    type: string
+    title: idempotency_key
+    description: The refund's idempotency key.

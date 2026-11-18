@@ -80,7 +80,7 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.runId).toEqual(expect.any(String))
     expect(transaction.getState()).toBe(TransactionState.DONE)
 
-    expect(mocks.one).toBeCalledWith(
+    expect(mocks.one).toHaveBeenCalledWith(
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
@@ -95,7 +95,7 @@ describe("Transaction Orchestrator", () => {
       })
     )
 
-    expect(mocks.two).toBeCalledWith(
+    expect(mocks.two).toHaveBeenCalledWith(
       expect.objectContaining({
         metadata: {
           model_id: "transaction-name",
@@ -454,10 +454,10 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
-    expect(mocks.one).toBeCalledWith({ prop: 123 })
-    expect(mocks.two).toBeCalledWith({ prop: 123 })
+    expect(mocks.one).toHaveBeenCalledWith({ prop: 123 })
+    expect(mocks.two).toHaveBeenCalledWith({ prop: 123 })
 
-    expect(mocks.three).toBeCalledWith(
+    expect(mocks.three).toHaveBeenCalledWith(
       { prop: 123 },
       {
         payload: {
@@ -549,9 +549,9 @@ describe("Transaction Orchestrator", () => {
     await strategy.resume(transaction)
     const resposes = transaction.getContext()
 
-    expect(mocks.compensateTwo).toBeCalledWith({})
+    expect(mocks.compensateTwo).toHaveBeenCalledWith({})
 
-    expect(mocks.compensateOne).toBeCalledWith({
+    expect(mocks.compensateOne).toHaveBeenCalledWith({
       secondMethod: {
         two: "isCompensated",
       },
@@ -694,7 +694,7 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.getState()).toBe(TransactionState.REVERTED)
     expect(mocks.compensateOne).toHaveBeenCalledTimes(1)
 
-    expect(mocks.two).nthCalledWith(
+    expect(mocks.two).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
         metadata: expect.objectContaining({
@@ -703,7 +703,7 @@ describe("Transaction Orchestrator", () => {
       })
     )
 
-    expect(mocks.two).nthCalledWith(
+    expect(mocks.two).toHaveBeenNthCalledWith(
       4,
       expect.objectContaining({
         metadata: expect.objectContaining({
@@ -804,7 +804,7 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.getState()).toBe(TransactionState.REVERTED)
     expect(mocks.compensateOne).toHaveBeenCalledTimes(1)
 
-    expect(mocks.two).nthCalledWith(
+    expect(mocks.two).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
         metadata: expect.objectContaining({
@@ -813,7 +813,7 @@ describe("Transaction Orchestrator", () => {
       })
     )
 
-    expect(mocks.two).nthCalledWith(
+    expect(mocks.two).toHaveBeenNthCalledWith(
       4,
       expect.objectContaining({
         metadata: expect.objectContaining({

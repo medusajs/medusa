@@ -1,4 +1,4 @@
-import { isDefined } from "@medusajs/utils"
+import { isDefined, isUnsafePathSegment } from "@medusajs/utils"
 import { ParsedFields } from "./index"
 
 /**
@@ -23,7 +23,13 @@ export class FieldParser {
     let allFields = new Set(defaults) as Set<string>
 
     if (isDefined(fields)) {
-      const customFields = fields.split(",").filter(Boolean)
+      const customFields = fields
+        .split(",")
+        .filter(Boolean)
+        .filter((field) => {
+          const segments = this.stripModifier(field).split(".")
+          return !segments.some(isUnsafePathSegment)
+        })
       const shouldReplaceDefaultFields =
         this.shouldReplaceDefaults(customFields)
 

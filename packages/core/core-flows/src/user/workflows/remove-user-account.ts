@@ -1,3 +1,4 @@
+import { RbacScope } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -17,6 +18,20 @@ export type RemoveUserAccountWorkflowInput = {
    * The ID of the user to remove.
    */
   userId: string
+  /**
+   * The ID of the actor removing the user. When provided, the actor must be
+   * able to grant the roles assigned to the user, since removing the user
+   * removes those assignments.
+   */
+  granting_actor_id?: string
+  /**
+   * The actor's type. Defaults to `user`.
+   */
+  granting_actor?: string
+  /**
+   * The scope the actor is acting within.
+   */
+  granting_scope?: RbacScope
 }
 export const removeUserAccountWorkflowId = "remove-user-account"
 /**
@@ -46,6 +61,9 @@ export const removeUserAccountWorkflow = createWorkflow(
     deleteUsersWorkflow.runAsStep({
       input: {
         ids: [input.userId],
+        granting_actor_id: input.granting_actor_id,
+        granting_actor: input.granting_actor,
+        granting_scope: input.granting_scope,
       },
     })
 

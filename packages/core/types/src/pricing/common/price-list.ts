@@ -227,8 +227,7 @@ export interface UpdatePriceListDTO {
  *
  * Filters to apply on price lists.
  */
-export interface FilterablePriceListProps
-  extends BaseFilterable<FilterablePriceListProps> {
+export interface FilterablePriceListProps extends BaseFilterable<FilterablePriceListProps> {
   /**
    * Find price lists by title or description through this search term.
    */
@@ -260,8 +259,7 @@ export interface FilterablePriceListProps
  *
  * Filters to apply on price list rules.
  */
-export interface FilterablePriceListRuleProps
-  extends BaseFilterable<FilterablePriceListRuleProps> {
+export interface FilterablePriceListRuleProps extends BaseFilterable<FilterablePriceListRuleProps> {
   /**
    * The IDs to filter price list rules by.
    */

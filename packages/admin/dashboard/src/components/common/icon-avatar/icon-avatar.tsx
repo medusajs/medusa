@@ -21,10 +21,10 @@ export const IconAvatar = ({
   return (
     <div
       className={clx(
-        "shadow-borders-base flex size-7 items-center justify-center",
+        "flex size-7 items-center justify-center shadow-borders-base",
         variant === "squared" && "rounded-md",
         variant === "rounded" && "rounded-full",
-        "[&>div]:bg-ui-bg-field [&>div]:text-ui-fg-subtle [&>div]:flex [&>div]:size-6 [&>div]:items-center [&>div]:justify-center",
+        "[&>div]:flex [&>div]:size-6 [&>div]:items-center [&>div]:justify-center [&>div]:bg-ui-bg-field [&>div]:text-ui-fg-subtle",
         {
           "size-7 rounded-md [&>div]:size-6 [&>div]:rounded-[4px]":
             size === "small",

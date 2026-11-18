@@ -8,7 +8,7 @@ type Options = [
   {
     allowedMutations?: string[]
     additionalMutationPrefixes?: string[]
-  }?
+  }?,
 ]
 
 const HTTP_METHODS = new Set([

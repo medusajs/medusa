@@ -14,7 +14,7 @@ const buildReq = (indexService?: unknown) =>
         return { warn: jest.fn() }
       }),
     },
-  } as any)
+  }) as any
 
 const buildRes = () => {
   const res: any = {}

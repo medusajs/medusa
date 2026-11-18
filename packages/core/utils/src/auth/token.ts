@@ -19,7 +19,8 @@ export const generateJwtToken = (
     )
   }
 
-  const expiresIn = jwtConfig.expiresIn ?? jwtConfig.jwtOptions?.expiresIn
+  const expiresIn = (jwtConfig.expiresIn ??
+    jwtConfig.jwtOptions?.expiresIn) as SignOptions["expiresIn"]
   return jwt.sign(tokenPayload, jwtConfig.secret, {
     ...jwtConfig.jwtOptions,
     expiresIn,

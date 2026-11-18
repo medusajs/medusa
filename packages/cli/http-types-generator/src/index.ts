@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @ts-ignore
 import { Command } from "commander"
 import { generateCommand } from "./commands/generate"
 import { validateCommand } from "./commands/validate"

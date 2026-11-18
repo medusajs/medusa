@@ -66,8 +66,7 @@ export interface AdminTranslationLocaleStatistics {
 /**
  * Statistics for an entity type.
  */
-export interface AdminTranslationEntityStatistics
-  extends AdminTranslationLocaleStatistics {
+export interface AdminTranslationEntityStatistics extends AdminTranslationLocaleStatistics {
   /**
    * Breakdown of statistics by locale.
    */

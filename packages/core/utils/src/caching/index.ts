@@ -101,7 +101,7 @@ type TargetMethodArgs<Target, PropertyKey> = Target[PropertyKey &
  */
 export function Cached<
   const Target extends object,
-  const PropertyKey extends keyof Target
+  const PropertyKey extends keyof Target,
 >(options: {
   /**
    * The key to use for the cache.

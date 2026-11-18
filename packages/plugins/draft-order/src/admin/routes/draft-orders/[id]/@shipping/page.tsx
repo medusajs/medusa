@@ -24,7 +24,7 @@ import {
   TriangleRightMini,
   TruckFast,
 } from "@medusajs/icons"
-import isEqual from "lodash.isequal"
+import { dequal as isEqual } from "dequal"
 import { Accordion } from "radix-ui"
 import { ConditionalTooltip } from "../../../../components/common/conditional-tooltip"
 import { Form } from "../../../../components/common/form"
@@ -59,6 +59,7 @@ import {
 } from "../../../../lib/utils/order-utils"
 import { pluralize } from "../../../../lib/utils/string-utils"
 import { ActionMenu } from "../../../../components/common/action-menu"
+import { EDIT_DRAFT_ORDER_SHIPPING_PERMISSIONS } from "../../../../lib/permissions"
 
 const STACKED_FOCUS_MODAL_ID = "shipping-form"
 
@@ -962,8 +963,8 @@ const ShippingOptionField = ({
     !locationId && !shippingProfileId
       ? "Choose a location and shipping profile first."
       : !locationId
-      ? "Choose a location first."
-      : "Choose a shipping profile first."
+        ? "Choose a location first."
+        : "Choose a shipping profile first."
 
   return (
     <Form.Field
@@ -1039,6 +1040,10 @@ const CustomAmountField = ({
       }}
     />
   )
+}
+
+export const handle = {
+  permissions: EDIT_DRAFT_ORDER_SHIPPING_PERMISSIONS,
 }
 
 export default Shipping

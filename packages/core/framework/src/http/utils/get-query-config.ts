@@ -1,15 +1,21 @@
-import { FindConfig, QueryConfig, RequestQueryFields } from "@medusajs/types"
+import {
+  FindConfig,
+  QueryConfig,
+  RbacContext,
+  RequestQueryFields,
+} from "@medusajs/types"
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   buildOrder,
-  FeatureFlag,
   isDefined,
   isPresent,
   MedusaError,
+  Modules,
   pickDeep,
-  PolicyDefinition,
   promiseAll,
   stringToSelectRelationObject,
 } from "@medusajs/utils"
+import { listRolePermissions } from "../../policies/has-permission"
 import { AuthContext, MedusaRequest } from "../types"
 import {
   AllowedFieldFilter,
@@ -19,6 +25,7 @@ import {
   RestrictedFieldFilter,
 } from "./field-filtering"
 import { RBACFieldFilter } from "./policies/rbac-field-filter"
+import { resolveRoles } from "./resolve-roles"
 
 export function pickByConfig<TModel>(
   obj: TModel | TModel[],
@@ -40,8 +47,8 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   validated: T,
   queryConfig: QueryConfig<TEntity> & { restricted?: string[] } = {},
   req?: MedusaRequest & {
-    policies?: PolicyDefinition[]
     auth_context?: AuthContext
+    rbac_context?: RbacContext
   }
 ) {
   const {
@@ -64,16 +71,28 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
   const parsedFields = FieldParser.parse(fields, defaults as string[])
   const { fields: allFields, starFields } = parsedFields
 
-  const rbacFilterFieldsFeatureFlag =
-    FeatureFlag.isFeatureEnabled("rbac_filter_fields")
-
   const filters: IFieldFilter[] = []
 
-  if (req?.policies && entity && rbacFilterFieldsFeatureFlag) {
+  if (
+    req?.rbac_context?.policies?.length &&
+    req?.auth_context &&
+    entity &&
+    MedusaModule.isInstalled(Modules.RBAC)
+  ) {
     filters.push(
       new RBACFieldFilter({
-        policies: req.policies,
-        userRoles: (req.auth_context?.app_metadata?.roles as string[]) || [],
+        getPermissions: async () =>
+          req.rbac_context?.permissions ??
+          listRolePermissions({
+            roles:
+              req.rbac_context?.role_ids ??
+              (await resolveRoles({
+                authContext: req.auth_context!,
+                container: req.scope,
+                scope: req.rbac_context?.scope,
+              })),
+            container: req.scope,
+          }),
         container: req.scope,
       })
     )
@@ -169,13 +188,13 @@ export async function prepareListQuery<T extends RequestQueryFields, TEntity>(
 
 export async function prepareRetrieveQuery<
   T extends RequestQueryFields,
-  TEntity
+  TEntity,
 >(
   validated: T,
   queryConfig?: QueryConfig<TEntity> & { restricted?: string[] },
   req?: MedusaRequest & {
-    policies?: PolicyDefinition[]
     auth_context?: AuthContext
+    rbac_context?: RbacContext
   }
 ) {
   const { listConfig, remoteQueryConfig } = await prepareListQuery(

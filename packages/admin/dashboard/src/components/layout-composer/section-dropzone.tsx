@@ -32,7 +32,7 @@ function SectionTail({ sectionId, className }: SectionTailProps) {
     <div
       ref={setNodeRef}
       className={clx(
-        "text-ui-fg-muted flex min-h-16 items-center justify-center rounded-lg border border-dashed transition-colors",
+        "flex min-h-16 items-center justify-center rounded-lg border border-dashed text-ui-fg-muted transition-colors",
         isOver
           ? "border-ui-border-interactive bg-ui-bg-highlight text-ui-fg-subtle"
           : "border-ui-border-strong",

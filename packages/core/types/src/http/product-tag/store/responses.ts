@@ -8,10 +8,9 @@ export interface StoreProductTagResponse {
   product_tag: StoreProductTag
 }
 
-export interface StoreProductTagListResponse
-  extends PaginatedResponse<{
-    /**
-     * The paginated list of tags.
-     */
-    product_tags: StoreProductTag[]
-  }> {}
+export interface StoreProductTagListResponse extends PaginatedResponse<{
+  /**
+   * The paginated list of tags.
+   */
+  product_tags: StoreProductTag[]
+}> {}

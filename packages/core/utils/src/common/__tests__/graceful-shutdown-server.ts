@@ -18,7 +18,7 @@ describe("GracefulShutdownServer", () => {
 
     GracefulShutdownServer.create({ on: onEventMock } as any)
 
-    expect(onEventMock).toBeCalledTimes(3)
+    expect(onEventMock).toHaveBeenCalledTimes(3)
 
     expect(onEventMock.mock.calls[2][0]).toEqual("request")
 
@@ -68,7 +68,7 @@ describe("GracefulShutdownServer", () => {
       })
     )
 
-    expect(onSocketClose).toBeCalledTimes(3)
+    expect(onSocketClose).toHaveBeenCalledTimes(3)
     expect(onSocketClose.mock.calls[0][0]).toEqual("close")
   })
 
@@ -110,23 +110,23 @@ describe("GracefulShutdownServer", () => {
       done()
     })
 
-    expect(setTimeoutSpy).toBeCalledTimes(0)
-    expect(setIntervalSpy).toBeCalledTimes(1)
+    expect(setTimeoutSpy).toHaveBeenCalledTimes(0)
+    expect(setIntervalSpy).toHaveBeenCalledTimes(1)
     expect(setIntervalSpy.mock.calls[0][1]).toEqual(waitTime)
-    expect(clearIntervalSpy).toBeCalledTimes(0)
-    expect(socket.destroy).toBeCalledTimes(0)
+    expect(clearIntervalSpy).toHaveBeenCalledTimes(0)
+    expect(socket.destroy).toHaveBeenCalledTimes(0)
 
     jest.advanceTimersByTime(200)
 
-    expect(socket.destroy).toBeCalledTimes(0)
+    expect(socket.destroy).toHaveBeenCalledTimes(0)
 
     finishRequestMock()
 
-    expect(socket.destroy).toBeCalledTimes(0)
+    expect(socket.destroy).toHaveBeenCalledTimes(0)
 
     jest.advanceTimersByTime(waitTime)
 
-    expect(socket.destroy).toBeCalledTimes(1)
+    expect(socket.destroy).toHaveBeenCalledTimes(1)
 
     closeServerCallback!()
   })
@@ -168,18 +168,18 @@ describe("GracefulShutdownServer", () => {
       done()
     })
 
-    expect(setTimeoutSpy).toBeCalledTimes(1)
+    expect(setTimeoutSpy).toHaveBeenCalledTimes(1)
     expect(setTimeoutSpy.mock.calls[0][1]).toEqual(forceTimeout)
-    expect(setIntervalSpy).toBeCalledTimes(1)
+    expect(setIntervalSpy).toHaveBeenCalledTimes(1)
     expect(setIntervalSpy.mock.calls[0][1]).toEqual(waitTime)
-    expect(clearIntervalSpy).toBeCalledTimes(0)
-    expect(socket.destroy).toBeCalledTimes(0)
+    expect(clearIntervalSpy).toHaveBeenCalledTimes(0)
+    expect(socket.destroy).toHaveBeenCalledTimes(0)
 
     jest.advanceTimersByTime(waitTime)
-    expect(socket.destroy).toBeCalledTimes(0)
+    expect(socket.destroy).toHaveBeenCalledTimes(0)
 
     jest.advanceTimersByTime(forceTimeout)
-    expect(socket.destroy).toBeCalledTimes(1)
+    expect(socket.destroy).toHaveBeenCalledTimes(1)
 
     closeServerCallback!()
   })

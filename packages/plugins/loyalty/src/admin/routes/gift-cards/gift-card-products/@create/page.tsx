@@ -88,4 +88,14 @@ const GiftCardProductCreate = () => {
   );
 };
 
+export const handle = {
+  permissions: [
+    "product:create",
+    "store:read",
+    "sales_channel:read",
+    "region:read",
+    "price_preference:read",
+  ],
+};
+
 export default GiftCardProductCreate;

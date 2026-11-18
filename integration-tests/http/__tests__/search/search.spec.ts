@@ -126,6 +126,7 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(200)
         expect(response.data.results.map((g) => g.entity).sort()).toEqual([
           "customer",
+          "customer_directory",
           "product",
         ])
 
@@ -323,7 +324,7 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(200)
         expect(response.data.enabled).toEqual(true)
         expect(response.data.search_indexes.map((index) => index.name)).toEqual(
-          ["customer", "product"]
+          ["customer", "customer_directory", "product"]
         )
 
         const product = response.data.search_indexes.find(

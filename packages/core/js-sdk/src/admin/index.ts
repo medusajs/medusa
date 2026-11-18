@@ -1,5 +1,6 @@
 import { Client } from "../client.js"
 import { ApiKey } from "./api-key.js"
+import { AuditLog } from "./audit-log.js"
 import { Campaign } from "./campaign.js"
 import { Claim } from "./claim.js"
 import { Currency } from "./currency.js"
@@ -17,6 +18,7 @@ import { Order } from "./order.js"
 import { OrderEdit } from "./order-edit.js"
 import { Payment } from "./payment.js"
 import { PaymentCollection } from "./payment-collection.js"
+import { Module } from "./module.js"
 import { Plugin } from "./plugin.js"
 import { PriceList } from "./price-list.js"
 import { PricePreference } from "./price-preference.js"
@@ -221,6 +223,10 @@ export class Admin {
    */
   public apiKey: ApiKey
   /**
+   * @tags audit
+   */
+  public auditLog: AuditLog
+  /**
    * @tags workflow
    */
   public workflowExecution: WorkflowExecution
@@ -252,6 +258,10 @@ export class Admin {
    * @tags plugin
    */
   public plugin: Plugin
+  /**
+   * @tags module
+   */
+  public module: Module
   /**
    * @tags search
    */
@@ -323,12 +333,14 @@ export class Admin {
     this.exchange = new Exchange(client)
     this.paymentCollection = new PaymentCollection(client)
     this.apiKey = new ApiKey(client)
+    this.auditLog = new AuditLog(client)
     this.workflowExecution = new WorkflowExecution(client)
     this.reservation = new Reservation(client)
     this.customerGroup = new CustomerGroup(client)
     this.promotion = new Promotion(client)
     this.campaign = new Campaign(client)
     this.plugin = new Plugin(client)
+    this.module = new Module(client)
     this.search = new Search(client)
     this.taxProvider = new TaxProvider(client)
     this.views = new Views(client)

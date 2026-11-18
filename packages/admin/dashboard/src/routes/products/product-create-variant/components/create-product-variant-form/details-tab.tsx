@@ -95,7 +95,7 @@ function DetailsTab({ form, product }: DetailsTabProps) {
             render={({ field: { value, onChange, ...field } }) => {
               return (
                 <Form.Item>
-                  <div className="bg-ui-bg-component shadow-elevation-card-rest flex gap-x-3 rounded-lg p-4">
+                  <div className="flex gap-x-3 rounded-lg bg-ui-bg-component p-4 shadow-elevation-card-rest">
                     <Form.Control>
                       <Switch
                         dir="ltr"
@@ -127,7 +127,7 @@ function DetailsTab({ form, product }: DetailsTabProps) {
             render={({ field: { value, onChange, ...field } }) => {
               return (
                 <Form.Item>
-                  <div className="bg-ui-bg-component shadow-elevation-card-rest flex gap-x-3 rounded-lg p-4">
+                  <div className="flex gap-x-3 rounded-lg bg-ui-bg-component p-4 shadow-elevation-card-rest">
                     <Form.Control>
                       <Switch
                         dir="ltr"
@@ -158,7 +158,7 @@ function DetailsTab({ form, product }: DetailsTabProps) {
             render={({ field: { value, onChange, ...field } }) => {
               return (
                 <Form.Item>
-                  <div className="bg-ui-bg-component shadow-elevation-card-rest flex gap-x-3 rounded-lg p-4">
+                  <div className="flex gap-x-3 rounded-lg bg-ui-bg-component p-4 shadow-elevation-card-rest">
                     <Form.Control>
                       <Switch
                         dir="ltr"

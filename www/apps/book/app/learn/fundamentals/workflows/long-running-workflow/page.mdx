@@ -92,6 +92,12 @@ Once the workflow's execution reaches an async step, it'll wait in the backgroun
 
 To fail or succeed a step, use the Workflow Engine Module's main service that is registered in the Medusa Container under the `Modules.WORKFLOW_ENGINE` (or `workflowsModuleService`) key.
 
+<Note type="warning">
+
+Admin users can also succeed or fail a step with the [Succeed a Step](!api!/admin/workflows-executions/succed-a-step) and [Fail a Step](!api!/admin/workflows-executions/fail-a-step) API routes. These routes only require the `workflow_execution:read` and `workflow_execution:update` [RBAC policies](!resources!/enterprise/rbac/concepts#policy). So, a user with those policies can resume your long-running workflow, even if they don't have the policies for the actions that the workflow performs.
+
+</Note>
+
 ### Retrieve Transaction ID
 
 Before changing the status of a workflow execution's async step, you must have the execution's transaction ID.

@@ -1,4 +1,5 @@
 import { defineWidgetConfig } from "@medusajs/admin-sdk";
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Button, Container } from "@medusajs/ui";
 import { Link, useParams } from "react-router-dom";
 import { Header } from "../components/header";
@@ -10,13 +11,19 @@ import { formatAmount } from "../utils/format-amount";
 
 const CustomerStoreCreditWidget = () => {
   const params = useParams();
+  const { hasPermission } = usePermissions();
+  const canRead = hasPermission("store_credit_account:read");
+  const canCreate = hasPermission("store_credit_account:create");
 
   const { store_credit_accounts: storeCreditAccounts, isPending } =
-    useStoreCreditAccounts({
-      customer_id: params.id!,
-    });
+    useStoreCreditAccounts(
+      {
+        customer_id: params.id!,
+      },
+      { enabled: canRead }
+    );
 
-  if (isPending) {
+  if (!canRead || isPending) {
     return null;
   }
 
@@ -26,25 +33,33 @@ const CustomerStoreCreditWidget = () => {
     <Container className="p-0">
       <Header
         title="Store Credit Accounts"
-        actions={[
-          {
-            type: "custom",
-            children: (
-              <Link to={createHref}>
-                <Button variant="secondary" size="small">
-                  Create
-                </Button>
-              </Link>
-            ),
-          },
-        ]}
+        actions={
+          canCreate
+            ? [
+                {
+                  type: "custom",
+                  children: (
+                    <Link to={createHref}>
+                      <Button variant="secondary" size="small">
+                        Create
+                      </Button>
+                    </Link>
+                  ),
+                },
+              ]
+            : []
+        }
       />
 
       {!storeCreditAccounts?.length && (
         <NoRecords
           className="border-t"
           title="No store credit accounts"
-          message="Create an account to credit this customer"
+          message={
+            canCreate
+              ? "Create an account to credit this customer"
+              : "This customer has no store credit accounts"
+          }
           icon={null}
         />
       )}

@@ -133,8 +133,8 @@ export interface MedusaCloudAuthProviderOptions {
   oauth_token_endpoint: string
   oauth_jwks_uri: string
   oauth_audience: string
+  oauth_client_secret?: string
   environment_handle: string
-  sandbox_handle: string
   api_key: string
   callback_url: string
   disabled: boolean

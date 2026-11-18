@@ -29,8 +29,7 @@ export type AdminProductListResponse = PaginatedResponse<{
 
 export interface AdminProductDeleteResponse extends DeleteResponse<"product"> {}
 
-export interface AdminBatchProductResponse
-  extends BatchResponse<AdminProduct> {}
+export interface AdminBatchProductResponse extends BatchResponse<AdminProduct> {}
 
 export interface AdminProductVariantResponse {
   variant: AdminProductVariant
@@ -43,8 +42,10 @@ export type AdminProductVariantListResponse = PaginatedResponse<{
   variants: AdminProductVariant[]
 }>
 
-export interface AdminProductVariantDeleteResponse
-  extends DeleteResponseWithParent<"variant", AdminProduct> {}
+export interface AdminProductVariantDeleteResponse extends DeleteResponseWithParent<
+  "variant",
+  AdminProduct
+> {}
 
 export interface AdminExportProductResponse {
   /**
@@ -74,14 +75,11 @@ export interface AdminImportProductResponse {
   }
 }
 
-export interface AdminImportProductsResponse
-  extends AdminImportProductResponse {}
+export interface AdminImportProductsResponse extends AdminImportProductResponse {}
 
-export interface AdminBatchProductVariantResponse
-  extends BatchResponse<AdminProductVariant> {}
+export interface AdminBatchProductVariantResponse extends BatchResponse<AdminProductVariant> {}
 
-export interface AdminBatchProductVariantInventoryItemResponse
-  extends BatchResponse<AdminInventoryItem> {}
+export interface AdminBatchProductVariantInventoryItemResponse extends BatchResponse<AdminInventoryItem> {}
 
 export interface AdminProductOptionResponse {
   /**
@@ -97,8 +95,10 @@ export type AdminProductOptionListResponse = PaginatedResponse<{
   product_options: AdminProductOption[]
 }>
 
-export interface AdminProductOptionDeleteResponse
-  extends DeleteResponseWithParent<"product_option", AdminProduct> {}
+export interface AdminProductOptionDeleteResponse extends DeleteResponseWithParent<
+  "product_option",
+  AdminProduct
+> {}
 
 export interface AdminProductOptionValueResponse {
   /**
@@ -114,15 +114,13 @@ export type AdminProductOptionValueListResponse = PaginatedResponse<{
   product_option_values: AdminProductOptionValue[]
 }>
 
-export interface AdminProductOptionValueDeleteResponse
-  extends DeleteResponseWithParent<
-    "product_option_value",
-    AdminProductOption
-  > {}
+export interface AdminProductOptionValueDeleteResponse extends DeleteResponseWithParent<
+  "product_option_value",
+  AdminProductOption
+> {}
 
 export type AdminProductVariantInventoryResponse =
-  | AdminProductVariantInventoryLink
-  | AdminProductVariantInventoryLink[]
+  AdminProductVariantInventoryLink | AdminProductVariantInventoryLink[]
 
 export interface AdminProductVariantInventoryBatchResponse {
   created: AdminProductVariantInventoryResponse

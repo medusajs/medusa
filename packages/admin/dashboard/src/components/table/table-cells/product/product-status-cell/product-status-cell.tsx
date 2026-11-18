@@ -17,8 +17,7 @@ export const ProductStatusCell = ({ status }: ProductStatusCellProps) => {
     published: ["green", t("products.productStatus.published")],
     rejected: ["red", t("products.productStatus.rejected")],
   }[status as string] as
-    | ["grey" | "orange" | "green" | "red", string]
-    | undefined
+    ["grey" | "orange" | "green" | "red", string] | undefined
 
   if (!variant) {
     return <PlaceholderCell />

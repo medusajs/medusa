@@ -142,21 +142,18 @@ export interface AdminAddExchangeInboundItems {
     metadata?: Record<string, unknown>
   }[]
 }
-export interface AdminUpdateExchangeInboundItem
-  extends AdminExchangeUpdateItem {}
+export interface AdminUpdateExchangeInboundItem extends AdminExchangeUpdateItem {}
 
-export interface AdminUpdateExchangeOutboundItem
-  extends Omit<AdminExchangeUpdateItem, "reason_id" | "description"> {}
+export interface AdminUpdateExchangeOutboundItem extends Omit<
+  AdminExchangeUpdateItem,
+  "reason_id" | "description"
+> {}
 
-export interface AdminExchangeAddInboundShipping
-  extends AdminExchangeAddShippingMethod {}
-export interface AdminExchangeUpdateInboundShipping
-  extends AdminExchangeUpdateShippingMethod {}
+export interface AdminExchangeAddInboundShipping extends AdminExchangeAddShippingMethod {}
+export interface AdminExchangeUpdateInboundShipping extends AdminExchangeUpdateShippingMethod {}
 
-export interface AdminExchangeAddOutboundShipping
-  extends AdminExchangeAddShippingMethod {}
-export interface AdminExchangeUpdateOutboundShipping
-  extends AdminExchangeUpdateShippingMethod {}
+export interface AdminExchangeAddOutboundShipping extends AdminExchangeAddShippingMethod {}
+export interface AdminExchangeUpdateOutboundShipping extends AdminExchangeUpdateShippingMethod {}
 
 export interface AdminRequestExchange {
   /**

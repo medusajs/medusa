@@ -91,8 +91,7 @@ export interface TaxProviderDTO {
 /**
  * The filters to apply on the retrieved tax rates.
  */
-export interface FilterableTaxRateProps
-  extends BaseFilterable<FilterableTaxRateProps> {
+export interface FilterableTaxRateProps extends BaseFilterable<FilterableTaxRateProps> {
   /**
    * Find tax rates based on name and code properties through this search term.
    */
@@ -198,8 +197,7 @@ export interface TaxRegionDTO {
 /**
  * The filters to apply on the retrieved tax regions.
  */
-export interface FilterableTaxRegionProps
-  extends BaseFilterable<FilterableTaxRegionProps> {
+export interface FilterableTaxRegionProps extends BaseFilterable<FilterableTaxRegionProps> {
   /**
    * Find tax regions based on currency and province codes through this search term.
    * The province code is the lower-case [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) province or state code.
@@ -310,8 +308,7 @@ export interface TaxRateRuleDTO {
 /**
  * The filters to apply on the retrieved tax rate rules.
  */
-export interface FilterableTaxRateRuleProps
-  extends BaseFilterable<FilterableTaxRateRuleProps> {
+export interface FilterableTaxRateRuleProps extends BaseFilterable<FilterableTaxRateRuleProps> {
   /**
    * Filter the tax rate rule by what it references.
    */

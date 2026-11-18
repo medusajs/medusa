@@ -4,8 +4,7 @@ import { CSS } from "@dnd-kit/utilities"
 import { clx } from "@/utils/clx"
 import { Table } from "@/components/table"
 
-interface DataTableSortableHeaderCellProps
-  extends React.HTMLAttributes<HTMLTableCellElement> {
+interface DataTableSortableHeaderCellProps extends React.HTMLAttributes<HTMLTableCellElement> {
   id: string
   children: React.ReactNode
   isFirstColumn?: boolean
@@ -66,7 +65,7 @@ export const DataTableSortableHeaderCell = React.forwardRef<
         ref={combineRefs}
         style={style}
         className={clx(className, "group/header-cell bg-ui-bg-subtle", {
-          "bg-ui-bg-base border-ui-border-interactive shadow-elevation-flyout":
+          "border-ui-border-interactive bg-ui-bg-base shadow-elevation-flyout":
             isDragging,
         })}
         {...attributes}

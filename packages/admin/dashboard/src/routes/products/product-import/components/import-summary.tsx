@@ -10,7 +10,7 @@ export const ImportSummary = ({
   const { t } = useTranslation()
 
   return (
-    <div className="shadow-elevation-card-rest bg-ui-bg-component transition-fg flex flex-row rounded-md px-3 py-2">
+    <div className="flex flex-row rounded-md bg-ui-bg-component px-3 py-2 shadow-elevation-card-rest transition-fg">
       <Stat
         title={summary.toCreate.toLocaleString()}
         description={t("products.import.upload.productsToCreate")}

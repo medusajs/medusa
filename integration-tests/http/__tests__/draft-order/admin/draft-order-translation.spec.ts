@@ -9,8 +9,6 @@ import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 
 jest.setTimeout(300000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Draft Order Translation API", () => {

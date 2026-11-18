@@ -223,9 +223,10 @@ export class ApiKeyModuleService
           forCreate,
           sharedContext
         )
-        const serializedResponse = await this.baseRepository_.serialize<
-          ApiKeyTypes.ApiKeyDTO[]
-        >(createdApiKeys)
+        const serializedResponse =
+          await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO[]>(
+            createdApiKeys
+          )
 
         return serializedResponse.map(
           (key) =>
@@ -235,7 +236,7 @@ export class ApiKeyModuleService
                 generatedTokens.find((t) => t.hashedToken === key.token)
                   ?.rawToken ?? key.token,
               salt: undefined,
-            } as ApiKeyTypes.ApiKeyDTO)
+            }) as ApiKeyTypes.ApiKeyDTO
         )
       }
 
@@ -520,7 +521,7 @@ export class ApiKeyModuleService
           ({
             id: apiKey.id,
             ...data,
-          } as T)
+          }) as T
       )
     }
 

@@ -20,7 +20,7 @@ type ComboboxQueryParams = {
 
 export const useComboboxData = <
   TResponse extends ComboboxExternalData,
-  TParams extends ComboboxQueryParams
+  TParams extends ComboboxQueryParams,
 >({
   queryKey,
   queryFn,
@@ -49,7 +49,7 @@ export const useComboboxData = <
         limit: Array.isArray(defaultValue) ? defaultValue.length : 1,
       } as TParams)
     },
-    enabled: !!defaultValue,
+    enabled: enabled && !!defaultValue,
   })
 
   const { data, ...rest } = useInfiniteQuery({

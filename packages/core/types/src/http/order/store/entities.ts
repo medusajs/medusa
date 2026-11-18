@@ -16,8 +16,10 @@ import {
   BaseOrderShippingMethodTaxLine,
 } from "../common"
 
-export interface StoreOrder
-  extends Omit<BaseOrder, "items" | "version" | "transations"> {
+export interface StoreOrder extends Omit<
+  BaseOrder,
+  "items" | "version" | "transations"
+> {
   /**
    * The order's shipping address.
    */
@@ -47,8 +49,10 @@ export interface StoreOrder
    */
   customer?: StoreCustomer
 }
-export interface StoreOrderLineItem
-  extends Omit<BaseOrderLineItem, "product" | "variant"> {
+export interface StoreOrderLineItem extends Omit<
+  BaseOrderLineItem,
+  "product" | "variant"
+> {
   /**
    * The associated product variant.
    */

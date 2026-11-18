@@ -36,7 +36,7 @@ export const removeCampaignPromotionsStep = createStep(
       })
     }
 
-    return new StepResponse(null, input)
+    return new StepResponse(promotionIdsToRemove, input)
   },
   async (data, { container }) => {
     if (!data) {

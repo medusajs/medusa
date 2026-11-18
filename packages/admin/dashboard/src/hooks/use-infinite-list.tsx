@@ -37,7 +37,7 @@ export const useInfiniteList = <
     limit?: number
   },
   TError = FetchError,
-  TQueryKey extends QueryKey = QueryKey
+  TQueryKey extends QueryKey = QueryKey,
 >({
   queryKey,
   queryFn,

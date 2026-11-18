@@ -68,4 +68,37 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: batchPriceListPricesWorkflow
-  x-events: []
+  x-events:
+    - name: price-list.prices_added
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the price list
+          price_set_ids, // The IDs of the price sets whose prices were added
+        }
+        ```
+      description: Emitted when prices are added to a price list.
+      deprecated: false
+      since: 2.21.3
+    - name: price-list.prices_updated
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the price list
+          price_set_ids, // The IDs of the price sets whose prices were updated
+        }
+        ```
+      description: Emitted when prices in a price list are updated.
+      deprecated: false
+      since: 2.21.3
+    - name: price-list.prices_removed
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the price list
+          price_set_ids, // The IDs of the price sets whose prices were removed
+        }
+        ```
+      description: Emitted when prices are removed from a price list.
+      deprecated: false
+      since: 2.21.3

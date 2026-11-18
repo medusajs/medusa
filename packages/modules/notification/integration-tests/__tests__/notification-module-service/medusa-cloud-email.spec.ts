@@ -99,7 +99,7 @@ moduleIntegrationTestRunner<INotificationModuleService>({
               status: 500,
               statusText: "Internal Server Error",
               json: () => Promise.resolve({ message: "Internal Server Error" }),
-            } as any)
+            }) as any
         )
 
         await expect(

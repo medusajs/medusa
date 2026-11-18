@@ -18,7 +18,7 @@ export const LocationItem = ({
       className={clx(
         "flex w-full cursor-pointer gap-x-2 rounded-lg border px-2 py-2",
         {
-          "border-ui-border-interactive ": selected,
+          "border-ui-border-interactive": selected,
         }
       )}
       onClick={() => onSelect(!selected)}

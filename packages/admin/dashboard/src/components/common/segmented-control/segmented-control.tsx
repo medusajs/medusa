@@ -22,7 +22,7 @@ export const SegmentedControl = ({
   return (
     <div
       className={clx(
-        "bg-ui-bg-disabled grid items-center gap-x-[1px] rounded-md p-[1px]",
+        "grid items-center gap-x-[1px] rounded-md bg-ui-bg-disabled p-[1px]",
         className
       )}
       style={{
@@ -41,7 +41,7 @@ export const SegmentedControl = ({
             type="button"
             className={clx(
               "w-auto",
-              !isSelected && "hover:text-ui-fg-base text-ui-fg-muted"
+              !isSelected && "text-ui-fg-muted hover:text-ui-fg-base"
             )}
           >
             {option.label}

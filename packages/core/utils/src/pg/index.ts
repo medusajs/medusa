@@ -37,7 +37,7 @@ export function createClient(options: string | ClientConfig) {
  * `client.connect` before using this utility.
  */
 export async function createDb(client: Client, databaseName: string) {
-  await client.query(`CREATE DATABASE "${databaseName}"`)
+  await client.query(`CREATE DATABASE ${client.escapeIdentifier(databaseName)}`)
 }
 
 /**
@@ -46,7 +46,8 @@ export async function createDb(client: Client, databaseName: string) {
  */
 export async function dbExists(client: Client, databaseName: string) {
   const result = await client.query(
-    `SELECT datname FROM pg_catalog.pg_database WHERE datname='${databaseName}';`
+    `SELECT datname FROM pg_catalog.pg_database WHERE datname = $1;`,
+    [databaseName]
   )
   return !!result.rowCount
 }

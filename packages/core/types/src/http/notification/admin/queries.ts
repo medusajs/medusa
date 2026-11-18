@@ -2,8 +2,7 @@ import { BaseFilterable } from "../../../dal"
 import { FindParams, SelectParams } from "../../common"
 
 export interface AdminNotificationListParams
-  extends BaseFilterable<AdminNotificationListParams>,
-    FindParams {
+  extends BaseFilterable<AdminNotificationListParams>, FindParams {
   /**
    * Query or keywords to search the notification's searchable fields.
    */

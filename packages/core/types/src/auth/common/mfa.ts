@@ -324,8 +324,7 @@ export type UseAuthMfaRecoveryCodeDTO = {
  *
  * @since 2.15.3
  */
-export interface FilterableAuthMfaProps
-  extends BaseFilterable<FilterableAuthMfaProps> {
+export interface FilterableAuthMfaProps extends BaseFilterable<FilterableAuthMfaProps> {
   /**
    * Filter by multi-factor authentication (MFA) configuration IDs.
    */

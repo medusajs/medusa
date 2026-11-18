@@ -21,8 +21,8 @@ function toCard(product: HttpTypes.StoreProduct) {
 ```
 
 - Storefronts and admin extensions that only need HTTP shapes can import `HttpTypes` from `@medusajs/types` directly (no runtime cost).
-- Namespaced bundles (`src/bundles.ts`): `HttpTypes`, `ProductTypes`, `OrderTypes`, `CartTypes`, `PricingTypes`, `ModulesSdkTypes`, `DAL`, `DmlTypes`, `SearchTypes`, `WorkflowsSdkTypes`, ...
-- Provider contracts to implement for custom providers live here (e.g. `IPaymentProvider` in `payment/provider.ts`, `ITaxProvider` in `tax/provider.ts`, `ILockingProvider` in `locking/index.ts`, `ICachingProviderService` in `caching/index.ts`, `AuthMfaProvider` in `auth/mfa-provider.ts`).
+- Namespaced bundles (`src/bundles.ts`): `HttpTypes`, `ProductTypes`, `OrderTypes`, `CartTypes`, `PricingTypes`, `ModulesSdkTypes`, `DAL`, `DmlTypes`, `SearchTypes`, `AuditTypes`, `WorkflowsSdkTypes`, ...
+- Provider contracts to implement for custom providers live here (e.g. `IPaymentProvider` in `payment/provider.ts`, `ITaxProvider` in `tax/provider.ts`, `ILockingProvider` in `locking/index.ts`, `ICachingProviderService` in `caching/index.ts`, `IAuditProvider` in `audit/provider.ts`, `AuthMfaProvider` in `auth/mfa-provider.ts`).
 - Typed module options in `defineConfig`: modules augment `ModuleOptions` keyed by their `resolve` string:
 
 ```ts

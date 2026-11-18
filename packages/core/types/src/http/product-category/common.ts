@@ -71,8 +71,7 @@ export interface BaseProductCategory {
 }
 
 export interface BaseProductCategoryListParams
-  extends FindParams,
-    BaseFilterable<BaseProductCategoryListParams> {
+  extends FindParams, BaseFilterable<BaseProductCategoryListParams> {
   /**
    * A query or keywords to search the category's searchable fields.
    */

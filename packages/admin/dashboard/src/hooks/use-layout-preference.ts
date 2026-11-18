@@ -93,8 +93,8 @@ export function useLayoutPreference(zone: string): UseLayoutPreferenceReturn {
   const definedScope: LayoutScope | null = personal_configuration
     ? "personal"
     : default_configuration
-    ? "default"
-    : null
+      ? "default"
+      : null
 
   const setPreference = useCallback(
     (

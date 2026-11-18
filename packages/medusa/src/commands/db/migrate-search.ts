@@ -1,4 +1,3 @@
-import checkbox from "@inquirer/checkbox"
 import { MedusaAppLoader } from "@medusajs/framework"
 import { LinkLoader } from "@medusajs/framework/links"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
@@ -14,8 +13,7 @@ import {
   mergePluginModules,
   Modules,
 } from "@medusajs/framework/utils"
-import boxen from "boxen"
-import chalk from "chalk"
+import { styleText } from "util"
 import { join } from "path"
 
 import { initializeContainer } from "../../loaders"
@@ -27,7 +25,7 @@ const TERMINAL_SIZE = process.stdout.columns
 function describeAction(
   action: SearchTypes.SearchIndexMigrationAction
 ): string {
-  const index = chalk.yellow(action.index)
+  const index = styleText("yellow", action.index)
 
   if (action.action === "drop") {
     // Every version goes, so all of them are named rather than just the one
@@ -36,11 +34,11 @@ function describeAction(
       ? action.physical_names.join(", ")
       : "no physical index"
 
-    return `${index} ${chalk.dim(`(${detail})`)}`
+    return `${index} ${styleText("dim", `(${detail})`)}`
   }
 
   if (action.action !== "migrate") {
-    return `${index} ${chalk.dim(`(${action.physical_name})`)}`
+    return `${index} ${styleText("dim", `(${action.physical_name})`)}`
   }
 
   const destination = `${action.active_physical_name} -> ${action.physical_name}`
@@ -49,14 +47,15 @@ function describeAction(
     ? `${action.previous_provider} -> ${action.provider}, ${destination}`
     : destination
 
-  return `${index} ${chalk.dim(`(${detail})`)}`
+  return `${index} ${styleText("dim", `(${detail})`)}`
 }
 
-function logActions(
+async function logActions(
   title: string,
   actions: SearchTypes.SearchIndexMigrationAction[],
   logger: Logger
 ) {
+  const { default: boxen } = await import("boxen")
   const actionsList = actions
     .map((action) => `  - ${describeAction(action)}`)
     .join("\n")
@@ -84,8 +83,8 @@ async function selectIndexesToDrop({
     return []
   }
 
-  const skip = (reason: string) => {
-    logActions(
+  const skip = async (reason: string) => {
+    await logActions(
       `Left the following search indexes in place, which no definition declares any more (${reason})`,
       actions,
       logger
@@ -107,20 +106,20 @@ async function selectIndexesToDrop({
     )
   }
 
+  const { default: boxen } = await import("boxen")
   logger.info(
     boxen(
-      `Select the search indexes to ${chalk.red(
+      `Select the search indexes to ${styleText(
+        "red",
         "DROP"
       )}. No definition declares them any more, and dropping one deletes every document it holds.`,
       { borderColor: "red", padding: 1 }
     )
   )
 
+  const { default: checkbox } = await import("@inquirer/checkbox")
   return await checkbox({
     message: "Select search indexes to drop",
-    instructions: chalk.dim(
-      " <space> select, <a> select all, <i> inverse, <enter> submit"
-    ),
     choices: actions.map((action) => {
       return {
         name: describeAction(action),
@@ -221,13 +220,13 @@ export async function migrateSearchIndexes({
     ])
 
     if (toCreate.length) {
-      logActions("Created following search indexes", toCreate, logger)
+      await logActions("Created following search indexes", toCreate, logger)
     }
     if (toMigrate.length) {
-      logActions("Rebuilt following search indexes", toMigrate, logger)
+      await logActions("Rebuilt following search indexes", toMigrate, logger)
     }
     if (toDrop.length) {
-      logActions("Dropped following search indexes", toDrop, logger)
+      await logActions("Dropped following search indexes", toDrop, logger)
     }
 
     logger.info(

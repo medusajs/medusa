@@ -26,7 +26,7 @@ import {
   TransactionStepState,
 } from "@medusajs/framework/utils"
 import { WorkflowOrchestratorService } from "@services"
-import { type CronExpression, parseExpression } from "cron-parser"
+import { type CronExpression, CronExpressionParser } from "cron-parser"
 import { WorkflowExecution } from "../models/workflow-execution"
 
 const THIRTY_MINUTES_IN_MS = 1000 * 60 * 30
@@ -70,7 +70,7 @@ function parseNextExecution(
 ) {
   if (typeof optionsOrExpression === "object") {
     if ("cron" in optionsOrExpression) {
-      const expression = parseExpression(optionsOrExpression.cron)
+      const expression = CronExpressionParser.parse(optionsOrExpression.cron)
       return calculateDelayFromExpression(expression)
     }
 
@@ -84,7 +84,7 @@ function parseNextExecution(
   const result = parseInt(`${optionsOrExpression}`)
 
   if (isNaN(result)) {
-    const expression = parseExpression(`${optionsOrExpression}`)
+    const expression = CronExpressionParser.parse(`${optionsOrExpression}`)
     return calculateDelayFromExpression(expression)
   }
 
@@ -656,7 +656,7 @@ export class InMemoryDistributedTransactionStorage
 
     if ("cron" in schedulerOptions) {
       // Cache the parsed expression to avoid repeated parsing
-      expression = parseExpression(schedulerOptions.cron)
+      expression = CronExpressionParser.parse(schedulerOptions.cron)
     } else if ("interval" in schedulerOptions) {
       expression = schedulerOptions.interval
     } else {

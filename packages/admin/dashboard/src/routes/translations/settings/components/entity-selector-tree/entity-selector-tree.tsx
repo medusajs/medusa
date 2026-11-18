@@ -215,7 +215,7 @@ export const EntitySelectorTree = React.forwardRef<
     <div className="flex h-full flex-col">
       <div className="flex-1 overflow-y-auto">
         {filteredAndSortedEntities.length === 0 ? (
-          <div className="text-ui-fg-subtle flex items-center justify-center py-12 text-sm">
+          <div className="flex items-center justify-center py-12 text-sm text-ui-fg-subtle">
             No entities matching filters
           </div>
         ) : (

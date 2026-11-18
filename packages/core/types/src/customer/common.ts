@@ -100,8 +100,7 @@ export interface CustomerAddressDTO {
 /**
  * The filters to apply on the retrieved customer address.
  */
-export interface FilterableCustomerAddressProps
-  extends BaseFilterable<FilterableCustomerAddressProps> {
+export interface FilterableCustomerAddressProps extends BaseFilterable<FilterableCustomerAddressProps> {
   /**
    * Searches for addresses by properties such as name and street using this search term.
    */
@@ -206,8 +205,7 @@ export interface FilterableCustomerAddressProps
 /**
  * The filters to apply on the retrieved customer group.
  */
-export interface FilterableCustomerGroupProps
-  extends BaseFilterable<FilterableCustomerGroupProps> {
+export interface FilterableCustomerGroupProps extends BaseFilterable<FilterableCustomerGroupProps> {
   /**
    * Searches for customer groups by name using this search term.
    */
@@ -247,8 +245,7 @@ export interface FilterableCustomerGroupProps
 /**
  * The filters to apply on the retrieved customer group's customers.
  */
-export interface FilterableCustomerGroupCustomerProps
-  extends BaseFilterable<FilterableCustomerGroupCustomerProps> {
+export interface FilterableCustomerGroupCustomerProps extends BaseFilterable<FilterableCustomerGroupCustomerProps> {
   /**
    * The IDs to filter the customer group's customer relation.
    */
@@ -293,8 +290,7 @@ export interface FilterableCustomerGroupCustomerProps
 /**
  * The filters to apply on the retrieved customer.
  */
-export interface FilterableCustomerProps
-  extends BaseFilterable<FilterableCustomerProps> {
+export interface FilterableCustomerProps extends BaseFilterable<FilterableCustomerProps> {
   /**
    * Searches for customers by properties such as name and email using this search term.
    */

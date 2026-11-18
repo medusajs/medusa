@@ -33,7 +33,6 @@ export interface CreateLineItemDTO extends PartialUpsertLineItemDTO {
 }
 
 export interface UpdateLineItemDTO
-  extends PartialUpsertLineItemDTO,
-    Partial<CreateLineItemDTO> {
+  extends PartialUpsertLineItemDTO, Partial<CreateLineItemDTO> {
   id: string
 }

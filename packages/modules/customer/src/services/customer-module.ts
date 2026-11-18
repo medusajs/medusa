@@ -104,8 +104,7 @@ export default class CustomerModuleService
   @EmitEvents()
   async createCustomers(
     dataOrArray:
-      | CustomerTypes.CreateCustomerDTO
-      | CustomerTypes.CreateCustomerDTO[],
+      CustomerTypes.CreateCustomerDTO | CustomerTypes.CreateCustomerDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<CustomerTypes.CustomerDTO | CustomerTypes.CustomerDTO[]> {
     const customers = await this.createCustomers_(dataOrArray, sharedContext)
@@ -122,8 +121,7 @@ export default class CustomerModuleService
   @InjectTransactionManager()
   async createCustomers_(
     dataOrArray:
-      | CustomerTypes.CreateCustomerDTO
-      | CustomerTypes.CreateCustomerDTO[],
+      CustomerTypes.CreateCustomerDTO | CustomerTypes.CreateCustomerDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof Customer>[]> {
     const data = Array.isArray(dataOrArray) ? dataOrArray : [dataOrArray]
@@ -311,9 +309,7 @@ export default class CustomerModuleService
   // @ts-expect-error
   async updateCustomerGroups(
     groupIdOrSelector:
-      | string
-      | string[]
-      | CustomerTypes.FilterableCustomerGroupProps,
+      string | string[] | CustomerTypes.FilterableCustomerGroupProps,
     data: CustomerTypes.CustomerGroupUpdatableFields,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
@@ -333,9 +329,7 @@ export default class CustomerModuleService
   @InjectTransactionManager()
   protected async updateCustomerGroups_(
     groupIdOrSelector:
-      | string
-      | string[]
-      | CustomerTypes.FilterableCustomerGroupProps,
+      string | string[] | CustomerTypes.FilterableCustomerGroupProps,
     data: CustomerTypes.CustomerGroupUpdatableFields,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
@@ -491,9 +485,7 @@ export default class CustomerModuleService
   // @ts-expect-error
   async updateCustomerAddresses(
     addressIdOrSelector:
-      | string
-      | string[]
-      | CustomerTypes.FilterableCustomerAddressProps,
+      string | string[] | CustomerTypes.FilterableCustomerAddressProps,
     data: CustomerTypes.UpdateCustomerAddressDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
@@ -513,9 +505,7 @@ export default class CustomerModuleService
   @InjectTransactionManager()
   protected async updateCustomerAddresses_(
     addressIdOrSelector:
-      | string
-      | string[]
-      | CustomerTypes.FilterableCustomerAddressProps,
+      string | string[] | CustomerTypes.FilterableCustomerAddressProps,
     data: CustomerTypes.UpdateCustomerAddressDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<

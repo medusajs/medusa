@@ -58,8 +58,8 @@ export const CloudAuthLogin = ({ onMfaChallenge }: CloudAuthLoginProps) => {
   // Render full-screen overlay during auto-login or callback to hide the login form
   if (isAutoLogin || isCallback) {
     return (
-      <div className="bg-ui-bg-subtle fixed inset-0 z-50 flex items-center justify-center">
-        <Spinner className="text-ui-fg-subtle animate-spin" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-ui-bg-subtle">
+        <Spinner className="animate-spin text-ui-fg-subtle" />
       </div>
     )
   }
@@ -73,7 +73,7 @@ export const CloudAuthLogin = ({ onMfaChallenge }: CloudAuthLoginProps) => {
   // If it's not auto-login or callback, and the cloud auth is enabled, just show the login button.
   return (
     <>
-      <hr className="bg-ui-border-base my-4" />
+      <hr className="my-4 bg-ui-border-base" />
       <Button
         variant="secondary"
         onClick={handleLogin}

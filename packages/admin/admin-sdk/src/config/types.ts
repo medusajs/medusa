@@ -70,11 +70,25 @@ export interface RouteConfig {
    * ```
    */
   translationNs?: string
+
+  /**
+   * The RBAC permissions, as `resource:operation` keys, required to open the
+   * route. The user must hold all of them. Without them, the route renders an
+   * access denied page and its sidebar item is hidden. Child routes inherit
+   * the requirement unless they declare their own. Only enforced when the RBAC
+   * module is installed.
+   *
+   * @example
+   * ```ts
+   * permissions: ["gift_card:read"]
+   * ```
+   */
+  permissions?: string | string[]
 }
 
 export type CustomFormField<
   TData = unknown,
-  TValidation extends ZodFirstPartySchemaTypes = ZodFirstPartySchemaTypes
+  TValidation extends ZodFirstPartySchemaTypes = ZodFirstPartySchemaTypes,
 > = {
   /**
    * The rules that the field should be validated against.
@@ -145,8 +159,10 @@ export interface CustomFieldConfig<TModel extends CustomFieldModel> {
   link: string | string[]
   forms: Array<
     {
-      [K in CustomFieldFormKeys<TModel> &
-        keyof CustomFieldModelFormTabsMap[TModel]]: {
+      [
+        K in CustomFieldFormKeys<TModel> &
+          keyof CustomFieldModelFormTabsMap[TModel]
+      ]: {
         /**
          * The form to extend.
          *

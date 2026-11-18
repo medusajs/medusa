@@ -9,7 +9,7 @@ export type DetailPageDefaultsOptions = {
   metadata?: boolean
   /** Render the JSON view section. @default true */
   jsonView?: boolean
-  /** Render the required-permissions section. @default true */
+  /** Render the required-permissions section. @default false */
   permissions?: boolean
 }
 
@@ -18,13 +18,15 @@ export type DetailPageDefaultsOptions = {
  * required permissions), each wrapped in a `LayoutComposer.Entry` with a
  * stable id so saved user preferences survive component renames.
  *
- * All three render by default. Pass an options object to opt out of any a
- * given page doesn't use, so the page renders exactly the set it always had:
+ * Metadata and JSON render by default.
  *
  * ```tsx
  * sections={{ main: <>{...coreContent}{detailPageDefaultEntries(entity)}</> }}
  * // metadata + json only:
- * {detailPageDefaultEntries(entity, { permissions: false })}
+ * {detailPageDefaultEntries(entity)}
+ * 
+ * // metadata + json + permissions:
+ * {detailPageDefaultEntries(entity, { permissions: true })}
  * ```
  */
 export function detailPageDefaultEntries(
@@ -32,7 +34,7 @@ export function detailPageDefaultEntries(
   {
     metadata = true,
     jsonView = true,
-    permissions = true,
+    permissions = false,
   }: DetailPageDefaultsOptions = {}
 ): ReactNode {
   return (

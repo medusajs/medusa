@@ -2,11 +2,16 @@ import Handlebars from "handlebars"
 import {
   DeclarationReflection,
   ProjectReflection,
+  ReflectionCategory,
   ReflectionGroup,
   ReflectionKind,
 } from "typedoc"
 import { MarkdownTheme } from "../../theme.js"
-import { escapeChars } from "utils"
+import {
+  escapeChars,
+  getReflectionUrl,
+  allChildrenHaveOwnDocument,
+} from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -26,10 +31,13 @@ export default function (theme: MarkdownTheme) {
       const isVisible =
         isNamespaceVisible ||
         this.groups?.some((group) => {
-          return group.allChildrenHaveOwnDocument()
+          return allChildrenHaveOwnDocument(group)
         })
 
-      function pushGroup(group: ReflectionGroup, md: string[]) {
+      function pushGroup(
+        group: ReflectionGroup | ReflectionCategory,
+        md: string[]
+      ) {
         const children = group.children
           .sort((childA, childB) => {
             return childA.name.localeCompare(childB.name)
@@ -37,7 +45,7 @@ export default function (theme: MarkdownTheme) {
           .map(
             (child) =>
               `- [${escapeChars(child.name)}](${Handlebars.helpers.relativeURL(
-                child.url
+                getReflectionUrl(child)
               )})`
           )
         md.push(children.join("\n"))
@@ -63,7 +71,7 @@ export default function (theme: MarkdownTheme) {
                 })
                 .forEach((category) => {
                   md.push(`${headingLevel} ${category.title} ${groupTitle}\n\n`)
-                  pushGroup(category as ReflectionGroup, md)
+                  pushGroup(category, md)
                   md.push("\n")
                 })
             } else {

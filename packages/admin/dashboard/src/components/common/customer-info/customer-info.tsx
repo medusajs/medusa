@@ -13,20 +13,20 @@ const ID = ({ data }: { data: HttpTypes.AdminOrder }) => {
   const fallback = (name || email || "").charAt(0).toUpperCase()
 
   return (
-    <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+    <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
       <Text size="small" leading="compact" weight="plus">
         {t("fields.id")}
       </Text>
       <Link
         to={`/customers/${id}`}
-        className="focus:shadow-borders-focus rounded-[4px] outline-none transition-shadow"
+        className="rounded-[4px] outline-none transition-shadow focus:shadow-borders-focus"
       >
         <div className="flex items-center gap-x-2 overflow-hidden">
           <Avatar size="2xsmall" fallback={fallback} />
           <Text
             size="small"
             leading="compact"
-            className="text-ui-fg-subtle hover:text-ui-fg-base transition-fg truncate"
+            className="truncate text-ui-fg-subtle transition-fg hover:text-ui-fg-base"
           >
             {name || email}
           </Text>
@@ -46,7 +46,7 @@ const Company = ({ data }: { data: HttpTypes.AdminOrder }) => {
   }
 
   return (
-    <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+    <div className="grid grid-cols-2 items-center px-6 py-4 text-ui-fg-subtle">
       <Text size="small" leading="compact" weight="plus">
         {t("fields.company")}
       </Text>
@@ -64,7 +64,7 @@ const Contact = ({ data }: { data: HttpTypes.AdminOrder }) => {
   const email = data.email || ""
 
   return (
-    <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+    <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
       <Text size="small" leading="compact" weight="plus">
         {t("orders.customer.contactLabel")}
       </Text>
@@ -114,7 +114,7 @@ const AddressPrint = ({
   const { t } = useTranslation()
 
   return (
-    <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
+    <div className="grid grid-cols-2 items-start px-6 py-4 text-ui-fg-subtle">
       <Text size="small" leading="compact" weight="plus">
         {type === "shipping"
           ? t("addresses.shippingAddress.label")

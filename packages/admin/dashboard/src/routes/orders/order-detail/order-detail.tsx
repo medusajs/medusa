@@ -17,6 +17,7 @@ import { OrderPaymentSection } from "./components/order-payment-section"
 import { OrderSummarySection } from "./components/order-summary-section"
 import { DEFAULT_FIELDS, ExtendedOrder } from "./constants"
 import { orderLoader } from "./loader"
+import { PermissionGuard } from "../../../components/common/permission-guard"
 
 export const OrderDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof orderLoader>>
@@ -72,16 +73,24 @@ export const OrderDetail = () => {
         main: (
           <>
             <LayoutComposer.Entry id="OrderActiveEditSection">
-              <OrderActiveEditSection order={order} />
+              <PermissionGuard permission="order_change:read">
+                <OrderActiveEditSection order={order} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ActiveOrderClaimSection">
-              <ActiveOrderClaimSection orderPreview={orderPreview!} />
+              <PermissionGuard permission="order_claim:read">
+                <ActiveOrderClaimSection orderPreview={orderPreview!} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ActiveOrderExchangeSection">
-              <ActiveOrderExchangeSection orderPreview={orderPreview!} />
+              <PermissionGuard permission="order_exchange:read">
+                <ActiveOrderExchangeSection orderPreview={orderPreview!} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="ActiveOrderReturnSection">
-              <ActiveOrderReturnSection orderPreview={orderPreview!} />
+              <PermissionGuard permission="return:read">
+                <ActiveOrderReturnSection orderPreview={orderPreview!} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="OrderGeneralSection">
               <OrderGeneralSection order={order as ExtendedOrder} />
@@ -90,13 +99,17 @@ export const OrderDetail = () => {
               <OrderSummarySection order={order} plugins={plugins} />
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="OrderPaymentSection">
-              <OrderPaymentSection
-                order={order as ExtendedOrder}
-                plugins={plugins}
-              />
+              <PermissionGuard permissions={["payment:read", "refund:read"]}>
+                <OrderPaymentSection
+                  order={order as ExtendedOrder}
+                  plugins={plugins}
+                />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="OrderFulfillmentSection">
-              <OrderFulfillmentSection order={order as ExtendedOrder} />
+              <PermissionGuard permission="fulfillment:read">
+                <OrderFulfillmentSection order={order as ExtendedOrder} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             {detailPageDefaultEntries(order)}
           </>
@@ -104,7 +117,9 @@ export const OrderDetail = () => {
         side: (
           <>
             <LayoutComposer.Entry id="OrderCustomerSection">
-              <OrderCustomerSection order={order} />
+              <PermissionGuard permission="customer:read">
+                <OrderCustomerSection order={order} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="OrderActivitySection">
               <OrderActivitySection order={order as ExtendedOrder} />

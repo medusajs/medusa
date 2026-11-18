@@ -51,13 +51,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_orders_{id}_fulfillments_{fulfillment_id}_mark-as-delivered/post.js
+        $ref: ../code_samples/JavaScript/admin_orders_{id}_fulfillments_{fulfillment_id}_mark-as-delivered/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_orders_{id}_fulfillments_{fulfillment_id}_mark-as-delivered/post.sh
+        $ref: ../code_samples/Shell/admin_orders_{id}_fulfillments_{fulfillment_id}_mark-as-delivered/post.sh
   tags:
     - Orders
   responses:

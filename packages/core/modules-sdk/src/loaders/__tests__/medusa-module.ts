@@ -53,8 +53,8 @@ describe("Medusa Modules", () => {
       } as InternalModuleDeclaration,
     })
 
-    expect(mockRegisterMedusaModule).toBeCalledTimes(1)
-    expect(mockModuleLoader).toBeCalledTimes(1)
+    expect(mockRegisterMedusaModule).toHaveBeenCalledTimes(1)
+    expect(mockModuleLoader).toHaveBeenCalledTimes(1)
 
     await MedusaModule.bootstrap({
       moduleKey: "moduleKey",
@@ -80,14 +80,14 @@ describe("Medusa Modules", () => {
       } as InternalModuleDeclaration,
     })
 
-    expect(mockRegisterMedusaModule).toBeCalledTimes(2)
-    expect(mockModuleLoader).toBeCalledTimes(2)
+    expect(mockRegisterMedusaModule).toHaveBeenCalledTimes(2)
+    expect(mockModuleLoader).toHaveBeenCalledTimes(2)
   })
 
   it("should prevent the module being loaded multiple times under concurrent requests", async () => {
     const load: any = []
 
-    for (let i = 5; i--; ) {
+    for (let i = 5; i--;) {
       load.push(
         MedusaModule.bootstrap({
           moduleKey: "moduleKey",
@@ -105,8 +105,8 @@ describe("Medusa Modules", () => {
 
     const intances = Promise.all(load)
 
-    expect(mockRegisterMedusaModule).toBeCalledTimes(1)
-    expect(mockModuleLoader).toBeCalledTimes(1)
+    expect(mockRegisterMedusaModule).toHaveBeenCalledTimes(1)
+    expect(mockModuleLoader).toHaveBeenCalledTimes(1)
     expect(intances[(await intances).length - 1]).toBe(intances[0])
   })
 

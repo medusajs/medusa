@@ -264,9 +264,10 @@ export default class AuthModuleService
       sharedContext
     )
 
-    const serializedProviders = await this.baseRepository_.serialize<
-      AuthTypes.ProviderIdentityDTO[]
-    >(updatedProviders)
+    const serializedProviders =
+      await this.baseRepository_.serialize<AuthTypes.ProviderIdentityDTO[]>(
+        updatedProviders
+      )
 
     return serializedProviders
   }
@@ -1147,9 +1148,8 @@ export default class AuthModuleService
           ],
         }
 
-        const createdAuthIdentity = await this.authIdentityService_.create(
-          normalizedRequest
-        )
+        const createdAuthIdentity =
+          await this.authIdentityService_.create(normalizedRequest)
 
         return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
           createdAuthIdentity

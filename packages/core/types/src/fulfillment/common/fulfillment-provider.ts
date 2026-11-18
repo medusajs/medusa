@@ -44,8 +44,7 @@ export interface FulfillmentProviderDTO {
 /**
  * The filters to apply on the retrieved fulfillment providers.
  */
-export interface FilterableFulfillmentProviderProps
-  extends BaseFilterable<FilterableFulfillmentProviderProps> {
+export interface FilterableFulfillmentProviderProps extends BaseFilterable<FilterableFulfillmentProviderProps> {
   /**
    * The IDs to filter the provider by.
    */

@@ -41,13 +41,13 @@ export const CategoryOrganizeSection = ({
           ]}
         />
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start gap-3 px-6 py-4">
+      <div className="grid grid-cols-2 items-start gap-3 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("categories.fields.path.label")}
         </Text>
         <PathDisplay category={category} />
       </div>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-start gap-3 px-6 py-4">
+      <div className="grid grid-cols-2 items-start gap-3 px-6 py-4 text-ui-fg-subtle">
         <Text size="small" leading="compact" weight="plus">
           {t("categories.fields.children.label")}
         </Text>

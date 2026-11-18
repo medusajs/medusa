@@ -7,7 +7,7 @@ import { Spinner } from "@medusajs/icons"
 
 const buttonVariants = cva({
   base: clx(
-    "transition-fg relative inline-flex w-fit items-center justify-center overflow-hidden rounded-md outline-none",
+    "transition-fg relative inline-flex w-fit items-center justify-center overflow-hidden rounded-md outline-hidden",
     "disabled:bg-ui-bg-disabled disabled:border-ui-border-base disabled:text-ui-fg-disabled disabled:shadow-buttons-neutral disabled:after:hidden",
     "after:transition-fg after:absolute after:inset-0 after:content-['']"
   ),
@@ -54,7 +54,8 @@ const buttonVariants = cva({
 })
 
 interface ButtonProps
-  extends React.ComponentPropsWithoutRef<"button">,
+  extends
+    React.ComponentPropsWithoutRef<"button">,
     VariantProps<typeof buttonVariants> {
   isLoading?: boolean
   asChild?: boolean
@@ -103,7 +104,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           <span className="pointer-events-none">
             <div
               className={clx(
-                "bg-ui-bg-disabled absolute inset-0 flex items-center justify-center rounded-md"
+                "absolute inset-0 flex items-center justify-center rounded-md bg-ui-bg-disabled"
               )}
             >
               <Spinner className="animate-spin" />

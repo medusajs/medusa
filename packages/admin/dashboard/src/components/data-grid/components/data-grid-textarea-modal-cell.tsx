@@ -178,7 +178,7 @@ const Inner = ({
         <RadixPopover.Anchor asChild>
           <div
             className={clx(
-              "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent outline-none",
+              "txt-compact-small flex size-full cursor-pointer items-center justify-center bg-transparent text-ui-fg-subtle outline-none",
               "focus:cursor-text"
             )}
           >
@@ -206,7 +206,7 @@ const Inner = ({
       <RadixPopover.Portal>
         <RadixPopover.Content
           className={clx(
-            "bg-ui-bg-base shadow-elevation-flyout flex max-h-[80vh] w-[600px] overflow-hidden p-0 outline-none"
+            "flex max-h-[80vh] w-[600px] overflow-hidden bg-ui-bg-base p-0 shadow-elevation-flyout outline-none"
           )}
           align="start"
           side="bottom"
@@ -223,7 +223,7 @@ const Inner = ({
               onKeyDown={(e) => {
                 e.stopPropagation()
               }}
-              className="!bg-ui-bg-base h-full min-h-[300px] w-full resize-none border-0 p-4 !shadow-none focus-visible:!shadow-none"
+              className="h-full min-h-[300px] w-full resize-none border-0 !bg-ui-bg-base p-4 !shadow-none focus-visible:!shadow-none"
             />
           </div>
         </RadixPopover.Content>

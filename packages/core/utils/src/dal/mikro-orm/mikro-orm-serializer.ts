@@ -671,7 +671,7 @@ export const mikroOrmSerializer = <TOutput extends object>(
           Array.isArray(options.populate) &&
           options.populate?.includes(WILDCARD)
             ? true
-            : options.populate ?? STATIC_OPTIONS_SHAPE.populate,
+            : (options.populate ?? STATIC_OPTIONS_SHAPE.populate),
         exclude: options.exclude,
         preventCircularRef:
           options.preventCircularRef ?? STATIC_OPTIONS_SHAPE.preventCircularRef,

@@ -140,7 +140,6 @@
  *     deprecated: false
  *     since: 2.12.3
  * x-since: 2.12.3
- * x-featureFlag: translation
  * 
 */
 

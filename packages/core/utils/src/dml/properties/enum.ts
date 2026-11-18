@@ -10,7 +10,7 @@ export type EnumLike = {
  * list of choices.
  */
 export class EnumProperty<
-  const Values extends unknown[] | EnumLike
+  const Values extends unknown[] | EnumLike,
 > extends BaseProperty<
   Values extends EnumLike ? Values[keyof Values] : Values[number]
 > {

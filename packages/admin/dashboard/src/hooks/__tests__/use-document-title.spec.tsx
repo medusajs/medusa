@@ -14,7 +14,7 @@ const buildMatch = (
     loaderData: undefined,
     handle: undefined,
     ...overrides,
-  } as UIMatch<unknown, RouteHandle>)
+  }) as UIMatch<unknown, RouteHandle>
 
 describe("getTitleFromMatch", () => {
   it("returns null when the handle is undefined", () => {

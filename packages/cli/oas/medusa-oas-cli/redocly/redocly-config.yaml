@@ -1,5 +1,5 @@
 plugins:
-  - ./plugins/medusa/index.js
+  - ./plugins/medusa/index.cjs
 decorators:
   medusa/circular-patch:
     schemas:
@@ -156,20 +156,7 @@ decorators:
         - AdminProductVariant
       StoreOrderShippingMethod:
         - StoreOrderShippingMethod
-theme:
-  openapi:
-    theme:
-      colors:
-        primary:
-          dark: '#242526'
-      sidebar:
-        width: 250px
-    disableSearch: true
-    expandResponses: 200,204
-    generatedPayloadSamplesMaxDepth: 4
-    hideDownloadButton: true
-    hideRequestPayloadSample: true
-    nativeScrollbars: true
-    requiredPropsFirst: true
-    showObjectSchemaExamples: true
-    sortTagsAlphabetically: true
+openapi:
+  generatedSamplesMaxDepth: 4
+  hideDownloadButtons: true
+  sortRequiredPropsFirst: true

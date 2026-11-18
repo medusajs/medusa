@@ -6,6 +6,7 @@ import {
   useViewConfiguration,
 } from "../../../hooks/use-view-configurations"
 import type { ViewConfiguration } from "../../../hooks/use-view-configurations"
+import { useViewConfigurationPermissions } from "../../../hooks/use-resource-permissions"
 import { SaveViewDialog } from "../save-view-dialog"
 
 interface ViewPillsProps {
@@ -28,6 +29,7 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
 }) => {
   const { listViews, activeView, setActiveView, isDefaultViewActive } =
     useViewConfigurations(entity)
+  const { canDelete: canResetSystemDefault } = useViewConfigurationPermissions()
 
   const views = listViews?.view_configurations || []
 
@@ -130,7 +132,7 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
             onClick={() => handleViewSelect(null)}
             onContextMenu={(e) => {
               e.preventDefault()
-              if (systemDefaultView) {
+              if (systemDefaultView && canResetSystemDefault) {
                 setContextMenuPosition({ x: e.clientX, y: e.clientY })
                 setContextMenuOpen("default")
               }
@@ -229,7 +231,7 @@ export const ViewPills: React.FC<ViewPillsProps> = ({
                       handleDeleteView(view)
                       setContextMenuOpen(null)
                     }}
-                    className="text-ui-fg-error flex items-center gap-x-2"
+                    className="flex items-center gap-x-2 text-ui-fg-error"
                   >
                     <Trash />
                     <span>Delete</span>

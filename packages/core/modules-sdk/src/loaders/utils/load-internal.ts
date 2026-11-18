@@ -83,6 +83,7 @@ type ResolvedModuleProvider = ModuleProviderExports & {
 // provider's definition key is the id chosen in the config.
 const LICENSED_MODULES: Record<string, LicenseFeature> = {
   [Modules.RBAC]: LicenseFeature.RBAC,
+  [Modules.AUDIT]: LicenseFeature.AUDIT,
 }
 
 const LICENSED_PROVIDERS: Record<string, LicenseFeature> = {
@@ -392,7 +393,7 @@ export async function loadInternalModule(args: {
 
     let moduleProviderServices = moduleResources.moduleService
       ? [moduleResources.moduleService]
-      : loadedProvider_.services ?? loadedProvider_
+      : (loadedProvider_.services ?? loadedProvider_)
 
     if (!moduleProviderServices) {
       return
@@ -487,8 +488,7 @@ export async function loadModuleMigrations(
     }
 
     const loadedServices = [mainLoadedModule] as (
-      | ResolvedModule
-      | ResolvedModuleProvider
+      ResolvedModule | ResolvedModuleProvider
     )[]
 
     if (Array.isArray(resolution?.options?.providers)) {
@@ -799,8 +799,7 @@ async function runLoaders(
 
 function prepareLoaders({
   loadedModuleLoaders = [] as
-    | ModuleLoaderFunction[]
-    | ModuleProviderLoaderFunction[],
+    ModuleLoaderFunction[] | ModuleProviderLoaderFunction[],
   models,
   repositories,
   services,

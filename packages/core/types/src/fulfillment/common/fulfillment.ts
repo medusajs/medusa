@@ -119,8 +119,7 @@ export interface FulfillmentDTO {
 /**
  * The filters to apply on the retrieved fulfillments.
  */
-export interface FilterableFulfillmentProps
-  extends BaseFilterable<FilterableFulfillmentProps> {
+export interface FilterableFulfillmentProps extends BaseFilterable<FilterableFulfillmentProps> {
   /**
    * The IDs to filter the fulfillments by.
    */

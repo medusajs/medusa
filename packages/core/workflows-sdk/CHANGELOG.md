@@ -1,5 +1,71 @@
 # @medusajs/workflows-sdk
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17162](https://github.com/medusajs/medusa/pull/17162) [`9e0b69c`](https://github.com/medusajs/medusa/commit/9e0b69cf36b1e0f411728ed1c1de5b83dac68691) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(workflows-sdk): use the renamed step's handler when a step configured with a new name runs inside `when`
+
+- Updated dependencies [[`b810334`](https://github.com/medusajs/medusa/commit/b810334cbf0c0ba3a401d82182ef06f2432e2716), [`75d8121`](https://github.com/medusajs/medusa/commit/75d81218810f5c8a60951a917d2f899bf3967d2f), [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc), [`ce6b88a`](https://github.com/medusajs/medusa/commit/ce6b88a3f01f7537dfa734ebf31e650c114a761d), [`1532c20`](https://github.com/medusajs/medusa/commit/1532c20d65386c4c0b535ec104c6ef309bc176ac), [`fd943bf`](https://github.com/medusajs/medusa/commit/fd943bf0ab1079947dd63758933b8adc5b22c114), [`93d4cc3`](https://github.com/medusajs/medusa/commit/93d4cc370e1b31be28c9b93b465c5dcf176616fb), [`9db3748`](https://github.com/medusajs/medusa/commit/9db37488d4be757b0139aac1e15fb79ed395fc6c), [`a645563`](https://github.com/medusajs/medusa/commit/a645563f7269549feef2265c436c5cdc69ffa1b1), [`08c9355`](https://github.com/medusajs/medusa/commit/08c9355d2008a9d04bd885a89d18a602a9d5e37c), [`90901f3`](https://github.com/medusajs/medusa/commit/90901f39c53ec1ee719dfda825ec576613bf5a1b)]:
+  - @medusajs/utils@2.22.7
+  - @medusajs/modules-sdk@2.22.7
+  - @medusajs/orchestration@2.22.7
+  - @medusajs/deps@2.22.7
+
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@2.22.6
+  - @medusajs/orchestration@2.22.6
+  - @medusajs/utils@2.22.6
+  - @medusajs/deps@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- Updated dependencies [[`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760), [`9bee47a`](https://github.com/medusajs/medusa/commit/9bee47a20d9d2ee9e1c59f0bf5cf94e1dc745609), [`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667)]:
+  - @medusajs/utils@2.22.5
+  - @medusajs/modules-sdk@2.22.5
+  - @medusajs/orchestration@2.22.5
+  - @medusajs/deps@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/modules-sdk@2.22.4
+  - @medusajs/orchestration@2.22.4
+  - @medusajs/utils@2.22.4
+  - @medusajs/deps@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17609](https://github.com/medusajs/medusa/pull/17609) [`39fb481`](https://github.com/medusajs/medusa/commit/39fb48168d4d63306623cb39f6973bc534a9c59a) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(cli,orchestration,utils,workflows-sdk,test-utils,file-s3,workflow-engine-inmemory,workflow-engine-redis): update ulid to v3.0.2
+
+- [#17618](https://github.com/medusajs/medusa/pull/17618) [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update jest to v30.5.2 and use the `--testPathPatterns` flag in test scripts
+
+- Updated dependencies [[`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7), [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828), [`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`12a5580`](https://github.com/medusajs/medusa/commit/12a55804efc97a0d685fc9e69ca005b9f44d3761), [`39fb481`](https://github.com/medusajs/medusa/commit/39fb48168d4d63306623cb39f6973bc534a9c59a), [`385c4ff`](https://github.com/medusajs/medusa/commit/385c4ff75f4fada544b6384779a0ede21b66c741), [`b1632c1`](https://github.com/medusajs/medusa/commit/b1632c158acd23b845e83e3b3cc682e90e977912), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8), [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828), [`2e3b55d`](https://github.com/medusajs/medusa/commit/2e3b55d8914dbe9724cfa0076c1a1be91b42ab95)]:
+  - @medusajs/utils@2.22.3
+  - @medusajs/deps@2.22.3
+  - @medusajs/orchestration@2.22.3
+  - @medusajs/modules-sdk@2.22.3
+
+## 2.22.2
+
+### Patch Changes
+
+- Updated dependencies [[`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`26e5807`](https://github.com/medusajs/medusa/commit/26e58070c1661c14aedc02ee6cfb0b2bb28d497b), [`26e5807`](https://github.com/medusajs/medusa/commit/26e58070c1661c14aedc02ee6cfb0b2bb28d497b), [`7b34df3`](https://github.com/medusajs/medusa/commit/7b34df35bf8e57ce0d2ab2373a624dc2cc573ca5), [`958ce34`](https://github.com/medusajs/medusa/commit/958ce349567b1c245688f6b97986a23447234d58), [`2f0b2e9`](https://github.com/medusajs/medusa/commit/2f0b2e94d6fa7193386d83b1e72bb0fc65caeddf), [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d)]:
+  - @medusajs/utils@2.22.2
+  - @medusajs/deps@2.22.2
+  - @medusajs/orchestration@2.22.2
+  - @medusajs/modules-sdk@2.22.2
+
 ## 2.22.1
 
 ### Patch Changes

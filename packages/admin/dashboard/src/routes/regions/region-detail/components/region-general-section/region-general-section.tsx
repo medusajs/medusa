@@ -4,12 +4,17 @@ import { useTranslation } from "react-i18next"
 
 import { HttpTypes } from "@medusajs/types"
 import { useNavigate } from "react-router-dom"
-import { ActionMenu } from "../../../../../components/common/action-menu/index.ts"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu/index.ts"
 import { ListSummary } from "../../../../../components/common/list-summary/index.ts"
 import { useDeleteRegion } from "../../../../../hooks/api/regions.tsx"
+import { useRegionPermissions } from "../../../../../hooks/use-resource-permissions.tsx"
 import { currencies } from "../../../../../lib/data/currencies.ts"
 import { formatProvider } from "../../../../../lib/format-provider.ts"
 import { SectionRow } from "../../../../../components/common/section/section-row.tsx"
+import { PermissionGuard } from "../../../../../components/common/permission-guard/index.ts"
 
 type RegionGeneralSectionProps = {
   region: HttpTypes.AdminRegion
@@ -32,19 +37,21 @@ export const RegionGeneralSection = ({
         <Heading>{region.name}</Heading>
         <RegionActions region={region} />
       </div>
-      <SectionRow
-        title={t("fields.currency")}
-        value={
-          <div className="flex items-center gap-x-2">
-            <Badge size="2xsmall" className="uppercase">
-              {region.currency_code}
-            </Badge>
-            <Text size="small" leading="compact">
-              {currencies[region.currency_code.toUpperCase()]?.name}
-            </Text>
-          </div>
-        }
-      />
+      <PermissionGuard permission="currency:read">
+        <SectionRow
+          title={t("fields.currency")}
+          value={
+            <div className="flex items-center gap-x-2">
+              <Badge size="2xsmall" className="uppercase">
+                {region.currency_code}
+              </Badge>
+              <Text size="small" leading="compact">
+                {currencies[region.currency_code.toUpperCase()]?.name}
+              </Text>
+            </div>
+          }
+        />
+      </PermissionGuard>
 
       <SectionRow
         title={t("fields.automaticTaxes")}
@@ -81,6 +88,7 @@ export const RegionGeneralSection = ({
 const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
+  const { canUpdate, canDelete } = useRegionPermissions()
   const { mutateAsync } = useDeleteRegion(region.id)
   const prompt = usePrompt()
 
@@ -111,28 +119,35 @@ const RegionActions = ({ region }: { region: HttpTypes.AdminRegion }) => {
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/settings/regions/${region.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/settings/regions/${region.id}/edit`,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

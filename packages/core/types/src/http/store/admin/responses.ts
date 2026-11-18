@@ -8,10 +8,9 @@ export interface AdminStoreResponse {
   store: AdminStore
 }
 
-export interface AdminStoreListResponse
-  extends PaginatedResponse<{
-    /**
-     * The list of stores.
-     */
-    stores: AdminStore[]
-  }> {}
+export interface AdminStoreListResponse extends PaginatedResponse<{
+  /**
+   * The list of stores.
+   */
+  stores: AdminStore[]
+}> {}

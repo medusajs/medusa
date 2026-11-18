@@ -15,10 +15,6 @@ export type BigNumberRawValue = {
 }
 
 export type BigNumberInput =
-  | BigNumberRawValue
-  | number
-  | string
-  | BigNumberJS
-  | IBigNumber
+  BigNumberRawValue | number | string | BigNumberJS | IBigNumber
 
 export type BigNumberValue = BigNumberJS | number | string | IBigNumber

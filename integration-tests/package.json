@@ -10,21 +10,20 @@
   "author": "Zakaria S. El Asri",
   "license": "ISC",
   "devDependencies": {
-    "dotenv": "^10.0.0"
+    "dotenv": "^18.0.9"
   },
   "dependencies": {
     "express": "^4.21.0",
-    "get-port": "^7.1.0",
     "@medusajs/medusa": "^1.20.10",
     "@medusajs/core-flows": "^0.0.10",
     "axios": "^1.20.0",
-    "scrypt-kdf": "^2.0.1",
+    "scrypt-kdf": "^4.0.0",
     "jsonwebtoken": "^9.0.2",
     "@medusajs/framework": "^1.0.1",
-    "awilix": "^8.0.1",
+    "awilix": "^13.0.5",
     "ioredis": "^5.11.1",
     "pg": "^8.23.1",
     "pg-god": "^1.0.12",
-    "glob": "13.0.6"
+    "glob": "14.0.2"
   }
 }

@@ -35,7 +35,7 @@ function applyTranslation(
  * Applies translated variant/product fields to line items.
  */
 export function applyTranslationsToItems<
-  T extends { variant_id?: string; [key: string]: any }
+  T extends { variant_id?: string; [key: string]: any },
 >(items: T[], variants: Partial<ProductVariantDTO>[]): T[] {
   const variantMap = new Map(variants.map((variant) => [variant.id, variant]))
 

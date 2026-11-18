@@ -3,8 +3,10 @@ import {
   BaseProductCategoryParams,
 } from "../common"
 
-export interface AdminProductCategoryListParams
-  extends Omit<BaseProductCategoryListParams, "name"> {
+export interface AdminProductCategoryListParams extends Omit<
+  BaseProductCategoryListParams,
+  "name"
+> {
   /**
    * Filter by whether the category is only available internally.
    */

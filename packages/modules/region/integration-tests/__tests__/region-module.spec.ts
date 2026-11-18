@@ -116,7 +116,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
             currency_code: "USD",
             countries: ["neverland"],
           })
-        ).rejects.toThrowError('Countries with codes: "neverland" do not exist')
+        ).rejects.toThrow('Countries with codes: "neverland" do not exist')
       })
 
       it("should throw when country is already assigned to a region", async () => {
@@ -132,7 +132,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
             currency_code: "USD",
             countries: ["us"],
           })
-        ).rejects.toThrowError(
+        ).rejects.toThrow(
           'Countries with codes: "us" are already assigned to a region'
         )
       })
@@ -151,7 +151,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
               countries: ["us"],
             },
           ])
-        ).rejects.toThrowError(
+        ).rejects.toThrow(
           'Countries with codes: "us" are already assigned to a region'
         )
       })
@@ -333,7 +333,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
               countries: ["us", "neverland"],
             }
           )
-        ).rejects.toThrowError('Countries with codes: "neverland" do not exist')
+        ).rejects.toThrow('Countries with codes: "neverland" do not exist')
       })
 
       it("should fail updating the region if there are duplicate countries", async () => {
@@ -350,7 +350,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
               countries: ["us", "us"],
             }
           )
-        ).rejects.toThrowError(
+        ).rejects.toThrow(
           'Countries with codes: "us" are already assigned to a region'
         )
       })
@@ -376,7 +376,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
               countries: ["us", "mx"],
             }
           )
-        ).rejects.toThrowError(
+        ).rejects.toThrow(
           'Countries with codes: "mx" are already assigned to a region'
         )
       })

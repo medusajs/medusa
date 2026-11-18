@@ -657,9 +657,8 @@ async function MedusaApp_({
         if (action === "revert") {
           await MedusaModule.migrateDown(migrationOptions, migrationNames)
         } else if (action === "run") {
-          const ranMigrationsResult = await MedusaModule.migrateUp(
-            migrationOptions
-          )
+          const ranMigrationsResult =
+            await MedusaModule.migrateUp(migrationOptions)
 
           // Store for revert if anything goes wrong later
           executedResolutions.push([

@@ -5,7 +5,6 @@ required:
   - id
   - email
   - accepted
-  - token
   - expires_at
   - created_at
   - updated_at
@@ -51,6 +50,5 @@ properties:
   rbac_roles:
     type: array
     description: The roles of the invited user.
-    x-featureFlag: rbac
     items:
       $ref: ./AdminRbacRole.yaml

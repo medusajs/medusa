@@ -10,8 +10,10 @@ import {
 import { Badge, clx, IconButton } from "@medusajs/ui"
 import { HandleProps } from "./types"
 
-export interface TreeItemProps
-  extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
+export interface TreeItemProps extends Omit<
+  HTMLAttributes<HTMLLIElement>,
+  "id"
+> {
   childCount?: number
   clone?: boolean
   collapsed?: boolean
@@ -67,12 +69,12 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
           ref={ref}
           style={style}
           className={clx(
-            "bg-ui-bg-base transition-fg relative flex items-center gap-x-3 border-y px-6 py-2.5",
+            "relative flex items-center gap-x-3 border-y bg-ui-bg-base px-6 py-2.5 transition-fg",
             {
               "border-l": depth > 0,
-              "shadow-elevation-flyout bg-ui-bg-base w-fit rounded-lg border-none pr-6 opacity-80":
+              "w-fit rounded-lg border-none bg-ui-bg-base pr-6 opacity-80 shadow-elevation-flyout":
                 clone,
-              "bg-ui-bg-base-hover z-[1] opacity-50": ghost,
+              "z-[1] bg-ui-bg-base-hover opacity-50": ghost,
               "bg-ui-bg-disabled": disabled,
             }
           )}
@@ -179,7 +181,7 @@ type ValueProps = {
 
 const Value = ({ value }: ValueProps) => {
   return (
-    <div className="txt-compact-small text-ui-fg-subtle flex-grow truncate">
+    <div className="txt-compact-small flex-grow truncate text-ui-fg-subtle">
       {value}
     </div>
   )

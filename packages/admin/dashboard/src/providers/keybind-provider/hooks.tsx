@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 
 import { useLogout } from "../../hooks/api/auth"
 import { queryClient } from "../../lib/query-client"
+import { usePermissions } from "../permissions-provider"
 import {
   getSearchEntityShortcuts,
   resolveSearchEntityShortcutLabel,
@@ -101,6 +102,7 @@ export const useShortcuts = ({
 export const useGlobalShortcuts = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { hasPermission } = usePermissions()
 
   const { mutateAsync } = useLogout()
 
@@ -116,14 +118,12 @@ export const useGlobalShortcuts = () => {
   const globalShortcuts: Shortcut[] = [
     // "Jump to" entries come from the search entity registry, so apps and
     // plugins customize them through their `search-entities.tsx` definitions.
-    ...getSearchEntityShortcuts().map(
-      ({ entity, shortcut }): Shortcut => ({
-        keys: shortcut.keys,
-        label: resolveSearchEntityShortcutLabel(entity, t),
-        type: shortcut.type ?? "pageShortcut",
-        to: shortcut.to,
-      })
-    ),
+    ...getSearchEntityShortcuts().map(({ entity, shortcut }): Shortcut => ({
+      keys: shortcut.keys,
+      label: resolveSearchEntityShortcutLabel(entity, t),
+      type: shortcut.type ?? "pageShortcut",
+      to: shortcut.to,
+    })),
     // The admin shell's own destinations, which belong to no entity.
     {
       keys: {
@@ -140,6 +140,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToStore"),
       type: "settingShortcut",
       to: "/settings/store",
+      permission: "store:read",
     },
     {
       keys: {
@@ -148,6 +149,7 @@ export const useGlobalShortcuts = () => {
       label: t("app.keyboardShortcuts.settings.goToWorkflows"),
       type: "settingShortcut",
       to: "/settings/workflows",
+      permission: "workflow_execution:read",
     },
     {
       keys: {
@@ -168,5 +170,7 @@ export const useGlobalShortcuts = () => {
     },
   ]
 
-  return globalShortcuts
+  return globalShortcuts.filter(
+    (shortcut) => !shortcut.permission || hasPermission(shortcut.permission)
+  )
 }

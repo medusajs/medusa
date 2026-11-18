@@ -51,8 +51,7 @@ export const rule = createRule<[], MessageIds>({
         }
 
         const fn = constructor as
-          | TSESTree.ArrowFunctionExpression
-          | TSESTree.FunctionExpression
+          TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression
 
         context.report({
           node: fn,

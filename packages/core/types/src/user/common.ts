@@ -40,7 +40,7 @@ export interface UserDTO {
   /**
    * The RBAC roles assigned to the user.
    *
-   * @ignore
+   * @since 2.22.4
    */
   roles?: string[] | null
 
@@ -65,8 +65,7 @@ export interface UserDTO {
  *
  * The filters to apply on the retrieved user.
  */
-export interface FilterableUserProps
-  extends BaseFilterable<FilterableUserProps> {
+export interface FilterableUserProps extends BaseFilterable<FilterableUserProps> {
   /**
    * Find users by name or email through this search term
    */
@@ -130,7 +129,7 @@ export interface InviteDTO {
   /**
    * The RBAC roles to assign to the user when the invite is accepted.
    *
-   * @ignore
+   * @since 2.22.4
    */
   roles?: string[] | null
 
@@ -153,8 +152,7 @@ export interface InviteDTO {
 /**
  * The filters to apply on the retrieved invites.
  */
-export interface FilterableInviteProps
-  extends BaseFilterable<FilterableInviteProps> {
+export interface FilterableInviteProps extends BaseFilterable<FilterableInviteProps> {
   /**
    * The IDs to filter the invites by.
    */

@@ -233,8 +233,9 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
         const fulfillmentSetLocationMap = {}
 
         scFulfillmentSets.stock_locations.forEach((stockLocation) => {
-          stockLocation.fulfillment_sets.forEach((fulfillmentSet) => {
-            fulfillmentSetLocationMap[fulfillmentSet.id] = stockLocation
+          const { fulfillment_sets, ...location } = stockLocation
+          fulfillment_sets.forEach((fulfillmentSet) => {
+            fulfillmentSetLocationMap[fulfillmentSet.id] = location
             fulfillmentSetIds.add(fulfillmentSet.id)
           })
         })
@@ -283,8 +284,8 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
           enabled_in_store: !isDefined(input.enabled_in_store)
             ? "true"
             : input.enabled_in_store
-            ? "true"
-            : "false",
+              ? "true"
+              : "false",
         }),
 
         filters: {
@@ -408,7 +409,7 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
               },
               data: optionDataMap.get(so.id),
               provider_id: so.provider_id,
-            } as CalculateShippingOptionPriceDTO)
+            }) as CalculateShippingOptionPriceDTO
         )
       }
     )

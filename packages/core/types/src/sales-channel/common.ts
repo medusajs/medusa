@@ -58,8 +58,7 @@ export interface SalesChannelDTO {
 /**
  * The filters to apply on the retrieved sales channel.
  */
-export interface FilterableSalesChannelProps
-  extends BaseFilterable<FilterableSalesChannelProps> {
+export interface FilterableSalesChannelProps extends BaseFilterable<FilterableSalesChannelProps> {
   /**
    * Find sales channels by their name or description through this search term.
    */

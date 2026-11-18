@@ -14,7 +14,7 @@ const eventBaseNames: [
   "fulfillment",
   "fulfillmentAddress",
   "fulfillmentItem",
-  "fulfillmentLabel"
+  "fulfillmentLabel",
 ] = [
   "fulfillmentSet",
   "serviceZone",

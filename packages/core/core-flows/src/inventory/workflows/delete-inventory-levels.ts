@@ -100,8 +100,7 @@ export const validateInventoryLevelsDelete = createStep(
  * The data to delete inventory levels. The inventory levels to be deleted
  * are selected based on the filters that you specify.
  */
-export interface DeleteInventoryLevelsWorkflowInput
-  extends FilterableInventoryLevelProps {
+export interface DeleteInventoryLevelsWorkflowInput extends FilterableInventoryLevelProps {
   /**
    * If true, the inventory levels will be deleted even if they have stocked items.
    */

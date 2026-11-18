@@ -56,11 +56,7 @@ export type Config = {
      * The storage method for JWT tokens.
      */
     jwtTokenStorageMethod?:
-      | "local"
-      | "session"
-      | "memory"
-      | "custom"
-      | "nostore"
+      "local" | "session" | "memory" | "custom" | "nostore"
     /**
      * The credentials mode for fetch requests.
      */

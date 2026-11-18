@@ -132,7 +132,7 @@ export const CreateShippingOptionTypeForm = () => {
                         <Text
                           size="small"
                           leading="compact"
-                          className="text-ui-fg-muted ml-1 inline"
+                          className="ml-1 inline text-ui-fg-muted"
                         >
                           ({t("fields.optional")})
                         </Text>

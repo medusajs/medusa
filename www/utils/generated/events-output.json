@@ -451,8 +451,14 @@
     "payload": "```ts\n{\n  id, // The ID of the product variant\n}\n```",
     "description": "Emitted when product variants are updated.",
     "workflows": [
+      "upsertVariantPricesWorkflow",
       "updateProductVariantsWorkflow",
-      "batchProductVariantsWorkflow"
+      "batchVariantImagesWorkflow",
+      "batchImageVariantsWorkflow",
+      "updateProductsWorkflow",
+      "batchProductVariantsWorkflow",
+      "batchProductsWorkflow",
+      "importProductsWorkflow"
     ],
     "deprecated": false
   },
@@ -490,8 +496,11 @@
     "payload": "```ts\n{\n  id, // The ID of the product\n}\n```",
     "description": "Emitted when products are updated.",
     "workflows": [
+      "linkProductsToSalesChannelWorkflow",
       "updateProductsWorkflow",
       "createAndLinkProductOptionsToProductWorkflow",
+      "batchLinkProductsToCategoryWorkflow",
+      "batchLinkProductsToCollectionWorkflow",
       "batchProductsWorkflow",
       "importProductsWorkflow"
     ],
@@ -647,6 +656,177 @@
       "deleteProductOptionValuesWorkflow"
     ],
     "since": "2.20.0",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.created",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n}\n```",
+    "description": "Emitted when price lists are created.",
+    "workflows": [
+      "createPriceListsWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.updated",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n}\n```",
+    "description": "Emitted when price lists are updated.",
+    "workflows": [
+      "updatePriceListsWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.deleted",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n}\n```",
+    "description": "Emitted when price lists are deleted.",
+    "workflows": [
+      "deletePriceListsWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.prices_added",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "PRICES_ADDED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n  price_set_ids, // The IDs of the price sets whose prices were added\n}\n```",
+    "description": "Emitted when prices are added to a price list.",
+    "workflows": [
+      "createPriceListPricesWorkflow",
+      "batchPriceListPricesWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.prices_updated",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "PRICES_UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n  price_set_ids, // The IDs of the price sets whose prices were updated\n}\n```",
+    "description": "Emitted when prices in a price list are updated.",
+    "workflows": [
+      "updatePriceListPricesWorkflow",
+      "batchPriceListPricesWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "price-list.prices_removed",
+    "parentName": "PriceListWorkflowEvents",
+    "propertyName": "PRICES_REMOVED",
+    "payload": "```ts\n{\n  id, // The ID of the price list\n  price_set_ids, // The IDs of the price sets whose prices were removed\n}\n```",
+    "description": "Emitted when prices are removed from a price list.",
+    "workflows": [
+      "removePriceListPricesWorkflow",
+      "batchPriceListPricesWorkflow"
+    ],
+    "since": "2.21.3",
+    "deprecated": false
+  },
+  {
+    "name": "promotion.created",
+    "parentName": "PromotionWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the promotion\n}\n```",
+    "description": "Emitted when promotions are created.",
+    "workflows": [
+      "createPromotionsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "promotion.updated",
+    "parentName": "PromotionWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the promotion\n}\n```",
+    "description": "Emitted when promotions are updated, including their status.",
+    "workflows": [
+      "updatePromotionsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "promotion.deleted",
+    "parentName": "PromotionWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the promotion\n}\n```",
+    "description": "Emitted when promotions are deleted.",
+    "workflows": [
+      "deletePromotionsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "promotion.rules_updated",
+    "parentName": "PromotionWorkflowEvents",
+    "propertyName": "RULES_UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the promotion\n  rule_type, // The type of rules changed: \"rules\", \"target_rules\", or \"buy_rules\"\n  created, // The IDs of the created rules\n  updated, // The IDs of the updated rules\n  deleted, // The IDs of the deleted rules\n}\n```",
+    "description": "Emitted when a promotion's rules, target rules, or buy rules\nare created, updated, or deleted in a batch.",
+    "workflows": [
+      "batchPromotionRulesWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "campaign.created",
+    "parentName": "CampaignWorkflowEvents",
+    "propertyName": "CREATED",
+    "payload": "```ts\n{\n  id, // The ID of the campaign\n}\n```",
+    "description": "Emitted when campaigns are created.",
+    "workflows": [
+      "createCampaignsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "campaign.updated",
+    "parentName": "CampaignWorkflowEvents",
+    "propertyName": "UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the campaign\n}\n```",
+    "description": "Emitted when campaigns are updated.",
+    "workflows": [
+      "updateCampaignsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "campaign.deleted",
+    "parentName": "CampaignWorkflowEvents",
+    "propertyName": "DELETED",
+    "payload": "```ts\n{\n  id, // The ID of the campaign\n}\n```",
+    "description": "Emitted when campaigns are deleted.",
+    "workflows": [
+      "deleteCampaignsWorkflow"
+    ],
+    "since": "2.22.7",
+    "deprecated": false
+  },
+  {
+    "name": "campaign.promotions_updated",
+    "parentName": "CampaignWorkflowEvents",
+    "propertyName": "PROMOTIONS_UPDATED",
+    "payload": "```ts\n{\n  id, // The ID of the campaign\n  added_promotion_ids, // The IDs of the promotions added to the campaign\n  removed_promotion_ids, // The IDs of the promotions removed from the campaign\n}\n```",
+    "description": "Emitted when promotions are added to or removed from a campaign.",
+    "workflows": [
+      "addOrRemoveCampaignPromotionsWorkflow"
+    ],
+    "since": "2.22.7",
     "deprecated": false
   },
   {

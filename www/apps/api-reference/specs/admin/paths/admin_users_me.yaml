@@ -55,3 +55,60 @@ get:
   security:
     - cookie_auth: []
     - jwt_token: []
+post:
+  operationId: PostUsersMe
+  summary: Update Logged-In User
+  description: >-
+    Update the logged-in user's details. Unlike the Update a User API route,
+    this API route doesn't require the `user:update` permission, so any user can
+    update their own details.
+  x-authenticated: true
+  security:
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminUpdateUser.yaml
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_users_me/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_users_me/post.sh
+  tags:
+    - Users
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminUserResponse.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  x-workflow: updateUsersWorkflow
+  x-events:
+    - name: user.updated
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the user
+        }
+        ```
+      description: Emitted when users are updated.
+      deprecated: false

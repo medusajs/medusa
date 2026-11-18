@@ -30,4 +30,8 @@ export const GiftCardProductEdit = () => {
   );
 };
 
+export const handle = {
+  permissions: ["product:read", "product:update"],
+};
+
 export default GiftCardProductEdit;

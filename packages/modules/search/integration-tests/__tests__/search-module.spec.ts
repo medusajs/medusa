@@ -40,8 +40,7 @@ const migrate = (
 
 const definition = (service: SearchService, name: string) =>
   (service as any).indexes_.get(name) as
-    | SearchTypes.ResolvedSearchIndexDefinition
-    | undefined
+    SearchTypes.ResolvedSearchIndexDefinition | undefined
 
 // `SearchIndex`, `SearchIndexVersion` and `SearchIndexSync` are internal to the
 // module — no generated CRUD, nothing on `SearchTypes` — so the bookkeeping is

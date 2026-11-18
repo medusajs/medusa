@@ -52,8 +52,7 @@ export interface ShippingProfileDTO {
 /**
  * The filters to apply on the retrieved shipping profiles.
  */
-export interface FilterableShippingProfileProps
-  extends BaseFilterable<FilterableShippingProfileProps> {
+export interface FilterableShippingProfileProps extends BaseFilterable<FilterableShippingProfileProps> {
   /**
    * The IDs to filter the shipping profiles by.
    */

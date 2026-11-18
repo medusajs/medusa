@@ -87,8 +87,7 @@ export interface RegionCountryDTO {
 /**
  * The filters to apply on the retrieved regions.
  */
-export interface FilterableRegionProps
-  extends BaseFilterable<FilterableRegionProps> {
+export interface FilterableRegionProps extends BaseFilterable<FilterableRegionProps> {
   /**
    * Find regions by name through this search term
    */
@@ -126,8 +125,7 @@ export interface FilterableRegionProps
 /**
  * The filters to apply on the retrieved region's countries.
  */
-export interface FilterableRegionCountryProps
-  extends BaseFilterable<FilterableRegionCountryProps> {
+export interface FilterableRegionCountryProps extends BaseFilterable<FilterableRegionCountryProps> {
   /**
    * The IDs to filter the countries by.
    */

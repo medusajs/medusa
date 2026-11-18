@@ -4,8 +4,7 @@ import { FindParams, SelectParams } from "../../common"
 export interface AdminCurrencyParams extends SelectParams {}
 
 export interface AdminCurrencyListParams
-  extends FindParams,
-    BaseFilterable<AdminCurrencyListParams> {
+  extends FindParams, BaseFilterable<AdminCurrencyListParams> {
   /**
    * Query or keyword to search the currency's searchable fields.
    */

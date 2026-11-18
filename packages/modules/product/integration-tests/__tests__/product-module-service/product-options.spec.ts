@@ -376,6 +376,46 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
       })
+
+      describe("removeProductOptionFromProduct", () => {
+        it("should unlink an option linked with a subset of its values when given the same pair", async () => {
+          const [sharedOption] = await service.createProductOptions([
+            {
+              title: "shared option",
+              is_exclusive: false,
+              values: ["v1", "v2", "v3"],
+            },
+          ])
+
+          const valueIds = sharedOption.values
+            .filter((value) => value.value !== "v3")
+            .map((value) => value.id)
+
+          const pair = {
+            product_id: productOne.id,
+            product_option_id: sharedOption.id,
+            product_option_value_ids: valueIds,
+          }
+
+          await service.addProductOptionToProduct([pair])
+
+          let product = await service.retrieveProduct(productOne.id, {
+            relations: ["options"],
+          })
+          expect(product.options.map((option) => option.id).sort()).toEqual(
+            [optionOne.id, sharedOption.id].sort()
+          )
+
+          await service.removeProductOptionFromProduct([pair])
+
+          product = await service.retrieveProduct(productOne.id, {
+            relations: ["options"],
+          })
+          expect(product.options.map((option) => option.id)).toEqual([
+            optionOne.id,
+          ])
+        })
+      })
     })
   },
 })

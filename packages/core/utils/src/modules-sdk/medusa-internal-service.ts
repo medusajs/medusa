@@ -81,7 +81,7 @@ export function isMedusaInternalService(value: any): value is InternalService {
 
 export function MedusaInternalService<
   TContainer extends object = object,
-  TEntity extends object = any
+  TEntity extends object = any,
 >(rawModel: any): InternalService {
   const model = DmlEntity.isDmlEntity(rawModel)
     ? toMikroORMEntity(rawModel)
@@ -90,9 +90,10 @@ export function MedusaInternalService<
   const injectedRepositoryName = `${lowerCaseFirst(model.name)}Repository`
   const propertyRepositoryName = `__${injectedRepositoryName}__`
 
-  class AbstractService_
-    implements ModulesSdkTypes.IMedusaInternalService<TEntity, TContainer>
-  {
+  class AbstractService_ implements ModulesSdkTypes.IMedusaInternalService<
+    TEntity,
+    TContainer
+  > {
     [MedusaInternalServiceSymbol] = true
 
     #eventSubscriber?: MedusaMikroOrmEventSubscriber
@@ -207,8 +208,8 @@ export function MedusaInternalService<
                   [isString(v) ? v : Object.values(v)].join(", ")
                 )
               : isObject(idOrObject)
-              ? Object.values(idOrObject).join(", ")
-              : idOrObject
+                ? Object.values(idOrObject).join(", ")
+                : idOrObject
           } was not found`
         )
       }
@@ -266,8 +267,7 @@ export function MedusaInternalService<
     ): Promise<InferEntityType<TEntity> | InferEntityType<TEntity>[]> {
       if (!isDefined(data) || (Array.isArray(data) && data.length === 0)) {
         return (Array.isArray(data) ? [] : void 0) as
-          | InferEntityType<TEntity>
-          | InferEntityType<TEntity>[]
+          InferEntityType<TEntity> | InferEntityType<TEntity>[]
       }
 
       registerInternalServiceEventSubscriber(
@@ -308,8 +308,7 @@ export function MedusaInternalService<
     ): Promise<InferEntityType<TEntity> | InferEntityType<TEntity>[]> {
       if (!isDefined(input) || (Array.isArray(input) && input.length === 0)) {
         return (Array.isArray(input) ? [] : void 0) as
-          | InferEntityType<TEntity>
-          | InferEntityType<TEntity>[]
+          InferEntityType<TEntity> | InferEntityType<TEntity>[]
       }
 
       registerInternalServiceEventSubscriber(
@@ -417,8 +416,7 @@ export function MedusaInternalService<
 
       if (!toUpdateData.length) {
         return (shouldReturnArray ? [] : void 0) as
-          | InferEntityType<TEntity>
-          | InferEntityType<TEntity>[]
+          InferEntityType<TEntity> | InferEntityType<TEntity>[]
       }
 
       // Manage metadata if needed
@@ -579,10 +577,7 @@ export function MedusaInternalService<
     @InjectTransactionManager(propertyRepositoryName)
     async softDelete(
       idsOrFilter:
-        | string
-        | string[]
-        | InternalFilterQuery
-        | InternalFilterQuery[],
+        string | string[] | InternalFilterQuery | InternalFilterQuery[],
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[InferEntityType<TEntity>[], Record<string, unknown[]>]> {
       if (

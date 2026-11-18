@@ -16,7 +16,8 @@ const iconBadgeVariants = cva({
 })
 
 interface IconBadgeProps
-  extends Omit<React.ComponentPropsWithoutRef<"span">, "color">,
+  extends
+    Omit<React.ComponentPropsWithoutRef<"span">, "color">,
     VariantProps<typeof badgeColorVariants>,
     VariantProps<typeof iconBadgeVariants> {
   asChild?: boolean

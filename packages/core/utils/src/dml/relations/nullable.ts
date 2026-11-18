@@ -9,9 +9,8 @@ const IsNullableModifier = Symbol.for("isNullableModifier")
 export class RelationNullableModifier<
   T,
   Relation extends RelationshipType<T>,
-  ForeignKey extends boolean
-> implements RelationshipType<T | null>
-{
+  ForeignKey extends boolean,
+> implements RelationshipType<T | null> {
   [IsNullableModifier]: true = true;
   [IsRelationship]: true = true
 

@@ -4,7 +4,9 @@ import copy from "copy-to-clipboard"
 import { useTranslation } from "react-i18next"
 import { Navigate, useLocation, useRouteError } from "react-router-dom"
 
+import { isPermissionError } from "../../../lib/permissions"
 import { isFetchError } from "../../../lib/is-fetch-error"
+import { AccessDenied } from "../../authentication/route-permission-guard"
 
 export const ErrorBoundary = () => {
   const error = useRouteError()
@@ -13,9 +15,28 @@ export const ErrorBoundary = () => {
 
   let code: number | null = null
 
+  // A guarded loader throws this before fetching when the user lacks the
+  // required permission, carrying the permission so we can name it.
+  if (isPermissionError(error)) {
+    return (
+      <AccessDenied
+        requirement={{
+          permissions: error.permissions,
+          requireAll: error.requireAll,
+        }}
+      />
+    )
+  }
+
   if (isFetchError(error)) {
     if (error.status === 401) {
       return <Navigate to="/login" state={{ from: location }} replace />
+    }
+
+    // Fallback for a 403 that escaped a guarded loader (e.g. a sub-resource
+    // fetch); the required permission isn't known here.
+    if (error.status === 403) {
+      return <AccessDenied />
     }
 
     code = error.status ?? null
@@ -80,11 +101,11 @@ export const ErrorBoundary = () => {
       break
   }
 
-  const handleCopyError = () => {
+  const handleCopyError = async () => {
     const errorText = `Error: ${errorMessage}\n\n${
       errorStack || "No stack trace available"
     }`
-    const success = copy(errorText)
+    const success = await copy(errorText)
 
     if (success) {
       toast.success("Error details copied to clipboard")
@@ -96,7 +117,7 @@ export const ErrorBoundary = () => {
   return (
     <div className="flex size-full min-h-[calc(100vh-57px-24px)] items-center justify-center">
       <div className="flex flex-col gap-y-6">
-        <div className="text-ui-fg-subtle flex flex-col items-center gap-y-3">
+        <div className="flex flex-col items-center gap-y-3 text-ui-fg-subtle">
           <ExclamationCircle />
           <div className="flex flex-col items-center justify-center gap-y-1">
             <Text size="small" leading="compact" weight="plus">
@@ -104,14 +125,14 @@ export const ErrorBoundary = () => {
             </Text>
             <Text
               size="small"
-              className="text-ui-fg-muted text-balance text-center"
+              className="text-balance text-center text-ui-fg-muted"
             >
               {message}
             </Text>
           </div>
         </div>
         {isDevelopment && errorMessage && (
-          <div className="bg-ui-bg-disabled border-ui-border-subtle max-h-[400px] max-w-3xl overflow-scroll rounded-lg border p-4">
+          <div className="border-ui-border-subtle max-h-[400px] max-w-3xl overflow-scroll rounded-lg border bg-ui-bg-disabled p-4">
             <div className="flex flex-col gap-y-4">
               <div className="flex items-center justify-between">
                 <Text size="small" weight="plus" className="text-ui-fg-base">
@@ -126,7 +147,7 @@ export const ErrorBoundary = () => {
               <div>
                 <Text
                   size="xsmall"
-                  className="text-ui-fg-subtle break-words font-mono"
+                  className="break-words font-mono text-ui-fg-subtle"
                 >
                   {errorMessage}
                 </Text>
@@ -136,11 +157,11 @@ export const ErrorBoundary = () => {
                   <Text
                     size="small"
                     weight="plus"
-                    className="text-ui-fg-base mb-2"
+                    className="mb-2 text-ui-fg-base"
                   >
                     Stack Trace
                   </Text>
-                  <pre className="text-ui-fg-subtle overflow-auto whitespace-pre-wrap break-words text-xs">
+                  <pre className="overflow-auto whitespace-pre-wrap break-words text-xs text-ui-fg-subtle">
                     {errorStack}
                   </pre>
                 </div>

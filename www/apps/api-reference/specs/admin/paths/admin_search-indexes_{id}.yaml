@@ -7,8 +7,7 @@ delete:
     migrations run, the index is built again from scratch at version 1.
   externalDocs:
     description: Learn about reindexing and index migrations
-    url: >-
-      https://docs.medusajs.com/resources/infrastructure-modules/search/reindexing
+    url: https://docs.medusajs.com/resources/infrastructure-modules/search/reindexing
   x-authenticated: true
   parameters:
     - name: id

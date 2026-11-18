@@ -10,20 +10,20 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "yarn clean && tsc",
+    "build": "yarn clean && yarn run -T tsc",
     "lint": "eslint --ext .ts src",
     "clean": "rimraf dist",
-    "watch": "tsc --watch"
+    "watch": "yarn run -T tsc --watch"
   },
   "peerDependencies": {
-    "typedoc": "0.27.x"
+    "typedoc": "0.28.x"
   },
   "devDependencies": {
     "@types/node": "^20.12.10",
-    "typescript": "^5.6.2"
+    "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.3.0",
+    "@faker-js/faker": "^10.6.0",
     "octokit": "^3.1.2",
     "prettier": "^3.4.2",
     "rimraf": "^5.0.5"

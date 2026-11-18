@@ -102,7 +102,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
   }
 
   protected static parseData<
-    TData extends { id: string; [key: string]: unknown }
+    TData extends { id: string; [key: string]: unknown },
   >(
     data: TData | TData[],
     schemaEntityObjectRepresentation: IndexTypes.SchemaObjectEntityRepresentation

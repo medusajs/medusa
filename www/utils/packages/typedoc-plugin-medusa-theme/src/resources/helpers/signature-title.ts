@@ -38,9 +38,7 @@ export default function (theme: MarkdownTheme) {
         md.push(`${memberSymbol(this)} `)
       }
 
-      const parentFlags = this.parent.flags.getFlagStrings(
-        theme.application.internationalization
-      )
+      const parentFlags = this.parent.flags.getFlagStrings()
       if (this.parent && parentFlags.length > 0) {
         md.push(parentFlags.join(" ") + " ")
       }
