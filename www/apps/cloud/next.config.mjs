@@ -202,7 +202,7 @@ const nextConfig = {
       permanent: true,
     },
     {
-      source: "/update-medusa",
+      source: "/cloud/update-medusa",
       destination: "/learn/update",
       basePath: false,
       permanent: true,
