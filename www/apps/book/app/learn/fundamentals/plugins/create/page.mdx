@@ -455,7 +455,7 @@ DB_PORT=5432
 DB_NAME=db_name
 ```
 
-You can add these environment variables in a `.env` file in your plugin project. The variables are:
+You can add these environment variables in a `.env` file in your plugin project. They connect to a local database only to generate migrations, so you don't add them to your Cloud environments. The variables are:
 
 - `DB_USERNAME`: The username of the PostgreSQL user to connect to the database.
 - `DB_PASSWORD`: The password of the PostgreSQL user to connect to the database.
