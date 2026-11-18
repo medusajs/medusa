@@ -13,6 +13,14 @@ export const metadata = {
 
 Commands in the Medusa CLI starting with `db:` perform actions on the database.
 
+<Note title="Using Cloud?">
+
+On Cloud, Medusa creates and manages the database of each environment, and sets its connection URL for you. You don't need to set `DATABASE_URL` in the environment's variables. Medusa also [runs migrations](!cloud!/database#running-migrations-on-cloud) for every deployment, so you don't run `db:` commands on Cloud.
+
+Use these commands for your local database, which you configure with `DATABASE_URL` in your `.env` file. Learn more in the [Set Up Medusa Locally](!cloud!/setup-locally) guide.
+
+</Note>
+
 ## db\:setup
 
 Creates a database for the Medusa application with the specified name, if it doesn't exist. Then, it runs migrations and syncs links.
@@ -776,7 +784,9 @@ npx medusa db:sync-links
 
 ## Reset the Database
 
-The Medusa CLI does not provide a dedicated command to drop or reset the database. To reset your database, drop it manually using PostgreSQL tools, then run `db:setup` to recreate and reinitialize it.
+The Medusa CLI does not provide a dedicated command to drop or reset the database. To reset your local database, drop it manually using PostgreSQL tools, then run `db:setup` to recreate and reinitialize it.
+
+To replace the database of a Cloud environment, [restore a backup](!cloud!/database#restore-a-backup) or [import a database dump](!cloud!/database#importexport-cloud-database-dumps) instead.
 
 <Note title="Warning" type="warning">
 

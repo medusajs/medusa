@@ -102,7 +102,7 @@ export const generatedEditDates = {
   "app/ai-toolkit/assistant/page.mdx": "2026-11-13T12:08:13.100Z",
   "app/development-resources/page.mdx": "2026-11-16T09:12:13.718Z",
   "app/setup-locally/docker/page.mdx": "2026-11-16T09:01:14.667Z",
-  "app/setup-locally/page.mdx": "2026-11-16T08:58:07.674Z",
+  "app/setup-locally/page.mdx": "2026-11-18T11:09:26.664Z",
   "app/integrations/page.mdx": "2026-11-16T09:12:13.717Z",
   "app/admin/page.mdx": "2026-11-16T12:22:19.079Z",
   "app/enterprise/page.mdx": "2026-11-16T13:26:56.908Z",
