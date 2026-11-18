@@ -4,7 +4,8 @@
  */
 export const ESM_ONLY_DEPENDENCIES: string[] = [
   "path-to-regexp",
-  "scrypt-kdf"
+  "scrypt-kdf",
+  "connect-redis",
 ]
 
 const PNP_PATTERN = "\\.pnp\\.[^\\/]+$"
@@ -40,4 +41,5 @@ export function buildTransformIgnorePatterns(packages: string[]): string[] {
 export const jestPreset = {
   testEnvironment: "node",
   transformIgnorePatterns: buildTransformIgnorePatterns(ESM_ONLY_DEPENDENCIES),
+  resolver: require.resolve("./jest-resolver"),
 }

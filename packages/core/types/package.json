@@ -46,14 +46,14 @@
   },
   "peerDependencies": {
     "express": "^4.21.0",
-    "ioredis": "^5.11.1",
+    "redis": "^6.3.0",
     "vite": ">=5"
   },
   "peerDependenciesMeta": {
     "express": {
       "optional": true
     },
-    "ioredis": {
+    "redis": {
       "optional": true
     },
     "vite": {
