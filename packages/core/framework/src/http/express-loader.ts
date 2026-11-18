@@ -2,7 +2,6 @@ import { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { dynamicImport } from "@medusajs/utils"
 import compression from "compression"
-import { RedisStore } from "connect-redis"
 import cookieParser from "cookie-parser"
 import express, { Express, RequestHandler } from "express"
 import session from "express-session"
@@ -125,6 +124,8 @@ export async function expressLoader({
       ),
     })
   } else if (configModule?.projectConfig?.redisUrl) {
+    // connect-redis is ESM-only, so it can't go through require() or dynamicImport
+    const { RedisStore } = await import("connect-redis")
     redisClient = createClient({
       ...configModule.projectConfig.redisOptions,
       url: configModule.projectConfig.redisUrl,

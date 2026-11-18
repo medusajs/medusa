@@ -3977,7 +3977,7 @@ __metadata:
     chokidar: "npm:^6.0.0"
     compression: "npm:^1.8.2"
     connect-dynamodb: "npm:^3.0.5"
-    connect-redis: "npm:10.0.0"
+    connect-redis: "npm:11.0.0"
     cookie-parser: "npm:^1.4.6"
     cors: "npm:^2.8.5"
     express: "npm:^4.21.0"
@@ -12061,13 +12061,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:10.0.0":
-  version: 10.0.0
-  resolution: "connect-redis@npm:10.0.0"
+"connect-redis@npm:11.0.0":
+  version: 11.0.0
+  resolution: "connect-redis@npm:11.0.0"
   peerDependencies:
     express-session: ">=1"
     redis: ">=5"
-  checksum: 10c0/effe2806fb6a2f0a1b8902728203dd2214fa1510e42cad7652927524582be162a95d4353adde8c7dbe4a015cc88766cd94fa2b43548b8fdca4e1e7b01baf48c5
+  checksum: 10c0/688500f09a3782702101d1aac8fdf70bb34fb4166d4b48c7f2090d1252b89e0c544fc753f54db232c827f0793c88f2137702ab6c232f63a1f053b24473c372d5
   languageName: node
   linkType: hard
 

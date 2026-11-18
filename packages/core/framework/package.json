@@ -95,7 +95,7 @@
     "chokidar": "^6.0.0",
     "compression": "^1.8.2",
     "connect-dynamodb": "^3.0.5",
-    "connect-redis": "10.0.0",
+    "connect-redis": "11.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.21.0",
