@@ -67,7 +67,7 @@ export const useUpdateStore = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.store.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: pricePreferencesQueryKeys.list(),
       })
@@ -76,7 +76,7 @@ export const useUpdateStore = (
       })
       queryClient.invalidateQueries({ queryKey: storeQueryKeys.details() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
