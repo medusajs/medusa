@@ -23,6 +23,30 @@ end
 return live
 `
 
+/**
+ * KEYS are tag sets, ARGV[1] the entry key to index, ARGV[2] the expiry the
+ * sets need for this entry in seconds (0 = the entry never expires).
+ * A tag set is shared by entries with different TTLs and must outlive all of
+ * them, so its expiry is only ever extended: a plain EXPIRE would let a
+ * short-lived entry expire the set while longer-lived entries still rely on it
+ * for tag invalidation.
+ */
+const INDEX_ENTRY_IN_TAG_SETS_SCRIPT = `
+local ttl = tonumber(ARGV[2])
+for i = 1, #KEYS do
+  local existed = redis.call('EXISTS', KEYS[i]) == 1
+  redis.call('SADD', KEYS[i], ARGV[1])
+  if ttl == 0 then
+    redis.call('PERSIST', KEYS[i])
+  else
+    local current = redis.call('TTL', KEYS[i])
+    if not existed or (current >= 0 and current < ttl) then
+      redis.call('EXPIRE', KEYS[i], ttl)
+    end
+  end
+end
+`
+
 export class RedisCachingProvider {
   static identifier = "cache-redis"
 
@@ -360,13 +384,16 @@ export class RedisCachingProvider {
           setPipeline.expire(tagsKey, effectiveTTL + 60)
         }
 
-        hashedTags.forEach((hashedTag) => {
-          const tagKey = this.#getTagKey(hashedTag, { isHashed: true })
-          setPipeline.sadd(tagKey, keyName)
-          if (effectiveTTL) {
-            setPipeline.expire(tagKey, effectiveTTL + 60)
-          }
-        })
+        const tagKeys = hashedTags.map((hashedTag) =>
+          this.#getTagKey(hashedTag, { isHashed: true })
+        )
+        setPipeline.eval(
+          INDEX_ENTRY_IN_TAG_SETS_SCRIPT,
+          tagKeys.length,
+          ...tagKeys,
+          keyName,
+          effectiveTTL ? effectiveTTL + 60 : 0
+        )
       }
 
       await setPipeline.exec()
