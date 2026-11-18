@@ -22,25 +22,25 @@ const HomepageLinksSection = () => {
           text: "Create your first project",
         },
         {
-          link: "https://docs.medusajs.com/cloud/going-live",
-          text: "Go live",
+          link: "https://docs.medusajs.com/cloud/migrate-self-hosted",
+          text: "Migrate from self-hosting",
         },
       ],
     },
     {
-      tag: "Medusa Cloud Resources",
+      tag: "Customize Medusa",
       links: [
         {
-          link: "https://docs.medusajs.com/cloud/storefront",
-          text: "Storefront",
+          link: "/learn",
+          text: "Learn the Framework",
         },
         {
-          link: "https://docs.medusajs.com/cloud/search",
-          text: "Search",
+          link: "https://docs.medusajs.com/cloud/integrations",
+          text: "Add integrations",
         },
         {
-          link: "https://docs.medusajs.com/cloud/emails",
-          text: "Emails",
+          link: "/learn/fundamentals/admin",
+          text: "Extend the Admin",
         },
       ],
     },
