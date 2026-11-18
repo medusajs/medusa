@@ -1068,6 +1068,10 @@ For example, instead of importing `@mikro-orm/core`, you now import it from `@me
 - `@opentelemetry/sdk-node` -> `@medusajs/framework/opentelemetry/sdk-node`
 - `@opentelemetry/sdk-trace-node` -> `@medusajs/framework/opentelemetry/sdk-trace-node`
 
+Since Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa uses OpenTelemetry JS SDK 3.0, which replaces `@opentelemetry/sdk-trace-node` with `@opentelemetry/sdk-trace`. So, Medusa renamed the `@medusajs/framework/opentelemetry/sdk-trace-node` subpath to `@medusajs/framework/opentelemetry/sdk-trace`.
+
+If you upgrade to v2.23.0 or later, replace imports of `@medusajs/framework/opentelemetry/sdk-trace-node` with `@medusajs/framework/opentelemetry/sdk-trace`. Also, use `TracerProvider` instead of `NodeTracerProvider`, and pass an object with the `exporter` property to `SimpleSpanProcessor` and `BatchSpanProcessor`. For example, `new SimpleSpanProcessor({ exporter })`.
+
 To help you update your codebase to reflect these changes, Medusa provides a codemod that automatically replaces imports of these packages throughout your codebase.
 
 ***
@@ -6594,6 +6598,8 @@ Medusa uses [OpenTelemetry](https://opentelemetry.io/) for instrumentation and r
 ### Install Dependencies
 
 As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0), OpenTelemetry dependencies are installed by default in new Medusa projects. If you're using an older version of Medusa, you need to install the `@opentelemetry/sdk-node`, `@opentelemetry/resources`, `@opentelemetry/sdk-trace-node`, and `@opentelemetry/instrumentation-pg` dependencies.
+
+Since Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa uses OpenTelemetry JS SDK 3.0. The exporter you pass to `registerOtel` must target SDK 3.0, so install a version of your exporter package that's compatible with it. Traces also include the `os.*` and `service.instance.id` resource attributes, which the SDK detects by default.
 
 Before you start, you must install the dependencies relevant for the exporter you use. If you're using Zipkin, install the following dependencies:
 
