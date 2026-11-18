@@ -42,11 +42,12 @@ This tutorial provides an approach to implement a ticket booking system using Me
 
 By following this tutorial, you will learn how to:
 
-- Install and set up Medusa with the Next.js Starter Storefront.
+- Create a Cloud project and set it up locally.
 - Create data models for venues and tickets, and link them to Medusa's data models.
 - Customize the Medusa Admin to manage venues and shows or events.
 - Implement custom validation and flows for ticket booking.
 - Generate QR codes for tickets and verify them at the venue.
+- Publish the customizations to Cloud.
 - [Extend the Next.js Starter Storefront to allow booking tickets and choosing seats](./storefront/page.mdx): This part of the tutorial is covered separately.
 
 ![Diagram showing the architecture of the ticket booking system with Medusa](https://res.cloudinary.com/dza7lstvk/image/upload/v1757512301/Medusa%20Resources/ticket-booking-diagram_egbpye.jpg)
@@ -68,11 +69,15 @@ By following this tutorial, you will learn how to:
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -85,23 +90,11 @@ By following this tutorial, you will learn how to:
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
-
-the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -4399,7 +4392,7 @@ module.exports = defineConfig({
 })
 ```
 
-Make sure to set the `SENDGRID_API_KEY` and `SENDGRID_FROM` environment variables in your `.env` file, as explained in the [SendGrid Notification Module Provider guide](../../../infrastructure-modules/notification/sendgrid/page.mdx).
+Make sure to set the `SENDGRID_API_KEY` and `SENDGRID_FROM` environment variables in your `.env` file, as explained in the [SendGrid Notification Module Provider guide](../../../infrastructure-modules/notification/sendgrid/page.mdx). You'll add these variables to your Cloud environment when you [publish to Cloud](#step-14-publish-to-cloud).
 
 You also need to define an email template for the order confirmation email in SendGrid. The following is a dynamic template you can use:
 
@@ -4908,6 +4901,43 @@ curl -X POST http://localhost:9000/tickets/{ticket_purchase_id}/verify
 Replace `{ticket_purchase_id}` with the actual ticket purchase ID you obtained from the QR code.
 
 If the ticket is valid, you'll receive a success response. Otherwise, you'll receive an error response indicating the ticket is invalid or has already been scanned.
+
+---
+
+## Step 14: Publish to Cloud
+
+After you test ticket booking locally, publish the customizations to your Cloud project.
+
+### a. Add Environment Variables to Cloud
+
+Create the environment variables that you added in `.env` in your Cloud project:
+
+- `SENDGRID_API_KEY`: Add it in the environment's **Backend** variables.
+- `SENDGRID_FROM`: Add it in the environment's **Backend** variables.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle for both variables, since `medusa-config.ts` reads them during the build. Also enable the **Sensitive** toggle for `SENDGRID_API_KEY` to hide its value. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+### b. Push Changes and Open a Pull Request
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/ticket-booking
+git add .
+git commit -m "Add ticket booking"
+git push origin feat/ticket-booking
+```
+
+Then, on GitHub, open a pull request from the `feat/ticket-booking` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Venues and ticket products that you created locally aren't copied to deployed environments. So, create them again in the deployed environment's Medusa Admin.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

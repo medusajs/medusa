@@ -35,11 +35,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 By following this tutorial, you'll learn how to:
 
-- Install and set up a Medusa application.
+- Create a Cloud project and set it up locally.
 - Define models for bundled products.
 - Link bundled products to Medusa's existing product model, allowing you to benefit from existing product features.
 - Customize the add-to-cart flow to support bundled products.
 - Customize the Next.js Starter Storefront to display bundled products.
+- Publish the customizations to Cloud.
 
 ![Bundled products system architecture diagram showing the relationship between bundled products and individual products and variants](https://res.cloudinary.com/dza7lstvk/image/upload/v1745855513/Medusa%20Resources/bundled-products-overview_r5zejm.jpg)
 
@@ -60,11 +61,15 @@ By following this tutorial, you'll learn how to:
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -77,23 +82,11 @@ By following this tutorial, you'll learn how to:
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this guide locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../../nextjs-starter/page.mdx), choose Yes.
-
-the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -1718,7 +1711,7 @@ In the associated product's page, you should:
 
 <Note>
 
-Learn more about editing a product in the [User Guide](!user-guide!/products/edit)
+Learn more about editing a product in the [Merchant Guide](!user-guide!/products/edit)
 
 </Note>
 
@@ -3140,6 +3133,27 @@ Then, open the storefront in your browser at `http://localhost:8000`. Given you'
 ![Cart with the Remove bundle button showing for bundle items](https://res.cloudinary.com/dza7lstvk/image/upload/v1746011200/Medusa%20Resources/Screenshot_2025-04-30_at_2.06.02_PM_cgtg45.png)
 
 If you click on the "Remove bundle" button for any of the bundle's items, all items in the bundle will be removed from the cart.
+
+---
+
+## Step 13: Publish to Cloud
+
+After you test the bundled products feature locally, publish it to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/bundled-products
+git add .
+git commit -m "Add bundled products"
+git push origin feat/bundled-products
+```
+
+Then, on GitHub, open a pull request from the `feat/bundled-products` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Your local database and the environment's database are separate, so after the deployment, create the bundled products again from the deployed environment's Medusa Admin.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 
