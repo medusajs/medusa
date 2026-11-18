@@ -26,10 +26,11 @@ When you install a Medusa application, you get a fully-fledged commerce platform
 
 By following this tutorial, you'll learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Create the Avalara Tax Module Provider that calculates taxes using Avalara.
 - Create transactions in Avalara when an order is placed.
 - Sync products to Avalara to manage their tax codes and classifications.
+- Publish the customizations to Cloud.
 
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
@@ -44,11 +45,15 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -61,23 +66,11 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -500,6 +493,8 @@ You set the following variables:
     4. Copy the company ID from the URL. It's the number at the end of the URL, after `/companies/`.
 
 You can also set other optional environment variables for further configuration. Refer to [Avalara's documentation for more details about these options](https://developer.avalara.com/avatax/client-headers/).
+
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-6-publish-to-cloud).
 
 ---
 
@@ -1762,6 +1757,42 @@ Then:
 2. Go to "Products," and delete a product.
 3. After deleting the product, go to your Avalara dashboard.
 4. From the sidebar, click on "Settings" → "What you sell and buy." The product's item should no longer be listed.
+
+---
+
+## Step 6: Publish to Cloud
+
+After you test the Avalara integration locally, publish the customizations to your Cloud project.
+
+Create the environment variables that you added in the `.env` file in your Cloud project:
+
+- `AVALARA_USERNAME`: Add it in the environment's **Backend** variables.
+- `AVALARA_PASSWORD`: Add it in the environment's **Backend** variables.
+- `AVALARA_APP_ENVIRONMENT`: Add it in the environment's **Backend** variables.
+- `AVALARA_COMPANY_ID`: Add it in the environment's **Backend** variables.
+- Any optional `AVALARA_*` variables you set locally, such as `AVALARA_COMPANY_CODE`: Add them in the environment's **Backend** variables.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of all the variables, since `medusa-config.ts` reads them. Mark `AVALARA_PASSWORD` as **Sensitive**. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+Then, create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/avalara-integration
+git add .
+git commit -m "Add Avalara integration"
+git push origin feat/avalara-integration
+```
+
+Then, on GitHub, open a pull request from the `feat/avalara-integration` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After you merge the pull request, [set Avalara as the tax provider of your tax regions](#prerequisite-set-regions-provider-to-avalara) in the deployed environment's Medusa Admin, as you did locally.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

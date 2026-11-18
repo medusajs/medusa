@@ -19,10 +19,11 @@ In this tutorial, you'll integrate Sentry with Medusa to monitor your applicatio
 
 By following this tutorial, you'll learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Set up instrumentation with Sentry. You'll trace HTTP requests, workflows, Query usages, and database operations.
 - Capture HTTP request errors in Sentry.
 - Test monitoring and error tracking.
+- Publish the customizations to Cloud.
 
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
@@ -37,11 +38,15 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -54,23 +59,11 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter. Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-First, you'll be asked for the project's name. Then, when prompted about installing the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory.
 
 <Note>
 
@@ -179,7 +172,7 @@ Then, add the following environment variable to your `.env` file in your Medusa 
 SENTRY_DSN=your_sentry_dsn_here
 ```
 
-Replace `your_sentry_dsn_here` with the DSN you copied from Sentry.
+Replace `your_sentry_dsn_here` with the DSN you copied from Sentry. You'll add this variable to your Cloud environment when you [publish to Cloud](#step-4-publish-to-cloud).
 
 ### Test Tracing in Sentry
 
@@ -367,6 +360,38 @@ If you click on the error, you can view more details about it, such as its stack
 ![Error details in Sentry](https://res.cloudinary.com/dza7lstvk/image/upload/v1750347022/Medusa%20Resources/CleanShot_2025-06-19_at_18.30.07_2x_oz5y9e.png)
 
 By capturing HTTP request errors in Sentry, you can now monitor and track errors in your Medusa application effectively. You can also set up alerts in Sentry to get notified about critical issues and handle them promptly.
+
+---
+
+## Step 4: Publish to Cloud
+
+After you test the Sentry integration locally, publish the customizations to your Cloud project.
+
+Create the environment variable that you added in the `.env` file in your Cloud project:
+
+- `SENTRY_DSN`: Add it in the environment's **Backend** variables.
+
+Add the variable in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variable in the environment variables section. Preview environments created afterward inherit it. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variable and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+The `instrumentation.ts` file reads `SENTRY_DSN` when the Medusa application starts, so you don't need to enable its **Build** toggle. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+Then, create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/sentry-integration
+git add .
+git commit -m "Add Sentry integration"
+git push origin feat/sentry-integration
+```
+
+Then, on GitHub, open a pull request from the `feat/sentry-integration` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After the deployment finishes, Sentry receives traces and errors from the deployed environment. You can send a request to the `/test-sentry` API route of the preview environment's backend URL to verify the integration, as you did locally.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

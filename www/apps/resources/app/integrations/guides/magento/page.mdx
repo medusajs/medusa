@@ -38,11 +38,12 @@ By following this tutorial, you'll create a Medusa plugin that migrates data fro
 
 This tutorial will teach you how to:
 
-- Install and set up a Medusa application project.
+- Create a Cloud project and set it up locally.
 - Install and set up a Medusa plugin.
 - Implement a Magento Module in the plugin to connect to Magento's APIs and retrieve products.
     - This guide will only focus on migrating product data from Magento to Medusa. You can extend the implementation to migrate other data, such as customers, orders, and more.
 - Trigger data migration from Magento to Medusa in a scheduled job.
+- Publish the customizations to Cloud.
 
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
@@ -57,13 +58,17 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
-You'll first install a Medusa application that exposes core commerce features through REST APIs. You'll later install the Magento plugin in this application to test it out.
+You'll first create a Medusa application that exposes core commerce features through REST APIs. You'll later install the Magento plugin in this application to test it out.
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -76,23 +81,11 @@ You'll first install a Medusa application that exposes core commerce features th
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx).
-
-Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory. This tutorial only uses the Medusa application.
 
 <Note>
 
@@ -130,7 +123,7 @@ Once the installation process is done, a new directory named `medusa-plugin-mage
 
 ## Step 3: Set up Plugin in Medusa Application
 
-Before you start your development, you'll set up the plugin in the Medusa application you installed in the first step. This will allow you to test the plugin during your development process.
+Before you start your development, you'll set up the plugin in the Medusa application you set up in the first step. This will allow you to test the plugin during your development process.
 
 In the plugin's directory, run the following command to publish the plugin to the local package registry:
 
@@ -654,6 +647,8 @@ Where:
 - `MAGENTO_USERNAME`: The username of a Magento admin user to authenticate with the Magento server.
 - `MAGENTO_PASSWORD`: The password of the Magento admin user.
 - `MAGENTO_IMAGE_BASE_URL`: The base URL to use for product images. Magento stores product images in the `pub/media/catalog/product` directory, so you can reference them directly or use a CDN URL. If the URLs of product images in the Medusa server already have a different base URL, you can omit this option.
+
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-7-publish-to-cloud).
 
 <Note title="Tip">
 
@@ -1300,6 +1295,74 @@ info: Finished migrating products from Magento
 To confirm that the products were migrated, open the Medusa Admin dashboard at `http://localhost:9000/app` and log in. Then, click on Products in the sidebar. You'll see your magento products in the list of products.
 
 ![Click on products at the sidebar on the right, then view the products in the table in the middle.](https://res.cloudinary.com/dza7lstvk/image/upload/v1739359394/Medusa%20Resources/Screenshot_2025-02-12_at_1.22.44_PM_uva98i.png)
+
+---
+
+## Step 7: Publish to Cloud
+
+After you test the migration locally, publish the plugin and the Medusa application's changes to your Cloud project.
+
+### Publish the Plugin
+
+Cloud can't install a plugin that you only published to the local package registry with `plugin:publish`. So, publish the plugin to npm, or to a private registry that your Cloud project can access.
+
+Before you publish, change the scheduled job's configuration in the plugin back to run at midnight every day:
+
+```ts title="src/jobs/migrate-magento.ts"
+export const config = {
+  // ...
+  schedule: "0 0 * * *",
+}
+```
+
+Then, build and publish the plugin as explained in the [Publish Plugin to NPM](!docs!/learn/fundamentals/plugins/create#5-publish-plugin-to-npm) chapter.
+
+Next, in the `apps/backend` directory of your Medusa application, install the published plugin to replace the version from the local package registry:
+
+```bash npm2yarn
+npm install medusa-plugin-magento
+```
+
+Where `medusa-plugin-magento` is the name of your plugin as published on npm. If you published it under a different name, also change the plugin's `resolve` property in `medusa-config.ts` to that name.
+
+### Set Environment Variables
+
+Create the environment variables that you added in the `.env` file in your Cloud project:
+
+- `MAGENTO_BASE_URL`: Add it in the environment's **Backend** variables.
+- `MAGENTO_USERNAME`: Add it in the environment's **Backend** variables.
+- `MAGENTO_PASSWORD`: Add it in the environment's **Backend** variables.
+- `MAGENTO_IMAGE_BASE_URL`: Add it in the environment's **Backend** variables, if you set it locally.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of all the variables, since `medusa-config.ts` reads them. Mark `MAGENTO_PASSWORD` as **Sensitive**. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+<Note type="warning">
+
+Your deployed Medusa application must be able to reach the Magento server. If you used a local Magento server, such as `http://localhost:8080`, set `MAGENTO_BASE_URL` and `MAGENTO_IMAGE_BASE_URL` to the URL of a Magento server that's publicly accessible.
+
+</Note>
+
+### Push the Changes
+
+Then, create a new branch, commit your changes in the Medusa application, and push them to the project's repository:
+
+```bash
+git checkout -b feat/magento-integration
+git add .
+git commit -m "Add Magento integration"
+git push origin feat/magento-integration
+```
+
+Then, on GitHub, open a pull request from the `feat/magento-integration` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After the deployment finishes, the scheduled job migrates products from Magento at midnight every day. You can view the migrated products in the deployed environment's Medusa Admin.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 
